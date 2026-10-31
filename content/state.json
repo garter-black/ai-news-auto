@@ -7096,6 +7096,13 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000044.000185093.html"
     },
+    "82d5e32da8b2fad037b61ea20d71e7757abe3f6e": {
+      "at": "2026-10-31T16:01:29.827318+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "quality: 本文が短い（1781字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）; easy_markdown が短い（355字 / 基準 400字以上）",
+      "skipped": true,
+      "url": "https://www.nikkei.com/article/DGXZQOUC2784A0X21C26A0000000/"
+    },
     "82e55235337e720c": {
       "at": "2026-10-26T23:01:37.148021+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（導入事例）",
@@ -11057,51 +11064,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T00:31:36.340427+00:00",
-      "attempt": 1,
-      "id": "ec5d4434c569cf19",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1827字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 105.0,
-        "avg_sentence": 68.5,
-        "long_share": 0.609,
-        "max_paragraph": 193,
-        "paragraphs": 15,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "google-cloud-blog-ja",
-      "title": "AI が自らモデルを進化させる時代へ。カインズが AlphaEvolve で需要予測の誤差を 19% 改善"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T00:31:43.535331+00:00",
-      "attempt": 2,
-      "id": "ec5d4434c569cf19",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2080字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 125.6,
-        "avg_sentence": 70.3,
-        "long_share": 0.6,
-        "max_paragraph": 227,
-        "paragraphs": 14,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "google-cloud-blog-ja",
-      "title": "AI が自らモデルを進化させる時代へ。カインズが AlphaEvolve で需要予測の誤差を 19% 改善"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T00:31:53.992259+00:00",
@@ -17812,6 +17774,53 @@
       "score": null,
       "source": "trends",
       "title": "柳田 悠 岐 馬"
+    },
+    {
+      "accepted": false,
+      "at": "2026-10-31T16:01:23.251074+00:00",
+      "attempt": 1,
+      "id": "82d5e32da8b2fad037b61ea20d71e7757abe3f6e",
+      "kind": "trend",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "本文が短い（1139字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
+        "easy_markdown が短い（386字 / 基準 400字以上）",
+        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
+      ],
+      "readability": {
+        "avg_paragraph": 126.1,
+        "avg_sentence": 56.1,
+        "long_share": 0.333,
+        "max_paragraph": 196,
+        "paragraphs": 8,
+        "sentences": 18
+      },
+      "score": null,
+      "source": "trends",
+      "title": "ヨドバシドットコム"
+    },
+    {
+      "accepted": false,
+      "at": "2026-10-31T16:01:29.827278+00:00",
+      "attempt": 2,
+      "id": "82d5e32da8b2fad037b61ea20d71e7757abe3f6e",
+      "kind": "trend",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "本文が短い（1781字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
+        "easy_markdown が短い（355字 / 基準 400字以上）"
+      ],
+      "readability": {
+        "avg_paragraph": 129.1,
+        "avg_sentence": 64.5,
+        "long_share": 0.591,
+        "max_paragraph": 201,
+        "paragraphs": 11,
+        "sentences": 22
+      },
+      "score": null,
+      "source": "trends",
+      "title": "ヨドバシドットコム"
     }
   ],
   "short_text_retry": {}

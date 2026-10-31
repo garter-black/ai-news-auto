@@ -2026,46 +2026,6 @@
    "urls": [
     "https://www.apple.com/jp/newsroom/2026/10/apple-introduces-the-new-14-inch-macbook-pro-with-m6/"
    ]
-  },
-  {
-   "slug": "openai-scientific-understanding-2026",
-   "at": "2026-10-27T15:58:14.061674+00:00",
-   "title": "ChatGPTのOpenAIが数学・CS・物理の難問をAIで証明、外部の専門家グループと検証へ",
-   "head": "ChatGPTのOpenAIが数学・CS・物理の難問をAIで証明、外部の専門家グループと検証へ | Working with academic communities to build scientific understanding",
-   "text": "ChatGPTのOpenAIが数学・CS・物理の難問をAIで証明、外部の専門家グループと検証へ | Working with academic communities to build scientific understanding | OpenAI / 局所平滑化予想 / 指数時間仮説 / 量子色力学 / Lean / 科学的理解 / 生成AI / 数学証明 / 生成AI / OpenAI / 数学 / 計算機科学 / 物理学",
-   "urls": [
-    "https://openai.com/index/building-scientific-understanding-with-academic-communities"
-   ]
-  },
-  {
-   "slug": "boj-cpi-core-indicators",
-   "at": "2026-10-27T15:55:05.298999+00:00",
-   "title": "日本銀行が消費者物価のコア指標を公表、一時的要因を除いた基調的物価の動きを解説",
-   "head": "日本銀行が消費者物価のコア指標を公表、一時的要因を除いた基調的物価の動きを解説 | 消費者物価のコア指標",
-   "text": "日本銀行が消費者物価のコア指標を公表、一時的要因を除いた基調的物価の動きを解説 | 消費者物価のコア指標 | 日本銀行 / 消費者物価 / コア指標 / インフレ / 物価動向 / 統計データ / 需給ギャップ / 日銀レビュー / ビジネス / 経済 / 金融 / 統計",
-   "urls": [
-    "http://www.boj.or.jp/research/research_data/cpi/index.htm"
-   ]
-  },
-  {
-   "slug": "coderabbit-secure-gpt-6-1-sol-security",
-   "at": "2026-10-27T15:51:53.670746+00:00",
-   "title": "AIコードレビューのCodeRabbit、OpenAIの新AI「GPT-6.1 Sol」で脆弱性の調査から修正案まで",
-   "head": "AIコードレビューのCodeRabbit、OpenAIの新AI「GPT-6.1 Sol」で脆弱性の調査から修正案まで | GPT-6.1 Sol helps CodeRabbit strengthen security across complex codebases",
-   "text": "AIコードレビューのCodeRabbit、OpenAIの新AI「GPT-6.1 Sol」で脆弱性の調査から修正案まで | GPT-6.1 Sol helps CodeRabbit strengthen security across complex codebases | CodeRabbit / CodeRabbit Secure / GPT-6.1 Sol / AIコードレビュー / 脆弱性 / セキュリティ / Deep Scan / プルリクエスト / OpenAI / サンドボックス / 生成AI / CodeRabbit / GPT-6.1 Sol / セキュリティ / 開発ツール",
-   "urls": [
-    "https://openai.com/index/gpt-6-1-sol-coderabbit-code-security"
-   ]
-  },
-  {
-   "slug": "openai-signals-chatgpt-work-data",
-   "at": "2026-10-27T15:27:52.928958+00:00",
-   "title": "ChatGPTのOpenAIが仕事での使われ方のデータを公開 約100カ国・165業務を分析",
-   "head": "ChatGPTのOpenAIが仕事での使われ方のデータを公開 約100カ国・165業務を分析 | ChatGPT’s expanding world of work",
-   "text": "ChatGPTのOpenAIが仕事での使われ方のデータを公開 約100カ国・165業務を分析 | ChatGPT’s expanding world of work | OpenAI Signals / ChatGPT 仕事 利用 / ChatGPT 業務データ / O*NET / 中間業務活動 / IWA / AI 経済 研究 / ChatGPT 国別 / 生成AI 仕事 統計 / OpenAI 研究データ / ChatGPT / OpenAI / 生成AI / OpenAI Signals / 経済研究",
-   "urls": [
-    "https://openai.com/index/chatgpt-expanding-world-of-work"
-   ]
   }
  ]
 }
