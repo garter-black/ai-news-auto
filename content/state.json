@@ -8,6 +8,7 @@
     "4idQxzAyPDo": 1,
     "5iu0nY9lIy8": 1,
     "7cJlIJpKBW4": 1,
+    "8K08Ywgduno": 1,
     "AIH_9dOpAmU": 1,
     "DDjr6gXqtN8": 1,
     "EuN8WCWQf7g": 1,
@@ -7116,6 +7117,12 @@
       "reason": "prefilter: 価値の薄いお知らせ（導入事例）",
       "skipped": true,
       "url": "https://kyodonewsprwire.jp/release/202610268701"
+    },
+    "82f858ee268207ae": {
+      "at": "2026-10-31T18:21:40.516386+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（職員）",
+      "skipped": true,
+      "url": "https://www.gov-online.go.jp/press_conferences/prime_minister/202610/video-326974.html"
     },
     "830d1e82575a6407": {
       "at": "2026-10-27T01:11:10.153802+00:00",
