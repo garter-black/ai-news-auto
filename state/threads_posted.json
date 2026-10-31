@@ -2291,6 +2291,26 @@
       "comment": "編集部：まず無料で触ってみられるのがいいですね。",
       "dueAt": "2026-11-01T00:45:00+00:00",
       "postedAt": "2026-10-31T18:23:13+00:00"
+    },
+    "google-project-suncatcher-satellite-response": {
+      "id": "6ae65cf21ee172cd6dc3a864",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae65cf2f0984eef3330ac20",
+        "facebook": "6ae65cf221c807e9d587113b"
+      },
+      "hook": "breaking",
+      "score": 3,
+      "style": "standalone",
+      "image": "cover",
+      "format": "hook_thread",
+      "hookTextVersion": 2,
+      "topic": "Google",
+      "question": false,
+      "comment": "編集部：現場のエンジニアには地味に効きそう。",
+      "dueAt": "2026-11-01T03:15:00+00:00",
+      "postedAt": "2026-10-31T21:26:10+00:00"
     }
   },
   "extraPending": {}
