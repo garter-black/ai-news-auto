@@ -6711,6 +6711,12 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000200.000055068.html"
     },
+    "76061cab14585529": {
+      "at": "2026-10-31T15:21:01.327319+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（キャンペーン）",
+      "skipped": true,
+      "url": "https://www.kantei.go.jp/jp/105/discourse/20261101message.html"
+    },
     "7652741f39ec7ac8": {
       "at": "2026-10-30T10:11:36.991884+00:00",
       "model": "gemini-3.5-flash-lite",

@@ -2066,26 +2066,6 @@
    "urls": [
     "https://openai.com/index/chatgpt-expanding-world-of-work"
    ]
-  },
-  {
-   "slug": "nvidia-ai-c-brain-dementia-research",
-   "at": "2026-10-27T15:19:06.618800+00:00",
-   "title": "NVIDIAのAI技術が挑む認知症研究の加速、データ解析を数週間から数時間へ",
-   "head": "NVIDIAのAI技術が挑む認知症研究の加速、データ解析を数週間から数時間へ | How AI Is Changing the Pace of Discovery for Millions Living With Dementia",
-   "text": "NVIDIAのAI技術が挑む認知症研究の加速、データ解析を数週間から数時間へ | How AI Is Changing the Pace of Discovery for Millions Living With Dementia | NVIDIA / 認知症研究 / C-BRAIN / OpenScientist / InsightEngine / AI / 医療AI / オープンソース / 生成AI / 医療・ライフサイエンス / オープンソース / AI for Good",
-   "urls": [
-    "https://blogs.nvidia.com/blog/open-source-ai-tools-cbrain-dementia/"
-   ]
-  },
-  {
-   "slug": "ntt-4k-ai-video-surveillance-2026",
-   "at": "2026-10-27T15:17:26.744451+00:00",
-   "title": "NTTが遠方の小物体を3倍以上先で検知する映像監視技術を実証、4K映像のAI推論でインフラ監視を効率化",
-   "head": "NTTが遠方の小物体を3倍以上先で検知する映像監視技術を実証、4K映像のAI推論でインフラ監視を効率化 | 遠方小物体の検知可能距離を従来比3倍以上に拡大する映像監視技術を実証 ～4Kリアルタイム解析で、道路・空港などのインフラ監視の広域化・省設備化に貢献～",
-   "text": "NTTが遠方の小物体を3倍以上先で検知する映像監視技術を実証、4K映像のAI推論でインフラ監視を効率化 | 遠方小物体の検知可能距離を従来比3倍以上に拡大する映像監視技術を実証 ～4Kリアルタイム解析で、道路・空港などのインフラ監視の広域化・省設備化に貢献～ | NTT / 映像監視技術 / AI推論LSI / 4Kリアルタイム解析 / インフラ監視 / VLM / 遠方検知 / 省設備化 / ビジネス / AI / テクノロジー / インフラ",
-   "urls": [
-    "https://group.ntt/jp/newsrelease/2026/10/27/261027b.html"
-   ]
   }
  ]
 }
