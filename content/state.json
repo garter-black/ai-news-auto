@@ -6749,6 +6749,13 @@
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026103001"
     },
+    "7918ca98ce966dbe": {
+      "at": "2026-10-31T14:01:20.280959+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "元記事のPDFがバイナリデータとOCR処理の不備により実質的な経済指標のデータが読み取れず、記事として構成できる十分な事実確認ができないため。",
+      "skipped": true,
+      "url": "https://www.boj.or.jp/mopo/mpmdeci/mpr_2026/k261030b.pdf"
+    },
     "792b349685b03dc3": {
       "at": "2026-10-30T06:12:49.236533+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -8849,6 +8856,13 @@
       "reason": "followup quality: 「M6、Wi-Fi 7などの記述は、この発表では裏付けられていません」→元記事にはWi-Fi 7とBluetooth 6対応（N1ワイヤレスチップ）が明記されており、矛盾している。; 「本記事は『Liquid Retina XDR』で最大1,600ニト、コントラスト比1,000,000:1としていました」→元記事にも確認済みの文脈にもなく、過去記事の内容として裏",
       "skipped": true,
       "url": "https://www.apple.com/jp/newsroom/2026/10/apple-unveils-groundbreaking-macbook-pro-with-proled-xdr-display/"
+    },
+    "bbb20757cdb06296": {
+      "at": "2026-10-31T14:01:06.776252+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "元データのPDFファイルが実質的なテキストを含んでおらず（バイナリデータの残骸のみ）、日本銀行の経済・物価情勢の展望に関する具体的な数値を抽出できないため。",
+      "skipped": true,
+      "url": "https://www.boj.or.jp/mopo/outlook/gor2610a.pdf"
     },
     "bbbcf0a8218efdf4": {
       "at": "2026-10-30T10:31:14.418869+00:00",
