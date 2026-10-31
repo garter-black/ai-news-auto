@@ -7592,6 +7592,14 @@
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/047974/"
     },
+    "8ffa3d02e5861448": {
+      "at": "2026-10-31T22:11:06.818763+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "design-industry-bankruptcies-record",
+      "url": "https://www.tsr-net.co.jp/data/detail/1203387_1527.html"
+    },
     "90b31744ef4440aa": {
       "at": "2026-10-26T14:10:58.214509+00:00",
       "reason": "prefilter: 告知・お知らせ系",
@@ -11101,52 +11109,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T00:51:36.300437+00:00",
-      "attempt": 1,
-      "id": "6f5c086e08d35232",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1719字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 143.3,
-        "avg_sentence": 59.7,
-        "long_share": 0.417,
-        "max_paragraph": 298,
-        "paragraphs": 10,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "jst",
-      "title": "ショウジョウバエの睡眠誘引因子に由来する抗菌ペプチドを発見"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T00:51:44.519193+00:00",
-      "attempt": 2,
-      "id": "6f5c086e08d35232",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 55.5字・60字超の文が 24% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 183.0字・最長 355字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 183.0,
-        "avg_sentence": 55.5,
-        "long_share": 0.242,
-        "max_paragraph": 355,
-        "paragraphs": 10,
-        "sentences": 33
-      },
-      "score": 100,
-      "source": "jst",
-      "title": "ショウジョウバエの睡眠誘引因子に由来する抗菌ペプチドを発見"
-    },
     {
       "accepted": true,
       "at": "2026-10-30T00:51:48.599668+00:00",
@@ -17856,6 +17818,51 @@
       "score": 100,
       "source": "boj",
       "title": "（参考）ETFの売却ペースの見直しに関する決定（2026年10月）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-10-31T22:11:03.277777+00:00",
+      "attempt": 1,
+      "id": "8ffa3d02e5861448",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 60.5字・60字超の文が 41% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 147.8字・最長 215字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 147.8,
+        "avg_sentence": 60.5,
+        "long_share": 0.409,
+        "max_paragraph": 215,
+        "paragraphs": 9,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "tsr",
+      "title": "AIの脅威が迫る「デザイン業」、上半期の倒産が過去最多 ～ 前年同期比1.9倍、住宅業界の変化も影響 ～"
+    },
+    {
+      "accepted": true,
+      "at": "2026-10-31T22:11:06.818404+00:00",
+      "attempt": 0,
+      "id": "8ffa3d02e5861448",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 159.1字・最長 233字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 159.1,
+        "avg_sentence": 37.7,
+        "long_share": 0.079,
+        "max_paragraph": 233,
+        "paragraphs": 9,
+        "sentences": 38
+      },
+      "score": 100,
+      "source": "tsr",
+      "title": "AIの脅威が迫る「デザイン業」、上半期の倒産が過去最多 ～ 前年同期比1.9倍、住宅業界の変化も影響 ～"
     }
   ],
   "short_text_retry": {}
