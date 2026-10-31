@@ -413,6 +413,17 @@
       "title": "Apple unveils groundbreaking MacBook Pro with PROLED XDR Display",
       "url": "https://www.apple.com/newsroom/2026/10/apple-unveils-groundbreaking-macbook-pro-with-proled-xdr-display/"
     },
+    "dbbcec2a746cb5b2": {
+      "detectedAt": "2026-10-31T14:16:20+00:00",
+      "finishedAt": "2026-10-31T14:16:58+00:00",
+      "outcome": "skipped",
+      "reason": "対象外のURL",
+      "run": "41209368740",
+      "source": "nintendo-news",
+      "startedAt": "2026-10-31T14:16:56+00:00",
+      "title": "「Pikmin Day Direct」を公開しました。",
+      "url": "https://www.nintendo.com/jp/nintendo-direct/20261031/index.html"
+    },
     "e9bc26ecbea53199": {
       "detectedAt": "2026-10-28T01:07:21+00:00",
       "finishedAt": "2026-10-28T01:07:22+00:00",
