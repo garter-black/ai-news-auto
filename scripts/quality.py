@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """生成した記事を書き出す前の品質ゲート。
 
-  (a) 形のチェック（API 不要）: 本文の長さ・かんたん版・タイトル長・英語の残骸・元記事の丸写し・独自の価値（流れ／表／自分に関係ある？）
+  (a) 形のチェック（API 不要）: 空欄・かんたん版・タイトル長・英語の残骸・元記事の丸写し
   (b) 事実確認（LLM・bulk）: 記事と元記事を突き合わせ {grounded, score, problems} を返させる
       grounded が false か score < 70 なら不合格
 
@@ -22,16 +22,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import llm  # noqa: E402
 
-MIN_BODY = {"ai": 2500, "broad": 1800, "trend": 1800}
-MIN_EASY = 400
 TITLE_RANGE = (18, 64)
 PASS_SCORE = 70
 # 事実確認・文の書き直しに使うモデルの段（速報レーンは待たせないよう quality にする。web_articles.py が切り替える）
 CHECK_TIER = "bulk"
 # 大きなニュース（速報レーン・主要企業の新モデルなど）を確認しているか（web_articles.py が切り替える）。
-# True のとき: 本文の長さの基準を MAJOR_BODY_RATIO 倍に緩め、細かい指摘は外科的に直して公開する（落とさない）
+# True のとき: 細かい指摘は外科的に直して公開する（落とさない）
 MAJOR = False
-MAJOR_BODY_RATIO = 0.8
 # 外科的な修正に回す・修正後に受理する事実確認の点数（致命的な誤り＝fatal が無いときだけ）
 SURGICAL_MIN_SCORE = 75
 # 事実確認に渡す元記事の長さ。生成に渡す長さ（feeds.TEXT_CAP = 12000）＋元記事の情報の見出しより短いと、
@@ -60,6 +57,15 @@ FACT_SCHEMA = {
     },
     "required": ["grounded", "score", "problems"],
     "propertyOrdering": ["grounded", "score", "problems", "fatal"],
+}
+
+# 新しい Web 記事は事実確認と同じ呼び出しで読者への有用性も確認する。
+# followup / evergreen が使う既存の FACT_SCHEMA は変更しない。
+WEB_FACT_SCHEMA = {
+    **FACT_SCHEMA,
+    "properties": {**FACT_SCHEMA["properties"], "useful": {"type": "BOOLEAN"}},
+    "required": ["grounded", "score", "problems", "fatal", "useful"],
+    "propertyOrdering": ["grounded", "score", "problems", "fatal", "useful"],
 }
 
 FACT_SYSTEM = """あなたは報道機関の校閲記者です。AIが書いた記事を、元記事（一次情報）と1文ずつ突き合わせて事実確認します。
@@ -93,6 +99,16 @@ FACT_PROMPT = """# 元記事（一次情報。自動抽出なのでメニュー�
 - fatal: 数値・日付・価格・固有名詞・発表内容（何が・いつ・誰に提供されるか）の取り違えや創作が1つでもあれば true。
   言い過ぎ・訳語の選び方・言い回し・補足説明の程度の問題だけなら false。"""
 
+WEB_USEFULNESS_PROMPT = """
+
+# 読者にとっての有用性も確認する
+- 文字数や特定の章・表の有無では判定しない。短い速報でも十分に答えていればよい。
+- 見出しが約束した内容について、何が起きたかと、元情報から確認できる対象・条件・読者との関係など、理解に必要な具体的事実があるか確認する。
+- 大事な条件が元資料にない場合、無理に補わず不明と区別できているかを見る。根拠のない体験談・比較・推測や誇大な断定は不可。
+- 編集部の見方は、確認できた事実を根拠とし、事実と区別した解釈であればよい。
+- useful: 見出しの疑問に答え、読者が概要を理解できる具体性があれば true。それ以外は false とし、problems に不足を記す。
+"""
+
 
 CONTEXT_BLOCK = """
 # 確認済みの文脈（サイソクの過去記事・既存記事の事実。ここにある事実は創作として扱わない）
@@ -100,15 +116,6 @@ CONTEXT_BLOCK = """
 {context}
 >>>
 """
-# 独自の価値: 「これまでの流れ」の章 / Markdown の表 / 「自分に関係ある？」の章（150字以上）のどれか
-UNIQUE_KINDS = {"ai", "broad", "trend"}
-UNIQUE_SECTION_MIN = 150
-TABLE_RE = re.compile(r"^\s*\|.+\|\s*\n\s*\|\s*:?-{3,}", re.M)
-# 最初の章の見出し（新しい記事は「概要」、古い記事は「ひとことで言うと」）
-FIRST_HEADINGS = ("概要", "ひとことで言うと")
-# 立場別の「自分に関係ある？」系の章（旧名も含む）
-RELEVANCE_HEADINGS = ("自分に関係ある？", "自分にはどう関係する？", "自分にとって何が変わる？", "読者にとって何が変わるのか", "誰にどう効くのか")
-
 # 読みやすさの基準（Terra の書き直し: 平均33字・60字超6%・段落48字）
 READ_MAX_AVG_SENTENCE = 45
 READ_LONG_SENTENCE = 60
@@ -139,18 +146,6 @@ def copied_sentences(body: str, source: str, min_len: int = 40) -> list[str]:
         if len(clean) >= min_len and clean in src:
             found.append(sentence.strip()[:50])
     return found
-
-
-def section_text(body: str, heading: str) -> str:
-    """「## 見出し」で始まる章の本文（次の ## まで）。無ければ空文字"""
-    m = re.search(rf"^## {re.escape(heading)}[^\n]*\n(.*?)(?=^## |\Z)", body or "", re.M | re.S)
-    return m.group(1) if m else ""
-
-
-def has_unique_value(body: str) -> bool:
-    if re.search(r"^## これまでの流れ", body or "", re.M) or TABLE_RE.search(body or ""):
-        return True
-    return any(_plain_len(section_text(body, h)) >= UNIQUE_SECTION_MIN for h in RELEVANCE_HEADINGS)
 
 
 def _strip_inline(text: str) -> str:
@@ -225,29 +220,16 @@ def structural_problems(record: dict, kind: str, source_text: str = "") -> list[
     easy = (record.get("easy") or "").strip()
     title = record.get("title") or ""
 
-    min_body = int(MIN_BODY.get(kind, 1800) * (MAJOR_BODY_RATIO if MAJOR else 1))
-    if _plain_len(body) < min_body:
-        problems.append(f"本文が短い（{_plain_len(body)}字 / 基準 {min_body}字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）")
-    if _plain_len(easy) < MIN_EASY:
-        problems.append(f"easy_markdown が短い（{_plain_len(easy)}字 / 基準 {MIN_EASY}字以上）")
+    if not re.sub(r"(?m)^\s*#{1,6}.*$|\s", "", body):
+        problems.append("本文が空です")
+    if not re.sub(r"(?m)^\s*#{1,6}.*$|\s", "", easy):
+        problems.append("easy_markdown に本文がありません")
     if not easy.startswith(("## ひとことで言うと", "## 概要")):
         problems.append("easy_markdown が「## ひとことで言うと」から始まっていない")
     if not TITLE_RANGE[0] <= len(title) <= TITLE_RANGE[1]:
         problems.append(f"title の長さが不適切（{len(title)}字 / {TITLE_RANGE[0]}〜{TITLE_RANGE[1]}字）")
     if re.search(r"[！!]", f"{title}{record.get('seoTitle') or ''}"):
         problems.append("title / seo_title に感嘆符がある")
-    if kind == "broad":
-        if not any(f"## {h}" in body for h in FIRST_HEADINGS):
-            problems.append("body_markdown に「## 概要」の章がない（構成どおりの見出しを使う）")
-        if "## 自分に関係ある？" not in body:
-            problems.append("body_markdown に「## 自分に関係ある？」の章がない（構成どおりの見出しを使う）")
-
-    if record.get("sourceType") == "web" and kind in UNIQUE_KINDS and not has_unique_value(body):
-        problems.append(
-            "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・"
-            "「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-        )
-
     text = f"{body}\n{easy}"
     if m := BOILERPLATE_RE.search(text):
         problems.append(f"Webページの英語の残骸が残っている（「{m.group(0)}」）")
@@ -276,23 +258,29 @@ def _article_for_check(record: dict) -> str:
     return "\n\n".join(parts)[:ARTICLE_CAP]
 
 
-def fact_check(record: dict, source_text: str, context: str = "") -> dict:
+def fact_check(record: dict, source_text: str, context: str = "", require_usefulness: bool = False) -> dict:
     """{grounded, score, problems, model}。context は確認済みの事実（過去記事など）。LLM が使えないときは例外"""
     prompt = FACT_PROMPT.format(
         source=source_text[:SOURCE_CAP],
         context=CONTEXT_BLOCK.format(context=context[:3000]) if context.strip() else "",
         article=_article_for_check(record),
     )
-    data, model = llm.generate_json(FACT_SYSTEM, prompt, FACT_SCHEMA, temperature=0.1, max_output_tokens=4096, tier=CHECK_TIER)
+    if require_usefulness:
+        prompt += WEB_USEFULNESS_PROMPT
+    data, model = llm.generate_json(FACT_SYSTEM, prompt, WEB_FACT_SCHEMA if require_usefulness else FACT_SCHEMA,
+                                    temperature=0.1, max_output_tokens=4096, tier=CHECK_TIER)
     try:
         score = int(data.get("score", 0))
     except (TypeError, ValueError):
         score = 0
     problems = [str(p).strip() for p in (data.get("problems") or []) if str(p).strip()][:8]
-    grounded = bool(data.get("grounded"))
+    grounded = data.get("grounded") is True
     # fatal が無い（古い形の応答）ときは、不合格を致命的とみなす（緩める方向に倒さない）
-    fatal = bool(data.get("fatal")) if "fatal" in data else not grounded
-    return {"grounded": grounded, "score": max(0, min(100, score)), "problems": problems, "fatal": fatal, "model": model}
+    fatal = data.get("fatal") is not False if "fatal" in data else not grounded
+    result = {"grounded": grounded, "score": max(0, min(100, score)), "problems": problems, "fatal": fatal, "model": model}
+    if require_usefulness:
+        result["useful"] = data.get("useful") is True
+    return result
 
 
 VIDEO_FIX = {"映像では": "元記事では", "スライドでは": "元記事では", "音声では": "元記事では"}
@@ -322,19 +310,21 @@ def evaluate(record: dict, source_text: str, kind: str, context: str = "", check
     read_problems = readability_problems("", read)
     base = {"structural": [], "fact": None, "readability": read, "readability_problems": read_problems}
     structural = structural_problems(record, kind, source_text)
+    if record.get("sourceType") == "web" and not (source_text or "").strip():
+        structural.append("一次資料が空のため記事の内容を確認できません")
     if structural:
         return {**base, "ok": False, "soft": False, "score": None, "problems": structural, "structural": structural}
     if not check_facts:
         return {**base, "ok": not read_problems, "soft": bool(read_problems), "score": None, "problems": read_problems}
     try:
-        fact = fact_check(record, source_text, context)
+        fact = fact_check(record, source_text, context, require_usefulness=True) if record.get("sourceType") == "web" else fact_check(record, source_text, context)
     except Exception as error:  # noqa: BLE001 - 確認できない記事は出さない
         problem = f"事実確認を実行できなかった（{str(error)[:80]}）"
         return {**base, "ok": False, "soft": False, "score": None, "problems": [problem], "unavailable": True}
-    fact_ok = fact["grounded"] and fact["score"] >= PASS_SCORE
+    fact_ok = fact["grounded"] and fact["score"] >= PASS_SCORE and fact.get("useful", True)
     problems = fact["problems"] if not fact_ok else read_problems
     if not fact_ok and not problems:
-        problems = [f"元記事との整合性が低い（score {fact['score']}）"]
+        problems = ["記事の有用性を確認できなかった"] if fact.get("useful") is False else [f"元記事との整合性が低い（score {fact['score']}）"]
     return {**base, "ok": fact_ok and not read_problems, "soft": fact_ok and bool(read_problems), "score": fact["score"],
             "problems": problems, "fact": fact}
 
@@ -399,7 +389,7 @@ def polish(record: dict, source_text: str, kind: str, context: str = "", check_f
     for a, b in zip(heads_old, heads_new):
         if _PROTECTED_HEADING_RE.match(a) and _norm(a) != _norm(b):
             return None, f"決まった章名が変わった（{a}→{b}）"[:80]
-    if _plain_len(new_body) < max(length * 0.9, MIN_BODY.get(kind, 1800) * (MAJOR_BODY_RATIO if MAJOR else 1)):
+    if _plain_len(new_body) < length * 0.9:
         return None, f"本文が縮んだ（{length}→{_plain_len(new_body)}字）"
     # 「3つあります」のような1桁の数は箇条書きにするときに増えるので見逃す（事実確認は後で通す）
     added = {n for n in _numbers(new_body) - _numbers(body) if len(n) > 1}
@@ -421,65 +411,6 @@ def polish(record: dict, source_text: str, kind: str, context: str = "", check_f
         return None, f"読みやすさが改善しなかった（{before['avg_sentence']}→{after['avg_sentence']}字）"
     verdict["polished_by"] = model
     return polished, verdict
-
-
-EXPAND_SYSTEM = """あなたはニュースサイトの編集者です。記者の原稿が少し短いので、元の情報源にある事実だけを使って書き足します。
-出力は指定の JSON だけ。"""
-
-EXPAND_PROMPT = """次の記事本文（Markdown）は {length}字で、基準の {target}字に足りません。
-元の情報源（下）にある事実だけを使って、{target}字を少し超える長さまで書き足してください。
-
-# 書き足し方
-- 各章で、元の情報源にある具体的な事実・数字の意味・使い方・条件・注意点・「読者の何が変わるか」の説明を足す。
-- 1文は50字以内、1段落は1〜3文。見出しは疑問の形のまま。
-- 同じことのくり返し、一般論、推測、元に無い数字・日付・価格・固有名詞は書かない。足りなければ無理に埋めず、書ける範囲で止める。
-
-# 変えてはいけないもの
-- 見出し（## と ###）の文言・数・順番。既存の文の事実・数字・リンク・表。
-
-# 元の情報源
-<<<
-{source}
->>>
-
-# 原稿
-<<<
-{body}
->>>"""
-
-LENGTH_RE = re.compile(r"^本文が短い（(\d+)字 / 基準 (\d+)字以上）")
-
-
-def length_only(verdict: dict) -> bool:
-    """不合格の理由が「本文が短い」だけで、足りない分が4割以内なら True（書き足しで救える）"""
-    problems = verdict.get("problems") or []
-    if not problems or verdict.get("unavailable"):
-        return False
-    m = [LENGTH_RE.match(p) for p in problems]
-    if not all(m):
-        return False
-    have, need = int(m[0].group(1)), int(m[0].group(2))
-    return have >= need * 0.6
-
-
-def expand(record: dict, source_text: str, kind: str, context: str = "", check_facts: bool = True):
-    """本文が少し短いだけの原稿を、元の情報源の事実で書き足す。(record, verdict) か (None, 理由)"""
-    body = record.get("body") or ""
-    length, target = _plain_len(body), int(MIN_BODY.get(kind, 1800) * (MAJOR_BODY_RATIO if MAJOR else 1))
-    prompt = EXPAND_PROMPT.format(length=length, target=target, source=(source_text or "")[:12000], body=body)
-    data, model = llm.generate_json(EXPAND_SYSTEM, prompt, POLISH_SCHEMA, temperature=0.4, max_output_tokens=16384, tier=CHECK_TIER)
-    new_body = re.sub(r"^(#{1,6}) +(?:#{1,6} +)+", r"\1 ", str(data.get("body_markdown") or "").strip(), flags=re.M)
-    heads_old, heads_new = _HEADING_RE.findall(body), _HEADING_RE.findall(new_body)
-    if [_norm(h) for h in heads_old] != [_norm(h) for h in heads_new]:
-        return None, f"見出しが変わった（{len(heads_old)}→{len(heads_new)}個）"
-    if _plain_len(new_body) <= length:
-        return None, "書き足されなかった"
-    expanded = {**record, "body": new_body}
-    verdict = evaluate(expanded, source_text, kind, context, check_facts=check_facts)
-    if not (verdict["ok"] or verdict.get("soft")):
-        return None, "書き足し後の確認に不合格: " + "; ".join(verdict["problems"][:2])
-    verdict["expanded_by"] = model
-    return expanded, verdict
 
 
 SURGICAL_SCHEMA = {
@@ -533,7 +464,7 @@ SURGICAL_PROMPT = """校閲記者が次の記事に指摘をしました。指�
 def surgical_ok(verdict: dict) -> bool:
     """外科的な修正に回せる不合格か（形のチェックは通り、事実確認が致命的でなく SURGICAL_MIN_SCORE 点以上）"""
     fact = verdict.get("fact") or {}
-    return bool(fact) and not verdict.get("structural") and not fact.get("fatal") and fact.get("score", 0) >= SURGICAL_MIN_SCORE
+    return bool(fact) and not verdict.get("structural") and not fact.get("fatal") and fact.get("useful", True) and fact.get("score", 0) >= SURGICAL_MIN_SCORE
 
 
 def surgical_fix(record: dict, source_text: str, kind: str, problems: list[str], context: str = "", check_facts: bool = True):
