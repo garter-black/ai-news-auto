@@ -7044,6 +7044,14 @@
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102818"
     },
+    "81545d2d115d854d": {
+      "at": "2026-10-31T17:41:27.560704+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "boj-etf-sales-pace-review-2026",
+      "url": "https://www.boj.or.jp/mopo/mpmdeci/mpr_2026/k261030c.pdf"
+    },
     "8176f956cd217fd4": {
       "at": "2026-10-27T17:33:44.535631+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11064,50 +11072,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T00:31:53.992259+00:00",
-      "attempt": 1,
-      "id": "186bcef5c82081bd",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 118.6,
-        "avg_sentence": 50.8,
-        "long_share": 0.25,
-        "max_paragraph": 165,
-        "paragraphs": 12,
-        "sentences": 28
-      },
-      "score": null,
-      "source": "digital-agency",
-      "title": "ガバメントAI 源内で「国会答弁作成支援AIアプリ」のプロトタイプ版を提供開始します"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T00:31:59.656964+00:00",
-      "attempt": 2,
-      "id": "186bcef5c82081bd",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1612字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 122.3,
-        "avg_sentence": 53.8,
-        "long_share": 0.28,
-        "max_paragraph": 198,
-        "paragraphs": 11,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "digital-agency",
-      "title": "ガバメントAI 源内で「国会答弁作成支援AIアプリ」のプロトタイプ版を提供開始します"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T00:51:36.300437+00:00",
@@ -17821,6 +17785,48 @@
       "score": null,
       "source": "trends",
       "title": "ヨドバシドットコム"
+    },
+    {
+      "accepted": false,
+      "at": "2026-10-31T17:41:15.264757+00:00",
+      "attempt": 1,
+      "id": "81545d2d115d854d",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 49.7字・60字超の文が 20% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 66.3,
+        "avg_sentence": 49.7,
+        "long_share": 0.2,
+        "max_paragraph": 99,
+        "paragraphs": 15,
+        "sentences": 20
+      },
+      "score": 100,
+      "source": "boj",
+      "title": "（参考）ETFの売却ペースの見直しに関する決定（2026年10月）"
+    },
+    {
+      "accepted": true,
+      "at": "2026-10-31T17:41:27.560326+00:00",
+      "attempt": 0,
+      "id": "81545d2d115d854d",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 71.0,
+        "avg_sentence": 31.3,
+        "long_share": 0.029,
+        "max_paragraph": 103,
+        "paragraphs": 15,
+        "sentences": 34
+      },
+      "score": 100,
+      "source": "boj",
+      "title": "（参考）ETFの売却ペースの見直しに関する決定（2026年10月）"
     }
   ],
   "short_text_retry": {}

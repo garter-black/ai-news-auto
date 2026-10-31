@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "boj-etf-sales-pace-review-2026",
+   "at": "2026-10-31T17:41:09.660638+00:00",
+   "title": "日本銀行がETFの売却ペース見直しを決定、2026年10月の決定会合で発表",
+   "head": "日本銀行がETFの売却ペース見直しを決定、2026年10月の決定会合で発表 | （参考）ETFの売却ペースの見直しに関する決定（2026年10月）",
+   "text": "日本銀行がETFの売却ペース見直しを決定、2026年10月の決定会合で発表 | （参考）ETFの売却ペースの見直しに関する決定（2026年10月） | 日本銀行 / ETF / 売却ペース / 金融政策決定会合 / 日銀 / 上場投資信託 / 2026年 / 金融 / 統計 / ビジネス / 経済",
+   "urls": [
+    "https://www.boj.or.jp/mopo/mpmdeci/mpr_2026/k261030c.pdf"
+   ]
+  },
+  {
    "slug": "intelligent-terminal-local-120b-llm",
    "at": "2026-10-31T12:01:39.436659+00:00",
    "title": "マイクロソフトの新端末で1220億パラメータの巨大AIを完全オフライン駆動できる開発ツールが公開",
@@ -762,9 +772,9 @@
   {
    "slug": "chatgpt-pro-business-api-credits-benefit",
    "at": "2026-10-29T12:25:22.684875+00:00",
-   "title": "ChatGPTの有料ユーザーに毎月最大500ドルのAPI利用枠 OpenAIが開発者向け特典を開始",
-   "head": "ChatGPTの有料ユーザーに毎月最大500ドルのAPI利用枠 OpenAIが開発者向け特典を開始 | API credits, now in ChatGPT Pro and Business plans",
-   "text": "ChatGPTの有料ユーザーに毎月最大500ドルのAPI利用枠 OpenAIが開発者向け特典を開始 | API credits, now in ChatGPT Pro and Business plans | ChatGPT / OpenAI / APIクレジット / ChatGPT Pro / ChatGPT Business / GPT-6.1 Terra / Codex / 使い方 / 料金 / 開発ツール / OpenAI / ChatGPT / API / 生成AI / 開発ツール",
+   "title": "ChatGPT Pro・BusinessのAPIクレジットとは？対象と受け取り方",
+   "head": "ChatGPT Pro・BusinessのAPIクレジットとは？対象と受け取り方 | API credits, now in ChatGPT Pro and Business plans",
+   "text": "ChatGPT Pro・BusinessのAPIクレジットとは？対象と受け取り方 | API credits, now in ChatGPT Pro and Business plans | ChatGPT / OpenAI / APIクレジット / ChatGPT Pro / ChatGPT Business / GPT-6.1 Terra / Codex / 使い方 / 料金 / 開発ツール / OpenAI / ChatGPT / API / 生成AI / 開発ツール",
    "urls": []
   },
   {
@@ -1923,108 +1933,6 @@
    "urls": [
     "https://www.riken.jp/press/2026/20261027_2/index.html",
     "https://www.jst.go.jp/pr/announce/20261027/index.html"
-   ]
-  },
-  {
-   "slug": "aws-bedrock-evaluation-bias-property-finder",
-   "at": "2026-10-27T17:37:00.079470+00:00",
-   "title": "AWSのAmazon Bedrock、AI評価の歪みを直して最適モデル選定へ",
-   "head": "AWSのAmazon Bedrock、AI評価の歪みを直して最適モデル選定へ | Fix evaluation bias to unlock better models on Amazon Bedrock",
-   "text": "AWSのAmazon Bedrock、AI評価の歪みを直して最適モデル選定へ | Fix evaluation bias to unlock better models on Amazon Bedrock | Amazon Bedrock / AWS / 評価バイアス / プロンプト最適化 / 生成AI / 不動産 / Llama 4 / モデル評価 / 生成AI / LLM / AWS",
-   "urls": [
-    "https://aws.amazon.com/blogs/machine-learning/fix-evaluation-bias-to-unlock-better-models-on-amazon-bedrock/"
-   ]
-  },
-  {
-   "slug": "fish-dha-food-web-riken",
-   "at": "2026-10-27T17:33:56.666799+00:00",
-   "title": "理化学研究所など、魚にDHAが多い理由を解明 原生生物の食物連鎖ルートを発見",
-   "head": "理化学研究所など、魚にDHAが多い理由を解明 原生生物の食物連鎖ルートを発見 | 魚にDHAが多いのはなぜ？食物連鎖の未解明ルートを発見",
-   "text": "理化学研究所など、魚にDHAが多い理由を解明 原生生物の食物連鎖ルートを発見 | 魚にDHAが多いのはなぜ？食物連鎖の未解明ルートを発見 | 理化学研究所 / DHA / 魚 / 食物連鎖 / アプラノキトリウム類 / 三陸沖 / 環境DNA / カイアシ類 / 科学・宇宙 / 生物 / 海洋 / 環境",
-   "urls": [
-    "https://www.riken.jp/press/2026/20261027_3/index.html"
-   ]
-  },
-  {
-   "slug": "spec-driven-development-sap-abap-aws",
-   "at": "2026-10-27T17:16:08.734354+00:00",
-   "title": "AWSがSAP ABAP向けの「スペック駆動開発」を発表 AI任せの開発でコードが散らかる問題を防ぐ",
-   "head": "AWSがSAP ABAP向けの「スペック駆動開発」を発表 AI任せの開発でコードが散らかる問題を防ぐ | スペックファースト: SAP ABAP のスペック駆動開発",
-   "text": "AWSがSAP ABAP向けの「スペック駆動開発」を発表 AI任せの開発でコードが散らかる問題を防ぐ | スペックファースト: SAP ABAP のスペック駆動開発 | SAP ABAP / スペック駆動開発 / AWS / Kiro / AIコーディング / モダナイゼーション / クリーンコア / バイブコーディング / 生成AI / 開発ツール / AWS / SAP",
-   "urls": [
-    "https://aws.amazon.com/jp/blogs/news/spec-driven-development-for-sap-abap/"
-   ]
-  },
-  {
-   "slug": "kirin-good-ale-limited-message-can",
-   "at": "2026-10-27T17:11:57.816162+00:00",
-   "title": "キリンビール、「グッドエール限定メッセージ缶」を11月24日より全国で期間限定発売",
-   "head": "キリンビール、「グッドエール限定メッセージ缶」を11月24日より全国で期間限定発売 | 「キリングッドエール」より、限定メッセージ缶を発売 綾瀬はるかさんをはじめとしたブランドリーダーが日常を明るくする“エール”を届ける",
-   "text": "キリンビール、「グッドエール限定メッセージ缶」を11月24日より全国で期間限定発売 | 「キリングッドエール」より、限定メッセージ缶を発売 綾瀬はるかさんをはじめとしたブランドリーダーが日常を明るくする“エール”を届ける | キリンビール / キリングッドエール / 限定メッセージ缶 / 綾瀬はるか / 大森元貴 / 浜辺美波 / 鈴木亮平 / ビール / 食品 / 日用品 / 消費 / 家計",
-   "urls": [
-    "https://www.kirinholdings.com/jp/newsroom/release/2026/1027_01.html"
-   ]
-  },
-  {
-   "slug": "caa-recall-accident-report-202610",
-   "at": "2026-10-27T16:54:16.235954+00:00",
-   "title": "消費者庁がリコール製品の重大事故を発表、電気シェーバーと充電式マッサージ器で火災など11件",
-   "head": "消費者庁がリコール製品の重大事故を発表、電気シェーバーと充電式マッサージ器で火災など11件 | 消費生活用製品の重大製品事故:リコール製品で火災等(電気シェーバー、マッサージ器(充電式))(10月27日) | アンカー・ジャパンの充電式スピーカーで火災など24件",
-   "text": "消費者庁がリコール製品の重大事故を発表、電気シェーバーと充電式マッサージ器で火災など11件 | 消費生活用製品の重大製品事故:リコール製品で火災等(電気シェーバー、マッサージ器(充電式))(10月27日) | 消費者庁 / 重大製品事故 / リコール / 電気シェーバー / マッサージ器 / 火災 / 消費生活用製品安全法 / 充電式 / 暮らし / 消費者トラブル / 日用品 / 住まい",
-   "urls": [
-    "https://www.caa.go.jp/notice/entry/047930/",
-    "https://www.caa.go.jp/notice/entry/047983/"
-   ]
-  },
-  {
-   "slug": "openai-oracle-partnership-chatgpt",
-   "at": "2026-10-27T16:52:10.451018+00:00",
-   "title": "ChatGPTのOpenAIがOracleと提携、企業の業務アプリとデータをChatGPTに統合",
-   "head": "ChatGPTのOpenAIがOracleと提携、企業の業務アプリとデータをChatGPTに統合 | OpenAI expands partnership with Oracle to bring its apps to ChatGPT",
-   "text": "ChatGPTのOpenAIがOracleと提携、企業の業務アプリとデータをChatGPTに統合 | OpenAI expands partnership with Oracle to bring its apps to ChatGPT | OpenAI / Oracle / ChatGPT / Codex / ChatGPT Work / AIエージェント / 企業向けAI / オラクル / 生成AI / LLM / ビジネス / クラウド / セキュリティ",
-   "urls": [
-    "https://openai.com/index/oracle-apps-in-chatgpt"
-   ]
-  },
-  {
-   "slug": "ntt-bbtower-iown-apn-storage-integration",
-   "at": "2026-10-27T16:34:43.220840+00:00",
-   "title": "NTTとブロードバンドタワー、東京～北海道間1,000km超のストレージ統合実証に成功",
-   "head": "NTTとブロードバンドタワー、東京～北海道間1,000km超のストレージ統合実証に成功 | 次世代通信基盤「IOWN APN」を活用し、東京～北海道データセンター間1,000km超のストレージ統合実証に成功～遠隔地でも同一拠点と同等の読み出し性能によりAIワークロードや映像処理を実現、データセンターの地方分散へ～ | 理研神戸と東大柏間での800Gbps超高速データ転送実証に成功",
-   "text": "NTTとブロードバンドタワー、東京～北海道間1,000km超のストレージ統合実証に成功 | 次世代通信基盤「IOWN APN」を活用し、東京～北海道データセンター間1,000km超のストレージ統合実証に成功～遠隔地でも同一拠点と同等の読み出し性能によりAIワークロードや映像処理を実現、データセンターの地方分散へ～ | IOWN APN / NTT東日本 / ブロードバンドタワー / データセンター / ストレージ統合 / オールフォトニクスネットワーク / 地方分散 / ランサムウェア対策 / インフラ / ネットワーク / データセンター / ストレージ / AI",
-   "urls": [
-    "https://www.ntt-east.co.jp/release/detail/20261027_01.html",
-    "http://www.ntt-west.co.jp/news/2610/261030a.html"
-   ]
-  },
-  {
-   "slug": "apple-imac-m6-2026-10",
-   "at": "2026-10-27T16:33:17.093991+00:00",
-   "title": "AppleがM6チップ搭載の新iMacを発表、最高18倍の高速化で24万9800円から",
-   "head": "AppleがM6チップ搭載の新iMacを発表、最高18倍の高速化で24万9800円から | Apple、M6を搭載した新しいiMacを発表",
-   "text": "AppleがM6チップ搭載の新iMacを発表、最高18倍の高速化で24万9800円から | Apple、M6を搭載した新しいiMacを発表 | Apple / iMac / M6 / M6チップ / Mac / Apple Intelligence / Siri AI / 新型iMac / macOS 27 / パソコン / PC / 家電 / Apple / ガジェット",
-   "urls": [
-    "https://www.apple.com/jp/newsroom/2026/10/apple-unveils-new-imac-with-m6/"
-   ]
-  },
-  {
-   "slug": "salesforce-agentic-ai-roi-survey-2026",
-   "at": "2026-10-27T16:16:03.045046+00:00",
-   "title": "セールスフォースのAI調査、日本企業の成果実現は平均7カ月",
-   "head": "セールスフォースのAI調査、日本企業の成果実現は平均7カ月 | Salesforce、「企業におけるエージェント型AI最新事情」（第1版）の日本語版を公開",
-   "text": "セールスフォースのAI調査、日本企業の成果実現は平均7カ月 | Salesforce、「企業におけるエージェント型AI最新事情」（第1版）の日本語版を公開 | Salesforce / AIエージェント / ROI / 生成AI / セールスフォース / 自律型AI / 企業 / 調査 / AIエージェント / 生成AI / ビジネス / セールスフォース",
-   "urls": [
-    "https://www.salesforce.com/jp/news/stories/agentic-ai-leaders-survey-on-roi/"
-   ]
-  },
-  {
-   "slug": "apple-14-inch-macbook-pro-m6",
-   "at": "2026-10-27T16:08:31.485827+00:00",
-   "title": "Appleが「M6」搭載の新14インチMacBook Proを発表、最大24時間駆動で33万9800円から",
-   "head": "Appleが「M6」搭載の新14インチMacBook Proを発表、最大24時間駆動で33万9800円から | Apple、M6を搭載した新しい14インチMacBook Proを発表",
-   "text": "Appleが「M6」搭載の新14インチMacBook Proを発表、最大24時間駆動で33万9800円から | Apple、M6を搭載した新しい14インチMacBook Proを発表 | MacBook Pro / M6 / Apple / ノートパソコン / Apple Intelligence / Mac / 新製品 / M6チップ / PC / 家電 / テクノロジー",
-   "urls": [
-    "https://www.apple.com/jp/newsroom/2026/10/apple-introduces-the-new-14-inch-macbook-pro-with-m6/"
    ]
   }
  ]
