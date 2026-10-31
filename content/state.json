@@ -3966,6 +3966,12 @@
       "slug": "awaji-hello-kitty-apple-land-autumn-food",
       "url": "https://www.atpress.ne.jp/news/644455"
     },
+    "1b4f4a0c18fb31ca": {
+      "at": "2026-10-31T20:20:58.013389+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（人事）",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/menu_news/s-news/01kanbo01_02001188.html"
+    },
     "1b68d707a7a4b7cc": {
       "at": "2026-10-30T10:31:02.170316+00:00",
       "reason": "prefilter: 扱わない話題（事件事故・ゴシップ・選挙・医療効果・噂）",
@@ -5026,6 +5032,12 @@
       "reason": "prefilter: 告知・お知らせ系",
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000196.000048688.html"
+    },
+    "3f890e59302d1c86": {
+      "at": "2026-10-31T20:20:58.013425+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（委員会）",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/menu_news/s-news/01kougai01_20261101.html"
     },
     "3fa519422b2c3b84": {
       "at": "2026-10-29T20:21:47.829615+00:00",
