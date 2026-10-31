@@ -2196,7 +2196,8 @@
       "permalink": "",
       "channels": {
         "twitter": "6ae57b56ceb491e585db6932",
-        "facebook": "6ae57b56a11457434989737e"
+        "facebook": "6ae57b56a11457434989737e",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mz6k7jpiwd2w"
       },
       "hook": "contrarian",
       "score": 4,
@@ -2226,7 +2227,8 @@
         "reposts": 0,
         "impressions": 0,
         "clicks": 0
-      }
+      },
+      "blueskyAt": "2026-10-31T14:51:08+00:00"
     },
     "google-antigravity-autonomous-software-development": {
       "id": "6ae584a1a1145743498b5f05",
@@ -2234,7 +2236,8 @@
       "permalink": "",
       "channels": {
         "twitter": "6ae584a1406ab8a018a0007c",
-        "facebook": "6ae584a1eaa24d6f9a5acaf5"
+        "facebook": "6ae584a1eaa24d6f9a5acaf5",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mz6k7mfe7t2q"
       },
       "hook": "before_after",
       "score": 5,
@@ -2247,7 +2250,8 @@
       "questionText": "もう試した人はいますか？",
       "comment": "編集部：これは開発者にはうれしい更新。",
       "dueAt": "2026-10-31T13:45:00+00:00",
-      "postedAt": "2026-10-31T06:03:13+00:00"
+      "postedAt": "2026-10-31T06:03:13+00:00",
+      "blueskyAt": "2026-10-31T14:51:11+00:00"
     }
   },
   "extraPending": {}
