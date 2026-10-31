@@ -156,18 +156,18 @@
   "articles": [
     "google-gemini-4-argon-review-alignment-issues",
     "anthropic-sonnet-5-5-ai-efficiency",
-    "openai-gpt-6-astra-comprehensive-guide-matome",
     "openai-security-agent-control-limitations",
-    "claude-opus-55-comprehensive-analysis-matome",
+    "openai-gpt-6-astra-comprehensive-guide-matome",
     "anthropic-claude-opus-55-automated-ai-research",
+    "claude-opus-55-comprehensive-analysis-matome",
     "claude-opus-5-5-physics-simulation-leap",
     "openai-gpt6-sol-luna-release",
     "anthropic-claude-opus-5-5-released",
     "claude-opus-5-5-gpt-6-sol-luna-release"
   ],
   "linkFrom": [
-    "claude-opus-55-comprehensive-analysis-matome",
     "anthropic-claude-opus-55-automated-ai-research",
+    "claude-opus-55-comprehensive-analysis-matome",
     "claude-opus-5-5-physics-simulation-leap",
     "anthropic-claude-opus-5-5-released",
     "claude-opus-5-5-gpt-6-sol-luna-release"
