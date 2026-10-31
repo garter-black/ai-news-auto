@@ -50,78 +50,10 @@
   ]
  },
  "chatgpt-pro-business-api-credits-benefit": {
-  "at": "2026-10-29T22:58:05+00:00",
-  "hash": "b92e374e797ab2fe",
+  "at": "2026-10-31T21:52:09+00:00",
+  "hash": "aa6eb16cd931f7cc",
   "model": "gemini-3.5-flash-lite",
-  "rows": [
-   {
-    "cachedInputPerM": null,
-    "currency": "USD",
-    "inputPerM": null,
-    "kind": "plan",
-    "monthlyPrice": 100,
-    "ok": true,
-    "outputPerM": null,
-    "plan": "Pro 100",
-    "product": "ChatGPT",
-    "quote": "| **ChatGPT Pro 100の特典** | API枠なし | **$100 / 月** | **$100分増加** |",
-    "vendor": "OpenAI"
-   },
-   {
-    "cachedInputPerM": null,
-    "currency": "USD",
-    "inputPerM": null,
-    "kind": "plan",
-    "monthlyPrice": 200,
-    "ok": true,
-    "outputPerM": null,
-    "plan": "Pro 200",
-    "product": "ChatGPT",
-    "quote": "| **ChatGPT Pro 200の特典** | API枠なし | **$200 / 月** | **$200分増加** |",
-    "vendor": "OpenAI"
-   },
-   {
-    "cachedInputPerM": null,
-    "currency": "USD",
-    "inputPerM": null,
-    "kind": "plan",
-    "monthlyPrice": 500,
-    "ok": true,
-    "outputPerM": null,
-    "plan": "Pro 500",
-    "product": "ChatGPT",
-    "quote": "| **ChatGPT Pro 500の特典** | API枠なし | **$500 / 月** | **$500分増加** |",
-    "vendor": "OpenAI"
-   },
-   {
-    "cachedInputPerM": null,
-    "currency": "USD",
-    "inputPerM": null,
-    "kind": "plan",
-    "monthlyPrice": 20,
-    "ok": false,
-    "outputPerM": null,
-    "plan": "Standard",
-    "product": "ChatGPT Business",
-    "quote": "| **Business Standard (1席)** | API枠なし | **$20 / 席 / 月** | **$20分増加** |",
-    "reason": "引用に製品名が無い",
-    "vendor": "OpenAI"
-   },
-   {
-    "cachedInputPerM": null,
-    "currency": "USD",
-    "inputPerM": null,
-    "kind": "plan",
-    "monthlyPrice": 100,
-    "ok": false,
-    "outputPerM": null,
-    "plan": "Premium",
-    "product": "ChatGPT Business",
-    "quote": "| **Business Premium (1席)** | API枠なし | **$100 / 席 / 月** | **最大$500プール** |",
-    "reason": "引用に製品名が無い",
-    "vendor": "OpenAI"
-   }
-  ]
+  "rows": []
  },
  "chatgpt-work-for-sales-comprehensive-summary-matome": {
   "at": "2026-10-27T10:58:07+00:00",
@@ -398,6 +330,12 @@
  "deepseek-v41-flash-1017-self-feedback": {
   "at": "2026-10-28T22:51:04+00:00",
   "hash": "0dcc01f7418680c8",
+  "model": "gemini-3.5-flash-lite",
+  "rows": []
+ },
+ "deepseek-v41-flash-review-benchmarks": {
+  "at": "2026-10-31T21:52:11+00:00",
+  "hash": "e7c349971cbdcc86",
   "model": "gemini-3.5-flash-lite",
   "rows": []
  },
@@ -751,8 +689,8 @@
   "rows": []
  },
  "meta-muse-ai-agent-app-launch": {
-  "at": "2026-10-27T10:49:20+00:00",
-  "hash": "2926969eba628bb0",
+  "at": "2026-10-31T21:52:12+00:00",
+  "hash": "7e54727e8390d528",
   "model": "gemini-3.5-flash-lite",
   "rows": []
  },
