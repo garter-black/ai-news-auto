@@ -1,218 +1,218 @@
 {
-  "updatedAt": "2026-11-01T00:13:18+00:00",
-  "posts": 62,
+  "updatedAt": "2026-11-01T06:14:10+00:00",
+  "posts": 66,
   "axes": {
     "hook": {
       "breaking": {
-        "n": 29,
-        "avgViews": 129.1,
-        "avgEngagement": 3.83,
-        "avgComments": 1.0,
-        "score": 160.61
+        "n": 32,
+        "avgViews": 117.0,
+        "avgEngagement": 3.47,
+        "avgComments": 0.91,
+        "score": 146.35
       },
       "free": {
         "n": 1,
         "avgViews": 9.0,
         "avgEngagement": 4.0,
         "avgComments": 1.0,
-        "score": 83.89
+        "score": 79.55
       },
       "conclusion": {
         "n": 4,
         "avgViews": 20.8,
         "avgEngagement": 3.25,
         "avgComments": 1.0,
-        "score": 71.36
-      },
-      "number": {
-        "n": 2,
-        "avgViews": 0.5,
-        "avgEngagement": 3.0,
-        "avgComments": 1.0,
-        "score": 69.51
-      },
-      "future": {
-        "n": 2,
-        "avgViews": 0.0,
-        "avgEngagement": 3.0,
-        "avgComments": 1.0,
-        "score": 69.31
+        "score": 68.88
       },
       "contrarian": {
         "n": 3,
         "avgViews": 12.7,
         "avgEngagement": 3.0,
         "avgComments": 1.0,
-        "score": 69.09
+        "score": 66.2
+      },
+      "number": {
+        "n": 2,
+        "avgViews": 0.5,
+        "avgEngagement": 3.0,
+        "avgComments": 1.0,
+        "score": 66.04
+      },
+      "future": {
+        "n": 2,
+        "avgViews": 0.0,
+        "avgEngagement": 3.0,
+        "avgComments": 1.0,
+        "score": 65.84
       },
       "finally": {
         "n": 3,
         "avgViews": 1.7,
         "avgEngagement": 3.0,
         "avgComments": 1.0,
-        "score": 63.59
+        "score": 60.7
       },
       "question": {
         "n": 3,
         "avgViews": 0.7,
         "avgEngagement": 3.0,
         "avgComments": 1.0,
-        "score": 63.09
+        "score": 60.2
       },
       "不明": {
         "n": 3,
         "avgViews": 2.3,
         "avgEngagement": 1.0,
         "avgComments": 0.0,
-        "score": 53.92
-      },
-      "callout": {
-        "n": 7,
-        "avgViews": 2.6,
-        "avgEngagement": 3.0,
-        "avgComments": 0.86,
-        "score": 51.45
+        "score": 51.03
       },
       "before_after": {
         "n": 5,
         "avgViews": 1.2,
         "avgEngagement": 2.0,
         "avgComments": 0.6,
-        "score": 49.07
+        "score": 46.9
+      },
+      "callout": {
+        "n": 8,
+        "avgViews": 2.2,
+        "avgEngagement": 2.62,
+        "avgComments": 0.75,
+        "score": 45.2
       }
     },
     "slot": {
       "昼": {
-        "n": 19,
-        "avgViews": 97.0,
-        "avgEngagement": 4.0,
-        "avgComments": 1.0,
-        "score": 131.34
+        "n": 22,
+        "avgViews": 83.8,
+        "avgEngagement": 3.45,
+        "avgComments": 0.86,
+        "score": 114.89
       },
       "朝": {
-        "n": 18,
-        "avgViews": 81.0,
-        "avgEngagement": 3.11,
-        "avgComments": 0.94,
-        "score": 109.74
+        "n": 19,
+        "avgViews": 76.7,
+        "avgEngagement": 2.95,
+        "avgComments": 0.89,
+        "score": 103.96
       },
       "夜": {
         "n": 25,
         "avgViews": 24.4,
         "avgEngagement": 2.76,
         "avgComments": 0.8,
-        "score": 56.7
+        "score": 56.08
       }
     },
     "company": {
       "Microsoft": {
-        "n": 7,
-        "avgViews": 246.1,
-        "avgEngagement": 4.57,
-        "avgComments": 0.57,
-        "score": 232.95
+        "n": 8,
+        "avgViews": 215.4,
+        "avgEngagement": 4.0,
+        "avgComments": 0.5,
+        "score": 210.2
       },
       "その他": {
-        "n": 8,
-        "avgViews": 93.9,
-        "avgEngagement": 3.25,
-        "avgComments": 1.0,
-        "score": 117.96
+        "n": 9,
+        "avgViews": 83.4,
+        "avgEngagement": 2.89,
+        "avgComments": 0.89,
+        "score": 106.68
       },
       "Google": {
-        "n": 11,
-        "avgViews": 83.1,
-        "avgEngagement": 2.91,
-        "avgComments": 0.91,
-        "score": 108.61
+        "n": 12,
+        "avgViews": 76.2,
+        "avgEngagement": 2.67,
+        "avgComments": 0.83,
+        "score": 100.21
       },
       "Meta": {
         "n": 2,
         "avgViews": 30.0,
         "avgEngagement": 4.0,
         "avgComments": 1.0,
-        "score": 85.31
+        "score": 81.84
       },
       "Anthropic": {
         "n": 5,
         "avgViews": 42.2,
         "avgEngagement": 3.2,
         "avgComments": 1.0,
-        "score": 82.19
+        "score": 80.02
       },
       "DeepSeek": {
-        "n": 1,
+        "n": 2,
         "avgViews": 0.0,
-        "avgEngagement": 3.0,
-        "avgComments": 1.0,
-        "score": 79.14
+        "avgEngagement": 1.5,
+        "avgComments": 0.5,
+        "score": 59.84
       },
       "NVIDIA": {
         "n": 10,
         "avgViews": 15.0,
         "avgEngagement": 3.1,
         "avgComments": 1.0,
-        "score": 57.43
+        "score": 56.09
       },
       "OpenAI": {
         "n": 18,
         "avgViews": 5.7,
         "avgEngagement": 2.94,
         "avgComments": 0.89,
-        "score": 43.79
+        "score": 42.96
       }
     },
     "ending": {
       "完結型": {
-        "n": 36,
-        "avgViews": 106.5,
-        "avgEngagement": 3.56,
-        "avgComments": 0.97,
-        "score": 138.5
+        "n": 40,
+        "avgViews": 95.9,
+        "avgEngagement": 3.2,
+        "avgComments": 0.88,
+        "score": 125.21
       },
       "問いかけ": {
         "n": 7,
         "avgViews": 2.1,
         "avgEngagement": 2.29,
         "avgComments": 0.57,
-        "score": 46.15
+        "score": 44.42
       },
       "記事で👇": {
         "n": 19,
         "avgViews": 3.3,
         "avgEngagement": 3.0,
         "avgComments": 0.89,
-        "score": 41.75
+        "score": 40.96
       }
     },
     "format": {
       "速報": {
-        "n": 26,
-        "avgViews": 143.6,
-        "avgEngagement": 3.85,
-        "avgComments": 1.0,
-        "score": 173.09
+        "n": 28,
+        "avgViews": 133.3,
+        "avgEngagement": 3.57,
+        "avgComments": 0.93,
+        "score": 161.36
       },
       "図解カード+返信リンク": {
-        "n": 5,
-        "avgViews": 17.0,
-        "avgEngagement": 3.0,
-        "avgComments": 1.0,
-        "score": 65.19
+        "n": 6,
+        "avgViews": 14.2,
+        "avgEngagement": 2.5,
+        "avgComments": 0.83,
+        "score": 56.02
       },
       "リンクカード": {
         "n": 5,
         "avgViews": 2.6,
         "avgEngagement": 1.0,
         "avgComments": 0.0,
-        "score": 43.69
+        "score": 41.52
       },
       "画像+返信リンク": {
-        "n": 26,
-        "avgViews": 3.1,
-        "avgEngagement": 3.12,
-        "avgComments": 0.96,
-        "score": 40.61
+        "n": 27,
+        "avgViews": 3.0,
+        "avgEngagement": 3.0,
+        "avgComments": 0.93,
+        "score": 38.67
       }
     },
     "postFormat": {
@@ -221,21 +221,21 @@
         "avgViews": 79.0,
         "avgEngagement": 3.36,
         "avgComments": 0.89,
-        "score": 111.57
+        "score": 111.22
       },
       "classic": {
-        "n": 7,
-        "avgViews": 22.6,
-        "avgEngagement": 3.0,
-        "avgComments": 1.0,
-        "score": 65.45
+        "n": 9,
+        "avgViews": 17.6,
+        "avgEngagement": 2.33,
+        "avgComments": 0.78,
+        "score": 53.1
       },
       "hook_thread": {
-        "n": 8,
-        "avgViews": 5.2,
-        "avgEngagement": 2.75,
-        "avgComments": 0.88,
-        "score": 49.87
+        "n": 10,
+        "avgViews": 4.2,
+        "avgEngagement": 2.2,
+        "avgComments": 0.7,
+        "score": 40.86
       }
     },
     "postFormatKind": {
@@ -244,42 +244,42 @@
         "avgViews": 173.1,
         "avgEngagement": 4.05,
         "avgComments": 1.0,
-        "score": 198.81
+        "score": 198.09
       },
       "classic/速報": {
-        "n": 2,
-        "avgViews": 36.5,
-        "avgEngagement": 3.0,
-        "avgComments": 1.0,
-        "score": 83.91
-      },
-      "hook_thread/速報": {
         "n": 3,
-        "avgViews": 8.3,
-        "avgEngagement": 3.0,
-        "avgComments": 1.0,
-        "score": 66.92
+        "avgViews": 24.3,
+        "avgEngagement": 2.0,
+        "avgComments": 0.67,
+        "score": 67.03
       },
       "classic/通常": {
-        "n": 5,
-        "avgViews": 17.0,
-        "avgEngagement": 3.0,
-        "avgComments": 1.0,
-        "score": 65.19
+        "n": 6,
+        "avgViews": 14.2,
+        "avgEngagement": 2.5,
+        "avgComments": 0.83,
+        "score": 56.02
+      },
+      "hook_thread/速報": {
+        "n": 4,
+        "avgViews": 6.2,
+        "avgEngagement": 2.25,
+        "avgComments": 0.75,
+        "score": 54.88
       },
       "hook_thread/通常": {
-        "n": 5,
-        "avgViews": 3.4,
-        "avgEngagement": 2.6,
-        "avgComments": 0.8,
-        "score": 54.19
+        "n": 6,
+        "avgViews": 2.8,
+        "avgEngagement": 2.17,
+        "avgComments": 0.67,
+        "score": 46.24
       },
       "A/B前/通常": {
         "n": 26,
         "avgViews": 3.0,
         "avgEngagement": 2.81,
         "avgComments": 0.81,
-        "score": 37.71
+        "score": 37.11
       }
     },
     "question": {
@@ -288,25 +288,25 @@
         "avgViews": 79.0,
         "avgEngagement": 3.36,
         "avgComments": 0.89,
-        "score": 111.57
-      },
-      "なし": {
-        "n": 10,
-        "avgViews": 15.6,
-        "avgEngagement": 3.1,
-        "avgComments": 1.0,
-        "score": 57.89
+        "score": 111.22
       },
       "問いかけあり": {
-        "n": 5,
-        "avgViews": 8.8,
-        "avgEngagement": 2.4,
-        "avgComments": 0.8,
-        "score": 56.32
+        "n": 6,
+        "avgViews": 7.3,
+        "avgEngagement": 2.0,
+        "avgComments": 0.67,
+        "score": 48.13
+      },
+      "なし": {
+        "n": 13,
+        "avgViews": 12.0,
+        "avgEngagement": 2.38,
+        "avgComments": 0.77,
+        "score": 45.95
       }
     }
   },
-  "xPosts": 47,
+  "xPosts": 51,
   "xAxes": {
     "postFormat": {
       "A/B前": {
@@ -314,21 +314,21 @@
         "avgViews": 7.4,
         "avgEngagement": 3.0,
         "avgComments": 0.0,
-        "score": 37.17
+        "score": 36.93
       },
       "hook_thread": {
-        "n": 8,
-        "avgViews": 5.2,
-        "avgEngagement": 2.62,
+        "n": 10,
+        "avgViews": 4.2,
+        "avgEngagement": 2.1,
         "avgComments": 0.0,
-        "score": 32.45
+        "score": 26.82
       },
       "classic": {
-        "n": 7,
-        "avgViews": 2.3,
-        "avgEngagement": 2.57,
+        "n": 9,
+        "avgViews": 1.8,
+        "avgEngagement": 2.0,
         "avgComments": 0.0,
-        "score": 30.09
+        "score": 24.39
       }
     },
     "postFormatKind": {
@@ -337,42 +337,42 @@
         "avgViews": 10.2,
         "avgEngagement": 3.0,
         "avgComments": 0.0,
-        "score": 39.58
-      },
-      "hook_thread/速報": {
-        "n": 3,
-        "avgViews": 9.7,
-        "avgEngagement": 3.0,
-        "avgComments": 0.0,
-        "score": 37.32
-      },
-      "classic/速報": {
-        "n": 2,
-        "avgViews": 2.0,
-        "avgEngagement": 3.0,
-        "avgComments": 0.0,
-        "score": 33.79
+        "score": 39.24
       },
       "A/B前/通常": {
         "n": 11,
         "avgViews": 1.9,
         "avgEngagement": 3.0,
         "avgComments": 0.0,
-        "score": 32.57
+        "score": 31.98
+      },
+      "hook_thread/速報": {
+        "n": 4,
+        "avgViews": 7.2,
+        "avgEngagement": 2.25,
+        "avgComments": 0.0,
+        "score": 30.82
+      },
+      "classic/速報": {
+        "n": 3,
+        "avgViews": 1.3,
+        "avgEngagement": 2.0,
+        "avgComments": 0.0,
+        "score": 26.78
       },
       "hook_thread/通常": {
-        "n": 5,
-        "avgViews": 2.6,
-        "avgEngagement": 2.4,
+        "n": 6,
+        "avgViews": 2.2,
+        "avgEngagement": 2.0,
         "avgComments": 0.0,
-        "score": 29.74
+        "score": 25.52
       },
       "classic/通常": {
-        "n": 5,
-        "avgViews": 2.4,
-        "avgEngagement": 2.4,
+        "n": 6,
+        "avgViews": 2.0,
+        "avgEngagement": 2.0,
         "avgComments": 0.0,
-        "score": 29.62
+        "score": 25.41
       }
     }
   },

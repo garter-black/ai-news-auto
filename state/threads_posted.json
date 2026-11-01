@@ -2292,7 +2292,26 @@
       "comment": "編集部：まず無料で触ってみられるのがいいですね。",
       "dueAt": "2026-11-01T00:45:00+00:00",
       "postedAt": "2026-10-31T18:23:13+00:00",
-      "blueskyAt": "2026-11-01T01:18:46+00:00"
+      "blueskyAt": "2026-11-01T01:18:46+00:00",
+      "metrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "views": 0,
+        "quotes": 0,
+        "reposts": 0
+      },
+      "metricsUpdatedAt": "2026-11-01T00:45:24.342Z",
+      "sentAt": "2026-11-01T00:45:30.001Z",
+      "externalLink": "https://www.threads.com/@saisoku637/post/DfLeaGllCaM",
+      "xMetrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "reposts": 0,
+        "impressions": 0,
+        "clicks": 0
+      }
     },
     "google-project-suncatcher-satellite-response": {
       "id": "6ae65cf21ee172cd6dc3a864",
@@ -2314,7 +2333,26 @@
       "comment": "編集部：現場のエンジニアには地味に効きそう。",
       "dueAt": "2026-11-01T03:15:00+00:00",
       "postedAt": "2026-10-31T21:26:10+00:00",
-      "blueskyAt": "2026-11-01T05:10:24+00:00"
+      "blueskyAt": "2026-11-01T05:10:24+00:00",
+      "metrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "views": 0,
+        "quotes": 0,
+        "reposts": 0
+      },
+      "metricsUpdatedAt": "2026-11-01T03:15:13.656Z",
+      "sentAt": "2026-11-01T03:15:22.674Z",
+      "externalLink": "https://www.threads.com/@saisoku637/post/DfLvjUSkTPH",
+      "xMetrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "reposts": 0,
+        "impressions": 0,
+        "clicks": 0
+      }
     },
     "nvidia-gtc-grid-reliability-resiliency": {
       "id": "6ae684211ee172cd6dce9702",
@@ -2355,7 +2393,26 @@
       "question": false,
       "comment": "編集部：これは気になる動き。",
       "postedAt": "2026-11-01T01:18:44+00:00",
-      "blueskyAt": "2026-11-01T01:18:48+00:00"
+      "blueskyAt": "2026-11-01T01:18:48+00:00",
+      "metrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "views": 0,
+        "quotes": 0,
+        "reposts": 0
+      },
+      "metricsUpdatedAt": "2026-11-01T01:18:34.824Z",
+      "sentAt": "2026-11-01T01:18:43.744Z",
+      "externalLink": "https://www.threads.com/@saisoku637/post/DfLiNLUlWCi",
+      "xMetrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "reposts": 0,
+        "impressions": 0,
+        "clicks": 0
+      }
     },
     "deepseek-super-agent-coding-prototype": {
       "id": "6ae6c9ad37c1acd2a0ea06fe",
@@ -2378,7 +2435,26 @@
       "question": false,
       "comment": "編集部：開発の手間が少し減りそうです。",
       "postedAt": "2026-11-01T05:10:23+00:00",
-      "blueskyAt": "2026-11-01T05:10:26+00:00"
+      "blueskyAt": "2026-11-01T05:10:26+00:00",
+      "metrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "views": 0,
+        "quotes": 0,
+        "reposts": 0
+      },
+      "metricsUpdatedAt": "2026-11-01T05:10:17.010Z",
+      "sentAt": "2026-11-01T05:10:26.428Z",
+      "externalLink": "https://www.threads.com/@saisoku637/post/DfL8t5QkYH5",
+      "xMetrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "reposts": 0,
+        "impressions": 0,
+        "clicks": 0
+      }
     },
     "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom": {
       "id": "6ae6d3121ee172cd6ddf276e",
