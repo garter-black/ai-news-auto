@@ -2300,7 +2300,8 @@
       "permalink": "",
       "channels": {
         "twitter": "6ae65cf2f0984eef3330ac20",
-        "facebook": "6ae65cf221c807e9d587113b"
+        "facebook": "6ae65cf221c807e9d587113b",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mza27zuvyr2p"
       },
       "hook": "breaking",
       "score": 3,
@@ -2312,7 +2313,8 @@
       "question": false,
       "comment": "編集部：現場のエンジニアには地味に効きそう。",
       "dueAt": "2026-11-01T03:15:00+00:00",
-      "postedAt": "2026-10-31T21:26:10+00:00"
+      "postedAt": "2026-10-31T21:26:10+00:00",
+      "blueskyAt": "2026-11-01T05:10:24+00:00"
     },
     "nvidia-gtc-grid-reliability-resiliency": {
       "id": "6ae684211ee172cd6dce9702",
@@ -2354,6 +2356,29 @@
       "comment": "編集部：これは気になる動き。",
       "postedAt": "2026-11-01T01:18:44+00:00",
       "blueskyAt": "2026-11-01T01:18:48+00:00"
+    },
+    "deepseek-super-agent-coding-prototype": {
+      "id": "6ae6c9ad37c1acd2a0ea06fe",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae6c9b8f0984eef334af16c",
+        "facebook": "6ae6c9baab019b908740ba7c",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mza2a3dla72q"
+      },
+      "dueAt": "2026-11-01T05:10:05+00:00",
+      "hook": "breaking",
+      "breaking": true,
+      "score": -2,
+      "style": "standalone",
+      "image": "photo",
+      "format": "hook_thread",
+      "hookTextVersion": 2,
+      "topic": "DeepSeek",
+      "question": false,
+      "comment": "編集部：開発の手間が少し減りそうです。",
+      "postedAt": "2026-11-01T05:10:23+00:00",
+      "blueskyAt": "2026-11-01T05:10:26+00:00"
     }
   },
   "extraPending": {}
