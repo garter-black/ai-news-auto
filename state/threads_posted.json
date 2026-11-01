@@ -2578,7 +2578,45 @@
       "comment": "編集部：これは開発者にはうれしい更新。",
       "dueAt": "2026-11-01T13:45:00+00:00",
       "postedAt": "2026-11-01T05:50:16+00:00",
-      "blueskyAt": "2026-11-01T14:47:43+00:00"
+      "blueskyAt": "2026-11-01T14:47:43+00:00",
+      "metrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "views": 0,
+        "quotes": 0,
+        "reposts": 0
+      },
+      "metricsUpdatedAt": "2026-11-01T13:45:23.925Z",
+      "sentAt": "2026-11-01T13:45:34.166Z",
+      "externalLink": "https://www.threads.com/@saisoku637/post/DfM3qOwkQJR",
+      "xMetrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "reposts": 0,
+        "impressions": 0,
+        "clicks": 0
+      }
+    },
+    "nvidia-gtc-berlin-healthcare-ai-holoscan5": {
+      "id": "6ae7825d7c4e5559266ceb32",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae7825e4c17af1b87165347",
+        "facebook": "6ae7825e142f545151f48eb4"
+      },
+      "hook": "breaking",
+      "score": 6,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "NVIDIA",
+      "question": false,
+      "comment": "編集部：無料で試せるのはありがたいところ。",
+      "dueAt": "2026-11-02T00:45:00+00:00",
+      "postedAt": "2026-11-01T18:18:06+00:00"
     }
   },
   "extraPending": {}
