@@ -1,22 +1,8 @@
 {
-  "fetchedAt": "2026-10-30T06:34:37.019143+00:00",
+  "fetchedAt": "2026-11-01T01:29:14.519748+00:00",
   "pixel": "https://www15.a8.net/0.gif?a8mat=4BELTP+50ED2Q+2HOM+BWGDT",
   "books": {
     "voice": [
-      {
-        "rbId": "18420245",
-        "itemId": "21778886",
-        "title": "最速で仕事の進め方が激変する Google NotebookLM 徹底活用術",
-        "author": "ヨス",
-        "price": 2200,
-        "rating": 3.93,
-        "reviews": 17,
-        "year": 2026,
-        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/2413/9784534062413_1_2.jpg?_ex=400x400",
-        "rank": 1,
-        "keyword": "AI 議事録",
-        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18420245%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21778886%252F"
-      },
       {
         "rbId": "18295147",
         "itemId": "21664439",
@@ -30,34 +16,6 @@
         "rank": 10,
         "keyword": "AI 議事録",
         "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18295147%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21664439%252F"
-      },
-      {
-        "rbId": "18546623",
-        "itemId": "21884800",
-        "title": "AI導入で今後は教えてもらえない 紙1枚すごい仕事術",
-        "author": "内田晋平",
-        "price": 1870,
-        "rating": 3.33,
-        "reviews": 6,
-        "year": 2026,
-        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/4155/9784799114155_1_4.jpg?_ex=400x400",
-        "rank": 16,
-        "keyword": "会議 AI",
-        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18546623%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21884800%252F"
-      },
-      {
-        "rbId": "18640710",
-        "itemId": "21964752",
-        "title": "AI仕事最速大全 NotebookLM即戦力スキル",
-        "author": "えーたん",
-        "price": 2310,
-        "rating": 4.83,
-        "reviews": 6,
-        "year": 2026,
-        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/1850/9784043301850_1_19.jpg?_ex=400x400",
-        "rank": 17,
-        "keyword": "会議 AI",
-        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18640710%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21964752%252F"
       }
     ],
     "local": [
@@ -120,20 +78,6 @@
     ],
     "image": [
       {
-        "rbId": "18369202",
-        "itemId": "21736735",
-        "title": "「作りたい」をカタチにする動画生成AI 基本からプロンプトのコツまでわかる！",
-        "author": "NOBU",
-        "price": 2530,
-        "rating": 4.5,
-        "reviews": 3,
-        "year": 2025,
-        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/3197/9784295023197_1_4.jpg?_ex=400x400",
-        "rank": 28,
-        "keyword": "画像生成AI",
-        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18369202%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21736735%252F"
-      },
-      {
         "rbId": "18133304",
         "itemId": "21539627",
         "title": "画像・動画生成AI ComfyUI マスターガイド （Generative AI イラストレーション）",
@@ -160,6 +104,36 @@
         "rank": 17,
         "keyword": "Stable Diffusion",
         "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18601583%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21932495%252F"
+      }
+    ],
+    "video": [
+      {
+        "rbId": "18369202",
+        "itemId": "21736735",
+        "title": "「作りたい」をカタチにする動画生成AI 基本からプロンプトのコツまでわかる！",
+        "author": "NOBU",
+        "price": 2530,
+        "rating": 4.5,
+        "reviews": 3,
+        "year": 2025,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/3197/9784295023197_1_4.jpg?_ex=400x400",
+        "rank": 9,
+        "keyword": "動画生成AI",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18369202%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21736735%252F"
+      },
+      {
+        "rbId": "18082288",
+        "itemId": "21469924",
+        "title": "グランドマスター三冠のKaggleノートブック開発術 単変量解析から地理情報分析／偽動画検出／LLMまで （impress top gear）",
+        "author": "Gabriel Preda",
+        "price": 3960,
+        "rating": null,
+        "reviews": 0,
+        "year": 2025,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/1018/9784295021018_1_2.jpg?_ex=400x400",
+        "rank": 28,
+        "keyword": "動画生成AI",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18082288%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21469924%252F"
       },
       {
         "rbId": "18155274",
@@ -174,22 +148,6 @@
         "rank": 30,
         "keyword": "動画生成AI",
         "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18155274%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21540930%252F"
-      }
-    ],
-    "video": [
-      {
-        "rbId": "18082288",
-        "itemId": "21469924",
-        "title": "グランドマスター三冠のKaggleノートブック開発術 単変量解析から地理情報分析／偽動画検出／LLMまで （impress top gear）",
-        "author": "Gabriel Preda",
-        "price": 3960,
-        "rating": null,
-        "reviews": 0,
-        "year": 2025,
-        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/1018/9784295021018_1_2.jpg?_ex=400x400",
-        "rank": 28,
-        "keyword": "動画生成AI",
-        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18082288%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21469924%252F"
       }
     ],
     "english": [
@@ -310,7 +268,22 @@
     ],
     "telecom": [],
     "telecom-gadget": [],
-    "gadget": [],
+    "gadget": [
+      {
+        "rbId": "18254269",
+        "itemId": "21625805",
+        "title": "40代から始める! スマートウォッチで健康生活 （TJMOOK）",
+        "author": "",
+        "price": 1479,
+        "rating": null,
+        "reviews": 0,
+        "year": 2025,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/0180/9784299070180_1_4.jpg?_ex=400x400",
+        "rank": 18,
+        "keyword": "スマートウォッチ",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18254269%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21625805%252F"
+      }
+    ],
     "kids": [
       {
         "rbId": "18326952",
@@ -998,18 +971,18 @@
         "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18132916%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21520287%252F"
       },
       {
-        "rbId": "18265771",
-        "itemId": "21642027",
-        "title": "現場で活用するためのAIエージェント実践入門 （KS情報科学専門書）",
-        "author": "太田 真人",
-        "price": 4180,
-        "rating": 4.33,
-        "reviews": 4,
+        "rbId": "18397536",
+        "itemId": "21760606",
+        "title": "AIエージェント 人類と協働する機械",
+        "author": "広木　大地",
+        "price": 2750,
+        "rating": 4.0,
+        "reviews": 5,
         "year": 2025,
-        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/1408/9784065401408_1_2.jpg?_ex=400x400",
-        "rank": 29,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/4587/9784865944587_1_5.jpg?_ex=400x400",
+        "rank": 25,
         "keyword": "AIエージェント",
-        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18265771%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21642027%252F"
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18397536%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21760606%252F"
       }
     ],
     "gemini": [
@@ -1026,6 +999,20 @@
         "rank": 3,
         "keyword": "Gemini",
         "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18425725%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21783476%252F"
+      },
+      {
+        "rbId": "18420245",
+        "itemId": "21778886",
+        "title": "最速で仕事の進め方が激変する Google NotebookLM 徹底活用術",
+        "author": "ヨス",
+        "price": 2200,
+        "rating": 3.93,
+        "reviews": 17,
+        "year": 2026,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/2413/9784534062413_1_2.jpg?_ex=400x400",
+        "rank": 5,
+        "keyword": "Gemini",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18420245%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21778886%252F"
       },
       {
         "rbId": "18302632",
@@ -1054,6 +1041,20 @@
         "rank": 11,
         "keyword": "Gemini",
         "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18611267%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21940368%252F"
+      },
+      {
+        "rbId": "18640710",
+        "itemId": "21964752",
+        "title": "AI仕事最速大全 NotebookLM即戦力スキル",
+        "author": "えーたん",
+        "price": 2310,
+        "rating": 4.83,
+        "reviews": 6,
+        "year": 2026,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/1850/9784043301850_1_19.jpg?_ex=400x400",
+        "rank": 13,
+        "keyword": "Gemini",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18640710%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21964752%252F"
       },
       {
         "rbId": "18432470",
@@ -1748,7 +1749,7 @@
   "partnerPrices": {
     "plaud-note-pro": 30800,
     "plaud-notepin-s": 28600,
-    "oz-rtx5070ti": 469800,
+    "oz-rtx5070ti": 504800,
     "oz-rx9060xt": 340800
   }
 }
