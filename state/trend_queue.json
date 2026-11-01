@@ -1,6 +1,41 @@
 {
-  "updated": "2026-11-01T15:20:09.076459+09:00",
+  "updated": "2026-11-01T23:20:22.736086+09:00",
   "items": [
+    {
+      "id": "2b6e779ca763ccab689b4a5956d7ee40b8a853d2",
+      "kind": "trend",
+      "url": "https://news.yahoo.co.jp/articles/7441d7eeff28ae198403f247e3810f802289f716",
+      "title": "柿谷曜一朗",
+      "summary": "Googleトレンド急上昇（約500件の検索）。関連報道: 峯岸みなみ「SNSは承認欲求警察だらけ」と警鐘 押切もえ、丸高愛実らアスリート妻たちがSNS発信の難しさを告白＜秘密のママ園3＞（WEBザテレビジョン） / 『秘密のママ園3』より（C）AbemaTV,Inc. / 押切もえ・丸高愛実ら、アスリート妻たちのSNS事情を告白！峯岸みなみ「SNSは承認欲求警察だらけ」と警鐘 丸高愛実、夫・柿谷曜一朗に求めたねぎらいの一言とは！？W杯の裏側で奮闘した育児エピソードを告白",
+      "published_at": "2026-11-01T22:30:00+09:00",
+      "source_name": "Googleトレンド",
+      "source_slug": "trends",
+      "lang": "ja",
+      "image": null,
+      "genre": "real-estate",
+      "sources": [
+        {
+          "title": "峯岸みなみ「SNSは承認欲求警察だらけ」と警鐘 押切もえ、丸高愛実らアスリート妻たちがSNS発信の難しさを告白＜秘密のママ園3＞（WEBザテレビジョン）",
+          "url": "https://news.yahoo.co.jp/articles/7441d7eeff28ae198403f247e3810f802289f716",
+          "source": "Yahoo!ニュース",
+          "published": "2026-11-01T22:30:00+09:00"
+        },
+        {
+          "title": "『秘密のママ園3』より（C）AbemaTV,Inc.",
+          "url": "https://www.sankei.com/article/20261101-EZWGG6D4SVOZPP7ONJYP4JSBTM/photo/QLGRX7UBGNLRNNKERCWPYN5JBA/",
+          "source": "産経ニュース",
+          "published": "2026-11-01T22:30:00+09:00"
+        },
+        {
+          "title": "押切もえ・丸高愛実ら、アスリート妻たちのSNS事情を告白！峯岸みなみ「SNSは承認欲求警察だらけ」と警鐘 丸高愛実、夫・柿谷曜一朗に求めたねぎらいの一言とは！？W杯の裏側で奮闘した育児エピソードを告白",
+          "url": "https://prtimes.jp/main/html/rd/p/000004183.000064643.html",
+          "source": "PR TIMES",
+          "published": "2026-11-01T22:30:00+09:00"
+        }
+      ],
+      "traffic": 500,
+      "queued_at": "2026-11-01T23:20:22.293248+09:00"
+    },
     {
       "id": "eb978cdae8afc40e69722ee110483f61149d4ad1",
       "kind": "trend",
@@ -105,76 +140,6 @@
       ],
       "traffic": 200,
       "queued_at": "2026-10-31T18:46:31.224203+09:00"
-    },
-    {
-      "id": "48d8034c8d85b180e8c17924961b6ac947a90f08",
-      "kind": "trend",
-      "url": "https://paypay.ne.jp/notice/20261030/cp-jichitai/",
-      "title": "paypay 自治体 キャンペーン 2026",
-      "summary": "Googleトレンド急上昇（約500件の検索）。関連報道: 地方自治体とPayPayが連携して取り組むキャンペーンなど、2026年12月以降に実施する施策が決定！ / PayPay、12月以降の自治体キャンペーンを発表 山梨県上野原市で25％還元など（ケータイ Watch） / きたひろキャッシュレス決済キャンペーンを実施します【北広島商工会】",
-      "published_at": "2026-10-31T07:30:00+09:00",
-      "source_name": "Googleトレンド",
-      "source_slug": "trends",
-      "lang": "ja",
-      "image": null,
-      "genre": "ai",
-      "sources": [
-        {
-          "title": "地方自治体とPayPayが連携して取り組むキャンペーンなど、2026年12月以降に実施する施策が決定！",
-          "url": "https://paypay.ne.jp/notice/20261030/cp-jichitai/",
-          "source": "PayPay",
-          "published": "2026-10-31T07:30:00+09:00"
-        },
-        {
-          "title": "PayPay、12月以降の自治体キャンペーンを発表 山梨県上野原市で25％還元など（ケータイ Watch）",
-          "url": "https://news.yahoo.co.jp/articles/037cfad4e4c0cb55a9a28d47cb3fba1425c25742",
-          "source": "Yahoo!ニュース",
-          "published": "2026-10-31T07:30:00+09:00"
-        },
-        {
-          "title": "きたひろキャッシュレス決済キャンペーンを実施します【北広島商工会】",
-          "url": "https://www.city.kitahiroshima.hokkaido.jp/hotnews/detail/00160515.html",
-          "source": "北海道北広島市",
-          "published": "2026-10-31T07:30:00+09:00"
-        }
-      ],
-      "traffic": 500,
-      "queued_at": "2026-10-31T08:00:35.939443+09:00"
-    },
-    {
-      "id": "e498ae4e987b20aa7bd0f622fb7eee33ad6bcdb3",
-      "kind": "trend",
-      "url": "https://news.yahoo.co.jp/articles/9d3373a46cfea4887461fe664f375c01b34080ce",
-      "title": "linux 脆弱 性 9.8",
-      "summary": "Googleトレンド急上昇（約10,000件の検索）。関連報道: Linuxに深刻度9.8の脆弱性、認証なしでroot権限奪取 AnthropicのAIが攻撃を実証（アスキー） / Linuxカーネルに重大な脆弱性「CVE-2026-98432」、CVSS 9.8 Claudeが遠隔root権限実行を実証 / Anthropicの未公開AI、複数の脆弱性を組み合わせた攻撃コードを開発",
-      "published_at": "2026-10-31T07:20:00+09:00",
-      "source_name": "Googleトレンド",
-      "source_slug": "trends",
-      "lang": "ja",
-      "image": null,
-      "genre": "ai",
-      "sources": [
-        {
-          "title": "Linuxに深刻度9.8の脆弱性、認証なしでroot権限奪取 AnthropicのAIが攻撃を実証（アスキー）",
-          "url": "https://news.yahoo.co.jp/articles/9d3373a46cfea4887461fe664f375c01b34080ce",
-          "source": "Yahoo!ニュース",
-          "published": "2026-10-31T07:20:00+09:00"
-        },
-        {
-          "title": "Linuxカーネルに重大な脆弱性「CVE-2026-98432」、CVSS 9.8 Claudeが遠隔root権限実行を実証",
-          "url": "https://rocket-boys.co.jp/security-measures-lab/linux_kernel_cve_2026_98432_ubuntu_anthropic_20261030/",
-          "source": "合同会社ロケットボーイズ",
-          "published": "2026-10-31T07:20:00+09:00"
-        },
-        {
-          "title": "Anthropicの未公開AI、複数の脆弱性を組み合わせた攻撃コードを開発",
-          "url": "https://news.mynavi.jp/techplus/article/20261030-5216742/",
-          "source": "マイナビニュース",
-          "published": "2026-10-31T07:20:00+09:00"
-        }
-      ],
-      "traffic": 10000,
-      "queued_at": "2026-10-31T08:00:35.939443+09:00"
     }
   ]
 }
