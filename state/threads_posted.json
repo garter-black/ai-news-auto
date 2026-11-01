@@ -2667,6 +2667,26 @@
         }
       },
       "id": "6ae7b026779ee9f13cb8268b"
+    },
+    "nvidia-uk-ai-factories-robotics": {
+      "id": "6ae7b8e5902c3fb1debdede9",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae7b8e501fa08ffbe6d2fc1",
+        "facebook": "6ae7b8e5779ee9f13cba7ab2"
+      },
+      "hook": "surprise",
+      "score": 5,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "NVIDIA",
+      "question": true,
+      "questionText": "気になった点はありますか？",
+      "comment": "編集部：実用化までの道のりにも注目したいです。",
+      "dueAt": "2026-11-02T03:15:00+00:00",
+      "postedAt": "2026-11-01T22:10:45+00:00"
     }
   },
   "extraPending": {}
