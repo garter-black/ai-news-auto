@@ -7,6 +7,7 @@ on:
   workflow_run:
     workflows: ['Auto Article Pipeline']
     types: [completed]
+    branches: [main]
   workflow_dispatch:
 permissions:
   actions: read
@@ -17,6 +18,13 @@ concurrency:
   cancel-in-progress: false
 jobs:
   check:
+    # Only our own normal pipeline may trigger this privileged monitor.
+    if: >-
+      ${{ github.event_name != 'workflow_run' ||
+          (github.event.workflow_run.head_repository.full_name == github.repository &&
+           github.event.workflow_run.head_branch == 'main' &&
+           contains(fromJSON('["schedule", "workflow_dispatch"]'), github.event.workflow_run.event) &&
+           startsWith(github.event.workflow_run.display_title, 'Auto Article Pipeline (')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

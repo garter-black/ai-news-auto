@@ -1183,10 +1183,14 @@ def main() -> int:
         args.max_major = len(fast_items)
     elif (ai_limit > 0 or args.max_major > 0) and args.section in ("ai", "all"):
         selected = [f for f in feeds.FEEDS if not args.source or f["slug"] in args.source]
-        ai_items = usable(feeds.collect(args.days, state, selected)) if selected else []
+        report = {}
+        ai_items = usable(feeds.collect(args.days, state, selected, report=report)) if selected else []
+        log(f"[feed-health] AI {json.dumps(feeds.report_totals(report), ensure_ascii=False, sort_keys=True)}")
     if not fast_mode and (broad_limit > 0 or (args.max_major > 0 and args.section in ("broad", "all"))):
         selected = [f for f in feeds.BROAD_FEEDS if not args.source or f["slug"] in args.source]
-        broad_items = tag_sections(usable(feeds.collect(args.days, state, selected))) if selected else []
+        report = {}
+        broad_items = tag_sections(usable(feeds.collect(args.days, state, selected, report=report))) if selected else []
+        log(f"[feed-health] broad {json.dumps(feeds.report_totals(report), ensure_ascii=False, sort_keys=True)}")
     if args.only:
         only_re = re.compile(args.only)
         ai_items = [i for i in ai_items if only_re.search(i["title"])]

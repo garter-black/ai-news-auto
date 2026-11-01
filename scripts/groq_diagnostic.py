@@ -38,7 +38,8 @@ def hints(body: str) -> list[str]:
         "disabled": ("disabled", "deactivated", "suspended", "revoked"),
         "verification": ("verification", "verify", "verified"),
         "terms": ("terms of service", "terms and conditions"),
-        "network": ("ip address", "ip_address", "cloudflare"),
+        "ip_address": ("ip address", "ip_address", "ip-address"),
+        "cloudflare": ("cloudflare", "cf-ray"),
         "billing": ("billing", "payment", "credit"),
         "permission": ("permission", "access"),
     }
@@ -58,7 +59,8 @@ def main() -> int:
     except urllib.error.HTTPError as error:
         body = error.read(100_000).decode("utf-8", "replace")
         result = classify(error.code, body, error.headers.get("content-type", ""))
-        print(f"[groq-diagnostic] result={result} http={error.code} hints={','.join(hints(body)) or 'none'}")
+        kind = "json" if "json" in error.headers.get("content-type", "").lower() else "html" if "html" in error.headers.get("content-type", "").lower() else "other"
+        print(f"[groq-diagnostic] result={result} http={error.code} body_type={kind} hints={','.join(hints(body)) or 'none'}")
     except (urllib.error.URLError, TimeoutError, ValueError, OSError):
         print("[groq-diagnostic] result=network_or_invalid_response")
     return 0

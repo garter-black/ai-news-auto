@@ -468,28 +468,40 @@ def collect(lookback_days: int = 3, state: dict | None = None, feeds: list[dict]
     per_source: dict[str, list[dict]] = {}
     for feed, items, error in results:
         kept = 0
+        counts = {"undated_or_old": 0, "processed": 0, "duplicate_id": 0, "blocked_host": 0,
+                  "not_ai": 0, "include_exclude": 0, "duplicate_title": 0}
         for item in items:
             if item["published_at"] is None or item["published_at"] < since:
+                counts["undated_or_old"] += 1
                 continue
-            if item["id"] in done or item["id"] in seen_ids:
+            if item["id"] in done:
+                counts["processed"] += 1
+                continue
+            if item["id"] in seen_ids:
+                counts["duplicate_id"] += 1
                 continue
             host = urllib.parse.urlsplit(item["url"]).netloc.lower()
             if any(host == h or host.endswith("." + h) for h in BLOCKED_HOSTS):
+                counts["blocked_host"] += 1
                 continue
             if feed.get("ai_only") and not is_ai_related(item, feed.get("title_only", False)):
+                counts["not_ai"] += 1
                 continue
             if feed.get("include_re") and not re.search(feed["include_re"], item["title"]):
+                counts["include_exclude"] += 1
                 continue
             if feed.get("exclude_re") and re.search(feed["exclude_re"], item["title"]):
+                counts["include_exclude"] += 1
                 continue
             key = _norm_title(item["title"])
             if key in seen_titles:
+                counts["duplicate_title"] += 1
                 continue
             seen_ids.add(item["id"])
             seen_titles.add(key)
             per_source.setdefault(feed["slug"], []).append(item)
             kept += 1
-        report[feed["slug"]] = {"fetched": len(items), "kept": kept, "error": error}
+        report[feed["slug"]] = {"fetched": len(items), "kept": kept, "error": error, **counts}
 
     # 発信元ごとに新しい順 → 優先度の高い発信元から1件ずつ交互に取り出す
     queues = sorted(
@@ -502,6 +514,14 @@ def collect(lookback_days: int = 3, state: dict | None = None, feeds: list[dict]
             if queue:
                 ordered.append(queue.pop(0))
     return ordered
+
+
+def report_totals(report: dict) -> dict:
+    """Aggregate feed outcomes without logging source contents or credentials."""
+    names = ("fetched", "kept", "undated_or_old", "processed", "duplicate_id", "blocked_host",
+             "not_ai", "include_exclude", "duplicate_title")
+    totals = {name: sum(int(r.get(name, 0)) for r in report.values()) for name in names}
+    return {"feeds": len(report), "errors": sum(bool(r.get("error")) for r in report.values()), **totals}
 
 
 # --------------------------------------------------------------------------- #
