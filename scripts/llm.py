@@ -66,6 +66,7 @@ BULK_MODELS = [
     "gemma-4-26b-a4b-it",
 ]
 GROQ_MODELS = ["openai/gpt-oss-120b", "llama-3.3-70b-versatile", "qwen/qwen3-32b"]
+GROQ_USER_AGENT = "saisoku-ai-news/1.0 (+https://ai-tech-express.jp)"
 
 CLAUDE_DEFAULT_MODEL = "sonnet"
 CLAUDE_DAILY_MAX_DEFAULT = 40  # bulk での1日の上限（オーナーの対話利用と枠を共有するため）
@@ -161,7 +162,7 @@ def _groq_models() -> list[str]:
         return []
     wanted = [m.strip() for m in os.environ.get("GROQ_MODELS", "").split(",") if m.strip()] or GROQ_MODELS
     try:
-        listed = {m["id"] for m in _http_json("https://api.groq.com/openai/v1/models", None, {"Authorization": f"Bearer {key}"}, 30).get("data", [])}
+        listed = {m["id"] for m in _http_json("https://api.groq.com/openai/v1/models", None, {"Authorization": f"Bearer {key}", "User-Agent": GROQ_USER_AGENT}, 30).get("data", [])}
         wanted = [m for m in wanted if m in listed]
     except Exception as error:  # noqa: BLE001
         log(f"[llm] Groq のモデル一覧取得に失敗: {str(error)[:100]}")
@@ -367,7 +368,10 @@ def _call_openai_compatible(model: str, system_instruction: str, prompt: str, sc
         "response_format": {"type": "json_object"},
     }
     try:
-        data = _http_json(url, payload, {"Authorization": f"Bearer {key}", "X-Title": "saisoku"})
+        headers = {"Authorization": f"Bearer {key}", "X-Title": "saisoku"}
+        if provider == "groq":
+            headers["User-Agent"] = GROQ_USER_AGENT
+        data = _http_json(url, payload, headers)
     except urllib.error.HTTPError as error:
         body = error.read().decode("utf-8", "ignore")[:300]
         raise RuntimeError(f"{error.code} {body}") from error

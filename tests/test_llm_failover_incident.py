@@ -1,5 +1,6 @@
 import sys
 import unittest
+import os
 from pathlib import Path
 from unittest.mock import patch
 
@@ -8,6 +9,18 @@ import llm
 
 
 class FailoverTests(unittest.TestCase):
+    def test_groq_requests_identify_client_without_changing_other_providers(self):
+        with patch.dict(os.environ, {'GROQ_API_KEY': 'fake', 'CLOUDFLARE_API_TOKEN': 'fake', 'CLOUDFLARE_ACCOUNT_ID': 'fake'}), \
+             patch.object(llm, '_http_json') as request:
+            request.return_value = {'data': [{'id': 'openai/gpt-oss-120b'}]}
+            self.assertEqual(llm._groq_models(), ['groq:openai/gpt-oss-120b'])
+            self.assertEqual(request.call_args.args[2]['User-Agent'], llm.GROQ_USER_AGENT)
+            request.return_value = {'choices': [{'message': {'content': '{}'}}]}
+            llm._call_openai_compatible('groq:openai/gpt-oss-120b', 'system', 'prompt', {}, 0.2, 256)
+            self.assertEqual(request.call_args.args[2]['User-Agent'], llm.GROQ_USER_AGENT)
+            llm._call_openai_compatible('cloudflare:test', 'system', 'prompt', {}, 0.2, 256)
+            self.assertNotIn('User-Agent', request.call_args.args[2])
+
     def test_quota_and_forbidden_try_next_provider(self):
         schema = {'required': ['answer']}
         llm._exhausted.clear()
