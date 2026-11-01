@@ -46,10 +46,12 @@ def hints(body: str) -> list[str]:
     return [name for name, words in known.items() if any(word in low for word in words)]
 
 
-def probe(label: str, key: str = "") -> None:
+def probe(label: str, key: str = "", identify: bool = False) -> None:
     headers = {"Accept": "application/json"}
     if key:
         headers["Authorization"] = "Bearer " + key
+    if identify:
+        headers["User-Agent"] = "saisoku-ai-news/1.0 (+https://ai-tech-express.jp)"
     request = urllib.request.Request("https://api.groq.com/openai/v1/models", headers=headers)
     try:
         with urllib.request.urlopen(request, timeout=20) as response:
@@ -67,8 +69,9 @@ def probe(label: str, key: str = "") -> None:
 def main() -> int:
     key = os.environ.get("GROQ_API_KEY", "")
     probe("anonymous")
+    probe("anonymous_identified", identify=True)
     if key:
-        probe("configured", key)
+        probe("configured_identified", key, identify=True)
     else:
         print("[groq-diagnostic] probe=configured result=not_configured")
     return 0
