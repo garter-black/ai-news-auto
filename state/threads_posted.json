@@ -2278,7 +2278,8 @@
       "permalink": "",
       "channels": {
         "twitter": "6ae63210ab019b90871a70f5",
-        "facebook": "6ae63211ab019b90871a7121"
+        "facebook": "6ae63211ab019b90871a7121",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mz7nbt2x4z2x"
       },
       "hook": "callout",
       "score": 6,
@@ -2290,7 +2291,8 @@
       "questionText": "無料なら試してみますか？",
       "comment": "編集部：まず無料で触ってみられるのがいいですね。",
       "dueAt": "2026-11-01T00:45:00+00:00",
-      "postedAt": "2026-10-31T18:23:13+00:00"
+      "postedAt": "2026-10-31T18:23:13+00:00",
+      "blueskyAt": "2026-11-01T01:18:46+00:00"
     },
     "google-project-suncatcher-satellite-response": {
       "id": "6ae65cf21ee172cd6dc3a864",
@@ -2330,6 +2332,28 @@
       "comment": "編集部：提供開始の続報を待ちたいところ。",
       "dueAt": "2026-11-01T06:30:00+00:00",
       "postedAt": "2026-11-01T00:13:22+00:00"
+    },
+    "figma-weave-creative-workflow": {
+      "id": "6ae69361cf3a3112f3d30616",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae6936bcf3a3112f3d30836",
+        "facebook": "6ae6936ef0984eef333f47d2",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mz7nbv64cq2c"
+      },
+      "dueAt": "2026-11-01T01:18:24+00:00",
+      "hook": "breaking",
+      "breaking": true,
+      "score": 5,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "生成AI",
+      "question": false,
+      "comment": "編集部：これは気になる動き。",
+      "postedAt": "2026-11-01T01:18:44+00:00",
+      "blueskyAt": "2026-11-01T01:18:48+00:00"
     }
   },
   "extraPending": {}
