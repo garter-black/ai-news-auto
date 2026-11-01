@@ -2,6 +2,22 @@
  "hours": 96,
  "items": [
   {
+   "slug": "nvidia-gtc-berlin-healthcare-ai-holoscan5",
+   "at": "2026-11-01T13:14:54.783855+00:00",
+   "title": "AI半導体のNVIDIAが医療向けAI発表 創薬から手術支援まで自動化を促進",
+   "head": "AI半導体のNVIDIAが医療向けAI発表 創薬から手術支援まで自動化を促進 | How AI Is Advancing Human Health",
+   "text": "AI半導体のNVIDIAが医療向けAI発表 創薬から手術支援まで自動化を促進 | How AI Is Advancing Human Health | NVIDIA / 医療AI / Holoscan 5 / RFD4-Proteina / BioNeMo / 創薬AI / 手術ロボット / 自律型ラボ / 適応放射線治療 / 使い方 / NVIDIA / GPU / 医療AI / 創薬 / ロボティクス / 生成AI",
+   "urls": []
+  },
+  {
+   "slug": "mistral-large-4-open-cyber-frontier",
+   "at": "2026-11-01T13:12:01.797334+00:00",
+   "title": "仏AIのミストラルが新AIモデル『Mistral Large 4』を公開 サイバー防衛に強み",
+   "head": "仏AIのミストラルが新AIモデル『Mistral Large 4』を公開 サイバー防衛に強み | Science Behind the Open Cyber Frontier with Mistral Large 4",
+   "text": "仏AIのミストラルが新AIモデル『Mistral Large 4』を公開 サイバー防衛に強み | Science Behind the Open Cyber Frontier with Mistral Large 4 | Mistral Large 4 / Mistral AI / オープンウェイト / サイバーセキュリティ / LLM / MoE / Hugging Face / Cybench / 使い方 / 料金 / Hugging Face / オープンソース / Mistral AI / 生成AI / LLM / サイバーセキュリティ",
+   "urls": []
+  },
+  {
    "slug": "microsoft-fabric-database-agent-preview",
    "at": "2026-11-01T12:12:25.470436+00:00",
    "title": "マイクロソフトがDB管理AI機能「Database Agent」を発表 アプリ遅延を自動検知",
@@ -1560,32 +1576,6 @@
     "https://www.jma.go.jp/bosai/map.html#contents=earthquake_map",
     "https://www.jma.go.jp/bosai/map.html#contents=earthquake_map",
     "https://www.jma.go.jp/bosai/map.html#contents=earthquake_map"
-   ]
-  },
-  {
-   "slug": "openai-legora-legal-ai-agent",
-   "at": "2026-10-28T12:43:27.833547+00:00",
-   "title": "ChatGPTのOpenAIが紹介する法律AI『Legora』とは？ 契約業務90%削減の実力",
-   "head": "ChatGPTのOpenAIが紹介する法律AI『Legora』とは？ 契約業務90%削減の実力 | Building the future of legal work with AI | Legora CEO Max Junestrand",
-   "text": "ChatGPTのOpenAIが紹介する法律AI『Legora』とは？ 契約業務90%削減の実力 | Building the future of legal work with AI | Legora CEO Max Junestrand | Legora / OpenAI / リーガルAI / 法律AI / 契約書レビュー / AIエージェント / 使い方 / 料金 / 日本語 / OpenAI / ChatGPT / 生成AI / リーガルテック / AIエージェント / Legora",
-   "urls": []
-  },
-  {
-   "slug": "openai-codex-astra-merge-ceo-interview",
-   "at": "2026-10-28T12:40:26.692265+00:00",
-   "title": "ChatGPTのOpenAIが誇る開発支援AI『Astra』 MergeのCEOが明かす非エンジニアのAI活用術",
-   "head": "ChatGPTのOpenAIが誇る開発支援AI『Astra』 MergeのCEOが明かす非エンジニアのAI活用術 | Merge CEO Shensi Ding: AI fluency starts at the top",
-   "text": "ChatGPTのOpenAIが誇る開発支援AI『Astra』 MergeのCEOが明かす非エンジニアのAI活用術 | Merge CEO Shensi Ding: AI fluency starts at the top | OpenAI / Codex / Astra / Merge / AIプログラミング / ノーコード / 活用事例 / 使い方 / OpenAI / ChatGPT / Codex / Astra / 生成AI / プログラミング",
-   "urls": []
-  },
-  {
-   "slug": "samsung-galaxy-buds-on-cuff-earbuds",
-   "at": "2026-10-28T12:29:43.863129+00:00",
-   "title": "サムスン初の耳たぶ挟み込み型イヤホン「Galaxy Buds On」 229ドルで11月6日発売",
-   "head": "サムスン初の耳たぶ挟み込み型イヤホン「Galaxy Buds On」 229ドルで11月6日発売 | Samsung unveils the $229 Galaxy Buds On, its first open-fit, C-shaped cuff earbuds to compete with Sony and Bose, designed with AI's help, shipping November 6",
-   "text": "サムスン初の耳たぶ挟み込み型イヤホン「Galaxy Buds On」 229ドルで11月6日発売 | Samsung unveils the $229 Galaxy Buds On, its first open-fit, C-shaped cuff earbuds to compete with Sony and Bose, designed with AI's help, shipping November 6 | Galaxy Buds On / サムスン イヤホン / カフ型イヤホン / クリップオン型 / 耳をふさがない / 229ドル / ながら聴き / Sony Bose 比較 / オープン型イヤホン / 日本発売 / Galaxy Buds On / Samsung / イヤホン / カフ型イヤホン / ウェアラブル",
-   "urls": [
-    "https://www.bloomberg.com/news/articles/2026-10-28/samsung-unveils-galaxy-buds-on-clip-on-earbuds-for-229"
    ]
   }
  ]

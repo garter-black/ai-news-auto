@@ -794,6 +794,14 @@
       "category": "半導体・インフラ"
     },
     {
+      "slug": "rfd4-proteina",
+      "name": "RFD4-Proteina",
+      "aliases": [],
+      "company": "nvidia",
+      "companyName": "NVIDIA",
+      "category": "AIモデル"
+    },
+    {
       "slug": "rtx-spark",
       "name": "RTX Spark",
       "aliases": [],
@@ -1034,6 +1042,7 @@
     "マルチモーダルAI",
     "ローカルAI",
     "ローカルLLM",
+    "創薬AI",
     "医療AI",
     "営業支援AI",
     "宇宙AI",
@@ -1045,7 +1054,7 @@
     "自律型AI",
     "音声AI"
   ],
-  "updatedAt": "2026-11-01T12:14:12+00:00",
+  "updatedAt": "2026-11-01T13:17:05+00:00",
   "failed": {
     "gpt-5-6-sol": {
       "at": "2026-10-27T11:05:30+00:00",

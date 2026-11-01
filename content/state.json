@@ -24,7 +24,6 @@
     "MxwXGl-lpe0": 1,
     "NsOlCHYn99k": 1,
     "Oi9DHk57KeQ": 2,
-    "QqeKRvAkIc8": 1,
     "UGLV3ufFZEw": 1,
     "UU_9ymJKm1w": 1,
     "VyowNv9wodk": 1,
@@ -808,6 +807,10 @@
       "at": "2026-09-15T20:34:25.297749+00:00",
       "slug": "gemini-live-api-updates-async-proactive-audio"
     },
+    "FczbSauVvjw": {
+      "at": "2026-11-01T13:12:01.797334+00:00",
+      "slug": "mistral-large-4-open-cyber-frontier"
+    },
     "Fi6FaIF6FdI": {
       "at": "2026-09-04T10:05:37.656253+00:00",
       "slug": "yen-rate-surge-sasaki-analysis-202609"
@@ -1423,6 +1426,10 @@
       "at": "2026-10-09T03:24:05.610408+00:00",
       "reason": "この動画は33秒のショート動画であり、Mistral Large 4の簡易的なコード生成検証を紹介するのみに留まっています。詳細な技術解説や十分な情報量が含まれておらず、4000〜6000字の本格的な報道記事を執筆するための一次情報として不足しているため、スキップと判定しました。",
       "skipped": true
+    },
+    "QqeKRvAkIc8": {
+      "at": "2026-11-01T13:14:54.783855+00:00",
+      "slug": "nvidia-gtc-berlin-healthcare-ai-holoscan5"
     },
     "R9momwXV9w4": {
       "at": "2026-09-25T02:16:14.806148+00:00",
