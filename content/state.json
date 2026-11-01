@@ -4510,6 +4510,14 @@
       "slug": "tokyo-naphtha-alternative-support",
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102913"
     },
+    "2b6e779ca763ccab689b4a5956d7ee40b8a853d2": {
+      "at": "2026-11-01T14:31:24.523787+00:00",
+      "kind": "trend",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "slug": "marutaka-kakitani-sns-ikuji",
+      "url": "https://news.yahoo.co.jp/articles/7441d7eeff28ae198403f247e3810f802289f716"
+    },
     "2c04b5d1f5cb1e4a": {
       "at": "2026-10-28T21:54:27.444085+00:00",
       "reason": "prefilter: タイトルが短すぎる（一覧リンク等）",
@@ -9307,6 +9315,14 @@
       "skipped": true,
       "url": "https://www.stat.go.jp/data/zenkokukakei/2024/kekka.html"
     },
+    "c583a2d982c5151e": {
+      "at": "2026-11-01T14:31:35.149947+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "sports",
+      "slug": "all-japan-adult-table-tennis-2026",
+      "url": "https://jtta.or.jp/news/38622"
+    },
     "c5ebf1cac4c8fd5d": {
       "at": "2026-10-30T08:11:27.577940+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11220,95 +11236,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:51:55.136238+00:00",
-      "attempt": 2,
-      "id": "18bd67bed46c5c04",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 177.6,
-        "avg_sentence": 57.3,
-        "long_share": 0.452,
-        "max_paragraph": 264,
-        "paragraphs": 10,
-        "sentences": 31
-      },
-      "score": null,
-      "source": "riken",
-      "title": "卵子の染色体接着を長期間維持する新因子OMC1を発見"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:52:02.428123+00:00",
-      "attempt": 1,
-      "id": "131b86cc9cd34917",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 146.7,
-        "avg_sentence": 60.0,
-        "long_share": 0.273,
-        "max_paragraph": 227,
-        "paragraphs": 9,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "soumu",
-      "title": "ふるさと住民登録制度の推進に関する総務大臣書簡の発出"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:52:08.481795+00:00",
-      "attempt": 2,
-      "id": "131b86cc9cd34917",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1373字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 110.6,
-        "avg_sentence": 55.3,
-        "long_share": 0.3,
-        "max_paragraph": 165,
-        "paragraphs": 10,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "soumu",
-      "title": "ふるさと住民登録制度の推進に関する総務大臣書簡の発出"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:52:17.582382+00:00",
-      "attempt": 1,
-      "id": "e5a0437380d206a8",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1759字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 133.1,
-        "avg_sentence": 54.2,
-        "long_share": 0.296,
-        "max_paragraph": 186,
-        "paragraphs": 11,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "ipa",
-      "title": "2025年度下期 未踏アドバンスト事業で実施したプロジェクトの成果概要、成果詳細を公開しました"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T01:52:24.569918+00:00",
@@ -17968,6 +17895,94 @@
       "score": 100,
       "source": "docker-blog",
       "title": "Coding Agent Horror Stories: The CVE That Did Not Exist"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-01T14:31:21.769085+00:00",
+      "attempt": 1,
+      "id": "2b6e779ca763ccab689b4a5956d7ee40b8a853d2",
+      "kind": "trend",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 56.7字・60字超の文が 50% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 145.9字・最長 251字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 145.9,
+        "avg_sentence": 56.7,
+        "long_share": 0.5,
+        "max_paragraph": 251,
+        "paragraphs": 7,
+        "sentences": 18
+      },
+      "score": 100,
+      "source": "trends",
+      "title": "柿谷曜一朗"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-01T14:31:24.523365+00:00",
+      "attempt": 0,
+      "id": "2b6e779ca763ccab689b4a5956d7ee40b8a853d2",
+      "kind": "trend",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 118.2,
+        "avg_sentence": 42.6,
+        "long_share": 0.16,
+        "max_paragraph": 172,
+        "paragraphs": 9,
+        "sentences": 25
+      },
+      "score": 100,
+      "source": "trends",
+      "title": "柿谷曜一朗"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-01T14:31:31.999976+00:00",
+      "attempt": 1,
+      "id": "c583a2d982c5151e",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 62.2字・60字超の文が 44% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 159.9字・最長 290字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 159.9,
+        "avg_sentence": 62.2,
+        "long_share": 0.444,
+        "max_paragraph": 290,
+        "paragraphs": 7,
+        "sentences": 18
+      },
+      "score": 100,
+      "source": "jtta",
+      "title": "百十四銀行 第60回全日本社会人卓球選手権大会 閉幕！"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-01T14:31:35.149619+00:00",
+      "attempt": 0,
+      "id": "c583a2d982c5151e",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 156.7字・最長 279字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 156.7,
+        "avg_sentence": 30.5,
+        "long_share": 0.028,
+        "max_paragraph": 279,
+        "paragraphs": 7,
+        "sentences": 36
+      },
+      "score": 100,
+      "source": "jtta",
+      "title": "百十四銀行 第60回全日本社会人卓球選手権大会 閉幕！"
     }
   ],
   "short_text_retry": {}
