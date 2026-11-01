@@ -45,6 +45,12 @@
     "apple-imac-m6-2026-10": {
       "liveAt": "2026-10-27T16:57:11+00:00"
     },
+    "atlassian-context-quality-score-cqs": {
+      "liveAt": "2026-11-01T08:14:23+00:00"
+    },
+    "atlassian-tackling-agent-sprawl": {
+      "liveAt": "2026-11-01T08:14:23+00:00"
+    },
     "attosecond-xray-laser-riken-2026": {
       "liveAt": "2026-10-27T17:55:43+00:00"
     },
@@ -146,6 +152,9 @@
     },
     "discord-public-server-google-search": {
       "liveAt": "2026-10-28T02:42:19+00:00"
+    },
+    "docker-coding-agent-horror-stories-cve": {
+      "liveAt": "2026-11-01T08:14:23+00:00"
     },
     "docomo-d-value-pass-uber-luup-2026": {
       "liveAt": "2026-10-30T02:49:09+00:00"
