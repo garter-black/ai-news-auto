@@ -52,5 +52,10 @@
     "claude:sonnet": 7,
     "cloudflare:@cf/openai/gpt-oss-120b": 12,
     "gemini-3.5-flash-lite": 37
+  },
+  "2026-11-01": {
+    "cf-image:flux-2-klein-4b": 1,
+    "cloudflare:@cf/openai/gpt-oss-120b": 2,
+    "gemini-3.5-flash-lite": 4
   }
 }

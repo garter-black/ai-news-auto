@@ -5024,6 +5024,14 @@
       "slug": "oh-my-teeth-interview-impression-survey",
       "url": "https://prtimes.jp/main/html/rd/p/000000150.000048884.html"
     },
+    "3d3dd604c2760eb5": {
+      "at": "2026-11-01T07:11:33.880362+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "jira-autumn-2026-release",
+      "url": "https://www.atlassian.com/blog/development/jira-autumn-release"
+    },
     "3d9ee45ab41d23bc": {
       "at": "2026-10-28T22:30:58.505763+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11168,51 +11176,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:12:22.720941+00:00",
-      "attempt": 1,
-      "id": "a7c69013d5b5f8de",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2178字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 82.5,
-        "avg_sentence": 65.3,
-        "long_share": 0.625,
-        "max_paragraph": 137,
-        "paragraphs": 19,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "windows-blog-jp",
-      "title": "SharePoint Showcase: 組織が Copilot in SharePoint で業務プロセスを改善する 5 つの方法"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:12:32.030339+00:00",
-      "attempt": 2,
-      "id": "a7c69013d5b5f8de",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2318字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（376字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 162.1,
-        "avg_sentence": 63.8,
-        "long_share": 0.606,
-        "max_paragraph": 268,
-        "paragraphs": 13,
-        "sentences": 33
-      },
-      "score": null,
-      "source": "windows-blog-jp",
-      "title": "SharePoint Showcase: 組織が Copilot in SharePoint で業務プロセスを改善する 5 つの方法"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T01:31:38.156963+00:00",
@@ -17921,6 +17884,48 @@
       "score": 93,
       "source": "radar-bloomberg.com",
       "title": "DeepSeek open sources Super-Agent as a research prototype, a proactive coding ag"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-01T07:11:30.014540+00:00",
+      "attempt": 1,
+      "id": "3d3dd604c2760eb5",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 55.0字・60字超の文が 40% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 101.4,
+        "avg_sentence": 55.0,
+        "long_share": 0.4,
+        "max_paragraph": 178,
+        "paragraphs": 19,
+        "sentences": 35
+      },
+      "score": 100,
+      "source": "atlassian-blog",
+      "title": "Jira’s autumn 2026 release: faster views, visible agents, and consistency by def"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-01T07:11:33.880038+00:00",
+      "attempt": 0,
+      "id": "3d3dd604c2760eb5",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 99.0,
+        "avg_sentence": 31.9,
+        "long_share": 0.017,
+        "max_paragraph": 181,
+        "paragraphs": 19,
+        "sentences": 59
+      },
+      "score": 100,
+      "source": "atlassian-blog",
+      "title": "Jira’s autumn 2026 release: faster views, visible agents, and consistency by def"
     }
   ],
   "short_text_retry": {}

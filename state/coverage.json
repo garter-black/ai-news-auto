@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "jira-autumn-2026-release",
+   "at": "2026-11-01T07:11:29.033415+00:00",
+   "title": "タスク管理「Jira」が秋の大型アップデート 画面表示の高速化やAIエージェントの可視化に対応",
+   "head": "タスク管理「Jira」が秋の大型アップデート 画面表示の高速化やAIエージェントの可視化に対応 | Jira’s autumn 2026 release: faster views, visible agents, and consistency by default",
+   "text": "タスク管理「Jira」が秋の大型アップデート 画面表示の高速化やAIエージェントの可視化に対応 | Jira’s autumn 2026 release: faster views, visible agents, and consistency by default | Jira / Atlassian / プロジェクト管理 / AIエージェント / タスク管理 / Jira Cloud / Rovo / チーム管理 / 開発ツール / プロジェクト管理 / 生成AI / SaaS",
+   "urls": [
+    "https://www.atlassian.com/blog/development/jira-autumn-release"
+   ]
+  },
+  {
    "slug": "deepseek-super-agent-coding-prototype",
    "at": "2026-11-01T05:07:46.947644+00:00",
    "title": "DeepSeekがプログラミングAIの試作版『Super-Agent』 呼ばれなくても助言",
