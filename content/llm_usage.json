@@ -49,7 +49,7 @@
   "2026-10-31": {
     "cf-image:flux-1-schnell": 1,
     "cf-image:flux-2-klein-4b": 3,
-    "claude:sonnet": 2,
+    "claude:sonnet": 7,
     "cloudflare:@cf/openai/gpt-oss-120b": 12,
     "gemini-3.5-flash-lite": 36
   }

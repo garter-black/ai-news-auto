@@ -4075,6 +4075,16 @@
       "skipped": true,
       "url": "https://aws.amazon.com/blogs/machine-learning/building-intent-driven-ui-testing-with-amazon-nova-act/"
     },
+    "1fe4326766c89237": {
+      "at": "2026-11-01T05:08:11.705864+00:00",
+      "breaking": true,
+      "major": true,
+      "model": "claude:sonnet",
+      "score": 93,
+      "section": "ai",
+      "slug": "deepseek-super-agent-coding-prototype",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-01/deepseek-drops-enhanced-coding-agent-with-aim-to-rival-anthropic"
+    },
     "1feedfe1c6dd597e": {
       "at": "2026-10-27T17:35:46.651016+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11153,51 +11163,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-30T01:12:06.930826+00:00",
-      "attempt": 1,
-      "id": "0f794a67729b2e9e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1500字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（343字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 89.5,
-        "avg_sentence": 58.2,
-        "long_share": 0.4,
-        "max_paragraph": 169,
-        "paragraphs": 13,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "aws-japan-blog",
-      "title": "AI エージェントに書き込みを任せるとき、境界をどこに置くか ― Kiro CLI で仕組みを作り、1 か月運用した記録"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:12:15.068194+00:00",
-      "attempt": 2,
-      "id": "0f794a67729b2e9e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（369字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 111.4,
-        "avg_sentence": 60.5,
-        "long_share": 0.543,
-        "max_paragraph": 194,
-        "paragraphs": 19,
-        "sentences": 35
-      },
-      "score": null,
-      "source": "aws-japan-blog",
-      "title": "AI エージェントに書き込みを任せるとき、境界をどこに置くか ― Kiro CLI で仕組みを作り、1 か月運用した記録"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-30T01:12:22.720941+00:00",
       "attempt": 1,
       "id": "a7c69013d5b5f8de",
@@ -17903,6 +17868,52 @@
       "score": 100,
       "source": "figma-blog",
       "title": "Making something human: 4 things we took away from Config India"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-01T05:07:51.767061+00:00",
+      "attempt": 1,
+      "id": "1fe4326766c89237",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "「元記事のタイトルは「research prototype（研究用の試作版）」としています」→ 元記事の見出しは「Drops Enhanced Coding Agent」で、research prototypeはタイトル欄の自動抽出文にあるのみで、記事のタイトルとして扱うのは不正確。",
+        "「DeepSeekの「Harness」チーム」→ 元記事は「DeepSeek Harness team」で、「Harness」は括弧付き名称ではなくチーム名の一部。軽微な言い換え。",
+        "「Claude Codeは、利用者が指示して使う形が基本です」→ 編集部の補足だが、元記事に根拠がない一般知識の断定。",
+        "「中国企業製のため、各社の方針に沿った確認も必要です」→ 元記事に根拠のない一般的助言で、やや踏み込みすぎ。",
+        "「Super-Agentが上記のモデルを使うかどうかは、元記事から確認できません」と区別できているが、「いまの多くのAIは、人が質問してから答えます」は元記事にない一般論。"
+      ],
+      "readability": {
+        "avg_paragraph": 62.7,
+        "avg_sentence": 30.8,
+        "long_share": 0.0,
+        "max_paragraph": 105,
+        "paragraphs": 29,
+        "sentences": 59
+      },
+      "score": 80,
+      "source": "radar-bloomberg.com",
+      "title": "DeepSeek open sources Super-Agent as a research prototype, a proactive coding ag"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-01T05:08:11.705428+00:00",
+      "attempt": 1,
+      "id": "1fe4326766c89237",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 59.4,
+        "avg_sentence": 30.8,
+        "long_share": 0.0,
+        "max_paragraph": 105,
+        "paragraphs": 29,
+        "sentences": 56
+      },
+      "score": 93,
+      "source": "radar-bloomberg.com",
+      "title": "DeepSeek open sources Super-Agent as a research prototype, a proactive coding ag"
     }
   ],
   "short_text_retry": {}

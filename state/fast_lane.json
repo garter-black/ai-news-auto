@@ -26,6 +26,19 @@
       "title": "Samsung unveils the $229 Galaxy Buds On, its first open-fit, C-shaped cuff earbuds to compete with Sony and Bose, designed with AI's help, shipping November 6",
       "url": "https://www.bloomberg.com/news/articles/2026-10-28/samsung-unveils-galaxy-buds-on-clip-on-earbuds-for-229"
     },
+    "1fe4326766c89237": {
+      "detectedAt": "2026-11-01T05:05:24+00:00",
+      "finishedAt": "2026-11-01T05:08:11+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41275615493",
+      "slug": "deepseek-super-agent-coding-prototype",
+      "source": "radar-bloomberg.com",
+      "sourcePublishedAt": "2026-11-01T05:00:13+00:00",
+      "startedAt": "2026-11-01T05:06:46+00:00",
+      "title": "DeepSeek open sources Super-Agent as a research prototype, a proactive coding agent it says can monitor group chats for coding issues and suggest solutions",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-01/deepseek-drops-enhanced-coding-agent-with-aim-to-rival-anthropic"
+    },
     "274aedb084ae6e00": {
       "detectedAt": "2026-10-28T02:17:51+00:00",
       "finishedAt": "2026-10-28T02:28:35+00:00",
