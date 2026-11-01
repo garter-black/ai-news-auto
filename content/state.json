@@ -4654,6 +4654,12 @@
       "skipped": true,
       "url": "https://www.mhlw.go.jp/stf/newpage_77050.html"
     },
+    "3247a17e1a0a8887": {
+      "at": "2026-11-01T00:51:18.288190+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（ビデオメッセージ）",
+      "skipped": true,
+      "url": "https://www.kantei.go.jp/jp/105/discourse/20261101message2.html"
+    },
     "326d641a8db7f800": {
       "at": "2026-10-28T21:51:50.348648+00:00",
       "model": "gemini-3.5-flash-lite",
