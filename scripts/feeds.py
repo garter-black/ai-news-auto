@@ -294,7 +294,7 @@ BLOCKED_HOSTS = ("linkedin.com", "x.com", "twitter.com", "facebook.com", "instag
 # AI 関連かどうかのざっくり判定（ai_only のフィードに使う）
 AI_RE = re.compile(
     r"(?<![A-Za-z])(AI|A\.I\.|LLMs?|GPT[-\w]*|Gemini|Gemma|Copilot|Claude|ChatGPT|agents?|agentic|"
-    r"machine learning|deep learning|neural|generative|model|inference|Llama|NVIDIA|GPU|robot\w*)(?![A-Za-z])"
+    r"large language models?|machine learning|deep learning|neural|generative|model|inference|Llama|NVIDIA|GPU|robot\w*)(?![A-Za-z])"
     r"|人工知能|生成AI|機械学習|深層学習|大規模言語|言語モデル|エージェント|チャットボット|ロボット|推論",
     re.IGNORECASE,
 )
@@ -430,7 +430,12 @@ def parse_feed(feed: dict) -> list[dict]:
 
 
 def is_ai_related(item: dict, title_only: bool = False) -> bool:
-    text = item["title"] if title_only else f"{item['title']} {item['summary']}"
+    text = item["title"]
+    if not title_only:
+        summary = item.get("summary") or ""
+        # Atom feeds can provide their synopsis as content without a summary.
+        # Limit this fallback to the opening, to avoid matching unrelated footer text.
+        text += " " + (summary or (item.get("content") or "")[:600])
     return bool(AI_RE.search(text))
 
 

@@ -8,6 +8,14 @@
       "via": "missed-check:techmeme",
       "found": "https://www.macrumors.com/2026/10/28/apple-brings-dynamic-island-to-mac/",
       "requestedAt": "2026-10-29T02:34:25+00:00"
+    },
+    {
+      "url": "https://www.figma.com/blog/the-tldr-on-figma-weave/",
+      "title": "Figma WeaveでAI画像・動画制作を繰り返せるワークフローに",
+      "sourceName": "Figma公式ブログ",
+      "secondary": false,
+      "via": "manual",
+      "requestedAt": "2026-11-01T00:52:21+00:00"
     }
   ]
 }
