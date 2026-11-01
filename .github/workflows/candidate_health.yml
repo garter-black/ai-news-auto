@@ -2,6 +2,11 @@ name: Candidate health monitor
 on:
   schedule:
     - cron: '17 * * * *'
+  # Scheduled Actions can be delayed or skipped. Article generation is also
+  # started by the watchdog, so each completion provides a backup trigger.
+  workflow_run:
+    workflows: ['Auto Article Pipeline']
+    types: [completed]
   workflow_dispatch:
 permissions:
   actions: read
