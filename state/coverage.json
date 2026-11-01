@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "reiwa-8-autumn-shoubo-houshou",
+   "at": "2026-11-01T20:21:04.609257+00:00",
+   "title": "令和8年秋の褒章、消防関係の受章者は110名に決定　紅綬や藍綬の内訳を整理",
+   "head": "令和8年秋の褒章、消防関係の受章者は110名に決定　紅綬や藍綬の内訳を整理 | 令和8年秋の褒章（消防関係）",
+   "text": "令和8年秋の褒章、消防関係の受章者は110名に決定　紅綬や藍綬の内訳を整理 | 令和8年秋の褒章（消防関係） | 令和8年秋の褒章 / 消防関係 / 総務省消防庁 / 紅綬褒章 / 黄綬褒章 / 藍綬褒章 / 受章者 / 社会・行政 / 表彰 / 消防",
+   "urls": [
+    "https://www.soumu.go.jp/menu_news/s-news/01shoubo01_02001279.html"
+   ]
+  },
+  {
    "slug": "government-education-loan-guide-2026",
    "at": "2026-11-01T18:15:49.320240+00:00",
    "title": "政府の国の教育ローン、世帯年収上限や金利と返済期間を整理　入学費用はいつでも申込可能",
@@ -1372,106 +1382,6 @@
    "text": "ChatGPTのOpenAIがServiceNowと提携拡大 業務プロセスの自動化を強化 | OpenAI and ServiceNow expand partnership across enterprise workflows | OpenAI / ServiceNow / ChatGPT / Codex / AIエージェント / ワークフロー自動化 / 企業向けAI / MCPプラグイン / 生成AI / LLM / 企業向けAI / ワークフロー自動化 / 開発ツール",
    "urls": [
     "https://openai.com/index/openai-servicenow-partnership-expansion"
-   ]
-  },
-  {
-   "slug": "ai-for-science-expansion-institutions",
-   "at": "2026-10-28T20:12:26.671886+00:00",
-   "title": "ClaudeのAnthropicが科学者支援を拡大 財団・研究機関20組織にAI利用枠を無償提供",
-   "head": "ClaudeのAnthropicが科学者支援を拡大 財団・研究機関20組織にAI利用枠を無償提供 | AI for Science expands to foundations and research institutions",
-   "text": "ClaudeのAnthropicが科学者支援を拡大 財団・研究機関20組織にAI利用枠を無償提供 | AI for Science expands to foundations and research institutions | AI for Science / Anthropic / Claude / 研究者支援 / Claude 無料クレジット / 科学研究 AI / Model Hardware Standard / Allen Institute / 米国科学財団 / gnomAD / Claude / Anthropic / 生成AI / 科学研究 / AI for Science",
-   "urls": [
-    "https://www.anthropic.com/news/ai-for-science-expands-foundations-research-institutions"
-   ]
-  },
-  {
-   "slug": "digital-dfft-oecd-meeting-2026",
-   "at": "2026-10-28T19:53:27.187741+00:00",
-   "title": "デジタル庁、OECDの「DFFT」対面会合に出席　国際ルール作りへ議論",
-   "head": "デジタル庁、OECDの「DFFT」対面会合に出席　国際ルール作りへ議論 | 三角デジタル監がDFFT Expert Community初の対面会合に出席しました",
-   "text": "デジタル庁、OECDの「DFFT」対面会合に出席　国際ルール作りへ議論 | 三角デジタル監がDFFT Expert Community初の対面会合に出席しました | デジタル庁 / OECD / DFFT / 三角竜子 / プライバシー強化技術 / PETs / データ流通 / 国際会合 / 社会・行政 / デジタル庁 / 国際関係 / データ流通",
-   "urls": [
-    "https://www.digital.go.jp/press/664c482f-3164-48d2-a3ee-5f1cf415cd78"
-   ]
-  },
-  {
-   "slug": "aws-ray-train-dlcs-efa-on-eks",
-   "at": "2026-10-28T19:53:14.195242+00:00",
-   "title": "AWSが公開した「Ray Train DLCs」とは？大規模AIの分散学習が手軽に",
-   "head": "AWSが公開した「Ray Train DLCs」とは？大規模AIの分散学習が手軽に | Distributed training with Ray Train DLCs and EFA on EKS",
-   "text": "AWSが公開した「Ray Train DLCs」とは？大規模AIの分散学習が手軽に | Distributed training with Ray Train DLCs and EFA on EKS | Ray Train DLCs / AWS / EKS / EFA / 分散学習 / PyTorch / Qwen2.5 / KubeRay / 生成AI / LLM / クラウド / インフラ",
-   "urls": [
-    "https://aws.amazon.com/blogs/machine-learning/distributed-training-with-ray-train-dlcs-and-efa-on-eks/"
-   ]
-  },
-  {
-   "slug": "google-gemini-agent-startups",
-   "at": "2026-10-28T19:35:24.109827+00:00",
-   "title": "Googleの生成AI「Gemini」に新機能、スタートアップ向けの自律型アシスタント発表",
-   "head": "Googleの生成AI「Gemini」に新機能、スタートアップ向けの自律型アシスタント発表 | Gemini エージェントがスタートアップにもたらすメリット",
-   "text": "Googleの生成AI「Gemini」に新機能、スタートアップ向けの自律型アシスタント発表 | Gemini エージェントがスタートアップにもたらすメリット | Gemini エージェント / Google Cloud / スタートアップ / Gemini 4 Argon / 生成AI / Google Workspace / MCP / コスト管理 / 生成AI / LLM / Google / スタートアップ",
-   "urls": [
-    "https://cloud.google.com/blog/ja/topics/startups/what-the-gemini-agent-means-for-startups/"
-   ]
-  },
-  {
-   "slug": "jpcert-weekly-report-20261028-vulnerabilities",
-   "at": "2026-10-28T19:33:57.811913+00:00",
-   "title": "JPCERT/CCが注意喚起、VeloCloud OrchestratorやPHPなどに深刻な脆弱性",
-   "head": "JPCERT/CCが注意喚起、VeloCloud OrchestratorやPHPなどに深刻な脆弱性 | Weekly Report: VeloCloud OrchestratorにSQLインジェクションの脆弱性",
-   "text": "JPCERT/CCが注意喚起、VeloCloud OrchestratorやPHPなどに深刻な脆弱性 | Weekly Report: VeloCloud OrchestratorにSQLインジェクションの脆弱性 | JPCERT / 脆弱性 / VeloCloud / PHP / SQLインジェクション / セキュリティパッチ / アップデート / 注意喚起 / セキュリティ / ネットワーク / アプリ / PC / サーバー",
-   "urls": [
-    "https://www.jpcert.or.jp/wr/2026/wr261028.html#1"
-   ]
-  },
-  {
-   "slug": "kirin-holdings-kirink-media-launch",
-   "at": "2026-10-28T19:14:00.907456+00:00",
-   "title": "キリンHDが新オウンドメディア『KIRINK』を10月28日公開、企業の未来を伝える挑戦とは",
-   "head": "キリンHDが新オウンドメディア『KIRINK』を10月28日公開、企業の未来を伝える挑戦とは | 「次のキリン」を伝える新オウンドメディア「KIRINK（キリンク）」を10月28日に公開",
-   "text": "キリンHDが新オウンドメディア『KIRINK』を10月28日公開、企業の未来を伝える挑戦とは | 「次のキリン」を伝える新オウンドメディア「KIRINK（キリンク）」を10月28日に公開 | キリン / KIRINK / オウンドメディア / キリンホールディングス / Innovate2035 / 食品 / 暮らし / 企業情報 / 食品 / 暮らし / 消費",
-   "urls": [
-    "https://www.kirinholdings.com/jp/newsroom/release/2026/1028_02.html"
-   ]
-  },
-  {
-   "slug": "github-copilot-security-extension",
-   "at": "2026-10-28T19:12:15.793989+00:00",
-   "title": "GitHub Copilotにセキュリティ拡張が登場 リポジトリの脆弱性修正がアプリ内で完結",
-   "head": "GitHub Copilotにセキュリティ拡張が登場 リポジトリの脆弱性修正がアプリ内で完結 | Security extension for the GitHub Copilot app",
-   "text": "GitHub Copilotにセキュリティ拡張が登場 リポジトリの脆弱性修正がアプリ内で完結 | Security extension for the GitHub Copilot app | GitHub Copilot / Security extension / コードスキャン / 脆弱性修正 / パブリックプレビュー / AI開発ツール / GitHub Enterprise / セキュリティ / 生成AI / 開発ツール / セキュリティ / GitHub",
-   "urls": [
-    "https://github.blog/changelog/2026-10-28-security-extension-for-the-github-copilot-app"
-   ]
-  },
-  {
-   "slug": "apple-14-inch-macbook-pro-m6-1eabbb64",
-   "at": "2026-10-28T19:11:50.581752+00:00",
-   "title": "Appleの新しい14インチMacBook Pro 「M6」搭載で最大24時間駆動、33万9,800円から",
-   "head": "Appleの新しい14インチMacBook Pro 「M6」搭載で最大24時間駆動、33万9,800円から | apple",
-   "text": "Appleの新しい14インチMacBook Pro 「M6」搭載で最大24時間駆動、33万9,800円から | apple | Apple / MacBook Pro / M6 / Mac / ノートPC / Apple Intelligence / 新型Mac / ノートパソコン / Apple / MacBook Pro / ハードウェア / 新製品",
-   "urls": [
-    "https://www.nytimes.com/2026/10/28/technology/apple-touch-screen-macbook-pro.html"
-   ]
-  },
-  {
-   "slug": "github-enterprise-includes-copilot",
-   "at": "2026-10-28T18:38:15.349849+00:00",
-   "title": "GitHub、法人プラン『GitHub Enterprise』にAI機能『GitHub Copilot』を標準内包へ",
-   "head": "GitHub、法人プラン『GitHub Enterprise』にAI機能『GitHub Copilot』を標準内包へ | GitHub Enterprise now includes access to GitHub Copilot",
-   "text": "GitHub、法人プラン『GitHub Enterprise』にAI機能『GitHub Copilot』を標準内包へ | GitHub Enterprise now includes access to GitHub Copilot | GitHub Enterprise / GitHub Copilot / GitHub / ライセンス / 料金 / AI / 開発者 / スタンドアロン / エンタープライズ / 生成AI / GitHub / 開発ツール / LLM",
-   "urls": [
-    "https://github.blog/changelog/2026-10-28-github-enterprise-now-includes-access-to-github-copilot"
-   ]
-  },
-  {
-   "slug": "womens-futsal-japan-camp-oct-2026",
-   "at": "2026-10-28T18:32:16.917412+00:00",
-   "title": "フットサル日本女子代表、千葉で国内トレーニングキャンプを開催へ（10月31日〜11月3日）",
-   "head": "フットサル日本女子代表、千葉で国内トレーニングキャンプを開催へ（10月31日〜11月3日） | フットサル日本女子代表候補 メンバー・スケジュール 国内トレーニングキャンプ（10.31-11.3 千葉／高円宮記念JFA夢フィールド） #jfa #nadeshiko #みんななでしこ #daihyo",
-   "text": "フットサル日本女子代表、千葉で国内トレーニングキャンプを開催へ（10月31日〜11月3日） | フットサル日本女子代表候補 メンバー・スケジュール 国内トレーニングキャンプ（10.31-11.3 千葉／高円宮記念JFA夢フィールド） #jfa #nadeshiko #みんななでしこ #daihyo | フットサル日本女子代表 / JFA / トレーニングキャンプ / 高円宮記念JFA夢フィールド / フットサル / 日本代表 / 女子代表 / 国内合宿 / サッカー / 日本代表 / フットサル / 女子代表",
-   "urls": [
-    "https://www.jfa.jp/news/00036957/"
    ]
   }
  ]

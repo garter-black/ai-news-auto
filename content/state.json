@@ -7481,6 +7481,12 @@
       "skipped": true,
       "url": "https://www.soumu.go.jp/menu_news/s-news/02kiban14_04001374.html"
     },
+    "881d05359e938ff3": {
+      "at": "2026-11-01T20:20:59.518614+00:00",
+      "reason": "prefilter: タイトルが短すぎる（一覧リンク等）",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/menu_news/s-news/01kanbo01_02001186.html"
+    },
     "882512038a7997cd": {
       "at": "2026-10-30T09:11:15.103300+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -8355,6 +8361,14 @@
       "section": "lifestyle",
       "slug": "alice-gakuen-october-enrollment-2026",
       "url": "https://www.value-press.com/pressrelease/382552"
+    },
+    "a44fc1f7f488bd51": {
+      "at": "2026-11-01T20:21:05.404842+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "public",
+      "slug": "reiwa-8-autumn-shoubo-houshou",
+      "url": "https://www.soumu.go.jp/menu_news/s-news/01shoubo01_02001279.html"
     },
     "a4be21c02d238c64": {
       "at": "2026-10-30T11:11:26.735515+00:00",
@@ -11267,28 +11281,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:21:38.455540+00:00",
-      "attempt": 1,
-      "id": "732aba1600924931",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（392字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 96.5,
-        "avg_sentence": 62.0,
-        "long_share": 0.5,
-        "max_paragraph": 242,
-        "paragraphs": 18,
-        "sentences": 28
-      },
-      "score": null,
-      "source": "windows-blog-jp",
-      "title": "SharePoint の AI イノベーションが一般提供 (GA) を開始、新しい Copilot app とエージェントの原動力に"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T02:21:45.461683+00:00",
@@ -18017,6 +18009,26 @@
       "score": 100,
       "source": "gov-online",
       "title": "お子さんの進学・在学資金を支援!国の教育ローンをご利用ください"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-01T20:21:05.404387+00:00",
+      "attempt": 1,
+      "id": "a44fc1f7f488bd51",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 79.4,
+        "avg_sentence": 35.3,
+        "long_share": 0.056,
+        "max_paragraph": 107,
+        "paragraphs": 8,
+        "sentences": 18
+      },
+      "score": 100,
+      "source": "soumu",
+      "title": "令和8年秋の褒章（消防関係）"
     }
   ],
   "short_text_retry": {}
