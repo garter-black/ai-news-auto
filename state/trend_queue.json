@@ -1,6 +1,47 @@
 {
-  "updated": "2026-11-01T08:27:06.789727+09:00",
+  "updated": "2026-11-01T15:20:09.076459+09:00",
   "items": [
+    {
+      "id": "eb978cdae8afc40e69722ee110483f61149d4ad1",
+      "kind": "trend",
+      "url": "https://news.yahoo.co.jp/articles/ffae37437929937866d815302a598a1a98c04595",
+      "title": "動画配信者",
+      "summary": "Googleトレンド急上昇（約200件の検索）。関連報道: ライバーが運転中に生配信で“よそ見→バイクと衝突”の恐怖の瞬間 千葉県警が語る「ながらスマホへの見解」（ピンズバNEWS） / 人気配信者がクレカ不正被害「約1000万円はいっさい返ってこない」 (2026年10月31日掲載) / 【炎上】迷惑配信者・久永小太郎、ホームレスからビッグマックをカツアゲ!? #迷惑配信者 #kick / 相次ぐ「家族系YouTuber」の収益化停止 欧州では「子どもの肖像権保護」の法規制も テレビはOK、動画だとダメ？弁護士の見解は",
+      "published_at": "2026-11-01T15:00:00+09:00",
+      "source_name": "Googleトレンド",
+      "source_slug": "trends",
+      "lang": "ja",
+      "image": null,
+      "genre": "ai",
+      "sources": [
+        {
+          "title": "ライバーが運転中に生配信で“よそ見→バイクと衝突”の恐怖の瞬間 千葉県警が語る「ながらスマホへの見解」（ピンズバNEWS）",
+          "url": "https://news.yahoo.co.jp/articles/ffae37437929937866d815302a598a1a98c04595",
+          "source": "Yahoo!ニュース",
+          "published": "2026-11-01T15:00:00+09:00"
+        },
+        {
+          "title": "人気配信者がクレカ不正被害「約1000万円はいっさい返ってこない」 (2026年10月31日掲載)",
+          "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9VckJ6RmFQdlZ1c2pFUklFSDRReUFpMGVSNElrSWkxaWVHem5jb3lPQlFaazFDbVppMG45eHlmYnZ6V09hdW9aY1hCalhpd2h2VG4td0JiZEdpN0p3RkE?oc=5",
+          "source": "ライブドアニュース",
+          "published": "2026-11-01T14:06:04+09:00"
+        },
+        {
+          "title": "【炎上】迷惑配信者・久永小太郎、ホームレスからビッグマックをカツアゲ!? #迷惑配信者 #kick",
+          "url": "https://news.google.com/rss/articles/CBMiQkFVX3lxTE9FM1AzU2JqRmMzVWpJd1gxSGpKNkJTTGJTUXh6WS1UZ05xQ2pxUEdaVGJESGtMdm1abEc1ZVBKTUdsdw?oc=5",
+          "source": "YouTube",
+          "published": "2026-11-01T12:00:07+09:00"
+        },
+        {
+          "title": "相次ぐ「家族系YouTuber」の収益化停止 欧州では「子どもの肖像権保護」の法規制も テレビはOK、動画だとダメ？弁護士の見解は",
+          "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1MbDJwQ29DZlRTanllb1NUWUNRMVhQVU1wbXFjQXZRekNhcHlWMWZPMHBWMkxib3lVMXktckpFdDhPQUxoTkRpRVF5SmZQa1FOeG1RLQ?oc=5",
+          "source": "ABEMA TIMES",
+          "published": "2026-11-01T11:00:00+09:00"
+        }
+      ],
+      "traffic": 200,
+      "queued_at": "2026-11-01T15:20:08.207341+09:00"
+    },
     {
       "id": "82d5e32da8b2fad037b61ea20d71e7757abe3f6e",
       "kind": "trend",
@@ -134,111 +175,6 @@
       ],
       "traffic": 10000,
       "queued_at": "2026-10-31T08:00:35.939443+09:00"
-    },
-    {
-      "id": "e7bf37c2ea0b7edcb7ba161e4879deccde91da2a",
-      "kind": "trend",
-      "url": "https://s.kabutan.jp/news/n202610301494/",
-      "title": "sox",
-      "summary": "Googleトレンド急上昇（約100件の検索）。関連報道: ＡＩへの巨額投資、もはや株価の好材料にならないとの声も / 「AI失速」を待ちわびる投資家、割安株買いでは勝てない残酷な現実 / ＡＩ投資が再び市場に波及、アマゾンは現金流出・インテル需要減警告",
-      "published_at": "2026-10-31T02:20:00+09:00",
-      "source_name": "Googleトレンド",
-      "source_slug": "trends",
-      "lang": "ja",
-      "image": null,
-      "genre": "ai",
-      "sources": [
-        {
-          "title": "ＡＩへの巨額投資、もはや株価の好材料にならないとの声も",
-          "url": "https://s.kabutan.jp/news/n202610301494/",
-          "source": "株探",
-          "published": "2026-10-31T02:20:00+09:00"
-        },
-        {
-          "title": "「AI失速」を待ちわびる投資家、割安株買いでは勝てない残酷な現実",
-          "url": "https://forbesjapan.com/articles/detail/107278",
-          "source": "Forbes JAPAN",
-          "published": "2026-10-31T02:20:00+09:00"
-        },
-        {
-          "title": "ＡＩ投資が再び市場に波及、アマゾンは現金流出・インテル需要減警告",
-          "url": "https://www.reuters.com/jp/economy/NHR2A4PKKVMVTHJR5KWJC3YPAI-2026-10-30/",
-          "source": "Reuters",
-          "published": "2026-10-31T02:20:00+09:00"
-        }
-      ],
-      "traffic": 100,
-      "queued_at": "2026-10-31T03:39:43.966250+09:00"
-    },
-    {
-      "id": "d29cd6cf0fec0f2f388b4fb4ad0a95578914c99f",
-      "kind": "trend",
-      "url": "https://news.yahoo.co.jp/articles/96e3c45f22506b331d9bb22e054c25150ba49841",
-      "title": "kddi",
-      "summary": "Googleトレンド急上昇（約2,000件の検索）。関連報道: KDDI2万件情報流出か 連携先へ不正アクセス（共同通信） / 【速報】KDDI、不正アクセスで2万件情報流出か / KDDI顧客情報漏えいか ライフネットへの不正アクセスで",
-      "published_at": "2026-10-30T21:30:00+09:00",
-      "source_name": "Googleトレンド",
-      "source_slug": "trends",
-      "lang": "ja",
-      "image": null,
-      "genre": "ai",
-      "sources": [
-        {
-          "title": "KDDI2万件情報流出か 連携先へ不正アクセス（共同通信）",
-          "url": "https://news.yahoo.co.jp/articles/96e3c45f22506b331d9bb22e054c25150ba49841",
-          "source": "Yahoo!ニュース",
-          "published": "2026-10-30T21:30:00+09:00"
-        },
-        {
-          "title": "【速報】KDDI、不正アクセスで2万件情報流出か",
-          "url": "https://www.47news.jp/15162792.html",
-          "source": "47NEWS",
-          "published": "2026-10-30T21:30:00+09:00"
-        },
-        {
-          "title": "KDDI顧客情報漏えいか ライフネットへの不正アクセスで",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261030de68756",
-          "source": "NHKニュース",
-          "published": "2026-10-30T21:30:00+09:00"
-        }
-      ],
-      "traffic": 2000,
-      "queued_at": "2026-10-30T22:07:24.721036+09:00"
-    },
-    {
-      "id": "9cda69f4c6975ef5c38025132289b9cc53f7db8a",
-      "kind": "trend",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261030de68227",
-      "title": "ラグタグ",
-      "summary": "Googleトレンド急上昇（約200件の検索）。関連報道: 【不正アクセス】個人情報流出などの発表相次ぐ（10月30日） / ワールドの子会社で不正アクセス被害 約120万件の個人情報流出の可能性／兵庫県（サンテレビ） / ワールド子会社に不正アクセス 120万件の会員情報流出か、氏名や住所など 古着店運営の企業|経済ニュース",
-      "published_at": "2026-10-30T21:30:00+09:00",
-      "source_name": "Googleトレンド",
-      "source_slug": "trends",
-      "lang": "ja",
-      "image": null,
-      "genre": "ai",
-      "sources": [
-        {
-          "title": "【不正アクセス】個人情報流出などの発表相次ぐ（10月30日）",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261030de68227",
-          "source": "NHKニュース",
-          "published": "2026-10-30T21:30:00+09:00"
-        },
-        {
-          "title": "ワールドの子会社で不正アクセス被害 約120万件の個人情報流出の可能性／兵庫県（サンテレビ）",
-          "url": "https://news.yahoo.co.jp/articles/93794cd353aaad801cd0693609418104e9b57df6",
-          "source": "Yahoo!ニュース",
-          "published": "2026-10-30T21:30:00+09:00"
-        },
-        {
-          "title": "ワールド子会社に不正アクセス 120万件の会員情報流出か、氏名や住所など 古着店運営の企業|経済ニュース",
-          "url": "https://www.kobe-np.co.jp/news/economy/202610/0020984371.shtml",
-          "source": "神戸新聞",
-          "published": "2026-10-30T21:30:00+09:00"
-        }
-      ],
-      "traffic": 200,
-      "queued_at": "2026-10-30T22:07:24.721036+09:00"
     }
   ]
 }
