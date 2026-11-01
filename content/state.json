@@ -5716,6 +5716,12 @@
       "skipped": true,
       "url": "https://www.maff.go.jp/j/press/kanbo/b_kankyo/261030.html"
     },
+    "5012da27dd46e5cc": {
+      "at": "2026-11-01T23:20:58.168369+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（職員）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/newpage_77111.html"
+    },
     "501f73ebd3323562": {
       "at": "2026-10-29T18:11:23.465767+00:00",
       "model": "gemini-3.5-flash-lite",
