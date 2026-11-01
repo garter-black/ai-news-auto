@@ -5597,6 +5597,14 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000132.000043765.html"
     },
+    "4ebf1cbe4b6719bb": {
+      "at": "2026-11-01T07:51:09.495279+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "atlassian-context-quality-score-cqs",
+      "url": "https://www.atlassian.com/blog/context/context-quality-score"
+    },
     "4eebfe08bde633ea": {
       "at": "2026-10-29T18:12:14.465098+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11184,51 +11192,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:31:51.937564+00:00",
-      "attempt": 1,
-      "id": "38dfb07257c2059f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 53.1字・60字超の文が 28% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 147.4字・最長 193字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 147.4,
-        "avg_sentence": 53.1,
-        "long_share": 0.28,
-        "max_paragraph": 193,
-        "paragraphs": 9,
-        "sentences": 25
-      },
-      "score": 100,
-      "source": "mhlw",
-      "title": "令和９年 医政局所管国家試験会場（予定）一覧"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T01:31:55.079896+00:00",
-      "attempt": 0,
-      "id": "38dfb07257c2059f",
-      "kind": "broad",
-      "model": "",
-      "problems": [
-        "読みやすさ基準外のまま受理: 本文が縮んだ（1805→1795字）"
-      ],
-      "readability": {
-        "avg_paragraph": 147.4,
-        "avg_sentence": 53.1,
-        "long_share": 0.28,
-        "max_paragraph": 193,
-        "paragraphs": 9,
-        "sentences": 25
-      },
-      "score": 100,
-      "source": "mhlw",
-      "title": "令和９年 医政局所管国家試験会場（予定）一覧"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T01:51:28.857346+00:00",
@@ -17933,6 +17896,50 @@
       "score": 100,
       "source": "atlassian-blog",
       "title": "Tackling agent sprawl across the enterprise"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-01T07:51:05.596667+00:00",
+      "attempt": 1,
+      "id": "4ebf1cbe4b6719bb",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 51.3字・60字超の文が 27% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 95.4,
+        "avg_sentence": 51.3,
+        "long_share": 0.269,
+        "max_paragraph": 199,
+        "paragraphs": 14,
+        "sentences": 26
+      },
+      "score": 100,
+      "source": "atlassian-blog",
+      "title": "Introducing the Context Quality Score (CQS): a new framework for measuring and o"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-01T07:51:09.494743+00:00",
+      "attempt": 0,
+      "id": "4ebf1cbe4b6719bb",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 46.2字・60字超の文が 21% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 51.5,
+        "avg_sentence": 46.2,
+        "long_share": 0.207,
+        "max_paragraph": 97,
+        "paragraphs": 26,
+        "sentences": 29
+      },
+      "score": 100,
+      "source": "atlassian-blog",
+      "title": "Introducing the Context Quality Score (CQS): a new framework for measuring and o"
     }
   ],
   "short_text_retry": {}

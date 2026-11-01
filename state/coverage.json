@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "atlassian-context-quality-score-cqs",
+   "at": "2026-11-01T07:51:04.821553+00:00",
+   "title": "アトラシアンがAIの精度を高める「CQS」を発表 散らばったデータを整理して回答の質を向上",
+   "head": "アトラシアンがAIの精度を高める「CQS」を発表 散らばったデータを整理して回答の質を向上 | Introducing the Context Quality Score (CQS): a new framework for measuring and optimizing AI context",
+   "text": "アトラシアンがAIの精度を高める「CQS」を発表 散らばったデータを整理して回答の質を向上 | Introducing the Context Quality Score (CQS): a new framework for measuring and optimizing AI context | Atlassian / CQS / Context Quality Score / Teamwork Graph / AI / データ品質 / 社内データ / アトラシアン / AI / データ管理 / 生成AI / 開発ツール",
+   "urls": [
+    "https://www.atlassian.com/blog/context/context-quality-score"
+   ]
+  },
+  {
    "slug": "atlassian-tackling-agent-sprawl",
    "at": "2026-11-01T07:31:02.374069+00:00",
    "title": "タスク管理のAtlassianがAIエージェントの野良増殖を防ぐ管理機能を発表",
