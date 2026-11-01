@@ -10431,6 +10431,12 @@
       "slug": "github-copilot-plugin-controls-ga",
       "url": "https://github.blog/changelog/2026-10-28-repository-plugin-defaults-and-enterprise-plugin-controls-generally-available"
     },
+    "eb978cdae8afc40e69722ee110483f61149d4ad1": {
+      "at": "2026-11-01T06:31:26.257628+00:00",
+      "reason": "trend sources 1",
+      "skipped": true,
+      "url": "https://news.yahoo.co.jp/articles/ffae37437929937866d815302a598a1a98c04595"
+    },
     "ebee271797294dcb": {
       "at": "2026-10-29T04:31:23.344370+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（審議会）",
