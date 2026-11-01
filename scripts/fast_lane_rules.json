@@ -382,6 +382,16 @@
         "name": "Meta AI公式"
       },
       {
+        "host": "engineering.fb.com",
+        "entity": "meta",
+        "name": "Meta Engineering公式"
+      },
+      {
+        "host": "figma.com",
+        "entity": "figma",
+        "name": "Figma公式ブログ"
+      },
+      {
         "host": "nvidia.com",
         "entity": "nvidia",
         "name": "NVIDIA公式"

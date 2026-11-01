@@ -20,6 +20,7 @@ import { radar } from "./radar.js";
 import { quakeLane } from "./quake.js";
 import { snsExtra } from "./sns-extra.js";
 import { bufferMonitorWatchdog } from "./buffer-monitor.js";
+import { checkActivity } from "./activity-monitor.js";
 // Python 側（scripts/fast_lane.py）と同じルールを使う。変えたら npx wrangler deploy し直す
 import baseRules from "../../../scripts/fast_lane_rules.json";
 // 追加の発信元（tier A/B/C）。fast_lane_rules.json の sources に足して使う
@@ -118,6 +119,11 @@ async function tick(env, now) {
     console.error(`fast: ${String(e)}`);
   }
   if (now.getUTCMinutes() % 10 !== 0) return;
+  try {
+    console.log(JSON.stringify({ activityMonitor: await checkActivity(env, now, makeGh(env)) }));
+  } catch (e) {
+    console.error(`activityMonitor: ${String(e)}`);
+  }
   if (now.getUTCHours() === 21 && now.getUTCMinutes() === 0) {
     // 日本時間 6:00: 深夜に作って出せなかった速報を SNS に出す（scripts/breaking_post.py が朝の分を拾う）
     try {

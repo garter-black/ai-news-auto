@@ -460,8 +460,12 @@ export async function radar(env, now, deps = {}) {
   for (const q of await readRequests(env, fetchImpl, now)) {
     if (!q?.url || Date.parse(q.requestedAt || 0) < now.getTime() - 48 * 3600e3) continue;
     const id = `req:${await itemId(q.url)}`;
-    if (!open(id)) continue;
     const ok = officialOf(q.url, [], RR) || outletOf(q.url, RR);
+    // An official host may have been added since this request was rejected.
+    // Reconsider only that explicit rejection; covered/dispatched requests stay closed.
+    const h = st.handled[id];
+    const newlyAllowed = h?.status === "rejected" && h.reason === "対象外のURL" && ok && !blocked(q.url, RR);
+    if (!open(id) && !newlyAllowed) continue;
     if (!ok || blocked(q.url, RR)) {
       st.handled[id] = { at: now.toISOString(), status: "rejected", reason: "対象外のURL", title: String(q.title || "").slice(0, 80) };
       dirty = true;

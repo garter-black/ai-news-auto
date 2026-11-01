@@ -269,6 +269,21 @@ test("見逃しチェック・手動の依頼（state/radar_requests.json）の 
   assert.equal((await h.run("2026-10-28T00:37:00Z")).dispatched.length, 0);
 });
 
+test("新たに許可した公式URLへの拒否済み依頼だけを再判定し、重複起動しない", async () => {
+  const h = harness();
+  await h.run("2026-10-28T00:00:00Z");
+  const url = "https://www.figma.com/blog/the-tldr-on-figma-weave/";
+  const id = `req:${await itemId(url)}`;
+  const st = h.state();
+  st.handled[id] = { status: "rejected", reason: "対象外のURL", at: "2026-10-28T00:01:00Z" };
+  h.store.set("radar", JSON.stringify(st));
+  h.world.requests = [{ url, title: "Figma Weave AI generation workflows", sourceName: "Figma公式ブログ", secondary: false, requestedAt: "2026-10-28T00:30:00Z", via: "manual" }];
+  const log = await h.run("2026-10-28T00:33:00Z");
+  assert.equal(log.dispatched.length, 1);
+  assert.equal(log.dispatched[0].secondary, false);
+  assert.equal((await h.run("2026-10-28T00:37:00Z")).dispatched.length, 0);
+});
+
 test("レーダーの1日の安全上限に達したら回さず、Issue で知らせる（1日1回）", async () => {
   const h = harness();
   h.world.coverage = BEFORE;
