@@ -54,6 +54,8 @@
    "endUtc": "2026-10-30T06:59:59Z",
    "status": "ended",
    "articleSlugs": [
+    "microsoft-fabric-database-agent-preview",
+    "microsoft-foundry-agent-framework-customization",
     "intelligent-terminal-local-120b-llm",
     "automation-vs-physical-ai-microsoft-azure",
     "github-copilot-plugin-controls-ga",
@@ -73,40 +75,32 @@
    ],
    "recap": [
     {
-     "text": "1220億パラメータの「Qwen 3.5 122B」をローカル実行する「Intelligent Terminal」を発表",
-     "slug": "intelligent-terminal-local-120b-llm"
+     "text": "GitHub EnterpriseにGitHub Copilotを標準内包",
+     "slug": "github-enterprise-includes-copilot"
     },
     {
-     "text": "GitHub Copilotのプラグイン管理機能がVS Codeなどで一般提供を開始",
-     "slug": "github-copilot-plugin-controls-ga"
-    },
-    {
-     "text": "GitHub Agentic Workflowsが一般提供（GA）を迎えすべてのユーザーが利用可能に",
+     "text": "GitHub Agentic Workflowsが一般提供を開始",
      "slug": "github-agentic-workflows-generally-available"
     },
     {
-     "text": "GitHub Copilotアプリ内でセキュリティ拡張機能がパブリックプレビューとして利用可能に",
+     "text": "GitHub Copilotのプラグイン管理機能が一般提供",
+     "slug": "github-copilot-plugin-controls-ga"
+    },
+    {
+     "text": "GitHub Copilotセキュリティ拡張がパブリックプレビュー",
      "slug": "github-copilot-security-extension"
     },
     {
-     "text": "GitHub EnterpriseにGitHub Copilotが標準内包されることを発表",
-     "slug": "github-enterprise-includes-copilot"
+     "text": "Copilotアプリのプロジェクト機能とコンピューター使用が公開プレビュー",
+     "slug": "github-copilot-app-projects-computer-use"
     },
     {
      "text": "GitHub製の実行基盤Copilot harnessがMicrosoft Foundryで利用可能に",
      "slug": "microsoft-copilot-harness-foundry"
-    },
-    {
-     "text": "Copilotアプリに複数のリポジトリや資料をまとめる「プロジェクト」などを公開プレビューとして発表",
-     "slug": "github-copilot-app-projects-computer-use"
-    },
-    {
-     "text": "営業、サービス、教育、法務向けの専門スキルを新たに搭載したMicrosoft CopilotのCoworkを発表",
-     "slug": "microsoft-copilot-cowork-new-skills"
     }
    ],
-   "recapKey": "4644f9161fca",
-   "recapAt": "2026-10-31T21:52:04Z"
+   "recapKey": "6be65c3e09a9",
+   "recapAt": "2026-11-01T22:24:44Z"
   },
   {
    "slug": "gartner-it-symposium-xpo-japan-2026",
@@ -634,5 +628,5 @@
    "articleSlugs": []
   }
  ],
- "refreshedAt": "2026-10-31T21:52:04Z"
+ "refreshedAt": "2026-11-01T22:24:44Z"
 }
