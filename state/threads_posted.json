@@ -2711,6 +2711,28 @@
       "comment": "編集部：今後の広がりに注目です。",
       "postedAt": "2026-11-01T22:42:49+00:00",
       "blueskyAt": "2026-11-01T22:42:52+00:00"
+    },
+    "windows11-context-menu-customize-kb5127936": {
+      "id": "6ae7ce5d01fa08ffbe72ba77",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae7ce682da2578c188b3675",
+        "facebook": "6ae7ce6b902c3fb1dec35937",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzbyexv7fc26"
+      },
+      "dueAt": "2026-11-01T23:42:20+00:00",
+      "hook": "breaking",
+      "breaking": true,
+      "score": -2,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "Microsoft",
+      "question": false,
+      "comment": "編集部：提供開始の続報を待ちたいところ。",
+      "postedAt": "2026-11-01T23:42:40+00:00",
+      "blueskyAt": "2026-11-01T23:42:42+00:00"
     }
   },
   "extraPending": {}
