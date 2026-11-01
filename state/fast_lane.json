@@ -297,6 +297,19 @@
       "title": "ソフトバンク、新型「iPad mini（A20 Pro）」価格発表 11万9800円～",
       "url": "https://k-tai.watch.impress.co.jp/docs/news/2151814.html"
     },
+    "96882ab7e78168fa": {
+      "detectedAt": "2026-11-01T22:37:24+00:00",
+      "finishedAt": "2026-11-01T22:40:16+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41358143805",
+      "slug": "oracle-ai-workspace-chatgpt",
+      "source": "radar-itmedia.co.jp",
+      "sourcePublishedAt": "2026-11-01T22:00:00+00:00",
+      "startedAt": "2026-11-01T22:38:46+00:00",
+      "title": "オラクルの機能がChatGPTで利用可能に 複数システムをまたぐ業務をAIで自動化",
+      "url": "https://kn.itmedia.co.jp/kn/article/2611/02/2000002740/"
+    },
     "99e0e76bd5ab3b42": {
       "detectedAt": "2026-10-28T17:57:51+00:00",
       "finishedAt": "2026-10-28T18:03:32+00:00",

@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "oracle-ai-workspace-chatgpt",
+   "at": "2026-11-01T22:39:49.872018+00:00",
+   "title": "オラクルの業務システムがChatGPTから操作可能に 小規模企業向け無償枠も",
+   "head": "オラクルの業務システムがChatGPTから操作可能に 小規模企業向け無償枠も | オラクルの機能がChatGPTで利用可能に 複数システムをまたぐ業務をAIで自動化",
+   "text": "オラクルの業務システムがChatGPTから操作可能に 小規模企業向け無償枠も | オラクルの機能がChatGPTで利用可能に 複数システムをまたぐ業務をAIで自動化 | Oracle AI Workspace / オラクル ChatGPT / OpenAI オラクル 協業 / Codex / Oracle App Composer / Oracle AI Security Mesh / Oracle AI SMB Bundle / NetSuite QuickStart / 業務自動化 AI / ChatGPT Business / 生成AI / ChatGPT / Codex / Oracle / 業務自動化 / ERP",
+   "urls": [
+    "https://kn.itmedia.co.jp/kn/article/2611/02/2000002740/"
+   ]
+  },
+  {
    "slug": "nvidia-uk-ai-factories-robotics",
    "at": "2026-11-01T22:04:45.766011+00:00",
    "title": "AI半導体のNVIDIAが英国AI構想を発表 創薬からロボットまで変える次世代基盤",
@@ -1234,52 +1244,6 @@
    "text": "KDDIグループのKDDIアイレットが社内AI活用事例113件を無料公開 稟議チェックの例も | KDDI傘下、社内のAI活用事例113件を無料公開 「Gemini Notebook」で稟議データのチェック支援も | KDDIアイレット / AI活用事例 / 生成AI 事例集 / Gemini Notebook / Claude Code / 稟議 AI / 社内AI活用 / Figma 開発効率化 / 無料公開 / 業務効率化 / 生成AI / Gemini / Claude / KDDIアイレット / 業務効率化",
    "urls": [
     "https://www.itmedia.co.jp/aiplus/article/2610/29/2000002685/"
-   ]
-  },
-  {
-   "slug": "mhlw-designated-drugs-2026-10",
-   "at": "2026-10-28T22:31:34.165943+00:00",
-   "title": "厚生労働省、危険ドラッグの成分3物質を指定薬物に追加　11月6日施行へ",
-   "head": "厚生労働省、危険ドラッグの成分3物質を指定薬物に追加　11月6日施行へ | 危険ドラッグの成分３物質を新たに指定薬物に指定",
-   "text": "厚生労働省、危険ドラッグの成分3物質を指定薬物に追加　11月6日施行へ | 危険ドラッグの成分３物質を新たに指定薬物に指定 | 指定薬物 / 危険ドラッグ / 厚生労働省 / 医薬品医療機器等法 / 薬事審議会 / 薬物対策 / 取締り強化 / 水際対策 / 消費者保護 / 社会・行政 / 法律・規制",
-   "urls": [
-    "https://www.mhlw.go.jp/stf/houdou/0000212707_00057.html"
-   ]
-  },
-  {
-   "slug": "google-gemini-live-sprout-plant-robot",
-   "at": "2026-10-28T22:30:05.801792+00:00",
-   "title": "GoogleのAI『Gemini』で観葉植物が自律移動、水やりを言葉で要求するロボット『Sprout』が登場",
-   "head": "GoogleのAI『Gemini』で観葉植物が自律移動、水やりを言葉で要求するロボット『Sprout』が登場 | Building real-time vision & edge navigation with Gemini Live",
-   "text": "GoogleのAI『Gemini』で観葉植物が自律移動、水やりを言葉で要求するロボット『Sprout』が登場 | Building real-time vision & edge navigation with Gemini Live | Google Gemini / Gemini Live / Robotics ER 2.0 / 自律走行ロボット / AIロボティクス / Google AI Studio / 使い方 / 機能 / Google / 開発者向け / 生成AI / Google Gemini / ロボティクス / Gemini Live",
-   "urls": []
-  },
-  {
-   "slug": "google-gemini-4-carbon-announcement",
-   "at": "2026-10-28T22:29:24.869463+00:00",
-   "title": "GoogleのAI『Gemini 4 Carbon』が性能首位に！2週間での急進化と利用条件とは",
-   "head": "GoogleのAI『Gemini 4 Carbon』が性能首位に！2週間での急進化と利用条件とは | Google announces Gemini 4 Carbon",
-   "text": "GoogleのAI『Gemini 4 Carbon』が性能首位に！2週間での急進化と利用条件とは | Google announces Gemini 4 Carbon | Gemini 4 Carbon / Google Gemini / Gemini 4 Argon / AIモデル / ベンチマーク / 使い方 / 料金 / 日本での提供 / Artificial Analysis / AIツール / 検証 / Google Gemini / 生成AI / LLM / AIモデル",
-   "urls": []
-  },
-  {
-   "slug": "ntt-landscape-nagai-ekkyo-kenshu",
-   "at": "2026-10-28T22:13:13.954863+00:00",
-   "title": "NTT Landscapeなど、山形県長井市を舞台にした企業向け越境研修を11月1日に提供開始",
-   "head": "NTT Landscapeなど、山形県長井市を舞台にした企業向け越境研修を11月1日に提供開始 | デジタルと伝統を生かしたまちづくりを進める山形県長井市を舞台に、企業向け「越境研修」を共同開発 〜地域の実課題への挑戦と行動評価を通じ、次世代リーダーを育成〜",
-   "text": "NTT Landscapeなど、山形県長井市を舞台にした企業向け越境研修を11月1日に提供開始 | デジタルと伝統を生かしたまちづくりを進める山形県長井市を舞台に、企業向け「越境研修」を共同開発 〜地域の実課題への挑戦と行動評価を通じ、次世代リーダーを育成〜 | 越境研修 / NTT Landscape / やまがたアルカディア観光局 / 長井市 / 次世代リーダー / 地域課題 / デジタルツイン / 人材育成 / ビジネス / ライフスタイル",
-   "urls": [
-    "https://www.ntt-landscape.co.jp/news/nagai-ekkyo-kenshu/"
-   ]
-  },
-  {
-   "slug": "aws-bedrock-agentcore-alarm-management",
-   "at": "2026-10-28T22:12:33.294719+00:00",
-   "title": "AWSが電力・公益事業向け生成AIエージェント『Amazon Bedrock AgentCore』発表、アラーム調査を数分に",
-   "head": "AWSが電力・公益事業向け生成AIエージェント『Amazon Bedrock AgentCore』発表、アラーム調査を数分に | Amazon Bedrock AgentCore を使用した電力・公益事業向けのインテリジェントなアラーム管理",
-   "text": "AWSが電力・公益事業向け生成AIエージェント『Amazon Bedrock AgentCore』発表、アラーム調査を数分に | Amazon Bedrock AgentCore を使用した電力・公益事業向けのインテリジェントなアラーム管理 | Amazon Bedrock / AgentCore / AWS / アラーム管理 / 電力 / 公益事業 / マルチエージェント / 生成AI / 生成AI / LLM / AWS / クラウド / インフラ",
-   "urls": [
-    "https://aws.amazon.com/jp/blogs/news/intelligent-alarm-management-for-power-and-utilities-using-amazon-bedrock-agentcore/"
    ]
   }
  ]

@@ -7998,6 +7998,16 @@
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/047949/"
     },
+    "96882ab7e78168fa": {
+      "at": "2026-11-01T22:40:16.869257+00:00",
+      "breaking": true,
+      "major": true,
+      "model": "claude:sonnet",
+      "score": 88,
+      "section": "ai",
+      "slug": "oracle-ai-workspace-chatgpt",
+      "url": "https://kn.itmedia.co.jp/kn/article/2611/02/2000002740/"
+    },
     "96c6180860078329": {
       "at": "2026-10-29T01:13:19.632805+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11298,51 +11308,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:21:45.461683+00:00",
-      "attempt": 2,
-      "id": "732aba1600924931",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2344字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 105.7,
-        "avg_sentence": 58.7,
-        "long_share": 0.333,
-        "max_paragraph": 208,
-        "paragraphs": 15,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "windows-blog-jp",
-      "title": "SharePoint の AI イノベーションが一般提供 (GA) を開始、新しい Copilot app とエージェントの原動力に"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:21:57.251800+00:00",
-      "attempt": 1,
-      "id": "3348d152eb91b9ce",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 60.1字・60字超の文が 28% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 145.2字・最長 203字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 145.2,
-        "avg_sentence": 60.1,
-        "long_share": 0.276,
-        "max_paragraph": 203,
-        "paragraphs": 12,
-        "sentences": 29
-      },
-      "score": 100,
-      "source": "ntt-news",
-      "title": "「dバリューパス」に新たな特典を追加 -「 Uber 」や「 Uber Eats 」、「LUUP」でご利用になれる特典が追加！さらに、「デイリーチャンス」の拡充"
-    },
     {
       "accepted": true,
       "at": "2026-10-30T02:22:01.111407+00:00",
@@ -18046,6 +18011,53 @@
       "score": 100,
       "source": "soumu",
       "title": "令和8年秋の褒章（消防関係）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-01T22:39:54.606433+00:00",
+      "attempt": 1,
+      "id": "96882ab7e78168fa",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "「経費や承認など、いくつものシステムをまたぐ作業」→ 元記事に「経費」の例は無く、具体例の追加。",
+        "「AIが勝手に権限を超える、という心配に配慮した設計です」→ 元記事に無い設計意図の推測。",
+        "「目的に合う機能や情報をAIが選び」→ 元記事は「業務目標に応じて必要な機能や情報を選び」とあるだけで、選ぶ主体がAIとは明記されていない。",
+        "「経理や総務、情報システムの担当者は特に注目です」→ 元記事に対象者の記載が無い。",
+        "「駅の改札で使えるプリペイドカード」の比喩→ クレジットは製品の開発や運営に使うAIツール向けで、例えが実態とずれる。",
+        "「小規模企業は…検討する価値があります」→ 条件や提供地域が不明なまま推奨しており言い過ぎ。"
+      ],
+      "readability": {
+        "avg_paragraph": 59.4,
+        "avg_sentence": 35.8,
+        "long_share": 0.052,
+        "max_paragraph": 122,
+        "paragraphs": 35,
+        "sentences": 58
+      },
+      "score": 82,
+      "source": "radar-itmedia.co.jp",
+      "title": "オラクルの機能がChatGPTで利用可能に 複数システムをまたぐ業務をAIで自動化"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-01T22:40:16.868805+00:00",
+      "attempt": 1,
+      "id": "96882ab7e78168fa",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 58.5,
+        "avg_sentence": 35.9,
+        "long_share": 0.053,
+        "max_paragraph": 125,
+        "paragraphs": 35,
+        "sentences": 57
+      },
+      "score": 88,
+      "source": "radar-itmedia.co.jp",
+      "title": "オラクルの機能がChatGPTで利用可能に 複数システムをまたぐ業務をAIで自動化"
     }
   ],
   "short_text_retry": {}
