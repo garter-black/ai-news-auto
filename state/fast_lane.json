@@ -154,6 +154,19 @@
       "title": "Introducing the Microsoft Copilot harness: Unlocking the potential of truly multi-model agentic work",
       "url": "https://blogs.microsoft.com/blog/2026/10/28/introducing-the-microsoft-copilot-harness-unlocking-the-potential-of-truly-multi-model-agentic-work/"
     },
+    "543af653b59f437d": {
+      "detectedAt": "2026-11-01T01:13:24+00:00",
+      "finishedAt": "2026-11-01T01:15:43+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41260242242",
+      "slug": "figma-weave-creative-workflow",
+      "source": "figma-blog",
+      "sourcePublishedAt": "2026-10-31T00:58:00+00:00",
+      "startedAt": "2026-11-01T01:14:44+00:00",
+      "title": "The TL;DR on Figma Weave: Make your creative process repeatable",
+      "url": "https://www.figma.com/blog/the-tldr-on-figma-weave/"
+    },
     "6318bf62f2c5750d": {
       "detectedAt": "2026-10-28T17:00:51+00:00",
       "finishedAt": "2026-10-28T17:02:42+00:00",

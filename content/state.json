@@ -5747,6 +5747,16 @@
       "skipped": true,
       "url": "https://www.kantei.go.jp/jp/105/actions/202610/28germany.html"
     },
+    "543af653b59f437d": {
+      "at": "2026-11-01T01:15:43.101847+00:00",
+      "breaking": true,
+      "major": true,
+      "model": "claude:sonnet",
+      "score": 95,
+      "section": "ai",
+      "slug": "figma-weave-creative-workflow",
+      "url": "https://www.figma.com/blog/the-tldr-on-figma-weave/"
+    },
     "54b214d174b0abcd": {
       "at": "2026-10-29T00:01:45.038131+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11133,28 +11143,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:11:42.642398+00:00",
-      "attempt": 2,
-      "id": "4e318ba20f1fa304",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "元記事の文をそのまま書き写している（2文。例「- リーガル リサーチ: Bloomberg Law、Trellis、Descrybe Legal 」）。自分の言葉で要約する"
-      ],
-      "readability": {
-        "avg_paragraph": 117.2,
-        "avg_sentence": 64.3,
-        "long_share": 0.516,
-        "max_paragraph": 188,
-        "paragraphs": 17,
-        "sentences": 31
-      },
-      "score": null,
-      "source": "windows-blog-jp",
-      "title": "法務向け Microsoft Copilot のご紹介"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T01:11:52.618157+00:00",
@@ -17887,6 +17875,26 @@
       "score": 100,
       "source": "meta-engineering",
       "title": "Catching Bugs Before They Land: JiTTesting’s Human-on-the-Loop Approach at Full "
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-01T01:15:43.101371+00:00",
+      "attempt": 1,
+      "id": "543af653b59f437d",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 57.2,
+        "avg_sentence": 27.7,
+        "long_share": 0.0,
+        "max_paragraph": 121,
+        "paragraphs": 32,
+        "sentences": 66
+      },
+      "score": 95,
+      "source": "figma-blog",
+      "title": "The TL;DR on Figma Weave: Make your creative process repeatable"
     }
   ],
   "short_text_retry": {}

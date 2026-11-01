@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "figma-weave-creative-workflow",
+   "at": "2026-11-01T01:15:38.479694+00:00",
+   "title": "デザインツールのFigmaが画像・動画のAI制作基盤「Weave」の使い方を公開 手順を再利用可能に",
+   "head": "デザインツールのFigmaが画像・動画のAI制作基盤「Weave」の使い方を公開 手順を再利用可能に | The TL;DR on Figma Weave: Make your creative process repeatable",
+   "text": "デザインツールのFigmaが画像・動画のAI制作基盤「Weave」の使い方を公開 手順を再利用可能に | The TL;DR on Figma Weave: Make your creative process repeatable | Figma Weave / Figma Weaveとは / Figma Weave 使い方 / Weaveツール / ノード / AI画像生成 / AI動画生成 / ワークフロー / Figma 新機能 / Figma 日本 / Figma Weave / 生成AI / 画像生成 / 動画生成 / デザインツール",
+   "urls": [
+    "https://www.figma.com/blog/the-tldr-on-figma-weave/"
+   ]
+  },
+  {
    "slug": "meta-jittestings-human-on-the-loop-approach",
    "at": "2026-11-01T01:11:01.089547+00:00",
    "title": "Metaが開発した「JiTTests」 人工知能でバグを事前に自動検出する新技術",
