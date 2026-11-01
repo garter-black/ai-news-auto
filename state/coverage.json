@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "meta-jittestings-human-on-the-loop-approach",
+   "at": "2026-11-01T01:11:01.089547+00:00",
+   "title": "Metaが開発した「JiTTests」 人工知能でバグを事前に自動検出する新技術",
+   "head": "Metaが開発した「JiTTests」 人工知能でバグを事前に自動検出する新技術 | Catching Bugs Before They Land: JiTTesting’s Human-on-the-Loop Approach at Full Scale",
+   "text": "Metaが開発した「JiTTests」 人工知能でバグを事前に自動検出する新技術 | Catching Bugs Before They Land: JiTTesting’s Human-on-the-Loop Approach at Full Scale | Meta / JiTTests / バグ検出 / 生成AI / LLM / コードレビュー / ソフトウェアテスト / 開発効率化 / 生成AI / LLM / 開発ツール / セキュリティ",
+   "urls": [
+    "https://engineering.fb.com/2026/10/29/security/catching-bugs-before-they-land-jittestings-human-on-the-loop-approach-at-full-scale/"
+   ]
+  },
+  {
    "slug": "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom",
    "at": "2026-11-01T00:11:14.326141+00:00",
    "title": "カスタマーサポート大手のZendeskがChatGPT Enterpriseを全社導入 社内で600のAIアプリを自作し営業効率化",
@@ -1660,16 +1670,6 @@
    "text": "KDDIが脆弱性管理をAIで効率化　ラックと連携、攻撃リスクを自動診断 | リスク診断・対処を効率化、AI脆弱性管理ソリューションを提供開始 | KDDI / 脆弱性管理 / AI / サイバーセキュリティー / ラック / CTEM / サプライチェーン / ネットワーク診断 / ソースコード分析 / セキュリティ対策 / AI / サイバーセキュリティー / ネットワーク / KDDI",
    "urls": [
     "https://newsroom.kddi.com/news/detail/kddi_nr-1212_4787.html"
-   ]
-  },
-  {
-   "slug": "google-genie-4-world-model",
-   "at": "2026-10-28T01:06:33.575134+00:00",
-   "title": "Googleが「世界モデル」の新版Genie 4を発表 言葉で操作でき音も自動生成",
-   "head": "Googleが「世界モデル」の新版Genie 4を発表 言葉で操作でき音も自動生成 | We’re announcing Genie 4, our new world model for real-time interactive simulation.",
-   "text": "Googleが「世界モデル」の新版Genie 4を発表 言葉で操作でき音も自動生成 | We’re announcing Genie 4, our new world model for real-time interactive simulation. | Genie 4 / 世界モデル / Google DeepMind / Project Genie / Google AI Ultra / Gemini API / AI Studio / リアルタイムシミュレーション / Gemini Omni / Genie 4 日本 / Genie 4 / 世界モデル / Google DeepMind / 生成AI / シミュレーション",
-   "urls": [
-    "https://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-genie-4/"
    ]
   }
  ]

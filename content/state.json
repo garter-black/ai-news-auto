@@ -4439,6 +4439,14 @@
       "skipped": true,
       "url": "https://news.mynavi.jp/article/20261028-5211663/"
     },
+    "2b2f487795f0e5d2": {
+      "at": "2026-11-01T01:11:05.151015+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "meta-jittestings-human-on-the-loop-approach",
+      "url": "https://engineering.fb.com/2026/10/29/security/catching-bugs-before-they-land-jittestings-human-on-the-loop-approach-at-full-scale/"
+    },
     "2b3073ee02ff6eca": {
       "at": "2026-10-29T18:35:20.173463+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（審議会）",
@@ -9993,6 +10001,12 @@
       "skipped": true,
       "url": "https://www.gov-online.go.jp/press_conferences/minister_of_state/202610/video-326804.html"
     },
+    "dce4438a3e40ff31": {
+      "at": "2026-11-01T01:11:05.151170+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（採用）",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/menu_syokai/saiyou/ippan_senkou.html"
+    },
     "dcf5d54939aadc4c": {
       "at": "2026-10-26T10:30:42.540838+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（一覧へ）",
@@ -11119,51 +11133,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T00:51:48.599668+00:00",
-      "attempt": 0,
-      "id": "6f5c086e08d35232",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 172.8字・最長 368字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 172.8,
-        "avg_sentence": 35.2,
-        "long_share": 0.074,
-        "max_paragraph": 368,
-        "paragraphs": 11,
-        "sentences": 54
-      },
-      "score": 100,
-      "source": "jst",
-      "title": "ショウジョウバエの睡眠誘引因子に由来する抗菌ペプチドを発見"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:11:34.801988+00:00",
-      "attempt": 1,
-      "id": "4e318ba20f1fa304",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2181字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（366字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 78.8,
-        "avg_sentence": 54.6,
-        "long_share": 0.346,
-        "max_paragraph": 158,
-        "paragraphs": 18,
-        "sentences": 26
-      },
-      "score": null,
-      "source": "windows-blog-jp",
-      "title": "法務向け Microsoft Copilot のご紹介"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T01:11:42.642398+00:00",
@@ -17873,6 +17842,51 @@
       "score": 100,
       "source": "tsr",
       "title": "AIの脅威が迫る「デザイン業」、上半期の倒産が過去最多 ～ 前年同期比1.9倍、住宅業界の変化も影響 ～"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-01T01:11:01.853293+00:00",
+      "attempt": 1,
+      "id": "2b2f487795f0e5d2",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 63.6字・60字超の文が 52% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 113.5字・最長 238字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 113.5,
+        "avg_sentence": 63.6,
+        "long_share": 0.52,
+        "max_paragraph": 238,
+        "paragraphs": 14,
+        "sentences": 25
+      },
+      "score": 100,
+      "source": "meta-engineering",
+      "title": "Catching Bugs Before They Land: JiTTesting’s Human-on-the-Loop Approach at Full "
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-01T01:11:05.150676+00:00",
+      "attempt": 0,
+      "id": "2b2f487795f0e5d2",
+      "kind": "ai",
+      "model": "",
+      "problems": [
+        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（63.6→63.6字）"
+      ],
+      "readability": {
+        "avg_paragraph": 113.5,
+        "avg_sentence": 63.6,
+        "long_share": 0.52,
+        "max_paragraph": 238,
+        "paragraphs": 14,
+        "sentences": 25
+      },
+      "score": 100,
+      "source": "meta-engineering",
+      "title": "Catching Bugs Before They Land: JiTTesting’s Human-on-the-Loop Approach at Full "
     }
   ],
   "short_text_retry": {}
