@@ -15,6 +15,10 @@ class GroqDiagnosticTests(unittest.TestCase):
         self.assertEqual(diag.classify(403, 'Cloudflare challenge-platform', 'text/html'), 'security_challenge')
         self.assertEqual(diag.classify(429, ''), 'rate_or_quota')
 
+    def test_hints_are_only_fixed_labels(self):
+        self.assertEqual(diag.hints('organization permission; secret-example'), ['organization', 'permission'])
+        self.assertNotIn('secret-example', str(diag.hints('secret-example')))
+
 
 if __name__ == '__main__':
     unittest.main()

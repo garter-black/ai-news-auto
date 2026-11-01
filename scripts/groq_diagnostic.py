@@ -27,6 +27,24 @@ def classify(status: int, body: str, content_type: str = "") -> str:
     return "other"
 
 
+def hints(body: str) -> list[str]:
+    # Only publish a fixed vocabulary; never echo any part of an API response.
+    low = body.lower()
+    known = {
+        "organization": ("organization", "organisation"),
+        "api_key": ("api key", "api_key", "apikey"),
+        "region": ("country", "region", "location", "geograph"),
+        "blocked": ("blocked", "denied", "forbidden", "restrict"),
+        "disabled": ("disabled", "deactivated", "suspended", "revoked"),
+        "verification": ("verification", "verify", "verified"),
+        "terms": ("terms of service", "terms and conditions"),
+        "network": ("ip address", "ip_address", "cloudflare"),
+        "billing": ("billing", "payment", "credit"),
+        "permission": ("permission", "access"),
+    }
+    return [name for name, words in known.items() if any(word in low for word in words)]
+
+
 def main() -> int:
     key = os.environ.get("GROQ_API_KEY", "")
     if not key:
@@ -40,7 +58,7 @@ def main() -> int:
     except urllib.error.HTTPError as error:
         body = error.read(100_000).decode("utf-8", "replace")
         result = classify(error.code, body, error.headers.get("content-type", ""))
-        print(f"[groq-diagnostic] result={result} http={error.code}")
+        print(f"[groq-diagnostic] result={result} http={error.code} hints={','.join(hints(body)) or 'none'}")
     except (urllib.error.URLError, TimeoutError, ValueError, OSError):
         print("[groq-diagnostic] result=network_or_invalid_response")
     return 0
