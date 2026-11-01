@@ -72,6 +72,12 @@ def main() -> int:
     probe("anonymous_identified", identify=True)
     if key:
         probe("configured_identified", key, identify=True)
+        # Exercise the exact production model-list path; this is a read-only GET.
+        try:
+            import llm
+            print(f"[groq-diagnostic] probe=production_code model_count={len(llm._groq_models())}")
+        except Exception:
+            print("[groq-diagnostic] probe=production_code result=error")
     else:
         print("[groq-diagnostic] probe=configured result=not_configured")
     return 0
