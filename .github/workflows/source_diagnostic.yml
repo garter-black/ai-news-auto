@@ -1,0 +1,15 @@
+name: Feed selection diagnostic (read only)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - name: Count feed outcomes without generating articles
+        run: python3 scripts/source_diagnostic.py
