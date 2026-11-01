@@ -2,6 +2,14 @@
  "hours": 96,
  "items": [
   {
+   "slug": "nvidia-uk-ai-factories-robotics",
+   "at": "2026-11-01T22:04:45.766011+00:00",
+   "title": "AI半導体のNVIDIAが英国AI構想を発表 創薬からロボットまで変える次世代基盤",
+   "head": "AI半導体のNVIDIAが英国AI構想を発表 創薬からロボットまで変える次世代基盤 | AI in the UK: Drug Discovery, Robotics and AI Factories | NVIDIA",
+   "text": "AI半導体のNVIDIAが英国AI構想を発表 創薬からロボットまで変える次世代基盤 | AI in the UK: Drug Discovery, Robotics and AI Factories | NVIDIA | NVIDIA / AIファクトリー / Isambard-AI / Vera Rubin / 創薬AI / ロボティクス / 英国AI / 半導体 / GPU / スーパーコンピュータ / NVIDIA / GPU / 生成AI / スーパーコンピュータ / ロボティクス / 医療AI",
+   "urls": []
+  },
+  {
    "slug": "reiwa-8-autumn-shoubo-houshou",
    "at": "2026-11-01T20:21:04.609257+00:00",
    "title": "令和8年秋の褒章、消防関係の受章者は110名に決定　紅綬や藍綬の内訳を整理",
@@ -1272,116 +1280,6 @@
    "text": "AWSが電力・公益事業向け生成AIエージェント『Amazon Bedrock AgentCore』発表、アラーム調査を数分に | Amazon Bedrock AgentCore を使用した電力・公益事業向けのインテリジェントなアラーム管理 | Amazon Bedrock / AgentCore / AWS / アラーム管理 / 電力 / 公益事業 / マルチエージェント / 生成AI / 生成AI / LLM / AWS / クラウド / インフラ",
    "urls": [
     "https://aws.amazon.com/jp/blogs/news/intelligent-alarm-management-for-power-and-utilities-using-amazon-bedrock-agentcore/"
-   ]
-  },
-  {
-   "slug": "abema-mahoyo-special-channel-2026",
-   "at": "2026-10-28T21:56:08.863706+00:00",
-   "title": "ABEMAが劇場アニメ『魔法使いの夜』公開記念で専門チャンネルを開設 空の境界やFateシリーズを毎日無料放送",
-   "head": "ABEMAが劇場アニメ『魔法使いの夜』公開記念で専門チャンネルを開設 空の境界やFateシリーズを毎日無料放送 | 劇場アニメーション『魔法使いの夜』公開記念 ABEMAにTYPE-MOON×ufotable作品の専門チャンネルを初開設",
-   "text": "ABEMAが劇場アニメ『魔法使いの夜』公開記念で専門チャンネルを開設 空の境界やFateシリーズを毎日無料放送 | 劇場アニメーション『魔法使いの夜』公開記念 ABEMAにTYPE-MOON×ufotable作品の専門チャンネルを初開設 | ABEMA / 魔法使いの夜 / TYPE-MOON / ufotable / 空の境界 / Fate / 無料放送 / アニメ / アニメ / 映画 / 配信",
-   "urls": [
-    "https://www.cyberagent.co.jp/news/detail/id=33955"
-   ]
-  },
-  {
-   "slug": "github-agentic-workflows-generally-available",
-   "at": "2026-10-28T21:54:16.721755+00:00",
-   "title": "GitHub、AIが自律作業する「Agentic Workflows」を一般提供開始",
-   "head": "GitHub、AIが自律作業する「Agentic Workflows」を一般提供開始 | GitHub Agentic Workflows generally available",
-   "text": "GitHub、AIが自律作業する「Agentic Workflows」を一般提供開始 | GitHub Agentic Workflows generally available | GitHub / Agentic Workflows / GitHub Actions / GitHub Copilot / AIエージェント / CI障害解析 / 開発自動化 / 生成AI / 開発ツール / GitHub",
-   "urls": [
-    "https://github.blog/changelog/2026-10-28-github-agentic-workflows-generally-available"
-   ]
-  },
-  {
-   "slug": "aws-sentinel-ai-audio-provenance",
-   "at": "2026-10-28T21:52:21.228334+00:00",
-   "title": "AWSがAI生成オーディオの来歴情報保持パイプライン『SENTINEL』を発表",
-   "head": "AWSがAI生成オーディオの来歴情報保持パイプライン『SENTINEL』を発表 | AWS で AI 生成コンテンツのオーディオ来歴情報を生成元で構築する",
-   "text": "AWSがAI生成オーディオの来歴情報保持パイプライン『SENTINEL』を発表 | AWS で AI 生成コンテンツのオーディオ来歴情報を生成元で構築する | AWS / SENTINEL / EU AI法 / C2PA / AudioSeal / AI生成音声 / コンテンツクレデンシャル / Amazon Bedrock / 生成AI / AWS / セキュリティ / オーディオ / コンプライアンス",
-   "urls": [
-    "https://aws.amazon.com/jp/blogs/news/jpmne-building-audio-provenance-for-ai-generated-content-at-the-source-with-aws/"
-   ]
-  },
-  {
-   "slug": "suwa-lake-fireworks-nli-report",
-   "at": "2026-10-28T21:52:08.226086+00:00",
-   "title": "ニッセイ基礎研究所が解説、諏訪湖の花火大会に学ぶ「地域行事を続ける力」の正体",
-   "head": "ニッセイ基礎研究所が解説、諏訪湖の花火大会に学ぶ「地域行事を続ける力」の正体 | 地域行事を続ける力は、どこから生まれるのか～諏訪湖祭湖上花火大会にみる、支え手の広がりと継承",
-   "text": "ニッセイ基礎研究所が解説、諏訪湖の花火大会に学ぶ「地域行事を続ける力」の正体 | 地域行事を続ける力は、どこから生まれるのか～諏訪湖祭湖上花火大会にみる、支え手の広がりと継承 | 諏訪湖祭湖上花火大会 / ニッセイ基礎研究所 / 地域行事 / 地方創生 / 花火大会 / 協賛金 / 持続可能性 / 小口裕 / ビジネス / 地方創生 / 暮らし / 社会貢献",
-   "urls": [
-    "https://www.nli-research.co.jp/topics_detail1/id=87165?site=nli"
-   ]
-  },
-  {
-   "slug": "ads-in-ai-mode-expand-markets",
-   "at": "2026-10-28T21:32:15.427312+00:00",
-   "title": "Googleの「AIモード」の広告が10カ国に拡大 続けて聞く質問にも広告を表示",
-   "head": "Googleの「AIモード」の広告が10カ国に拡大 続けて聞く質問にも広告を表示 | Ads in AI Mode expand to new markets.",
-   "text": "Googleの「AIモード」の広告が10カ国に拡大 続けて聞く質問にも広告を表示 | Ads in AI Mode expand to new markets. | AIモード 広告 / Google AIモード / AIモード 広告 日本 / マルチターン広告 / Google広告 / 検索広告 AI / Sponsored 表示 / AI検索 広告 拡大 / Shashi Thakur / AIモード 対象国 / Google / AIモード / Google広告 / 検索広告 / 生成AI",
-   "urls": [
-    "https://blog.google/products/ads-commerce/ads-in-ai-mode-global/"
-   ]
-  },
-  {
-   "slug": "aws-kiro-crew-1000-prs-stability",
-   "at": "2026-10-28T21:12:44.346800+00:00",
-   "title": "AWSの開発エージェント『Kiro Crew』が週1000件のPRを安定処理する仕組み",
-   "head": "AWSの開発エージェント『Kiro Crew』が週1000件のPRを安定処理する仕組み | 週 1,000 件の PR でもソフトウェアファクトリーを安定させる方法",
-   "text": "AWSの開発エージェント『Kiro Crew』が週1000件のPRを安定処理する仕組み | 週 1,000 件の PR でもソフトウェアファクトリーを安定させる方法 | AWS / Kiro Crew / コードレビュー / 自動テスト / CI/CD / ソフトウェアファクトリー / プルリクエスト / AIエージェント / AI / 開発ツール / AWS / CI/CD",
-   "urls": [
-    "https://aws.amazon.com/jp/blogs/news/software-factory-stability/"
-   ]
-  },
-  {
-   "slug": "alternative-foods-commodity-luxury-future",
-   "at": "2026-10-28T21:12:23.131658+00:00",
-   "title": "ニッセイ基礎研究所が解説、コーヒー豆を使わない代替食品が広がる背景と「本物」の価値",
-   "head": "ニッセイ基礎研究所が解説、コーヒー豆を使わない代替食品が広がる背景と「本物」の価値 | 「本物」が贅沢品になる日－コーヒー豆を使わないコーヒーから考える代替食品と消費社会の未来",
-   "text": "ニッセイ基礎研究所が解説、コーヒー豆を使わない代替食品が広がる背景と「本物」の価値 | 「本物」が贅沢品になる日－コーヒー豆を使わないコーヒーから考える代替食品と消費社会の未来 | 代替食品 / ニッセイ基礎研究所 / コーヒー2050年問題 / 代替コーヒー / カゴメ / イオン / 消費社会 / 気候変動 / ビジネス / 小売 / 経済 / トレンド",
-   "urls": [
-    "https://www.nli-research.co.jp/topics_detail1/id=87192?site=nli"
-   ]
-  },
-  {
-   "slug": "aws-qa-studio-team-management-nova-act",
-   "at": "2026-10-28T20:52:12.191111+00:00",
-   "title": "AWS、AI自動テスト基盤『QA Studio』にチーム管理機能を追加",
-   "head": "AWS、AI自動テスト基盤『QA Studio』にチーム管理機能を追加 | Accelerating software delivery with agentic QA automation using Amazon Nova Act – Part 3",
-   "text": "AWS、AI自動テスト基盤『QA Studio』にチーム管理機能を追加 | Accelerating software delivery with agentic QA automation using Amazon Nova Act – Part 3 | AWS / QA Studio / Amazon Nova Act / テスト自動化 / AIエージェント / CI/CD / 権限管理 / メトリクス / 生成AI / 開発ツール / AWS / 自動テスト",
-   "urls": [
-    "https://aws.amazon.com/blogs/machine-learning/accelerating-software-delivery-with-agentic-qa-automation-using-amazon-nova-act-part-3/"
-   ]
-  },
-  {
-   "slug": "india-upi-cashless-revolution",
-   "at": "2026-10-28T20:51:52.468433+00:00",
-   "title": "インドの統一決済インターフェース『UPI』が急成長、現金社会からキャッシュレスへ移行加速",
-   "head": "インドの統一決済インターフェース『UPI』が急成長、現金社会からキャッシュレスへ移行加速 | インドの現金社会に決済革命～UPI急成長の背景と新たな課題～",
-   "text": "インドの統一決済インターフェース『UPI』が急成長、現金社会からキャッシュレスへ移行加速 | インドの現金社会に決済革命～UPI急成長の背景と新たな課題～ | インド / UPI / キャッシュレス / フィンテック / ニッセイ基礎研究所 / 決済革命 / 電子決済 / 金融 / キャッシュレス / アジア経済 / ビジネス",
-   "urls": [
-    "https://www.nli-research.co.jp/topics_detail1/id=87193?site=nli"
-   ]
-  },
-  {
-   "slug": "ricoh-digital-skills-standard-hr",
-   "at": "2026-10-28T20:32:26.284992+00:00",
-   "title": "複写機のリコーがデジタル人材を約6800人育成 デジタルスキル標準（DSS）を軸に全社の共通言語へ",
-   "head": "複写機のリコーがデジタル人材を約6800人育成 デジタルスキル標準（DSS）を軸に全社の共通言語へ | 【DXSQUARE】新着記事「DSSを全社の共通言語とし、デジタル人材育成を加速。 実践で学び、事業成長につなぐリコーの挑戦」を公開しました",
-   "text": "複写機のリコーがデジタル人材を約6800人育成 デジタルスキル標準（DSS）を軸に全社の共通言語へ | 【DXSQUARE】新着記事「DSSを全社の共通言語とし、デジタル人材育成を加速。 実践で学び、事業成長につなぐリコーの挑戦」を公開しました | リコー / デジタルスキル標準 / DSS / デジタル人材育成 / リコーデジタルアカデミー / DXSQUARE / 人的資本経営 / DX / ビジネス / セキュリティ / アプリ / テック",
-   "urls": [
-    "https://dx.ipa.go.jp/interview_ricoh"
-   ]
-  },
-  {
-   "slug": "openai-servicenow-partnership-expansion",
-   "at": "2026-10-28T20:31:34.540491+00:00",
-   "title": "ChatGPTのOpenAIがServiceNowと提携拡大 業務プロセスの自動化を強化",
-   "head": "ChatGPTのOpenAIがServiceNowと提携拡大 業務プロセスの自動化を強化 | OpenAI and ServiceNow expand partnership across enterprise workflows",
-   "text": "ChatGPTのOpenAIがServiceNowと提携拡大 業務プロセスの自動化を強化 | OpenAI and ServiceNow expand partnership across enterprise workflows | OpenAI / ServiceNow / ChatGPT / Codex / AIエージェント / ワークフロー自動化 / 企業向けAI / MCPプラグイン / 生成AI / LLM / 企業向けAI / ワークフロー自動化 / 開発ツール",
-   "urls": [
-    "https://openai.com/index/openai-servicenow-partnership-expansion"
    ]
   }
  ]

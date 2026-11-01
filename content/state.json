@@ -32,7 +32,9 @@
     "YQYckl38zpo": 1,
     "YcFnDg6dl0s": 2,
     "a75xDflRooI": 1,
+    "cflbzHRvGvg": 1,
     "dQMYDBGX0uk": 2,
+    "dmbT2IHpOKU": 1,
     "eNuyyBJwOEw": 1,
     "f-3fGNfMfqU": 1,
     "fHY0sjAejcA": 1,
@@ -46,6 +48,7 @@
     "nfpVl4pC0UM": 1,
     "nqAri_t8xRA": 1,
     "o4D1J1YWjhg": 2,
+    "qVGa1VU2YfA": 1,
     "roVDIuW_6HI": 1,
     "tTuk4pGnT0A": 1,
     "u5t7-BLYvfQ": 2,
@@ -1779,6 +1782,10 @@
       "reason": "楽待チャンネルの動画ですが、内容はアニメ『ちいかわ』劇場版を国際政治学の観点から深読み・考察するエンタメ企画であり、不動産（物件・エリア相場・住宅ローン・不動産投資・税制など）に関する実質的な情報が含まれていないため。",
       "skipped": true
     },
+    "XWYMvOFMacA": {
+      "at": "2026-11-01T22:04:45.766011+00:00",
+      "slug": "nvidia-uk-ai-factories-robotics"
+    },
     "XZymuStDLXw": {
       "at": "2026-07-31T16:43:50.358453+00:00",
       "slug": "kioxia-financial-results-semiconductor-analysis"
@@ -1829,6 +1836,11 @@
     "Y_ddqmpOo_c": {
       "at": "2026-08-30T15:40:20.400977+00:00",
       "slug": "amakusa-vacant-house-migration"
+    },
+    "Yim7JrVzSkk": {
+      "at": "2026-11-01T22:00:06.197018+00:00",
+      "reason": "26秒のショート動画であり、AT&T法務部門幹部によるOpenAI提携への期待や感想を述べた宣伝・ティーザー映像にとどまるため。新機能の仕様や技術解説、具体的な実演デモなどの実質的な情報が含まれていません。",
+      "skipped": true
     },
     "YkojG31MIBI": {
       "at": "2026-09-16T02:05:57.284384+00:00",
@@ -2384,6 +2396,11 @@
     "lI1Oc-lFeCQ": {
       "at": "2026-09-02T20:15:00.866010+00:00",
       "slug": "microsoft-john-maeda-ai-compounding-improvement-systems"
+    },
+    "lPZQrVFcz3c": {
+      "at": "2026-11-01T22:01:03.687239+00:00",
+      "reason": "45秒のプロモーション動画（ユーザー事例のティーザー広告）であり、新機能の具体的な技術解説や実質的な製品発表が含まれていないため。",
+      "skipped": true
     },
     "llCMoIIHgi4": {
       "at": "2026-08-11T07:49:38.859772+00:00",
