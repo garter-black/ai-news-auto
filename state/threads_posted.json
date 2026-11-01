@@ -2311,6 +2311,25 @@
       "comment": "編集部：現場のエンジニアには地味に効きそう。",
       "dueAt": "2026-11-01T03:15:00+00:00",
       "postedAt": "2026-10-31T21:26:10+00:00"
+    },
+    "nvidia-gtc-grid-reliability-resiliency": {
+      "id": "6ae684211ee172cd6dce9702",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae6842121c807e9d5921869",
+        "facebook": "6ae684221ee172cd6dce9741"
+      },
+      "hook": "contrarian",
+      "score": 3,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "NVIDIA",
+      "question": false,
+      "comment": "編集部：提供開始の続報を待ちたいところ。",
+      "dueAt": "2026-11-01T06:30:00+00:00",
+      "postedAt": "2026-11-01T00:13:22+00:00"
     }
   },
   "extraPending": {}
