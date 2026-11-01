@@ -2631,7 +2631,8 @@
       ],
       "via": "buffer",
       "channels": {
-        "twitter": "6ae7b026902c3fb1debb9c11"
+        "twitter": "6ae7b026902c3fb1debb9c11",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzbuzwq66b2y"
       },
       "permalink": "",
       "dueAt": "2026-11-01T22:30:00+00:00",
@@ -2666,7 +2667,8 @@
           "updatedAt": "2026-11-01T21:33:25+00:00"
         }
       },
-      "id": "6ae7b026779ee9f13cb8268b"
+      "id": "6ae7b026779ee9f13cb8268b",
+      "blueskyAt": "2026-11-01T22:42:51+00:00"
     },
     "nvidia-uk-ai-factories-robotics": {
       "id": "6ae7b8e5902c3fb1debdede9",
@@ -2687,6 +2689,28 @@
       "comment": "編集部：実用化までの道のりにも注目したいです。",
       "dueAt": "2026-11-02T03:15:00+00:00",
       "postedAt": "2026-11-01T22:10:45+00:00"
+    },
+    "oracle-ai-workspace-chatgpt": {
+      "id": "6ae7c053d016796999f50331",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae7c05d48ce42a6b42e2795",
+        "facebook": "6ae7c060d016796999f505ca",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzbuzy6w4l26"
+      },
+      "dueAt": "2026-11-01T22:42:25+00:00",
+      "hook": "breaking",
+      "breaking": true,
+      "score": 3,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "ChatGPT",
+      "question": false,
+      "comment": "編集部：今後の広がりに注目です。",
+      "postedAt": "2026-11-01T22:42:49+00:00",
+      "blueskyAt": "2026-11-01T22:42:52+00:00"
     }
   },
   "extraPending": {}
