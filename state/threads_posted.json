@@ -2617,6 +2617,56 @@
       "comment": "編集部：無料で試せるのはありがたいところ。",
       "dueAt": "2026-11-02T00:45:00+00:00",
       "postedAt": "2026-11-01T18:18:06+00:00"
+    },
+    "digest-20261102": {
+      "style": "digest",
+      "format": "digest",
+      "hook": "digest",
+      "question": false,
+      "topic": "AI",
+      "items": [
+        "nvidia-gtc-berlin-healthcare-ai-holoscan5",
+        "google-deepmind-genie-4-world-model-sffpkujd_jk",
+        "mistral-large-4-open-cyber-frontier"
+      ],
+      "via": "buffer",
+      "channels": {
+        "twitter": "6ae7b026902c3fb1debb9c11"
+      },
+      "permalink": "",
+      "dueAt": "2026-11-01T22:30:00+00:00",
+      "postedAt": "2026-11-01T21:33:25+00:00",
+      "postPlan": {
+        "key": "digest-20261102",
+        "text": "今朝のAIニュース3本（2026/11/02）\n\n・AI半導体のNVIDIAが医療向けAI発表\n・Google DeepMind\n・仏AIのミストラルが新AIモデル『Mistral Large 4』を公開",
+        "reply": "全部の記事はこちらから読めます👇",
+        "link": "https://ai-tech-express.jp/news",
+        "x_text": "今朝のAIニュース3本（2026/11/02）\n\n・AI半導体のNVIDIAが医療向けAI発表\n・Google DeepMind\n・仏AIのミストラルが新AIモデル『Mistral Large 4』を公開\n\nhttps://ai-tech-express.jp/news?utm_source=x&utm_medium=social&utm_campaign=digest\n#AI",
+        "slot": [
+          7,
+          30
+        ],
+        "items": [
+          "nvidia-gtc-berlin-healthcare-ai-holoscan5",
+          "google-deepmind-genie-4-world-model-sffpkujd_jk",
+          "mistral-large-4-open-cyber-frontier"
+        ]
+      },
+      "expectedChannels": [
+        "threads",
+        "twitter"
+      ],
+      "delivery": {
+        "threads": {
+          "status": "accepted",
+          "updatedAt": "2026-11-01T21:33:25+00:00"
+        },
+        "twitter": {
+          "status": "accepted",
+          "updatedAt": "2026-11-01T21:33:25+00:00"
+        }
+      },
+      "id": "6ae7b026779ee9f13cb8268b"
     }
   },
   "extraPending": {}
