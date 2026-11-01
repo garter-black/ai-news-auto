@@ -2360,7 +2360,8 @@
       "permalink": "",
       "channels": {
         "twitter": "6ae6842121c807e9d5921869",
-        "facebook": "6ae684221ee172cd6dce9741"
+        "facebook": "6ae684221ee172cd6dce9741",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzadflscvx2w"
       },
       "hook": "contrarian",
       "score": 3,
@@ -2371,7 +2372,8 @@
       "question": false,
       "comment": "編集部：提供開始の続報を待ちたいところ。",
       "dueAt": "2026-11-01T06:30:00+00:00",
-      "postedAt": "2026-11-01T00:13:22+00:00"
+      "postedAt": "2026-11-01T00:13:22+00:00",
+      "blueskyAt": "2026-11-01T07:54:35+00:00"
     },
     "figma-weave-creative-workflow": {
       "id": "6ae69361cf3a3112f3d30616",
