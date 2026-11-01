@@ -7222,6 +7222,14 @@
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026103008"
     },
+    "843669dfabc08285": {
+      "at": "2026-11-01T01:41:15.293425+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "figma-config-india-insights-ai",
+      "url": "https://www.figma.com/blog/making-something-human-4-things-we-took-away-from-config-india/"
+    },
     "84ba605ae7c4de87": {
       "at": "2026-10-30T06:13:05.036566+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11143,51 +11151,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:11:52.618157+00:00",
-      "attempt": 1,
-      "id": "7de3a8e3b1290bff",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 71.8字・60字超の文が 83% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 215.4字・最長 282字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 215.4,
-        "avg_sentence": 71.8,
-        "long_share": 0.833,
-        "max_paragraph": 282,
-        "paragraphs": 8,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "法改正後も残る遺族年金と老齢年金の課税上の不均衡－高齢期の医療・介護の自己負担にも及ぶ影響"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T01:12:00.752373+00:00",
-      "attempt": 0,
-      "id": "7de3a8e3b1290bff",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 273.0字・最長 376字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 273.0,
-        "avg_sentence": 26.3,
-        "long_share": 0.0,
-        "max_paragraph": 376,
-        "paragraphs": 8,
-        "sentences": 83
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "法改正後も残る遺族年金と老齢年金の課税上の不均衡－高齢期の医療・介護の自己負担にも及ぶ影響"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T01:12:06.930826+00:00",
@@ -17895,6 +17858,51 @@
       "score": 95,
       "source": "figma-blog",
       "title": "The TL;DR on Figma Weave: Make your creative process repeatable"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-01T01:41:12.114210+00:00",
+      "attempt": 1,
+      "id": "843669dfabc08285",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 65.5字・60字超の文が 54% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 131.1字・最長 244字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 131.1,
+        "avg_sentence": 65.5,
+        "long_share": 0.542,
+        "max_paragraph": 244,
+        "paragraphs": 12,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "figma-blog",
+      "title": "Making something human: 4 things we took away from Config India"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-01T01:41:15.292978+00:00",
+      "attempt": 0,
+      "id": "843669dfabc08285",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 139.2字・最長 251字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 139.2,
+        "avg_sentence": 41.8,
+        "long_share": 0.15,
+        "max_paragraph": 251,
+        "paragraphs": 12,
+        "sentences": 40
+      },
+      "score": 100,
+      "source": "figma-blog",
+      "title": "Making something human: 4 things we took away from Config India"
     }
   ],
   "short_text_retry": {}

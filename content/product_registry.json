@@ -244,6 +244,14 @@
       "category": "AIモデル"
     },
     {
+      "slug": "figma",
+      "name": "Figma",
+      "aliases": [],
+      "company": "other",
+      "companyName": "Figma",
+      "category": "アプリ・サービス"
+    },
+    {
       "slug": "gemini",
       "name": "Gemini",
       "aliases": [
@@ -1017,7 +1025,7 @@
     "自律型AI",
     "音声AI"
   ],
-  "updatedAt": "2026-11-01T00:13:05+00:00",
+  "updatedAt": "2026-11-01T01:41:17+00:00",
   "failed": {
     "gpt-5-6-sol": {
       "at": "2026-10-27T11:05:30+00:00",
@@ -1030,6 +1038,10 @@
     "rtx-spark": {
       "at": "2026-10-31T12:13:10+00:00",
       "signature": "ef53f469d0978064"
+    },
+    "figma": {
+      "at": "2026-11-01T01:41:23+00:00",
+      "signature": "e8a77abaa2cef678"
     }
   },
   "deferred": {}

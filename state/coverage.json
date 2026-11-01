@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "figma-config-india-insights-ai",
+   "at": "2026-11-01T01:41:11.338520+00:00",
+   "title": "デザインツールFigmaが語る「AI時代のものづくり」 インドの創造的カンファレンスから見えた4つの視点",
+   "head": "デザインツールFigmaが語る「AI時代のものづくり」 インドの創造的カンファレンスから見えた4つの視点 | Making something human: 4 things we took away from Config India",
+   "text": "デザインツールFigmaが語る「AI時代のものづくり」 インドの創造的カンファレンスから見えた4つの視点 | Making something human: 4 things we took away from Config India | Figma / Config India / 生成AI / デザイン / UIデザイン / クリエイター / チームラボ / プロダクトデザイン / 生成AI / デザイン / Figma",
+   "urls": [
+    "https://www.figma.com/blog/making-something-human-4-things-we-took-away-from-config-india/"
+   ]
+  },
+  {
    "slug": "figma-weave-creative-workflow",
    "at": "2026-11-01T01:15:38.479694+00:00",
    "title": "デザインツールのFigmaが画像・動画のAI制作基盤「Weave」の使い方を公開 手順を再利用可能に",
@@ -1660,26 +1670,6 @@
    "text": "ClaudeのAnthropicが米SECにS-1を提出 株式上場に向けた手続きが始まる | Anthropic files S-1 with the SEC for proposed initial public offering | Anthropic 上場 / Anthropic IPO / S-1 / ANT / ナスダック / SEC / Claude / 新規株式公開 / 目論見書 / クラスA普通株 / Anthropic / IPO / Claude / 生成AI / SEC / ナスダック",
    "urls": [
     "https://www.anthropic.com/news/s1-sec"
-   ]
-  },
-  {
-   "slug": "minecraft-nintendo-switch-2-launch",
-   "at": "2026-10-28T01:32:10.668721+00:00",
-   "title": "任天堂の新型機Nintendo Switch 2版『Minecraft』発売、グラフィック強化でより鮮やかに",
-   "head": "任天堂の新型機Nintendo Switch 2版『Minecraft』発売、グラフィック強化でより鮮やかに | 『Minecraft』が、より鮮やかなグラフィックにアップデートしてNintendo Switch 2 に登場。本日より発売開始。",
-   "text": "任天堂の新型機Nintendo Switch 2版『Minecraft』発売、グラフィック強化でより鮮やかに | 『Minecraft』が、より鮮やかなグラフィックにアップデートしてNintendo Switch 2 に登場。本日より発売開始。 | Minecraft / Nintendo Switch 2 / 任天堂 / マインクラフト / ゲーム / バイブラントビジュアルズ / マリオ / アップデート / ゲーム / Nintendo Switch / Minecraft",
-   "urls": [
-    "https://www.nintendo.com/jp/topics/article/c8c6ed2b-cff7-4ff5-8953-32bd770e2537"
-   ]
-  },
-  {
-   "slug": "kddi-ai-vulnerability-management-solution",
-   "at": "2026-10-28T01:31:44.531512+00:00",
-   "title": "KDDIが脆弱性管理をAIで効率化　ラックと連携、攻撃リスクを自動診断",
-   "head": "KDDIが脆弱性管理をAIで効率化　ラックと連携、攻撃リスクを自動診断 | リスク診断・対処を効率化、AI脆弱性管理ソリューションを提供開始",
-   "text": "KDDIが脆弱性管理をAIで効率化　ラックと連携、攻撃リスクを自動診断 | リスク診断・対処を効率化、AI脆弱性管理ソリューションを提供開始 | KDDI / 脆弱性管理 / AI / サイバーセキュリティー / ラック / CTEM / サプライチェーン / ネットワーク診断 / ソースコード分析 / セキュリティ対策 / AI / サイバーセキュリティー / ネットワーク / KDDI",
-   "urls": [
-    "https://newsroom.kddi.com/news/detail/kddi_nr-1212_4787.html"
    ]
   }
  ]
