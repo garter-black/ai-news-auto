@@ -46,23 +46,31 @@ def hints(body: str) -> list[str]:
     return [name for name, words in known.items() if any(word in low for word in words)]
 
 
-def main() -> int:
-    key = os.environ.get("GROQ_API_KEY", "")
-    if not key:
-        print("[groq-diagnostic] result=not_configured")
-        return 0
-    request = urllib.request.Request("https://api.groq.com/openai/v1/models", headers={"Authorization": "Bearer " + key, "Accept": "application/json"})
+def probe(label: str, key: str = "") -> None:
+    headers = {"Accept": "application/json"}
+    if key:
+        headers["Authorization"] = "Bearer " + key
+    request = urllib.request.Request("https://api.groq.com/openai/v1/models", headers=headers)
     try:
         with urllib.request.urlopen(request, timeout=20) as response:
             data = json.loads(response.read(1_000_000).decode("utf-8"))
-            print(f"[groq-diagnostic] result=ok http=200 model_count={len(data.get('data', []))}")
+            print(f"[groq-diagnostic] probe={label} result=ok http=200 model_count={len(data.get('data', []))}")
     except urllib.error.HTTPError as error:
         body = error.read(100_000).decode("utf-8", "replace")
         result = classify(error.code, body, error.headers.get("content-type", ""))
         kind = "json" if "json" in error.headers.get("content-type", "").lower() else "html" if "html" in error.headers.get("content-type", "").lower() else "other"
-        print(f"[groq-diagnostic] result={result} http={error.code} body_type={kind} hints={','.join(hints(body)) or 'none'}")
+        print(f"[groq-diagnostic] probe={label} result={result} http={error.code} body_type={kind} hints={','.join(hints(body)) or 'none'}")
     except (urllib.error.URLError, TimeoutError, ValueError, OSError):
-        print("[groq-diagnostic] result=network_or_invalid_response")
+        print(f"[groq-diagnostic] probe={label} result=network_or_invalid_response")
+
+
+def main() -> int:
+    key = os.environ.get("GROQ_API_KEY", "")
+    probe("anonymous")
+    if key:
+        probe("configured", key)
+    else:
+        print("[groq-diagnostic] probe=configured result=not_configured")
     return 0
 
 
