@@ -2379,6 +2379,67 @@
       "comment": "編集部：開発の手間が少し減りそうです。",
       "postedAt": "2026-11-01T05:10:23+00:00",
       "blueskyAt": "2026-11-01T05:10:26+00:00"
+    },
+    "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom": {
+      "id": "6ae6d3121ee172cd6ddf276e",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae6d31321c807e9d5a2929b",
+        "facebook": "6ae6d3131ee172cd6ddf279e"
+      },
+      "hook": "callout",
+      "score": 6,
+      "style": "standalone",
+      "image": "cover",
+      "format": "hook_thread",
+      "hookTextVersion": 2,
+      "topic": "ChatGPT",
+      "question": true,
+      "questionText": "ChatGPT、最近使いましたか？",
+      "comment": "編集部：職場で使えるかどうか、気になるところ。",
+      "dueAt": "2026-11-01T09:30:00+00:00",
+      "postedAt": "2026-11-01T05:50:11+00:00"
+    },
+    "figma-config-india-insights-ai": {
+      "id": "6ae6d314ab019b9087426246",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae6d3151ee172cd6ddf2802",
+        "facebook": "6ae6d315f0984eef334c9551"
+      },
+      "hook": "conclusion",
+      "score": 1,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "生成AI",
+      "question": true,
+      "questionText": "まず無料で試してみたいですか？",
+      "comment": "編集部：お試しのハードルが低いのは助かります。",
+      "dueAt": "2026-11-01T12:00:00+00:00",
+      "postedAt": "2026-11-01T05:50:13+00:00"
+    },
+    "amazon-bedrock-cost-management-playbook": {
+      "id": "6ae6d3171ee172cd6ddf2857",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae6d317f0984eef334c95ce",
+        "facebook": "6ae6d31837c1acd2a0ebb674"
+      },
+      "hook": "question",
+      "score": 0,
+      "style": "standalone",
+      "image": "cover",
+      "format": "hook_thread",
+      "hookTextVersion": 2,
+      "topic": "Amazon",
+      "question": false,
+      "comment": "編集部：これは開発者にはうれしい更新。",
+      "dueAt": "2026-11-01T13:45:00+00:00",
+      "postedAt": "2026-11-01T05:50:16+00:00"
     }
   },
   "extraPending": {}
