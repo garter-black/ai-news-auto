@@ -6,157 +6,156 @@
   "companyName": "Microsoft",
   "category": "開発ツール",
   "overview": {
-    "text": "Microsoft Foundryは、Microsoftが提供する開発者向けの統合AIプラットフォームです。AIエージェントの構築や複数モデルの自動ルーティング機能を備えています。",
+    "text": "Microsoft Foundryは、Microsoftが提供するAIエージェントの開発プラットフォームです。チャットからコードを開く機能やコスト最適化機能を備えています。2026年9月に最新機能が発表されました。",
     "sources": [
-      "microsoft-copilot-harness-foundry-agent-builder",
+      "microsoft-foundry-agent-framework-customization",
       "microsoft-foundry-model-router-update"
     ]
   },
   "facts": [
     {
-      "label": "提供開始",
-      "value": "プレビューおよび一般提供中",
+      "label": "料金",
+      "value": "API従量課金",
       "sources": [
-        "microsoft-copilot-harness-foundry-agent-builder",
-        "dotnet-11-rc2-python-arm64-foundry-browser-automation",
+        "microsoft-foundry-agent-framework-customization",
+        "microsoft-foundry-agent-guardrails-security"
+      ]
+    },
+    {
+      "label": "提供開始",
+      "value": "2026年9月",
+      "sources": [
         "microsoft-foundry-model-router-update"
       ]
     },
     {
       "label": "日本での提供",
-      "value": "日本からでも利用可能",
+      "value": "利用できる",
       "sources": [
-        "microsoft-copilot-harness-foundry-agent-builder",
-        "microsoft-copilot-harness-agent-scaling",
-        "dotnet-11-rc2-python-arm64-foundry-browser-automation",
-        "microsoft-foundry-agent-guardrails-security"
+        "microsoft-foundry-agent-framework-customization",
+        "microsoft-copilot-harness-foundry-agent-builder"
       ]
     },
     {
       "label": "向いている人",
       "value": "開発者",
       "sources": [
-        "microsoft-copilot-harness-foundry-agent-builder",
-        "microsoft-copilot-harness-agent-scaling",
-        "microsoft-foundry-agent-optimizer-guide"
+        "microsoft-foundry-agent-framework-customization",
+        "microsoft-copilot-harness-foundry-agent-builder"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "サーバーやコンテナの準備なしで、指示とツールを設定してAIエージェントを作成できます。",
+      "text": "チャット画面のボタンから直接Visual Studio Codeを開き、エージェントの基盤コードを即座に編集できます。",
       "sources": [
-        "microsoft-copilot-harness-foundry-agent-builder",
-        "microsoft-copilot-harness-agent-scaling"
+        "microsoft-foundry-agent-framework-customization"
       ]
     },
     {
-      "text": "単一のエンドポイントからOpenAIやAnthropicなどの複数モデルへ動的にルーティングできます。",
+      "text": "サーバーやコンテナの準備なしで、指示とツールを設定するだけでAIエージェントを作成できます。",
       "sources": [
-        "microsoft-foundry-model-router-update"
+        "microsoft-copilot-harness-foundry-agent-builder"
       ]
     },
     {
-      "text": "コンテンツセーフティや個人情報の漏洩防止を行うガードレール機能を利用できます。",
+      "text": "ユーザーからの入力に対して脱獄プロンプトや個人情報の漏洩を自動的に検出してブロックします。",
       "sources": [
         "microsoft-foundry-agent-guardrails-security"
       ]
     },
     {
-      "text": "本番環境のログを活用してプロンプトや構成を自動で最適化できます。",
+      "text": "本番環境のログから評価データを自動抽出し、プロンプトと構成を継続的に最適化できます。",
       "sources": [
         "microsoft-foundry-agent-optimizer-guide",
         "microsoft-foundry-ai-agent-cost-optimization"
       ]
     },
     {
-      "text": "AIが画面を直接操作して仕事をこなすブラウザ自動化エージェントが導入可能です。",
+      "text": "リクエストの内容に応じてリアルタイムに最適な大規模言語モデルへ処理を振り分けます。",
       "sources": [
-        "dotnet-11-rc2-python-arm64-foundry-browser-automation"
+        "microsoft-foundry-ai-agent-cost-optimization",
+        "microsoft-foundry-model-router-update"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "ベースとなる利用料および裏側で呼び出すモデルのトークン消費に応じた従量課金が適用されます。",
+      "text": "配備するモデルの呼び出し回数に応じたAPI従量課金が発生します。",
       "sources": [
-        "microsoft-copilot-harness-foundry-agent-builder",
-        "microsoft-copilot-harness-agent-scaling"
+        "microsoft-foundry-agent-framework-customization"
       ]
     },
     {
-      "text": "最適化ツール等の実行時には、評価や改善案生成に伴うAPI呼び出し費用が発生します。",
+      "text": "Azureの無料初期クレジット枠などを活用して検証が可能です。",
       "sources": [
-        "microsoft-foundry-agent-optimizer-guide",
-        "microsoft-foundry-model-router-auto-evaluation"
+        "microsoft-foundry-agent-guardrails-security"
       ]
     }
   ],
   "japan": [
     {
-      "text": "日本からでも今日からすぐ試すことができます。",
+      "text": "日本国内からAzureのアカウントを開設し、ポータルサイトにログインすることで利用できます。",
       "sources": [
+        "microsoft-foundry-agent-framework-customization",
         "microsoft-copilot-harness-foundry-agent-builder"
       ]
     },
     {
-      "text": "日本語のプロンプトや指示文も問題なく動作しますが、一部の最新モデルや機能名称は英語表記が基本です。",
+      "text": "日本語のプロンプトや指示文も問題なく動作します。",
       "sources": [
-        "microsoft-copilot-harness-foundry-agent-builder",
-        "microsoft-copilot-harness-agent-scaling"
+        "microsoft-copilot-harness-foundry-agent-builder"
       ]
     }
   ],
   "howto": [
     {
-      "text": "Microsoft Foundryポータルにアクセスし、Azureアカウントでログインします。",
+      "text": "Azureポータルにアクセスし、有効なサブスクリプションを準備します。",
       "sources": [
-        "microsoft-copilot-harness-foundry-agent-builder",
-        "microsoft-copilot-harness-agent-scaling"
+        "microsoft-foundry-agent-framework-customization"
       ]
     },
     {
-      "text": "エージェント作成画面でツールやプロンプトを設定して作成します。",
+      "text": "Microsoft Foundryのポータルサイトへログインして新しいプロジェクトを作成します。",
       "sources": [
-        "microsoft-copilot-harness-foundry-agent-builder",
-        "microsoft-copilot-harness-agent-scaling"
+        "microsoft-copilot-harness-foundry-agent-builder"
       ]
     }
   ],
   "differences": [
     {
-      "text": "従来は必要だったAIエージェント構築時のサーバーやコンテナの準備が不要になりました。",
+      "text": "チャット画面からワンクリックでローカルのコードエディターへ直接遷移できるようになりました。",
       "sources": [
-        "microsoft-copilot-harness-foundry-agent-builder",
-        "microsoft-copilot-harness-agent-scaling"
+        "microsoft-foundry-agent-framework-customization"
       ]
     },
     {
-      "text": "個別モデルデプロイの代わりに単一エンドポイントから複数LLMを自動振り分け可能になりました。",
+      "text": "サーバーやコンテナの構築を一切行わずにAIエージェントの機能を拡張できるようになりました。",
       "sources": [
-        "microsoft-foundry-model-router-update"
+        "microsoft-copilot-harness-agent-scaling"
       ]
     }
   ],
   "faq": [
     {
-      "q": "サーバーの準備は必要ですか？",
-      "a": "サーバーやコンテナの準備なしでAIエージェントを作成できます。",
-      "sources": [
-        "microsoft-copilot-harness-foundry-agent-builder"
-      ]
-    },
-    {
-      "q": "セキュリティ対策機能はありますか？",
-      "a": "脱獄プロンプトや個人情報漏洩を防ぐガードレール機能が用意されています。",
+      "q": "無料で試すことはできますか？",
+      "a": "Azureの無料初期クレジット枠などを活用して検証が可能です。",
       "sources": [
         "microsoft-foundry-agent-guardrails-security"
       ]
     },
     {
-      "q": "モデルの自動振り分けはできますか？",
-      "a": "単一のエンドポイントから複数のLLMへ動的にルーティングできます。",
+      "q": "どのような安全機能がありますか？",
+      "a": "脱獄プロンプトや個人情報（PII）の漏洩、タスクの乖離を防ぐガードレール機能を備えています。",
       "sources": [
+        "microsoft-foundry-agent-guardrails-security"
+      ]
+    },
+    {
+      "q": "コストを抑える機能はありますか？",
+      "a": "リクエストに応じて最適なモデルを自動で振り分けるモデルルーター機能などが用意されています。",
+      "sources": [
+        "microsoft-foundry-ai-agent-cost-optimization",
         "microsoft-foundry-model-router-update"
       ]
     }
@@ -168,6 +167,16 @@
       "event": "Model Routerの最新機能を公開"
     },
     {
+      "date": "2026-10-02",
+      "slug": "microsoft-foundry-model-router-auto-evaluation",
+      "event": "モデル自動評価ツールを公開"
+    },
+    {
+      "date": "2026-10-20",
+      "slug": "microsoft-foundry-ai-agent-cost-optimization",
+      "event": "コスト自動最適化の2機能を公開"
+    },
+    {
       "date": "2026-10-22",
       "slug": "microsoft-foundry-agent-optimizer-guide",
       "event": "Agent Optimizerの解説動画を公開"
@@ -176,6 +185,11 @@
       "date": "2026-10-26",
       "slug": "microsoft-foundry-agent-guardrails-security",
       "event": "ガードレール機能の解説を公開"
+    },
+    {
+      "date": "2026-10-31",
+      "slug": "microsoft-foundry-agent-framework-customization",
+      "event": "エージェント直接カスタム手法を公開"
     }
   ],
   "related": [
@@ -185,6 +199,7 @@
     "azure-sql"
   ],
   "articles": [
+    "microsoft-foundry-agent-framework-customization",
     "microsoft-copilot-harness-foundry-agent-builder",
     "microsoft-copilot-harness-agent-scaling",
     "microsoft-copilot-harness-foundry",
@@ -199,15 +214,16 @@
     "visual-studio-ai-agents-mcp-sdk"
   ],
   "linkFrom": [
+    "microsoft-foundry-agent-framework-customization",
     "microsoft-foundry-agent-guardrails-security",
     "microsoft-foundry-agent-optimizer-guide",
     "microsoft-foundry-ai-agent-cost-optimization",
     "microsoft-foundry-model-router-auto-evaluation",
     "microsoft-foundry-model-router-update"
   ],
-  "signature": "b09854b3c5af6321",
-  "primarySignature": "c243b3ecacda78a9",
+  "signature": "536ec73500fb42c1",
+  "primarySignature": "9d19619498a7ad96",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:43:54+00:00",
-  "updatedAt": "2026-10-30T10:52:21+00:00"
+  "updatedAt": "2026-11-01T12:14:36+00:00"
 }

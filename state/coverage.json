@@ -2,6 +2,22 @@
  "hours": 96,
  "items": [
   {
+   "slug": "microsoft-fabric-database-agent-preview",
+   "at": "2026-11-01T12:12:25.470436+00:00",
+   "title": "マイクロソフトがDB管理AI機能「Database Agent」を発表 アプリ遅延を自動検知",
+   "head": "マイクロソフトがDB管理AI機能「Database Agent」を発表 アプリ遅延を自動検知 | How to Use Database Agents in Microsoft Fabric | Data Exposed",
+   "text": "マイクロソフトがDB管理AI機能「Database Agent」を発表 アプリ遅延を自動検知 | How to Use Database Agents in Microsoft Fabric | Data Exposed | Database Agent / Microsoft Fabric / Database Hub / Azure SQL Database / SSMS / GitHub Copilot / データベース管理 / 障害検知AI / プレビュー / 使い方 / Microsoft / Copilot / Microsoft Fabric / Azure SQL / データベース管理 / AIエージェント",
+   "urls": []
+  },
+  {
+   "slug": "microsoft-foundry-agent-framework-customization",
+   "at": "2026-11-01T12:11:17.876146+00:00",
+   "title": "マイクロソフトのAI開発「Microsoft Foundry」チャットからコードを開いてエージェントを直接カスタム",
+   "head": "マイクロソフトのAI開発「Microsoft Foundry」チャットからコードを開いてエージェントを直接カスタム | Customize your agent from a Chat Window?",
+   "text": "マイクロソフトのAI開発「Microsoft Foundry」チャットからコードを開いてエージェントを直接カスタム | Customize your agent from a Chat Window? | Microsoft Foundry / Microsoft Agent Framework / AIエージェント / VS Code / Python / MCP / GitHub Copilot / エージェント開発 / 使い方 / 料金 / Microsoft / Copilot / Microsoft Foundry / Agent Framework / AIエージェント / VS Code / Python",
+   "urls": []
+  },
+  {
    "slug": "docker-coding-agent-horror-stories-cve",
    "at": "2026-11-01T08:11:15.223591+00:00",
    "title": "AIのコード査読ボットが架空の脆弱性をでっち上げ？Docker公式ブログが明かす恐怖の事件",
@@ -1570,16 +1586,6 @@
    "text": "サムスン初の耳たぶ挟み込み型イヤホン「Galaxy Buds On」 229ドルで11月6日発売 | Samsung unveils the $229 Galaxy Buds On, its first open-fit, C-shaped cuff earbuds to compete with Sony and Bose, designed with AI's help, shipping November 6 | Galaxy Buds On / サムスン イヤホン / カフ型イヤホン / クリップオン型 / 耳をふさがない / 229ドル / ながら聴き / Sony Bose 比較 / オープン型イヤホン / 日本発売 / Galaxy Buds On / Samsung / イヤホン / カフ型イヤホン / ウェアラブル",
    "urls": [
     "https://www.bloomberg.com/news/articles/2026-10-28/samsung-unveils-galaxy-buds-on-clip-on-earbuds-for-229"
-   ]
-  },
-  {
-   "slug": "meta-waddle-world-ai-pet",
-   "at": "2026-10-28T12:08:34.880914+00:00",
-   "title": "Metaがたまごっち風のAIペットアプリ「Waddle World」 日記に返事をくれる",
-   "head": "Metaがたまごっち風のAIペットアプリ「Waddle World」 日記に返事をくれる | Meta quietly launched Waddle World, a Tamagotchi-like, AI pet-rearing game, in the Philippines in September, calling it a \"daily journal disguised as a pet\"",
-   "text": "Metaがたまごっち風のAIペットアプリ「Waddle World」 日記に返事をくれる | Meta quietly launched Waddle World, a Tamagotchi-like, AI pet-rearing game, in the Philippines in September, calling it a \"daily journal disguised as a pet\" | Waddle World / Meta / AIペット / たまごっち / Muse Charm / AI日記 / Metaアプリ / フィリピン / バーチャルペット / Muse / Meta / Waddle World / 生成AI / AIペット / Muse",
-   "urls": [
-    "https://www.engadget.com/2299227/meta-tamagotchi-like-ai-digital-pet-app-waddle-world/"
    ]
   }
  ]

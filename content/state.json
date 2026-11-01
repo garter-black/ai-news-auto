@@ -800,6 +800,10 @@
       "at": "2026-08-02T05:50:15.111590+00:00",
       "slug": "sato-masaru-capitalism-shinto-emperor"
     },
+    "FVYDyA1LcGI": {
+      "at": "2026-11-01T12:11:17.876146+00:00",
+      "slug": "microsoft-foundry-agent-framework-customization"
+    },
     "FVkp6tc2rNY": {
       "at": "2026-09-15T20:34:25.297749+00:00",
       "slug": "gemini-live-api-updates-async-proactive-audio"
@@ -1059,6 +1063,10 @@
     "K20SU5PHEI4": {
       "at": "2026-08-08T18:35:00.854347+00:00",
       "slug": "coast-fire-guide-investment-balance"
+    },
+    "KGhCcTWy-Ew": {
+      "at": "2026-11-01T12:12:25.470436+00:00",
+      "slug": "microsoft-fabric-database-agent-preview"
     },
     "KHaLbqNa5-Y": {
       "at": "2026-08-08T12:30:52.709833+00:00",
@@ -2038,6 +2046,11 @@
     "dGhUFqeITbY": {
       "at": "2026-10-17T09:51:31.122511+00:00",
       "slug": "reflection-releases-beam-501b-moe-open-model"
+    },
+    "dIlza2R5hFE": {
+      "at": "2026-11-01T12:11:33.560673+00:00",
+      "reason": "12秒のショート動画（プロモーション用ティーザー）であり、Google SearchのAI Modeでクモの巣生成シミュレーションを呼び出すデモを見せる内容にとどまり、商業記事として十分な情報量や技術的解説が含まれていないため。",
+      "skipped": true
     },
     "dS_B9l1eKPA": {
       "at": "2026-08-04T01:46:32.521938+00:00",

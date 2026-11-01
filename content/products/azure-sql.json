@@ -8,42 +8,36 @@
   "companyName": "Microsoft",
   "category": "アプリ・サービス",
   "overview": {
-    "text": "Azure SQLは、Microsoftが提供するクラウドデータベースサービスです。2026年10月までにAI開発支援機能やDiskANNによるベクトル検索など多くの新機能が発表されています。",
+    "text": "Azure SQLは、マイクロソフトが提供するクラウドデータベースサービスです。リレーショナルデータベースとしての強みを活かしながら、AI連携や大容量のベクトル検索機能などを備えています。",
     "sources": [
-      "azure-sql-ai-agent-skills-guide",
+      "microsoft-fabric-database-agent-preview",
       "azure-sql-vector-index-diskann-ga",
       "azure-sql-hyperscale-developers-guide"
     ]
   },
   "facts": [
     {
-      "label": "提供開始",
-      "value": "2026年10月（DiskANN等）",
+      "label": "日本での提供",
+      "value": "利用できる",
       "sources": [
+        "microsoft-fabric-database-agent-preview",
         "azure-sql-vector-index-diskann-ga"
       ]
     },
     {
-      "label": "日本での提供",
-      "value": "日本から利用できる",
-      "sources": [
-        "azure-sql-ai-agent-skills-guide"
-      ]
-    },
-    {
       "label": "向いている人",
-      "value": "開発者、データ技術者",
+      "value": "開発者、DBA、データ技術者",
       "sources": [
-        "azure-sql-ai-agent-skills-guide",
-        "azure-sql-fabric-data-anomaly-detection"
+        "microsoft-fabric-database-agent-preview",
+        "azure-sql-ai-agent-skills-guide"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "GitHub CopilotなどのAIエージェントがローカルDockerコンテナの作成からDB同期まで自動処理できます。",
+      "text": "AIがデータベースの処理詰まりや高負荷を自動検知し、原因の特定から修正までスムーズに行えます。",
       "sources": [
-        "azure-sql-ai-agent-skills-guide"
+        "microsoft-fabric-database-agent-preview"
       ]
     },
     {
@@ -53,27 +47,21 @@
       ]
     },
     {
-      "text": "40TBの超大規模データベースをわずか7分でポイントインタイムリストアできます。",
+      "text": "コンピュートとストレージを分離した分散アーキテクチャにより、40TBをわずか7分でリストア可能です。",
       "sources": [
         "azure-sql-hyperscale-developers-guide"
-      ]
-    },
-    {
-      "text": "Change Event Streamingによりデータベースの変更データをFabricへリアルタイム転送できます。",
-      "sources": [
-        "azure-sql-fabric-data-anomaly-detection"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "無料枠（Azure SQL Database Free Tier）が用意されています。",
+      "text": "利用するサービスの料金プランやMicrosoft Fabricのキャパシティに準拠します。",
       "sources": [
-        "azure-sql-ai-agent-skills-guide"
+        "microsoft-fabric-database-agent-preview"
       ]
     },
     {
-      "text": "対象データベースサービスが最大35%割引になる支出ベースのSavings Planが提供されています。",
+      "text": "支出ベースのAzure savings plan for databasesを利用できます。",
       "sources": [
         "azure-savings-plan-for-databases"
       ]
@@ -81,67 +69,62 @@
   ],
   "japan": [
     {
-      "text": "日本国内の環境から利用できます。",
+      "text": "発表の時点では、日本からも利用可能です。",
       "sources": [
-        "azure-sql-ai-agent-skills-guide"
+        "microsoft-fabric-database-agent-preview"
       ]
     }
   ],
   "howto": [
     {
-      "text": "Azure SQL Developer Hubから開発開始アプローチを選択できます。",
+      "text": "Microsoft Fabricのポータルから設定を有効にします。",
       "sources": [
-        "azure-sql-ai-agent-skills-guide"
+        "microsoft-fabric-database-agent-preview"
       ]
     },
     {
-      "text": "VS Code上のmssql拡張機能からGitHub Copilotにスキルをロードして利用できます。",
+      "text": "Database Hubから監視したいデータベースを選択して始められます。",
       "sources": [
-        "azure-sql-ai-agent-skills-guide"
+        "microsoft-fabric-database-agent-preview"
       ]
     }
   ],
   "differences": [
     {
-      "text": "従来は手動だったベクトルインデックスの再構築が、バックグラウンドでの自動更新に改善されました。",
+      "text": "従来の受動的な運用から、AIが問題を自動検知して教えるプロアクティブな運用へ変わりました。",
       "sources": [
-        "mssql-vector-indexing-updates"
-      ]
-    },
-    {
-      "text": "ベクトル検索とWHERE句の絞り込みを同時に行うイテレーティブフィルタリングが導入されました。",
-      "sources": [
-        "mssql-vector-indexing-updates"
+        "microsoft-fabric-database-agent-preview"
       ]
     }
   ],
   "faq": [
     {
-      "q": "無料で使える？",
-      "a": "クラウドのAzure SQL Database無料枠を利用して試すことができます。",
+      "q": "無料枠はある？",
+      "a": "クラウドのAzure SQL Database無料枠が用意されています。",
       "sources": [
         "azure-sql-ai-agent-skills-guide"
       ]
     },
     {
-      "q": "ベクトル検索の速度はどれくらい？",
-      "a": "10億行のベクトルデータに対して1秒未満（32ミリ秒）の応答速度を記録しています。",
+      "q": "誰に向いている？",
+      "a": "データベースを管理するエンジニアや開発者に向いています。",
       "sources": [
-        "azure-sql-vector-index-diskann-ga"
+        "microsoft-fabric-database-agent-preview",
+        "azure-sql-ai-agent-skills-guide"
       ]
     },
     {
       "q": "コスト削減プランはある？",
-      "a": "時間あたりのコミットで対象データベースが最大35%割引になるSavings Planが提供されています。",
+      "a": "最大35パーセント割引になるAzure savings plan for databasesが提供されています。",
       "sources": [
         "azure-savings-plan-for-databases"
       ]
     },
     {
-      "q": "バックアップとリストアはどのくらいで完了する？",
-      "a": "40TBの超大規模データベースであっても、わずか7分でポイントインタイムリストアを完了できます。",
+      "q": "検索速度はどれくらい？",
+      "a": "10億行のベクトルデータに対して1秒未満の応答速度を達成しています。",
       "sources": [
-        "azure-sql-hyperscale-developers-guide"
+        "azure-sql-vector-index-diskann-ga"
       ]
     }
   ],
@@ -149,12 +132,12 @@
     {
       "date": "2026-07-29",
       "slug": "azure-sql-fabric-data-anomaly-detection",
-      "event": "Azure SQLとFabric連携機能の解説を公開"
+      "event": "Azure SQLとFabricの連携機能を発表"
     },
     {
       "date": "2026-08-20",
       "slug": "azure-sql-hyperscale-developers-guide",
-      "event": "Azure SQL HyperscaleのAI統合を発表"
+      "event": "Azure SQL Hyperscaleを解説"
     },
     {
       "date": "2026-10-02",
@@ -173,6 +156,7 @@
     "typescript-7"
   ],
   "articles": [
+    "microsoft-fabric-database-agent-preview",
     "azure-sql-ai-agent-skills-guide",
     "azure-savings-plan-for-databases",
     "azure-sql-vector-index-diskann-ga",
@@ -186,9 +170,9 @@
     "azure-sql-hyperscale-developers-guide",
     "azure-sql-fabric-data-anomaly-detection"
   ],
-  "signature": "3bf6e9885a3bca94",
+  "signature": "fc8078e505f62ec4",
   "primarySignature": "445f088250997aef",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:44:29+00:00",
-  "updatedAt": "2026-10-27T11:03:48+00:00"
+  "updatedAt": "2026-11-01T12:15:08+00:00"
 }

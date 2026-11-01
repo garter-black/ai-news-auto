@@ -195,8 +195,10 @@
     "gpt-6-1-terra"
   ],
   "articles": [
+    "microsoft-foundry-agent-framework-customization",
     "microsoft-copilot-harness-foundry-agent-builder",
     "microsoft-copilot-harness-agent-scaling",
+    "microsoft-fabric-database-agent-preview",
     "microsoft-copilot-harness-foundry",
     "github-copilot-fusion-release",
     "github-copilot-app-projects-computer-use",

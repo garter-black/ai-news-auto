@@ -1,0 +1,88 @@
+{
+  "slug": "microsoft-foundry-agent-framework-customization",
+  "title": "マイクロソフトのAI開発「Microsoft Foundry」チャットからコードを開いてエージェントを直接カスタム",
+  "seoTitle": "Microsoft Foundryとは？使い方とAIエージェントのカスタマイズ",
+  "threadsPost": "AIエージェントの開発をしている人、必読の機能です。\n\nマイクロソフトのMicrosoft Foundryでは、チャット画面のVS Codeアイコンを押すだけで背景のコードが開きます。\n\n指示プロンプトやMCPツールの連携コードを直接編集できます。\n\n開発環境とAIツールがシームレスにつながります。",
+  "threadsHook": "callout",
+  "threadsStyle": 2,
+  "writingVoice": "qa",
+  "lede": "マイクロソフトのクラウドAI開発プラットフォーム「Microsoft Foundry」において、AIエージェントの開発・調整フローを効率化する実演が公開されました。チャット画面上のボタンからVisual Studio Code上のワークスペースコードへ直ちにアクセスし、Pythonによるエージェントロジックやプロンプト構成を即座に修正・確認できます。",
+  "description": "Microsoft FoundryとAgent Frameworkを活用したAIエージェント開発の手法を解説。チャット画面から直接VS Codeを起動しプロンプトやMCPツール連携コードを調整する具体的な手順を紹介します。",
+  "keywords": [
+    "Microsoft Foundry",
+    "Microsoft Agent Framework",
+    "AIエージェント",
+    "VS Code",
+    "Python",
+    "MCP",
+    "GitHub Copilot",
+    "エージェント開発",
+    "使い方",
+    "料金"
+  ],
+  "tags": [
+    "Microsoft",
+    "Copilot",
+    "Microsoft Foundry",
+    "Agent Framework",
+    "AIエージェント",
+    "VS Code",
+    "Python"
+  ],
+  "highlights": [
+    "チャット画面のボタンから直接VS Codeを開きエージェントの基盤コードを即座に編集可能",
+    "Microsoft Agent FrameworkとPythonを用いた構造化プロンプトおよびワークフローの構築手順を提示",
+    "MCP（Model Context Protocol）ツールサーバーとの連携による顧客データ管理の自動化を実演"
+  ],
+  "timetable": [
+    {
+      "time": "0:00",
+      "label": "Foundry agent creation画面とVS Code起動ボタンの操作"
+    },
+    {
+      "time": "0:08",
+      "label": "VS Codeでのワークスペース展開とsrcフォルダ構成の解説"
+    },
+    {
+      "time": "0:14",
+      "label": "main.py内におけるMicrosoft Agent Frameworkの呼び出し"
+    },
+    {
+      "time": "0:20",
+      "label": "FoundryToolboxとFoundryChatClientの設定処理"
+    },
+    {
+      "time": "0:27",
+      "label": "AGENT_INSTRUCTIONS内の顧客・注文ワークフロー定義"
+    },
+    {
+      "time": "0:47",
+      "label": "sparklesMCPサーバーツールを用いた指示とツールの接続"
+    }
+  ],
+  "verdict": {
+    "status": "available",
+    "japan": "ok",
+    "price": "API従量課金",
+    "free": true,
+    "audience": "開発者",
+    "take": "Microsoft FoundryとVS Codeを組み合わせてエージェント構築の手順を簡略化しましょう。",
+    "judgedAt": "2026-11-01T12:11:17.876097+00:00"
+  },
+  "body": "## 概要\n\nAIエージェント開発における画面の切り替えの手間を減らす技術が示されました。\n\nマイクロソフトの開発プラットフォームで、チャット画面から直接プログラムコードを開く様子が公開されています。\n\n専門的な設定画面を探すことなく、エージェントの内部構造を即座に書き換えられます。\n\nAIアプリの開発スピードを向上させたい開発者に向けた実践的なアプローチです。\n\n## 何が発表された？\n\n「で、結局何が発表されたの？」\n\n今回の実演では、Microsoft Foundryの環境下で構築されたAIエージェントのソースコードを、チャットUI上のアイコンから直接Visual Studio Codeで呼び出し、編集するワークフローが示されました。\n\n登壇者のCarlotta Castelluccio氏が、カップケーキショップ「Sparkles」のコンシェルジュエージェントを例にとり、具体的な構成を説明しています。\n\nこれは完全に新しい隔離された製品というよりも、Microsoft FoundryとMicrosoft Agent Framework、およびVS Codeの拡張機能を組み合わせた開発ツールの統合手法です。\n\n一般の開発環境として利用可能な統合アプローチであり、PythonコードベースでAIエージェントの挙動を厳格に定義したい技術者に向けて提供されています。\n\n対象ユーザーは、基幹システムやデータベースと連携する高度な自律型AIエージェントを実装するソフトウェアエンジニアです。\n\n## 前と何が違う？\n\n「前の開発方法と何が違うの？」\n\n### チャット画面からワンクリックでコードに飛べる\n\nこれまでのAI開発では、Web上の管理コンソールでAIと試走テストを行い、問題が見つかると別のコードエディターを開いて該当ファイルを探す必要がありました。\n\nデモ画面では「Foundry agent creation」のチャットパネルに配置されたVS Codeアイコンをクリックする場面が描かれています。\n\n外部アプリケーションを起動する確認ダイアログで許可を出すと、ワークスペース全体のフォルダが一発でエディター上に展開されます。\n\n画面を行き来する無駄なクリック作業が排除され、検証と実装のフィードバックループが大幅に短縮されます。\n\n### Pythonコードでエージェントの核となる動線を構築する\n\nエージェントの制御ロジックは、プロジェクト内の`src/agent-framework-agent-with-foundry-toolboxes/main.py`というファイルに集約されています。\n\nコード内では`microsoft.agent_framework`パッケージから`Agent`クラスや`FoundryChatClient`クラスをインポートしています。\n\n`DefaultAzureCredential`を用いて安全に認証を行い、Foundry側でホストされたモデルのエンドポイントへ環境変数を介して接続します。\n\n抽象的なプロンプトだけでなく、プログラム側で明確なオブジェクト構造としてAIクライアントとツール群（`FoundryToolbox`）を接続する仕様がコードレベルで可視化されています。\n\n### プロンプトとMCPツールの連携をコード上で完結させる\n\nファイル内の`AGENT_INSTRUCTIONS`という変数には、AIに対する行動指針が構造化されたテキストとして記述されています。\n\n顧客情報の検索や新規登録の手順、注文情報のサマリー確認といった一連のワークフローが箇条書き形式で定義されています。\n\nさらに「`sparklesMCP`ツール」という外部サーバー連携機構の呼び出し手順も指示に含まれています。\n\n曖昧な口頭指示ではなく、特定のMCP（Model Context Protocol）ツールをどのタイミングで呼び出すべきかが明確にプログラム化されています。\n\n## 数字で見るとどう変わった？\n\n動画内ではベンチマークスコアや処理速度などの数値データに関する具体的な提示はありません。\n\nただし、開発工程における画面遷移の操作回数が数クリック分削減されることや、設定ファイルの探索時間が不要になるという作業効率化の効果が示されています。\n\n## ライバルと比べてどう？\n\n「他のAI開発ツールと比べたらどうなの？」\n\n**コード連携の深さとエンタープライズ認証の統合においてマイクロソフト環境が扱いやすい。**\n\n他社の競合開発ツールと特徴を比較すると以下のようになります。\n\n| 比較項目 | Microsoft Foundry (今回の手法) | OpenAI Assistants API (Playground) | 有利なのは |\n| --- | --- | --- | --- |\n| エディター連携 | VS Codeからローカルコードへ直接飛べる | Web上の設定GUIが中心 | **Microsoft Foundry** |\n| 認証機構 | Azureの標準認証（DefaultAzureCredential）に対応 | APIキーによる認証が主 | **Microsoft Foundry** |\n| プロトコル対応 | MCP（Model Context Protocol）標準を意識 | カスタムFunction Callingが中心 | **引き分け** |\n\nOpenAIのPlaygroundなどはブラウザ上で手軽にプロンプトを試せる強みがあります。\n\n一方で、実際のシステムに組み込む際にはローカルのコードベースとの同期に課題が生じやすい傾向があります。\n\n今回のMicrosoft Foundryのアプローチは、最初からVS CodeやGitHub Copilotといった既存の開発プラットフォームと密接に融合している点が強みです。\n\n他社環境に比べて、開発者が使い慣れたコードエディター側へシームレスに遷移できる設計が評価できます。\n\n## 料金は？\n\n動画内では個別の価格や料金体系についての直接的な言及はありません。\n\nMicrosoft FoundryやAzureの基盤機能を利用する場合、配備するモデルの呼び出し回数に応じたAPI従量課金およびAzureインフラストラクチャの使用料が発生します。\n\nVS Codeエディター自体は無料で利用可能です。\n\n## 日本で使える？\n\n利用可能です。\n\n日本国内からAzureのアカウントを開設し、Microsoft FoundryのポータルサイトおよびVS Codeを入手することで本構成を試すことができます。\n\n導入の手順は以下の通りです。\n\n- Azureポータルにアクセスし、有効なサブスクリプションを準備する\n- Microsoft Foundryのポータルサイト（`aka.ms/foundry-portal`）へログインする\n- ローカル環境にVisual Studio CodeおよびPython環境をインストールする\n- 必要に応じてMicrosoft Agent Framework関連パッケージをPython環境にインストールする\n- 開発対象のワークスペースを設定し、MCPツールやプロンプトのコード記述を行う\n\n## 自分にはどう関係する？\n\n「で、自分にはどう関係するの？」\n\n### エンジニアなら\nプロンプトの調整とPythonコードの修正を同じエディター空間で完結できるようになります。\n\n複雑なエージェントのデバッグ作業が容易になり、外部システムと連携するロジックの構築スピードが向上します。\n\n### 企画・マーケティングなら\nエージェントがどのような手順で顧客に対応するかという業務フローの定義が、プロンプトコードとしてそのまま反映される仕組みを理解できます。\n\n仕様変更の際に開発チームへ要求を伝える精度が高まります。\n\n### 経営者・管理者なら\nAI導入の現場における開発効率が高まることで、実証実験から本番稼働までのタイムトゥマーケットを短縮できます。\n\nAzureの認証基盤を用いた安全な運用管理が前提となるため、セキュリティリスクを抑えたAI活用が可能になります。\n\n## まとめ\n\n今後の開発フローにおけるポイントは以下の2点です。\n\n- AIエージェントの指示やツール連携は、UI上の設定だけでなくコードベースで厳格に管理する傾向が強まる\n- チャットインターフェースとVS Codeのような開発環境の統合を活用し、デバッグの往復時間を短縮する",
+  "easy": "## ひとことで言うと\nAIエージェント（全自動で作業をするAIプログラム）を作るとき、チャット画面からボタンひとつで実際のプログラムコードを開いて書き換えられる仕組みです。\n\n## 何がすごいの？\nこれまではAIとの会話画面とプログラムを書く画面が分かれていて、行ったり来たりするのが大変でした。今回の方法を使えば、チャットの裏でAIがどう動いているかをワンクリックでプログラム画面（VS Code）で確認できます。\n\n例えば、お店の注文を受けるAIを作りたいとします。「お客様の名前を聞く」「注文を受ける」といった手順や、顧客管理データベースとの接続設定を、プログラムファイルの中で直接修正できます。\n\n## 自分に関係ある？\nアプリやAIエージェントを作るエンジニアの人に直接関係があります。開発のスピードが上がり、AIの動作チェックがとても楽になります。\n\n## 使ってみるには\nMicrosoft FoundryとVisual Studio Code、それにPythonの開発環境を用意することで、今日からでも試すことができます。",
+  "channel": "Microsoft Developer",
+  "channelId": "UCsMica-v34Irf9KVTh6xx-g",
+  "channelSlug": "microsoft-developer",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は元動画の映像・音声をAIが解析して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "FVYDyA1LcGI",
+  "videoUrl": "https://www.youtube.com/watch?v=FVYDyA1LcGI",
+  "videoTitle": "Customize your agent from a Chat Window?",
+  "publishedAt": "2026-10-30T15:00:21+00:00",
+  "generatedAt": "2026-11-01T12:11:17.876146+00:00",
+  "thumbnail": "https://i.ytimg.com/vi/FVYDyA1LcGI/maxresdefault.jpg",
+  "model": "gemini-3.5-flash",
+  "affiliates": []
+}

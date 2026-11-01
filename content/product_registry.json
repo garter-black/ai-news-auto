@@ -656,6 +656,14 @@
       "category": "アプリ・サービス"
     },
     {
+      "slug": "microsoft-fabric",
+      "name": "Microsoft Fabric",
+      "aliases": [],
+      "company": "microsoft",
+      "companyName": "Microsoft",
+      "category": "アプリ・サービス"
+    },
+    {
       "slug": "microsoft-foundry",
       "name": "Microsoft Foundry",
       "aliases": [],
@@ -1037,7 +1045,7 @@
     "自律型AI",
     "音声AI"
   ],
-  "updatedAt": "2026-11-01T08:11:23+00:00",
+  "updatedAt": "2026-11-01T12:14:12+00:00",
   "failed": {
     "gpt-5-6-sol": {
       "at": "2026-10-27T11:05:30+00:00",
