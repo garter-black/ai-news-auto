@@ -3747,6 +3747,16 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000099.000048788.html"
     },
+    "1393d0e0f8bb9b8a": {
+      "at": "2026-11-01T23:39:24.680411+00:00",
+      "breaking": true,
+      "major": true,
+      "model": "claude:sonnet",
+      "score": 90,
+      "section": "ai",
+      "slug": "windows11-context-menu-customize-kb5127936",
+      "url": "https://news.mynavi.jp/techplus/article/20261102-5224966/"
+    },
     "13a4ab60325dbcec": {
       "at": "2026-10-27T03:05:10.759542+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（出展）",
@@ -11315,29 +11325,6 @@
   },
   "quality_log": [
     {
-      "accepted": true,
-      "at": "2026-10-30T02:22:01.111407+00:00",
-      "attempt": 0,
-      "id": "3348d152eb91b9ce",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 45.2字・60字超の文が 15% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 150.6字・最長 228字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 150.6,
-        "avg_sentence": 45.2,
-        "long_share": 0.15,
-        "max_paragraph": 228,
-        "paragraphs": 12,
-        "sentences": 40
-      },
-      "score": 100,
-      "source": "ntt-news",
-      "title": "「dバリューパス」に新たな特典を追加 -「 Uber 」や「 Uber Eats 」、「LUUP」でご利用になれる特典が追加！さらに、「デイリーチャンス」の拡充"
-    },
-    {
       "accepted": false,
       "at": "2026-10-30T02:22:06.926418+00:00",
       "attempt": 1,
@@ -18064,6 +18051,26 @@
       "score": 88,
       "source": "radar-itmedia.co.jp",
       "title": "オラクルの機能がChatGPTで利用可能に 複数システムをまたぐ業務をAIで自動化"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-01T23:39:24.680039+00:00",
+      "attempt": 1,
+      "id": "1393d0e0f8bb9b8a",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 67.2,
+        "avg_sentence": 36.1,
+        "long_share": 0.074,
+        "max_paragraph": 129,
+        "paragraphs": 29,
+        "sentences": 54
+      },
+      "score": 90,
+      "source": "radar-news.mynavi.jp",
+      "title": "Windows 11の右クリックメニュー刷新、不要項目を非表示にする機能の提供開始"
     }
   ],
   "short_text_retry": {}
