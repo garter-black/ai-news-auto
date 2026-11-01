@@ -19,7 +19,6 @@
     "JI3bbZNdyeA": 2,
     "JPe8gJkEa6g": 2,
     "KH5fQCLhXrg": 1,
-    "LOP8ul3KqQI": 1,
     "MCB3zM5dEVI": 1,
     "MxwXGl-lpe0": 1,
     "NsOlCHYn99k": 1,
@@ -455,6 +454,11 @@
     "7TtGMileCus": {
       "at": "2026-10-31T12:10:51.479930+00:00",
       "reason": "本動画は約30秒の短尺事例インタビュー動画（プロモーション動画）であり、新しい技術発表や具体的な新機能、詳細なデモ画面、評価数値などの実質的な技術情報が含まれていないため。",
+      "skipped": true
+    },
+    "7cJlIJpKBW4": {
+      "at": "2026-11-01T18:12:08.791193+00:00",
+      "reason": "本動画は23秒間のショート抜粋動画であり、具体的な新製品の仕様、ベンチマーク詳細、提供時期や価格などの十分な情報が含まれていないため。",
       "skipped": true
     },
     "7fZ1rFcm1nA": {
@@ -1121,6 +1125,10 @@
       "at": "2026-10-17T19:48:06.702556+00:00",
       "reason": "本動画は1分程度のイベントダイジェスト映像（YouTube Shorts）であり、参加した開発者の短く断片的なコメントの切り抜きを中心に構成されています。詳細な仕様発表、新機能の解説、あるいは再現可能な技術デモ等が含まれておらず、単体で深掘りした報道記事を作成するための情報密度を満たしていないため対象外と判定しました。",
       "skipped": true
+    },
+    "LOP8ul3KqQI": {
+      "at": "2026-11-01T18:13:43.381383+00:00",
+      "slug": "google-deepmind-genie-4-world-model"
     },
     "LRSJXRsKmLQ": {
       "at": "2026-10-31T00:11:37.046897+00:00",
@@ -1924,6 +1932,11 @@
     "aPn0Gon8p8k": {
       "at": "2026-08-16T12:17:11.843694+00:00",
       "slug": "github-copilot-kimi-k3-multi-agent"
+    },
+    "aRg5DWHAC_g": {
+      "at": "2026-11-01T18:11:39.397212+00:00",
+      "reason": "本動画はGoogle検索におけるマライア・キャリー関連のホリデー演出（イースターエッグ）を紹介する5秒のショート動画であり、IT・AI分野の技術発表や実質的な解説情報が含まれていないため。",
+      "skipped": true
     },
     "aSV48uAywcg": {
       "at": "2026-10-05T02:56:12.266678+00:00",
@@ -2772,6 +2785,10 @@
     "sCZ4u09636A": {
       "at": "2026-07-31T19:14:45.346358+00:00",
       "slug": "microsoft-typescript-7-native-compiler-speedup"
+    },
+    "sFfPkUJd_Jk": {
+      "at": "2026-11-01T18:15:19.967229+00:00",
+      "slug": "google-deepmind-genie-4-world-model-sffpkujd_jk"
     },
     "sI6iupU1hkw": {
       "at": "2026-08-11T01:05:33.690229+00:00",
@@ -7328,6 +7345,14 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000026.000173933.html"
     },
+    "852d5d7ce61f0e5a": {
+      "at": "2026-11-01T18:15:54.421755+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "public",
+      "slug": "government-education-loan-guide-2026",
+      "url": "https://www.gov-online.go.jp/article/201512/entry-8156.html"
+    },
     "855bbb431067c230": {
       "at": "2026-10-27T03:04:42.977750+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（オープン）",
@@ -11236,68 +11261,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:52:24.569918+00:00",
-      "attempt": 2,
-      "id": "e5a0437380d206a8",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 55.5字・60字超の文が 38% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 118.4,
-        "avg_sentence": 55.5,
-        "long_share": 0.375,
-        "max_paragraph": 183,
-        "paragraphs": 15,
-        "sentences": 32
-      },
-      "score": 100,
-      "source": "ipa",
-      "title": "2025年度下期 未踏アドバンスト事業で実施したプロジェクトの成果概要、成果詳細を公開しました"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T01:52:28.284911+00:00",
-      "attempt": 0,
-      "id": "e5a0437380d206a8",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 118.9,
-        "avg_sentence": 33.0,
-        "long_share": 0.093,
-        "max_paragraph": 183,
-        "paragraphs": 15,
-        "sentences": 54
-      },
-      "score": 100,
-      "source": "ipa",
-      "title": "2025年度下期 未踏アドバンスト事業で実施したプロジェクトの成果概要、成果詳細を公開しました"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T02:09:36.608374+00:00",
-      "attempt": 1,
-      "id": "277d5156ec35d8c2",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 83.9,
-        "avg_sentence": 32.3,
-        "long_share": 0.018,
-        "max_paragraph": 184,
-        "paragraphs": 42,
-        "sentences": 109
-      },
-      "score": 93,
-      "source": "anthropic-news",
-      "title": "Discovering and exploiting vulnerabilities in critical, real-world software with"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T02:21:38.455540+00:00",
@@ -17983,6 +17946,71 @@
       "score": 100,
       "source": "jtta",
       "title": "百十四銀行 第60回全日本社会人卓球選手権大会 閉幕！"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-01T18:15:43.002069+00:00",
+      "attempt": 1,
+      "id": "852d5d7ce61f0e5a",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "easy_markdown が「## ひとことで言うと」から始まっていない"
+      ],
+      "readability": {
+        "avg_paragraph": 154.1,
+        "avg_sentence": 51.4,
+        "long_share": 0.333,
+        "max_paragraph": 201,
+        "paragraphs": 8,
+        "sentences": 24
+      },
+      "score": null,
+      "source": "gov-online",
+      "title": "お子さんの進学・在学資金を支援!国の教育ローンをご利用ください"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-01T18:15:50.120249+00:00",
+      "attempt": 2,
+      "id": "852d5d7ce61f0e5a",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 56.9字・60字超の文が 33% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 170.8字・最長 248字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 170.8,
+        "avg_sentence": 56.9,
+        "long_share": 0.333,
+        "max_paragraph": 248,
+        "paragraphs": 8,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "gov-online",
+      "title": "お子さんの進学・在学資金を支援!国の教育ローンをご利用ください"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-01T18:15:54.421304+00:00",
+      "attempt": 0,
+      "id": "852d5d7ce61f0e5a",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 49.4,
+        "avg_sentence": 31.7,
+        "long_share": 0.0,
+        "max_paragraph": 85,
+        "paragraphs": 27,
+        "sentences": 42
+      },
+      "score": 100,
+      "source": "gov-online",
+      "title": "お子さんの進学・在学資金を支援!国の教育ローンをご利用ください"
     }
   ],
   "short_text_retry": {}

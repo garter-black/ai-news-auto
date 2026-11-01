@@ -346,6 +346,14 @@
       "category": "AIモデル"
     },
     {
+      "slug": "genie-4",
+      "name": "Genie 4",
+      "aliases": [],
+      "company": "google",
+      "companyName": "Google",
+      "category": "AIモデル"
+    },
+    {
       "slug": "github",
       "name": "GitHub",
       "aliases": [],
@@ -1043,6 +1051,7 @@
     "ローカルAI",
     "ローカルLLM",
     "創薬AI",
+    "動画生成AI",
     "医療AI",
     "営業支援AI",
     "宇宙AI",
@@ -1054,7 +1063,7 @@
     "自律型AI",
     "音声AI"
   ],
-  "updatedAt": "2026-11-01T13:17:05+00:00",
+  "updatedAt": "2026-11-01T18:17:05+00:00",
   "failed": {
     "gpt-5-6-sol": {
       "at": "2026-10-27T11:05:30+00:00",
