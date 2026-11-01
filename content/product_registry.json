@@ -553,6 +553,14 @@
       "category": "AIモデル"
     },
     {
+      "slug": "jira",
+      "name": "Jira",
+      "aliases": [],
+      "company": "other",
+      "companyName": "Atlassian",
+      "category": "アプリ・サービス"
+    },
+    {
       "slug": "kimi-k3",
       "name": "Kimi K3",
       "aliases": [],
@@ -945,6 +953,7 @@
     "AI秘書",
     "AI開発",
     "Astra",
+    "Atlassian",
     "Birding Pal",
     "Codex Sites",
     "Cooley",
@@ -1027,7 +1036,7 @@
     "自律型AI",
     "音声AI"
   ],
-  "updatedAt": "2026-11-01T05:31:10+00:00",
+  "updatedAt": "2026-11-01T07:31:09+00:00",
   "failed": {
     "gpt-5-6-sol": {
       "at": "2026-10-27T11:05:30+00:00",

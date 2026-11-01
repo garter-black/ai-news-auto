@@ -1,0 +1,72 @@
+{
+  "slug": "atlassian-tackling-agent-sprawl",
+  "sourceType": "web",
+  "sourceUrl": "https://www.atlassian.com/blog/ai-at-work/tackling-ai-agent-sprawl",
+  "sourceName": "Atlassian公式ブログ",
+  "title": "タスク管理のAtlassianがAIエージェントの野良増殖を防ぐ管理機能を発表",
+  "seoTitle": "AtlassianがAIエージェントの管理機能を発表｜使い方と料金",
+  "threadsPost": "社内で野良AIエージェントが増えすぎて困っていませんか。\nタスク管理ツールのAtlassianが、企業のAI管理機能を発表しました。\n誰が何を作ったか可視化し、安全に運用できます。",
+  "threadsHook": "question",
+  "threadsStyle": 2,
+  "writingVoice": "qa",
+  "lede": "タスク管理ツールのAtlassian公式ブログによると、企業内で増え続けるAIエージェントの無秩序な展開を防ぐ「AIエージェント管理機能」が発表されました。誰がどんなエージェントを作ったかを可視化し、セキュリティとガバナンスを両立させます。",
+  "description": "Atlassian公式ブログが発表した企業向けAIエージェント管理機能について解説。野良AIの増殖を防ぎ、権限やコストを安全にコントロールする方法を分かりやすくまとめました。",
+  "keywords": [
+    "Atlassian",
+    "AIエージェント",
+    "ガバナンス",
+    "Jira",
+    "Confluence",
+    "Teamwork Collection",
+    "企業向けAI",
+    "セキュリティ"
+  ],
+  "tags": [
+    "生成AI",
+    "SaaS",
+    "セキュリティ",
+    "タスク管理"
+  ],
+  "highlights": [
+    "企業内で無秩序に増えるAIエージェント（エージェントスプロール）の管理リスクを解説",
+    "Gartnerの予測では、2028年までにFortune 500企業は平均15万個のエージェントを利用する見込み",
+    "DocuSignの導入事例ではチケット作成が75%高速化するなど業務効率が大幅に向上"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "ok",
+    "price": "法人向け",
+    "free": null,
+    "audience": "IT管理者・開発者",
+    "take": "Atlassian製品を導入している企業の管理者は、チームごとのAIエージェント利用状況の可視化と権限設定を確認してください。",
+    "judgedAt": "2026-11-01T07:31:02.374027+00:00"
+  },
+  "body": "## 概要\nAtlassianの公式ブログで、企業内で無秩序に増えるAIエージェントの管理問題に対する新しいソリューションが発表されました。\n誰がどのようなエージェントを作成し、どのデータにアクセスしているかを可視化します。\n安全なガードレールを設定し、組織全体で責任あるAI活用を進めるための仕組みです。\n\n## 何が発表された？\nAtlassianが公開した記事で、企業内でAIエージェントが管理されずに増殖する「エージェントスプロール」の課題と解決策が示されました。\nGartnerの予測では、2028年までに世界の大企業で平均15万個以上のエージェントが稼働するとされています。\nしかし、現時点で適切なガバナンス体制が整っていると答えた組織はわずか13%にとどまっています。\n今回の発表は、単なる個別ツールの提供ではありません。\n企業全体でAIエージェントを安全に管理・運用するための総合的なアプローチを示すものです。\n\n## なぜエージェントスプロールが問題になるのか？\n### データ露出のリスク\nAIエージェントがチームの予期しない形で機密情報を表に出したり移動させたりする恐れがあります。\n\n### 権限とアクセスの曖昧さ\nエージェントが過剰に広い権限を引き継いだり、適切な制御なしにシステムへ接続したりするリスクが生じます。\n\n### 運用管理の複雑化\n誰がエージェントを所有し、どのように意思決定が行われているかが分からなくなります。\nこれで、コストや容量の管理が困難になります。\n\n## どうやってAIの暴走を防ぐのか？\n### 権限の継承とエージェント単位の制御\nAIエージェントは、操作しているユーザーが閲覧を許可されているコンテンツだけを参照します。\nさらに、管理者や作成者はエージェントごとに参照できる情報源や呼び出せるツールを個別に制限できます。\nConfluenceの閲覧履歴では、AIエージェントがどのコンテンツにアクセスしたかが記録されます。\nこれで、誰の代理で動いたかが明示されます。\n\n### 「Agent Insights」による可視化\nAtlassianのプラットフォームに備わる「Agent Insights」機能により、管理者はエージェントの数や利用頻度を把握できます。\nこれにより、整理や統合が必要な不要なエージェントを特定しやすくなります。\n\n## 導入企業ではどんな成果が出ているのか？\nDocuSignでの導入事例では、Atlassianの「Teamwork Collection」を活用して安全なAI運用を実現しています。\nチケット作成時間が約20分から5分へと75%短縮されました。\nこれで、バックログ計画の工数も大幅に削減されました。\nまた、100以上のConfluenceスペースで標準化されたエージェントの展開に成功しています。\n\n## 自分にはどう関係する？\n### エンジニアなら\n業務に役立つAIエージェントを安全に構築できます。\nこれで、チームの生産性を高めながらセキュリティ基準を維持できます。\n\n### 企画・マーケティングなら\n定型的なタスクをAIに任せることができます。\nこれで、顧客対応やコンテンツ制作のスピードを向上させられます。\n\n### 経営者・管理者なら\n社内で稼働するAIのコストや利用状況を正確に把握できます。\nこれで、セキュリティリスクを抑えながら投資対効果を高められます。\n\n## まとめ\nAIエージェントを野放図に増やすことはできません。\n適切な権限管理と共通のコンテキストを結びつけることが重要です。\n管理者は自社の利用状況を確認し、安全な運用体制の構築を進めてください。",
+  "easy": "## ひとことで言うと\nAtlassian（アトラシアン：プロジェクト管理ツールを提供する企業）が、会社の中で勝手に増えるAIエージェントを安全に管理する仕組みを発表しました。\n\n## 何がすごいの？\n会社の中で誰がどんなAIを使っているか分からない状態を防ぎ、安全なデータだけをAIに読み込ませることができます。\n\n## 自分に関係ある？\n会社でJiraやConfluenceを使っている人や、企業のITシステムを管理する人にとって、セキュリティを守りながらAIを活用しやすくなります。\n\n## 使ってみるには\nAtlassianの提供する「Teamwork Collection」などのプラットフォーム上で機能を利用できます。詳しい導入や料金は公式サイトをご確認ください。",
+  "channel": "Atlassian公式ブログ",
+  "channelId": "",
+  "channelSlug": "atlassian-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Tackling agent sprawl across the enterprise",
+  "publishedAt": "2026-10-30T15:41:41+00:00",
+  "generatedAt": "2026-11-01T07:31:02.374069+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/atlassian-tackling-agent-sprawl-222c251c.jpg",
+  "model": "gemini-3.5-flash-lite",
+  "affiliates": [],
+  "qualityScore": 100,
+  "sourcePublishedAt": "2026-10-30T15:41:41+00:00",
+  "detectedAt": "2026-11-01T07:30:44+00:00",
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close-up view of a computer monitor showing a detailed dashboard with graphs and control panels, set on a clean office desk with soft ambient lighting and a blurred modern workspace in the background.",
+    "provider": "Cloudflare Workers AI",
+    "original": "https://atlassianblog.wpengine.com/wp-content/uploads/2026/10/tackling-ai-agent-sprawl-blog-header_1920x1080px-scaled.webp",
+    "at": "2026-11-01T07:32:17+00:00"
+  }
+}

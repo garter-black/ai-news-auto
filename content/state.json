@@ -3712,6 +3712,14 @@
       "skipped": true,
       "url": "https://www.nintendo.com/jp/topics/article/f4df5c50-0d01-4cc9-bcfc-489eb36274bf"
     },
+    "142f0e7c0832faf1": {
+      "at": "2026-11-01T07:31:06.287083+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "atlassian-tackling-agent-sprawl",
+      "url": "https://www.atlassian.com/blog/ai-at-work/tackling-ai-agent-sprawl"
+    },
     "145bd84bff691da1": {
       "at": "2026-10-27T03:04:42.978650+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（出演）",
@@ -11178,52 +11186,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-30T01:31:38.156963+00:00",
-      "attempt": 1,
-      "id": "c091029267ceffbc",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1338字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（347字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 97.1,
-        "avg_sentence": 42.2,
-        "long_share": 0.13,
-        "max_paragraph": 152,
-        "paragraphs": 10,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "jtta",
-      "title": "百十四銀行 第60回全日本社会人卓球選手権大会 開幕！"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:31:43.852534+00:00",
-      "attempt": 2,
-      "id": "c091029267ceffbc",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1371字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（312字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 120.0,
-        "avg_sentence": 53.3,
-        "long_share": 0.222,
-        "max_paragraph": 164,
-        "paragraphs": 8,
-        "sentences": 18
-      },
-      "score": null,
-      "source": "jtta",
-      "title": "百十四銀行 第60回全日本社会人卓球選手権大会 開幕！"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-30T01:31:51.937564+00:00",
       "attempt": 1,
       "id": "38dfb07257c2059f",
@@ -17926,6 +17888,51 @@
       "score": 100,
       "source": "atlassian-blog",
       "title": "Jira’s autumn 2026 release: faster views, visible agents, and consistency by def"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-01T07:31:03.074250+00:00",
+      "attempt": 1,
+      "id": "142f0e7c0832faf1",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 52.7字・60字超の文が 26% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 101.0字・最長 242字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 101.0,
+        "avg_sentence": 52.7,
+        "long_share": 0.261,
+        "max_paragraph": 242,
+        "paragraphs": 12,
+        "sentences": 23
+      },
+      "score": 100,
+      "source": "atlassian-blog",
+      "title": "Tackling agent sprawl across the enterprise"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-01T07:31:06.286562+00:00",
+      "attempt": 0,
+      "id": "142f0e7c0832faf1",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 104.3字・最長 242字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 104.3,
+        "avg_sentence": 40.4,
+        "long_share": 0.129,
+        "max_paragraph": 242,
+        "paragraphs": 12,
+        "sentences": 31
+      },
+      "score": 100,
+      "source": "atlassian-blog",
+      "title": "Tackling agent sprawl across the enterprise"
     }
   ],
   "short_text_retry": {}

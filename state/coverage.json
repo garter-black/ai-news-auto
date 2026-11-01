@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "atlassian-tackling-agent-sprawl",
+   "at": "2026-11-01T07:31:02.374069+00:00",
+   "title": "タスク管理のAtlassianがAIエージェントの野良増殖を防ぐ管理機能を発表",
+   "head": "タスク管理のAtlassianがAIエージェントの野良増殖を防ぐ管理機能を発表 | Tackling agent sprawl across the enterprise",
+   "text": "タスク管理のAtlassianがAIエージェントの野良増殖を防ぐ管理機能を発表 | Tackling agent sprawl across the enterprise | Atlassian / AIエージェント / ガバナンス / Jira / Confluence / Teamwork Collection / 企業向けAI / セキュリティ / 生成AI / SaaS / セキュリティ / タスク管理",
+   "urls": [
+    "https://www.atlassian.com/blog/ai-at-work/tackling-ai-agent-sprawl"
+   ]
+  },
+  {
    "slug": "jira-autumn-2026-release",
    "at": "2026-11-01T07:11:29.033415+00:00",
    "title": "タスク管理「Jira」が秋の大型アップデート 画面表示の高速化やAIエージェントの可視化に対応",
