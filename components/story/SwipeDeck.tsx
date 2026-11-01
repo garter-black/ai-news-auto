@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 export type StoryItem = {
   slug: string;
@@ -63,6 +63,29 @@ function writeSaved(slugs: string[]) {
 export default function StoryRail({ bundles }: { bundles: Bundle[] }) {
   const [open, setOpen] = useState<number | null>(null);
   const [seen, setSeen] = useState<Record<string, boolean>>({});
+  const rail = useRef<HTMLDivElement>(null);
+  const railId = useId();
+  const [scrollState, setScrollState] = useState({ overflow: false, previous: false, next: false });
+
+  useEffect(() => {
+    const el = rail.current;
+    if (!el) return;
+    const update = () => {
+      const remaining = el.scrollWidth - el.clientWidth - el.scrollLeft;
+      setScrollState({ overflow: el.scrollWidth > el.clientWidth + 1, previous: el.scrollLeft > 1, next: remaining > 1 });
+    };
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => { el.removeEventListener("scroll", update); observer.disconnect(); };
+  }, [bundles]);
+
+  const moveRail = (direction: -1 | 1) => {
+    const el = rail.current;
+    if (!el) return;
+    el.scrollBy({ left: direction * Math.max(240, el.clientWidth * 0.7), behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+  };
 
   useEffect(() => {
     if (open === null) return;
@@ -78,7 +101,9 @@ export default function StoryRail({ bundles }: { bundles: Bundle[] }) {
   return (
     <>
       <style>{CSS}</style>
-      <div className="sr" role="list" aria-label="ストーリー">
+      <div className="sr-wrap">
+      {scrollState.overflow && <button type="button" className="sr-arrow sr-arrow-prev" aria-label="ストーリーを左に移動" aria-controls={railId} aria-disabled={!scrollState.previous} onClick={() => moveRail(-1)}><span aria-hidden>‹</span></button>}
+      <div id={railId} ref={rail} className="sr" role="list" aria-label="ストーリー">
         {bundles.map((b, i) => (
           <button key={b.key} type="button" role="listitem" className={`sr-ring ${seen[b.key] ? "seen" : ""}`} onClick={() => setOpen(i)}>
             <span className="sr-img">
@@ -91,6 +116,8 @@ export default function StoryRail({ bundles }: { bundles: Bundle[] }) {
             <span className="sr-preview" title={b.items[0]?.title}>{Array.from(b.items[0]?.title ?? "").slice(0, 26).join("")}{(b.items[0]?.title.length ?? 0) > 26 ? "…" : ""}</span>
           </button>
         ))}
+      </div>
+      {scrollState.overflow && <button type="button" className="sr-arrow sr-arrow-next" aria-label="ストーリーを右に移動" aria-controls={railId} aria-disabled={!scrollState.next} onClick={() => moveRail(1)}><span aria-hidden>›</span></button>}
       </div>
       {open !== null && (
         <Deck
@@ -361,8 +388,14 @@ function Card({ it, mode }: { it: StoryItem; mode: Mode }) {
 }
 
 const CSS = `
+.sr-wrap{position:relative}
 .sr{display:flex;gap:12px;overflow-x:auto;padding:14px 20px 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .sr::-webkit-scrollbar{display:none}
+.sr-arrow{position:absolute;z-index:2;top:36px;display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--line-strong,#cbd5e1);border-radius:50%;background:var(--paper,#fff);color:var(--ink,#0b1a33);box-shadow:0 2px 10px rgba(11,26,51,.16);font-size:32px;line-height:1}
+.sr-arrow span{display:block;transform:translateY(-2px)}
+.sr-arrow-prev{left:2px}.sr-arrow-next{right:2px}
+.sr-arrow[aria-disabled=true]{opacity:.38;cursor:default}
+.sr-arrow:focus-visible{outline:2px solid #1d4a8f;outline-offset:2px}
 /* ラベルは 13px（docs/typography.md）。6 字の「今すぐ使える」が切れない幅にする */
 .sr-ring{flex:none;display:flex;flex-direction:column;align-items:center;gap:5px;width:108px}
 .sr-img{width:64px;height:64px;border-radius:50%;padding:2.5px;background:conic-gradient(from 210deg,#2fd27f,#0a6fa0,#2fd27f);transition:transform .15s}
@@ -377,6 +410,7 @@ const CSS = `
 /* PC は丸を少し大きくし、1列（最大12個）に均等に並べて横幅を使い切る */
 @media (min-width:1024px){
   .sr{gap:8px}
+  .sr-arrow{top:42px}
   .sr-ring{flex:0 0 120px;min-width:120px;max-width:120px;gap:7px}
   .sr-img{width:76px;height:76px;padding:3px}
   .sr-label{font-size:14px}
