@@ -103,6 +103,9 @@ FEEDS: list[dict] = [
     {"slug": "amd-newsroom", "name": "AMD ニュースルーム", "url": "https://newsroom.amd.com/rss.xml", "lang": "en", "priority": 3, "ai_only": True, "kind": "company"},  # 約0.3件/日
     {"slug": "cloudflare-blog", "name": "Cloudflare公式ブログ", "url": "https://blog.cloudflare.com/rss/", "lang": "en", "priority": 3, "ai_only": True, "kind": "company"},  # 約1.5件/日
     {"slug": "figma-blog", "name": "Figma公式ブログ", "url": "https://www.figma.com/blog/feed/atom.xml", "lang": "en", "priority": 3, "ai_only": True, "kind": "company"},  # 約0.6件/日
+    # 速報の監視元にも登録済み。通常記事はAI関連のみ拾い、従来の重複・事実確認・品質ゲートを通す。
+    {"slug": "atlassian-blog", "name": "Atlassian公式ブログ", "url": "https://www.atlassian.com/blog/rss", "lang": "en", "priority": 3, "ai_only": True, "kind": "company"},
+    {"slug": "docker-blog", "name": "Docker公式ブログ", "url": "https://www.docker.com/feed/", "lang": "en", "priority": 3, "ai_only": True, "kind": "company"},
 ]
 FEEDS_BY_SLUG = {f["slug"]: f for f in FEEDS}
 
