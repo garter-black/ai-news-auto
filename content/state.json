@@ -5427,6 +5427,14 @@
       "skipped": true,
       "url": "https://paypay.ne.jp/notice/20261030/cp-jichitai/"
     },
+    "4937bb769d43b7b6": {
+      "at": "2026-11-01T08:11:20.829898+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "docker-coding-agent-horror-stories-cve",
+      "url": "https://www.docker.com/blog/coding-agent-horror-stories-the-cve-that-did-not-exist/"
+    },
     "49384cd85f07d187": {
       "at": "2026-10-29T01:41:58.847293+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11192,73 +11200,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:51:28.857346+00:00",
-      "attempt": 1,
-      "id": "011c99cc86af4261",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1810字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（351字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 108.2,
-        "avg_sentence": 56.1,
-        "long_share": 0.407,
-        "max_paragraph": 222,
-        "paragraphs": 14,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "google-cloud-blog-ja",
-      "title": "データ主権の境界内におけるマネージド RAG 検索: Gemini on GDC エンタープライズ検索"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:51:37.988845+00:00",
-      "attempt": 2,
-      "id": "011c99cc86af4261",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "マネージドPostgreSQL（リフレッシュされたオープンソースデータベース）データベースにメタデータを記録し → 元記事には「オープンソースデータベース」という表現はなく「検索用に最適化されたアプリのマネージド PostgreSQL データベース」とあるため、補足された表現が不正確。"
-      ],
-      "readability": {
-        "avg_paragraph": 136.3,
-        "avg_sentence": 80.8,
-        "long_share": 0.704,
-        "max_paragraph": 250,
-        "paragraphs": 16,
-        "sentences": 27
-      },
-      "score": 90,
-      "source": "google-cloud-blog-ja",
-      "title": "データ主権の境界内におけるマネージド RAG 検索: Gemini on GDC エンタープライズ検索"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T01:51:46.026303+00:00",
-      "attempt": 1,
-      "id": "18bd67bed46c5c04",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1432字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 116.5,
-        "avg_sentence": 46.6,
-        "long_share": 0.2,
-        "max_paragraph": 206,
-        "paragraphs": 10,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "riken",
-      "title": "卵子の染色体接着を長期間維持する新因子OMC1を発見"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T01:51:55.136238+00:00",
@@ -17940,6 +17881,73 @@
       "score": 100,
       "source": "atlassian-blog",
       "title": "Introducing the Context Quality Score (CQS): a new framework for measuring and o"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-01T08:11:06.633765+00:00",
+      "attempt": 1,
+      "id": "4937bb769d43b7b6",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "「建築学的っとっと乗っ取り」→「っとっと」という誤字が含まれており、元記事の「architectural takeover」の訳として不自然かつ不正確である。"
+      ],
+      "readability": {
+        "avg_paragraph": 132.0,
+        "avg_sentence": 66.0,
+        "long_share": 0.577,
+        "max_paragraph": 258,
+        "paragraphs": 13,
+        "sentences": 26
+      },
+      "score": 85,
+      "source": "docker-blog",
+      "title": "Coding Agent Horror Stories: The CVE That Did Not Exist"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-01T08:11:16.177761+00:00",
+      "attempt": 2,
+      "id": "4937bb769d43b7b6",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 64.8字・60字超の文が 50% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 139.5字・最長 248字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 139.5,
+        "avg_sentence": 64.8,
+        "long_share": 0.5,
+        "max_paragraph": 248,
+        "paragraphs": 13,
+        "sentences": 28
+      },
+      "score": 100,
+      "source": "docker-blog",
+      "title": "Coding Agent Horror Stories: The CVE That Did Not Exist"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-01T08:11:20.829349+00:00",
+      "attempt": 0,
+      "id": "4937bb769d43b7b6",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 149.2字・最長 254字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 149.2,
+        "avg_sentence": 30.8,
+        "long_share": 0.0,
+        "max_paragraph": 254,
+        "paragraphs": 13,
+        "sentences": 63
+      },
+      "score": 100,
+      "source": "docker-blog",
+      "title": "Coding Agent Horror Stories: The CVE That Did Not Exist"
     }
   ],
   "short_text_retry": {}

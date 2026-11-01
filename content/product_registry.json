@@ -959,6 +959,7 @@
     "Cooley",
     "Copilot harness",
     "DiskANN",
+    "Docker",
     "dots",
     "DX",
     "Enterprise",
@@ -1036,7 +1037,7 @@
     "自律型AI",
     "音声AI"
   ],
-  "updatedAt": "2026-11-01T07:31:09+00:00",
+  "updatedAt": "2026-11-01T08:11:23+00:00",
   "failed": {
     "gpt-5-6-sol": {
       "at": "2026-10-27T11:05:30+00:00",

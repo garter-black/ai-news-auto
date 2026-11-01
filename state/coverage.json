@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "docker-coding-agent-horror-stories-cve",
+   "at": "2026-11-01T08:11:15.223591+00:00",
+   "title": "AIのコード査読ボットが架空の脆弱性をでっち上げ？Docker公式ブログが明かす恐怖の事件",
+   "head": "AIのコード査読ボットが架空の脆弱性をでっち上げ？Docker公式ブログが明かす恐怖の事件 | Coding Agent Horror Stories: The CVE That Did Not Exist",
+   "text": "AIのコード査読ボットが架空の脆弱性をでっち上げ？Docker公式ブログが明かす恐怖の事件 | Coding Agent Horror Stories: The CVE That Did Not Exist | Docker / AI / コードレビュー / 脆弱性 / セキュリティ / Ollama / Docker Sandbox / CIパイプライン / 生成AI / セキュリティ / 開発ツール / Docker",
+   "urls": [
+    "https://www.docker.com/blog/coding-agent-horror-stories-the-cve-that-did-not-exist/"
+   ]
+  },
+  {
    "slug": "atlassian-context-quality-score-cqs",
    "at": "2026-11-01T07:51:04.821553+00:00",
    "title": "アトラシアンがAIの精度を高める「CQS」を発表 散らばったデータを整理して回答の質を向上",
