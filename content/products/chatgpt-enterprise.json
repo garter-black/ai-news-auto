@@ -6,16 +6,15 @@
   "companyName": "OpenAI",
   "category": "アプリ・サービス",
   "overview": {
-    "text": "ChatGPT Enterpriseは、法人向けのセキュリティや高速なGPT-4o利用を提供するプラットフォームです。OpenAIによって提供されています。",
+    "text": "ChatGPT Enterpriseは、OpenAIが提供する法人向けの生成AIプラットフォームです。2023年8月に提供が開始されました。",
     "sources": [
-      "zendesk-chatgpt-enterprise-case-study",
-      "openai-reimagining-it-with-chatgpt"
+      "zendesk-chatgpt-enterprise-case-study"
     ]
   },
   "facts": [
     {
       "label": "料金",
-      "value": "法人向けの個別見積もり",
+      "value": "個別見積もり",
       "sources": [
         "zendesk-chatgpt-enterprise-case-study"
       ]
@@ -29,7 +28,7 @@
     },
     {
       "label": "日本での提供",
-      "value": "日本国内の企業でも利用可能",
+      "value": "利用できる",
       "sources": [
         "zendesk-chatgpt-enterprise-case-study"
       ]
@@ -37,19 +36,25 @@
   ],
   "capabilities": [
     {
-      "text": "社内データやチケット情報をAIと直接連携させることができます。",
+      "text": "Zendeskでは現場社員が約600個の社内AIアプリを自作しています。",
       "sources": [
         "zendesk-chatgpt-enterprise-case-study"
       ]
     },
     {
-      "text": "Thomson ReutersのCoCounsel LegalやHighQを統合できます。",
+      "text": "営業向けAIエージェントが顧客データを自動分析して契約拡大の機会を提示します。",
+      "sources": [
+        "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
+      ]
+    },
+    {
+      "text": "Thomson ReutersのCoCounsel Legalなどを統合して法律判断を生成できます。",
       "sources": [
         "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
       ]
     },
     {
-      "text": "ヘルプデスク業務や社内ITの運用プロセスを再構築できます。",
+      "text": "ITヘルプデスクではチケットの約45%を自動で処理できます。",
       "sources": [
         "openai-reimagining-it-with-chatgpt"
       ]
@@ -57,13 +62,13 @@
   ],
   "pricing": [
     {
-      "text": "法人向けの個別見積もりプランとなっています。",
+      "text": "法人向けの個別見積もりプランとなります。",
       "sources": [
         "zendesk-chatgpt-enterprise-case-study"
       ]
     },
     {
-      "text": "導入を検討する場合は、OpenAIの営業担当へ問い合わせる必要があります。",
+      "text": "導入を検討する場合はOpenAIの営業担当へ問い合わせる必要があります。",
       "sources": [
         "zendesk-chatgpt-enterprise-case-study"
       ]
@@ -71,13 +76,13 @@
   ],
   "japan": [
     {
-      "text": "日本の企業でもグローバルと同等の機能を利用可能です。",
+      "text": "日本国内の企業でも今日から利用可能です。",
       "sources": [
         "zendesk-chatgpt-enterprise-case-study"
       ]
     },
     {
-      "text": "公式サイトより導入の問い合わせを行うことで利用できます。",
+      "text": "日本語によるプロンプトやデータ処理に標準で対応しています。",
       "sources": [
         "zendesk-chatgpt-enterprise-case-study"
       ]
@@ -85,13 +90,13 @@
   ],
   "howto": [
     {
-      "text": "OpenAIの公式サイトより導入の問い合わせを行います。",
+      "text": "OpenAIの公式Webサイトから導入の問い合わせを行います。",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study"
+        "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
       ]
     },
     {
-      "text": "社内データと連携するためのAPI基盤を整えて開始します。",
+      "text": "社内データと連携するためのAPI基盤やセキュリティ設定を整えます。",
       "sources": [
         "zendesk-chatgpt-enterprise-case-study"
       ]
@@ -99,45 +104,45 @@
   ],
   "differences": [
     {
-      "text": "各現場の社員が自らの業務に合わせて約600個もの専用アプリを作れます。",
+      "text": "エンジニアに頼らず、現場のビジネス職が自前で約600個もの専用アプリを構築できるようになりました。",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study"
+        "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
       ]
     },
     {
-      "text": "法律データベースやHighQなどの業務管理基盤が統合されています。",
+      "text": "人間が手動でデータを見に行くのではなく、AIが自発的に顧客の拡大チャンスを通知する仕組みに変わりました。",
       "sources": [
-        "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
+        "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
       ]
     }
   ],
   "faq": [
     {
-      "q": "法務向けの機能はありますか？",
-      "a": "CoCounsel LegalやHighQが統合されており、判例検索などが可能です。",
-      "sources": [
-        "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
-      ]
-    },
-    {
-      "q": "いつから提供されていますか？",
-      "a": "2023年8月から提供が開始されています。",
+      "q": "無料で使える？",
+      "a": "法人向けの有料プランであり、個別見積もりが必要です。",
       "sources": [
         "zendesk-chatgpt-enterprise-case-study"
       ]
     },
     {
-      "q": "どのような事例がありますか？",
-      "a": "Zendesk社内で約600個の社内AIアプリが自作されています。",
+      "q": "いつから使える？",
+      "a": "日本国内も含めて、すでに法人向けに提供されています。",
       "sources": [
         "zendesk-chatgpt-enterprise-case-study"
       ]
     },
     {
-      "q": "IT部門ではどう使われますか？",
-      "a": "ヘルプデスクに寄せられるチケットの約45%を自動で処理できます。",
+      "q": "誰に向いている？",
+      "a": "全社的な運用を行う企業や、自社データとAIを連携させたいビジネス職に向いています。",
       "sources": [
-        "openai-reimagining-it-with-chatgpt"
+        "zendesk-chatgpt-enterprise-case-study"
+      ]
+    },
+    {
+      "q": "安全性は？",
+      "a": "エンタープライズレベルのセキュリティを備えています。",
+      "sources": [
+        "zendesk-chatgpt-enterprise-case-study"
       ]
     }
   ],
@@ -145,7 +150,7 @@
     {
       "date": "2026-10-30",
       "slug": "zendesk-chatgpt-enterprise-case-study",
-      "event": "2023年08月 法人向け提供を開始"
+      "event": "OpenAIが法人向けChatGPT Enterpriseを提供開始"
     }
   ],
   "related": [
@@ -156,17 +161,19 @@
   ],
   "articles": [
     "zendesk-chatgpt-enterprise-case-study",
+    "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom",
     "uber-openai-chatgpt-work-enterprise-deployment",
     "thomson-reuters-openai-chatgpt-enterprise-cocounsel",
     "openai-reimagining-it-with-chatgpt"
   ],
   "linkFrom": [
     "zendesk-chatgpt-enterprise-case-study",
+    "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom",
     "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
   ],
-  "signature": "8687eef50f8b6942",
-  "primarySignature": "2804a0d194f709f4",
+  "signature": "4017290c9a00628e",
+  "primarySignature": "a4538011df2051f6",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-30T12:19:13+00:00",
-  "updatedAt": "2026-10-30T12:19:13+00:00"
+  "updatedAt": "2026-11-01T00:13:12+00:00"
 }

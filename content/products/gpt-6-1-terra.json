@@ -167,15 +167,15 @@
   ],
   "articles": [
     "chatgpt-pro-business-api-credits-benefit",
-    "openai-gpt-6-1-terra-announcement",
     "gpt-6-1-terra-github-copilot-guide",
-    "chatgpt-gpt-6-1-terra-plans-guide",
-    "gpt-6-1-terra-sol-astra-comparison"
+    "openai-gpt-6-1-terra-announcement",
+    "gpt-6-1-terra-sol-astra-comparison",
+    "chatgpt-gpt-6-1-terra-plans-guide"
   ],
   "linkFrom": [
     "openai-gpt-6-1-terra-announcement",
-    "chatgpt-gpt-6-1-terra-plans-guide",
-    "gpt-6-1-terra-sol-astra-comparison"
+    "gpt-6-1-terra-sol-astra-comparison",
+    "chatgpt-gpt-6-1-terra-plans-guide"
   ],
   "signature": "f8a1eed26673f620",
   "primarySignature": "66fb4a62bcb54941",

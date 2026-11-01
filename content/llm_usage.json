@@ -49,6 +49,6 @@
   "2026-10-31": {
     "cf-image:flux-2-klein-4b": 2,
     "cloudflare:@cf/openai/gpt-oss-120b": 6,
-    "gemini-3.5-flash-lite": 22
+    "gemini-3.5-flash-lite": 25
   }
 }
