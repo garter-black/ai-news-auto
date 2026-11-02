@@ -3893,6 +3893,14 @@
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/047978/"
     },
+    "1545015c8f298087": {
+      "at": "2026-11-02T10:51:43.803905+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "public",
+      "slug": "tokyo-electricity-gas-subsidy-7th",
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110210"
+    },
     "157f623c815d8fdb251103227384a9b6600381ff": {
       "at": "2026-10-26T21:41:13.628283+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -8198,6 +8206,12 @@
       "skipped": true,
       "url": "https://kyodonewsprwire.jp/release/202610218386"
     },
+    "93007272508454d1": {
+      "at": "2026-11-02T10:51:12.685573+00:00",
+      "reason": "followup: 新しい事実なし（boj-outlook-report-october）",
+      "skipped": true,
+      "url": "https://www.boj.or.jp/mopo/outlook/gor2610b.pdf"
+    },
     "9367c33359f699fc": {
       "at": "2026-10-27T03:04:42.979534+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（を掲載しました）",
@@ -8970,6 +8984,13 @@
       "section": "public",
       "slug": "tokyo-email-leak-incident",
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102713"
+    },
+    "a8f9c4c3d8c63a92": {
+      "at": "2026-11-02T10:51:32.933369+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "followup quality: 続報の長さが不適切（285字 / 400〜900字）",
+      "skipped": true,
+      "url": "https://www.boj.or.jp/statistics/boj/fm/juqf/juqf10.xlsx"
     },
     "aa3e2a58cca92e6f": {
       "at": "2026-10-28T23:11:26.688694+00:00",
@@ -11962,74 +11983,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T07:11:40.195528+00:00",
-      "attempt": 1,
-      "id": "d4c7b707664f4813",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 63.2字・60字超の文が 46% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 177.1字・最長 322字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 177.1,
-        "avg_sentence": 63.2,
-        "long_share": 0.464,
-        "max_paragraph": 322,
-        "paragraphs": 10,
-        "sentences": 28
-      },
-      "score": 100,
-      "source": "toyota",
-      "title": "トヨタ自動車とWaymo、安全な交通社会とすべての人の移動の自由に向け、自動運転分野における協業を拡大 -Waymoの自動運転タクシーに使用するトヨタbZ4Xの"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T07:11:44.359363+00:00",
-      "attempt": 0,
-      "id": "d4c7b707664f4813",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 197.6字・最長 354字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 197.6,
-        "avg_sentence": 30.9,
-        "long_share": 0.016,
-        "max_paragraph": 354,
-        "paragraphs": 10,
-        "sentences": 64
-      },
-      "score": 100,
-      "source": "toyota",
-      "title": "トヨタ自動車とWaymo、安全な交通社会とすべての人の移動の自由に向け、自動運転分野における協業を拡大 -Waymoの自動運転タクシーに使用するトヨタbZ4Xの"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T07:31:06.855692+00:00",
-      "attempt": 1,
-      "id": "4bf8b53fa4880823",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 51.1字・60字超の文が 30% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 130.6字・最長 188字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 130.6,
-        "avg_sentence": 51.1,
-        "long_share": 0.304,
-        "max_paragraph": 188,
-        "paragraphs": 9,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "jfa",
-      "title": "【ホットピ！～HotTopic～】フットサル日本代表、大分で強豪モロッコと対戦 #jfa #daihyo"
-    },
     {
       "accepted": true,
       "at": "2026-10-30T07:31:11.449386+00:00",
@@ -18559,6 +18512,65 @@
       "score": 100,
       "source": "tsr",
       "title": "新型コロナ破たん、10月は125件発生"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T10:51:32.933348+00:00",
+      "attempt": 1,
+      "id": "a8f9c4c3d8c63a92",
+      "kind": "update",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "続報の長さが不適切（285字 / 400〜900字）"
+      ],
+      "score": null,
+      "source": "boj",
+      "title": "日銀当座預金増減要因と金融調節（10月実績）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T10:51:40.663427+00:00",
+      "attempt": 1,
+      "id": "1545015c8f298087",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 51.0字・60字超の文が 32% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 124.7字・最長 172字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 124.7,
+        "avg_sentence": 51.0,
+        "long_share": 0.318,
+        "max_paragraph": 172,
+        "paragraphs": 9,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "tokyo-metro",
+      "title": "第7回 中小企業特別高圧電力・工業用LPガス価格高騰緊急対策事業 特別高圧電力・工業用LPガスを使用する中小企業者等を支援します！"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T10:51:43.802985+00:00",
+      "attempt": 0,
+      "id": "1545015c8f298087",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 48.4字・60字超の文が 27% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 118.2,
+        "avg_sentence": 48.4,
+        "long_share": 0.273,
+        "max_paragraph": 172,
+        "paragraphs": 9,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "tokyo-metro",
+      "title": "第7回 中小企業特別高圧電力・工業用LPガス価格高騰緊急対策事業 特別高圧電力・工業用LPガスを使用する中小企業者等を支援します！"
     }
   ],
   "short_text_retry": {},
