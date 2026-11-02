@@ -5,6 +5,9 @@
   data, model = generate_json(system_text, prompt, schema, tier="bulk")
 
 - tier="quality": main.py と同じ Gemini Flash 系（無料）
+- tier="write"  : 通常記事の本文を書く段（2026-11-03）。いちばん強い無料モデルから: Gemini Flash 系（各1日20回の無料枠。
+                  速報用に少し残す）→ Cloudflare / Groq の gpt-oss-120b → OpenRouter の無料モデル → 最後に軽量モデル（flash-lite → Gemma）。
+                  軽量モデルは事実確認・文の手直しなど小さな作業（bulk）に回す
 - tier="bulk"   : 無料枠の大きい軽量モデル（flash-lite → Gemma）→ quality → 外部無料API（キーがあれば）→ Codex（ローカルのみ）
 - Claude は「目立つもの」だけに使う（2026-11-03 オーナー決定）。visibility="high" を付けた呼び出しだけが
   Claude API（クレジット）→ Claude CLI（サブスクリプション）→ 上の無料モデル の順で試す。
@@ -56,6 +59,8 @@ except Exception:  # noqa: BLE001 - tzdata が無い環境
 ROOT = Path(__file__).resolve().parent.parent
 USAGE_PATH = ROOT / "content" / "llm_usage.json"
 REQUEST_TIMEOUT_MS = 240_000
+# 本文を書く段（write）で Gemini を待つ上限。Flash 系は混雑すると数分かかる・504 になるので、待ちすぎずに次の強いモデルへ
+WRITE_TIMEOUT_MS = int(os.environ.get("LLM_WRITE_TIMEOUT_MS", "150000"))
 TRANSIENT_RETRIES = 2
 MAX_SHORT_WAIT = 20  # 秒。これより長い待機指示（＝日次上限）は待たずに次のモデルへ
 
@@ -77,6 +82,12 @@ BULK_MODELS = [
     "gemma-4-26b-a4b-it",
 ]
 GROQ_MODELS = ["openai/gpt-oss-120b", "llama-3.3-70b-versatile", "qwen/qwen3-32b"]
+# 無料枠の1日の回数（太平洋時間で区切る）。content/llm_usage.json の今日の回数がこれに届いたモデルは、呼ばずに飛ばす
+# （2026-11-03 に 429 の応答で確認: Gemini Flash 系は GenerateRequestsPerDayPerProjectPerModel-FreeTier = 20）。
+# 環境変数 LLM_DAILY_LIMIT_<モデル名の英数字を _ に> で変更できる（0 = 数えない）
+FREE_DAILY_LIMITS = {m: 20 for m in QUALITY_MODELS}
+# 本文を書く段（write）では、Flash 系の枠をこの回数だけ残す（速報・大きなニュースの予備。Claude が使えないとき quality で作る）
+WRITE_RESERVE = 3
 GROQ_USER_AGENT = "saisoku-ai-news/1.0 (+https://ai-tech-express.jp)"
 
 CLAUDE_DEFAULT_MODEL = "sonnet"
@@ -87,6 +98,7 @@ CODEX_TIMEOUT = int(os.environ.get("CODEX_TIMEOUT", "600"))
 _client = None
 _available: set[str] | None = None
 _exhausted: set[str] = set()
+_limit_logged: set[tuple[str, str]] = set()
 
 
 def log(message: str) -> None:
@@ -123,6 +135,24 @@ def _record_usage(model: str) -> None:
 def usage_today() -> dict:
     """{model: 今日（太平洋時間）の呼び出し回数}"""
     return dict(_load_usage().get(_today(), {}))
+
+
+def daily_limit(model: str) -> int:
+    """無料枠の1日の回数（分からなければ 0 = 数えない）"""
+    env = "LLM_DAILY_LIMIT_" + re.sub(r"[^A-Za-z0-9]", "_", model).upper()
+    try:
+        return int(os.environ[env])
+    except (KeyError, ValueError):
+        return FREE_DAILY_LIMITS.get(model, 0)
+
+
+def over_daily_limit(model: str, tier: str = "", used: dict | None = None) -> bool:
+    """今日の無料枠を使い切った（本文を書く段では、速報用の予備 WRITE_RESERVE 回を残した）モデルか"""
+    limit = daily_limit(model)
+    if limit <= 0:
+        return False
+    used = usage_today() if used is None else used
+    return used.get(model, 0) >= limit - (WRITE_RESERVE if tier == "write" else 0)
 
 
 # --------------------------------------------------------------------------- #
@@ -246,6 +276,13 @@ def models_for(tier: str) -> list[str]:
         # Claude（CLI）はここに入れない。visibility="high" の呼び出しだけが generate_json の中で先頭に足す
         if tier == "quality":
             chosen = quality
+        elif tier == "write":
+            # 本文は強いモデルから。軽量モデル（flash-lite・Gemma）は最後の手段
+            bulk = [m for m in BULK_MODELS if m in have]
+            chosen = list(dict.fromkeys(
+                quality + _cloudflare_models()[:1] + _groq_models()[:1] + _openrouter_models() + bulk
+                + _cloudflare_models()[1:] + _groq_models()[1:]
+            )) + _codex_models()
         else:
             bulk = [m for m in BULK_MODELS if m in have]
             chosen = list(dict.fromkeys(bulk + quality)) + _groq_models() + _openrouter_models() + _cloudflare_models() + _codex_models()
@@ -337,11 +374,14 @@ def _retry_delay(text: str) -> float | None:
     return float(match.group(1)) if match else None
 
 
-def _call_gemini(model: str, system_instruction: str, prompt: str, schema: dict, temperature: float, max_output_tokens: int, use_schema: bool = True) -> str:
+def _call_gemini(model: str, system_instruction: str, prompt: str, schema: dict, temperature: float, max_output_tokens: int,
+                 use_schema: bool = True, timeout_ms: int | None = None) -> str:
     from google.genai import types
 
     gemma = model.startswith("gemma")
     cfg = {"temperature": temperature, "max_output_tokens": max_output_tokens}
+    if timeout_ms:
+        cfg["http_options"] = types.HttpOptions(timeout=timeout_ms)
     if gemma:
         # Gemma は system_instruction で 500 を返すことがある → 指示は本文に入れる
         contents = _plain_prompt(system_instruction, prompt, schema)
@@ -952,8 +992,17 @@ def generate_json(
             return got
     candidates = (_claude_models() if high else []) + [m for m in models_for(tier) if not m.startswith("claude:")]
     last_error: Exception | None = None
+    used = usage_today()
     for model in candidates:
         if model in _exhausted:
+            continue
+        if over_daily_limit(model, tier, used):
+            if (model, tier) not in _limit_logged:
+                _limit_logged.add((model, tier))
+                reserve = f"・速報用に{WRITE_RESERVE}回残す" if tier == "write" else ""
+                log(f"   [llm] {model}: 今日の無料枠（{daily_limit(model)}回{reserve}）を使ったので飛ばす")
+            if tier != "write":
+                _exhausted.add(model)  # 本文の段の予備は、速報（quality）がまだ使える
             continue
         if model.startswith("claude:") and purpose != "breaking" and claude_calls_today() >= _claude_daily_max():
             log(f"   [llm] {model}: 今日の上限 {_claude_daily_max()} 回に達したので使わない")
@@ -970,7 +1019,8 @@ def generate_json(
                 elif ":" in model:
                     text = _call_openai_compatible(model, system_instruction, prompt, schema, temperature, max_output_tokens)
                 else:
-                    text = _call_gemini(model, system_instruction, prompt, schema, temperature, max_output_tokens, use_schema)
+                    text = _call_gemini(model, system_instruction, prompt, schema, temperature, max_output_tokens, use_schema,
+                                        timeout_ms=WRITE_TIMEOUT_MS if tier == "write" else None)
                 _record_usage(model)
                 data = parse_json_lenient(text)
                 missing = missing_keys(data, schema)
@@ -1012,6 +1062,14 @@ def generate_json(
                     log(f"   [llm] {model}: 400（{text[:80]}） -> スキーマ無しで再試行")
                     use_schema = False
                     continue
+                slow = any(w in text.lower() for w in ("deadline", "timed out", "timeout"))
+                if kind == "transient" and tier == "write" and (slow or attempt > 1):
+                    # 本文の段: 時間切れ（Flash の混雑時は5分かかる・504 になる）は待たずに次の強いモデルへ。
+                    # 時間切れのモデルはこの実行ではもう使わない（次の記事でまた数分待たない）。混雑（503）の再試行は1回まで
+                    if slow:
+                        _exhausted.add(model)
+                    log(f"   [llm] {model}: {'時間切れ（この実行ではもう使わない）' if slow else '混雑'}（{text[:60]}） -> 次のモデルへ")
+                    break
                 if kind == "transient" and attempt <= TRANSIENT_RETRIES:
                     wait = min(20, 5 * attempt) + random.uniform(0, 2)
                     log(f"   [llm] {model}: 一時的なエラー（{text[:80]}） -> {wait:.0f}s 後に再試行")

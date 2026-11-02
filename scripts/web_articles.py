@@ -54,6 +54,7 @@ import facts_bundle  # noqa: E402
 import fast_lane  # noqa: E402
 import feeds  # noqa: E402
 import followup  # noqa: E402
+import glossary  # noqa: E402
 import japan_availability  # noqa: E402
 import llm  # noqa: E402
 import main as m  # noqa: E402
@@ -505,6 +506,16 @@ for _schema in (WEB_SCHEMA, TREND_SCHEMA):
 
 # FAQ と「今日やること」を書くジャンル（AI・製品、お金・税・制度、使い方の話題）。スポーツ・エンタメ・科学は書かない
 FAQ_GENRES = {"ai", "investment", "business", "public", "tech-gadget", "lifestyle", "real-estate"}
+
+
+def schema_for(base: dict, genre_slug: str) -> dict:
+    """ジャンルに合わせた出力の形。FAQ を書くジャンルでは faq と today_actions を必須にする（無料の軽量モデルが書き落とすため。2026-11-03）。
+    それでも空・足りないときは fill_faq_actions が足りない欄だけ書き足す（記事全体は作り直さない）"""
+    if genre_slug not in FAQ_GENRES:
+        return base
+    schema = copy.deepcopy(base)
+    schema["required"] = list(dict.fromkeys(schema["required"] + ["faq", "today_actions"]))
+    return schema
 # 読者が使う・買う・申し込むものが無い「数字の話題」（統計・業績・倒産件数など）。判定カードは出さない
 DATA_TOPIC_RE = re.compile(
     r"統計|倒産|件数|調査結果|決算|業績|自社株買い|株主還元|配当|(?<![A-Za-z])GDP(?![A-Za-z])|指数|物価|消費者物価|雇用統計|失業率|景気|"
@@ -512,15 +523,17 @@ DATA_TOPIC_RE = re.compile(
 )
 DATA_GENRES = {"business", "investment", "science", "real-estate"}
 
-FAQ_TODAY_FIELD = """# faq と today_actions（記事ページの「よくある質問」「今日やること」欄）
-- faq: 読者が検索しそうな疑問を3〜5個（q と a）。質問は次の候補から、**この記事に答えがあるものだけ**選ぶ:
-  無料で使える？／日本で使える？／いつから？／いくら？／前と何が違う？／誰に向いている？／どうやって申し込む・始める？／注意点は？
+FAQ_TODAY_FIELD = """# faq と today_actions（記事ページの「よくある質問」「今日やること」欄。このジャンルでは必須）
+- faq: 読者が検索しそうな疑問を必ず3〜5個（q と a）。質問は次の候補から、**この記事に答えがあるものだけ**選ぶ:
+  何が発表された？／前と何が違う？／誰に関係する？／無料で使える？／日本で使える？／いつから？／いくら？／どうやって申し込む・始める？／注意点は？
+  （「何が発表された？」「前と何が違う？」「誰に関係する？」はどの記事にも答えがあるので、ほかが足りないときに使う）
   q は製品名・制度名を入れた20〜40字の疑問文（例「Claude Ultraは無料で使える？」）。
   a は40〜120字。**body_markdown と元記事、「当サイトで確認済み」の欄に書かれた事実だけ**で答える。新しい数字・条件を足さない。
-  答えが「元記事には書かれていません」になる質問は入れない。3個そろわないなら空配列 []。
-- today_actions: 「今日やること」を2〜3個。各20〜60字の1文で、読者が今日できる具体的な行動を書く（例「設定の使用状況画面で、今の上限を確かめる」）。
+  答えが「元記事には書かれていません」になる質問は入れない。
+- today_actions: 「今日やること」を必ず2〜3個。各20〜60字の1文で、読者が今日できる具体的な行動を書く（例「設定の使用状況画面で、今の上限を確かめる」）。
   画面の場所・ボタン名は元記事にあるときだけ書く。無ければ「公式の設定画面で確認する」のように書き、場所を作らない。
-  提供予定・研究段階・統計や業績の話題で、読者が今日できることが無ければ空配列 []。特定の銘柄・物件の売買はすすめない。"""
+  提供予定・研究段階・統計や業績の話題でも、公式発表で条件を確かめる・自分の契約や設定を見直す・社内で共有する など、記事に沿った行動を書く。
+  特定の銘柄・物件の売買はすすめない。"""
 FAQ_TODAY_OFF = """# faq と today_actions
 - このジャンルでは faq と today_actions は空配列 [] にする。"""
 
@@ -581,6 +594,75 @@ def genre_verdict(raw: object, genre_slug: str, record: dict) -> dict | None:
             verdict["status"] = "soon"
         return verdict
     return japan_availability.apply_to_verdict(verdict, record)
+
+
+# 料金・プラン・リリースノートのページの見張り（page_watch.py / pricing_watch.py）から来た候補の書き方（2026-11-03）。
+# 差分の行（「- 追加: Plan: Pro, Feature: …」）をそのまま記事に貼った例があったため
+WATCH_DIFF_NOTE = """## 今回の元記事は「公式ページの変更点」です（重要）
+- 元記事の「- 削除: …」「- 追加: …」の行は、公式ページの表示の差分（英語のまま・表の1行を横に並べたもの）です。記事にそのまま貼らない。
+- 何が・どう変わったかを、自然な日本語の文で説明する。変わったものが3つ以上なら「比べること | 前 | 今回」の表にする（英語の項目名は日本語に訳し、
+  プラン名・製品名・金額だけ英語・数字のまま残す）。「Plan: Pro, Feature: …」のような英語の書き方を記事に出さない。
+- 差分だけでは分からない条件（いつから・誰が対象か・日本での扱い）は、元記事と確認済みの事実の束にあるときだけ書き、無ければ「公式ページには書かれていません」と書く。"""
+
+FILL_SCHEMA = {
+    "type": "OBJECT",
+    "properties": {
+        "faq": WEB_SCHEMA["properties"]["faq"],
+        "today_actions": WEB_SCHEMA["properties"]["today_actions"],
+    },
+    "required": ["faq", "today_actions"],
+    "propertyOrdering": ["faq", "today_actions"],
+}
+FILL_SYSTEM = "あなたはニュースサイトの編集者です。できあがった記事に「よくある質問」と「今日やること」の欄だけを書き足します。出力は指定の JSON だけ。"
+
+
+def fill_faq_actions(record: dict, source_text: str = "", context: str = "") -> list[str]:
+    """FAQ を書くジャンルで faq / todayActions が無い・足りない記事に、足りない欄だけを書き足す（安いモデル。本文は変えない）。
+    書き足せた欄の名前を返す。答えの事実は、このあと品質ゲートの事実確認で本文・元記事と突き合わせる"""
+    if record.get("genreSlug") not in FAQ_GENRES:
+        return []
+    need = [k for k in ("faq", "todayActions") if not record.get(k)]
+    if not need:
+        return []
+    verdict = record.get("verdict") or {}
+    prompt = (
+        f"{FAQ_TODAY_FIELD}\n\n# 書き足す欄\n" + "・".join("faq" if k == "faq" else "today_actions" for k in need)
+        + "（ほかの欄は空配列 [] でよい）\n\n"
+        f"# 記事\nタイトル: {record.get('title', '')}\nリード: {record.get('lede', '')}\n"
+        f"判定: 提供状況={verdict.get('status')} 日本={verdict.get('japan')} 料金={verdict.get('price')}\n\n"
+        f"本文:\n<<<\n{(record.get('body') or '')[:8000]}\n>>>\n\n"
+        f"# 元記事（抜粋）\n<<<\n{(source_text or '')[:6000]}\n>>>"
+        + (f"\n\n# 当サイトで確認済み\n{context[:3000]}" if context.strip() else "")
+    )
+    data, model = llm.generate_json(FILL_SYSTEM, prompt, FILL_SCHEMA, temperature=0.3, max_output_tokens=4096, tier=quality.CHECK_TIER)
+    added = []
+    if "faq" in need and (faq := clean_faq(data.get("faq"))):
+        record["faq"] = faq
+        added.append("faq")
+    if "todayActions" in need and (actions := clean_actions(data.get("today_actions"))):
+        record["todayActions"] = actions
+        added.append("todayActions")
+    if added:
+        log(f"   [fill] 足りない欄だけ書き足した: {'・'.join(added)}（{model}）")
+    else:
+        log(f"   [fill] 書き足せなかった（{model}）: {'・'.join(need)}")
+    return added
+
+
+def pre_gate(record: dict, source_text: str = "", context: str = "") -> None:
+    """品質ゲートの前の安い手直し（通常の実行と試し書きの道具が同じものを使う）:
+    足りない FAQ・今日やることの書き足し → 判定カードを本文にそろえる・紹介文の「要約すると、」・言葉の問題の文だけ直す"""
+    try:
+        fill_faq_actions(record, source_text, context)
+    except Exception as error:  # noqa: BLE001 - 書き足せなくても記事は出せる（欄を出さないだけ）
+        log(f"   [fill] 失敗（{str(error)[:100]}）")
+    quality.pre_gate_repair(record, source_text, log=log)
+
+
+def write_tier(tier: str) -> str:
+    """本文を書く段の tier。通常（bulk）の記事も、本文は強い無料モデルから書く（llm.py の tier "write"）。
+    軽量モデルは事実確認・手直しなど小さな作業（quality.CHECK_TIER）に残す"""
+    return "write" if tier == "bulk" else tier
 
 
 def clean_faq(raw: object) -> list[dict]:
@@ -851,18 +933,20 @@ def compose_with_facts(item: dict, text: str, lane: str, related: list[dict], vo
     if item.get("late"):
         context += LATE_NOTE.format(date=f"{item['published_at'].astimezone(JST):%Y年%m月%d日}")
     secondary_note = f"\n\n{SECONDARY_SOURCE_NOTE.format(name=item['source_name'])}" if item.get("secondary") else ""
+    watch_note = f"\n\n{WATCH_DIFF_NOTE}" if item.get("watch") else ""
     if lane == "ai":
         genre = AI
-        system = f"{m.SYSTEM_INSTRUCTION_BASE}\n\n{AI.persona}\n\n{WEB_SOURCE_NOTE}{secondary_note}\n\n## 今回の語り口\n{voice_text}"
-        prompt, schema, kind = build_prompt(item, text, context), WEB_SCHEMA, "ai"
+        system = (f"{m.SYSTEM_INSTRUCTION_BASE}\n\n{AI.persona}\n\n{WEB_SOURCE_NOTE}{secondary_note}{watch_note}\n\n"
+                  f"{glossary.prompt_block()}\n\n## 今回の語り口\n{voice_text}")
+        prompt, schema, kind = build_prompt(item, text, context), schema_for(WEB_SCHEMA, AI.slug), "ai"
     else:
         genre = GENRES_BY_SLUG[lane]
         system = (
-            f"{m.SYSTEM_INSTRUCTION_BASE}\n\n{genre.persona}\n\n{WEB_SOURCE_NOTE}{secondary_note}\n\n{BROAD_SOURCE_NOTE}"
-            f"\n\n## 今回の語り口\n{voice_text}"
+            f"{m.SYSTEM_INSTRUCTION_BASE}\n\n{genre.persona}\n\n{WEB_SOURCE_NOTE}{secondary_note}{watch_note}\n\n{BROAD_SOURCE_NOTE}"
+            f"\n\n{glossary.prompt_block()}\n\n## 今回の語り口\n{voice_text}"
         )
         outline = money_outline() if bundle.money else None
-        prompt, schema, kind = build_broad_prompt(item, text, genre, context, outline), TREND_SCHEMA, "broad"
+        prompt, schema, kind = build_broad_prompt(item, text, genre, context, outline), schema_for(TREND_SCHEMA, genre.slug), "broad"
     return genre, system, prompt, schema, kind, check_context_for(item["title"], text, related, bundle), bundle
 
 
@@ -1794,7 +1878,7 @@ def main() -> int:
     def generate(system: str, prompt: str, schema: dict, item_id: str, tier: str, purpose: str | None = None):
         # purpose があるもの（速報・SNS に出しそうな記事）だけ Claude（API → CLI）を先に試す。ほかは無料モデルだけ
         try:
-            return llm.generate_json(system, prompt, schema, temperature=0.6, max_output_tokens=32768, tier=tier,
+            return llm.generate_json(system, prompt, schema, temperature=0.6, max_output_tokens=32768, tier=write_tier(tier),
                                      visibility="high" if purpose else None, purpose=purpose)
         except Exception as error:  # noqa: BLE001
             log(f"   [NG] {str(error)[:200]}")
@@ -1834,6 +1918,7 @@ def main() -> int:
                 log(f"   [NG] レスポンスの形式が不正: {error}")
                 verdict = {"ok": False, "score": None, "problems": [f"形式が不正: {error}"]}
             else:
+                pre_gate(record, source_text, context)
                 verdict = quality.evaluate(record, source_text, kind, context, check_facts=not args.no_gate)
                 tag = "合格" if verdict["ok"] else ("読みやすさのみ基準外" if verdict.get("soft") else "不合格")
                 r = verdict.get("readability") or {}
@@ -2186,13 +2271,13 @@ def main() -> int:
             voice_key, voice_text = m.pick_voice()
             system = (
                 f"{m.SYSTEM_INSTRUCTION_BASE}\n\n{genre.persona}\n\n"
-                f"{TREND_SOURCE_NOTE.format(rules=trends.EDITORIAL_RULES)}\n\n## 今回の語り口\n{voice_text}"
+                f"{TREND_SOURCE_NOTE.format(rules=trends.EDITORIAL_RULES)}\n\n{glossary.prompt_block()}\n\n## 今回の語り口\n{voice_text}"
             )
             if related:
                 log(f"   [context] 過去記事 {len(related)} 本: {', '.join(r['slug'] for r in related)}")
             started = time.time()
             status, record, model_name, info = gated(
-                q, "trend", system, build_trend_prompt(q, fetched, genre, context), TREND_SCHEMA, source_text,
+                q, "trend", system, build_trend_prompt(q, fetched, genre, context), schema_for(TREND_SCHEMA, genre.slug), source_text,
                 lambda data, model, q=q, fetched=fetched, voice_key=voice_key, related=related: attach_related(
                     build_trend_record(q, fetched, data, model, voice_key), data, related
                 ),

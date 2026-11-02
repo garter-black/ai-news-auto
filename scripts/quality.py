@@ -21,6 +21,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import calc_facts  # noqa: E402
+import glossary  # noqa: E402
 import japan_availability  # noqa: E402
 import llm  # noqa: E402
 import persona  # noqa: E402
@@ -200,6 +201,421 @@ def ui_step_problems(record: dict, source_text: str, context: str = "") -> list[
         return []
     return [f"元記事・確認済みの資料に無い画面の手順・メニュー名・ボタン名がある（{'、'.join('「' + b[:24] + '」' for b in bad[:4])}）。"
             "資料にある道順だけを書くか、「公式ヘルプの手順を確認してください」と書く"]
+
+
+# --------------------------------------------------------------------------- #
+# 言葉のチェック（2026-11-03）: 中国語の混入・訳し残しの英単語・用語の誤訳。API 不要。
+# 見つかった文は repair_language() が「その文だけ」直す（安い手直し）。直らなければ形の不合格（作り直し）
+# --------------------------------------------------------------------------- #
+
+# 中国語にしかない言い回し（日本語の漢字だけで書けてしまうもの。簡体字を含むものは下の文字の判定で見つかる）。
+# 「所以」は「100万カ所以上」に出るので入れない
+CHINESE_PHRASE_RE = re.compile(
+    r"但是|可以|如果|而且|就是|然而|例如|以及|什么|怎么|我们|你们|他们|那个|不过|还是|因为|虽然|其实|那么|这样|并且|已经|应该"
+)
+_HAN_RE = re.compile(r"[㐀-䶿一-鿿]")
+
+
+def simplified_chars(text: str) -> list[str]:
+    """日本語の文字コード（cp932）に無い漢字＝中国の簡体字など（这・们・过・进 など）。2026-11-03 の全896記事で誤判定 0 件"""
+    out = []
+    for ch in dict.fromkeys(_HAN_RE.findall(text or "")):
+        try:
+            ch.encode("cp932")
+        except UnicodeEncodeError:
+            out.append(ch)
+    return out
+
+
+# 日本語の文の中に、日本語に挟まれて1語だけ残った小文字の英単語（「初期 adopter向け」）。製品名・コマンド名は小文字でも
+# 普通の英単語ではないので、この一覧（訳すべき普通の英単語）に入っているものだけを見る（2026-11-03 の全記事で13件・ほぼ本物）
+HALF_EN_WORDS = frozenset("""
+adopter adopters early user users feature features release releases update updates inference reasoning training launch launched
+available availability support supported pricing price prices plan plans customer customers business businesses enterprise
+developer developers team teams performance security privacy cost costs revenue growth market markets people company companies
+product products service services allowance processing picker selection resolution matching governed generalized contextual
+checks effort blocking tier platform storage reusable second dollars drift decoding long-term short-term
+access accuracy analysis announcement benefit benefits capability capabilities change changes choice community content contract
+control data deal demand design device devices efficiency employee employees experience feedback free global goal
+improvement industry information insight insights investment investors leader leaders level limit limits management
+member members mission network new news number offer option options partner partners partnership policy power preview process
+productivity program project projects quality rate region regions report research result results risk risks rollout
+safety sales scale schedule share solution solutions speed standard strategy subscription subscribers success summary
+system systems target task tasks technology test testing tool tools traffic trial usage value version vision workers workforce
+worldwide yearly monthly weekly daily annual quarterly income profit profits loss losses adoption beta waitlist
+generally general public private official officially upcoming coming soon recently latest previous current future
+""".split())
+_JA_CHAR = r"[぀-ヿ㐀-鿿々〆ー、。・「」]"
+HALF_EN_RE = re.compile(rf"(?:(?<={_JA_CHAR})|(?<={_JA_CHAR} ))([a-z][a-z\-]{{2,}})(?= ?{_JA_CHAR})")
+
+
+def _strip_for_language(text: str) -> str:
+    """言葉のチェックで見ない部分（コード・リンク先・URL・引用した英語の画面の文字・英語の補足（ ））を消す"""
+    t = re.sub(r"```.*?```", " ", text or "", flags=re.S)
+    t = re.sub(r"`[^`]*`", " ", t)
+    t = re.sub(r"!?\[([^\]]*)\]\([^)]*\)", r"\1", t)
+    t = re.sub(r"https?://\S+", " ", t)
+    t = re.sub(r"[\"“][^\"”\n]{1,80}[\"”]", " ", t)
+    t = re.sub(r"「[\x20-\x7e]{1,80}」", " ", t)
+    # 「調査（research）」「（tabs、tabGroups、storage など）」のような英語の補足・一覧は訳し残しではない
+    t = re.sub(r"[（(][^（()）\n]{0,80}[）)]", lambda m: " " if len(re.findall(r"[A-Za-z]", m.group(0))) * 2 >= len(m.group(0)) - 2 else m.group(0), t)
+    return t
+
+
+def sentence_language_issues(sentence: str, source_text: str = "") -> list[str]:
+    """1文の言葉の問題（直し方の説明つき）"""
+    issues = []
+    text = _strip_for_language(sentence)
+    chars = simplified_chars(text)
+    if chars:
+        issues.append(f"中国の簡体字（{''.join(chars[:5])}）が混ざっている")
+    if m := CHINESE_PHRASE_RE.search(text):
+        issues.append(f"中国語の言い回し（「{m.group(0)}」）が混ざっている")
+    words = [w for w in HALF_EN_RE.findall(text) if w in HALF_EN_WORDS]
+    if words:
+        issues.append(f"英単語（{', '.join(dict.fromkeys(words))}）が訳されずに残っている")
+    for bad in glossary.mistranslations(text, source_text):
+        issues.append(f"用語の誤訳 {bad}")
+    return issues
+
+
+# 言葉のチェックをする欄（読者に見えるもの）。(欄の名前, 取り出し方)
+def _language_units(record: dict) -> list[tuple[str, int | None, str]]:
+    """(欄, 一覧の番号 or None, 文)。本文などは1文ずつに分ける"""
+    units: list[tuple[str, int | None, str]] = []
+    for key in ("title", "seoTitle", "lede", "description", "body", "easy", "threadsPost"):
+        value = record.get(key)
+        if not isinstance(value, str):
+            continue
+        for line in value.splitlines():
+            for sentence in re.split(r"(?<=[。！？])", line):
+                if sentence.strip():
+                    units.append((key, None, sentence.strip()))
+    for key in ("highlights", "todayActions"):
+        for i, value in enumerate(record.get(key) or []):
+            units.append((key, i, str(value)))
+    for i, row in enumerate(record.get("faq") or []):
+        units.append(("faq.q", i, str(row.get("q", ""))))
+        units.append(("faq.a", i, str(row.get("a", ""))))
+    for i, value in enumerate((record.get("workMoney") or {}).get("points") or []):
+        units.append(("workMoney", i, str(value)))
+    if isinstance(record.get("verdict"), dict) and record["verdict"].get("take"):
+        units.append(("verdict.take", None, str(record["verdict"]["take"])))
+    return units
+
+
+def language_issues(record: dict, source_text: str = "") -> list[dict]:
+    """[{field, index, sentence, issues}]。同じ文は1回だけ"""
+    out, seen = [], set()
+    for field, index, sentence in _language_units(record):
+        if (field, sentence) in seen:
+            continue
+        issues = sentence_language_issues(sentence, source_text)
+        if issues:
+            seen.add((field, sentence))
+            out.append({"field": field, "index": index, "sentence": sentence, "issues": issues})
+    return out
+
+
+def language_problems(record: dict, source_text: str = "") -> list[str]:
+    found = language_issues(record, source_text)
+    if not found:
+        return []
+    examples = "、".join(f"「{x['sentence'][:30]}」→{x['issues'][0]}" for x in found[:3])
+    return [f"言葉の問題がある文が{len(found)}か所（{examples}）。中国語・訳し残しの英単語を自然な日本語にし、用語集どおりに訳す"]
+
+
+LANG_FIX_SCHEMA = {
+    "type": "OBJECT",
+    "properties": {
+        "fixes": {
+            "type": "ARRAY",
+            "items": {
+                "type": "OBJECT",
+                "properties": {"id": {"type": "INTEGER"}, "text": {"type": "STRING"}},
+                "required": ["id", "text"],
+                "propertyOrdering": ["id", "text"],
+            },
+        }
+    },
+    "required": ["fixes"],
+}
+
+LANG_FIX_SYSTEM = """あなたはニュースサイトの校閲者です。指摘された文だけを、自然な日本語に直します。出力は指定の JSON だけ。"""
+
+LANG_FIX_PROMPT = """次の文には言葉の問題（中国語の混入・訳されずに残った英単語・用語の誤訳）があります。1文ずつ直してください。
+
+# 直し方
+- 指摘された問題だけを直す。中国語の言葉・簡体字は日本語に、英単語は日本語に訳す（製品名・会社名・略語はそのまま）。
+- 事実・数字・日付・固有名詞・リンク・太字（**）は一字も変えない。文を足したり削ったりしない（1文は1文のまま）。
+- 用語は次の用語集どおりに訳す。
+
+{glossary}
+
+# 直す文（id ごとに、直した文を text に入れて返す）
+{items}"""
+
+
+def _replace_unit(record: dict, field: str, index: int | None, old: str, new: str) -> bool:
+    if field in ("faq.q", "faq.a"):
+        row = (record.get("faq") or [])[index]
+        key = field.split(".")[1]
+        if row.get(key) == old:
+            row[key] = new
+            return True
+        return False
+    if field == "workMoney":
+        points = (record.get("workMoney") or {}).get("points") or []
+        if index is not None and index < len(points) and points[index] == old:
+            points[index] = new
+            return True
+        return False
+    if field == "verdict.take":
+        if (record.get("verdict") or {}).get("take") == old:
+            record["verdict"]["take"] = new
+            return True
+        return False
+    if index is not None:
+        values = record.get(field) or []
+        if index < len(values) and values[index] == old:
+            values[index] = new
+            return True
+        return False
+    value = record.get(field)
+    if isinstance(value, str) and old in value:
+        record[field] = value.replace(old, new, 1)
+        return True
+    return False
+
+
+def repair_language(record: dict, source_text: str = "") -> tuple[int, int, str]:
+    """言葉の問題がある文だけを、安いモデル（CHECK_TIER）で1回直す。record をその場で書き換える。
+    (見つかった数, 直した数, 使ったモデル)。数字が変わった・問題が残った直しは使わない"""
+    found = language_issues(record, source_text)
+    if not found:
+        return 0, 0, ""
+    found = found[:20]
+    items = "\n".join(f"- id {i}: {x['sentence']}\n  問題: {' / '.join(x['issues'])}" for i, x in enumerate(found))
+    prompt = LANG_FIX_PROMPT.format(glossary=glossary.prompt_block(), items=items)
+    data, model = llm.generate_json(LANG_FIX_SYSTEM, prompt, LANG_FIX_SCHEMA, temperature=0.1, max_output_tokens=4096, tier=CHECK_TIER)
+    fixed = 0
+    for row in data.get("fixes") or []:
+        try:
+            x = found[int(row.get("id"))]
+        except (TypeError, ValueError, IndexError):
+            continue
+        new = str(row.get("text") or "").strip()
+        if not new or new == x["sentence"] or _numbers(new) != _numbers(x["sentence"]):
+            continue
+        if sentence_language_issues(new, source_text):
+            continue
+        if x["sentence"].count("**") != new.count("**") or x["sentence"].count("](") != new.count("]("):
+            continue
+        fixed += _replace_unit(record, x["field"], x["index"], x["sentence"], new)
+    return len(found), fixed, model
+
+
+# --------------------------------------------------------------------------- #
+# Threads 紹介文の「要約すると、」（threads_hooks.POST_STYLE 3 の型。2つ目のかたまりの書き出し）
+# --------------------------------------------------------------------------- #
+
+
+def _post_blocks(text: str) -> list[str]:
+    return [b.strip() for b in re.split(r"\n\s*\n", str(text or "").strip()) if b.strip()]
+
+
+def summary_opener_problems(record: dict) -> list[str]:
+    """紹介文（threads_post）の2つ目のかたまりが「要約すると、」で始まっているか（型が3の記事だけ）"""
+    if int(record.get("threadsStyle") or 0) < 3 or not str(record.get("threadsPost") or "").strip():
+        return []
+    blocks = _post_blocks(record["threadsPost"])
+    opener = f"{persona.SUMMARY_OPENER}、"
+    if len(blocks) == 3 and blocks[1].startswith(opener):
+        return []
+    return [f"threads_post が「書き出し／{opener}＋事実2文／問いかけ」の3つのかたまりになっていない（2つ目のかたまりを「{opener}」で始める）"]
+
+
+def fix_summary_opener(record: dict) -> bool:
+    """機械で直せる崩れだけ直す（2つ目のかたまりの頭に「要約すると、」が無い・「要約すると：」になっている）"""
+    post = str(record.get("threadsPost") or "")
+    blocks = _post_blocks(post)
+    opener = f"{persona.SUMMARY_OPENER}、"
+    if len(blocks) != 3 or blocks[1].startswith(opener):
+        return False
+    second = re.sub(rf"^{persona.SUMMARY_OPENER}\s*[、,:：]?\s*", "", blocks[1])
+    second = re.sub(r"^(?:つまり|簡単に言うと|ざっくり言うと|ひとことで言うと)[、,:：]\s*", "", second)
+    if not second or second.endswith(("？", "?")):
+        return False
+    record["threadsPost"] = "\n\n".join([blocks[0], opener + second, blocks[2]])
+    return True
+
+
+POST_FIX_SCHEMA = {"type": "OBJECT", "properties": {"threads_post": {"type": "STRING"}}, "required": ["threads_post"]}
+
+
+def repair_summary_opener(record: dict) -> str:
+    """紹介文だけを型どおりに書き直す（安いモデル。本文は変えない）。使ったモデル名。直らなければ例外にせず元のまま"""
+    import threads_hooks  # noqa: PLC0415 - 重い import を避ける
+
+    prompt = (
+        f"{threads_hooks.POST_RULES}\n\n# 記事\nタイトル: {record.get('title', '')}\nリード: {record.get('lede', '')}\n"
+        f"要点: {' / '.join(record.get('highlights') or [])}\n\n# 今の紹介文（型が崩れている）\n{record.get('threadsPost', '')}\n\n"
+        "上のルールの3つのかたまり（書き出し／「要約すると、」で始まる事実2文／問いかけ）に直した threads_post を返す。"
+        "事実・数字は記事のとおり。記事に無いことを足さない。"
+    )
+    data, model = llm.generate_json("あなたはニュースサイトのSNS担当の編集者です。出力は指定の JSON だけ。", prompt, POST_FIX_SCHEMA,
+                                    temperature=0.3, max_output_tokens=1024, tier=CHECK_TIER)
+    new = re.sub(r"\n{3,}", "\n\n", str(data.get("threads_post") or "").strip())
+    old = record.get("threadsPost")
+    record["threadsPost"] = new
+    if summary_opener_problems(record) or sentence_language_issues(new):
+        record["threadsPost"] = old
+        return ""
+    return model
+
+
+# --------------------------------------------------------------------------- #
+# 料金・プランのページの差分（page_watch / pricing_watch）を、そのまま貼っていないか
+# --------------------------------------------------------------------------- #
+
+RAW_DIFF_RE = re.compile(
+    r"(?m)^\s*[-*]\s*(?:削除|追加)\s*[:：]|"
+    r"(?<![A-Za-z])(?:Plan|Feature|Price|Tier|Model|Limit|Usage)\s*:\s*[^,\n。]{1,40},\s*(?:Plan|Feature|Price|Tier|Model|Limit|Usage)\s*:"
+)
+
+
+def raw_diff_problems(record: dict) -> list[str]:
+    """ページの差分の行（「- 追加: …」「Plan: Pro, Feature: …」）がそのまま記事に出ていないか"""
+    text = "\n".join(str(record.get(k) or "") for k in ("title", "lede", "body", "easy", "description", "videoTitle"))
+    text += "\n" + "\n".join(record.get("highlights") or [])
+    m = RAW_DIFF_RE.search(text)
+    if not m:
+        return []
+    return [f"料金・プランのページの差分（「{m.group(0)[:30]}」）をそのまま貼っている。変更点は自然な日本語の文か表（前→後）で説明する"]
+
+
+# --------------------------------------------------------------------------- #
+# 判定カード（verdict）と本文の食い違い
+# --------------------------------------------------------------------------- #
+
+# いま提供が始まっている（順次提供を含む）言い方。「予定」「これから」を含む文は数えない
+ROLLING_RE = re.compile(
+    r"順次(?:提供|展開|配信|公開)(?:され|を始め|を開始し|し)て(?:い|おり)|順次(?:提供|展開|配信)中|"
+    r"提供(?:を|が)(?:開始|始まり|始め)(?:しました|ました|られました)|提供(?:が始まって|されて)います|提供中です|"
+    r"利用できるようになりました|使えるようになりました|一般提供(?:を開始|が始まり)"
+)
+FUTURE_RE = re.compile(r"予定|見込み|今後|将来|これから|まもなく|近く|以降|か月|年内|未定|まだ|始まっていません|されていません|ではありません")
+JAPAN_YES_RE = re.compile(r"(?:日本(?:から|でも|で)?(?:も)?)?(?:使えます|利用できます|使用できます|利用可能です|使える状態です|提供されています|対応しています)")
+JAPAN_NO_RE = re.compile(r"使えません|利用できません|提供されていません|対象外|提供の予定はありません|未提供|対応していません")
+JAPAN_PARTIAL_RE = re.compile(r"英語のみ|英語だけ|英語版|API(?:経由|から)|一部|条件|法人|限定|ただし")
+
+
+def _section(body: str, heading_re: re.Pattern) -> str:
+    m = heading_re.search(body or "")
+    if not m:
+        return ""
+    rest = body[m.end():]
+    nxt = re.search(r"^##\s", rest, re.M)
+    return rest[: nxt.start()] if nxt else rest
+
+
+def _first_sentence(text: str) -> str:
+    for line in (text or "").splitlines():
+        line = line.strip()
+        if line and not line.startswith(("#", "|", "-", "*", ">")):
+            return re.split(r"(?<=[。！？])", line)[0]
+    return ""
+
+
+def _status_sentences(record: dict) -> list[str]:
+    """提供状況を述べる文（リード・概要・日本で使える？の最初の段落・判定のひとこと）。表と箇条書きは見ない"""
+    body = record.get("body") or ""
+    parts = [record.get("lede") or "", _section(body, re.compile(r"^##\s*概要.*$", re.M)),
+             _section(body, japan_availability.JAPAN_HEADING_RE), (record.get("verdict") or {}).get("take") or ""]
+    out = []
+    for part in parts:
+        for line in part.splitlines():
+            if line.strip().startswith(("|", "#")):
+                continue
+            out += [s for s in re.split(r"(?<=[。！？])", line) if s.strip()]
+    return out
+
+
+def align_verdict(record: dict) -> list[str]:
+    """判定カードを本文の答えにそろえる（はっきり分かるときだけ）。直した内容の説明を返す。
+    - status が soon/demo なのに、本文が「順次提供されています」「提供を開始しました」と書いている → limited（段階的に提供中）
+    - japan が unknown なのに、「日本で使える？」の最初の1文が「使えます」 → ok（英語のみ・API だけ等の条件があれば partial）"""
+    verdict = record.get("verdict")
+    if not isinstance(verdict, dict) or verdict.get("kind") in ("sports", "public"):
+        return []
+    notes = []
+    if verdict.get("status") in ("soon", "demo"):
+        hit = next((s for s in _status_sentences(record) if ROLLING_RE.search(s) and not FUTURE_RE.search(s)), None)
+        if hit:
+            notes.append(f"判定の提供状況 {verdict['status']} → limited（本文「{hit.strip()[:40]}」）")
+            verdict["status"] = "limited"
+    section = _section(record.get("body") or "", japan_availability.JAPAN_HEADING_RE)
+    first = _first_sentence(section)
+    if verdict.get("japan") == "unknown" and first and JAPAN_YES_RE.search(first) and not JAPAN_NO_RE.search(first) \
+            and not FUTURE_RE.search(first) and not japan_availability.UNKNOWN_ANSWER_RE.search(first):
+        # 条件（英語のみ・API だけ・一部の人だけ）は、最初の段落の続きの文に書かれることが多い
+        para = section.strip().split("\n\n")[0]
+        value = "partial" if JAPAN_PARTIAL_RE.search(para) else "ok"
+        notes.append(f"判定の日本 unknown → {value}（本文「{first[:40]}」）")
+        verdict["japan"] = value
+    return notes
+
+
+def verdict_problems(record: dict) -> list[str]:
+    """判定カードと本文の「日本で使える？」・提供状況が食い違っていないか（align_verdict で直せないもの）"""
+    verdict = record.get("verdict")
+    if not isinstance(verdict, dict) or verdict.get("kind") in ("sports", "public"):
+        return []
+    problems = []
+    first = _first_sentence(_section(record.get("body") or "", japan_availability.JAPAN_HEADING_RE))
+    if first:
+        says_no = bool(JAPAN_NO_RE.search(first))
+        says_yes = bool(JAPAN_YES_RE.search(first)) and not says_no and not FUTURE_RE.search(first)
+        if verdict.get("japan") == "ok" and says_no:
+            problems.append(f"判定は「日本から使える」なのに、本文の「日本で使える？」は「{first[:30]}」。どちらかを元記事に合わせてそろえる")
+        if verdict.get("japan") == "no" and says_yes:
+            problems.append(f"判定は「日本では未提供」なのに、本文の「日本で使える？」は「{first[:30]}」。どちらかを元記事に合わせてそろえる")
+    if verdict.get("status") in ("soon", "demo"):
+        hit = next((s for s in _status_sentences(record) if ROLLING_RE.search(s) and not FUTURE_RE.search(s)), None)
+        if hit:
+            problems.append(f"判定は「提供はこれから」なのに、本文は「{hit.strip()[:30]}」と書いている。提供状況をそろえる")
+    if verdict.get("status") == "available":
+        hit = next((s for s in _status_sentences(record)[:6] if re.search(r"提供(?:は|が)?(?:まだ|これから)|提供開始は未定|まだ(?:使えません|提供されていません)", s)), None)
+        if hit and not re.search(r"日本", hit):
+            problems.append(f"判定は「今すぐ使える」なのに、本文は「{hit.strip()[:30]}」と書いている。提供状況をそろえる")
+    return problems
+
+
+def pre_gate_repair(record: dict, source_text: str = "", log=print) -> list[str]:
+    """品質ゲートの前の安い手直し（record をその場で書き換える）。行ったことの説明を返す。
+    1. 判定カードを本文にそろえる  2. 紹介文の「要約すると、」（機械 → だめなら紹介文だけ書き直し）
+    3. 中国語・訳し残しの英単語・誤訳の文だけ直す。ここで直らなかったものは evaluate の形のチェックで不合格になる"""
+    notes = align_verdict(record)
+    if summary_opener_problems(record):
+        if fix_summary_opener(record):
+            notes.append("紹介文の2つ目のかたまりに「要約すると、」を付けた")
+        else:
+            try:
+                model = repair_summary_opener(record)
+            except Exception as error:  # noqa: BLE001
+                model, notes = "", notes + [f"紹介文の書き直しに失敗（{str(error)[:60]}）"]
+            if model:
+                notes.append(f"紹介文を型どおりに書き直した（{model}）")
+    try:
+        found, fixed, model = repair_language(record, source_text)
+    except Exception as error:  # noqa: BLE001
+        found, fixed, model = 1, 0, ""
+        notes.append(f"言葉の手直しに失敗（{str(error)[:60]}）")
+    if found:
+        notes.append(f"言葉の問題 {found} 文のうち {fixed} 文を直した（{model or '-'}）")
+    for note in notes:
+        log(f"   [repair] {note}")
+    return notes
 
 
 # お金・税・制度の記事の章立て（web_articles.MONEY_OUTLINE）で必ず要る章。早見表は材料が無ければ省いてよい
@@ -419,6 +835,11 @@ def structural_problems(record: dict, kind: str, source_text: str = "", context:
     if record.get("sourceType") == "web" and kind != "update" and not record.get("workMoney"):
         problems.append(f"work_money（「{persona.WORK_MONEY_HEADING}」欄）がありません")
     problems += persona.work_money_problems(record.get("workMoney"))
+    problems += language_problems(record, source_text)
+    problems += raw_diff_problems(record)
+    if kind != "update":
+        problems += summary_opener_problems(record)
+        problems += verdict_problems(record)
     if record.get("sourceType") == "web" and kind != "update":
         problems += first_person_problems(record)
         problems += promise_problems(record)

@@ -291,6 +291,20 @@ def _with_links(watch: dict, entry_md: str) -> str:
     return "\n\n".join(parts)
 
 
+DIFF_KIND_RES = (
+    ("料金", re.compile(r"\$\s?\d|¥\s?\d|\d\s?円|/\s?(?:mo|month)|per (?:user|month|seat)|月額|年額|price|pricing|credit", re.I)),
+    ("利用上限", re.compile(r"limit|usage|messages|quota|allowance|上限|回数", re.I)),
+)
+
+
+def diff_title(watch: dict, removed: list[str], added: list[str]) -> str:
+    """料金・プランのページの差分の候補の題名（日本語だけ）。何の行が変わったか（料金・利用上限・プラン）を添える"""
+    name = watch.get("product_name") or watch["name"]
+    text = "\n".join(removed + added)
+    kinds = [label for label, pattern in DIFF_KIND_RES if pattern.search(text)] or ["プラン"]
+    return f"{name}の料金・プランのページが更新（{'・'.join(kinds)}の記載が変更）"
+
+
 def check_one(watch: dict, page: dict, now: datetime, md: str) -> list[dict]:
     """1ページ分。page は状態（書き換える）。候補のリスト"""
     out: list[dict] = []
@@ -353,10 +367,11 @@ def check_one(watch: dict, page: dict, now: datetime, md: str) -> list[dict]:
     change = "\n".join([f"- 削除: {x}" for x in removed[:20]] + [f"- 追加: {x}" for x in added[:20]])
     if not is_significant(watch, change):
         return out
-    summary = " / ".join(added[:3]) or " / ".join(removed[:3])
-    title = f"{watch.get('product_name') or watch['name']}が更新: {summary}"
+    # 題名は日本語だけにする（記事ページの「出典」に元の題名として出る。英語の差分の行を題名に入れない。2026-11-03）
+    title = diff_title(watch, removed, added)
     content = (
         f"【{watch['name']}（{watch['url']}）の変更点。前回の確認（{prev_since}）から {now.isoformat(timespec='minutes')} までの差分】\n"
+        "（下の「- 削除:」「- 追加:」の行は公式ページの表示の差分そのもの。記事には貼らず、何がどう変わったかを日本語の文か表で説明する）\n"
         f"{change}\n\n【現在のページの内容】\n" + "\n".join(lines)[:8000]
     )
     key = f"entry-{now.astimezone(JST):%Y-%m-%d}-{h[:6]}"
