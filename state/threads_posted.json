@@ -2905,7 +2905,8 @@
       "permalink": "",
       "channels": {
         "twitter": "6ae825a07817c41d1a46fa40",
-        "facebook": "6ae825a1c60bdbcc33d9c275"
+        "facebook": "6ae825a1c60bdbcc33d9c275",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzdizbytn72q"
       },
       "hook": "breaking",
       "score": 6,
@@ -2917,7 +2918,8 @@
       "questionText": "無料なら試してみますか？",
       "comment": "編集部：まず無料で触ってみられるのがいいですね。",
       "dueAt": "2026-11-02T13:45:00+00:00",
-      "postedAt": "2026-11-02T05:54:41+00:00"
+      "postedAt": "2026-11-02T05:54:41+00:00",
+      "blueskyAt": "2026-11-02T14:13:04+00:00"
     },
     "cyberagent-fy2026-results-date": {
       "id": "6ae83ac31a965d64fbf6417e",
