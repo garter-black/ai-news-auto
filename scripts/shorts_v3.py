@@ -85,8 +85,7 @@ FOCUS = (PW * 0.5, PH * 0.40)  # 注目する文字を置くパネル内の位�
 ANCHOR_Y = PANEL[1] + int(FOCUS[1])  # キーワードの縦の中心（画面の注目の行と同じ高さ＝目が横に動くだけ）
 SOURCE_Y = 968  # 出典の小さな1行
 LOGO_XY = (104, 70)
-SUB_BOTTOM = PANEL[3] - 44  # 日本語字幕の下端（画面の中）
-SUB_W = PW - 200
+SUB_TOP = 636  # 日本語字幕のカードの上端（左の列・補足の下）
 
 # ページの撮影
 CAPTURE_W = 540  # CSS px（縦の画面にちょうど入るスマホ〜小型タブレットの幅）
@@ -1280,18 +1279,36 @@ def big_lines(text: str) -> np.ndarray:
 
 
 def subtitle_sprite(text: str) -> np.ndarray:
-    """日本語字幕: 白い文字＋やわらかい影（箱は描かない。画面の下のぼかした影の上に乗る）"""
-    core = wrapped(text, "bold", range(42, 31, -2), SUB_W, 2, color=WHITE, accent=False, center=True)
-    pad = 14
-    h, w = core.shape[:2]
-    out = np.zeros((h + pad * 2, w + pad * 2, 4), dtype=np.uint8)
-    a = np.zeros((h + pad * 2, w + pad * 2), dtype=np.uint8)
-    a[pad + 2 : pad + 2 + h, pad : pad + w] = core[..., 3]
-    shadow = np.asarray(Image.fromarray(a).filter(ImageFilter.GaussianBlur(6))).astype(np.float32) * 0.85
+    """日本語字幕: 左の文字の列の下に置く白いカード（小さな見出し「英文の訳」＋訳）。画面のページの上には重ねない"""
+    pad_x, pad_y = 30, 24
+    label = fit_line("英文の訳", "bold", range(22, 16, -2), COL_W, color=BLUE, accent=False, tracking=0.08)
+    body = wrapped(text, "bold", range(36, 27, -1), COL_W - pad_x * 2, 3, color=INK, accent=False)
+    w = COL_W
+    h = pad_y * 2 + label.shape[0] + 12 + body.shape[0]
+    sh = 18  # 影の余白
+    out = np.zeros((h + sh * 2, w + sh * 2, 4), dtype=np.uint8)
+    card, shadow = _mask_sub_card(w, h, sh)
     out[..., :3] = INK
-    out[..., 3] = np.clip(shadow, 0, 255).astype(np.uint8)
-    blend_rgba(out, core, pad, pad)
+    out[..., 3] = shadow
+    white = np.zeros_like(out)
+    white[..., :3] = 255
+    white[..., 3] = card
+    blend_rgba(out, white, 0, 0)
+    blend_rgba(out, label, sh + pad_x, sh + pad_y)
+    blend_rgba(out, body, sh + pad_x, sh + pad_y + label.shape[0] + 12)
     return out
+
+
+def _mask_sub_card(w: int, h: int, sh: int) -> tuple[np.ndarray, np.ndarray]:
+    """字幕のカードの形（角丸）と、そのやわらかい影の濃さ（どちらもマスク）"""
+    q = 4
+    big = Image.new("L", ((w + sh * 2) * q, (h + sh * 2) * q), 0)
+    ImageDraw.Draw(big).rounded_rectangle((sh * q, sh * q, (sh + w) * q, (sh + h) * q), radius=18 * q, fill=255)
+    card = big.resize((w + sh * 2, h + sh * 2), Image.LANCZOS)
+    shadow = Image.new("L", card.size, 0)
+    shadow.paste(card, (0, 6))
+    shadow = shadow.filter(ImageFilter.GaussianBlur(10)).point(lambda v: int(v * 0.16))
+    return np.asarray(card), np.asarray(shadow)
 
 
 def blend_rgba(dst: np.ndarray, src: np.ndarray, x: int, y: int) -> None:
@@ -1498,8 +1515,8 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     for a, b, idx in sub_spans:
         text = (items[idx].get("ja") or "").strip()
         spr = subtitle_sprite(text)
-        x = PANEL[0] + (PW - spr.shape[1]) // 2
-        y = SUB_BOTTOM - spr.shape[0] + 14
+        x = COL[0] - 18
+        y = SUB_TOP - 18
         subtitles.append(Subtitle(a, b, text, spr, x, y))
 
     # 注目の場所（画面上の枠）: 字幕がかぶらないかをゲートで見る
@@ -1576,15 +1593,7 @@ def _mask_spot(rect: tuple, pad: float = 18) -> np.ndarray:
     return np.asarray(img.filter(ImageFilter.GaussianBlur(5)).resize((PW, PH), Image.BILINEAR))
 
 
-SCRIM_H = 280
 EDGE_FADE = 64  # 画面の左右の端をなじませる幅
-
-
-def _mask_scrim() -> tuple[np.ndarray, np.ndarray]:
-    """字幕の下: (ぼかしの混ぜ具合, 暗さ)。画面の下 SCRIM_H px だけ・下ほど強い（0〜1）。
-    後ろの画面をすりガラスのようにぼかしてから暗くするので、箱を描かなくても字幕が読める"""
-    y = np.linspace(0, 1, SCRIM_H, dtype=np.float32)
-    return np.clip(y * 2.2, 0, 1)[:, None], (np.clip(y * 1.25, 0, 1) ** 1.3 * 0.80)[:, None]
 
 
 def _highlight_select(img: np.ndarray, rect: tuple, k: float) -> None:
@@ -1638,7 +1647,6 @@ class Renderer:
         self.stage = stage_bg()
         self.corner = _mask_panel_corners()
         self.cursor = _cursor_sprite()
-        self.scrim = _mask_scrim()
         self.edge = (np.linspace(0, 1, EDGE_FADE, dtype=np.float32) ** 1.8) * 0.95  # 端ほど地の色
         self.levels = [self._pyramid(p.img) for p in plan.pages]
         self.bgs = [p.bg() for p in plan.pages]
@@ -1797,18 +1805,6 @@ class Renderer:
         for sl, ramp in ((np.s_[:, :e], self.edge[::-1]), (np.s_[:, PW - e :], self.edge)):
             part = img[sl].astype(np.float32)
             img[sl] = (part * (1 - ramp[None, :, None]) + bg * ramp[None, :, None]).astype(np.uint8)
-        # 字幕の下のぼかした影
-        sa = max((self._fade(t, s.t0, s.t1, 0.22) for s in self.plan.subtitles), default=0.0)
-        if sa > 0:
-            mix, dark = self.scrim
-            h = SCRIM_H
-            roi = img[PH - h :].astype(np.float32)
-            if cv2 is not None:
-                small = cv2.resize(img[PH - h :], (PW // 4, h // 4), interpolation=cv2.INTER_AREA)
-                soft = cv2.resize(cv2.GaussianBlur(small, (0, 0), 3), (PW, h), interpolation=cv2.INTER_LINEAR).astype(np.float32)
-                roi = roi * (1 - mix[..., None] * sa) + soft * (mix[..., None] * sa)
-            a = dark * sa
-            img[PH - h :] = (roi * (1 - a[..., None]) + np.array(INK, dtype=np.float32) * a[..., None]).astype(np.uint8)
         return img
 
     @staticmethod
@@ -1959,7 +1955,7 @@ def text_records(plan: Plan) -> list[dict]:
     rows = [(item.role, item.text, item.sprite, item.bbox(), item.t0, item.t1) for item in plan.texts]
     for sub in plan.subtitles:
         spr = sub.sprite
-        ys, xs = np.nonzero(spr[..., 3] > 120)
+        ys, xs = np.nonzero(spr[..., 3] > 200)
         bbox = [float(sub.x + xs.min()), float(sub.y + ys.min()), float(sub.x + xs.max() + 1), float(sub.y + ys.max() + 1)]
         rows.append(("subtitle", sub.text, spr, bbox, sub.t0, sub.t1))
     for role, text, spr, bbox, t0, t1 in rows:
@@ -1968,16 +1964,13 @@ def text_records(plan: Plan) -> list[dict]:
         elif role in ("source", "credit"):
             box = [COL[0], SOURCE_Y - 60, PANEL[0] - 8, H - 20]
         elif role == "subtitle":
-            box = list(PANEL)
+            box = [COL[0] - 20, SUB_TOP - 20, COL[2] + 20, SOURCE_Y - 8]
         else:
             box = [0, 0, PANEL[0], PANEL[1] + 40]
-        size = {"hook": 46, "keyword": 72, "sub": 30, "conclusion": 46, "eyebrow": 20, "source": 18, "credit": 16, "subtitle": 30, "logo": 24}.get(role, 18)
+        size = {"hook": 46, "keyword": 72, "sub": 30, "conclusion": 46, "eyebrow": 20, "source": 18, "credit": 16, "subtitle": 27, "logo": 24}.get(role, 18)
         color = {"sub": MUTED, "source": SOFT, "credit": SOFT, "eyebrow": BLUE}.get(role, INK)
-        if role == "subtitle":  # 白い字 ↔ 字幕の影（文字の中ほどの高さ・白いページの上で）
-            k = min(1.0, max(0.0, ((bbox[1] + bbox[3]) / 2 - (PANEL[3] - SCRIM_H)) / SCRIM_H))
-            a = min(1.0, k * 1.25) ** 1.3 * 0.80
-            bg = tuple(int(255 * (1 - a) + c * a) for c in INK)
-            contrast = gate.contrast(WHITE, bg)
+        if role == "subtitle":  # 白いカードの上の墨の字
+            contrast = gate.contrast(INK, WHITE)
         else:
             contrast = min(gate.contrast(color, STAGE), gate.contrast(ACCENT, STAGE) if role == "keyword" else 99)
         face = "logo" if role == "logo" else ("black" if role in ("hook", "keyword", "conclusion") else "bold")
