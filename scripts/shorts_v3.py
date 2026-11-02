@@ -99,8 +99,10 @@ GAP = 0.22
 END_HOLD = 0.7  # 締めの声のあと、最後の画面を残す時間（締めのカードは作らない）
 CREDIT_SEC = 1.4  # 最後の場面に小さく出すクレジットの長さ
 HOOK_TEXT_MAX = 1.7  # つかみの文字はこの時刻までに消す（ゲートは 2.0 秒）
-TARGET_MAX = 30.5
-TARGET_MIN = 20.5
+# 長さ（2026-11-02 夜 オーナー「30秒に収めなくてよい。ちゃんと説明して」→ 45〜75秒）
+TARGET_MAX = 74.0
+TARGET_MIN = 42.0
+LENGTH_RANGE = (40.0, 80.0)  # ゲートの長さの範囲（report["length_range"] で渡す）
 SEP_TARGET_DB = 15.0  # 声と BGM の差
 
 # 声（2026-11-02 夜 オーナーが試聴サンプル6つから「九州そら（ノーマル・高さ-0.01・抑揚1.0・速さ1.38）」を選んだ。
@@ -494,6 +496,7 @@ def snippets(pages: list[Page], per_page: int = 70) -> str:
 _BEAT = {
     "type": "OBJECT",
     "properties": {
+        "label": {"type": "STRING"},
         "keyword": {"type": "STRING"},
         "sub": {"type": "STRING"},
         "speech": {"type": "STRING"},
@@ -501,7 +504,19 @@ _BEAT = {
         "target": {"type": "STRING"},
         "ja": {"type": "STRING"},
     },
-    "required": ["keyword", "sub", "speech", "block", "target", "ja"],
+    "required": ["label", "keyword", "sub", "speech", "block", "target", "ja"],
+}
+_ROW = {
+    "type": "OBJECT",
+    "properties": {
+        "name": {"type": "STRING"},
+        "price": {"type": "STRING"},
+        "usage": {"type": "STRING"},
+        "mult": {"type": "STRING"},
+        "block": {"type": "STRING"},
+        "target": {"type": "STRING"},
+    },
+    "required": ["name", "price", "usage", "mult", "block", "target"],
 }
 SCRIPT_SCHEMA = {
     "type": "OBJECT",
@@ -517,68 +532,138 @@ SCRIPT_SCHEMA = {
             "properties": {"beat": {"type": "INTEGER"}, "base": {"type": "STRING"}, "subject": {"type": "STRING"}, "ratio": {"type": "STRING"}},
             "required": ["beat", "base", "subject", "ratio"],
         },
+        "ladder": {
+            "type": "OBJECT",
+            "properties": {"beat": {"type": "INTEGER"}, "subject": {"type": "STRING"}, "rows": {"type": "ARRAY", "items": _ROW}},
+            "required": ["beat", "subject", "rows"],
+        },
+        "units": {
+            "type": "OBJECT",
+            "properties": {
+                "beat": {"type": "INTEGER"},
+                "unit": {"type": "STRING"},
+                "subject": {"type": "STRING"},
+                "rows": {"type": "ARRAY", "items": {"type": "OBJECT", "properties": {"name": {"type": "STRING"}, "count": {"type": "INTEGER"}}, "required": ["name", "count"]}},
+            },
+            "required": ["beat", "unit", "subject", "rows"],
+        },
         "conclusion": {"type": "OBJECT", "properties": {"text": {"type": "STRING"}, "speech": {"type": "STRING"}}, "required": ["text", "speech"]},
         "title": {"type": "STRING"},
         "summary": {"type": "STRING"},
         "hashtags": {"type": "ARRAY", "items": {"type": "STRING"}},
     },
-    "propertyOrdering": ["hook", "beats", "compare", "conclusion", "title", "summary", "hashtags"],
-    "required": ["hook", "beats", "compare", "conclusion", "title", "summary", "hashtags"],
+    "propertyOrdering": ["hook", "beats", "compare", "ladder", "units", "conclusion", "title", "summary", "hashtags"],
+    "required": ["hook", "beats", "compare", "ladder", "units", "conclusion", "title", "summary", "hashtags"],
 }
+
+
+BEATS_MIN, BEATS_MAX = 5, 7
+SPEECH_TOTAL_MAX = 330  # 読み上げの合計（九州そら・速さ1.38 で約1秒5字 → 約65秒）
 
 
 def script_system() -> str:
     import persona
 
     p = persona.PERSONA
-    return f"""あなたはニュースサイト「{persona.BRAND}」の横型の短い解説動画（20〜28秒）の構成作家。
+    return f"""あなたはニュースサイト「{persona.BRAND}」の横型の解説動画（45〜70秒）の構成作家。
 動画は「画面で見せる型」: 公式ページの本物の画面をズームして証拠を見せる。画面に出す文字はキーワードだけで、話はナレーションが運ぶ。
 見る人: {p['who']}
-見る人が知りたいこと: 自分の仕事・お金・副業にどう使えるか、何と比べてどうか、どこを押せば試せるか。
-ナレーションの話し方: {p['voice']} 詳しくて頼れる先輩が「これ知ってる？」と話すように、です・ます調で短く。専門用語は普通の言葉に言い換える。
+見る人が知りたいこと: 自分の仕事・お金にどう関係するか。いくらで、何と比べてどれくらい違うか。自分は必要か。どこを押せば確かめられるか。
+ナレーションの話し方: {p['voice']} 詳しくて頼れる先輩が話すように、です・ます調で短い文。専門用語は普通の言葉に言い換える。
 
-# 絶対の決まり
-- 使ってよい事実は「資料」（記事）に書かれていることだけ。推測・補足・一般論の追加は禁止。
-- 例外は「どこを押すか」だけ: 操作の場所（メニュー名・ボタン名・設定の場所）は「画面の文字」にそのまま書かれていれば使ってよい。数字は資料にあるものだけ。
-- 数字・価格・製品名は資料の表記どおり。資料に無い数字は書かない。
+# いちばん大事なこと
+hook の問いに、**具体的な数字と比較で答える**。忙しい会社員が頭の中で絵を描ける答えにする。
+「Proで足りない人向けです」のような、聞かなくても分かる答え・中身の無い言い回しは禁止。
+例（料金のニュース）: 問い「最上位プラン、月200ドル必要？」→ 答え「多くの人は月20ドルのProで足ります。毎日長い作業を任せる人だけ」
+→ 料金の段階（Free 0ドル・Pro 20ドル・Max 100ドル・Ultra 200ドル）と使える量（Proの5倍・10倍）を並べる
+→ たとえ（Proの1週間分を1杯とすると、Maxは5杯、Ultraは10杯）→ 必要な人・要らない人の具体的な目安 → 自分の使用量の確かめ方。
+
+# 事実の決まり
+- 使ってよい事実は「資料」の記事と「公式ページの文字」に書かれていることだけ。推測・一般論・他社の情報の追加は禁止。
+- 数字・価格・製品名は資料の表記どおり。資料に無い数字は書かない（メッセージ数・時間など、公式に無い数字を作らない）。
+  公式に1回あたりの数字が無いときは、倍率（Proの5倍・10倍）と身近な場面（1週間分・1日の作業）で言い換える。
 - 「初」「最大」「最高」「最速」「最安」「唯一」などの評価語は資料に同じ言葉があるときだけ。
 - 煽らない（衝撃・ヤバい・革命・神・ついに・必見は禁止）。絵文字・記号の飾りは禁止。「ざっくり」は使わない（まとめるときは「要約すると」）。
 
 # 構成
-- hook（最初の1.5秒）: text は画面に大きく出す1行（12〜20字）。見る人が「自分ごと」になる問いかけか得。
-  例の形:「Claudeの最上位、月200ドルの価値ある？」。payoff はその答えの手がかりになる数字のキーワード（8字以内・資料の表記どおり。例: 月200ドル）。
-  speech は text を自然に読む1文（16字以内）。block / target は payoff の証拠になる画面の文字。
-  できれば文字の大きい行（番号に「|大」が付いた行。料金表の大きな金額など）を選ぶ。最初の画面になるので見栄えが大事。
-- beats: ちょうど4つ。ニュースを伝えるだけで終わらせず、画面で案内しながら「一歩先」まで連れて行く。順番と役目:
-  1. 何が変わった: 変化を1つにまとめる（例: 名前がUltraに・価格は据え置き）。
-  2. 活用法: 誰の、どんな仕事・お金の場面で、どう使えるか（記事の事実で。例: Proの上限によく当たる人→毎週10倍・5時間制限なし）。
-  3. 比較・注意: 資料に比べる相手（前の版・他のプラン・他社）があれば違いを1つ。無ければ記事にある条件・注意点
-     （例: 月払いのみ／アプリ経由は価格が違うことがある／日本での提供は未確認）。
-  4. 今すること: どこを押せば確かめられる・試せるか（例: 設定の使用状況で確認／料金ページのUltraの欄）。
-     証拠はその手順や場所が書かれた公式ページの行（ヘルプのQ&Aの答え・料金ページの該当プラン・ボタン）。
-  資料が薄いニュース（名前の変更だけ等）は、無理に足さず資料の範囲で短くまとめる。
-  keyword: 画面に大きく出す言葉。2〜8字（例: 手続き不要、Proの10倍、月払いのみ）。文にしない。句読点を付けない。
-  sub: 補足（14字以内。不要なら空）。
-  speech: 読み上げ。1文（長くても短い2文）・28字以内。keyword の数字・名前を必ず含める。
-  block: 下の「画面の文字」一覧の番号（例: 1-23）。target: その行の文字から、この beat の証拠になる部分を**一文字も変えずに**抜き出す（日本語は2〜40字。英語なら英語のまま・100字まで）。
-  英語の target は**文として完結する範囲**（主語から文末のピリオドまで。見出しなら見出し全体）を選ぶ。文の途中で切らない（例: × "Starting this week, we will make Carbon available to a"）。
-  証拠の行は見出し・大きな文字（|大）・短い行を優先し、長い本文の段落は選ばない。
-  ja: target が英語のときだけ、target の日本語訳（画面のその英文のすぐ下に訳として出す）。文全体を、ふつうの話し言葉に近い自然な日本語で（です・ます調・36字以内）。
-  直訳の硬さを避ける（× 最強のモデル。サイバーセキュリティは最先端 → ○ Gemini 4 Carbonは、サイバーセキュリティで最先端の、いちばん強いモデルです）。
-  文の一部だけを訳さない・言葉を足さない・意味を強めない・target に無い数字を入れない。製品名は英字のまま（Ultra・Pro）。target が日本語なら空文字。hook も同じ。
-- **画面の文字は証拠の場所を選ぶためだけに使う。** 画面にあっても記事（資料）に無い事実・数字は、keyword・sub・speech に書かない（ja は target の訳なのでよい）。
-- compare: 2つを倍率で比べられる事実が資料にあるときだけ。beat はそれを話す beat の番号（1〜4）、base は基準（例: Pro）、subject は比べる相手（例: Ultra）、
+- hook（最初の2秒）: text は画面に大きく出す1行（12〜20字）。見る人が「自分ごと」になる問いかけ。
+  payoff はその答えの手がかりになる数字のキーワード（8字以内・資料の表記どおり。例: 月200ドル）。speech は text を自然に読む1文（20字以内）。
+  block / target は payoff の証拠になる画面の文字。できれば文字の大きい行（番号に「|大」）を選ぶ。
+- beats: {BEATS_MIN}〜{BEATS_MAX}個。話題に合わせて次の役目から選んで、この順に並べる（label は左上に小さく出す見出し・2〜7字）:
+  1. 答え（label 例: 答え）: hook の問いへの答えを1行で。誰ならイエスか。
+  2. 比較（label 例: プランの比較・前と比べると）: 料金のニュースなら料金の段階を並べる（ladder を使う）。製品のニュースなら前の版・他のプランとの違い。
+  3. たとえ（label 例: たとえると）: 公式の数字・倍率だけを使って、毎日の仕事の場面に置き換える。
+  4. 必要な人（label 例: 必要な人）: 具体的な目安（例: 毎日、資料作りやコードを何時間も任せる／上限の表示に週に何度も当たる）。
+  5. 要らない人・注意（label 例: 要らない人・注意）: 具体的な目安や条件（例: 1日数回の相談ならPro／月払いのみ／アプリ経由は価格が違う）。
+  6. 確かめ方・使い方（label 例: 確かめ方・使い方）: どこを押せば確かめられる・試せるか（例: 設定の使用状況）。
+  keyword: 画面に大きく出す言葉。2〜8字。文にしない。句読点を付けない。sub: 補足（14字以内。不要なら空）。
+  speech: 読み上げ。短い文で1〜3文・60字以内。keyword の数字・名前を必ず含める。
+  block: 下の「画面の文字」一覧の番号（例: 1-23）。target: その行の文字から、この beat の証拠になる部分を**一文字も変えずに**抜き出す（日本語は2〜40字。英語は100字まで）。
+  英語の target は文として完結する範囲（文の頭から、文末のピリオドかカンマまで）を選ぶ。文の途中で切らない。
+  ja: target が英語のときだけ、target の日本語訳（画面のその英文のすぐ下に訳として出す）。文全体を、自然なです・ます調で（36字以内）。
+  直訳の硬さを避け、文の一部だけを訳さない・言葉を足さない・target に無い数字を入れない。製品名は英字のまま。target が日本語なら空文字。hook も同じ。
+- 読み上げ（hook・beats・conclusion の speech）の合計は{SPEECH_TOTAL_MAX - 30}字前後まで（約60秒）。
+- ladder: 料金の段階を比べる beat があるときだけ（無ければ beat=0・rows は空）。beat はその beat の番号、subject は話の主役のプラン名（例: Ultra）。
+  rows は安い順に2〜5行。name はプラン名、price は画面に出す価格（例: $20/月。公式ページの表記の数字どおり）、
+  usage は使える量の短い説明（例: Proの5倍。公式の表記の範囲で。8字以内）、mult は基準（例: Pro）を1としたときの倍率の数字だけ（例: 5。分からなければ空）。
+  block / target は、その行の価格が書かれた公式ページの文字（料金表のカードの価格など）。target は一覧の文字をそのまま。
+- units: 「たとえ」の beat を絵にするときだけ（無ければ beat=0・rows は空）。基準の量を1つの四角として、各プランが四角いくつ分かを並べる。
+  beat はその beat の番号、unit は基準の言い方（例: Proの1週間分。12字以内）、subject は主役（例: Ultra）、
+  rows は2〜4行で name と count（公式の倍率の数字どおり。例: Pro 1・Max 5・Ultra 10。12まで）。公式に倍率が無ければ使わない。
+- compare: 2つを倍率で比べる事実があり、ladder を使わないときだけ。beat はその beat の番号、base は基準（例: Pro）、subject は相手（例: Ultra）、
   ratio は資料の表記どおりの倍率（例: 10倍）。無ければ beat=0、他は空文字。
-- conclusion: 最後の一言。text は16字以内で hook の問いに答える（例: 上限に困る人なら検討の価値）。speech は14〜22字。
-- 読み上げ（hook・beats・conclusion の speech）の合計は150字以内。声が落ち着いたゆっくりめの声なので、これで約30秒になる。
-- title: 40字以内・主役の名前を入れて事実をそのまま。summary: 説明欄の要約。「要約すると、」で始めて80〜120字。hashtags: 3〜4個（#付き）。
+- conclusion: 最後の一言。text は16字以内で hook の問いに答える。speech は14〜30字。
+- title: 40字以内・主役の名前を入れて事実をそのまま。summary: 説明欄の要約。「要約すると、」で始めて80〜140字。hashtags: 3〜4個（#付き）。
 
-# 画面の文字（text・payoff・keyword・sub・conclusion.text・ja）
+# 画面の文字（text・payoff・keyword・sub・conclusion.text・ja・ladder）
 - 製品名・社名は資料の表記のまま英字で書く（Claude・Gemini・Ultra。カタカナにしない）。カタカナにするのは speech だけ。
 
 # 読み上げ（speech）
 - 英語の製品名・社名はカタカナ（Claude→クロード、OpenAI→オープンエーアイ、Pro→プロ）。記号は言葉に（$200→200ドル、%→パーセント）。
 - 数字はアラビア数字のまま（かなや漢数字にしない）。"""
+
+
+REVIEW_SCHEMA = {
+    "type": "OBJECT",
+    "properties": {"ok": {"type": "BOOLEAN"}, "issues": {"type": "ARRAY", "items": {"type": "STRING"}}},
+    "required": ["ok", "issues"],
+}
+
+
+def review_system() -> str:
+    return """あなたは経済ニュース番組の厳しい編集長。短い解説動画の台本を読んで、次を判定する。
+1. hook の問いに、具体的な数字や比較で答えているか（忙しい会社員が頭の中で絵を描けるか）。
+2. 聞かなくても分かる当たり前の文・中身の無い言い回し（例:「Proで足りない人向けです」「用途に合わせて選びましょう」）が無いか。
+3. 料金のニュースなら料金の段階、製品のニュースなら使い方と比較があるか。
+4. 必要な人・要らない人の目安が具体的か。最後に、どこで確かめられるかが分かるか。
+5. 資料（記事と公式ページの文字）に無い数字や事実を足していないか。
+すべて満たすときだけ ok=true。足りないときは ok=false にし、issues に直し方を具体的に書く（例:「beat3 は倍率をProの1週間分=1杯のように身近に言い換える」）。
+資料に無い数字を足すような直し方は書かない。"""
+
+
+def official_text(pages: list[Page], limit: int = 7000) -> str:
+    """公式ページの文字（事実として使ってよい）。大きな見出し（料金表のプラン名など）ごとに1行にまとめる
+    （「Max / 終日の業務に / $100 / 月額 / Pro の 5 倍の使用量」が同じ行＝同じ話題として数字の文脈を確かめられる）"""
+    out = []
+    for page in pages:
+        out.append(f"## {page.host}（{page.title[:50]}）")
+        line: list[str] = []
+        for b in page.blocks:
+            if b.font_px >= 24 and line:
+                out.append(" / ".join(line).replace("。", "、"))  # 1つの見出しの中は1つの話題（数字の文脈の確認で文を分けない）
+                line = []
+            if b.text and (not line or line[-1] != b.text):
+                line.append(b.text[:300])
+        if line:
+            out.append(" / ".join(line).replace("。", "、"))
+    text = "\n".join(out)
+    return text[:limit]
+
+
+def with_official(article: dict, pages_or_text) -> dict:
+    """事実の照合に使う資料: 記事 ＋ 公式ページの文字（撮った公式ページは一次情報なので、数字の出どころとして認める）"""
+    text = pages_or_text if isinstance(pages_or_text, str) else official_text(pages_or_text)
+    return gate.with_official(article, text)
 
 
 # 画面の文字にカタカナの製品名が入ったら英字に直す（読み上げ用のカタカナが画面に漏れるのを防ぐ）
@@ -634,7 +719,11 @@ def is_english(text: str) -> bool:
 
 
 def script_material(article: dict, pages: list[Page]) -> str:
-    return v2.article_material(article) + "\n\n# 画面の文字（[番号] 文字）\n" + snippets(pages)
+    return (
+        v2.article_material(article)
+        + "\n\n# 公式ページの文字（事実として使ってよい・証拠の場所は下の一覧の番号で）\n" + official_text(pages)
+        + "\n\n# 画面の文字（[番号] 文字）\n" + snippets(pages)
+    )
 
 
 def flat_script(s: dict) -> dict:
@@ -647,6 +736,8 @@ def flat_script(s: dict) -> dict:
         numbers.append({"value": hook["payoff"], "label": ""})
     if comp.get("beat") and comp.get("ratio"):
         numbers.append({"value": comp["ratio"], "label": ""})
+    lad = s.get("ladder") or {}
+    ladder_text = " ".join(f"{r.get('name', '')} {r.get('price', '')} {r.get('usage', '')}" for r in (lad.get("rows") or []) if lad.get("beat"))
     return {
         "title": s.get("title", ""),
         "headline": hook.get("text", ""),
@@ -654,7 +745,7 @@ def flat_script(s: dict) -> dict:
         "points": [{"caption": f"{b.get('keyword', '')} {b.get('sub', '')}".strip(), "speech": b.get("speech", "")} for b in beats],
         "use": {"caption": (s.get("conclusion") or {}).get("text", ""), "speech": (s.get("conclusion") or {}).get("speech", "")},
         "numbers": numbers,
-        "hook_text": " ".join(x for x in [hook.get("payoff", ""), comp.get("base", "") if comp.get("beat") else "", comp.get("subject", "") if comp.get("beat") else ""] if x),
+        "hook_text": " ".join(x for x in [hook.get("payoff", ""), comp.get("base", "") if comp.get("beat") else "", comp.get("subject", "") if comp.get("beat") else "", ladder_text] if x),
         "summary": s.get("summary", ""),
         "hashtags": s.get("hashtags", []),
     }
@@ -666,9 +757,10 @@ def _digits(text: str) -> list[str]:
 
 def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
     out = []
+    article = with_official(article, pages)  # 事実の出どころ: 記事 ＋ 撮った公式ページの文字
     hook, beats, concl = s.get("hook") or {}, s.get("beats") or [], s.get("conclusion") or {}
-    if len(beats) != 4:
-        out.append(f"beats はちょうど4つ（今は{len(beats)}）。")
+    if not (BEATS_MIN <= len(beats) <= BEATS_MAX):
+        out.append(f"beats は{BEATS_MIN}〜{BEATS_MAX}個（今は{len(beats)}）。")
     if not (6 <= len(hook.get("text", "")) <= 22):
         out.append(f"hook.text は12〜20字（今は{len(hook.get('text', ''))}字）。")
     if len(hook.get("payoff", "")) > 9:
@@ -681,15 +773,19 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
             out.append(f"beat{i}.keyword は2〜8字で句読点なし（{kw}）。")
         if len(b.get("sub", "")) > 16:
             out.append(f"beat{i}.sub は14字以内。")
-        if len(b.get("speech", "")) > 32:
-            out.append(f"beat{i}.speech が長すぎます（28字以内。今は{len(b.get('speech', ''))}字）。")
+        if len(b.get("speech", "")) > 66:
+            out.append(f"beat{i}.speech が長すぎます（60字以内。今は{len(b.get('speech', ''))}字）。")
+        if not (2 <= len(b.get("label", "")) <= 9):
+            out.append(f"beat{i}.label は2〜7字の見出し（例: 答え・プランの比較）。")
     total_speech = sum(len(x.get("speech", "")) for x in [hook, concl] + beats)
-    if total_speech > 160:
-        out.append(f"読み上げの合計が長すぎます（{total_speech}字。150字以内）。")
-    if len(hook.get("speech", "")) > 20:
-        out.append("hook.speech は16字以内。")
-    if len(concl.get("speech", "")) > 26:
-        out.append("conclusion.speech は22字以内。")
+    if total_speech > SPEECH_TOTAL_MAX:
+        out.append(f"読み上げの合計が長すぎます（{total_speech}字。{SPEECH_TOTAL_MAX - 30}字前後まで）。")
+    if total_speech < 190:
+        out.append(f"読み上げの合計が短すぎます（{total_speech}字）。問いに数字と比較で答えるには足りません。")
+    if len(hook.get("speech", "")) > 24:
+        out.append("hook.speech は20字以内。")
+    if len(concl.get("speech", "")) > 34:
+        out.append("conclusion.speech は30字以内。")
     joined = json.dumps(s, ensure_ascii=False)
     if "ざっくり" in joined:
         out.append("「ざっくり」は使わない。")
@@ -733,10 +829,47 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
         for kata in re.findall(r"[ァ-ヴー]{3,}", text or ""):
             if kata in speech_all and kata not in mat and kata not in gate.KATAKANA_OK:
                 out.append(f"画面の文字「{text}」のカタカナ「{kata}」は読み上げ用の書き方です。画面では資料の英字の表記に。")
+    # 料金の段階（ladder）: 各行の価格がその行の証拠（公式ページ）にあり、公式ページで名前と価格が同じ話題に出てくる
+    lad = s.get("ladder") or {}
+    if lad.get("beat"):
+        rows = lad.get("rows") or []
+        if not (1 <= int(lad["beat"]) <= len(beats)) or not (2 <= len(rows) <= 5):
+            out.append("ladder は beat（beat の番号）と rows（2〜5行）をそろえるか、beat=0 に。")
+        lines_off = [ln for ln in official_text(pages).split("\n")]
+        for k, row in enumerate(rows, 1):
+            for field_name, lim in (("name", 10), ("price", 9), ("usage", 9)):
+                if len(row.get(field_name, "")) > lim:
+                    out.append(f"ladder.rows[{k}].{field_name} が長すぎます（{lim - 1}字以内）。")
+            tgt = find_target(pages, row.get("target", ""), row.get("block", ""), keyword=row.get("price", "")) if pages else None
+            if pages and not tgt:
+                out.append(f"ladder.rows[{k}].target「{row.get('target', '')}」が画面の文字にありません。")
+            for d in _digits(row.get("price", "")):
+                same = [ln for ln in lines_off if re.search(r"(?<![\d.])" + re.escape(d) + r"(?![\d])", gate.norm(ln)) and row.get("name", "").lower() in ln.lower()]
+                if not same:
+                    out.append(f"ladder.rows[{k}] の価格 {d} が、公式ページで「{row.get('name')}」と同じ所に出てきません（別のプランの数字では？）。")
+            if row.get("mult") and not re.fullmatch(r"\d+(?:\.\d+)?", row["mult"].strip()):
+                out.append(f"ladder.rows[{k}].mult は数字だけ（例: 5）か空。")
+            for text in (row.get("price", ""), row.get("usage", ""), row.get("mult", "")):
+                if bad := gate.numbers_ok(text, gate.number_tokens(gate.material_text(article))):
+                    out.append(f"ladder.rows[{k}] の数字 {', '.join(bad)} が資料にありません。")
+    uni = s.get("units") or {}
+    if uni.get("beat"):
+        urows = uni.get("rows") or []
+        if not (1 <= int(uni["beat"]) <= len(beats)) or not (2 <= len(urows) <= 4) or len(uni.get("unit", "")) > 13:
+            out.append("units は beat・unit（12字以内）・rows（2〜4行）をそろえるか、beat=0 に。")
+        mat_nums = gate.number_tokens(gate.material_text(article))
+        for r in urows:
+            c = int(r.get("count") or 0)
+            if not (1 <= c <= 12):
+                out.append(f"units.rows の count は1〜12（{r.get('name')}: {c}）。")
+            elif str(c) not in mat_nums:
+                out.append(f"units.rows の {r.get('name')} の数 {c} が資料（公式の倍率）にありません。")
+        if bad := gate.numbers_ok(uni.get("unit", ""), mat_nums):
+            out.append(f"units.unit の数字 {', '.join(bad)} が資料にありません。")
     comp = s.get("compare") or {}
     if comp.get("beat"):
-        if not (1 <= int(comp["beat"]) <= 4) or not comp.get("ratio") or not comp.get("base") or not comp.get("subject"):
-            out.append("compare は beat（1〜4）・base・subject・ratio をそろえるか、beat=0 に。")
+        if not (1 <= int(comp["beat"]) <= len(beats)) or not comp.get("ratio") or not comp.get("base") or not comp.get("subject"):
+            out.append("compare は beat（beat の番号）・base・subject・ratio をそろえるか、beat=0 に。")
         elif not re.search(r"\d", comp["ratio"]):
             out.append("compare.ratio は数字の倍率（例: 10倍）。")
     flat = flat_script(s)
@@ -749,22 +882,35 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
 STYLE_PREFIXES = ("speech で数字", "speech に英単語", "target の区切り")
 
 
+def review_script(data: dict, article: dict, pages: list[Page], tier: str) -> dict | None:
+    import llm
+
+    prompt = f"# 資料\n{script_material(article, pages)}\n\n# 台本\n{json.dumps(data, ensure_ascii=False)}\n\n判定を JSON で返してください。"
+    try:
+        verdict, _ = llm.generate_json(review_system(), prompt, REVIEW_SCHEMA, temperature=0.2, max_output_tokens=2048, tier=tier)
+        return verdict
+    except Exception as error:  # noqa: BLE001 - レビューが使えないときは、事実の検査に通った台本をそのまま使う
+        log(f"   [v3] 台本のレビューに失敗: {type(error).__name__}")
+        return None
+
+
 def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
     import llm
 
     prompt = f"# 資料\n{script_material(article, pages)}\n\n上の資料だけを使って、決まりどおりの台本を JSON で書いてください。"
     feedback, last = "", ""
     tier = os.environ.get("V3_LLM_TIER", "quality")
-    for attempt in range(1, 7):
+    reviews = 0
+    for attempt in range(1, 9):
         try:
-            data, model = llm.generate_json(script_system(), prompt + feedback, SCRIPT_SCHEMA, temperature=0.5, max_output_tokens=4096, tier=tier)
+            data, model = llm.generate_json(script_system(), prompt + feedback, SCRIPT_SCHEMA, temperature=0.5, max_output_tokens=8192, tier=tier)
         except RuntimeError:
             if tier == "bulk":
                 raise
             tier = "bulk"  # 上位モデルの枠が尽きたら軽いモデルへ（事実の照合は同じ）
             log("   [v3] 台本: quality の枠が無いので bulk で書く")
             continue
-        data["beats"] = [b for b in data.get("beats") or [] if isinstance(b, dict)][:4]
+        data["beats"] = [b for b in data.get("beats") or [] if isinstance(b, dict)][:BEATS_MAX]
         latin_names(data)
         problems = script_problems(data, article, pages)
         style = [p for p in problems if p.startswith(STYLE_PREFIXES)]
@@ -775,9 +921,20 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
                     item = data["hook"] if m.group(1) == "hook" else data["beats"][int(m.group(2)) - 1]
                     item["ja"] = ""
         if not problems or (attempt >= 4 and len(style) == len(problems)):
+            # 自己レビュー: 問いに具体的な数字・比較で答えているか、当たり前・空の文が無いか（2回まで書き直す）
+            if reviews < 2 and attempt < 8:
+                reviews += 1
+                verdict = review_script(data, article, pages, tier)
+                if verdict and not verdict.get("ok") and verdict.get("issues"):
+                    issues = [str(x) for x in verdict["issues"]][:8]
+                    log(f"   [v3] 台本のレビュー（{reviews}）: 書き直し {issues}")
+                    feedback = "\n\n# 編集長のレビュー（すべて直す。資料に無い数字は足さない）\n" + "\n".join(f"- {p}" for p in issues) + "\n\n# 前回の台本\n" + json.dumps(data, ensure_ascii=False)
+                    continue
+                log(f"   [v3] 台本のレビュー（{reviews}）: 合格")
             if problems:  # 読み・長さだけは最後に妥協する（事実・証拠の問題は必ず直す。入らない文字は描画で止まる）
                 log(f"   [v3] 読み・長さの注意を残して採用: {problems}")
                 data["_notes"] = problems
+            data["_reviews"] = reviews
             return data, model
         last = "; ".join(problems)
         log(f"   [v3] 台本の書き直し（{attempt}）: {last[:300]}")
@@ -811,7 +968,7 @@ def warm_voicevox() -> threading.Thread | None:
 @dataclass
 class Line:
     kind: str  # hook / beat / conclusion
-    index: int  # beat の番号（1〜4）・hook=0・conclusion=5
+    index: int  # beat の番号（1〜）・hook=0・conclusion=beat の数+1
     speech: str
     start: float = 0.0
     end: float = 0.0
@@ -847,7 +1004,7 @@ def make_tts(kind: str, speed: float):
 
 
 def narrate(script: dict, tts_kind: str, work: Path) -> Narration:
-    lines = [Line("hook", 0, script["hook"]["speech"])] + [Line("beat", i, b["speech"]) for i, b in enumerate(script["beats"], 1)] + [Line("conclusion", 5, script["conclusion"]["speech"])]
+    lines = [Line("hook", 0, script["hook"]["speech"])] + [Line("beat", i, b["speech"]) for i, b in enumerate(script["beats"], 1)] + [Line("conclusion", len(script["beats"]) + 1, script["conclusion"]["speech"])]
     if tts_kind == "voicevox" and not wait_voicevox():
         raise RuntimeError("VOICEVOX に繋がりません")
     base_speed = V3_VOICE["speed"] if tts_kind != "fake" else 1.22
@@ -872,13 +1029,13 @@ def narrate(script: dict, tts_kind: str, work: Path) -> Narration:
         # 長さが外れたら、声の部分の長さから必要な速さを1回で計算して読み直す（何度も合成すると遅い）
         voiced = sum(len(c) for c in clips) / SR
         fixed = total - voiced
-        if total < TARGET_MIN and speed > base_speed - 0.16:
-            speed = max(base_speed - 0.16, speed * voiced / max(TARGET_MIN + 0.6 - fixed, 1.0))
+        if total < TARGET_MIN and speed > base_speed - 0.08:
+            speed = max(base_speed - 0.08, speed * voiced / max(TARGET_MIN + 0.6 - fixed, 1.0))
             log(f"   [v3] {total:.1f}秒で短い → 速さ {speed:.2f} で読み直し")
             continue
-        if total <= TARGET_MAX or speed >= base_speed + 0.15:
+        if total <= TARGET_MAX or speed >= base_speed + 0.1:
             break
-        speed = min(base_speed + 0.15, speed * voiced / max(TARGET_MAX - 0.6 - fixed, 1.0))
+        speed = min(base_speed + 0.1, speed * voiced / max(TARGET_MAX - 0.6 - fixed, 1.0))
         log(f"   [v3] {total:.1f}秒で長い → 速さ {speed:.2f} で読み直し")
     samples = np.zeros(int(math.ceil(total * SR)) + 1, dtype=np.float32)
     for line, clip in zip(lines, clips):
@@ -1193,6 +1350,18 @@ class Click:
 
 
 @dataclass
+class Ladder:
+    """料金の段階のグラフ（公式の料金表の数字だけ）: 安い順の行・主役のプラン・1行ずつ出す間隔"""
+    t0: float
+    t1: float
+    rows: list
+    subject: str
+    reveal: float = 0.5
+    mode: str = "price"  # price（料金の段階）/ units（たとえ: 基準の量の四角いくつ分）
+    unit: str = ""
+
+
+@dataclass
 class Chart:
     t0: float
     t1: float
@@ -1470,6 +1639,7 @@ class Plan:
     events: list[dict]
     focus: list[dict]
     credits: list[str]
+    ladders: list = field(default_factory=list)
 
 
 def _source_label(page: Page) -> str:
@@ -1508,6 +1678,16 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         targets[i] = targets[i] or targets[i - 1]
     comp = script.get("compare") or {}
     comp_beat = int(comp.get("beat") or 0) if comp.get("ratio") else 0
+    lad = script.get("ladder") or {}
+    lad_rows = [r for r in (lad.get("rows") or []) if r.get("name") and r.get("price")]
+    lad_beat = int(lad.get("beat") or 0) if len(lad_rows) >= 2 else 0
+    if lad_beat:
+        comp_beat = 0  # 料金の段階のグラフがあるときは2つの比較グラフは出さない
+    n_beats = len(beats)
+    ladders: list[Ladder] = []
+    uni = script.get("units") or {}
+    uni_rows = [{"name": r.get("name", ""), "count": int(r.get("count") or 0)} for r in (uni.get("rows") or []) if 1 <= int(r.get("count") or 0) <= 12]
+    uni_beat = int(uni.get("beat") or 0) if len(uni_rows) >= 2 else 0
 
     moves: list[Move] = []
     spots: list[Spot] = []
@@ -1538,7 +1718,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     if hook_xl:
         sub_spans.append((1.25, lines[1].start - 0.08, 0))
 
-    for i, (beat, line) in enumerate(zip(beats, lines[1:5]), 1):
+    for i, (beat, line) in enumerate(zip(beats, lines[1 : n_beats + 1]), 1):
         tg = targets[i]
         page = pages[tg.page]
         nxt = lines[i + 1].start
@@ -1557,6 +1737,51 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         ev(a_t, "cut" if cut else "move", f"beat{i}: 行へ")
         b_t = line.start + max(0.85, 0.42 * dur)
         sub_t0, sub_end = a_t + 0.95, nxt - 0.08
+        if i == lad_beat:
+            # 料金の段階: 本物の料金表の価格を安い順に1つずつ見せて（証拠）、そのあと比較のグラフでまとめる
+            moves.pop()
+            events.pop()
+            row_tgs = [find_target(pages, r.get("target", ""), r.get("block", ""), keyword=r.get("price", "")) for r in lad_rows]
+            shown = [(r, t) for r, t in zip(lad_rows, row_tgs) if t is not None]
+            step = min(1.6, max(1.0, 0.5 * dur / max(len(shown), 1)))
+            t_cur = a_t
+            for r, rt in shown:
+                rp = pages[rt.page]
+                cam_r = frame_rect(rp, rt.page, rt.zoom_rect, 0.30, 1.9, zmin=1.35, line=rt.rect, chars=rt.line_chars)
+                is_cut = rt.page != moves[-1].cam.page
+                moves.append(Move(t_cur, 0.45 if is_cut else 0.55, cam_r, cut=is_cut))
+                ev(t_cur, "cut" if is_cut else "move", f"料金表: {r.get('name')}")
+                spots.append(Spot(t_cur + 0.4, t_cur + step - 0.05, rt.page, rt.rect, [rt.zoom_rect], t_cur + 0.5))
+                t_cur += step
+            t_c = t_cur if shown else line.start + 0.3
+            reveal = 0.5
+            t_hi = t_c + 0.3 + reveal * len(lad_rows) + 0.3
+            t_end = min(nxt - 0.06, t_hi + 1.5)
+            ladders.append(Ladder(t_c, t_end, lad_rows, lad.get("subject", ""), reveal))
+            ev(t_c, "chart", "料金の段階のグラフ")
+            ev(t_hi, "pop", "グラフ: 主役を強調")
+            if nxt - t_end > 0.8 and shown:  # 残りの時間は料金表の主役のプランへ戻る
+                sub_r, sub_t = next(((r, t) for r, t in shown if r.get("name", "").lower() == lad.get("subject", "").lower()), shown[-1])
+                cam_s = frame_rect(pages[sub_t.page], sub_t.page, sub_t.rect, 0.8, 1.5, zmin=1.2)
+                moves.append(Move(t_end - 0.1, 0.6, cam_s, cut=sub_t.page != moves[-1].cam.page))
+                ev(t_end - 0.1, "move", f"料金表: {sub_r.get('name')} へ戻る")
+                spots.append(Spot(t_end + 0.3, nxt - 0.08, sub_t.page, sub_t.rect, [sub_t.zoom_rect], t_end + 0.4))
+            continue
+        if i == uni_beat and i != lad_beat:
+            # たとえ: 行の証拠を見せたあと、基準の量を四角1つとして並べる絵
+            t_u = line.start + max(0.9, 0.3 * dur)
+            t_hi = t_u + 0.3 + 0.5 * len(uni_rows) + 0.3
+            t_end = min(nxt - 0.06, t_hi + 1.8)
+            ladders.append(Ladder(t_u, t_end, uni_rows, uni.get("subject", ""), 0.5, "units", uni.get("unit", "")))
+            ev(t_u, "chart", "たとえの絵")
+            ev(t_hi, "pop", "たとえ: 主役を強調")
+            spots.append(Spot(a_t + 0.35, t_u, tg.page, span, sel, a_t + 0.6))
+            if xl:
+                sub_spans.append((a_t + 0.95, t_u - 0.05, i))
+            if nxt - t_end > 0.8:
+                moves.append(Move(t_end - 0.1, 0.6, block_cam))
+                ev(t_end - 0.1, "move", f"beat{i}: 画面へ戻る")
+            continue
         if i == comp_beat:
             charts.append(Chart(b_t, nxt - 0.06, comp["base"], comp["subject"], comp["ratio"]))
             ev(b_t, "chart", "比較のグラフ")
@@ -1583,7 +1808,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
             sub_spans.append((sub_t0, sub_end, i))
 
     # 締め: 最初の画面（ページ幅いっぱい）へ引いて戻る
-    concl = lines[5]
+    concl = lines[-1]
     moves.append(Move(concl.start - 0.16, 0.7, Camera._hold(first, 0, 0), cut=first.page != moves[-1].cam.page))
     ev(concl.start - 0.16, "move", "締め: 最初の画面へ戻る")
     c_t = concl.start + max(0.9, 0.45 * (concl.end - concl.start))
@@ -1591,6 +1816,27 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         moves.append(Move(c_t, 0.7, hook_close))
         ev(c_t, "move", "締め: 最初の数字へ")
         spots.append(Spot(c_t + 0.35, narr.end_start, t0.page, t0.rect, [t0.match], c_t + 0.5))
+    # 2.6秒より長く何も変わらない所には、ゆっくり寄る・引くを足す（長い動画でも 1.5〜3秒ごとに何かが変わる）
+    cover = [(c.t0, c.t1) for c in charts] + [(L.t0, L.t1) for L in ladders]
+    for _ in range(3):
+        camera = Camera(first, moves)
+        changes = sorted({e["t"] for e in events if e["kind"] in ("move", "cut", "chart", "pop")})
+        bounds = [0.0] + changes + [narr.end_start]
+        added = False
+        for a, b in zip(bounds, bounds[1:]):
+            if b - a <= 2.9 or any(c0 - 0.2 <= (a + b) / 2 <= c1 + 0.2 for c0, c1 in cover):
+                continue
+            n_add = math.ceil((b - a) / 2.4) - 1
+            for k in range(1, n_add + 1):
+                t = a + (b - a) * k / (n_add + 1)
+                c = camera.at(t)
+                pg = pages[c.page]
+                zin = c.s * 1.22 <= fit_s(pg) * ZOOM_MAX * 1.1 and k % 2 == 1
+                moves.append(Move(t, 0.7, clamp_cam(pg, c.page, c.cx, c.cy, c.s * (1.22 if zin else 1 / 1.22))))
+                ev(t, "move", "ゆっくり寄る" if zin else "少し引く")
+                added = True
+        if not added:
+            break
     camera = Camera(first, moves)
 
     # 文字（左の列）: 小さな見出し → キーワード（マーカー）→ 補足。キーワードの中心は画面の注目の行と同じ高さ
@@ -1606,15 +1852,16 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         (_, _, px, py), = column_group([("keyword", pay, 0)], ANCHOR_Y)
         texts.append(TextItem("keyword", hook["payoff"], pay, px, py, hook_end, lines[1].start - 0.06, anim="wipe", marker=True))
         ev(hook_end, "pop", "つかみの数字")
-    for i, (beat, line) in enumerate(zip(beats, lines[1:5]), 1):
+    for i, (beat, line) in enumerate(zip(beats, lines[1 : n_beats + 1]), 1):
         t_in, t_out = line.start - 0.1, lines[i + 1].start - 0.06
-        brow = fit_line(EYEBROWS[i - 1], "bold", range(28, 20, -2), COL_W, color=BLUE, accent=False, tracking=0.08)
-        kw = fit_line(beat["keyword"], "black", range(132, 72, -4), COL_W)
+        label = (beat.get("label") or EYEBROWS[min(i, len(EYEBROWS)) - 1]).strip()
+        brow = fit_line(label, "bold", range(28, 20, -2), COL_W, color=BLUE, accent=False, tracking=0.08)
+        kw = fit_line(beat["keyword"], "black", range(132, 52, -4), COL_W)
         parts = [("eyebrow", brow, 0), ("keyword", kw, 18)]
         if beat.get("sub"):
             parts.append(("sub", fit_line(beat["sub"], "bold", range(42, 30, -2), COL_W, color=MUTED, accent=False), 30))
         for role, spr, x, y in column_group(parts, ANCHOR_Y):
-            text = {"eyebrow": EYEBROWS[i - 1], "keyword": beat["keyword"], "sub": beat.get("sub", "")}[role]
+            text = {"eyebrow": label, "keyword": beat["keyword"], "sub": beat.get("sub", "")}[role]
             texts.append(TextItem(role, text, spr, x, y, t_in, t_out, anim="wipe" if role == "keyword" else "rise", delay={"eyebrow": 0.0, "keyword": 0.06, "sub": 0.22}[role], marker=role == "keyword"))
     concl_brow = fit_line("要約すると", "bold", range(28, 20, -2), COL_W, color=BLUE, accent=False, tracking=0.08)
     concl_spr = big_lines(script["conclusion"]["text"])
@@ -1662,7 +1909,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
             focus.append({"t0": round(sp.t0, 3), "t1": round(sp.t1, 3), "bbox": [round(PANEL[0] + max(0, x0), 1), round(PANEL[1] + max(0, y0), 1), round(PANEL[0] + min(PW, x1), 1), round(PANEL[1] + min(PH, y1), 1)]})
 
     events.sort(key=lambda e: e["t"])
-    return Plan(article, script, narr, pages, targets, camera, spots, clicks, charts, texts, subtitles, events, focus, credits)
+    return Plan(article, script, narr, pages, targets, camera, spots, clicks, charts, texts, subtitles, events, focus, credits, ladders)
 
 
 def stage_bg() -> np.ndarray:
@@ -1741,6 +1988,12 @@ def _highlight_select(img: np.ndarray, rect: tuple, k: float) -> None:
     img[ya:yb, xa:xb] = ((roi * np.array(SELECT, dtype=np.uint16)) >> 8).astype(np.uint8)
 
 
+def _highlight_row(img: np.ndarray, x: int, y: int, w: int, h: int, k: float) -> None:
+    """料金の段階のグラフで、主役のプランの行の地を薄い青に（不透明度 k）"""
+    roi = img[max(0, y) : y + h, max(0, x) : x + w].astype(np.float32)
+    img[max(0, y) : y + h, max(0, x) : x + w] = (roi * (1 - 0.55 * k) + np.array(MARKER, dtype=np.float32) * 0.55 * k).astype(np.uint8)
+
+
 def _highlight_marker(frame: np.ndarray, x: int, y: int, w: int, h: int, k: float) -> None:
     """キーワードの下半分を走る薄い青のマーカー（左から k の割合まで）"""
     xb = x + int(w * k)
@@ -1766,12 +2019,15 @@ def _cursor_sprite() -> np.ndarray:
     return np.asarray(big.resize((50, 63), Image.LANCZOS))
 
 
-def data_bars(card: Image.Image, rows: list[tuple[int, int, int, tuple]], height: int = 56) -> None:
-    """比較グラフの棒（データの棒だけ。飾りではない）: [(x, y, 長さ, 色)]"""
+def data_bars(card: Image.Image, rows: list[tuple[int, int, int, tuple]], height: int = 56, radius: int | None = None) -> None:
+    """比較グラフの棒・たとえの四角（データの印だけ。飾りではない）: [(x, y, 長さ, 色)]。radius を渡すと長さどおりの角丸の四角"""
     d = ImageDraw.Draw(card)
     for x, y, length, color in rows:
         if length > 2:
-            d.rounded_rectangle((x, y, x + max(length, int(height * 1.4)), y + height), radius=height // 2, fill=color)
+            if radius is not None:
+                d.rounded_rectangle((x, y, x + length, y + height), radius=radius, fill=color)
+            else:
+                d.rounded_rectangle((x, y, x + max(length, int(height * 1.4)), y + height), radius=height // 2, fill=color)
 
 
 class Renderer:
@@ -1785,6 +2041,7 @@ class Renderer:
         self.levels = [self._pyramid(p.img) for p in plan.pages]
         self.bgs = [p.bg() for p in plan.pages]
         self.chart_cards = [self._chart_base(c) for c in plan.charts]
+        self.ladder_cards = [self._ladder_base(L) for L in plan.ladders]
         self.end_start = plan.narr.end_start
         self.total = plan.narr.total
         self.panel_stage = self.stage[PANEL[1] : PANEL[3], PANEL[0] : PANEL[2]].copy()
@@ -1833,6 +2090,126 @@ class Renderer:
         # 倍率は記事の表記どおり（台本の compare.ratio）をそのまま。途中の数字（カウントアップ）は描かない
         value = render_text([(c.ratio, "black", ACCENT)], 150)
         return {"card": card, "labels": labels, "chart": c, "value": value}
+
+    LAD_X = 76
+
+    def _ladder_base(self, L: "Ladder") -> dict:
+        """料金の段階のカード: 見出し・各行（プラン名・価格・使える量）の文字を先に作る。棒は毎フレーム描く"""
+        if L.mode == "units":
+            title = render_text([(f"{L.unit}を", "bold", BLUE), ("■", "bold", BLUE), ("1つとすると", "bold", BLUE)], 30, 0.04)
+            src = render_text([("公式の倍率より", "bold", SOFT)], 22)
+            n = len(L.rows)
+            top, bottom = 170, PH - 90
+            row_h = min(200, (bottom - top) // n)
+            rows = []
+            for k, r in enumerate(L.rows):
+                subj = r["name"].lower() == (L.subject or "").lower()
+                rows.append({
+                    "y": top + k * row_h, "h": row_h, "subj": subj, "count": r["count"],
+                    "name": render_text([(r["name"], "black", INK)], 46),
+                    "label": render_text([(f"{r['count']}個分", "black", ACCENT if subj else MUTED)], 40),
+                })
+            return {"title": title, "src": src, "rows": rows}
+        title = render_text([("料金と使える量", "bold", BLUE)], 28, 0.08)
+        src = render_text([("公式の料金ページより", "bold", SOFT)], 22)
+        n = len(L.rows)
+        top, bottom = 150, PH - 70
+        row_h = min(190, (bottom - top) // n)
+        mults = [float(r["mult"]) for r in L.rows if re.fullmatch(r"\d+(?:\.\d+)?", str(r.get("mult", "")).strip())]
+        max_mult = max(mults) if mults else 1.0
+        rows = []
+        for k, r in enumerate(L.rows):
+            subj = r.get("name", "").lower() == (L.subject or "").lower()
+            name = render_text([(r["name"], "black", INK)], 46)
+            price = render_text(accent_segments(r["price"], "black", INK) if subj else [(r["price"], "black", INK)], 46)
+            usage = render_text([(r.get("usage", ""), "bold", BLUE if subj else MUTED)], 30) if r.get("usage") else None
+            m = str(r.get("mult", "")).strip()
+            frac = float(m) / max_mult if re.fullmatch(r"\d+(?:\.\d+)?", m) else 0.0
+            rows.append({"y": top + k * row_h, "h": row_h, "name": name, "price": price, "usage": usage, "frac": frac, "subj": subj})
+        return {"title": title, "src": src, "rows": rows}
+
+    def units_frame(self, info: dict, L: "Ladder", t: float) -> np.ndarray:
+        """たとえの絵: 各行に、基準の量の四角を count 個（左から1つずつ並ぶ）"""
+        arr = np.full((PH, PW, 3), 255, dtype=np.uint8)
+        x0 = self.LAD_X
+        n = len(info["rows"])
+        t_hi = L.t0 + 0.3 + L.reveal * n + 0.3
+        hi = ease_out((t - t_hi) / 0.4)
+        sq, gap = 46, 12
+        boxes = []
+        labels = []
+        for k, row in enumerate(info["rows"]):
+            age = t - (L.t0 + 0.3 + L.reveal * k)
+            if age < 0:
+                continue
+            if row["subj"] and hi > 0:
+                _highlight_row(arr, 30, row["y"] - 20, PW - 60, row["h"] - 16, hi)
+            shown = min(row["count"], int(age / 0.05) + 1)
+            mid = row["y"] + row["h"] // 2 - 30
+            for j in range(shown):
+                boxes.append((x0 + 190 + j * (sq + gap), mid + 30 - sq // 2, sq, BLUE if row["subj"] else (196, 205, 220)))
+            a = ease_out(age / 0.35)
+            labels.append((row, mid, a, x0 + 190 + row["count"] * (sq + gap) + 14))
+        img = Image.fromarray(arr)
+        data_bars(img, boxes, sq, radius=9)
+        arr = np.asarray(img).copy()
+        blend(arr, info["title"], x0, 70)
+        blend(arr, info["src"], x0 + info["title"].shape[1] + 24, 76)
+        for row, mid, a, lx in labels:
+            blend(arr, row["name"], x0, mid + 30 - row["name"].shape[0] // 2, a)
+            blend(arr, row["label"], lx, mid + 30 - row["label"].shape[0] // 2, a)
+        return arr
+
+    def ladder_frame(self, idx: int, t: float) -> np.ndarray:
+        info = self.ladder_cards[idx]
+        L: Ladder = self.plan.ladders[idx]
+        if L.mode == "units":
+            return self.units_frame(info, L, t)
+        card = Image.new("RGB", (PW, PH), (255, 255, 255))
+        x0 = self.LAD_X
+        bar_x = x0 + 400
+        bar_max = PW - bar_x - 230
+        n = len(info["rows"])
+        t_hi = L.t0 + 0.3 + L.reveal * n + 0.3
+        hi = ease_out((t - t_hi) / 0.4)
+        arr = np.asarray(card).copy()
+        bars = []
+        for k, row in enumerate(info["rows"]):
+            age = t - (L.t0 + 0.3 + L.reveal * k)
+            if age < 0:
+                continue
+            if row["subj"] and hi > 0:
+                _highlight_row(arr, 30, row["y"] - 18, PW - 60, row["h"] - 14, hi)
+            grow = ease_out(age / 0.45)
+            length = int((max(row["frac"], 0.0) * bar_max if row["frac"] else 36) * grow)
+            mid = row["y"] + row["h"] // 2 - 30
+            bars.append((bar_x, mid + 6, length, BLUE if row["subj"] else (204, 212, 225)))
+            row["_age"] = age
+            row["_len"] = length
+            row["_mid"] = mid
+        img = Image.fromarray(arr)
+        data_bars(img, bars, 40)
+        arr = np.asarray(img).copy()
+        blend(arr, info["title"], x0, 60)
+        blend(arr, info["src"], x0 + info["title"].shape[1] + 24, 64)
+        for k, row in enumerate(info["rows"]):
+            age = row.pop("_age", None)
+            if age is None:
+                continue
+            a = ease_out(age / 0.35)
+            mid = row.pop("_mid")
+            length = row.pop("_len")
+            dx = int((1 - a) * 90)  # 右から滑り込む
+            blend(arr, row["name"], x0 + dx, mid - row["name"].shape[0] // 2 + 26, a)
+            blend(arr, row["price"], x0 + 150 + dx, mid - row["price"].shape[0] // 2 + 26, a)
+            if row["usage"] is not None:
+                blend(arr, row["usage"], bar_x + max(length, 56) + 20, mid + 26 - row["usage"].shape[0] // 2, a)
+        # カード全体がごくゆっくり寄る（止まった絵にしない）
+        k = 1 + 0.05 * min(1.0, max(0.0, (t - L.t0) / max(L.t1 - L.t0, 0.5)))
+        if cv2 is not None and k > 1.001:
+            m = np.array([[k, 0, PW / 2 * (1 - k)], [0, k, PH / 2 * (1 - k)]], dtype=np.float32)
+            arr = cv2.warpAffine(arr, m, (PW, PH), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+        return arr
 
     def chart_frame(self, idx: int, t: float) -> tuple[np.ndarray, list]:
         info = self.chart_cards[idx]
@@ -1887,7 +2264,7 @@ class Renderer:
         for m in self.plan.camera.moves:
             if m.cut and m.t > clicks[-1].t and t > m.t - 0.15:
                 alpha = 0.0
-        concl = self.plan.narr.lines[5].start - 0.16
+        concl = self.plan.narr.lines[-1].start - 0.16
         if t > concl:
             alpha *= max(0.0, 1 - (t - concl) / 0.2)
         x, y = cam.map(px, py)
@@ -1952,6 +2329,12 @@ class Renderer:
                 spr = cv2.resize(spr, (w2, h2), interpolation=cv2.INTER_AREA) if cv2 is not None else np.asarray(Image.fromarray(spr).resize((w2, h2)))
             if alpha > 0:
                 blend(img, spr, int(x - 4), int(y - 4), alpha)
+        # 料金の段階のグラフ
+        for k, L in enumerate(self.plan.ladders):
+            if L.t0 <= t <= L.t1 + 0.2:
+                a = min(1.0, (t - L.t0) / 0.25) * min(1.0, max(0.0, (L.t1 + 0.2 - t) / 0.2))
+                card = self.ladder_frame(k, t)
+                img = ((img.astype(np.uint16) * int((1 - a) * 256) + card.astype(np.uint16) * int(a * 256)) >> 8).astype(np.uint8)
         # 比較のグラフ
         for k, ch in enumerate(self.plan.charts):
             if ch.t0 <= t <= ch.t1 + 0.2:
@@ -2118,7 +2501,7 @@ def text_records(plan: Plan) -> list[dict]:
             box = list(PANEL)
         else:
             box = [0, 0, PANEL[0], PANEL[1] + 40]
-        size = {"hook": 46, "keyword": 72, "sub": 30, "conclusion": 46, "eyebrow": 20, "source": 18, "credit": 16, "subtitle": 24, "logo": 24}.get(role, 18)
+        size = {"hook": 46, "keyword": 52, "sub": 30, "conclusion": 46, "eyebrow": 20, "source": 18, "credit": 16, "subtitle": 24, "logo": 24}.get(role, 18)
         color = {"sub": MUTED, "source": SOFT, "credit": SOFT, "eyebrow": BLUE}.get(role, INK)
         if role == "subtitle":  # 墨の吹き出しの上の白い字
             contrast = gate.contrast(WHITE, INK)
@@ -2146,7 +2529,7 @@ def text_records(plan: Plan) -> list[dict]:
 def units_for_gate(plan: Plan) -> list[dict]:
     """字幕（画面のキーワード）とナレーションの対応（v2 のゲートと同じ形）"""
     by_line: dict[int, list] = {}
-    order = {"hook": 0, "conclusion": 5}
+    order = {"hook": 0, "conclusion": len(plan.narr.lines) - 1}
     beat_i = 0
     for item in plan.texts:
         if item.role in ("hook", "conclusion"):
@@ -2311,6 +2694,9 @@ def make_video(
                 "fonts": [FONT_FAMILY, LOGO_FAMILY],
                 "rendered_strings": sorted(set(RENDERED)),
                 "charts": [{"t0": round(c.t0, 3), "t1": round(c.t1, 3), "base": c.base, "subject": c.subject, "ratio": c.ratio} for c in plan.charts],
+                "ladders": [{"t0": round(L.t0, 3), "t1": round(L.t1, 3), "subject": L.subject, "rows": [{k: r.get(k, "") for k in ("name", "price", "usage", "mult")} for r in L.rows]} for L in plan.ladders],
+                "official_text": official_text(plan.pages),
+                "length_range": list(LENGTH_RANGE),
                 "panel": list(PANEL),
                 "targets": [{"page": t.page + 1, "block": t.block.id, "text": t.text, "block_text": t.block.text[:160]} if t else None for t in plan.targets],
                 **make_meta(a, plan.script, plan.narr.voice, plan.pages),

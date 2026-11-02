@@ -235,12 +235,18 @@ def number_context_problems(script_v3: dict, article: dict) -> list[str]:
     items += [(f"beat{i}", f"{b.get('keyword', '')} {b.get('sub', '')}", b.get("speech", "")) for i, b in enumerate(script_v3.get("beats") or [], 1)]
     concl = script_v3.get("conclusion") or {}
     items.append(("conclusion", concl.get("text", ""), concl.get("speech", "")))
+    # 料金の段階のグラフの数字（プラン名と価格が公式ページの同じ所にあるかは台本の検査で見ている）は、その beat では文脈を問わない
+    lad = script_v3.get("ladder") or {}
+    lad_name = f"beat{int(lad.get('beat') or 0)}" if lad.get("beat") else ""
+    lad_nums = set(re.findall(r"\d+(?:\.\d+)?", norm(" ".join(f"{r.get('price', '')} {r.get('usage', '')} {r.get('mult', '')}" for r in lad.get("rows") or []))))
     problems = []
     for name, screen, speech in items:
         text = norm(f"{screen} {speech}")
         terms = {t for t in _TERM.findall(norm(screen)) if t not in LATIN_OK and not re.fullmatch(r"\d+", t)}
         terms -= {"ドル", "時間", "毎週", "毎月", "月額", "プラン"}
         for num in set(re.findall(r"\d+(?:\.\d+)?", text)):
+            if name == lad_name and num in lad_nums:
+                continue
             pat = re.compile(r"(?<![\d.])" + re.escape(num) + r"(?![\d])")
             hits = [s for s in sentences if pat.search(s)]
             if not hits:
@@ -449,7 +455,7 @@ def _inside(box, outer) -> bool:
     return box[0] >= outer[0] - 0.5 and box[1] >= outer[1] - 0.5 and box[2] <= outer[2] + 0.5 and box[3] <= outer[3] + 0.5
 
 
-def check_format(mp4: Path, profile: dict, result: GateResult, frame: tuple | None = None) -> float:
+def check_format(mp4: Path, profile: dict, result: GateResult, frame: tuple | None = None, max_sec: float = MAX_SEC) -> float:
     info = probe(mp4)
     streams = info.get("streams", [])
     video = next((s for s in streams if s.get("codec_type") == "video"), None)
@@ -478,9 +484,9 @@ def check_format(mp4: Path, profile: dict, result: GateResult, frame: tuple | No
     result.metrics["fps"] = round(fps, 3)
     if profile["fps"] and abs(fps - profile["fps"]) > 0.01:
         result.reasons.append(f"fps が {profile['fps']} ではない（{fps:.2f}）")
-    if not (MIN_SEC <= duration <= MAX_SEC):
-        result.reasons.append(f"長さが {MIN_SEC:.0f}〜{MAX_SEC:.0f}秒の外（{duration:.1f}秒）")
-    elif not (TARGET_SEC[0] <= duration <= TARGET_SEC[1]):
+    if not (MIN_SEC <= duration <= max_sec):
+        result.reasons.append(f"長さが {MIN_SEC:.0f}〜{max_sec:.0f}秒の外（{duration:.1f}秒）")
+    elif not (TARGET_SEC[0] <= duration <= max(TARGET_SEC[1], max_sec)):
         result.warnings.append(f"長さが目安 {TARGET_SEC[0]:.0f}〜{TARGET_SEC[1]:.0f}秒の外（{duration:.1f}秒）")
     if size > MAX_BYTES:
         result.reasons.append(f"ファイルが大きすぎる（{size / 1e6:.1f}MB > {MAX_BYTES / 1e6:.1f}MB）")
@@ -716,8 +722,9 @@ def _overlap(a, b) -> float:
 
 def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, article: dict | None = None, renderer: Path | None = None) -> None:
     m = result.metrics
-    if not (V3_SEC[0] <= duration <= V3_SEC[1]):
-        result.reasons.append(f"v3: 長さが {V3_SEC[0]:.0f}〜{V3_SEC[1]:.0f}秒の外（{duration:.1f}秒）")
+    lo, hi = report.get("length_range") or V3_SEC
+    if not (lo <= duration <= hi):
+        result.reasons.append(f"v3: 長さが {lo:.0f}〜{hi:.0f}秒の外（{duration:.1f}秒）")
     end = float(report.get("end_start") or duration)
     # 場面の変化（カメラの移動・切り替え・数字・グラフ）。クリックは数えない
     changes = sorted({round(e["t"], 2) for e in report.get("events") or [] if e.get("kind") in ("move", "cut", "chart", "pop") and e["t"] < end - 0.3})
@@ -803,16 +810,27 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
         result.reasons.append(f"v3: 飾りの線・帯: {p}")
 
 
+def with_official(article: dict, text: str) -> dict:
+    """事実の照合に使う資料: 記事 ＋ 撮った公式ページの文字（v3 は公式ページを一次情報として数字の出どころに認める）"""
+    if not text:
+        return article
+    aug = dict(article)
+    aug["body"] = (article.get("body") or "") + "\n\n# 公式ページ\n" + text
+    return aug
+
+
 def check_video(mp4: Path, report: dict, article: dict, profile: str = "production") -> GateResult:
     """動画を投稿に付けてよいか。例外は投げず、問題はすべて reasons に入れる"""
     result = GateResult(ok=False)
+    article = with_official(article, report.get("official_text") or "")
     prof = PROFILES[profile]
     try:
         mp4 = Path(mp4)
         if not mp4.exists() or mp4.stat().st_size == 0:
             result.reasons.append("動画ファイルが無い")
             return result
-        duration = check_format(mp4, prof, result, tuple(report["frame"]) if report.get("frame") else None)
+        max_sec = max(MAX_SEC, float((report.get("length_range") or [0, MAX_SEC])[1]))
+        duration = check_format(mp4, prof, result, tuple(report["frame"]) if report.get("frame") else None, max_sec)
         check_audio(mp4, report, duration, result)
         check_timeline(report, duration, result)
         check_texts(report, result)

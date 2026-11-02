@@ -124,6 +124,9 @@ class LintAndGateTest(unittest.TestCase):
 class GoldenRenderTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        # 合成の短い台本（4場面）なので、長さの範囲だけ短い版にする（本番は 45〜75秒）
+        cls._saved = (v3.TARGET_MIN, v3.TARGET_MAX, v3.LENGTH_RANGE)
+        v3.TARGET_MIN, v3.TARGET_MAX, v3.LENGTH_RANGE = 20.5, 30.5, (20.0, 32.0)
         cls.tmp = Path(tempfile.mkdtemp())
         cls.report = v3.make_video(
             "fixture-ai-plan", cls.tmp, tts="fake", article=article(), pages=[fake_page()], script=copy.deepcopy(SCRIPT),
@@ -132,6 +135,7 @@ class GoldenRenderTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        v3.TARGET_MIN, v3.TARGET_MAX, v3.LENGTH_RANGE = cls._saved
         shutil.rmtree(cls.tmp, ignore_errors=True)
 
     def test_gate_passes(self):

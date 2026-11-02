@@ -23,7 +23,7 @@ concurrency:
 jobs:
   render:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - name: VOICEVOX を裏で起動（以降の準備と並行）
         run: |
@@ -52,6 +52,7 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           CLAUDE_DAILY_MAX: ${{ vars.CLAUDE_DAILY_MAX || '40' }}
+          CLAUDE_MODEL: opus  # 台本はいちばん強いモデルで（2026-11-02 オーナー「質を優先」）
           V3_VOICEVOX_SPEAKER: ${{ github.event.inputs.speaker || '九州そら' }}
           SLUGS: ${{ github.event.inputs.slugs }}
         run: |
