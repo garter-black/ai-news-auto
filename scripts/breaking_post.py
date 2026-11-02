@@ -149,16 +149,19 @@ def main() -> int:
         image = tp.post_image(article, fmt)
         if fmt == "classic" and not article.get("disaster"):
             # 本文は「【速報】の書き出し／要約すると、2文／問いかけ」で完結（2026-11-02）。編集部の一言は足さない
-            comment, threads_text = "", text
-            for problem in tp.post_problems(threads_text, article):
+            comment = ""
+            for problem in tp.post_problems(text, article):
                 log(f"  [check] {article['slug']}: {problem}")
+            # 2026-11-03〜: Threads は本文の最後に記事のリンク（返信は作らない）
+            threads_text = tp.with_link(text, article, "threads", fmt)
+            detail = "（なし。リンクは本文。X だけ返信にリンク）"
         else:
             # hook_thread と地震・津波: Threads の本文に編集部の一言（地震・津波は付けない）。問いかけは付けない
             comment = tp.voice.editor_comment(article, tp.recent_voice(state, "comment"))
             threads_text = tp.voice.add_voice(text, comment, "", tp.MAX_CHARS)
             comment = comment if comment and comment in threads_text else ""
             question = ""
-        question = question if question and threads_text.endswith(question) else ""
+        question = question if question and question in threads_text else ""
         log(f"--- {article['slug']} [{fmt}] トピック={tp.topic_of(article)} ({len(threads_text)}文字)\n{threads_text}\n[返信]\n{detail}\n[X]\n{x_preview}\n[画像] {image}\n")
         summary += [f"**{article['slug']}** [{fmt}]", "", "```", threads_text, "---", detail, "```", f"画像: {image}", ""]
         if not live:

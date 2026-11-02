@@ -265,6 +265,56 @@ class GroundedQuestionTest(unittest.TestCase):
         self.assertTrue(text.endswith("楽天証券、使っていますか？"))
 
 
+class LinkInBodyTest(unittest.TestCase):
+    """2026-11-03 オーナー決定: Threads・Bluesky・Facebook は本文にリンク。X だけ返信にリンク"""
+
+    def test_threads_body_ends_with_link_line(self):
+        with no_weak():
+            body = tp.compose(dict(OLD), [])
+        text = tp.with_link(body, OLD, "threads", "classic")
+        self.assertTrue(text.startswith(body))
+        lines = text.splitlines()
+        self.assertEqual(lines[-2], "詳しくはこちら👇（かんたん版あり）")
+        self.assertTrue(lines[-1].startswith(f"{tp.site_url()}/articles/{OLD['slug']}?utm_source=threads&utm_medium=social"))
+        self.assertLessEqual(len(text), tp.MAX_CHARS)
+        self.assertEqual(tp.with_link(body, {**OLD, "easy": ""}).splitlines()[-2], "詳しくはこちら👇")
+
+    def test_long_body_drops_hook_first(self):
+        body = "書き出し" * 20 + "\n\n要約すると、" + "あ" * 300 + "。\n\nどれですか？"
+        text = tp.with_link(body, OLD)
+        self.assertNotIn("書き出し", text)
+        self.assertLessEqual(len(text), tp.MAX_CHARS)
+        self.assertIn("utm_source=threads", text)
+
+    def test_utm_per_platform_and_content(self):
+        url = tp.utm_link("https://x.jp/a", "bluesky", "classic")
+        self.assertEqual(url, "https://x.jp/a?utm_source=bluesky&utm_medium=social&utm_campaign=classic")
+        self.assertTrue(tp.utm_link("https://x.jp/a", "x", "classic", "video 1").endswith("&utm_content=video%201"))
+        self.assertIn("?a=1&utm_source=facebook", tp.utm_link("https://x.jp/a?a=1", "facebook", "classic"))
+
+    def test_buffer_threads_classic_has_no_reply(self):
+        sent = []
+        with patch.object(tp, "create_post", side_effect=lambda key, body: sent.append(body) or "id1"):
+            tp.publish_via_buffer("k", "ch", "本文\nhttps://example", "https://ai-tech-express.jp/articles/a", dict(OLD), draft=True)
+            tp.publish_via_buffer("k", "ch", "本文", "https://ai-tech-express.jp/articles/a", dict(OLD), draft=True, fmt="hook_thread")
+        classic, hook = (b["metadata"]["threads"]["thread"] for b in sent)
+        self.assertEqual(len(classic), 1)
+        self.assertEqual(classic[0]["assets"][0]["image"]["url"], tp.card_url(OLD))
+        self.assertEqual(len(hook), 2)
+
+    def test_x_keeps_link_in_reply_and_facebook_has_no_reply(self):
+        sent = []
+        channels = {"twitter": {"id": "t"}, "facebook": {"id": "f"}}
+        with patch.object(tp, "create_post", side_effect=lambda key, body: sent.append(body) or "id"):
+            tp.publish_extra_channels("k", channels, "本文？", "https://ai-tech-express.jp/articles/a", dict(OLD), None, draft=True)
+        x, fb = sent
+        thread = x["metadata"]["twitter"]["thread"]
+        self.assertEqual(len(thread), 2)
+        self.assertIn("utm_source=x&utm_medium=social", thread[1]["text"])
+        self.assertNotIn("thread", fb["metadata"]["facebook"])
+        self.assertIn("utm_source=facebook&utm_medium=social", fb["metadata"]["facebook"]["linkAttachment"]["url"])
+
+
 class PromptTest(unittest.TestCase):
     def test_generation_prompt_asks_for_new_shape(self):
         self.assertEqual(threads_hooks.POST_STYLE, 3)

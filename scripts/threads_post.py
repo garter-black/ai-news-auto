@@ -980,8 +980,31 @@ def recent_voice(state: dict, field: str, n: int = 5) -> list[str]:
     return [p[field] for p in history if p.get(field)][:n]
 
 
-def utm_link(link: str, source: str, fmt: str) -> str:
-    return f"{link}?utm_source={source}&utm_medium=social&utm_campaign={fmt}"
+def utm_link(link: str, source: str, fmt: str, content: str = "") -> str:
+    """SNS ごとの流入を分けるための UTM（utm_source=threads|bluesky|facebook|x, utm_medium=social, utm_campaign=形式）。
+    動画など投稿の中身を分けたいときは content（utm_content）を足す"""
+    sep = "&" if "?" in link else "?"
+    url = f"{link}{sep}utm_source={source}&utm_medium=social&utm_campaign={fmt}"
+    return f"{url}&utm_content={urllib.parse.quote(content)}" if content else url
+
+
+THREADS_LINK_LINE = "詳しくはこちら👇"
+THREADS_EASY_NOTE = "（かんたん版あり）"
+
+
+def with_link(text: str, article: dict, source: str = "threads", fmt: str = "classic", limit: int = MAX_CHARS) -> str:
+    """本文の最後（問いかけの後）に、記事へのリンクを1行で足す（2026-11-03 オーナー決定。Threads・Bluesky・Facebook は本文にリンク）。
+    上限を超えるときは書き出しのかたまりから削る"""
+    url = utm_link(f"{site_url()}/articles/{article['slug']}", source, fmt)
+    line = THREADS_LINK_LINE + (THREADS_EASY_NOTE if str(article.get("easy") or "").strip() else "")
+    tail = f"\n\n{line}\n{url}"
+    body = str(text).rstrip()
+    blocks = post_blocks_of(body)
+    if len(body) + len(tail) > limit and len(blocks) == 3:
+        body = "\n\n".join(blocks[1:])
+    if len(body) + len(tail) > limit:
+        body = body[: max(0, limit - len(tail) - 1)].rstrip() + "…"
+    return body + tail
 
 
 IMAGE_EXT_RE = re.compile(r"\.(jpe?g|png)(\?|$)", re.I)
@@ -1231,17 +1254,17 @@ def publish_via_buffer(
 ) -> dict:
     """Buffer に予約投稿する。
 
-    本文にはリンクを付けず、画像を1枚添える。記事へのリンクは、すぐ下に続く返信（スレッドの2件目）に置く。
-    リンクだけの投稿は反応が付きにくく、表示が伸びにくいと言われているため。
-    classic: 本文は完結型＋図解カード、返信はリンクの案内だけ
+    画像を1枚添える。
+    classic: 本文（問いかけの後に記事のリンク。with_link）＋カード画像。返信は作らない（2026-11-03 オーナー決定）
     hook_thread: 本文は短い書き出し＋写真（またはカバー）、返信に要約・要点・結論（＋リンクカード）
     """
     cover = f"{site_url()}/cover/{article['slug']}"
     title = article.get("seoTitle") or article["title"]
     reply = compose_detail(article) if fmt == "hook_thread" else link_reply_text(article)
-    thread = [
-        {"text": text, "assets": [{"image": {"url": post_image(article, fmt)}}]},
-        {
+    thread = [{"text": text, "assets": [{"image": {"url": post_image(article, fmt)}}]}]
+    # 2026-11-03〜: classic は本文の最後に記事のリンク（with_link）を入れ、返信（2/2）は作らない。画像はそのまま添える
+    if fmt != "classic":
+        thread.append({
             "text": reply,
             "assets": [],
             "metadata": {
@@ -1254,8 +1277,7 @@ def publish_via_buffer(
                     }
                 }
             },
-        },
-    ]
+        })
     post_input = {
         "channelId": channel_id,
         "text": text,
@@ -1365,7 +1387,7 @@ def main() -> int:
         test_text = compose_hook(sample) if test_fmt == "hook_thread" else compose(sample)
         log(f"[test] 形式: {test_fmt}")
         # classic は本文だけで完結（問いかけ入り）。hook_thread は編集部の一言と問いかけも入れた形で確かめる
-        threads_test = test_text if test_fmt == "classic" else voice.add_voice(
+        threads_test = with_link(test_text, sample, "threads", test_fmt) if test_fmt == "classic" else voice.add_voice(
             test_text, voice.editor_comment(sample, []), voice.question_line(sample, topic_of(sample), []), MAX_CHARS
         )
         log(f"[test] Threads の本文:\n{threads_test}")
@@ -1473,9 +1495,11 @@ def main() -> int:
             recent = [hook, *recent][:4]
         if fmt == "classic":
             # 本文は「書き出し／要約すると、2文／問いかけ」で完結（2026-11-02）。編集部の一言は足さない（形を崩さないため）
-            comment, question, threads_text = "", article.get("_question") or "", text
-            for problem in post_problems(threads_text, article):
+            comment, question = "", article.get("_question") or ""
+            for problem in post_problems(text, article):
                 log(f"  [check] {article['slug']}: {problem}")
+            # 2026-11-03〜: Threads は本文の最後に記事のリンク（返信は作らない）
+            threads_text = with_link(text, article, "threads", fmt)
         else:
             # hook_thread（以前の A/B の形）: Threads の本文だけに「編集部の一言」と、約半分は「問いかけ」を足す
             comment = voice.editor_comment(article, recent_comments)
@@ -1484,10 +1508,10 @@ def main() -> int:
                 question = voice.question_line(article, topic_of(article), recent_questions)
             threads_text = voice.add_voice(text, comment, question, MAX_CHARS)
             comment = comment if comment and comment in threads_text else ""
-        question = question if question and threads_text.endswith(question) else ""
+        question = question if question and question in threads_text else ""
         recent_comments = [comment, *recent_comments][:5] if comment else recent_comments
         recent_questions = [question, *recent_questions][:5] if question else recent_questions
-        detail = compose_detail(article) if fmt == "hook_thread" else link_reply_text(article)
+        detail = compose_detail(article) if fmt == "hook_thread" else "（なし。リンクは本文。X だけ返信にリンク）"
         log(
             f"--- {article['slug']} [{fmt}] 問いかけ={'あり' if question else 'なし'} トピック={topic_of(article)} "
             f"({len(threads_text)}文字)\n{threads_text}\n[返信]\n{detail}\n[画像] {post_image(article, fmt)}\n{link}\n"
