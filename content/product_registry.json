@@ -226,6 +226,14 @@
       "category": "半導体・インフラ"
     },
     {
+      "slug": "d",
+      "name": "dバリューパス",
+      "aliases": [],
+      "company": "other",
+      "companyName": "NTTドコモ",
+      "category": "アプリ・サービス"
+    },
+    {
       "slug": "daybreak",
       "name": "Daybreak",
       "aliases": [],
@@ -1014,6 +1022,7 @@
     "Model Router",
     "Muon",
     "NASA",
+    "NTTドコモ",
     "NTTドコモビジネス",
     "Oracle",
     "OS設計",
@@ -1064,7 +1073,7 @@
     "自律型AI",
     "音声AI"
   ],
-  "updatedAt": "2026-11-01T23:01:01+00:00",
+  "updatedAt": "2026-11-02T02:11:29+00:00",
   "failed": {
     "gpt-5-6-sol": {
       "at": "2026-10-27T11:05:30+00:00",
