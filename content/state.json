@@ -3968,6 +3968,12 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000005956.000054842.html"
     },
+    "16f4c4df8844aa08": {
+      "at": "2026-11-02T10:31:24.723418+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（議事）",
+      "skipped": true,
+      "url": "https://www.mof.go.jp/about_mof/councils/study_on_chain/on_chain_giji1.html"
+    },
     "173efb6f209b5e2c": {
       "at": "2026-10-29T23:11:22.615962+00:00",
       "reason": "prefilter: 告知・お知らせ系",
@@ -6533,6 +6539,12 @@
       "reason": "quality: 本文が短い（1286字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）; easy_markdown が短い（316字 / 基準 400字以上）; 独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に",
       "skipped": true,
       "url": "https://www.boj.or.jp/mopo/mpmdeci/mpr_2026/mpr261030b.pdf"
+    },
+    "63c4b7d8634c79e8": {
+      "at": "2026-11-02T10:31:24.723385+00:00",
+      "reason": "prefilter: 告知・お知らせ系",
+      "skipped": true,
+      "url": "https://blog.jetbrains.com/ai/2026/11/livestream-scaling-agentic-development-with-air-governance/"
     },
     "63ed6ece3476ff3d": {
       "at": "2026-10-27T03:04:42.977885+00:00",
@@ -10163,6 +10175,14 @@
       "skipped": true,
       "url": "https://www.telwel-east.co.jp/news/media/000348.html"
     },
+    "cd0896561670865f": {
+      "at": "2026-11-02T10:31:35.826468+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "covid19-bankruptcy-october-2026",
+      "url": "https://www.tsr-net.co.jp/data/detail/1203394_1527.html"
+    },
     "cd69600d9623203f": {
       "at": "2026-10-27T03:05:10.758700+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（受賞）",
@@ -11135,6 +11155,12 @@
       "skipped": true,
       "url": "https://survey.gov-online.go.jp"
     },
+    "ea66f5a34808c903": {
+      "at": "2026-11-02T10:31:24.723345+00:00",
+      "reason": "stale: 発表から68時間（48時間を超えた発表は通常の記事にしない）",
+      "skipped": true,
+      "url": "https://deepmind.google/blog/speeding-up-planning-decisions-with-ai/"
+    },
     "ead87d51915fe418": {
       "at": "2026-10-28T22:30:42.874883+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（審議会）",
@@ -11936,52 +11962,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T07:11:24.260691+00:00",
-      "attempt": 1,
-      "id": "da267ffdca032156",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1737字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（250字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 133.9,
-        "avg_sentence": 49.6,
-        "long_share": 0.222,
-        "max_paragraph": 230,
-        "paragraphs": 10,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "fsa",
-      "title": "その他,「諸外国における金融制度の概要に関する調査」報告書について公表しました。"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T07:11:31.858523+00:00",
-      "attempt": 2,
-      "id": "da267ffdca032156",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（370字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 123.2,
-        "avg_sentence": 49.3,
-        "long_share": 0.2,
-        "max_paragraph": 161,
-        "paragraphs": 12,
-        "sentences": 30
-      },
-      "score": null,
-      "source": "fsa",
-      "title": "その他,「諸外国における金融制度の概要に関する調査」報告書について公表しました。"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T07:11:40.195528+00:00",
@@ -18534,6 +18514,51 @@
       "score": 100,
       "source": "nissan",
       "title": "6社が「福島県及び浪江町での循環型社会の実現に向けた取組みに関する連携協定」を締結"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T10:31:32.675876+00:00",
+      "attempt": 1,
+      "id": "cd0896561670865f",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 46.2字・60字超の文が 12% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 138.8字・最長 183字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 138.8,
+        "avg_sentence": 46.2,
+        "long_share": 0.125,
+        "max_paragraph": 183,
+        "paragraphs": 8,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "tsr",
+      "title": "新型コロナ破たん、10月は125件発生"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T10:31:35.825493+00:00",
+      "attempt": 0,
+      "id": "cd0896561670865f",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 126.4字・最長 202字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 126.4,
+        "avg_sentence": 27.8,
+        "long_share": 0.0,
+        "max_paragraph": 202,
+        "paragraphs": 9,
+        "sentences": 41
+      },
+      "score": 100,
+      "source": "tsr",
+      "title": "新型コロナ破たん、10月は125件発生"
     }
   ],
   "short_text_retry": {},
