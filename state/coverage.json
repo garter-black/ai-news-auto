@@ -2,6 +2,36 @@
  "hours": 96,
  "items": [
   {
+   "slug": "tokyo-real-estate-videos-2026",
+   "at": "2026-11-02T18:26:16.911886+00:00",
+   "title": "東京都、不動産取引の注意点や法改正がわかる動画8本を公開　トラブル防止へ",
+   "head": "東京都、不動産取引の注意点や法改正がわかる動画8本を公開　トラブル防止へ | 不動産取引に役立つ動画を公開！",
+   "text": "東京都、不動産取引の注意点や法改正がわかる動画8本を公開　トラブル防止へ | 不動産取引に役立つ動画を公開！ | 東京都 / 不動産取引 / 宅建業法 / サブリース契約 / 借家契約 / 重要事項説明 / 個人情報保護 / 人権の尊重 / 不動産 / 消費者保護 / 法律 / 行政 / 暮らし",
+   "urls": [
+    "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110215"
+   ]
+  },
+  {
+   "slug": "openai-lifeval-everyday-tasks",
+   "at": "2026-11-02T18:26:05.353135+00:00",
+   "title": "ChatGPTのOpenAIが生活の用事をこなす力を測る新テスト「LifeVal」を公開",
+   "head": "ChatGPTのOpenAIが生活の用事をこなす力を測る新テスト「LifeVal」を公開 | LifeVal",
+   "text": "ChatGPTのOpenAIが生活の用事をこなす力を測る新テスト「LifeVal」を公開 | LifeVal | LifeVal / OpenAI / ChatGPT / AIエージェント / 日常タスク / AI 評価 / ブラウザ操作 / コンピューター操作 / AIアシスタント / 生活の手続き / 生成AI / ChatGPT / OpenAI / AIエージェント / 評価指標",
+   "urls": [
+    "https://openai.com/index/lifeval"
+   ]
+  },
+  {
+   "slug": "yukimi-daifuku-fujisawa-ryoka",
+   "at": "2026-11-02T18:24:07.007191+00:00",
+   "title": "ロッテの「雪見だいふく」が発売45周年 Mrs. GREEN APPLEの藤澤涼架が新アンバサダーに就任",
+   "head": "ロッテの「雪見だいふく」が発売45周年 Mrs. GREEN APPLEの藤澤涼架が新アンバサダーに就任 | 雪見だいふく",
+   "text": "ロッテの「雪見だいふく」が発売45周年 Mrs. GREEN APPLEの藤澤涼架が新アンバサダーに就任 | 雪見だいふく | 雪見だいふく / 藤澤涼架 / Mrs. GREEN APPLE / ロッテ / アンバサダー / 45周年 / アイス / りょうちゃんだいふく / テクノロジー / エンタメ / ニュース",
+   "urls": [
+    "https://news.yahoo.co.jp/articles/665557ba443284b46e77077206af16c366813e92"
+   ]
+  },
+  {
    "slug": "google-ai-news-october-2026",
    "at": "2026-11-02T18:00:33.906162+00:00",
    "title": "GoogleのAI「Gemini 4」など10月の新発表まとめ 詐欺対策や偽画像の判別も",
@@ -1586,42 +1616,6 @@
    "urls": [
     "https://aws.amazon.com/blogs/machine-learning/build-a-repeatable-php-to-java-migration-engine-with-kiro/"
    ]
-  },
-  {
-   "slug": "tokyo-chiiki-kigyo-challenge-2026",
-   "at": "2026-10-29T18:15:24.126396+00:00",
-   "title": "東京都、地域中小企業の事業変革を後押しする4つの企業グループを決定　令和10年1月まで専門家が伴走支援",
-   "head": "東京都、地域中小企業の事業変革を後押しする4つの企業グループを決定　令和10年1月まで専門家が伴走支援 | 令和8年度新規事業 「地域企業グループチャレンジ促進事業」事業変革に取り組む4つの地域企業グループを決定",
-   "text": "東京都、地域中小企業の事業変革を後押しする4つの企業グループを決定　令和10年1月まで専門家が伴走支援 | 令和8年度新規事業 「地域企業グループチャレンジ促進事業」事業変革に取り組む4つの地域企業グループを決定 | 東京都 / 地域企業グループチャレンジ促進事業 / 中小企業 / 事業変革 / ものづくり / コンサルタント / 地域ブランド / 技術継承 / 社会・行政 / 中小企業支援 / 東京都 / ものづくり",
-   "urls": [
-    "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102903"
-   ]
-  },
-  {
-   "slug": "openai-updated-model-spec-2026",
-   "at": "2026-10-29T18:07:27.001760+00:00",
-   "title": "ChatGPTのOpenAIがAIの行動指針「モデルスペック」を全面改定 行動理念を5つの価値観に整理",
-   "head": "ChatGPTのOpenAIがAIの行動指針「モデルスペック」を全面改定 行動理念を5つの価値観に整理 | An updated Model Spec for more capable and beneficial AI",
-   "text": "ChatGPTのOpenAIがAIの行動指針「モデルスペック」を全面改定 行動理念を5つの価値観に整理 | An updated Model Spec for more capable and beneficial AI | OpenAI / モデルスペック / 生成AI / AIの倫理 / アライメント / ChatGPT / AI安全 / 開発者ガイドライン / AI / 生成AI / LLM / 開発ツール",
-   "urls": [
-    "https://openai.com/index/updated-model-spec"
-   ]
-  },
-  {
-   "slug": "microsoft-copilot-harness-agent-scaling",
-   "at": "2026-10-29T18:06:41.884439+00:00",
-   "title": "Microsoftが新機能発表 インフラ構築なしでAIエージェントを自動拡張『Copilot Harness』",
-   "head": "Microsoftが新機能発表 インフラ構築なしでAIエージェントを自動拡張『Copilot Harness』 | Stop wiring infrastructure, start building agents.",
-   "text": "Microsoftが新機能発表 インフラ構築なしでAIエージェントを自動拡張『Copilot Harness』 | Stop wiring infrastructure, start building agents. | Microsoft Foundry / Copilot Harness / AIエージェント / MCP / GitHub Copilot / Azure / スキル定義 / 自動化 / インフラ不要 / 使い方 / Microsoft / Copilot / AI / クラウド / 開発ツール / Azure",
-   "urls": []
-  },
-  {
-   "slug": "microsoft-copilot-harness-foundry-agent-builder",
-   "at": "2026-10-29T18:03:39.496753+00:00",
-   "title": "Microsoft、AI開発基盤で「Copilot harness」を発表 コンテナ不要で動くエージェント構築が可能に",
-   "head": "Microsoft、AI開発基盤で「Copilot harness」を発表 コンテナ不要で動くエージェント構築が可能に | Stop wiring infrastructure, start building agents",
-   "text": "Microsoft、AI開発基盤で「Copilot harness」を発表 コンテナ不要で動くエージェント構築が可能に | Stop wiring infrastructure, start building agents | Microsoft Copilot harness / Microsoft Foundry / AIエージェント / GitHub Copilot / MCP / 使い方 / 料金 / 日本 / Microsoft / Copilot / 生成AI / Azure / GitHub Copilot / 開発ツール",
-   "urls": []
   }
  ]
 }

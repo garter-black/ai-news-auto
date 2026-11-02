@@ -27,11 +27,11 @@
   "products": [
     {
       "partner": "oz-rtx5070ti",
-      "price": "469,800円",
+      "price": "504,800円",
       "priceSource": {
         "type": "data",
         "file": "products.json",
-        "checkedAt": "2026-10-26T09:25:06.891826+00:00"
+        "checkedAt": "2026-11-02T01:50:40.814700+00:00"
       },
       "priceNote": "",
       "specs": [
@@ -52,11 +52,11 @@
     },
     {
       "partner": "oz-rx9060xt",
-      "price": "274,800円",
+      "price": "340,800円",
       "priceSource": {
         "type": "data",
         "file": "products.json",
-        "checkedAt": "2026-10-26T09:25:06.891826+00:00"
+        "checkedAt": "2026-11-02T01:50:40.814700+00:00"
       },
       "priceNote": "",
       "specs": [
@@ -101,7 +101,7 @@
       "priceSource": {
         "type": "official",
         "url": "https://www.minisforum.jp/",
-        "checkedAt": "2026-10-27T02:35:28+09:00"
+        "checkedAt": "2026-11-03T03:28:41+09:00"
       },
       "priceNote": "ハロウィン特別セール開催中（通常価格からの値引きあり）",
       "specs": [
@@ -126,7 +126,7 @@
       "priceSource": {
         "type": "official",
         "url": "https://jp.gmktec.com/",
-        "checkedAt": "2026-10-27T02:35:28+09:00"
+        "checkedAt": "2026-11-03T03:28:41+09:00"
       },
       "priceNote": "2026年10月31日までのハロウィン限定キャンペーン実施中",
       "specs": [
@@ -179,12 +179,12 @@
     }
   ],
   "relatedArticleSlugs": [
-    "nvidia-local-ai-gtc-berlin-spark-station",
-    "nvidia-gtc-berlin-2026-keynote-highlights",
-    "nvidia-gtc-berlin-2026-pregame-summary",
-    "nvidia-halos-safe-autonomous-vehicle-safety",
-    "nvidia-isaac-gpt6-astra-robotics-agile-one",
-    "nvidia-gtc-berlin-2026-vera-rubin-openshell"
+    "intelligent-terminal-local-120b-llm",
+    "nvidia-gtc-grid-reliability-resiliency",
+    "geforce-now-phantom-blade-zero-update",
+    "nvidia-gtc-berlin-healthcare-ai-holoscan5",
+    "nvidia-uk-ai-factories-robotics",
+    "nvidia-local-ai-gtc-berlin-spark-station"
   ],
   "sources": [
     {
@@ -224,8 +224,8 @@
     }
   ],
   "publishedAt": "2026-10-27T02:29:59+09:00",
-  "updatedAt": "2026-10-27T02:35:40+09:00",
-  "priceCheckedAt": "2026-10-27T02:35:28+09:00",
+  "updatedAt": "2026-11-03T03:28:51+09:00",
+  "priceCheckedAt": "2026-11-03T03:28:41+09:00",
   "model": "gemini-3.5-flash-lite",
   "factCheck": {
     "score": 100,

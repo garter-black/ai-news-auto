@@ -28,7 +28,7 @@
       "priceSource": {
         "type": "official",
         "url": "https://www.xserver.ne.jp/price/",
-        "checkedAt": "2026-10-27T02:35:40+09:00"
+        "checkedAt": "2026-11-03T03:28:51+09:00"
       },
       "priceNote": "",
       "specs": [
@@ -55,7 +55,7 @@
       "priceSource": {
         "type": "official",
         "url": "https://www.shin-server.jp/",
-        "checkedAt": "2026-10-27T02:35:40+09:00"
+        "checkedAt": "2026-11-03T03:28:51+09:00"
       },
       "priceNote": "ベーシックプラン",
       "specs": [
@@ -82,7 +82,7 @@
       "priceSource": {
         "type": "official",
         "url": "https://lolipop.jp/pricing/",
-        "checkedAt": "2026-10-27T02:35:40+09:00"
+        "checkedAt": "2026-11-03T03:28:51+09:00"
       },
       "priceNote": "エコノミーの場合。長期契約でお得",
       "specs": [
@@ -159,7 +159,9 @@
       "a": "多くのプランで対応していますが、ロリポップ！のエコノミーなど一部のプランでは対応していない場合があります。各プランの仕様を公式サイトで確認してください。"
     }
   ],
-  "relatedArticleSlugs": [],
+  "relatedArticleSlugs": [
+    "docker-coding-agent-horror-stories-cve"
+  ],
   "sources": [
     {
       "partner": "xserver",
@@ -191,8 +193,8 @@
     }
   ],
   "publishedAt": "2026-10-27T02:10:32+09:00",
-  "updatedAt": "2026-10-27T02:35:55+09:00",
-  "priceCheckedAt": "2026-10-27T02:35:40+09:00",
+  "updatedAt": "2026-11-03T03:28:56+09:00",
+  "priceCheckedAt": "2026-11-03T03:28:51+09:00",
   "model": "gemini-3.5-flash-lite",
   "factCheck": {
     "score": 100,

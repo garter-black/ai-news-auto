@@ -53,7 +53,7 @@
       "priceSource": {
         "type": "official",
         "url": "https://doraverse.com/ja/pricing",
-        "checkedAt": "2026-10-27T02:34:28+09:00"
+        "checkedAt": "2026-11-03T03:28:23+09:00"
       },
       "priceNote": "10ドル／月、8ドル／月（Starterプラン）",
       "specs": [
@@ -103,12 +103,12 @@
     }
   ],
   "relatedArticleSlugs": [
-    "biztex-executive-ai-1day-training",
-    "ai-hack-claude-sonnet-5-5-gpt-6-1-sol",
-    "openai-dot-bug-hunting-codex",
-    "chatgpt-work-realpage-ai-training",
-    "openai-astra-shield-forge-it-support",
-    "att-openai-ai-legal-workflows-legaledge"
+    "google-ai-news-october-2026",
+    "deepseek-harness-creator-mode",
+    "anthropic-s1a-amendment-ant-nasdaq",
+    "openai-grid-protectors-program",
+    "openai-lifeval-everyday-tasks",
+    "chatgpt-codex-shared-usage-limits"
   ],
   "sources": [
     {
@@ -128,8 +128,8 @@
     }
   ],
   "publishedAt": "2026-10-27T02:30:58+09:00",
-  "updatedAt": "2026-10-27T02:34:36+09:00",
-  "priceCheckedAt": "2026-10-27T02:34:28+09:00",
+  "updatedAt": "2026-11-03T03:28:32+09:00",
+  "priceCheckedAt": "2026-11-03T03:28:23+09:00",
   "model": "gemini-3.5-flash-lite",
   "factCheck": {
     "score": 100,

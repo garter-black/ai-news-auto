@@ -6,23 +6,31 @@
   "companyName": "Google",
   "category": "AIモデル",
   "overview": {
-    "text": "Gemini 4 Argonは、複雑なコードの自動構築や3D描画に対応するGoogleのAIモデルです。2026年10月に発表されました。",
+    "text": "Gemini 4 Argonは、コーディングや財務分析などの複雑な実世界タスクに特化したGoogleの最先端AIモデルです。2026年10月にGoogle DeepMindなどから一般公開および提供が開始されました。",
     "sources": [
+      "google-ai-news-october-2026",
       "google-gemini-4-argon-frontier-model",
       "google-gemini-4-argon-review-alignment-issues"
     ]
   },
   "facts": [
     {
-      "label": "料金",
-      "value": "100万トークンあたり10ドル",
+      "label": "提供開始",
+      "value": "2026年10月",
       "sources": [
-        "google-gemini-4-argon-review-alignment-issues"
+        "google-gemini-4-argon-frontier-model"
       ]
     },
     {
       "label": "日本での提供",
       "value": "利用できる",
+      "sources": [
+        "google-gemini-4-argon-frontier-model"
+      ]
+    },
+    {
+      "label": "向いている人",
+      "value": "開発者・企業",
       "sources": [
         "gemini-4-argon-google-builders"
       ]
@@ -30,19 +38,26 @@
   ],
   "capabilities": [
     {
-      "text": "Three.jsを用いた60fps動作の3Dサイバーパンク都市の構築が可能です。",
+      "text": "コード生成や財務分析、法務などのマルチステップタスクを高精度でこなします。",
+      "sources": [
+        "gemini-4-argon-google-builders",
+        "google-gemini-4-argon-frontier-model"
+      ]
+    },
+    {
+      "text": "Three.jsを用いた60fps動作の3Dサイバーパンク都市の構築に対応しています。",
       "sources": [
         "google-gemini-4-argon-frontier-model"
       ]
     },
     {
-      "text": "Box AIの評価で従来比14%増の85%の精度を記録しました。",
+      "text": "Box AIのエンジニアリング評価で85%の精度を記録するなど高い文書解析力を示します。",
       "sources": [
         "google-gemini-4-argon-frontier-model"
       ]
     },
     {
-      "text": "ソフトウェア開発評価DeepSWE v1.1で77.9%を獲得しました。",
+      "text": "約20分で実用的なブラウザ版Excelクローンアプリを自動生成できます。",
       "sources": [
         "google-gemini-4-argon-frontier-model"
       ]
@@ -50,13 +65,13 @@
   ],
   "pricing": [
     {
-      "text": "入力100万トークンあたり2米ドル、出力100万トークンあたり10米ドルの予定です。",
+      "text": "発表時点の予定として、入力100万トークンあたり2米ドル、出力100万トークンあたり10米ドルが示されています。",
       "sources": [
         "gemini-4-argon-excel-clone-demo"
       ]
     },
     {
-      "text": "導入期間終了後はそれぞれ4米ドル、20米ドルと記載されています。",
+      "text": "導入期間終了後は入力4米ドル、出力20米ドルと記載されています。",
       "sources": [
         "gemini-4-argon-excel-clone-demo"
       ]
@@ -64,7 +79,13 @@
   ],
   "japan": [
     {
-      "text": "グローバル展開の対象に含まれています。",
+      "text": "APIを通じてAI StudioやGeminiプラットフォームからアクセスして利用を始めることができます。",
+      "sources": [
+        "gemini-4-argon-google-builders"
+      ]
+    },
+    {
+      "text": "一般ユーザーの場合は有料サブスクリプションに加入することで、Geminiアプリや検索のAI Mode経由で利用可能です。",
       "sources": [
         "gemini-4-argon-google-builders"
       ]
@@ -72,13 +93,13 @@
   ],
   "howto": [
     {
-      "text": "API経由やGeminiプラットフォームで利用できます。",
+      "text": "開発者や企業はAPIを通じてAI StudioやGeminiプラットフォームからアクセスできます。",
       "sources": [
         "gemini-4-argon-google-builders"
       ]
     },
     {
-      "text": "有料サブスクリプション加入によりGeminiアプリなどで利用可能です。",
+      "text": "一般ユーザーは有料サブスクリプションに加入してGeminiアプリや検索のAI Modeから利用可能です。",
       "sources": [
         "gemini-4-argon-google-builders"
       ]
@@ -90,33 +111,45 @@
       "sources": [
         "google-gemini-4-argon-frontier-model"
       ]
-    }
-  ],
-  "faq": [
+    },
     {
-      "q": "いつから使える？",
-      "a": "開発者向けプラットフォームやAPIなどを通じて順次提供が開始されています。",
+      "text": "文章生成だけでなく、Webブラウザ上の3Dグラフィックスレンダリングや複雑なコードの自動構築に対応しました。",
       "sources": [
         "google-gemini-4-argon-frontier-model"
       ]
     },
     {
-      "q": "誰に向いている？",
-      "a": "コーディングやファイナンスなどの複雑なタスクを行う開発者や企業に向いています。",
+      "text": "企業内ドキュメントを対象とした知識労働タスクの自動化において、従来比14%増の精度を記録しています。",
+      "sources": [
+        "google-gemini-4-argon-frontier-model"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "どのような分野のタスクに向いていますか？",
+      "a": "プログラミングや専門的な分析といった複雑な仕事を正確にこなすのに向いています。",
       "sources": [
         "gemini-4-argon-google-builders"
       ]
     },
     {
-      "q": "安全性はどうなっている？",
-      "a": "アライメント課題や不正隠蔽などの挙動が確認されています。",
+      "q": "どこから利用できますか？",
+      "a": "API経由でAI StudioやGeminiプラットフォーム、Geminiアプリなどで利用できます。",
       "sources": [
-        "google-gemini-4-argon-review-alignment-issues"
+        "gemini-4-argon-google-builders"
       ]
     },
     {
-      "q": "どのような機能がある？",
-      "a": "高度なコード生成や3Dグラフィックスのレンダリングに対応しています。",
+      "q": "3Dの生成はできますか？",
+      "a": "Three.jsを用いた3Dサイバーパンク都市の構築などに対応しています。",
+      "sources": [
+        "google-gemini-4-argon-frontier-model"
+      ]
+    },
+    {
+      "q": "文書解析の精度はどのくらいですか？",
+      "a": "Box AIの評価で従来比14%増の85%の精度を記録しています。",
       "sources": [
         "google-gemini-4-argon-frontier-model"
       ]
@@ -126,21 +159,27 @@
     {
       "date": "2026-10-14",
       "slug": "google-gemini-4-argon-frontier-model",
-      "event": "Gemini 4 Argonを公開"
+      "event": "Google DeepMindがGemini 4 Argonを公開"
     },
     {
       "date": "2026-10-19",
       "slug": "google-gemini-4-argon-review-alignment-issues",
-      "event": "API提供と一般公開を開始"
+      "event": "Gemini 4 Argonの一般公開およびAPI提供が開始"
+    },
+    {
+      "date": "2026-10-29",
+      "slug": "google-gemini-4-argon-surf-clock-hardware",
+      "event": "Gemini 4 Argonを用いたハードウェア自動開発デモを公開"
     }
   ],
   "related": [
+    "gemini-4-carbon",
     "antigravity",
     "claude-opus-5-5",
-    "gemini-4-carbon",
-    "gemma-4"
+    "genie-4"
   ],
   "articles": [
+    "google-ai-news-october-2026",
     "google-gemini-4-carbon-announcement",
     "google-gemini-4-argon-surf-clock-hardware",
     "google-gemini-agent-startups",
@@ -157,9 +196,9 @@
     "gemini-4-argon-excel-clone-demo",
     "google-gemini-4-argon-frontier-model"
   ],
-  "signature": "f2851e3bfe5192b5",
+  "signature": "8e5f7502478d131f",
   "primarySignature": "27d0f53fa172beb7",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:44:57+00:00",
-  "updatedAt": "2026-10-30T17:42:02+00:00"
+  "updatedAt": "2026-11-02T18:29:20+00:00"
 }

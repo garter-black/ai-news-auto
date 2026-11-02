@@ -28,7 +28,7 @@
       "priceSource": {
         "type": "official",
         "url": "https://jp.gmktec.com/",
-        "checkedAt": "2026-10-27T02:34:25+09:00"
+        "checkedAt": "2026-11-03T03:28:21+09:00"
       },
       "priceNote": "ハロウィン限定キャンペーン中",
       "specs": [
@@ -55,7 +55,7 @@
       "priceSource": {
         "type": "official",
         "url": "https://www.minisforum.jp/",
-        "checkedAt": "2026-10-27T02:34:25+09:00"
+        "checkedAt": "2026-11-03T03:28:21+09:00"
       },
       "priceNote": "ハロウィン特別セール開催中",
       "specs": [
@@ -128,8 +128,8 @@
     }
   ],
   "publishedAt": "2026-10-27T02:16:56+09:00",
-  "updatedAt": "2026-10-27T02:34:26+09:00",
-  "priceCheckedAt": "2026-10-27T02:34:25+09:00",
+  "updatedAt": "2026-11-03T03:28:23+09:00",
+  "priceCheckedAt": "2026-11-03T03:28:21+09:00",
   "model": "gemini-3.5-flash-lite",
   "factCheck": {
     "score": 100,

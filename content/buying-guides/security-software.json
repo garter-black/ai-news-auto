@@ -31,7 +31,7 @@
       "priceSource": {
         "type": "official",
         "url": "https://www.trendmicro.com/ja_jp/forHome/products/vb.html",
-        "checkedAt": "2026-10-27T02:35:55+09:00"
+        "checkedAt": "2026-11-03T03:28:56+09:00"
       },
       "priceNote": "3年版などの複数プランあり",
       "specs": [
@@ -58,7 +58,7 @@
       "priceSource": {
         "type": "official",
         "url": "https://jp.norton.com/products/norton-360-standard",
-        "checkedAt": "2026-10-27T02:35:55+09:00"
+        "checkedAt": "2026-11-03T03:28:56+09:00"
       },
       "priceNote": "スタンダード 1年版の価格",
       "specs": [
@@ -159,12 +159,12 @@
     }
   ],
   "relatedArticleSlugs": [
-    "microsoft-foundry-agent-guardrails-security",
-    "sophos-openai-daybreak-security-agent",
-    "mistral-large-4-le-chonk-preview",
-    "openai-security-agent-control-limitations",
-    "science-of-watermarking-ai-synthid",
-    "nvidia-confidential-computing-guide-matome"
+    "google-ai-news-october-2026",
+    "hokuriku-electric-hokulink-leak",
+    "google-warns-llmjacking-cloud-threats",
+    "docker-blueprint-alliance-agent-baseline",
+    "aws-connect-ai-agents-guardrails",
+    "artex-agentic-offensive-frameworks"
   ],
   "sources": [
     {
@@ -198,8 +198,8 @@
     }
   ],
   "publishedAt": "2026-10-27T02:01:20+09:00",
-  "updatedAt": "2026-10-27T02:36:23+09:00",
-  "priceCheckedAt": "2026-10-27T02:35:55+09:00",
+  "updatedAt": "2026-11-03T03:29:02+09:00",
+  "priceCheckedAt": "2026-11-03T03:28:56+09:00",
   "model": "gemini-3.5-flash-lite",
   "factCheck": {
     "score": 100,

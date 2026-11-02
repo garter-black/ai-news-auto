@@ -101,6 +101,7 @@
     }
   ],
   "relatedArticleSlugs": [
+    "gemini-notebook-free-textbooks",
     "chatgpt-work-realpage-ai-training",
     "durable-skill-software-engineer-2026-kent-c-dodds",
     "iceland-national-ai-education-pilot"
@@ -122,8 +123,8 @@
     }
   ],
   "publishedAt": "2026-10-27T02:15:57+09:00",
-  "updatedAt": "2026-10-27T02:35:28+09:00",
-  "priceCheckedAt": "2026-10-27T02:34:57+09:00",
+  "updatedAt": "2026-11-03T03:28:41+09:00",
+  "priceCheckedAt": "2026-11-03T03:28:35+09:00",
   "model": "gemini-3.5-flash-lite",
   "factCheck": {
     "score": 100,

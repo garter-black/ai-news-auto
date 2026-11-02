@@ -32,7 +32,7 @@
       "priceSource": {
         "type": "official",
         "url": "https://vps.xserver.ne.jp/",
-        "checkedAt": "2026-10-27T02:36:38+09:00"
+        "checkedAt": "2026-11-03T03:29:08+09:00"
       },
       "priceNote": "初期費用無料、プランにより変動",
       "specs": [
@@ -114,12 +114,12 @@
     }
   ],
   "relatedArticleSlugs": [
-    "dotnet-11-rc2-python-arm64-foundry-browser-automation",
-    "microsoft-foundry-agent-guardrails-security",
-    "nvidia-gtc-berlin-2026-keynote-highlights",
-    "openai-dot-bug-hunting-codex",
-    "nvidia-isaac-gpt6-astra-robotics-agile-one",
-    "openai-astra-shield-forge-it-support"
+    "deepseek-harness-creator-mode",
+    "docker-blueprint-alliance-agent-baseline",
+    "openai-lifeval-everyday-tasks",
+    "nissay-it-ai-driven-development-aws",
+    "google-knowledge-catalog-self-learning-enrichment",
+    "google-agent-compute-engine-governance"
   ],
   "sources": [
     {
@@ -139,8 +139,8 @@
     }
   ],
   "publishedAt": "2026-10-27T02:07:22+09:00",
-  "updatedAt": "2026-10-30T19:17:48+09:00",
-  "priceCheckedAt": "2026-10-27T02:36:38+09:00",
+  "updatedAt": "2026-11-03T03:29:09+09:00",
+  "priceCheckedAt": "2026-11-03T03:29:08+09:00",
   "model": "gemini-3.5-flash-lite",
   "factCheck": {
     "score": 100,

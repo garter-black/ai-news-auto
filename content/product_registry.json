@@ -250,6 +250,14 @@
       "category": "AIモデル"
     },
     {
+      "slug": "deepseek-harness",
+      "name": "DeepSeek Harness",
+      "aliases": [],
+      "company": "deepseek",
+      "companyName": "DeepSeek",
+      "category": "AIモデル"
+    },
+    {
       "slug": "deepseek-v4-1-flash",
       "name": "DeepSeek-V4.1-Flash",
       "aliases": [
@@ -1114,7 +1122,7 @@
     "自律型AI",
     "音声AI"
   ],
-  "updatedAt": "2026-11-02T17:39:21+00:00",
+  "updatedAt": "2026-11-02T18:29:11+00:00",
   "failed": {
     "gpt-5-6-sol": {
       "at": "2026-10-27T11:05:30+00:00",

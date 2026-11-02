@@ -166,11 +166,12 @@
   ],
   "related": [
     "gemini-4-argon",
-    "gemma-4",
     "gemini-4-carbon",
+    "gemma-4",
     "gemini-robotics-2"
   ],
   "articles": [
+    "google-ai-news-october-2026",
     "google-deepmind-genie-4-world-model",
     "google-deepmind-genie-4-world-model-sffpkujd_jk",
     "google-genie-4-world-model"

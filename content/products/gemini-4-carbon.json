@@ -6,10 +6,9 @@
   "companyName": "Google",
   "category": "AIモデル",
   "overview": {
-    "text": "Gemini 4 Carbonは、Googleが2026年10月に発表した最新のAIモデルです。AIの総合性能テストで首位を獲得し、プログラミングやサイバーセキュリティの処理が得意です。",
+    "text": "Gemini 4 Carbonは、Googleが2026年10月28日に発表したAIモデルです。サイバー防御やコード作成に強い性能を持っています。",
     "sources": [
       "google-gemini-4-carbon-announcement-zhnjo7s91ls",
-      "google-gemini-4-carbon-announcement",
       "gemini-4-carbon-cybersecurity-model"
     ]
   },
@@ -23,17 +22,24 @@
       ]
     },
     {
-      "label": "日本での提供",
-      "value": "条件付き・順次対応見込み",
+      "label": "提供開始",
+      "value": "2026年10月28日",
       "sources": [
-        "google-gemini-4-carbon-announcement-zhnjo7s91ls",
-        "google-gemini-4-carbon-announcement"
+        "gemini-4-carbon-cybersecurity-model"
+      ]
+    },
+    {
+      "label": "日本での提供",
+      "value": "一般提供後に利用可能になる見込み",
+      "sources": [
+        "google-gemini-4-carbon-announcement-zhnjo7s91ls"
       ]
     },
     {
       "label": "向いている人",
-      "value": "開発者やセキュリティ担当者",
+      "value": "開発者やセキュリティ担当",
       "sources": [
+        "google-ai-news-october-2026",
         "google-gemini-4-carbon-announcement-zhnjo7s91ls",
         "gemini-4-carbon-cybersecurity-model"
       ]
@@ -41,35 +47,49 @@
   ],
   "capabilities": [
     {
-      "text": "システムの脆弱性を発見するテストで88.2%の成果を出しました。",
+      "text": "システムの弱点を見つけて修正パッチを当てることができます。",
       "sources": [
         "google-gemini-4-carbon-announcement-zhnjo7s91ls",
         "gemini-4-carbon-cybersecurity-model"
       ]
     },
     {
-      "text": "画面を見てパソコンを操作するテストで81.5%の成果を記録しました。",
+      "text": "ターミナルでのコマンド実行やパソコン操作が可能です。",
       "sources": [
         "google-gemini-4-carbon-announcement-zhnjo7s91ls"
       ]
     },
     {
-      "text": "高度な数学問題において80.0%正解しました。",
+      "text": "数日かかる長い開発や不具合の修正作業を続けられます。",
       "sources": [
-        "google-gemini-4-carbon-announcement-zhnjo7s91ls"
+        "google-gemini-4-carbon-announcement-zhnjo7s91ls",
+        "gemini-4-carbon-cybersecurity-model"
+      ]
+    },
+    {
+      "text": "安全なコードを生成し、不自然な抜け道を使うズルをしません。",
+      "sources": [
+        "google-gemini-4-carbon-announcement-zhnjo7s91ls",
+        "gemini-4-carbon-cybersecurity-model"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "入力トークンは100万トークンあたり2ドルです。",
+      "text": "初期価格は入力トークンが100万トークンあたり2ドル、出力が10ドルです。",
       "sources": [
         "google-gemini-4-carbon-announcement-zhnjo7s91ls",
         "gemini-4-carbon-cybersecurity-model"
       ]
     },
     {
-      "text": "出力トークンは100万トークンあたり10ドルです。",
+      "text": "期間終了後は入力4ドル、出力20ドルに切り替わります。",
+      "sources": [
+        "google-gemini-4-carbon-announcement-zhnjo7s91ls"
+      ]
+    },
+    {
+      "text": "キャッシュ済みの入力は入力価格の95%オフになります。",
       "sources": [
         "google-gemini-4-carbon-announcement-zhnjo7s91ls",
         "gemini-4-carbon-cybersecurity-model"
@@ -78,14 +98,13 @@
   ],
   "japan": [
     {
-      "text": "発表の時点では、一般ユーザーが今すぐ利用することはできません。",
+      "text": "発表の時点では、一般ユーザーはまだ利用できません。",
       "sources": [
-        "google-gemini-4-carbon-announcement",
-        "gemini-4-carbon-cybersecurity-model"
+        "google-gemini-4-carbon-announcement-zhnjo7s91ls"
       ]
     },
     {
-      "text": "一般提供の開始後は、日本からもアクセス可能になる見込みです。",
+      "text": "一般提供が開始されれば、日本からもアクセス可能になる見込みです。",
       "sources": [
         "google-gemini-4-carbon-announcement-zhnjo7s91ls"
       ]
@@ -93,10 +112,9 @@
   ],
   "howto": [
     {
-      "text": "一般公開後は「Google AI Studio」または「Vertex AI」からAPIキーを取得して利用可能になります。",
+      "text": "一般提供開始後にGoogle AI StudioかVertex AIからAPIキーを取得します。",
       "sources": [
-        "google-gemini-4-carbon-announcement-zhnjo7s91ls",
-        "google-gemini-4-carbon-announcement"
+        "google-gemini-4-carbon-announcement-zhnjo7s91ls"
       ]
     },
     {
@@ -108,29 +126,37 @@
   ],
   "differences": [
     {
-      "text": "Artificial Analysisの指標で、前作の51ポイントから59ポイントへ上昇しました。",
+      "text": "前作のGemini 4 Argonからわずか2週間で発表されました。",
+      "sources": [
+        "google-ai-news-october-2026",
+        "google-gemini-4-carbon-announcement-zhnjo7s91ls",
+        "gemini-4-carbon-cybersecurity-model"
+      ]
+    },
+    {
+      "text": "Artificial Analysisの指標で59を獲得し、前作の51からスコアが上がりました。",
       "sources": [
         "google-gemini-4-carbon-announcement-zhnjo7s91ls",
         "google-gemini-4-carbon-announcement"
       ]
     },
     {
-      "text": "端末操作や脆弱性攻撃のテストにおいて、前作よりもスコアが向上しています。",
+      "text": "安全なコード生成の成功率がArgonの2倍以上になりました。",
       "sources": [
-        "google-gemini-4-carbon-announcement-zhnjo7s91ls"
+        "gemini-4-carbon-cybersecurity-model"
       ]
     },
     {
-      "text": "安全なコードを生成できる成功率が前作の2倍以上になりました。",
+      "text": "カンニングの成功率が4.0%から0.0%に減りました。",
       "sources": [
-        "gemini-4-carbon-cybersecurity-model"
+        "google-gemini-4-carbon-announcement-zhnjo7s91ls"
       ]
     }
   ],
   "faq": [
     {
       "q": "いつから使える？",
-      "a": "現在は一部のセキュリティ担当者向けに提供中で、数週間以内に一般提供が始まる計画です。",
+      "a": "発表時は一部のセキュリティ専門家に提供中で、数週間以内に一般提供される予定です。",
       "sources": [
         "google-gemini-4-carbon-announcement-zhnjo7s91ls",
         "google-gemini-4-carbon-announcement",
@@ -138,27 +164,27 @@
       ]
     },
     {
+      "q": "Argonとの違いは？",
+      "a": "知能指数のスコアが上がり、サイバー防御やコーディングの自律性が強化されています。",
+      "sources": [
+        "google-gemini-4-carbon-announcement-zhnjo7s91ls",
+        "google-gemini-4-carbon-announcement"
+      ]
+    },
+    {
+      "q": "安全性は高い？",
+      "a": "不正な抜け道を使うズルをする確率がゼロになり、根拠のない主張も半減しています。",
+      "sources": [
+        "google-gemini-4-carbon-announcement-zhnjo7s91ls",
+        "gemini-4-carbon-cybersecurity-model"
+      ]
+    },
+    {
       "q": "誰に向いている？",
-      "a": "サイバーセキュリティの担当者や、高度なコーディングを行う開発者に向いています。",
+      "a": "サイバー防御を担当するセキュリティ専門家や開発者に向いています。",
       "sources": [
-        "google-gemini-4-carbon-announcement-zhnjo7s91ls",
-        "gemini-4-carbon-cybersecurity-model"
-      ]
-    },
-    {
-      "q": "前作のArgonと何が違う？",
-      "a": "総合評価スコアが上がり、サイバーセキュリティの防御やコード生成の能力が大きく向上しました。",
-      "sources": [
-        "google-gemini-4-carbon-announcement-zhnjo7s91ls",
-        "gemini-4-carbon-cybersecurity-model"
-      ]
-    },
-    {
-      "q": "誰が作った？",
-      "a": "米GoogleのGoogle DeepMindが開発しました。",
-      "sources": [
-        "google-gemini-4-carbon-announcement-zhnjo7s91ls",
-        "gemini-4-carbon-cybersecurity-model"
+        "google-ai-news-october-2026",
+        "google-gemini-4-carbon-announcement-zhnjo7s91ls"
       ]
     }
   ],
@@ -166,21 +192,17 @@
     {
       "date": "2026-10-29",
       "slug": "gemini-4-carbon-cybersecurity-model",
-      "event": "Google DeepMindがGemini 4 Argonを発表"
-    },
-    {
-      "date": "2026-10-29",
-      "slug": "google-gemini-4-carbon-announcement-zhnjo7s91ls",
-      "event": "最新モデルGemini 4 Carbonを発表"
+      "event": "Gemini 4 Carbonを発表"
     }
   ],
   "related": [
     "gemini-4-argon",
-    "gemma-4",
     "genie-4",
+    "gemma-4",
     "gemini-robotics-2"
   ],
   "articles": [
+    "google-ai-news-october-2026",
     "google-gemini-4-carbon-announcement-zhnjo7s91ls",
     "google-gemini-4-carbon-announcement",
     "gemini-4-carbon-cybersecurity-model"
@@ -190,9 +212,9 @@
     "google-gemini-4-carbon-announcement",
     "gemini-4-carbon-cybersecurity-model"
   ],
-  "signature": "572b1c85e727ef50",
+  "signature": "7d444b58b962961b",
   "primarySignature": "572b1c85e727ef50",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-29T12:27:16+00:00",
-  "updatedAt": "2026-10-29T12:27:16+00:00"
+  "updatedAt": "2026-11-02T18:29:31+00:00"
 }

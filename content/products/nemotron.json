@@ -6,7 +6,7 @@
   "companyName": "NVIDIA",
   "category": "AIモデル",
   "overview": {
-    "text": "Nemotronは、NVIDIAが開発する先進的なオープンAIモデルシリーズです。テキスト、音声、画像などを処理するモデルが発表されています。",
+    "text": "Nemotronは、NVIDIAが提供するオープンなAIモデルシリーズです。テキスト、画像、動画のマルチモーダル処理や音声認識に対応するモデルが発表されています。",
     "sources": [
       "aws-nvidia-nemotron-35-super-vl",
       "nvidia-nemotron-35-transcribe"
@@ -14,15 +14,8 @@
   },
   "facts": [
     {
-      "label": "料金",
-      "value": "無償公開（オープンウェイト）",
-      "sources": [
-        "nvidia-nemotron-35-transcribe"
-      ]
-    },
-    {
       "label": "提供開始",
-      "value": "2026年10月時点",
+      "value": "2026年10月に順次発表",
       "sources": [
         "aws-nvidia-nemotron-35-super-vl",
         "nvidia-nemotron-35-transcribe"
@@ -38,7 +31,7 @@
     },
     {
       "label": "使える場所",
-      "value": "Hugging Faceなど",
+      "value": "AWS環境やHugging Face",
       "sources": [
         "aws-nvidia-nemotron-35-super-vl",
         "nvidia-nemotron-35-transcribe"
@@ -46,20 +39,14 @@
     },
     {
       "label": "向いている人",
-      "value": "AI開発者・研究者",
+      "value": "AI開発者や研究者",
       "sources": [
-        "nvidia-nemotron-35-transcribe",
-        "nvidia-nemotron-halloween-monsterhouse"
+        "nvidia-tensorrt-edge-llm-edge-ai",
+        "nvidia-nemotron-35-transcribe"
       ]
     }
   ],
   "capabilities": [
-    {
-      "text": "Nemotron 3.5 Super VLは120Bパラメータの混合専門家モデルです。",
-      "sources": [
-        "aws-nvidia-nemotron-35-super-vl"
-      ]
-    },
     {
       "text": "テキストや画像、ドキュメント、動画を1つのモデルで処理できます。",
       "sources": [
@@ -67,19 +54,19 @@
       ]
     },
     {
-      "text": "Nemotron 3.5 Transcribeは40言語の文字起こしに対応します。",
+      "text": "40言語の文字起こしや31言語から英語への翻訳に対応しています。",
       "sources": [
         "nvidia-nemotron-35-transcribe"
       ]
     },
     {
-      "text": "31言語から英語への翻訳や13言語の話者識別が可能です。",
+      "text": "DGX Spark環境でNemotron-3.5 Lightningを実行できます。",
       "sources": [
-        "nvidia-nemotron-35-transcribe"
+        "nvidia-tensorrt-edge-llm-edge-ai"
       ]
     },
     {
-      "text": "Nemotron 3.5 Bolt E4Bは対話エージェント向けの小型言語モデルです。",
+      "text": "Bolt E4Bなどの小型言語モデルでローカル動作を実現します。",
       "sources": [
         "nvidia-nemotron-halloween-monsterhouse"
       ]
@@ -87,13 +74,14 @@
   ],
   "pricing": [
     {
-      "text": "モデルの重みやデータパイプラインはHugging Face上で無償公開されています。",
+      "text": "モデルの重みや学習データはオープンウェイトとして無償で公開されています。",
       "sources": [
+        "aws-nvidia-nemotron-35-super-vl",
         "nvidia-nemotron-35-transcribe"
       ]
     },
     {
-      "text": "AWS上で利用する場合はインスタンス料金やストレージ料金がかかります。",
+      "text": "AWS上での利用は、Amazon EKSなどのインスタンス料金に準じます。",
       "sources": [
         "aws-nvidia-nemotron-35-super-vl"
       ]
@@ -101,57 +89,53 @@
   ],
   "japan": [
     {
-      "text": "Hugging Faceにアクセスできる環境があれば日本からダウンロードして試せます。",
+      "text": "日本国内のAWS環境やHugging Faceを通じて利用可能です。",
       "sources": [
+        "aws-nvidia-nemotron-35-super-vl",
         "nvidia-nemotron-35-transcribe"
       ]
     },
     {
-      "text": "日本国内のAWS環境でも対応インスタンスを利用してデプロイできます。",
+      "text": "対応するNVIDIA環境があれば今日から試すことができます。",
       "sources": [
-        "aws-nvidia-nemotron-35-super-vl"
+        "nvidia-tensorrt-edge-llm-edge-ai"
       ]
     }
   ],
   "howto": [
     {
-      "text": "Hugging FaceやModelScopeからモデルの重みを取得して利用します。",
+      "text": "AWS上ではAmazon EKSやSageMaker HyperPod EKSでデプロイできます。",
+      "sources": [
+        "aws-nvidia-nemotron-35-super-vl"
+      ]
+    },
+    {
+      "text": "Hugging Faceなどからモデルをダウンロードして実行可能です。",
       "sources": [
         "nvidia-nemotron-35-transcribe"
       ]
     },
     {
-      "text": "AWS上ではAmazon EKSなどでデプロイ可能です。",
+      "text": "コマンドラインツールを使ってチャットを開始できます。",
       "sources": [
-        "aws-nvidia-nemotron-35-super-vl"
+        "nvidia-tensorrt-edge-llm-edge-ai"
       ]
     }
   ],
   "differences": [
     {
-      "text": "複数の音声タスクが1つのチェックポイントに統合されています。",
+      "text": "1つのモデルに文字起こしや話者識別などが統合されています。",
       "sources": [
         "nvidia-nemotron-35-transcribe"
-      ]
-    },
-    {
-      "text": "自然言語のプロンプトで出力を切り替えられるようになりました。",
-      "sources": [
-        "nvidia-nemotron-35-transcribe"
-      ]
-    },
-    {
-      "text": "ハイブリッドなMamba-Transformer MoEアーキテクチャを採用しています。",
-      "sources": [
-        "aws-nvidia-nemotron-35-super-vl"
       ]
     }
   ],
   "faq": [
     {
       "q": "無料で使えますか？",
-      "a": "モデルの重みはHugging Face等で無償公開されています。実行には対応GPU等の環境が必要です。",
+      "a": "モデルの重み自体は無償公開されていますが、実行にはGPU環境が必要です。",
       "sources": [
+        "aws-nvidia-nemotron-35-super-vl",
         "nvidia-nemotron-35-transcribe"
       ]
     },
@@ -163,18 +147,17 @@
       ]
     },
     {
-      "q": "マルチモーダルモデルのパラメータ数はいくつですか？",
-      "a": "120B（1200億）パラメータを持つ混合専門家モデルです。",
+      "q": "商用利用は可能ですか？",
+      "a": "公開されている規約に従うことで商用利用を含めて活用できます。",
       "sources": [
-        "aws-nvidia-nemotron-35-super-vl"
+        "nvidia-nemotron-35-transcribe"
       ]
     },
     {
-      "q": "ローカル環境でも動かせますか？",
-      "a": "ワークステーションなどのローカル環境にダウンロードして動かすことが可能です。",
+      "q": "対応しているコンテキスト長はどのくらいですか？",
+      "a": "最大1Mトークンの長大なコンテキスト長を効率的に処理できます。",
       "sources": [
-        "nvidia-nemotron-halloween-monsterhouse",
-        "nvidia-nemotron-35-transcribe"
+        "aws-nvidia-nemotron-35-super-vl"
       ]
     }
   ],
@@ -182,17 +165,12 @@
     {
       "date": "2026-10-28",
       "slug": "nvidia-nemotron-35-transcribe",
-      "event": "多言語音声認識モデル『Nemotron 3.5 Transcribe』を発表"
+      "event": "Nemotron 3.5 Transcribeを発表"
     },
     {
       "date": "2026-10-30",
       "slug": "aws-nvidia-nemotron-35-super-vl",
-      "event": "マルチモーダルAI『Nemotron 3.5 Super VL』のサポートを発表"
-    },
-    {
-      "date": "2026-10-31",
-      "slug": "nvidia-nemotron-halloween-monsterhouse",
-      "event": "Nemotronモデル等を活用した音声エージェントのデモを公開"
+      "event": "Nemotron 3.5 Super VLのサポートを発表"
     }
   ],
   "related": [
@@ -216,9 +194,9 @@
     "aws-nvidia-nemotron-35-super-vl",
     "nvidia-nemotron-35-transcribe"
   ],
-  "signature": "83e0b2dd9ab327da",
+  "signature": "72e5388a4030f56e",
   "primarySignature": "f25eb84db1927efb",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-29T17:50:17+00:00",
-  "updatedAt": "2026-10-30T18:05:15+00:00"
+  "updatedAt": "2026-11-02T18:29:40+00:00"
 }

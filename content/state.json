@@ -1,5 +1,6 @@
 {
   "failed": {
+    "0Kw6_DTZPrY": 1,
     "1E0ZoktFerQ": 1,
     "2lNUGkCg_qc": 1,
     "3IVo-MNwk2I": 1,
@@ -3803,6 +3804,14 @@
       "skipped": true,
       "url": "https://www.aboutamazon.com/news/company-news/amazon-q3-2026-earnings-preview?utm_source=rss"
     },
+    "13515cec206f1d26f0abe56daf90242f82455be2": {
+      "at": "2026-11-02T18:24:25.920952+00:00",
+      "kind": "trend",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "slug": "yukimi-daifuku-fujisawa-ryoka",
+      "url": "https://news.yahoo.co.jp/articles/665557ba443284b46e77077206af16c366813e92"
+    },
     "13657a084b9310b9": {
       "at": "2026-10-27T15:18:19.259077+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -7371,6 +7380,14 @@
       "section": "business",
       "slug": "tohoku-atotsugi-connect-sendai-2026",
       "url": "https://j-net21.smrj.go.jp/news/bt5puv00000105io.html"
+    },
+    "76c6d2d9da855dff": {
+      "at": "2026-11-02T18:26:17.966540+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "public",
+      "slug": "tokyo-real-estate-videos-2026",
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110215"
     },
     "76f2e7e1339672d5": {
       "at": "2026-10-27T03:04:42.978433+00:00",
@@ -11624,6 +11641,14 @@
       "skipped": true,
       "url": "https://www.gov-online.go.jp/press_conferences/prime_minister/202610/video-326700.html"
     },
+    "ed4b58253682640f": {
+      "at": "2026-11-02T18:26:06.281188+00:00",
+      "model": "claude:sonnet",
+      "score": 100,
+      "section": "ai",
+      "slug": "openai-lifeval-everyday-tasks",
+      "url": "https://openai.com/index/lifeval"
+    },
     "ed7ed4b401931f62": {
       "at": "2026-10-27T19:13:45.311483+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -12348,98 +12373,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:31:36.428415+00:00",
-      "attempt": 1,
-      "id": "8408d2d1dfd75e06",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1661字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（329字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 136.5,
-        "avg_sentence": 51.8,
-        "long_share": 0.172,
-        "max_paragraph": 197,
-        "paragraphs": 11,
-        "sentences": 29
-      },
-      "score": null,
-      "source": "tokyo-metro",
-      "title": "「共生社会の理念に賛同する企業・団体」シンボルデザインの愛称は「ともりん」に決定！"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:31:42.995992+00:00",
-      "attempt": 2,
-      "id": "8408d2d1dfd75e06",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1752字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（376字 / 基準 400字以上）",
-        "body_markdown に「## 自分に関係ある？」の章がない（構成どおりの見出しを使う）"
-      ],
-      "readability": {
-        "avg_paragraph": 153.4,
-        "avg_sentence": 43.2,
-        "long_share": 0.125,
-        "max_paragraph": 203,
-        "paragraphs": 9,
-        "sentences": 32
-      },
-      "score": null,
-      "source": "tokyo-metro",
-      "title": "「共生社会の理念に賛同する企業・団体」シンボルデザインの愛称は「ともりん」に決定！"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:31:55.385087+00:00",
-      "attempt": 1,
-      "id": "61b8eac0193dcad3",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（303字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 122.4,
-        "avg_sentence": 53.8,
-        "long_share": 0.32,
-        "max_paragraph": 225,
-        "paragraphs": 11,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "tokyo-metro",
-      "title": "11月は「薬剤耐性（AMR）対策推進月間」新たなポータルサイトや動画等でAMRを分かりやすく発信"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:32:10.073713+00:00",
-      "attempt": 2,
-      "id": "61b8eac0193dcad3",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1650字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（385字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 144.9,
-        "avg_sentence": 55.2,
-        "long_share": 0.143,
-        "max_paragraph": 233,
-        "paragraphs": 8,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "tokyo-metro",
-      "title": "11月は「薬剤耐性（AMR）対策推進月間」新たなポータルサイトや動画等でAMRを分かりやすく発信"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T10:51:13.725511+00:00",
@@ -18876,6 +18809,91 @@
       "score": 100,
       "source": "google-blog-all",
       "title": "The latest AI news we announced in October 2026"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T18:24:22.810730+00:00",
+      "attempt": 1,
+      "id": "13515cec206f1d26f0abe56daf90242f82455be2",
+      "kind": "trend",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 52.3字・60字超の文が 33% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 134.6字・最長 216字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 134.6,
+        "avg_sentence": 52.3,
+        "long_share": 0.333,
+        "max_paragraph": 216,
+        "paragraphs": 7,
+        "sentences": 18
+      },
+      "score": 100,
+      "source": "trends",
+      "title": "雪見だいふく"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T18:24:25.919978+00:00",
+      "attempt": 0,
+      "id": "13515cec206f1d26f0abe56daf90242f82455be2",
+      "kind": "trend",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 116.4字・最長 223字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 116.4,
+        "avg_sentence": 42.3,
+        "long_share": 0.136,
+        "max_paragraph": 223,
+        "paragraphs": 8,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "trends",
+      "title": "雪見だいふく"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T18:26:06.280147+00:00",
+      "attempt": 1,
+      "id": "ed4b58253682640f",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 66.6,
+        "avg_sentence": 32.7,
+        "long_share": 0.036,
+        "max_paragraph": 117,
+        "paragraphs": 27,
+        "sentences": 55
+      },
+      "score": 100,
+      "source": "openai-news",
+      "title": "LifeVal"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T18:26:17.965580+00:00",
+      "attempt": 1,
+      "id": "76c6d2d9da855dff",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 54.6,
+        "avg_sentence": 41.0,
+        "long_share": 0.083,
+        "max_paragraph": 128,
+        "paragraphs": 18,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "tokyo-metro",
+      "title": "不動産取引に役立つ動画を公開！"
     }
   ],
   "short_text_retry": {},
