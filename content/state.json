@@ -8898,6 +8898,14 @@
       "skipped": true,
       "url": "https://www.kantei.go.jp/jp/105/actions/202610/28teigen2.html"
     },
+    "a88ae1defb1edfa3": {
+      "at": "2026-11-02T08:26:59.568262+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "civil-code-revision-promissory-note-abolition",
+      "url": "https://j-net21.smrj.go.jp/solution/law/know-how15-03.html"
+    },
     "a8a878b3129862cf": {
       "at": "2026-10-30T06:13:16.132671+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -10070,6 +10078,12 @@
       "reason": "prefilter: 価値の薄いお知らせ（審議会）",
       "skipped": true,
       "url": "https://www.soumu.go.jp/main_sosiki/joho_tsusin/policyreports/joho_tsusin/yusei/denki_tsusin/02ryutsu01_04000523.html"
+    },
+    "cbed109b09d9bd7d": {
+      "at": "2026-11-02T08:26:45.006422+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（公募）",
+      "skipped": true,
+      "url": "http://www.mlit.go.jp/report/press/sogo12_hh_000556.html"
     },
     "cc3393ae46e04fd2": {
       "at": "2026-10-27T03:04:42.979449+00:00",
@@ -11666,6 +11680,14 @@
       "skipped": true,
       "url": "https://www.maff.go.jp/j/press/yusyutu_kokusai/kikaku/261030.html"
     },
+    "f94fc35fdadaf544": {
+      "at": "2026-11-02T08:26:45.006205+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "nissay-it-ai-driven-development-aws",
+      "url": "https://aws.amazon.com/jp/blogs/news/ai-dlc-unicorn-gym-nissay-it-202611/"
+    },
     "f9bcba43eff0987b": {
       "at": "2026-10-30T03:01:57.220825+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11874,88 +11896,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T06:34:13.172458+00:00",
-      "attempt": 0,
-      "id": "194aeeabb9a24578",
-      "kind": "ai",
-      "model": "gemini-3.1-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 46.0字・60字超の文が 20% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 160.9字・最長 242字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 160.9,
-        "avg_sentence": 46.0,
-        "long_share": 0.204,
-        "max_paragraph": 242,
-        "paragraphs": 14,
-        "sentences": 49
-      },
-      "score": 100,
-      "source": "ntt-news-ai",
-      "title": "NTTインテグレーション、IBM Spyreを活用したAI導入検証サービス「Spyreトライアルサービス」を提供開始 ～実機環境でのAI推論・RAG検証を通じ、"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:34:19.252418+00:00",
-      "attempt": 1,
-      "id": "d77075fc505fa2e9",
-      "kind": "update",
-      "model": "gemini-3.1-flash-lite",
-      "problems": [
-        "リード: NTT東日本とブロードバンドタワーによるストレージ統合実証に加え → 元記事にはブロードバンドタワーとの実証実験に関する記述は存在しない。"
-      ],
-      "score": 85,
-      "source": "ntt-news",
-      "title": "IOWN APNを用いたストレージ間の超高速大容量データ転送の実証実験を実施〜800Gbpsの回線帯域に対し、二つの実用アプリケーションで750Gbps超の転送"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:34:26.778249+00:00",
-      "attempt": 1,
-      "id": "590ab436e522a0ed",
-      "kind": "broad",
-      "model": "gemini-3.1-flash-lite",
-      "problems": [
-        "本文が短い（1531字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 130.7,
-        "avg_sentence": 52.3,
-        "long_share": 0.32,
-        "max_paragraph": 223,
-        "paragraphs": 10,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "maff",
-      "title": "令和8年9月の米穀流通の動向（集荷、販売、民間在庫）"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T06:34:31.324452+00:00",
-      "attempt": 1,
-      "id": "590ab436e522a0ed",
-      "kind": "broad",
-      "model": "gemini-3.1-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 48.6字・60字超の文が 21% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 184.6字・最長 275字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 184.6,
-        "avg_sentence": 48.6,
-        "long_share": 0.211,
-        "max_paragraph": 275,
-        "paragraphs": 10,
-        "sentences": 38
-      },
-      "score": 100,
-      "source": "maff",
-      "title": "令和8年9月の米穀流通の動向（集荷、販売、民間在庫）"
-    },
     {
       "accepted": true,
       "at": "2026-10-30T06:34:37.861884+00:00",
@@ -18468,6 +18408,92 @@
       "score": 96,
       "source": "radar-k-tai.watch.impress.co.jp",
       "title": "XREAL、Android XRとGemini搭載のスマートグラス「XREAL AURA」を11月27日に発売"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T08:26:40.794846+00:00",
+      "attempt": 1,
+      "id": "f94fc35fdadaf544",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 66.9字・60字超の文が 54% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 114.6,
+        "avg_sentence": 66.9,
+        "long_share": 0.542,
+        "max_paragraph": 158,
+        "paragraphs": 14,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "aws-japan-blog",
+      "title": "大規模金融系保守開発における AI 適用への挑戦 ── ニッセイ情報テクノロジーが AI-DLC v2 と内製ツールで進める、個人保険基幹系システムの AI 駆"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T08:26:45.005031+00:00",
+      "attempt": 0,
+      "id": "f94fc35fdadaf544",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 125.7字・最長 195字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 125.7,
+        "avg_sentence": 22.7,
+        "long_share": 0.0,
+        "max_paragraph": 195,
+        "paragraphs": 15,
+        "sentences": 83
+      },
+      "score": 100,
+      "source": "aws-japan-blog",
+      "title": "大規模金融系保守開発における AI 適用への挑戦 ── ニッセイ情報テクノロジーが AI-DLC v2 と内製ツールで進める、個人保険基幹系システムの AI 駆"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T08:26:54.684792+00:00",
+      "attempt": 1,
+      "id": "a88ae1defb1edfa3",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 56.6字・60字超の文が 33% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 89.4,
+        "avg_sentence": 56.6,
+        "long_share": 0.333,
+        "max_paragraph": 177,
+        "paragraphs": 19,
+        "sentences": 30
+      },
+      "score": 100,
+      "source": "jnet21",
+      "title": "中小企業に必要な法律知識（第3回）ー民法改正と手形廃止後の取引実務ー"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T08:26:59.567219+00:00",
+      "attempt": 0,
+      "id": "a88ae1defb1edfa3",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 79.5,
+        "avg_sentence": 23.8,
+        "long_share": 0.0,
+        "max_paragraph": 135,
+        "paragraphs": 27,
+        "sentences": 90
+      },
+      "score": 100,
+      "source": "jnet21",
+      "title": "中小企業に必要な法律知識（第3回）ー民法改正と手形廃止後の取引実務ー"
     }
   ],
   "short_text_retry": {},
