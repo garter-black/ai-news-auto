@@ -187,46 +187,88 @@
       "embedded": true
     },
     "openai-grid-protectors-program": {
-      "at": "2026-11-02T20:21:59+00:00",
-      "status": "gate_failed",
-      "tries": 1,
+      "at": "2026-11-02T20:45:03+00:00",
+      "status": "ready",
+      "tries": 2,
       "textAt": "2026-11-02T15:11:47+00:00",
       "versions": {
         "full": {
-          "ok": false,
-          "seconds": null,
-          "reasons": [
-            "描画: RuntimeError: 文字が入りません: 最大1,000MW"
-          ]
+          "ok": true,
+          "seconds": 56.446,
+          "reasons": [],
+          "post": {
+            "title": "OpenAIがGrid Protectors発表 電力逼迫時にAI施設が使用量…",
+            "url": "https://ai-tech-express.jp/articles/openai-grid-protectors-program",
+            "total": 56.446,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "AIの電力対策、あなたに関係ある？"
+              },
+              "summary": "要約すると、OpenAIがこれから建てるAI施設で電力逼迫時に使用量を減らすGrid Protectors Programを発表しました。第1弾の米ジョージア州では最大1,000MW、約70万世帯分の調整で合意。使えるサービスではなく方針の発表で、各地の取り決めは決まり次第公表されます。"
+            }
+          }
         },
         "short": {
-          "ok": false,
-          "seconds": null,
-          "reasons": [
-            "描画: RuntimeError: 文字が入りません: 最大1,000MW"
-          ]
+          "ok": true,
+          "seconds": 35.965,
+          "reasons": [],
+          "post": {
+            "title": "OpenAIがGrid Protectors発表 電力逼迫時にAI施設が使用量…",
+            "url": "https://ai-tech-express.jp/articles/openai-grid-protectors-program",
+            "total": 35.965,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "AIの電力対策、あなたに関係ある？"
+              },
+              "summary": "要約すると、OpenAIがこれから建てるAI施設で電力逼迫時に使用量を減らすGrid Protectors Programを発表しました。第1弾の米ジョージア州では最大1,000MW、約70万世帯分の調整で合意。使えるサービスではなく方針の発表で、各地の取り決めは決まり次第公表されます。"
+            }
+          }
         }
       },
       "timings": {
         "full": {
           "script": 0.0,
-          "tts": 21.44,
-          "gate": 0.0,
-          "total": 21.5
+          "tts": 24.06,
+          "plan_audio": 4.53,
+          "render": 46.6,
+          "gate": 5.66,
+          "sheet": 2.33,
+          "total": 83.3
         },
         "short": {
           "script": 0.0,
-          "tts": 15.37,
-          "gate": 0.0,
-          "total": 15.5
+          "tts": 14.85,
+          "plan_audio": 2.08,
+          "render": 28.85,
+          "gate": 4.0,
+          "sheet": 1.64,
+          "total": 51.4
         }
       },
-      "ok": false,
-      "reason": "full: 描画: RuntimeError: 文字が入りません: 最大1,000MW / short: 描画: RuntimeError: 文字が入りません: 最大1,000MW",
+      "ok": true,
+      "reason": "",
       "pages": [
         "ai-tech-express.jp",
         "developers.openai.com"
-      ]
+      ],
+      "urls": {
+        "full": "https://ai-tech-express.jp/video/openai-grid-protectors-program-90fa9c44dc.mp4",
+        "short": "https://ai-tech-express.jp/video/openai-grid-protectors-program-e14b939954.mp4",
+        "poster": "https://ai-tech-express.jp/video/openai-grid-protectors-program-2737691465.jpg"
+      },
+      "embedded": true
     }
   }
 }

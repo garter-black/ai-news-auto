@@ -95,5 +95,12 @@
     ],
     "ar": 1.7778,
     "src": "https://ai-tech-express.jp/img/openai-grid-protectors-program-8dd36c0e.jpg"
+  },
+  "video": {
+    "src": "https://ai-tech-express.jp/video/openai-grid-protectors-program-90fa9c44dc.mp4",
+    "poster": "https://ai-tech-express.jp/video/openai-grid-protectors-program-2737691465.jpg",
+    "seconds": 56.4,
+    "title": "OpenAIがGrid Protectors発表 電力逼迫時にAI施設が使用量…",
+    "credit": "VOICEVOX:九州そら"
   }
 }
