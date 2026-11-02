@@ -99,37 +99,57 @@ class IndexNowGuideSelectionTest(unittest.TestCase):
         self.assertNotIn(BASE + "/guides/sample", self.selected())
         self.assertIn(BASE + "/guides/sample", self.selected(hours=None))
 
-    def test_short_article_is_selected_but_manual_noindex_and_wire_stay_excluded(self):
+    def test_thin_offfocus_and_wire_are_excluded(self):
+        long = "## 日本で使える？\n" + "a" * 2000
         cases = [
-            {"slug": "ai-long", "genreSlug": "ai", "sourceType": "web", "body": "a" * 2000, "generatedAt": NEW},
-            {"slug": "ai-short", "genreSlug": "ai", "sourceType": "web", "body": "a" * 1999, "generatedAt": NEW},
+            {"slug": "ai-long", "genreSlug": "ai", "sourceType": "web", "body": long, "generatedAt": NEW},
+            {"slug": "ai-short", "genreSlug": "ai", "sourceType": "web", "body": "a" * 1000, "generatedAt": NEW},
             {"slug": "noindex", "indexable": False, "generatedAt": NEW},
-            {"slug": "video", "sourceType": "video", "generatedAt": NEW},
-            {"slug": "wire", "sourceType": "web", "channelSlug": "prtimes", "body": "a" * 2000, "generatedAt": NEW},
+            {"slug": "sports", "genreSlug": "sports", "title": "試合結果", "body": long, "generatedAt": NEW},
+            {"slug": "wire", "sourceType": "web", "channelSlug": "prtimes", "body": long, "generatedAt": NEW},
             {"slug": "old", "indexable": True, "generatedAt": OLD},
         ]
         for article in cases:
             (self.articles / (article["slug"] + ".json")).write_text(json.dumps(article))
         self.assertEqual(self.selected(), [BASE, BASE + "/articles", BASE + "/genres/ai",
-                                           BASE + "/articles/ai-long", BASE + "/articles/ai-short",
-                                           BASE + "/articles/video"])
+                                           BASE + "/articles/ai-long"])
 
-    def test_search_and_distribution_policies_are_separate(self):
+    def test_search_policy_reasons(self):
+        long = "a" * 2000
+        jp = "## 無料で使える？\n" + long
         cases = [
-            ({"sourceType": "web", "body": "a"}, True, False),
-            ({"sourceType": "web", "body": "a" * 2000}, True, True),
-            ({"sourceType": "web", "body": ""}, False, False),
-            ({"sourceType": "web", "body": "a", "indexable": False}, False, False),
-            ({"sourceType": "web", "body": "a", "channelSlug": "prtimes"}, False, False),
-            ({"sourceType": "web", "body": "a", "channelSlug": "prtimes", "indexable": True}, True, True),
-            ({"sourceType": "web", "type": "roundup", "body": "a"}, True, True),
-            ({"sourceType": "video"}, True, True),
+            ({"genreSlug": "ai", "body": jp}, None),
+            ({"genreSlug": "ai", "body": long, "verdict": {"japan": "ok"}}, None),
+            ({"genreSlug": "ai", "body": long}, "no-japan-value"),
+            ({"genreSlug": "ai", "body": "a"}, "thin"),
+            ({"genreSlug": "public", "title": "生成AIの指針", "body": jp}, None),
+            ({"genreSlug": "public", "title": "道路の工事", "body": jp}, "off-focus"),
+            ({"genreSlug": "ai", "body": "a", "channelSlug": "prtimes"}, "wire"),
+            ({"body": "a", "indexable": True}, None),
+            ({"body": jp, "genreSlug": "ai", "indexable": False}, "manual"),
+            ({"type": "roundup", "body": "a"}, None),
         ]
-        for article, search, distribution in cases:
+        for article, reason in cases:
             with self.subTest(article=article):
-                self.assertEqual(indexnow.is_indexable(article), search)
-                self.assertEqual(indexnow.is_distribution_eligible(article), distribution)
+                self.assertEqual(indexnow.noindex_reason(article), reason)
 
+    def test_duplicates_keep_longest(self):
+        arts = [{"slug": "a", "title": "同じ 題名", "body": "x" * 10},
+                {"slug": "b", "title": "同じ題名", "body": "x" * 20},
+                {"slug": "c", "title": "別", "sourceUrl": "u", "body": "x"},
+                {"slug": "d", "title": "別2", "sourceUrl": "u", "body": "xx"}]
+        self.assertEqual(indexnow.duplicate_slugs(arts), {"a", "c"})
+
+    def test_distribution_policy_unchanged(self):
+        cases = [
+            ({"sourceType": "web", "body": "a"}, False),
+            ({"sourceType": "web", "body": "a" * 2000}, True),
+            ({"sourceType": "web", "body": "a", "channelSlug": "prtimes", "indexable": True}, True),
+            ({"sourceType": "video"}, True),
+        ]
+        for article, distribution in cases:
+            with self.subTest(article=article):
+                self.assertEqual(indexnow.is_distribution_eligible(article), distribution)
 
 if __name__ == "__main__":
     unittest.main()

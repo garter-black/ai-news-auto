@@ -1,6 +1,7 @@
 import Link from "next/link";
 import CompanyMark from "@/components/CompanyMark";
 import HomeHero from "@/components/HomeHero";
+import HomeAssets from "@/components/HomeAssets";
 import CompanyChips from "@/components/CompanyChips";
 import NewsHub from "@/components/NewsHub";
 import Thumb from "@/components/Thumb";
@@ -81,6 +82,8 @@ export default function HomePage() {
           </div>
         </nav>
 
+        <HomeAssets />
+
         <div className="mt-14 grid gap-14 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
           <section aria-labelledby="latest-heading" className="min-w-0">
             <div className="mb-2 flex items-end justify-between gap-4">
@@ -159,6 +162,7 @@ export default function HomePage() {
           <p className="flex flex-wrap gap-x-6 gap-y-2 text-note leading-relaxed text-ink-soft">
             <Link href="/about" className="underline decoration-line-strong underline-offset-4 hover:text-accent">サイソクについて・運営者情報</Link>
             <Link href="/editorial-policy" className="underline decoration-line-strong underline-offset-4 hover:text-accent">編集方針・AI利用と事実確認</Link>
+            <Link href="/corrections" className="underline decoration-line-strong underline-offset-4 hover:text-accent">訂正履歴</Link>
           </p>
           {otherGenres.length > 0 && (
             <p className="text-meta text-muted">

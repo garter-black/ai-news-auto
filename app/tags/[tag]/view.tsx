@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import ArticleCard from "@/components/ArticleCard";
 import Pagination from "@/components/Pagination";
 import { getArticlesByTag, getTagLabel, tagSlug } from "@/lib/articles";
+import { listingRobots } from "@/lib/indexing";
 import { pageHref, pageSuffix, paginate } from "@/lib/paginate";
 
 /** タグ一覧の metadata（1ページ目と2ページ目以降で共通） */
@@ -16,8 +17,8 @@ export function tagMetadata(tag: string, page: number): Metadata {
     title: `${label} の最新ニュース・解説記事${pageSuffix(page)}`,
     description: `${label} に関する${genres}の解説記事を ${articles.length} 本掲載。公式発表や専門家の動画をAIが解析し、要点・数字・注意点まで日本語でまとめています。`,
     alternates: { canonical: pageHref(base, page) },
-    // 記事が1本だけの薄いタグは検索対象から外す
-    ...(articles.length >= 2 ? {} : { robots: { index: false, follow: true } }),
+    // 検索対象の記事が少ない薄いタグは検索対象から外す
+    ...listingRobots(articles),
   };
 }
 

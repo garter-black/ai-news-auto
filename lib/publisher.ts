@@ -14,4 +14,16 @@ export const publisherJsonLd = {
   publishingPrinciples: `${siteConfig.url}/editorial-policy`,
   correctionsPolicy: `${siteConfig.url}/editorial-policy`,
   sameAs: siteConfig.social.map((social) => social.url),
+  // 運営責任者（所在地は都道府県まで）
+  founder: { "@type": "Person", name: siteConfig.operator.representative },
+  address: { "@type": "PostalAddress", addressRegion: siteConfig.operator.location, addressCountry: "JP" },
+} as const;
+
+/** 記事・ガイドの著者。全ページで同じ編集部を指し、発行元とつなぐ */
+export const authorJsonLd = {
+  "@type": "Organization",
+  "@id": `${siteConfig.url}/#editorial`,
+  name: siteConfig.author,
+  url: `${siteConfig.url}/about`,
+  parentOrganization: { "@id": `${siteConfig.url}/#publisher` },
 } as const;

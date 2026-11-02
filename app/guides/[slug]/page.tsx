@@ -1,3 +1,4 @@
+import { authorJsonLd, publisherJsonLd } from "@/lib/publisher";
 import fs from "@/lib/content-fs";
 import path from "node:path";
 import type { Metadata } from "next";
@@ -89,8 +90,8 @@ export default async function GuidePage({ params }: Props) {
       inLanguage: "ja",
       ...(updatedAt ? { dateModified: updatedAt } : {}),
       mainEntityOfPage: `${siteConfig.url}/guides/${guide.slug}`,
-      author: { "@type": "Organization", name: siteConfig.author },
-      publisher: { "@type": "Organization", name: siteConfig.name },
+      author: authorJsonLd,
+      publisher: publisherJsonLd,
     },
     {
       "@context": "https://schema.org",

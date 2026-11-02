@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import urllib.request
 from datetime import datetime, timedelta, timezone
@@ -69,12 +70,15 @@ def collect_urls(base: str, hours: int | None) -> list[str]:
     )
     urls = [base, f"{base}/articles", f"{base}/genres/ai"]
 
+    articles = []
     for path in sorted(ARTICLES_DIR.glob("*.json")):
         try:
-            article = json.loads(path.read_text("utf-8"))
+            articles.append(json.loads(path.read_text("utf-8")))
         except json.JSONDecodeError:
             continue
-        if not is_indexable(article):
+    dups = duplicate_slugs(articles)
+    for article in articles:
+        if not is_indexable(article, dups):
             continue
         if threshold:
             try:
@@ -123,20 +127,60 @@ def submit(base: str, key: str, urls: list[str]) -> int:
         return response.status
 
 
-# lib/indexing.ts の isIndexable と同じ基準（検索に出さない記事は通知しない）
+# lib/indexing.ts の isIndexable と同じ基準（検索に出さない記事は通知しない。条件の説明はそちら）
 WIRE_SOURCES = {"prtimes", "prtimes-all", "atpress", "value-press", "kyodo-prwire", "dreamnews"}
 
 
-def is_indexable(article: dict) -> bool:
+THIN_BODY = 1500
+FOCUS_GENRES = {"ai", "tech-gadget"}
+AI_TOPIC = re.compile(
+    r"(?<![A-Za-z])AI(?![a-z])|人工知能|生成|LLM|GPT|Gemini|Claude|Copilot|機械学習|エージェント|ロボット|半導体|NVIDIA",
+    re.I,
+)
+JAPAN_VALUE = re.compile(r"^#{2,3}.*(日本|無料|使い方|料金|始め方|使える)", re.M)
+TITLE_NOISE = re.compile(r"[\s「」『』【】()（）・、。！？!?:：|｜\-—〜~\"'“”]")
+
+
+def duplicate_slugs(articles: list[dict]) -> set[str]:
+    """同じ題名・出典URLの重複のうち代表以外（本文の長い方、同じなら先に載った方が代表）。"""
+    keep: set[str] = set()
+    out: set[str] = set()
+    items = [a for a in articles if a.get("type") != "roundup"]
+    items.sort(key=lambda a: a.get("generatedAt", ""))
+    items.sort(key=lambda a: -len(a.get("body", "")))
+    for a in items:
+        keys = ["t:" + TITLE_NOISE.sub("", a.get("title", "")).lower()]
+        if a.get("sourceUrl"):
+            keys.append("u:" + a["sourceUrl"])
+        if any(k in keep for k in keys):
+            out.add(a.get("slug", ""))
+        else:
+            keep.update(keys)
+    return out
+
+
+def noindex_reason(article: dict, dups: set[str] | frozenset = frozenset()) -> str | None:
     if isinstance(article.get("indexable"), bool):
-        return article["indexable"]
-    if article.get("sourceType") != "web" or article.get("type") == "roundup":
-        return True
+        return None if article["indexable"] else "manual"
+    if article.get("type") == "roundup":
+        return None
     if article.get("channelSlug") in WIRE_SOURCES:
-        return False
-    if not article.get("body", ""):
-        return False
-    return True
+        return "wire"
+    body = article.get("body", "")
+    if len(body) < THIN_BODY:
+        return "thin"
+    text = article.get("title", "") + " " + " ".join(article.get("tags") or [])
+    if article.get("genreSlug") not in FOCUS_GENRES and not AI_TOPIC.search(text):
+        return "off-focus"
+    if not article.get("verdict") and not JAPAN_VALUE.search(body):
+        return "no-japan-value"
+    if article.get("slug") in dups:
+        return "duplicate"
+    return None
+
+
+def is_indexable(article: dict, dups: set[str] | frozenset = frozenset()) -> bool:
+    return noindex_reason(article, dups) is None
 
 
 def is_distribution_eligible(article: dict) -> bool:

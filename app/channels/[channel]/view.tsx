@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import ArticleCard from "@/components/ArticleCard";
 import Pagination from "@/components/Pagination";
 import { getAllChannels, getArticlesByChannel, isWeb } from "@/lib/articles";
+import { isListingIndexable } from "@/lib/indexing";
 import { pageHref, pageSuffix, paginate } from "@/lib/paginate";
 
 /** チャンネル一覧の metadata（1ページ目と2ページ目以降で共通） */
@@ -10,8 +11,8 @@ export function channelMetadata(channel: string, page: number): Metadata {
   const label = getAllChannels().find((c) => c.slug === channel)?.label ?? channel;
   const items = getArticlesByChannel(channel);
   const count = items.length;
-  // AI記事を1本も持たないチャンネルは検索対象から外す
-  const indexable = items.some((a) => a.genreSlug === "ai");
+  // AI記事が無い・検索対象の記事が少ないチャンネルは検索対象から外す
+  const indexable = items.some((a) => a.genreSlug === "ai") && isListingIndexable(items);
   // 公式ブログ・プレスリリースの発信元は「YouTube動画」と書かない
   const what = items[0] && isWeb(items[0]) ? "公式発表" : "YouTube動画";
 

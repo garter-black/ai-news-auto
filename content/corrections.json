@@ -1,0 +1,26 @@
+[
+  {
+    "date": "2026-11-01",
+    "slug": "chatgpt-pro-business-api-credits-benefit",
+    "title": "ChatGPT Pro・BusinessのAPIクレジット",
+    "summary": "請求の扱い・追加料金・利用開始の条件について、公式資料と合わない記述を直しました。ChatGPTとAPIの請求は別で、特典には対象条件と受け取り手続きがあります。"
+  },
+  {
+    "date": "2026-10-31",
+    "slug": "m5-ultra-vs-rtx-5090-local-llm-benchmark",
+    "title": "M5 UltraのMac StudioとRTX 5090の比較",
+    "summary": "最大メモリ仕様と検証機の構成（256GB）を混同していた点、測定条件の異なる数値を並べていた点を直しました。"
+  },
+  {
+    "date": "2026-10-31",
+    "slug": "openai-solves-navier-stokes-millennium-problem",
+    "title": "OpenAIのナビエ・ストークス問題の証明",
+    "summary": "外部研究者のデータ利用についてOpenAIが認めたかのような記述と、専門家の評価が不要になるかのような表現を直しました。"
+  },
+  {
+    "date": "2026-10-31",
+    "slug": "meta-muse-ai-agent-app-launch",
+    "title": "Metaの新AIアプリ「Muse」（関連2記事を含む）",
+    "summary": "掲載時は日本での提供を確認できていませんでしたが、Metaが10月23日に日本での提供開始を発表していたため、日本で使えるかの記述を直しました。"
+  }
+]

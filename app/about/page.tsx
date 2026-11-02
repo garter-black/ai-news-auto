@@ -19,7 +19,7 @@ export default function AboutPage() {
       eyebrow="ABOUT"
       title="運営者情報・編集方針"
       lead={`${siteConfig.siteName}（略称：${siteConfig.shortName}）は、公式発表をもとに、AI・テクノロジーの新情報と「日本で使えるか・料金はいくらか・何に注意するか」を日本語で伝えるニュースメディアです。制作にはAIを使い、情報源と確認方法を開示しています。`}
-      updatedAt="2026年10月31日"
+      updatedAt="2026年11月2日"
     >
       <h2>運営者情報</h2>
       <table>
@@ -45,7 +45,7 @@ export default function AboutPage() {
             <td>個人運営</td>
           </tr>
           <tr>
-            <th>運営責任者</th>
+            <th>運営・編集責任者</th>
             <td>{operator.representative}</td>
           </tr>
           <tr>
@@ -205,6 +205,7 @@ export default function AboutPage() {
         誤りを見つけられた場合は、
         <a href="/contact">お問い合わせ</a>
         からご連絡ください。確認のうえ、訂正または記事の取り下げを行います。
+        これまでの訂正は<a href="/corrections">訂正履歴</a>で公開しています。
         権利者の方からの削除・修正のご要望にも同様に対応します。
       </p>
 

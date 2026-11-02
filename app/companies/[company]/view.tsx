@@ -6,6 +6,7 @@ import Pagination from "@/components/Pagination";
 import Timeline from "@/components/Timeline";
 import { getAllArticles } from "@/lib/articles";
 import { companyCounts, companyOf, getCompany } from "@/lib/companies";
+import { listingRobots } from "@/lib/indexing";
 import { pageHref, pageSuffix, paginate } from "@/lib/paginate";
 import { productsByCompany } from "@/lib/products";
 import Link from "next/link";
@@ -16,13 +17,15 @@ export const aiArticles = () => getAllArticles().filter((a) => a.genreSlug === "
 export function companyMetadata(slug: string, page: number): Metadata {
   const company = getCompany(slug);
   if (!company) return {};
-  const count = aiArticles().filter((a) => companyOf(a).slug === slug).length;
+  const items = aiArticles().filter((a) => companyOf(a).slug === slug);
+  const count = items.length;
   const name = company.slug === "other" ? "その他のAI企業" : company.name;
 
   return {
     title: `${name}の最新ニュース・発表まとめ${pageSuffix(page)}`,
     description: `${name}の新モデル・新機能・料金などの最新発表を、日本語で要点だけ時系列にまとめています（${count}本）。`,
     alternates: { canonical: pageHref(`/companies/${slug}`, page) },
+    ...listingRobots(items),
   };
 }
 

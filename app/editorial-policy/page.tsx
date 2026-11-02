@@ -21,7 +21,7 @@ export default function EditorialPolicyPage() {
       eyebrow="EDITORIAL POLICY"
       title="編集方針・AI利用と事実確認について"
       lead={`${siteConfig.name}は、公式発表などの一次情報をもとに、「何が起きたか」だけでなく「自分に関係あるか」「今すぐ使えるか」まで、誰にでもわかる日本語で伝えるメディアです。記事の制作にはAIを使っています。その方法と、品質を守るためのルールをここで開示します。`}
-      updatedAt="2026年10月30日"
+      updatedAt="2026年11月2日"
     >
       <h2>私たちが目指すこと</h2>
       <p>
@@ -66,6 +66,31 @@ export default function EditorialPolicyPage() {
         </li>
       </ol>
 
+      <h2>制作の流れ（まとめ）</h2>
+      <ol>
+        <li><strong>検知：</strong>65社以上の公式ブログ・ニュースルーム・官公庁の発表を数分おきに確認し、新しい発表を見つけます。</li>
+        <li><strong>下書き：</strong>元の発表の本文だけを材料に、生成AIが「結論・要点・日本で使える？・無料？・注意点」の型で下書きします。</li>
+        <li><strong>自動の事実確認：</strong>別の工程のAIが下書きを元の発表と照合し、100点満点で採点します。元にない数字・日付・名前があるもの、70点未満のもの、読者に役立つ情報が乏しいものは公開しません。</li>
+        <li><strong>公開と記録：</strong>記事には出典（公式）へのリンク、サイソクに載せた日時、続報を足した日時と出典を表示します。</li>
+        <li><strong>見直し：</strong>公開後に誤りが見つかった記事は訂正し、<Link href="/corrections">訂正履歴</Link>に残します。</li>
+      </ol>
+
+      <h2>検索エンジンに出す記事の基準</h2>
+      <p>
+        サイト内ではすべての記事を読めますが、検索エンジンには、次の条件をすべて満たす記事だけを案内しています（それ以外は検索に出さない設定にしています）。
+      </p>
+      <ul>
+        <li>本文が十分な分量（1,500字以上）で、要約だけの薄い記事ではないこと</li>
+        <li>AI・テクノロジーが主題であること</li>
+        <li>「日本で使える？」「無料？」「料金・使い方」など、日本の読者が判断に使える情報があること</li>
+        <li>同じ発表を扱う記事が複数ある場合は、最も詳しい1本だけ</li>
+        <li>プレスリリース配信サービスの言い換えではないこと</li>
+      </ul>
+      <p>
+        記事数より、1本ごとに読者の役に立つことを優先するための基準です。
+        長く使える情報は<Link href="/guides">使い方ガイド</Link>・<Link href="/ai-pricing">料金早見表</Link>にまとめ、公式ページで確認し直した日付を表示しています。
+      </p>
+
       <h2>扱わない話題</h2>
       <p>
         誤りが人を傷つけるおそれのある、事件・事故の被害、個人のうわさやゴシップ、選挙運動、病気の治療効果をうたう内容は扱いません。
@@ -75,6 +100,7 @@ export default function EditorialPolicyPage() {
       <h2>訂正について</h2>
       <p>
         誤りを見つけた場合、またはご指摘をいただいた場合は、確認のうえ速やかに記事を訂正し、記事内に訂正した日付と内容を記します。
+        訂正した記事は<Link href="/corrections">訂正履歴</Link>に一覧で公開しています。
         誤り・ご意見は <a href={`mailto:${operator.email}`}>{operator.email}</a> または
         <Link href="/contact">お問い合わせページ</Link>からお知らせください。
       </p>
@@ -92,7 +118,7 @@ export default function EditorialPolicyPage() {
 
       <h2>責任者</h2>
       <p>
-        {operator.name}（代表: {operator.representative}）が、このサイトの記事と運営に責任を持ちます。運営者の情報は<Link href="/about">運営者情報</Link>をご覧ください。
+        {operator.name}（代表・編集責任者: {operator.representative}、{operator.location}）が、このサイトの記事と運営に責任を持ちます。運営者の情報は<Link href="/about">運営者情報</Link>をご覧ください。
       </p>
     </LegalPage>
   );

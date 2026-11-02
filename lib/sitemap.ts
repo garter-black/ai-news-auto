@@ -1,15 +1,18 @@
 import { getAllChooseGuides } from "@/lib/choose";
 import { COMPARE_PUBLIC } from "@/lib/buying-guides";
-import { isIndexable } from "@/lib/indexing";
+import { isIndexable, isListingIndexable } from "@/lib/indexing";
 import {
   getAllArticles,
   getAllChannels,
   getAllGenres,
   getAllTags,
+  getArticlesByChannel,
+  getArticlesByGenre,
+  getArticlesByTag,
   lastModifiedOf,
   tagSlug,
 } from "@/lib/articles";
-import { companyCounts } from "@/lib/companies";
+import { companyCounts, companyOf } from "@/lib/companies";
 import { getAllGuides, guideArticles } from "@/lib/guides";
 import { getAllHowtos } from "@/lib/howto";
 import { getAllBuyingGuides } from "@/lib/buying-guides";
@@ -71,7 +74,7 @@ export function sitemapEntries(): SitemapEntry[] {
     ...(allArticles.some((article) => isBroadGenre(article.genreSlug))
       ? [{ url: `${base}/news`, lastModified, changeFrequency: "hourly" as const, priority: 0.9 }]
       : []),
-    ...["/about", "/editorial-policy", "/privacy", "/disclaimer", "/contact"].map((path) => ({
+    ...["/about", "/editorial-policy", "/corrections", "/privacy", "/disclaimer", "/contact"].map((path) => ({
       url: `${base}${path}`,
       lastModified,
       changeFrequency: "yearly" as const,
@@ -85,7 +88,7 @@ export function sitemapEntries(): SitemapEntry[] {
       priority: 0.8,
     })),
     ...getAllGenres()
-      .filter((genre) => genre.slug === "ai" || isBroadGenre(genre.slug))
+      .filter((genre) => (genre.slug === "ai" || isBroadGenre(genre.slug)) && isListingIndexable(getArticlesByGenre(genre.slug)))
       .map((genre) => ({
       url: `${base}/genres/${genre.slug}`,
       lastModified,
@@ -93,7 +96,7 @@ export function sitemapEntries(): SitemapEntry[] {
       priority: 0.9,
     })),
     ...getAllChannels()
-      .filter((channel) => liveChannels.has(channel.slug) && aiChannels.has(channel.slug))
+      .filter((channel) => liveChannels.has(channel.slug) && aiChannels.has(channel.slug) && isListingIndexable(getArticlesByChannel(channel.slug)))
       .map((channel) => ({
       url: `${base}/channels/${channel.slug}`,
       lastModified,
@@ -163,14 +166,14 @@ export function sitemapEntries(): SitemapEntry[] {
       changeFrequency: "weekly" as const,
       priority: 0.9,
     })),
-    ...companyCounts(articles).map(({ company }) => ({
+    ...companyCounts(articles).filter(({ company }) => isListingIndexable(allArticles.filter((a) => a.genreSlug === "ai" && companyOf(a).slug === company.slug))).map(({ company }) => ({
       url: `${base}/companies/${company.slug}`,
       lastModified,
       changeFrequency: "hourly" as const,
       priority: 0.8,
     })),
     ...getAllTags()
-      .filter((tag) => liveTags.has(tag.slug) && (tagArticleCounts.get(tag.slug) ?? 0) >= 2)
+      .filter((tag) => liveTags.has(tag.slug) && (tagArticleCounts.get(tag.slug) ?? 0) >= 2 && isListingIndexable(getArticlesByTag(tag.slug)))
       .map((tag) => ({
       url: `${base}/tags/${encodeURIComponent(tag.slug)}`,
       lastModified,

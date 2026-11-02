@@ -101,6 +101,10 @@ export type Article = {
   generatedAt: string;
   /** 続報を足した最後の日時 */
   updatedAt?: string;
+  /** 公式発表の日時（web 記事で取れたときだけ） */
+  sourcePublishedAt?: string;
+  /** 公開前の事実確認の点数（100点満点） */
+  qualityScore?: number;
   /** 続報の履歴（古い順） */
   updates?: ArticleUpdate[];
   /** 「これまでの流れ」で文脈に使った過去記事の slug */
@@ -125,6 +129,8 @@ export type ArticleDerived = {
   bodyLength: number;
   /** 「かんたんに読む」版があるか */
   hasEasy: boolean;
+  /** 「日本で使える？無料？料金・使い方」の見出しがあるか（検索に出す条件） */
+  hasJapanValue: boolean;
   /** 「かんたん」版の「ひとことで言うと」段落（無ければ空。表示側でリード文に戻す） */
   easyGist: string;
   /** まとめ記事が統合した本数 */

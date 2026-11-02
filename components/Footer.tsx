@@ -10,6 +10,7 @@ import { siteConfig } from "@/site.config";
 const LEGAL_LINKS = [
   { href: "/about", label: "運営者情報" },
   { href: "/editorial-policy", label: "編集方針・AI利用と事実確認" },
+  { href: "/corrections", label: "訂正履歴" },
   { href: "/privacy", label: "プライバシーポリシー" },
   { href: "/disclaimer", label: "免責事項・広告について" },
   { href: "/contact", label: "お問い合わせ" },

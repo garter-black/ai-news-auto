@@ -19,7 +19,7 @@ import {
 import { Phrases } from "@/lib/highlight";
 import { howtosForProduct } from "@/lib/howto";
 import { siteConfig } from "@/site.config";
-import { publisherJsonLd } from "@/lib/publisher";
+import { authorJsonLd, publisherJsonLd } from "@/lib/publisher";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -126,7 +126,7 @@ export default async function ProductPage({ params }: Props) {
       datePublished: product.createdAt,
       dateModified: product.updatedAt,
       mainEntityOfPage: url,
-      author: { "@type": "Organization", name: siteConfig.author, url: `${siteConfig.url}/about` },
+      author: authorJsonLd,
       publisher: publisherJsonLd,
       publishingPrinciples: `${siteConfig.url}/editorial-policy`,
       about: { "@type": "Thing", name: product.name },

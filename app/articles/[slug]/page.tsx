@@ -18,6 +18,7 @@ import InlineRead from "@/components/InlineRead";
 import ReadingMode from "@/components/ReadingMode";
 import VerdictCard from "@/components/VerdictCard";
 import AssetLinks from "@/components/assets/AssetLinks";
+import SourceRecord from "@/components/SourceRecord";
 import { companyOf, thumbSource } from "@/lib/companies";
 import { guideForArticle } from "@/lib/guides";
 import { howtoForArticle } from "@/lib/howto";
@@ -56,7 +57,7 @@ import {
   splitBeforeHeading,
 } from "@/lib/markdown";
 import { siteConfig } from "@/site.config";
-import { publisherJsonLd } from "@/lib/publisher";
+import { authorJsonLd, publisherJsonLd } from "@/lib/publisher";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -195,7 +196,7 @@ export default async function ArticlePage({ params }: Props) {
       inLanguage: "ja",
       keywords: article.keywords.join(", "),
       mainEntityOfPage: `${siteConfig.url}/articles/${article.slug}`,
-      author: { "@type": "Organization", name: siteConfig.author, url: `${siteConfig.url}/about` },
+      author: authorJsonLd,
       // 編集方針と訂正方針（誰がどう責任を持つかを検索エンジンに示す）
       publishingPrinciples: `${siteConfig.url}/editorial-policy`,
       correctionsPolicy: `${siteConfig.url}/editorial-policy`,
@@ -596,6 +597,24 @@ export default async function ArticlePage({ params }: Props) {
           )}
           </div>
           </div>
+
+          {/* 出典（公式）・日時・確認方法・更新履歴 */}
+          {!isRoundup && (
+            <SourceRecord
+              article={article}
+              sourceUrl={sourceUrl}
+              sourceName={sourceName}
+              guide={
+                howto
+                  ? { href: `/guides/${howto.slug}`, label: howto.title }
+                  : guide
+                    ? { href: `/guides/${guide.slug}`, label: `${guide.name}とは？できること・料金・使い方` }
+                    : product
+                      ? { href: `/products/${product.slug}`, label: `${product.name}のまとめページ` }
+                      : undefined
+              }
+            />
+          )}
 
           {/* 読み終えた位置で、次の1本を大きく見せる */}
           <NextRead items={nextReads} />
