@@ -10,8 +10,8 @@ on:
         description: "記事の slug（スペース区切り）"
         required: true
       speaker:
-        description: "VOICEVOX の話者名（2026-11-02 から明るい声の東北ずん子）"
-        default: "東北ずん子"
+        description: "VOICEVOX の話者名（2026-11-02 オーナーが選んだ九州そら）"
+        default: "九州そら"
 
 permissions:
   contents: read
@@ -52,7 +52,7 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           CLAUDE_DAILY_MAX: ${{ vars.CLAUDE_DAILY_MAX || '40' }}
-          V3_VOICEVOX_SPEAKER: ${{ github.event.inputs.speaker || '東北ずん子' }}
+          V3_VOICEVOX_SPEAKER: ${{ github.event.inputs.speaker || '九州そら' }}
           SLUGS: ${{ github.event.inputs.slugs }}
         run: |
           set +e

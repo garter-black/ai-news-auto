@@ -85,7 +85,6 @@ FOCUS = (PW * 0.5, PH * 0.40)  # 注目する文字を置くパネル内の位�
 ANCHOR_Y = PANEL[1] + int(FOCUS[1])  # キーワードの縦の中心（画面の注目の行と同じ高さ＝目が横に動くだけ）
 SOURCE_Y = 968  # 出典の小さな1行
 LOGO_XY = (104, 70)
-SUB_TOP = 636  # 日本語字幕のカードの上端（左の列・補足の下）
 
 # ページの撮影
 CAPTURE_W = 540  # CSS px（縦の画面にちょうど入るスマホ〜小型タブレットの幅）
@@ -104,15 +103,17 @@ TARGET_MAX = 30.5
 TARGET_MIN = 20.5
 SEP_TARGET_DB = 15.0  # 声と BGM の差
 
-# 声（2026-11-02 オーナー「声とBGMが暗いかも」→ 冥鳴ひまりから東北ずん子へ。明るい声色で、落ち着いて聞こえる大人の声。
+# 声（2026-11-02 夜 オーナーが試聴サンプル6つから「九州そら（ノーマル・高さ-0.01・抑揚1.0・速さ1.38）」を選んだ。
+# 東北ずん子は「少し高い・AIっぽい」。九州そらは落ち着いた大人の声。規約は zunko.jp（「VOICEVOX:九州そら」の表記で商用可）。
+# 以前の比較（明るさ）: 冥鳴ひまり→東北ずん子（夕方）。
 # 候補（同じ文で比較）: 冥鳴ひまり 声の高さ中央 253Hz・明るさ（スペクトル重心）1854Hz / 冥鳴ひまり（高さ+0.04・抑揚1.3）293Hz・1813Hz /
 # 東北ずん子 353Hz・2451Hz / 春日部つむぎ 358Hz・2010Hz。No.7 は商用に事前確認が要るので外した）
 V3_VOICE = {
-    "speaker": os.environ.get("V3_VOICEVOX_SPEAKER", "東北ずん子"),
+    "speaker": os.environ.get("V3_VOICEVOX_SPEAKER", "九州そら"),
     "style": os.environ.get("V3_VOICEVOX_STYLE", "ノーマル"),
-    "pitch": float(os.environ.get("V3_VOICEVOX_PITCH", "0.01")),
-    "intonation": float(os.environ.get("V3_VOICEVOX_INTONATION", "1.18")),
-    "speed": float(os.environ.get("V3_VOICEVOX_SPEED", "1.26")),
+    "pitch": float(os.environ.get("V3_VOICEVOX_PITCH", "-0.01")),
+    "intonation": float(os.environ.get("V3_VOICEVOX_INTONATION", "1.0")),
+    "speed": float(os.environ.get("V3_VOICEVOX_SPEED", "1.38")),
 }
 
 SITE = "ai-tech-express.jp"
@@ -395,6 +396,12 @@ class Target:
     focus: tuple | None = None  # キーワードの数字の部分（例: $200）の枠。寄る先
     match: tuple | None = None  # target の文字そのものの枠（選択の青を付ける所・行の中の一部）
     line_chars: list = field(default_factory=list)  # 注目の行の1文字ずつ [(文字, 枠)]（語の頭で切るため）
+    rows: list = field(default_factory=list)  # target の文字の行ごとの枠（複数行の文の選択・訳の吹き出しの位置）
+
+    @property
+    def span(self) -> tuple:
+        """target の文字全体の枠（複数行ならすべての行）"""
+        return _union(self.rows) if self.rows else (self.match or self.rect)
 
     @property
     def zoom_rect(self) -> tuple:
@@ -451,7 +458,13 @@ def find_target(pages: list[Page], needle: str, block_id: str = "", page_no: int
         if focus:  # 注目の枠は数字を含む行
             all_boxes = [r for r in rects if r]
             line = [r for r in all_boxes if row(r)] or line
-        return Target(pi, b, _union(line), needle, focus, match, line_chars)
+        rows: list[list] = []
+        for r in boxes:  # target の文字を行ごとにまとめる
+            if rows and abs(r[1] - rows[-1][0][1]) < (r[3] - r[1]) * 0.6:
+                rows[-1].append(r)
+            else:
+                rows.append([r])
+        return Target(pi, b, _union(line), needle, focus, match, line_chars, [_union(x) for x in rows])
     return None
 
 
@@ -547,10 +560,12 @@ def script_system() -> str:
   keyword: 画面に大きく出す言葉。2〜8字（例: 手続き不要、Proの10倍、月払いのみ）。文にしない。句読点を付けない。
   sub: 補足（14字以内。不要なら空）。
   speech: 読み上げ。1〜2文・合計45字以内。keyword の数字・名前を必ず含める。
-  block: 下の「画面の文字」一覧の番号（例: 1-23）。target: その行の文字から、この beat の証拠になる部分を**一文字も変えずに**抜き出す（2〜40字。英語なら英語のまま）。
+  block: 下の「画面の文字」一覧の番号（例: 1-23）。target: その行の文字から、この beat の証拠になる部分を**一文字も変えずに**抜き出す（日本語は2〜40字。英語なら英語のまま・100字まで）。
+  英語の target は**文として完結する範囲**（主語から文末のピリオドまで。見出しなら見出し全体）を選ぶ。文の途中で切らない（例: × "Starting this week, we will make Carbon available to a"）。
   証拠の行は見出し・大きな文字（|大）・短い行を優先し、長い本文の段落は選ばない。
-  ja: target が英語のときだけ、target の日本語訳（字幕として画面に出す）。target に書いてあることだけを、短く自然な日本語に（28字以内）。
-  言葉を足さない・意味を強めない・target に無い数字を入れない。製品名は英字のまま（Ultra・Pro）。target が日本語なら空文字。hook も同じ。
+  ja: target が英語のときだけ、target の日本語訳（画面のその英文のすぐ下に訳として出す）。文全体を、ふつうの話し言葉に近い自然な日本語で（です・ます調・36字以内）。
+  直訳の硬さを避ける（× 最強のモデル。サイバーセキュリティは最先端 → ○ Gemini 4 Carbonは、サイバーセキュリティで最先端の、いちばん強いモデルです）。
+  文の一部だけを訳さない・言葉を足さない・意味を強めない・target に無い数字を入れない。製品名は英字のまま（Ultra・Pro）。target が日本語なら空文字。hook も同じ。
 - **画面の文字は証拠の場所を選ぶためだけに使う。** 画面にあっても記事（資料）に無い事実・数字は、keyword・sub・speech に書かない（ja は target の訳なのでよい）。
 - compare: 2つを倍率で比べられる事実が資料にあるときだけ。beat はそれを話す beat の番号（1〜4）、base は基準（例: Pro）、subject は比べる相手（例: Ultra）、
   ratio は資料の表記どおりの倍率（例: 10倍）。無ければ beat=0、他は空文字。
@@ -589,6 +604,15 @@ def latin_names(script: dict) -> dict:
             if isinstance(beat.get(k), str):
                 beat[k] = fix(beat[k])
     return script
+
+
+def item_block_text(pages: list, item: dict) -> str:
+    """台本の block 番号の行の文字（見出しなど、文末の記号が無くても行全体なら完結とみなす）"""
+    for p in pages:
+        for b in p.blocks:
+            if b.id == item.get("block"):
+                return b.text
+    return ""
 
 
 def is_english(text: str) -> bool:
@@ -671,8 +695,10 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
         if not ja:
             out.append(f"{name}.ja: target が英語なので、target の日本語訳を入れてください。")
             continue
-        if len(ja) > 30:
-            out.append(f"{name}.ja は28字以内（今は{len(ja)}字）。")
+        if len(ja) > 40:
+            out.append(f"{name}.ja は36字以内（今は{len(ja)}字）。")
+        if not re.search(r"[.?!:。？！]\s*$", tgt_text.strip()) and _norm(tgt_text) != _norm(item_block_text(pages, item)):
+            out.append(f"{name}.target「{tgt_text[:40]}」は文の途中で切れています。文末（ピリオド）までの完結した文を選んでください。")
         extra = [d for d in _digits(ja) if d not in set(_digits(tgt_text))]
         if extra:
             out.append(f"{name}.ja に target に無い数字 {', '.join(extra)} があります。訳に言葉や数字を足さない。")
@@ -1125,7 +1151,7 @@ class Spot:
     t1: float
     page: int
     rect: tuple
-    sel: tuple | None = None  # 選択の青を付ける文字（target そのもの）
+    sel: list | None = None  # 選択の青を付ける文字（target そのもの・行ごとの枠）
     sel_t: float = 0.0  # 選択が始まる時刻
 
 
@@ -1290,37 +1316,90 @@ def big_lines(text: str) -> np.ndarray:
     return wrapped(text, "black", range(80, 44, -2), COL_W, 3)
 
 
-def subtitle_sprite(text: str) -> np.ndarray:
-    """日本語字幕: 左の文字の列の下に置く白いカード（小さな見出し「英文の訳」＋訳）。画面のページの上には重ねない"""
-    pad_x, pad_y = 30, 24
-    label = fit_line("英文の訳", "bold", range(22, 16, -2), COL_W, color=BLUE, accent=False, tracking=0.08)
-    body = wrapped(text, "bold", range(36, 27, -1), COL_W - pad_x * 2, 3, color=INK, accent=False)
-    w = COL_W
-    h = pad_y * 2 + label.shape[0] + 12 + body.shape[0]
-    sh = 18  # 影の余白
+CALLOUT_MAX_W = 860
+CALLOUT_SH = 16  # 吹き出しの影の余白
+CALLOUT_GAP = 16  # 選択した英文と吹き出しのすき間（とがりを含まない）
+POINTER = (30, 14)  # 吹き出しのとがり（幅・高さ）
+
+
+def callout_sprite(text: str) -> np.ndarray:
+    """訳の吹き出しの本体（墨の角丸・小さな見出し「日本語訳」・白い太字の訳・やわらかい影）。とがりは描画のときに足す"""
+    pad_x, pad_y = 30, 20
+    label = fit_line("日本語訳", "bold", range(22, 16, -2), CALLOUT_MAX_W, color=(150, 182, 232), accent=False, tracking=0.1)
+    body = None
+    for size, rows_max in ((42, 2), (38, 2), (36, 3), (32, 3)):
+        try:
+            body = wrapped(text, "bold", range(size, size - 1, -1), CALLOUT_MAX_W - pad_x * 2, rows_max, color=WHITE, accent=False)
+            break
+        except RuntimeError:
+            continue
+    if body is None:
+        body = wrapped(text, "bold", range(32, 22, -1), CALLOUT_MAX_W - pad_x * 2, 4, color=WHITE, accent=False)
+    w = max(label.shape[1], body.shape[1]) + pad_x * 2
+    h = pad_y * 2 + label.shape[0] + 10 + body.shape[0]
+    sh = CALLOUT_SH
     out = np.zeros((h + sh * 2, w + sh * 2, 4), dtype=np.uint8)
-    card, shadow = _mask_sub_card(w, h, sh)
+    card, shadow = _mask_callout(w, h, sh)
     out[..., :3] = INK
     out[..., 3] = shadow
-    white = np.zeros_like(out)
-    white[..., :3] = 255
-    white[..., 3] = card
-    blend_rgba(out, white, 0, 0)
+    box = np.zeros_like(out)
+    box[..., :3] = INK
+    box[..., 3] = card
+    blend_rgba(out, box, 0, 0)
     blend_rgba(out, label, sh + pad_x, sh + pad_y)
-    blend_rgba(out, body, sh + pad_x, sh + pad_y + label.shape[0] + 12)
+    blend_rgba(out, body, sh + pad_x, sh + pad_y + label.shape[0] + 10)
     return out
 
 
-def _mask_sub_card(w: int, h: int, sh: int) -> tuple[np.ndarray, np.ndarray]:
-    """字幕のカードの形（角丸）と、そのやわらかい影の濃さ（どちらもマスク）"""
+def _mask_callout(w: int, h: int, sh: int) -> tuple[np.ndarray, np.ndarray]:
+    """吹き出しの形（角丸）と、そのやわらかい影の濃さ（どちらもマスク）"""
     q = 4
     big = Image.new("L", ((w + sh * 2) * q, (h + sh * 2) * q), 0)
-    ImageDraw.Draw(big).rounded_rectangle((sh * q, sh * q, (sh + w) * q, (sh + h) * q), radius=18 * q, fill=255)
+    ImageDraw.Draw(big).rounded_rectangle((sh * q, sh * q, (sh + w) * q, (sh + h) * q), radius=16 * q, fill=255)
     card = big.resize((w + sh * 2, h + sh * 2), Image.LANCZOS)
     shadow = Image.new("L", card.size, 0)
     shadow.paste(card, (0, 6))
-    shadow = shadow.filter(ImageFilter.GaussianBlur(10)).point(lambda v: int(v * 0.16))
+    shadow = shadow.filter(ImageFilter.GaussianBlur(9)).point(lambda v: int(v * 0.30))
     return np.asarray(card), np.asarray(shadow)
+
+
+def _mask_pointer(up: bool) -> np.ndarray:
+    """吹き出しのとがり（墨の三角）。up=True なら上の英文を指す"""
+    q = 4
+    pw, ph = POINTER
+    big = Image.new("L", (pw * q, (ph + 2) * q), 0)
+    pts = [(0, (ph + 2) * q), (pw * q, (ph + 2) * q), (pw * q / 2, 0)] if up else [(0, 0), (pw * q, 0), (pw * q / 2, (ph + 2) * q)]
+    ImageDraw.Draw(big).polygon(pts, fill=255)
+    a = np.asarray(big.resize((pw, ph + 2), Image.LANCZOS))
+    out = np.zeros((ph + 2, pw, 4), dtype=np.uint8)
+    out[..., :3] = INK
+    out[..., 3] = a
+    return out
+
+
+def callout_place(sub: "Subtitle", cam: "Cam") -> tuple[int, int, int, int, bool] | None:
+    """吹き出しの位置（パネル座標）: (x, y, とがりの x, とがりの y, 上向きか)。選択した英文にかぶらない所。置けなければ None"""
+    if cam.page != sub.page:
+        return None
+    rows = [(*cam.map(r[0], r[1]), *cam.map(r[2], r[3])) for r in sub.rows]
+    vis = [r for r in rows if r[3] > 0 and r[1] < PH and r[2] > 0 and r[0] < PW] or rows
+    top, bottom = min(r[1] for r in vis), max(r[3] for r in vis)
+    sh = CALLOUT_SH
+    h, w = sub.sprite.shape[0] - sh * 2, sub.sprite.shape[1] - sh * 2
+    margin = 36
+    anchor = min(r[0] for r in vis)
+    x = int(min(max(anchor - 6, margin), PW - margin - w))
+    py_gap = CALLOUT_GAP + POINTER[1]
+    if bottom + py_gap + h <= PH - margin:
+        y, up = int(bottom + py_gap), True
+    elif top - py_gap - h >= margin:
+        y, up = int(top - py_gap - h), False
+    else:
+        return None
+    last = [r for r in vis if (r[3] >= bottom - 2 if up else r[1] <= top + 2)][0]
+    tip_x = int(min(max(max(last[0], 0) + 44, x + 24), x + w - 24 - POINTER[0]))
+    tip_y = y - POINTER[1] if up else y + h
+    return x, y, tip_x, tip_y, up
 
 
 def blend_rgba(dst: np.ndarray, src: np.ndarray, x: int, y: int) -> None:
@@ -1337,12 +1416,13 @@ def blend_rgba(dst: np.ndarray, src: np.ndarray, x: int, y: int) -> None:
 
 @dataclass
 class Subtitle:
+    """訳の吹き出し: 選択した英文（rows・ページの座標）のすぐ下（入らなければ上）に付いて、カメラと一緒に動く"""
     t0: float
     t1: float
     text: str
     sprite: np.ndarray
-    x: int
-    y: int
+    page: int
+    rows: list
 
 
 @dataclass
@@ -1421,11 +1501,12 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     hook_close = frame_rect(p0, t0.page, t0.zoom_rect, 0.34, ZOOM_MAX, zmin=1.6, line=t0.rect, chars=t0.line_chars)
     moves.append(Move(0.18, 0.8, hook_close))
     ev(0.18, "move", "つかみ: 数字へ寄る")
-    spots.append(Spot(0.7, lines[1].start - 0.08, t0.page, t0.rect, t0.match, 0.92))
+    hook_xl = is_english(hook.get("target", "")) and bool(hook.get("ja"))
+    spots.append(Spot(0.7, lines[1].start - 0.08, t0.page, t0.span if hook_xl else t0.rect, t0.rows if hook_xl else [t0.match], 0.92))
     clicks.append(Click(0.92, t0.page, *click_point(t0)))
     ev(0.92, "click")
-    if is_english(hook.get("target", "")) and hook.get("ja"):
-        sub_spans.append((0.9, lines[1].start - 0.08, 0))
+    if hook_xl:
+        sub_spans.append((1.25, lines[1].start - 0.08, 0))
 
     for i, (beat, line) in enumerate(zip(beats, lines[1:5]), 1):
         tg = targets[i]
@@ -1436,22 +1517,29 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         a_t = line.start - 0.16
         cut = tg.page != prev_page
         wide_block = tg.block.rect[2] - tg.block.rect[0] > 0.5 * page.width
-        line_rect = (tg.block.rect[0], tg.rect[1], tg.block.rect[2], tg.rect[3]) if wide_block else tg.rect
+        # 英文に訳を付ける beat は、文全体（複数行）を選択して、その下に訳の吹き出しを出す
+        xl = found[i] and is_english(beat.get("target", "")) and bool(beat.get("ja"))
+        span = tg.span if xl else tg.rect
+        sel = tg.rows if xl else [tg.match]
+        line_rect = (tg.block.rect[0], span[1], tg.block.rect[2], span[3]) if wide_block else span
         block_cam = frame_rect(page, tg.page, line_rect, 0.96, 1.6, zmin=1.25 if wide_block else ZOOM_BLOCK)
         moves.append(Move(a_t, 0.45 if cut else 0.55, block_cam, cut=cut))
         ev(a_t, "cut" if cut else "move", f"beat{i}: 行へ")
         b_t = line.start + max(0.85, 0.42 * dur)
-        sub_end = nxt - 0.08
+        sub_t0, sub_end = a_t + 0.95, nxt - 0.08
         if i == comp_beat:
             charts.append(Chart(b_t, nxt - 0.06, comp["base"], comp["subject"], comp["ratio"]))
             ev(b_t, "chart", "比較のグラフ")
-            spots.append(Spot(a_t + 0.35, b_t, tg.page, tg.rect, tg.match, a_t + 0.6))
+            spots.append(Spot(a_t + 0.35, b_t, tg.page, span, sel, a_t + 0.6))
             sub_end = b_t - 0.05
         elif nxt - b_t > 0.9:
             zr = tg.zoom_rect
             moves.append(Move(b_t, 0.6, frame_rect(page, tg.page, zr, 0.36 if tg.focus else 0.7, ZOOM_MAX, zmin=1.7, line=tg.rect, chars=tg.line_chars)))
             ev(b_t, "move", f"beat{i}: 数字へ寄る")
-            spots.append(Spot(b_t + 0.3, nxt - 0.08, tg.page, tg.rect, tg.match, b_t + 0.55))
+            if xl:  # 行に着いたらすぐ文を選択して訳を出し、寄っている間も出したまま
+                spots.append(Spot(a_t + 0.35, nxt - 0.08, tg.page, span, sel, a_t + 0.6))
+            else:
+                spots.append(Spot(b_t + 0.3, nxt - 0.08, tg.page, span, sel, b_t + 0.55))
             clicks.append(Click(b_t + 0.55, tg.page, *click_point(tg)))
             ev(b_t + 0.55, "click")
             if nxt - b_t > 3.3:  # 長い beat: 途中で少し引いて行の前後も見せる（3.6秒より長く止まらない）
@@ -1459,9 +1547,10 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
                 moves.append(Move(m_t, 0.6, frame_rect(page, tg.page, line_rect, 0.96, 1.4, zmin=1.15)))
                 ev(m_t, "move", f"beat{i}: 少し引く")
         else:
-            spots.append(Spot(a_t + 0.3, nxt - 0.08, tg.page, tg.rect, tg.match, a_t + 0.55))
-        if found[i] and is_english(beat.get("target", "")) and beat.get("ja") and sub_end - (a_t + 0.5) > 0.6:
-            sub_spans.append((a_t + 0.5, sub_end, i))
+            spots.append(Spot(a_t + 0.3, nxt - 0.08, tg.page, span, sel, a_t + 0.55))
+            sub_t0 = a_t + 0.9
+        if xl and sub_end - sub_t0 > 0.6:
+            sub_spans.append((sub_t0, sub_end, i))
 
     # 締め: 最初の画面（ページ幅いっぱい）へ引いて戻る
     concl = lines[5]
@@ -1471,7 +1560,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     if narr.end_start - c_t > 0.9:  # 最初の数字へもう一度寄る（最初と最後がつながる）
         moves.append(Move(c_t, 0.7, hook_close))
         ev(c_t, "move", "締め: 最初の数字へ")
-        spots.append(Spot(c_t + 0.35, narr.end_start, t0.page, t0.rect, t0.match, c_t + 0.5))
+        spots.append(Spot(c_t + 0.35, narr.end_start, t0.page, t0.rect, [t0.match], c_t + 0.5))
     camera = Camera(first, moves)
 
     # 文字（左の列）: 小さな見出し → キーワード（マーカー）→ 補足。キーワードの中心は画面の注目の行と同じ高さ
@@ -1527,13 +1616,11 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     credits = [credit]
 
     # 日本語字幕（英語の文に寄っている間）: 画面の下に中央そろえ
-    subtitles = []
+    subtitles: list[Subtitle] = []
     for a, b, idx in sub_spans:
         text = (items[idx].get("ja") or "").strip()
-        spr = subtitle_sprite(text)
-        x = COL[0] - 18
-        y = SUB_TOP - 18
-        subtitles.append(Subtitle(a, b, text, spr, x, y))
+        tg = targets[idx]
+        subtitles.append(Subtitle(a, b, text, callout_sprite(text), tg.page, list(tg.rows or [tg.match or tg.rect])))
 
     # 注目の場所（画面上の枠）: 字幕がかぶらないかをゲートで見る
     focus = []
@@ -1663,6 +1750,7 @@ class Renderer:
         self.stage = stage_bg()
         self.corner = _mask_panel_corners()
         self.cursor = _cursor_sprite()
+        self.pointers = {True: _mask_pointer(True), False: _mask_pointer(False)}
         self.edge = (np.linspace(0, 1, EDGE_FADE, dtype=np.float32) ** 1.8) * 0.95  # 端ほど地の色
         self.levels = [self._pyramid(p.img) for p in plan.pages]
         self.bgs = [p.bg() for p in plan.pages]
@@ -1792,9 +1880,34 @@ class Renderer:
             f = (255 - dim * (255 - mask.astype(np.float32))).astype(np.uint16)
             img = ((img.astype(np.uint16) * f[..., None]) >> 8).astype(np.uint8)
             if sp.sel and t >= sp.sel_t and t <= sp.t1:
-                sx0, sy0 = cam.map(sp.sel[0], sp.sel[1])
-                sx1, sy1 = cam.map(sp.sel[2], sp.sel[3])
-                _highlight_select(img, (sx0, sy0, sx1, sy1), ease_out((t - sp.sel_t) / 0.35))
+                # 行ごとに左から順に選択していく（複数行の文は1行目 → 2行目）
+                widths = [max(r[2] - r[0], 1) for r in sp.sel]
+                done = ease_out((t - sp.sel_t) / (0.35 + 0.12 * (len(sp.sel) - 1))) * sum(widths)
+                for r, wd in zip(sp.sel, widths):
+                    k = min(1.0, max(0.0, done / wd))
+                    done -= wd
+                    if k <= 0:
+                        break
+                    sx0, sy0 = cam.map(r[0], r[1])
+                    sx1, sy1 = cam.map(r[2], r[3])
+                    _highlight_select(img, (sx0, sy0, sx1, sy1), k)
+        # 左右の端はページの地の色へなじませる（行の途中で切れた語が、ぶつっと切れて見えないように）
+        bg = np.array(self.bgs[cam.page], dtype=np.float32)
+        e = EDGE_FADE
+        for sl, ramp in ((np.s_[:, :e], self.edge[::-1]), (np.s_[:, PW - e :], self.edge)):
+            part = img[sl].astype(np.float32)
+            img[sl] = (part * (1 - ramp[None, :, None]) + bg * ramp[None, :, None]).astype(np.uint8)
+        # 訳の吹き出し（選択した英文のすぐ下・選択が終わるころにふわっと出る）
+        for sub in self.plan.subtitles:
+            fa = self._fade(t, sub.t0, sub.t1, 0.2)
+            place = callout_place(sub, cam) if fa > 0 else None
+            if not place:
+                continue
+            x, y, tip_x, tip_y, up = place
+            k = ease_out((t - sub.t0) / 0.3)
+            dy = int((1 - k) * (-10 if up else 10))
+            blend(img, sub.sprite, x - CALLOUT_SH, y - CALLOUT_SH + dy, fa)
+            blend(img, self.pointers[up], tip_x, tip_y + dy - (0 if up else 2), fa)
         # カーソルとクリックの波紋
         cur = self.cursor_at(t, cam)
         if cur:
@@ -1815,12 +1928,6 @@ class Renderer:
                 a = min(1.0, (t - ch.t0) / 0.25) * min(1.0, max(0.0, (ch.t1 + 0.2 - t) / 0.2))
                 card, _ = self.chart_frame(k, t)
                 img = ((img.astype(np.uint16) * int((1 - a) * 256) + card.astype(np.uint16) * int(a * 256)) >> 8).astype(np.uint8)
-        # 左右の端はページの地の色へなじませる（行の途中で切れた語が、ぶつっと切れて見えないように）
-        bg = np.array(self.bgs[cam.page], dtype=np.float32)
-        e = EDGE_FADE
-        for sl, ramp in ((np.s_[:, :e], self.edge[::-1]), (np.s_[:, PW - e :], self.edge)):
-            part = img[sl].astype(np.float32)
-            img[sl] = (part * (1 - ramp[None, :, None]) + bg * ramp[None, :, None]).astype(np.uint8)
         return img
 
     @staticmethod
@@ -1908,11 +2015,6 @@ class Renderer:
             else:  # rise: 下から上がってくる（下は見えない所から）
                 k = ease_out(age / 0.38)
                 blend(frame, item.sprite, item.x, item.y + int((1 - k) * 22) + dy_out, k * k_out)
-        for sub in self.plan.subtitles:
-            a = self._fade(t, sub.t0, sub.t1, 0.18)
-            if a > 0:
-                k = ease_out((t - sub.t0) / 0.3)
-                blend(frame, sub.sprite, sub.x, sub.y + int((1 - k) * 10), a)
         return frame
 
 
@@ -1969,10 +2071,13 @@ SAFE_V3 = (40, 30, W - 40, H - 30)
 def text_records(plan: Plan) -> list[dict]:
     out = []
     rows = [(item.role, item.text, item.sprite, item.bbox(), item.t0, item.t1) for item in plan.texts]
-    for sub in plan.subtitles:
+    for sub in plan.subtitles:  # 吹き出しはカメラと動くので、出ている間の真ん中の時刻の位置で記録する
         spr = sub.sprite
-        ys, xs = np.nonzero(spr[..., 3] > 200)
-        bbox = [float(sub.x + xs.min()), float(sub.y + ys.min()), float(sub.x + xs.max() + 1), float(sub.y + ys.max() + 1)]
+        place = callout_place(sub, plan.camera.at((sub.t0 + sub.t1) / 2))
+        if not place:
+            continue
+        x, y = PANEL[0] + place[0], PANEL[1] + place[1]
+        bbox = [float(x), float(y), float(x + spr.shape[1] - CALLOUT_SH * 2), float(y + spr.shape[0] - CALLOUT_SH * 2)]
         rows.append(("subtitle", sub.text, spr, bbox, sub.t0, sub.t1))
     for role, text, spr, bbox, t0, t1 in rows:
         if role in ("hook", "keyword", "sub", "conclusion", "eyebrow"):
@@ -1980,13 +2085,13 @@ def text_records(plan: Plan) -> list[dict]:
         elif role in ("source", "credit"):
             box = [COL[0], SOURCE_Y - 60, PANEL[0] - 8, H - 20]
         elif role == "subtitle":
-            box = [COL[0] - 20, SUB_TOP - 20, COL[2] + 20, SOURCE_Y - 8]
+            box = list(PANEL)
         else:
             box = [0, 0, PANEL[0], PANEL[1] + 40]
-        size = {"hook": 46, "keyword": 72, "sub": 30, "conclusion": 46, "eyebrow": 20, "source": 18, "credit": 16, "subtitle": 27, "logo": 24}.get(role, 18)
+        size = {"hook": 46, "keyword": 72, "sub": 30, "conclusion": 46, "eyebrow": 20, "source": 18, "credit": 16, "subtitle": 24, "logo": 24}.get(role, 18)
         color = {"sub": MUTED, "source": SOFT, "credit": SOFT, "eyebrow": BLUE}.get(role, INK)
-        if role == "subtitle":  # 白いカードの上の墨の字
-            contrast = gate.contrast(INK, WHITE)
+        if role == "subtitle":  # 墨の吹き出しの上の白い字
+            contrast = gate.contrast(WHITE, INK)
         else:
             contrast = min(gate.contrast(color, STAGE), gate.contrast(ACCENT, STAGE) if role == "keyword" else 99)
         face = "logo" if role == "logo" else ("black" if role in ("hook", "keyword", "conclusion") else "bold")
