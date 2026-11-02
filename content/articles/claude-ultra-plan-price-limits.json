@@ -88,5 +88,13 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/claude-ultra-plan-price-limits-1e7f969a.jpg"
-  }
+  },
+  "charts": [
+    {
+      "kind": "ladder",
+      "product": "claude",
+      "highlight": "ultra",
+      "afterHeading": "料金は？"
+    }
+  ]
 }

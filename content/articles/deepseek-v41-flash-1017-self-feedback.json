@@ -96,5 +96,52 @@
   "generatedAt": "2026-10-28T18:23:56.302969+00:00",
   "thumbnail": "https://i.ytimg.com/vi/pryCaGv8wuo/maxresdefault.jpg",
   "model": "gemini-3.6-flash",
-  "affiliates": []
+  "affiliates": [],
+  "charts": [
+    {
+      "kind": "before_after",
+      "title": "V4.1 Flash → 1017",
+      "unit": "",
+      "groups": [
+        {
+          "label": "ProgramBench（コード生成）",
+          "items": [
+            {
+              "label": "V4.1 Flash",
+              "value": 20.3,
+              "display": "20.3"
+            },
+            {
+              "label": "1017",
+              "value": 29.1,
+              "display": "29.1",
+              "highlight": true
+            }
+          ]
+        },
+        {
+          "label": "Terminal-Bench 4.0（PC操作）",
+          "items": [
+            {
+              "label": "V4.1 Flash",
+              "value": 31.2,
+              "display": "31.2"
+            },
+            {
+              "label": "1017",
+              "value": 42.3,
+              "display": "42.3",
+              "highlight": true
+            }
+          ]
+        }
+      ],
+      "afterHeading": "数字で見るとどう変わった？",
+      "from": "table",
+      "source": {
+        "name": "Two Minute Papers",
+        "url": "https://www.youtube.com/watch?v=pryCaGv8wuo"
+      }
+    }
+  ]
 }

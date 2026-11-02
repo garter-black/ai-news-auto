@@ -99,5 +99,36 @@
   "model": "gemini-3.6-flash",
   "affiliates": [],
   "duplicateOf": "openai-legora-legal-ai-agent",
-  "duplicateReason": "同じ発信元が同時に出した同じ話題（legora）"
+  "duplicateReason": "同じ発信元が同時に出した同じ話題（legora）",
+  "charts": [
+    {
+      "kind": "before_after",
+      "title": "自社の拠点数拡大",
+      "unit": "拠点",
+      "groups": [
+        {
+          "label": "自社の拠点数拡大",
+          "items": [
+            {
+              "label": "従来のやり方",
+              "value": 3.0,
+              "display": "3拠点"
+            },
+            {
+              "label": "Legora導入後",
+              "value": 18.0,
+              "display": "18拠点",
+              "highlight": true
+            }
+          ]
+        }
+      ],
+      "afterHeading": "数字で見るとどう変わった？",
+      "from": "table",
+      "source": {
+        "name": "OpenAI",
+        "url": "https://www.youtube.com/watch?v=yJxZef1Ylok"
+      }
+    }
+  ]
 }

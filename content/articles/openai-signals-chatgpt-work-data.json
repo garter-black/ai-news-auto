@@ -73,5 +73,36 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://images.ctfassets.net/kftzwdyauwt9/6K9gMLTc6r3aFUbyZ2uZDN/d05f2ece956d33201cab06373febac3a/how-workers-use-chatgpt-social.png?w=1600&h=900&fit=fill",
     "at": "2026-10-28T06:06:40+00:00"
-  }
+  },
+  "charts": [
+    {
+      "kind": "before_after",
+      "title": "上位10業務が分類済みメッセージに占める割合（74カ国平均）",
+      "unit": "%",
+      "groups": [
+        {
+          "label": "上位10業務が分類済みメッセージに占める割合（74カ国平均）",
+          "items": [
+            {
+              "label": "2025年第1四半期",
+              "value": 56.0,
+              "display": "56.0%"
+            },
+            {
+              "label": "2026年第3四半期",
+              "value": 51.1,
+              "display": "51.1%",
+              "highlight": true
+            }
+          ]
+        }
+      ],
+      "afterHeading": "数字で見るとどう変わった？",
+      "from": "table",
+      "source": {
+        "name": "OpenAI公式ブログ",
+        "url": "https://openai.com/index/chatgpt-expanding-world-of-work"
+      }
+    }
+  ]
 }

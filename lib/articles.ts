@@ -1,3 +1,4 @@
+import type { ArticleChart } from "@/lib/charts";
 import fs, { hasVirtualFs } from "@/lib/content-fs";
 import path from "node:path";
 import type { Verdict } from "@/lib/verdict";
@@ -104,6 +105,8 @@ export type Article = {
   faq?: { q: string; a: string }[];
   /** 今日やること（2〜3個） */
   todayActions?: string[];
+  /** 数字の図（前と今・推移・料金の段。scripts/article_charts.py が記事の表から作る。lib/charts.ts） */
+  charts?: ArticleChart[];
   affiliates: AffiliateLink[];
   body: string;
   /** 「かんたんに読む」版（専門用語なしの短い解説）。無い記事は切り替えを出さない */

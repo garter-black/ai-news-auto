@@ -88,5 +88,36 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/windows11-context-menu-customize-kb5127936-3c568e2b.jpg"
-  }
+  },
+  "charts": [
+    {
+      "kind": "before_after",
+      "title": "並ぶ項目数（アイコン除く）",
+      "unit": "項目",
+      "groups": [
+        {
+          "label": "並ぶ項目数（アイコン除く）",
+          "items": [
+            {
+              "label": "前",
+              "value": 21.0,
+              "display": "21項目"
+            },
+            {
+              "label": "今回",
+              "value": 9.0,
+              "display": "9項目",
+              "highlight": true
+            }
+          ]
+        }
+      ],
+      "afterHeading": "数字で見るとどう変わった？",
+      "from": "table",
+      "source": {
+        "name": "マイナビニュース",
+        "url": "https://news.mynavi.jp/techplus/article/20261102-5224966/"
+      }
+    }
+  ]
 }

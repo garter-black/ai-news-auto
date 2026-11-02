@@ -73,5 +73,36 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/07_-_Containers__Kubernetes_iY4YTLa.max-2600x2600.jpg",
     "at": "2026-10-29T03:54:57+00:00"
-  }
+  },
+  "charts": [
+    {
+      "kind": "before_after",
+      "title": "1日あたりの出力（トークン）",
+      "unit": "",
+      "groups": [
+        {
+          "label": "1日あたりの出力（トークン）",
+          "items": [
+            {
+              "label": "導入前",
+              "value": 1470000000.0,
+              "display": "14.7億"
+            },
+            {
+              "label": "導入後",
+              "value": 5970000000.0,
+              "display": "59.7億",
+              "highlight": true
+            }
+          ]
+        }
+      ],
+      "afterHeading": "数字で見るとどう変わった？",
+      "from": "table",
+      "source": {
+        "name": "Google Cloud 公式ブログ（日本）",
+        "url": "https://cloud.google.com/blog/ja/products/containers-kubernetes/zenteiq-scales-physical-ai-inference-4x-with-gke-and-llm-d/"
+      }
+    }
+  ]
 }

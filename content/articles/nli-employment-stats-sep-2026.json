@@ -61,5 +61,52 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.nli-research.co.jp/files/topics/87224_ext_03_0.jpg",
     "at": "2026-10-30T03:16:53+00:00"
-  }
+  },
+  "charts": [
+    {
+      "kind": "before_after",
+      "title": "主な数字の前と今",
+      "unit": "倍",
+      "groups": [
+        {
+          "label": "有効求人倍率",
+          "items": [
+            {
+              "label": "前",
+              "value": 1.18,
+              "display": "1.18倍（推計・前月）"
+            },
+            {
+              "label": "9月",
+              "value": 1.19,
+              "display": "1.19倍",
+              "highlight": true
+            }
+          ]
+        },
+        {
+          "label": "新規求人倍率",
+          "items": [
+            {
+              "label": "前",
+              "value": 2.06,
+              "display": "2.06倍（推計・前月）"
+            },
+            {
+              "label": "9月",
+              "value": 2.19,
+              "display": "2.19倍",
+              "highlight": true
+            }
+          ]
+        }
+      ],
+      "afterHeading": "数字で見ると？",
+      "from": "table",
+      "source": {
+        "name": "ニッセイ基礎研究所",
+        "url": "https://www.nli-research.co.jp/topics_detail1/id=87224?site=nli"
+      }
+    }
+  ]
 }
