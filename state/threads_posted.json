@@ -3100,6 +3100,28 @@
         "impressions": 0,
         "clicks": 0
       }
+    },
+    "google-ai-news-october-2026": {
+      "id": "6ae8f9f3c8ee2961312fd6b2",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae8f9fe16d5739c131f25bf",
+        "facebook": "6ae8fa0925a58c431d050f97",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mze7synwyt2w"
+      },
+      "dueAt": "2026-11-02T21:00:35+00:00",
+      "hook": "breaking",
+      "breaking": true,
+      "score": 3,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "Gemini",
+      "question": true,
+      "questionText": "あなたの仕事で、いちばん気になった発表はどれですか？",
+      "postedAt": "2026-11-02T21:01:07+00:00",
+      "blueskyAt": "2026-11-02T21:01:08+00:00"
     }
   },
   "extraPending": {}
