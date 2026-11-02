@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "haneda-innov-city-awai-2026",
+   "at": "2026-11-02T16:52:07.685366+00:00",
+   "title": "羽田みらい開発、『あわい -awai2026-』を2026年11月に開催へ 大田区の大型施設で",
+   "head": "羽田みらい開発、『あわい -awai2026-』を2026年11月に開催へ 大田区の大型施設で | 羽田からひろがる、新たな出会い 「あわい -awai2026- 」開催決定（羽田みらい開発）",
+   "text": "羽田みらい開発、『あわい -awai2026-』を2026年11月に開催へ 大田区の大型施設で | 羽田からひろがる、新たな出会い 「あわい -awai2026- 」開催決定（羽田みらい開発） | 羽田みらい開発 / あわいawai2026 / HANEDA INNOVATION CITY / 大田区 / 羽田空港 / 野村不動産ホールディングス / イベント / 街づくり / ビジネス / 不動産 / 地域",
+   "urls": [
+    "https://www.nomura-re-hd.co.jp/news/005027.html"
+   ]
+  },
+  {
    "slug": "mlit-autumn-2026-medals-of-honor",
    "at": "2026-11-02T16:31:35.224811+00:00",
    "title": "国土交通省、令和8年秋の褒章受章者を発表 伝達式は11月18日に開催へ",
@@ -1601,26 +1611,6 @@
    "text": "ChatGPTのOpenAIがAIモデルの隠れた誤作動を防ぐ多層モニタリングシステムを公開 | How we detect frontier model misalignment | OpenAI / AI誤作動 / フロンティアモデル / セキュリティ / モニタリングシステム / アクティベーションプローブ / 強化学習 / コード生成 / 生成AI / LLM / セキュリティ / OpenAI",
    "urls": [
     "https://openai.com/index/how-we-detect-frontier-model-misalignment"
-   ]
-  },
-  {
-   "slug": "tomb-raider-thirty-years-lara-croft",
-   "at": "2026-10-29T16:45:32.568354+00:00",
-   "title": "名作アクション『トゥームレイダー』30周年、初代を新たな解釈で描く新作が2027年2月に登場",
-   "head": "名作アクション『トゥームレイダー』30周年、初代を新たな解釈で描く新作が2027年2月に登場 | ララ・クロフトの 30 年を振り返る",
-   "text": "名作アクション『トゥームレイダー』30周年、初代を新たな解釈で描く新作が2027年2月に登場 | ララ・クロフトの 30 年を振り返る | トゥームレイダー / ララ・クロフト / Crystal Dynamics / Xbox / レガシー・オブ・アトランティス / 30周年 / ゲーム / アクション / ゲーム / エンタメ / アクション",
-   "urls": [
-    "https://news.xbox.com/ja-jp/2026/10/29/thirty-years-of-lara-croft/"
-   ]
-  },
-  {
-   "slug": "nvidia-omniverse-frontier-ai-agents",
-   "at": "2026-10-29T16:41:57.392717+00:00",
-   "title": "AI半導体のNVIDIAが公開、自律型AIでシミュレーション開発を効率化する新手法",
-   "head": "AI半導体のNVIDIAが公開、自律型AIでシミュレーション開発を効率化する新手法 | Into the Omniverse: How Developers Turn Ideas Into Simulations With Frontier AI Agents",
-   "text": "AI半導体のNVIDIAが公開、自律型AIでシミュレーション開発を効率化する新手法 | Into the Omniverse: How Developers Turn Ideas Into Simulations With Frontier AI Agents | NVIDIA / Omniverse / AIエージェント / シミュレーション / デジタルツイン / OpenUSD / Isaac Sim / 物理AI / 生成AI / ロボティクス / 開発ツール / シミュレーション",
-   "urls": [
-    "https://blogs.nvidia.com/blog/developers-simulation-frontier-ai-agents/"
    ]
   }
  ]

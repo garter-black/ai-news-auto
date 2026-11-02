@@ -72,5 +72,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://eleven-public-cdn.elevenlabs.io/payloadcms/5mo6tyh5yio-sfx-v1.webp",
     "at": "2026-11-02T16:32:24+00:00"
+  },
+  "imageFocus": {
+    "x": 0.45,
+    "y": 0.613,
+    "box": [
+      0.0,
+      0.286,
+      0.9,
+      0.94
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/elevenlabs-sfx-v3-sound-effects-f70ed081.jpg"
   }
 }
