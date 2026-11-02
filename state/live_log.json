@@ -48,6 +48,9 @@
     "apple-imac-m6-2026-10": {
       "liveAt": "2026-10-27T16:57:11+00:00"
     },
+    "apple-ui-navigation-rl-agent": {
+      "liveAt": "2026-11-02T14:55:30+00:00"
+    },
     "arm-october-2026-ai-innovations": {
       "liveAt": "2026-11-02T11:15:39+00:00"
     },
@@ -207,6 +210,9 @@
     "discord-public-server-google-search": {
       "liveAt": "2026-10-28T02:42:19+00:00"
     },
+    "docker-blueprint-alliance-agent-baseline": {
+      "liveAt": "2026-11-02T14:55:34+00:00"
+    },
     "docker-coding-agent-horror-stories-cve": {
       "liveAt": "2026-11-01T08:14:23+00:00"
     },
@@ -221,6 +227,9 @@
     },
     "ecb-policy-rate-hold-2026-10": {
       "liveAt": "2026-10-30T10:26:30+00:00"
+    },
+    "eurozone-gdp-2026-q3-slowdown": {
+      "liveAt": "2026-11-02T14:55:32+00:00"
     },
     "fage-suntory-skincare-2026-nov": {
       "liveAt": "2026-11-02T04:35:57+00:00"
@@ -381,6 +390,9 @@
     "katayama-mof-budget-2027-tax-estimate": {
       "liveAt": "2026-11-02T11:54:38+00:00"
     },
+    "katayama-mof-press-conference-oct2026": {
+      "liveAt": "2026-11-02T14:55:31+00:00"
+    },
     "kddi-ai-vulnerability-management-solution": {
       "liveAt": "2026-10-28T01:42:49+00:00"
     },
@@ -500,6 +512,9 @@
     },
     "nissay-it-ai-driven-development-aws": {
       "liveAt": "2026-11-02T09:17:51+00:00"
+    },
+    "nli-ai-agent-explained": {
+      "liveAt": "2026-11-02T14:55:33+00:00"
     },
     "nli-employment-stats-sep-2026": {
       "liveAt": "2026-10-30T03:19:14+00:00"
