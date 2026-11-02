@@ -252,6 +252,14 @@
       "category": "AIモデル"
     },
     {
+      "slug": "dgx-spark",
+      "name": "DGX Spark",
+      "aliases": [],
+      "company": "nvidia",
+      "companyName": "NVIDIA",
+      "category": "ガジェット"
+    },
+    {
       "slug": "figma",
       "name": "Figma",
       "aliases": [],
@@ -1076,7 +1084,7 @@
     "自律型AI",
     "音声AI"
   ],
-  "updatedAt": "2026-11-02T03:11:28+00:00",
+  "updatedAt": "2026-11-02T03:31:44+00:00",
   "failed": {
     "gpt-5-6-sol": {
       "at": "2026-10-27T11:05:30+00:00",

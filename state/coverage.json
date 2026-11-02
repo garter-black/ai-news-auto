@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "pikmin-4-switch-2-edition-demo",
+   "at": "2026-11-02T03:31:37.283655+00:00",
+   "title": "任天堂、『ピクミン4 Nintendo Switch 2 Edition』などの体験版を配信開始",
+   "head": "任天堂、『ピクミン4 Nintendo Switch 2 Edition』などの体験版を配信開始 | 『ピクミン4 Nintendo Switch 2 Edition + だれでもチャレンジ! ダンドリ検定』の体験版が配信開始。「Pikmin Day Direct」で公開した情報もご紹介。",
+   "text": "任天堂、『ピクミン4 Nintendo Switch 2 Edition』などの体験版を配信開始 | 『ピクミン4 Nintendo Switch 2 Edition + だれでもチャレンジ! ダンドリ検定』の体験版が配信開始。「Pikmin Day Direct」で公開した情報もご紹介。 | ピクミン4 / Nintendo Switch 2 / 体験版 / ダンドリ検定 / Pikmin Bloom / 任天堂 / ゲーム / 配信 / エンタメ",
+   "urls": [
+    "https://www.nintendo.com/jp/topics/article/8a0fad53-c589-4304-98b2-f86bd3d5764f"
+   ]
+  },
+  {
+   "slug": "nvidia-tensorrt-edge-llm-edge-ai",
+   "at": "2026-11-02T03:31:20.769184+00:00",
+   "title": "半導体大手のNVIDIA、AI開発を数コマンドで始められる「TensorRT Edge-LLM」公開",
+   "head": "半導体大手のNVIDIA、AI開発を数コマンドで始められる「TensorRT Edge-LLM」公開 | Run AI Models for Edge Application Development with Just a Few Commands",
+   "text": "半導体大手のNVIDIA、AI開発を数コマンドで始められる「TensorRT Edge-LLM」公開 | Run AI Models for Edge Application Development with Just a Few Commands | NVIDIA / TensorRT Edge-LLM / DGX Spark / エッジAI / Nemotron / 推論ランタイム / 大規模言語モデル / 開発ツール / 生成AI / LLM / エッジAI / 開発ツール / ハードウェア",
+   "urls": [
+    "https://developer.nvidia.com/blog/run-ai-models-for-edge-application-development-with-just-a-few-commands/"
+   ]
+  },
+  {
    "slug": "toyota-wec-monza-2026-preview",
    "at": "2026-11-02T03:11:22.106077+00:00",
    "title": "トヨタのWECチーム、モンツァ6時間レースで2026年最終戦へ 両チャンピオン獲得に挑む",
@@ -1259,26 +1279,6 @@
    "text": "GoogleのGKEにAI推論の加速機能、バッチ処理性能が最大4倍に向上 | ZenteiQ、llm-d を搭載した GKE Inference Gateway でバッチ推論のスループットを 4 倍に拡大 | GKE / Google Cloud / AI推論 / llm-d / 推論最適化 / Kubernetes / バッチ処理 / 科学基盤モデル / vLLM / 生成AI / LLM / クラウド / Google Cloud / Kubernetes",
    "urls": [
     "https://cloud.google.com/blog/ja/products/containers-kubernetes/zenteiq-scales-physical-ai-inference-4x-with-gke-and-llm-d/"
-   ]
-  },
-  {
-   "slug": "rakuten-mobile-ipad-sale-nov6",
-   "at": "2026-10-29T03:25:39.631093+00:00",
-   "title": "楽天モバイルがiPadの取り扱い開始 新型iPad miniなど4機種、11月6日8時に発売",
-   "head": "楽天モバイルがiPadの取り扱い開始 新型iPad miniなど4機種、11月6日8時に発売 | 楽天モバイル、iPadを取り扱い開始 11月6日8時発売",
-   "text": "楽天モバイルがiPadの取り扱い開始 新型iPad miniなど4機種、11月6日8時に発売 | 楽天モバイル、iPadを取り扱い開始 11月6日8時発売 | 楽天モバイル iPad / iPad mini A20 Pro / 楽天モバイル 発売日 / iPad Wi-Fi＋Cellular / Rakuten最強プラン / Rakuten最強U-NEXT / iPad Air M4 / iPad Pro M5 / iPad A16 / 楽天市場 iPad / 楽天モバイル / iPad / iPad mini / タブレット / Rakuten最強プラン",
-   "urls": [
-    "https://k-tai.watch.impress.co.jp/docs/news/2152180.html"
-   ]
-  },
-  {
-   "slug": "tokyo-sayama-tamako-event-2026",
-   "at": "2026-10-29T03:23:34.851626+00:00",
-   "title": "東京都、狭山丘陵と多摩湖で秋のイベント開催　モノレール延伸に向けた将来像を体験",
-   "head": "東京都、狭山丘陵と多摩湖で秋のイベント開催　モノレール延伸に向けた将来像を体験 | 水と緑、モノレールがつなぐ、未来の風景",
-   "text": "東京都、狭山丘陵と多摩湖で秋のイベント開催　モノレール延伸に向けた将来像を体験 | 水と緑、モノレールがつなぐ、未来の風景 | 東京都 / 狭山丘陵 / 多摩湖 / 多摩都市モノレール / 狭山公園 / 花と光のムーブメント / まちづくり / イベント / 社会・行政 / 暮らし・生活 / イベント / 東京都",
-   "urls": [
-    "https://www.waterworks.metro.tokyo.lg.jp/information/press/r8/10/2026102801"
    ]
   }
  ]

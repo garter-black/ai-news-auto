@@ -5893,6 +5893,14 @@
       "skipped": true,
       "url": "https://www.atpress.ne.jp/news/643878"
     },
+    "52dedc30355aed7e": {
+      "at": "2026-11-02T03:31:26.022587+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "nvidia-tensorrt-edge-llm-edge-ai",
+      "url": "https://developer.nvidia.com/blog/run-ai-models-for-edge-application-development-with-just-a-few-commands/"
+    },
     "52f1edc28ca2ef81": {
       "at": "2026-10-29T17:05:52.528666+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -8947,6 +8955,14 @@
       "skipped": true,
       "url": "https://blogs.windows.com/japan/2026/10/26/expanding-the-windows-on-arm-app-ecosystem/"
     },
+    "b2b708c5b7035885": {
+      "at": "2026-11-02T03:31:42.166205+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "entertainment",
+      "slug": "pikmin-4-switch-2-edition-demo",
+      "url": "https://www.nintendo.com/jp/topics/article/8a0fad53-c589-4304-98b2-f86bd3d5764f"
+    },
     "b32fc1ff91add27f": {
       "at": "2026-10-27T02:31:09.461076+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（懇談会）",
@@ -11516,120 +11532,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T03:42:36.522831+00:00",
-      "attempt": 0,
-      "id": "e5ec03234183a95a",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 173.8字・最長 306字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 173.8,
-        "avg_sentence": 39.1,
-        "long_share": 0.1,
-        "max_paragraph": 306,
-        "paragraphs": 9,
-        "sentences": 40
-      },
-      "score": 100,
-      "source": "xbox-wire-jp",
-      "title": "ウェイストランド体験を表参道で！「Fallout」× TOWER RECORDS CAFE コラボ先行体験をファンの声とともにお届け"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:01:40.291457+00:00",
-      "attempt": 1,
-      "id": "0fae713d99d57a61",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1722字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（361字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 134.0,
-        "avg_sentence": 53.6,
-        "long_share": 0.24,
-        "max_paragraph": 242,
-        "paragraphs": 10,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "ipa",
-      "title": "プロフェッショナルデジタルスキル（データ・AI）試験（仮称） 科目Bのシラバス案を公表しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:01:46.263932+00:00",
-      "attempt": 2,
-      "id": "0fae713d99d57a61",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1773字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（375字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 86.6,
-        "avg_sentence": 65.0,
-        "long_share": 0.542,
-        "max_paragraph": 125,
-        "paragraphs": 18,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "ipa",
-      "title": "プロフェッショナルデジタルスキル（データ・AI）試験（仮称） 科目Bのシラバス案を公表しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:01:52.217114+00:00",
-      "attempt": 1,
-      "id": "f906c63ac8a581e2",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1347字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（360字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 119.8,
-        "avg_sentence": 59.9,
-        "long_share": 0.65,
-        "max_paragraph": 272,
-        "paragraphs": 10,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "maff",
-      "title": "令和9年1月分からパックご飯、即席味噌汁、ラムネ等の炭酸飲料などの輸出額が把握できるようになります！"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:01:58.076661+00:00",
-      "attempt": 2,
-      "id": "f906c63ac8a581e2",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1621字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 148.1,
-        "avg_sentence": 57.0,
-        "long_share": 0.385,
-        "max_paragraph": 231,
-        "paragraphs": 10,
-        "sentences": 26
-      },
-      "score": null,
-      "source": "maff",
-      "title": "令和9年1月分からパックご飯、即席味噌汁、ラムネ等の炭酸飲料などの輸出額が把握できるようになります！"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T04:02:07.088797+00:00",
@@ -18225,6 +18127,115 @@
       "score": 100,
       "source": "toyota",
       "title": "WEC 2026年シーズン 第8戦 モンツァ6時間レース ： プレビュー マニファクチャラーチャンピオンとして最終戦に挑む"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T03:31:21.523514+00:00",
+      "attempt": 1,
+      "id": "52dedc30355aed7e",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 61.9字・60字超の文が 47% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 104.2,
+        "avg_sentence": 61.9,
+        "long_share": 0.469,
+        "max_paragraph": 196,
+        "paragraphs": 19,
+        "sentences": 32
+      },
+      "score": 100,
+      "source": "nvidia-developer-blog",
+      "title": "Run AI Models for Edge Application Development with Just a Few Commands"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T03:31:26.022142+00:00",
+      "attempt": 0,
+      "id": "52dedc30355aed7e",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 53.5字・60字超の文が 26% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 107.0,
+        "avg_sentence": 53.5,
+        "long_share": 0.263,
+        "max_paragraph": 196,
+        "paragraphs": 19,
+        "sentences": 38
+      },
+      "score": 100,
+      "source": "nvidia-developer-blog",
+      "title": "Run AI Models for Edge Application Development with Just a Few Commands"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T03:31:32.178726+00:00",
+      "attempt": 1,
+      "id": "b2b708c5b7035885",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "title / seo_title に感嘆符がある"
+      ],
+      "readability": {
+        "avg_paragraph": 149.8,
+        "avg_sentence": 47.3,
+        "long_share": 0.211,
+        "max_paragraph": 192,
+        "paragraphs": 6,
+        "sentences": 19
+      },
+      "score": null,
+      "source": "nintendo-topics",
+      "title": "『ピクミン4 Nintendo Switch 2 Edition + だれでもチャレンジ! ダンドリ検定』の体験版が配信開始。「Pikmin Day Direc"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T03:31:38.055563+00:00",
+      "attempt": 2,
+      "id": "b2b708c5b7035885",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 52.3字・60字超の文が 32% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 143.9字・最長 193字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 143.9,
+        "avg_sentence": 52.3,
+        "long_share": 0.318,
+        "max_paragraph": 193,
+        "paragraphs": 8,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "nintendo-topics",
+      "title": "『ピクミン4 Nintendo Switch 2 Edition + だれでもチャレンジ! ダンドリ検定』の体験版が配信開始。「Pikmin Day Direc"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T03:31:42.165688+00:00",
+      "attempt": 0,
+      "id": "b2b708c5b7035885",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 75.1,
+        "avg_sentence": 36.4,
+        "long_share": 0.03,
+        "max_paragraph": 120,
+        "paragraphs": 16,
+        "sentences": 33
+      },
+      "score": 100,
+      "source": "nintendo-topics",
+      "title": "『ピクミン4 Nintendo Switch 2 Edition + だれでもチャレンジ! ダンドリ検定』の体験版が配信開始。「Pikmin Day Direc"
     }
   ],
   "short_text_retry": {},
