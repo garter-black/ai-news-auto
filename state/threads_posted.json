@@ -2942,6 +2942,28 @@
       "comment": "編集部：家計や仕事のお金に関わる話なので、押さえておきたいところ。",
       "postedAt": "2026-11-02T07:25:12+00:00",
       "blueskyAt": "2026-11-02T07:25:14+00:00"
+    },
+    "openai-grid-protectors-program": {
+      "id": "6ae8a82004fa73faa22da052",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae8a82b31e164b233ebe0f5",
+        "facebook": "6ae8a82e31e164b233ebe237",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzdmcdu47y2d"
+      },
+      "dueAt": "2026-11-02T15:11:27+00:00",
+      "hook": "breaking",
+      "breaking": true,
+      "score": 3,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "ChatGPT",
+      "question": true,
+      "questionText": "AIの電気代が自分の電気料金に響くか、気になりますか？",
+      "postedAt": "2026-11-02T15:11:47+00:00",
+      "blueskyAt": "2026-11-02T15:11:49+00:00"
     }
   },
   "extraPending": {}
