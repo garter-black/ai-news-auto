@@ -150,6 +150,12 @@ export type Article = {
   updates?: ArticleUpdate[];
   /** 「これまでの流れ」で文脈に使った過去記事の slug */
   relatedSlugs?: string[];
+  /** 元記事のほかに確かめた資料（scripts/facts_bundle.py。記事末の「出典と更新履歴」に「料金：Anthropic公式の料金ページ（11/3確認）」の形で出す） */
+  factSources?: FactSource[];
+  /** 本文の料金の章に出す料金の段の表の製品（components/PriceTable.tsx。content/pricing/<product>.json） */
+  pricingProduct?: string;
+  /** 料金の章に添える同じ段の他社比較（"plan:top" / "api:flagship" など） */
+  pricingCompare?: string;
   /** 解説動画（サイト用の全部の版）。scripts/sns_video_followup.py が書く。components/ArticleVideo.tsx が押したときだけ読み込む */
   video?: ArticleVideoInfo | null;
   thumbnail: string;
@@ -225,6 +231,8 @@ export type ArticleSummary = Pick<
   | "speedMinutes"
 > &
   ArticleDerived;
+
+export type FactSource = { label: string; name: string; url?: string; checkedAt?: string };
 
 /** 記事ページ用の全データ（本文つき）。一覧用の値も持つので ArticleSummary として扱える */
 export type FullArticle = Article & ArticleDerived;

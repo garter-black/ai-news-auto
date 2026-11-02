@@ -49,8 +49,8 @@ jobs:
 
       - name: Verify guide routing without external requests
         run: |
-          node --test tests/test_howto_routing.cjs tests/test_guide_links.cjs tests/test_charts_calc.cjs
-          python3 -m unittest tests/test_article_charts.py
+          node --test tests/test_howto_routing.cjs tests/test_guide_links.cjs tests/test_charts_calc.cjs tests/test_price_slot.cjs
+          python3 -m unittest tests/test_article_charts.py tests/test_facts_bundle.py
 
       - name: Verify search eligibility and unchanged distribution
         run: |

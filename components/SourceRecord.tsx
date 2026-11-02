@@ -5,6 +5,12 @@ import { formatDateTime, type FullArticle } from "@/lib/articles";
  * 記事末の「出典と更新履歴」。どの公式発表をもとに、いつ載せ、いつ何を足したかを1か所で見せる。
  * 発表から何分かは推定を含むため出さず、時刻だけを並べる（docs/latency-evidence-20261031.md）。
  */
+/** 2026-11-03 → 11/3 */
+function shortDate(value: string): string {
+  const m = /^\d{4}-(\d{2})-(\d{2})/.exec(value);
+  return m ? `${Number(m[1])}/${Number(m[2])}` : value;
+}
+
 export default function SourceRecord({
   article,
   sourceUrl,
@@ -36,6 +42,34 @@ export default function SourceRecord({
                 {sourceName}
               </a>
               {article.videoTitle ? <span className="ml-1 text-muted">「{article.videoTitle}」</span> : null}
+            </dd>
+          </div>
+        )}
+        {(article.factSources ?? []).length > 0 && (
+          <div className={row}>
+            <dt className={key}>確かめた資料</dt>
+            <dd>
+              <ul className="grid gap-1.5">
+                {(article.factSources ?? []).map((s) => (
+                  <li key={`${s.label}-${s.name}`}>
+                    {s.label}：
+                    {s.url ? (
+                      s.url.startsWith("/") ? (
+                        <Link href={s.url} className={link}>
+                          {s.name}
+                        </Link>
+                      ) : (
+                        <a href={s.url} target="_blank" rel="noopener noreferrer" className={link}>
+                          {s.name}
+                        </a>
+                      )
+                    ) : (
+                      s.name
+                    )}
+                    {s.checkedAt && <span className="index-num text-muted">（{shortDate(s.checkedAt)}確認）</span>}
+                  </li>
+                ))}
+              </ul>
             </dd>
           </div>
         )}

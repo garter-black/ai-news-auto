@@ -73,6 +73,8 @@ import CalculatorBox from "@/components/calc/CalculatorBox";
 import { CALC_SLOT, insertFigures, markCalculatorSlot, renderChart, type ChartFigure } from "@/lib/charts";
 import { calculatorForArticle } from "@/lib/calculators";
 import { getFx, getPlanProduct, getPlanProducts } from "@/lib/plan-prices";
+import PriceTable from "@/components/PriceTable";
+import { hasPriceBlock, markPriceSlot, pricingForArticle, PRICE_SLOT, withPriceSlot } from "@/lib/price-slot";
 import { authorJsonLd, publisherJsonLd } from "@/lib/publisher";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -193,16 +195,33 @@ export default async function ArticlePage({ params }: Props) {
   const easy = article.easy?.trim() ?? "";
   const easyMinutes = Math.max(1, Math.round(easy.length / 500));
   const easyHtml = easy ? await renderMarkdown(easy, affiliates.map((a) => a.url)) : "";
-  const html = await renderMarkdown(
-    insertAfterPricingSection(article.body, pricingLink),
-    affiliates.map((a) => a.url),
-  );
-  // 記事の数字の図（記事 JSON の charts 欄。lib/charts.ts）を該当する章の下に差し込み、
-  // 記事に合う計算機（lib/calculators.ts）の置き場所の印を、合う章の終わりに入れる
+  // 料金の章に差し込んだ表は、毎日更新の料金表（と同じ段の他社比較）に差し替える（lib/price-slot.ts）。
+  // 同じ製品の料金の段の図（charts の ladder）を出す記事では、表は図のすぐ下に「詳しい表」として出し、同じ数字を2か所に並べない
+  const pricing = pricingForArticle(article);
   const fx = getFx();
-  const figures = (article.charts ?? [])
+  const chartFigures = (article.charts ?? [])
     .map((chart) => renderChart(chart, getPlanProduct, fx))
     .filter((figure): figure is ChartFigure => figure !== null);
+  const ladderChart = Boolean(
+    pricing && hasPriceBlock(article.body) && (article.charts ?? []).some((c) => c.kind === "ladder" && c.product === pricing.product) &&
+      chartFigures.some((f) => f.kind === "ladder"),
+  );
+  const figures = ladderChart ? chartFigures.map((f) => (f.kind === "ladder" ? { ...f, html: f.html + PRICE_SLOT } : f)) : chartFigures;
+  const html = markPriceSlot(
+    await renderMarkdown(
+      insertAfterPricingSection(pricing ? withPriceSlot(article.body, !ladderChart) : article.body, pricingLink),
+      affiliates.map((a) => a.url),
+    ),
+  );
+  const priceBox =
+    pricing && (ladderChart || html.includes(PRICE_SLOT)) ? (
+      <div className="my-8 grid max-w-[46em] gap-6">
+        <PriceTable product={pricing.product} title={ladderChart ? "プランごとの詳しい料金と上限" : undefined} />
+        {pricing.compare && <PriceTable compare={pricing.compare.tier} kind={pricing.compare.kind} title={pricing.compare.kind === "api" ? "同じクラスの他社モデル" : "同じ価格帯の他社プラン"} />}
+      </div>
+    ) : undefined;
+  // 記事の数字の図（記事 JSON の charts 欄。lib/charts.ts）を該当する章の下に差し込み、
+  // 記事に合う計算機（lib/calculators.ts）の置き場所の印を、合う章の終わりに入れる
   const calc = calculatorForArticle(article, getPlanProducts().map((p) => p.product));
   const bodyHtml = markCalculatorSlot(insertFigures(html, figures), calc?.heading ?? null);
   const calcInline = Boolean(calc && bodyHtml.includes(CALC_SLOT));
@@ -658,14 +677,14 @@ export default async function ArticlePage({ params }: Props) {
           )}
 
           {/* 本文（前半） */}
-          <ArticleProse className="prose mt-10 max-w-[40em]" html={bodyTop} slot={calcInline ? calcBox : undefined} />
+          <ArticleProse className="prose mt-10 max-w-[40em]" html={bodyTop} slot={calcInline ? calcBox : undefined} priceSlot={priceBox} />
           {bodyMid && inlineRead && <InlineRead item={{ article: inlineRead, reason: "同じ話題の記事" }} />}
 
           {/* ② 記事中盤の広告枠 */}
           {bodyMid && <AdSlot position="article-middle" className="my-10" />}
 
           {bodyMid && (
-            <ArticleProse className="prose max-w-[40em]" html={bodyMid} slot={calcInline ? calcBox : undefined} />
+            <ArticleProse className="prose max-w-[40em]" html={bodyMid} slot={calcInline ? calcBox : undefined} priceSlot={priceBox} />
           )}
 
           {/* 本文に馴染ませる収益導線。関連ツールは本文の途中（読者がまだ読んでいる位置）に置く。
@@ -685,7 +704,7 @@ export default async function ArticlePage({ params }: Props) {
           {bodyTail && inlineCta && <CtaBanner genreSlug={article.genreSlug} slot="inline" className="my-10" />}
 
           {bodyTail && (
-            <ArticleProse className="prose max-w-[40em]" html={bodyTail} slot={calcInline ? calcBox : undefined} />
+            <ArticleProse className="prose max-w-[40em]" html={bodyTail} slot={calcInline ? calcBox : undefined} priceSlot={priceBox} />
           )}
           </div>
           </div>
