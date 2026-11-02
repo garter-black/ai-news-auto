@@ -1,41 +1,6 @@
 {
-  "updated": "2026-11-02T08:40:18.870246+09:00",
+  "updated": "2026-11-02T09:02:48.745453+09:00",
   "items": [
-    {
-      "id": "baed61a4dbe0301752e0f27f675ecbde0ae5cb53",
-      "kind": "trend",
-      "url": "https://finance.yahoo.co.jp/news/detail/f46868eeea7ab53f91d53ade53064c20f3268ff3",
-      "title": "金融資産",
-      "summary": "Googleトレンド急上昇（約500件の検索）。関連報道: 72歳まで繰り下げ予定「旦那と私の年金では到底足りない。離婚も視野に」65歳女性の本音(あるじゃん（All About マネー）) / 金融資産7800万円「月の半分はシルバー人材センターで働き8万円」66歳男性の年金生活 / 老齢年金月21万7000円「45年前の高速有鉛並みの価格になってしまった」67歳男性の老後コスト",
-      "published_at": "2026-11-02T07:50:00+09:00",
-      "source_name": "Googleトレンド",
-      "source_slug": "trends",
-      "lang": "ja",
-      "image": null,
-      "genre": "investment",
-      "sources": [
-        {
-          "title": "72歳まで繰り下げ予定「旦那と私の年金では到底足りない。離婚も視野に」65歳女性の本音(あるじゃん（All About マネー）)",
-          "url": "https://finance.yahoo.co.jp/news/detail/f46868eeea7ab53f91d53ade53064c20f3268ff3",
-          "source": "Yahoo!ファイナンス",
-          "published": "2026-11-02T07:50:00+09:00"
-        },
-        {
-          "title": "金融資産7800万円「月の半分はシルバー人材センターで働き8万円」66歳男性の年金生活",
-          "url": "https://allabout.co.jp/gm/gc/522575/",
-          "source": "All About（オールアバウト）",
-          "published": "2026-11-02T07:50:00+09:00"
-        },
-        {
-          "title": "老齢年金月21万7000円「45年前の高速有鉛並みの価格になってしまった」67歳男性の老後コスト",
-          "url": "https://topics.smt.docomo.ne.jp/article/allabout/life/allabout-166164?page=3",
-          "source": "ｄメニューニュース",
-          "published": "2026-11-02T07:50:00+09:00"
-        }
-      ],
-      "traffic": 500,
-      "queued_at": "2026-11-02T08:40:18.530325+09:00"
-    },
     {
       "id": "2b6e779ca763ccab689b4a5956d7ee40b8a853d2",
       "kind": "trend",

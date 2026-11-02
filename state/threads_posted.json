@@ -2668,7 +2668,26 @@
         }
       },
       "id": "6ae7b026779ee9f13cb8268b",
-      "blueskyAt": "2026-11-01T22:42:51+00:00"
+      "blueskyAt": "2026-11-01T22:42:51+00:00",
+      "metrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "views": 0,
+        "quotes": 0,
+        "reposts": 0
+      },
+      "metricsUpdatedAt": "2026-11-01T22:30:16.921Z",
+      "sentAt": "2026-11-01T22:30:24.559Z",
+      "externalLink": "https://www.threads.com/@saisoku637/post/DfNzvdfFYzl",
+      "xMetrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "reposts": 0,
+        "impressions": 0,
+        "clicks": 0
+      }
     },
     "nvidia-uk-ai-factories-robotics": {
       "id": "6ae7b8e5902c3fb1debdede9",
@@ -2710,7 +2729,26 @@
       "question": false,
       "comment": "編集部：今後の広がりに注目です。",
       "postedAt": "2026-11-01T22:42:49+00:00",
-      "blueskyAt": "2026-11-01T22:42:52+00:00"
+      "blueskyAt": "2026-11-01T22:42:52+00:00",
+      "metrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "views": 0,
+        "quotes": 0,
+        "reposts": 0
+      },
+      "metricsUpdatedAt": "2026-11-01T22:42:36.725Z",
+      "sentAt": "2026-11-01T22:42:55.779Z",
+      "externalLink": "https://www.threads.com/@saisoku637/post/DfN1JsUlfFm",
+      "xMetrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "reposts": 0,
+        "impressions": 0,
+        "clicks": 0
+      }
     },
     "windows11-context-menu-customize-kb5127936": {
       "id": "6ae7ce5d01fa08ffbe72ba77",
@@ -2732,7 +2770,46 @@
       "question": false,
       "comment": "編集部：提供開始の続報を待ちたいところ。",
       "postedAt": "2026-11-01T23:42:40+00:00",
-      "blueskyAt": "2026-11-01T23:42:42+00:00"
+      "blueskyAt": "2026-11-01T23:42:42+00:00",
+      "metrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "views": 0,
+        "quotes": 0,
+        "reposts": 0
+      },
+      "metricsUpdatedAt": "2026-11-01T23:42:30.995Z",
+      "sentAt": "2026-11-01T23:42:38.858Z",
+      "externalLink": "https://www.threads.com/@saisoku637/post/DfN8AZIlbby",
+      "xMetrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "reposts": 0,
+        "impressions": 0,
+        "clicks": 0
+      }
+    },
+    "shopify-cto-codex-ai-prototyping": {
+      "id": "6ae7d4332da2578c188d1490",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae7d433902c3fb1dec55fa1",
+        "facebook": "6ae7d43301fa08ffbe74ab0c"
+      },
+      "hook": "callout",
+      "score": 5,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "ChatGPT",
+      "question": true,
+      "questionText": "開発で使ってみたいですか？",
+      "comment": "編集部：開発の手間が少し減りそうです。",
+      "dueAt": "2026-11-02T06:30:00+00:00",
+      "postedAt": "2026-11-02T00:07:16+00:00"
     }
   },
   "extraPending": {}
