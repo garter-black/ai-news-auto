@@ -100,6 +100,10 @@ export type Article = {
   verdict?: Verdict | null;
   /** 「仕事・お金にどう活かせる？」欄（2026-11-02 以降の記事だけ。lib/work-money.ts） */
   workMoney?: WorkMoney | null;
+  /** よくある質問（3〜5問。2026-11-03 以降の記事・合うジャンルだけ。答えは元記事の事実だけ） */
+  faq?: { q: string; a: string }[];
+  /** 今日やること（2〜3個） */
+  todayActions?: string[];
   affiliates: AffiliateLink[];
   body: string;
   /** 「かんたんに読む」版（専門用語なしの短い解説）。無い記事は切り替えを出さない */

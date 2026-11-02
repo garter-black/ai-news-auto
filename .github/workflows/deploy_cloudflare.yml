@@ -48,7 +48,7 @@ jobs:
           python3 -m unittest tests/test_a8_pr_copy.py tests/test_muse_japan_correction.py
 
       - name: Verify guide routing without external requests
-        run: node --test tests/test_howto_routing.cjs
+        run: node --test tests/test_howto_routing.cjs tests/test_guide_links.cjs
 
       - name: Verify search eligibility and unchanged distribution
         run: |
