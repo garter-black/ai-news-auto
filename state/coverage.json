@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "eurozone-unemployment-rate-sep-2026",
+   "at": "2026-11-02T16:11:54.797233+00:00",
+   "title": "ニッセイ基礎研究所がユーロ圏失業率（2026年9月）を発表、失業率は6.5％で横ばいも若年層は上昇",
+   "head": "ニッセイ基礎研究所がユーロ圏失業率（2026年9月）を発表、失業率は6.5％で横ばいも若年層は上昇 | ユーロ圏失業率（2026年9月）－失業率は横ばい、若年失業率は上昇",
+   "text": "ニッセイ基礎研究所がユーロ圏失業率（2026年9月）を発表、失業率は6.5％で横ばいも若年層は上昇 | ユーロ圏失業率（2026年9月）－失業率は横ばい、若年失業率は上昇 | ユーロ圏 / 失業率 / ニッセイ基礎研究所 / 欧州経済 / 若年失業率 / 雇用統計 / EU / 経済指標 / ビジネス / 統計 / 経済",
+   "urls": [
+    "https://www.nli-research.co.jp/topics_detail1/id=87233?site=nli"
+   ]
+  },
+  {
+   "slug": "nvidia-workload-map-ai-frameworks",
+   "at": "2026-11-02T16:11:22.866709+00:00",
+   "title": "AI半導体のNVIDIAが公開、複雑なAIフレームワークを効率管理する『Workload Map』とは",
+   "head": "AI半導体のNVIDIAが公開、複雑なAIフレームワークを効率管理する『Workload Map』とは | Support New AI Frameworks Faster Using NVIDIA Workload Map",
+   "text": "AI半導体のNVIDIAが公開、複雑なAIフレームワークを効率管理する『Workload Map』とは | Support New AI Frameworks Faster Using NVIDIA Workload Map | NVIDIA / Workload Map / Kubernetes / AIフレームワーク / JobSet / DSX AI Factory / Run:ai / 分散処理 / 生成AI / 開発ツール / Kubernetes / NVIDIA",
+   "urls": [
+    "https://developer.nvidia.com/blog/support-new-ai-frameworks-faster-using-nvidia-workload-map/"
+   ]
+  },
+  {
    "slug": "nli-electronic-waste-recycling-challenges",
    "at": "2026-11-02T16:02:26.614169+00:00",
    "title": "ニッセイ基礎研究所が電子ごみの現状を解説、小型家電の回収率向上と長期使用が課題に",

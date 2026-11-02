@@ -4677,6 +4677,12 @@
       "skipped": true,
       "url": "https://www.kirinholdings.com/jp/newsroom/release/2026/1028_01.html"
     },
+    "2a0472d76d4bf2e4": {
+      "at": "2026-11-02T16:11:31.709355+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（を開催）",
+      "skipped": true,
+      "url": "http://www.mlit.go.jp/report/press/kouku19_hh_000117.html"
+    },
     "2a181a0a4fb64895": {
       "at": "2026-11-02T11:51:18.751815+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -6884,6 +6890,14 @@
       "reason": "prefilter: 価値の薄いお知らせ（ビデオメッセージ）",
       "skipped": true,
       "url": "https://www.gov-online.go.jp/press_conferences/prime_minister/202611/video-326948.html"
+    },
+    "695b25dcb4295c45": {
+      "at": "2026-11-02T16:12:02.744082+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "eurozone-unemployment-rate-sep-2026",
+      "url": "https://www.nli-research.co.jp/topics_detail1/id=87233?site=nli"
     },
     "69b343e8a29aa74d": {
       "at": "2026-10-27T00:51:23.899281+00:00",
@@ -12083,6 +12097,14 @@
       "skipped": true,
       "url": "https://sakana.ai/us-midterms-analysis/"
     },
+    "fcfd6740eb17fc15": {
+      "at": "2026-11-02T16:11:31.709159+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "nvidia-workload-map-ai-frameworks",
+      "url": "https://developer.nvidia.com/blog/support-new-ai-frameworks-faster-using-nvidia-workload-map/"
+    },
     "fd0f0a9c372a93bc": {
       "at": "2026-10-30T10:32:10.074027+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（部会）",
@@ -12218,108 +12240,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T09:31:34.740458+00:00",
-      "attempt": 1,
-      "id": "74684824c71b8449",
-      "kind": "update",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "score": 100,
-      "source": "ntt-news",
-      "title": "IOWN APNを用いたストレージ間の超高速大容量データ転送の実証実験を実施"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T09:31:50.580848+00:00",
-      "attempt": 1,
-      "id": "d73f8b83aa40db8a",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 55.2字・60字超の文が 39% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 130.2字・最長 265字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 130.2,
-        "avg_sentence": 55.2,
-        "long_share": 0.394,
-        "max_paragraph": 265,
-        "paragraphs": 14,
-        "sentences": 33
-      },
-      "score": 100,
-      "source": "digital-agency",
-      "title": "マイナンバーカードの普及と利活用に関するダッシュボードを更新しました"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T09:31:55.097328+00:00",
-      "attempt": 0,
-      "id": "d73f8b83aa40db8a",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 143.2字・最長 276字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 143.2,
-        "avg_sentence": 28.6,
-        "long_share": 0.0,
-        "max_paragraph": 276,
-        "paragraphs": 14,
-        "sentences": 70
-      },
-      "score": 100,
-      "source": "digital-agency",
-      "title": "マイナンバーカードの普及と利活用に関するダッシュボードを更新しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T09:52:23.850377+00:00",
-      "attempt": 1,
-      "id": "fa3f46d9d12180d7",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1596字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 130.0,
-        "avg_sentence": 52.0,
-        "long_share": 0.28,
-        "max_paragraph": 190,
-        "paragraphs": 10,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "nli-research",
-      "title": "ＥＣＢ政策理事会－利上げを示唆しつつも今回は利上げ見送り"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T09:53:57.821328+00:00",
-      "attempt": 1,
-      "id": "fa3f46d9d12180d7",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 46.7字・60字超の文が 21% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 158.8字・最長 228字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 158.8,
-        "avg_sentence": 46.7,
-        "long_share": 0.206,
-        "max_paragraph": 228,
-        "paragraphs": 10,
-        "sentences": 34
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "ＥＣＢ政策理事会－利上げを示唆しつつも今回は利上げ見送り"
-    },
     {
       "accepted": true,
       "at": "2026-10-30T09:55:09.521776+00:00",
@@ -18761,6 +18681,114 @@
       "score": 100,
       "source": "nli-research",
       "title": "増え続ける電子ごみと資源循環の行方－電子ごみの発生抑制と資源循環の課題"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T16:11:27.938443+00:00",
+      "attempt": 1,
+      "id": "fcfd6740eb17fc15",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 55.9字・60字超の文が 48% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 85.7,
+        "avg_sentence": 55.9,
+        "long_share": 0.478,
+        "max_paragraph": 157,
+        "paragraphs": 15,
+        "sentences": 23
+      },
+      "score": 100,
+      "source": "nvidia-developer-blog",
+      "title": "Support New AI Frameworks Faster Using NVIDIA Workload Map"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T16:11:31.708003+00:00",
+      "attempt": 0,
+      "id": "fcfd6740eb17fc15",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 90.5,
+        "avg_sentence": 34.8,
+        "long_share": 0.026,
+        "max_paragraph": 164,
+        "paragraphs": 15,
+        "sentences": 39
+      },
+      "score": 100,
+      "source": "nvidia-developer-blog",
+      "title": "Support New AI Frameworks Faster Using NVIDIA Workload Map"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T16:11:40.681168+00:00",
+      "attempt": 1,
+      "id": "695b25dcb4295c45",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "easy_markdown が「## ひとことで言うと」から始まっていない"
+      ],
+      "readability": {
+        "avg_paragraph": 113.5,
+        "avg_sentence": 50.4,
+        "long_share": 0.222,
+        "max_paragraph": 155,
+        "paragraphs": 12,
+        "sentences": 27
+      },
+      "score": null,
+      "source": "nli-research",
+      "title": "ユーロ圏失業率（2026年9月）－失業率は横ばい、若年失業率は上昇"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T16:11:58.664599+00:00",
+      "attempt": 2,
+      "id": "695b25dcb4295c45",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 56.3字・60字超の文が 23% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 103.2,
+        "avg_sentence": 56.3,
+        "long_share": 0.227,
+        "max_paragraph": 169,
+        "paragraphs": 12,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "nli-research",
+      "title": "ユーロ圏失業率（2026年9月）－失業率は横ばい、若年失業率は上昇"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T16:12:02.743011+00:00",
+      "attempt": 0,
+      "id": "695b25dcb4295c45",
+      "kind": "broad",
+      "model": "",
+      "problems": [
+        "読みやすさ基準外のまま受理: 書き直し後の確認に不合格: デジタル版の表「前」列の値「若年失業者数 240.0万人（8月推計等）」 → 元記事に8月の若年失業者数の数値（240.0万人）の記載はないため（8月の若年失業率は15.1％とあるが人数は本文中未記載）。"
+      ],
+      "readability": {
+        "avg_paragraph": 103.2,
+        "avg_sentence": 56.3,
+        "long_share": 0.227,
+        "max_paragraph": 169,
+        "paragraphs": 12,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "nli-research",
+      "title": "ユーロ圏失業率（2026年9月）－失業率は横ばい、若年失業率は上昇"
     }
   ],
   "short_text_retry": {},
