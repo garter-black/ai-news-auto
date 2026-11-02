@@ -185,6 +185,7 @@
 - 記事の写真の速さと著作権（2026/11/2）: 元記事の写真は**公式の発表（会社・団体の自社サイト、PR TIMES などのプレスリリース配信）だけ**使い、幅1200pxまで縮小してWebP（400/640/800/1200）と一緒に自前のKV（saisoku-images）から配信する。写真の下に「画像：◯◯（公式発表より）」を出す。ニュースサイト・ブログ・SNSの写真は保存も直リンクもせず、フリー素材・AI生成にする。仕組みは `scripts/images.py` の冒頭（`--cache-official`・`--variants`）と `lib/thumb-url.ts`。YouTube のサムネイルは従来どおり YouTube から読む。
 - 重複記事の統合（duplicateOf・noindex・canonical）、古い発表の作り直し停止とニュース用サイトマップの48時間ルール、料金・リリースノートの見張り、他社との突き合わせ: `docs/parity-fixes-20261102.md`。重複の判定は `scripts/story.py` だけで行い、サイトは JSON の duplicateOf を読む。
 - 改名（サイソクニュース）と読者像（ペルソナ）、記事の「仕事・お金にどう活かせる？」欄、SNSの活用型・お金インパクト型、幅広い話題の優先順位・スポーツの範囲と1日上限: `docs/persona-20261102.md`。読者像の文面は `scripts/persona.py` だけで直す。
+- SNS 動画 v2（試作・未投稿・スケジュール無し）: `docs/sns-video-v2-20261102.md`。3デザイン（報道テロップ/大きな文字/公式ページ）、品質ゲート `scripts/video_gate.py`、失敗時は動画なしで今までどおり投稿する約束 `scripts/sns_video.py`（既定は無効）。投稿用の声は VOICEVOX のみ。
 
 <!-- BEGIN:nextjs-agent-rules -->
 

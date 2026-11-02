@@ -1,0 +1,37 @@
+{
+  "slug": "fixture-ai-plan",
+  "sourceType": "web",
+  "sourceUrl": "https://example.com/fixture-ai/news",
+  "sourceName": "Fixture AI公式",
+  "title": "対話AI「Fixture AI」に新プラン「Pro Max」 月額3000円で利用量は5倍",
+  "lede": "テスト用の架空の記事です。Fixture AIは新しい有料プラン「Pro Max」を発表しました。月額は3000円で、利用量は通常プランの5倍です。日本でもすぐに使えます。",
+  "description": "架空のFixture AIが新プランPro Maxを発表。月額3000円、利用量は5倍。",
+  "highlights": [
+    "新プラン「Pro Max」は月額3000円",
+    "利用量は通常プランの5倍",
+    "日本でも2026年11月から提供"
+  ],
+  "verdict": {
+    "status": "available",
+    "japan": "ok",
+    "price": "月3000円",
+    "free": false,
+    "audience": "仕事で毎日使う人",
+    "take": "毎日たくさん使う人だけ検討すれば十分です。"
+  },
+  "body": "## 概要\n\nFixture AIは新プラン「Pro Max」を発表しました。月額3000円で、利用量は通常プランの5倍です。日本でも2026年11月から提供されます。毎日たくさん使う人に向いています。",
+  "easy": "## ひとことで言うと\n\nFixture AIに、たくさん使える新プランができました。月3000円です。",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "tags": [
+    "Fixture AI",
+    "料金プラン"
+  ],
+  "thumbnail": "https://ai-tech-express.jp/img/fixture-ai-plan.jpg",
+  "imageCredit": {
+    "kind": "official",
+    "org": "Fixture AI",
+    "sourceUrl": "https://example.com/fixture-ai/news"
+  },
+  "publishedAt": "2026-11-02T00:00:00+00:00"
+}

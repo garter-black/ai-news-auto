@@ -1,0 +1,26 @@
+{
+  "slug": "fixture-money-survey",
+  "sourceType": "web",
+  "sourceUrl": "https://news.example.com/money/1",
+  "sourceName": "テストニュース",
+  "title": "40代会社員の副業収入を調査 月5万円以上は2割",
+  "lede": "テスト用の架空の記事です。ある調査で、副業をしている40代会社員のうち月5万円以上を稼ぐ人は2割でした。平均は月3万2000円です。",
+  "description": "架空の調査。副業収入が月5万円以上の40代会社員は2割、平均は月3万2000円。",
+  "highlights": [
+    "月5万円以上の人は2割",
+    "平均の副業収入は月3万2000円",
+    "調査は会社員1000人が対象"
+  ],
+  "body": "## 概要\n\n調査は会社員1000人が対象です。副業をしている40代のうち、月5万円以上を稼ぐ人は2割でした。平均は月3万2000円でした。",
+  "genre": "投資・マネー",
+  "genreSlug": "investment",
+  "tags": [
+    "副業",
+    "会社員"
+  ],
+  "thumbnail": "https://ai-tech-express.jp/img/fixture-money-survey.jpg",
+  "imageCredit": {
+    "kind": "ai"
+  },
+  "publishedAt": "2026-11-02T00:00:00+00:00"
+}
