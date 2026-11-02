@@ -18,9 +18,10 @@ import bluesky_post as bp  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 BANNER = ROOT / "public" / "brand" / "bluesky-banner.png"
 DISPLAY_NAME = "サイソクニュース"
-DESCRIPTION = """⚡公式発表から最短6分で、AIニュースを日本語に
-ChatGPT・Gemini・Claudeの新機能を「日本で使える？無料？」まで3行で
-フォローすると、速報がいち早く届きます
+DESCRIPTION = """気づけば、周りはもう動いてる
+そうならないための最速ニュース⚡
+忙しくても、サイソクで「旬」がわかる
+何ができるか、どう使うか、何に役立つかが一瞬で
 ai-tech-express.jp"""
 
 
