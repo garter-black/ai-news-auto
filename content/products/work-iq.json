@@ -1,0 +1,147 @@
+{
+  "slug": "work-iq",
+  "name": "Work IQ",
+  "aliases": [],
+  "company": "microsoft",
+  "companyName": "Microsoft",
+  "category": "アプリ・サービス",
+  "overview": {
+    "text": "Work IQは、Microsoft 365のメールや会議、文書の文脈をAIエージェントに渡す基盤コンポーネントです。米Microsoftが発表しました。",
+    "sources": [
+      "microsoft-copilot-to-agent-ecosystem-guide",
+      "microsoft-work-iq-agent-context-m365"
+    ]
+  },
+  "facts": [
+    {
+      "label": "提供開始",
+      "value": "CLIは2026年6月16日",
+      "sources": [
+        "microsoft-work-iq-agent-context-m365"
+      ]
+    },
+    {
+      "label": "向いている人",
+      "value": "開発者およびビジネスユーザー",
+      "sources": [
+        "microsoft-copilot-to-agent-ecosystem-guide"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "text": "Microsoft 365のメールや会議、文書などのデータへ安全にアクセスできます。",
+      "sources": [
+        "microsoft-work-iq-agent-context-m365"
+      ]
+    },
+    {
+      "text": "バックグラウンドで直近の文脈を補完します。",
+      "sources": [
+        "microsoft-work-iq-agent-context-m365"
+      ]
+    },
+    {
+      "text": "REST APIやA2A、MCPを通じて外部エージェントと連携できます。",
+      "sources": [
+        "microsoft-work-iq-agent-context-m365"
+      ]
+    },
+    {
+      "text": "Teamsやメールのデータを扱う基盤として連携します。",
+      "sources": [
+        "microsoft-fabric-onelake-ai-stack"
+      ]
+    }
+  ],
+  "pricing": [
+    {
+      "text": "CLIやMCPの利用には、Copilot Studioの従量課金プランの設定が必要です。",
+      "sources": [
+        "microsoft-work-iq-agent-context-m365"
+      ]
+    }
+  ],
+  "japan": [
+    {
+      "text": "発表の時点では、日本での提供について案内はありません。",
+      "sources": [
+        "copilot-cowork-build-lessons-rust",
+        "microsoft-copilot-to-agent-ecosystem-guide",
+        "microsoft-work-iq-agent-context-m365"
+      ]
+    }
+  ],
+  "howto": [
+    {
+      "text": "組織管理者の同意と、Copilot Studioの従量課金プランの設定を行います。",
+      "sources": [
+        "microsoft-work-iq-agent-context-m365"
+      ]
+    },
+    {
+      "text": "コマンドで直接質問するCLIや、AIアシスタントへ接続するMCPとして利用できます。",
+      "sources": [
+        "microsoft-work-iq-agent-context-m365"
+      ]
+    }
+  ],
+  "differences": [],
+  "faq": [
+    {
+      "q": "Microsoft Graphとの違いは何ですか？",
+      "a": "Graphがデータアクセスを担う層であるのに対し、Work IQはエージェント向けに抽象化されたインテリジェンス層です。",
+      "sources": [
+        "microsoft-work-iq-agent-context-m365"
+      ]
+    },
+    {
+      "q": "どのような接続方法に対応していますか？",
+      "a": "REST API、A2Aプロトコル、MCPに対応しています。",
+      "sources": [
+        "microsoft-work-iq-agent-context-m365"
+      ]
+    },
+    {
+      "q": "いつから使えるようになりますか？",
+      "a": "CLIは2026年6月16日に一般提供されたと説明されています。",
+      "sources": [
+        "microsoft-work-iq-agent-context-m365"
+      ]
+    },
+    {
+      "q": "安全に利用するための機能はありますか？",
+      "a": "管理画面で個別ツールの有効化や無効化を切り替えるガバナンス機能があります。",
+      "sources": [
+        "microsoft-work-iq-agent-context-m365"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2026-10-01",
+      "slug": "microsoft-work-iq-agent-context-m365",
+      "event": "Work IQのCLIを一般提供"
+    }
+  ],
+  "related": [
+    "azure-sql",
+    "github-copilot",
+    "microsoft-foundry",
+    "typescript-7"
+  ],
+  "articles": [
+    "copilot-cowork-build-lessons-rust",
+    "microsoft-copilot-to-agent-ecosystem-guide",
+    "microsoft-work-iq-agent-context-m365",
+    "microsoft-fabric-onelake-ai-stack"
+  ],
+  "linkFrom": [
+    "microsoft-work-iq-agent-context-m365"
+  ],
+  "signature": "f304e38a4c76cbb0",
+  "primarySignature": "683c2cec9be0b96b",
+  "model": "gemini-3.5-flash-lite",
+  "createdAt": "2026-11-02T21:56:25+00:00",
+  "updatedAt": "2026-11-02T21:56:25+00:00"
+}

@@ -164,7 +164,8 @@
   "related": [
     "github-copilot",
     "microsoft-foundry",
-    "azure-sql"
+    "azure-sql",
+    "work-iq"
   ],
   "articles": [
     "typescript-7-and-microsoft-oss-evolution-matome",

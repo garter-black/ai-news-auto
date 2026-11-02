@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "mhlw-war-dead-memorial-nov2026",
+   "at": "2026-11-02T21:56:14.444353+00:00",
+   "title": "厚生労働省、戦没者慰霊事業 2026年11月実施分を発表　遺骨収集と慰霊巡拝のスケジュール",
+   "head": "厚生労働省、戦没者慰霊事業 2026年11月実施分を発表　遺骨収集と慰霊巡拝のスケジュール | 戦没者慰霊事業のお知らせ（令和８年11月実施分）",
+   "text": "厚生労働省、戦没者慰霊事業 2026年11月実施分を発表　遺骨収集と慰霊巡拝のスケジュール | 戦没者慰霊事業のお知らせ（令和８年11月実施分） | 戦没者慰霊事業 / 遺骨収集 / 硫黄島 / パプアニューギニア / ソロモン諸島 / 厚生労働省 / 戦没者遺族 / 慰霊巡拝 / 公的行事 / 戦没者遺骨 / public / history / government",
+   "urls": [
+    "https://www.mhlw.go.jp/stf/newpage_77136.html"
+   ]
+  },
+  {
+   "slug": "copilot-cowork-build-lessons-rust",
+   "at": "2026-11-02T21:54:56.716517+00:00",
+   "title": "MicrosoftのAI秘書「Copilot Cowork」、9人が1日1,211件の更新 AIに書かせる開発の6つの教訓",
+   "head": "MicrosoftのAI秘書「Copilot Cowork」、9人が1日1,211件の更新 AIに書かせる開発の6つの教訓 | Nine engineers, 1,211 code updates in a day: Lessons from building Copilot Cowork",
+   "text": "MicrosoftのAI秘書「Copilot Cowork」、9人が1日1,211件の更新 AIに書かせる開発の6つの教訓 | Nine engineers, 1,211 code updates in a day: Lessons from building Copilot Cowork | Copilot Cowork / Microsoft Copilot / AIエージェント / AIコーディング / 仕様書駆動 / Rust移行 / Work IQ / プルリクエスト / AIレビュー / Microsoft 365 Copilot / Microsoft / Copilot Cowork / 生成AI / AIエージェント / ソフトウェア開発",
+   "urls": [
+    "https://commandline.microsoft.com/how-we-built-copilot-cowork-python-to-rust-migration/"
+   ]
+  },
+  {
    "slug": "digital-agency-updates-card-record-list",
    "at": "2026-11-02T21:37:35.779439+00:00",
    "title": "カード代替電磁的記録利用サービス一覧更新　NTTドコモとソニー銀行が追加",

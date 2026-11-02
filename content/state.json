@@ -4117,6 +4117,14 @@
       "skipped": true,
       "url": "https://www.digital.go.jp/policies/genai/b736d2d7-b03b-43f0-9932-eba7da7f8142"
     },
+    "186d94b3d13f9a68": {
+      "at": "2026-11-02T21:56:15.577664+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "score": 100,
+      "section": "public",
+      "slug": "mhlw-war-dead-memorial-nov2026",
+      "url": "https://www.mhlw.go.jp/stf/newpage_77136.html"
+    },
     "188e9fbc4643b05c": {
       "at": "2026-10-26T16:11:49.835535+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11424,6 +11432,14 @@
       "slug": "tokyo-water-smart-meter-power-network",
       "url": "https://www.waterworks.metro.tokyo.lg.jp/information/press/r8/10/2026102901"
     },
+    "e0be2f0a8eaa6b94": {
+      "at": "2026-11-02T21:54:58.365382+00:00",
+      "model": "claude:sonnet",
+      "score": 100,
+      "section": "ai",
+      "slug": "copilot-cowork-build-lessons-rust",
+      "url": "https://commandline.microsoft.com/how-we-built-copilot-cowork-python-to-rust-migration/"
+    },
     "e0f931a5dccfafa2": {
       "at": "2026-10-31T06:01:11.937375+00:00",
       "reason": "prefilter: タイトルが短すぎる（一覧リンク等）",
@@ -12648,73 +12664,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T16:42:56.170394+00:00",
-      "attempt": 2,
-      "id": "f79033ac6daecade",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2330字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（300字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 123.9,
-        "avg_sentence": 53.1,
-        "long_share": 0.286,
-        "max_paragraph": 212,
-        "paragraphs": 15,
-        "sentences": 35
-      },
-      "score": null,
-      "source": "about-amazon",
-      "title": "Q3 Earnings: Andy Jassy on faster delivery, lowering cost to serve, groceries, p"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T16:43:05.919541+00:00",
-      "attempt": 1,
-      "id": "fdecd0afca3c9702",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1924字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 109.5,
-        "avg_sentence": 52.7,
-        "long_share": 0.407,
-        "max_paragraph": 204,
-        "paragraphs": 13,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "about-amazon",
-      "title": "Q3 Earnings: Andy Jassy on why AWS growth keeps accelerating"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T16:43:18.975278+00:00",
-      "attempt": 2,
-      "id": "fdecd0afca3c9702",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2395字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 115.1,
-        "avg_sentence": 62.0,
-        "long_share": 0.5,
-        "max_paragraph": 242,
-        "paragraphs": 14,
-        "sentences": 26
-      },
-      "score": null,
-      "source": "about-amazon",
-      "title": "Q3 Earnings: Andy Jassy on why AWS growth keeps accelerating"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T17:01:08.547386+00:00",
@@ -19109,6 +19058,68 @@
       "score": 100,
       "source": "digital-agency",
       "title": "カード代替電磁的記録を利用するサービスを開始した事業者及び事例一覧を更新しました"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T21:53:06.228106+00:00",
+      "attempt": 1,
+      "id": "e0be2f0a8eaa6b94",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "サイソクが自分で試したように読める書き方がある（「筆者」）。サイソクは試していない。元記事の書き手が試した結果なら「〇〇（媒体名）の記者が試したところ」と誰が試したかを書く"
+      ],
+      "readability": {
+        "avg_paragraph": 65.6,
+        "avg_sentence": 31.8,
+        "long_share": 0.01,
+        "max_paragraph": 127,
+        "paragraphs": 50,
+        "sentences": 103
+      },
+      "score": null,
+      "source": "microsoft-source",
+      "title": "Nine engineers, 1,211 code updates in a day: Lessons from building Copilot Cowor"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T21:54:58.354932+00:00",
+      "attempt": 2,
+      "id": "e0be2f0a8eaa6b94",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 77.6,
+        "avg_sentence": 31.4,
+        "long_share": 0.008,
+        "max_paragraph": 159,
+        "paragraphs": 53,
+        "sentences": 131
+      },
+      "score": 100,
+      "source": "microsoft-source",
+      "title": "Nine engineers, 1,211 code updates in a day: Lessons from building Copilot Cowor"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T21:56:15.573693+00:00",
+      "attempt": 1,
+      "id": "186d94b3d13f9a68",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 91.5,
+        "avg_sentence": 34.9,
+        "long_share": 0.048,
+        "max_paragraph": 192,
+        "paragraphs": 8,
+        "sentences": 21
+      },
+      "score": 100,
+      "source": "mhlw",
+      "title": "戦没者慰霊事業のお知らせ（令和８年11月実施分）"
     }
   ],
   "short_text_retry": {},
