@@ -1,0 +1,73 @@
+{
+  "slug": "openai-gpt-61-terra-amazon-bedrock",
+  "sourceType": "web",
+  "sourceUrl": "https://aws.amazon.com/jp/blogs/news/weekly-genai-20261026/",
+  "sourceName": "AWS ブログ（日本）",
+  "title": "OpenAIの新AIモデル「GPT-6.1 Terra」Amazon Bedrockで提供開始 料金は半分、パソコン操作も得意に",
+  "seoTitle": "GPT-6.1 Terraとは？料金や使い方と日本での提供状況",
+  "threadsPost": "OpenAIの新しいAIモデル「GPT-6.1 Terra」がAmazon Bedrockで一般提供となりました。料金は前モデルより50%以上安くなり、視覚推論やパソコン操作の能力が向上しています。日常的な業務効率化に活用できるモデルです。",
+  "threadsHook": "number",
+  "threadsStyle": 2,
+  "writingVoice": "qa",
+  "lede": "AWSブログの週刊生成AIレポートによると、OpenAIの新しいAIモデル「GPT-6.1 Terra」がAmazon Bedrockで一般提供を開始した。料金は前モデルから50%以上安くなり、視覚推論や正確なパソコン操作の能力が向上している。",
+  "description": "OpenAIの新AIモデル「GPT-6.1 Terra」がAmazon Bedrockで一般提供開始。料金は半額になり、視覚推論やコンピュータ操作が向上。価格や特徴を解説。",
+  "keywords": [
+    "GPT-6.1 Terra",
+    "Amazon Bedrock",
+    "OpenAI",
+    "生成AI",
+    "LLM",
+    "AWS",
+    "AIモデル",
+    "コスト削減"
+  ],
+  "tags": [
+    "生成AI",
+    "LLM",
+    "AWS",
+    "OpenAI"
+  ],
+  "highlights": [
+    "OpenAIの最新モデル「GPT-6.1 Terra」がAmazon Bedrockで一般提供を開始しました。",
+    "入出力トークンの価格は従来のGPT-6.1 SolやGPT-5.6 Terraより50%以上低くなっています。",
+    "視覚推論や正確なコンピュータ操作、自然な文章作成の能力が向上しています。"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "ok",
+    "price": "API従量課金（従来より50%以上安価）",
+    "free": false,
+    "audience": "開発者・企業管理者",
+    "take": "Amazon Bedrock経由でGPT-6.1 Terraの利用とコスト効率を確認する。",
+    "judgedAt": "2026-11-02T05:48:37.489788+00:00"
+  },
+  "body": "## 概要\nAWSブログが発表しました。OpenAIの新しいAIモデル「GPT-6.1 Terra」がAmazon Bedrockで一般提供を開始しています。Amazon BedrockはAWSのAI開発基盤です。日常的な業務に向いたモデルです。料金が大幅に安くなりました。パソコンの操作や画像の読み取り能力も向上しています。企業はコストを抑えながら、高度なAI機能を取り入れられるようになります。\n\n## 何が発表された？\nOpenAIが開発した新しいAIモデル「GPT-6.1 Terra」が発表されました。Amazon Bedrock上で一般提供（GA）となっています。日常的なワークロードを対象にしています。能力、速度、コスト効率のバランスが優れているのが特徴です。利用方法は以下の通りです。\n- Amazon BedrockのAPIから直接呼び出す\n- ChatGPT WorkやCodex経由で利用する\n\n## 料金は？\n今回のモデルで特筆すべき点はコストパフォーマンスの高さです。入出力トークン（AIが処理する文字やデータの単位）の価格は従来モデルと比べて50%以上低く設定されています。従来のモデルは「GPT-6.1 Sol」や「GPT-5.6 Terra」です。具体的な月額固定費などは示されていません。Amazon Bedrockを通じた従量課金制となります。\n\n## 前と何が違う？\n### 視覚推論とパソコン操作の向上\nGPT-5.6 Terraなどの従来モデルと比べました。詳細な視覚推論の能力が向上しています。正確なコンピュータ操作の能力も大きく向上しました。事実に基づいた自然な文章作成も得意としています。\n\n### 処理速度と性能のバランス\nOpenAI社内の評価（Agents' Last Exam）が行われました。GPT-5.6 Terraのスコアを15ポイント上回っています。上位の「GPT-6 Astra」と同等の成績を記録しました。また、タスクの完了スピードは速くなっています。GPT-6 AstraやGPT-6.1 Solと比べて3倍以上速いという結果が出ています。\n\n### 最大100万トークンのコンテキスト\nコンテキストウィンドウ（一度に読み込めるデータ量）があります。最大で100万入力トークンに対応しています。テキストだけでなく画像データの入力も処理できます。\n\n## 日本で使える？\n日本国内からも利用可能です。Amazon Bedrockが提供されているリージョンを通じて利用できます。特別な申し込みは不要です。Amazon BedrockのコンソールやAPI経由で今日の業務に組み込むことができます。日本語の文章作成能力も向上しました。国内のシステム開発やビジネスアプリへの応用が期待できます。\n\n## 自分にはどう関係する？\n### エンジニアなら\nアプリに組み込むAIのコストをこれまでの半分以下に抑えられます。より高度な視覚認識や処理速度を手に入れられます。複雑な自動化処理の実装に向いています。\n\n### 企画・マーケティングなら\n大量の画像や長文テキストを扱う業務があります。こうした業務においてAIの処理スピードが上がります。予算を圧迫せずに新しい機能をサービスに組み込めるようになります。\n\n### 経営者・管理者なら\n生成AIの利用にかかるランニングコストを大幅に削減できます。このため、AI活用の投資対効果（ROI）を高める大きな選択肢になります。\n\n## まとめ\nGPT-6.1 Terraは実用的なAIモデルです。コスト削減とパフォーマンス向上を同時に実現しています。まずはAmazon Bedrockの環境でコストと応答速度を検証しましょう。自社のシステムにどれだけメリットがあるか確かめてみましょう。",
+  "easy": "## ひとことで言うと\nOpenAIの新AIモデル「GPT-6.1 Terra」がAmazon Bedrockで使えるようになりました。料金がこれまでの半額になり、パソコンの操作や画像の読み取りがとても得意になったモデルです。\n\n## 何がすごいの？\n日常的な仕事をこなすための能力とスピード、そしてコストのバランスが良くなりました。前のモデルと比べて、画面を見て正しく操作する力や、複雑な図や写真を読み取る力が大きく上がっています。\n\n## 自分に関係ある？\n仕事でAIの仕組みやアプリを作っているエンジニアや企業にとって、AIを使うときのお金を半分に抑えられるのが大きなメリットです。処理のスピードも速いため、たくさんのデータを扱う業務で役に立ちます。\n\n## 使ってみるには\nAmazon BedrockのAPIなどを通じて、今日から利用を始めることができます。",
+  "channel": "AWS ブログ（日本）",
+  "channelId": "",
+  "channelSlug": "aws-japan-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "週刊生成AI with AWS – 2026/10/26 週",
+  "publishedAt": "2026-11-02T05:32:10+00:00",
+  "generatedAt": "2026-11-02T05:48:37.489833+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/openai-gpt-61-terra-amazon-bedrock-497f50a1.jpg",
+  "model": "gemini-3.5-flash-lite",
+  "affiliates": [],
+  "qualityScore": 100,
+  "sourcePublishedAt": "2026-11-02T05:32:10+00:00",
+  "detectedAt": "2026-11-02T05:48:05+00:00",
+  "speedMinutes": 20,
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close-up view of a server rack glowing with blue LEDs in a modern data center, showing cables and hardware under soft overhead lighting.",
+    "provider": "Cloudflare Workers AI",
+    "original": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/22/WeeklyGenAI.png",
+    "at": "2026-11-02T05:52:09+00:00"
+  }
+}

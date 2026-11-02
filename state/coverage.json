@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "boj-outlook-report-october",
+   "at": "2026-11-02T05:48:48.756378+00:00",
+   "title": "日本銀行が「経済・物価情勢の展望」を公表、今後の金融政策と物価の見通しは",
+   "head": "日本銀行が「経済・物価情勢の展望」を公表、今後の金融政策と物価の見通しは | 経済・物価情勢の展望（10月、全文）",
+   "text": "日本銀行が「経済・物価情勢の展望」を公表、今後の金融政策と物価の見通しは | 経済・物価情勢の展望（10月、全文） | 日本銀行 / 日銀 / 経済・物価情勢の展望 / 金融政策 / 物価 / 経済 / ビジネス / 日銀展望レポート / 金融 / 経済 / 統計 / ビジネス",
+   "urls": [
+    "http://www.boj.or.jp/mopo/outlook/gor2610b.pdf"
+   ]
+  },
+  {
+   "slug": "openai-gpt-61-terra-amazon-bedrock",
+   "at": "2026-11-02T05:48:37.489833+00:00",
+   "title": "OpenAIの新AIモデル「GPT-6.1 Terra」Amazon Bedrockで提供開始 料金は半分、パソコン操作も得意に",
+   "head": "OpenAIの新AIモデル「GPT-6.1 Terra」Amazon Bedrockで提供開始 料金は半分、パソコン操作も得意に | 週刊生成AI with AWS – 2026/10/26 週",
+   "text": "OpenAIの新AIモデル「GPT-6.1 Terra」Amazon Bedrockで提供開始 料金は半分、パソコン操作も得意に | 週刊生成AI with AWS – 2026/10/26 週 | GPT-6.1 Terra / Amazon Bedrock / OpenAI / 生成AI / LLM / AWS / AIモデル / コスト削減 / 生成AI / LLM / AWS / OpenAI",
+   "urls": [
+    "https://aws.amazon.com/jp/blogs/news/weekly-genai-20261026/"
+   ]
+  },
+  {
    "slug": "crimson-desert-enhanced-charting-the-unknown",
    "at": "2026-11-02T05:32:16.446598+00:00",
    "title": "『紅の砂漠 Enhanced』が新DLC「未知なる旅路」を配信開始 海の探索やハウジング機能も追加",
@@ -1319,16 +1339,6 @@
    "text": "KDDIのデータセンター、ロンドンで受電容量を倍増へ。AI時代のインフラ強化に470億円投資 | 世界No.1のコネクティビティを有するロンドン データセンターの受電容量を倍増 | KDDI / データセンター / ロンドン / AI / インフラ / Telehouse / GPU / ネットワーク / 通信 / ビジネス / AI / データセンター",
    "urls": [
     "https://newsroom.kddi.com/news/detail/kddi_nr-1222_4792.html"
-   ]
-  },
-  {
-   "slug": "cao-consumer-confidence-survey-oct-2026",
-   "at": "2026-10-29T05:34:56.199197+00:00",
-   "title": "内閣府の消費動向調査、2026年10月分が公表　これまでの推移とデータ活用のポイント",
-   "head": "内閣府の消費動向調査、2026年10月分が公表　これまでの推移とデータ活用のポイント | 消費動向調査（令和8年10月実施分）",
-   "text": "内閣府の消費動向調査、2026年10月分が公表　これまでの推移とデータ活用のポイント | 消費動向調査（令和8年10月実施分） | 消費動向調査 / 内閣府 / 景気 / 消費マインド / 統計 / 経済指標 / 世帯 / 耐久消費財 / ビジネス / 経済 / 統計",
-   "urls": [
-    "https://www.esri.cao.go.jp/jp/stat/shouhi/shouhi.html"
    ]
   }
  ]

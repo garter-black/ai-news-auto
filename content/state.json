@@ -4240,6 +4240,14 @@
       "skipped": true,
       "url": "https://blogs.windows.com/japan/2026/10/27/microsoft-copilot-blog-building-trust-aware-controls-for-ai-differentiated-handling-of-untrusted-conten-4562160/"
     },
+    "1ff21a1fea64f84e": {
+      "at": "2026-11-02T05:48:42.542932+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "openai-gpt-61-terra-amazon-bedrock",
+      "url": "https://aws.amazon.com/jp/blogs/news/weekly-genai-20261026/"
+    },
     "204064d4bd48e1b5": {
       "at": "2026-10-28T19:13:04.598761+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9778,6 +9786,14 @@
       "skipped": true,
       "url": "https://www.mext.go.jp/a_menu/shinkou/nankyoku/1285461.htm"
     },
+    "c733105af322c5af": {
+      "at": "2026-11-02T05:48:53.823018+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "boj-outlook-report-october",
+      "url": "http://www.boj.or.jp/mopo/outlook/gor2610b.pdf"
+    },
     "c7606af40dbb903f": {
       "at": "2026-10-30T17:01:41.818264+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11710,98 +11726,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:02:21.540589+00:00",
-      "attempt": 1,
-      "id": "25acc890c6003092",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1310字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（244字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 113.4,
-        "avg_sentence": 46.4,
-        "long_share": 0.091,
-        "max_paragraph": 176,
-        "paragraphs": 9,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "stat",
-      "title": "統計Today No.210 社会生活基本調査から分かること（PDF：795KB）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:02:29.799441+00:00",
-      "attempt": 2,
-      "id": "25acc890c6003092",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 53.4字・60字超の文が 53% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 121.1字・最長 270字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 121.1,
-        "avg_sentence": 53.4,
-        "long_share": 0.529,
-        "max_paragraph": 270,
-        "paragraphs": 15,
-        "sentences": 34
-      },
-      "score": 100,
-      "source": "stat",
-      "title": "統計Today No.210 社会生活基本調査から分かること（PDF：795KB）"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T05:02:33.806816+00:00",
-      "attempt": 0,
-      "id": "25acc890c6003092",
-      "kind": "broad",
-      "model": "",
-      "problems": [
-        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（53.4→53.4字）"
-      ],
-      "readability": {
-        "avg_paragraph": 121.1,
-        "avg_sentence": 53.4,
-        "long_share": 0.529,
-        "max_paragraph": 270,
-        "paragraphs": 15,
-        "sentences": 34
-      },
-      "score": 100,
-      "source": "stat",
-      "title": "統計Today No.210 社会生活基本調査から分かること（PDF：795KB）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:21:35.400257+00:00",
-      "attempt": 1,
-      "id": "0c5e0ff6475dedc5",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1603字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（299字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 144.2,
-        "avg_sentence": 48.1,
-        "long_share": 0.133,
-        "max_paragraph": 194,
-        "paragraphs": 10,
-        "sentences": 30
-      },
-      "score": null,
-      "source": "maff",
-      "title": "野菜の生育状況及び価格見通し（令和8年11月）について"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T05:21:42.790483+00:00",
@@ -18367,6 +18291,92 @@
       "score": 100,
       "source": "xbox-wire-jp",
       "title": "『紅の砂漠 Enhanced』の旅は「未知なる旅路」へと続く"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T05:48:38.741594+00:00",
+      "attempt": 1,
+      "id": "1ff21a1fea64f84e",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 53.1字・60字超の文が 35% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 111.1,
+        "avg_sentence": 53.1,
+        "long_share": 0.348,
+        "max_paragraph": 172,
+        "paragraphs": 11,
+        "sentences": 23
+      },
+      "score": 100,
+      "source": "aws-japan-blog",
+      "title": "週刊生成AI with AWS – 2026/10/26 週"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T05:48:42.542096+00:00",
+      "attempt": 0,
+      "id": "1ff21a1fea64f84e",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 120.5字・最長 190字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 120.5,
+        "avg_sentence": 28.2,
+        "long_share": 0.0,
+        "max_paragraph": 190,
+        "paragraphs": 11,
+        "sentences": 47
+      },
+      "score": 100,
+      "source": "aws-japan-blog",
+      "title": "週刊生成AI with AWS – 2026/10/26 週"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T05:48:49.868513+00:00",
+      "attempt": 1,
+      "id": "c733105af322c5af",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 48.6字・60字超の文が 14% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 113.3,
+        "avg_sentence": 48.6,
+        "long_share": 0.143,
+        "max_paragraph": 155,
+        "paragraphs": 9,
+        "sentences": 21
+      },
+      "score": 100,
+      "source": "boj",
+      "title": "経済・物価情勢の展望（10月、全文）"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T05:48:53.822351+00:00",
+      "attempt": 0,
+      "id": "c733105af322c5af",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 118.1,
+        "avg_sentence": 33.2,
+        "long_share": 0.031,
+        "max_paragraph": 171,
+        "paragraphs": 9,
+        "sentences": 32
+      },
+      "score": 100,
+      "source": "boj",
+      "title": "経済・物価情勢の展望（10月、全文）"
     }
   ],
   "short_text_retry": {},
