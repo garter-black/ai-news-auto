@@ -3377,6 +3377,12 @@
       "skipped": true,
       "url": "https://www.kantei.go.jp/jp/105/actions/202610/30hyoukei.html"
     },
+    "08a4eb29eadc85c2": {
+      "at": "2026-11-02T05:31:19.966557+00:00",
+      "reason": "stale: 発表から62時間（48時間を超えた発表は通常の記事にしない）",
+      "skipped": true,
+      "url": "https://newsroom.arm.com/blog/ai-developer-takeaways-models-deployment"
+    },
     "08ef10f23f8f0696": {
       "at": "2026-10-26T16:36:52.258900+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -3566,6 +3572,12 @@
       "reason": "prefilter: 価値の薄いお知らせ（出張）",
       "skipped": true,
       "url": "https://www.maff.go.jp/j/press/yusyutu_kokusai/chiiki/261030.html"
+    },
+    "0e70e1d6cb5f6a97": {
+      "at": "2026-11-02T05:31:19.966574+00:00",
+      "reason": "stale: 発表から64時間（48時間を超えた発表は通常の記事にしない）",
+      "skipped": true,
+      "url": "https://cloud.google.com/blog/topics/training-certifications/new-gemini-courses-for-financial-services-and-legal-teams/"
     },
     "0eeaf12b012d820c37d58d0e46c509208d7e2569": {
       "at": "2026-10-29T06:12:29.214614+00:00",
@@ -4023,6 +4035,14 @@
       "reason": "quality: 本文が短い（1739字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）; 独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる",
       "skipped": true,
       "url": "https://sakana.ai/vp-of-gtm-interview/"
+    },
+    "191056a627871c9b": {
+      "at": "2026-11-02T05:31:51.219862+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "aws-connect-ai-agents-guardrails",
+      "url": "https://aws.amazon.com/jp/blogs/news/implementing-responsible-ai-in-contact-centers-with-connect-ai-agents-guardrails/"
     },
     "194ab4b69c2cec81": {
       "at": "2026-10-28T18:00:07.036477+00:00",
@@ -4860,6 +4880,12 @@
       "skipped": true,
       "url": "http://www.boj.or.jp/finsys/intlact_fs/risk/ris261028a.htm"
     },
+    "332fdbaaf3ad70ab": {
+      "at": "2026-11-02T05:31:19.966401+00:00",
+      "reason": "stale: 発表から61時間（48時間を超えた発表は通常の記事にしない）",
+      "skipped": true,
+      "url": "https://newsroom.arm.com/blog/ai-wearables-smart-glasses-arm"
+    },
     "333c13aab03cae3f": {
       "at": "2026-10-31T06:01:11.937401+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（公募）",
@@ -5311,6 +5337,13 @@
       "reason": "followup quality: OpenAI公式ブログは2026年10月28日 -> 元記事には「2026年10月28日」という具体的な日付の記載はない",
       "skipped": true,
       "url": "https://openai.com/index/legora"
+    },
+    "421c7219cebee5fd": {
+      "at": "2026-11-02T05:32:00.709636+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "元記事のPDFデータがバイナリ形式の乱れや破損を含んでおり、植田日銀総裁の記者会見における具体的な発言内容や数値データを正確に読み取ることができないため。",
+      "skipped": true,
+      "url": "http://www.boj.or.jp/about/press/kaiken_2026/kk261102a.pdf"
     },
     "422388a2f04ffeff": {
       "at": "2026-10-27T03:05:10.758457+00:00",
@@ -6904,6 +6937,14 @@
       "slug": "abema-mahoyo-special-channel-2026",
       "url": "https://www.cyberagent.co.jp/news/detail/id=33955"
     },
+    "72be3fcc67999367": {
+      "at": "2026-11-02T05:32:07.173538+00:00",
+      "kind": "update",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "updated": "xreal-aura-android-xr-glasses",
+      "url": "https://www.au.com/information/topic/mobile/2026-012/"
+    },
     "72ce2995014524fc": {
       "at": "2026-10-27T01:53:28.335014+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -6988,6 +7029,14 @@
       "reason": "prefilter: 価値の薄いお知らせ（億米ドル）",
       "skipped": true,
       "url": "https://www.dreamnews.jp/press/0000366545"
+    },
+    "755c6b2b63fba038": {
+      "at": "2026-11-02T05:32:20.562825+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "entertainment",
+      "slug": "crimson-desert-enhanced-charting-the-unknown",
+      "url": "https://news.xbox.com/ja-jp/2026/11/02/crimson-desert-charting-the-unknown/"
     },
     "75d4fca3ee3bc3a5": {
       "at": "2026-10-26T12:38:18.205462+00:00",
@@ -7744,6 +7793,12 @@
       "reason": "prefilter: 価値の薄いお知らせ（職員）",
       "skipped": true,
       "url": "https://www.soumu.go.jp/menu_syokai/saiyou/detail/02gyosei01_04000556.html"
+    },
+    "8b5f34b85bf1bd76": {
+      "at": "2026-11-02T05:31:19.966498+00:00",
+      "reason": "stale: 発表から63時間（48時間を超えた発表は通常の記事にしない）",
+      "skipped": true,
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/artex-and-friends-enter-agentic-offensive-frameworks/"
     },
     "8b64523463792c7b6489af7ae24191231ab8853b": {
       "at": "2026-10-27T20:11:09.827393+00:00",
@@ -8560,6 +8615,12 @@
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026103010"
     },
+    "a283ca869f875377": {
+      "at": "2026-11-02T05:31:19.966464+00:00",
+      "reason": "stale: 発表から62時間（48時間を超えた発表は通常の記事にしない）",
+      "skipped": true,
+      "url": "https://developer.nvidia.com/blog/how-to-check-and-configure-nvidia-gpudirect-storage-for-your-platform/"
+    },
     "a2ff4102256b5786": {
       "at": "2026-10-27T17:51:57.399683+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（ライブ配信）",
@@ -9296,6 +9357,12 @@
       "reason": "prefilter: 価値の薄いお知らせ（入札）",
       "skipped": true,
       "url": "https://www.mhlw.go.jp/topics/2026/10/tp1028-1.html"
+    },
+    "bac9edc458a4db1a": {
+      "at": "2026-11-02T05:31:19.966527+00:00",
+      "reason": "stale: 発表から65時間（48時間を超えた発表は通常の記事にしない）",
+      "skipped": true,
+      "url": "https://elevenlabs.io/blog/warm-transfer-vs-cold-transfer"
     },
     "bad059043da3c64c": {
       "at": "2026-10-26T12:06:20.822459+00:00",
@@ -11643,126 +11710,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:01:45.994927+00:00",
-      "attempt": 2,
-      "id": "c51c36735c001787",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1767字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（366字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 137.5,
-        "avg_sentence": 59.8,
-        "long_share": 0.391,
-        "max_paragraph": 230,
-        "paragraphs": 10,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "stat",
-      "title": "令和6年全国家計構造調査 年間収入・資産分布等に関する結果（ジニ係数、貧困率等を除く）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:01:52.255736+00:00",
-      "attempt": 1,
-      "id": "f8ae2744baae7de9",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1113字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（336字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 97.7,
-        "avg_sentence": 54.3,
-        "long_share": 0.333,
-        "max_paragraph": 176,
-        "paragraphs": 10,
-        "sentences": 18
-      },
-      "score": null,
-      "source": "maff",
-      "title": "令和8年度我が国周辺水域の水産資源に関する評価結果が公表されました（ベニズワイガニ、ヒラメ、アカガレイ、ソウハチ、ムシガレイ、ニギス）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:01:58.633764+00:00",
-      "attempt": 2,
-      "id": "f8ae2744baae7de9",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1542字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（365字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 125.7,
-        "avg_sentence": 50.3,
-        "long_share": 0.12,
-        "max_paragraph": 163,
-        "paragraphs": 10,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "maff",
-      "title": "令和8年度我が国周辺水域の水産資源に関する評価結果が公表されました（ベニズワイガニ、ヒラメ、アカガレイ、ソウハチ、ムシガレイ、ニギス）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:02:07.056686+00:00",
-      "attempt": 1,
-      "id": "8637362590f96969",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1494字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（315字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 120.7,
-        "avg_sentence": 54.3,
-        "long_share": 0.4,
-        "max_paragraph": 194,
-        "paragraphs": 9,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "インフルエンザに関する報道発表資料を更新しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:02:14.666242+00:00",
-      "attempt": 2,
-      "id": "8637362590f96969",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1487字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（322字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 113.4,
-        "avg_sentence": 49.3,
-        "long_share": 0.13,
-        "max_paragraph": 165,
-        "paragraphs": 10,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "インフルエンザに関する報道発表資料を更新しました"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T05:02:21.540589+00:00",
@@ -18321,6 +18268,105 @@
       "score": 95,
       "source": "radar-official",
       "title": "ChatGPTの「Chat」と「Work」を統合、利用枠はCodexと共通に"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T05:31:36.073860+00:00",
+      "attempt": 1,
+      "id": "191056a627871c9b",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 56.3字・60字超の文が 43% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 98.5,
+        "avg_sentence": 56.3,
+        "long_share": 0.429,
+        "max_paragraph": 171,
+        "paragraphs": 16,
+        "sentences": 28
+      },
+      "score": 100,
+      "source": "aws-japan-blog",
+      "title": "AI ガードレールによるコンタクトセンターでの責任ある AI の実装"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T05:31:51.218877+00:00",
+      "attempt": 0,
+      "id": "191056a627871c9b",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 115.3,
+        "avg_sentence": 27.5,
+        "long_share": 0.0,
+        "max_paragraph": 174,
+        "paragraphs": 16,
+        "sentences": 67
+      },
+      "score": 100,
+      "source": "aws-japan-blog",
+      "title": "AI ガードレールによるコンタクトセンターでの責任ある AI の実装"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T05:32:07.170159+00:00",
+      "attempt": 1,
+      "id": "72be3fcc67999367",
+      "kind": "update",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "score": 100,
+      "source": "au-topics",
+      "title": "「XREAL AURA」をau +1 collectionから11月27日に発売"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T05:32:17.117259+00:00",
+      "attempt": 1,
+      "id": "755c6b2b63fba038",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 52.3字・60字超の文が 29% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 122.0字・最長 218字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 122.0,
+        "avg_sentence": 52.3,
+        "long_share": 0.286,
+        "max_paragraph": 218,
+        "paragraphs": 9,
+        "sentences": 21
+      },
+      "score": 100,
+      "source": "xbox-wire-jp",
+      "title": "『紅の砂漠 Enhanced』の旅は「未知なる旅路」へと続く"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T05:32:20.561691+00:00",
+      "attempt": 0,
+      "id": "755c6b2b63fba038",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 129.3字・最長 220字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 129.3,
+        "avg_sentence": 33.3,
+        "long_share": 0.029,
+        "max_paragraph": 220,
+        "paragraphs": 9,
+        "sentences": 35
+      },
+      "score": 100,
+      "source": "xbox-wire-jp",
+      "title": "『紅の砂漠 Enhanced』の旅は「未知なる旅路」へと続く"
     }
   ],
   "short_text_retry": {},

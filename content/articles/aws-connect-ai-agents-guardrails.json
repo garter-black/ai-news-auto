@@ -1,0 +1,76 @@
+{
+  "slug": "aws-connect-ai-agents-guardrails",
+  "sourceType": "web",
+  "sourceUrl": "https://aws.amazon.com/jp/blogs/news/implementing-responsible-ai-in-contact-centers-with-connect-ai-agents-guardrails/",
+  "sourceName": "AWS ブログ（日本）",
+  "title": "AWS、コールセンター用生成AIに安全機能『AI ガードレール』 トラブルを防ぎながら運用",
+  "seoTitle": "Amazon Connect AI ガードレールの機能と設定方法｜責任あるAI実装",
+  "threadsPost": "コールセンターで生成AIを安全に使うための新機能が登場しました。\nAmazon Connect Customerに、個人情報の保護や有害な返答を防ぐ「AI ガードレール」が標準で組み込まれました。\n性能を落とさずリアルタイムで不正な入力をブロックできます。",
+  "threadsHook": "contrarian",
+  "threadsStyle": 2,
+  "writingVoice": "friendly",
+  "lede": "AWS（Amazon Web Services）の公式ブログによると、コンタクトセンター向けクラウド型サービス「Amazon Connect Customer」に、生成AIの安全な運用を支える「AI ガードレール」機能が追加されました。外部の仕組みを使わず、プラットフォームのコアに直接組み込まれているのが特徴です。",
+  "description": "AWSがコンタクトセンター向けAmazon Connect Customerに「AI ガードレール」を実装。プロンプト攻撃や個人情報漏洩を防ぎ、責任ある生成AI活用を実現する機能の仕組みを解説します。",
+  "keywords": [
+    "Amazon Connect",
+    "AI ガードレール",
+    "責任あるAI",
+    "個人情報保護",
+    "AWS",
+    "コンタクトセンター",
+    "生成AI",
+    "プロンプト攻撃防止"
+  ],
+  "tags": [
+    "生成AI",
+    "AWS",
+    "セキュリティ",
+    "カスタマーサポート"
+  ],
+  "highlights": [
+    "Amazon Connect Customerのネイティブ機能としてAI ガードレールが追加されました。",
+    "プロンプト攻撃や個人情報の漏洩（PII）、不適切な表現をリアルタイムでブロックします。",
+    "追加のインフラや追加費用なしで、AIエージェントの料金内で利用できるのが特徴です。"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "ok",
+    "price": "AIエージェントの料金に包含",
+    "free": false,
+    "audience": "コンタクトセンター管理者",
+    "take": "Amazon ConnectコンソールのAI agent Designerから設定を確認してみましょう。",
+    "judgedAt": "2026-11-02T05:31:31.469203+00:00"
+  },
+  "body": "## 概要\nAWSの公式ブログによると、コールセンター向けの「Amazon Connect Customer」に機能が実装されました。生成AIを安全かつ倫理的に使うための「AI ガードレール」機能です。レイテンシー（処理の遅延）を増やさずに機能します。リアルタイムで顧客とのやり取りを守ります。企業の担当者が安心してAIを取り入れられる環境を整える機能です。\n\n## 何が発表された？\nAmazon Connect Customerのネイティブ機能として提供されます。名前は「AI ガードレール」です。AIを活用した顧客対応が安全に行われるようにします。企業のルールに沿って行われるようにする保護メカニズムです。外部の後付けソリューションとは異なります。プラットフォームのコアに直接組み込まれています。\n\n利用できる主な対象や機能は以下の通りです。\n- エージェント支援型およびセルフサービス型の顧客対応\n- 50以上の言語へのサポート\n- Amazon Connect Customerのコンソール、CLI、APIによる一元管理\n\n## 前と何が違う？\n### 組み込み型のリアルタイム保護\n従来の外部フィルタリングツールとは違います。Amazon Bedrock Guardrailsと同じ技術を持っています。プラットフォームのコアに直接持っています。会話の流れを止めることはありません。100ミリ秒未満の最小限のレイテンシーで安全性を保ちます。\n\n### 多層防御による7つの柱\n7つのコンポーネントが連携します。具体的にはプロンプト攻撃の検出やコンテンツフィルタリングがあります。拒否トピックやワードフィルターもあります。機密情報フィルター（PII）やコンテキストグラウンディングチェックもあります。ブロック時メッセージもあります。これにより、悪意ある入力から機密データまでを総合的に保護します。\n\n### 柔軟な機密情報の保護モード\n個人情報（PII）の検出機能があります。ここでは3つのモードを選べます。データを伏せ字にする「ANONYMIZE」というモードがあります。AI処理自体を止める「BLOCK」というモードもあります。監査証跡としてログに残す「REDACT」というモードもあります。実際の運用ニーズに合わせて細かく調整可能です。\n\n## 数字で見るとどう変わった？\n導入事例として示された数値があります。医療分野のコンテンツフィルタリングでは不適切なコンテンツによるインシデントが94%減少しました。通信業界での個人情報（PII）漏洩インシデントも94%削減されています。金融サービスでの拒否トピックの導入では顧客満足度を4.6/5に維持しました。この状態でコンプライアンス違反を87%削減する成果を上げています。\n\n## ライバルと比べてどう？\n**ネイティブ統合による処理の速さが大きな強みです。管理のしやすさも強みとなっています。**\n\nAIプラットフォームのセキュリティ機能は各社が提供しています。しかしAmazon Connectの中だけで設定や監査が完結します。そのため追加のインフラストラクチャを必要としません。複雑な連携設定も必要としません。コスト面でも追加のライセンス費用がかからない点が優位性となっています。\n\n## 料金は？\nAI ガードレールの利用にあたって費用がかかります。追加のインフラストラクチャコストは発生しません。追加のライセンスコストも発生しません。コストはAIエージェントの料金に含まれる仕組みになっています。\n\n## 日本で使える？\n日本国内でも利用可能です。Amazon Connectの環境を通じて利用できます。設定は通常のAmazon Connect Customerのコンソールから行えます。そのため日本語での対応を進めることができます。マルチ言語環境でのガードレール設定も進めることができます。\n\n## 自分にはどう関係する？\n### エンジニアなら\n追加の外部APIを構築する必要はありません。複雑なサーバーを構築することなく利用できます。コンソールやAPIから一貫したセキュリティポリシーを適用できます。\n\n### 企画・マーケティングなら\nブランドのイメージを損なう不適切な返答を防げます。誤った情報（ハルシネーション）の提供も未然に防ぎます。これにより安心してAI対話を導入できます。\n\n### 経営者・管理者なら\n規制遵守のガバナンスを強化できます。プライバシー保護のガバナンスも強化できます。トラブルのリスクを抑えながら顧客対応の効率化を推進できます。\n\n## これまでの流れ\n- **2026年10月28日**：ドコモSMTBネット銀行が生成AI活用を強化、Amazon Connectで電話・チャットの応対を自動化（[ドコモSMTBネット銀行が生成AI活用を強化、Amazon Connectで電話・チャットの応対を自動化](/articles/docomo-smtb-net-bank-amazon-connect-ai)）\n\n今回のAI ガードレールの追加により状況が変わります。すでにAmazon Connectを導入している企業があります。こうした企業はより厳格な安全基準を維持できるようになります。コンプライアンスを維持しながらAIの活用範囲を広げられるようになります。\n\n## まとめ\nAI ガードレールを活用することができます。これによりコンタクトセンターにおける生成AIの安全運用が現実的なものになります。まずはコンソールの「AI agent Designer」から設定項目を確認してみましょう。自社のポリシーに合わせた保護を検討してみましょう。",
+  "easy": "## ひとことで言うと\nコールセンターで使うAIが、不適切な返事をしたり個人情報を漏らしたりしないように見張る、AWSの新しい安全機能のことです。\n\n## 何がすごいの？\nこれまではAIの安全性を保つために外から別の仕組みを組み込む必要がありましたが、Amazon Connectの仕組みの中に最初から組み込まれています。そのため、会話のテンポを落とさずに、悪意のある入力や個人情報をリアルタイムで見つけて防ぐことができます。\n\n## 自分に関係ある？\nカスタマーセンターやコールセンターで生成AIの導入を進めている管理者やエンジニアにとって、安全性の不安を解消し、コンプライアンスを守りながら運用するための重要な仕組みになります。\n\n## 使ってみるには\nAmazon Connect Customerのコンソールにある「AI agent Designer」からガードレールを選択し、機能を設定して有効化することで利用できます。",
+  "channel": "AWS ブログ（日本）",
+  "channelId": "",
+  "channelSlug": "aws-japan-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "AI ガードレールによるコンタクトセンターでの責任ある AI の実装",
+  "publishedAt": "2026-11-02T05:23:14+00:00",
+  "generatedAt": "2026-11-02T05:31:31.469247+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/aws-connect-ai-agents-guardrails-896eb209.jpg",
+  "model": "gemini-3.5-flash-lite",
+  "affiliates": [],
+  "relatedSlugs": [
+    "docomo-smtb-net-bank-amazon-connect-ai"
+  ],
+  "qualityScore": 100,
+  "sourcePublishedAt": "2026-11-02T05:23:14+00:00",
+  "detectedAt": "2026-11-02T05:30:52+00:00",
+  "speedMinutes": 12,
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A blurred figure in a dimly lit call center with rows of computer screens and headsets, under fluorescent lighting.",
+    "provider": "Cloudflare Workers AI",
+    "original": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/10/28/implementing-responsible-ai-in-contact-centers-with-connect-ai-agents-guardrails_Connect-customer.png",
+    "at": "2026-11-02T05:33:24+00:00"
+  }
+}

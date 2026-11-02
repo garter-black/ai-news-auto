@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "crimson-desert-enhanced-charting-the-unknown",
+   "at": "2026-11-02T05:32:16.446598+00:00",
+   "title": "『紅の砂漠 Enhanced』が新DLC「未知なる旅路」を配信開始 海の探索やハウジング機能も追加",
+   "head": "『紅の砂漠 Enhanced』が新DLC「未知なる旅路」を配信開始 海の探索やハウジング機能も追加 | 『紅の砂漠 Enhanced』の旅は「未知なる旅路」へと続く",
+   "text": "『紅の砂漠 Enhanced』が新DLC「未知なる旅路」を配信開始 海の探索やハウジング機能も追加 | 『紅の砂漠 Enhanced』の旅は「未知なる旅路」へと続く | 紅の砂漠 Enhanced / 未知なる旅路 / Xbox / Pearl Abyss / オープンワールド / DLC / ハウジング / 新作ゲーム / ゲーム / エンタメ",
+   "urls": [
+    "https://news.xbox.com/ja-jp/2026/11/02/crimson-desert-charting-the-unknown/"
+   ]
+  },
+  {
+   "slug": "aws-connect-ai-agents-guardrails",
+   "at": "2026-11-02T05:31:31.469247+00:00",
+   "title": "AWS、コールセンター用生成AIに安全機能『AI ガードレール』 トラブルを防ぎながら運用",
+   "head": "AWS、コールセンター用生成AIに安全機能『AI ガードレール』 トラブルを防ぎながら運用 | AI ガードレールによるコンタクトセンターでの責任ある AI の実装",
+   "text": "AWS、コールセンター用生成AIに安全機能『AI ガードレール』 トラブルを防ぎながら運用 | AI ガードレールによるコンタクトセンターでの責任ある AI の実装 | Amazon Connect / AI ガードレール / 責任あるAI / 個人情報保護 / AWS / コンタクトセンター / 生成AI / プロンプト攻撃防止 / 生成AI / AWS / セキュリティ / カスタマーサポート",
+   "urls": [
+    "https://aws.amazon.com/jp/blogs/news/implementing-responsible-ai-in-contact-centers-with-connect-ai-agents-guardrails/"
+   ]
+  },
+  {
    "slug": "chatgpt-codex-shared-usage-limits",
    "at": "2026-11-02T05:03:16.615957+00:00",
    "title": "ChatGPTのOpenAI、12月から利用枠を「Codex」と共通化 AI作業機能は本体へ",
@@ -1309,26 +1329,6 @@
    "text": "内閣府の消費動向調査、2026年10月分が公表　これまでの推移とデータ活用のポイント | 消費動向調査（令和8年10月実施分） | 消費動向調査 / 内閣府 / 景気 / 消費マインド / 統計 / 経済指標 / 世帯 / 耐久消費財 / ビジネス / 経済 / 統計",
    "urls": [
     "https://www.esri.cao.go.jp/jp/stat/shouhi/shouhi.html"
-   ]
-  },
-  {
-   "slug": "household-savings-rate-discrepancy",
-   "at": "2026-10-29T05:31:40.753772+00:00",
-   "title": "家計貯蓄率がなぜ乖離？国民経済計算と家計調査、実態に近いのはどちらか",
-   "head": "家計貯蓄率がなぜ乖離？国民経済計算と家計調査、実態に近いのはどちらか | 国民経済計算と家計調査の家計貯蓄率はなぜ乖離するのか",
-   "text": "家計貯蓄率がなぜ乖離？国民経済計算と家計調査、実態に近いのはどちらか | 国民経済計算と家計調査の家計貯蓄率はなぜ乖離するのか | 家計貯蓄率 / 国民経済計算 / 家計調査 / 個人消費 / 経済統計 / ニッセイ基礎研究所 / 可処分所得 / 消費支出 / ビジネス / 経済 / 統計 / 金融",
-   "urls": [
-    "https://www.nli-research.co.jp/topics_detail1/id=87222?site=nli"
-   ]
-  },
-  {
-   "slug": "toyota-2026-half-year-results",
-   "at": "2026-10-29T05:12:04.832875+00:00",
-   "title": "トヨタ自動車、2026年度上半期の販売・生産・輸出実績を発表　グローバルでの動向を整理",
-   "head": "トヨタ自動車、2026年度上半期の販売・生産・輸出実績を発表　グローバルでの動向を整理 | 2026年度上半期（4月－9月）販売・生産・輸出実績",
-   "text": "トヨタ自動車、2026年度上半期の販売・生産・輸出実績を発表　グローバルでの動向を整理 | 2026年度上半期（4月－9月）販売・生産・輸出実績 | トヨタ自動車 / 自動車産業 / 販売実績 / 生産実績 / 輸出実績 / 決算 / ビジネス / モビリティ / ビジネス / 統計 / 自動車",
-   "urls": [
-    "https://global.toyota/jp/company/profile/production-sales-figures/202609.html"
    ]
   }
  ]
