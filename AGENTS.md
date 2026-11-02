@@ -183,6 +183,7 @@
 - 2026/11/1の検索入口・訪問数の基準とAPI特典記事の訂正: `docs/daily-growth-and-api-correction-20261101.md`。API特典は申請・対象・期限・別請求を維持し、旧SNS文面の再利用に注意。検索・訪問の計測は集計範囲を分ける。
 
 - 記事の写真の速さと著作権（2026/11/2）: 元記事の写真は**公式の発表（会社・団体の自社サイト、PR TIMES などのプレスリリース配信）だけ**使い、幅1200pxまで縮小してWebP（400/640/800/1200）と一緒に自前のKV（saisoku-images）から配信する。写真の下に「画像：◯◯（公式発表より）」を出す。ニュースサイト・ブログ・SNSの写真は保存も直リンクもせず、フリー素材・AI生成にする。仕組みは `scripts/images.py` の冒頭（`--cache-official`・`--variants`）と `lib/thumb-url.ts`。YouTube のサムネイルは従来どおり YouTube から読む。
+- 検索に出す記事の基準は1つ（Python `scripts/indexnow.py` の `noindex_reason`／サイト `lib/indexing.ts` の `noindexReason`。サイトマップ・ニュース用サイトマップ・記事の robots・IndexNow が同じ判定を使う）。主題（off-focus）は読者像に合わせる: AI・テック／`persona.is_persona_topic`（ビジネス・投資・不動産、制度・暮らしのお金の話題）／日本のスポーツ（`persona.sports_scope`）。判定の値は `lib/index-rules.json`（`python3 scripts/indexnow.py --export-rules` で生成。ずれは `tests/test_index_rules.py` が検出）。本文1500字未満（thin）は下げない。
 - 重複記事の統合（duplicateOf・noindex・canonical）、古い発表の作り直し停止とニュース用サイトマップの48時間ルール、料金・リリースノートの見張り、他社との突き合わせ: `docs/parity-fixes-20261102.md`。重複の判定は `scripts/story.py` だけで行い、サイトは JSON の duplicateOf を読む。
 - 改名（サイソクニュース）と読者像（ペルソナ）、記事の「仕事・お金にどう活かせる？」欄、SNSの活用型・お金インパクト型、幅広い話題の優先順位・スポーツの範囲と1日上限: `docs/persona-20261102.md`。読者像の文面は `scripts/persona.py` だけで直す。
 - SNS 動画 v3「画面で見せる型」（試作・未投稿・スケジュール無し）: `docs/sns-video-v3-20261102.md`。公式ページを本物のブラウザで撮って数字へズーム、文字はキーワードだけ、締めのカード無し。`scripts/shorts_v3.py`・追加ゲート `video_gate.check_v3`・手動の `shorts_v3.yml`。CI で約2〜3分。

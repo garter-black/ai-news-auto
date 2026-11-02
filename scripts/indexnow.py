@@ -21,6 +21,9 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import persona  # noqa: E402  読者像（検索に出す話題の基準）
+
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
 HOWTO_DIR = ROOT / "content" / "howto"
@@ -61,7 +64,7 @@ def latest_guide_timestamp(guide: dict) -> datetime | None:
 
 
 def collect_urls(base: str, hours: int | None) -> list[str]:
-    """インデックス対象（AIジャンル）の記事URLを集める。
+    """インデックス対象（noindex_reason が None）の記事URLを集める。
 
     noindex にしている記事を送っても意味がないため、対象から外す。
     """
@@ -132,7 +135,9 @@ WIRE_SOURCES = {"prtimes", "prtimes-all", "atpress", "value-press", "kyodo-prwir
 
 
 THIN_BODY = 1500
+# いつでも主題として扱うジャンル（AI・テック）。お金・不動産・起業・制度は persona.is_persona_topic、スポーツは persona.sports_scope
 FOCUS_GENRES = {"ai", "tech-gadget"}
+SPORTS_GENRES = {"sports"}
 AI_TOPIC = re.compile(
     r"(?<![A-Za-z])AI(?![a-z])|人工知能|生成|LLM|GPT|Gemini|Claude|Copilot|機械学習|エージェント|ロボット|半導体|NVIDIA",
     re.I,
@@ -164,6 +169,23 @@ def duplicate_slugs(articles: list[dict]) -> set[str]:
     return out
 
 
+def is_focus(article: dict) -> bool:
+    """読者像（scripts/persona.py）の話題か。lib/indexing.ts の isFocus と同じ。
+    1. AI・テック（ジャンル ai / tech-gadget、または題名・タグにAI関連語）
+    2. 読者像の話題（persona.is_persona_topic: ビジネス・投資・不動産のジャンル、制度・暮らし・テックのジャンルでお金・税・補助金・起業の話題）
+    3. 日本のスポーツ（persona.sports_scope。海外のリーグ・選手だけの話題は外す。世界的な大会は海外選手も可）
+    それ以外（エンタメ・ゲーム、お金に関係しない新商品や研究成果など）は主題外。"""
+    text = article.get("title", "") + " " + " ".join(article.get("tags") or [])
+    if article.get("genreSlug") in FOCUS_GENRES or AI_TOPIC.search(text):
+        return True
+    if persona.is_persona_topic(article):
+        return True
+    if article.get("genreSlug") in SPORTS_GENRES:
+        # 発信元が海外かは記事に残らない。海外のフィードは生成時に sports_scope(japanese_source=False) で落としているので、ここでは目印だけで見る
+        return persona.sports_scope(text)[0]
+    return False
+
+
 def noindex_reason(article: dict, dups: set[str] | frozenset = frozenset()) -> str | None:
     if isinstance(article.get("indexable"), bool):
         return None if article["indexable"] else "manual"
@@ -174,14 +196,50 @@ def noindex_reason(article: dict, dups: set[str] | frozenset = frozenset()) -> s
     body = article.get("body", "")
     if len(body) < THIN_BODY:
         return "thin"
-    text = article.get("title", "") + " " + " ".join(article.get("tags") or [])
-    if article.get("genreSlug") not in FOCUS_GENRES and not AI_TOPIC.search(text):
+    if not is_focus(article):
         return "off-focus"
     if not article.get("verdict") and not JAPAN_VALUE.search(body):
         return "no-japan-value"
     if article.get("slug") in dups or (article.get("duplicateOf") and article.get("duplicateOf") != article.get("slug")):
         return "duplicate"
     return None
+
+
+# サイト側（lib/indexing.ts）が読む判定の材料。正本はこのファイルと scripts/persona.py で、
+# 変えたら `python3 scripts/indexnow.py --export-rules` で書き出す（tests/test_index_rules.py がずれを検出する）
+RULES_PATH = ROOT / "lib" / "index-rules.json"
+
+
+def _js_regex(pattern: re.Pattern) -> dict:
+    return {"source": pattern.pattern, "flags": "i" if pattern.flags & re.I else ""}
+
+
+def index_rules() -> dict:
+    return {
+        "_note": "scripts/indexnow.py --export-rules で生成。手で直さない（正本は scripts/indexnow.py と scripts/persona.py）",
+        "thinBody": THIN_BODY,
+        "focusGenres": sorted(FOCUS_GENRES),
+        "aiTopic": _js_regex(AI_TOPIC),
+        "personaGenres": list(persona.PERSONA_GENRES),
+        "personaExtraGenres": list(persona.PERSONA_EXTRA_GENRES),
+        "priorityTopic": _js_regex(persona.PRIORITY_TOPIC_RE),
+        "sportsGenres": sorted(SPORTS_GENRES),
+        "globalEvent": _js_regex(persona.GLOBAL_EVENT_RE),
+        "japanSports": _js_regex(persona.JAPAN_SPORTS_RE),
+        "foreignSports": _js_regex(persona.FOREIGN_SPORTS_RE),
+    }
+
+
+def rules_json() -> str:
+    return json.dumps(index_rules(), ensure_ascii=False, indent=2) + "\n"
+
+
+def rules_drift() -> bool:
+    """lib/index-rules.json が今の基準とずれているか（サイトと IndexNow の判定が食い違う）"""
+    try:
+        return RULES_PATH.read_text("utf-8") != rules_json()
+    except OSError:
+        return True
 
 
 NEWS_WINDOW = timedelta(days=2)
@@ -238,7 +296,16 @@ def main() -> int:
     parser.add_argument("--hours", type=int, default=12, help="直近N時間の記事のみ")
     parser.add_argument("--dry-run", action="store_true", help="送信せず対象を表示")
     parser.add_argument("--urls", default="", help="カンマ区切りの URL だけを送る")
+    parser.add_argument("--export-rules", action="store_true", help="サイト側の判定材料 lib/index-rules.json を書き出す")
     args = parser.parse_args()
+
+    if args.export_rules:
+        RULES_PATH.write_text(rules_json(), "utf-8")
+        print(f"[done] {RULES_PATH.relative_to(ROOT)} を書き出しました")
+        return 0
+    if rules_drift():
+        print("[warn] lib/index-rules.json が scripts/indexnow.py・persona.py の基準とずれています。"
+              "python3 scripts/indexnow.py --export-rules で直してください（サイトの noindex と通知対象が食い違います）", file=sys.stderr)
 
     key = find_key()
     if not key:

@@ -1,4 +1,7 @@
 import type { ArticleSummary } from "@/lib/articles";
+// 判定の材料（文字数・ジャンル・話題の正規表現）は scripts/indexnow.py --export-rules が書き出す。
+// 正本は scripts/indexnow.py と scripts/persona.py（読者像）。ここに値を複製しない。
+import rules from "./index-rules.json";
 
 /**
  * Google に見せる記事を選ぶ（サイトでは全記事を読める。noindex でも一覧・内部リンクには残す）。
@@ -7,7 +10,9 @@ import type { ArticleSummary } from "@/lib/articles";
  * 検索に出す条件（手動指定 indexable が最優先。まとめ記事は常に対象）:
  *  1. プレスリリース配信サービスではない
  *  2. 本文が THIN_BODY 文字以上（薄い要約を出さない）
- *  3. 主題がAI・テック（ジャンル ai / tech-gadget、または題名・タグにAI関連語）
+ *  3. 読者像（scripts/persona.py）の話題: AI・テック（ジャンル ai / tech-gadget、または題名・タグにAI関連語）／
+ *     ビジネス・投資・不動産のジャンル／制度・暮らし・テックのジャンルでお金・税・補助金・起業の話題（persona.is_persona_topic）／
+ *     日本のスポーツ（persona.sports_scope。海外のリーグ・選手だけの話題は外す。世界的な大会は海外選手も可）
  *  4. 日本の読者向けの価値がある（「日本で使える？」判定 verdict、または
  *     「日本・無料・料金・使い方・始め方・使える」の見出し）
  *  5. 同じ発表の重複記事（duplicateOf。scripts/story.py が付ける）や、同じ題名・同じ出典URLの重複のうち代表1本以外ではない
@@ -17,17 +22,43 @@ import type { ArticleSummary } from "@/lib/articles";
 
 /** プレスリリースの配信サービス（量が多く、言い換えになりやすい） */
 export const WIRE_SOURCES = new Set(["prtimes", "prtimes-all", "atpress", "value-press", "kyodo-prwire", "dreamnews"]);
-/** 本文の最低文字数 */
-export const THIN_BODY = 1500;
-/** 主題として扱うジャンル */
-export const FOCUS_GENRES = new Set(["ai", "tech-gadget"]);
+/** 本文の最低文字数（Markdown の本文の文字数） */
+export const THIN_BODY: number = rules.thinBody;
+/** いつでも主題として扱うジャンル（AI・テック） */
+export const FOCUS_GENRES = new Set<string>(rules.focusGenres);
 /** それ以外のジャンルでもAIの話題なら対象にする */
-export const AI_TOPIC =
-  /(?<![A-Za-z])AI(?![a-z])|人工知能|生成|LLM|GPT|Gemini|Claude|Copilot|機械学習|エージェント|ロボット|半導体|NVIDIA/i;
+export const AI_TOPIC = new RegExp(rules.aiTopic.source, rules.aiTopic.flags);
+/** 読者像のジャンル（persona.PERSONA_GENRES）と、お金・制度の話題なら対象にするジャンル（persona.PERSONA_EXTRA_GENRES） */
+const PERSONA_GENRES = new Set<string>(rules.personaGenres);
+const PERSONA_EXTRA_GENRES = new Set<string>(rules.personaExtraGenres);
+const PRIORITY_TOPIC = new RegExp(rules.priorityTopic.source, rules.priorityTopic.flags);
+const SPORTS_GENRES = new Set<string>(rules.sportsGenres);
+const GLOBAL_EVENT = new RegExp(rules.globalEvent.source, rules.globalEvent.flags);
+const JAPAN_SPORTS = new RegExp(rules.japanSports.source, rules.japanSports.flags);
+const FOREIGN_SPORTS = new RegExp(rules.foreignSports.source, rules.foreignSports.flags);
 
-function isFocus(article: ArticleSummary): boolean {
-  if (FOCUS_GENRES.has(article.genreSlug)) return true;
-  return AI_TOPIC.test(`${article.title} ${(article.tags ?? []).join(" ")}`);
+/** persona.is_persona_topic と同じ */
+function isPersonaTopic(article: ArticleSummary): boolean {
+  const genre = article.genreSlug || "";
+  if (PERSONA_GENRES.has(genre)) return true;
+  const text = `${article.title ?? ""} ${article.seoTitle ?? ""} ${(article.tags ?? []).join(" ")}`;
+  return PERSONA_EXTRA_GENRES.has(genre) && PRIORITY_TOPIC.test(text);
+}
+
+/** persona.sports_scope(text) と同じ（発信元が海外かは記事に残らないので、日本の発信元として扱う） */
+function isJapanSports(text: string): boolean {
+  const t = text.normalize("NFKC");
+  if (GLOBAL_EVENT.test(t) || JAPAN_SPORTS.test(t)) return true;
+  return !FOREIGN_SPORTS.test(t);
+}
+
+/** 読者像の話題か（scripts/indexnow.py の is_focus と同じ） */
+export function isFocus(article: ArticleSummary): boolean {
+  const text = `${article.title ?? ""} ${(article.tags ?? []).join(" ")}`;
+  if (FOCUS_GENRES.has(article.genreSlug) || AI_TOPIC.test(text)) return true;
+  if (isPersonaTopic(article)) return true;
+  if (SPORTS_GENRES.has(article.genreSlug)) return isJapanSports(text);
+  return false;
 }
 
 /** 検索に出さない理由（出すなら null）。判定の説明・集計に使う */
