@@ -90,6 +90,9 @@
     "boj-cpi-core-indicators": {
       "liveAt": "2026-10-27T16:02:08+00:00"
     },
+    "boj-current-account-october": {
+      "liveAt": "2026-11-02T04:35:55+00:00"
+    },
     "boj-etf-sales-pace-review-2026": {
       "liveAt": "2026-10-31T17:44:43+00:00"
     },
@@ -180,6 +183,9 @@
     "ecb-policy-rate-hold-2026-10": {
       "liveAt": "2026-10-30T10:26:30+00:00"
     },
+    "fage-suntory-skincare-2026-nov": {
+      "liveAt": "2026-11-02T04:35:57+00:00"
+    },
     "fallout-collab-cafe-tower-records": {
       "liveAt": "2026-10-30T04:18:59+00:00"
     },
@@ -248,6 +254,9 @@
     },
     "google-gke-inference-gateway-4x-speed": {
       "liveAt": "2026-10-29T04:39:22+00:00"
+    },
+    "google-pixel-11-pro-food-photography": {
+      "liveAt": "2026-11-02T04:35:56+00:00"
     },
     "google-project-suncatcher-satellite-response": {
       "liveAt": "2026-10-30T17:20:37+00:00"
@@ -452,6 +461,9 @@
     },
     "nvidia-meta-muse-partnership-expansion": {
       "liveAt": "2026-10-28T02:13:24+00:00"
+    },
+    "nvidia-nemoclaw-agent-platform": {
+      "liveAt": "2026-11-02T04:35:55+00:00"
     },
     "nvidia-nemotron-35-transcribe": {
       "liveAt": "2026-10-28T16:19:53+00:00"
