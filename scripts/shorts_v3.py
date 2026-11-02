@@ -189,6 +189,8 @@ TEXT_JS = r"""(maxY) => {
     const t = n.nodeValue; if (!t || !t.trim()) continue;
     const el = n.parentElement; if (!el || el.closest('script,style,noscript,svg,button,nav,footer')) continue;
     const cs = getComputedStyle(el); if (cs.visibility === 'hidden' || parseFloat(cs.opacity) < 0.2) continue;
+    // 閉じた <details>（「AI の要約」など）・祖先が非表示の文字は画面に見えないので使わない（位置が別の文と重なって、選択の青がずれる）
+    if (el.checkVisibility && !el.checkVisibility({ opacityProperty: true, visibilityProperty: true, contentVisibilityAuto: true })) continue;
     range.selectNodeContents(n); const b = range.getBoundingClientRect();
     if (b.width < 1 || b.height < 1) continue;
     const top = b.top + scrollY; if (top > maxY || b.bottom + scrollY < 0) continue;
@@ -205,6 +207,16 @@ TEXT_JS = r"""(maxY) => {
   for (const [el, id] of blocks) { const r = el.getBoundingClientRect(); out[id] = [r.left + scrollX, r.top + scrollY, r.right + scrollX, r.bottom + scrollY]; }
   return { blocks: out, nodes, height: document.documentElement.scrollHeight, title: document.title };
 }"""
+
+
+def layout_same(a: dict, b: dict, tol: float = 2.0) -> bool:
+    """2回測った文字の配置が同じか（高さと、最初の200個のまとまりの位置が tol px 以内）"""
+    if abs(a.get("height", 0) - b.get("height", 0)) > tol or len(a.get("blocks") or []) != len(b.get("blocks") or []):
+        return False
+    for ra, rb in list(zip(a["blocks"], b["blocks"]))[:200]:
+        if ra and rb and any(abs(x - y) > tol for x, y in zip(ra, rb)):
+            return False
+    return True
 
 
 @dataclass
@@ -286,18 +298,27 @@ async def _capture_one(browser, url: str, page_no: int, timeout_ms: int) -> Page
         # 画面の高さを変えると配置が変わるので、測るときと撮るときの配置を同じにする）
         await page.evaluate("document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo(0, 0)")
         await page.wait_for_timeout(150)
+        # 撮っている間に配置が動く（画像の読み込みなど）と、文字の位置と写真がずれる（選択の青が別の文に付く）。
+        # 撮る前と後で測り直し、動いていたらもう一度撮る（最大2回）。最後は「撮った直後に測った位置」を使う
         data = await page.evaluate(TEXT_JS, CAPTURE_MAX_H)
-        height = int(min(data["height"], CAPTURE_MAX_H))
-        shots = []
-        y = 0
-        while y < height:
-            got = await page.evaluate(f"window.scrollTo(0, {y}); window.scrollY")
-            await page.wait_for_timeout(90)
-            got = await page.evaluate("window.scrollY")
-            shots.append((got, await page.screenshot(timeout=timeout_ms)))
-            if got + 960 >= height or got < y:
+        for _round in range(3):
+            height = int(min(data["height"], CAPTURE_MAX_H))
+            shots = []
+            y = 0
+            while y < height:
+                got = await page.evaluate(f"window.scrollTo(0, {y}); window.scrollY")
+                await page.wait_for_timeout(90)
+                got = await page.evaluate("window.scrollY")
+                shots.append((got, await page.screenshot(timeout=timeout_ms)))
+                if got + 960 >= height or got < y:
+                    break
+                y = got + 960
+            await page.evaluate("window.scrollTo(0, 0)")
+            after = await page.evaluate(TEXT_JS, CAPTURE_MAX_H)
+            if layout_same(data, after):
                 break
-            y = got + 960
+            log(f"   [v3] 撮っている間にページの配置が動いたので撮り直す（{_round + 1}）: {url}")
+            data = after
     except Exception as error:  # noqa: BLE001
         log(f"   [v3] 撮影に失敗: {url}: {type(error).__name__}: {str(error)[:120]}")
         return None
