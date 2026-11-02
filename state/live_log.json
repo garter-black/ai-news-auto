@@ -126,6 +126,9 @@
     "boj-tankan-price-forecast-gap": {
       "liveAt": "2026-11-02T10:02:34+00:00"
     },
+    "boj-ueda-press-conf-oct30": {
+      "liveAt": "2026-11-02T19:42:22+00:00"
+    },
     "caa-consumer-safety-report-oct2026": {
       "liveAt": "2026-10-29T07:13:54+00:00"
     },
@@ -143,6 +146,9 @@
     },
     "chatgpt-codex-shared-usage-limits": {
       "liveAt": "2026-11-02T05:06:03+00:00"
+    },
+    "chatgpt-pro-monthly-api-credits": {
+      "liveAt": "2026-11-02T19:42:23+00:00"
     },
     "civil-code-revision-promissory-note-abolition": {
       "liveAt": "2026-11-02T09:17:51+00:00"
@@ -456,6 +462,12 @@
     "kirin-hyoketsu-gobobi-sparkling": {
       "liveAt": "2026-10-29T02:46:14+00:00"
     },
+    "kpn-elevenlabs-mobiel-ai-netherlands": {
+      "liveAt": "2026-11-02T19:42:22+00:00"
+    },
+    "lumen-microsoft-enterprise-ai-networks": {
+      "liveAt": "2026-11-02T19:42:22+00:00"
+    },
     "maff-bangladesh-cooperation-mou": {
       "liveAt": "2026-10-28T00:06:37+00:00"
     },
@@ -543,6 +555,9 @@
     "nemuri-antimicrobial-peptides-discovery": {
       "liveAt": "2026-10-30T01:08:05+00:00"
     },
+    "nenkin-no-hi-2026-mhlw": {
+      "liveAt": "2026-11-02T19:42:22+00:00"
+    },
     "nissan-namie-ev-battery-circular-economy": {
       "liveAt": "2026-11-02T10:13:56+00:00"
     },
@@ -599,6 +614,9 @@
     },
     "nvidia-ai-cluster-runtime-dynamo": {
       "liveAt": "2026-11-02T03:34:05+00:00"
+    },
+    "nvidia-aicr-vera-rubin-kubernetes": {
+      "liveAt": "2026-11-02T19:42:22+00:00"
     },
     "nvidia-cosmos-world-models-simulation": {
       "liveAt": "2026-11-02T17:48:30+00:00"
@@ -681,6 +699,9 @@
     "playstation-partner-awards-2026-announcement": {
       "liveAt": "2026-10-29T17:34:27+00:00"
     },
+    "qodo-codex-plugin-code-review": {
+      "liveAt": "2026-11-02T19:42:23+00:00"
+    },
     "qst-hyperpolarized-mri-liver-pon": {
       "liveAt": "2026-10-30T05:54:56+00:00"
     },
@@ -756,6 +777,9 @@
     "soumu-kkj-2025-3rd-result": {
       "liveAt": "2026-10-29T00:08:02+00:00"
     },
+    "soumu-local-allocation-tax-nov-2026": {
+      "liveAt": "2026-11-02T19:42:22+00:00"
+    },
     "soumu-vice-capital-cabinet-order": {
       "liveAt": "2026-10-29T01:44:43+00:00"
     },
@@ -809,6 +833,9 @@
     },
     "tokyo-sayama-tamako-event-2026": {
       "liveAt": "2026-10-29T03:28:01+00:00"
+    },
+    "tokyo-tax-council-meeting-2026": {
+      "liveAt": "2026-11-02T19:42:21+00:00"
     },
     "tokyo-utility-pole-removal-ordinance-2026": {
       "liveAt": "2026-10-30T10:26:31+00:00"
