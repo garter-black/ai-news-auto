@@ -367,4 +367,109 @@ class CommandGuardsTests(unittest.TestCase):
             merge.assert_not_called()
 
 
+def digest_post(now=NOW):
+    items = [{'slug': 'nvidia', 'title': 'AI半導体のNVIDIAが医療向けAI発表 創薬から手術支援まで'},
+             {'slug': 'genie', 'title': 'Google DeepMind、言葉で遊べる世界を作る新AI「Genie 4」を発表 操作も自由自在', 'channel': 'Google DeepMind'}]
+    with patch.object(md, 'pick', return_value=items):
+        return md.build('digest', {'posted': {}}, now)
+
+
+class DigestPageTest(unittest.TestCase):
+    """朝のまとめのリンク先（号のページ）・添える画像・見出しの短縮"""
+
+    def test_headline_is_never_just_the_company_name(self):
+        title = 'Google DeepMind、言葉で遊べる世界を作る新AI「Genie 4」を発表 操作も自由自在'
+        got = md.one_line({'title': title, 'channel': 'Google DeepMind', 'tags': ['Google DeepMind']})
+        self.assertNotEqual(got, 'Google DeepMind')
+        self.assertEqual(got, 'Google DeepMind、新AI「Genie 4」を発表')
+
+    def test_build_links_to_the_edition_page_with_utm_and_image(self):
+        p = digest_post()
+        self.assertEqual(p['link'], 'https://ai-tech-express.jp/digest/20261030')
+        self.assertEqual(p['image'], 'https://ai-tech-express.jp/digest/20261030/card.png')
+        self.assertIn('https://ai-tech-express.jp/digest/20261030?utm_source=x&utm_medium=social&utm_campaign=digest', p['x_text'])
+        self.assertIn('・Google DeepMind、新AI「Genie 4」を発表', p['text'])
+        self.assertEqual(p['edition']['id'], '20261030')
+        self.assertEqual([i['headline'] for i in p['edition']['items']], ['AI半導体のNVIDIAが医療向けAI発表', 'Google DeepMind、新AI「Genie 4」を発表'])
+        self.assertEqual(p['text'].splitlines()[0], '今日のAIニュース2本（2026/10/30）')
+
+    def test_threads_post_has_image_and_edition_link_card(self):
+        p = digest_post()
+        data = md.threads_input('ch', p, {'mode': 'shareNow'})
+        thread = data['metadata']['threads']['thread']
+        self.assertEqual(thread[0]['assets'], [{'image': {'url': p['image']}}])
+        card = thread[1]['metadata']['threads']['linkAttachment']
+        self.assertEqual(card['url'], 'https://ai-tech-express.jp/digest/20261030?utm_source=threads&utm_medium=social&utm_campaign=digest')
+        self.assertEqual(card['thumbnail']['url'], 'https://ai-tech-express.jp/digest/20261030/share.png')
+        self.assertEqual(md.x_input('x', p, {'mode': 'shareNow'})['assets'], [{'image': {'url': p['image']}}])
+
+    def test_prepare_falls_back_to_news_without_image(self):
+        p = digest_post()
+        with tempfile.TemporaryDirectory() as tmp, patch.object(md.dp, 'DIGESTS_DIR', Path(tmp)), \
+                patch.object(md.dp, 'design', return_value='A'), patch.object(md.dp, 'publish', return_value=False) as publish, \
+                patch.object(md.dp, 'wait_live') as wait:
+            ready = md.prepare_page(p)
+            self.assertTrue((Path(tmp) / '20261030.json').exists())
+        publish.assert_called_once()
+        wait.assert_not_called()
+        self.assertEqual(ready['link'], 'https://ai-tech-express.jp/news')
+        self.assertEqual(ready['image'], '')
+        self.assertIn('https://ai-tech-express.jp/news?utm_source=x&utm_medium=social&utm_campaign=digest', ready['x_text'])
+        self.assertNotIn('/digest/', ready['x_text'])
+        thread = md.threads_input('ch', ready, {'mode': 'shareNow'})['metadata']['threads']['thread']
+        self.assertEqual(thread[0]['assets'], [])
+        self.assertTrue(thread[1]['metadata']['threads']['linkAttachment']['thumbnail']['url'].endswith('/logo.png'))
+
+    def test_prepare_keeps_edition_when_live(self):
+        p = digest_post()
+        with tempfile.TemporaryDirectory() as tmp, patch.object(md.dp, 'DIGESTS_DIR', Path(tmp)), \
+                patch.object(md.dp, 'design', return_value='A'), patch.object(md.dp, 'publish', return_value=True), \
+                patch.object(md.dp, 'wait_live', return_value=True) as wait, patch.object(md.dp, 'ai_background') as bg:
+            ready = md.prepare_page(p)
+        bg.assert_not_called()  # 案A では AI の背景を作らない
+        self.assertEqual(wait.call_args_list[0].args[0], p['image'])
+        self.assertEqual(ready['link'], p['link'])
+        self.assertEqual(ready['image'], p['image'])
+
+    def test_design_c_makes_one_background_per_edition(self):
+        p = digest_post()
+        with tempfile.TemporaryDirectory() as tmp, patch.object(md.dp, 'DIGESTS_DIR', Path(tmp)), \
+                patch.object(md.dp, 'design', return_value='C'), patch.object(md.dp, 'publish', return_value=True), \
+                patch.object(md.dp, 'wait_live', return_value=True), \
+                patch.object(md.dp, 'ai_background', return_value='https://ai-tech-express.jp/img/digest-20261030-bg-1.jpg') as bg:
+            ready = md.prepare_page(p)
+            again = md.prepare_page(ready)
+        self.assertEqual(bg.call_count, 1)
+        self.assertEqual(again['edition']['aiImage'], 'https://ai-tech-express.jp/img/digest-20261030-bg-1.jpg')
+
+    def test_rejected_image_post_is_recreated_without_image_once(self):
+        p = digest_post()
+        payload = md.threads_input('ch', p, {'mode': 'shareNow'})
+        with patch.object(md.tp, 'create_post', side_effect=[RuntimeError('Buffer: invalid image'), 'ok']) as create:
+            self.assertEqual(md.create_with_fallback('k', payload), 'ok')
+        self.assertEqual(create.call_args_list[1].args[1]['metadata']['threads']['thread'][0]['assets'], [])
+        # 通信エラー（受理不明）は作り直さない
+        with patch.object(md.tp, 'create_post', side_effect=TimeoutError()) as create:
+            with self.assertRaises(TimeoutError):
+                md.create_with_fallback('k', payload)
+            self.assertEqual(create.call_count, 1)
+
+    def test_merge_restores_edition_file(self):
+        p = digest_post()
+        entry = {'style': 'digest', 'postPlan': p}
+        with tempfile.TemporaryDirectory() as tmp, patch.object(md.dp, 'DIGESTS_DIR', Path(tmp)):
+            md.restore_edition(entry)
+            saved = json.loads((Path(tmp) / '20261030.json').read_text('utf-8'))
+        self.assertEqual(saved['items'][1]['headline'], 'Google DeepMind、新AI「Genie 4」を発表')
+
+    def test_bluesky_links_to_edition_page(self):
+        p = digest_post()
+        entry = {'style': 'digest', 'items': [], 'postPlan': p}
+        got = bp.plan('digest-20261030', entry)
+        self.assertEqual(got['link'], 'https://ai-tech-express.jp/digest/20261030?utm_source=bluesky&utm_medium=social&utm_campaign=digest')
+        self.assertEqual(got['images'][0], 'https://ai-tech-express.jp/digest/20261030/share.png')
+        old = bp.plan('digest-20261029', {'style': 'digest', 'items': [], 'postPlan': {**p, 'link': 'https://ai-tech-express.jp/news'}})
+        self.assertTrue(old['link'].startswith('https://ai-tech-express.jp/news?'))
+
+
 if __name__=='__main__':unittest.main()

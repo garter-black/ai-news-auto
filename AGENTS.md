@@ -187,6 +187,8 @@
 - 改名（サイソクニュース）と読者像（ペルソナ）、記事の「仕事・お金にどう活かせる？」欄、SNSの活用型・お金インパクト型、幅広い話題の優先順位・スポーツの範囲と1日上限: `docs/persona-20261102.md`。読者像の文面は `scripts/persona.py` だけで直す。
 - SNS 動画 v2（試作・未投稿・スケジュール無し）: `docs/sns-video-v2-20261102.md`。3デザイン（報道テロップ/大きな文字/公式ページ）、品質ゲート `scripts/video_gate.py`、失敗時は動画なしで今までどおり投稿する約束 `scripts/sns_video.py`（既定は無効）。投稿用の声は VOICEVOX のみ。
 
+- 朝のまとめ「今朝のAIニュース3本」の号ページ `/digest/<YYYYMMDD>`（noindex）とシェア画像 `share.png`（1200×630）・`card.png`（1080×1350）。デザインは `lib/digest-design.ts` の `DIGEST_DESIGN`（A/B/C）1か所で切替、`?design=` で見比べ。号のデータは `scripts/digest_page.py` が `content/digests` と KV（デプロイ前の朝用）に置く。見出しは会社名だけにしない（`short_headline`）。要約の見出しは「要約すると」。
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know

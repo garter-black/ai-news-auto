@@ -64,19 +64,44 @@ def login() -> dict:
     return xrpc("com.atproto.server.createSession", {"identifier": handle, "password": password})
 
 
-def fetch(url: str) -> tuple[bytes, str]:
+def fetch(url: str, limit: int = MAX_BLOB + 1) -> tuple[bytes, str]:
     req = urllib.request.Request(url, headers={"User-Agent": "saisoku-bluesky/1.0"})
     with urllib.request.urlopen(req, timeout=30) as res:
-        return res.read(MAX_BLOB + 1), res.headers.get_content_type()
+        return res.read(limit), res.headers.get_content_type()
+
+
+def shrink(data: bytes) -> bytes | None:
+    """1MB を超える画像（写真入りの PNG など）を JPEG にして 1MB 以下にする。Pillow が無ければ None"""
+    try:
+        import io
+
+        from PIL import Image  # noqa: PLC0415
+    except ImportError:
+        return None
+    try:
+        image = Image.open(io.BytesIO(data)).convert("RGB")
+        for quality in (86, 80, 72, 64):
+            buf = io.BytesIO()
+            image.save(buf, "JPEG", quality=quality, optimize=True)
+            if buf.tell() <= MAX_BLOB:
+                return buf.getvalue()
+    except Exception:  # noqa: BLE001
+        return None
+    return None
 
 
 def upload_thumb(session: dict, urls: list[str]) -> dict | None:
     """1MB 以下の画像をアップロードして blob を返す。どれも無理なら None（カードは画像なし）"""
     for url in urls:
         try:
-            data, ctype = fetch(url)
-            if len(data) > MAX_BLOB or not ctype.startswith("image/"):
+            data, ctype = fetch(url, 8 * 1024 * 1024)
+            if not ctype.startswith("image/"):
                 continue
+            if len(data) > MAX_BLOB:
+                data = shrink(data) or b""
+                ctype = "image/jpeg"
+                if not data:
+                    continue
             return xrpc("com.atproto.repo.uploadBlob", data, session["accessJwt"], ctype)["blob"]
         except Exception as error:  # noqa: BLE001
             log(f"  [bluesky] 画像を使えません {url}: {error}")
@@ -126,9 +151,16 @@ def plan(key: str, entry: dict) -> dict | None:
             if not items or not recorded_at:
                 return None
             text = md.compose(items, datetime.fromisoformat(recorded_at.replace("Z", "+00:00")))
+        # リンク先はその日の号のページ（/digest/<YYYYMMDD>。カードの画像も号のシェア画像）。古い記録・号を出せなかった日は /news
+        page = str((entry.get("postPlan") or {}).get("link") or "")
+        covers = [f"{tp.site_url()}/cover/{items[0]['slug']}"] if items else []
+        if "/digest/" in page:
+            return {"text": text, "link": tp.utm_link(page, "bluesky", "digest"),
+                    "title": f"{text.splitlines()[0]}｜サイソクニュース", "desc": "直近のAIニュースを3本だけ。写真と要約つき。",
+                    "images": [page.rstrip("/") + "/share.png", *covers]}
         link = tp.utm_link(f"{tp.site_url()}/news", "bluesky", "digest")
         return {"text": text, "link": link, "title": "AIニュースまとめ｜サイソクニュース",
-                "desc": "直近のAIニュースを1分で。", "images": [f"{tp.site_url()}/cover/{items[0]['slug']}"] if items else []}
+                "desc": "直近のAIニュースを1分で。", "images": covers}
     path = tp.ARTICLES_DIR / f"{key}.json"
     if not path.exists():
         return None

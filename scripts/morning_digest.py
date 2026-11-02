@@ -14,7 +14,9 @@
 決まりごと:
 - 対象は直近 HOURS 時間に作った AI の記事（地震・津波などの災害記事は除く）。速報 → 投稿向きの点数 → Threads の閲覧数の順に選ぶ
 - 同じ話題（Threads のトピック）が重ならないように3本選ぶ。2本未満なら出さない
-- 本文は見出しを1行ずつ（煽らない）。リンクは自分への返信に置く（Threads はリンクカード）
+- 本文は見出しを1行ずつ（煽らない）。見出しは「だれが＋何を」（scripts/digest_page.py の short_headline。会社名だけにしない）
+- リンクは自分への返信に置く（Threads はリンクカード）。リンク先はその日の号のページ /digest/<YYYYMMDD>（UTM 付き）、
+  Threads・X には号の縦長画像（/digest/<id>/card.png）を添える。号のデータは投稿前に KV へ置き、出せなければ従来の /news・画像なし
 - 7:30 は通常の予約枠から外してある（threads_post.DIGEST_SLOT_JST）ので、1日の本数は増えない
 - 1日1本だけ。state/threads_posted.json に digest-YYYYMMDD（style: digest）で記録する
 - SNS_DIGEST=0 なら何もしない
@@ -30,12 +32,13 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import digest_page as dp  # noqa: E402
 import threads_post as tp  # noqa: E402
 
 HOURS = 12
 MIN_ITEMS = 2
 MAX_ITEMS = 3
-ITEM_MAX = 40
+ITEM_MAX = dp.ITEM_MAX
 # 本文の話題（1つだけ）
 TOPIC = "AI"
 REPLY_LINES = [
@@ -43,8 +46,6 @@ REPLY_LINES = [
     "昨夜からの新着はこちらから👇",
     "全部の記事はこちらから読めます👇",
 ]
-# 日本語の間の空白で区切る（見出しの後半「〜の仕組み」などを落とす）。英語名の中の空白では切らない
-SPLIT_RE = re.compile(r"(?<=[^\x00-\x7F])[ 　](?=[^\x00-\x7F])")
 
 
 def log(message: str) -> None:
@@ -52,13 +53,8 @@ def log(message: str) -> None:
 
 
 def one_line(article: dict) -> str:
-    """見出しを1行に（前半だけ・長ければ句読点で切る）"""
-    title = str(article.get("title") or article.get("seoTitle") or "").strip()
-    head = SPLIT_RE.split(title)[0].strip()
-    if len(head) > ITEM_MAX:
-        cut = max(head.rfind(c, 0, ITEM_MAX) for c in "、，！？")
-        head = head[:cut] if cut >= 15 else head[: ITEM_MAX - 1] + "…"
-    return head.rstrip("、，。")
+    """見出しを1行に（だれが＋何を）。2026/11/02 に「Google DeepMind」だけになった切り方を直した（digest_page.short_headline）"""
+    return dp.short_headline(article)
 
 
 def views(state: dict, slug: str) -> float:
@@ -204,12 +200,20 @@ def merge(mine_path: str) -> int:
                 continue
             current = daily_entry(state, key)
             combined = merge_entry(current, entry)
+            restore_edition(combined)
             if combined != current:
                 store_entry(state, key, combined, save=False)
                 added += 1
     tp.save_state(state)
     log(f"[digest] 投稿履歴に {added} 件を足しました")
     return 0
+
+
+def restore_edition(entry: dict) -> None:
+    """push 前に最新の main へ戻したあとも、号のデータ（content/digests）を git に残す"""
+    edition = (entry.get("postPlan") or {}).get("edition")
+    if entry.get("style") == "digest" and isinstance(edition, dict) and edition.get("id") and not dp.path_of(edition["id"]).exists():
+        dp.save(edition)
 
 
 def delete_post(api_key: str, post_id: str) -> None:
@@ -238,25 +242,107 @@ def build(kind: str, state: dict, now: datetime) -> dict | None:
     if len(items) < MIN_ITEMS:
         log(f"[digest] 直近{HOURS}時間の記事が {len(items)} 本しかないため出しません")
         return None
-    link = f"{tp.site_url()}/news"
+    text = compose(items, now)
+    edition = dp.edition(items, now, re.sub(r"（.*$", "", text.splitlines()[0]))
+    link = f"{tp.site_url()}/digest/{edition['id']}"
     for a in items:
         log(f"  {a['slug']} (速報={bool(a.get('breaking'))} 点={tp.score(a)} トピック={tp.topic_of(a)})")
     return {
-        "key": f"digest-{jst:%Y%m%d}", "text": compose(items, now),
+        "key": f"digest-{jst:%Y%m%d}", "text": text,
         "reply": REPLY_LINES[jst.toordinal() % len(REPLY_LINES)] if jst.hour < 10 else REPLY_LINES[0], "link": link,
         "x_text": compose_x(items, tp.utm_link(link, "x", "digest"), now),
         "slot": tp.DIGEST_SLOT_JST, "items": [a["slug"] for a in items],
+        "image": f"{tp.site_url()}/digest/{edition['id']}/card.png", "edition": edition,
     }
 
 
+def fallback_to_news(post: dict) -> dict:
+    """号のページを出せないときは、従来どおり /news へのリンク・画像なしにする"""
+    news = f"{tp.site_url()}/news"
+    x_text = post["x_text"].replace(tp.utm_link(post["link"], "x", "digest"), tp.utm_link(news, "x", "digest"))
+    return {**post, "link": news, "image": "", "x_text": x_text}
+
+
+def prepare_page(post: dict) -> dict:
+    """号のデータを置き（content/digests と KV）、サイトが号の画像を返すまで待つ。
+
+    Buffer への予約より前に行う。号のデータが置けない・画像を確認できないときは /news・画像なしに戻す。
+    案 C（lib/digest-design.ts）のときだけ、号ごとに1枚 AI の背景を作る（すでにあれば作らない）。
+    """
+    edition = post.get("edition")
+    if not edition or "/digest/" not in str(post.get("link")):
+        return post
+    edition = dict(edition)
+    if dp.design() == "C" and not edition.get("aiImage"):
+        articles = [a for a in (dp.load_article(i["slug"]) for i in edition["items"]) if a]
+        try:
+            url = dp.ai_background(edition, articles)
+        except Exception as error:  # noqa: BLE001  背景が無くても写真で描ける
+            log(f"[digest] 背景を作れません ({type(error).__name__})")
+            url = None
+        if url:
+            edition["aiImage"] = url
+    dp.save(edition)
+    post = {**post, "edition": edition}
+    if not dp.publish(edition) or not dp.wait_live(post["image"]):
+        log("[digest] 号のページ・画像を確認できないため、リンクは /news・画像なしで出します")
+        return fallback_to_news(post)
+    # リンクカード用の横長画像もエッジに作っておく（失敗しても投稿は続ける）
+    dp.wait_live(post["image"].replace("/card.png", "/share.png"), tries=2, interval=5)
+    log(f"[digest] 号のページ: {post['link']}")
+    return post
+
+
+def image_assets(post: dict) -> list[dict]:
+    return [{"image": {"url": post["image"]}}] if post.get("image") else []
+
+
+def link_card(post: dict) -> dict:
+    """返信のリンクカード。号のページなら号のシェア画像、従来の /news ならロゴ"""
+    if "/digest/" in str(post.get("link")):
+        return {
+            "title": f"{post['text'].splitlines()[0]}｜サイソクニュース",
+            "description": "・".join(i.get("headline", "") for i in (post.get("edition") or {}).get("items", []))[:120]
+            or "AI・ビジネス・お金の公式発表を、速く・分かりやすく。",
+            "thumbnail": {"url": post["link"].rstrip("/") + "/share.png"},
+        }
+    return {
+        "title": "サイソクニュース 新着一覧",
+        "description": "AI・ビジネス・お金の公式発表を、速く・分かりやすく。",
+        "thumbnail": {"url": f"{tp.site_url()}/logo.png"},
+    }
+
+
+def x_input(channel_id: str, post: dict, when: dict) -> dict:
+    return {"channelId": channel_id, "text": post["x_text"], "schedulingType": "automatic", "assets": image_assets(post), **when}
+
+
+def without_images(payload: dict) -> dict:
+    """画像を外した投稿（Buffer が画像付きを拒否したときの作り直し用）"""
+    copy = json.loads(json.dumps(payload))
+    copy["assets"] = []
+    for item in (copy.get("metadata") or {}).get("threads", {}).get("thread", []):
+        item["assets"] = []
+    return copy
+
+
+def create_with_fallback(api_key: str, payload: dict) -> str:
+    """画像付きで作る。Buffer がはっきり拒否した（MutationError）ときだけ、画像なしで1回作り直す"""
+    try:
+        return tp.create_post(api_key, payload)
+    except RuntimeError as error:
+        plain = without_images(payload)
+        if not str(error).startswith("Buffer: ") or plain == payload:
+            raise
+        log("[digest] 画像付きの予約が拒否されたため、画像なしで作り直します")
+        return tp.create_post(api_key, plain)
+
+
 def threads_input(channel_id: str, post: dict, when: dict) -> dict:
-    thread = [{"text": post["text"], "assets": []}]
+    thread = [{"text": post["text"], "assets": image_assets(post)}]
     if post["reply"]:
         thread.append({"text": post["reply"], "assets": [], "metadata": {"threads": {"linkAttachment": {
-            "url": tp.utm_link(post["link"], "threads", "digest"),
-            "title": "サイソクニュース 新着一覧",
-            "description": "AI・ビジネス・お金の公式発表を、速く・分かりやすく。",
-            "thumbnail": {"url": f"{tp.site_url()}/logo.png"},
+            "url": tp.utm_link(post["link"], "threads", "digest"), **link_card(post),
         }}}})
     return {
         "channelId": channel_id, "text": post["text"], "schedulingType": "automatic", "assets": [], **when,
@@ -468,13 +554,11 @@ def deliver(api_key: str, channels: dict, state: dict, post: dict, kind: str, no
             continue
         media_due = due + timedelta(minutes=2) if due and service == "twitter" else due
         when = {"mode": "customScheduled", "dueAt": tp.utc_z(media_due)} if media_due else {"mode": "shareNow"}
-        payload = threads_input(channels[service]["id"], post, when) if service == "threads" else {
-            "channelId": channels[service]["id"], "text": post["x_text"], "schedulingType": "automatic", "assets": [], **when,
-        }
+        payload = threads_input(channels[service]["id"], post, when) if service == "threads" else x_input(channels[service]["id"], post, when)
         entry.setdefault("delivery", {})[service] = {"status": "attempting", "updatedAt": now.isoformat(timespec="seconds")}
         store_entry(state, key, entry)  # 通信前にも記録。クラッシュ後は照合なしに再作成しない。
         try:
-            post_id = tp.create_post(api_key, payload)
+            post_id = create_with_fallback(api_key, payload)
         except Exception as error:  # 片側だけ成功した場合も、そのIDを先に確実に残す
             # createPostのMutationErrorは明確な拒否。それ以外は受理不明として止める。
             status = "rejected" if isinstance(error, RuntimeError) and str(error).startswith("Buffer: ") else "unknown"
@@ -554,7 +638,9 @@ def main() -> int:
             post["reply"] = REPLY_LINES[0]
         if not post.get("x_text"):
             raise RuntimeError("Xに送る本文がありません")
-        log(f"--- {post['key']}\n{post['text']}\n[返信]\n{post['reply']}\n{post['link']}\n[X]\n{post['x_text']}\n")
+        if args.kind == "digest" and (live or args.test_draft):
+            post = prepare_page(post)
+        log(f"--- {post['key']}\n{post['text']}\n[返信]\n{post['reply']}\n{post['link']}\n[画像] {post.get('image') or 'なし'}\n[X]\n{post['x_text']}\n")
         tp.write_summary([f"### {post['key']} {'（受付予定・公開は別途確認）' if live else '（下書き・未投稿）'}", "", "```", post["text"], "---", post["reply"], post["link"], "```", ""])
         if not live and not args.test_draft:
             return 0
@@ -571,9 +657,7 @@ def main() -> int:
             created = []
             try:
                 created.append(tp.create_post(api_key, threads_input(channels["threads"]["id"], post, draft)))
-                created.append(tp.create_post(api_key, {
-                    "channelId": channels["twitter"]["id"], "text": post["x_text"], "schedulingType": "automatic", "assets": [], **draft,
-                }))
+                created.append(tp.create_post(api_key, x_input(channels["twitter"]["id"], post, draft)))
                 log(f"[test] 下書きを作りました: {created}")
             finally:
                 for post_id in created:

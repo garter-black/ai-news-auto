@@ -48,11 +48,16 @@ jobs:
           python-version: "3.12"
       - name: Test delay and duplicate protection
         run: python -m unittest discover -s tests -p 'test_morning_digest.py'
+      # 号の背景（案C）を作るときに画像を扱う
+      - run: pip install -q pillow
       - name: Test drafts (nothing is published)
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.test == 'true' && inputs.verify != true }}
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           KIND: ${{ inputs.kind }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_KV_TOKEN: ${{ secrets.CF_DEPLOY_TOKEN }}
         run: |
           # 日次企画の修正検証では対象企画だけを確認し、不要なAPI消費を避ける。
           if [ "$KIND" = "digest" ] || [ "$KIND" = "poll" ]; then
@@ -72,6 +77,10 @@ jobs:
           THREADS_MODE: ${{ vars.THREADS_MODE }}
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           SNS_DIGEST: ${{ vars.SNS_DIGEST }}
+          # 朝のまとめの号ページ（/digest/<日付>）のデータを KV に置く・案Cの背景を Workers AI で作る（scripts/digest_page.py）
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_KV_TOKEN: ${{ secrets.CF_DEPLOY_TOKEN }}
           KIND: ${{ github.event.schedule == '45 2 * * 2,5' && 'poll' || inputs.kind || 'digest' }}
           TARGET_DATE: ${{ inputs.date }}
         run: |
@@ -97,7 +106,7 @@ jobs:
       - name: Commit history
         if: ${{ !cancelled() && inputs.test != 'true' && inputs.verify != true }}
         run: |
-          if [ -z "$(git status --porcelain state)" ]; then exit 0; fi
+          if [ -z "$(git status --porcelain state content/digests)" ]; then exit 0; fi
           cp state/threads_posted.json "$RUNNER_TEMP/mine.json"
           if [ -f state/threads_inbox.json ]; then cp state/threads_inbox.json "$RUNNER_TEMP/inbox.json"; fi
           git config user.name  "github-actions[bot]"
@@ -107,6 +116,8 @@ jobs:
             python scripts/morning_digest.py --merge "$RUNNER_TEMP/mine.json"
             if [ -f "$RUNNER_TEMP/inbox.json" ]; then cp "$RUNNER_TEMP/inbox.json" state/threads_inbox.json; git add state/threads_inbox.json; fi
             git add state/threads_posted.json
+            # 号のデータ（--merge が投稿記録から書き戻す）。次のデプロイからサイトに同梱される
+            git add content/digests 2>/dev/null || true
             if git diff --cached --quiet; then exit 0; fi
             git commit -m "chore(threads): 朝のまとめ・問いかけ投稿・コメント一覧を記録 [no-deploy]"
             git push origin HEAD:main && exit 0
