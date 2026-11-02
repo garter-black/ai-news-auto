@@ -3421,6 +3421,12 @@
       "skipped": true,
       "url": "https://www.digital.go.jp/press/605c1671-b6ad-4f31-94b7-b586675d65a4"
     },
+    "0ad77be4c06b8f1b": {
+      "at": "2026-11-02T03:51:18.941106+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（セール）",
+      "skipped": true,
+      "url": "https://blog.ja.playstation.com/2026/11/02/20261102-ps5-marvels-wolverine-retail-sale-s/"
+    },
     "0ad8e1b977b5a9da": {
       "at": "2026-10-27T03:07:12.941933+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -8170,6 +8176,12 @@
       "skipped": true,
       "url": "https://www.soumu.go.jp/main_sosiki/singi/kanmin/02shingi06_02001103.html"
     },
+    "97e3f097f9d91591": {
+      "at": "2026-11-02T03:51:18.941129+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（周年）",
+      "skipped": true,
+      "url": "https://blog.ja.playstation.com/2026/11/02/20261102-ps-store-20th-anniversary-editorial-feature-s/"
+    },
     "97f90c00b2bd8e72": {
       "at": "2026-10-30T18:31:35.898709+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9346,6 +9358,14 @@
       "reason": "prefilter: 価値の薄いお知らせ（募集）",
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000455.000015757.html"
+    },
+    "bda2ca88f48f8801": {
+      "at": "2026-11-02T03:51:18.940839+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "databricks-wealth-management-onboarding",
+      "url": "https://www.databricks.com/blog/wealth-management-client-onboarding-needs-more-ai"
     },
     "bdec164d5a53e33b": {
       "at": "2026-10-26T12:05:24.307273+00:00",
@@ -11532,50 +11552,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:02:07.088797+00:00",
-      "attempt": 1,
-      "id": "8d2124d7838d1e30",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "body_markdown に「## 自分に関係ある？」の章がない（構成どおりの見出しを使う）"
-      ],
-      "readability": {
-        "avg_paragraph": 173.5,
-        "avg_sentence": 63.6,
-        "long_share": 0.467,
-        "max_paragraph": 228,
-        "paragraphs": 11,
-        "sentences": 30
-      },
-      "score": null,
-      "source": "nli-research",
-      "title": "「フレンドフレーション」について考えたことはありますか？"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:02:13.551829+00:00",
-      "attempt": 2,
-      "id": "8d2124d7838d1e30",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（388字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 178.6,
-        "avg_sentence": 64.3,
-        "long_share": 0.64,
-        "max_paragraph": 223,
-        "paragraphs": 9,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "nli-research",
-      "title": "「フレンドフレーション」について考えたことはありますか？"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T04:02:19.990828+00:00",
@@ -18236,6 +18212,49 @@
       "score": 100,
       "source": "nintendo-topics",
       "title": "『ピクミン4 Nintendo Switch 2 Edition + だれでもチャレンジ! ダンドリ検定』の体験版が配信開始。「Pikmin Day Direc"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T03:51:15.061885+00:00",
+      "attempt": 1,
+      "id": "bda2ca88f48f8801",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 73.9字・60字超の文が 64% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 135.4字・最長 318字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 135.4,
+        "avg_sentence": 73.9,
+        "long_share": 0.636,
+        "max_paragraph": 318,
+        "paragraphs": 12,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "databricks-blog",
+      "title": "Wealth Management Client Onboarding Needs More Than AI"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T03:51:18.940256+00:00",
+      "attempt": 0,
+      "id": "bda2ca88f48f8801",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 117.3,
+        "avg_sentence": 39.1,
+        "long_share": 0.111,
+        "max_paragraph": 205,
+        "paragraphs": 15,
+        "sentences": 45
+      },
+      "score": 100,
+      "source": "databricks-blog",
+      "title": "Wealth Management Client Onboarding Needs More Than AI"
     }
   ],
   "short_text_retry": {},
