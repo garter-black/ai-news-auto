@@ -245,7 +245,9 @@ export default async function ArticlePage({ params }: Props) {
   const related = getRelatedArticles(article, 8).filter((a) => !nextSlugs.has(a.slug)).slice(0, 4);
 
   // 判定カードに見えている問いと答えを、そのまま FAQ の構造化データにする（AI検索の引用向け）
-  const name = article.seoTitle?.split(/[｜|：:]/)[0]?.trim() || "この発表";
+  // 「〇〇とは？…」型の題は「とは」「？」の前までを名前にする。長すぎる名前は問いが崩れるので「この発表」にする
+  const titleName = article.seoTitle?.split(/[｜|：:？?]|とは/)[0]?.trim() ?? "";
+  const name = titleName && titleName.length <= 30 ? titleName : "この発表";
   // 本文の「よくある質問」（記事に表示している問いと答え）があればそれを使う。
   // Google の FAQ のリッチリザルトは 2026-05 に終了したが、ページに見えている Q&A の印は他の検索・AI の答えに使われうるので残す
   const faq = articleFaq.length >= 3
@@ -257,7 +259,8 @@ export default async function ArticlePage({ params }: Props) {
         { q: `${name}の料金は？`, a: verdict.price || "不明" },
         { q: `${name}は無料で試せる？`, a: freeLabel(verdict.free) },
         ...(verdict.audience ? [{ q: `${name}は誰に向いている？`, a: verdict.audience }] : []),
-      ]
+        // 答えが「記載なし」「不明」の問いは載せない（答えになっていない Q&A は検索・AI の引用で逆効果）
+      ].filter((row) => row.a && !/^(記載なし|不明|未定)/.test(row.a))
     : [];
 
   const jsonLd = [
