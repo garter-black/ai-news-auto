@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "nvidia-recovery-automated-training-recovery",
+   "at": "2026-11-02T23:38:15.807310+00:00",
+   "title": "AI半導体のNVIDIAが学習の自動復旧ツール公開 止まったAI開発を人手なしで再開",
+   "head": "AI半導体のNVIDIAが学習の自動復旧ツール公開 止まったAI開発を人手なしで再開 | Keep Distributed Training Running with Automated Workload Recovery",
+   "text": "AI半導体のNVIDIAが学習の自動復旧ツール公開 止まったAI開発を人手なしで再開 | Keep Distributed Training Running with Automated Workload Recovery | NVIDIA Recovery / 分散学習 / 自動復旧 / Slurm / NVIDIA DSX OS / GPUクラスター / チェックポイント / オープンソース / AI学習 障害 / goodput / NVIDIA / NVIDIA Recovery / 分散学習 / GPUクラスター / オープンソース / AIインフラ",
+   "urls": [
+    "https://developer.nvidia.com/blog/keep-distributed-training-running-with-automated-workload-recovery/"
+   ]
+  },
+  {
+   "slug": "respirator-mask-ring-recall-2026",
+   "at": "2026-11-02T23:36:26.053318+00:00",
+   "title": "厚生労働省が注意喚起　防毒マスクの締め付けリング不具合と回収対応（2026年11月2日）",
+   "head": "厚生労働省が注意喚起　防毒マスクの締め付けリング不具合と回収対応（2026年11月2日） | 防毒マスクの締め付けリングの使用に関する注意喚起について",
+   "text": "厚生労働省が注意喚起　防毒マスクの締め付けリング不具合と回収対応（2026年11月2日） | 防毒マスクの締め付けリングの使用に関する注意喚起について | 防毒マスク / 締め付けリング / 回収 / 安全対策 / 厚生労働省 / 労働安全 / 化学防護 / 製品リコール / 吸収缶 / マスク不具合 / 消費者保護 / 労働安全 / 防護具",
+   "urls": [
+    "https://www.mhlw.go.jp/stf/newpage_77145.html"
+   ]
+  },
+  {
    "slug": "affinity-for-ipad-canva-release",
    "at": "2026-11-02T22:43:29.788820+00:00",
    "title": "Canvaがデザインアプリ「Affinity」iPad版を公開 描く・写真編集・ページ制作が1本に",
@@ -1765,16 +1785,6 @@
    "text": "デジタル庁の政府職員向け生成AI「源内」、満足度71.7％ 第1回利用状況アンケート結果を公表 | ガバメントAI 源内 利用状況アンケート調査（第1回）の結果を公表しました | デジタル庁 / ガバメントAI 源内 / 生成AI / 政府職員 / アンケート調査 / 業務効率化 / 行政サービス / AIエージェント / 行政 / AI / デジタル庁 / 働き方改革",
    "urls": [
     "https://www.digital.go.jp/policies/genai/f9ed1b1c-b22f-4466-8e50-c1c9adf9f8eb"
-   ]
-  },
-  {
-   "slug": "mhlw-job-openings-september-2026",
-   "at": "2026-10-29T23:31:43.666837+00:00",
-   "title": "厚生労働省が令和8年9月の有効求人倍率を発表　前月比0.01ポイント上昇の1.19倍",
-   "head": "厚生労働省が令和8年9月の有効求人倍率を発表　前月比0.01ポイント上昇の1.19倍 | 一般職業紹介状況(令和8年9月分)について",
-   "text": "厚生労働省が令和8年9月の有効求人倍率を発表　前月比0.01ポイント上昇の1.19倍 | 一般職業紹介状況(令和8年9月分)について | 有効求人倍率 / 厚生労働省 / 一般職業紹介状況 / 求人倍率 / 正社員有効求人倍率 / ハローワーク / 雇用情勢 / 労働市場 / 社会・行政 / 雇用 / 労働市場",
-   "urls": [
-    "https://www.mhlw.go.jp/stf/newpage_76960.html"
    ]
   }
  ]

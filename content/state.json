@@ -4830,6 +4830,12 @@
       "skipped": true,
       "url": "https://news.mynavi.jp/article/20261028-5211663/"
     },
+    "2adc1bac1cb6806f": {
+      "at": "2026-11-02T23:34:29.003288+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（委員会）",
+      "skipped": true,
+      "url": "https://www.mext.go.jp/b_menu/shingi/kokuritu/gijiroku/mext_00011.html"
+    },
     "2b2f487795f0e5d2": {
       "at": "2026-11-01T01:11:05.151015+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -6951,6 +6957,14 @@
       "reason": "prefilter: 価値の薄いお知らせ（採用）",
       "skipped": true,
       "url": "https://www.mhlw.go.jp/stf/kouseiroudoushou/saiyou/hijoukin/hj-iyakukyoku02-kagakubussitusinsasenmonin.html"
+    },
+    "659f928ed29ab472": {
+      "at": "2026-11-02T23:36:49.636472+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "score": 100,
+      "section": "public",
+      "slug": "respirator-mask-ring-recall-2026",
+      "url": "https://www.mhlw.go.jp/stf/newpage_77145.html"
     },
     "6687f834982bd2f1": {
       "at": "2026-10-29T01:14:14.760103+00:00",
@@ -9139,6 +9153,14 @@
       "skipped": true,
       "url": "https://www.docomo.ne.jp/info/news_release/2026/10/27_01.html"
     },
+    "9f7e69613023002a": {
+      "at": "2026-11-02T23:38:17.802512+00:00",
+      "model": "claude:sonnet",
+      "score": 100,
+      "section": "ai",
+      "slug": "nvidia-recovery-automated-training-recovery",
+      "url": "https://developer.nvidia.com/blog/keep-distributed-training-running-with-automated-workload-recovery/"
+    },
     "9fbf8cf82abe3d0a": {
       "at": "2026-10-26T13:32:13.607843+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9604,6 +9626,13 @@
       "section": "ai",
       "slug": "github-copilot-security-extension",
       "url": "https://github.blog/changelog/2026-10-28-security-extension-for-the-github-copilot-app"
+    },
+    "ae04509b394cb839": {
+      "at": "2026-11-02T23:34:28.448402+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: 元記事・確認済みの資料に無い画面の手順・メニュー名・ボタン名がある（「ワークスペース設定の左サイドバーからAI > A」）。資料にある道順だけを書くか、「公式ヘルプの手順を確認してください」と書く",
+      "skipped": true,
+      "url": "https://www.atlassian.com/blog/bitbucket/agentic-pipelines-generally-available"
     },
     "ae2898f665e29e0d": {
       "at": "2026-10-26T13:12:34.090521+00:00",
@@ -12704,118 +12733,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T18:03:10.966258+00:00",
-      "attempt": 0,
-      "id": "b2263e9f84127c76",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 167.9字・最長 272字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 167.9,
-        "avg_sentence": 23.4,
-        "long_share": 0.0,
-        "max_paragraph": 272,
-        "paragraphs": 16,
-        "sentences": 115
-      },
-      "score": 100,
-      "source": "hugging-face-blog",
-      "title": "nemotron-halloween"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T18:31:04.348184+00:00",
-      "attempt": 1,
-      "id": "25cc4c9bb2e3e7e5",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2040字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 97.8,
-        "avg_sentence": 55.0,
-        "long_share": 0.312,
-        "max_paragraph": 137,
-        "paragraphs": 18,
-        "sentences": 32
-      },
-      "score": null,
-      "source": "openai-news",
-      "title": "Making it easier for websites to express AI training preferences"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T18:31:14.484737+00:00",
-      "attempt": 2,
-      "id": "25cc4c9bb2e3e7e5",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2209字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 148.6,
-        "avg_sentence": 69.0,
-        "long_share": 0.643,
-        "max_paragraph": 272,
-        "paragraphs": 13,
-        "sentences": 28
-      },
-      "score": null,
-      "source": "openai-news",
-      "title": "Making it easier for websites to express AI training preferences"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T18:51:43.224428+00:00",
-      "attempt": 1,
-      "id": "e7bf37c2ea0b7edcb7ba161e4879deccde91da2a",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1216字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（362字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 157.9,
-        "avg_sentence": 61.4,
-        "long_share": 0.5,
-        "max_paragraph": 251,
-        "paragraphs": 7,
-        "sentences": 18
-      },
-      "score": null,
-      "source": "trends",
-      "title": "sox"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T18:51:51.249066+00:00",
-      "attempt": 2,
-      "id": "e7bf37c2ea0b7edcb7ba161e4879deccde91da2a",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1324字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 153.9,
-        "avg_sentence": 63.4,
-        "long_share": 0.529,
-        "max_paragraph": 247,
-        "paragraphs": 7,
-        "sentences": 17
-      },
-      "score": null,
-      "source": "trends",
-      "title": "sox"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T19:11:14.845089+00:00",
@@ -19147,6 +19064,114 @@
       "score": null,
       "source": "radar-gori.me",
       "title": "新型MacBook Proは「ほしい」、だけど「活かせない」のジレンマ。新モデルは買いま……"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T23:33:34.738201+00:00",
+      "attempt": 1,
+      "id": "ae04509b394cb839",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "元記事・確認済みの資料に無い画面の手順・メニュー名・ボタン名がある（「AI > AI」）。資料にある道順だけを書くか、「公式ヘルプの手順を確認してください」と書く"
+      ],
+      "readability": {
+        "avg_paragraph": 90.5,
+        "avg_sentence": 52.2,
+        "long_share": 0.423,
+        "max_paragraph": 319,
+        "paragraphs": 15,
+        "sentences": 26
+      },
+      "score": null,
+      "source": "atlassian-blog",
+      "title": "Agentic Pipelines is generally available: run agents in Cloud or on your own Lin"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T23:34:28.448345+00:00",
+      "attempt": 2,
+      "id": "ae04509b394cb839",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "元記事・確認済みの資料に無い画面の手順・メニュー名・ボタン名がある（「ワークスペース設定の左サイドバーからAI > A」）。資料にある道順だけを書くか、「公式ヘルプの手順を確認してください」と書く"
+      ],
+      "readability": {
+        "avg_paragraph": 78.4,
+        "avg_sentence": 40.5,
+        "long_share": 0.194,
+        "max_paragraph": 210,
+        "paragraphs": 16,
+        "sentences": 31
+      },
+      "score": null,
+      "source": "atlassian-blog",
+      "title": "Agentic Pipelines is generally available: run agents in Cloud or on your own Lin"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T23:36:30.356574+00:00",
+      "attempt": 1,
+      "id": "659f928ed29ab472",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "段落が長い（平均 114.8字・最長 236字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 114.8,
+        "avg_sentence": 38.3,
+        "long_share": 0.037,
+        "max_paragraph": 236,
+        "paragraphs": 9,
+        "sentences": 27
+      },
+      "score": 100,
+      "source": "mhlw",
+      "title": "防毒マスクの締め付けリングの使用に関する注意喚起について"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T23:36:49.631341+00:00",
+      "attempt": 0,
+      "id": "659f928ed29ab472",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 104.0字・最長 228字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 104.0,
+        "avg_sentence": 34.7,
+        "long_share": 0.0,
+        "max_paragraph": 228,
+        "paragraphs": 10,
+        "sentences": 30
+      },
+      "score": 100,
+      "source": "mhlw",
+      "title": "防毒マスクの締め付けリングの使用に関する注意喚起について"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T23:38:17.794694+00:00",
+      "attempt": 1,
+      "id": "9f7e69613023002a",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 54.4,
+        "avg_sentence": 30.9,
+        "long_share": 0.015,
+        "max_paragraph": 148,
+        "paragraphs": 38,
+        "sentences": 67
+      },
+      "score": 100,
+      "source": "nvidia-developer-blog",
+      "title": "Keep Distributed Training Running with Automated Workload Recovery"
     }
   ],
   "short_text_retry": {},
