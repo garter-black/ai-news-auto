@@ -139,6 +139,39 @@ PRIORITY_TOPIC_RE = re.compile(
     re.IGNORECASE,
 )
 
+# 読者像から外れた一般の話題（2026-11-03 の点検: 「年金の日」の告知・都の広報動画・叙勲や褒章・会議の開催日程など）。
+# 候補の題名・概要がこれに当たり、下のお金の行動の目印が無いものは、幅広い話題の中で後回しにし、1日の上限（WEB_DAILY_CAP）にも数えない
+# （別に OFF_PERSONA_DAILY_CAP 本まで。scripts/web_articles.py）。本当の読者像の話題（補助金の申請・税・金利など）は落とさない
+OFF_PERSONA_RE = re.compile(
+    r"叙勲|褒章|受章|文化功労者|文化勲章|栄典|表彰|感謝状|功労者|伝達式|授与式|式典|"
+    r"「[^」]{1,12}の日」|記念日|(?:強化|推進|防止|啓発|普及|ねんきん|安全|防災)(?:月間|週間|運動)|"
+    r"動画を公開|動画\d+本|PR動画|広報動画|ポスター|パンフレット|"
+    r"(?:会合|総会|審議会|調査会|懇談会|分科会|検討会|委員会|会議)(?:（[^）]{0,12}）)?(?:の)?(?:開催|日程)|開催日程|開催について|開催のお知らせ|"
+    r"人事異動|役員人事|就任のお知らせ|"
+    r"イルミネーション|ゆるキャラ|マスコット|写真展|作品展|コンテスト|フェスティバル|お祭り"
+)
+# お金・手続きで読者が動ける目印（これがあれば一般の話題の形でも後回しにしない）
+MONEY_ACTION_RE = re.compile(
+    r"申請|受付|締切|期限|給付|補助金|助成金|支援金|控除|減税|増税|値上げ|値下げ|金利|株価|為替|円安|円高|NISA|iDeCo|"
+    r"税率|保険料|手当|最大\d+万円|\d+億円|\d+兆円",
+    re.IGNORECASE,
+)
+
+
+def is_off_persona_candidate(title: str, summary: str = "") -> bool:
+    """生成前の候補が、読者像から外れた一般の話題か（叙勲・記念日の告知・広報動画・会議の日程など）。
+    お金・手続きの目印（申請・補助金・金利・値上げ など）があれば外れていない"""
+    text = _nfkc(f"{title} {summary[:200]}")
+    return bool(OFF_PERSONA_RE.search(text)) and not MONEY_ACTION_RE.search(text)
+
+
+def candidate_rank(title: str, summary: str = "") -> int:
+    """幅広い話題のレーン内の並び順。0 = 読者像の話題（お金・投資・不動産・起業/副業・税や補助金）/ 1 = ふつう / 2 = 読者像から外れた一般の話題"""
+    if is_off_persona_candidate(title, summary):
+        return 2
+    return 0 if PRIORITY_TOPIC_RE.search(f"{title} {summary[:200]}") else 1
+
+
 # 配信用に選ぶ話題（はてなブログの下書き scripts/crosspost_drafts.py など）。スポーツは入れない
 # 検索に出す記事の基準（scripts/indexnow.py の is_focus・lib/indexing.ts）もこの下のジャンル・正規表現とスポーツの正規表現を使う。
 # 変えたら `python3 scripts/indexnow.py --export-rules` で lib/index-rules.json を書き出す（サイト側が読む）

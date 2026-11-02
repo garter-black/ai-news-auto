@@ -39,6 +39,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import os
 import re
 import urllib.parse
 import sys
@@ -1174,11 +1175,30 @@ def attach_related(record: dict, data: dict, rows: list[dict]) -> dict:
     return record
 
 
+# 読者像から外れた一般の話題（persona.is_off_persona_candidate）の1日の上限。WEB_DAILY_CAP とは別に数える（2026-11-03）
+OFF_PERSONA_DAILY_CAP = int(os.environ.get("OFF_PERSONA_DAILY_CAP", "3"))
+
+
+def off_persona_today(state: dict, now: datetime | None = None) -> int:
+    """今日（JST）作った、読者像から外れた一般の話題の記事の本数"""
+    today = (now or datetime.now(JST)).astimezone(JST).date()
+    count = 0
+    for value in (state.get("processed_web") or {}).values():
+        if isinstance(value, dict) and value.get("slug") and value.get("offPersona"):
+            try:
+                if datetime.fromisoformat(value["at"]).astimezone(JST).date() == today:
+                    count += 1
+            except (KeyError, ValueError):
+                continue
+    return count
+
+
 def generated_today(state: dict) -> int:
+    """今日（JST）作った新しい記事の本数（1日の上限に数えるもの）。読者像から外れた一般の話題は数えない（別の上限）"""
     today = datetime.now(JST).date()
     count = 0
     for value in (state.get("processed_web") or {}).values():
-        if isinstance(value, dict) and value.get("slug"):
+        if isinstance(value, dict) and value.get("slug") and not value.get("offPersona"):
             try:
                 if datetime.fromisoformat(value["at"]).astimezone(JST).date() == today:
                     count += 1
@@ -1320,8 +1340,14 @@ def lane_turns(lane: str) -> int:
 
 
 def persona_rank(item: dict) -> int:
-    """レーン内の並べ替え用（rank_bucket の次）。お金・投資・不動産・起業/副業・税や補助金の話題を先に"""
-    return 0 if persona.PRIORITY_TOPIC_RE.search(f"{item.get('title', '')} {item.get('summary', '')[:200]}") else 1
+    """レーン内の並べ替え用（rank_bucket の次）。お金・投資・不動産・起業/副業・税や補助金の話題を先に、
+    読者像から外れた一般の話題（叙勲・記念日の告知・広報動画・会議の日程など）を最後に（persona.candidate_rank）"""
+    return persona.candidate_rank(item.get("title", ""), item.get("summary", ""))
+
+
+def off_persona(item: dict) -> bool:
+    """幅広い話題の候補が、読者像から外れた一般の話題か（後回しにし、1日の上限とは別に数える）"""
+    return persona.is_off_persona_candidate(item.get("title", ""), item.get("summary", ""))
 
 
 def sports_today(state: dict, now: datetime | None = None) -> int:
@@ -1859,6 +1885,10 @@ def main() -> int:
     def total_created() -> int:
         return sum(created.values())
 
+    # 読者像から外れた一般の話題の本数（total_created・1日の上限には数えない。OFF_PERSONA_DAILY_CAP まで）
+    created_off = [0]
+    off_done_today = off_persona_today(state)
+
     def time_left() -> float:
         return RUN_TIME_BUDGET_SEC - (time.time() - run_started)
 
@@ -2194,9 +2224,13 @@ def main() -> int:
         touched.add(record["slug"])
         run_status[item["id"]] = ("article", record["slug"])
         mark(state, item, slug=record["slug"], model=model_name, section=lane, score=record.get("qualityScore"),
+             **({"offPersona": True} if item.get("_off_persona") else {}),
              **({"major": True} if major else {}), **({"breaking": True} if record.get("breaking") else {}))
         state["major_tries"].pop(item["id"], None)
-        created["major" if major else ("ai" if is_ai else "broad")] += 1
+        if item.get("_off_persona") and not major:
+            created_off[0] += 1  # 読者像から外れた一般の話題は、1日の上限・この実行の本数に数えない
+        else:
+            created["major" if major else ("ai" if is_ai else "broad")] += 1
         per_section[record["genreSlug"]] = per_section.get(record["genreSlug"], 0) + 1
         log(
             f"   [OK{' major' if major else ''}] {path.relative_to(m.ROOT)} ({record['genreSlug']} / {len(record['body'])}字 / "
@@ -2309,6 +2343,21 @@ def main() -> int:
         order = lane_order(lanes)
         pointers = {lane: 0 for lane in order}
         active = list(order)
+        deferred_off: list[tuple[str, dict]] = []
+
+        def next_candidate(lane: str, is_ai: bool):
+            """レーンの次の候補 (item, target) か (None, None)。幅広い話題の「読者像から外れた一般の話題」は deferred_off に回す"""
+            items = lanes[lane]
+            while pointers[lane] < len(items):
+                cand = items[pointers[lane]]
+                pointers[lane] += 1
+                if not is_ai and off_persona(cand):
+                    deferred_off.append((lane, cand))
+                    continue
+                action, found = pick(cand, is_ai)
+                if action == "take":
+                    return cand, found
+            return None, None
         while active:
             if total_created() >= remaining or time_up():
                 break
@@ -2322,17 +2371,8 @@ def main() -> int:
                 if (is_ai and created["ai"] >= ai_limit) or (not is_ai and created["broad"] >= broad_limit):
                     active.remove(lane)
                     continue
-                items = lanes[lane]
-                # このレーンで次に試せる候補を探す（足切り・重複・フィード上限は飛ばす）
-                item = None
-                target = None
-                while pointers[lane] < len(items):
-                    cand = items[pointers[lane]]
-                    pointers[lane] += 1
-                    action, target = pick(cand, is_ai)
-                    if action == "take":
-                        item = cand
-                        break
+                # このレーンで次に試せる候補を探す（足切り・重複・フィード上限は飛ばす。読者像から外れた一般の話題は後回し）
+                item, target = next_candidate(lane, is_ai)
                 if item is None:
                     active.remove(lane)
                     continue
@@ -2343,17 +2383,21 @@ def main() -> int:
                         break
                     if created["broad"] >= broad_limit:
                         break
-                    extra = None
-                    while pointers[lane] < len(items):
-                        cand = items[pointers[lane]]
-                        pointers[lane] += 1
-                        action, target = pick(cand, is_ai)
-                        if action == "take":
-                            extra = cand
-                            break
+                    extra, target = next_candidate(lane, is_ai)
                     if extra is None:
                         break
                     process_web(extra, lane, target)
+        # 読者像から外れた一般の話題は、読者像の候補を回し終えてから、1日 OFF_PERSONA_DAILY_CAP 本まで（上限・本数には数えない）
+        for lane, cand in deferred_off:
+            if off_done_today + created_off[0] >= OFF_PERSONA_DAILY_CAP or time_up() or llm.all_exhausted(args.tier):
+                if deferred_off:
+                    log(f"[persona] 読者像から外れた一般の話題 {len(deferred_off)} 件は見送り（今日 {off_done_today + created_off[0]} 本 / 上限 {OFF_PERSONA_DAILY_CAP}）")
+                break
+            action, target = pick(cand, False)
+            if action == "take":
+                cand["_off_persona"] = True
+                log(f"\n[persona] 読者像から外れた一般の話題（後回しの分）: {cand['title'][:60]}")
+                process_web(cand, lane, target)
     finally:
         if fast_mode:
             write_fast_results(fast_items, fast_results, state, run_status, run_detected_at)

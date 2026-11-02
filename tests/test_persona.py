@@ -208,5 +208,31 @@ class PlainStyleTest(unittest.TestCase):
         self.assertIn("サイソクニュース", c.footer({"slug": "s", "title": "t"}, "hatena"))
 
 
+class OffPersonaCandidates(unittest.TestCase):
+    """読者像から外れた一般の話題（2026-11-03 の点検: 年金の日・都の広報動画・叙勲など）は後回し・上限は別（本物の読者像の話題は落とさない）"""
+
+    def test_classifier(self):
+        for title in ("令和８年秋の叙勲について", "「年金の日」・「ねんきん月間」のお知らせ", "不動産取引に役立つ動画を公開！",
+                      "国債市場特別参加者会合（第121回）開催日程", "令和8年度 文化功労者及び文化勲章受章者について"):
+            self.assertTrue(persona.is_off_persona_candidate(title), title)
+            self.assertEqual(persona.candidate_rank(title), 2)
+        for title in ("中小企業向け電力支援金の第7回申請受付を開始", "住宅ローン減税の延長", "日銀当座預金増減要因（10月実績）",
+                      "「いい夫婦の日」キャンペーンで最大50万円のポイント還元", "OpenAI introduces GPT-6"):
+            self.assertFalse(persona.is_off_persona_candidate(title), title)
+        self.assertEqual(persona.candidate_rank("NISAの新しい制度"), 0)
+        self.assertEqual(w.persona_rank({"title": "令和８年秋の褒章について", "summary": ""}), 2)
+
+    def test_off_persona_not_counted_in_daily_cap(self):
+        now = datetime.now(timezone.utc).isoformat()
+        state = {"processed_web": {
+            "a": {"slug": "a", "at": now},
+            "b": {"slug": "b", "at": now, "offPersona": True},
+            "c": {"slug": "c", "at": now, "offPersona": True},
+            "d": {"skipped": True, "at": now},
+        }}
+        self.assertEqual(w.generated_today(state), 1)
+        self.assertEqual(w.off_persona_today(state), 2)
+
+
 if __name__ == "__main__":
     unittest.main()
