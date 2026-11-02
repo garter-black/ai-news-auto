@@ -36,6 +36,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from threads_token import API_BASE, load_token, refresh_if_needed  # noqa: E402
 import threads_voice as voice  # noqa: E402
 import persona  # noqa: E402
+import threads_hooks  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
@@ -133,10 +134,236 @@ def key_fact(article: dict) -> str:
     return next((p for p in points if re.search(r"\d", p)), points[0] if points else "")
 
 
-def compose(article: dict, recent: list[str] | None = None, breaking: bool = False) -> str:
-    """投稿文（完結型）。投稿だけで「誰が・何を・何が変わる・自分に関係あるか」が分かるようにする。
+# ---- 本文の形（2026-11-02 オーナー承認）----
+# 画像（16:9 の写真＋見出し）に見出しが入るので、本文で見出しを繰り返さない。空行で区切った3つのかたまり:
+#   1. 短い書き出し（書き出しの型のローテーションはそのまま）
+#   2. 「要約すると、」＋事実の短い文2つ（1文に1つのこと）
+#   3. 読者への問いかけ（自分の仕事・お金・副業・道具について、一言で答えられるもの。「？」で終える）
+# 全体で全角120〜150字くらい。記事へのリンクは返信（2/2）に置く。
+POST_TARGET_CHARS = 150
+POST_MAX_CHARS = 175
+HOOK_MAX = 34
+# 生成時に記事ごとに書いた紹介文の1行目は、少し長くても書き出しに使う（判定から作る定型の書き出しより記事に合う）
+OLD_HOOK_MAX = 40
+SENTENCE_MAX = 62
+# 要約の1文の目安（これより長い文は、組み立て直すときに選ばれにくくする）
+SENTENCE_SHORT = 45
+SUMMARY_MAX = 125
+QUESTION_MAX = 48
+QUESTION_END = ("？", "?")
+# 問いかけで使わない呼びかけ（反応のお願い・アンケートのふり）
+BAIT_RE = re.compile(r"コメント|いいね|フォロー|リポスト|拡散|シェアして|アンケート|投票")
+# 要約に使わない文: 記事の紹介（「〜を解説します」）、読者への指示・推測、出典の前置き
+META_RE = re.compile(r"解説|まとめて|まとめた|まとめられ|紹介し|分かりやすく|わかりやすく|記事|お伝えします")
+NUDGE_RE = re.compile(
+    r"(?:チェック|確認)して(?:みて|おいて)?ください|チェックしてほしい|要チェック|急務|してみては|おすすめ|しておきたい|が分かります|"
+    r"(?:そうです|ようです|でしょう|かもしれません|と考えられます|とみられます|見込みです)。$"
+)
+SOURCE_LEAD_RE = re.compile(r"^[^。、「」]{2,40}?によると、")
 
-    記事へのリンクは返信（X はスレッドの2件目）に付けるので、本文は記事へ誘導するだけの締めで終えない。
+
+def split_sentences(text: str) -> list[str]:
+    return [s.strip() for s in re.split(r"(?<=[。！？!?])", str(text or "")) if s.strip()]
+
+
+def post_blocks_of(text: str) -> list[str]:
+    """空行で区切ったかたまり（各かたまりの中の空白行は落とす）"""
+    return [b.strip() for b in re.split(r"\n\s*\n", str(text or "").strip()) if b.strip()]
+
+
+def repeats_title(line: str, title: str) -> bool:
+    """見出しをほぼそのまま書いた行か（画像に見出しが入るので、本文では繰り返さない）"""
+    if not line or not title:
+        return False
+    return title in line or overlap(line, title) >= max(16, int(len(title) * 0.7))
+
+
+def post_problems(text: str, article: dict | None = None) -> list[str]:
+    """本文が新しい形になっているかの機械チェック（API 不要）。問題がなければ空"""
+    article = article or {}
+    problems: list[str] = []
+    blocks = post_blocks_of(text)
+    if len(blocks) != 3:
+        problems.append(f"かたまりが3つでない（{len(blocks)}個）")
+    if len(blocks) < 2 or not blocks[1].startswith(f"{persona.SUMMARY_OPENER}、"):
+        problems.append(f"2つ目のかたまりが「{persona.SUMMARY_OPENER}、」で始まっていない")
+    if not str(text).rstrip().endswith(QUESTION_END):
+        problems.append("最後が問いかけ（？）で終わっていない")
+    if m := persona.STIFF_RE.search(text):
+        problems.append(f"使わない言い回し（「{m.group(0)}」）")
+    if m := persona.ADVICE_RE.search(text):
+        problems.append(f"儲け話・投資助言の表現（「{m.group(0)}」）")
+    if blocks and (m := BAIT_RE.search(blocks[-1])):
+        problems.append(f"反応のお願い・アンケートのふり（「{m.group(0)}」）")
+    if re.search(r"https?://|#\S", text):
+        problems.append("URL かハッシュタグが入っている")
+    if len(text) > POST_MAX_CHARS:
+        problems.append(f"長すぎる（{len(text)}字 / {POST_MAX_CHARS}字まで）")
+    title = str(article.get("title") or "").strip()
+    if title and any(repeats_title(line, title) for line in str(text).splitlines()):
+        problems.append("見出しをそのまま繰り返している")
+    return problems
+
+
+def clean_sentence(sentence: str) -> str:
+    s = EMOJI_RE.sub("", str(sentence or "")).strip()
+    s = re.sub(r"^【速報】\s*", "", s)
+    s = re.sub(r"^(?:結論[：:]|先に言うと、)\s*", "", s)
+    s = re.sub(r"^(?:さらに|また|加えて|そのうえ)、?", "", s)  # 前の文に続ける言葉は、文を選び直すと浮くので落とす
+    s = SOURCE_LEAD_RE.sub("", s).strip()
+    if s and not s.endswith(("。", "！", "？", "!", "?")):
+        s += "。"
+    return s
+
+
+def fact_pool(article: dict, title: str, hook: str = "", max_len: int = SENTENCE_MAX) -> list[str]:
+    """要約に使える事実の文。生成時に作った紹介文（話し言葉）→ 要点 → 説明文の順。数字は記事のまま"""
+    raw: list[str] = []
+    post = article.get("threadsPost", "")
+    blocks = post_blocks_of(post) if int(article.get("threadsStyle") or 1) >= 3 else [post]
+    if len(blocks) > 1:  # 新しい形の紹介文は、要約のかたまりだけを材料にする（書き出し・問いかけは事実ではない）
+        blocks = [b for b in blocks if b.startswith(persona.SUMMARY_OPENER)]
+    for block in blocks:
+        sentences = [x for line in clean_lines(block) for x in split_sentences(line.removeprefix(f"{persona.SUMMARY_OPENER}、"))]
+        if len(blocks) == 1 and len(sentences) > 1 and len(sentences[0]) <= HOOK_MAX:
+            sentences = sentences[1:]  # 以前の紹介文の最初の文は書き出し（事実の文ではない）
+        raw += sentences
+    for h in article.get("highlights", []):
+        raw += split_sentences(h)
+    raw += split_sentences(article.get("description", ""))
+    found: list[str] = []
+    for sentence in raw:
+        s = clean_sentence(sentence)
+        if not 8 <= len(s) <= max_len or s.endswith(QUESTION_END) or (hook and (s in hook or hook in s)):
+            continue
+        if META_RE.search(s) or NUDGE_RE.search(s) or TEASER_RE.search(s) or CLICKBAIT_RE.search(s):
+            continue
+        if persona.STIFF_RE.search(s) or persona.ADVICE_RE.search(s) or repeats_title(s, title):
+            continue
+        if any(overlap(s, f) >= 12 or difflib.SequenceMatcher(None, s, f).ratio() >= 0.45 for f in found):
+            continue
+        found.append(s)
+    return found
+
+
+def summary_block(article: dict, title: str, hook: str, budget: int) -> str:
+    """「要約すると、」＋事実の短い文2つ（入らなければ1つ）。文は記事の紹介文・要点から選び、数字・固有名詞は変えない"""
+    # 短い文が無い記事は、少し長い文まで広げる（それでも無ければ説明文の1文目）
+    pool = fact_pool(article, title, hook)[:8] or fact_pool(article, title, hook, budget - 6)[:8]
+    opener = f"{persona.SUMMARY_OPENER}、"
+    best: tuple[float, list[str]] | None = None
+    for i, first in enumerate(pool):
+        for j in [None, *range(i + 1, len(pool))]:
+            chosen = [first] if j is None else [first, pool[j]]
+            size = len(opener) + sum(len(s) for s in chosen) + len(chosen) - 1
+            if size > budget:
+                continue
+            # 2文を優先。早く出てくる文（紹介文の話し言葉）と、数字のある文を優先する
+            cost = i + (j or 0) * 0.5 + (6 if j is None else 0) - (3 if re.search(r"\d", "".join(chosen)) else 0)
+            cost += sum(max(0, len(s) - SENTENCE_SHORT) for s in chosen) / 5  # 短い文を優先
+            if best is None or cost < best[0]:
+                best = (cost, chosen)
+    if best is None:
+        fallback = clean_sentence(str(article.get("description") or title))
+        fallback = split_sentences(fallback)[0] if split_sentences(fallback) else title
+        return opener + fallback[: max(10, budget - len(opener))]
+    return opener + "\n".join(best[1])
+
+
+HOOK_EXAMPLES = {e for hook in threads_hooks.HOOKS for e in hook["examples"]}
+
+
+def first_line_hook(article: dict, recent: list[str], breaking: bool, title: str) -> str:
+    """1行目の短い書き出し。生成時の紹介文の1行目が短ければそれ、なければ判定から型を選ぶ（直近の型は避ける）"""
+    if breaking and not article.get("disaster") and speed_line(article):
+        article["_hook"] = "breaking"
+        return speed_line(article)
+    weak = set(weak_hook_keys())
+    blocks = post_blocks_of(article.get("threadsPost", ""))
+    old = clean_lines(blocks[0] if int(article.get("threadsStyle") or 1) >= 3 and blocks else article.get("threadsPost", ""))
+    line = re.sub(r"^【速報】\s*", "", old[0]) if old else ""
+    if len(line) > OLD_HOOK_MAX and len(split_sentences(line)) > 1:
+        line = split_sentences(line)[0]  # 改行の無い以前の紹介文は、最初の文を書き出しの候補にする
+    usable = (
+        line and len(line) <= OLD_HOOK_MAX and article.get("threadsHook") not in weak
+        and not line.startswith(persona.SUMMARY_OPENER) and not repeats_title(line, title)
+        and line not in HOOK_EXAMPLES  # 型の例をそのまま写した書き出し（記事と合わないことがある）は使わない
+        and not persona.STIFF_RE.search(line) and not persona.ADVICE_RE.search(line)
+    )
+    if usable:
+        article["_hook"] = article.get("threadsHook") or ""
+        hook = line
+    else:
+        hook_key, hook = opening_line(article, recent, allow_breaking=False)
+        article["_hook"] = hook_key
+    if breaking:
+        article["_hook"] = "breaking"
+        if not hook.startswith("【速報】"):
+            head = re.split(r"[、，,\s　]", title)[0] if title else ""
+            hook = f"【速報】{head}" if 4 <= len(head) <= 24 and not repeats_title(head, title) else f"【速報】{hook}"
+    return hook
+
+
+def compose(
+    article: dict,
+    recent: list[str] | None = None,
+    breaking: bool = False,
+    recent_questions: list[str] | None = None,
+) -> str:
+    """投稿文（2026-11-02 の形）。書き出し／要約すると、＋事実2文／読者への問いかけ の3つのかたまり。
+
+    生成時に新しい形で作った紹介文（threadsStyle 3）は、かたまりごとに確かめて使う。足りない・崩れているかたまりは
+    記事の要点・判定から組み立て直す（LLM の書き損じや古い記事への備え）。問いかけが無ければ、話題に合う問いを足す。
+    breaking=True（速報としていま出す）なら1行目を【速報】にする。地震・津波（disaster）は従来の形のまま。
+    """
+    if article.get("disaster"):
+        return compose_legacy(article, recent, breaking)
+    recent, recent_questions = recent or [], recent_questions or []
+    title = str(article.get("title") or article.get("seoTitle") or "").strip()
+    hook = first_line_hook(article, recent, breaking, title)
+    blocks = post_blocks_of(article.get("threadsPost", "")) if int(article.get("threadsStyle") or 1) >= 3 else []
+    question = ""
+    if len(blocks) >= 2 and len(clean_lines(blocks[-1])) == 1 and clean_lines(blocks[-1])[0] != hook:
+        last = clean_lines(blocks[-1])[0]
+        if (
+            last.endswith(QUESTION_END) and len(last) <= QUESTION_MAX and not BAIT_RE.search(last)
+            and not persona.ADVICE_RE.search(last) and not persona.STIFF_RE.search(last)
+        ):
+            question = last
+    if not question:
+        question = voice.reader_question(article, topic_of(article), recent_questions)
+    summary = ""
+    generated = next((b for b in blocks if b.startswith(f"{persona.SUMMARY_OPENER}、")), "")
+    if generated:
+        lines = clean_lines(generated)
+        candidate = "\n".join(lines)
+        sentences = split_sentences(candidate.removeprefix(f"{persona.SUMMARY_OPENER}、"))
+        if (
+            1 <= len(sentences) <= 3 and len(candidate) <= SUMMARY_MAX
+            and not persona.STIFF_RE.search(candidate) and not persona.ADVICE_RE.search(candidate)
+            and not any(repeats_title(line, title) for line in lines)
+        ):
+            summary = candidate
+    budget = POST_MAX_CHARS - len(hook) - len(question) - 4
+    if not summary or len(summary) > budget:
+        summary = summary_block(article, title, hook, min(budget, POST_TARGET_CHARS - len(hook) - len(question) - 4 + 20))
+    text = "\n\n".join(b for b in (hook, summary, question) if b)
+    article["_question"] = question
+    return ensure_question(text, article, recent_questions)
+
+
+def ensure_question(text: str, article: dict, recent_questions: list[str] | None = None) -> str:
+    """最後が問いかけでなければ、話題に合う問いを足す（最後の砦）"""
+    if str(text).rstrip().endswith(QUESTION_END):
+        return text
+    question = voice.reader_question(article, topic_of(article), recent_questions or [])
+    article["_question"] = question
+    return f"{str(text).rstrip()}\n\n{question}"
+
+
+def compose_legacy(article: dict, recent: list[str] | None = None, breaking: bool = False) -> str:
+    """以前の投稿文（完結型）。地震・津波の投稿だけで使う（読者への問いかけは付けない）。
+
     新しい記事（threadsStyle 2 以上）は生成時に作った紹介文を使い、以前の記事は見出し・要点・判定から組み立てる。
     breaking=True（速報としていま出す）なら1行目に【速報】を付ける。
     """
@@ -194,6 +421,11 @@ def weak_hook_keys() -> list[str]:
     return threads_hooks.weak_hooks()
 
 
+# 悪いニュース（攻撃・悪用・事故・倒産など）。前向きな書き出しを使わない
+NEGATIVE_RE = re.compile(r"悪用|攻撃|脆弱性|詐欺|不正|流出|漏えい|漏洩|障害|不具合|事故|倒産|破たん|被害|訴訟|停止|リコール")
+POSITIVE_OPENERS = {"結論：日本からも、もう使えます。", "これ、無料で試せます。", "これ、明日からの仕事で試せます。"}
+
+
 def openers(article: dict) -> list[tuple[str, str]]:
     """紹介文を持たない記事向けの書き出し候補（型, 1行目）。判定から、事実として言えるものだけを作る。"""
     name = re.split(r"[｜|：:？?]", str(article.get("seoTitle") or ""))[0].strip()
@@ -232,13 +464,24 @@ def openers(article: dict) -> list[tuple[str, str]]:
             found.append(("use_case", "仕事やお金に、直接かかわる話です。"))
     if re.search(r"\d", price) and re.search(r"円|ドル|無料", price) and len(price) <= 14:
         found.append(("money", f"まず料金から。{price}です。"))
+    if not any(key != "breaking" for key, _ in found):
+        # 判定の無い記事（お金・制度の話題など）向け。記事の workMoney に根拠があるときだけ
+        if work_money.get("relevance") == "low":
+            found.append(("conclusion", "先に言うと、直接の影響は小さめです。"))
+        elif work_money.get("relevance") in ("high", "medium") and article.get("genreSlug") in voice.MONEY_GENRES:
+            options = ["経営や家計に関わる人は、押さえておきたい話です。", "会社のお金や家計に関わる人向けの話です。"]
+            found.append(("callout", options[sum(ord(c) for c in article.get("slug", "")) % len(options)]))
+    if NEGATIVE_RE.search(f"{article.get('title', '')} {article.get('seoTitle', '')}"):
+        # 攻撃・悪用・事故などの話題に「もう試しました？」「無料で試せます」は合わないので使わない
+        found = [o for o in found if o[1] not in POSITIVE_OPENERS and not o[1].endswith("もう試しました？")]
     return found
 
 
-def opening_line(article: dict, recent: list[str]) -> tuple[str, str]:
+def opening_line(article: dict, recent: list[str], allow_breaking: bool = True) -> tuple[str, str]:
     """直近で使った型を避けて、記事ごとに書き出しを変える"""
     weak = set(weak_hook_keys())
-    options = [o for o in openers(article) if o[0] not in weak] or openers(article)
+    found = [o for o in openers(article) if allow_breaking or o[0] != "breaking"]
+    options = [o for o in found if o[0] not in weak] or found
     if not options:
         options = [("question", "このニュース、もうチェックしました？")]
     fresh = [option for option in options if option[0] not in recent] or options
@@ -575,20 +818,15 @@ def buffer_threads_channel(api_key: str) -> dict | None:
     return None
 
 
-READING_MODE_LINES = [
-    "記事はこちら👇\n専門用語なしの「かんたん版」と、数字や仕様まで追える「専門家版」、好きな読み方を選べます。",
-    "詳しくは記事で👇\nAIに詳しくなくても大丈夫。「かんたんに読む」に切り替えると3分で分かります。",
-    "記事はこちら👇\nサクッと知りたい人は「かんたん版」、じっくり知りたい人は「専門家版」でどうぞ。",
-    "続きは記事で👇\n読み方を2つ用意しています。忙しい人は「かんたんに読む」がおすすめです。",
-]
+LINK_REPLY = "詳しくはこちら👇"
+EASY_NOTE = "（専門用語なしの「かんたん版」もあります）"
 
 
 def link_reply_text(article: dict) -> str:
-    """記事リンクを付ける返信の文。「かんたん／専門家」の2つの読み方を選べることを、毎回言い方を変えて伝える"""
+    """記事リンクを付ける返信（2/2）の文。短く「詳しくはこちら👇」と、かんたん版があればその一言（2026-11-02）"""
     if not str(article.get("easy") or "").strip():
-        return "記事はこちら👇"
-    index = sum(ord(c) for c in article["slug"]) % len(READING_MODE_LINES)
-    return READING_MODE_LINES[index]
+        return LINK_REPLY
+    return f"{LINK_REPLY}\n{EASY_NOTE}"
 
 
 # X は全角1文字を2と数える280字まで（URLは23字扱い）
@@ -615,6 +853,20 @@ def compose_x(article: dict, root_text: str) -> str:
     text_src = f"{article.get('title', '')} {' '.join(article.get('tags', []))}"
     tag = next((t for pattern, t in COMPANY_TAGS if re.search(pattern, text_src)), "")
     tags = " ".join(t for t in ["#AI", tag] if t) if not article.get("disaster") else "#地震" if "地震" in text_src else ""
+    blocks = post_blocks_of(root_text)
+    if len(blocks) == 3 and blocks[1].startswith(persona.SUMMARY_OPENER) and blocks[2].endswith(QUESTION_END):
+        # 新しい形（書き出し／要約2文／問いかけ）。入らなければ 書き出し → 2文目 → 問いかけ の順に削る。【速報】の行は残す
+        hook, summary, question = blocks
+        first = summary.split("\n")[0] if "\n" in summary else summary
+        if hook.startswith("【速報】"):
+            options = [[hook, summary, question], [hook, first, question], [hook, summary], [hook, first]]
+        else:
+            options = [[hook, summary, question], [summary, question], [hook, first, question], [first, question], [summary], [first]]
+        for option in options:
+            candidate = "\n\n".join(option)
+            if x_weight(candidate) + x_weight(tags) + 2 <= X_LIMIT:
+                return f"{candidate}\n\n{tags}"
+        return f"{first[:100]}\n\n{tags}"
     if lines and lines[0].startswith("【速報】"):
         options = [lines[:n] for n in range(len(lines), 0, -1)]
     else:
@@ -1070,8 +1322,8 @@ def main() -> int:
         test_fmt = test_fmt if test_fmt in FORMATS else "hook_thread"
         test_text = compose_hook(sample) if test_fmt == "hook_thread" else compose(sample)
         log(f"[test] 形式: {test_fmt}")
-        # 編集部の一言と問いかけも入れた形で確かめる
-        threads_test = voice.add_voice(
+        # classic は本文だけで完結（問いかけ入り）。hook_thread は編集部の一言と問いかけも入れた形で確かめる
+        threads_test = test_text if test_fmt == "classic" else voice.add_voice(
             test_text, voice.editor_comment(sample, []), voice.question_line(sample, topic_of(sample), []), MAX_CHARS
         )
         log(f"[test] Threads の本文:\n{threads_test}")
@@ -1172,18 +1424,24 @@ def main() -> int:
         # 下書きモードでは履歴が増えないので、何本目かを足して交互にする（本番は保存済みの履歴で数える）
         # 公式 API の経路（返信を作れない）は従来の形式のまま
         fmt = choose_format(state, article, breaking=False, offset=0 if live else offset) if buffer_channel or not live else "classic"
-        classic_text = compose(article, recent)
+        classic_text = compose(article, recent, recent_questions=recent_questions)
         text = compose_hook(article, recent) if fmt == "hook_thread" else classic_text
-        hook = article.get("threadsHook") or article.get("_hook", "")
+        hook = article.get("_hook") or article.get("threadsHook") or ""
         if hook:
             recent = [hook, *recent][:4]
-        # Threads の本文だけに「編集部の一言」と、約半分は「問いかけ」を足す（両形式に同じ条件。X・Facebook は元の本文）
-        comment = voice.editor_comment(article, recent_comments)
-        question = ""
-        if voice.want_question(normal_index(state) + (0 if live else offset)):
-            question = voice.question_line(article, topic_of(article), recent_questions)
-        threads_text = voice.add_voice(text, comment, question, MAX_CHARS)
-        comment = comment if comment and comment in threads_text else ""
+        if fmt == "classic":
+            # 本文は「書き出し／要約すると、2文／問いかけ」で完結（2026-11-02）。編集部の一言は足さない（形を崩さないため）
+            comment, question, threads_text = "", article.get("_question") or "", text
+            for problem in post_problems(threads_text, article):
+                log(f"  [check] {article['slug']}: {problem}")
+        else:
+            # hook_thread（以前の A/B の形）: Threads の本文だけに「編集部の一言」と、約半分は「問いかけ」を足す
+            comment = voice.editor_comment(article, recent_comments)
+            question = ""
+            if voice.want_question(normal_index(state) + (0 if live else offset)):
+                question = voice.question_line(article, topic_of(article), recent_questions)
+            threads_text = voice.add_voice(text, comment, question, MAX_CHARS)
+            comment = comment if comment and comment in threads_text else ""
         question = question if question and threads_text.endswith(question) else ""
         recent_comments = [comment, *recent_comments][:5] if comment else recent_comments
         recent_questions = [question, *recent_questions][:5] if question else recent_questions
