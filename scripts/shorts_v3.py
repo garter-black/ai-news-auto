@@ -547,7 +547,7 @@ def script_system() -> str:
 # 構成
 - hook（最初の1.5秒）: text は画面に大きく出す1行（12〜20字）。見る人が「自分ごと」になる問いかけか得。
   例の形:「Claudeの最上位、月200ドルの価値ある？」。payoff はその答えの手がかりになる数字のキーワード（8字以内・資料の表記どおり。例: 月200ドル）。
-  speech は text を自然に読む1文（22字以内）。block / target は payoff の証拠になる画面の文字。
+  speech は text を自然に読む1文（16字以内）。block / target は payoff の証拠になる画面の文字。
   できれば文字の大きい行（番号に「|大」が付いた行。料金表の大きな金額など）を選ぶ。最初の画面になるので見栄えが大事。
 - beats: ちょうど4つ。ニュースを伝えるだけで終わらせず、画面で案内しながら「一歩先」まで連れて行く。順番と役目:
   1. 何が変わった: 変化を1つにまとめる（例: 名前がUltraに・価格は据え置き）。
@@ -559,7 +559,7 @@ def script_system() -> str:
   資料が薄いニュース（名前の変更だけ等）は、無理に足さず資料の範囲で短くまとめる。
   keyword: 画面に大きく出す言葉。2〜8字（例: 手続き不要、Proの10倍、月払いのみ）。文にしない。句読点を付けない。
   sub: 補足（14字以内。不要なら空）。
-  speech: 読み上げ。1〜2文・合計45字以内。keyword の数字・名前を必ず含める。
+  speech: 読み上げ。1文（長くても短い2文）・28字以内。keyword の数字・名前を必ず含める。
   block: 下の「画面の文字」一覧の番号（例: 1-23）。target: その行の文字から、この beat の証拠になる部分を**一文字も変えずに**抜き出す（日本語は2〜40字。英語なら英語のまま・100字まで）。
   英語の target は**文として完結する範囲**（主語から文末のピリオドまで。見出しなら見出し全体）を選ぶ。文の途中で切らない（例: × "Starting this week, we will make Carbon available to a"）。
   証拠の行は見出し・大きな文字（|大）・短い行を優先し、長い本文の段落は選ばない。
@@ -569,7 +569,8 @@ def script_system() -> str:
 - **画面の文字は証拠の場所を選ぶためだけに使う。** 画面にあっても記事（資料）に無い事実・数字は、keyword・sub・speech に書かない（ja は target の訳なのでよい）。
 - compare: 2つを倍率で比べられる事実が資料にあるときだけ。beat はそれを話す beat の番号（1〜4）、base は基準（例: Pro）、subject は比べる相手（例: Ultra）、
   ratio は資料の表記どおりの倍率（例: 10倍）。無ければ beat=0、他は空文字。
-- conclusion: 最後の一言。text は16字以内で hook の問いに答える（例: 上限に困る人なら検討の価値）。speech は20〜32字。
+- conclusion: 最後の一言。text は16字以内で hook の問いに答える（例: 上限に困る人なら検討の価値）。speech は14〜22字。
+- 読み上げ（hook・beats・conclusion の speech）の合計は150字以内。声が落ち着いたゆっくりめの声なので、これで約30秒になる。
 - title: 40字以内・主役の名前を入れて事実をそのまま。summary: 説明欄の要約。「要約すると、」で始めて80〜120字。hashtags: 3〜4個（#付き）。
 
 # 画面の文字（text・payoff・keyword・sub・conclusion.text・ja）
@@ -680,8 +681,15 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
             out.append(f"beat{i}.keyword は2〜8字で句読点なし（{kw}）。")
         if len(b.get("sub", "")) > 16:
             out.append(f"beat{i}.sub は14字以内。")
-        if len(b.get("speech", "")) > 52:
-            out.append(f"beat{i}.speech が長すぎます（45字以内）。")
+        if len(b.get("speech", "")) > 32:
+            out.append(f"beat{i}.speech が長すぎます（28字以内。今は{len(b.get('speech', ''))}字）。")
+    total_speech = sum(len(x.get("speech", "")) for x in [hook, concl] + beats)
+    if total_speech > 160:
+        out.append(f"読み上げの合計が長すぎます（{total_speech}字。150字以内）。")
+    if len(hook.get("speech", "")) > 20:
+        out.append("hook.speech は16字以内。")
+    if len(concl.get("speech", "")) > 26:
+        out.append("conclusion.speech は22字以内。")
     joined = json.dumps(s, ensure_ascii=False)
     if "ざっくり" in joined:
         out.append("「ざっくり」は使わない。")
@@ -868,9 +876,9 @@ def narrate(script: dict, tts_kind: str, work: Path) -> Narration:
             speed = max(base_speed - 0.16, speed * voiced / max(TARGET_MIN + 0.6 - fixed, 1.0))
             log(f"   [v3] {total:.1f}秒で短い → 速さ {speed:.2f} で読み直し")
             continue
-        if total <= TARGET_MAX or speed >= base_speed + 0.3:
+        if total <= TARGET_MAX or speed >= base_speed + 0.15:
             break
-        speed = min(base_speed + 0.3, speed * voiced / max(TARGET_MAX - 0.6 - fixed, 1.0))
+        speed = min(base_speed + 0.15, speed * voiced / max(TARGET_MAX - 0.6 - fixed, 1.0))
         log(f"   [v3] {total:.1f}秒で長い → 速さ {speed:.2f} で読み直し")
     samples = np.zeros(int(math.ceil(total * SR)) + 1, dtype=np.float32)
     for line, clip in zip(lines, clips):
