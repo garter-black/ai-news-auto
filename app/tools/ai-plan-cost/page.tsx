@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
 import ToolPage, { ToolSection } from "@/components/calc/ToolPage";
 import { CALCULATORS } from "@/lib/calculators";
@@ -6,11 +7,11 @@ import { getPlanProducts } from "@/lib/plan-prices";
 
 const meta = CALCULATORS["ai-plan-cost"];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withPageShare("ai-plan-cost", meta.href, {
   title: "AIの有料プラン費用計算｜月払いと年払い・Pro何個分",
   description: meta.description,
   alternates: { canonical: meta.href },
-};
+});
 
 export default function AiPlanCostPage() {
   const products = getPlanProducts();

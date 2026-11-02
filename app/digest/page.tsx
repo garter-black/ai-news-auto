@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
 import AssetShell, { Crumbs, QHeading } from "@/components/assets/AssetShell";
 import { bundledDigestIds, digestDateLabel, digestPath, getDigest } from "@/lib/digest";
@@ -7,12 +8,12 @@ import { bundledDigestIds, digestDateLabel, digestPath, getDigest } from "@/lib/
 export const dynamic = "force-static";
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withPageShare("digest", "/digest", {
   title: "朝のAIニュース（毎朝3本）",
   description: "毎朝7時30分に、昨夜から今朝までのAIニュースを3本だけ選んでまとめています。",
   alternates: { canonical: "/digest" },
   robots: { index: false, follow: true },
-};
+});
 
 export default async function DigestIndex() {
   const digests = (await Promise.all(bundledDigestIds().slice(0, 60).map((id) => getDigest(id)))).filter((d) => d !== null);

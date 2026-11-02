@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { withPageShare } from "@/lib/page-share";
 import LegalPage from "@/components/LegalPage";
 import { getAllArticles, getAllGenres } from "@/lib/articles";
 import { siteConfig } from "@/site.config";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withPageShare("about", "/about", {
   title: "運営者情報・編集方針",
   description: `${siteConfig.name}の運営者情報と、記事の制作方法・編集方針・AI利用の開示について説明しています。`,
   alternates: { canonical: "/about" },
-};
+});
 
 export default function AboutPage() {
   const articles = getAllArticles();

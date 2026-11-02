@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
 import LegalPage from "@/components/LegalPage";
 import { siteConfig } from "@/site.config";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withPageShare("editorial-policy", "/editorial-policy", {
   title: "編集方針・AI利用と事実確認について",
   description: `${siteConfig.name}がどのように記事を作り、AIをどう使い、事実をどう確認し、誤りをどう訂正しているかを説明します。`,
   alternates: { canonical: "/editorial-policy" },
-};
+});
 
 /**
  * 編集方針。誰が・どのように・どんな基準で記事を出しているかを開示する。

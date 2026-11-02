@@ -41,14 +41,12 @@ export const metadata: Metadata = {
     siteName: siteConfig.siteName,
     locale: siteConfig.locale,
     // og:url はここに置かない（openGraph を持たない下層ページ（/tools など）が og:url=トップを引き継ぎ、
-    // Facebook・LINE でシェアするとトップのシェアとして扱われていた）。トップの og:url は app/page.tsx
-    title: `${siteConfig.siteName} AI・ビジネス・お金の新しい動きが最速でわかる`,
-    description: siteConfig.description,
+    // Facebook・LINE でシェアするとトップのシェアとして扱われていた）。トップの og:url は app/page.tsx。
+    // og:title・og:description も置かない（同じ理由で、下層ページがトップの題名でシェアされていた。2026-11-03）。
+    // 置かないページでは SNS がページの <title>・説明文を使う。主な固定ページは lib/page-share.ts で題名・画像を出す
   },
   twitter: {
     card: "summary_large_image",
-    title: siteConfig.name,
-    description: siteConfig.description,
   },
   robots: {
     index: true,

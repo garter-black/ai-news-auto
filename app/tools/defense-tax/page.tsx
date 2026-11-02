@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { withPageShare } from "@/lib/page-share";
 import ToolPage, { ToolSection } from "@/components/calc/ToolPage";
 import { CALCULATORS } from "@/lib/calculators";
 
 const meta = CALCULATORS["defense-tax"];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withPageShare("defense-tax", meta.href, {
   title: "防衛特別所得税の計算｜2027年から・年ごとの税額",
   description: meta.description,
   alternates: { canonical: meta.href },
-};
+});
 
 export default function DefenseTaxPage() {
   return (

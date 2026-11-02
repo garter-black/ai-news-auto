@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
+import { withPageShare } from "@/lib/page-share";
 import ToolPage, { ToolSection } from "@/components/calc/ToolPage";
 import { CALCULATORS } from "@/lib/calculators";
 import { getFx } from "@/lib/plan-prices";
 
 const meta = CALCULATORS["usd-jpy"];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withPageShare("usd-jpy", meta.href, {
   title: "ドル建てサブスクの円換算｜消費税10%・年額つき",
   description: meta.description,
   alternates: { canonical: meta.href },
-};
+});
 
 export default function UsdJpyPage() {
   const fx = getFx();

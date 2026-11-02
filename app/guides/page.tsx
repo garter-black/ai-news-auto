@@ -1,5 +1,6 @@
 import { getAllChooseGuides } from "@/lib/choose";
 import type { Metadata } from "next";
+import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
 import CompanyMark from "@/components/CompanyMark";
 import { formatDate } from "@/lib/articles";
@@ -8,12 +9,12 @@ import { getAllGuides, guideArticles } from "@/lib/guides";
 import { getAllHowtos, type HowtoGuide } from "@/lib/howto";
 import { getProduct } from "@/lib/products";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withPageShare("guides", "/guides", {
   title: "AIの使い方ガイド：始め方・料金・無料でどこまで使えるか",
   description:
     "ChatGPT・Gemini・Claude・NotebookLMなどAIツールの使い方と、AIを使う仕事・サイト運営を解説。料金、無料で使える範囲、導入条件を公式情報と確認日付きで整理しています。",
   alternates: { canonical: "/guides" },
-};
+});
 
 /** 使い方ガイドと製品ガイドの一覧 */
 export default function GuidesPage() {

@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
 import LegalPage from "@/components/LegalPage";
 import corrections from "@/content/corrections.json";
 import { siteConfig } from "@/site.config";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withPageShare("corrections", "/corrections", {
   title: "訂正履歴",
   description: `${siteConfig.siteName}が公開後に訂正した記事の一覧です。いつ・何を直したかを公開しています。`,
   alternates: { canonical: "/corrections" },
-};
+});
 
 type Correction = { date: string; slug: string; title: string; summary: string };
 

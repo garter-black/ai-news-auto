@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
 import AssetShell, { Crumbs } from "@/components/assets/AssetShell";
 import { getAllWeeks, weekRangeLabel } from "@/lib/weekly";
@@ -8,12 +9,11 @@ const TITLE = "今週のAIニュースまとめ：1週間の重要な10本を2�
 const DESCRIPTION =
   "OpenAI・Google・Anthropicなどの1週間のAIニュースから重要な10本を選び、何が起きたか・なぜ大事かを2行ずつまとめています。毎週月曜の朝7時に更新。";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withPageShare("weekly", "/weekly", {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/weekly", types: { "application/rss+xml": "/feed.xml" } },
-  openGraph: { type: "website", url: "/weekly", title: "今週のAIニュースまとめ", description: DESCRIPTION },
-};
+}, "今週のAIニュースまとめ");
 
 /** 週まとめの一覧 */
 export default function WeeklyIndexPage() {

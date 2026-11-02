@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
 import CompanyMark from "@/components/CompanyMark";
 import Timeline from "@/components/Timeline";
@@ -14,12 +15,11 @@ const TITLE = "今すぐ使える最新AIツール・新機能まとめ【毎日
 const DESCRIPTION =
   "発表されたばかりのAIの新機能・新モデルのうち、今日から使えるものだけを集めた一覧です。日本から使えるか・料金・無料で試せるかを、発表ごとに判定しています。";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withPageShare("usable", "/usable", {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/usable" },
-  openGraph: { title: TITLE, description: DESCRIPTION, url: "/usable" },
-};
+});
 
 const dayFormat = new Intl.DateTimeFormat("ja-JP", { month: "numeric", day: "numeric", timeZone: "Asia/Tokyo" });
 

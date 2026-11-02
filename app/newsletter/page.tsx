@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
 import { Suspense } from "react";
 import NewsletterSignup from "@/components/NewsletterSignup";
@@ -9,11 +10,11 @@ import { getAllArticles } from "@/lib/articles";
 import { isDistributionEligible } from "@/lib/indexing";
 import { siteConfig } from "@/site.config";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withPageShare("newsletter", "/newsletter", {
   title: "メール配信（毎朝7時のAIニュース要点）",
   description: `${siteConfig.siteName}のメール配信。毎朝7時に、前日のAIニュースから大きな発表を5本選び、1本2行の要点とリンクでお届けします。無料・いつでも解除できます。`,
   alternates: { canonical: "/newsletter" },
-};
+});
 
 // サイト共通の Noto Sans JP（以前は細い Zen Kaku を避けるため OS の書体にしていた。游ゴシックは細いので使わない）
 const FONT = "var(--font-sans)";

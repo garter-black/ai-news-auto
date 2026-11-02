@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
 import CompanyMark from "@/components/CompanyMark";
 import Thumb from "@/components/Thumb";
@@ -6,12 +7,12 @@ import { coverPath, formatDate, getArticleSummary } from "@/lib/articles";
 import { COMPANIES, getCompany, thumbSource } from "@/lib/companies";
 import { getAllProducts, type Product } from "@/lib/products";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withPageShare("products", "/products", {
   title: "AIサービス図鑑：できること・料金・最新ニュース",
   description:
     "GPT-6.1 Terra、Claude Opus 5.5、Gemini 4 Argonなど、記事に出てきたAIモデル・アプリ・ガジェットを製品ごとに1ページで整理。料金・日本で使えるか・これまでの流れを、記事が増えるたびに更新します。",
   alternates: { canonical: "/products" },
-};
+});
 
 /** 製品まとめの一覧（企業ごと） */
 export default function ProductsPage() {

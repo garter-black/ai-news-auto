@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
 import AssetShell, { Crumbs } from "@/components/assets/AssetShell";
 import PricingBoard from "@/components/assets/PricingBoard";
@@ -12,13 +13,11 @@ const TITLE = "AIの料金比較・早見表【最新】ChatGPT・Claude・Gemin
 const DESCRIPTION =
   "ChatGPT・Claude・GeminiなどのAI APIの料金（100万トークンあたり）と月額プランを1ページで比較。日本で使えるか、無料で試せるかも一緒にわかります。チャットや要約などの使い方を選ぶと、月の費用が円で出ます。数字はすべて出典の記事で確認しています。";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withPageShare("ai-pricing", "/ai-pricing", {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/ai-pricing" },
-  openGraph: { type: "website", url: "/ai-pricing", title: "AIの料金・日本対応 早見表", description: DESCRIPTION },
-  twitter: { card: "summary_large_image", title: "AIの料金・日本対応 早見表", description: DESCRIPTION },
-};
+}, "AIの料金・日本対応 早見表");
 
 /** 計算機の初期値と同じ使い方（入力100万・出力30万トークン/月）での月額 */
 const defaultCost = (row: PriceRow) =>
