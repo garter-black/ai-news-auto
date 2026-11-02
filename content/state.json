@@ -4370,6 +4370,14 @@
       "slug": "digital-agency-pmh-medical-subsidy",
       "url": "https://www.digital.go.jp/policies/health/public-medical-hub"
     },
+    "23fa88e53441b0d4": {
+      "at": "2026-11-02T09:32:56.662676+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "boj-tankan-price-forecast-gap",
+      "url": "https://www.nli-research.co.jp/topics_detail1/id=87236?site=nli"
+    },
     "24128a17ed6c828c": {
       "at": "2026-10-28T21:52:26.575448+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11913,75 +11921,6 @@
   },
   "quality_log": [
     {
-      "accepted": false,
-      "at": "2026-10-30T06:51:20.843034+00:00",
-      "attempt": 2,
-      "id": "b749fcda386da4a4",
-      "kind": "broad",
-      "model": "gemini-3.1-flash-lite",
-      "problems": [
-        "「今年で3回目となる記念日『自由の日』のイベントが開始されました」→元記事には「今年で3回目を迎える」との記述はあるが、イベントが「開始された」という明示的な記述はない（配布は祝祭終了時）。",
-        "「配信サービス | PlayStation Plus ゲームカタログ」→元記事の注釈には「ゲームカタログで配信中のため」とあるが、表形式で断定的に記載するのは誤解を招く可能性がある。",
-        "「価格 | スタンダード版 4,480円 / スーパー市民版 6,480円」→元記事の表には「販売価格」として記載されているが、イベントの価格ではなくゲーム本体の価格であるため、イベントの項目として記載するのは不適切。"
-      ],
-      "readability": {
-        "avg_paragraph": 136.4,
-        "avg_sentence": 55.8,
-        "long_share": 0.364,
-        "max_paragraph": 238,
-        "paragraphs": 9,
-        "sentences": 22
-      },
-      "score": 85,
-      "source": "playstation-blog-jp",
-      "title": "『HELLDIVERS 2』で“自由の日”を祝おう！ ゲーム内で記念ギフトを配布"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:51:29.836305+00:00",
-      "attempt": 1,
-      "id": "23ac914e0e3febaf",
-      "kind": "broad",
-      "model": "gemini-3.1-flash-lite",
-      "problems": [
-        "本文が短い（1646字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 135.7,
-        "avg_sentence": 48.8,
-        "long_share": 0.28,
-        "max_paragraph": 212,
-        "paragraphs": 9,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "digital-agency",
-      "title": "自治体・医療機関等をつなぐ情報連携システム（Public Medical Hub：PMH）に係る「先行実施事業の実施状況」「自治体・自治体システムベンダー向けの"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T06:51:45.890062+00:00",
-      "attempt": 1,
-      "id": "23ac914e0e3febaf",
-      "kind": "broad",
-      "model": "gemini-3.1-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 47.5字・60字超の文が 18% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 156.8字・最長 252字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 156.8,
-        "avg_sentence": 47.5,
-        "long_share": 0.182,
-        "max_paragraph": 252,
-        "paragraphs": 10,
-        "sentences": 33
-      },
-      "score": 100,
-      "source": "digital-agency",
-      "title": "自治体・医療機関等をつなぐ情報連携システム（Public Medical Hub：PMH）に係る「先行実施事業の実施状況」「自治体・自治体システムベンダー向けの"
-    },
-    {
       "accepted": true,
       "at": "2026-10-30T06:51:53.376557+00:00",
       "attempt": 0,
@@ -18517,6 +18456,73 @@
       "score": 100,
       "source": "mof",
       "title": "第57回住宅金融支援機構債券（グリーンボンド）に対する政府保証の付与"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T09:31:30.114952+00:00",
+      "attempt": 1,
+      "id": "23fa88e53441b0d4",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "easy_markdown が「## ひとことで言うと」から始まっていない"
+      ],
+      "readability": {
+        "avg_paragraph": 124.9,
+        "avg_sentence": 59.2,
+        "long_share": 0.526,
+        "max_paragraph": 161,
+        "paragraphs": 9,
+        "sentences": 19
+      },
+      "score": null,
+      "source": "nli-research",
+      "title": "乖離する企業の２つの「物価」見通し－物価見通しは２％超でも自社の中期の販売価格見通しは１％未満"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T09:32:09.063641+00:00",
+      "attempt": 2,
+      "id": "23fa88e53441b0d4",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 60.5字・60字超の文が 47% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 127.8字・最長 181字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 127.8,
+        "avg_sentence": 60.5,
+        "long_share": 0.474,
+        "max_paragraph": 181,
+        "paragraphs": 9,
+        "sentences": 19
+      },
+      "score": 100,
+      "source": "nli-research",
+      "title": "乖離する企業の２つの「物価」見通し－物価見通しは２％超でも自社の中期の販売価格見通しは１％未満"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T09:32:56.661911+00:00",
+      "attempt": 0,
+      "id": "23fa88e53441b0d4",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 140.1字・最長 202字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 140.1,
+        "avg_sentence": 34.1,
+        "long_share": 0.0,
+        "max_paragraph": 202,
+        "paragraphs": 9,
+        "sentences": 37
+      },
+      "score": 100,
+      "source": "nli-research",
+      "title": "乖離する企業の２つの「物価」見通し－物価見通しは２％超でも自社の中期の販売価格見通しは１％未満"
     }
   ],
   "short_text_retry": {},
