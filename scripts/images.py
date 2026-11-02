@@ -54,6 +54,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import image_focus  # noqa: E402
 import llm  # noqa: E402
 
 try:
@@ -2059,6 +2060,7 @@ def main() -> int:
     parser.add_argument("--retry-ai", action="store_true", help="AI 生成の画像の記事でフリー素材を探し直す（見つからなければそのまま）")
     parser.add_argument("--cache-official", action="store_true", help="外部の写真を直リンクしている記事を直す（公式発表の写真は自前に保存、それ以外はフリー素材・AI 生成に）")
     parser.add_argument("--variants", action="store_true", help="前からある自前の写真に幅ごとの WebP を足す")
+    parser.add_argument("--focus-recent", type=int, default=40, help="新しい N 本のうち、写真の主役の位置（imageFocus）が無い・写真が変わった記事を解析する（0 で止める）")
     parser.add_argument("--dry-run", action="store_true", help="保存しない")
     parser.add_argument("--preview", help="出来上がった JPEG をこのフォルダにも書く（確認用）")
     parser.add_argument("--shard", help="並列実行の分担（例: 0/3）")
@@ -2166,10 +2168,24 @@ def main() -> int:
             log(f"   [img] 失敗: {str(error)[:160]}")
             outcome = "error"
         tally[outcome] += 1
+        # 写真の主役の位置（SNS カードの切り抜き・ロゴの角に使う。scripts/image_focus.py）
+        if not args.dry_run and image_focus.ensure_focus(article):
+            save(path, article)
         if args.report:
             with open(args.report, "a", encoding="utf-8") as fh:
                 row = {"slug": article.get("slug"), "outcome": outcome, "seconds": round(time.time() - began, 1), "thumbnail": article.get("thumbnail"), "imageCredit": article.get("imageCredit")}
                 fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+    if args.focus_recent and not args.dry_run:
+        # 写真を選び直さなかった記事（YouTube のサムネイル・前からある写真）も、新しい分は主役の位置を持たせる
+        focused = 0
+        for path, article in sorted(articles.items(), key=newest_first, reverse=True)[: args.focus_recent]:
+            if time.time() - started > max(args.budget, 60) + 60:
+                break
+            if image_focus.ensure_focus(article):
+                save(path, article)
+                focused += 1
+        if focused:
+            log(f"[img] 主役の位置を {focused} 本に書きました")
     log(f"[img] 結果: {dict(tally)}（AI 生成は今日 {ai_used_today()} / {AI_DAILY_MAX} 枚）")
     return 0
 

@@ -6,6 +6,8 @@ import sharp from "sharp";
 import type { FullArticle } from "@/lib/articles";
 import { companyOf } from "@/lib/companies";
 import { fetchPhoto } from "@/lib/cover";
+import { officialCreditText } from "@/lib/image-credit";
+import { containRect, coverFit, cornerRect, DEFAULT_AR, focusOf, freeCorner as freeCornerOf, NOTE, overlap, photoOnlyLayout, TAG, type Box, type Corner, type Rect } from "@/lib/card-geometry";
 
 /**
  * SNS 投稿に添えるカード（2026-11 案）。縦長の「見出し＋要点3つ」をやめ、文字を見出し1本に絞る。
@@ -409,60 +411,6 @@ export async function renderCardDesign(article: FullArticle, design: CardDesign)
  * ------------------------------------------------------------------------- */
 export type PhotoDesign = "p1" | "p2" | "p3" | "p4";
 const DEEP = "#0b1f45";
-const DEFAULT_AR = 1200 / 630;
-type Box = [number, number, number, number];
-type Rect = { x: number; y: number; w: number; h: number };
-
-/** 主役の枠（0〜1）。無い・写真が変わったときは写真全体を主役とみなす（＝切らない側に倒す） */
-function focusOf(article: FullArticle): { box: Box; ar: number } {
-  const f = article.imageFocus;
-  const credit = article.imageCredit;
-  if (credit?.kind === "figure" || credit?.imageKind === "logo") return { box: [0.08, 0.2, 0.92, 0.8], ar: f?.ar || DEFAULT_AR };
-  if (!f || f.src !== article.thumbnail) return { box: [0, 0, 1, 1], ar: f?.ar || DEFAULT_AR };
-  return { box: f.box, ar: f.ar || DEFAULT_AR };
-}
-
-/**
- * 写真を w×h の枠に cover で敷いたときに、主役が丸ごと入るずらし方。
- * 入れば objectPosition（%）と、枠の中での主役の位置（px）を返す。入らなければ null
- */
-export function coverFit(ar: number, box: Box, w: number, h: number): { pos: string; subject: Rect } | null {
-  const scale = Math.max(w / ar, h);
-  const rw = ar * scale;
-  const rh = scale;
-  const place = (lo: number, hi: number, size: number, frame: number): number | null => {
-    const a = lo * size;
-    const b = hi * size;
-    if (b - a > frame + 0.5) return null;
-    const free = size - frame;
-    if (free <= 0) return 0;
-    const centre = (a + b) / 2 - frame / 2;
-    return Math.min(Math.max(centre, b - frame, 0), Math.min(a, free));
-  };
-  const ox = place(box[0], box[2], rw, w);
-  const oy = place(box[1], box[3], rh, h);
-  if (ox === null || oy === null) return null;
-  const px = rw - w > 0.5 ? (ox / (rw - w)) * 100 : 50;
-  const py = rh - h > 0.5 ? (oy / (rh - h)) * 100 : 50;
-  return {
-    pos: `${px.toFixed(1)}% ${py.toFixed(1)}%`,
-    subject: { x: box[0] * rw - ox, y: box[1] * rh - oy, w: (box[2] - box[0]) * rw, h: (box[3] - box[1]) * rh },
-  };
-}
-
-/** 写真を w×h に収める（切らない）ときの大きさと位置 */
-function containRect(ar: number, w: number, h: number): Rect {
-  const pw = Math.min(w, h * ar);
-  const ph = pw / ar;
-  return { x: (w - pw) / 2, y: (h - ph) / 2, w: pw, h: ph };
-}
-
-function overlap(a: Rect, b: Rect): number {
-  const x = Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x));
-  const y = Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
-  return x * y;
-}
-
 /** 写真（切り抜かない元の比率のまま）を data URL に。sharp が無ければ元の URL */
 async function photoSource(url: string): Promise<string | null> {
   const photo = await fetchPhoto(url).catch(() => null);
@@ -488,43 +436,55 @@ function Img({ src, rect, pos, fit }: { src: string; rect: Rect; pos?: string; f
   );
 }
 
-/** 小さなロゴ札（ネイビーの角丸）＋ニュース／速報 */
-function CornerTag({ article, corner }: { article: FullArticle; corner: "tl" | "tr" | "bl" | "br" }) {
+/** 小さなロゴ札（ネイビーの角丸）＋ニュース／速報。位置と大きさの上限は lib/card-geometry.ts の TAG */
+function CornerTag({ article, corner }: { article: FullArticle; corner: Corner }) {
   const label = labelOf(article);
-  const m = 26;
-  const pos = { ...(corner[0] === "t" ? { top: m } : { bottom: m }), ...(corner[1] === "l" ? { left: m } : { right: m }) };
+  const r = cornerRect(corner, TAG);
   return (
-    <div style={{ position: "absolute", ...pos, display: "flex", alignItems: "center", gap: 12, padding: "10px 16px 11px", borderRadius: 12, background: "rgba(11,31,69,0.9)" }}>
-      <Logo size={26} color={PAPER} />
-      <div style={{ display: "flex", padding: "1px 10px", borderRadius: 5, background: label === "速報" ? RED : "rgba(255,255,255,0.16)", color: PAPER, fontSize: 20, fontWeight: 700 }}>{label}</div>
+    <div style={{ position: "absolute", left: r.x, top: r.y, width: r.w, height: r.h, display: "flex", alignItems: corner[0] === "t" ? "flex-start" : "flex-end", justifyContent: corner[1] === "r" ? "flex-end" : "flex-start" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 14px 10px", borderRadius: 10, background: "rgba(11,31,69,0.9)" }}>
+        <Logo size={22} color={PAPER} />
+        <div style={{ display: "flex", padding: "1px 9px", borderRadius: 5, background: label === "速報" ? RED : "rgba(255,255,255,0.16)", color: PAPER, fontSize: 18, fontWeight: 700 }}>{label}</div>
+      </div>
     </div>
   );
 }
 
-const TAG_SIZE = { w: 330, h: 70 };
-/** 主役にかからない角（全部かかるなら、かかりがいちばん少ない角） */
-function freeCorner(subject: Rect, w: number, h: number): "tl" | "tr" | "bl" | "br" {
-  const m = 26;
-  const rects: Record<"tl" | "tr" | "bl" | "br", Rect> = {
-    tl: { x: m, y: m, ...TAG_SIZE },
-    tr: { x: w - m - TAG_SIZE.w, y: m, ...TAG_SIZE },
-    bl: { x: m, y: h - m - TAG_SIZE.h, ...TAG_SIZE },
-    br: { x: w - m - TAG_SIZE.w, y: h - m - TAG_SIZE.h, ...TAG_SIZE },
-  };
-  return (Object.keys(rects) as ("tl" | "tr" | "bl" | "br")[]).reduce((best, k) => (overlap(rects[k], subject) < overlap(rects[best], subject) ? k : best), "tl");
+function freeCorner(subject: Rect, w: number, h: number): Corner {
+  return freeCornerOf(subject, TAG, undefined, w, h);
 }
 
-/** 1: 写真だけ。主役を切らない位置で 16:9 いっぱいに。入らなければ写真全体をネイビーの地に収める */
+/** 写真の注記（カバー画像と同じ。AI 生成・素材写真・公式写真のときだけ。CC BY は作者とライセンスの表示が条件） */
+export function cardCredit(article: FullArticle): string {
+  const c = article.imageCredit;
+  if (c?.kind === "ai") return "画像はイメージ（AI生成）";
+  if (c?.kind === "official" || c?.kind === "figure") return officialCreditText(c) ?? "";
+  if (c?.kind !== "stock") return "";
+  const who = (c.creator || "").slice(0, 28);
+  return c.license?.startsWith("CC BY") ? `写真はイメージ　Photo: ${who} / ${c.license}` : "写真はイメージ";
+}
+
+function CornerNote({ text, corner }: { text: string; corner: Corner }) {
+  const r = cornerRect(corner, NOTE);
+  const right = corner[1] === "r";
+  return (
+    <div style={{ position: "absolute", left: r.x, top: r.y, width: r.w, height: r.h, display: "flex", alignItems: corner[0] === "t" ? "flex-start" : "flex-end", justifyContent: right ? "flex-end" : "flex-start" }}>
+      <div style={{ display: "flex", padding: "4px 10px", borderRadius: 6, background: "rgba(6,14,32,0.62)", color: "rgba(255,255,255,0.92)", fontSize: 17, fontWeight: 700, maxWidth: r.w, overflow: "hidden", whiteSpace: "nowrap" }}>{text}</div>
+    </div>
+  );
+}
+
+/** 1: 写真だけ（2026-11-03 採用）。主役を切らない位置で 16:9 いっぱいに（入らなければ写真全体を濃紺の地に収める）。札と注記は主役にかからない角へ */
 function P1({ article, src, focus }: { article: FullArticle; src: string | null; focus: { box: Box; ar: number } }) {
   const { width, height } = CARD_SIZES.p1;
-  const fit = coverFit(focus.ar, focus.box, width, height);
-  const frame = { x: 0, y: 0, w: width, h: height };
-  const inner = fit ? frame : containRect(focus.ar, width, height);
-  const subject = fit ? fit.subject : { x: inner.x + focus.box[0] * inner.w, y: inner.y + focus.box[1] * inner.h, w: (focus.box[2] - focus.box[0]) * inner.w, h: (focus.box[3] - focus.box[1]) * inner.h };
+  void focus;
+  const note = cardCredit(article);
+  const layout = photoOnlyLayout(article, Boolean(note));
   return (
     <div style={{ width, height, display: "flex", position: "relative", background: DEEP, fontFamily: "Noto" }}>
-      {src ? <Img src={src} rect={inner} pos={fit?.pos} fit={fit ? "cover" : "contain"} /> : <NoPhoto width={width} height={height} name={sourceOf(article)} />}
-      <CornerTag article={article} corner={freeCorner(subject, width, height)} />
+      {src ? <Img src={src} rect={layout.inner} pos={layout.fit?.pos} fit={layout.fit ? "cover" : "contain"} /> : <NoPhoto width={width} height={height} name={sourceOf(article)} />}
+      <CornerTag article={article} corner={layout.tag} />
+      {note && layout.note && <CornerNote text={note} corner={layout.note} />}
     </div>
   );
 }
