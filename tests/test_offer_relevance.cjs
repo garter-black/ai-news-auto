@@ -46,13 +46,14 @@ test("関係のない記事（スポーツ・芸能）も広告枠は出す（�
     const plan = offerPlanForArticle(item);
     assert.equal(plan.offer.fallback, true);
     assert.equal(plan.offer.topic, "fallback-life");
+    assert.equal(keys(plan.rail)[0], "abema-premium");
     assert.ok(keys(plan.rail).some((key) => /wifi|wimax|hikari/.test(key)));
     assert.deepEqual(readNextForArticle(item), [], item.title);
   }
 });
 
 test("全ジャンルの記事に広告を1つ以上出し、右側と本文中で重ならない", () => {
-  const expected = { ai: "fallback-ai", science: "fallback-ai", business: "fallback-work", "tech-gadget": "fallback-gadget", investment: "fallback-money", "real-estate": "fallback-money", public: "fallback-money", sports: "fallback-life", entertainment: "fallback-life", lifestyle: "fallback-life", other: "fallback-work" };
+  const expected = { ai: "fallback-ai", science: "fallback-ai", business: "fallback-work", "tech-gadget": "fallback-gadget", investment: "fallback-money", "real-estate": "fallback-money", public: "fallback-tax", sports: "fallback-life", entertainment: "fallback-life", lifestyle: "fallback-life", other: "fallback-work" };
   for (const [genreSlug, topic] of Object.entries(expected)) {
     const plan = offerPlanForArticle(article({ title: "褒章の受章者が決定", genreSlug }));
     assert.equal(plan.offer.topic, topic, genreSlug);
@@ -135,4 +136,24 @@ test("あわせて読みたいは同じページに出ているガイドを選�
   assert.deepEqual(readNextForArticle(article({ title: "折りたたみスマホGalaxy Z Fold8の使い心地", genreSlug: "tech-gadget", genre: "ガジェット" })), []);
   const phishing = article({ title: "金融庁、個人情報流出の相談窓口を開設", genreSlug: "public" });
   assert.equal(readNextForArticle(phishing)[0].href, "/compare/security-software");
+});
+
+test("税金・ふるさと納税・開業の記事は会計ソフト・ふるさと納税・開業サービスを証券より先に出す", () => {
+  const tax = offerPlanForArticle(article({ title: "2027年開始の防衛特別所得税とは", genreSlug: "investment" }));
+  assert.equal(tax.offer.topic, "tax-filing");
+  assert.ok(["mf-kakutei", "yayoi-kakutei"].includes(keys(tax.rail)[0]));
+  assert.equal(offerPlanForArticle(article({ title: "ふるさと納税の新ルール", genreSlug: "public" })).rail.items[0].key, "aupay-furusato");
+  const pub = keys(offerPlanForArticle(article({ title: "褒章の受章者が決定", genreSlug: "public" })).offer);
+  assert.ok(pub.indexOf("mf-kakutei") < pub.indexOf("matsui"));
+  assert.equal(keys(offerPlanForArticle(article({ title: "個人事業主から法人化する手順", genreSlug: "business" })).rail)[0], "yayoi-kaigyou");
+  assert.equal(keys(offerPlanForArticle(article({ title: "日銀の展望レポート", genreSlug: "business" })).rail)[0], "yayoi-kaigyou");
+});
+
+test("新しいA8案件はリンクと表示計測が同じ素材（a8mat）の組で、PR枠で出す", () => {
+  for (const key of ["mf-kakutei", "yayoi-kakutei", "aupay-furusato", "mf-setsuritsu", "yayoi-kaigyou", "yayoi-setsuritsu", "abema-premium"]) {
+    const partner = offers.partners[key];
+    assert.match(partner.link, /^https:\/\/px\.a8\.net\/svt\/ejp\?a8mat=[0-9A-Z+]+$/);
+    assert.equal(partner.pixel.split("a8mat=")[1], partner.link.split("a8mat=")[1], key);
+    assert.ok(links[partner.program]?.url, key);
+  }
 });
