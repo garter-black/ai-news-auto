@@ -1,0 +1,183 @@
+{
+ "hook": {
+  "text": "新AI Carbon、仕事に関係ある？",
+  "payoff": "Carbon",
+  "speech": "Googleの新AI、Carbon。あなたの仕事に関係ある？",
+  "block": "1-1",
+  "target": "Gemini 4 Carbon: our next frontier model",
+  "ja": ""
+ },
+ "beats": [
+  {
+   "label": "答え",
+   "keyword": "今は守る側だけ",
+   "sub": "一般の人はまだ使えない",
+   "speech": "要約すると、今はセキュリティの担当者向けで、一般の人はまだ使えません。",
+   "block": "1-11",
+   "target": "Starting this week, we will make Carbon available to a subset of cyber defenders and will gradually phase access to additional trusted partners through our Fairwind Program.",
+   "ja": "今週から一部のサイバー防御の担当者に提供し、信頼できる相手へ少しずつ広げます。"
+  },
+  {
+   "label": "得意なこと",
+   "keyword": "弱点を探して直す",
+   "sub": "発見→確認→修正",
+   "speech": "得意なのは、ソフトの弱点を見つけて直すこと。家の戸締まりでいうと、鍵の開いた窓を探して、本当に入れるか確かめ、修理までします。",
+   "block": "1-18",
+   "target": "It achieves state-of-the-art performance across the cybersecurity defense lifecycle — vulnerability detection, validation, and remediation.",
+   "ja": "弱点の発見・確認・修正という防御の流れ全体で、最高水準の性能です。"
+  },
+  {
+   "label": "実力",
+   "keyword": "発見88.2%",
+   "sub": "安全なコードは2倍以上",
+   "speech": "実力は、弱点の発見で88.2%、修正で71.0%。安全なコードを書く力は、前のモデルの2倍以上です。",
+   "block": "1-21",
+   "target": "Carbon achieves a state-of-the-art 88.2% on SEC-bench Pro, autonomously uncovering complex flaws buried in real-world software.",
+   "ja": "CarbonはSEC-bench Proで最高水準の88.2%。実際のソフトに潜む弱点を自分で見つけます。"
+  },
+  {
+   "label": "料金",
+   "keyword": "入力$2・出力$10",
+   "sub": "100万トークンあたり",
+   "speech": "料金は100万トークンあたり、入力2ドル・出力10ドル。トークンは、AIが文章を読み書きする量の単位です。",
+   "block": "1-12",
+   "target": "Gemini 4 Carbon will launch at the same introductory price as Argon at $2 per million input tokens and $10 per million output tokens, with cached input tokens priced at 95% off input token price.",
+   "ja": "Argonと同じ導入価格で、100万トークンあたり入力2ドル・出力10ドルです。"
+  },
+  {
+   "label": "他社と比較",
+   "keyword": "半分以下",
+   "sub": "Solと同じ値段",
+   "speech": "他社と比べると、OpenAIの最上位GPT-6 Astraは入力10ドル・出力50ドル。AnthropicのClaude Opus 5.5は入力4ドル・出力20ドル。Carbonはその半分以下で、OpenAIのGPT-6.1 Solと同じ値段です。",
+   "block": "3-6",
+   "target": "Prices per 1M tokens.",
+   "ja": ""
+  },
+  {
+   "label": "注意",
+   "keyword": "12/1から値上げ",
+   "sub": "Argonは無料枠なし",
+   "speech": "ただ、公開済みの兄弟モデルArgonは、12月1日から入力が4ドルに上がり、無料枠もありません。",
+   "block": "2-63",
+   "target": "$2.00 through November 30, 2026.$4.00 starting December 1, 2026.",
+   "ja": "入力は2026年11月30日まで2ドル、12月1日から4ドルです。"
+  },
+  {
+   "label": "今できること",
+   "keyword": "Argonで試す",
+   "sub": "AI Studioから試せる",
+   "speech": "今できるのは、公開済みのArgonで自分の作業との相性を試しておくこと。Google AI Studioの「試す」から始められます。",
+   "block": "2-51",
+   "target": "Try it in Google AI Studio",
+   "ja": "Google AI Studioで試せます。"
+  }
+ ],
+ "compare": {
+  "beat": 0,
+  "base": "",
+  "subject": "",
+  "ratio": ""
+ },
+ "ladder": {
+  "beat": 0,
+  "subject": "",
+  "rows": []
+ },
+ "ladders": [
+  {
+   "beat": 3,
+   "subject": "",
+   "title": "公式の試験の結果",
+   "source": "Google 公式ブログより",
+   "rows": [
+    {
+     "name": "弱点の発見",
+     "price": "88.2%",
+     "usage": "SEC-bench Pro",
+     "mult": "88.2",
+     "block": "1-21",
+     "target": "88.2% on SEC-bench Pro"
+    },
+    {
+     "name": "弱点の修正",
+     "price": "71.0%",
+     "usage": "CWE-bench",
+     "mult": "71.0",
+     "block": "1-23",
+     "target": "Carbon reaches 71.0% on Collinear’s CWE-bench"
+    }
+   ]
+  },
+  {
+   "beat": 5,
+   "subject": "Gemini 4 Carbon",
+   "title": "100万トークンあたりの料金（入力 / 出力）",
+   "source": "各社の公式料金ページより",
+   "rows": [
+    {
+     "name": "GPT-6 Astra",
+     "price": "$10 / $50",
+     "usage": "出力$50",
+     "mult": "50",
+     "block": "3-16",
+     "target": "$50.00"
+    },
+    {
+     "name": "Claude Opus 5.5",
+     "price": "$4 / $20",
+     "usage": "出力$20",
+     "mult": "20",
+     "block": "4-27",
+     "target": "$20/ MTok"
+    },
+    {
+     "name": "Gemini 4 Carbon",
+     "price": "$2 / $10",
+     "usage": "出力$10",
+     "mult": "10",
+     "block": "1-12",
+     "target": "$10 per million output tokens"
+    },
+    {
+     "name": "GPT-6.1 Sol",
+     "price": "$2 / $10",
+     "usage": "出力$10",
+     "mult": "10",
+     "block": "3-22",
+     "target": "$10.00"
+    }
+   ]
+  }
+ ],
+ "units": {
+  "beat": 0,
+  "unit": "",
+  "subject": "",
+  "rows": []
+ },
+ "flows": [
+  {
+   "beat": 2,
+   "title": "家の戸締まりでいうと",
+   "steps": [
+    "開いた窓を探す",
+    "入れるか確かめる",
+    "修理する"
+   ],
+   "note": "弱点の発見 → 確認 → 修正"
+  }
+ ],
+ "conclusion": {
+  "text": "一般公開は速報で",
+  "speech": "Carbonが一般に出たら、また速報でお伝えします。"
+ },
+ "title": "Google「Gemini 4 Carbon」は誰向け？ 実力・料金・他社比較",
+ "summary": "要約すると、Gemini 4 Carbonは今はセキュリティ担当者向けで、一般の人はまだ使えません。弱点の発見88.2%・修正71.0%、料金は100万トークンあたり入力2ドル・出力10ドルで、GPT-6 AstraやClaude Opus 5.5の半分以下です。",
+ "hashtags": [
+  "#Gemini",
+  "#Google",
+  "#セキュリティ",
+  "#生成AI"
+ ],
+ "_approved": "2026-11-03 オーナー承認の台本（読み上げは一字も変えない）"
+}

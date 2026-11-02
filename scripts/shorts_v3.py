@@ -103,6 +103,7 @@ HOOK_TEXT_MAX = 1.7  # つかみの文字はこの時刻までに消す（ゲー
 TARGET_MAX = 74.0
 TARGET_MIN = 42.0
 LENGTH_RANGE = (40.0, 80.0)  # ゲートの長さの範囲（report["length_range"] で渡す）
+APPROVED_RANGE = (40.0, 110.0)  # オーナーが承認した台本（読み上げを変えない）は長くなってもよい
 SEP_TARGET_DB = 15.0  # 声と BGM の差
 
 # 声（2026-11-02 夜 オーナーが試聴サンプル6つから「九州そら（ノーマル・高さ-0.01・抑揚1.0・速さ1.38）」を選んだ。
@@ -125,7 +126,7 @@ BRAND = "サイソクニュース"
 PRODUCT_PAGES = [
     (re.compile(r"Claude", re.I), "https://claude.com/pricing"),
     (re.compile(r"ChatGPT|Codex", re.I), "https://chatgpt.com/pricing"),
-    (re.compile(r"Gemini", re.I), "https://ai.google.dev/gemini-api/docs/pricing"),
+    (re.compile(r"Gemini", re.I), "https://ai.google.dev/gemini-api/docs/pricing?hl=ja"),  # 言語を固定（撮るたびに英語・日本語が変わるため）
 ]
 
 AD_HOSTS = v2.AD_HOSTS
@@ -353,7 +354,7 @@ def capture_pages(urls: list[str], timeout_ms: int = 25000) -> list[Page]:
     return pages
 
 
-def page_urls(article: dict) -> list[str]:
+def page_urls(article: dict, extra: list[str] | None = None) -> list[str]:
     """撮ってよいページ: 記事の出典が公式（v2 と同じ判定）なら出典、主役の製品の公式料金ページ。最大3つ"""
     urls = []
     if src := v2.official_page_url(article):
@@ -362,7 +363,11 @@ def page_urls(article: dict) -> list[str]:
     for pattern, url in PRODUCT_PAGES:
         if pattern.search(who) and url not in urls:
             urls.append(url)
-    return urls[:3]
+    urls = urls[:3]
+    for url in extra or []:  # 台本に合わせて足す公式ページ（他社の料金表など。最大5つ）
+        if url not in urls:
+            urls.append(url)
+    return urls[:5]
 
 
 # --------------------------------------------------------------------------- #
@@ -656,7 +661,7 @@ def review_system() -> str:
 細かい言い回しより、中身（問いへの答え・比較・目安）を優先する。"""
 
 
-def official_text(pages: list[Page], limit: int = 7000) -> str:
+def official_text(pages: list[Page], limit: int | None = None) -> str:
     """公式ページの文字（事実として使ってよい）。大きな見出し（料金表のプラン名など）ごとに1行にまとめる
     （「Max / 終日の業務に / $100 / 月額 / Pro の 5 倍の使用量」が同じ行＝同じ話題として数字の文脈を確かめられる）"""
     out = []
@@ -672,7 +677,7 @@ def official_text(pages: list[Page], limit: int = 7000) -> str:
         if line:
             out.append(" / ".join(line).replace("。", "、"))
     text = "\n".join(out)
-    return text[:limit]
+    return text[:limit] if limit else text
 
 
 def with_official(article: dict, pages_or_text) -> dict:
@@ -736,7 +741,7 @@ def is_english(text: str) -> bool:
 def script_material(article: dict, pages: list[Page]) -> str:
     return (
         v2.article_material(article)
-        + "\n\n# 公式ページの文字（事実として使ってよい・証拠の場所は下の一覧の番号で）\n" + official_text(pages)
+        + "\n\n# 公式ページの文字（事実として使ってよい・証拠の場所は下の一覧の番号で）\n" + official_text(pages, 24000)
         + "\n\n# 画面の文字（[番号] 文字）\n" + snippets(pages)
     )
 
@@ -1018,6 +1023,25 @@ def wait_voicevox(timeout: float = 240.0) -> bool:
     return False
 
 
+# 読み上げ用の読み（台本の文は変えず、声に渡すときだけ置き換える。長い語から順に）
+TTS_READINGS = [
+    ("Google AI Studio", "グーグル エーアイ スタジオ"), ("AI Studio", "エーアイ スタジオ"),
+    ("GPT-6.1 Sol", "ジーピーティー 6.1 ソル"), ("GPT-6 Astra", "ジーピーティー 6 アストラ"), ("Claude Opus 5.5", "クロード オーパス 5.5"),
+    ("Opus 5.5", "オーパス 5.5"), ("OpenAI", "オープンエーアイ"), ("Anthropic", "アンソロピック"), ("Claude Code", "クロード コード"),
+    ("Claude", "クロード"), ("Gemini", "ジェミニ"), ("Google", "グーグル"), ("Carbon", "カーボン"), ("Argon", "アルゴン"),
+    ("Ultra", "ウルトラ"), ("Max", "マックス"), ("Pro", "プロ"), ("Free", "フリー"), ("API", "エーピーアイ"), ("AI", "エーアイ"),
+    ("%", "パーセント"), ("$", ""),
+]  # fmt: skip
+
+
+def speech_for_tts(text: str) -> str:
+    """声に渡す文: 英字の製品名をカタカナに、記号を言葉に（画面・記録の文はそのまま）"""
+    out = text
+    for src, dst in TTS_READINGS:
+        out = out.replace(src, dst)
+    return out
+
+
 def make_tts(kind: str, speed: float):
     """v3 の声: VOICEVOX は V3_VOICE（話者・スタイル・高さ・抑揚）。それ以外は v2 と同じ"""
     if kind == "voicevox" or (kind == "auto" and shorts.VoiceVox.available()):
@@ -1040,7 +1064,7 @@ def narrate(script: dict, tts_kind: str, work: Path) -> Narration:
 
         def synth(i: int) -> np.ndarray:
             raw, dst = work / f"l{i}.src.wav", work / f"l{i}.wav"
-            tts.synth(lines[i].speech, raw)
+            tts.synth(speech_for_tts(lines[i].speech), raw)
             v2._to_48k_trimmed(raw, dst)
             return v2._read_wav(dst)
 
@@ -1059,7 +1083,7 @@ def narrate(script: dict, tts_kind: str, work: Path) -> Narration:
             speed = max(base_speed - 0.08, speed * voiced / max(TARGET_MIN + 0.6 - fixed, 1.0))
             log(f"   [v3] {total:.1f}秒で短い → 速さ {speed:.2f} で読み直し")
             continue
-        if total <= TARGET_MAX or speed >= base_speed + 0.1:
+        if total <= (TARGET_MAX if not script.get("_approved") else 108.0) or speed >= base_speed + 0.1:
             break
         speed = min(base_speed + 0.1, speed * voiced / max(TARGET_MAX - 0.6 - fixed, 1.0))
         log(f"   [v3] {total:.1f}秒で長い → 速さ {speed:.2f} で読み直し")
@@ -1383,8 +1407,11 @@ class Ladder:
     rows: list
     subject: str
     reveal: float = 0.5
-    mode: str = "price"  # price（料金の段階）/ units（たとえ: 基準の量の四角いくつ分）
-    unit: str = ""
+    mode: str = "price"  # price（料金の段階）/ units（たとえ: 基準の量の四角いくつ分）/ flow（手順の箱と矢印）
+    unit: str = ""  # units: 基準の言い方 / flow: 最後に出す一言
+    title: str = ""  # グラフの見出し（空なら既定）
+    source: str = ""  # 見出しの横の出どころ（空なら既定）
+    tour: float = 0.0  # >0 なら、強調の行を上から順にこの秒数ずつ移す（読み上げが長い場面）
 
 
 @dataclass
@@ -1718,11 +1745,16 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         targets[i] = targets[i] or targets[i - 1]
     comp = script.get("compare") or {}
     comp_beat = int(comp.get("beat") or 0) if comp.get("ratio") else 0
-    lad = script.get("ladder") or {}
-    lad_rows = [r for r in (lad.get("rows") or []) if r.get("name") and r.get("price")]
-    lad_beat = int(lad.get("beat") or 0) if len(lad_rows) >= 2 else 0
-    if lad_beat:
-        comp_beat = 0  # 料金の段階のグラフがあるときは2つの比較グラフは出さない
+    # 料金の段階・数字の比較のグラフ（ladder 1つ、または ladders に複数）。beat ごとに1つ
+    lad_map: dict[int, dict] = {}
+    for L_ in [script.get("ladder") or {}] + list(script.get("ladders") or []):
+        rows_ = [r for r in (L_.get("rows") or []) if r.get("name") and r.get("price")]
+        if int(L_.get("beat") or 0) and len(rows_) >= 2:
+            lad_map[int(L_["beat"])] = {**L_, "rows": rows_}
+    if comp_beat in lad_map:
+        comp_beat = 0  # 同じ場面に2つのグラフは出さない
+    # 手順の絵（flows）: 作業の流れ・たとえの手順を箱と矢印で
+    flow_map = {int(f.get("beat") or 0): f for f in (script.get("flows") or []) if int(f.get("beat") or 0) and len(f.get("steps") or []) >= 2}
     n_beats = len(beats)
     ladders: list[Ladder] = []
     uni = script.get("units") or {}
@@ -1747,7 +1779,8 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     hero = hero_block(p0)
     if t0.block.font_px < 22 and hero is not None and hero is not t0.block:
         first = frame_rect(p0, t0.page, hero.rect, 0.96, 1.4)
-    hook_close = frame_rect(p0, t0.page, t0.zoom_rect, 0.34, ZOOM_MAX, zmin=1.6, line=t0.rect, chars=t0.line_chars)
+    # 数字に寄るときは大きく、見出し（数字なし）は全体が入る程度に寄る（見出しの途中で切らない）
+    hook_close = frame_rect(p0, t0.page, t0.zoom_rect, 0.34, ZOOM_MAX, zmin=1.6, line=t0.rect, chars=t0.line_chars) if t0.focus else frame_rect(p0, t0.page, t0.rect, 0.9, 1.6, zmin=1.15)
     moves.append(Move(0.18, 0.8, hook_close))
     ev(0.18, "move", "つかみ: 数字へ寄る")
     # つかみの訳は、同じ英文を beat でも訳すなら出さない（同じ訳が2回続かないように）
@@ -1777,8 +1810,10 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         ev(a_t, "cut" if cut else "move", f"beat{i}: 行へ")
         b_t = line.start + max(0.85, 0.42 * dur)
         sub_t0, sub_end = a_t + 0.95, nxt - 0.08
-        if i == lad_beat:
+        if i in lad_map:
             # 料金の段階: 本物の料金表の価格を安い順に1つずつ見せて（証拠）、そのあと比較のグラフでまとめる
+            lad = lad_map[i]
+            lad_rows = lad["rows"]
             moves.pop()
             events.pop()
             row_tgs = [find_target(pages, r.get("target", ""), r.get("block", ""), keyword=r.get("price", "")) for r in lad_rows]
@@ -1796,10 +1831,18 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
             t_c = t_cur if shown else line.start + 0.3
             reveal = 0.5
             t_hi = t_c + 0.3 + reveal * len(lad_rows) + 0.3
-            t_end = min(nxt - 0.06, t_hi + 1.5)
-            ladders.append(Ladder(t_c, t_end, lad_rows, lad.get("subject", ""), reveal))
+            # 読み上げが長い場面は、グラフを出したまま1行ずつ順に強調していく（読み上げで各行を話す間ずっと見せる）
+            tour = nxt - t_hi > 4.0
+            t_end = min(nxt - 0.06, t_hi + (1.8 * len(lad_rows) + 0.2 if tour else 1.5))
+            L_new = Ladder(t_c, t_end, lad_rows, lad.get("subject", ""), reveal, "price", "", lad.get("title", ""), lad.get("source", ""))
+            L_new.tour = 1.8 if tour else 0.0
+            ladders.append(L_new)
             ev(t_c, "chart", "料金の段階のグラフ")
-            ev(t_hi, "pop", "グラフ: 主役を強調")
+            if tour:
+                for k in range(len(lad_rows)):
+                    ev(t_hi + 1.8 * k, "pop", f"グラフ: {lad_rows[k].get('name')}")
+            else:
+                ev(t_hi, "pop", "グラフ: 主役を強調")
             if nxt - t_end > 0.8 and shown:  # 残りの時間は料金表の主役のプランへ戻る
                 sub_r, sub_t = next(((r, t) for r, t in shown if r.get("name", "").lower() == lad.get("subject", "").lower()), shown[-1])
                 cam_s = frame_rect(pages[sub_t.page], sub_t.page, sub_t.rect, 0.8, 1.5, zmin=1.2)
@@ -1807,7 +1850,24 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
                 ev(t_end - 0.1, "move", f"料金表: {sub_r.get('name')} へ戻る")
                 spots.append(Spot(t_end + 0.3, nxt - 0.08, sub_t.page, sub_t.rect, [sub_t.zoom_rect], t_end + 0.4))
             continue
-        if i == uni_beat and i != lad_beat:
+        if i in flow_map and i not in lad_map:
+            # 手順の絵: 行の証拠を見せたあと、作業の流れを箱と矢印で1つずつ出す
+            fl = flow_map[i]
+            steps = [str(x) for x in fl.get("steps")][:4]
+            t_u = line.start + max(0.9, 0.22 * dur)
+            t_hi = t_u + 0.3 + 0.7 * len(steps) + 0.2
+            t_end = min(nxt - 0.06, t_hi + 2.0)
+            ladders.append(Ladder(t_u, t_end, [{"name": x} for x in steps], "", 0.7, "flow", fl.get("note", ""), fl.get("title", ""), ""))
+            ev(t_u, "chart", "手順の絵")
+            ev(t_hi, "pop", "手順: まとめ")
+            spots.append(Spot(a_t + 0.35, t_u, tg.page, span, sel, a_t + 0.6))
+            if xl and t_u - (a_t + 0.95) > 0.8:
+                sub_spans.append((a_t + 0.95, t_u - 0.05, i))
+            if nxt - t_end > 0.8:
+                moves.append(Move(t_end - 0.1, 0.6, block_cam))
+                ev(t_end - 0.1, "move", f"beat{i}: 画面へ戻る")
+            continue
+        if i == uni_beat and i not in lad_map:
             # たとえ: 行の証拠を見せたあと、基準の量を四角1つとして並べる絵
             t_u = line.start + max(0.9, 0.3 * dur)
             t_hi = t_u + 0.3 + 0.5 * len(uni_rows) + 0.3
@@ -1937,7 +1997,11 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     voice_text = f"音声 {voice['credit']}" if voice.get("credit") else "音声 試作の声（本番は VOICEVOX）"
     hosts = "・".join(dict.fromkeys(p.host for p in pages))
     credit = f"{voice_text}　画面 {hosts}（公式）"
-    rows = [fit_line(voice_text, "bold", range(22, 16, -1), COL_W, color=SOFT, accent=False), fit_line(f"画面 {hosts}（公式）", "bold", range(22, 14, -1), COL_W, color=SOFT, accent=False)]
+    try:
+        host_row = fit_line(f"画面 {hosts}（公式）", "bold", range(22, 15, -1), COL_W, color=SOFT, accent=False)
+    except RuntimeError:  # ページが多いときは2行に
+        host_row = wrapped(f"画面 {hosts}（公式）", "bold", range(20, 14, -1), COL_W, 2, color=SOFT, accent=False)
+    rows = [fit_line(voice_text, "bold", range(22, 16, -1), COL_W, color=SOFT, accent=False), host_row]
     spr = stack(rows, 8)
     texts.append(TextItem("credit", credit, spr, COL[0], SOURCE_Y - spr.shape[0] + rows[0].shape[0], credit_t, narr.total + 1, anim="rise"))
     credits = [credit]
@@ -2042,13 +2106,13 @@ def _highlight_select(img: np.ndarray, rect: tuple, k: float) -> None:
     img[ya:yb, xa:xb] = ((roi * np.array(SELECT, dtype=np.uint16)) >> 8).astype(np.uint8)
 
 
-def push_in(arr: np.ndarray, info: dict, L: "Ladder", t: float, t_hi: float) -> np.ndarray:
+def push_in(arr: np.ndarray, info: dict, L: "Ladder", t: float, t_hi: float, amount: float = 0.16) -> np.ndarray:
     """グラフのカメラ: ずっとごくゆっくり寄り、主役の行を強調したあとは、その行へ寄っていく（止まった絵にしない）"""
     if cv2 is None:
         return arr
     base = 0.03 * min(1.0, max(0.0, (t - L.t0) / max(L.t1 - L.t0, 0.5)))
     after = ease((t - t_hi) / 1.4)
-    k = 1 + base + 0.16 * after
+    k = 1 + base + amount * after
     subj = next((r for r in info["rows"] if r.get("subj")), None)
     cy = PH / 2 + ((subj["y"] + subj["h"] / 2 - 10 - PH / 2) * after if subj else 0)
     cx = PW / 2 - PW * 0.08 * after
@@ -2165,6 +2229,16 @@ class Renderer:
 
     def _ladder_base(self, L: "Ladder") -> dict:
         """料金の段階のカード: 見出し・各行（プラン名・価格・使える量）の文字を先に作る。棒は毎フレーム描く"""
+        if L.mode == "flow":
+            n = len(L.rows)
+            arrow = render_text([("→", "black", BLUE)], 60)
+            gap = arrow.shape[1] + 36
+            box_w = int((PW - 2 * self.LAD_X - gap * (n - 1)) / n)
+            steps = [wrapped(r["name"], "black", range(46, 26, -2), box_w - 36, 2, color=INK, accent=False, center=True) for r in L.rows]
+            nums = [render_text([(chr(0x2460 + k), "black", BLUE)], 34) for k in range(n)]
+            title = render_text([(L.title, "bold", BLUE)], 30, 0.06) if L.title else None
+            note = wrapped(L.unit, "black", range(46, 30, -2), PW - 2 * self.LAD_X, 2, color=INK) if L.unit else None
+            return {"steps": steps, "nums": nums, "arrow": arrow, "gap": gap, "box_w": box_w, "title": title, "note": note, "rows": []}
         if L.mode == "units":
             title = render_text([(f"{L.unit}を", "bold", BLUE), ("■", "bold", BLUE), ("1つとすると", "bold", BLUE)], 30, 0.04)
             src = render_text([("公式の倍率より", "bold", SOFT)], 22)
@@ -2180,8 +2254,8 @@ class Renderer:
                     "label": render_text([(f"{r['count']}個分", "black", ACCENT if subj else MUTED)], 40),
                 })
             return {"title": title, "src": src, "rows": rows}
-        title = render_text([("料金と使える量", "bold", BLUE)], 28, 0.08)
-        src = render_text([("公式の料金ページより", "bold", SOFT)], 22)
+        title = render_text([(L.title or "料金と使える量", "bold", BLUE)], 28, 0.06)
+        src = render_text([(L.source or "公式の料金ページより", "bold", SOFT)], 22)
         n = len(L.rows)
         top, bottom = 150, PH - 70
         row_h = min(190, (bottom - top) // n)
@@ -2232,11 +2306,55 @@ class Renderer:
             blend(arr, row["label"], lx, mid + 30 - row["label"].shape[0] // 2, a)
         return push_in(arr, info, L, t, t_hi)
 
+    def flow_frame(self, info: dict, L: "Ladder", t: float) -> np.ndarray:
+        """手順の絵: 番号つきの箱が左から1つずつ現れ、間に矢印。最後に一言（note）"""
+        arr = np.full((PH, PW, 3), 255, dtype=np.uint8)
+        n = len(info["steps"])
+        x0, box_w, gap = self.LAD_X, info["box_w"], info["gap"]
+        box_h = 230
+        y_box = PH // 2 - box_h // 2 - 40
+        boxes, items = [], []
+        for k in range(n):
+            age = t - (L.t0 + 0.3 + L.reveal * k)
+            if age < 0:
+                continue
+            a = ease_out(age / 0.35)
+            bx = x0 + k * (box_w + gap)
+            dy = int((1 - a) * 24)
+            boxes.append((bx, y_box + dy, box_w, MARKER if a >= 0.5 else (236, 241, 249)))
+            items.append((k, bx, dy, a))
+        img = Image.fromarray(arr)
+        data_bars(img, boxes, box_h, radius=22)
+        arr = np.asarray(img).copy()
+        if info["title"] is not None:
+            blend(arr, info["title"], x0, 70)
+        for k, bx, dy, a in items:
+            num, st = info["nums"][k], info["steps"][k]
+            blend(arr, num, bx + 22, y_box + 18 + dy, a)
+            blend(arr, st, bx + (box_w - st.shape[1]) // 2, y_box + (box_h - st.shape[0]) // 2 + 14 + dy, a)
+            if k > 0:
+                ar = info["arrow"]
+                blend(arr, ar, bx - gap + (gap - ar.shape[1]) // 2, y_box + (box_h - ar.shape[0]) // 2 + dy, a)
+        t_hi = L.t0 + 0.3 + L.reveal * n + 0.2
+        if info["note"] is not None and t >= t_hi:
+            a = ease_out((t - t_hi) / 0.4)
+            blend(arr, info["note"], x0, y_box + box_h + 60 + int((1 - a) * 16), a)
+        # ゆっくり寄り、まとめの一言が出たらそこへ寄る（止まった絵にしない）
+        if cv2 is not None:
+            after = ease((t - t_hi) / 1.4)
+            k = 1 + 0.04 * min(1.0, max(0.0, (t - L.t0) / max(L.t1 - L.t0, 0.5))) + 0.09 * after
+            cy = PH / 2 + (y_box + box_h + 90 - PH / 2) * after * 0.6
+            m = np.array([[k, 0, PW / 2 * (1 - k)], [0, k, cy * (1 - k)]], dtype=np.float32)
+            arr = cv2.warpAffine(arr, m, (PW, PH), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+        return arr
+
     def ladder_frame(self, idx: int, t: float) -> np.ndarray:
         info = self.ladder_cards[idx]
         L: Ladder = self.plan.ladders[idx]
         if L.mode == "units":
             return self.units_frame(info, L, t)
+        if L.mode == "flow":
+            return self.flow_frame(info, L, t)
         card = Image.new("RGB", (PW, PH), (255, 255, 255))
         x0 = self.LAD_X
         name_w = max(r["name"].shape[1] for r in info["rows"])
@@ -2247,13 +2365,18 @@ class Renderer:
         n = len(info["rows"])
         t_hi = L.t0 + 0.3 + L.reveal * n + 0.3
         hi = ease_out((t - t_hi) / 0.4)
+        focus_k = None  # 順に強調するときの今の行
+        if L.tour and t >= t_hi:
+            focus_k = min(n - 1, int((t - t_hi) / L.tour))
+            hi = ease_out((t - t_hi - focus_k * L.tour) / 0.3)
         arr = np.asarray(card).copy()
         bars = []
         for k, row in enumerate(info["rows"]):
             age = t - (L.t0 + 0.3 + L.reveal * k)
             if age < 0:
                 continue
-            if row["subj"] and hi > 0:
+            on = (k == focus_k) if focus_k is not None else row["subj"]
+            if on and hi > 0:
                 _highlight_row(arr, 30, row["y"] - 18, PW - 60, row["h"] - 14, hi)
             grow = ease_out(age / 0.45)
             length = int((max(row["frac"], 0.0) * bar_max if row["frac"] else 36) * grow)
@@ -2279,7 +2402,9 @@ class Renderer:
             blend(arr, row["price"], price_x + dx, mid - row["price"].shape[0] // 2 + 26, a)
             if row["usage"] is not None:
                 blend(arr, row["usage"], bar_x + max(length, 56) + 20, mid + 26 - row["usage"].shape[0] // 2, a)
-        return push_in(arr, info, L, t, t_hi)
+        if focus_k is not None:  # 強調している行へ軽く寄る
+            info = {**info, "rows": [{**r, "subj": i == focus_k} for i, r in enumerate(info["rows"])]}
+        return push_in(arr, info, L, t, t_hi if focus_k is None else t_hi + focus_k * L.tour, 0.08 if focus_k is not None else 0.16)
 
     def chart_frame(self, idx: int, t: float) -> tuple[np.ndarray, list]:
         info = self.chart_cards[idx]
@@ -2517,7 +2642,9 @@ def encode(renderer: Renderer, audio: Path, out: Path, fps: int = FPS, workers: 
         shorts.ffmpeg_bin(), "-y", "-loglevel", "error",
         "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(fps), "-i", "-",
         "-i", str(audio), "-map", "0:v", "-map", "1:a", *vf,
-        "-c:v", "libx264", "-preset", preset, "-crf", "20", "-maxrate", "8M", "-bufsize", "16M",
+        # 長い動画は 24MiB に収まるよう少し強めに圧縮（文字の画面なので crf 23 でも十分きれい）
+        "-c:v", "libx264", "-preset", preset, "-crf", "20" if renderer.total <= 45 else "23",
+        "-maxrate", f"{min(8.0, max(2.0, 150.0 / max(renderer.total, 1))):.1f}M", "-bufsize", "16M",
         "-profile:v", "high", "-pix_fmt", "yuv420p", "-r", str(fps), "-g", str(fps * 2), "-keyint_min", str(fps), "-sc_threshold", "0",
         "-c:a", "aac", "-b:a", "160k", "-ar", str(SR), "-ac", "2",
         "-t", f"{renderer.total:.3f}", "-movflags", "+faststart", str(out),
@@ -2694,6 +2821,7 @@ def make_video(
     workers: int | None = None,
     sheet: bool = True,
     bgm: bool = True,
+    extra_pages: list[str] | None = None,
 ) -> dict:
     """1本作って品質ゲートにかける。戻り値は report（gate.ok で合否）。例外は投げず report に残す"""
     timer = Timer()
@@ -2708,7 +2836,7 @@ def make_video(
         warm = warm_voicevox() if tts == "voicevox" else None
         if pages is None:
             t = time.time()
-            urls = page_urls(a)
+            urls = page_urls(a, extra_pages)
             if not urls:
                 raise RuntimeError("撮ってよい公式ページがありません（ニュースサイトが出典の記事は v3 の対象外）")
             pages = capture_pages(urls)
@@ -2766,9 +2894,9 @@ def make_video(
                 "fonts": [FONT_FAMILY, LOGO_FAMILY],
                 "rendered_strings": sorted(set(RENDERED)),
                 "charts": [{"t0": round(c.t0, 3), "t1": round(c.t1, 3), "base": c.base, "subject": c.subject, "ratio": c.ratio} for c in plan.charts],
-                "ladders": [{"t0": round(L.t0, 3), "t1": round(L.t1, 3), "mode": L.mode, "unit": L.unit, "subject": L.subject, "rows": [{k: r.get(k, "") for k in ("name", "price", "usage", "mult", "count") if k in r} for r in L.rows]} for L in plan.ladders],
+                "ladders": [{"t0": round(L.t0, 3), "t1": round(L.t1, 3), "mode": L.mode, "unit": L.unit, "title": L.title, "subject": L.subject, "rows": [{k: r.get(k, "") for k in ("name", "price", "usage", "mult", "count") if k in r} for r in L.rows]} for L in plan.ladders],
                 "official_text": official_text(plan.pages),
-                "length_range": list(LENGTH_RANGE),
+                "length_range": list(APPROVED_RANGE if plan.script.get("_approved") else LENGTH_RANGE),
                 "panel": list(PANEL),
                 "targets": [{"page": t.page + 1, "block": t.block.id, "text": t.text, "block_text": t.block.text[:160]} if t else None for t in plan.targets],
                 **make_meta(a, plan.script, plan.narr.voice, plan.pages),
@@ -2801,13 +2929,14 @@ def main() -> None:
     parser.add_argument("--reuse-script", action="store_true")
     parser.add_argument("--profile", choices=list(gate.PROFILES))
     parser.add_argument("--no-bgm", action="store_true")
+    parser.add_argument("--pages", nargs="*", default=[], help="足して撮る公式ページ（他社の料金表など）")
     args = parser.parse_args()
     import llm
 
     llm._load_env_local()
     failed = 0
     for slug in args.slugs:
-        r = make_video(slug, Path(args.out), args.tts, args.reuse_script, args.profile, bgm=not args.no_bgm)
+        r = make_video(slug, Path(args.out), args.tts, args.reuse_script, args.profile, bgm=not args.no_bgm, extra_pages=args.pages)
         failed += 0 if r["gate"]["ok"] else 1
     sys.exit(1 if failed else 0)
 

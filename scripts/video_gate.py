@@ -228,7 +228,9 @@ def number_context_problems(script_v3: dict, article: dict) -> list[str]:
     """v3: 画面・読み上げの数字が、記事の中で同じ話題の文に出てくるか。
     例: 「APIクレジット 月200ドル分」は、記事に 200 があっても APIクレジットの文に無ければ失敗（別ページの数字の混入を防ぐ）"""
     material = norm(material_text(article))
-    sentences = [x for x in re.split(r"[。\n]|(?<=[.!?])\s", material) if x.strip()]
+    # 記事は文ごと、公式ページの文字は見出しごとの1行（料金表の行など、文に分けると名前と価格が離れるため）
+    head, _, official = material.partition("# 公式ページ")
+    sentences = [x for x in re.split(r"[。\n]|(?<=[.!?])\s", head) if x.strip()] + [x for x in official.split("\n") if x.strip()]
     hook = script_v3.get("hook") or {}
     # つかみは問いかけの言葉が多いので、答えの数字（payoff）の言葉だけで見る
     items = [("hook", hook.get("payoff", ""), hook.get("speech", ""))]
@@ -236,16 +238,18 @@ def number_context_problems(script_v3: dict, article: dict) -> list[str]:
     concl = script_v3.get("conclusion") or {}
     items.append(("conclusion", concl.get("text", ""), concl.get("speech", "")))
     # 料金の段階のグラフの数字（プラン名と価格が公式ページの同じ所にあるかは台本の検査で見ている）は、その beat では文脈を問わない
-    lad = script_v3.get("ladder") or {}
-    lad_name = f"beat{int(lad.get('beat') or 0)}" if lad.get("beat") else ""
-    lad_nums = set(re.findall(r"\d+(?:\.\d+)?", norm(" ".join(f"{r.get('price', '')} {r.get('usage', '')} {r.get('mult', '')}" for r in lad.get("rows") or []))))
+    lad_nums_by: dict[str, set] = {}
+    for lad in [script_v3.get("ladder") or {}] + list(script_v3.get("ladders") or []):
+        if lad.get("beat"):
+            rows_text = " ".join(f"{r.get('name', '')} {r.get('price', '')} {r.get('usage', '')} {r.get('mult', '')}" for r in lad.get("rows") or [])
+            lad_nums_by.setdefault(f"beat{int(lad['beat'])}", set()).update(re.findall(r"\d+(?:\.\d+)?", norm(rows_text)))
     problems = []
     for name, screen, speech in items:
         text = norm(f"{screen} {speech}")
         terms = {t for t in _TERM.findall(norm(screen)) if t not in LATIN_OK and not re.fullmatch(r"\d+", t)}
         terms -= {"ドル", "時間", "毎週", "毎月", "月額", "プラン"}
         for num in set(re.findall(r"\d+(?:\.\d+)?", text)):
-            if name == lad_name and num in lad_nums:
+            if num in lad_nums_by.get(name, ()) or num == "1":  # 「1つ」「1ドルあたり」のような1は文脈を問わない（記事・公式にあるかは別に見る）
                 continue
             pat = re.compile(r"(?<![\d.])" + re.escape(num) + r"(?![\d])")
             hits = [s for s in sentences if pat.search(s)]
@@ -810,19 +814,44 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
         result.reasons.append(f"v3: 飾りの線・帯: {p}")
 
 
+_MONTHS = {m: i for i, m in enumerate(["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], 1)}
+
+
+def japanese_dates(text: str) -> str:
+    """英語の日付（December 1, 2026）に日本語の書き方（2026年12月1日）を添える（数字の照合で月を読めるように）"""
+    def rep(m: re.Match) -> str:
+        mon = _MONTHS[m.group(1)]
+        year = f"{m.group(3)}年" if m.group(3) else ""
+        return f"{m.group(0)}（{year}{mon}月{int(m.group(2))}日）"
+
+    return re.sub(r"\b(" + "|".join(_MONTHS) + r")\s+(\d{1,2})(?:st|nd|rd|th)?(?:,\s*(\d{4}))?", rep, text)
+
+
 def with_official(article: dict, text: str) -> dict:
     """事実の照合に使う資料: 記事 ＋ 撮った公式ページの文字（v3 は公式ページを一次情報として数字の出どころに認める）"""
     if not text:
         return article
+    text = japanese_dates(text)
     aug = dict(article)
     aug["body"] = (article.get("body") or "") + "\n\n# 公式ページ\n" + text
     return aug
 
 
+def derived_counts(script_v3: dict) -> str:
+    """グラフの行の数（例: 料金の段階が3行 →「3段階・3つ」）。公式の行を数えた数なので、数字の出どころとして認める"""
+    out = []
+    for lad in [script_v3.get("ladder") or {}] + list(script_v3.get("ladders") or []):
+        rows = [r for r in lad.get("rows") or [] if r.get("name")]
+        if lad.get("beat") and rows:
+            n = len(rows)
+            out.append(f"（グラフの行の数）{'・'.join(r['name'] for r in rows)}の{n}段階、{n}つ、{n}種類、{n}プラン")
+    return "\n".join(out)
+
+
 def check_video(mp4: Path, report: dict, article: dict, profile: str = "production") -> GateResult:
     """動画を投稿に付けてよいか。例外は投げず、問題はすべて reasons に入れる"""
     result = GateResult(ok=False)
-    article = with_official(article, report.get("official_text") or "")
+    article = with_official(article, "\n".join(x for x in [report.get("official_text") or "", derived_counts(report.get("script_v3") or {})] if x))
     prof = PROFILES[profile]
     try:
         mp4 = Path(mp4)
