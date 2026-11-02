@@ -1,0 +1,105 @@
+name: SNS video follow-up (flagged, default off)
+
+# SNS（Threads）に投稿した記事だけ、長めの解説動画（v3）を作り、あとから「動画で解説」の投稿として出す。
+# 2026-11-03 オーナー決定「当面は SNS に投稿する記事だけ」「まず Threads に1日2本」。
+# **既定では何もしない。** Actions の Variables で順に有効にする（docs/sns-video-v3-20261102.md「自動化の計画」）:
+#   SNS_VIDEO_FOLLOWUP=on  … 定期実行で動画を作る（ゲートまで。投稿しない）
+#   SNS_VIDEO_UPLOAD=on    … 合格した動画を R2 に置く（SNS_VIDEO_R2_BUCKET・SNS_VIDEO_PUBLIC_BASE と R2 の書き込み権限のトークンが要る）
+#   SNS_VIDEO_POST=live    … Buffer で Threads に出す（オーナーの確認のあと）
+# 手動実行（workflow_dispatch）は、Variables に関係なく「作るだけ（投稿しない）」で試せる。
+on:
+  schedule:
+    - cron: "45 * * * *"  # 毎時45分（文面の投稿 15/35/55 分のあと）。SNS_VIDEO_FOLLOWUP=on のときだけ動く
+  workflow_dispatch:
+    inputs:
+      plan_only:
+        description: "対象を表示するだけ（true）／動画を作ってゲートまで（false）"
+        default: "true"
+
+permissions:
+  contents: write  # state/sns_video.json と Claude API の使用量を main に残すため
+
+concurrency:
+  group: sns-video-followup
+  cancel-in-progress: false
+
+jobs:
+  followup:
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.SNS_VIDEO_FOLLOWUP == 'on' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: VOICEVOX を裏で起動
+        run: nohup sh -c 'docker run -d --rm --name voicevox -p 50021:50021 voicevox/voicevox_engine:cpu-latest' > /tmp/voicevox.log 2>&1 &
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: 準備（Python・Claude CLI・日本語フォント）
+        run: |
+          npm i -g @anthropic-ai/claude-code > /tmp/claude-install.log 2>&1 &
+          pip install -r requirements.txt numpy pillow budoux opencv-python-headless playwright imageio-ffmpeg
+          mkdir -p ~/.local/share/fonts && cp assets/fonts/NotoSansJP-*.otf ~/.local/share/fonts/ && fc-cache -f > /dev/null
+          wait
+      - name: 動画を作る（フラグに従う）
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          CLAUDE_MODEL: opus
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          LLM_DEFAULT_VISIBILITY: high
+          LLM_DEFAULT_PURPOSE: video
+          CLAUDE_API_LEDGER: video
+          CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
+          CLAUDE_API_DAILY_CALLS_VIDEO: ${{ vars.CLAUDE_API_DAILY_CALLS_VIDEO }}
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_R2_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # 手動実行は「作るだけ」。投稿・アップロードは定期実行で Variables が on/live のときだけ
+          SNS_VIDEO_FOLLOWUP: ${{ github.event_name == 'workflow_dispatch' && 'on' || vars.SNS_VIDEO_FOLLOWUP }}
+          SNS_VIDEO_UPLOAD: ${{ github.event_name == 'schedule' && vars.SNS_VIDEO_UPLOAD || 'off' }}
+          SNS_VIDEO_POST: ${{ github.event_name == 'schedule' && vars.SNS_VIDEO_POST || 'off' }}
+          SNS_VIDEO_DAILY_MAX: ${{ vars.SNS_VIDEO_DAILY_MAX || '2' }}
+          SNS_VIDEO_R2_BUCKET: ${{ vars.SNS_VIDEO_R2_BUCKET }}
+          SNS_VIDEO_PUBLIC_BASE: ${{ vars.SNS_VIDEO_PUBLIC_BASE }}
+        run: |
+          if [ "${{ github.event.inputs.plan_only }}" = "true" ]; then
+            python scripts/sns_video_followup.py --plan
+          else
+            python scripts/sns_video_followup.py
+          fi
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: sns-video-${{ github.run_number }}
+          path: |
+            out/sns_video_followup/*.mp4
+            out/sns_video_followup/*.png
+            out/sns_video_followup/*.json
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: 記録を main に残す（動画の記録・Claude API の使用量）
+        if: ${{ always() && github.event.inputs.plan_only != 'true' }}
+        continue-on-error: true
+        run: |
+          files="state/sns_video.json state/claude_api_usage_video.json"
+          changed=""; for f in $files; do [ -f "$f" ] && [ -n "$(git status --porcelain "$f")" ] && changed="$changed $f"; done
+          [ -z "$changed" ] && exit 0
+          for f in $changed; do cp "$f" "$RUNNER_TEMP/$(basename "$f")"; done
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for i in 1 2 3; do
+            git fetch --depth 1 origin main && git reset --hard origin/main
+            [ -f "$RUNNER_TEMP/sns_video.json" ] && cp "$RUNNER_TEMP/sns_video.json" state/sns_video.json
+            [ -f "$RUNNER_TEMP/claude_api_usage_video.json" ] && python scripts/llm.py --merge-api-usage "$RUNNER_TEMP/claude_api_usage_video.json" state/claude_api_usage_video.json
+            git add state/sns_video.json state/claude_api_usage_video.json 2>/dev/null
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "chore(video): SNS 動画の記録を更新 [no-deploy]"
+            git push origin HEAD:main && exit 0
+            sleep 5
+          done
