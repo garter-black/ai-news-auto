@@ -89,6 +89,7 @@
 | `missed_check.yml` | 毎朝8:30、取りこぼした大ニュースがないか確認 |
 | `newsletter.yml` | 毎朝7時のメルマガ |
 | `readability.yml` | 文字の見やすさの自動チェック |
+| `pricing_watch.yml` | 毎朝6:17、公式の料金ページを読み直して料金の段の表（`content/pricing/*.json`、円の目安つき）を更新。金額が変わったら記事の候補にする。読み方は `scripts/pricing.py`（Python）と `lib/pricing-ladder.ts`・`components/PriceTable.tsx`（サイト） |
 
 ## 6. 大事なルール（必ず守る）
 

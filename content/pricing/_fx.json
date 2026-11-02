@@ -1,0 +1,8 @@
+{
+ "base": "USD",
+ "quote": "JPY",
+ "rate": 157.9,
+ "date": "2026-11-02",
+ "source": "ECB参照レート（ユーロ経由で計算）",
+ "sourceUrl": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
+}

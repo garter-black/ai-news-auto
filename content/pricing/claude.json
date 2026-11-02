@@ -1,0 +1,290 @@
+{
+ "product": "claude",
+ "name": "Claude",
+ "company": "anthropic",
+ "kind": "plan",
+ "mode": "auto",
+ "checkedAt": "2026-11-03",
+ "updatedAt": "2026-11-03",
+ "sources": [
+  {
+   "url": "https://claude.com/pricing",
+   "title": "Claude 料金ページ（Plans & Pricing）",
+   "checkedAt": "2026-11-03",
+   "how": "auto"
+  }
+ ],
+ "taxNote": "表示価格には適用される税金が含まれていません。価格およびプランは、Anthropic の裁量により変更される場合があります。",
+ "notes": [
+  "Team: 2〜150名のチーム向け",
+  "Team: 月額最大500ドルのプールAPIクレジット"
+ ],
+ "plans": [
+  {
+   "id": "free",
+   "name": "Free",
+   "tier": "free",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 0,
+     "currency": "USD",
+     "per": "month",
+     "label": "$0 すべてのカスタマーに無料で提供",
+     "taxIncluded": false,
+     "src": "auto",
+     "jpy": {
+      "exTax": 0,
+      "inclTax": 0,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [
+    "制限された使用量（5 時間ごと・毎週）"
+   ],
+   "sourceUrl": "https://claude.com/pricing"
+  },
+  {
+   "id": "pro",
+   "name": "Pro",
+   "tier": "standard",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 17,
+     "currency": "USD",
+     "per": "month",
+     "billing": "annual",
+     "label": "$17 年間サブスクリプション割引適用時の月額（ $200 一括請求）",
+     "billedAs": 200,
+     "taxIncluded": false,
+     "src": "auto",
+     "jpy": {
+      "exTax": 2684,
+      "inclTax": 2953,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    },
+    {
+     "amount": 20,
+     "currency": "USD",
+     "per": "month",
+     "billing": "monthly",
+     "label": "月払いの場合は $20",
+     "taxIncluded": false,
+     "src": "auto",
+     "jpy": {
+      "exTax": 3158,
+      "inclTax": 3474,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [
+    "Free より多い使用量（5 時間ごと・毎週）"
+   ],
+   "sourceUrl": "https://claude.com/pricing"
+  },
+  {
+   "id": "max",
+   "name": "Max",
+   "tier": "high",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 100,
+     "currency": "USD",
+     "per": "month",
+     "billing": "monthly",
+     "label": "$100 月額",
+     "taxIncluded": false,
+     "src": "auto",
+     "jpy": {
+      "exTax": 15790,
+      "inclTax": 17369,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [
+    "Pro の 5 倍の使用量（5 時間ごと・毎週）",
+    "Claude Platform での開発に利用できる月額 $100 分の API クレジット"
+   ],
+   "sourceUrl": "https://claude.com/pricing"
+  },
+  {
+   "id": "ultra",
+   "name": "Ultra",
+   "tier": "top",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 200,
+     "currency": "USD",
+     "per": "month",
+     "billing": "monthly",
+     "label": "$200 月額",
+     "taxIncluded": false,
+     "src": "auto",
+     "jpy": {
+      "exTax": 31580,
+      "inclTax": 34738,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [
+    "5 時間制限なし",
+    "Pro の 10 倍の使用量（毎週）",
+    "月額 $200 分の API クレジット（Max の $100 からアップグレード）"
+   ],
+   "sourceUrl": "https://claude.com/pricing"
+  },
+  {
+   "id": "team-standard",
+   "name": "Team（スタンダードシート）",
+   "tier": "team",
+   "audience": "team",
+   "prices": [
+    {
+     "amount": 20,
+     "currency": "USD",
+     "per": "seat-month",
+     "billing": "annual",
+     "label": "$20 年払い時のシートあたり月額",
+     "taxIncluded": false,
+     "src": "auto",
+     "jpy": {
+      "exTax": 3158,
+      "inclTax": 3474,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    },
+    {
+     "amount": 25,
+     "currency": "USD",
+     "per": "seat-month",
+     "billing": "monthly",
+     "label": "月払いの場合は $25",
+     "taxIncluded": false,
+     "src": "auto",
+     "jpy": {
+      "exTax": 3948,
+      "inclTax": 4342,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [
+    "すべてのClaude 機能、さらにProより多い使用量"
+   ],
+   "sourceUrl": "https://claude.com/pricing"
+  },
+  {
+   "id": "team-premium",
+   "name": "Team（プレミアムシート）",
+   "tier": "team",
+   "audience": "team",
+   "prices": [
+    {
+     "amount": 100,
+     "currency": "USD",
+     "per": "seat-month",
+     "billing": "annual",
+     "label": "$100 年払い時のシートあたり月額",
+     "taxIncluded": false,
+     "src": "auto",
+     "jpy": {
+      "exTax": 15790,
+      "inclTax": 17369,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    },
+    {
+     "amount": 125,
+     "currency": "USD",
+     "per": "seat-month",
+     "billing": "monthly",
+     "label": "月払いの場合は $125",
+     "taxIncluded": false,
+     "src": "auto",
+     "jpy": {
+      "exTax": 19738,
+      "inclTax": 21711,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [
+    "スタンダードシートの5倍の使用量"
+   ],
+   "sourceUrl": "https://claude.com/pricing"
+  },
+  {
+   "id": "enterprise",
+   "name": "Enterprise",
+   "tier": "enterprise",
+   "audience": "enterprise",
+   "prices": [
+    {
+     "amount": 20,
+     "currency": "USD",
+     "per": "seat-month",
+     "billing": "annual",
+     "taxIncluded": false,
+     "label": "US$20/シート/月（年払い、最低20シート）。使用コストはモデルとタスクに応じて変動します。",
+     "src": "auto",
+     "jpy": {
+      "exTax": 3158,
+      "inclTax": 3474,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [
+    "US$20/シート/月（年払い、最低20シート）。使用コストはモデルとタスクに応じて変動します。",
+    "シート料金 + APIレートでの使用量"
+   ],
+   "sourceUrl": "https://claude.com/pricing"
+  }
+ ],
+ "fx": {
+  "base": "USD",
+  "quote": "JPY",
+  "rate": 157.9,
+  "date": "2026-11-02",
+  "source": "ECB参照レート（ユーロ経由で計算）",
+  "sourceUrl": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
+ }
+}

@@ -1,0 +1,327 @@
+{
+ "product": "chatgpt",
+ "name": "ChatGPT",
+ "company": "openai",
+ "kind": "plan",
+ "mode": "mixed",
+ "checkedAt": "2026-11-03",
+ "updatedAt": "2026-11-03",
+ "sources": [
+  {
+   "url": "https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus",
+   "title": "What is ChatGPT Plus?（OpenAI ヘルプ）",
+   "checkedAt": "2026-11-03",
+   "how": "auto"
+  },
+  {
+   "url": "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers",
+   "title": "About ChatGPT Pro tiers（OpenAI ヘルプ）",
+   "checkedAt": "2026-11-03",
+   "how": "auto"
+  },
+  {
+   "url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+   "title": "What is ChatGPT Business?（OpenAI ヘルプ）",
+   "checkedAt": "2026-11-03",
+   "how": "auto"
+  },
+  {
+   "url": "https://chatgpt.com/ja-JP/pricing/",
+   "title": "ChatGPT プランと料金（日本向け・円表示）",
+   "checkedAt": "2026-11-03",
+   "how": "manual"
+  }
+ ],
+ "taxNote": "ドルの価格は OpenAI ヘルプセンター。円の価格は chatgpt.com の日本向け料金ページ（税の扱いの記載なし）",
+ "notes": [],
+ "plans": [
+  {
+   "id": "free",
+   "name": "無料版",
+   "tier": "free",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 0,
+     "currency": "JPY",
+     "per": "month",
+     "taxIncluded": null,
+     "src": "manual",
+     "label": "￥0 / 月",
+     "sourceUrl": "https://chatgpt.com/ja-JP/pricing/"
+    }
+   ],
+   "limits": [],
+   "sourceUrl": "https://chatgpt.com/ja-JP/pricing/"
+  },
+  {
+   "id": "go",
+   "name": "Go",
+   "tier": "low",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 1400,
+     "currency": "JPY",
+     "per": "month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "src": "manual",
+     "label": "￥1,400 / 月",
+     "sourceUrl": "https://chatgpt.com/ja-JP/pricing/"
+    }
+   ],
+   "limits": [
+    "This plan may include ads.（広告が表示される場合あり）"
+   ],
+   "sourceUrl": "https://chatgpt.com/ja-JP/pricing/"
+  },
+  {
+   "id": "plus",
+   "name": "Plus",
+   "tier": "standard",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 3000,
+     "currency": "JPY",
+     "per": "month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "src": "manual",
+     "label": "￥3,000 / 月",
+     "sourceUrl": "https://chatgpt.com/ja-JP/pricing/"
+    },
+    {
+     "amount": 20,
+     "currency": "USD",
+     "per": "month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "label": "Price: $20/month (billed monthly)",
+     "src": "auto",
+     "jpy": {
+      "exTax": 3158,
+      "inclTax": 3474,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [],
+   "sourceUrl": "https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus"
+  },
+  {
+   "id": "pro-100",
+   "name": "Pro 100",
+   "tier": "high",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 16800,
+     "currency": "JPY",
+     "per": "month",
+     "billing": "monthly",
+     "from": true,
+     "taxIncluded": null,
+     "src": "manual",
+     "label": "Pro 月額 ￥16,800 から",
+     "sourceUrl": "https://chatgpt.com/ja-JP/pricing/"
+    },
+    {
+     "amount": 100,
+     "currency": "USD",
+     "per": "month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "label": "Pro 100 $100（Monthly price (USD)）",
+     "src": "auto",
+     "jpy": {
+      "exTax": 15790,
+      "inclTax": 17369,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [
+    "Ultrafast: Not included",
+    "月額 ￥16,800 分の API クレジット（日本向けページ）"
+   ],
+   "sourceUrl": "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers",
+   "manualLimits": [
+    "月額 ￥16,800 分の API クレジット（日本向けページ）"
+   ]
+  },
+  {
+   "id": "pro-200",
+   "name": "Pro 200",
+   "tier": "top",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 200,
+     "currency": "USD",
+     "per": "month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "label": "Pro 200 $200（Monthly price (USD)）",
+     "src": "auto",
+     "jpy": {
+      "exTax": 31580,
+      "inclTax": 34738,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [
+    "Ultrafast: Not included",
+    "月額 ￥30,000 分の API クレジット（日本向けページ）"
+   ],
+   "sourceUrl": "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers",
+   "manualLimits": [
+    "月額 ￥30,000 分の API クレジット（日本向けページ）"
+   ]
+  },
+  {
+   "id": "pro-500",
+   "name": "Pro 500",
+   "tier": "top",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 500,
+     "currency": "USD",
+     "per": "month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "label": "Pro 500 $500（Monthly price (USD)）",
+     "src": "auto",
+     "jpy": {
+      "exTax": 78950,
+      "inclTax": 86845,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [
+    "Ultrafast: Included",
+    "月額 ￥84,000 分の API クレジット（日本向けページ）"
+   ],
+   "sourceUrl": "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers",
+   "manualLimits": [
+    "月額 ￥84,000 分の API クレジット（日本向けページ）"
+   ]
+  },
+  {
+   "id": "business-standard",
+   "name": "Business（スタンダードシート）",
+   "tier": "team",
+   "audience": "team",
+   "prices": [
+    {
+     "amount": 20,
+     "currency": "USD",
+     "per": "seat-month",
+     "billing": "annual",
+     "taxIncluded": null,
+     "label": "Annual plan: $20 per user per month, billed annually",
+     "src": "auto",
+     "jpy": {
+      "exTax": 3158,
+      "inclTax": 3474,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    },
+    {
+     "amount": 25,
+     "currency": "USD",
+     "per": "seat-month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "label": "Monthly plan: $25 per user per month",
+     "src": "auto",
+     "jpy": {
+      "exTax": 3948,
+      "inclTax": 4342,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [
+    "ChatGPT, ChatGPT Work, and Codex"
+   ],
+   "sourceUrl": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business"
+  },
+  {
+   "id": "business-premium",
+   "name": "Business（プレミアムシート）",
+   "tier": "team",
+   "audience": "team",
+   "prices": [
+    {
+     "amount": 100,
+     "currency": "USD",
+     "per": "seat-month",
+     "billing": "annual",
+     "taxIncluded": null,
+     "label": "Annual plan: $100 per user per month, billed annually",
+     "src": "auto",
+     "jpy": {
+      "exTax": 15790,
+      "inclTax": 17369,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    },
+    {
+     "amount": 125,
+     "currency": "USD",
+     "per": "seat-month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "label": "Monthly plan: $125 per user per month",
+     "src": "auto",
+     "jpy": {
+      "exTax": 19738,
+      "inclTax": 21711,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [
+    "ChatGPT, ChatGPT Work, and Codex with higher usage limits"
+   ],
+   "sourceUrl": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business"
+  }
+ ],
+ "fx": {
+  "base": "USD",
+  "quote": "JPY",
+  "rate": 157.9,
+  "date": "2026-11-02",
+  "source": "ECB参照レート（ユーロ経由で計算）",
+  "sourceUrl": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
+ }
+}

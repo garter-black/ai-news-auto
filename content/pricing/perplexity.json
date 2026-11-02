@@ -1,0 +1,95 @@
+{
+ "product": "perplexity",
+ "name": "Perplexity",
+ "company": "perplexity",
+ "kind": "plan",
+ "mode": "manual",
+ "checkedAt": "2026-11-03",
+ "updatedAt": "2026-11-03",
+ "sources": [
+  {
+   "url": "https://www.perplexity.ai/pro",
+   "title": "Perplexity Pro（料金・日本語表示）",
+   "checkedAt": "2026-11-03",
+   "how": "manual"
+  }
+ ],
+ "taxNote": "ページに税の記載なし",
+ "notes": [
+  "公式ページはボット対策で機械では読めないため、人が公式ページを読んで記入した値です（確認日つき）。",
+  "公式ページの表示は年額請求の場合の「月あたり相当額」だけで、月払いの金額は書かれていません。"
+ ],
+ "plans": [
+  {
+   "id": "pro",
+   "name": "Pro",
+   "tier": "standard",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 17,
+     "currency": "USD",
+     "per": "month",
+     "billing": "annual",
+     "taxIncluded": null,
+     "src": "manual",
+     "label": "$17 /月相当（年額請求の場合）",
+     "jpy": {
+      "exTax": 2684,
+      "inclTax": 2953,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     },
+     "sourceUrl": "https://www.perplexity.ai/pro"
+    }
+   ],
+   "limits": [
+    "+$40の無料Computerクレジット（期間限定）",
+    "4,000のボーナスクレジット"
+   ],
+   "sourceUrl": "https://www.perplexity.ai/pro"
+  },
+  {
+   "id": "max",
+   "name": "Max",
+   "tier": "top",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 167,
+     "currency": "USD",
+     "per": "month",
+     "billing": "annual",
+     "taxIncluded": null,
+     "src": "manual",
+     "label": "$167 /月相当（年額請求の場合）",
+     "jpy": {
+      "exTax": 26369,
+      "inclTax": 29006,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     },
+     "sourceUrl": "https://www.perplexity.ai/pro"
+    }
+   ],
+   "limits": [
+    "+$450の無料Computerクレジット（期間限定）",
+    "35,000のボーナスクレジット",
+    "10,000の月間クレジット"
+   ],
+   "sourceUrl": "https://www.perplexity.ai/pro"
+  }
+ ],
+ "fx": {
+  "base": "USD",
+  "quote": "JPY",
+  "rate": 157.9,
+  "date": "2026-11-02",
+  "source": "ECB参照レート（ユーロ経由で計算）",
+  "sourceUrl": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
+ }
+}

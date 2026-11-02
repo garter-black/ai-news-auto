@@ -1,0 +1,191 @@
+{
+ "product": "gemini",
+ "name": "Gemini（Google AI プラン）",
+ "company": "google",
+ "kind": "plan",
+ "mode": "auto",
+ "checkedAt": "2026-11-03",
+ "updatedAt": "2026-11-03",
+ "sources": [
+  {
+   "url": "https://gemini.google/jp/subscriptions/?hl=ja",
+   "title": "Google AI プラン（日本）",
+   "checkedAt": "2026-11-03",
+   "how": "auto"
+  }
+ ],
+ "taxNote": "Google の日本向けページの円表示（税の扱いはページに記載なし）",
+ "notes": [],
+ "plans": [
+  {
+   "id": "free",
+   "name": "無料",
+   "tier": "free",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 0,
+     "currency": "JPY",
+     "per": "month",
+     "taxIncluded": null,
+     "label": "￥0 JPY / 月（Google アカウントをお持ちの方）",
+     "src": "auto"
+    }
+   ],
+   "limits": [
+    "Gmail、Google ドライブ、Google フォト共通で利用できる 15 GB のクラウド ストレージ"
+   ],
+   "sourceUrl": "https://gemini.google/jp/subscriptions/?hl=ja"
+  },
+  {
+   "id": "ai-plus",
+   "name": "Google AI Plus",
+   "tier": "low",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 725,
+     "currency": "JPY",
+     "per": "month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "label": "￥725 JPY / 月",
+     "src": "auto"
+    }
+   ],
+   "limits": [
+    "無料版の 2 倍の使用量上限",
+    "Gmail、Google ドライブ、Google フォト共通で利用できる 400 GB のクラウド ストレージ"
+   ],
+   "sourceUrl": "https://gemini.google/jp/subscriptions/?hl=ja"
+  },
+  {
+   "id": "ai-pro",
+   "name": "Google AI Pro",
+   "tier": "standard",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 2900,
+     "currency": "JPY",
+     "per": "month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "label": "￥2,900 JPY / 月",
+     "src": "auto"
+    }
+   ],
+   "limits": [
+    "無料版の 4 倍の使用量上限",
+    "Gmail、Google ドライブ、Google フォト共通で利用できる 5 TB のクラウド ストレージ"
+   ],
+   "sourceUrl": "https://gemini.google/jp/subscriptions/?hl=ja"
+  },
+  {
+   "id": "ai-ultra-5x",
+   "name": "Google AI Ultra（AI Pro の 5 倍）",
+   "tier": "top",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 14500,
+     "currency": "JPY",
+     "per": "month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "label": "￥14,500 JPY/月: AI Pro の 5 倍の使用量上限",
+     "src": "auto"
+    }
+   ],
+   "limits": [
+    "AI Pro の 5 倍の使用量上限"
+   ],
+   "sourceUrl": "https://gemini.google/jp/subscriptions/?hl=ja"
+  },
+  {
+   "id": "ai-ultra-20x",
+   "name": "Google AI Ultra（AI Pro の 20 倍）",
+   "tier": "top",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 32000,
+     "currency": "JPY",
+     "per": "month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "label": "￥32,000 JPY /月: AI Pro の 20 倍の使用量上限",
+     "src": "auto"
+    }
+   ],
+   "limits": [
+    "AI Pro の 20 倍の使用量上限"
+   ],
+   "sourceUrl": "https://gemini.google/jp/subscriptions/?hl=ja"
+  },
+  {
+   "id": "enterprise-business",
+   "name": "Gemini Enterprise Business エディション",
+   "tier": "team",
+   "audience": "team",
+   "prices": [
+    {
+     "amount": 21,
+     "currency": "USD",
+     "per": "seat-month",
+     "from": true,
+     "taxIncluded": null,
+     "label": "最小構成価格: $21 （1 ライセンスあたり月額）",
+     "src": "auto",
+     "jpy": {
+      "exTax": 3316,
+      "inclTax": 3647,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [
+    "ユーザー数: 最大 300 人"
+   ],
+   "sourceUrl": "https://gemini.google/jp/subscriptions/?hl=ja"
+  },
+  {
+   "id": "enterprise-standard",
+   "name": "Gemini Enterprise Standard / Plus エディション",
+   "tier": "enterprise",
+   "audience": "enterprise",
+   "prices": [
+    {
+     "amount": 30,
+     "currency": "USD",
+     "per": "seat-month",
+     "from": true,
+     "taxIncluded": null,
+     "label": "最小構成価格: $30 （1 ライセンスあたり月額）",
+     "src": "auto",
+     "jpy": {
+      "exTax": 4737,
+      "inclTax": 5211,
+      "rate": 157.9,
+      "rateDate": "2026-11-02",
+      "rateSource": "ECB参照レート（ユーロ経由で計算）",
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [],
+   "sourceUrl": "https://gemini.google/jp/subscriptions/?hl=ja"
+  }
+ ],
+ "fx": {
+  "base": "USD",
+  "quote": "JPY",
+  "rate": 157.9,
+  "date": "2026-11-02",
+  "source": "ECB参照レート（ユーロ経由で計算）",
+  "sourceUrl": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
+ }
+}

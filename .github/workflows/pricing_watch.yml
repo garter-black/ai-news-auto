@@ -1,0 +1,79 @@
+name: Pricing watch
+
+# 公式の料金ページを毎日読み直し、content/pricing/*.json（料金の段の表・円の目安）を作り直す（scripts/pricing_watch.py）。
+# 読めないページは前のデータを残す。金額が変わったら state/pricing_news.json に候補を置き、auto_run の記事生成が拾う。
+on:
+  schedule:
+    - cron: "17 21 * * *" # 06:17 JST（ECB の前日分のレートが出たあと・朝の記事より前）
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: pricing-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Test parsers and the never-write-partial rule
+        run: python -m unittest tests/test_pricing.py
+      - name: Read official pricing pages
+        id: watch
+        env:
+          JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
+        run: |
+          set +e
+          python -u scripts/pricing_watch.py run --report "$RUNNER_TEMP/pricing-watch.json"
+          echo "code=$?" >> "$GITHUB_OUTPUT"
+          python - <<'EOF' >> "$GITHUB_OUTPUT"
+          import json, os
+          r = json.load(open(os.path.join(os.environ["RUNNER_TEMP"], "pricing-watch.json")))
+          changed = any(p.get("status") == "changed" for p in r["products"].values())
+          print(f"changed={'true' if changed else 'false'}")
+          EOF
+      - name: Save report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: pricing-watch-report
+          path: ${{ runner.temp }}/pricing-watch.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Commit pricing data
+        if: ${{ !cancelled() }}
+        env:
+          CHANGED: ${{ steps.watch.outputs.changed }}
+        run: |
+          git add content/pricing state/pricing_watch.json
+          if [ -f state/pricing_news.json ]; then git add state/pricing_news.json; fi
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # 金額が変わった回だけすぐ公開する（確認日・為替だけの更新は、次の記事の公開でまとめて出る）
+          if [ "$CHANGED" = "true" ]; then
+            git commit -m "chore(pricing): 公式の料金ページの変更を反映"
+          else
+            git commit -m "chore(pricing): 料金の確認日と為替を更新 [no-deploy]"
+          fi
+          for i in 1 2 3 4; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            if [ -n "$(git diff --name-only --diff-filter=U)" ]; then exit 1; fi
+            sleep 7
+          done
+          exit 1
+      - name: Fail when a page could not be read for days
+        if: ${{ steps.watch.outputs.code != '0' }}
+        run: |
+          echo "3回続けて読めない料金ページがあります。scripts/pricing_watch.py の読み取りを直してください（データは前のまま）。"
+          exit 1

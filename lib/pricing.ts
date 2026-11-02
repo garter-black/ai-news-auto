@@ -86,3 +86,26 @@ export function isPricingSource(slug: string): boolean {
 }
 
 export { formatMoney, formatYen } from "@/lib/money";
+
+/**
+ * 公式の料金ページから毎日作り直す「料金の段の表・会社をまたいだ比較表」（content/pricing/<product>.json）。
+ * 上の早見表（記事から抜き出した数字）とは別のデータ。生成・ページからはここから読む。
+ */
+export {
+  getLadder,
+  getComparison,
+  getCompanyLadders,
+  getPricingProduct,
+  findPricingProducts,
+  PLAN_TIER_LABELS,
+  API_TIER_LABELS,
+} from "@/lib/pricing-ladder";
+export type {
+  LadderTable,
+  ComparisonTable,
+  PlanRow,
+  ModelRow,
+  PricingProductId,
+  PlanTier,
+  ApiTier,
+} from "@/lib/pricing-ladder";

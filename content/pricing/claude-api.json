@@ -1,0 +1,137 @@
+{
+ "product": "claude-api",
+ "name": "Claude API",
+ "company": "anthropic",
+ "kind": "api",
+ "mode": "auto",
+ "checkedAt": "2026-11-03",
+ "updatedAt": "2026-11-03",
+ "sources": [
+  {
+   "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+   "title": "Claude API Pricing（公式ドキュメント）",
+   "checkedAt": "2026-11-03",
+   "how": "auto"
+  }
+ ],
+ "taxNote": "All prices are in USD.（税は含まない）",
+ "notes": [],
+ "models": [
+  {
+   "id": "claude-opus-5-5",
+   "name": "Claude Opus 5.5",
+   "tier": null,
+   "class": "flagship",
+   "primary": true,
+   "currency": "USD",
+   "per": "1M tokens",
+   "input": 4,
+   "output": 20,
+   "cacheRead": 0.2,
+   "cacheWrite": 5,
+   "notes": [
+    "Cache hits and refreshes on Claude Opus 5.5 and Claude Sonnet 5.5 are priced at 0.05x the base input price."
+   ],
+   "status": "listed",
+   "sourceUrl": "https://platform.claude.com/docs/en/about-claude/pricing",
+   "jpy": {
+    "input": 632.0,
+    "output": 3158.0,
+    "cacheRead": 31.6,
+    "rate": 157.9,
+    "rateDate": "2026-11-02",
+    "rateSource": "ECB参照レート（ユーロ経由で計算）",
+    "estimate": true,
+    "taxIncluded": false
+   }
+  },
+  {
+   "id": "claude-sonnet-5-5",
+   "name": "Claude Sonnet 5.5",
+   "tier": null,
+   "class": "mid",
+   "primary": true,
+   "currency": "USD",
+   "per": "1M tokens",
+   "input": 2,
+   "output": 10,
+   "cacheRead": 0.1,
+   "cacheWrite": 2.5,
+   "notes": [
+    "Cache hits and refreshes on Claude Opus 5.5 and Claude Sonnet 5.5 are priced at 0.05x the base input price."
+   ],
+   "status": "listed",
+   "sourceUrl": "https://platform.claude.com/docs/en/about-claude/pricing",
+   "jpy": {
+    "input": 316.0,
+    "output": 1579.0,
+    "cacheRead": 15.8,
+    "rate": 157.9,
+    "rateDate": "2026-11-02",
+    "rateSource": "ECB参照レート（ユーロ経由で計算）",
+    "estimate": true,
+    "taxIncluded": false
+   }
+  },
+  {
+   "id": "claude-haiku-5-5",
+   "name": "Claude Haiku 5.5",
+   "tier": "入力10万トークンまで",
+   "class": "small",
+   "primary": true,
+   "currency": "USD",
+   "per": "1M tokens",
+   "input": 0.1,
+   "output": 0.5,
+   "cacheRead": 0.01,
+   "cacheWrite": 0.125,
+   "notes": [],
+   "status": "listed",
+   "sourceUrl": "https://platform.claude.com/docs/en/about-claude/pricing",
+   "jpy": {
+    "input": 15.8,
+    "output": 79.0,
+    "cacheRead": 1.58,
+    "rate": 157.9,
+    "rateDate": "2026-11-02",
+    "rateSource": "ECB参照レート（ユーロ経由で計算）",
+    "estimate": true,
+    "taxIncluded": false
+   }
+  },
+  {
+   "id": "claude-haiku-5-5",
+   "name": "Claude Haiku 5.5",
+   "tier": "入力10万トークン超",
+   "class": "small",
+   "primary": false,
+   "currency": "USD",
+   "per": "1M tokens",
+   "input": 0.5,
+   "output": 2.5,
+   "cacheRead": 0.05,
+   "cacheWrite": 0.625,
+   "notes": [],
+   "status": "listed",
+   "sourceUrl": "https://platform.claude.com/docs/en/about-claude/pricing",
+   "jpy": {
+    "input": 79.0,
+    "output": 395.0,
+    "cacheRead": 7.9,
+    "rate": 157.9,
+    "rateDate": "2026-11-02",
+    "rateSource": "ECB参照レート（ユーロ経由で計算）",
+    "estimate": true,
+    "taxIncluded": false
+   }
+  }
+ ],
+ "fx": {
+  "base": "USD",
+  "quote": "JPY",
+  "rate": 157.9,
+  "date": "2026-11-02",
+  "source": "ECB参照レート（ユーロ経由で計算）",
+  "sourceUrl": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
+ }
+}

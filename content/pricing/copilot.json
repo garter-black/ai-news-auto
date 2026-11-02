@@ -1,0 +1,225 @@
+{
+ "product": "copilot",
+ "name": "Microsoft Copilot（Microsoft 365）",
+ "company": "microsoft",
+ "kind": "plan",
+ "mode": "auto",
+ "checkedAt": "2026-11-03",
+ "updatedAt": "2026-11-03",
+ "sources": [
+  {
+   "url": "https://www.microsoft.com/ja-jp/microsoft-365/buy/compare-all-microsoft-365-products",
+   "title": "Microsoft 365 の個人・家庭向けプラン比較（日本）",
+   "checkedAt": "2026-11-03",
+   "how": "auto"
+  },
+  {
+   "url": "https://www.microsoft.com/ja-jp/microsoft-365/copilot/business",
+   "title": "Microsoft Copilot の価格（一般法人向け・日本）",
+   "checkedAt": "2026-11-03",
+   "how": "auto"
+  },
+  {
+   "url": "https://www.microsoft.com/ja-jp/microsoft-365/copilot/enterprise",
+   "title": "Microsoft 365 Copilot の価格（大企業向け・日本）",
+   "checkedAt": "2026-11-03",
+   "how": "auto"
+  }
+ ],
+ "taxNote": "個人向けは税の扱いの記載なし。法人向けは「価格には消費税は含まれていません」（公式ページ）",
+ "notes": [],
+ "plans": [
+  {
+   "id": "m365-personal",
+   "name": "Microsoft 365 Personal",
+   "tier": "low",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 2130,
+     "currency": "JPY",
+     "per": "month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "label": "¥2,130/月",
+     "src": "auto"
+    },
+    {
+     "amount": 21300,
+     "currency": "JPY",
+     "per": "year",
+     "billing": "annual",
+     "taxIncluded": null,
+     "label": "¥21,300/年",
+     "src": "auto"
+    }
+   ],
+   "limits": [
+    "1 ユーザー用",
+    "無料版よりも高い使用上限での、高度な Copilot",
+    "Copilot での AI イメージ作成を無料プランよりも高い使用量で使用可能"
+   ],
+   "sourceUrl": "https://www.microsoft.com/ja-jp/microsoft-365/buy/compare-all-microsoft-365-products"
+  },
+  {
+   "id": "m365-family",
+   "name": "Microsoft 365 Family",
+   "tier": "low",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 2740,
+     "currency": "JPY",
+     "per": "month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "label": "¥2,740/月",
+     "src": "auto"
+    },
+    {
+     "amount": 27400,
+     "currency": "JPY",
+     "per": "year",
+     "billing": "annual",
+     "taxIncluded": null,
+     "label": "¥27,400/年",
+     "src": "auto"
+    }
+   ],
+   "limits": [
+    "1 - 6 ユーザー (AI はサブスクリプション所有者のみが使用可能)"
+   ],
+   "sourceUrl": "https://www.microsoft.com/ja-jp/microsoft-365/buy/compare-all-microsoft-365-products"
+  },
+  {
+   "id": "m365-premium",
+   "name": "Microsoft 365 Premium",
+   "tier": "standard",
+   "audience": "individual",
+   "prices": [
+    {
+     "amount": 3200,
+     "currency": "JPY",
+     "per": "month",
+     "billing": "monthly",
+     "taxIncluded": null,
+     "label": "¥3,200/月",
+     "src": "auto"
+    },
+    {
+     "amount": 32000,
+     "currency": "JPY",
+     "per": "year",
+     "billing": "annual",
+     "taxIncluded": null,
+     "label": "¥32,000/年",
+     "src": "auto"
+    }
+   ],
+   "limits": [
+    "非常に高い利用上限での高度な Copilot"
+   ],
+   "sourceUrl": "https://www.microsoft.com/ja-jp/microsoft-365/buy/compare-all-microsoft-365-products"
+  },
+  {
+   "id": "m365-copilot-business",
+   "name": "Microsoft 365 Copilot Business",
+   "tier": "team",
+   "audience": "team",
+   "prices": [
+    {
+     "amount": 2698,
+     "currency": "JPY",
+     "per": "seat-month",
+     "billing": "annual",
+     "taxIncluded": false,
+     "label": "Originally starting from ¥3,148 now starting from ¥2,698 ユーザー/月相当、年払い",
+     "regular": 3148,
+     "from": true,
+     "src": "auto",
+     "jpy": {
+      "exTax": 2698,
+      "inclTax": 2968,
+      "rate": null,
+      "rateDate": null,
+      "rateSource": null,
+      "estimate": true
+     }
+    },
+    {
+     "amount": 3778,
+     "currency": "JPY",
+     "per": "seat-month",
+     "billing": "monthly",
+     "taxIncluded": false,
+     "label": "¥3,778 ユーザー/月",
+     "src": "auto",
+     "jpy": {
+      "exTax": 3778,
+      "inclTax": 4156,
+      "rate": null,
+      "rateDate": null,
+      "rateSource": null,
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [
+    "利用中の Microsoft 365 プランにアドオン"
+   ],
+   "sourceUrl": "https://www.microsoft.com/ja-jp/microsoft-365/copilot/business"
+  },
+  {
+   "id": "m365-copilot",
+   "name": "Microsoft 365 Copilot（大企業向け）",
+   "tier": "enterprise",
+   "audience": "enterprise",
+   "prices": [
+    {
+     "amount": 4497,
+     "currency": "JPY",
+     "per": "seat-month",
+     "billing": "annual",
+     "taxIncluded": false,
+     "label": "¥4,497 ユーザー/月相当、年払い",
+     "src": "auto",
+     "jpy": {
+      "exTax": 4497,
+      "inclTax": 4947,
+      "rate": null,
+      "rateDate": null,
+      "rateSource": null,
+      "estimate": true
+     }
+    },
+    {
+     "amount": 4722,
+     "currency": "JPY",
+     "per": "seat-month",
+     "billing": "monthly",
+     "taxIncluded": false,
+     "label": "または毎月 ¥4,722 のお支払い",
+     "src": "auto",
+     "jpy": {
+      "exTax": 4722,
+      "inclTax": 5194,
+      "rate": null,
+      "rateDate": null,
+      "rateSource": null,
+      "estimate": true
+     }
+    }
+   ],
+   "limits": [],
+   "sourceUrl": "https://www.microsoft.com/ja-jp/microsoft-365/copilot/enterprise"
+  }
+ ],
+ "fx": {
+  "base": "USD",
+  "quote": "JPY",
+  "rate": 157.9,
+  "date": "2026-11-02",
+  "source": "ECB参照レート（ユーロ経由で計算）",
+  "sourceUrl": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
+ }
+}

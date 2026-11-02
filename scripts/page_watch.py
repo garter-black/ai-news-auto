@@ -9,6 +9,7 @@
                  2回続けて同じ内容だったとき（A/B テストや一時的な表示の揺れを除く）だけ候補にする
 - どちらも、意味のある変更か（significant_re。無ければ既定の語）を確かめる。項目が短いときは、項目の中の公式ページのリンクも読む
 - 初めて見るページは基準だけ保存して候補にしない（デプロイ直後に古い項目を流さない）
+- 料金の金額の変化は scripts/pricing_watch.py（毎日）が state/pricing_news.json に置く。ここで他の候補と一緒に渡す
 - 状態は state/page_watch.json（auto_run.yml が変わったときだけコミットする）。記事にするかは web_articles.py が
   大きなニュースと同じ流れで判断する（同じ発表の記事があれば続報か見送り・品質ゲート・速報投稿はしない）
 
@@ -393,6 +394,7 @@ def check(dry_run: bool = False, now: datetime | None = None, fetcher=fetch_page
         for it in items:
             log(f"[watch] 候補: {it['title'][:100]}（{it['url']}）")
         found += items
+    found += pricing_news(now)
     have = {p["id"] for p in state["pending"]}
     state["pending"] += [it for it in found if it["id"] not in have]
     since = now - timedelta(hours=PENDING_KEEP_HOURS)
@@ -400,6 +402,24 @@ def check(dry_run: bool = False, now: datetime | None = None, fetcher=fetch_page
     if not dry_run:
         save_state(state)
     return [dict(p) for p in state["pending"]] if not dry_run else found
+
+
+def pricing_news(now: datetime) -> list[dict]:
+    """scripts/pricing_watch.py が公式の料金ページで見つけた「料金が変わった」候補（同じ形）。
+    state の隣の pricing_news.json（料金の見張りは別のワークフローで1日1回動く）"""
+    try:
+        data = json.loads(STATE_PATH.with_name("pricing_news.json").read_text("utf-8"))
+    except (OSError, ValueError):
+        return []
+    since = now - timedelta(hours=PENDING_KEEP_HOURS)
+    out = []
+    for p in data.get("pending", []) if isinstance(data, dict) else []:
+        try:
+            if p.get("id") and datetime.fromisoformat(p["detectedAt"]) >= since:
+                out.append({k: v for k, v in p.items() if k != "pricingChanges"})
+        except (KeyError, TypeError, ValueError):
+            continue
+    return out
 
 
 def candidates(processed: dict, now: datetime | None = None, max_items: int = 2, dry_run: bool = False) -> list[dict]:
