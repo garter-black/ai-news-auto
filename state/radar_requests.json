@@ -1,21 +1,20 @@
 {
   "items": [
     {
-      "url": "https://www.macrumors.com/2026/10/28/apple-brings-dynamic-island-to-mac/",
-      "title": "Apple's touchscreen MacBook Pro is the first Mac with the Dynamic Island, offering similar functionality to the iPhone; the Dynamic Island launched in 2022",
-      "sourceName": "MacRumors",
-      "secondary": true,
-      "via": "missed-check:techmeme",
-      "found": "https://www.macrumors.com/2026/10/28/apple-brings-dynamic-island-to-mac/",
-      "requestedAt": "2026-10-29T02:34:25+00:00"
-    },
-    {
       "url": "https://www.figma.com/blog/the-tldr-on-figma-weave/",
       "title": "Figma WeaveでAI画像・動画制作を繰り返せるワークフローに",
       "sourceName": "Figma公式ブログ",
       "secondary": false,
       "via": "manual",
       "requestedAt": "2026-11-01T00:52:21+00:00"
+    },
+    {
+      "url": "https://help.openai.com/ja-jp/articles/20001625-understanding-chatgpt-and-codex-usage-limits",
+      "title": "ChatGPTの「Chat」と「Work」を統合、利用枠はCodexと共通に",
+      "sourceName": "",
+      "secondary": false,
+      "via": "manual",
+      "requestedAt": "2026-11-02T04:56:36+00:00"
     }
   ]
 }
