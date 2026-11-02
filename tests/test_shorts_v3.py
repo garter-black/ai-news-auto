@@ -3,7 +3,7 @@
 - 描画のソースに飾りの線・帯・枠が無い（lint）
 - v3 の追加ゲート（題の出しっぱなし・文字の面積・数字の文脈・グラフの倍率）が壊れた記録で落ちる
 - 合成した「公式ページ」（Pillow で描いた料金表）と決まった台本・テスト用の合成音で、1本を
-  270x480・10fps で実際に書き出し、品質ゲート（test プロファイル＋v3 の基準）に通る
+  480x270（横型）・10fps で実際に書き出し、品質ゲート（test プロファイル＋v3 の基準）に通る
 
   python3 -m unittest tests/test_shorts_v3.py -v
 ネット・LLM・VOICEVOX・ブラウザは使わない。ffmpeg / numpy / Pillow / budoux が無ければ飛ばす。
@@ -156,7 +156,7 @@ class GoldenRenderTest(unittest.TestCase):
         mp4 = self.tmp / "fixture-ai-plan__v3.mp4"
         bad = copy.deepcopy(self.report)
         bad["charts"][0]["ratio"] = "8倍"
-        bad["texts"][0]["t1"] = 5.0
+        next(t for t in bad["texts"] if t["role"] == "hook")["t1"] = 5.0
         bad["audio"]["separation_db"] = 4.0
         res = gate.check_video(mp4, bad, article(), "test")
         joined = " ".join(res.reasons)

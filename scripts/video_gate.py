@@ -8,7 +8,7 @@
 ok が False の動画は**絶対に投稿に付けない**（投稿そのものは動画なしで今までどおり出す。下の「失敗時の約束」）。
 
 見ること
-- 形式: H.264(High/Main) + AAC、yuv420p、1080x1920、30fps 固定、5〜45秒、moov が先頭（faststart）、
+- 形式: H.264(High/Main) + AAC、yuv420p、1080x1920（v3 は report["frame"] の横型 1920x1080）、30fps 固定、5〜45秒、moov が先頭（faststart）、
   ファイルサイズは 24MiB 以下（各SNSの上限より十分小さく、Cloudflare KV の1値25MiBにも収まる）。
 - 音: 音声トラックがある・ラウドネスが -14 LUFS ±1.5・トゥルーピーク -1.0 dBTP 以下（クリップしない）・
   意図した所（冒頭と締め）以外に1秒を超える無音がない・字幕の時間がナレーションと合っている。
@@ -39,6 +39,7 @@ from pathlib import Path
 # --------------------------------------------------------------------------- #
 
 W, H, FPS = 1080, 1920, 30
+V3_W, V3_H = 1920, 1080  # v3 は横型 16:9（2026-11-02 オーナー指示）。report["frame"] で寸法を渡す
 # Threads/Reels/TikTok の UI（下のキャプション・右のボタン列・上のアカウント名）に隠れない範囲。x0, y0, x1, y1
 SAFE = (60, 150, 950, 1536)
 MIN_SEC, MAX_SEC = 5.0, 45.0
@@ -448,7 +449,7 @@ def _inside(box, outer) -> bool:
     return box[0] >= outer[0] - 0.5 and box[1] >= outer[1] - 0.5 and box[2] <= outer[2] + 0.5 and box[3] <= outer[3] + 0.5
 
 
-def check_format(mp4: Path, profile: dict, result: GateResult) -> float:
+def check_format(mp4: Path, profile: dict, result: GateResult, frame: tuple | None = None) -> float:
     info = probe(mp4)
     streams = info.get("streams", [])
     video = next((s for s in streams if s.get("codec_type") == "video"), None)
@@ -467,10 +468,12 @@ def check_format(mp4: Path, profile: dict, result: GateResult) -> float:
         result.reasons.append(f"色の形式が yuv420p ではない（{video.get('pix_fmt')}）")
     vw, vh = int(video.get("width", 0)), int(video.get("height", 0))
     result.metrics["size"] = f"{vw}x{vh}"
-    if profile["size"] and (vw, vh) != profile["size"]:
-        result.reasons.append(f"画面サイズが {profile['size'][0]}x{profile['size'][1]} ではない（{vw}x{vh}）")
-    if vw * 16 != vh * 9:
-        result.reasons.append(f"縦横比が 9:16 ではない（{vw}x{vh}）")
+    want = (frame or profile["size"]) if profile["size"] else None
+    if want and (vw, vh) != tuple(want):
+        result.reasons.append(f"画面サイズが {want[0]}x{want[1]} ではない（{vw}x{vh}）")
+    aw, ah = frame or (9, 16)
+    if vw * ah != vh * aw:
+        result.reasons.append(f"縦横比が {'16:9' if aw > ah else '9:16'} ではない（{vw}x{vh}）")
     fps = _fps(str(video.get("r_frame_rate", "0/1")))
     result.metrics["fps"] = round(fps, 3)
     if profile["fps"] and abs(fps - profile["fps"]) > 0.01:
@@ -636,10 +639,11 @@ V3_SEPARATION = (12.0, 18.0)  # 声と BGM の差（声が出ている間の RMS
 V3_TITLE_MAX = 2.0  # つかみ（題）の文字は 2 秒までに消す
 V3_TEXT_RATIO = 0.18  # 1フレームの中で文字が占める面積の上限
 V3_MAX_FONTS = 2
-V3_CAPTION_ROLES = ("hook", "keyword", "sub", "conclusion", "source", "credit")
+V3_CAPTION_ROLES = ("hook", "keyword", "sub", "conclusion", "source", "credit", "subtitle", "eyebrow", "logo")
 # 飾りの線・帯・枠を描く呼び出し。v3 の描画ではマスク（_mask_*）・比較グラフの棒（data_bars）・カーソル（_cursor_sprite）以外で禁止
 LINT_CALLS = {"line", "rectangle", "rounded_rectangle", "polygon", "draw_rect", "hline", "vline", "drawbox"}
-LINT_ALLOWED = ("_mask_", "data_bars", "_cursor_sprite")
+# _highlight_*: キーワードの下を走るマーカーと、画面の文字の「選択」の青（強調はこの2つだけ。2026-11-02）
+LINT_ALLOWED = ("_mask_", "data_bars", "_cursor_sprite", "_highlight_")
 
 
 def lint_renderer(path: Path) -> list[str]:
@@ -664,13 +668,18 @@ def lint_renderer(path: Path) -> list[str]:
     return problems
 
 
-def motion_series(path: Path, fps: int = 10) -> list[float]:
-    """隣り合うフレームの平均絶対差（108x192 の白黒）。差の i 番目は i/fps〜(i+1)/fps 秒"""
+def motion_series(path: Path, fps: int = 10, size: tuple = (108, 192), crop: tuple | None = None) -> list[float]:
+    """隣り合うフレームの平均絶対差（108x192 の白黒）。差の i 番目は i/fps〜(i+1)/fps 秒。
+    crop=(x0, y0, x1, y1, 元の幅, 元の高さ) なら、その範囲（v3 横型は動く画面のカード）だけを測る"""
     import numpy as np
 
-    w, h = 108, 192
+    w, h = size
+    vf = f"fps={fps},scale={w}:{h}"
+    if crop:
+        x0, y0, x1, y1, fw, fh = crop
+        vf = f"fps={fps},crop=iw*{(x1 - x0) / fw:.4f}:ih*{(y1 - y0) / fh:.4f}:iw*{x0 / fw:.4f}:ih*{y0 / fh:.4f},scale={w}:{h}"
     raw = subprocess.run(
-        [_bin("ffmpeg"), "-hide_banner", "-loglevel", "error", "-i", str(path), "-vf", f"fps={fps},scale={w}:{h}", "-pix_fmt", "gray", "-f", "rawvideo", "-"],
+        [_bin("ffmpeg"), "-hide_banner", "-loglevel", "error", "-i", str(path), "-vf", vf, "-pix_fmt", "gray", "-f", "rawvideo", "-"],
         capture_output=True, timeout=180, check=True,
     ).stdout  # fmt: skip
     a = np.frombuffer(raw, dtype=np.uint8)
@@ -683,14 +692,14 @@ def _visible(texts: list[dict], t: float) -> list[dict]:
     return [x for x in texts if float(x.get("t0", 0)) - 1e-6 <= t < float(x.get("t1", 0))]
 
 
-def text_ratio_max(texts: list[dict], total: float) -> tuple[float, float]:
+def text_ratio_max(texts: list[dict], total: float, frame: tuple = (W, H)) -> tuple[float, float]:
     """文字の枠（重なりは1回）が画面に占める割合の最大と、その時刻"""
     import numpy as np
 
     worst, at = 0.0, 0.0
     t = 0.0
     while t < total:
-        grid = np.zeros((H // 8, W // 8), dtype=bool)
+        grid = np.zeros((frame[1] // 8, frame[0] // 8), dtype=bool)
         for x in _visible(texts, t):
             b = x["bbox"]
             grid[max(0, int(b[1]) // 8) : int(math.ceil(b[3] / 8)), max(0, int(b[0]) // 8) : int(math.ceil(b[2] / 8))] = True
@@ -723,7 +732,14 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
     if m["v3_max_segment"] > V3_MAX_SEGMENT:
         result.reasons.append(f"v3: {m['v3_max_segment']:.1f}秒間なにも変わらない区間がある（{V3_MAX_SEGMENT}秒まで）")
     # 実際の動き（動画のフレーム差）: 各区間が止まっていない・変化の直後に本当に絵が変わっている
-    diffs = motion_series(mp4)
+    fw, fh = report.get("frame") or (W, H)
+    panel = report.get("panel")
+    if fw > fh and panel:
+        # 横型: 動く所（画面のカード）は画面の約半分。全体の差を「動く所の面積」で割って、縦型と同じ基準で見る
+        share = (panel[2] - panel[0]) * (panel[3] - panel[1]) / (fw * fh)
+        diffs = [d / max(share, 0.3) for d in motion_series(mp4, size=(192, 108))]
+    else:
+        diffs = motion_series(mp4)
     step = 0.1
     seg_scores = []
     for a, b in segs:
@@ -750,7 +766,7 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
     for x in texts:
         if x.get("role") in ("hook", "title") and float(x.get("t1", 0)) > V3_TITLE_MAX + 1e-6:
             result.reasons.append(f"v3: つかみの文字が {V3_TITLE_MAX:.0f}秒を過ぎても出ている（{x.get('t1')}秒まで）")
-    ratio, at = text_ratio_max(texts, end)
+    ratio, at = text_ratio_max(texts, end, (fw, fh))
     m["v3_text_ratio"] = round(ratio, 3)
     if ratio > V3_TEXT_RATIO:
         result.reasons.append(f"v3: 文字が画面の {ratio:.0%} を占める（{at:.1f}秒。上限 {V3_TEXT_RATIO:.0%}）")
@@ -765,7 +781,7 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
     # 画面に描いた数字（キーワード・グラフ・締め）がすべて記事にあり、グラフの倍率は台本と同じ表記
     material_numbers = number_tokens(material_text(article or {})) | {"0"}
     for text in report.get("rendered_strings") or []:
-        if text.startswith(("音声", "出典：", "公式ページ：")) or text in ("ai-tech-express.jp",):
+        if text.startswith(("音声", "出典：", "公式ページ")) or text in ("ai-tech-express.jp",):
             continue
         if bad := numbers_ok(text, material_numbers):
             result.reasons.append(f"v3: 画面の数字 {', '.join(sorted(set(bad)))} が記事に無い（{text[:16]}）")
@@ -796,7 +812,7 @@ def check_video(mp4: Path, report: dict, article: dict, profile: str = "producti
         if not mp4.exists() or mp4.stat().st_size == 0:
             result.reasons.append("動画ファイルが無い")
             return result
-        duration = check_format(mp4, prof, result)
+        duration = check_format(mp4, prof, result, tuple(report["frame"]) if report.get("frame") else None)
         check_audio(mp4, report, duration, result)
         check_timeline(report, duration, result)
         check_texts(report, result)

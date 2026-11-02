@@ -325,11 +325,13 @@ def wav_seconds(path: Path) -> float:
 
 
 class VoiceVox:
-    def __init__(self, speaker: str, speed: float = 1.15):
+    def __init__(self, speaker: str, speed: float = 1.15, style: str = "ノーマル", pitch: float = 0.0, intonation: float = 1.0):
         self.base = os.environ.get("VOICEVOX_URL", "http://127.0.0.1:50021").rstrip("/")
         self.speed = speed
+        self.pitch = pitch  # pitchScale（0 が標準。+0.03 くらいで少し高く）
+        self.intonation = intonation  # intonationScale（1 が標準。上げると抑揚が大きく明るく聞こえる）
         self.speaker_name = speaker
-        self.style_id = self._resolve(speaker)
+        self.style_id = self._resolve(speaker, style)
         self.credit = f"VOICEVOX:{speaker}"
         self.label = f"VOICEVOX（{speaker}）"
 
@@ -337,12 +339,12 @@ class VoiceVox:
         with urllib.request.urlopen(self.base + path, timeout=10) as r:
             return json.loads(r.read())
 
-    def _resolve(self, name: str) -> int:
-        """キャラ名（「ノーマル」優先）→ style id"""
+    def _resolve(self, name: str, style: str = "ノーマル") -> int:
+        """キャラ名（指定のスタイル → 「ノーマル」の順）→ style id"""
         for sp in self._get("/speakers"):
             if sp.get("name") == name:
                 styles = sp.get("styles", [])
-                normal = [s for s in styles if s.get("name") == "ノーマル"] or styles
+                normal = [s for s in styles if s.get("name") == style] or [s for s in styles if s.get("name") == "ノーマル"] or styles
                 return int(normal[0]["id"])
         raise RuntimeError(f"VOICEVOX に話者がいません: {name}")
 
@@ -360,7 +362,7 @@ class VoiceVox:
         req = urllib.request.Request(f"{self.base}/audio_query?{q}", method="POST")
         with urllib.request.urlopen(req, timeout=60) as r:
             query = json.loads(r.read())
-        query.update({"speedScale": self.speed, "prePhonemeLength": 0.05, "postPhonemeLength": 0.1, "outputSamplingRate": SAMPLE_RATE, "outputStereo": False})
+        query.update({"speedScale": self.speed, "pitchScale": self.pitch, "intonationScale": self.intonation, "prePhonemeLength": 0.05, "postPhonemeLength": 0.1, "outputSamplingRate": SAMPLE_RATE, "outputStereo": False})
         req = urllib.request.Request(
             f"{self.base}/synthesis?speaker={self.style_id}",
             data=json.dumps(query).encode(),

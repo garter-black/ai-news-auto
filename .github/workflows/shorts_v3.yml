@@ -1,6 +1,6 @@
 name: SNS video v3 (manual)
 
-# SNS 動画 v3「画面で見せる型」を本番の声（VOICEVOX）で書き出し、Artifacts に置くだけ。投稿はしない。
+# SNS 動画 v3「画面で見せる型」（横型 1920x1080）を本番の声（VOICEVOX）で書き出し、Artifacts に置くだけ。投稿はしない。
 # 手動実行のみ（スケジュールなし）。各段階の秒数は report.json の timings と、このログの「時間」に出る。
 # 速さのために: VOICEVOX は最初に裏で起動（取得と並行）・ブラウザはランナーにある Chrome・日本語フォントは repo の Noto を使う。
 on:
@@ -10,8 +10,8 @@ on:
         description: "記事の slug（スペース区切り）"
         required: true
       speaker:
-        description: "VOICEVOX の話者名"
-        default: "冥鳴ひまり"
+        description: "VOICEVOX の話者名（2026-11-02 から明るい声の東北ずん子）"
+        default: "東北ずん子"
 
 permissions:
   contents: read
@@ -52,7 +52,7 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           CLAUDE_DAILY_MAX: ${{ vars.CLAUDE_DAILY_MAX || '40' }}
-          VOICEVOX_SPEAKER: ${{ github.event.inputs.speaker || '冥鳴ひまり' }}
+          V3_VOICEVOX_SPEAKER: ${{ github.event.inputs.speaker || '東北ずん子' }}
           SLUGS: ${{ github.event.inputs.slugs }}
         run: |
           set +e

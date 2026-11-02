@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SNS 用の縦型ショート動画 v3「画面で見せる型」（20〜30秒・1080x1920・30fps）。
+"""SNS 用の短い解説動画 v3「画面で見せる型」（20〜30秒・横型 1920x1080・30fps）。
 
   python3 scripts/shorts_v3.py <slug>                    # 本番の声（VOICEVOX）
   python3 scripts/shorts_v3.py <slug> --tts fake         # 声なしの試作（合成音）
@@ -56,24 +56,37 @@ try:  # 描画を速くする（無ければ Pillow で同じことを遅くや�
 except ImportError:  # pragma: no cover
     cv2 = None
 
-W, H, FPS = gate.W, gate.H, gate.FPS
+# 横型 16:9（2026-11-02 オーナー指示: タイムラインで流れてきたときに見やすい）
+W, H, FPS = gate.V3_W, gate.V3_H, gate.FPS
 SR = 48000
 VERSION = "v3"
+LAYOUT = "landscape"
 
-# 色（強調色は ACCENT の1色だけ）
-STAGE = (11, 17, 30)
+# 色（サイトの色: 墨 #0b1a33・青 #1d4a8f・赤 #c8221a・白。明るく清潔な見た目）
+STAGE = (243, 245, 249)  # 背景（ほぼ白の明るいグレー）
+INK = (11, 26, 51)
+BLUE = (29, 74, 143)
+ACCENT = (200, 34, 26)  # 数字の強調（赤）
+MUTED = (84, 100, 128)  # 補足の文字
+SOFT = (90, 103, 126)  # 出典・クレジット
+MARKER = (214, 226, 244)  # キーワードの下を走るマーカー（青を薄くした色）
+SELECT = (178, 208, 250)  # 画面の文字の選択色（ブラウザで文字を選んだときの青）
 WHITE = (255, 255, 255)
-SUBTLE = (150, 166, 190)
-ACCENT = (255, 92, 74)  # サイソクの速報レッドを暗い背景で読める明るさにしたもの
 FONT_FAMILY = "Noto Sans JP"
+LOGO_FAMILY = "Dela Gothic One"
 
-# 画面の割り付け（x0, y0, x1, y1）。文字は上の帯だけ・画面（公式ページ）はその下
-TEXT_ZONE = (64, 178, 950, 418)
-SOURCE_Y = 430
-PANEL = (36, 478, 1044, 1888)
+# 画面の割り付け（x0, y0, x1, y1）。左に文字の列・右に動く画面（公式ページ）
+PANEL = (712, 64, 1856, 1016)
 PW, PH = PANEL[2] - PANEL[0], PANEL[3] - PANEL[1]
-RADIUS = 40
-FOCUS = (PW * 0.5, PH * 0.34)  # 注目する文字を置くパネル内の位置（下の UI に隠れない高さ）
+RADIUS = 26
+COL = (104, 150, 644, 930)  # 文字の列（キーワード・補足・つかみ・締め）
+COL_W = COL[2] - COL[0]
+FOCUS = (PW * 0.5, PH * 0.40)  # 注目する文字を置くパネル内の位置
+ANCHOR_Y = PANEL[1] + int(FOCUS[1])  # キーワードの縦の中心（画面の注目の行と同じ高さ＝目が横に動くだけ）
+SOURCE_Y = 968  # 出典の小さな1行
+LOGO_XY = (104, 70)
+SUB_BOTTOM = PANEL[3] - 44  # 日本語字幕の下端（画面の中）
+SUB_W = PW - 200
 
 # ページの撮影
 CAPTURE_W = 540  # CSS px（縦の画面にちょうど入るスマホ〜小型タブレットの幅）
@@ -91,6 +104,17 @@ HOOK_TEXT_MAX = 1.7  # つかみの文字はこの時刻までに消す（ゲー
 TARGET_MAX = 30.5
 TARGET_MIN = 20.5
 SEP_TARGET_DB = 15.0  # 声と BGM の差
+
+# 声（2026-11-02 オーナー「声とBGMが暗いかも」→ 冥鳴ひまりから東北ずん子へ。明るい声色で、落ち着いて聞こえる大人の声。
+# 候補（同じ文で比較）: 冥鳴ひまり 声の高さ中央 253Hz・明るさ（スペクトル重心）1854Hz / 冥鳴ひまり（高さ+0.04・抑揚1.3）293Hz・1813Hz /
+# 東北ずん子 353Hz・2451Hz / 春日部つむぎ 358Hz・2010Hz。No.7 は商用に事前確認が要るので外した）
+V3_VOICE = {
+    "speaker": os.environ.get("V3_VOICEVOX_SPEAKER", "東北ずん子"),
+    "style": os.environ.get("V3_VOICEVOX_STYLE", "ノーマル"),
+    "pitch": float(os.environ.get("V3_VOICEVOX_PITCH", "0.01")),
+    "intonation": float(os.environ.get("V3_VOICEVOX_INTONATION", "1.18")),
+    "speed": float(os.environ.get("V3_VOICEVOX_SPEED", "1.26")),
+}
 
 SITE = "ai-tech-express.jp"
 BRAND = "サイソクニュース"
@@ -370,6 +394,8 @@ class Target:
     rect: tuple  # 一致した文字の枠（ページの画素）
     text: str
     focus: tuple | None = None  # キーワードの数字の部分（例: $200）の枠。寄る先
+    match: tuple | None = None  # target の文字そのものの枠（選択の青を付ける所・行の中の一部）
+    line_chars: list = field(default_factory=list)  # 注目の行の1文字ずつ [(文字, 枠)]（語の頭で切るため）
 
     @property
     def zoom_rect(self) -> tuple:
@@ -419,10 +445,14 @@ def find_target(pages: list[Page], needle: str, block_id: str = "", page_no: int
                     focus = _union(fb)
                     break
         line = _first_line(boxes)
+        ref = focus or line[0]
+        row = lambda r: abs(r[1] - ref[1]) < (ref[3] - ref[1]) * 0.6  # noqa: E731
+        match = _union([r for r in boxes if row(r)] or line)
+        line_chars = [(c, r) for c, r in zip(flat, rects) if r and row(r)]
         if focus:  # 注目の枠は数字を含む行
             all_boxes = [r for r in rects if r]
-            line = [r for r in all_boxes if abs(r[1] - focus[1]) < (focus[3] - focus[1]) * 0.6] or line
-        return Target(pi, b, _union(line), needle, focus)
+            line = [r for r in all_boxes if row(r)] or line
+        return Target(pi, b, _union(line), needle, focus, match, line_chars)
     return None
 
 
@@ -457,16 +487,17 @@ _BEAT = {
         "speech": {"type": "STRING"},
         "block": {"type": "STRING"},
         "target": {"type": "STRING"},
+        "ja": {"type": "STRING"},
     },
-    "required": ["keyword", "sub", "speech", "block", "target"],
+    "required": ["keyword", "sub", "speech", "block", "target", "ja"],
 }
 SCRIPT_SCHEMA = {
     "type": "OBJECT",
     "properties": {
         "hook": {
             "type": "OBJECT",
-            "properties": {"text": {"type": "STRING"}, "payoff": {"type": "STRING"}, "speech": {"type": "STRING"}, "block": {"type": "STRING"}, "target": {"type": "STRING"}},
-            "required": ["text", "payoff", "speech", "block", "target"],
+            "properties": {"text": {"type": "STRING"}, "payoff": {"type": "STRING"}, "speech": {"type": "STRING"}, "block": {"type": "STRING"}, "target": {"type": "STRING"}, "ja": {"type": "STRING"}},
+            "required": ["text", "payoff", "speech", "block", "target", "ja"],
         },
         "beats": {"type": "ARRAY", "items": _BEAT},
         "compare": {
@@ -488,45 +519,82 @@ def script_system() -> str:
     import persona
 
     p = persona.PERSONA
-    return f"""あなたはニュースサイト「{persona.BRAND}」の縦型ショート動画（20〜28秒）の構成作家。
+    return f"""あなたはニュースサイト「{persona.BRAND}」の横型の短い解説動画（20〜28秒）の構成作家。
 動画は「画面で見せる型」: 公式ページの本物の画面をズームして証拠を見せる。画面に出す文字はキーワードだけで、話はナレーションが運ぶ。
 見る人: {p['who']}
-ナレーションの話し方: {p['voice']} 友だちの詳しい先輩が「これ知ってる？」と話すように、です・ます調で短く。
+見る人が知りたいこと: 自分の仕事・お金・副業にどう使えるか、何と比べてどうか、どこを押せば試せるか。
+ナレーションの話し方: {p['voice']} 詳しくて頼れる先輩が「これ知ってる？」と話すように、です・ます調で短く。専門用語は普通の言葉に言い換える。
 
 # 絶対の決まり
 - 使ってよい事実は「資料」（記事）に書かれていることだけ。推測・補足・一般論の追加は禁止。
+- 例外は「どこを押すか」だけ: 操作の場所（メニュー名・ボタン名・設定の場所）は「画面の文字」にそのまま書かれていれば使ってよい。数字は資料にあるものだけ。
 - 数字・価格・製品名は資料の表記どおり。資料に無い数字は書かない。
 - 「初」「最大」「最高」「最速」「最安」「唯一」などの評価語は資料に同じ言葉があるときだけ。
-- 煽らない（衝撃・ヤバい・革命・神・ついに・必見は禁止）。絵文字・記号の飾りは禁止。「ざっくり」は使わない。
+- 煽らない（衝撃・ヤバい・革命・神・ついに・必見は禁止）。絵文字・記号の飾りは禁止。「ざっくり」は使わない（まとめるときは「要約すると」）。
 
 # 構成
 - hook（最初の1.5秒）: text は画面に大きく出す1行（12〜20字）。見る人が「自分ごと」になる問いかけか得。
   例の形:「Claudeの最上位、月200ドルの価値ある？」。payoff はその答えの手がかりになる数字のキーワード（8字以内・資料の表記どおり。例: 月200ドル）。
   speech は text を自然に読む1文（22字以内）。block / target は payoff の証拠になる画面の文字。
   できれば文字の大きい行（番号に「|大」が付いた行。料金表の大きな金額など）を選ぶ。最初の画面になるので見栄えが大事。
-- beats: ちょうど4つ。「何が変わったか」で終わらせず、見る人が次に動けるところまで案内する。順番と役目は固定:
+- beats: ちょうど4つ。ニュースを伝えるだけで終わらせず、画面で案内しながら「一歩先」まで連れて行く。順番と役目:
   1. 何が変わった: 変化を1つにまとめる（例: 名前がUltraに・価格は据え置き）。
-  2. 得する人: 誰の仕事・お金に、なぜ効くか（記事の事実で。例: Proの上限によく当たる人→毎週10倍・5時間制限なし）。
-  3. 向かない人・注意: 記事にある条件・注意点（例: 月払いのみ／アプリ経由は価格が違うことがある／日本での提供は未確認／組織はTeam・Enterprise）。
-  4. 今すること: 具体的な次の一歩（例: 今の契約者は手続き不要・設定の使用状況で確認／新規は公式の料金ページでProやMaxと比べる）。
-     証拠はその手順や条件が書かれた公式ページの行（ヘルプのQ&Aの答え・料金ページの該当プラン）。
+  2. 活用法: 誰の、どんな仕事・お金の場面で、どう使えるか（記事の事実で。例: Proの上限によく当たる人→毎週10倍・5時間制限なし）。
+  3. 比較・注意: 資料に比べる相手（前の版・他のプラン・他社）があれば違いを1つ。無ければ記事にある条件・注意点
+     （例: 月払いのみ／アプリ経由は価格が違うことがある／日本での提供は未確認）。
+  4. 今すること: どこを押せば確かめられる・試せるか（例: 設定の使用状況で確認／料金ページのUltraの欄）。
+     証拠はその手順や場所が書かれた公式ページの行（ヘルプのQ&Aの答え・料金ページの該当プラン・ボタン）。
+  資料が薄いニュース（名前の変更だけ等）は、無理に足さず資料の範囲で短くまとめる。
   keyword: 画面に大きく出す言葉。2〜8字（例: 手続き不要、Proの10倍、月払いのみ）。文にしない。句読点を付けない。
   sub: 補足（14字以内。不要なら空）。
   speech: 読み上げ。1〜2文・合計45字以内。keyword の数字・名前を必ず含める。
   block: 下の「画面の文字」一覧の番号（例: 1-23）。target: その行の文字から、この beat の証拠になる部分を**一文字も変えずに**抜き出す（2〜40字。英語なら英語のまま）。
   証拠の行は見出し・大きな文字（|大）・短い行を優先し、長い本文の段落は選ばない。
-- **画面の文字は証拠の場所を選ぶためだけに使う。** 画面にあっても記事（資料）に無い事実・数字は、keyword・sub・speech に書かない。
+  ja: target が英語のときだけ、target の日本語訳（字幕として画面に出す）。target に書いてあることだけを、短く自然な日本語に（28字以内）。
+  言葉を足さない・意味を強めない・target に無い数字を入れない。製品名は英字のまま（Ultra・Pro）。target が日本語なら空文字。hook も同じ。
+- **画面の文字は証拠の場所を選ぶためだけに使う。** 画面にあっても記事（資料）に無い事実・数字は、keyword・sub・speech に書かない（ja は target の訳なのでよい）。
 - compare: 2つを倍率で比べられる事実が資料にあるときだけ。beat はそれを話す beat の番号（1〜4）、base は基準（例: Pro）、subject は比べる相手（例: Ultra）、
   ratio は資料の表記どおりの倍率（例: 10倍）。無ければ beat=0、他は空文字。
 - conclusion: 最後の一言。text は16字以内で hook の問いに答える（例: 上限に困る人なら検討の価値）。speech は20〜32字。
 - title: 40字以内・主役の名前を入れて事実をそのまま。summary: 説明欄の要約。「要約すると、」で始めて80〜120字。hashtags: 3〜4個（#付き）。
 
-# 画面の文字（text・payoff・keyword・sub・conclusion.text）
-- 製品名・社名は資料の表記のまま英字で書く（Claude・Gemini。カタカナにしない）。カタカナにするのは speech だけ。
+# 画面の文字（text・payoff・keyword・sub・conclusion.text・ja）
+- 製品名・社名は資料の表記のまま英字で書く（Claude・Gemini・Ultra。カタカナにしない）。カタカナにするのは speech だけ。
 
 # 読み上げ（speech）
 - 英語の製品名・社名はカタカナ（Claude→クロード、OpenAI→オープンエーアイ、Pro→プロ）。記号は言葉に（$200→200ドル、%→パーセント）。
 - 数字はアラビア数字のまま（かなや漢数字にしない）。"""
+
+
+# 画面の文字にカタカナの製品名が入ったら英字に直す（読み上げ用のカタカナが画面に漏れるのを防ぐ）
+KATAKANA_NAMES = {
+    "クロード": "Claude", "アンソロピック": "Anthropic", "ジェミニ": "Gemini", "グーグル": "Google",
+    "チャットジーピーティー": "ChatGPT", "オープンエーアイ": "OpenAI", "コーデックス": "Codex", "ウルトラ": "Ultra",
+    "カーボン": "Carbon", "アルゴン": "Argon", "マイクロソフト": "Microsoft", "コパイロット": "Copilot",
+}  # fmt: skip
+SCREEN_FIELDS = (("hook", "text"), ("hook", "payoff"), ("hook", "ja"), ("conclusion", "text"))
+
+
+def latin_names(script: dict) -> dict:
+    """画面の文字のカタカナの製品名を英字に置き換える（台本を直接直す）"""
+    def fix(text: str) -> str:
+        for kata, latin in KATAKANA_NAMES.items():
+            text = text.replace(kata, latin)
+        return text
+
+    for a, b in SCREEN_FIELDS:
+        if isinstance(script.get(a), dict) and isinstance(script[a].get(b), str):
+            script[a][b] = fix(script[a][b])
+    for beat in script.get("beats") or []:
+        for k in ("keyword", "sub", "ja"):
+            if isinstance(beat.get(k), str):
+                beat[k] = fix(beat[k])
+    return script
+
+
+def is_english(text: str) -> bool:
+    """英語の文・句か（字幕を付けるか）: 英字の語が2つ以上で、かなと漢字が無い"""
+    return len(re.findall(r"[A-Za-z]{2,}", text or "")) >= 2 and not re.search(r"[ぁ-んァ-ヴ一-龥]", text or "")
 
 
 def script_material(article: dict, pages: list[Page]) -> str:
@@ -594,6 +662,32 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
             miss = [d for d in _digits(kw) if d not in have]
             if miss:
                 out.append(f"{name} の数字 {', '.join(miss)} が証拠の行 [{tgt.block.id}] にありません。数字が書かれた行を選んでください。")
+    # 英語の証拠には日本語の字幕（target の訳）。訳に無い数字・記事に無い語を入れない
+    mat = gate.material_text(article)
+    mat_numbers = gate.number_tokens(mat)
+    for name, _, item in items:
+        tgt_text, ja = item.get("target", ""), (item.get("ja") or "").strip()
+        if not is_english(tgt_text):
+            continue
+        if not ja:
+            out.append(f"{name}.ja: target が英語なので、target の日本語訳を入れてください。")
+            continue
+        if len(ja) > 30:
+            out.append(f"{name}.ja は28字以内（今は{len(ja)}字）。")
+        extra = [d for d in _digits(ja) if d not in set(_digits(tgt_text))]
+        if extra:
+            out.append(f"{name}.ja に target に無い数字 {', '.join(extra)} があります。訳に言葉や数字を足さない。")
+        if bad := gate.numbers_ok(ja, mat_numbers):
+            out.append(f"{name}.ja の数字 {', '.join(bad)} が記事にありません。")
+        if bad := gate.proper_noun_problems(ja, mat + " " + tgt_text):
+            out.append(f"{name}.ja に記事・target に無い語 {', '.join(bad)}。")
+    screen = [s.get("hook", {}).get(k, "") for k in ("text", "payoff", "ja")] + [(s.get("conclusion") or {}).get("text", "")]
+    screen += [b.get(k, "") for b in beats for k in ("keyword", "sub", "ja")]
+    speech_all = " ".join([hook.get("speech", ""), concl.get("speech", "")] + [b.get("speech", "") for b in beats])
+    for text in screen:
+        for kata in re.findall(r"[ァ-ヴー]{3,}", text or ""):
+            if kata in speech_all and kata not in mat and kata not in gate.KATAKANA_OK:
+                out.append(f"画面の文字「{text}」のカタカナ「{kata}」は読み上げ用の書き方です。画面では資料の英字の表記に。")
     comp = s.get("compare") or {}
     if comp.get("beat"):
         if not (1 <= int(comp["beat"]) <= 4) or not comp.get("ratio") or not comp.get("base") or not comp.get("subject"):
@@ -626,6 +720,7 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
             log("   [v3] 台本: quality の枠が無いので bulk で書く")
             continue
         data["beats"] = [b for b in data.get("beats") or [] if isinstance(b, dict)][:4]
+        latin_names(data)
         problems = script_problems(data, article, pages)
         style = [p for p in problems if p.startswith(STYLE_PREFIXES)]
         if not problems or (attempt >= 4 and len(style) == len(problems)):
@@ -649,7 +744,7 @@ def warm_voicevox() -> threading.Thread | None:
 
     def run():
         try:
-            tts = shorts.VoiceVox(shorts.DEFAULT_VOICEVOX, 1.2)
+            tts = make_tts("voicevox", V3_VOICE["speed"])
             with tempfile.TemporaryDirectory() as tmp:
                 tts.synth("はい。", Path(tmp) / "w.wav")
         except Exception as error:  # noqa: BLE001
@@ -689,13 +784,25 @@ def wait_voicevox(timeout: float = 240.0) -> bool:
     return False
 
 
+def make_tts(kind: str, speed: float):
+    """v3 の声: VOICEVOX は V3_VOICE（話者・スタイル・高さ・抑揚）。それ以外は v2 と同じ"""
+    if kind == "voicevox" or (kind == "auto" and shorts.VoiceVox.available()):
+        v = V3_VOICE
+        tts = shorts.VoiceVox(v["speaker"], speed, style=v["style"], pitch=v["pitch"], intonation=v["intonation"])
+        tts.engine = "voicevox"
+        tts.label = f"VOICEVOX（{v['speaker']}・{v['style']}・高さ{v['pitch']:+.2f}・抑揚{v['intonation']:.2f}）"
+        return tts
+    return v2.make_tts(kind, speed)
+
+
 def narrate(script: dict, tts_kind: str, work: Path) -> Narration:
     lines = [Line("hook", 0, script["hook"]["speech"])] + [Line("beat", i, b["speech"]) for i, b in enumerate(script["beats"], 1)] + [Line("conclusion", 5, script["conclusion"]["speech"])]
     if tts_kind == "voicevox" and not wait_voicevox():
         raise RuntimeError("VOICEVOX に繋がりません")
-    speed = 1.22
+    base_speed = V3_VOICE["speed"] if tts_kind != "fake" else 1.22
+    speed = base_speed
     for _ in range(5):
-        tts = v2.FakeTTS(0.135 * 1.22 / speed) if tts_kind == "fake" else v2.make_tts(tts_kind, speed)
+        tts = v2.FakeTTS(0.135 * 1.22 / speed) if tts_kind == "fake" else make_tts(tts_kind, speed)
 
         def synth(i: int) -> np.ndarray:
             raw, dst = work / f"l{i}.src.wav", work / f"l{i}.wav"
@@ -711,11 +818,11 @@ def narrate(script: dict, tts_kind: str, work: Path) -> Narration:
             t = line.end + GAP
         total = lines[-1].end + END_HOLD
         end_start = total  # 締めのカードは無い（最後の場面のまま終わる）
-        if total < TARGET_MIN and speed > 1.06:
+        if total < TARGET_MIN and speed > base_speed - 0.16:
             speed -= 0.08  # 短すぎる（20秒未満）ときは少しゆっくり読む
             log(f"   [v3] {total:.1f}秒で短い → 速さ {speed:.2f} で読み直し")
             continue
-        if total <= TARGET_MAX or speed >= 1.45:
+        if total <= TARGET_MAX or speed >= base_speed + 0.24:
             break
         speed += 0.08
         log(f"   [v3] {total:.1f}秒で長い → 速さ {speed:.2f} で読み直し")
@@ -760,51 +867,63 @@ def _add(out: np.ndarray, sig: np.ndarray, at: float) -> None:
 
 
 def synth_bgm(total: float, seed: int = 0) -> np.ndarray:
-    """自作の BGM（108BPM・明るめのコード進行・プラック＋パッド＋ベース＋軽いキックとハット）。外部音源なし＝権利の心配なし"""
+    """自作の BGM（2026-11-02 オーナー「暗いかも」→ 明るく弾む形に）。外部音源なし＝権利の心配なし。
+    122BPM・D メジャー（I–V–vi–IV: D A Bm G）・マリンバ風のプラック（裏で跳ねる）＋薄いパッド＋弾むベース＋
+    軽いキック・手拍子・シェイカー。声の帯域（1〜4kHz）は空ける"""
     rng = np.random.default_rng(seed)
-    bpm = 108
+    bpm = 122
     beat = 60 / bpm
     bar = 4 * beat
     n = int((total + 1) * SR)
     out = np.zeros(n, dtype=np.float32)
-    prog = [[53, 57, 60, 64], [55, 59, 62, 67], [52, 55, 59, 62], [57, 60, 64, 67]]  # Fmaj7 G Em7 Am7
+    prog = [[62, 66, 69, 73], [57, 61, 64, 69], [59, 62, 66, 69], [55, 59, 62, 66]]  # Dmaj7 A Bm Gmaj7
     bars = int(math.ceil(total / bar)) + 1
 
-    def tone(freq: float, dur: float, decay: float, harm=(1.0, 0.35, 0.12), attack=0.004) -> np.ndarray:
+    def tone(freq: float, dur: float, decay: float, harm=(1.0, 0.0, 0.0, 0.22), attack=0.003) -> np.ndarray:
         t = np.arange(int(dur * SR)) / SR
         env = np.minimum(1, t / attack) * np.exp(-t / decay)
-        return (env * sum(a * np.sin(2 * np.pi * freq * (k + 1) * t) for k, a in enumerate(harm))).astype(np.float32)
+        # マリンバ風: 基音＋4倍音（倍音はすぐ消える）
+        sig = sum(a * np.sin(2 * np.pi * freq * (k + 1) * t) * (np.exp(-t / (decay * 0.25)) if k else 1) for k, a in enumerate(harm) if a)
+        return (env * sig).astype(np.float32)
 
-    pattern = [0, 2, 1, 3, 2, 1, 3, 1]
+    # 8分のプラック（裏拍を強めにして跳ねる・3拍目の裏は休む）
+    pattern = [(0, 0, 0.10), (0.5, 2, 0.13), (1, 1, 0.08), (1.5, 3, 0.13), (2, 2, 0.09), (3, 1, 0.08), (3.5, 3, 0.12)]
     for b in range(bars):
         chord = prog[b % 4]
         t0 = b * bar
-        # パッド（ゆっくり立ち上がる和音）
+        # パッド（薄く・明るい高めの和音）
         t = np.arange(int(bar * SR)) / SR
-        env = np.minimum(1, t / 0.5) * np.minimum(1, (bar - t) / 0.4)
-        pad = sum(np.sin(2 * np.pi * _midi(m) * d * t) + 0.25 * np.sin(4 * np.pi * _midi(m) * d * t) for m in chord for d in (0.998, 1.002))
-        _add(out, (0.035 * env * pad).astype(np.float32), t0)
-        # プラック（16分のアルペジオ）
-        for k in range(16):
-            note = chord[pattern[k % 8]] + 12
-            vel = 0.13 if k % 4 == 0 else 0.085
-            _add(out, vel * tone(_midi(note), 0.5, 0.14), t0 + k * beat / 4 + (0.012 if k % 2 else 0))
-        # ベース
-        for at in (0, 1.5, 2, 3.5):
-            _add(out, 0.30 * tone(_midi(chord[0] - 12), 0.6, 0.32, harm=(1.0, 0.3)), t0 + at * beat)
-        # キック（1・3拍）とハット（裏拍）
+        env = np.minimum(1, t / 0.3) * np.minimum(1, (bar - t) / 0.3)
+        pad = sum(np.sin(2 * np.pi * _midi(m + 12) * d * t) for m in chord[1:] for d in (0.997, 1.003))
+        _add(out, (0.016 * env * pad).astype(np.float32), t0)
+        for at, idx, vel in pattern:
+            note = chord[idx] + 12
+            _add(out, vel * tone(_midi(note), 0.45, 0.16), t0 + at * beat + (0.01 if at % 1 else 0))
+        # 2小節目ごとに高い音の飾り（上がっていく3音）
+        if b % 2 == 1:
+            for k, idx in enumerate((1, 2, 3)):
+                _add(out, 0.06 * tone(_midi(chord[idx] + 24), 0.3, 0.09), t0 + (3 + k / 3) * beat)
+        # ベース（ルートと1オクターブ上を行き来して弾む）
+        for at, oct_ in ((0, 0), (0.75, 12), (1.5, 0), (2, 0), (2.75, 12), (3.5, 0)):
+            _add(out, 0.24 * tone(_midi(chord[0] - 24 + oct_), 0.32, 0.12, harm=(1.0, 0.35)), t0 + at * beat)
+        # キック（1・3拍。軽め）・手拍子（2・4拍）・シェイカー（16分）
         for at in (0, 2):
-            tt = np.arange(int(0.35 * SR)) / SR
-            f = 46 + 70 * np.exp(-tt / 0.035)
-            _add(out, (0.42 * np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt / 0.16)).astype(np.float32), t0 + at * beat)
-        for k in range(8):
-            if k % 2:
-                tt = np.arange(int(0.06 * SR)) / SR
-                _add(out, (0.05 * rng.standard_normal(len(tt)) * np.exp(-tt / 0.018)).astype(np.float32), t0 + k * beat / 2)
-    out = fft_filter(out, low=7000, high=40, dip=(2500, 1.2, -5))  # 声の帯域（1〜4kHz）を空ける
+            tt = np.arange(int(0.25 * SR)) / SR
+            f = 55 + 80 * np.exp(-tt / 0.03)
+            _add(out, (0.30 * np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt / 0.11)).astype(np.float32), t0 + at * beat)
+        for at in (1, 3):
+            tt = np.arange(int(0.18 * SR)) / SR
+            clap = fft_filter(rng.standard_normal(len(tt)).astype(np.float32), low=6000, high=900)
+            env = np.exp(-tt / 0.045) * (1 + 0.6 * np.exp(-((tt - 0.012) / 0.004) ** 2))
+            _add(out, (0.10 * clap * env).astype(np.float32), t0 + at * beat)
+        for k in range(16):
+            tt = np.arange(int(0.05 * SR)) / SR
+            vel = 0.035 if k % 2 else 0.018
+            _add(out, (vel * rng.standard_normal(len(tt)) * np.exp(-tt / 0.012)).astype(np.float32), t0 + k * beat / 4)
+    out = fft_filter(out, low=10000, high=45, dip=(2400, 1.1, -5))  # 声の帯域（1〜4kHz）を空ける
     out = out[: int(total * SR)]
     t = np.arange(len(out)) / SR
-    out *= np.minimum(1, t / 0.25) * np.minimum(1, np.maximum(0, (total - t) / 0.9))
+    out *= np.minimum(1, t / 0.2) * np.minimum(1, np.maximum(0, (total - t) / 0.9))
     return (out / max(np.abs(out).max(), 1e-6) * 0.5).astype(np.float32)
 
 
@@ -943,9 +1062,14 @@ def fit_s(page: Page) -> float:
     return PW / page.width
 
 
-def frame_rect(page: Page, page_no: int, rect: tuple, frac: float, zmax: float, zmin: float = 1.0, line: tuple | None = None) -> Cam:
+WORD_BREAK = set(" 　、。，,（(「『・/")
+
+
+def frame_rect(page: Page, page_no: int, rect: tuple, frac: float, zmax: float, zmin: float = 1.0, line: tuple | None = None, chars: list | None = None) -> Cam:
     """rect の幅が画面幅の frac になる倍率（ページ幅いっぱい〜zmax 倍）で、rect を注目位置に置く。
-    line（rect を含む行）が画面に入りきらないときは、行の頭が見えるように左に寄せる（両端が切れた文にしない）"""
+    line（rect を含む行）があるとき:
+      - 行の全体が無理なく入る倍率（ページ幅の 1.3 倍以上）なら、行の全体が入るまで引く
+      - 入らないときは、注目の所が見える範囲で、なるべく行の頭から。頭を切るときは語の頭で切る（語の途中で切れた文にしない）"""
     s0 = fit_s(page)
     rw, rh = max(rect[2] - rect[0], 1), max(rect[3] - rect[1], 1)
     s = min(frac * PW / rw, 0.22 * PH / rh)
@@ -953,11 +1077,21 @@ def frame_rect(page: Page, page_no: int, rect: tuple, frac: float, zmax: float, 
     cx = (rect[0] + rect[2]) / 2
     sub = line is not None
     line = line or rect
+    margin = 50
+    if sub:
+        s_fit = (PW * 0.96 - 2 * margin) / max(line[2] - line[0], 1)
+        if s_fit >= s0 * 1.3:
+            s = min(s, s_fit)
     vis = PW / s
-    if line[2] - line[0] > vis * 0.94:
-        left = line[0] - 36 / s
-        if sub and rect[2] + 70 / s > left + vis:  # 注目の所（行の一部）が右にはみ出すなら、そこが見える所まで
-            left = rect[2] + 70 / s - vis
+    if line[2] - line[0] > vis - 2 * margin / s:
+        left = line[0] - margin / s
+        if sub and rect[2] + 70 / s > left + vis:
+            want = rect[2] + 70 / s - vis + margin / s  # 文字の始まりはここより右
+            starts = []
+            if chars:
+                starts = [r[0] for i, (c, r) in enumerate(chars) if c not in WORD_BREAK and (i == 0 or chars[i - 1][0] in WORD_BREAK)]
+            cand = [x for x in starts if want <= x < rect[2]]
+            left = (min(cand) if cand else want) - margin / s
         cx = left + FOCUS[0] / s
     return clamp_cam(page, page_no, cx, (rect[1] + rect[3]) / 2, s)
 
@@ -992,6 +1126,8 @@ class Spot:
     t1: float
     page: int
     rect: tuple
+    sel: tuple | None = None  # 選択の青を付ける文字（target そのもの）
+    sel_t: float = 0.0  # 選択が始まる時刻
 
 
 @dataclass
@@ -1055,8 +1191,9 @@ class TextItem:
     y: int
     t0: float
     t1: float
-    enter: bool = True
+    anim: str = "rise"  # rise（下から上がる）/ wipe（左から現れる）/ none
     delay: float = 0.0
+    marker: bool = False  # キーワードの下をマーカーが走る
 
     def bbox(self) -> list[float]:
         a = self.sprite[..., 3]
@@ -1069,17 +1206,23 @@ class TextItem:
 RENDERED: list[str] = []  # 動画に描いた文字すべて（数字が記事と合っているかをゲートで見る。途中の数字は描かない）
 
 
-def render_text(segments: list[tuple[str, str, tuple]], size: int) -> np.ndarray:
-    """1行の文字（[(文字, 書体, 色)]）を RGBA で。前後の余白は切り落とす"""
+def render_text(segments: list[tuple[str, str, tuple]], size: int, tracking: float = 0.0) -> np.ndarray:
+    """1行の文字（[(文字, 書体, 色)]）を RGBA で。前後の余白は切り落とす。tracking は字間（文字の大きさに対する割合）"""
     RENDERED.append("".join(t for t, _, _ in segments))
     fonts = [shorts.font(face, size) for _, face, _ in segments]
-    width = int(sum(f.getlength(t) for (t, _, _), f in zip(segments, fonts))) + size
+    track = size * tracking
+    width = int(sum(f.getlength(t) + track * len(t) for (t, _, _), f in zip(segments, fonts))) + size
     img = Image.new("RGBA", (width + 8, int(size * 1.6)), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
     x = 4.0
     for (t, _, color), f in zip(segments, fonts):
-        d.text((x, size * 0.15), t, font=f, fill=color + (255,))
-        x += f.getlength(t)
+        if track:
+            for ch in t:
+                d.text((x, size * 0.15), ch, font=f, fill=color + (255,))
+                x += f.getlength(ch) + track
+        else:
+            d.text((x, size * 0.15), t, font=f, fill=color + (255,))
+            x += f.getlength(t)
     arr = np.asarray(img)
     ys, xs = np.nonzero(arr[..., 3] > 0)
     if not len(xs):
@@ -1090,7 +1233,7 @@ def render_text(segments: list[tuple[str, str, tuple]], size: int) -> np.ndarray
 NUM_SPLIT = re.compile(r"([$＄]?\d[\d,，.．]*(?:万|億|兆)?\d*(?:円|ドル|%|％|倍|人|件|社|年|月|日|時間|分|秒|GB|TB|万人|トークン)?)")
 
 
-def accent_segments(text: str, face: str = "black", base=WHITE) -> list[tuple[str, str, tuple]]:
+def accent_segments(text: str, face: str = "black", base=INK) -> list[tuple[str, str, tuple]]:
     out = []
     for i, part in enumerate(NUM_SPLIT.split(text)):
         if part:
@@ -1098,38 +1241,79 @@ def accent_segments(text: str, face: str = "black", base=WHITE) -> list[tuple[st
     return out
 
 
-def fit_line(text: str, face: str, sizes: range, width: int, color=WHITE, accent: bool = True) -> np.ndarray:
+def fit_line(text: str, face: str, sizes: range, width: int, color=INK, accent: bool = True, tracking: float = 0.0) -> np.ndarray:
     for size in sizes:
-        spr = render_text(accent_segments(text, face, color) if accent else [(text, face, color)], size)
+        spr = render_text(accent_segments(text, face, color) if accent else [(text, face, color)], size, tracking)
         if spr.shape[1] <= width:
             return spr
     raise RuntimeError(f"文字が入りません: {text}")
 
 
-def stack(sprites: list[np.ndarray], gap: int) -> np.ndarray:
+def stack(sprites: list[np.ndarray], gap: int, center: bool = False) -> np.ndarray:
     w = max(s.shape[1] for s in sprites)
     h = sum(s.shape[0] for s in sprites) + gap * (len(sprites) - 1)
     out = np.zeros((h, w, 4), dtype=np.uint8)
     y = 0
     for s in sprites:
-        out[y : y + s.shape[0], : s.shape[1]] = s
+        x = (w - s.shape[1]) // 2 if center else 0
+        out[y : y + s.shape[0], x : x + s.shape[1]] = s
         y += s.shape[0] + gap
     return out
 
 
-def wrapped(text: str, face: str, sizes: range, width: int, rows_max: int) -> np.ndarray:
+def wrapped(text: str, face: str, sizes: range, width: int, rows_max: int, color=INK, accent: bool = True, center: bool = False) -> np.ndarray:
     for size in sizes:
         rows = v2.wrap_jp(text, shorts.font(face, size), width - 8)
         if len(rows) <= rows_max:
-            sprites = [render_text(accent_segments(r, face), size) for r in rows]
+            sprites = [render_text(accent_segments(r, face, color) if accent else [(r, face, color)], size) for r in rows]
             if all(s.shape[1] <= width for s in sprites):
-                return stack(sprites, int(size * 0.18))
+                return stack(sprites, int(size * 0.22), center)
     raise RuntimeError(f"文字が入りません: {text}")
 
 
-def place_in_zone(sprite: np.ndarray) -> tuple[int, int]:
-    zx0, zy0, zx1, zy1 = TEXT_ZONE
-    return zx0, zy0 + max(0, (zy1 - zy0 - sprite.shape[0]) // 2)
+def big_lines(text: str) -> np.ndarray:
+    """つかみ・締めの大きな文字: 2行に入る大きさ（72px 以上）ならそれで、無理なら3行"""
+    try:
+        return wrapped(text, "black", range(86, 70, -2), COL_W, 2)
+    except RuntimeError:
+        return wrapped(text, "black", range(80, 48, -2), COL_W, 3)
+
+
+def subtitle_sprite(text: str) -> np.ndarray:
+    """日本語字幕: 白い文字＋やわらかい影（箱は描かない。画面の下のぼかした影の上に乗る）"""
+    core = wrapped(text, "bold", range(42, 31, -2), SUB_W, 2, color=WHITE, accent=False, center=True)
+    pad = 14
+    h, w = core.shape[:2]
+    out = np.zeros((h + pad * 2, w + pad * 2, 4), dtype=np.uint8)
+    a = np.zeros((h + pad * 2, w + pad * 2), dtype=np.uint8)
+    a[pad + 2 : pad + 2 + h, pad : pad + w] = core[..., 3]
+    shadow = np.asarray(Image.fromarray(a).filter(ImageFilter.GaussianBlur(6))).astype(np.float32) * 0.85
+    out[..., :3] = INK
+    out[..., 3] = np.clip(shadow, 0, 255).astype(np.uint8)
+    blend_rgba(out, core, pad, pad)
+    return out
+
+
+def blend_rgba(dst: np.ndarray, src: np.ndarray, x: int, y: int) -> None:
+    """RGBA の上に RGBA を重ねる（字幕の影の上に文字）"""
+    h, w = src.shape[:2]
+    roi = dst[y : y + h, x : x + w].astype(np.float32)
+    sa = src[..., 3:4].astype(np.float32) / 255
+    da = roi[..., 3:4] / 255
+    oa = sa + da * (1 - sa)
+    rgb = (src[..., :3] * sa + roi[..., :3] * da * (1 - sa)) / np.maximum(oa, 1e-6)
+    dst[y : y + h, x : x + w, :3] = np.clip(rgb, 0, 255).astype(np.uint8)
+    dst[y : y + h, x : x + w, 3:4] = np.clip(oa * 255, 0, 255).astype(np.uint8)
+
+
+@dataclass
+class Subtitle:
+    t0: float
+    t1: float
+    text: str
+    sprite: np.ndarray
+    x: int
+    y: int
 
 
 @dataclass
@@ -1144,13 +1328,32 @@ class Plan:
     clicks: list[Click]
     charts: list[Chart]
     texts: list[TextItem]
+    subtitles: list[Subtitle]
     events: list[dict]
     focus: list[dict]
     credits: list[str]
 
 
 def _source_label(page: Page) -> str:
-    return f"公式ページ：{page.host}"
+    return f"公式ページ　{page.host}"
+
+
+EYEBROWS = ["何が変わった", "使いどころ", "知っておきたい", "次の一歩"]
+
+
+def column_group(parts: list[tuple[str, np.ndarray, int]], center_y: int) -> list[tuple[str, np.ndarray, int, int]]:
+    """文字の列に縦に並べる: [(役目, 絵, 上の間隔)] → [(役目, 絵, x, y)]。キーワードの中心が center_y に来る"""
+    ys, y = [], 0
+    key_mid = None
+    for role, spr, gap in parts:
+        y += gap if ys else 0
+        ys.append(y)
+        if role in ("keyword", "hook", "conclusion") and key_mid is None:
+            key_mid = y + spr.shape[0] / 2
+        y += spr.shape[0]
+    top = int(center_y - (key_mid if key_mid is not None else y / 2))
+    top = max(COL[1], min(top, COL[3] - y))
+    return [(role, spr, COL[0], top + yy) for (role, spr, _), yy in zip(parts, ys)]
 
 
 def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -> Plan:
@@ -1162,6 +1365,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     targets = [find_target(pages, it.get("target", ""), it.get("block", ""), keyword=k) for it, k in zip(items, kws)]
     if not targets[0]:
         raise RuntimeError("つかみの証拠の場所がページに見つかりません")
+    found = [t is not None for t in targets]
     for i in range(1, len(targets)):  # 見つからない beat は1つ前の場所を使う（ゲートで事実は見ている）
         targets[i] = targets[i] or targets[i - 1]
     comp = script.get("compare") or {}
@@ -1172,25 +1376,27 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     clicks: list[Click] = []
     charts: list[Chart] = []
     events: list[dict] = []
+    sub_spans: list[tuple[float, float, int]] = []  # (t0, t1, 台本の番号 0=hook)
 
     def ev(t: float, kind: str, note: str = "") -> None:
         events.append({"t": round(max(0.0, t), 3), "kind": kind, "note": note})
 
-    # つかみ: ページ幅いっぱい → 0.25秒から payoff の数字へ寄る（1秒で数字が大きく見える）
+    # つかみ: ページ幅いっぱい → 0.18秒から payoff の数字へ寄る（1秒で数字が大きく見える）
     t0 = targets[0]
     p0 = pages[t0.page]
     wide_rect = t0.block.rect if t0.block.rect[2] - t0.block.rect[0] > 0.5 * p0.width else t0.rect
     first = frame_rect(p0, t0.page, (wide_rect[0], t0.rect[1], wide_rect[2], t0.rect[3]), 0.96, 1.5, zmin=1.0 if wide_rect is t0.block.rect else 1.2)
     hero = hero_block(p0)
     if t0.block.font_px < 22 and hero is not None and hero is not t0.block:
-        # 数字が本文の中の小さな字なら、最初の画面はページの大きな見出し（公式ページだと一目でわかる）→ 数字へ
         first = frame_rect(p0, t0.page, hero.rect, 0.96, 1.4)
-    hook_close = frame_rect(p0, t0.page, t0.zoom_rect, 0.34, ZOOM_MAX, zmin=1.6, line=t0.rect)
+    hook_close = frame_rect(p0, t0.page, t0.zoom_rect, 0.34, ZOOM_MAX, zmin=1.6, line=t0.rect, chars=t0.line_chars)
     moves.append(Move(0.18, 0.8, hook_close))
     ev(0.18, "move", "つかみ: 数字へ寄る")
-    spots.append(Spot(0.7, lines[1].start - 0.08, t0.page, t0.rect))
+    spots.append(Spot(0.7, lines[1].start - 0.08, t0.page, t0.rect, t0.match, 0.92))
     clicks.append(Click(0.92, t0.page, *click_point(t0)))
     ev(0.92, "click")
+    if is_english(hook.get("target", "")) and hook.get("ja"):
+        sub_spans.append((0.9, lines[1].start - 0.08, 0))
 
     for i, (beat, line) in enumerate(zip(beats, lines[1:5]), 1):
         tg = targets[i]
@@ -1201,24 +1407,28 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         a_t = line.start - 0.16
         cut = tg.page != prev_page
         wide_block = tg.block.rect[2] - tg.block.rect[0] > 0.5 * page.width
-        # 行へ: 段落の幅を基準に、上下は証拠の行に合わせる（小さすぎる字にならないよう 1.25 倍以上）
         line_rect = (tg.block.rect[0], tg.rect[1], tg.block.rect[2], tg.rect[3]) if wide_block else tg.rect
         block_cam = frame_rect(page, tg.page, line_rect, 0.96, 1.6, zmin=1.25 if wide_block else ZOOM_BLOCK)
         moves.append(Move(a_t, 0.45 if cut else 0.55, block_cam, cut=cut))
         ev(a_t, "cut" if cut else "move", f"beat{i}: 行へ")
         b_t = line.start + max(0.85, 0.42 * dur)
+        sub_end = nxt - 0.08
         if i == comp_beat:
             charts.append(Chart(b_t, nxt - 0.06, comp["base"], comp["subject"], comp["ratio"]))
             ev(b_t, "chart", "比較のグラフ")
+            spots.append(Spot(a_t + 0.35, b_t, tg.page, tg.rect, tg.match, a_t + 0.6))
+            sub_end = b_t - 0.05
         elif nxt - b_t > 0.9:
             zr = tg.zoom_rect
-            moves.append(Move(b_t, 0.6, frame_rect(page, tg.page, zr, 0.36 if tg.focus else 0.7, ZOOM_MAX, zmin=1.7, line=tg.rect)))
+            moves.append(Move(b_t, 0.6, frame_rect(page, tg.page, zr, 0.36 if tg.focus else 0.7, ZOOM_MAX, zmin=1.7, line=tg.rect, chars=tg.line_chars)))
             ev(b_t, "move", f"beat{i}: 数字へ寄る")
-            spots.append(Spot(b_t + 0.3, nxt - 0.08, tg.page, tg.rect))
+            spots.append(Spot(b_t + 0.3, nxt - 0.08, tg.page, tg.rect, tg.match, b_t + 0.55))
             clicks.append(Click(b_t + 0.55, tg.page, *click_point(tg)))
             ev(b_t + 0.55, "click")
         else:
-            spots.append(Spot(a_t + 0.3, nxt - 0.08, tg.page, tg.rect))
+            spots.append(Spot(a_t + 0.3, nxt - 0.08, tg.page, tg.rect, tg.match, a_t + 0.55))
+        if found[i] and is_english(beat.get("target", "")) and beat.get("ja") and sub_end - (a_t + 0.5) > 0.6:
+            sub_spans.append((a_t + 0.5, sub_end, i))
 
     # 締め: 最初の画面（ページ幅いっぱい）へ引いて戻る
     concl = lines[5]
@@ -1228,32 +1438,37 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     if narr.end_start - c_t > 0.9:  # 最初の数字へもう一度寄る（最初と最後がつながる）
         moves.append(Move(c_t, 0.7, hook_close))
         ev(c_t, "move", "締め: 最初の数字へ")
-        spots.append(Spot(c_t + 0.35, narr.end_start, t0.page, t0.rect))
+        spots.append(Spot(c_t + 0.35, narr.end_start, t0.page, t0.rect, t0.match, c_t + 0.5))
     camera = Camera(first, moves)
 
-    # 文字
-    zone_w = TEXT_ZONE[2] - TEXT_ZONE[0]
+    # 文字（左の列）: 小さな見出し → キーワード（マーカー）→ 補足。キーワードの中心は画面の注目の行と同じ高さ
     texts: list[TextItem] = []
-    hook_spr = wrapped(hook["text"], "black", range(92, 70, -2), zone_w, 2)
+    logo = render_text([(BRAND, "logo", INK)], 32)
+    texts.append(TextItem("logo", BRAND, logo, LOGO_XY[0], LOGO_XY[1], 0.0, narr.total + 1, anim="none"))
+    hook_spr = big_lines(hook["text"])
     hook_end = lines[0].end if lines[0].end <= 2.0 else min(HOOK_TEXT_MAX, lines[0].end - 0.5)
-    texts.append(TextItem("hook", hook["text"], hook_spr, *place_in_zone(hook_spr), 0.0, hook_end, enter=False))
+    (_, _, hx, hy), = column_group([("hook", hook_spr, 0)], ANCHOR_Y)
+    texts.append(TextItem("hook", hook["text"], hook_spr, hx, hy, 0.0, hook_end, anim="none"))
     if hook.get("payoff") and lines[1].start - 0.06 - hook_end >= 0.5:
-        pay = fit_line(hook["payoff"], "black", range(150, 96, -4), zone_w)
-        texts.append(TextItem("keyword", hook["payoff"], pay, *place_in_zone(pay), hook_end, lines[1].start - 0.06))
+        pay = fit_line(hook["payoff"], "black", range(150, 84, -4), COL_W)
+        (_, _, px, py), = column_group([("keyword", pay, 0)], ANCHOR_Y)
+        texts.append(TextItem("keyword", hook["payoff"], pay, px, py, hook_end, lines[1].start - 0.06, anim="wipe", marker=True))
         ev(hook_end, "pop", "つかみの数字")
     for i, (beat, line) in enumerate(zip(beats, lines[1:5]), 1):
         t_in, t_out = line.start - 0.1, lines[i + 1].start - 0.06
-        kw = fit_line(beat["keyword"], "black", range(140, 88, -4), zone_w)
+        brow = fit_line(EYEBROWS[i - 1], "bold", range(28, 20, -2), COL_W, color=BLUE, accent=False, tracking=0.08)
+        kw = fit_line(beat["keyword"], "black", range(132, 72, -4), COL_W)
+        parts = [("eyebrow", brow, 0), ("keyword", kw, 18)]
         if beat.get("sub"):
-            sub = fit_line(beat["sub"], "bold", range(46, 34, -2), zone_w, color=SUBTLE, accent=False)
-            block = stack([kw, sub], 20)
-            x, y = place_in_zone(block)
-            texts.append(TextItem("keyword", beat["keyword"], kw, x, y, t_in, t_out))
-            texts.append(TextItem("sub", beat["sub"], sub, x, y + kw.shape[0] + 20, t_in, t_out, delay=0.1))
-        else:
-            texts.append(TextItem("keyword", beat["keyword"], kw, *place_in_zone(kw), t_in, t_out))
-    concl_spr = wrapped(script["conclusion"]["text"], "black", range(92, 70, -2), zone_w, 2)
-    texts.append(TextItem("conclusion", script["conclusion"]["text"], concl_spr, *place_in_zone(concl_spr), concl.start - 0.1, narr.total + 1))
+            parts.append(("sub", fit_line(beat["sub"], "bold", range(42, 30, -2), COL_W, color=MUTED, accent=False), 30))
+        for role, spr, x, y in column_group(parts, ANCHOR_Y):
+            text = {"eyebrow": EYEBROWS[i - 1], "keyword": beat["keyword"], "sub": beat.get("sub", "")}[role]
+            texts.append(TextItem(role, text, spr, x, y, t_in, t_out, anim="wipe" if role == "keyword" else "rise", delay={"eyebrow": 0.0, "keyword": 0.06, "sub": 0.22}[role], marker=role == "keyword"))
+    concl_brow = fit_line("要約すると", "bold", range(28, 20, -2), COL_W, color=BLUE, accent=False, tracking=0.08)
+    concl_spr = big_lines(script["conclusion"]["text"])
+    for role, spr, x, y in column_group([("eyebrow", concl_brow, 0), ("conclusion", concl_spr, 18)], ANCHOR_Y):
+        text = "要約すると" if role == "eyebrow" else script["conclusion"]["text"]
+        texts.append(TextItem(role, text, spr, x, y, concl.start - 0.1, narr.total + 1, anim="rise", delay=0.0 if role == "eyebrow" else 0.08))
     # 出典（どのページか）: 小さく1行・ページが変わったら切り替える
     spans: list[list] = []
     for m in [Move(0.0, 0, first)] + camera.moves:
@@ -1267,16 +1482,25 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         if b - a < 0.3:
             continue
         label = _source_label(pages[page_no])
-        spr = fit_line(label, "bold", range(28, 22, -2), zone_w, color=SUBTLE, accent=False)
-        texts.append(TextItem("source", label, spr, TEXT_ZONE[0], SOURCE_Y, a, b, enter=a > 0))
-    # クレジット: 締めのカードの代わりに、最後の場面の出典の位置へ小さく1行（説明文にも必ず入れる）
+        spr = fit_line(label, "bold", range(24, 18, -2), COL_W, color=SOFT, accent=False)
+        texts.append(TextItem("source", label, spr, COL[0], SOURCE_Y, a, b, anim="rise" if a > 0 else "none"))
     voice = narr.voice
     voice_text = f"音声 {voice['credit']}" if voice.get("credit") else "音声 試作の声（本番は VOICEVOX）"
     hosts = "・".join(dict.fromkeys(p.host for p in pages))
     credit = f"{voice_text}　画面 {hosts}（公式）"
-    spr = fit_line(credit, "bold", range(26, 20, -2), zone_w, color=SUBTLE, accent=False)
-    texts.append(TextItem("credit", credit, spr, TEXT_ZONE[0], SOURCE_Y, credit_t, narr.total + 1))
+    rows = [fit_line(voice_text, "bold", range(22, 16, -1), COL_W, color=SOFT, accent=False), fit_line(f"画面 {hosts}（公式）", "bold", range(22, 14, -1), COL_W, color=SOFT, accent=False)]
+    spr = stack(rows, 8)
+    texts.append(TextItem("credit", credit, spr, COL[0], SOURCE_Y - spr.shape[0] + rows[0].shape[0], credit_t, narr.total + 1, anim="rise"))
     credits = [credit]
+
+    # 日本語字幕（英語の文に寄っている間）: 画面の下に中央そろえ
+    subtitles = []
+    for a, b, idx in sub_spans:
+        text = (items[idx].get("ja") or "").strip()
+        spr = subtitle_sprite(text)
+        x = PANEL[0] + (PW - spr.shape[1]) // 2
+        y = SUB_BOTTOM - spr.shape[0] + 14
+        subtitles.append(Subtitle(a, b, text, spr, x, y))
 
     # 注目の場所（画面上の枠）: 字幕がかぶらないかをゲートで見る
     focus = []
@@ -1285,19 +1509,28 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         if cam.page == sp.page:
             x0, y0 = cam.map(sp.rect[0], sp.rect[1])
             x1, y1 = cam.map(sp.rect[2], sp.rect[3])
-            focus.append({"t0": round(sp.t0, 3), "t1": round(sp.t1, 3), "bbox": [round(PANEL[0] + x0, 1), round(PANEL[1] + y0, 1), round(PANEL[0] + x1, 1), round(PANEL[1] + y1, 1)]})
+            focus.append({"t0": round(sp.t0, 3), "t1": round(sp.t1, 3), "bbox": [round(PANEL[0] + max(0, x0), 1), round(PANEL[1] + max(0, y0), 1), round(PANEL[0] + min(PW, x1), 1), round(PANEL[1] + min(PH, y1), 1)]})
 
     events.sort(key=lambda e: e["t"])
-    return Plan(article, script, narr, pages, targets, camera, spots, clicks, charts, texts, events, focus, credits)
+    return Plan(article, script, narr, pages, targets, camera, spots, clicks, charts, texts, subtitles, events, focus, credits)
 
 
 def stage_bg() -> np.ndarray:
-    """背景: 濃い紺の単色に、上の方だけごく弱い光（線や帯は描かない）"""
-    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
-    d = np.sqrt(((xx - W * 0.5) / (W * 0.9)) ** 2 + ((yy - 300) / 900) ** 2)
-    glow = np.clip(1 - d, 0, 1) ** 2 * 14
-    base = np.array(STAGE, dtype=np.float32)[None, None, :] + glow[..., None] * np.array([0.6, 0.8, 1.2], dtype=np.float32)
+    """背景: 明るいほぼ白の単色（上ほどわずかに明るい）と、画面のカードのやわらかい影（線や帯は描かない）"""
+    yy = np.mgrid[0:H, 0:W][0].astype(np.float32)
+    base = np.array(STAGE, dtype=np.float32)[None, None, :] + (4 * (1 - yy / H))[..., None]  # 上ほどわずかに明るい
+    shadow = _mask_card_shadow()[..., None] * 0.16
+    base = base * (1 - shadow) + np.array(INK, dtype=np.float32) * shadow
     return np.clip(base, 0, 255).astype(np.uint8)
+
+
+def _mask_card_shadow() -> np.ndarray:
+    """画面のカードの下に落ちるやわらかい影の濃さ（0〜1）。ぼかしたマスクだけ"""
+    q = 4
+    m = Image.new("L", (W // q, H // q), 0)
+    ImageDraw.Draw(m).rounded_rectangle(((PANEL[0] + 6) // q, (PANEL[1] + 22) // q, (PANEL[2] - 6) // q, (PANEL[3] + 26) // q), radius=RADIUS // q, fill=255)
+    m = m.filter(ImageFilter.GaussianBlur(9)).resize((W, H), Image.BILINEAR)
+    return np.asarray(m).astype(np.float32) / 255
 
 
 # --------------------------------------------------------------------------- #
@@ -1305,8 +1538,8 @@ def stage_bg() -> np.ndarray:
 # --------------------------------------------------------------------------- #
 
 
-def blend(dst: np.ndarray, rgba: np.ndarray, x: int, y: int, alpha: float = 1.0) -> None:
-    """dst（RGB）に rgba を (x, y) へ重ねる。はみ出す所は切る"""
+def blend(dst: np.ndarray, rgba: np.ndarray, x: int, y: int, alpha: float = 1.0, col_alpha: np.ndarray | None = None) -> None:
+    """dst（RGB）に rgba を (x, y) へ重ねる。はみ出す所は切る。col_alpha は横の位置ごとの不透明度（左から現れる動き）"""
     h, w = rgba.shape[:2]
     x0, y0, x1, y1 = max(0, x), max(0, y), min(dst.shape[1], x + w), min(dst.shape[0], y + h)
     if x0 >= x1 or y0 >= y1 or alpha <= 0:
@@ -1315,6 +1548,8 @@ def blend(dst: np.ndarray, rgba: np.ndarray, x: int, y: int, alpha: float = 1.0)
     a = src[..., 3:4].astype(np.uint16)
     if alpha < 1:
         a = (a * int(alpha * 256)) >> 8
+    if col_alpha is not None:
+        a = (a * (col_alpha[x0 - x : x1 - x] * 256).astype(np.uint16)[None, :, None]) >> 8
     roi = dst[y0:y1, x0:x1]
     roi[:] = ((src[..., :3].astype(np.uint16) * a + roi.astype(np.uint16) * (255 - a)) // 255).astype(np.uint8)
 
@@ -1341,6 +1576,37 @@ def _mask_spot(rect: tuple, pad: float = 18) -> np.ndarray:
     return np.asarray(img.filter(ImageFilter.GaussianBlur(5)).resize((PW, PH), Image.BILINEAR))
 
 
+SCRIM_H = 280
+EDGE_FADE = 64  # 画面の左右の端をなじませる幅
+
+
+def _mask_scrim() -> tuple[np.ndarray, np.ndarray]:
+    """字幕の下: (ぼかしの混ぜ具合, 暗さ)。画面の下 SCRIM_H px だけ・下ほど強い（0〜1）。
+    後ろの画面をすりガラスのようにぼかしてから暗くするので、箱を描かなくても字幕が読める"""
+    y = np.linspace(0, 1, SCRIM_H, dtype=np.float32)
+    return np.clip(y * 2.2, 0, 1)[:, None], (np.clip(y * 1.25, 0, 1) ** 1.3 * 0.80)[:, None]
+
+
+def _highlight_select(img: np.ndarray, rect: tuple, k: float) -> None:
+    """画面の文字に「選択」の青を付ける（左から k の割合まで）。掛け算なので文字は黒いまま・地だけ青くなる"""
+    pad = 5
+    x0, y0, x1, y1 = rect[0] - pad, rect[1] - pad * 0.6, rect[2] + pad, rect[3] + pad * 0.6
+    x1 = x0 + (x1 - x0) * k
+    xa, ya, xb, yb = max(0, int(x0)), max(0, int(y0)), min(img.shape[1], int(x1)), min(img.shape[0], int(y1))
+    if xa >= xb or ya >= yb:
+        return
+    roi = img[ya:yb, xa:xb].astype(np.uint16)
+    img[ya:yb, xa:xb] = ((roi * np.array(SELECT, dtype=np.uint16)) >> 8).astype(np.uint8)
+
+
+def _highlight_marker(frame: np.ndarray, x: int, y: int, w: int, h: int, k: float) -> None:
+    """キーワードの下半分を走る薄い青のマーカー（左から k の割合まで）"""
+    xb = x + int(w * k)
+    if xb <= x:
+        return
+    frame[y : y + h, x:xb] = MARKER
+
+
 def _cursor_sprite() -> np.ndarray:
     """カーソル（白い矢印・黒いふち・やわらかい影）。塗りの多角形を2枚重ねる"""
     s = 4
@@ -1355,10 +1621,10 @@ def _cursor_sprite() -> np.ndarray:
     cx, cy = 4 + 34 / 3, 4 + 30
     inner = [((cx + (x + 4 - cx) * 0.80) * s, (cy + (y + 4 - cy) * 0.80) * s + 2 * s) for x, y in pts]
     d.polygon(inner, fill=(255, 255, 255, 255))
-    return np.asarray(big.resize((60, 76), Image.LANCZOS))
+    return np.asarray(big.resize((50, 63), Image.LANCZOS))
 
 
-def data_bars(card: Image.Image, rows: list[tuple[int, int, int, tuple]], height: int = 64) -> None:
+def data_bars(card: Image.Image, rows: list[tuple[int, int, int, tuple]], height: int = 56) -> None:
     """比較グラフの棒（データの棒だけ。飾りではない）: [(x, y, 長さ, 色)]"""
     d = ImageDraw.Draw(card)
     for x, y, length, color in rows:
@@ -1372,6 +1638,8 @@ class Renderer:
         self.stage = stage_bg()
         self.corner = _mask_panel_corners()
         self.cursor = _cursor_sprite()
+        self.scrim = _mask_scrim()
+        self.edge = (np.linspace(0, 1, EDGE_FADE, dtype=np.float32) ** 1.8) * 0.95  # 端ほど地の色
         self.levels = [self._pyramid(p.img) for p in plan.pages]
         self.bgs = [p.bg() for p in plan.pages]
         self.chart_cards = [self._chart_base(c) for c in plan.charts]
@@ -1409,20 +1677,19 @@ class Renderer:
         inv = (1 / k, 0, -tx / k, 0, 1 / k, -ty / k)  # pragma: no cover
         return np.asarray(Image.fromarray(img).transform((PW, PH), Image.AFFINE, inv, resample=Image.BILINEAR, fillcolor=self.bgs[cam.page]))
 
-    BAR_H = 64
+    BAR_H = 56
 
     def _chart_base(self, c: Chart) -> dict:
         """比較グラフのカード（白地・名前2つ・倍率）。棒は毎フレーム長さを変えて描く"""
         card = np.full((PH, PW, 3), 255, dtype=np.uint8)
-        ink = (24, 28, 36)
         labels = []
-        y = 340
+        y = 250
         for name in (c.base, c.subject):
-            spr = render_text([(name, "bold", ink)], 64)
-            labels.append((name, spr, 84, y))
-            y += 280
+            spr = render_text([(name, "bold", INK)], 56)
+            labels.append((name, spr, 110, y))
+            y += 250
         # 倍率は記事の表記どおり（台本の compare.ratio）をそのまま。途中の数字（カウントアップ）は描かない
-        value = render_text([(c.ratio, "black", ACCENT)], 170)
+        value = render_text([(c.ratio, "black", ACCENT)], 150)
         return {"card": card, "labels": labels, "chart": c, "value": value}
 
     def chart_frame(self, idx: int, t: float) -> tuple[np.ndarray, list]:
@@ -1430,23 +1697,22 @@ class Renderer:
         c: Chart = info["chart"]
         card = Image.fromarray(info["card"].copy())
         ratio = float(re.sub(r"[^\d.]", "", gate.norm(c.ratio)) or 1)
-        maxlen = PW - 84 - 84
+        maxlen = PW - 110 - 110
         grow = ease_out((t - c.t0 - 0.2) / 0.9)
         base_len = max(self.BAR_H, int(maxlen / max(ratio, 1)))
         rows = []
         for k, (name, spr, x, y) in enumerate(info["labels"]):
-            bar_y = y + spr.shape[0] + 28
+            bar_y = y + spr.shape[0] + 26
             length = int(base_len * min(1, max(0.0, (t - c.t0) / 0.25))) if k == 0 else int(self.BAR_H + (maxlen - self.BAR_H) * grow)
-            rows.append((x, bar_y, length, (208, 213, 221) if k == 0 else ACCENT))
+            rows.append((x, bar_y, length, (212, 219, 230) if k == 0 else BLUE))
         data_bars(card, rows, self.BAR_H)
         arr = np.asarray(card).copy()
         for name, spr, x, y in info["labels"]:
             blend(arr, spr, x, y)
-        # 倍率（長い棒の右上）。棒が伸び切る少し前にふわっと出す
         spr = info["value"]
         _, lab, _, sy = info["labels"][1]
         k = ease_out((t - c.t0 - 0.55) / 0.3)
-        blend(arr, spr, 84 + maxlen - spr.shape[1], sy + lab.shape[0] - spr.shape[0] + int((1 - k) * 20), k)
+        blend(arr, spr, 110 + maxlen - spr.shape[1], sy + lab.shape[0] - spr.shape[0] + int((1 - k) * 20), k)
         return arr, []
 
     def cursor_at(self, t: float, cam: Cam) -> tuple[float, float, float, float] | None:
@@ -1476,7 +1742,6 @@ class Renderer:
         alpha = 1.0
         first_t = clicks[0].t - 0.6
         alpha *= min(1.0, max(0.0, (t - first_t) / 0.15))
-        # 次の場面（カメラの切り替え・締め）で消す
         for m in self.plan.camera.moves:
             if m.cut and m.t > clicks[-1].t and t > m.t - 0.15:
                 alpha = 0.0
@@ -1489,7 +1754,7 @@ class Renderer:
     def panel(self, t: float) -> np.ndarray:
         cam = self.plan.camera.at(t)
         img = self.motion_blurred(t, cam)
-        # 注目（周りを少し暗く）
+        # 注目（周りを少し暗く）＋ target の文字に選択の青
         for sp in self.plan.spots:
             if sp.page != cam.page or not (sp.t0 <= t <= sp.t1 + 0.25):
                 continue
@@ -1499,16 +1764,20 @@ class Renderer:
             x0, y0 = cam.map(sp.rect[0], sp.rect[1])
             x1, y1 = cam.map(sp.rect[2], sp.rect[3])
             mask = _mask_spot((x0, y0, x1, y1))
-            dim = 0.30 * a
+            dim = 0.10 * a
             f = (255 - dim * (255 - mask.astype(np.float32))).astype(np.uint16)
             img = ((img.astype(np.uint16) * f[..., None]) >> 8).astype(np.uint8)
+            if sp.sel and t >= sp.sel_t and t <= sp.t1:
+                sx0, sy0 = cam.map(sp.sel[0], sp.sel[1])
+                sx1, sy1 = cam.map(sp.sel[2], sp.sel[3])
+                _highlight_select(img, (sx0, sy0, sx1, sy1), ease_out((t - sp.sel_t) / 0.35))
         # カーソルとクリックの波紋
         cur = self.cursor_at(t, cam)
         if cur:
             x, y, alpha, since = cur
             if 0 <= since < 0.45:
                 k = since / 0.45
-                self._ripple(img, x, y, 14 + 46 * ease_out(k), 0.45 * (1 - k))
+                self._ripple(img, x, y, 14 + 40 * ease_out(k), 0.40 * (1 - k))
             spr = self.cursor
             if 0 <= since < 0.16:
                 sc = 1 - 0.18 * math.sin(math.pi * since / 0.16)
@@ -1522,7 +1791,31 @@ class Renderer:
                 a = min(1.0, (t - ch.t0) / 0.25) * min(1.0, max(0.0, (ch.t1 + 0.2 - t) / 0.2))
                 card, _ = self.chart_frame(k, t)
                 img = ((img.astype(np.uint16) * int((1 - a) * 256) + card.astype(np.uint16) * int(a * 256)) >> 8).astype(np.uint8)
+        # 左右の端はページの地の色へなじませる（行の途中で切れた語が、ぶつっと切れて見えないように）
+        bg = np.array(self.bgs[cam.page], dtype=np.float32)
+        e = EDGE_FADE
+        for sl, ramp in ((np.s_[:, :e], self.edge[::-1]), (np.s_[:, PW - e :], self.edge)):
+            part = img[sl].astype(np.float32)
+            img[sl] = (part * (1 - ramp[None, :, None]) + bg * ramp[None, :, None]).astype(np.uint8)
+        # 字幕の下のぼかした影
+        sa = max((self._fade(t, s.t0, s.t1, 0.22) for s in self.plan.subtitles), default=0.0)
+        if sa > 0:
+            mix, dark = self.scrim
+            h = SCRIM_H
+            roi = img[PH - h :].astype(np.float32)
+            if cv2 is not None:
+                small = cv2.resize(img[PH - h :], (PW // 4, h // 4), interpolation=cv2.INTER_AREA)
+                soft = cv2.resize(cv2.GaussianBlur(small, (0, 0), 3), (PW, h), interpolation=cv2.INTER_LINEAR).astype(np.float32)
+                roi = roi * (1 - mix[..., None] * sa) + soft * (mix[..., None] * sa)
+            a = dark * sa
+            img[PH - h :] = (roi * (1 - a[..., None]) + np.array(INK, dtype=np.float32) * a[..., None]).astype(np.uint8)
         return img
+
+    @staticmethod
+    def _fade(t: float, t0: float, t1: float, d: float) -> float:
+        if t < t0 or t > t1 + d:
+            return 0.0
+        return min(1.0, (t - t0) / d) * min(1.0, max(0.0, (t1 + d - t) / d))
 
     def motion_blurred(self, t: float, cam: Cam) -> np.ndarray:
         """速く動く所だけモーションブラー（シャッター 180度相当）。
@@ -1535,7 +1828,7 @@ class Renderer:
         zoom_px = abs(math.log(c2.s / c1.s)) * PH * 0.5
         length = math.hypot(dx, dy)
         if zoom_px > 4 and zoom_px > length:
-            n = int(min(7, 2 + zoom_px // 4))
+            n = int(min(6, 2 + zoom_px // 4))
             acc = np.zeros(img.shape, dtype=np.uint32)
             for k in range(n):
                 acc += self.warp(self.plan.camera.at(t + (k / (n - 1) - 0.5) / 60))
@@ -1561,7 +1854,7 @@ class Renderer:
         dist = np.sqrt((xx + x0 - x) ** 2 + (yy + y0 - y) ** 2)
         a = np.clip(r - dist, 0, 1.5) / 1.5 * alpha * 255
         spr = np.zeros((2 * R, 2 * R, 4), dtype=np.uint8)
-        spr[..., :3] = ACCENT
+        spr[..., :3] = BLUE
         spr[..., 3] = a.astype(np.uint8)
         blend(img, spr, x0, y0)
 
@@ -1569,7 +1862,6 @@ class Renderer:
         t = i / FPS
         frame = self.stage.copy()
         panel = self.panel(t)
-        # 角を丸くして貼る（角の4か所だけ背景と混ぜる）
         r = RADIUS
         for (sy, sx, flip) in ((slice(0, r), slice(0, r), (False, False)), (slice(0, r), slice(PW - r, PW), (False, True)), (slice(PH - r, PH), slice(0, r), (True, False)), (slice(PH - r, PH), slice(PW - r, PW), (True, True))):
             a = self.corner
@@ -1580,16 +1872,35 @@ class Renderer:
             panel[sy, sx] = (panel[sy, sx] * a[..., None] + self.panel_stage[sy, sx] * (1 - a[..., None])).astype(np.uint8)
         frame[PANEL[1] : PANEL[3], PANEL[0] : PANEL[2]] = panel
         for item in self.plan.texts:
-            if not (item.t0 - 1e-6 <= t < item.t1 + 0.18):
+            if not (item.t0 - 1e-6 <= t < item.t1 + 0.2):
                 continue
             age = t - item.t0 - item.delay
             if age < 0:
                 continue
-            k_in = ease_out(age / 0.32) if item.enter else 1.0
-            k_out = 1 - ease((t - item.t1) / 0.18) if t > item.t1 else 1.0
-            alpha = k_in * k_out
-            dy = int((1 - k_in) * 26 - (1 - k_out) * 10)
-            blend(frame, item.sprite, item.x, item.y + dy, alpha)
+            k_out = 1 - ease((t - item.t1) / 0.2) if t > item.t1 else 1.0
+            h, w = item.sprite.shape[:2]
+            dy_out = -int((1 - k_out) * 14)
+            if item.anim == "none":
+                blend(frame, item.sprite, item.x, item.y + dy_out, k_out)
+            elif item.anim == "wipe":
+                # 左から現れる（やわらかい端）＋少し上がる。マーカーは少し遅れて左から走る
+                k = ease_out(age / 0.5)
+                if item.marker:
+                    mk = ease((age - 0.22) / 0.45)
+                    mh = int(h * 0.34)
+                    if mk > 0 and k_out > 0.6:
+                        _highlight_marker(frame, item.x - 6, item.y + h - mh - int(h * 0.06) + dy_out, w + 12, mh, mk)
+                edge = 60.0
+                col = np.clip((k * (w + edge) - np.arange(w, dtype=np.float32)) / edge, 0, 1)
+                blend(frame, item.sprite, item.x, item.y + int((1 - k) * 16) + dy_out, k_out, col_alpha=col)
+            else:  # rise: 下から上がってくる（下は見えない所から）
+                k = ease_out(age / 0.38)
+                blend(frame, item.sprite, item.x, item.y + int((1 - k) * 22) + dy_out, k * k_out)
+        for sub in self.plan.subtitles:
+            a = self._fade(t, sub.t0, sub.t1, 0.18)
+            if a > 0:
+                k = ease_out((t - sub.t0) / 0.3)
+                blend(frame, sub.sprite, sub.x, sub.y + int((1 - k) * 10), a)
         return frame
 
 
@@ -1640,29 +1951,49 @@ def encode(renderer: Renderer, audio: Path, out: Path, fps: int = FPS, workers: 
 # 7. 記録・見比べ用の画像・まとめ
 # --------------------------------------------------------------------------- #
 
+SAFE_V3 = (40, 30, W - 40, H - 30)
+
 
 def text_records(plan: Plan) -> list[dict]:
     out = []
-    for item in plan.texts:
-        bbox = item.bbox()
-        box = list(TEXT_ZONE) if item.role in ("hook", "keyword", "sub", "conclusion") else [0, 0, W, H]
-        if item.role in ("source", "credit"):
-            box = [TEXT_ZONE[0], SOURCE_Y - 4, TEXT_ZONE[2], PANEL[1]]
-        size = {"hook": 70, "keyword": 88, "sub": 34, "conclusion": 70, "source": 22, "credit": 20}.get(item.role, 22)
-        color = ACCENT if item.role == "keyword" else (SUBTLE if item.role in ("sub", "source", "credit") else WHITE)
+    rows = [(item.role, item.text, item.sprite, item.bbox(), item.t0, item.t1) for item in plan.texts]
+    for sub in plan.subtitles:
+        spr = sub.sprite
+        ys, xs = np.nonzero(spr[..., 3] > 120)
+        bbox = [float(sub.x + xs.min()), float(sub.y + ys.min()), float(sub.x + xs.max() + 1), float(sub.y + ys.max() + 1)]
+        rows.append(("subtitle", sub.text, spr, bbox, sub.t0, sub.t1))
+    for role, text, spr, bbox, t0, t1 in rows:
+        if role in ("hook", "keyword", "sub", "conclusion", "eyebrow"):
+            box = list(COL)
+        elif role in ("source", "credit"):
+            box = [COL[0], SOURCE_Y - 60, PANEL[0] - 8, H - 20]
+        elif role == "subtitle":
+            box = list(PANEL)
+        else:
+            box = [0, 0, PANEL[0], PANEL[1] + 40]
+        size = {"hook": 46, "keyword": 72, "sub": 30, "conclusion": 46, "eyebrow": 20, "source": 18, "credit": 16, "subtitle": 30, "logo": 24}.get(role, 18)
+        color = {"sub": MUTED, "source": SOFT, "credit": SOFT, "eyebrow": BLUE}.get(role, INK)
+        if role == "subtitle":  # 白い字 ↔ 字幕の影（文字の中ほどの高さ・白いページの上で）
+            k = min(1.0, max(0.0, ((bbox[1] + bbox[3]) / 2 - (PANEL[3] - SCRIM_H)) / SCRIM_H))
+            a = min(1.0, k * 1.25) ** 1.3 * 0.80
+            bg = tuple(int(255 * (1 - a) + c * a) for c in INK)
+            contrast = gate.contrast(WHITE, bg)
+        else:
+            contrast = min(gate.contrast(color, STAGE), gate.contrast(ACCENT, STAGE) if role == "keyword" else 99)
+        face = "logo" if role == "logo" else ("black" if role in ("hook", "keyword", "conclusion") else "bold")
         out.append(
             {
-                "role": item.role,
-                "text": item.text,
+                "role": role,
+                "text": text,
                 "bbox": [round(v, 1) for v in bbox],
                 "box": box,
-                "size": int(item.sprite.shape[0] * 0.75),
+                "size": int(spr.shape[0] * 0.75) if role != "subtitle" else int((bbox[3] - bbox[1]) * 0.75),
                 "min_size": size * 3 // 4,
-                "contrast": round(min(gate.contrast(color, STAGE), gate.contrast(WHITE, STAGE)), 2),
-                "missing": gate.missing_glyphs(item.text, shorts.font("black" if item.role in ("hook", "keyword", "conclusion") else "bold", 40)),
+                "contrast": round(contrast, 2),
+                "missing": gate.missing_glyphs(text, shorts.font(face, 40)),
                 "safe": True,
-                "t0": round(item.t0, 3),
-                "t1": round(item.t1, 3),
+                "t0": round(t0, 3),
+                "t1": round(t1, 3),
             }
         )
     return out
@@ -1715,36 +2046,35 @@ def make_meta(a: dict, script: dict, voice: dict, pages: list[Page]) -> dict:
     return {"title": title, "description": "\n".join(lines), "hashtags": tags, "url": url}
 
 
-def contact_sheet(mp4: Path, plan: Plan, out: Path) -> None:
-    """場面が変わる所の直後を12コマ並べる（実際の mp4 から取り出す）"""
-    marks = [(0.0, "0.0s 最初の画面")]
-    for e in plan.events:
-        if e["kind"] in ("move", "cut", "chart", "pop"):
-            marks.append((e["t"] + (0.75 if e["kind"] in ("move", "cut") else 0.6), f"{e['t']:.1f}s {e['note'] or e['kind']}"))
-    marks.append((plan.narr.total - 0.4, f"{plan.narr.total - 0.4:.1f}s 最後（クレジット）"))
-    marks = sorted({round(t, 2): (t, lab) for t, lab in marks}.values())[:14]
-    tw, th = 216, 384
-    cols = 7
+def contact_sheet(mp4: Path, plan: Plan, out: Path, every: float = 2.0) -> None:
+    """2秒ごとのコマを並べる（実際の mp4 から取り出す）。動画を再生しなくても流れが見える"""
+    total = plan.narr.total
+    marks = [round(k * every, 2) for k in range(int(total / every) + 1)]
+    if total - 0.4 - marks[-1] > 0.6:
+        marks.append(round(total - 0.4, 2))
+    tw, th = 480, 270
+    cols = 4
     rows = math.ceil(len(marks) / cols)
-    sheet = Image.new("RGB", (cols * (tw + 10) + 10, rows * (th + 46) + 10), (236, 239, 244))
+    sheet = Image.new("RGB", (cols * (tw + 12) + 12, rows * (th + 40) + 12), (226, 230, 237))
     d = ImageDraw.Draw(sheet)
-    f = shorts.font("bold", 17)
-    for i, (t, label) in enumerate(marks):
+    f = shorts.font("bold", 20)
+    for i, t in enumerate(marks):
         raw = subprocess.run(
-            [shorts.ffmpeg_bin(), "-loglevel", "error", "-ss", f"{min(t, plan.narr.total - 0.05):.2f}", "-i", str(mp4), "-frames:v", "1", "-vf", f"scale={tw}:{th}", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
+            [shorts.ffmpeg_bin(), "-loglevel", "error", "-ss", f"{min(t, total - 0.05):.2f}", "-i", str(mp4), "-frames:v", "1", "-vf", f"scale={tw}:{th}:flags=area", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
             capture_output=True, check=True,
         ).stdout  # fmt: skip
         frame = Image.frombytes("RGB", (tw, th), raw[: tw * th * 3])
-        x, y = 10 + (i % cols) * (tw + 10), 10 + (i // cols) * (th + 46)
+        x, y = 12 + (i % cols) * (tw + 12), 12 + (i // cols) * (th + 40)
         sheet.paste(frame, (x, y))
-        d.text((x, y + th + 6), label[:16], font=f, fill=(20, 26, 40))
+        notes = [e["note"] for e in plan.events if t - every < e["t"] <= t and e["note"]]
+        d.text((x, y + th + 6), f"{t:.1f}s  {(notes[-1] if notes else '')[:18]}", font=f, fill=(20, 26, 40))
     sheet.save(out)
 
 
 def load_script(slug: str, article: dict, pages: list[Page], out_dir: Path, reuse: bool) -> dict:
     path = out_dir / f"{slug}.v3script.json"
     if reuse and path.exists():
-        return json.loads(path.read_text("utf-8"))
+        return latin_names(json.loads(path.read_text("utf-8")))
     script, model = write_script(article, pages)
     script["_model"] = model
     path.write_text(json.dumps(script, ensure_ascii=False, indent=2), "utf-8")
@@ -1788,7 +2118,7 @@ def make_video(
                 raise RuntimeError("公式ページを撮れませんでした")
         report["pages"] = [{"url": p.url, "host": p.host, "title": p.title, "seconds": p.seconds, "size": [p.width, p.height], "blocks": len(p.blocks)} for p in pages]
         t = time.time()
-        script = script or load_script(slug, a, pages, out_dir, reuse)
+        script = latin_names(script or load_script(slug, a, pages, out_dir, reuse))
         timer.mark("script", t)
         t = time.time()
         if warm:
@@ -1827,11 +2157,14 @@ def make_video(
                 "credits_shown": plan.credits,
                 "voice": plan.narr.voice,
                 "image_credit": "",
-                "safe": list(gate.SAFE),
+                "safe": list(SAFE_V3),
+                "frame": [W, H],
+                "layout": LAYOUT,
+                "subtitles": [{"t0": round(x.t0, 3), "t1": round(x.t1, 3), "text": x.text} for x in plan.subtitles],
                 "fps": fps,
                 "events": plan.events,
                 "focus": plan.focus,
-                "fonts": [FONT_FAMILY],
+                "fonts": [FONT_FAMILY, LOGO_FAMILY],
                 "rendered_strings": sorted(set(RENDERED)),
                 "charts": [{"t0": round(c.t0, 3), "t1": round(c.t1, 3), "base": c.base, "subject": c.subject, "ratio": c.ratio} for c in plan.charts],
                 "panel": list(PANEL),
