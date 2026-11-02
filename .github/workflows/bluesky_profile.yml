@@ -1,0 +1,28 @@
+name: Bluesky profile
+
+# Bluesky のプロフィール（表示名・自己紹介・ヘッダー画像）を設定する（scripts/bluesky_profile.py）。手動実行だけ
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "今のプロフィールと変更内容の表示だけ"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  profile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Update profile
+        env:
+          BLUESKY_HANDLE: ${{ vars.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+        run: python scripts/bluesky_profile.py ${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}
