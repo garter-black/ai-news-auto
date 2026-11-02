@@ -4134,6 +4134,14 @@
       "skipped": true,
       "url": "https://www.kantei.go.jp/jp/105/statement/2026/1026kaiken.html"
     },
+    "1e833fbe344a0242": {
+      "at": "2026-11-02T01:41:16.530957+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "sakana-ai-symposium-2026-sawara",
+      "url": "https://sakana.ai/symposium-2026/"
+    },
     "1eabbb64216942938ae7fb8532595e34945bc67b": {
       "at": "2026-10-28T19:11:59.737412+00:00",
       "kind": "trend",
@@ -7992,6 +8000,14 @@
       "skipped": true,
       "url": "https://aws.amazon.com/blogs/machine-learning/multi-turn-reinforcement-learning-on-amazon-sagemaker-ai-a-hands-on-guide/"
     },
+    "954ac10d46d53a6b": {
+      "at": "2026-11-02T01:41:34.403589+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "science",
+      "slug": "riken-utokyo-3d-live-cell-microscope",
+      "url": "https://www.riken.jp/press/2026/20261102_1/index.html"
+    },
     "95acebd2bc110fc1": {
       "at": "2026-10-28T04:22:50.223428+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -11375,118 +11391,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:42:27.120829+00:00",
-      "attempt": 1,
-      "id": "cf411a29cd6486f0",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1557字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 127.1,
-        "avg_sentence": 52.0,
-        "long_share": 0.273,
-        "max_paragraph": 192,
-        "paragraphs": 9,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "maff",
-      "title": "11月は「和食月間」、11月24日は「和食の日」！"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:42:36.842544+00:00",
-      "attempt": 2,
-      "id": "cf411a29cd6486f0",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 188.6,
-        "avg_sentence": 67.9,
-        "long_share": 0.76,
-        "max_paragraph": 244,
-        "paragraphs": 9,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "maff",
-      "title": "11月は「和食月間」、11月24日は「和食の日」！"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:42:43.666579+00:00",
-      "attempt": 1,
-      "id": "f1b9a13f205742c1",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（383字 / 基準 400字以上）",
-        "title の長さが不適切（73字 / 18〜64字）"
-      ],
-      "readability": {
-        "avg_paragraph": 148.1,
-        "avg_sentence": 59.2,
-        "long_share": 0.4,
-        "max_paragraph": 213,
-        "paragraphs": 8,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "nintendo-topics",
-      "title": "ニンテンドーeショップ新作ソフト情報 10/30（金）号。"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:42:49.531899+00:00",
-      "attempt": 2,
-      "id": "f1b9a13f205742c1",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1623字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（296字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 124.6,
-        "avg_sentence": 59.0,
-        "long_share": 0.421,
-        "max_paragraph": 196,
-        "paragraphs": 9,
-        "sentences": 19
-      },
-      "score": null,
-      "source": "nintendo-topics",
-      "title": "ニンテンドーeショップ新作ソフト情報 10/30（金）号。"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:42:59.914406+00:00",
-      "attempt": 1,
-      "id": "2d80bd688a0dc98f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 58.7字・60字超の文が 37% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 58.7,
-        "avg_sentence": 58.7,
-        "long_share": 0.37,
-        "max_paragraph": 101,
-        "paragraphs": 27,
-        "sentences": 27
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "鉱工業生産26年9月－熊本地震や台風・豪雨の影響を受けながらも、7-9月期は小幅な増産を確保"
-    },
     {
       "accepted": true,
       "at": "2026-10-30T02:43:04.331655+00:00",
@@ -18116,6 +18020,114 @@
       "score": 100,
       "source": "cyberagent",
       "title": "アバターSNS「ピグパーティ」、TVアニメ『桃源暗鬼』とのコラボレーションを 11月2日より開催"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T01:41:04.342377+00:00",
+      "attempt": 1,
+      "id": "1e833fbe344a0242",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "「2027年12月に学習の準備を進めてスタートし」→元記事では「現在は学習の準備を進めており、この12月にSawara Small（仮称）の事前学習を始めます」となっており、学習開始は「12月」（2026年想定）であり「2027年12月」ではないため矛盾している。"
+      ],
+      "readability": {
+        "avg_paragraph": 108.1,
+        "avg_sentence": 60.1,
+        "long_share": 0.556,
+        "max_paragraph": 216,
+        "paragraphs": 15,
+        "sentences": 27
+      },
+      "score": 90,
+      "source": "sakana-ai",
+      "title": "【開催レポート】Sakana AIシンポジウム：Jürgen Schmidhuberが語るAIのこれまでとこれから、日本から挑む言語モデル・世界モデル・Phys"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T01:41:12.655970+00:00",
+      "attempt": 2,
+      "id": "1e833fbe344a0242",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 60.6字・60字超の文が 46% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 112.6字・最長 222字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 112.6,
+        "avg_sentence": 60.6,
+        "long_share": 0.462,
+        "max_paragraph": 222,
+        "paragraphs": 14,
+        "sentences": 26
+      },
+      "score": 100,
+      "source": "sakana-ai",
+      "title": "【開催レポート】Sakana AIシンポジウム：Jürgen Schmidhuberが語るAIのこれまでとこれから、日本から挑む言語モデル・世界モデル・Phys"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T01:41:16.530598+00:00",
+      "attempt": 0,
+      "id": "1e833fbe344a0242",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 63.6,
+        "avg_sentence": 35.0,
+        "long_share": 0.0,
+        "max_paragraph": 110,
+        "paragraphs": 27,
+        "sentences": 49
+      },
+      "score": 100,
+      "source": "sakana-ai",
+      "title": "【開催レポート】Sakana AIシンポジウム：Jürgen Schmidhuberが語るAIのこれまでとこれから、日本から挑む言語モデル・世界モデル・Phys"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T01:41:31.558031+00:00",
+      "attempt": 1,
+      "id": "954ac10d46d53a6b",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 56.3字・60字超の文が 33% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 144.9字・最長 203字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 144.9,
+        "avg_sentence": 56.3,
+        "long_share": 0.333,
+        "max_paragraph": 203,
+        "paragraphs": 7,
+        "sentences": 18
+      },
+      "score": 100,
+      "source": "riken",
+      "title": "生きた細胞内の成分を三次元動画で捉える顕微鏡を開発"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T01:41:34.403285+00:00",
+      "attempt": 0,
+      "id": "954ac10d46d53a6b",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 70.3,
+        "avg_sentence": 29.8,
+        "long_share": 0.0,
+        "max_paragraph": 96,
+        "paragraphs": 14,
+        "sentences": 33
+      },
+      "score": 100,
+      "source": "riken",
+      "title": "生きた細胞内の成分を三次元動画で捉える顕微鏡を開発"
     }
   ],
   "short_text_retry": {}
