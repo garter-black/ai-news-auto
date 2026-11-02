@@ -198,7 +198,7 @@
     },
     "openai-grid-protectors-program": {
       "at": "2026-11-02T20:45:03+00:00",
-      "status": "ready",
+      "status": "posted",
       "tries": 2,
       "textAt": "2026-11-02T15:11:47+00:00",
       "versions": {
@@ -278,7 +278,12 @@
         "short": "https://ai-tech-express.jp/video/openai-grid-protectors-program-e14b939954.mp4",
         "poster": "https://ai-tech-express.jp/video/openai-grid-protectors-program-2737691465.jpg"
       },
-      "embedded": true
+      "embedded": true,
+      "variant": "short",
+      "body": "AIの電力対策、あなたに関係ある？\n公式ページの画面を見ながら、36秒で解説しました。\n\n要約すると、OpenAIがこれから建てるAI施設で電力逼迫時に使用量を減らすGrid Protectors Programを発表しました。第1弾の米ジョージア州では最大1,000MW、約70万世帯分の調整で合意。使えるサービスではなく方針の発表で、各地の取り決めは決まり次第公表されます。\n\n詳しくはこちら👇\nhttps://ai-tech-express.jp/articles/openai-grid-protectors-program?utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=short\n音声：VOICEVOX:九州そら",
+      "link": "https://ai-tech-express.jp/articles/openai-grid-protectors-program?utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=short",
+      "bufferId": "6ae920169e9bda3b49d6d405",
+      "postedAt": "2026-11-02T23:43:29+00:00"
     },
     "google-ai-news-october-2026": {
       "at": "2026-11-02T21:27:03+00:00",
