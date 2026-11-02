@@ -12460,6 +12460,16 @@
       "slug": "nissay-it-ai-driven-development-aws",
       "url": "https://aws.amazon.com/jp/blogs/news/ai-dlc-unicorn-gym-nissay-it-202611/"
     },
+    "f968f27e7c1fba7b": {
+      "at": "2026-11-02T22:43:34.920732+00:00",
+      "breaking": true,
+      "major": true,
+      "model": "claude:sonnet",
+      "score": 100,
+      "section": "ai",
+      "slug": "affinity-for-ipad-canva-release",
+      "url": "https://news.mynavi.jp/article/20261103-5246117/"
+    },
     "f9bcba43eff0987b": {
       "at": "2026-10-30T03:01:57.220825+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12688,28 +12698,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T17:17:22.949077+00:00",
-      "attempt": 0,
-      "id": "c350724d4712c977",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 47.9字・60字超の文が 19% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 85.1,
-        "avg_sentence": 47.9,
-        "long_share": 0.188,
-        "max_paragraph": 140,
-        "paragraphs": 27,
-        "sentences": 48
-      },
-      "score": 100,
-      "source": "google-blog-all",
-      "title": "We’ve received our first response from the Project Suncatcher prototype satellit"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T17:41:13.604823+00:00",
@@ -19136,6 +19124,26 @@
       "score": 100,
       "source": "vercel-changelog",
       "title": "LongCat 2.5 now available on AI Gateway"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T22:43:34.915143+00:00",
+      "attempt": 1,
+      "id": "f968f27e7c1fba7b",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 63.7,
+        "avg_sentence": 33.8,
+        "long_share": 0.062,
+        "max_paragraph": 131,
+        "paragraphs": 34,
+        "sentences": 64
+      },
+      "score": 100,
+      "source": "radar-news.mynavi.jp",
+      "title": "「Affinity for iPad」公開 スケッチから写真編集・ページ制作まで1つのアプリで"
     }
   ],
   "short_text_retry": {},
