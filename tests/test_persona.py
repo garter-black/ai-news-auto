@@ -182,25 +182,28 @@ class CrosspostPersonaTest(unittest.TestCase):
 class PlainStyleTest(unittest.TestCase):
     def test_shared_tone_reaches_article_and_sns_prompts(self):
         self.assertIn(persona.PLAIN_STYLE, m.SYSTEM_INSTRUCTION_BASE)
-        self.assertIn("ざっくり言うと", persona.WORK_MONEY_FIELD)
+        self.assertNotIn("ざっくり言うと", persona.WORK_MONEY_FIELD + persona.PLAIN_STYLE + persona.SNS_BLOCK)
+        self.assertIn("要約すると", persona.PLAIN_STYLE)
         self.assertIn("硬い言い回し", persona.SNS_BLOCK)
         import evergreen
         self.assertIn(persona.PLAIN_STYLE, evergreen.SYSTEM)
 
     def test_crosspost_style_check(self):
         import crosspost_drafts as c
-        plain = ("ざっくり言うと、会計ソフトが月額980円で使えるようになりました。\n\n"
+        plain = ("要約すると、会計ソフトが月額980円で使えるようになりました。\n\n"
                  "たとえば、毎月の領収書の整理が楽になります。つまり、手作業が減ります。")
         self.assertEqual(c.style_problems(plain), [])
         stiff = ("本サービスにおいては、利用者が多様な業務を効率的に処理することが可能となっており、今後の展開を見据えた設計となっております。\n\n"
                  "記事では料金への言及はありませんが、注意が必要と言えるでしょう。")
         problems = " ".join(c.style_problems(stiff))
         self.assertIn("文が長い", problems)
-        self.assertIn("硬い言い回し", problems)
-        self.assertIn("ざっくり言うと", problems)
-        self.assertIn("**ざっくり言うと**", "**ざっくり言うと**、x。")
-        self.assertEqual(c.style_problems("**ざっくり言うと**、短い文です。"), [])
-        self.assertIn("ざっくり言うと", c.SYSTEM)
+        self.assertIn("使わない言い回し", problems)
+        self.assertIn("要約すると", problems)
+        self.assertEqual(c.style_problems("**要約すると**、短い文です。"), [])
+        casual = " ".join(c.style_problems("要約すると、ざっくり言えば便利になります。"))
+        self.assertIn("ざっくり", casual)
+        self.assertIn("「要約すると、」で始まる", c.SYSTEM)
+        self.assertNotIn("「ざっくり言うと」", c.SYSTEM)
         self.assertIn(persona.PLAIN_STYLE_EXAMPLE, c.SYSTEM)
         self.assertIn("サイソクニュース", c.footer({"slug": "s", "title": "t"}, "hatena"))
 
