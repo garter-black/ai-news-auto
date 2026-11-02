@@ -126,6 +126,9 @@
     "chatgpt-codex-shared-usage-limits": {
       "liveAt": "2026-11-02T05:06:03+00:00"
     },
+    "civil-code-revision-promissory-note-abolition": {
+      "liveAt": "2026-11-02T09:17:51+00:00"
+    },
     "claude-drug-development-progress": {
       "liveAt": "2026-10-28T01:59:29+00:00"
     },
@@ -351,6 +354,9 @@
     "jfa-storz-medical-japan-partner": {
       "liveAt": "2026-10-29T17:34:26+00:00"
     },
+    "jhfc-green-bond-gov-guarantee": {
+      "liveAt": "2026-11-02T09:17:51+00:00"
+    },
     "jira-autumn-2026-release": {
       "liveAt": "2026-11-01T07:14:01+00:00"
     },
@@ -444,6 +450,9 @@
     "mistral-large-4-preview": {
       "liveAt": "2026-10-29T14:40:23+00:00"
     },
+    "mof-tax-stamp-revenue-sep-2026": {
+      "liveAt": "2026-11-02T09:17:51+00:00"
+    },
     "morinaga-cocoa-bowel-movement-study": {
       "liveAt": "2026-11-02T02:37:43+00:00"
     },
@@ -455,6 +464,9 @@
     },
     "nemuri-antimicrobial-peptides-discovery": {
       "liveAt": "2026-10-30T01:08:05+00:00"
+    },
+    "nissay-it-ai-driven-development-aws": {
+      "liveAt": "2026-11-02T09:17:51+00:00"
     },
     "nli-employment-stats-sep-2026": {
       "liveAt": "2026-10-30T03:19:14+00:00"
