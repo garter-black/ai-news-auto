@@ -4,11 +4,13 @@
  *   "B" トップ記事を大きく＋残り2本を横に縦並び（写真に文字を重ねる旧案）
  *   "B1" 紺の地。左にトップ記事（写真の下に見出し）、右に2本を［写真｜見出し］。写真は切らず、文字は写真に重ねない
  *   "B2" 明るい地。上にトップ記事［写真｜見出し］、下に2本を横に並べる。写真は切らず、文字は写真に重ねない
+ *   "D1"〜"D4" 別方向の試作（不採用）
+ *   "E1"・"E2" 最初の B を文字少なくした案。写真は 16:9 を切らずに入れ、下側だけ地の色へ溶かして短い見出しを置く。E2 を採用（2026-11-02）
  *   "C" AI生成のイラスト背景＋番号つきの見出し一覧（号ごとに1枚だけ scripts/digest_page.py が作って KV に置く）
  * scripts/digest_page.py もこの値を読む（C のときだけ背景を作る）。
  */
-export type DigestDesign = "A" | "B" | "B1" | "B2" | "C";
+export type DigestDesign = "A" | "B" | "B1" | "B2" | "C" | "D1" | "D2" | "D3" | "D4" | "E1" | "E2";
 
-export const DIGEST_DESIGNS: readonly DigestDesign[] = ["A", "B", "B1", "B2", "C"];
+export const DIGEST_DESIGNS: readonly DigestDesign[] = ["A", "B", "B1", "B2", "C", "D1", "D2", "D3", "D4", "E1", "E2"];
 
-export const DIGEST_DESIGN: DigestDesign = "A";
+export const DIGEST_DESIGN: DigestDesign = "E2";
