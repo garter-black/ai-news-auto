@@ -2916,6 +2916,28 @@
       "comment": "編集部：まず無料で触ってみられるのがいいですね。",
       "dueAt": "2026-11-02T13:45:00+00:00",
       "postedAt": "2026-11-02T05:54:41+00:00"
+    },
+    "cyberagent-fy2026-results-date": {
+      "id": "6ae83ac31a965d64fbf6417e",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae83ace76279ec7eb9be433",
+        "facebook": "6ae83ad176279ec7eb9be4ff",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzcs7zwacs2c"
+      },
+      "dueAt": "2026-11-02T07:24:50+00:00",
+      "hook": "breaking",
+      "breaking": true,
+      "score": -2,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "決算",
+      "question": false,
+      "comment": "編集部：家計や仕事のお金に関わる話なので、押さえておきたいところ。",
+      "postedAt": "2026-11-02T07:25:12+00:00",
+      "blueskyAt": "2026-11-02T07:25:14+00:00"
     }
   },
   "extraPending": {}
