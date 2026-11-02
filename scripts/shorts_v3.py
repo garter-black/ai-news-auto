@@ -933,13 +933,23 @@ def fit_s(page: Page) -> float:
     return PW / page.width
 
 
-def frame_rect(page: Page, page_no: int, rect: tuple, frac: float, zmax: float, zmin: float = 1.0) -> Cam:
-    """rect の幅が画面幅の frac になる倍率（ページ幅いっぱい〜zmax 倍）で、rect を注目位置に置く"""
+def frame_rect(page: Page, page_no: int, rect: tuple, frac: float, zmax: float, zmin: float = 1.0, line: tuple | None = None) -> Cam:
+    """rect の幅が画面幅の frac になる倍率（ページ幅いっぱい〜zmax 倍）で、rect を注目位置に置く。
+    line（rect を含む行）が画面に入りきらないときは、行の頭が見えるように左に寄せる（両端が切れた文にしない）"""
     s0 = fit_s(page)
     rw, rh = max(rect[2] - rect[0], 1), max(rect[3] - rect[1], 1)
     s = min(frac * PW / rw, 0.22 * PH / rh)
     s = min(max(s, s0 * zmin), s0 * zmax)
-    return clamp_cam(page, page_no, (rect[0] + rect[2]) / 2, (rect[1] + rect[3]) / 2, s)
+    cx = (rect[0] + rect[2]) / 2
+    sub = line is not None
+    line = line or rect
+    vis = PW / s
+    if line[2] - line[0] > vis * 0.94:
+        left = line[0] - 36 / s
+        if sub and rect[2] + 70 / s > left + vis:  # 注目の所（行の一部）が右にはみ出すなら、そこが見える所まで
+            left = rect[2] + 70 / s - vis
+        cx = left + FOCUS[0] / s
+    return clamp_cam(page, page_no, cx, (rect[1] + rect[3]) / 2, s)
 
 
 def hero_block(page: Page) -> Block | None:
@@ -1165,7 +1175,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     if t0.block.font_px < 22 and hero is not None and hero is not t0.block:
         # 数字が本文の中の小さな字なら、最初の画面はページの大きな見出し（公式ページだと一目でわかる）→ 数字へ
         first = frame_rect(p0, t0.page, hero.rect, 0.96, 1.4)
-    hook_close = frame_rect(p0, t0.page, t0.zoom_rect, 0.34, ZOOM_MAX, zmin=1.6)
+    hook_close = frame_rect(p0, t0.page, t0.zoom_rect, 0.34, ZOOM_MAX, zmin=1.6, line=t0.rect)
     moves.append(Move(0.18, 0.8, hook_close))
     ev(0.18, "move", "つかみ: 数字へ寄る")
     spots.append(Spot(0.7, lines[1].start - 0.08, t0.page, t0.rect))
@@ -1192,7 +1202,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
             ev(b_t, "chart", "比較のグラフ")
         elif nxt - b_t > 0.9:
             zr = tg.zoom_rect
-            moves.append(Move(b_t, 0.6, frame_rect(page, tg.page, zr, 0.36 if tg.focus else 0.7, ZOOM_MAX, zmin=1.7)))
+            moves.append(Move(b_t, 0.6, frame_rect(page, tg.page, zr, 0.36 if tg.focus else 0.7, ZOOM_MAX, zmin=1.7, line=tg.rect)))
             ev(b_t, "move", f"beat{i}: 数字へ寄る")
             spots.append(Spot(b_t + 0.3, nxt - 0.08, tg.page, tg.rect))
             clicks.append(Click(b_t + 0.55, tg.page, *click_point(tg)))
