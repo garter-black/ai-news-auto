@@ -55,18 +55,21 @@
   "videoTitle": "Coding Agent Horror Stories: The CVE That Did Not Exist",
   "publishedAt": "2026-10-29T13:00:00+00:00",
   "generatedAt": "2026-11-01T08:11:15.223591+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/docker-coding-agent-horror-stories-cve-3b70c296.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/docker-coding-agent-horror-stories-cve-b874a4db.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-29T13:00:00+00:00",
   "detectedAt": "2026-11-01T08:10:44+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A pair of hands typing on a laptop displaying lines of code, with a server rack and cables visible in the background under soft overhead lighting.",
-    "provider": "Cloudflare Workers AI",
+    "kind": "official",
+    "org": "Docker",
+    "provider": "Docker公式ブログ",
+    "sourceUrl": "https://www.docker.com/blog/coding-agent-horror-stories-the-cve-that-did-not-exist/",
     "original": "https://www.docker.com/app/uploads/2026/10/1080x566_v06.png",
-    "at": "2026-11-01T08:12:08+00:00"
+    "width": 1080,
+    "height": 566,
+    "at": "2026-11-02T11:55:06+00:00",
+    "imageKind": "hero"
   }
 }

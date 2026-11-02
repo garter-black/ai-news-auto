@@ -46,7 +46,7 @@
   "videoTitle": "日銀当座預金増減要因と金融調節（10月実績）",
   "publishedAt": "2026-11-02T04:00:00+00:00",
   "generatedAt": "2026-11-02T04:11:29.258565+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/boj-current-account-october-cf90f8a6.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/boj-current-account-october-cbe3db33.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -54,10 +54,12 @@
   "detectedAt": "2026-11-02T04:10:48+00:00",
   "speedMinutes": 15,
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A close-up of a hand arranging a stack of Japanese yen banknotes on a wooden desk next to an open ledger showing a simple line graph, lit by soft natural light.",
-    "provider": "Cloudflare Workers AI",
-    "at": "2026-11-02T04:12:24+00:00"
+    "kind": "figure",
+    "provider": "サイソクニュース",
+    "number": "",
+    "label": "日銀当座預金要因",
+    "sourceUrl": "http://www.boj.or.jp/statistics/boj/fm/juqf/juqf10.xlsx",
+    "at": "2026-11-02T11:54:06+00:00",
+    "org": "日本銀行"
   }
 }

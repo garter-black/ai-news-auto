@@ -58,17 +58,21 @@
   "videoTitle": "ChatGPTの「Chat」と「Work」を統合、利用枠はCodexと共通に",
   "publishedAt": "2026-11-02T05:01:24.629000+00:00",
   "generatedAt": "2026-11-02T05:03:16.615957+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/chatgpt-codex-shared-usage-limits-5cad67f6.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/chatgpt-codex-shared-usage-limits-d550274d.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "qualityScore": 95,
   "detectedAt": "2026-11-02T05:01:24+00:00",
   "fastLane": true,
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-1-schnell",
-    "prompt": "A close-up view of a computer monitor displaying lines of programming code beside a keyboard, illuminated by soft office lighting.",
-    "provider": "Cloudflare Workers AI",
-    "at": "2026-11-02T05:03:40+00:00"
+    "kind": "official",
+    "org": "OpenAI",
+    "provider": "OpenAI公式",
+    "sourceUrl": "https://help.openai.com/en/articles/20001625-understanding-chatgpt-and-codex-usage-limits",
+    "original": "https://help.openai.com/og-image.png",
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-02T11:53:36+00:00",
+    "imageKind": "logo"
   }
 }

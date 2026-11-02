@@ -53,18 +53,19 @@
   "videoTitle": "片山財務大臣兼内閣府特命担当大臣繰上げ閣議後記者会見の概要(令和8年11月2日(月曜日))",
   "publishedAt": "2026-11-02T08:40:00+00:00",
   "generatedAt": "2026-11-02T11:51:14.117922+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/katayama-mof-budget-2027-tax-estimate-031900d0.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/katayama-mof-budget-2027-tax-estimate-ea559228.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-02T08:40:00+00:00",
   "detectedAt": "2026-11-02T11:50:45+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A hand arranges official budget papers on a wooden desk in a government office, with a blurred view of the Finance Ministry building through a window and soft natural daylight illuminating the scene.",
-    "provider": "Cloudflare Workers AI",
-    "original": "https://www.mof.go.jp/common/images/og_img.png",
-    "at": "2026-11-02T11:52:01+00:00"
+    "kind": "figure",
+    "provider": "サイソクニュース",
+    "number": "",
+    "label": "税収見積もりの透明化",
+    "sourceUrl": "https://www.mof.go.jp/public_relations/conference/my20261102.html",
+    "at": "2026-11-02T11:53:19+00:00",
+    "org": "財務省"
   }
 }

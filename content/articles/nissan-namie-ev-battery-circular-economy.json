@@ -65,23 +65,20 @@
   "videoTitle": "6社が「福島県及び浪江町での循環型社会の実現に向けた取組みに関する連携協定」を締結",
   "publishedAt": "2026-11-02T09:00:00+00:00",
   "generatedAt": "2026-11-02T10:11:18.863231+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/nissan-namie-ev-battery-circular-economy-6201e6fe.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/nissan-namie-ev-battery-circular-economy-6d88205f.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-02T09:00:00+00:00",
   "detectedAt": "2026-11-02T10:10:49+00:00",
   "imageCredit": {
-    "kind": "stock",
-    "title": "Namie-machi town office 02",
-    "creator": "Higa4",
-    "creatorUrl": "",
-    "license": "CC0",
-    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Namie-machi_town_office_02.jpg",
-    "query": "namie town",
+    "kind": "official",
+    "org": "日産自動車",
+    "provider": "日産自動車 ニュースルーム",
+    "sourceUrl": "http://global.nissannews.com/ja-JP/releases/261102-01-j",
     "original": "https://wieck-nissanao-production.s3.us-west-1.amazonaws.com/releaseInlineImages/0a325c22cc11835017df16bb6dbc02de271ae1c3",
-    "at": "2026-11-02T10:12:08+00:00"
+    "width": 755,
+    "height": 469,
+    "at": "2026-11-02T11:53:00+00:00"
   }
 }

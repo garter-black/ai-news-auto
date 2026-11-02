@@ -53,18 +53,21 @@
   "videoTitle": "[トヨタイムズ記事] 物流、スポーツ、教育、食... 広がる水素の可能性",
   "publishedAt": "2026-11-02T08:00:00+00:00",
   "generatedAt": "2026-11-02T11:31:29.006219+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/toyota-hydrogen-initiatives-2026-16764691.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/toyota-hydrogen-initiatives-2026-47b5d22c.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-02T08:00:00+00:00",
   "detectedAt": "2026-11-02T11:30:50+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A fuel cell delivery truck is refueling at a hydrogen station in an industrial area, with a modern school building visible in the background under bright daylight, and workers seen from behind handling cargo.",
-    "provider": "Cloudflare Workers AI",
+    "kind": "official",
+    "org": "トヨタ自動車",
+    "provider": "トヨタ自動車 グローバルニュースルーム",
+    "sourceUrl": "https://toyotatimes.jp/newscast/216.html?padid=ag478_from_newsroom",
     "original": "https://toyotatimes.jp/upload_images/newscast_216_1200_630_OGP.png",
-    "at": "2026-11-02T11:32:38+00:00"
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-02T11:54:03+00:00",
+    "imageKind": "banner"
   }
 }

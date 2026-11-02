@@ -55,23 +55,21 @@
   "videoTitle": "Databricks and SAP unleash end-to-end data & AI capabilities to level up enterprise AI transformation",
   "publishedAt": "2026-10-30T21:00:00+00:00",
   "generatedAt": "2026-11-02T03:11:10.178562+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/databricks-sap-partnership-enterprise-ai-19c77433.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/databricks-sap-partnership-enterprise-ai-225864fe.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-30T21:00:00+00:00",
   "detectedAt": "2026-11-02T03:10:44+00:00",
   "imageCredit": {
-    "kind": "stock",
-    "title": "UPS Power Management Module, racks with network cabling in NERSC data center",
-    "creator": "Derrick Coetzee from Berkeley, CA, USA",
-    "creatorUrl": "",
-    "license": "CC0",
-    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:UPS_Power_Management_Module,_racks_with_network_cabling_in_NERSC_data_center.jpg",
-    "query": "data center rack",
+    "kind": "official",
+    "org": "Databricks",
+    "provider": "Databricks公式ブログ",
+    "sourceUrl": "https://www.databricks.com/blog/databricks-and-sap-unleash-end-end-data-ai-capabilities-level-enterprise-ai-transformation",
     "original": "https://www.databricks.com/sites/default/files/2026-10/2026-10-Blog-SAP-Databricks-expands-with-a-new-Data-Accelerator-for-SAP-OG-1200x628-2x.png",
-    "at": "2026-11-02T03:12:50+00:00"
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-02T11:54:28+00:00",
+    "imageKind": "logo"
   }
 }

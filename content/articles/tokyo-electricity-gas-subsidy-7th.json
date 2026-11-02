@@ -63,23 +63,19 @@
   "videoTitle": "第7回 中小企業特別高圧電力・工業用LPガス価格高騰緊急対策事業 特別高圧電力・工業用LPガスを使用する中小企業者等を支援します！",
   "publishedAt": "2026-11-01T15:00:00+00:00",
   "generatedAt": "2026-11-02T10:51:39.962228+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/tokyo-electricity-gas-subsidy-7th-60b5ac18.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/tokyo-electricity-gas-subsidy-7th-2f2b4b04.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-01T15:00:00+00:00",
   "detectedAt": "2026-11-02T10:50:48+00:00",
   "imageCredit": {
-    "kind": "stock",
-    "title": "Gas regulator",
-    "creator": "Rifleman 82",
-    "creatorUrl": "",
-    "license": "Public Domain",
-    "licenseUrl": "",
-    "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gas_regulator.jpg",
-    "query": "industrial gas cylinder",
-    "original": "https://www.metro.tokyo.lg.jp/documents/45925314/275764568/20261102_07_03.png/ad9f28ae-9981-1db1-4434-d04ad5e5de45?version=1.0&t=1793582821116&imagePreview=1",
-    "at": "2026-11-02T10:52:31+00:00"
+    "kind": "figure",
+    "provider": "サイソクニュース",
+    "number": "750万円",
+    "label": "支援金上限",
+    "sourceUrl": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110210",
+    "at": "2026-11-02T11:53:24+00:00",
+    "org": "東京都"
   }
 }

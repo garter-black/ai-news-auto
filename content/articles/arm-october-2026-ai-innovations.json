@@ -63,7 +63,7 @@
   "videoTitle": "Top Arm-based innovations advancing on-device AI, cloud infrastructure, and physical AI in October 2026",
   "publishedAt": "2026-11-02T11:05:25+00:00",
   "generatedAt": "2026-11-02T11:11:25.941304+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/arm-october-2026-ai-innovations-532c7d57.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/arm-october-2026-ai-innovations-ad3b4946.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -71,11 +71,13 @@
   "detectedAt": "2026-11-02T11:10:55+00:00",
   "speedMinutes": 10,
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A photorealistic shot of a compact autonomous robot standing on a workbench beside a modern smartphone, with a circuit board and development tools scattered around, illuminated by soft diffused lab lighting.",
-    "provider": "Cloudflare Workers AI",
-    "original": "https://newsroom.arm.com/wp-content/uploads/2025/12/GettyImages-1917379601-1-scaled.jpg",
-    "at": "2026-11-02T11:13:19+00:00"
+    "kind": "official",
+    "org": "Arm",
+    "provider": "Armニュースルーム",
+    "sourceUrl": "https://newsroom.arm.com/blog/top-arm-based-innovations-in-october-2026",
+    "original": "https://newsroom.arm.com/wp-content/uploads/2026/11/rachel_apartment_agentic_a_no_headline-NB2.1-1.png",
+    "width": 1200,
+    "height": 670,
+    "at": "2026-11-02T11:53:04+00:00"
   }
 }

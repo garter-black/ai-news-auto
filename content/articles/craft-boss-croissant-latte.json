@@ -54,22 +54,17 @@
   "videoTitle": "～人気ベーカリー\"パンとエスプレッソと\"共同開発～ クロワッサンとカフェラテを同時に頬張る、あの幸せな味わいを再現！「クラフトボス クロワッサンラテ」新発売",
   "publishedAt": "2026-11-01T15:00:00+00:00",
   "generatedAt": "2026-11-02T00:22:34.884983+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/craft-boss-croissant-latte-3be89a81.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/craft-boss-croissant-latte-5fe21d7d.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-01T15:00:00+00:00",
   "detectedAt": "2026-11-02T00:22:11+00:00",
   "imageCredit": {
-    "kind": "stock",
-    "title": "Latte and croissant (Unsplash)",
-    "creator": "Sergey Zolkin szolkin",
-    "creatorUrl": "",
-    "license": "CC0",
-    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Latte_and_croissant_(Unsplash).jpg",
-    "query": "croissant latte",
-    "at": "2026-11-02T00:24:35+00:00"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A clear glass bottle of coffee placed beside a freshly baked croissant on a light wooden tabletop, illuminated by soft natural daylight from a nearby window.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T11:57:03+00:00"
   }
 }

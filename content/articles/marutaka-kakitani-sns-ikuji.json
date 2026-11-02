@@ -55,7 +55,7 @@
   "videoTitle": "柿谷曜一朗",
   "publishedAt": "2026-11-01T13:30:00+00:00",
   "generatedAt": "2026-11-01T14:31:20.522328+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/marutaka-kakitani-sns-ikuji-3fd8494a.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/marutaka-kakitani-sns-ikuji-b087daf4.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "trendKeyword": "柿谷曜一朗",
@@ -80,11 +80,11 @@
   "sourcePublishedAt": "2026-11-01T13:30:00+00:00",
   "detectedAt": "2026-11-01T14:30:54+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A pair of hands cradling a baby in a modern living room, with a smartphone on the coffee table and soft daylight streaming through a window.",
-    "provider": "Cloudflare Workers AI",
-    "original": "https://newsatcl-pctr.c.yimg.jp/t/amd-img/20261101-01453597-the_tv-000-1-view.jpg?exp=10800",
-    "at": "2026-11-02T03:42:41+00:00"
+    "kind": "figure",
+    "provider": "サイソクニュース",
+    "number": "",
+    "label": "丸高愛実の育児",
+    "sourceUrl": "https://news.yahoo.co.jp/articles/7441d7eeff28ae198403f247e3810f802289f716",
+    "at": "2026-11-02T11:55:26+00:00"
   }
 }

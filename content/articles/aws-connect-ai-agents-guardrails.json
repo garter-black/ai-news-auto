@@ -55,7 +55,7 @@
   "videoTitle": "AI ガードレールによるコンタクトセンターでの責任ある AI の実装",
   "publishedAt": "2026-11-02T05:23:14+00:00",
   "generatedAt": "2026-11-02T05:31:31.469247+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/aws-connect-ai-agents-guardrails-896eb209.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/aws-connect-ai-agents-guardrails-9d0794f3.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "relatedSlugs": [
@@ -66,11 +66,14 @@
   "detectedAt": "2026-11-02T05:30:52+00:00",
   "speedMinutes": 12,
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A blurred figure in a dimly lit call center with rows of computer screens and headsets, under fluorescent lighting.",
-    "provider": "Cloudflare Workers AI",
+    "kind": "official",
+    "org": "AWS",
+    "provider": "AWS ブログ（日本）",
+    "sourceUrl": "https://aws.amazon.com/jp/blogs/news/implementing-responsible-ai-in-contact-centers-with-connect-ai-agents-guardrails/",
     "original": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/10/28/implementing-responsible-ai-in-contact-centers-with-connect-ai-agents-guardrails_Connect-customer.png",
-    "at": "2026-11-02T05:33:24+00:00"
+    "width": 864,
+    "height": 486,
+    "at": "2026-11-02T11:54:03+00:00",
+    "imageKind": "hero"
   }
 }

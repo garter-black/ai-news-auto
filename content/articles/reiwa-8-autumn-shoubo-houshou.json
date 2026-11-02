@@ -45,7 +45,7 @@
   "videoTitle": "令和8年秋の褒章（消防関係）",
   "publishedAt": "2026-11-01T20:00:00+00:00",
   "generatedAt": "2026-11-01T20:21:04.609257+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/reiwa-8-autumn-shoubo-houshou-1da2cfaa.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/reiwa-8-autumn-shoubo-houshou-15a38fc9.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -53,11 +53,12 @@
   "detectedAt": "2026-11-01T20:20:49+00:00",
   "speedMinutes": 25,
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A line of firefighters in full gear stands behind a podium with a tray of medals and ribbons, the scene lit by soft natural light and the background softly blurred, showing only backs and hands.",
-    "provider": "Cloudflare Workers AI",
-    "original": "https://www.soumu.go.jp/main_content/000372150.jpg",
-    "at": "2026-11-01T20:21:35+00:00"
+    "kind": "figure",
+    "provider": "サイソクニュース",
+    "number": "110名",
+    "label": "消防表彰受章者数",
+    "sourceUrl": "https://www.soumu.go.jp/menu_news/s-news/01shoubo01_02001279.html",
+    "at": "2026-11-02T11:54:37+00:00",
+    "org": "総務省"
   }
 }

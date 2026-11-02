@@ -54,18 +54,19 @@
   "videoTitle": "乖離する企業の２つの「物価」見通し－物価見通しは２％超でも自社の中期の販売価格見通しは１％未満",
   "publishedAt": "2026-11-02T04:58:54+00:00",
   "generatedAt": "2026-11-02T09:31:56.538740+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/boj-tankan-price-forecast-gap-08dd5897.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/boj-tankan-price-forecast-gap-ef20d8ea.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-02T04:58:54+00:00",
   "detectedAt": "2026-11-02T09:30:43+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A group of businesspeople seated around a conference table, looking at a laptop displaying a graph of price trends, with soft natural lighting and the participants shown from behind.",
-    "provider": "Cloudflare Workers AI",
-    "original": "https://www.nli-research.co.jp/files/topics/87236_ext_03_0.jpg",
-    "at": "2026-11-02T09:33:50+00:00"
+    "kind": "figure",
+    "provider": "サイソクニュース",
+    "number": "2％",
+    "label": "企業の物価見通し",
+    "sourceUrl": "https://www.nli-research.co.jp/topics_detail1/id=87236?site=nli",
+    "at": "2026-11-02T11:53:50+00:00",
+    "org": "ニッセイ基礎研究所"
   }
 }

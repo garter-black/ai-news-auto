@@ -47,7 +47,7 @@
   "videoTitle": "金融資産",
   "publishedAt": "2026-11-01T22:50:00+00:00",
   "generatedAt": "2026-11-02T00:02:45.234261+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/kinyu-shisan-nainen-jijo-60s-adcc5951.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/kinyu-shisan-nainen-jijo-60s-057a11a7.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "trendKeyword": "金融資産",
@@ -67,11 +67,11 @@
   "sourcePublishedAt": "2026-11-01T22:50:00+00:00",
   "detectedAt": "2026-11-02T00:02:05+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "An elderly couple seated at a kitchen table, viewed from behind, reviewing a pension statement and a notebook with a calculator, soft natural light from a nearby window.",
-    "provider": "Cloudflare Workers AI",
-    "original": "https://s.yimg.jp/images/finance/common/image/ogp.png",
-    "at": "2026-11-02T00:04:49+00:00"
+    "kind": "figure",
+    "provider": "サイソクニュース",
+    "number": "",
+    "label": "60代の年金事情",
+    "sourceUrl": "https://finance.yahoo.co.jp/news/detail/f46868eeea7ab53f91d53ade53064c20f3268ff3",
+    "at": "2026-11-02T11:54:52+00:00"
   }
 }

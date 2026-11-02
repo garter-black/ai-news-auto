@@ -56,7 +56,7 @@
   "videoTitle": "What’s new in AI infrastructure and orchestration in October",
   "publishedAt": "2026-10-30T16:00:00+00:00",
   "generatedAt": "2026-11-02T04:51:17.175307+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/google-cloud-ai-infrastructure-october-updates-69261ebc.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/google-cloud-ai-infrastructure-october-updates-4586dd7a.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "relatedSlugs": [
@@ -67,11 +67,14 @@
   "sourcePublishedAt": "2026-10-30T16:00:00+00:00",
   "detectedAt": "2026-11-02T04:50:49+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A photorealistic shot of a spacious data center aisle lined with glowing server racks under cool white lighting, with a pair of hands reaching to connect a cable.",
-    "provider": "Cloudflare Workers AI",
+    "kind": "official",
+    "org": "Google Cloud",
+    "provider": "Google Cloud公式ブログ",
+    "sourceUrl": "https://cloud.google.com/blog/topics/ai-infrastructure/whats-new-in-ai-infrastructure-this-month/",
     "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/Whats_new_in_AI_infrastructure.max-2500x2500.jpg",
-    "at": "2026-11-02T04:52:36+00:00"
+    "width": 1200,
+    "height": 591,
+    "at": "2026-11-02T11:54:07+00:00",
+    "imageKind": "hero"
   }
 }

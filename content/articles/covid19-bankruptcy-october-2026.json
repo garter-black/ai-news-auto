@@ -56,23 +56,19 @@
   "videoTitle": "新型コロナ破たん、10月は125件発生",
   "publishedAt": "2026-11-02T08:50:00+00:00",
   "generatedAt": "2026-11-02T10:31:31.899613+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/covid19-bankruptcy-october-2026-ef8b899b.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/covid19-bankruptcy-october-2026-f92407f1.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-02T08:50:00+00:00",
   "detectedAt": "2026-11-02T10:30:54+00:00",
   "imageCredit": {
-    "kind": "stock",
-    "title": "Empty Office Real Estate (22789285225)",
-    "creator": "Carl Lender from Sunrise, USA",
-    "creatorUrl": "",
-    "license": "CC BY 2.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-    "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Empty_Office_Real_Estate_(22789285225).jpg",
-    "query": "empty office",
-    "original": "https://www.tsr-net.co.jp/data/detail/__icsFiles/afieldfile/2026/11/02/korona1_1.jpg",
-    "at": "2026-11-02T10:32:20+00:00"
+    "kind": "figure",
+    "provider": "サイソクニュース",
+    "number": "125件",
+    "label": "10月の新型コロナ倒産件数",
+    "sourceUrl": "https://www.tsr-net.co.jp/data/detail/1203394_1527.html",
+    "at": "2026-11-02T11:53:21+00:00",
+    "org": "東京商工リサーチ"
   }
 }

@@ -58,19 +58,22 @@
   "videoTitle": "What is the Ultra plan? | Claude Help Center",
   "publishedAt": "2026-11-02T04:53:24.629000+00:00",
   "generatedAt": "2026-11-02T04:55:44.280030+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/claude-ultra-plan-price-limits-4c2db074.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/claude-ultra-plan-price-limits-70ec17b7.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "qualityScore": 86,
   "detectedAt": "2026-11-02T04:53:24+00:00",
   "fastLane": true,
+  "late": true,
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-1-schnell",
-    "prompt": "A close-up of hands typing on a laptop keyboard in a modern office, illuminated by soft natural light from a nearby window.",
-    "provider": "Cloudflare Workers AI",
+    "kind": "official",
+    "org": "Anthropic",
+    "provider": "Anthropic公式",
+    "sourceUrl": "https://support.claude.com/en/articles/17728952-what-is-the-ultra-plan",
     "original": "https://downloads.intercomcdn.com/i/o/lupk8zyo/792494/717b10d3ebd874823db64841659b/76f3062d78ebbb04863fb1de3ef9cca0.png",
-    "at": "2026-11-02T04:56:32+00:00"
-  },
-  "late": true
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-02T11:54:31+00:00",
+    "imageKind": "logo"
+  }
 }
