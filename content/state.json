@@ -8230,6 +8230,15 @@
       "skipped": true,
       "url": "https://news.yahoo.co.jp/articles/b75ce6c7ecac74b46f42c5d540c8417612a107d5"
     },
+    "91d07db2a7132c51": {
+      "at": "2026-11-02T13:47:48.437367+00:00",
+      "major": true,
+      "model": "claude:sonnet",
+      "score": 93,
+      "section": "ai",
+      "slug": "google-messages-gradient-icon",
+      "url": "https://9to5google.com/2026/11/02/google-messages-gradient-icon-beta/"
+    },
     "9217c0f90ebe5e32": {
       "at": "2026-10-27T03:07:28.604435+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（職員）",
@@ -12084,28 +12093,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:12:52.916660+00:00",
-      "attempt": 1,
-      "id": "a36d3c4140ba175e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "title の長さが不適切（66字 / 18〜64字）"
-      ],
-      "readability": {
-        "avg_paragraph": 124.2,
-        "avg_sentence": 56.8,
-        "long_share": 0.429,
-        "max_paragraph": 210,
-        "paragraphs": 16,
-        "sentences": 35
-      },
-      "score": null,
-      "source": "google-cloud-blog-ja",
-      "title": "境界セキュリティのモダナイズ: VPC Service Controls によるスケーラブルな境界"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T08:12:59.887176+00:00",
@@ -18660,6 +18647,26 @@
       "score": 100,
       "source": "boj",
       "title": "CPMIが報告書「進化する決済システムにおける中央銀行および中央銀行マネーの役割」を公表"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T13:47:48.436195+00:00",
+      "attempt": 1,
+      "id": "91d07db2a7132c51",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 51.0,
+        "avg_sentence": 30.0,
+        "long_share": 0.078,
+        "max_paragraph": 146,
+        "paragraphs": 30,
+        "sentences": 51
+      },
+      "score": 93,
+      "source": "radar-9to5google.com",
+      "title": "Google Messages update rolling out new app icon with gradient design"
     }
   ],
   "short_text_retry": {},

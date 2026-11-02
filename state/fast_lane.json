@@ -349,6 +349,19 @@
       "title": "What is the Ultra plan? | Claude Help Center",
       "url": "https://support.claude.com/en/articles/17728952-what-is-the-ultra-plan"
     },
+    "91d07db2a7132c51": {
+      "detectedAt": "2026-11-02T13:45:24+00:00",
+      "finishedAt": "2026-11-02T13:47:48+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41455867136",
+      "slug": "google-messages-gradient-icon",
+      "source": "radar-9to5google.com",
+      "sourcePublishedAt": "2026-11-02T13:45:24+00:00",
+      "startedAt": "2026-11-02T13:46:52+00:00",
+      "title": "Google Messages update rolling out new app icon with gradient design",
+      "url": "https://9to5google.com/2026/11/02/google-messages-gradient-icon-beta/"
+    },
     "96882ab7e78168fa": {
       "detectedAt": "2026-11-01T22:37:24+00:00",
       "finishedAt": "2026-11-01T22:40:16+00:00",
