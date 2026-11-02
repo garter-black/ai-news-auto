@@ -135,6 +135,8 @@ export type Article = {
   thumbnail: string;
   /** 写真の出典。stock・ai のときは記事ページに「写真はイメージです」とクレジットを出す */
   imageCredit?: ImageCredit;
+  /** 写真の主役の位置（scripts/image_focus.py。座標は 0〜1、ar は写真の幅/高さ）。SNS カードの切り抜き・見出しの位置に使う */
+  imageFocus?: { x: number; y: number; box: [number, number, number, number]; ar: number; src: string };
   model: string;
   /** 主要企業の公式発表の速報（scripts/web_articles.py が付け、デプロイ直後に SNS へ即時投稿する） */
   breaking?: boolean;
