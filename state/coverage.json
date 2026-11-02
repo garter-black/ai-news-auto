@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "google-ai-news-october-2026",
+   "at": "2026-11-02T18:00:33.906162+00:00",
+   "title": "GoogleのAI「Gemini 4」など10月の新発表まとめ 詐欺対策や偽画像の判別も",
+   "head": "GoogleのAI「Gemini 4」など10月の新発表まとめ 詐欺対策や偽画像の判別も | The latest AI news we announced in October 2026",
+   "text": "GoogleのAI「Gemini 4」など10月の新発表まとめ 詐欺対策や偽画像の判別も | The latest AI news we announced in October 2026 | Gemini 4 Argon / Gemini 4 Carbon / Genie 4 / SynthID Detector / Android 詐欺対策 / Fitbit Edge / EmbeddingGemma 2 / Google AI 10月 まとめ / Playground Google / Willow 量子 / Gemini / 生成AI / Google / LLM / セキュリティ / 量子コンピューター",
+   "urls": [
+    "https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-october-2026/"
+   ]
+  },
+  {
    "slug": "deepseek-harness-creator-mode",
    "at": "2026-11-02T17:44:35.562626+00:00",
    "title": "中国DeepSeekのAI助手に「クリエイターモード」 文章で指示して3D表示や動画編集の道具を作成",
@@ -1612,16 +1622,6 @@
    "head": "Microsoft、AI開発基盤で「Copilot harness」を発表 コンテナ不要で動くエージェント構築が可能に | Stop wiring infrastructure, start building agents",
    "text": "Microsoft、AI開発基盤で「Copilot harness」を発表 コンテナ不要で動くエージェント構築が可能に | Stop wiring infrastructure, start building agents | Microsoft Copilot harness / Microsoft Foundry / AIエージェント / GitHub Copilot / MCP / 使い方 / 料金 / 日本 / Microsoft / Copilot / 生成AI / Azure / GitHub Copilot / 開発ツール",
    "urls": []
-  },
-  {
-   "slug": "aws-nvidia-nemotron-35-super-vl",
-   "at": "2026-10-29T17:47:32.550482+00:00",
-   "title": "AWS、NVIDIAの最新マルチモーダルAI『Nemotron 3.5 Super VL』をサポート",
-   "head": "AWS、NVIDIAの最新マルチモーダルAI『Nemotron 3.5 Super VL』をサポート | Accelerate agentic AI with NVIDIA Nemotron models on Amazon EKS and SageMaker HyperPod EKS",
-   "text": "AWS、NVIDIAの最新マルチモーダルAI『Nemotron 3.5 Super VL』をサポート | Accelerate agentic AI with NVIDIA Nemotron models on Amazon EKS and SageMaker HyperPod EKS | AWS / NVIDIA / Nemotron / Amazon EKS / マルチモーダルAI / SageMaker HyperPod / 生成AI / 生成AI / LLM / AWS / NVIDIA / Kubernetes",
-   "urls": [
-    "https://aws.amazon.com/blogs/machine-learning/accelerate-agentic-ai-with-nvidia-nemotron-models-on-amazon-eks-and-sagemaker-hyperpod-eks/"
-   ]
   }
  ]
 }

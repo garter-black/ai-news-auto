@@ -4033,6 +4033,16 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000021.000192413.html"
     },
+    "1802721ebc5f02c3": {
+      "at": "2026-11-02T18:00:41.824443+00:00",
+      "breaking": true,
+      "major": true,
+      "model": "claude:sonnet",
+      "score": 100,
+      "section": "ai",
+      "slug": "google-ai-news-october-2026",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-october-2026/"
+    },
     "18319346c05da9cf": {
       "at": "2026-10-27T01:52:38.060592+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12340,53 +12350,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-30T10:31:23.312461+00:00",
-      "attempt": 1,
-      "id": "6159e6840e0fe956",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1366字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（292字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 113.2,
-        "avg_sentence": 49.2,
-        "long_share": 0.261,
-        "max_paragraph": 191,
-        "paragraphs": 10,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "soumu",
-      "title": "「令和8年度携帯電話及び全国BWA等に係る電波の利用状況調査の調査結果の概要」の公表"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:31:29.600469+00:00",
-      "attempt": 2,
-      "id": "6159e6840e0fe956",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（323字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 67.2,
-        "avg_sentence": 67.2,
-        "long_share": 0.64,
-        "max_paragraph": 100,
-        "paragraphs": 25,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "soumu",
-      "title": "「令和8年度携帯電話及び全国BWA等に係る電波の利用状況調査の調査結果の概要」の公表"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-30T10:31:36.428415+00:00",
       "attempt": 1,
       "id": "8408d2d1dfd75e06",
@@ -18871,6 +18834,48 @@
       "score": 100,
       "source": "radar-bloomberg.com",
       "title": "DeepSeek releases a \"creator mode\" that allows users of DeepSeek Harness to crea"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T17:58:11.408182+00:00",
+      "attempt": 1,
+      "id": "1802721ebc5f02c3",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "題名で「日本で使えるか」を約束しているのに、本文の「日本で使える？」が「分からない」で始まっている。「当サイトで確認済み」の欄に答えがあればそれで答え、無ければ題名から日本の話を外す"
+      ],
+      "readability": {
+        "avg_paragraph": 66.9,
+        "avg_sentence": 32.1,
+        "long_share": 0.053,
+        "max_paragraph": 132,
+        "paragraphs": 36,
+        "sentences": 75
+      },
+      "score": null,
+      "source": "google-blog-all",
+      "title": "The latest AI news we announced in October 2026"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T18:00:41.823121+00:00",
+      "attempt": 2,
+      "id": "1802721ebc5f02c3",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 67.0,
+        "avg_sentence": 33.0,
+        "long_share": 0.031,
+        "max_paragraph": 148,
+        "paragraphs": 32,
+        "sentences": 65
+      },
+      "score": 100,
+      "source": "google-blog-all",
+      "title": "The latest AI news we announced in October 2026"
     }
   ],
   "short_text_retry": {},
