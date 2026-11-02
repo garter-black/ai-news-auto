@@ -88,5 +88,12 @@
     ],
     "ar": 1.7778,
     "src": "https://ai-tech-express.jp/img/nvidia-tensorrt-edge-llm-edge-ai-1fe76d8f.jpg"
+  },
+  "video": {
+    "src": "https://ai-tech-express.jp/video/nvidia-tensorrt-edge-llm-edge-ai-4861602b37.mp4",
+    "poster": "https://ai-tech-express.jp/video/nvidia-tensorrt-edge-llm-edge-ai-0184a13db1.jpg",
+    "seconds": 56.5,
+    "title": "NVIDIA、TensorRT Edge-LLMを公開 数コマンドでAI開発",
+    "credit": "VOICEVOX:九州そら"
   }
 }
