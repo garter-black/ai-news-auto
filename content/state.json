@@ -3908,6 +3908,12 @@
       "skipped": true,
       "url": "https://jp.investing.com/news/stock-market-news/article-1725036"
     },
+    "158423f4848f3b00": {
+      "at": "2026-11-02T14:31:21.619845+00:00",
+      "reason": "prefilter: タイトルが短すぎる（一覧リンク等）",
+      "skipped": true,
+      "url": "https://www.mof.go.jp/application-contact/procurement/seihuchoutatsu/index.htm"
+    },
     "15a4ccf73ef28b6b": {
       "at": "2026-10-28T04:22:17.393712+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（採用）",
@@ -4709,6 +4715,14 @@
       "slug": "marutaka-kakitani-sns-ikuji",
       "url": "https://news.yahoo.co.jp/articles/7441d7eeff28ae198403f247e3810f802289f716"
     },
+    "2b820c6e0bc17bb5": {
+      "at": "2026-11-02T14:31:32.542278+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "nli-ai-agent-explained",
+      "url": "https://www.nli-research.co.jp/topics_detail1/id=87239?site=nli"
+    },
     "2beb40c18b92349f": {
       "at": "2026-11-02T12:31:13.235453+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（公募）",
@@ -4962,6 +4976,12 @@
       "section": "business",
       "slug": "kaitori-koji-sns-meo-management",
       "url": "https://www.dreamnews.jp/press/0000366438"
+    },
+    "32fe1fe72be1f88c": {
+      "at": "2026-11-02T14:31:21.619877+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（会議）",
+      "skipped": true,
+      "url": "http://www.mlit.go.jp/report/press/house05_hh_001164.html"
     },
     "3322e009de895582": {
       "at": "2026-10-28T03:52:51.787253+00:00",
@@ -7992,6 +8012,14 @@
       "skipped": true,
       "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFAzWUlTeWtHbDVjR1R1Z3JYc2NJLTdZamlzZlRPYUp1R1FBVXA3UE5Ba1dLdk9RWGVjUS1VRUV5bUhiNWYwZjA2NnptTEpaMERsSllYOTIyYlR3UWs?oc=5"
     },
+    "8b79606d9c8c64ee": {
+      "at": "2026-11-02T14:31:47.317550+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "apple-ui-navigation-rl-agent",
+      "url": "https://machinelearning.apple.com/research/planning-grounding-ui-navigation"
+    },
     "8bad65ff8eb5b90d": {
       "at": "2026-10-30T01:52:11.559588+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（ポイント還元）",
@@ -8853,6 +8881,14 @@
       "skipped": true,
       "url": "https://developer.nvidia.com/blog/how-to-check-and-configure-nvidia-gpudirect-storage-for-your-platform/"
     },
+    "a29a9b9616500371": {
+      "at": "2026-11-02T14:31:21.619560+00:00",
+      "kind": "update",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "updated": "docker-coding-agent-horror-stories-cve",
+      "url": "https://www.docker.com/blog/docker-sandbox-code-checkout-workflows/"
+    },
     "a2a7b71a0a19d94c": {
       "at": "2026-11-02T13:41:34.571950+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9081,6 +9117,12 @@
       "reason": "followup quality: 続報の長さが不適切（285字 / 400〜900字）",
       "skipped": true,
       "url": "https://www.boj.or.jp/statistics/boj/fm/juqf/juqf10.xlsx"
+    },
+    "a9e0107a2985dd78": {
+      "at": "2026-11-02T14:31:32.651599+00:00",
+      "reason": "stale: 発表から142時間（記事ページの日付）",
+      "skipped": true,
+      "url": "https://www.redhat.com/en/blog/sovereignty-ai-era-choice-control-and-autonomy"
     },
     "aa3e2a58cca92e6f": {
       "at": "2026-10-28T23:11:26.688694+00:00",
@@ -12109,120 +12151,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:31:09.414293+00:00",
-      "attempt": 1,
-      "id": "bcbf10246dc16651",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1169字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（309字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 99.1,
-        "avg_sentence": 49.5,
-        "long_share": 0.25,
-        "max_paragraph": 142,
-        "paragraphs": 10,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "boj",
-      "title": "米ドル資金供給オペレーションのオファー日程（2026年11月～2027年3月）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:31:14.868820+00:00",
-      "attempt": 2,
-      "id": "bcbf10246dc16651",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1419字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（293字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 122.1,
-        "avg_sentence": 53.1,
-        "long_share": 0.261,
-        "max_paragraph": 174,
-        "paragraphs": 10,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "boj",
-      "title": "米ドル資金供給オペレーションのオファー日程（2026年11月～2027年3月）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:31:23.290434+00:00",
-      "attempt": 1,
-      "id": "3accf3bc15497543",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（368字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 143.7,
-        "avg_sentence": 56.2,
-        "long_share": 0.391,
-        "max_paragraph": 205,
-        "paragraphs": 9,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "digital-agency",
-      "title": "公金受取口座の登録状況に関するダッシュボードを更新しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:31:28.764837+00:00",
-      "attempt": 2,
-      "id": "3accf3bc15497543",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1666字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（361字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 80.3,
-        "avg_sentence": 52.5,
-        "long_share": 0.308,
-        "max_paragraph": 128,
-        "paragraphs": 17,
-        "sentences": 26
-      },
-      "score": null,
-      "source": "digital-agency",
-      "title": "公金受取口座の登録状況に関するダッシュボードを更新しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:31:37.116229+00:00",
-      "attempt": 1,
-      "id": "8d5c737c495043c1",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "title の長さが不適切（83字 / 18〜64字）"
-      ],
-      "readability": {
-        "avg_paragraph": 100.1,
-        "avg_sentence": 51.9,
-        "long_share": 0.259,
-        "max_paragraph": 186,
-        "paragraphs": 14,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "ntt-news",
-      "title": "NTTインテグレーション、「PowerCloudNEXT」にIBM Power11対応メニューおよびローカルメニューを追加 ～最新基盤への対応と、メニュー拡充に"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T08:31:43.288714+00:00",
@@ -18678,6 +18606,106 @@
       "score": 100,
       "source": "mof",
       "title": "片山財務大臣兼内閣府特命担当大臣閣議後記者会見の概要(令和8年10月30日(金曜日))"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T14:31:21.618704+00:00",
+      "attempt": 1,
+      "id": "a29a9b9616500371",
+      "kind": "update",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "score": 100,
+      "source": "docker-blog",
+      "title": "Where should your code live in a Docker Sandbox?"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T14:31:29.437711+00:00",
+      "attempt": 1,
+      "id": "2b820c6e0bc17bb5",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 52.8字・60字超の文が 38% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 105.5,
+        "avg_sentence": 52.8,
+        "long_share": 0.375,
+        "max_paragraph": 130,
+        "paragraphs": 8,
+        "sentences": 16
+      },
+      "score": 100,
+      "source": "nli-research",
+      "title": "次世代のAI「AIエージェント」とは－従来の生成AIとの違いを分かりやすく解説"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T14:31:32.541387+00:00",
+      "attempt": 0,
+      "id": "2b820c6e0bc17bb5",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 125.9字・最長 153字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 125.9,
+        "avg_sentence": 28.0,
+        "long_share": 0.0,
+        "max_paragraph": 153,
+        "paragraphs": 8,
+        "sentences": 36
+      },
+      "score": 100,
+      "source": "nli-research",
+      "title": "次世代のAI「AIエージェント」とは－従来の生成AIとの違いを分かりやすく解説"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T14:31:43.185703+00:00",
+      "attempt": 1,
+      "id": "8b79606d9c8c64ee",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 61.8字・60字超の文が 56% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 103.0,
+        "avg_sentence": 61.8,
+        "long_share": 0.56,
+        "max_paragraph": 212,
+        "paragraphs": 15,
+        "sentences": 25
+      },
+      "score": 100,
+      "source": "apple-ml",
+      "title": "Online Dense Reinforcement Learning with Planning-Grounding Agent for UI Navigat"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T14:31:47.316314+00:00",
+      "attempt": 0,
+      "id": "8b79606d9c8c64ee",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 42.2字・60字超の文が 25% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 101.4,
+        "avg_sentence": 42.2,
+        "long_share": 0.25,
+        "max_paragraph": 187,
+        "paragraphs": 15,
+        "sentences": 36
+      },
+      "score": 100,
+      "source": "apple-ml",
+      "title": "Online Dense Reinforcement Learning with Planning-Grounding Agent for UI Navigat"
     }
   ],
   "short_text_retry": {},

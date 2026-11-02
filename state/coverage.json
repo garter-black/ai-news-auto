@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "apple-ui-navigation-rl-agent",
+   "at": "2026-11-02T14:31:42.219366+00:00",
+   "title": "Appleの研究チームが新AI学習手法を発表、スマホ画面の自動操作で大幅に性能向上",
+   "head": "Appleの研究チームが新AI学習手法を発表、スマホ画面の自動操作で大幅に性能向上 | Online Dense Reinforcement Learning with Planning-Grounding Agent for UI Navigation on Live iOS Apps",
+   "text": "Appleの研究チームが新AI学習手法を発表、スマホ画面の自動操作で大幅に性能向上 | Online Dense Reinforcement Learning with Planning-Grounding Agent for UI Navigation on Live iOS Apps | Apple / UIナビゲーション / 強化学習 / iOSアプリ / AIエージェント / PPO / LLM / スマホ自動操作 / AI / 生成AI / iOS / 研究開発",
+   "urls": [
+    "https://machinelearning.apple.com/research/planning-grounding-ui-navigation"
+   ]
+  },
+  {
+   "slug": "nli-ai-agent-explained",
+   "at": "2026-11-02T14:31:28.421670+00:00",
+   "title": "ニッセイ基礎研究所が解説、次世代AI「AIエージェント」とは－従来の生成AIとの違い",
+   "head": "ニッセイ基礎研究所が解説、次世代AI「AIエージェント」とは－従来の生成AIとの違い | 次世代のAI「AIエージェント」とは－従来の生成AIとの違いを分かりやすく解説",
+   "text": "ニッセイ基礎研究所が解説、次世代AI「AIエージェント」とは－従来の生成AIとの違い | 次世代のAI「AIエージェント」とは－従来の生成AIとの違いを分かりやすく解説 | AIエージェント / 生成AI / ニッセイ基礎研究所 / ビジネス / 業務効率化 / AI / ビジネス / 経済 / 働き方",
+   "urls": [
+    "https://www.nli-research.co.jp/topics_detail1/id=87239?site=nli"
+   ]
+  },
+  {
    "slug": "katayama-mof-press-conference-oct2026",
    "at": "2026-11-02T14:11:44.017975+00:00",
    "title": "片山財務相、外国人旅行者の免税リファンド方式への移行やガソリン補助の見直しを表明",
@@ -747,10 +767,11 @@
    "slug": "docker-coding-agent-horror-stories-cve",
    "at": "2026-11-01T08:11:15.223591+00:00",
    "title": "AIのコード査読ボットが架空の脆弱性をでっち上げ？Docker公式ブログが明かす恐怖の事件",
-   "head": "AIのコード査読ボットが架空の脆弱性をでっち上げ？Docker公式ブログが明かす恐怖の事件 | Coding Agent Horror Stories: The CVE That Did Not Exist",
+   "head": "AIのコード査読ボットが架空の脆弱性をでっち上げ？Docker公式ブログが明かす恐怖の事件 | Coding Agent Horror Stories: The CVE That Did Not Exist | Docker Sandboxにおけるコード配置とワークフローの指針",
    "text": "AIのコード査読ボットが架空の脆弱性をでっち上げ？Docker公式ブログが明かす恐怖の事件 | Coding Agent Horror Stories: The CVE That Did Not Exist | Docker / AI / コードレビュー / 脆弱性 / セキュリティ / Ollama / Docker Sandbox / CIパイプライン / 生成AI / セキュリティ / 開発ツール / Docker",
    "urls": [
-    "https://www.docker.com/blog/coding-agent-horror-stories-the-cve-that-did-not-exist/"
+    "https://www.docker.com/blog/coding-agent-horror-stories-the-cve-that-did-not-exist/",
+    "https://www.docker.com/blog/docker-sandbox-code-checkout-workflows/"
    ]
   },
   {
