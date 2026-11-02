@@ -2,6 +2,36 @@
  "hours": 96,
  "items": [
   {
+   "slug": "kanto-gx-connect-matching-tokyo",
+   "at": "2026-11-02T17:37:41.776273+00:00",
+   "title": "関東経済産業局、省エネ・脱炭素の技術を持つ6社と企業をつなぐマッチングイベントを東京で開催",
+   "head": "関東経済産業局、省エネ・脱炭素の技術を持つ6社と企業をつなぐマッチングイベントを東京で開催 | 省エネ・コスト削減技術が集結、東京でマッチングイベント",
+   "text": "関東経済産業局、省エネ・脱炭素の技術を持つ6社と企業をつなぐマッチングイベントを東京で開催 | 省エネ・コスト削減技術が集結、東京でマッチングイベント | 省エネ / GX / 関東経済産業局 / 脱炭素 / マッチングイベント / エネルギーコスト削減 / Tokyo Innovation Base / 資源エネルギー庁 / ビジネス / 省エネ / SDGs / 経営戦略",
+   "urls": [
+    "https://j-net21.smrj.go.jp/news/bt5puv00000102qs.html"
+   ]
+  },
+  {
+   "slug": "nvidia-cosmos-world-models-simulation",
+   "at": "2026-11-02T17:35:57.689487+00:00",
+   "title": "NVIDIAが物理AI向け世界モデル「Cosmos」を拡張 自動運転やロボットのシミュレーションを高速化",
+   "head": "NVIDIAが物理AI向け世界モデル「Cosmos」を拡張 自動運転やロボットのシミュレーションを高速化 | Build World Models for Interactive Simulation with NVIDIA Cosmos",
+   "text": "NVIDIAが物理AI向け世界モデル「Cosmos」を拡張 自動運転やロボットのシミュレーションを高速化 | Build World Models for Interactive Simulation with NVIDIA Cosmos | NVIDIA Cosmos / 世界モデル / 物理AI / 自動運転シミュレーション / ロボット / Cosmos NIM / 生成AI / H200 / 生成AI / ロボティクス / 自動運転 / NVIDIA / 開発ツール",
+   "urls": [
+    "https://developer.nvidia.com/blog/build-world-models-for-interactive-simulation-with-nvidia-cosmos/"
+   ]
+  },
+  {
+   "slug": "hokuriku-electric-hokulink-leak",
+   "at": "2026-11-02T17:33:34.776621+00:00",
+   "title": "北陸電力の「ほくリンク」会員約55万件のメールアドレスが流出、委託先のメール配信サービスで不正アクセス",
+   "head": "北陸電力の「ほくリンク」会員約55万件のメールアドレスが流出、委託先のメール配信サービスで不正アクセス | 北陸電力 ほくリンク",
+   "text": "北陸電力の「ほくリンク」会員約55万件のメールアドレスが流出、委託先のメール配信サービスで不正アクセス | 北陸電力 ほくリンク | 北陸電力 / ほくリンク / メールアドレス流出 / 不正アクセス / 個人情報流出 / 北電 / 委託先 / セキュリティ / セキュリティ / ニュース / 北陸電力 / インシデント",
+   "urls": [
+    "https://news.yahoo.co.jp/articles/1a2e6ef472c5df46ae574d193f1d60e20907ef27"
+   ]
+  },
+  {
    "slug": "tohoku-atotsugi-connect-sendai-2026",
    "at": "2026-11-02T17:11:38.848296+00:00",
    "title": "東北経済産業局、仙台でアトツギ交流会を開催 家業の強み活かした新規事業へ挑戦",
@@ -1591,26 +1621,6 @@
    "text": "理化学研究所など、植物ホルモンが根の成長を操る仕組みを解明 | 植物ホルモンが「働く場所」を操る | ジベレリン / 植物ホルモン / 理化学研究所 / 埼玉大学 / 根の成長 / シロイヌナズナ / 合成GA / GA受容体 / 科学 / 生物 / 植物 / 研究成果",
    "urls": [
     "https://www.riken.jp/press/2026/20261029_2/index.html"
-   ]
-  },
-  {
-   "slug": "aws-moengage-agentcore-gateway",
-   "at": "2026-10-29T17:28:32.830670+00:00",
-   "title": "AWSの生成AI基盤『Amazon Bedrock』、社内API400個をAIの道具に化かす新機能",
-   "head": "AWSの生成AI基盤『Amazon Bedrock』、社内API400個をAIの道具に化かす新機能 | How MoEngage turned over 400 APIs into agent tools with AgentCore Gateway",
-   "text": "AWSの生成AI基盤『Amazon Bedrock』、社内API400個をAIの道具に化かす新機能 | How MoEngage turned over 400 APIs into agent tools with AgentCore Gateway | AWS / Bedrock / AgentCore Gateway / AIエージェント / API / MCP / OpenAPI / MoEngage / 生成AI / AWS / API / 開発ツール",
-   "urls": [
-    "https://aws.amazon.com/blogs/machine-learning/how-moengage-turned-over-400-apis-into-agent-tools-with-agentcore-gateway/"
-   ]
-  },
-  {
-   "slug": "jfa-storz-medical-japan-partner",
-   "at": "2026-10-29T17:25:28.925889+00:00",
-   "title": "JFAがストルツメディカル・ジャパンとサポーター契約 選手の傷害予防とコンディショニングを支援",
-   "head": "JFAがストルツメディカル・ジャパンとサポーター契約 選手の傷害予防とコンディショニングを支援 | ストルツメディカル・ジャパン株式会社とJFAサポーター契約を締結 ～選手のコンディショニングと傷害予防を支えるメディカルサポートを強化～ #jfa",
-   "text": "JFAがストルツメディカル・ジャパンとサポーター契約 選手の傷害予防とコンディショニングを支援 | ストルツメディカル・ジャパン株式会社とJFAサポーター契約を締結 ～選手のコンディショニングと傷害予防を支えるメディカルサポートを強化～ #jfa | JFA / ストルツメディカル・ジャパン / 日本サッカー協会 / メディカルサポート / 体外衝撃波治療器 / スポーツ医科学 / コンディショニング / 傷害予防 / サッカー / 日本代表 / JFA / メディカル",
-   "urls": [
-    "https://www.jfa.jp/news/00036960/"
    ]
   }
  ]

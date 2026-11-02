@@ -4882,6 +4882,12 @@
       "skipped": true,
       "url": "https://www.ntt-tx.co.jp/whatsnew/2026/261030.html"
     },
+    "2f642fc4ea6c0e3a": {
+      "at": "2026-11-02T17:37:14.542048+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（セミナー）",
+      "skipped": true,
+      "url": "https://j-net21.smrj.go.jp/news/bt5puv00000105ey.html"
+    },
     "2f6f7152e98ee2c5": {
       "at": "2026-10-27T00:51:50.088106+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -5764,6 +5770,14 @@
       "reason": "prefilter: 告知・お知らせ系",
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000005970.000054842.html"
+    },
+    "4846a74cece39cf74bcd7402342e1290bb651f86": {
+      "at": "2026-11-02T17:34:50.485007+00:00",
+      "kind": "trend",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "slug": "hokuriku-electric-hokulink-leak",
+      "url": "https://news.yahoo.co.jp/articles/1a2e6ef472c5df46ae574d193f1d60e20907ef27"
     },
     "48661b10a37603f5": {
       "at": "2026-10-29T16:43:54.049584+00:00",
@@ -8480,6 +8494,14 @@
       "skipped": true,
       "url": "https://www.atpress.ne.jp/news/644549"
     },
+    "94e2e7000b62203f": {
+      "at": "2026-11-02T17:38:58.688024+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "kanto-gx-connect-matching-tokyo",
+      "url": "https://j-net21.smrj.go.jp/news/bt5puv00000102qs.html"
+    },
     "952e90918f03ac9c": {
       "at": "2026-10-27T18:52:13.755124+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -8765,6 +8787,13 @@
       "section": "lifestyle",
       "slug": "morinaga-cocoa-bowel-movement-study",
       "url": "https://www.morinaga.co.jp/company/newsrelease/detail.php?no=3229"
+    },
+    "9cb8acb22504c471": {
+      "at": "2026-11-02T17:32:10.579290+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "followup quality: 続報の長さが不適切（268字 / 400〜900字）",
+      "skipped": true,
+      "url": "https://openai.com/chatgpt/pricing/#entry-2026-11-03-7f77f9"
     },
     "9cd6e2587ed02367": {
       "at": "2026-10-26T12:39:03.007958+00:00",
@@ -10111,6 +10140,14 @@
       "reason": "prefilter: 価値の薄いお知らせ（求人）",
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000001.000193445.html"
+    },
+    "c3d9c0114f0e103f": {
+      "at": "2026-11-02T17:37:13.893331+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "nvidia-cosmos-world-models-simulation",
+      "url": "https://developer.nvidia.com/blog/build-world-models-for-interactive-simulation-with-nvidia-cosmos/"
     },
     "c3faa8bab2cf2ce3": {
       "at": "2026-10-29T00:51:46.046709+00:00",
@@ -12136,6 +12173,12 @@
       "skipped": true,
       "url": "https://github.blog/changelog/2026-10-28-github-copilot-fusion-now-supports-selection-of-local-models"
     },
+    "fcb81763c4955df7": {
+      "at": "2026-11-02T17:37:14.542074+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（セミナー）",
+      "skipped": true,
+      "url": "https://j-net21.smrj.go.jp/news/bt5puv00000105b8.html"
+    },
     "fcf6901fbd725b70": {
       "at": "2026-10-29T15:04:07.394309+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12286,165 +12329,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:12:22.321813+00:00",
-      "attempt": 2,
-      "id": "5af2f33cb41b4881",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1684字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（382字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 156.0,
-        "avg_sentence": 50.3,
-        "long_share": 0.323,
-        "max_paragraph": 268,
-        "paragraphs": 10,
-        "sentences": 31
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "輸入食品に対する検査命令の実施 - （中国産おくら、その加工品）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:12:30.933798+00:00",
-      "attempt": 1,
-      "id": "358c7b25779727f0",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1792字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（350字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 153.9,
-        "avg_sentence": 61.6,
-        "long_share": 0.4,
-        "max_paragraph": 256,
-        "paragraphs": 10,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "nli-research",
-      "title": "米個人所得・消費支出（26年9月）－個人所得、消費支出ともに前月、および市場予想を下回る"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:12:37.250828+00:00",
-      "attempt": 2,
-      "id": "358c7b25779727f0",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 148.4,
-        "avg_sentence": 55.7,
-        "long_share": 0.292,
-        "max_paragraph": 195,
-        "paragraphs": 9,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "nli-research",
-      "title": "米個人所得・消費支出（26年9月）－個人所得、消費支出ともに前月、および市場予想を下回る"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:12:44.013202+00:00",
-      "attempt": 1,
-      "id": "1ab7b8f90bd7781e",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1641字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 135.1,
-        "avg_sentence": 60.8,
-        "long_share": 0.35,
-        "max_paragraph": 197,
-        "paragraphs": 9,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "tokyo-metro",
-      "title": "令和8年10月31日から「東京における宅地開発の無電柱化の推進に関する条例」を施行します"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:12:52.061032+00:00",
-      "attempt": 2,
-      "id": "1ab7b8f90bd7781e",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 54.7字・60字超の文が 34% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 158.6字・最長 224字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 158.6,
-        "avg_sentence": 54.7,
-        "long_share": 0.345,
-        "max_paragraph": 224,
-        "paragraphs": 10,
-        "sentences": 29
-      },
-      "score": 100,
-      "source": "tokyo-metro",
-      "title": "令和8年10月31日から「東京における宅地開発の無電柱化の推進に関する条例」を施行します"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T10:12:55.958016+00:00",
-      "attempt": 0,
-      "id": "1ab7b8f90bd7781e",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 78.7,
-        "avg_sentence": 27.9,
-        "long_share": 0.0,
-        "max_paragraph": 135,
-        "paragraphs": 22,
-        "sentences": 62
-      },
-      "score": 100,
-      "source": "tokyo-metro",
-      "title": "令和8年10月31日から「東京における宅地開発の無電柱化の推進に関する条例」を施行します"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:31:08.647053+00:00",
-      "attempt": 1,
-      "id": "056aa7df20c31861",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1467字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（311字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 128.0,
-        "avg_sentence": 57.6,
-        "long_share": 0.45,
-        "max_paragraph": 235,
-        "paragraphs": 9,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "soumu",
-      "title": "デジタルインフラ整備計画2030に基づく5Gインフラの整備状況（令和7年度末）の公表"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T10:31:14.418750+00:00",
@@ -18838,6 +18722,149 @@
       "score": 100,
       "source": "jnet21",
       "title": "仙台でアトツギ交流会、家業の強みを活かした新規事業に挑戦"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T17:32:10.579265+00:00",
+      "attempt": 1,
+      "id": "9cb8acb22504c471",
+      "kind": "update",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "続報の長さが不適切（268字 / 400〜900字）"
+      ],
+      "score": null,
+      "source": "watch-chatgpt-pricing",
+      "title": "ChatGPTが更新: with Pro 100, with Pro 200, or with Pro 500.Plan: Pro, Feature: Mont"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T17:33:54.651255+00:00",
+      "attempt": 1,
+      "id": "4846a74cece39cf74bcd7402342e1290bb651f86",
+      "kind": "trend",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 65.8字・60字超の文が 58% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 87.8,
+        "avg_sentence": 65.8,
+        "long_share": 0.583,
+        "max_paragraph": 117,
+        "paragraphs": 9,
+        "sentences": 12
+      },
+      "score": 100,
+      "source": "trends",
+      "title": "北陸電力 ほくリンク"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T17:34:50.484250+00:00",
+      "attempt": 0,
+      "id": "4846a74cece39cf74bcd7402342e1290bb651f86",
+      "kind": "trend",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 85.5,
+        "avg_sentence": 31.7,
+        "long_share": 0.0,
+        "max_paragraph": 137,
+        "paragraphs": 10,
+        "sentences": 27
+      },
+      "score": 100,
+      "source": "trends",
+      "title": "北陸電力 ほくリンク"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T17:36:18.309855+00:00",
+      "attempt": 1,
+      "id": "c3d9c0114f0e103f",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 59.2字・60字超の文が 52% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 85.1,
+        "avg_sentence": 59.2,
+        "long_share": 0.522,
+        "max_paragraph": 153,
+        "paragraphs": 16,
+        "sentences": 23
+      },
+      "score": 100,
+      "source": "nvidia-developer-blog",
+      "title": "Build World Models for Interactive Simulation with NVIDIA Cosmos"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T17:37:13.892345+00:00",
+      "attempt": 0,
+      "id": "c3d9c0114f0e103f",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 78.4,
+        "avg_sentence": 36.2,
+        "long_share": 0.077,
+        "max_paragraph": 145,
+        "paragraphs": 18,
+        "sentences": 39
+      },
+      "score": 100,
+      "source": "nvidia-developer-blog",
+      "title": "Build World Models for Interactive Simulation with NVIDIA Cosmos"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T17:38:11.303629+00:00",
+      "attempt": 1,
+      "id": "94e2e7000b62203f",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 53.8字・60字超の文が 33% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 125.4字・最長 266字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 125.4,
+        "avg_sentence": 53.8,
+        "long_share": 0.333,
+        "max_paragraph": 266,
+        "paragraphs": 9,
+        "sentences": 21
+      },
+      "score": 100,
+      "source": "jnet21",
+      "title": "省エネ・コスト削減技術が集結、東京でマッチングイベント"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T17:38:58.687235+00:00",
+      "attempt": 0,
+      "id": "94e2e7000b62203f",
+      "kind": "broad",
+      "model": "",
+      "problems": [
+        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（53.8→53.8字）"
+      ],
+      "readability": {
+        "avg_paragraph": 125.4,
+        "avg_sentence": 53.8,
+        "long_share": 0.333,
+        "max_paragraph": 266,
+        "paragraphs": 9,
+        "sentences": 21
+      },
+      "score": 100,
+      "source": "jnet21",
+      "title": "省エネ・コスト削減技術が集結、東京でマッチングイベント"
     }
   ],
   "short_text_retry": {},
