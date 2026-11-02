@@ -1530,7 +1530,8 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     hook_close = frame_rect(p0, t0.page, t0.zoom_rect, 0.34, ZOOM_MAX, zmin=1.6, line=t0.rect, chars=t0.line_chars)
     moves.append(Move(0.18, 0.8, hook_close))
     ev(0.18, "move", "つかみ: 数字へ寄る")
-    hook_xl = is_english(hook.get("target", "")) and bool(hook.get("ja"))
+    # つかみの訳は、同じ英文を beat でも訳すなら出さない（同じ訳が2回続かないように）
+    hook_xl = is_english(hook.get("target", "")) and bool(hook.get("ja")) and all(_norm(b.get("target", "")) != _norm(hook.get("target", "")) for b in beats)
     spots.append(Spot(0.7, lines[1].start - 0.08, t0.page, t0.span if hook_xl else t0.rect, t0.rows if hook_xl else [t0.match], 0.92))
     clicks.append(Click(0.92, t0.page, *click_point(t0)))
     ev(0.92, "click")
