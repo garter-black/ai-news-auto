@@ -13,7 +13,7 @@ import { renderCardDesign, type CardDesign } from "@/lib/card-designs";
  * 2026-11 の新案は lib/card-designs.tsx（"a" 16:9 写真＋見出し帯 / "b" 1:1 / "c" 16:9 見出し主役）。切り替えはこの1行だけ。
  * 画像の URL（/card/<slug>）は1週間キャッシュされるので、変えると新しく出す記事から効く。
  */
-const CARD_DESIGN: CardDesign | "tall" = "tall";
+const CARD_DESIGN: CardDesign | "tall" = "a"; // 2026-11-02 オーナーが A（16:9）を採用
 
 /**
  * SNS 投稿に添える図解カード（1080×1350・縦4:5）。
