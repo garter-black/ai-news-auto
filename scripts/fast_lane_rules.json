@@ -354,7 +354,7 @@
       }
     ],
     "signal_re": "(?<![A-Za-z])(?:launch(?:es|ed)?|releas(?:es|ed)|unveil(?:s|ed)?|introduc(?:es|ed)|announc(?:es|ed)|debuts?|rolls? out|rolling out)(?![A-Za-z])|now available|available (?:today|now)|generally available|(?<![A-Za-z])IPO(?![A-Za-z])|(?<![A-Za-z])S-1(?![0-9])|initial public offering|go(?:es|ing)? public|(?<![A-Za-z])acquir(?:es|ed|ing)(?![A-Za-z])|acquisition of|(?<![A-Za-z])(?:buys|to buy)(?![A-Za-z])|merger|price cuts?|cuts prices|open[- ]sources|発表|提供開始|配信開始|一般提供|正式公開|公開|リリース|発売|日本語対応|対応開始|利用可能|利用できる|買収|上場|新規株式公開|正式申請|値下げ|新モデル|登場|(?<![A-Za-z])renam(?:es|ed)(?![A-Za-z])|now called|名称変更|改名|改称|統合|上限(?:を)?(?:引き上げ|2倍|倍増|拡大)|(?<![A-Za-z])doubl(?:es|ed)(?![A-Za-z])|値上げ|新プラン|(?<![A-Za-z])new plan|料金改定|プラン(?:を)?(?:刷新|改定|変更)",
-    "exclude_re": "^\\s*(?:sources?|report|filing)s?:|sources say|according to (?:people|sources)|reportedly|rumou?r|(?<![A-Za-z])leak|噂|リーク|うわさ|(?<![A-Za-z])(?:might|could|may|plans to|planning to|considering|weighs|in talks|nears? deal)(?![A-Za-z])|検討|交渉|lawsuit|(?<![A-Za-z])sues?(?![A-Za-z])|(?<![A-Za-z])sued(?![A-Za-z])|(?<![A-Za-z])court(?![A-Za-z])|(?<![A-Za-z])judge(?![A-Za-z])|訴訟|提訴|earnings|(?<![A-Za-z])Q[1-4](?![A-Za-z0-9])|quarterly|決算|四半期|interview|インタビュー|opinion|op-ed|podcast|(?<![A-Za-z])review(?![A-Za-z])|hands-on|レビュー|使ってみた|試してみた|比較|まとめ|解説|セール|お得|割引|クーポン|キャンペーン|予約|ポイント|how to|(?<![A-Za-z])tips(?![A-Za-z])|方法|やり方|設定|使い方|連載|コラム|週間|今週|先週|ランキング|webinar|ウェビナー|セミナー|イベント|hiring|careers|採用|人事|就任|退任",
+    "exclude_re": "^\\s*(?:sources?|report|filing)s?:|sources say|according to (?:people|sources)|reportedly|rumou?r|(?<![A-Za-z])leak|噂|リーク|うわさ|(?<![A-Za-z])(?:might|could|may|plans to|planning to|considering|weighs|in talks|nears? deal)(?![A-Za-z])|検討|交渉|lawsuit|(?<![A-Za-z])sues?(?![A-Za-z])|(?<![A-Za-z])sued(?![A-Za-z])|(?<![A-Za-z])court(?![A-Za-z])|(?<![A-Za-z])judge(?![A-Za-z])|訴訟|提訴|earnings|(?<![A-Za-z])Q[1-4](?![A-Za-z0-9])|quarterly|決算|四半期|interview|インタビュー|opinion|op-ed|podcast|(?<![A-Za-z])review(?![A-Za-z])|hands-on|レビュー|使ってみた|試してみた|比較|まとめ|解説|セール|お得|割引|クーポン|キャンペーン|予約|ポイント|how to|(?<![A-Za-z])tips(?![A-Za-z])|方法|やり方|設定|使い方|連載|コラム|週間|今週|先週|ランキング|webinar|ウェビナー|セミナー|イベント|hiring|careers|採用|人事|就任|退任|^\\s*【[^】]{2,20}の[^】]{2,20}】",
     "ai_re": "(?<![A-Za-z])(?:AI|A\\.I\\.|LLMs?|GPT[-\\w]*|Gemini|Gemma|Copilot|Claude|ChatGPT|agents?|agentic|machine learning|deep learning|neural|generative|models?|inference|Llama|NVIDIA|GPU|robot\\w*)(?![A-Za-z])|人工知能|生成AI|機械学習|深層学習|大規模言語|言語モデル|エージェント|チャットボット|ロボット|推論|Apple Intelligence",
     "primary_hosts": [
       {
@@ -678,6 +678,8 @@
       "ソニー",
       "ソフトバンク",
       "アンソロピック",
+      "codex",
+      "sora",
       "ntt",
       "kddi",
       "nec",

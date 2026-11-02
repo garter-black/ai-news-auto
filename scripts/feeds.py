@@ -400,6 +400,9 @@ def _parse_date(value: str) -> datetime | None:
         dt = parsedate_to_datetime(value)
     except (TypeError, ValueError, IndexError):
         dt = None
+    if dt is None and re.fullmatch(r"\d{4}-\d{2}-\d{2}Z?", value):
+        # 日付だけ（Apple Newsroom の「2026-10-28Z」など。Python 3.12 の fromisoformat は読めない）
+        dt = datetime.strptime(value[:10], "%Y-%m-%d").replace(tzinfo=timezone.utc)
     if dt is None:
         # Python 3.9 の fromisoformat は「Z」「+0900」を読めないので「+09:00」にそろえる
         iso = re.sub(r"([+-]\d{2})(\d{2})$", r"\1:\2", value.replace("Z", "+00:00"))
