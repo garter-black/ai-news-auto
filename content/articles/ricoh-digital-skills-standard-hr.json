@@ -47,15 +47,20 @@
   "videoTitle": "【DXSQUARE】新着記事「DSSを全社の共通言語とし、デジタル人材育成を加速。 実践で学び、事業成長につなぐリコーの挑戦」を公開しました",
   "publishedAt": "2026-10-27T15:00:00+00:00",
   "generatedAt": "2026-10-28T20:32:26.284992+00:00",
-  "thumbnail": "https://dx.ipa.go.jp/media/rb1f3LAjezTXQTHng7uzKkB07IRUUtyDlUmpyc7T.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/ricoh-digital-skills-standard-hr-24f547aa.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-27T15:00:00+00:00",
   "detectedAt": "2026-10-28T20:31:14+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "IPA（情報処理推進機構）",
     "provider": "IPA（情報処理推進機構）",
-    "sourceUrl": "https://dx.ipa.go.jp/interview_ricoh"
+    "sourceUrl": "https://dx.ipa.go.jp/interview_ricoh",
+    "original": "https://dx.ipa.go.jp/media/rb1f3LAjezTXQTHng7uzKkB07IRUUtyDlUmpyc7T.jpg",
+    "width": 1200,
+    "height": 800,
+    "at": "2026-11-02T03:50:17+00:00"
   }
 }

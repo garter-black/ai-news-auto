@@ -55,7 +55,7 @@
   "videoTitle": "An update from Amazon engineering leadership on the role of the developer in the age of AI",
   "publishedAt": "2026-10-27T17:50:33+00:00",
   "generatedAt": "2026-10-27T18:31:23.731851+00:00",
-  "thumbnail": "https://assets.aboutamazon.com/dims4/default/d0cf1cd/2147483647/strip/true/crop/2000x1125+0+0/resize/1320x743!/quality/90/?url=https%3A%2F%2Fassets.aboutamazon.com%2Fcd%2F99%2F72c7f5be4e44a9cfc6a1e3f867b7%2Funtitled-20-october-2026-at-13-50-15-5.png",
+  "thumbnail": "https://ai-tech-express.jp/img/amazon-renaissance-developer-ai-guidelines-499d5157.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "relatedSlugs": [
@@ -67,8 +67,13 @@
   "detectedAt": "2026-10-27T18:30:56+00:00",
   "speedMinutes": 44,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Amazon",
     "provider": "Amazon公式ニュース（About Amazon）",
-    "sourceUrl": "https://www.aboutamazon.com/news/company-news/amazon-software-engineer-role-guideline-ai?utm_source=rss"
+    "sourceUrl": "https://www.aboutamazon.com/news/company-news/amazon-software-engineer-role-guideline-ai?utm_source=rss",
+    "original": "https://assets.aboutamazon.com/dims4/default/d0cf1cd/2147483647/strip/true/crop/2000x1125+0+0/resize/1320x743!/quality/90/?url=https%3A%2F%2Fassets.aboutamazon.com%2Fcd%2F99%2F72c7f5be4e44a9cfc6a1e3f867b7%2Funtitled-20-october-2026-at-13-50-15-5.png",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:53:46+00:00"
   }
 }

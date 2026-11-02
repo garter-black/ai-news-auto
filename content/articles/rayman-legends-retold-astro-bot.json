@@ -55,15 +55,20 @@
   "videoTitle": "12月3日（木）発売のPS5®『レイマン レジェンド リトールド』で、アストロボットコスチュームが登場！",
   "publishedAt": "2026-10-28T13:15:00+00:00",
   "generatedAt": "2026-10-28T17:53:50.264814+00:00",
-  "thumbnail": "https://blog.ja.playstation.com/tachyon/sites/7/2026/10/0cd6ffc52197a5e9330601bdb0386a564def5d1d-scaled-e1793167344103.png",
+  "thumbnail": "https://ai-tech-express.jp/img/rayman-legends-retold-astro-bot-67eb3d9b.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-28T13:15:00+00:00",
   "detectedAt": "2026-10-28T17:51:15+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "PlayStation",
     "provider": "PlayStation.Blog 日本語",
-    "sourceUrl": "https://blog.ja.playstation.com/2026/10/28/20261028-rlr-pre-launch-update-o/"
+    "sourceUrl": "https://blog.ja.playstation.com/2026/10/28/20261028-rlr-pre-launch-update-o/",
+    "original": "https://blog.ja.playstation.com/tachyon/sites/7/2026/10/0cd6ffc52197a5e9330601bdb0386a564def5d1d-scaled-e1793167344103.png",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:50:50+00:00"
   }
 }

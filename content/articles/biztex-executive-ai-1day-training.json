@@ -57,13 +57,19 @@
   "videoTitle": "BizteX「経営者向け AI 1DAY講習」の提供を開始。AIと壁打ちする経営から、AIに任せる経営へのシフトを支援",
   "publishedAt": "2026-10-26T13:10:02+00:00",
   "generatedAt": "2026-10-26T13:31:56.769291+00:00",
-  "thumbnail": "https://prcdn.freetls.fastly.net/release_image/27337/137/27337-137-eaf18dde7423156f6fe1663eeed63d06-1600x1067.jpg?width=1950&height=1350&quality=85%2C65&format=jpeg&auto=webp&fit=bounds&bg-color=fff",
+  "thumbnail": "https://ai-tech-express.jp/img/biztex-executive-ai-1day-training-2147984c.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "BizteX株式会社",
     "provider": "PR TIMES",
-    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000137.000027337.html"
+    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000137.000027337.html",
+    "original": "https://prcdn.freetls.fastly.net/release_image/27337/137/27337-137-eaf18dde7423156f6fe1663eeed63d06-1600x1067.jpg?width=1950&height=1350&quality=85%2C65&format=jpeg&auto=webp&fit=bounds&bg-color=fff",
+    "width": 1200,
+    "height": 800,
+    "at": "2026-11-02T03:57:22+00:00",
+    "via": "PR TIMES"
   }
 }

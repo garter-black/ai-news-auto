@@ -58,7 +58,7 @@
   "videoTitle": "楽天モバイル、iPadを取り扱い開始 11月6日8時発売",
   "publishedAt": "2026-10-29T03:16:01+00:00",
   "generatedAt": "2026-10-29T03:25:39.631093+00:00",
-  "thumbnail": "https://k-tai.watch.impress.co.jp/img/ktw/list/2152/180/Apple-iPad-mini-hero-261026.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/rakuten-mobile-ipad-sale-nov6-46575838.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "relatedSlugs": [
@@ -71,8 +71,11 @@
   "fastLane": true,
   "speedMinutes": 13,
   "imageCredit": {
-    "kind": "source",
-    "provider": "ケータイ Watch",
-    "sourceUrl": "https://k-tai.watch.impress.co.jp/docs/news/2152180.html"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A person viewed from behind examines a tablet on a display stand inside a modern electronics store, with bright overhead lighting and other devices on shelves.",
+    "provider": "Cloudflare Workers AI",
+    "original": "https://k-tai.watch.impress.co.jp/img/ktw/list/2152/180/Apple-iPad-mini-hero-261026.jpg",
+    "at": "2026-11-02T03:49:23+00:00"
   }
 }

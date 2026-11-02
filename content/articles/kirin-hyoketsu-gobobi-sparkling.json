@@ -54,7 +54,7 @@
   "videoTitle": "12月に高まる「自分へのご褒美」ニーズに冬限定「氷結® ご褒美スパークリング」 旬の果実を心地よい炭酸感で楽しめるアップルと洋梨の2品発売",
   "publishedAt": "2026-10-29T02:00:05+00:00",
   "generatedAt": "2026-10-29T02:21:56.780834+00:00",
-  "thumbnail": "https://www.kirinholdings.com/jp/newsroom/release/2026/images/1029_01_ogp.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/kirin-hyoketsu-gobobi-sparkling-54e65fc0.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -62,8 +62,13 @@
   "detectedAt": "2026-10-29T02:21:16+00:00",
   "speedMinutes": 25,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "キリンホールディングス",
     "provider": "キリンホールディングス ニュースリリース",
-    "sourceUrl": "https://www.kirinholdings.com/jp/newsroom/release/2026/1029_01.html"
+    "sourceUrl": "https://www.kirinholdings.com/jp/newsroom/release/2026/1029_01.html",
+    "original": "https://www.kirinholdings.com/jp/newsroom/release/2026/images/1029_01_ogp.jpg",
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-02T03:49:42+00:00"
   }
 }

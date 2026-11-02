@@ -55,7 +55,7 @@
   "videoTitle": "Into the Omniverse: How Developers Turn Ideas Into Simulations With Frontier AI Agents",
   "publishedAt": "2026-10-29T16:00:35+00:00",
   "generatedAt": "2026-10-29T16:41:57.392717+00:00",
-  "thumbnail": "https://blogs.nvidia.com/wp-content/uploads/2026/10/Copy-of-nvidia-ov-x-astra-4up-KV-r1-press-4k-r2-1680x945.png",
+  "thumbnail": "https://ai-tech-express.jp/img/nvidia-omniverse-frontier-ai-agents-642d22b5.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -63,8 +63,13 @@
   "detectedAt": "2026-10-29T16:41:18+00:00",
   "speedMinutes": 46,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "NVIDIA",
     "provider": "NVIDIA公式ブログ",
-    "sourceUrl": "https://blogs.nvidia.com/blog/developers-simulation-frontier-ai-agents/"
+    "sourceUrl": "https://blogs.nvidia.com/blog/developers-simulation-frontier-ai-agents/",
+    "original": "https://blogs.nvidia.com/wp-content/uploads/2026/10/Copy-of-nvidia-ov-x-astra-4up-KV-r1-press-4k-r2-1680x945.png",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:48:08+00:00"
   }
 }

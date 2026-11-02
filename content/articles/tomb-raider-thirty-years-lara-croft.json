@@ -54,15 +54,20 @@
   "videoTitle": "ララ・クロフトの 30 年を振り返る",
   "publishedAt": "2026-10-29T07:07:33+00:00",
   "generatedAt": "2026-10-29T16:45:32.568354+00:00",
-  "thumbnail": "https://xboxwire.thesourcemediaassets.com/sites/10/2026/10/MinecraftVanilla_Switch2_PR_1920x1080-861108c80326c542f270-d480373d0affc95ebf4a.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/tomb-raider-thirty-years-lara-croft-bee79430.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-29T07:07:33+00:00",
   "detectedAt": "2026-10-29T16:41:18+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Xbox",
     "provider": "Xbox Wire Japan",
-    "sourceUrl": "https://news.xbox.com/ja-jp/2026/10/29/thirty-years-of-lara-croft/"
+    "sourceUrl": "https://news.xbox.com/ja-jp/2026/10/29/thirty-years-of-lara-croft/",
+    "original": "https://xboxwire.thesourcemediaassets.com/sites/10/2026/10/MinecraftVanilla_Switch2_PR_1920x1080-861108c80326c542f270-d480373d0affc95ebf4a.jpg",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:47:53+00:00"
   }
 }

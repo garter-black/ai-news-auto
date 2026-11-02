@@ -57,7 +57,7 @@
   "videoTitle": "nemotron-halloween",
   "publishedAt": "2026-10-30T17:57:24+00:00",
   "generatedAt": "2026-10-30T18:03:00.321562+00:00",
-  "thumbnail": "https://cdn-uploads.huggingface.co/production/uploads/6ab2a746c7d0655b3d8dfbb9/fownH6rn05tSp1jDBTz8m.png",
+  "thumbnail": "https://ai-tech-express.jp/img/nvidia-nemotron-halloween-monsterhouse-6c7accef.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [
     {
@@ -80,8 +80,13 @@
   "detectedAt": "2026-10-30T18:02:05+00:00",
   "speedMinutes": 9,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Hugging Face",
     "provider": "Hugging Face公式ブログ",
-    "sourceUrl": "https://huggingface.co/blog/nvidia/nemotron-halloween"
+    "sourceUrl": "https://huggingface.co/blog/nvidia/nemotron-halloween",
+    "original": "https://cdn-uploads.huggingface.co/production/uploads/6ab2a746c7d0655b3d8dfbb9/fownH6rn05tSp1jDBTz8m.png",
+    "width": 1200,
+    "height": 648,
+    "at": "2026-11-02T03:45:28+00:00"
   }
 }

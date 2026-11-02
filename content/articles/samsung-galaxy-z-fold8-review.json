@@ -55,7 +55,7 @@
   "videoTitle": "「Samsung Galaxy Z Fold8」に買い替えた若手が語る、毎日持ち歩く折りたたみスマートフォンの使い心地",
   "publishedAt": "2026-10-29T15:00:40+00:00",
   "generatedAt": "2026-10-29T15:06:47.277456+00:00",
-  "thumbnail": "https://img.global.news.samsung.com/jp/wp-content/uploads/2026/10/%E7%A4%BE%E5%93%A1%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%93%E3%83%A5%E3%83%BC_PR_1440x720.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/samsung-galaxy-z-fold8-review-faa3f9d4.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -63,8 +63,13 @@
   "detectedAt": "2026-10-29T15:01:20+00:00",
   "speedMinutes": 11,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Samsung",
     "provider": "Samsung Newsroom 日本",
-    "sourceUrl": "https://news.samsung.com/jp/galaxy-z-fold8-interview2610?utm_source=rss&utm_medium=direct"
+    "sourceUrl": "https://news.samsung.com/jp/galaxy-z-fold8-interview2610?utm_source=rss&utm_medium=direct",
+    "original": "https://img.global.news.samsung.com/jp/wp-content/uploads/2026/10/%E7%A4%BE%E5%93%A1%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%93%E3%83%A5%E3%83%BC_PR_1440x720.jpg",
+    "width": 1200,
+    "height": 600,
+    "at": "2026-11-02T03:48:48+00:00"
   }
 }

@@ -54,15 +54,20 @@
   "videoTitle": "Can AI diagnose like a team of doctors? New research puts it to the test",
   "publishedAt": "2026-10-23T15:56:30+00:00",
   "generatedAt": "2026-10-26T11:02:32.614627+00:00",
-  "thumbnail": "https://microsoft.ai/wp-content/uploads/2026/10/cosmos_flowers_blue_sky.webp",
+  "thumbnail": "https://ai-tech-express.jp/img/microsoft-mai-dxo-medical-superintelligence-2e58ea7b.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "originalTitle": "医療AIは医師を超えたか、マイクロソフトが発表した診断システムの全貌",
   "titleRewritten": true,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Microsoft",
     "provider": "Microsoft Source（ニュースルーム）",
-    "sourceUrl": "https://microsoft.ai/news/building-medical-superintelligence/"
+    "sourceUrl": "https://microsoft.ai/news/building-medical-superintelligence/",
+    "original": "https://microsoft.ai/wp-content/uploads/2026/10/cosmos_flowers_blue_sky.webp",
+    "width": 1200,
+    "height": 672,
+    "at": "2026-11-02T03:58:05+00:00"
   }
 }

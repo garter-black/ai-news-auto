@@ -57,15 +57,20 @@
   "videoTitle": "「PlayStation® Partner Awards 2026 Japan Asia」12月3日開催決定！",
   "publishedAt": "2026-10-29T06:02:00+00:00",
   "generatedAt": "2026-10-29T17:06:19.217271+00:00",
-  "thumbnail": "https://blog.ja.playstation.com/tachyon/sites/7/2026/09/7c38abe4abe04de7a9c94d5136e1a14422456731.jpg?resize=1088%2C612&crop_strategy=smart&zoom=1",
+  "thumbnail": "https://ai-tech-express.jp/img/playstation-partner-awards-2026-announcement-6fab4f3f.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-29T06:02:00+00:00",
   "detectedAt": "2026-10-29T17:01:13+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "PlayStation",
     "provider": "PlayStation.Blog 日本語",
-    "sourceUrl": "https://blog.ja.playstation.com/2026/10/29/20261029-pspawards-event-announcement-s/"
+    "sourceUrl": "https://blog.ja.playstation.com/2026/10/29/20261029-pspawards-event-announcement-s/",
+    "original": "https://blog.ja.playstation.com/tachyon/sites/7/2026/09/7c38abe4abe04de7a9c94d5136e1a14422456731.jpg?resize=1088%2C612&crop_strategy=smart&zoom=1",
+    "width": 1088,
+    "height": 612,
+    "at": "2026-11-02T03:47:19+00:00"
   }
 }

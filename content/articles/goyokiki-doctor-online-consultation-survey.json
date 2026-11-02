@@ -55,13 +55,19 @@
   "videoTitle": "【独自調査】オンライン診療の悩み1位は「眠れない」。国内発送分の56%が不眠、不眠の相談は約半数がリピート利用――相談563件を分析",
   "publishedAt": "2026-10-26T15:40:02+00:00",
   "generatedAt": "2026-10-26T15:53:16.032521+00:00",
-  "thumbnail": "https://prcdn.freetls.fastly.net/release_image/49934/71/49934-71-8e861bd842feae8777dce1e0400b61ff-1672x941.png?width=1950&height=1350&quality=85%2C65&format=jpeg&auto=webp&fit=bounds&bg-color=fff",
+  "thumbnail": "https://ai-tech-express.jp/img/goyokiki-doctor-online-consultation-survey-1920c66e.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "iput株式会社",
     "provider": "PR TIMES",
-    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000071.000049934.html"
+    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000071.000049934.html",
+    "original": "https://prcdn.freetls.fastly.net/release_image/49934/71/49934-71-8e861bd842feae8777dce1e0400b61ff-1672x941.png?width=1950&height=1350&quality=85%2C65&format=jpeg&auto=webp&fit=bounds&bg-color=fff",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:56:53+00:00",
+    "via": "PR TIMES"
   }
 }

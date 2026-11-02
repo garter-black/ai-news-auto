@@ -54,15 +54,20 @@
   "videoTitle": "Making something human: 4 things we took away from Config India",
   "publishedAt": "2026-10-29T20:00:00+00:00",
   "generatedAt": "2026-11-01T01:41:11.338520+00:00",
-  "thumbnail": "https://cdn.sanity.io/images/599r6htc/regionalized/931d1da4183059147bedbef3764e716f7e87d65f-2048x1365.jpg?w=1200&q=70&fit=max&auto=format",
+  "thumbnail": "https://ai-tech-express.jp/img/figma-config-india-insights-ai-22341c81.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-29T20:00:00+00:00",
   "detectedAt": "2026-11-01T01:40:53+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Figma",
     "provider": "Figma公式ブログ",
-    "sourceUrl": "https://www.figma.com/blog/making-something-human-4-things-we-took-away-from-config-india/"
+    "sourceUrl": "https://www.figma.com/blog/making-something-human-4-things-we-took-away-from-config-india/",
+    "original": "https://cdn.sanity.io/images/599r6htc/regionalized/931d1da4183059147bedbef3764e716f7e87d65f-2048x1365.jpg?w=1200&q=70&fit=max&auto=format",
+    "width": 1200,
+    "height": 800,
+    "at": "2026-11-02T03:43:54+00:00"
   }
 }

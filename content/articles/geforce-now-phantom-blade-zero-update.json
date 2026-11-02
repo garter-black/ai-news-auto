@@ -55,7 +55,7 @@
   "videoTitle": "Slice Into GFN Thursday: ‘Phantom Blade Zero’ Launches on GeForce NOW",
   "publishedAt": "2026-10-29T13:00:16+00:00",
   "generatedAt": "2026-10-29T15:10:13.059111+00:00",
-  "thumbnail": "https://blogs.nvidia.com/wp-content/uploads/2026/10/dsx-ai-factory-platform.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/geforce-now-phantom-blade-zero-update-6cdbc072.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [
     {
@@ -70,8 +70,13 @@
   "sourcePublishedAt": "2026-10-29T13:00:16+00:00",
   "detectedAt": "2026-10-29T15:01:20+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "NVIDIA",
     "provider": "NVIDIA公式ブログ",
-    "sourceUrl": "https://blogs.nvidia.com/blog/geforce-now-thursday-phantom-blade-zero/"
+    "sourceUrl": "https://blogs.nvidia.com/blog/geforce-now-thursday-phantom-blade-zero/",
+    "original": "https://blogs.nvidia.com/wp-content/uploads/2026/10/dsx-ai-factory-platform.jpg",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:48:36+00:00"
   }
 }

@@ -55,15 +55,21 @@
   "videoTitle": "「伏見工業高等学校跡地」および「元南部配水管理課用地」における大規模街区開発事業 京都初の「脱炭素先行地域」における4ha超の大規模な複合開発 街の名称が『KYOTO COCO CITY』に決定",
   "publishedAt": "2026-10-26T08:30:00+00:00",
   "generatedAt": "2026-10-26T12:32:11.405612+00:00",
-  "thumbnail": "https://www.atpress.ne.jp/releases/644402/img_644402_1.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/kyoto-coco-city-fushimi-development-a1e49591.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "originalTitle": "伏見工業高校跡地の大規模複合開発、街の名称が「KYOTO COCO CITY」に決定",
   "titleRewritten": true,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "阪急阪神不動産株式会社",
     "provider": "@Press",
-    "sourceUrl": "https://www.atpress.ne.jp/news/644402"
+    "sourceUrl": "https://www.atpress.ne.jp/news/644402",
+    "original": "https://www.atpress.ne.jp/releases/644402/img_644402_1.jpg",
+    "width": 1000,
+    "height": 695,
+    "at": "2026-11-02T03:57:34+00:00",
+    "via": "@Press"
   }
 }

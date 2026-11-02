@@ -54,7 +54,7 @@
   "videoTitle": "『Minecraft』が、より鮮やかなグラフィックにアップデートしてNintendo Switch 2 に登場。本日より発売開始。",
   "publishedAt": "2026-10-28T01:01:00+00:00",
   "generatedAt": "2026-10-28T01:32:10.668721+00:00",
-  "thumbnail": "https://assets.topics.apps-jp.nintendo.com/image/2026/10/22230148061392/1280/455dfe2f747a4ba7b139ccdf4df3d910.webp",
+  "thumbnail": "https://ai-tech-express.jp/img/minecraft-nintendo-switch-2-launch-bc2c28f2.jpg",
   "model": "gemini-3.1-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -62,8 +62,13 @@
   "detectedAt": "2026-10-28T01:31:01+00:00",
   "speedMinutes": 35,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "任天堂",
     "provider": "任天堂 トピックス",
-    "sourceUrl": "https://www.nintendo.com/jp/topics/article/c8c6ed2b-cff7-4ff5-8953-32bd770e2537"
+    "sourceUrl": "https://www.nintendo.com/jp/topics/article/c8c6ed2b-cff7-4ff5-8953-32bd770e2537",
+    "original": "https://assets.topics.apps-jp.nintendo.com/image/2026/10/22230148061392/1280/455dfe2f747a4ba7b139ccdf4df3d910.webp",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:53:12+00:00"
   }
 }

@@ -58,7 +58,7 @@
   "videoTitle": "Gemini 4 Carbon: our next frontier model",
   "publishedAt": "2026-10-28T17:00:00+00:00",
   "generatedAt": "2026-10-28T17:02:33.184251+00:00",
-  "thumbnail": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini_carbon_102726_header.width-1300.png",
+  "thumbnail": "https://ai-tech-express.jp/img/gemini-4-carbon-cybersecurity-model-7a76dc49.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "relatedSlugs": [
@@ -71,8 +71,13 @@
   "fastLane": true,
   "speedMinutes": 6,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Google",
     "provider": "Google公式ブログ",
-    "sourceUrl": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/"
+    "sourceUrl": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/",
+    "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini_carbon_102726_header.width-1300.png",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:50:59+00:00"
   }
 }

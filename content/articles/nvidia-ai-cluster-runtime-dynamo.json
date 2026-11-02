@@ -55,7 +55,7 @@
   "videoTitle": "Build a Validated Kubernetes Runtime for NVIDIA Dynamo",
   "publishedAt": "2026-10-30T21:35:31+00:00",
   "generatedAt": "2026-11-02T02:51:19.694364+00:00",
-  "thumbnail": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/inline-image-1-1.webp",
+  "thumbnail": "https://ai-tech-express.jp/img/nvidia-ai-cluster-runtime-dynamo-2c5d00e2.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "relatedSlugs": [
@@ -65,8 +65,13 @@
   "sourcePublishedAt": "2026-10-30T21:35:31+00:00",
   "detectedAt": "2026-11-02T02:50:48+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "NVIDIA",
     "provider": "NVIDIA Developer Blog",
-    "sourceUrl": "https://developer.nvidia.com/blog/build-a-validated-kubernetes-runtime-for-nvidia-dynamo/"
+    "sourceUrl": "https://developer.nvidia.com/blog/build-a-validated-kubernetes-runtime-for-nvidia-dynamo/",
+    "original": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/inline-image-1-1.webp",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:39:30+00:00"
   }
 }

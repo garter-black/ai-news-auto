@@ -47,7 +47,7 @@
   "videoTitle": "改正保険業法のポイント、「実態に即した契約書の修正がカギ」～ 法律事務所あかつき・岡本大毅弁護士インタビュー ～",
   "publishedAt": "2026-10-30T22:00:00+00:00",
   "generatedAt": "2026-10-30T22:01:24.572560+00:00",
-  "thumbnail": "https://www.tsr-net.co.jp/data/detail/__icsFiles/artimage/2026/10/23/ca0802/1031_akatsuki_1.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/amended-insurance-business-law-tokyo-shoko-research-54fcf007.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -55,8 +55,13 @@
   "detectedAt": "2026-10-30T22:00:44+00:00",
   "speedMinutes": 5,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "東京商工リサーチ",
     "provider": "東京商工リサーチ",
-    "sourceUrl": "https://www.tsr-net.co.jp/data/detail/1203367_1527.html"
+    "sourceUrl": "https://www.tsr-net.co.jp/data/detail/1203367_1527.html",
+    "original": "https://www.tsr-net.co.jp/data/detail/__icsFiles/artimage/2026/10/23/ca0802/1031_akatsuki_1.jpg",
+    "width": 1200,
+    "height": 941,
+    "at": "2026-11-02T03:44:51+00:00"
   }
 }

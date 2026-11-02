@@ -53,15 +53,20 @@
   "videoTitle": "デジタルと伝統を生かしたまちづくりを進める山形県長井市を舞台に、企業向け「越境研修」を共同開発 〜地域の実課題への挑戦と行動評価を通じ、次世代リーダーを育成〜",
   "publishedAt": "2026-10-28T05:00:00+00:00",
   "generatedAt": "2026-10-28T22:13:13.954863+00:00",
-  "thumbnail": "https://www.ntt-landscape.co.jp/images/news/202610-1/main.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/ntt-landscape-nagai-ekkyo-kenshu-37b26c79.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-28T05:00:00+00:00",
   "detectedAt": "2026-10-28T22:11:15+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "NTT",
     "provider": "NTT ニュースリリース",
-    "sourceUrl": "https://www.ntt-landscape.co.jp/news/nagai-ekkyo-kenshu/"
+    "sourceUrl": "https://www.ntt-landscape.co.jp/news/nagai-ekkyo-kenshu/",
+    "original": "https://www.ntt-landscape.co.jp/images/news/202610-1/main.jpg",
+    "width": 1200,
+    "height": 904,
+    "at": "2026-11-02T03:50:04+00:00"
   }
 }

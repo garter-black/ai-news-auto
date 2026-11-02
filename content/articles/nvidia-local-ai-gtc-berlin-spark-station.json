@@ -55,7 +55,7 @@
   "videoTitle": "欧州へ広がる Spark：ローカル インテリジェンスがエージェントの次なる進化を支える",
   "publishedAt": "2026-10-26T00:32:27+00:00",
   "generatedAt": "2026-10-26T10:31:00.364159+00:00",
-  "thumbnail": "https://blogs.nvidia.co.jp/wp-content/uploads/sites/11/2026/10/nvidia-dsx-pod.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/nvidia-local-ai-gtc-berlin-spark-station-54c5311e.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [
     {
@@ -68,8 +68,13 @@
   ],
   "qualityScore": 100,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "NVIDIA",
     "provider": "NVIDIA日本版ブログ",
-    "sourceUrl": "https://blogs.nvidia.co.jp/blog/local-ai-gtc-rtx-dgx-spark-station-sync/"
+    "sourceUrl": "https://blogs.nvidia.co.jp/blog/local-ai-gtc-rtx-dgx-spark-station-sync/",
+    "original": "https://blogs.nvidia.co.jp/wp-content/uploads/sites/11/2026/10/nvidia-dsx-pod.jpg",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:58:29+00:00"
   }
 }

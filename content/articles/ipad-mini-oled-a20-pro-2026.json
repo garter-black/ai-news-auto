@@ -56,7 +56,7 @@
   "videoTitle": "Apple、iPad miniに史上最大のアップデートを導入",
   "publishedAt": "2026-10-26T13:27:32.665000+00:00",
   "generatedAt": "2026-10-26T13:54:02.036790+00:00",
-  "thumbnail": "https://www.apple.com/newsroom/images/2026/10/apple-gives-ipad-mini-its-biggest-update-ever/article/Apple-iPad-mini-lifestyle-01-261026_big.jpg.small_2x.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/ipad-mini-oled-a20-pro-2026-be5f4c1f.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -82,8 +82,13 @@
   ],
   "updatedAt": "2026-10-27T18:07:41.485593+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Apple",
     "provider": "Apple Newsroom（日本）",
-    "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/apple-gives-ipad-mini-its-biggest-update-ever/"
+    "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/apple-gives-ipad-mini-its-biggest-update-ever/",
+    "original": "https://www.apple.com/newsroom/images/2026/10/apple-gives-ipad-mini-its-biggest-update-ever/article/Apple-iPad-mini-lifestyle-01-261026_big.jpg.small_2x.jpg",
+    "width": 1200,
+    "height": 800,
+    "at": "2026-11-02T03:57:11+00:00"
   }
 }

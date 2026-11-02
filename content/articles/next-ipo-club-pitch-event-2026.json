@@ -48,15 +48,21 @@
   "videoTitle": "現役プライム上場企業社長と135億円EXIT起業家がIPO志望経営者のピッチに直接フィードバック｜Next IPO Clubインキュベーションサロン9月度月例会 開催レポート",
   "publishedAt": "2026-10-26T20:10:02+00:00",
   "generatedAt": "2026-10-26T20:21:35.241085+00:00",
-  "thumbnail": "https://prcdn.freetls.fastly.net/release_image/54393/334/54393-334-d90cee513a47f47ae3da78a82728d499-2048x1365.jpg?width=1950&height=1350&quality=85%2C65&format=jpeg&auto=webp&fit=bounds&bg-color=fff",
+  "thumbnail": "https://ai-tech-express.jp/img/next-ipo-club-pitch-event-2026-e1645788.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "originalTitle": "ベクトル西江氏らがIPO志望企業に直言、Next IPO Clubがピッチイベント開催",
   "titleRewritten": true,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "株式会社IR Robotics",
     "provider": "PR TIMES",
-    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000334.000054393.html"
+    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000334.000054393.html",
+    "original": "https://prcdn.freetls.fastly.net/release_image/54393/334/54393-334-d90cee513a47f47ae3da78a82728d499-2048x1365.jpg?width=1950&height=1350&quality=85%2C65&format=jpeg&auto=webp&fit=bounds&bg-color=fff",
+    "width": 1200,
+    "height": 800,
+    "at": "2026-11-02T03:56:01+00:00",
+    "via": "PR TIMES"
   }
 }

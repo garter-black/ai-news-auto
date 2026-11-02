@@ -55,7 +55,7 @@
   "videoTitle": "ClaudeからもSlackからも：AIforceでSalesforceの仕事を進める2つの体験",
   "publishedAt": "2026-10-28T04:00:00+00:00",
   "generatedAt": "2026-10-28T04:21:52.599599+00:00",
-  "thumbnail": "https://www.salesforce.com/jp/news/wp-content/uploads/sites/21/2026/10/image1_f24add.png",
+  "thumbnail": "https://ai-tech-express.jp/img/salesforce-aiforce-claude-slack-9a741cb9.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -63,8 +63,13 @@
   "detectedAt": "2026-10-28T04:21:16+00:00",
   "speedMinutes": 26,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Salesforce",
     "provider": "Salesforce ニュース（日本）",
-    "sourceUrl": "https://www.salesforce.com/jp/news/stories/japan-claudeforce-and-slackforce-domo/"
+    "sourceUrl": "https://www.salesforce.com/jp/news/stories/japan-claudeforce-and-slackforce-domo/",
+    "original": "https://www.salesforce.com/jp/news/wp-content/uploads/sites/21/2026/10/image1_f24add.png",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:53:02+00:00"
   }
 }

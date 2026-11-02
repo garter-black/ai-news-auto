@@ -47,7 +47,7 @@
   "videoTitle": "百十四銀行 第60回全日本社会人卓球選手権大会 閉幕！",
   "publishedAt": "2026-11-01T14:30:06+00:00",
   "generatedAt": "2026-11-01T14:31:31.104171+00:00",
-  "thumbnail": "https://jtta.s3.ap-northeast-1.amazonaws.com/wp-content/uploads/2026/11/01200521/2026_syakaijin_Women_Winner-2-1024x576.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/all-japan-adult-table-tennis-2026-5f98320f.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -55,8 +55,13 @@
   "detectedAt": "2026-11-01T14:30:54+00:00",
   "speedMinutes": 5,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "日本卓球協会",
     "provider": "日本卓球協会",
-    "sourceUrl": "https://jtta.or.jp/news/38622"
+    "sourceUrl": "https://jtta.or.jp/news/38622",
+    "original": "https://jtta.s3.ap-northeast-1.amazonaws.com/wp-content/uploads/2026/11/01200521/2026_syakaijin_Women_Winner-2-1024x576.jpg",
+    "width": 1024,
+    "height": 576,
+    "at": "2026-11-02T03:41:10+00:00"
   }
 }

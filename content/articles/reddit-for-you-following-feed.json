@@ -58,7 +58,7 @@
   "videoTitle": "Reddit rolls out a dual-feed homepage, with For You and Following feeds, joining TikTok, Instagram, and others in offering a recommendation-driven feed",
   "publishedAt": "2026-10-28T16:10:07+00:00",
   "generatedAt": "2026-10-28T16:16:28.750579+00:00",
-  "thumbnail": "https://techcrunch.com/wp-content/uploads/2023/03/reddit-e1708636699632.jpg?resize=1200,800",
+  "thumbnail": "https://ai-tech-express.jp/img/reddit-for-you-following-feed-8b7fb6c9.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "qualityScore": 80,
@@ -68,8 +68,11 @@
   "fastLane": true,
   "speedMinutes": 10,
   "imageCredit": {
-    "kind": "source",
-    "provider": "TechCrunch",
-    "sourceUrl": "https://techcrunch.com/2026/10/28/reddit-is-the-latest-platform-to-embrace-the-for-you-feed/"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close-up of a hand scrolling on a laptop keyboard while a web feed is displayed on the screen, illuminated by soft natural light.",
+    "provider": "Cloudflare Workers AI",
+    "original": "https://techcrunch.com/wp-content/uploads/2023/03/reddit-e1708636699632.jpg?resize=1200,800",
+    "at": "2026-11-02T03:51:48+00:00"
   }
 }

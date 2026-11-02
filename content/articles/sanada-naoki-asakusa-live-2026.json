@@ -54,15 +54,21 @@
   "videoTitle": "真田ナオキ 浅草公演が大盛況！ 公演の一部をYouTube限定公開中＆10/29生配信決定！12月には、歌謡ポップスチャンネルでテレビ初放送も！",
   "publishedAt": "2026-10-26T10:00:00+00:00",
   "generatedAt": "2026-10-26T12:06:10.159444+00:00",
-  "thumbnail": "https://www.atpress.ne.jp/attachments/4o3YDGhlGGXXF1K0DfqE.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/sanada-naoki-asakusa-live-2026-dcb0ee1d.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "originalTitle": "真田ナオキ、浅草公会堂でのディスコ風ワンマンライブを大盛況で完走",
   "titleRewritten": true,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "株式会社テイチクエンタテインメント",
     "provider": "@Press",
-    "sourceUrl": "https://www.atpress.ne.jp/news/644526"
+    "sourceUrl": "https://www.atpress.ne.jp/news/644526",
+    "original": "https://www.atpress.ne.jp/attachments/4o3YDGhlGGXXF1K0DfqE.jpg",
+    "width": 1200,
+    "height": 802,
+    "at": "2026-11-02T03:57:45+00:00",
+    "via": "@Press"
   }
 }

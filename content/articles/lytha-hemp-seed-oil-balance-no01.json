@@ -53,15 +53,21 @@
   "videoTitle": "京都発ウェルネスブランド「LYTHA」誕生。イタリア・プーリア産100％エキストラバージン・ヘンプシードオイルを、1回分ずつ遮光・密閉の4gエアタイトサシェに",
   "publishedAt": "2026-10-26T06:00:00+00:00",
   "generatedAt": "2026-10-26T23:01:45.896915+00:00",
-  "thumbnail": "https://files.value-press.com/czMjZXllY2F0Y2gjNDEwMTgjNDEwMThfaXdjY21URENPRS5qcGc.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/lytha-hemp-seed-oil-balance-no01-92ed3bcb.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "originalTitle": "京都発ウェルネスブランドLYTHAがヘンプシードオイルを個包装で発売",
   "titleRewritten": true,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Molfo合同会社",
     "provider": "ValuePress",
-    "sourceUrl": "https://www.value-press.com/pressrelease/383188"
+    "sourceUrl": "https://www.value-press.com/pressrelease/383188",
+    "original": "https://files.value-press.com/czMjZXllY2F0Y2gjNDEwMTgjNDEwMThfaXdjY21URENPRS5qcGc.jpg",
+    "width": 1200,
+    "height": 650,
+    "at": "2026-11-02T03:55:41+00:00",
+    "via": "ValuePress"
   }
 }

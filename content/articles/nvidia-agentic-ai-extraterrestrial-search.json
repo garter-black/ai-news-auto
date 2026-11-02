@@ -56,7 +56,7 @@
   "videoTitle": "Things That Go Beep in the Night: Agentic AI Joins the Search for Extraterrestrial Signals",
   "publishedAt": "2026-10-30T15:00:10+00:00",
   "generatedAt": "2026-10-30T15:21:12.552456+00:00",
-  "thumbnail": "https://blogs.nvidia.com/wp-content/uploads/2026/10/IMG_1607-ATA-2023-CREDIT-Joe-Marfia-scaled.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/nvidia-agentic-ai-extraterrestrial-search-99d070ae.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -64,8 +64,13 @@
   "detectedAt": "2026-10-30T15:20:46+00:00",
   "speedMinutes": 25,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "NVIDIA",
     "provider": "NVIDIA公式ブログ",
-    "sourceUrl": "https://blogs.nvidia.com/blog/ai-joins-the-search-for-extraterrestrial-signals/"
+    "sourceUrl": "https://blogs.nvidia.com/blog/ai-joins-the-search-for-extraterrestrial-signals/",
+    "original": "https://blogs.nvidia.com/wp-content/uploads/2026/10/IMG_1607-ATA-2023-CREDIT-Joe-Marfia-scaled.jpg",
+    "width": 1200,
+    "height": 800,
+    "at": "2026-11-02T03:45:47+00:00"
   }
 }

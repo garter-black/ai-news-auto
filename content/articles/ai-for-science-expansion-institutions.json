@@ -60,7 +60,7 @@
   "videoTitle": "AI for Science expands to foundations and research institutions",
   "publishedAt": "2026-10-28T00:00:00+00:00",
   "generatedAt": "2026-10-28T20:12:26.671886+00:00",
-  "thumbnail": "https://www-cdn.anthropic.com/images/4zrzovbb/website/2c317246f4ac7eaf0667d90a76ac05a7a7b601fc-1200x630.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/ai-for-science-expansion-institutions-e1f0ad33.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "relatedSlugs": [
@@ -73,8 +73,13 @@
   "detectedAt": "2026-10-28T20:10:51+00:00",
   "fastLane": true,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Anthropic",
     "provider": "Anthropic公式ニュース",
-    "sourceUrl": "https://www.anthropic.com/news/ai-for-science-expands-foundations-research-institutions"
+    "sourceUrl": "https://www.anthropic.com/news/ai-for-science-expands-foundations-research-institutions",
+    "original": "https://www-cdn.anthropic.com/images/4zrzovbb/website/2c317246f4ac7eaf0667d90a76ac05a7a7b601fc-1200x630.jpg",
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-02T03:50:29+00:00"
   }
 }

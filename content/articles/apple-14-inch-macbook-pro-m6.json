@@ -54,15 +54,20 @@
   "videoTitle": "Apple、M6を搭載した新しい14インチMacBook Proを発表",
   "publishedAt": "2026-10-27T13:19:37.372000+00:00",
   "generatedAt": "2026-10-27T16:08:31.485827+00:00",
-  "thumbnail": "https://www.apple.com/newsroom/images/2026/10/apple-introduces-the-new-14-inch-macbook-pro-with-m6/article/Apple-MacBook-Pro-14-in-with-M6-lifestyle-261027_big.jpg.small_2x.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/apple-14-inch-macbook-pro-m6-55ab0949.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-27T13:19:37+00:00",
   "detectedAt": "2026-10-27T16:05:08+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Apple",
     "provider": "Apple Newsroom（日本）",
-    "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/apple-introduces-the-new-14-inch-macbook-pro-with-m6/"
+    "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/apple-introduces-the-new-14-inch-macbook-pro-with-m6/",
+    "original": "https://www.apple.com/newsroom/images/2026/10/apple-introduces-the-new-14-inch-macbook-pro-with-m6/article/Apple-MacBook-Pro-14-in-with-M6-lifestyle-261027_big.jpg.small_2x.jpg",
+    "width": 832,
+    "height": 555,
+    "at": "2026-11-02T03:54:28+00:00"
   }
 }

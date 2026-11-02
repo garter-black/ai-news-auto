@@ -58,7 +58,7 @@
   "videoTitle": "Muse Is Now Available in Singapore: The World’s First Personal AI Agent Built for Everyone",
   "publishedAt": "2026-10-28T00:00:03+00:00",
   "generatedAt": "2026-10-28T00:50:27.206802+00:00",
-  "thumbnail": "https://about.fb.com/wp-content/uploads/2026/10/Muse-16x9-SG.png?w=1200",
+  "thumbnail": "https://ai-tech-express.jp/img/meta-muse-singapore-launch-bd801660.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "relatedSlugs": [
@@ -70,10 +70,15 @@
   "detectedAt": "2026-10-28T00:36:33+00:00",
   "fastLane": true,
   "speedMinutes": 54,
+  "updatedAt": "2026-10-31T06:00:34+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Meta",
     "provider": "Metaニュースルーム",
-    "sourceUrl": "https://about.fb.com/news/2026/10/muse-is-now-available-in-singapore-the-worlds-first-personal-ai-agent-built-for-everyone/"
-  },
-  "updatedAt": "2026-10-31T06:00:34+00:00"
+    "sourceUrl": "https://about.fb.com/news/2026/10/muse-is-now-available-in-singapore-the-worlds-first-personal-ai-agent-built-for-everyone/",
+    "original": "https://about.fb.com/wp-content/uploads/2026/10/Muse-16x9-SG.png?w=1200",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:53:25+00:00"
+  }
 }

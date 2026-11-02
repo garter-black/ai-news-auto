@@ -55,15 +55,21 @@
   "videoTitle": "今日の「できた」を体験！ It's My Day サッカーイベントを開催",
   "publishedAt": "2026-10-27T01:41:44+00:00",
   "generatedAt": "2026-10-27T01:51:53.172207+00:00",
-  "thumbnail": "https://prcdn.freetls.fastly.net/release_image/20802/340/20802-340-060ab21dde42aebefce6f7c56902a232-3900x2600.jpg?format=jpeg&auto=webp&fit=bounds&width=2400&height=1260",
+  "thumbnail": "https://ai-tech-express.jp/img/asics-vissel-kobe-its-my-day-event-d0732769.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "originalTitle": "アシックスがヴィッセル神戸戦で子ども向けサッカーイベントを開催",
   "titleRewritten": true,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "アシックスジャパン株式会社",
     "provider": "PR TIMES",
-    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000340.000020802.html"
+    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000340.000020802.html",
+    "original": "https://prcdn.freetls.fastly.net/release_image/20802/340/20802-340-060ab21dde42aebefce6f7c56902a232-3900x2600.jpg?format=jpeg&auto=webp&fit=bounds&width=2400&height=1260",
+    "width": 1200,
+    "height": 800,
+    "at": "2026-11-02T03:55:07+00:00",
+    "via": "PR TIMES"
   }
 }

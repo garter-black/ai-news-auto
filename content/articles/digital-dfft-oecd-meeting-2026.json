@@ -47,15 +47,20 @@
   "videoTitle": "三角デジタル監がDFFT Expert Community初の対面会合に出席しました",
   "publishedAt": "2026-10-28T06:04:22+00:00",
   "generatedAt": "2026-10-28T19:53:27.187741+00:00",
-  "thumbnail": "https://www.digital.go.jp/assets/contents/styles/body/public/node/basic_page/field_ref_images/664c482f-3164-48d2-a3ee-5f1cf415cd78/5f403177/20261029_01.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/digital-dfft-oecd-meeting-2026-08d5c430.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-28T06:04:22+00:00",
   "detectedAt": "2026-10-28T19:51:18+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "デジタル庁",
     "provider": "デジタル庁",
-    "sourceUrl": "https://www.digital.go.jp/press/664c482f-3164-48d2-a3ee-5f1cf415cd78"
+    "sourceUrl": "https://www.digital.go.jp/press/664c482f-3164-48d2-a3ee-5f1cf415cd78",
+    "original": "https://www.digital.go.jp/assets/contents/styles/body/public/node/basic_page/field_ref_images/664c482f-3164-48d2-a3ee-5f1cf415cd78/5f403177/20261029_01.jpg",
+    "width": 1190,
+    "height": 666,
+    "at": "2026-11-02T03:50:41+00:00"
   }
 }

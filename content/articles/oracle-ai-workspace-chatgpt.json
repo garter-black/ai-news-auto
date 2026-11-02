@@ -59,7 +59,7 @@
   "videoTitle": "オラクルの機能がChatGPTで利用可能に 複数システムをまたぐ業務をAIで自動化",
   "publishedAt": "2026-11-01T22:00:00+00:00",
   "generatedAt": "2026-11-01T22:39:49.872018+00:00",
-  "thumbnail": "https://kn.itmedia.co.jp/kn/article/ogp/2611/02/2000002740/10010972/2048",
+  "thumbnail": "https://ai-tech-express.jp/img/oracle-ai-workspace-chatgpt-8ef1a2b8.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "relatedSlugs": [
@@ -72,8 +72,11 @@
   "fastLane": true,
   "speedMinutes": 44,
   "imageCredit": {
-    "kind": "source",
-    "provider": "ITmedia",
-    "sourceUrl": "https://kn.itmedia.co.jp/kn/article/2611/02/2000002740/"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A person viewed from behind sits at a modern office desk, typing on a laptop that displays a stylized AI chat interface, with soft daylight streaming in through a nearby window.",
+    "provider": "Cloudflare Workers AI",
+    "original": "https://kn.itmedia.co.jp/kn/article/ogp/2611/02/2000002740/10010972/2048",
+    "at": "2026-11-02T03:40:59+00:00"
   }
 }

@@ -54,14 +54,19 @@
   "videoTitle": "See what 5 builders are making with Gemini 4 Argon",
   "publishedAt": "2026-10-23T16:00:00+00:00",
   "generatedAt": "2026-10-26T09:34:44.344091+00:00",
-  "thumbnail": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/5buildersArgon_Hero.width-2200.format-webp.webp",
+  "thumbnail": "https://ai-tech-express.jp/img/gemini-4-argon-google-builders-5862d5a2.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "originalTitle": "Googleの新フロンティアモデル「Gemini 4 Argon」が開発者向けに提供開始",
   "titleRewritten": true,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Google",
     "provider": "Google公式ブログ（Gemini）",
-    "sourceUrl": "https://blog.google/products-and-platforms/products/gemini/gemini-4-argon-builders/"
+    "sourceUrl": "https://blog.google/products-and-platforms/products/gemini/gemini-4-argon-builders/",
+    "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/5buildersArgon_Hero.width-2200.format-webp.webp",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:58:40+00:00"
   }
 }

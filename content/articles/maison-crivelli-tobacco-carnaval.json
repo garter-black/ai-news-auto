@@ -53,15 +53,21 @@
   "videoTitle": "人生と体験の断片から香りを生み出す〈メゾン クリヴェリ〉の新作「トバコ カルナヴァル」が誕生",
   "publishedAt": "2026-10-26T14:40:02+00:00",
   "generatedAt": "2026-10-26T14:53:20.198740+00:00",
-  "thumbnail": "https://prcdn.freetls.fastly.net/release_image/3907/856/3907-856-8cefae24a8f97adb4597baa3acac6ac1-3900x2041.png?format=jpeg&auto=webp&fit=bounds&width=2400&height=1260",
+  "thumbnail": "https://ai-tech-express.jp/img/maison-crivelli-tobacco-carnaval-17f94afc.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "originalTitle": "メゾン クリヴェリの新作香水「トバコ カルナヴァル」が登場、阪急うめだ本店で先行発売",
   "titleRewritten": true,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "ブルーベル・ジャパン株式会社",
     "provider": "PR TIMES",
-    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000856.000003907.html"
+    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000856.000003907.html",
+    "original": "https://prcdn.freetls.fastly.net/release_image/3907/856/3907-856-8cefae24a8f97adb4597baa3acac6ac1-3900x2041.png?format=jpeg&auto=webp&fit=bounds&width=2400&height=1260",
+    "width": 1200,
+    "height": 628,
+    "at": "2026-11-02T03:57:01+00:00",
+    "via": "PR TIMES"
   }
 }

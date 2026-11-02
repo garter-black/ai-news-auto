@@ -55,15 +55,20 @@
   "videoTitle": "スマホやSNSの「わが家のルール」を考えるきっかけに。大分県内120校の子どもたちに伝える情報モラル",
   "publishedAt": "2026-10-27T06:09:16+00:00",
   "generatedAt": "2026-10-27T21:22:26.908390+00:00",
-  "thumbnail": "https://cdn.image.st-hatena.com/image/scale/daf5a66bb473d6a2e296d4e18f9ba1a0e1b591ba/backend=imagemagick;version=1;width=1300/https%3A%2F%2Fcdn-ak.f.st-hatena.com%2Fimages%2Ffotolife%2FS%2FSB_keiko_kubojima%2F20261027%2F20261027152535.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/softbank-net-safety-education-oita-d203e050.jpg",
   "model": "gemini-3.1-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-27T06:09:16+00:00",
   "detectedAt": "2026-10-27T21:21:02+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "ソフトバンク",
     "provider": "ソフトバンクニュース",
-    "sourceUrl": "https://www.softbank.jp/sbnews/entry/20261027_02"
+    "sourceUrl": "https://www.softbank.jp/sbnews/entry/20261027_02",
+    "original": "https://cdn.image.st-hatena.com/image/scale/daf5a66bb473d6a2e296d4e18f9ba1a0e1b591ba/backend=imagemagick;version=1;width=1300/https%3A%2F%2Fcdn-ak.f.st-hatena.com%2Fimages%2Ffotolife%2FS%2FSB_keiko_kubojima%2F20261027%2F20261027152535.jpg",
+    "width": 1200,
+    "height": 800,
+    "at": "2026-11-02T03:53:35+00:00"
   }
 }

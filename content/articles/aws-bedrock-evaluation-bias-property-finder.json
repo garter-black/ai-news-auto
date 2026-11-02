@@ -54,7 +54,7 @@
   "videoTitle": "Fix evaluation bias to unlock better models on Amazon Bedrock",
   "publishedAt": "2026-10-27T16:53:02+00:00",
   "generatedAt": "2026-10-27T17:37:00.079470+00:00",
-  "thumbnail": "https://d1.awsstatic.com/onedam/marketing-channels/website/aws/en_US/homepage/global-nav/building-30-day-challenge.fbb950fa275e28193955202b94c04d0125135ecc.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/aws-bedrock-evaluation-bias-property-finder-e2826a5e.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -62,8 +62,13 @@
   "detectedAt": "2026-10-27T17:31:05+00:00",
   "speedMinutes": 48,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "AWS",
     "provider": "AWS Machine Learning Blog",
-    "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/fix-evaluation-bias-to-unlock-better-models-on-amazon-bedrock/"
+    "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/fix-evaluation-bias-to-unlock-better-models-on-amazon-bedrock/",
+    "original": "https://d1.awsstatic.com/onedam/marketing-channels/website/aws/en_US/homepage/global-nav/building-30-day-challenge.fbb950fa275e28193955202b94c04d0125135ecc.jpg",
+    "width": 1200,
+    "height": 900,
+    "at": "2026-11-02T03:53:55+00:00"
   }
 }

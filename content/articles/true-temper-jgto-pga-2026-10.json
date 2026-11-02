@@ -46,13 +46,19 @@
   "videoTitle": "【ツアー報告】JGTOでDynamic Goldが今季2勝目を支える、PGAツアーは使用選手がプレーオフ進出",
   "publishedAt": "2026-10-26T23:40:02+00:00",
   "generatedAt": "2026-10-27T00:02:13.351978+00:00",
-  "thumbnail": "https://prcdn.freetls.fastly.net/release_image/182292/26/182292-26-8f847176b1bdda9a73fd8df64f4e3cba-1920x1080.jpg?format=jpeg&auto=webp&fit=bounds&width=2400&height=1260",
+  "thumbnail": "https://ai-tech-express.jp/img/true-temper-jgto-pga-2026-10-87bacb75.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "トゥルーテンパースポーツインクジャパン",
     "provider": "PR TIMES",
-    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000026.000182292.html"
+    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000026.000182292.html",
+    "original": "https://prcdn.freetls.fastly.net/release_image/182292/26/182292-26-8f847176b1bdda9a73fd8df64f4e3cba-1920x1080.jpg?format=jpeg&auto=webp&fit=bounds&width=2400&height=1260",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:55:31+00:00",
+    "via": "PR TIMES"
   }
 }

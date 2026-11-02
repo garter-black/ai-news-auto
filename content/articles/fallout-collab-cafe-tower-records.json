@@ -55,7 +55,7 @@
   "videoTitle": "ウェイストランド体験を表参道で！「Fallout」× TOWER RECORDS CAFE コラボ先行体験をファンの声とともにお届け",
   "publishedAt": "2026-10-30T02:52:32+00:00",
   "generatedAt": "2026-10-30T03:42:28.996583+00:00",
-  "thumbnail": "https://xboxwire.thesourcemediaassets.com/sites/10/2026/10/DSC_3901-4ebce68ab53250cf7dbd.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/fallout-collab-cafe-tower-records-93441e53.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -63,8 +63,13 @@
   "detectedAt": "2026-10-30T03:41:18+00:00",
   "speedMinutes": 54,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Xbox",
     "provider": "Xbox Wire Japan",
-    "sourceUrl": "https://news.xbox.com/ja-jp/2026/10/30/fallout-collab-cafe-tower-records-omotesando/"
+    "sourceUrl": "https://news.xbox.com/ja-jp/2026/10/30/fallout-collab-cafe-tower-records-omotesando/",
+    "original": "https://xboxwire.thesourcemediaassets.com/sites/10/2026/10/DSC_3901-4ebce68ab53250cf7dbd.jpg",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:46:26+00:00"
   }
 }

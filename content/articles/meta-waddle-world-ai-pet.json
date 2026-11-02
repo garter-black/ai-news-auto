@@ -58,7 +58,7 @@
   "videoTitle": "Meta quietly launched Waddle World, a Tamagotchi-like, AI pet-rearing game, in the Philippines in September, calling it a \"daily journal disguised as a pet\"",
   "publishedAt": "2026-10-28T12:05:01+00:00",
   "generatedAt": "2026-10-28T12:08:34.880914+00:00",
-  "thumbnail": "https://www.engadget.com/img/gallery/metas-waddle-world-is-a-tamagotchi-like-ai-digital-pet-app/l-intro-1793176733.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/meta-waddle-world-ai-pet-ca16504c.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "relatedSlugs": [
@@ -73,8 +73,16 @@
   "fastLane": true,
   "speedMinutes": 7,
   "imageCredit": {
-    "kind": "source",
-    "provider": "Engadget",
-    "sourceUrl": "https://www.engadget.com/2299227/meta-tamagotchi-like-ai-digital-pet-app-waddle-world/"
+    "kind": "stock",
+    "title": "Hand Holding Mobile Phone Snap Taking Photo (40821291134)",
+    "creator": "Rawpixel Ltd",
+    "creatorUrl": "",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "provider": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hand_Holding_Mobile_Phone_Snap_Taking_Photo_(40821291134).jpg",
+    "query": "hand holding phone",
+    "original": "https://www.engadget.com/img/gallery/metas-waddle-world-is-a-tamagotchi-like-ai-digital-pet-app/l-intro-1793176733.jpg",
+    "at": "2026-11-02T03:52:46+00:00"
   }
 }

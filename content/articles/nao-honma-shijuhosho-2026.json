@@ -47,7 +47,7 @@
   "videoTitle": "国立天文台水沢VLBI観測所長 本間希樹教授が紫綬褒章を受章 - ニュース",
   "publishedAt": "2026-11-02T01:00:00+00:00",
   "generatedAt": "2026-11-02T01:01:04.266552+00:00",
-  "thumbnail": "https://www.nao.ac.jp/contents/news/topics/2026/20261102-honma-ogp.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/nao-honma-shijuhosho-2026-170db314.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -55,8 +55,13 @@
   "detectedAt": "2026-11-02T01:00:48+00:00",
   "speedMinutes": 5,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "国立天文台",
     "provider": "国立天文台",
-    "sourceUrl": "https://www.nao.ac.jp/news/topics/2026/20261102-honma.html"
+    "sourceUrl": "https://www.nao.ac.jp/news/topics/2026/20261102-honma.html",
+    "original": "https://www.nao.ac.jp/contents/news/topics/2026/20261102-honma-ogp.jpg",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:39:46+00:00"
   }
 }

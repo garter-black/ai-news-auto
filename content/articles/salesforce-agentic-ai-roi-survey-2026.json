@@ -55,15 +55,20 @@
   "videoTitle": "Salesforce、「企業におけるエージェント型AI最新事情」（第1版）の日本語版を公開",
   "publishedAt": "2026-10-27T01:00:00+00:00",
   "generatedAt": "2026-10-27T16:16:03.045046+00:00",
-  "thumbnail": "https://www.salesforce.com/jp/news/wp-content/uploads/sites/21/2026/08/Copy-of-789_0826_T08_First-To-Launch-Isnt-Fastest-to-ROI-Per-New-Study-of-22025-Agentic-AI-Leaders_c_v3_082726.png",
+  "thumbnail": "https://ai-tech-express.jp/img/salesforce-agentic-ai-roi-survey-2026-137e7587.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-27T01:00:00+00:00",
   "detectedAt": "2026-10-27T16:05:08+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "Salesforce",
     "provider": "Salesforce ニュース（日本）",
-    "sourceUrl": "https://www.salesforce.com/jp/news/stories/agentic-ai-leaders-survey-on-roi/"
+    "sourceUrl": "https://www.salesforce.com/jp/news/stories/agentic-ai-leaders-survey-on-roi/",
+    "original": "https://www.salesforce.com/jp/news/wp-content/uploads/sites/21/2026/08/Copy-of-789_0826_T08_First-To-Launch-Isnt-Fastest-to-ROI-Per-New-Study-of-22025-Agentic-AI-Leaders_c_v3_082726.png",
+    "width": 1200,
+    "height": 676,
+    "at": "2026-11-02T03:54:18+00:00"
   }
 }

@@ -58,7 +58,7 @@
   "videoTitle": "DeepSeek open sources Super-Agent as a research prototype, a proactive coding agent it says can monitor group chats for coding issues and suggest solutions",
   "publishedAt": "2026-11-01T05:00:13+00:00",
   "generatedAt": "2026-11-01T05:07:46.947644+00:00",
-  "thumbnail": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/ihTLLfWiDBA0/v1/1200x853.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/deepseek-super-agent-coding-prototype-e891c9ab.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "relatedSlugs": [
@@ -72,8 +72,16 @@
   "fastLane": true,
   "speedMinutes": 11,
   "imageCredit": {
-    "kind": "source",
-    "provider": "ブルームバーグ",
-    "sourceUrl": "https://www.bloomberg.com/news/articles/2026-11-01/deepseek-drops-enhanced-coding-agent-with-aim-to-rival-anthropic"
+    "kind": "stock",
+    "title": "Laptop Programmcode",
+    "creator": "Negative Space",
+    "creatorUrl": "",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "provider": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Laptop_Programmcode.jpg",
+    "query": "programming laptop",
+    "original": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/ihTLLfWiDBA0/v1/1200x853.jpg",
+    "at": "2026-11-02T03:43:22+00:00"
   }
 }

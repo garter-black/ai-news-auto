@@ -53,15 +53,20 @@
   "videoTitle": "PS5®︎『Marvel’s Wolverine』フォトモードガイド！",
   "publishedAt": "2026-10-26T13:08:46+00:00",
   "generatedAt": "2026-10-26T18:12:16.546722+00:00",
-  "thumbnail": "https://blog.ja.playstation.com/tachyon/sites/7/2026/10/7809d39f54c1b8f313878ff0c1972c17abdbf3a2.jpg?resize=1920%2C1080&zoom=1",
+  "thumbnail": "https://ai-tech-express.jp/img/ps5-marvels-wolverine-photo-mode-guide-0b3d70e7.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "originalTitle": "PS5『Marvel’s Wolverine』のフォトモード徹底活用術",
   "titleRewritten": true,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "PlayStation",
     "provider": "PlayStation.Blog 日本語",
-    "sourceUrl": "https://blog.ja.playstation.com/2026/10/26/20261026-marvels-wolverine-photo-mode-o/"
+    "sourceUrl": "https://blog.ja.playstation.com/2026/10/26/20261026-marvels-wolverine-photo-mode-o/",
+    "original": "https://blog.ja.playstation.com/tachyon/sites/7/2026/10/7809d39f54c1b8f313878ff0c1972c17abdbf3a2.jpg?resize=1920%2C1080&zoom=1",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T03:56:12+00:00"
   }
 }

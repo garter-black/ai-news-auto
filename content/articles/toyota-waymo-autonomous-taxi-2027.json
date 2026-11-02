@@ -47,7 +47,7 @@
   "videoTitle": "トヨタ自動車とWaymo、安全な交通社会とすべての人の移動の自由に向け、自動運転分野における協業を拡大 -Waymoの自動運転タクシーに使用するトヨタbZ4Xの運行を、2027年に日本で開始-",
   "publishedAt": "2026-10-30T07:00:00+00:00",
   "generatedAt": "2026-10-30T07:11:39.440880+00:00",
-  "thumbnail": "https://global.toyota/pages/news/images/2026/10/30/1600/20261030_01_ogp.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/toyota-waymo-autonomous-taxi-2027-1d091dfc.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -55,8 +55,13 @@
   "detectedAt": "2026-10-30T07:10:52+00:00",
   "speedMinutes": 15,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "トヨタ自動車",
     "provider": "トヨタ自動車 グローバルニュースルーム",
-    "sourceUrl": "https://global.toyota/jp/newsroom/corporate/44960910.html"
+    "sourceUrl": "https://global.toyota/jp/newsroom/corporate/44960910.html",
+    "original": "https://global.toyota/pages/news/images/2026/10/30/1600/20261030_01_ogp.jpg",
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-02T03:46:01+00:00"
   }
 }
