@@ -1,4 +1,4 @@
-import type { Bundle, StoryItem } from "@/components/story/SwipeDeck";
+import type { Bundle, RailBundle, StoryItem } from "@/components/story/SwipeDeck";
 import { coverPath, getAllArticles, type ArticleSummary } from "@/lib/articles";
 import { COMPANIES, companyOf } from "@/lib/companies";
 import { easyGist } from "@/lib/general";
@@ -209,4 +209,12 @@ export function getStoryBundles(now: number = Date.now()): Bundle[] {
       items: d.items.map((x) => toItem(x.a, x.at)),
     };
   });
+}
+
+/**
+ * トップの丸の一覧用の軽い束（components/story/SwipeDeck.tsx の RailBundle）。
+ * 要約・要点はトップの HTML に載せず、丸を開くときに /stories.json（app/stories.json/route.ts）から読む
+ */
+export function getStoryRailBundles(now: number = Date.now()): RailBundle[] {
+  return getStoryBundles(now).map(({ items, ...rest }) => ({ ...rest, items: items.map(({ slug, title, image, at }) => ({ slug, title, image, at })) }));
 }

@@ -9,7 +9,7 @@ import { smallThumb } from "@/lib/thumb-url";
 import Timeline from "@/components/Timeline";
 import RailRanking from "@/components/rail/RailRanking";
 import StoryRail from "@/components/story/SwipeDeck";
-import { getStoryBundles } from "@/lib/stories";
+import { getStoryRailBundles } from "@/lib/stories";
 import { offerForArticle } from "@/lib/offers";
 import { getAllArticles, getAllGenres, tagSlug, type ArticleSummary } from "@/lib/articles";
 import { companyCounts, thumbSource } from "@/lib/companies";
@@ -60,7 +60,7 @@ export default function HomePage() {
   // 以前扱っていた分野（不動産・投資など）。幅広い話題は「ニュース」側に出すので除く
   const otherGenres = getAllGenres().filter((g) => g.slug !== "ai" && !isBroadGenre(g.slug));
 
-  const bundles = getStoryBundles();
+  const bundles = getStoryRailBundles();
 
   return (
     <>
