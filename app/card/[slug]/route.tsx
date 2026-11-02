@@ -7,6 +7,7 @@ import { getAllArticles, getArticle, type FullArticle } from "@/lib/articles";
 import { companyOf } from "@/lib/companies";
 import { fetchPhoto } from "@/lib/cover";
 import { renderCardDesign, type CardDesign } from "@/lib/card-designs";
+import { siteConfig } from "@/site.config";
 
 /**
  * どのカードを出すか。"tall" は今の縦長（見出し＋要点3つ）。
@@ -155,7 +156,9 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
   } catch (error) {
     // 図解が描けないときはカバー画像に回す（投稿の画像が欠けないように）
     console.error(`[card] fallback: ${slug}`, error);
-    return Response.redirect(new URL(`/cover/${slug}`, _request.url), 302);
+    // 転送先はサイトの URL で組む（request.url だとビルド時の事前生成で http://localhost:3000 になり、
+    // それが1週間キャッシュされて Buffer が画像を取れなかった。2026-11-03 の「Image could not be read from its URL」）
+    return Response.redirect(new URL(`/cover/${slug}`, siteConfig.url), 302);
   }
 }
 
