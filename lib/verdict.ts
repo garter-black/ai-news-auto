@@ -118,10 +118,21 @@ export const JAPAN_LABEL: Record<Verdict["japan"], string> = {
   unknown: "記載なし",
 };
 
-/** 提供前の製品で「日本では未提供」と出すと日本だけ除外されたように読めるので「提供前」にする */
+/**
+ * 「日本から使える？」の欄。
+ * 提供前の製品で「日本では未提供」と出すと日本だけ除外されたように読めるので「提供前」にする。
+ * ただし日本での扱いが分からない（unknown）ときは「提供前」と言い切らない（本文が「順次提供されています」と書いていることがある。
+ * 2026-11-03 の点検で見つかった食い違い。生成時にも scripts/quality.py の align_verdict で本文にそろえる）
+ */
 export function japanLabel(verdict: Verdict): string {
-  if (verdict.status === "soon" || verdict.status === "demo") {
-    return verdict.japan === "ok" ? "日本でも提供予定" : "提供前";
+  if (verdict.status === "soon") {
+    if (verdict.japan === "ok") return "日本でも提供予定";
+    if (verdict.japan === "partial") return "条件付きで提供予定";
+    if (verdict.japan === "unknown") return "日本は未確認";
+    return "提供前";
+  }
+  if (verdict.status === "demo") {
+    return verdict.japan === "ok" ? "日本でも提供予定" : verdict.japan === "unknown" ? "日本は未確認" : "提供前";
   }
   return JAPAN_LABEL[verdict.japan];
 }

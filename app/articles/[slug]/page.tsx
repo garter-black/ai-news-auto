@@ -159,6 +159,9 @@ export default async function ArticlePage({ params }: Props) {
   const howto = guide ? undefined : howtoForArticle(article);
   const verdict = verdictOf(article);
   const cardKind = verdictKind(article);
+  // 同じ発表の重複記事（scripts/story.py の duplicateOf）は、代表の記事へ案内する（検索では代表だけを出す）
+  const mainArticle =
+    article.duplicateOf && article.duplicateOf !== article.slug ? getArticleSummary(article.duplicateOf) : undefined;
   const workMoney = workMoneyOf(article.workMoney);
   // 同じ製品の料金・使い方ガイドへの固定の案内（要点のすぐ下と、本文の料金の章の下。lib/guide-links.ts）
   const guideLinks = guideLinksForArticle(article);
@@ -509,6 +512,15 @@ export default async function ArticlePage({ params }: Props) {
             </p>
           )}
 
+          {mainArticle && (
+            <p className="mt-4 rounded-sm border border-line bg-surface px-4 py-3 text-note text-ink-soft">
+              同じ話題をまとめた記事があります：
+              <Link href={`/articles/${mainArticle.slug}`} className="ml-1 font-bold text-accent underline underline-offset-4">
+                {mainArticle.title}
+              </Link>
+            </p>
+          )}
+
           <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-meta text-muted">
             {/* ステマ規制（景品表示法）に沿い、広告を含みうる全記事の冒頭で明示する */}
             <span className="rounded-sm bg-surface px-2 py-0.5 text-badge font-bold">
@@ -817,7 +829,6 @@ export default async function ArticlePage({ params }: Props) {
                 {video ? "元動画を見る" : "元記事を読む"}
               </a>
             )}
-            （解析モデル: {article.model}）
             <span className="mt-1.5 block">
               制作方法と事実確認の手順は
               <Link href="/editorial-policy" className="mx-1 text-accent underline">

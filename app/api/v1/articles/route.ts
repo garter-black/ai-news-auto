@@ -28,7 +28,6 @@ function serialize(article: FullArticle, includeBody: boolean) {
     thumbnail: article.thumbnail,
     publishedAt: article.publishedAt,
     generatedAt: article.generatedAt,
-    model: article.model,
     charCount: article.body.length,
     affiliateCount: article.affiliates.length,
   };
