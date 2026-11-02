@@ -109,6 +109,11 @@ class PageCandidatesTest(unittest.TestCase):
 
 
 class AiImageTest(unittest.TestCase):
+    def test_objects_only_scene(self):
+        scene = images.objects_only_scene({"scene": "A meeting room where businessmen review a price chart, soft light"}, {})
+        self.assertNotIn("businessmen", scene)
+        self.assertIn("no people", scene)
+
     @unittest.skipIf(images.Image is None, "Pillow が無い")
     def test_trim_dark_band(self):
         image = images.Image.new("RGB", (400, 210), (120, 140, 160))

@@ -1717,6 +1717,13 @@ def trim_dark_band(image):
     return image.crop((0, 0, w, h - cut)) if cut >= 3 else image
 
 
+def objects_only_scene(plan: dict, article: dict) -> str:
+    """人の写らない場面（物・建物・場所だけ）。元の場面の言葉に「人を描かない」をはっきり足す"""
+    scene = plan.get("scene") or ", ".join(plan.get("queries") or []) or article.get("genre", "")
+    scene = re.sub(r"\b(people|person|persons|man|men|woman|women|workers?|staff|employees?|businessm[ae]n|crowd|team|hands?|figures?)\b[^.,]*", "", scene, flags=re.I)
+    return f"{scene.strip(' ,.')}. A still life of objects and places only: absolutely no people, no hands, no faces, no silhouettes."
+
+
 def shows_face(image) -> bool:
     """人の顔（ぼけた背景の人も含む）か、文字・文字のような落書きが写っているか（判定できないときは False）"""
     face = cf_vision(image, "Can you see any human face in this image, including people in the background (not just hands or a pure back view)? Answer yes or no.", max_tokens=5)
@@ -1895,6 +1902,8 @@ def process(path: Path, article: dict, ctx: dict) -> str:
         if best:
             return use_official(path, article, ctx, best, official)
         return "error"
+    if ctx.get("scene"):
+        plan["scene"] = ctx["scene"]
     log(f"   [img] 検索語: {plan['queries']} / {plan.get('query_ja')} ({plan['model']})")
 
     credit: dict = {}
@@ -1902,8 +1911,12 @@ def process(path: Path, article: dict, ctx: dict) -> str:
     # 2. AI 生成（前からの写真風のプロンプト。話題を問わない。実在の人物は描かない。1日 IMAGE_AI_DAILY_MAX 枚まで）
     if not ctx.get("retry_ai"):
         made = None
-        for _ in range(2):
-            made = generate_ai(plan, article, fast=ctx.get("fast", False))
+        for attempt in range(3):
+            # 2回とも顔・文字が出たら、最後は「人を描かない・物だけ」の場面で1回だけ作る
+            use = plan if attempt < 2 else {**plan, "scene": objects_only_scene(plan, article)}
+            if attempt == 2:
+                log("   [img] 人を描かない場面で作り直す")
+            made = generate_ai(use, article, fast=ctx.get("fast", False))
             # 人の顔・文字の写った画像は使わない（実在の人物と誤解される・作り物の人物や崩れた文字を載せない）。1回だけ作り直す
             if made and shows_face(made[0]):
                 log("   [img] AI 画像に人の顔か文字が写ったので作り直す")
@@ -2041,6 +2054,7 @@ def main() -> int:
     parser.add_argument("--ai-only", action="store_true", help="素材を探さず AI 生成だけ（確認用）")
     parser.add_argument("--recheck-source", action="store_true", help="元記事の写真を採用した記事を今の基準で見直す")
     parser.add_argument("--repick-hours", type=float, default=0, help="この時間以内の記事で、フリー素材・AI 生成・数字の図にした画像を今の基準で選び直す")
+    parser.add_argument("--scene", help="AI 生成の場面（英語）をこの文にする（--slug で1本だけ直すとき用）")
     parser.add_argument("--report", help="記事ごとの結果（JSON Lines）をこのファイルに書く（確認用）")
     parser.add_argument("--retry-ai", action="store_true", help="AI 生成の画像の記事でフリー素材を探し直す（見つからなければそのまま）")
     parser.add_argument("--cache-official", action="store_true", help="外部の写真を直リンクしている記事を直す（公式発表の写真は自前に保存、それ以外はフリー素材・AI 生成に）")
@@ -2081,6 +2095,7 @@ def main() -> int:
         "defer_hours": args.defer_hours,
         "retry_ai": args.retry_ai,
         "repick": bool(args.slug or args.repick_hours),
+        "scene": args.scene or "",
     }
 
     if args.variants:
