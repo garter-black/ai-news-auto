@@ -6729,6 +6729,14 @@
       "slug": "kddi-london-datacenter-expansion",
       "url": "https://newsroom.kddi.com/news/detail/kddi_nr-1222_4792.html"
     },
+    "6f9832433932a9cb": {
+      "at": "2026-11-02T01:21:04.861459+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "entertainment",
+      "slug": "piggparty-tougen-anki-collab",
+      "url": "https://www.cyberagent.co.jp/news/detail/id=33965"
+    },
     "6fb118c02ff58754": {
       "at": "2026-10-29T05:12:44.876743+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -11367,53 +11375,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:42:12.426706+00:00",
-      "attempt": 1,
-      "id": "6f2d32bff0fd1b0c",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1727字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（352字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 134.2,
-        "avg_sentence": 48.3,
-        "long_share": 0.2,
-        "max_paragraph": 199,
-        "paragraphs": 9,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "kddi-topics",
-      "title": "KDDI MUSEUM、「KDDI南極アカデミー2026」を11月21日に開催"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:42:19.659793+00:00",
-      "attempt": 2,
-      "id": "6f2d32bff0fd1b0c",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1751字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（394字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 123.5,
-        "avg_sentence": 45.7,
-        "long_share": 0.259,
-        "max_paragraph": 192,
-        "paragraphs": 10,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "kddi-topics",
-      "title": "KDDI MUSEUM、「KDDI南極アカデミー2026」を11月21日に開催"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T02:42:27.120829+00:00",
@@ -18110,6 +18071,51 @@
       "score": 100,
       "source": "naoj",
       "title": "国立天文台水沢VLBI観測所長 本間希樹教授が紫綬褒章を受章 - ニュース"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T01:21:01.020666+00:00",
+      "attempt": 1,
+      "id": "6f9832433932a9cb",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 59.1字・60字超の文が 46% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 162.5字・最長 211字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 162.5,
+        "avg_sentence": 59.1,
+        "long_share": 0.455,
+        "max_paragraph": 211,
+        "paragraphs": 8,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "cyberagent",
+      "title": "アバターSNS「ピグパーティ」、TVアニメ『桃源暗鬼』とのコラボレーションを 11月2日より開催"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T01:21:04.861143+00:00",
+      "attempt": 0,
+      "id": "6f9832433932a9cb",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 146.7字・最長 201字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 146.7,
+        "avg_sentence": 40.0,
+        "long_share": 0.091,
+        "max_paragraph": 201,
+        "paragraphs": 9,
+        "sentences": 33
+      },
+      "score": 100,
+      "source": "cyberagent",
+      "title": "アバターSNS「ピグパーティ」、TVアニメ『桃源暗鬼』とのコラボレーションを 11月2日より開催"
     }
   ],
   "short_text_retry": {}
