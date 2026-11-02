@@ -8176,6 +8176,14 @@
       "skipped": true,
       "url": "https://www.soumu.go.jp/main_sosiki/singi/kanmin/02shingi06_02001103.html"
     },
+    "97aa33a82ef0eed4": {
+      "at": "2026-11-02T04:11:23.552459+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "google-pixel-11-pro-food-photography",
+      "url": "https://www.softbank.jp/sbnews/entry/20261102_01"
+    },
     "97e3f097f9d91591": {
       "at": "2026-11-02T03:51:18.941129+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（周年）",
@@ -11202,6 +11210,14 @@
       "skipped": true,
       "url": "https://www.atpress.ne.jp/news/637609"
     },
+    "f61a06ff1934df84": {
+      "at": "2026-11-02T04:11:30.178023+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "boj-current-account-october",
+      "url": "http://www.boj.or.jp/statistics/boj/fm/juqf/juqf10.xlsx"
+    },
     "f682eb9635b69ed3": {
       "at": "2026-10-27T03:04:42.977762+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（受賞）",
@@ -11552,76 +11568,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:02:19.990828+00:00",
-      "attempt": 1,
-      "id": "10e39f3c465923ee",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1716字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（369字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 86.2,
-        "avg_sentence": 56.2,
-        "long_share": 0.348,
-        "max_paragraph": 145,
-        "paragraphs": 15,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "ipa",
-      "title": "「データ連携の仕組みに関するガイドラインの手引き サプライチェーン共通編」の2.0版を公開しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:02:26.632091+00:00",
-      "attempt": 2,
-      "id": "10e39f3c465923ee",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 58.0字・60字超の文が 29% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 126.5字・最長 259字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 126.5,
-        "avg_sentence": 58.0,
-        "long_share": 0.292,
-        "max_paragraph": 259,
-        "paragraphs": 11,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "ipa",
-      "title": "「データ連携の仕組みに関するガイドラインの手引き サプライチェーン共通編」の2.0版を公開しました"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T04:02:30.266683+00:00",
-      "attempt": 0,
-      "id": "10e39f3c465923ee",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 45.5字・60字超の文が 13% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 128.3字・最長 263字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 128.3,
-        "avg_sentence": 45.5,
-        "long_share": 0.129,
-        "max_paragraph": 263,
-        "paragraphs": 11,
-        "sentences": 31
-      },
-      "score": 100,
-      "source": "ipa",
-      "title": "「データ連携の仕組みに関するガイドラインの手引き サプライチェーン共通編」の2.0版を公開しました"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T04:22:06.150562+00:00",
@@ -18255,6 +18201,70 @@
       "score": 100,
       "source": "databricks-blog",
       "title": "Wealth Management Client Onboarding Needs More Than AI"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T04:11:19.154342+00:00",
+      "attempt": 1,
+      "id": "97aa33a82ef0eed4",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 57.1字・60字超の文が 52% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 96.4,
+        "avg_sentence": 57.1,
+        "long_share": 0.519,
+        "max_paragraph": 195,
+        "paragraphs": 16,
+        "sentences": 27
+      },
+      "score": 100,
+      "source": "softbank-news-ai",
+      "title": "スマホのAI編集×撮影テクニックで料理を美味しく魅せる！ プロが教える「Google Pixel」での撮影術"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T04:11:23.551942+00:00",
+      "attempt": 0,
+      "id": "97aa33a82ef0eed4",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 115.5字・最長 238字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 115.5,
+        "avg_sentence": 19.7,
+        "long_share": 0.0,
+        "max_paragraph": 238,
+        "paragraphs": 16,
+        "sentences": 94
+      },
+      "score": 100,
+      "source": "softbank-news-ai",
+      "title": "スマホのAI編集×撮影テクニックで料理を美味しく魅せる！ プロが教える「Google Pixel」での撮影術"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T04:11:30.177566+00:00",
+      "attempt": 1,
+      "id": "f61a06ff1934df84",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 114.9,
+        "avg_sentence": 43.8,
+        "long_share": 0.095,
+        "max_paragraph": 166,
+        "paragraphs": 8,
+        "sentences": 21
+      },
+      "score": 100,
+      "source": "boj",
+      "title": "日銀当座預金増減要因と金融調節（10月実績）"
     }
   ],
   "short_text_retry": {},

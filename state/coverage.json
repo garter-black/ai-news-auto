@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "boj-current-account-october",
+   "at": "2026-11-02T04:11:29.258565+00:00",
+   "title": "日本銀行が10月の日銀当座預金増減要因を発表、金融調節の動向を示す",
+   "head": "日本銀行が10月の日銀当座預金増減要因を発表、金融調節の動向を示す | 日銀当座預金増減要因と金融調節（10月実績）",
+   "text": "日本銀行が10月の日銀当座預金増減要因を発表、金融調節の動向を示す | 日銀当座預金増減要因と金融調節（10月実績） | 日本銀行 / 日銀当座預金 / 金融調節 / 資金需給 / 統計 / 日銀 / 金融政策 / ビジネス / 金融 / 統計 / 経済",
+   "urls": [
+    "http://www.boj.or.jp/statistics/boj/fm/juqf/juqf10.xlsx"
+   ]
+  },
+  {
+   "slug": "google-pixel-11-pro-food-photography",
+   "at": "2026-11-02T04:11:18.022760+00:00",
+   "title": "ソフトバンクが「Google Pixel 11 Pro」の料理撮影術を公開、AIでシズル感を高める活用法",
+   "head": "ソフトバンクが「Google Pixel 11 Pro」の料理撮影術を公開、AIでシズル感を高める活用法 | スマホのAI編集×撮影テクニックで料理を美味しく魅せる！ プロが教える「Google Pixel」での撮影術",
+   "text": "ソフトバンクが「Google Pixel 11 Pro」の料理撮影術を公開、AIでシズル感を高める活用法 | スマホのAI編集×撮影テクニックで料理を美味しく魅せる！ プロが教える「Google Pixel」での撮影術 | Google Pixel 11 Pro / 料理撮影 / AI編集 / ソフトバンクニュース / マジックキャプチャー / イマジネーション / カメラコーチ / シズル感 / 生成AI / スマートフォン / カメラ / Google",
+   "urls": [
+    "https://www.softbank.jp/sbnews/entry/20261102_01"
+   ]
+  },
+  {
    "slug": "databricks-wealth-management-onboarding",
    "at": "2026-11-02T03:51:14.363431+00:00",
    "title": "富裕層向け資産管理のAI導入はなぜ止まる？データ基盤『Databricks』が提唱する新プラットフォーム",
@@ -1269,26 +1289,6 @@
    "text": "東京都、廃棄物データ管理のDXツールを導入　プラスチックリサイクル高度化へ11月から実験 | 都事業所のプラスチックリサイクル高度化に向けて廃棄物データ管理DXツールを導入します | 東京都 / プラスチックリサイクル / DX / 廃棄物管理 / ゼロエミッション / サーキュラーエコノミー / pool / 環境対策 / 社会 / 行政 / 環境",
    "urls": [
     "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102711"
-   ]
-  },
-  {
-   "slug": "kddi-l4s-autonomous-driving-shiojiri",
-   "at": "2026-10-29T04:12:06.334391+00:00",
-   "title": "KDDIら9者、自動運転バスの遠隔監視で映像の乱れを抑える『L4S』技術を実証",
-   "head": "KDDIら9者、自動運転バスの遠隔監視で映像の乱れを抑える『L4S』技術を実証 | 自動運転の複数台運行を見守る、安定した映像伝送技術を実証",
-   "text": "KDDIら9者、自動運転バスの遠隔監視で映像の乱れを抑える『L4S』技術を実証 | 自動運転の複数台運行を見守る、安定した映像伝送技術を実証 | KDDI / 自動運転 / L4S / 遠隔監視 / ネットワークスライシング / 塩尻市 / スマートモビリティ / 実証実験 / 通信 / 自動運転 / IoT / モビリティ",
-   "urls": [
-    "https://newsroom.kddi.com/news/detail/kddi_nr-1217_4791.html"
-   ]
-  },
-  {
-   "slug": "google-gke-inference-gateway-4x-speed",
-   "at": "2026-10-29T03:52:29.038986+00:00",
-   "title": "GoogleのGKEにAI推論の加速機能、バッチ処理性能が最大4倍に向上",
-   "head": "GoogleのGKEにAI推論の加速機能、バッチ処理性能が最大4倍に向上 | ZenteiQ、llm-d を搭載した GKE Inference Gateway でバッチ推論のスループットを 4 倍に拡大",
-   "text": "GoogleのGKEにAI推論の加速機能、バッチ処理性能が最大4倍に向上 | ZenteiQ、llm-d を搭載した GKE Inference Gateway でバッチ推論のスループットを 4 倍に拡大 | GKE / Google Cloud / AI推論 / llm-d / 推論最適化 / Kubernetes / バッチ処理 / 科学基盤モデル / vLLM / 生成AI / LLM / クラウド / Google Cloud / Kubernetes",
-   "urls": [
-    "https://cloud.google.com/blog/ja/products/containers-kubernetes/zenteiq-scales-physical-ai-inference-4x-with-gke-and-llm-d/"
    ]
   }
  ]
