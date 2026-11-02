@@ -4126,6 +4126,12 @@
       "skipped": true,
       "url": "https://www.maff.go.jp/j/press/kanbo/anpo/261026.html"
     },
+    "1a7a57bebf08da6a": {
+      "at": "2026-11-02T11:31:10.843762+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（インターン）",
+      "skipped": true,
+      "url": "https://www.mof.go.jp/policy/international_policy/mdbs/ebrd/20261030233332.html"
+    },
     "1ab7b8f90bd7781e": {
       "at": "2026-10-30T10:12:55.958454+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -7507,6 +7513,14 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000059.000130865.html"
     },
+    "810f54c1a816500d": {
+      "at": "2026-11-02T11:31:30.190022+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "toyota-hydrogen-initiatives-2026",
+      "url": "https://toyotatimes.jp/newscast/216.html?padid=ag478_from_newsroom"
+    },
     "811d8b7ccb8ef441": {
       "at": "2026-10-28T19:33:35.835553+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（審議会）",
@@ -8494,6 +8508,13 @@
       "section": "lifestyle",
       "slug": "kirin-hyoketsu-gobobi-sparkling",
       "url": "https://www.kirinholdings.com/jp/newsroom/release/2026/1029_01.html"
+    },
+    "99bb573a7212de85": {
+      "at": "2026-11-02T11:31:22.784616+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "quality: 訳されていない英文が残っている（「The roles of central banks and central b…」）",
+      "skipped": true,
+      "url": "http://www.boj.or.jp/paym/intlact_pm/cpss/cpss261102a.htm"
     },
     "99e0e76bd5ab3b42": {
       "at": "2026-10-28T18:03:32.148088+00:00",
@@ -11999,73 +12020,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T07:51:37.313642+00:00",
-      "attempt": 2,
-      "id": "20ce38e970e73a0f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 65.7字・60字超の文が 62% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 172.5字・最長 221字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 172.5,
-        "avg_sentence": 65.7,
-        "long_share": 0.619,
-        "max_paragraph": 221,
-        "paragraphs": 8,
-        "sentences": 21
-      },
-      "score": 100,
-      "source": "boj",
-      "title": "総裁記者会見（10月30日）動画の配信開始"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T07:51:42.654444+00:00",
-      "attempt": 0,
-      "id": "20ce38e970e73a0f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 43.0,
-        "avg_sentence": 21.2,
-        "long_share": 0.0,
-        "max_paragraph": 79,
-        "paragraphs": 43,
-        "sentences": 87
-      },
-      "score": 100,
-      "source": "boj",
-      "title": "総裁記者会見（10月30日）動画の配信開始"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:11:02.347501+00:00",
-      "attempt": 1,
-      "id": "5d89b13d8af0e9fe",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1798字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（356字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 101.7,
-        "avg_sentence": 61.0,
-        "long_share": 0.48,
-        "max_paragraph": 161,
-        "paragraphs": 15,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "aws-japan-blog",
-      "title": "エージェント時代の運用：re:Invent 2026 の AIOps セッション"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T08:11:09.399113+00:00",
@@ -18581,6 +18535,70 @@
       "score": 100,
       "source": "mof",
       "title": "国債のオンチェーン対応に関する研究会"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T11:31:17.815522+00:00",
+      "attempt": 1,
+      "id": "99bb573a7212de85",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "訳されていない英文が残っている（「The roles of central banks and central b…」）"
+      ],
+      "readability": {
+        "avg_paragraph": 142.9,
+        "avg_sentence": 57.1,
+        "long_share": 0.4,
+        "max_paragraph": 239,
+        "paragraphs": 8,
+        "sentences": 20
+      },
+      "score": null,
+      "source": "boj",
+      "title": "CPMIが報告書「進化する決済システムにおける中央銀行および中央銀行マネーの役割」を公表"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T11:31:22.784584+00:00",
+      "attempt": 2,
+      "id": "99bb573a7212de85",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "訳されていない英文が残っている（「The roles of central banks and central b…」）"
+      ],
+      "readability": {
+        "avg_paragraph": 164.8,
+        "avg_sentence": 61.8,
+        "long_share": 0.375,
+        "max_paragraph": 278,
+        "paragraphs": 6,
+        "sentences": 16
+      },
+      "score": null,
+      "source": "boj",
+      "title": "CPMIが報告書「進化する決済システムにおける中央銀行および中央銀行マネーの役割」を公表"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T11:31:30.188926+00:00",
+      "attempt": 1,
+      "id": "810f54c1a816500d",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 105.4,
+        "avg_sentence": 43.9,
+        "long_share": 0.125,
+        "max_paragraph": 196,
+        "paragraphs": 10,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "toyota",
+      "title": "[トヨタイムズ記事] 物流、スポーツ、教育、食... 広がる水素の可能性"
     }
   ],
   "short_text_retry": {},
