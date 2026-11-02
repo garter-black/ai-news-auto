@@ -148,6 +148,15 @@ def design() -> str:
         return "A"
 
 
+def image_rev() -> str:
+    """lib/digest-design.ts の DIGEST_IMAGE_REV（画像URLの ?v=。無ければデザイン名）"""
+    try:
+        match = re.search(r'DIGEST_IMAGE_REV\s*=\s*"([A-Za-z0-9_-]+)"', DESIGN_FILE.read_text("utf-8"))
+        return match.group(1) if match else design()
+    except OSError:
+        return design()
+
+
 def edition(items: list[dict], when: datetime, heading: str) -> dict:
     jst = when.astimezone(JST)
     return {

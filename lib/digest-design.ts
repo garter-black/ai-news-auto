@@ -14,3 +14,6 @@ export type DigestDesign = "A" | "B" | "B1" | "B2" | "C" | "D1" | "D2" | "D3" | 
 export const DIGEST_DESIGNS: readonly DigestDesign[] = ["A", "B", "B1", "B2", "C", "D1", "D2", "D3", "D4", "E1", "E2"];
 
 export const DIGEST_DESIGN: DigestDesign = "E2";
+
+/** 画像の版。デザインや文字組みを変えたら上げる（画像URLの ?v= に入り、エッジ・SNS に古い画像が残らない）。scripts/digest_page.py も読む */
+export const DIGEST_IMAGE_REV = "E2-2";

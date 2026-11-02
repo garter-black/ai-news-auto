@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from "@/lib/content-fs";
 import { getArticleSummary, type ArticleSummary } from "@/lib/articles";
 import { COMPANIES, companyOf, type Company } from "@/lib/companies";
-import { DIGEST_DESIGN } from "@/lib/digest-design";
+import { DIGEST_IMAGE_REV } from "@/lib/digest-design";
 import { easyGist } from "@/lib/general";
 
 /**
@@ -150,5 +150,5 @@ export function digestSlashDate(digest: Pick<DigestData, "date">): string {
 
 export const digestPath = (id: string) => `/digest/${id}`;
 // ?v= にデザイン名を入れて、デザインを変えたときにエッジ・SNS のキャッシュに古い画像が残らないようにする（画面側は v を見ない）
-export const digestImagePath = (id: string) => `/digest/${id}/share.png?v=${DIGEST_DESIGN}`;
-export const digestCardPath = (id: string) => `/digest/${id}/card.png?v=${DIGEST_DESIGN}`;
+export const digestImagePath = (id: string) => `/digest/${id}/share.png?v=${DIGEST_IMAGE_REV}`;
+export const digestCardPath = (id: string) => `/digest/${id}/card.png?v=${DIGEST_IMAGE_REV}`;

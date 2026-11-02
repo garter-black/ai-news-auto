@@ -1077,10 +1077,10 @@ function DesignE2({ digest, photos }: Ctx, format: DigestFormat) {
     const sideW = width - bigW - GAP;
     const sideH = Math.floor((bodyH - GAP) / 2);
     const PAD = 32;
-    const num = 40;
+    const num = 62; // 番号は見出しの文字の高さくらい（2026/11/02 オーナー指摘）
     const topText = fitLines(top.headline, bigW - PAD * 2 - num - 14, 2, 66, 60, 16);
     const topBlock = Math.round(topText.lines.length * topText.size * 1.22) + 14 + 24;
-    const sideNum = 26;
+    const sideNum = 36;
     const sideFit = rest.map((s) => fitLines(s.headline, sideW - 36 - sideNum - 10, 2, 34, 30, 12));
     const sideSize = Math.min(...sideFit.map((f) => f.size));
     const sideLines = rest.map((s) => fitLines(s.headline, sideW - 36 - sideNum - 10, 2, sideSize, sideSize, 12).lines);
@@ -1091,7 +1091,7 @@ function DesignE2({ digest, photos }: Ctx, format: DigestFormat) {
           <div style={{ display: "flex", flexDirection: "column", width: bigW, height: bodyH }}>
             <EPhoto photo={photos[0]} story={top} width={bigW} height={bodyH - topBlock} />
             <div style={{ display: "flex", alignItems: "baseline", gap: 14, padding: `14px ${PAD}px 0` }}>
-              <div style={{ display: "flex", fontSize: num, fontWeight: 900, color: E_RED, width: num, flexShrink: 0 }}>1</div>
+              <div style={{ display: "flex", fontSize: num, fontWeight: 900, color: E_RED, width: Math.round(num * 0.68), lineHeight: 1.22, flexShrink: 0 }}>1</div>
               <Lines lines={topText.lines} size={topText.size} />
             </div>
           </div>
@@ -1102,7 +1102,7 @@ function DesignE2({ digest, photos }: Ctx, format: DigestFormat) {
                 <div key={story.slug} style={{ display: "flex", flexDirection: "column", width: sideW, height: sideH, background: E_BG }}>
                   <EPhoto photo={photos[i + 1]} story={story} width={sideW} height={sideH - block} />
                   <div style={{ display: "flex", alignItems: "baseline", gap: 10, padding: "8px 18px 0" }}>
-                    <div style={{ display: "flex", fontSize: sideNum, fontWeight: 900, color: E_RED, width: sideNum, flexShrink: 0 }}>{i + 2}</div>
+                    <div style={{ display: "flex", fontSize: sideNum, fontWeight: 900, color: E_RED, width: Math.round(sideNum * 0.68), lineHeight: 1.22, flexShrink: 0 }}>{i + 2}</div>
                     <Lines lines={sideLines[i]} size={sideSize} />
                   </div>
                 </div>
@@ -1115,13 +1115,13 @@ function DesignE2({ digest, photos }: Ctx, format: DigestFormat) {
   }
   const HEAD = 108;
   const SAFE = 48;
-  const num = 52;
+  const num = 86;
   const topPh = Math.round((width * 9) / 16);
   const topText = fitLines(top.headline, width - SAFE * 2 - num - 16, 2, 92, 84, 16);
   const topBlock = Math.round(topText.lines.length * topText.size * 1.22) + 22 + 28;
   const rowH = Math.floor((height - HEAD - topPh - topBlock - GAP * 2) / 2);
   const thumbW = Math.round((rowH * 16) / 9);
-  const rowNum = 40;
+  const rowNum = 56;
   const rowTextW = width - thumbW - 32 - SAFE - rowNum - 14;
   const rowFits = rest.map((s) => fitLines(s.headline, rowTextW, 2, 56, 50, 12));
   const rowSize = Math.min(...rowFits.map((f) => f.size));
@@ -1131,14 +1131,14 @@ function DesignE2({ digest, photos }: Ctx, format: DigestFormat) {
       <EHeader digest={digest} size={42} height={HEAD} pad={SAFE} />
       <EPhoto photo={photos[0]} story={top} width={width} height={topPh} />
       <div style={{ display: "flex", alignItems: "baseline", gap: 16, padding: `22px ${SAFE}px 0`, height: topBlock }}>
-        <div style={{ display: "flex", fontSize: num, fontWeight: 900, color: E_RED, width: num, flexShrink: 0 }}>1</div>
+        <div style={{ display: "flex", fontSize: num, fontWeight: 900, color: E_RED, width: Math.round(num * 0.68), lineHeight: 1.22, flexShrink: 0 }}>1</div>
         <Lines lines={topText.lines} size={topText.size} />
       </div>
       {rest.map((story, i) => (
         <div key={story.slug} style={{ display: "flex", height: rowH, marginTop: GAP, alignItems: "center", gap: 32 }}>
           <EPhoto photo={photos[i + 1]} story={story} width={thumbW} height={rowH} />
           <div style={{ display: "flex", alignItems: "baseline", gap: 14, width: rowTextW + rowNum + 14 }}>
-            <div style={{ display: "flex", fontSize: rowNum, fontWeight: 900, color: E_RED, width: rowNum, flexShrink: 0 }}>{i + 2}</div>
+            <div style={{ display: "flex", fontSize: rowNum, fontWeight: 900, color: E_RED, width: Math.round(rowNum * 0.68), lineHeight: 1.22, flexShrink: 0 }}>{i + 2}</div>
             <Lines lines={rowLines[i]} size={rowSize} />
           </div>
         </div>

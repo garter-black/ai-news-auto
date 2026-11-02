@@ -157,7 +157,7 @@ def plan(key: str, entry: dict) -> dict | None:
         if "/digest/" in page:
             return {"text": text, "link": tp.utm_link(page, "bluesky", "digest"),
                     "title": f"{text.splitlines()[0]}｜サイソクニュース", "desc": "直近のAIニュースを3本だけ。写真と要約つき。",
-                    "images": [f"{page.rstrip('/')}/share.png?v={md.dp.design()}", *covers]}
+                    "images": [f"{page.rstrip('/')}/share.png?v={md.dp.image_rev()}", *covers]}
         link = tp.utm_link(f"{tp.site_url()}/news", "bluesky", "digest")
         return {"text": text, "link": link, "title": "AIニュースまとめ｜サイソクニュース",
                 "desc": "直近のAIニュースを1分で。", "images": covers}
