@@ -3708,6 +3708,14 @@
       "skipped": true,
       "url": "https://www.kantei.go.jp/jp/105/actions/202610/26kaigi_cyber.html"
     },
+    "113b61fb4ffd8543": {
+      "at": "2026-11-02T14:52:12.361621+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "eurozone-gdp-2026-q3-slowdown",
+      "url": "https://www.nli-research.co.jp/topics_detail1/id=87234?site=nli"
+    },
     "1141940c31976119": {
       "at": "2026-10-28T17:56:11.096314+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12142,6 +12150,12 @@
       "slug": "hiroshima-u-glioblastoma-mri-ai",
       "url": "https://www.hiroshima-u.ac.jp/news/100822"
     },
+    "fffe65155421d33d": {
+      "at": "2026-11-02T14:51:29.992715+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（公募）",
+      "skipped": true,
+      "url": "http://www.mlit.go.jp/report/press/tokatsu01_hh_001048.html"
+    },
     "ffff32ebfd0624b0": {
       "at": "2026-10-29T18:35:20.173321+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12151,50 +12165,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:31:43.288714+00:00",
-      "attempt": 2,
-      "id": "8d5c737c495043c1",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（397字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 201.3,
-        "avg_sentence": 100.7,
-        "long_share": 0.556,
-        "max_paragraph": 572,
-        "paragraphs": 9,
-        "sentences": 18
-      },
-      "score": null,
-      "source": "ntt-news",
-      "title": "NTTインテグレーション、「PowerCloudNEXT」にIBM Power11対応メニューおよびローカルメニューを追加 ～最新基盤への対応と、メニュー拡充に"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:31:50.778233+00:00",
-      "attempt": 1,
-      "id": "0872902dfeb6a015",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1740字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 143.8,
-        "avg_sentence": 65.4,
-        "long_share": 0.545,
-        "max_paragraph": 229,
-        "paragraphs": 10,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "不正アクセスによる情報漏えい等の事案を踏まえたセキュリティ対策の徹底について（注意喚起）"
-    },
     {
       "accepted": true,
       "at": "2026-10-30T08:31:54.999561+00:00",
@@ -18706,6 +18676,48 @@
       "score": 100,
       "source": "apple-ml",
       "title": "Online Dense Reinforcement Learning with Planning-Grounding Agent for UI Navigat"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T14:52:09.226999+00:00",
+      "attempt": 1,
+      "id": "113b61fb4ffd8543",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 48.6字・60字超の文が 25% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 108.1,
+        "avg_sentence": 48.6,
+        "long_share": 0.25,
+        "max_paragraph": 139,
+        "paragraphs": 9,
+        "sentences": 20
+      },
+      "score": 100,
+      "source": "nli-research",
+      "title": "ユーロ圏ＧＤＰ（2026年7-9月期）－主要4か国はいずれも前期比伸び率が低下"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T14:52:12.360812+00:00",
+      "attempt": 0,
+      "id": "113b61fb4ffd8543",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 113.1,
+        "avg_sentence": 24.2,
+        "long_share": 0.0,
+        "max_paragraph": 145,
+        "paragraphs": 9,
+        "sentences": 42
+      },
+      "score": 100,
+      "source": "nli-research",
+      "title": "ユーロ圏ＧＤＰ（2026年7-9月期）－主要4か国はいずれも前期比伸び率が低下"
     }
   ],
   "short_text_retry": {},

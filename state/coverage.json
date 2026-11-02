@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "eurozone-gdp-2026-q3-slowdown",
+   "at": "2026-11-02T14:51:51.655171+00:00",
+   "title": "ユーロ圏GDP（2026年7-9月期）は前期比0.4%増、主要4か国で伸び率が低下",
+   "head": "ユーロ圏GDP（2026年7-9月期）は前期比0.4%増、主要4か国で伸び率が低下 | ユーロ圏ＧＤＰ（2026年7-9月期）－主要4か国はいずれも前期比伸び率が低下",
+   "text": "ユーロ圏GDP（2026年7-9月期）は前期比0.4%増、主要4か国で伸び率が低下 | ユーロ圏ＧＤＰ（2026年7-9月期）－主要4か国はいずれも前期比伸び率が低下 | ユーロ圏GDP / 欧州経済 / ニッセイ基礎研究所 / ドイツ経済 / フランス経済 / スペイン経済 / イタリア経済 / 景気動向 / ビジネス / 経済 / 統計 / 欧州",
+   "urls": [
+    "https://www.nli-research.co.jp/topics_detail1/id=87234?site=nli"
+   ]
+  },
+  {
    "slug": "apple-ui-navigation-rl-agent",
    "at": "2026-11-02T14:31:42.219366+00:00",
    "title": "Appleの研究チームが新AI学習手法を発表、スマホ画面の自動操作で大幅に性能向上",
@@ -1601,17 +1611,6 @@
    "text": "サムスンの折りたたみスマホ「Galaxy Z Fold8」に若手社員が買い替えた理由と使い心地 | 「Samsung Galaxy Z Fold8」に買い替えた若手が語る、毎日持ち歩く折りたたみスマートフォンの使い心地 | Galaxy Z Fold8 / サムスン / 折りたたみスマホ / スマホ買い替え / Galaxy AI / ワケタラ / Samsung Week / Z世代 / スマートフォン / Android / サムスン / ガジェット",
    "urls": [
     "https://news.samsung.com/jp/galaxy-z-fold8-interview2610?utm_source=rss&utm_medium=direct"
-   ]
-  },
-  {
-   "slug": "mistral-large-4-preview",
-   "at": "2026-10-29T14:36:40.099122+00:00",
-   "title": "欧州Mistral AIが新AIモデル「Mistral Large 4」を公開 1兆パラメータ、重みは月末公開",
-   "head": "欧州Mistral AIが新AIモデル「Mistral Large 4」を公開 1兆パラメータ、重みは月末公開 | Introducing Mistral Large 4 | Mistral Large 4のモデルウェイトが一般公開",
-   "text": "欧州Mistral AIが新AIモデル「Mistral Large 4」を公開 1兆パラメータ、重みは月末公開 | Introducing Mistral Large 4 | Mistral Large 4 / Mistral AI / オープンウェイト / 生成AI / LLM / サイバーセキュリティ AI / Mistral Studio / 日本で使える / 1兆パラメータ / 欧州 AI / Mistral Large 4 / 生成AI / LLM / オープンウェイト / サイバーセキュリティ",
-   "urls": [
-    "https://mistral.ai/news/mistral-large-4/",
-    "https://huggingface.co/blog/mistral-large4"
    ]
   }
  ]
