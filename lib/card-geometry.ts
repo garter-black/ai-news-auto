@@ -89,38 +89,88 @@ export function freeCorner(subject: Rect, size: { w: number; h: number }, avoid?
   return options.reduce((best, c) => (overlap(cornerRect(c, size, w, h), subject) < overlap(cornerRect(best, size, w, h), subject) ? c : best), options[0]);
 }
 
-/** 写真の中の主役の位置（rect に写真を敷いたとき）と、その本体（余白を除く。写真の端に接している辺はそのまま） */
-function subjectIn(box: Box, rect: Rect, fit: { subject: Rect } | null): { subject: Rect; core: Rect } {
-  const subject: Rect = fit
-    ? fit.subject
-    : { x: rect.x + box[0] * rect.w, y: rect.y + box[1] * rect.h, w: (box[2] - box[0]) * rect.w, h: (box[3] - box[1]) * rect.h };
+/** 主役の本体（imageFocus.box から余白 FOCUS_MARGIN を除く。写真の端に接している辺はそのまま） */
+export function coreOf(box: Box): Box {
   const shrink = (v: number, edge: boolean, dir: 1 | -1) => (edge ? v : v + dir * FOCUS_MARGIN);
-  const c: Box = [shrink(box[0], box[0] <= 0.001, 1), shrink(box[1], box[1] <= 0.001, 1), shrink(box[2], box[2] >= 0.999, -1), shrink(box[3], box[3] >= 0.999, -1)];
-  const sx = subject.w / Math.max(box[2] - box[0], 1e-6);
-  const sy = subject.h / Math.max(box[3] - box[1], 1e-6);
-  return { subject, core: { x: subject.x + (c[0] - box[0]) * sx, y: subject.y + (c[1] - box[1]) * sy, w: (c[2] - c[0]) * sx, h: (c[3] - c[1]) * sy } };
+  return [shrink(box[0], box[0] <= 0.001, 1), shrink(box[1], box[1] <= 0.001, 1), shrink(box[2], box[2] >= 0.999, -1), shrink(box[3], box[3] >= 0.999, -1)];
 }
 
-/** 札を置く上の余白（inset のとき）。札は EDGE から TAG.h の高さ */
-export const INSET_TOP = EDGE + TAG.h + 8;
+/** 切り抜きで守る範囲：主役の本体＋少しの余白（背景はここまで削ってよい） */
+export const KEEP_MARGIN = 0.015;
+function keepOf(box: Box): Box {
+  const c = coreOf(box);
+  return [Math.max(0, c[0] - KEEP_MARGIN), Math.max(0, c[1] - KEEP_MARGIN), Math.min(1, c[2] + KEEP_MARGIN), Math.min(1, c[3] + KEEP_MARGIN)];
+}
+
+/** 16:9 に敷いたとき主役がはみ出すなら、はみ出しが写真の TRIM_MAX 以内に限り、主役の枠を中央へ縮める（それ以上なら縮めない） */
+export const TRIM_MAX = 0.1;
+function trimTo(keep: Box, ar: number): Box {
+  const scale = Math.max(CARD_W / ar, CARD_H);
+  const fw = CARD_W / (ar * scale); // 枠に入る写真の幅の割合
+  const fh = CARD_H / scale;
+  const shrinkAxis = (lo: number, hi: number, frame: number): [number, number] => {
+    const over = hi - lo - frame;
+    if (over <= 0 || over > TRIM_MAX) return [lo, hi];
+    return [lo + over / 2 + 0.001, hi - over / 2 - 0.001];
+  };
+  const [x0, x1] = shrinkAxis(keep[0], keep[2], fw);
+  const [y0, y1] = shrinkAxis(keep[1], keep[3], fh);
+  return [x0, y0, x1, y1];
+}
+
+/** 写真（0〜1 の座標）の枠を、写真を rect に敷いたときの位置（px）に */
+function mapBox(box: Box, rect: Rect): Rect {
+  return { x: rect.x + box[0] * rect.w, y: rect.y + box[1] * rect.h, w: (box[2] - box[0]) * rect.w, h: (box[3] - box[1]) * rect.h };
+}
+
+/** 札の小さい版（どの角も主役にかかるとき。ロゴだけ・半透明） */
+export const TAG_SMALL = { w: 200, h: 44 };
+export const NOTE_SMALL = { w: 300, h: 30 };
 
 /**
- * 写真だけのカード（p1）の配置。
- *  - cover: 主役を切らない位置で 16:9 いっぱい。札・注記は主役の本体にかからない角へ
- *  - contain: 主役が 16:9 に収まらない写真は、写真全体を濃紺の地に収める
- *  - inset: どの角も主役にかかる写真は、写真全体を少し小さくして下に寄せ、上の濃紺の余白に札と注記を置く（写真の上には何も載せない）
+ * 写真だけのカード（p1）の配置。写真が主役なので、できるだけ 16:9 いっぱいに敷く。
+ *  - cover: 主役の本体＋少しの余白が 16:9 に入れば、背景を削って枠いっぱいに（ほとんどの写真）
+ *  - contain: 主役がどうしても 16:9 に入らない（縦に長い等）ときだけ、写真全体を収め、まわりは同じ写真をぼかして暗くしたもので埋める
+ * 札（ロゴ＋ニュース／速報）は主役にかからない角へ。どの角もかかるなら小さい半透明のロゴだけ、それでもかかるなら札は出さない。
+ * 写真を札のために小さくすることはしない。注記（AI生成など）は小さく、いちばんかからない角に必ず出す。
  */
 export function photoOnlyLayout(article: Focusable, hasNote: boolean) {
   const focus = focusOf(article);
-  const fit = coverFit(focus.ar, focus.box, CARD_W, CARD_H);
-  const inner = fit ? { x: 0, y: 0, w: CARD_W, h: CARD_H } : containRect(focus.ar, CARD_W, CARD_H);
-  const { subject, core } = subjectIn(focus.box, inner, fit);
-  const tag = freeCorner(core, TAG);
-  const note = hasNote ? freeCorner(core, NOTE, tag) : null;
-  const clear = overlap(cornerRect(tag, TAG), core) === 0 && (!note || overlap(cornerRect(note, NOTE), core) === 0);
-  if (clear) return { mode: fit ? ("cover" as const) : ("contain" as const), fit, inner, subject, core, tag, note };
-  const box = containRect(focus.ar, CARD_W, CARD_H - INSET_TOP);
-  const insetRect: Rect = { x: box.x, y: INSET_TOP, w: box.w, h: box.h };
-  const placed = subjectIn(focus.box, insetRect, null);
-  return { mode: "inset" as const, fit: null, inner: insetRect, ...placed, tag: "tl" as Corner, note: hasNote ? ("tr" as Corner) : null };
+  const keep = keepOf(focus.box);
+  const scale = Math.max(CARD_W / focus.ar, CARD_H);
+  // 主役が枠より少しだけ大きい（端まで続く机・街並みなど）ときは、はみ出す分を両側から均等に削って敷く（TRIM_MAX まで）
+  const fitted = coverFit(focus.ar, keep, CARD_W, CARD_H) ?? coverFit(focus.ar, trimTo(keep, focus.ar), CARD_W, CARD_H);
+  let inner: Rect;
+  let photoRect: Rect; // 写真全体が置かれる位置（cover のときは枠の外にはみ出す）
+  if (fitted) {
+    inner = { x: 0, y: 0, w: CARD_W, h: CARD_H };
+    const rw = focus.ar * scale;
+    const rh = scale;
+    const [px, py] = fitted.pos.split(" ").map((v) => parseFloat(v) / 100);
+    photoRect = { x: -(rw - CARD_W) * px, y: -(rh - CARD_H) * py, w: rw, h: rh };
+  } else {
+    inner = containRect(focus.ar, CARD_W, CARD_H);
+    photoRect = inner;
+  }
+  const subject = mapBox(focus.box, photoRect);
+  const core = mapBox(coreOf(focus.box), photoRect);
+  const corners: Corner[] = ["tl", "tr", "bl", "br"];
+  const clearOf = (size: { w: number; h: number }, avoid?: Corner) => corners.find((c) => c !== avoid && overlap(cornerRect(c, size), core) === 0) ?? null;
+  let tag: Corner | null = clearOf(TAG);
+  let tagSize: "full" | "small" | null = tag ? "full" : null;
+  if (!tag) {
+    tag = clearOf(TAG_SMALL);
+    tagSize = tag ? "small" : null;
+  }
+  let note: Corner | null = null;
+  let noteSize: "full" | "small" = "full";
+  if (hasNote) {
+    const avoid = tag ?? undefined;
+    note = clearOf(NOTE, avoid);
+    if (!note) {
+      noteSize = "small";
+      note = clearOf(NOTE_SMALL, avoid) ?? freeCorner(core, NOTE_SMALL, avoid);
+    }
+  }
+  return { mode: fitted ? ("cover" as const) : ("contain" as const), pos: fitted?.pos, inner, subject, core, tag, tagSize, note, noteSize };
 }

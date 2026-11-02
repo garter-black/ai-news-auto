@@ -1797,12 +1797,50 @@ def webp_variants(image) -> dict[str, bytes]:
 def render(image, keep_aspect: bool = False) -> tuple[bytes, dict[str, bytes]]:
     """JPEG（140KB 以下）と幅ごとの WebP。
     フリー素材・AI 生成は 1200×630 に切り抜く。公式発表の写真（keep_aspect）は切り抜かず、幅 1200 まで縮小するだけ"""
-    if keep_aspect:
+    if not keep_aspect:
+        centering = subject_centering(image, OUT_W / OUT_H)
+        if centering is not None:
+            fitted = ImageOps.fit(image, (OUT_W, OUT_H), method=Image.LANCZOS, centering=centering)
+            return _jpeg(fitted), webp_variants(fitted)
+        # 主役が 1200×630 に収まらない（縦に長い等）：切り抜きを控えめにし、4:3 までにとどめる（SNS カードは主役の位置で敷き方を決める）
         w, h = image.size
-        fitted = image if w <= OUT_W else image.resize((OUT_W, round(h * OUT_W / w)), Image.LANCZOS)
-    else:
-        fitted = ImageOps.fit(image, (OUT_W, OUT_H), method=Image.LANCZOS, centering=(0.5, 0.45))
+        if h / w > 0.75:
+            centre = subject_centering(image, 4 / 3) or (0.5, 0.45)
+            image = ImageOps.fit(image, (w, round(w * 0.75)), method=Image.LANCZOS, centering=centre)
+        keep_aspect = True
+    w, h = image.size
+    fitted = image if w <= OUT_W else image.resize((OUT_W, round(h * OUT_W / w)), Image.LANCZOS)
     return _jpeg(fitted), webp_variants(fitted)
+
+
+def subject_centering(image, target: float) -> tuple[float, float] | None:
+    """主役（scripts/image_focus.py）が丸ごと入る、縦横比 target の切り抜き位置（ImageOps.fit の centering）。
+    主役が入らなければ None。解析できない環境・写真では、これまでどおり少し上寄せの真ん中"""
+    try:
+        buf = io.BytesIO()
+        image.convert("RGB").save(buf, "JPEG", quality=85)
+        focus = image_focus.subject_box(buf.getvalue())
+    except Exception:  # noqa: BLE001 - OpenCV が無い等
+        return (0.5, 0.45)
+    if not focus:
+        return (0.5, 0.45)
+    keep = image_focus.keep_box(focus["box"])
+    w, h = image.size
+    if w / h >= target:  # 横を削る
+        frame = h * target / w
+        lo, hi = keep[0], keep[2]
+    else:  # 縦を削る
+        frame = w / target / h
+        lo, hi = keep[1], keep[3]
+    if hi - lo > frame + 0.1:  # 端まで続く背景（1割まで）は削ってよい。それより大きい主役は切らない
+        return None
+    free = 1 - frame
+    if free <= 0.001:
+        pos = 0.5
+    else:
+        start = min(max((lo + hi) / 2 - frame / 2, hi - frame, 0.0), min(lo, free))
+        pos = max(0.0, min(1.0, start / free))
+    return (pos, 0.5) if w / h >= target else (0.5, pos)
 
 
 def store(slug: str, image, dry_run: bool, keep_aspect: bool = False) -> tuple[str, tuple[int, int]]:

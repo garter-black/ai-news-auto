@@ -7,7 +7,7 @@ import type { FullArticle } from "@/lib/articles";
 import { companyOf } from "@/lib/companies";
 import { fetchPhoto } from "@/lib/cover";
 import { officialCreditText } from "@/lib/image-credit";
-import { containRect, coverFit, cornerRect, DEFAULT_AR, focusOf, freeCorner as freeCornerOf, NOTE, overlap, photoOnlyLayout, TAG, type Box, type Corner, type Rect } from "@/lib/card-geometry";
+import { containRect, coverFit, cornerRect, DEFAULT_AR, focusOf, freeCorner as freeCornerOf, NOTE, NOTE_SMALL, overlap, photoOnlyLayout, TAG, TAG_SMALL, type Box, type Corner, type Rect } from "@/lib/card-geometry";
 
 /**
  * SNS 投稿に添えるカード（2026-11 案）。縦長の「見出し＋要点3つ」をやめ、文字を見出し1本に絞る。
@@ -437,9 +437,18 @@ function Img({ src, rect, pos, fit }: { src: string; rect: Rect; pos?: string; f
 }
 
 /** 小さなロゴ札（ネイビーの角丸）＋ニュース／速報。位置と大きさの上限は lib/card-geometry.ts の TAG */
-function CornerTag({ article, corner }: { article: FullArticle; corner: Corner }) {
+function CornerTag({ article, corner, small = false }: { article: FullArticle; corner: Corner; small?: boolean }) {
   const label = labelOf(article);
-  const r = cornerRect(corner, TAG);
+  const r = cornerRect(corner, small ? TAG_SMALL : TAG);
+  if (small) {
+    return (
+      <div style={{ position: "absolute", left: r.x, top: r.y, width: r.w, height: r.h, display: "flex", alignItems: corner[0] === "t" ? "flex-start" : "flex-end", justifyContent: corner[1] === "r" ? "flex-end" : "flex-start" }}>
+        <div style={{ display: "flex", padding: "6px 10px 7px", borderRadius: 8, background: "rgba(11,31,69,0.55)" }}>
+          <Logo size={18} color="rgba(255,255,255,0.95)" />
+        </div>
+      </div>
+    );
+  }
   return (
     <div style={{ position: "absolute", left: r.x, top: r.y, width: r.w, height: r.h, display: "flex", alignItems: corner[0] === "t" ? "flex-start" : "flex-end", justifyContent: corner[1] === "r" ? "flex-end" : "flex-start" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 14px 10px", borderRadius: 10, background: "rgba(11,31,69,0.9)" }}>
@@ -464,27 +473,34 @@ export function cardCredit(article: FullArticle): string {
   return c.license?.startsWith("CC BY") ? `写真はイメージ　Photo: ${who} / ${c.license}` : "写真はイメージ";
 }
 
-function CornerNote({ text, corner }: { text: string; corner: Corner }) {
-  const r = cornerRect(corner, NOTE);
+function CornerNote({ text, corner, small = false }: { text: string; corner: Corner; small?: boolean }) {
+  const r = cornerRect(corner, small ? NOTE_SMALL : NOTE);
   const right = corner[1] === "r";
   return (
     <div style={{ position: "absolute", left: r.x, top: r.y, width: r.w, height: r.h, display: "flex", alignItems: corner[0] === "t" ? "flex-start" : "flex-end", justifyContent: right ? "flex-end" : "flex-start" }}>
-      <div style={{ display: "flex", padding: "4px 10px", borderRadius: 6, background: "rgba(6,14,32,0.62)", color: "rgba(255,255,255,0.92)", fontSize: 17, fontWeight: 700, maxWidth: r.w, overflow: "hidden", whiteSpace: "nowrap" }}>{text}</div>
+      <div style={{ display: "flex", padding: small ? "2px 7px" : "4px 10px", borderRadius: 6, background: small ? "rgba(6,14,32,0.45)" : "rgba(6,14,32,0.62)", color: "rgba(255,255,255,0.92)", fontSize: small ? 13 : 17, fontWeight: 700, maxWidth: r.w, overflow: "hidden", whiteSpace: "nowrap" }}>{text}</div>
     </div>
   );
 }
 
-/** 1: 写真だけ（2026-11-03 採用）。主役を切らない位置で 16:9 いっぱいに（入らなければ写真全体を濃紺の地に収める）。札と注記は主役にかからない角へ */
-function P1({ article, src, focus }: { article: FullArticle; src: string | null; focus: { box: Box; ar: number } }) {
+/** 1: 写真だけ（2026-11-03 採用）。配置は lib/card-geometry.ts の photoOnlyLayout */
+function P1({ article, src, blur }: { article: FullArticle; src: string | null; blur?: string | null }) {
   const { width, height } = CARD_SIZES.p1;
-  void focus;
   const note = cardCredit(article);
   const layout = photoOnlyLayout(article, Boolean(note));
+  const full = { x: 0, y: 0, w: width, h: height };
   return (
     <div style={{ width, height, display: "flex", position: "relative", background: DEEP, fontFamily: "Noto" }}>
-      {src ? <Img src={src} rect={layout.inner} pos={layout.fit?.pos} fit={layout.fit ? "cover" : "contain"} /> : <NoPhoto width={width} height={height} name={sourceOf(article)} />}
-      <CornerTag article={article} corner={layout.tag} />
-      {note && layout.note && <CornerNote text={note} corner={layout.note} />}
+      {src && layout.mode === "contain" && (
+        // 主役が 16:9 に入らない写真だけ：まわりは同じ写真をぼかして暗くしたもの（sharp が無い環境ではぼかさず暗くするだけ）
+        <>
+          <Img src={blur ?? src} rect={full} fit="cover" />
+          <div style={{ position: "absolute", left: 0, top: 0, width, height, display: "flex", background: blur ? "rgba(6,14,32,0.25)" : "rgba(6,14,32,0.6)" }} />
+        </>
+      )}
+      {src ? <Img src={src} rect={layout.inner} pos={layout.pos} fit={layout.mode === "cover" ? "cover" : "contain"} /> : <NoPhoto width={width} height={height} name={sourceOf(article)} />}
+      {layout.tag && <CornerTag article={article} corner={layout.tag} small={layout.tagSize === "small"} />}
+      {note && layout.note && <CornerNote text={note} corner={layout.note} small={layout.noteSize === "small"} />}
     </div>
   );
 }
@@ -493,7 +509,7 @@ function P1({ article, src, focus }: { article: FullArticle; src: string | null;
 function P2({ article, src, focus }: { article: FullArticle; src: string | null; focus: { box: Box; ar: number } }) {
   const { width, height } = CARD_SIZES.p2;
   const fit = coverFit(focus.ar, focus.box, width, height);
-  if (!fit || !src) return <P1 article={article} src={src} focus={focus} />;
+  if (!fit || !src) return <P1 article={article} src={src} />;
   // 枠の余白（image_focus.py の MARGIN=5%）の分だけ内側を主役とみなす。影は主役の本体にはかけない
   const mx = fit.subject.w * 0.045;
   const my = fit.subject.h * 0.045;
@@ -519,7 +535,7 @@ function P2({ article, src, focus }: { article: FullArticle; src: string | null;
     const t = layoutAt(headline, textW, 2, maxSize, 42) ?? layoutAt(compactTail(headline), textW, 2, maxSize, 42) ?? (vertical(side) ? null : layoutAt(compactTail(headline), textW, 3, maxSize, 42));
     if (t && (!best || t.size > best.fit.size)) best = { side, fit: t };
   }
-  if (!best) return <P1 article={article} src={src} focus={focus} />;
+  if (!best) return <P1 article={article} src={src} />;
   const r = free[best.side];
   const dir = { bottom: "to top", top: "to bottom", right: "to left", left: "to right" }[best.side];
   const textH = best.fit.lines.length * best.fit.size * 1.2;
@@ -610,10 +626,24 @@ function P4({ article, src, focus }: { article: FullArticle; src: string | null;
   );
 }
 
+/** ぼかして暗くした写真（contain のときの地）。sharp が無ければ null */
+async function blurredSource(url: string): Promise<string | null> {
+  const photo = await fetchPhoto(url).catch(() => null);
+  if (!photo) return null;
+  try {
+    const jpeg = await sharp(photo).resize({ width: 480, withoutEnlargement: true }).blur(18).modulate({ brightness: 0.6 }).jpeg({ quality: 70 }).toBuffer();
+    return `data:image/jpeg;base64,${jpeg.toString("base64")}`;
+  } catch {
+    return null;
+  }
+}
+
 async function renderPhotoFirst(article: FullArticle, design: PhotoDesign): Promise<ImageResponse> {
-  const [src, fontData] = await Promise.all([photoSource(article.thumbnail), loadFonts()]);
   const focus = focusOf(article);
+  const contain = design === "p1" && photoOnlyLayout(article, false).mode === "contain";
+  const [src, blur, fontData] = await Promise.all([photoSource(article.thumbnail), contain ? blurredSource(article.thumbnail) : Promise.resolve(null), loadFonts()]);
   const { width, height } = CARD_SIZES[design];
-  const Body = { p1: P1, p2: P2, p3: P3, p4: P4 }[design];
-  return new ImageResponse(<Body article={article} src={src} focus={focus} />, { width, height, fonts: fontData });
+  const body =
+    design === "p1" ? <P1 article={article} src={src} blur={blur} /> : design === "p2" ? <P2 article={article} src={src} focus={focus} /> : design === "p3" ? <P3 article={article} src={src} focus={focus} /> : <P4 article={article} src={src} focus={focus} />;
+  return new ImageResponse(body, { width, height, fonts: fontData });
 }
