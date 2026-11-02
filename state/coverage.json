@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "mlit-autumn-2026-medals-of-honor",
+   "at": "2026-11-02T16:31:35.224811+00:00",
+   "title": "国土交通省、令和8年秋の褒章受章者を発表 伝達式は11月18日に開催へ",
+   "head": "国土交通省、令和8年秋の褒章受章者を発表 伝達式は11月18日に開催へ | 令和８年秋の褒章について",
+   "text": "国土交通省、令和8年秋の褒章受章者を発表 伝達式は11月18日に開催へ | 令和８年秋の褒章について | 国土交通省 / 褒章 / 令和8年秋 / 受章者 / 黄綬褒章 / 藍綬褒章 / 緑綬褒章 / 伝達式 / ビジネス・経済 / 社会・行政 / ニュース",
+   "urls": [
+    "http://www.mlit.go.jp/report/press/kanbo03_hh_000427.html"
+   ]
+  },
+  {
+   "slug": "elevenlabs-sfx-v3-sound-effects",
+   "at": "2026-11-02T16:31:23.810230+00:00",
+   "title": "ElevenLabsが音響効果モデル「SFX v3」公開 複数指示への追従性が向上",
+   "head": "ElevenLabsが音響効果モデル「SFX v3」公開 複数指示への追従性が向上 | Introducing SFX v3 for developers",
+   "text": "ElevenLabsが音響効果モデル「SFX v3」公開 複数指示への追従性が向上 | Introducing SFX v3 for developers | ElevenLabs / SFX v3 / 効果音生成 / AI音声 / API / 音声合成 / 生成AI / API / 音声合成",
+   "urls": [
+    "https://elevenlabs.io/blog/sfx-v3-for-developers"
+   ]
+  },
+  {
    "slug": "eurozone-unemployment-rate-sep-2026",
    "at": "2026-11-02T16:11:54.797233+00:00",
    "title": "ニッセイ基礎研究所がユーロ圏失業率（2026年9月）を発表、失業率は6.5％で横ばいも若年層は上昇",
@@ -1601,16 +1621,6 @@
    "text": "AI半導体のNVIDIAが公開、自律型AIでシミュレーション開発を効率化する新手法 | Into the Omniverse: How Developers Turn Ideas Into Simulations With Frontier AI Agents | NVIDIA / Omniverse / AIエージェント / シミュレーション / デジタルツイン / OpenUSD / Isaac Sim / 物理AI / 生成AI / ロボティクス / 開発ツール / シミュレーション",
    "urls": [
     "https://blogs.nvidia.com/blog/developers-simulation-frontier-ai-agents/"
-   ]
-  },
-  {
-   "slug": "gemini-edit-files-directly",
-   "at": "2026-10-29T16:19:04.424322+00:00",
-   "title": "Googleの生成AI『Gemini』に新機能 文書やPDFをチャット内で作成・編集",
-   "head": "Googleの生成AI『Gemini』に新機能 文書やPDFをチャット内で作成・編集 | You can now generate, preview, and edit documents, PDFs, presentations, spreadsheets, and more directly in Gemini.",
-   "text": "Googleの生成AI『Gemini』に新機能 文書やPDFをチャット内で作成・編集 | You can now generate, preview, and edit documents, PDFs, presentations, spreadsheets, and more directly in Gemini. | Gemini / Geminiアプリ / ファイル編集 / PDF編集 / 生成AI / スライド作成 / スプレッドシート / Googleドキュメント / Markdown / 新機能 / Gemini / 生成AI / Google / PDF / ドキュメント作成",
-   "urls": [
-    "https://blog.google/innovation-and-ai/products/gemini-app/edit-files-directly/"
    ]
   }
  ]
