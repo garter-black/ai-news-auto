@@ -865,6 +865,7 @@ def build_record(entry: dict, data: dict) -> dict:
 
 
 def write_article(record: dict) -> Path:
+    record.pop("_facts", None)  # 品質ゲート用の中身（scripts/facts_bundle.py）は書き出さない
     ARTICLES_DIR.mkdir(parents=True, exist_ok=True)
     path = ARTICLES_DIR / f"{record['slug']}.json"
     path.write_text(

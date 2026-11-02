@@ -20,6 +20,7 @@ import unicodedata
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import calc_facts  # noqa: E402
 import japan_availability  # noqa: E402
 import llm  # noqa: E402
 import persona  # noqa: E402
@@ -37,6 +38,8 @@ SURGICAL_MIN_SCORE = 75
 # 元記事の後半にある事実（2026-10-28 の Mithril の買収は 9400 字目）を「創作」と誤判定するので、それより長くする
 SOURCE_CAP = 13000
 ARTICLE_CAP = 9000
+# 事実確認に渡す「確認済みの文脈」（過去記事・日本での提供・確かな事実の束・計算済みの数字）の長さ
+CONTEXT_CAP = 7000
 
 BOILERPLATE_RE = re.compile(
     r"\b(Read more|Learn more|Subscribe|Sign up|Sign in|Cookie|Privacy Policy|Terms of (Use|Service)|"
@@ -129,6 +132,61 @@ def faq_problems(record: dict) -> list[str]:
     return problems
 
 
+# 数字の照合で見る欄（記事に出る文章）。リンク先の URL は見ない
+def _article_numbers_text(record: dict) -> str:
+    parts = [record.get("title") or "", record.get("lede") or "", " ".join(record.get("highlights") or []),
+             record.get("body") or "", record.get("easy") or ""]
+    parts += [f"{r.get('q', '')} {r.get('a', '')}" for r in record.get("faq") or []]
+    parts += list(record.get("todayActions") or [])
+    parts += list((record.get("workMoney") or {}).get("points") or [])
+    return re.sub(r"\]\([^)]*\)", "]", "\n".join(parts))
+
+
+COMPUTED_MARK_RE = re.compile(r"計算|試算|換算|目安|ペース")
+
+
+def number_problems(record: dict, source_text: str, context: str = "") -> list[str]:
+    """記事の数字（お金・割合・倍・大きな件数）が、元記事・確認済みの事実の束・計算済みの数字のどれかにあるか（API 不要）。
+    LLM には計算させない（2026-11-03 の比較調査の3位）。無い数字は「作った数字」か「自分で計算した数字」として落とす。
+    束の数字を使ったのに出典を書いていないときも落とす（どこで確かめた事実か分かるように）"""
+    facts = record.get("_facts") or {}
+    groups = [g for g in facts.get("groups") or [] if g.get("body")]
+    allowed_text = "\n".join([source_text or "", context or ""] + [g["body"] for g in groups] + list(facts.get("computed") or []))
+    if not allowed_text.strip():
+        return []
+    allowed = calc_facts.values(allowed_text) + [float(v) for v in facts.get("computedValues") or []]
+    text = _article_numbers_text(record)
+    found = [q for q in calc_facts.extract(text) if calc_facts.checkable(q)]
+    problems = []
+    missing, seen = [], set()
+    for q in found:
+        if not calc_facts.supported(q, allowed) and q.text not in seen:
+            seen.add(q.text)
+            missing.append(f"「{q.before[-12:]}{q.text}」")
+    if missing:
+        problems.append(
+            f"元記事・確認済みの事実の束・計算済みの数字のどれにも無い数字がある（{'、'.join(missing[:5])}）。"
+            "元記事か束の数字に直すか、その文を削る。割合・差・換算などを自分で計算しない（計算済みの数字の欄にあるものだけ使う）"
+        )
+    # 束の数字を出典なしで使っていないか
+    source_vals = calc_facts.values(f"{source_text}\n{context}")
+    plain = [q for q in found if calc_facts.supported(q, allowed) and not calc_facts.supported(q, source_vals)]
+    if plain:
+        for g in groups:
+            if g.get("label") == "元記事の注記":
+                continue
+            vals = calc_facts.values(g["body"])
+            if any(calc_facts.supported(q, vals) for q in plain) and not any(m and m in text for m in g.get("marks") or []):
+                problems.append(f"確認済みの事実の束（{g.get('label')}：{g.get('name')}）の数字を使っているのに、出典が書かれていない。"
+                                f"使った文の直後に「（{g.get('name')}、確認日）」のように書く")
+        group_vals = calc_facts.values("\n".join(g["body"] for g in groups))
+        comp_vals = calc_facts.values("\n".join(facts.get("computed") or [])) + [float(v) for v in facts.get("computedValues") or []]
+        only_computed = [q for q in plain if calc_facts.supported(q, comp_vals) and not calc_facts.supported(q, group_vals)]
+        if only_computed and not COMPUTED_MARK_RE.search(text):
+            problems.append("計算済みの数字を使っているのに、計算した数字だと分かる書き方になっていない。「（サイソク編集部の計算）」と添える")
+    return problems
+
+
 FACT_SCHEMA = {
     "type": "OBJECT",
     "properties": {
@@ -166,6 +224,9 @@ FACT_PROMPT = """# 元記事（一次情報。自動抽出なのでメニュー�
 
 # 確認のしかた
 - 記事にある数値・日付・価格・固有名詞・発言・対象者・提供状況が、元記事に書かれているか、元記事と矛盾しないかを確かめる。
+- 「確認済みの文脈」に書かれた事実（サイソクの過去記事・当サイトで確認済みの日本での提供状況・確かな事実の束〔公式の料金表・当サイトのガイド・元記事のリンク先の公式ページ・公的資料・為替〕）は、元記事と同じく正しい事実として扱う。
+  記事がその事実を使うときは「（Anthropic公式の料金ページ、11/3確認）」のように出典が添えてあればよい。出典が無いだけなら言い過ぎと同じ軽い問題（fatal にしない）。
+- 「計算済みの数字」（サイソク編集部の計算。式つき）にある数字は、表記どおり（「約」を含む）なら正しい。欄に無い計算結果（記事が自分で計算した割合・差・増減率・ペース・円換算）は創作として問題にする。
 - 次は問題にしない: 元記事の内容の言い換え・要約、「確認済みの文脈」に書かれた事実（過去の経緯・日付・価格など）、「（編集部注）」と明記した一般的な背景説明（具体的な数値を含まないもの）、
   「元記事では言及なし」「発表されていない」といった記述、読者への一般的な助言（公式情報を確認しよう等）。
 - 「[元記事の情報]」の発信元・公開日時に基づく記述（「〇〇の公式ブログによると」「10月26日に発表」など）は元記事に書かれた事実として扱う。
@@ -198,7 +259,7 @@ WEB_USEFULNESS_PROMPT = """
 
 
 CONTEXT_BLOCK = """
-# 確認済みの文脈（サイソクの過去記事・既存記事の事実。ここにある事実は創作として扱わない）
+# 確認済みの文脈（サイソクの過去記事・日本での提供状況・確かな事実の束・計算済みの数字。ここにある事実は創作として扱わない）
 <<<
 {context}
 >>>
@@ -300,8 +361,8 @@ def readability_problems(body: str, stats: dict | None = None) -> list[str]:
     return problems
 
 
-def structural_problems(record: dict, kind: str, source_text: str = "") -> list[str]:
-    """形のチェック。問題のリスト（空なら合格）"""
+def structural_problems(record: dict, kind: str, source_text: str = "", context: str = "") -> list[str]:
+    """形のチェック。問題のリスト（空なら合格）。context は確認済みの文脈（数字の照合に使う）"""
     problems: list[str] = []
     body = record.get("body") or ""
     easy = (record.get("easy") or "").strip()
@@ -333,6 +394,7 @@ def structural_problems(record: dict, kind: str, source_text: str = "") -> list[
         problems += faq_problems(record)
         if m := persona.OLD_VIEWPOINT_RE.search(body):
             problems.append(f"古い立場の小見出し（「{m.group(0).lstrip('# ')}」）がある。立場は「" + "」「".join(persona.VIEWPOINTS) + "」の3つにする")
+        problems += number_problems(record, source_text, context)
     if source_text:
         copied = copied_sentences(body, source_text)
         if len(copied) >= 2:
@@ -369,7 +431,7 @@ def fact_check(record: dict, source_text: str, context: str = "", require_useful
     """{grounded, score, problems, model}。context は確認済みの事実（過去記事など）。LLM が使えないときは例外"""
     prompt = FACT_PROMPT.format(
         source=source_text[:SOURCE_CAP],
-        context=CONTEXT_BLOCK.format(context=context[:3000]) if context.strip() else "",
+        context=CONTEXT_BLOCK.format(context=context[:CONTEXT_CAP]) if context.strip() else "",
         article=_article_for_check(record),
     )
     if require_usefulness:
@@ -416,7 +478,7 @@ def evaluate(record: dict, source_text: str, kind: str, context: str = "", check
     read = readability(record.get("body") or "")
     read_problems = readability_problems("", read)
     base = {"structural": [], "fact": None, "readability": read, "readability_problems": read_problems}
-    structural = structural_problems(record, kind, source_text)
+    structural = structural_problems(record, kind, source_text, context)
     if record.get("sourceType") == "web" and not (source_text or "").strip():
         structural.append("一次資料が空のため記事の内容を確認できません")
     if structural:
@@ -582,7 +644,8 @@ def surgical_fix(record: dict, source_text: str, kind: str, problems: list[str],
     (record, verdict) か (None, 理由)。直したあとも致命的でなく SURGICAL_MIN_SCORE 点以上なら、残った細かい指摘は受理する"""
     body = record.get("body") or ""
     prompt = SURGICAL_PROMPT.format(
-        problems="\n".join(f"- {p}" for p in problems[:8]), source=(source_text or "")[:SOURCE_CAP],
+        problems="\n".join(f"- {p}" for p in problems[:8]),
+        source=(source_text or "")[:SOURCE_CAP] + (f"\n\n# 確認済みの文脈（ここにある事実・計算済みの数字も使ってよい）\n{context[:CONTEXT_CAP]}" if context.strip() else ""),
         title=record.get("title", ""), lede=record.get("lede", ""), highlights=" / ".join(record.get("highlights") or []),
         work_money=" / ".join((record.get("workMoney") or {}).get("points") or []) or "（なし）",
         body=body, easy=record.get("easy", ""),
@@ -594,7 +657,7 @@ def surgical_fix(record: dict, source_text: str, kind: str, problems: list[str],
         return None, f"見出しが変わった（{len(heads_old)}→{len(heads_new)}個）"
     if _plain_len(new_body) < _plain_len(body) * 0.85:
         return None, f"本文を削りすぎた（{_plain_len(body)}→{_plain_len(new_body)}字）"
-    added = {n for n in _numbers(new_body) - _numbers(body) - _numbers(source_text) if len(n) > 1}
+    added = {n for n in _numbers(new_body) - _numbers(body) - _numbers(source_text) - _numbers(context) if len(n) > 1}
     if added:
         return None, f"元に無い数字が増えた（{', '.join(sorted(added)[:5])}）"
     fixed = {**record, "body": new_body}

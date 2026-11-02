@@ -196,6 +196,8 @@
 
 - 記事の「すぐできること」（2026-11-03 の比較調査 `out/記事の比較調査_2026-11-03.md` の6章）: 日本での提供の表 `content/japan_availability.json`（人が確かめて更新。出典と確認日つき。確かめられないものは unknown）を `scripts/japan_availability.py` が生成・事実確認・判定に使う（一般提供中の製品だけ unknown を直す）。料金・使い方ガイドへの固定リンクは `lib/guide-links.ts`。判定カードはジャンル別（`lib/verdict.ts` の `verdictKind`）。FAQ・今日やることは合うジャンルだけ。サイソクが自分で試したように読める書き方（「筆者」など）と、題名の約束に本文が答えていない記事は品質ゲートで落とす。公開済みの記事の機械的な手直しは `python3 scripts/article_quickfix.py [--apply]`。
 
+- 記事の「確かな事実の束」と数字の計算（2026-11-03 の比較調査の大きく作るもの1・2・4・7）: 生成の前に `scripts/facts_bundle.py` が、料金の段の表（`scripts/pricing.py`）・同じ段の他社比較・当サイトのガイド・60日以内の過去記事の数字・元記事の注記・元記事のリンク先（同じ公式ドメインか公的なページを最大2本。`scripts/source_links.py`）・為替を出典と確認日つきで集め、`scripts/calc_facts.py` がペース・年換算・差・割合・1つあたり・円換算を式つきで計算して LLM に渡す。LLM は計算しない。品質ゲート（`quality.number_problems`）は記事の数字（お金・%・倍・大きな件数）が元記事・束・計算済みの数字のどれかにあるか、束の数字に出典があるかを確かめて落とす。料金の段の表はプログラムが本文に差し込み、記事ページは最新の `PriceTable` に差し替える（`lib/price-slot.ts`）。確かめた資料は記事 JSON の `factSources` に残し、「出典と更新履歴」に出す。お金・税・制度の記事は「何が変わる→いつから→対象→早見表→自分の場合の確かめ方→FAQ」の章立て（`web_articles.MONEY_OUTLINE`）。
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know

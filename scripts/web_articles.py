@@ -48,7 +48,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import archive  # noqa: E402
+import article_charts  # noqa: E402
 import dedupe  # noqa: E402
+import facts_bundle  # noqa: E402
 import fast_lane  # noqa: E402
 import feeds  # noqa: E402
 import followup  # noqa: E402
@@ -233,8 +235,11 @@ WEB_SOURCE_NOTE = """## 今回の取材対象（重要）
 - 元記事の文をそのまま訳したり書き写したりしない。内容を理解したうえで、自分の言葉で要約・解説する。
   引用は短いフレーズ（1文の一部、30字程度まで）にとどめ、「」で括る。
 - 本文中で必ず一度は出典（発信元の名前）に触れる（例：「〇〇の公式ブログによると」）。
-- 元記事に書かれていない事実・数値・価格・日付・発言は作らない。
-  一般的な背景知識で補う場合は「（編集部注）」と明記し、具体的な数値は書かない。
+- 書いてよい事実は、元記事と「確認済みの事実の束」（プロンプトにあるときだけ）にあるものだけ。
+  束の事実を使うときは、その文の直後に（ ）で出典と確認日を書く（例「（Anthropic公式の料金ページ、11/3確認）」）。
+  どちらにも無い事実・数値・価格・日付・発言は作らない。一般的な背景知識で補う場合は「（編集部注）」と明記し、具体的な数値は書かない。
+- 数字の計算（割合・差・増減率・ペース・平均・円への換算）は自分でしない。計算した数字が要るときは、
+  「計算済みの数字」の欄にあるものだけを表記どおり（「約」を含む）に使い、「（サイソク編集部の計算）」と添える。
 - 読者にとって重要で元記事から確認できない条件は不明と示す。材料のない章を無理に作らず、水増ししない。
 - 編集部の見方は、確認済みの事実を根拠にし、「編集部の見方」と明示して事実と区別する。根拠のない体験談・比較・推測は書かない。
 - サイソク（編集部）は自分では試していない。「筆者のテスト環境では」「私たちが試したところ」「実際に使ってみると」のように、
@@ -383,7 +388,45 @@ body_markdown 内では h1 (`#`) を使わないでください（タイトル�
 """
 
 
-def build_broad_prompt(item: dict, text: str, genre, context: str = "") -> str:
+# お金・税・制度の記事の章立て（2026-11-03 の比較調査の7位・大きく作るもの7）。facts_bundle.is_money_topic のとき genre.outline の代わりに使う
+MONEY_OUTLINE = """**お金・税・制度の記事の章立て（この順番で。材料の無い章は省く）**
+## 概要
+短い文3〜4つで、何が変わるのかを専門用語なしで書く。1段落は1〜3文。ここだけ読めば全体がつかめるようにする。
+
+## 何が変わる？
+前と後で何が変わるのかを、元記事と確認済みの事実の束の事実だけで書く。`###` 小見出し（中身が分かる言葉）で論点ごとに整理する（最低2つ）。
+決まったことか、案（検討中・意見募集中）かを必ず区別する。
+
+## いつから？
+開始日・期限・経過措置を日付つきで書く。元記事に無ければ「発表では示されていません」と書く。
+
+## 誰が対象？
+対象になる人・ならない人を箇条書きで。所得・年齢・地域などの条件は元記事の表記どおりに書く。
+
+## 早見表
+金額・税率・期限・対象などを表（Markdown table。最後の列は「出典」）にする。表に入れてよい数字は、元記事・確認済みの事実の束（公的資料など）の公式の数字と、
+「計算済みの数字」だけ。自分で計算した数字・仮の例の金額は入れない。材料が無ければこの章は作らない。
+
+## 自分の場合の確かめ方
+読者が自分の場合を確かめる方法を、番号つきの手順（1. 2. 3.）で書く（どの書類・明細を見るか、公式の計算ページ・相談窓口）。
+書類の欄の名前・ページ名・窓口は、元記事か確認済みの事実の束にあるものだけ。無ければ「発表元（〇〇）の案内ページで確かめる」と書き、場所を作らない。
+
+## 自分に関係ある？
+{relate}
+
+## まとめ
+今後の予定と、読者が次に取るべき行動を短い文で2〜3つ。
+
+よくある質問は faq の欄に3〜5問書く（本文に「よくある質問」の章は作らない。記事ページが faq を本文の後に出す）。"""
+
+
+def money_outline() -> str:
+    from genres import RELATE_PERSONA  # noqa: PLC0415
+
+    return MONEY_OUTLINE.replace("{relate}", RELATE_PERSONA)
+
+
+def build_broad_prompt(item: dict, text: str, genre, context: str = "", outline: str | None = None) -> str:
     prompt = BROAD_PROMPT_TEMPLATE.format(
         source_name=item["source_name"],
         title=item["title"],
@@ -391,7 +434,7 @@ def build_broad_prompt(item: dict, text: str, genre, context: str = "") -> str:
         url=item["url"],
         genre_name=f"{genre.slug}（{genre.name}）",
         text=text,
-        outline=genre.outline,
+        outline=outline or genre.outline,
         field_notes=genre.field_notes,
         topic_guard=f"  **このジャンルの対象範囲**: {genre.topic_guard}",
         genre_choices="\n".join(f"  - {g.slug}: {g.name}" for g in ALL_GENRES),
@@ -772,15 +815,35 @@ def build_prompt(item: dict, text: str, context: str = "") -> str:
             + "\n\n" + m.threads_hooks.prompt_block())
 
 
-def check_context_for(title: str, text: str, related: list[dict]) -> str:
-    """事実確認に渡す確認済みの事実（過去記事＋日本での提供の表）"""
-    return "\n\n".join(x for x in (archive.check_block(related), japan_availability.check_block(title, text)) if x)
+def check_context_for(title: str, text: str, related: list[dict], bundle: facts_bundle.Bundle | None = None) -> str:
+    """事実確認に渡す確認済みの事実（過去記事＋日本での提供の表＋確かな事実の束・計算済みの数字）"""
+    parts = (archive.check_block(related), japan_availability.check_block(title, text), bundle.check_block() if bundle else "")
+    return "\n\n".join(x for x in parts if x)
 
 
-def compose(item: dict, text: str, lane: str, related: list[dict], voice_text: str):
+def compose(item: dict, text: str, lane: str, related: list[dict], voice_text: str, page: dict | None = None):
     """1本の記事の生成に渡すもの一式（通常の実行と、試し書きの道具が同じものを使う）。
-    戻り値: (genre, system, prompt, schema, kind, check_context)"""
-    context = archive.prompt_block(related) + japan_availability.prompt_block(item["title"], text)
+    戻り値: (genre, system, prompt, schema, kind, check_context)。確かな事実の束も欲しいときは compose_with_facts"""
+    return compose_with_facts(item, text, lane, related, voice_text, page)[:6]
+
+
+def compose_with_facts(item: dict, text: str, lane: str, related: list[dict], voice_text: str, page: dict | None = None,
+                       bundle: facts_bundle.Bundle | None = None):
+    """compose と同じものに、確かな事実の束（facts_bundle.Bundle）を足して返す。
+    page（元記事の取得結果）を渡すと、元記事の中のリンクを最大2本追いかけて束に入れる。
+    戻り値: (genre, system, prompt, schema, kind, check_context, bundle)"""
+    if bundle is None:
+        try:
+            # 速報（速報レーン・大きなニュース）は待たせないよう、リンク先は1本だけ
+            bundle = facts_bundle.build(item, text, related, lane, page, follow_links=page is not None, log=log,
+                                        max_links=1 if item.get("fast") or item.get("major") else 2)
+        except Exception as error:  # noqa: BLE001 - 束が作れなくても記事は今までどおり作る
+            log(f"   [facts] 確かな事実の束を作れませんでした（{str(error)[:80]}）")
+            bundle = facts_bundle.Bundle()
+    if not bundle.empty():
+        log(f"   [facts] 束 {len(bundle.groups)} 欄（{'・'.join(g.label for g in bundle.groups)}）/ 計算済みの数字 {len(bundle.computed)} 個"
+            f"{' / 料金の表を差し込む' if bundle.ladder else ''}{' / お金・制度の章立て' if bundle.money else ''}")
+    context = archive.prompt_block(related) + japan_availability.prompt_block(item["title"], text) + bundle.prompt_block()
     if item.get("late"):
         context += LATE_NOTE.format(date=f"{item['published_at'].astimezone(JST):%Y年%m月%d日}")
     secondary_note = f"\n\n{SECONDARY_SOURCE_NOTE.format(name=item['source_name'])}" if item.get("secondary") else ""
@@ -794,8 +857,9 @@ def compose(item: dict, text: str, lane: str, related: list[dict], voice_text: s
             f"{m.SYSTEM_INSTRUCTION_BASE}\n\n{genre.persona}\n\n{WEB_SOURCE_NOTE}{secondary_note}\n\n{BROAD_SOURCE_NOTE}"
             f"\n\n## 今回の語り口\n{voice_text}"
         )
-        prompt, schema, kind = build_broad_prompt(item, text, genre, context), TREND_SCHEMA, "broad"
-    return genre, system, prompt, schema, kind, check_context_for(item["title"], text, related)
+        outline = money_outline() if bundle.money else None
+        prompt, schema, kind = build_broad_prompt(item, text, genre, context, outline), TREND_SCHEMA, "broad"
+    return genre, system, prompt, schema, kind, check_context_for(item["title"], text, related, bundle), bundle
 
 
 def prefilter(item: dict) -> str | None:
@@ -868,7 +932,8 @@ def web_disclaimer(genre) -> str:
     return text
 
 
-def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_key: str) -> dict:
+def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_key: str,
+                     bundle: facts_bundle.Bundle | None = None) -> dict:
     resolved = GENRES_BY_SLUG.get(str(data.get("genre", "")).strip(), AI)
     thumbnail = page.get("image") or item.get("image") or ""
     record = {
@@ -918,6 +983,16 @@ def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_
     record["verdict"] = genre_verdict(data.get("verdict"), resolved.slug, record)
     # 判定を日本での提供の表で直したら、本文の「日本で使える？」の「まだ分かりません」も表の答えにそろえる
     record["body"] = japan_availability.fix_japan_section(record["body"], record)
+    if bundle is not None and not bundle.empty():
+        strip_fact_ids(record)
+        # 料金の段の表はプログラムが差し込む（LLM に表を書かせない）。束の中身は品質ゲートの数字・出典の照合に使う（書き出す前に外す）
+        record["body"] = facts_bundle.insert_ladder(record["body"], bundle)
+        record["_facts"] = bundle.meta()
+        if bundle.ladder and bundle.ladder.get("product") and "markdown" in bundle.ladder:
+            # 記事ページは、本文に差し込んだ表の場所に、毎日更新の料金表（components/PriceTable.tsx）を出す
+            record["pricingProduct"] = bundle.ladder["product"]
+            if bundle.ladder.get("compare"):
+                record["pricingCompare"] = bundle.ladder["compare"]
     # よくある質問（3〜5問）と「今日やること」（2〜3個）。合うジャンルだけ（FAQ_GENRES）
     if resolved.slug in FAQ_GENRES:
         if faq := clean_faq(data.get("faq")):
@@ -931,6 +1006,46 @@ def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_
         record["affiliates"] = affiliates
         record["body"] = m.linkify_first_mention(record["body"], affiliates)
         log(f"   [aff] {len(affiliates)}件: {', '.join(a['name'] for a in affiliates)}")
+    return record
+
+
+FACT_ID_RE = re.compile(r"\s?[（(\[]\s?[FC]\d{1,2}(?:\s?[、,・]\s?[FC]\d{1,2})*\s?[）)\]]")
+
+
+def strip_fact_ids(record: dict) -> None:
+    """束の欄の記号（「（C2）」「[F1]」）が本文に漏れていたら消す。record をその場で書き換える"""
+    for key in ("body", "easy", "lede"):
+        if isinstance(record.get(key), str):
+            record[key] = FACT_ID_RE.sub("", record[key])
+    record["highlights"] = [FACT_ID_RE.sub("", h) for h in record.get("highlights") or []]
+    for row in record.get("faq") or []:
+        row["a"] = FACT_ID_RE.sub("", row.get("a", ""))
+    if record.get("todayActions"):
+        record["todayActions"] = [FACT_ID_RE.sub("", a) for a in record["todayActions"]]
+    wm = record.get("workMoney") or {}
+    if wm.get("points"):
+        wm["points"] = [FACT_ID_RE.sub("", p) for p in wm["points"]]
+
+
+def attach_charts(record: dict) -> dict:
+    """記事の数字の図（前と今・推移・料金の段）を charts に入れる（scripts/article_charts.py。LLM なし・決まった手順）"""
+    try:
+        charts = article_charts.derive_charts(record)
+    except Exception as error:  # noqa: BLE001 - 図が作れなくても記事は出す
+        log(f"   [charts] 図を作れませんでした（{str(error)[:80]}）")
+        return record
+    if charts:
+        record["charts"] = charts
+        log(f"   [charts] {', '.join(c['kind'] for c in charts)}")
+    return record
+
+
+def finalize_facts(record: dict, source_text: str) -> dict:
+    """品質ゲートを通った記事に、元記事のほかに確かめた資料（factSources）を残し、束の中身（_facts）を外す"""
+    if record.get("_facts"):
+        if found := facts_bundle.sources(record, source_text):
+            record["factSources"] = found
+    record.pop("_facts", None)
     return record
 
 
@@ -1909,12 +2024,12 @@ def main() -> int:
         if related:
             log(f"   [context] 過去記事 {len(related)} 本: {', '.join(r['slug'] for r in related)}")
         voice_key, voice_text = m.pick_voice()
-        genre, system, prompt, schema, kind, check_context = compose(item, text, lane, related, voice_text)
+        genre, system, prompt, schema, kind, check_context, bundle = compose_with_facts(item, text, lane, related, voice_text, page)
 
-        def build(data, model, item=item, page=page, voice_key=voice_key, genre=genre, related=related):
+        def build(data, model, item=item, page=page, voice_key=voice_key, genre=genre, related=related, bundle=bundle):
             if str(data.get("genre", "")).strip() not in GENRES_BY_SLUG:
                 data = {**data, "genre": genre.slug}
-            return attach_related(build_web_record(item, data, page, model, voice_key), data, related)
+            return attach_related(build_web_record(item, data, page, model, voice_key, bundle), data, related)
 
         started = time.time()
         if major:
@@ -1956,6 +2071,8 @@ def main() -> int:
             record["breaking"] = True
         if item.get("late"):
             record["late"] = True
+        finalize_facts(record, text)
+        attach_charts(record)
         stamp_times(record, item, run_detected_at)
         path = m.write_article(record)
         recent.add(record["title"], record["sourceUrl"], record.get("keywords"))
@@ -2063,6 +2180,7 @@ def main() -> int:
                 rejected += status == "reject"
                 run_status[q["id"]] = ("failed", 2)
                 continue
+            attach_charts(record)
             stamp_times(record, q, run_detected_at)
             path = m.write_article(record)
             recent.add(record["title"], record["sourceUrl"], record.get("keywords"))

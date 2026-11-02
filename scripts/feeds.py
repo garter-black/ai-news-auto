@@ -608,6 +608,9 @@ class _Extractor(HTMLParser):
         self.in_article = 0
         self.in_main = 0
         self.meta: dict[str, str] = {}
+        # 本文の中のリンク（元記事が案内する料金ページ・ヘルプ・資料を追いかける。scripts/source_links.py）
+        self.links: list[dict] = []
+        self._link: dict | None = None
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -630,10 +633,16 @@ class _Extractor(HTMLParser):
             self.in_article += 1
         if tag == "main":
             self.in_main += 1
+        if tag == "a" and attrs.get("href") and self.skip_at is None and len(self.links) < 300:
+            self._link = {"href": attrs["href"].strip(), "text": [], "main": bool(self.in_article or self.in_main)}
         if tag in BLOCK_TAGS:
             self._emit("\n")
 
     def handle_endtag(self, tag):
+        if tag == "a" and self._link is not None:
+            link, self._link = self._link, None
+            link["text"] = re.sub(r"\s+", " ", "".join(link["text"])).strip()[:120]
+            self.links.append(link)
         if tag in VOID_TAGS or tag not in self.stack:
             return
         # 閉じ忘れのタグをまとめて閉じる
@@ -653,6 +662,8 @@ class _Extractor(HTMLParser):
     def handle_data(self, data):
         if self.skip_at is None and data.strip():
             self._emit(data)
+            if self._link is not None:
+                self._link["text"].append(data)
 
     def _emit(self, text):
         if self.skip_at is not None and text != "\n":
@@ -697,11 +708,13 @@ def _fetch_via_reader(url: str) -> dict:
     published = m.group(1).strip() if m else ""
     if "Markdown Content:" in body:
         body = body.split("Markdown Content:", 1)[1]
-    # 画像・リンクの記法を外して読みやすい本文にする
+    # 画像・リンクの記法を外して読みやすい本文にする（リンクは先に取っておく）
     body = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", body)
+    links = [{"href": href, "text": text, "main": True} for text, href in re.findall(r"\[([^\]]{1,120})\]\((https?://[^)\s]+)", body)]
     body = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", body)
     text = _collapse(body)
-    return {"text": text[:TEXT_CAP], "image": None, "title": title, "description": "", "final_url": url, "published": published}
+    return {"text": text[:TEXT_CAP], "image": None, "title": title, "description": "", "final_url": url, "published": published,
+            "links": _abs_links(links, url)}
 
 
 def fetch_article_text(url: str) -> dict:
@@ -748,7 +761,23 @@ def _fetch_direct(url: str) -> dict:
         "description": parser.meta.get("og:description") or parser.meta.get("description", ""),
         "final_url": final_url,
         "published": parser.meta.get("article:published_time", "") or parser.meta.get("og:published_time", "") or _jsonld_published(data),
+        "links": _abs_links(parser.links, final_url),
     }
+
+
+def _abs_links(links: list[dict], base: str) -> list[dict]:
+    """リンクを絶対URLにして重複を外す（{"url", "text", "main"}）"""
+    out, seen = [], set()
+    for link in links:
+        href = html.unescape(link.get("href") or "")
+        if not href or href.startswith(("#", "mailto:", "javascript:", "tel:")):
+            continue
+        url = urllib.parse.urljoin(base, href).split("#")[0]
+        if not url.startswith(("http://", "https://")) or url in seen:
+            continue
+        seen.add(url)
+        out.append({"url": url, "text": link.get("text") or "", "main": bool(link.get("main"))})
+    return out
 
 
 _JSONLD_DATE_RE = re.compile(rb'"datePublished"\s*:\s*"([^"]{8,40})"')
