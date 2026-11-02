@@ -120,6 +120,31 @@
         "full": null,
         "short": null
       }
+    },
+    "openai-grid-protectors-program": {
+      "at": "2026-11-02T19:44:19+00:00",
+      "status": "gate_failed",
+      "textAt": "2026-11-02T15:11:47+00:00",
+      "versions": {
+        "full": {
+          "ok": false,
+          "seconds": null,
+          "reasons": [
+            "公式ページか台本が無い"
+          ]
+        },
+        "short": {
+          "ok": false,
+          "seconds": null,
+          "reasons": [
+            "公式ページか台本が無い"
+          ]
+        }
+      },
+      "timings": {
+        "full": null,
+        "short": null
+      }
     }
   }
 }
