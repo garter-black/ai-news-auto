@@ -24,6 +24,8 @@ export default function SourceRecord({
 }) {
   const official = article.sourcePublishedAt && /T\d/.test(article.sourcePublishedAt) ? article.sourcePublishedAt : "";
   const updates = article.updates ?? [];
+  // 話題の見張り（radar-）から来た記事は報道が元のことがある。公式・官公庁の名前でなければ「報道」と表示する
+  const reported = (article.channelSlug ?? "").startsWith("radar-") && !/公式|省|庁|委員会|政府|都庁|県|市役所/.test(sourceName);
   const row = "grid gap-1 py-3 sm:grid-cols-[9rem_1fr] sm:gap-4";
   const key = "text-meta font-bold text-muted";
   const link = "font-semibold text-ink underline decoration-line-strong underline-offset-4 hover:text-accent";
@@ -36,7 +38,7 @@ export default function SourceRecord({
       <dl className="mt-2 divide-y divide-line text-note leading-relaxed text-ink-soft">
         {sourceUrl && (
           <div className={row}>
-            <dt className={key}>{article.sourceType === "web" ? "出典（公式）" : "元の動画"}</dt>
+            <dt className={key}>{article.sourceType === "web" ? (reported ? "出典（報道）" : "出典（公式）") : "元の動画"}</dt>
             <dd>
               <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className={link}>
                 {sourceName}
