@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { liveBundles } from "@/lib/story-window";
 
 export type StoryItem = {
   slug: string;
@@ -19,7 +20,7 @@ export type StoryItem = {
   price: string | null;
 };
 
-/** cover は丸の表紙（束どうしで重ならないようサーバー側で選ぶ） */
+/** cover は丸の表紙（束どうしで重ならないようサーバー側で選ぶ）。items は新しい順、at で24時間を数える */
 export type Bundle = { key: string; label: string; cover?: string; items: StoryItem[] };
 type Mode = "easy" | "expert";
 
@@ -41,6 +42,16 @@ function ago(iso: string): string {
   return h < 24 ? `${h}時間前` : `${Math.round(h / 24)}日前`;
 }
 
+/*
+ * 閲覧時刻（分単位）。トップは静的ページで次のデプロイまでキャッシュされるので、
+ * 24時間を過ぎた記事はブラウザ側で丸から外す。サーバー描画とハイドレーションでは null（=サーバーの束のまま）。
+ */
+const minuteNow = () => Math.floor(Date.now() / 60_000) * 60_000;
+function subscribeClock(onChange: () => void) {
+  const id = window.setInterval(onChange, 60_000);
+  return () => window.clearInterval(id);
+}
+
 function readSaved(): string[] {
   try {
     return JSON.parse(localStorage.getItem(SAVED_KEY) ?? "[]");
@@ -60,8 +71,14 @@ function writeSaved(slugs: string[]) {
  * 右スワイプ＝気になる（取っておく）、左＝スキップ、ボタンで今すぐ読む。
  * 束を見終えたら「気になった記事」をまとめて出し、次の束へ進める。
  */
-export default function StoryRail({ bundles }: { bundles: Bundle[] }) {
-  const [open, setOpen] = useState<number | null>(null);
+export default function StoryRail({ bundles: built }: { bundles: Bundle[] }) {
+  const now = useSyncExternalStore(subscribeClock, minuteNow, () => null);
+  const bundles = useMemo(() => (now === null ? built : liveBundles(built, now)), [built, now]);
+  // 開いている束はキーで持つ（時刻が進んで丸の並びが変わっても、見ている束がずれない）
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  const found = openKey === null ? -1 : bundles.findIndex((b) => b.key === openKey);
+  const open = found < 0 ? null : found;
+  const setOpen = (i: number | null) => setOpenKey(i === null ? null : bundles[i]?.key ?? null);
   const [seen, setSeen] = useState<Record<string, boolean>>({});
   const rail = useRef<HTMLDivElement>(null);
   const railId = useId();
@@ -79,7 +96,7 @@ export default function StoryRail({ bundles }: { bundles: Bundle[] }) {
     const observer = new ResizeObserver(update);
     observer.observe(el);
     return () => { el.removeEventListener("scroll", update); observer.disconnect(); };
-  }, [bundles]);
+  }, [bundles.length]);
 
   const moveRail = (direction: -1 | 1) => {
     const el = rail.current;
@@ -87,16 +104,19 @@ export default function StoryRail({ bundles }: { bundles: Bundle[] }) {
     el.scrollBy({ left: direction * Math.max(240, el.clientWidth * 0.7), behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
   };
 
+  const isOpen = open !== null;
   useEffect(() => {
-    if (open === null) return;
+    if (!isOpen) return;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     // 記事への画面遷移でもアンマウント時に解除し、移動先のスクロールを妨げない。
     return () => { document.body.style.overflow = previousOverflow; };
-  }, [open]);
+  }, [isOpen]);
 
   // 表紙は lib/stories.ts で丸ごとに違う見た目を選んである
   const covers = bundles.map((b) => ringImage(b.cover || b.items[0]?.image || ""));
+
+  if (bundles.length === 0) return null;
 
   return (
     <>
