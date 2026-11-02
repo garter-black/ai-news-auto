@@ -189,6 +189,9 @@
     "databricks-wealth-management-onboarding": {
       "liveAt": "2026-11-02T04:00:02+00:00"
     },
+    "deepseek-harness-creator-mode": {
+      "liveAt": "2026-11-02T17:48:30+00:00"
+    },
     "deepseek-super-agent-coding-prototype": {
       "liveAt": "2026-11-01T05:10:00+00:00"
     },
@@ -363,6 +366,9 @@
     "hiroshima-u-lung-cancer-ai-ct": {
       "liveAt": "2026-10-27T19:19:09+00:00"
     },
+    "hokuriku-electric-hokulink-leak": {
+      "liveAt": "2026-11-02T17:48:30+00:00"
+    },
     "honda-rn0-emtb-eicma-2026": {
       "liveAt": "2026-11-02T15:35:15+00:00"
     },
@@ -407,6 +413,9 @@
     },
     "jpcert-weekly-report-20261028-vulnerabilities": {
       "liveAt": "2026-10-28T19:57:37+00:00"
+    },
+    "kanto-gx-connect-matching-tokyo": {
+      "liveAt": "2026-11-02T17:48:29+00:00"
     },
     "katayama-mof-budget-2027-tax-estimate": {
       "liveAt": "2026-11-02T11:54:38+00:00"
@@ -587,6 +596,9 @@
     },
     "nvidia-ai-cluster-runtime-dynamo": {
       "liveAt": "2026-11-02T03:34:05+00:00"
+    },
+    "nvidia-cosmos-world-models-simulation": {
+      "liveAt": "2026-11-02T17:48:30+00:00"
     },
     "nvidia-fox-factory-agents-europe": {
       "liveAt": "2026-10-29T00:31:47+00:00"
