@@ -1,6 +1,76 @@
 {
-  "updated": "2026-11-02T15:21:24.853477+09:00",
+  "updated": "2026-11-03T02:11:09.454987+09:00",
   "items": [
+    {
+      "id": "4846a74cece39cf74bcd7402342e1290bb651f86",
+      "kind": "trend",
+      "url": "https://news.yahoo.co.jp/articles/1a2e6ef472c5df46ae574d193f1d60e20907ef27",
+      "title": "北陸電力 ほくリンク",
+      "summary": "Googleトレンド急上昇（約100件の検索）。関連報道: 北陸電力「ほくリンク」会員のメールアドレス約55万件が流出 委託先のメール配信サービスに不正アクセス / 「ほくリンク」会員55万件のメールアドレス流出 北陸電力、委託先の不正アクセスで｜社会｜石川のニュース / 北電、メールアドレス５５万件流出 委託先に不正アクセス",
+      "published_at": "2026-11-03T00:30:00+09:00",
+      "source_name": "Googleトレンド",
+      "source_slug": "trends",
+      "lang": "ja",
+      "image": null,
+      "genre": "ai",
+      "sources": [
+        {
+          "title": "北陸電力「ほくリンク」会員のメールアドレス約55万件が流出 委託先のメール配信サービスに不正アクセス",
+          "url": "https://news.yahoo.co.jp/articles/1a2e6ef472c5df46ae574d193f1d60e20907ef27",
+          "source": "Yahoo!ニュース",
+          "published": "2026-11-03T00:30:00+09:00"
+        },
+        {
+          "title": "「ほくリンク」会員55万件のメールアドレス流出 北陸電力、委託先の不正アクセスで｜社会｜石川のニュース",
+          "url": "https://www.hokkoku.co.jp/articles/-/2278351",
+          "source": "北國新聞",
+          "published": "2026-11-03T00:30:00+09:00"
+        },
+        {
+          "title": "北電、メールアドレス５５万件流出 委託先に不正アクセス",
+          "url": "https://webun.jp/articles/-/1121874",
+          "source": "北日本新聞webunプラス",
+          "published": "2026-11-03T00:30:00+09:00"
+        }
+      ],
+      "traffic": 100,
+      "queued_at": "2026-11-03T02:11:09.120334+09:00"
+    },
+    {
+      "id": "13515cec206f1d26f0abe56daf90242f82455be2",
+      "kind": "trend",
+      "url": "https://news.yahoo.co.jp/articles/665557ba443284b46e77077206af16c366813e92",
+      "title": "雪見だいふく",
+      "summary": "Googleトレンド急上昇（約100件の検索）。関連報道: Mrs. GREEN APPLE藤澤涼架「雪⾒だいふく」新アンバサダーに就任！「信じられない。それぐらいうれしい」 / ミセス藤澤涼架が「雪見だいふく」新アンバサダーに！　「家族やメンバーともずっと食べてきた」と愛がさく裂 / ロッテ「雪見だいふく」発売から45周年！新アンバサダーに、藤澤涼架さん（Mrs. GREEN APPLE）が就任！「子どもの頃から大好きで、家族やメンバーともずっと食べてきた」",
+      "published_at": "2026-11-02T23:50:00+09:00",
+      "source_name": "Googleトレンド",
+      "source_slug": "trends",
+      "lang": "ja",
+      "image": null,
+      "genre": "ai",
+      "sources": [
+        {
+          "title": "Mrs. GREEN APPLE藤澤涼架「雪⾒だいふく」新アンバサダーに就任！「信じられない。それぐらいうれしい」",
+          "url": "https://news.yahoo.co.jp/articles/665557ba443284b46e77077206af16c366813e92",
+          "source": "Yahoo!ニュース",
+          "published": "2026-11-02T23:50:00+09:00"
+        },
+        {
+          "title": "ミセス藤澤涼架が「雪見だいふく」新アンバサダーに！　「家族やメンバーともずっと食べてきた」と愛がさく裂",
+          "url": "https://topics.smt.docomo.ne.jp/article/crankin/entertainment/crankin-19364003",
+          "source": "ｄメニューニュース",
+          "published": "2026-11-02T23:50:00+09:00"
+        },
+        {
+          "title": "ロッテ「雪見だいふく」発売から45周年！新アンバサダーに、藤澤涼架さん（Mrs. GREEN APPLE）が就任！「子どもの頃から大好きで、家族やメンバーともずっと食べてきた」",
+          "url": "https://prtimes.jp/main/html/rd/p/000000097.000086324.html",
+          "source": "PR TIMES",
+          "published": "2026-11-02T23:50:00+09:00"
+        }
+      ],
+      "traffic": 100,
+      "queued_at": "2026-11-03T02:11:09.120334+09:00"
+    },
     {
       "id": "2b6e779ca763ccab689b4a5956d7ee40b8a853d2",
       "kind": "trend",
