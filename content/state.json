@@ -32,7 +32,6 @@
     "YQYckl38zpo": 1,
     "YcFnDg6dl0s": 2,
     "a75xDflRooI": 1,
-    "cflbzHRvGvg": 1,
     "dQMYDBGX0uk": 2,
     "dmbT2IHpOKU": 1,
     "eNuyyBJwOEw": 1,
@@ -48,7 +47,7 @@
     "nfpVl4pC0UM": 1,
     "nqAri_t8xRA": 1,
     "o4D1J1YWjhg": 2,
-    "qVGa1VU2YfA": 1,
+    "qVGa1VU2YfA": 2,
     "roVDIuW_6HI": 1,
     "tTuk4pGnT0A": 1,
     "u5t7-BLYvfQ": 2,
@@ -2057,6 +2056,10 @@
       "at": "2026-09-13T01:45:31.886673+00:00",
       "reason": "動画が53秒のショート動画であり、提供されている情報量が極めて限定的であるため、4000〜6000字の商業品質の記事を執筆するための一次情報が不足しています。",
       "skipped": true
+    },
+    "cflbzHRvGvg": {
+      "at": "2026-11-02T00:02:01.434375+00:00",
+      "slug": "shopify-cto-codex-ai-prototyping"
     },
     "cify-SUpqz4": {
       "at": "2026-09-26T20:18:36.093609+00:00",
@@ -6366,6 +6369,12 @@
       "skipped": true,
       "url": "https://blog.google/innovation-and-ai/products/gemini-app/update-resume-with-gemini/"
     },
+    "653c076d030f55e7": {
+      "at": "2026-11-02T00:02:48.732168+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（採用）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/kouseiroudoushou/saiyou/hijoukin/hj-iyakukyoku02-kagakubussitusinsasenmonin.html"
+    },
     "6687f834982bd2f1": {
       "at": "2026-10-29T01:14:14.760103+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9076,6 +9085,14 @@
       "slug": "sanada-naoki-asakusa-live-2026",
       "url": "https://www.atpress.ne.jp/news/644526"
     },
+    "baed61a4dbe0301752e0f27f675ecbde0ae5cb53": {
+      "at": "2026-11-02T00:02:48.731978+00:00",
+      "kind": "trend",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "slug": "kinyu-shisan-nainen-jijo-60s",
+      "url": "https://finance.yahoo.co.jp/news/detail/f46868eeea7ab53f91d53ade53064c20f3268ff3"
+    },
     "baed9642cea94fc7": {
       "at": "2026-10-27T01:31:56.901652+00:00",
       "reason": "prefilter: 告知・お知らせ系",
@@ -9591,6 +9608,12 @@
       "reason": "quality: 本文が短い（2050字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000056.000175627.html"
+    },
+    "cbaf201becd502e1": {
+      "at": "2026-11-02T00:02:48.732158+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（採用）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/kouseiroudoushou/saiyou/hijoukin/hj-ninki-seisakutoukatukan_ikuzi_00001.html"
     },
     "cbe0ba8852adf755": {
       "at": "2026-10-27T01:53:14.804383+00:00",
@@ -11324,52 +11347,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:22:06.926418+00:00",
-      "attempt": 1,
-      "id": "c1c951b7ff0caff4",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1686字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（349字 / 基準 400字以上）",
-        "title / seo_title に感嘆符がある"
-      ],
-      "readability": {
-        "avg_paragraph": 87.0,
-        "avg_sentence": 59.3,
-        "long_share": 0.409,
-        "max_paragraph": 128,
-        "paragraphs": 15,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "windows-blog-jp",
-      "title": "PowerPoint のインタラクティブ スライドでストーリーテリングを変革"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:22:13.536848+00:00",
-      "attempt": 2,
-      "id": "c1c951b7ff0caff4",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2133字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 99.4,
-        "avg_sentence": 66.2,
-        "long_share": 0.667,
-        "max_paragraph": 163,
-        "paragraphs": 16,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "windows-blog-jp",
-      "title": "PowerPoint のインタラクティブ スライドでストーリーテリングを変革"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T02:41:38.873488+00:00",
@@ -18071,6 +18048,49 @@
       "score": 90,
       "source": "radar-news.mynavi.jp",
       "title": "Windows 11の右クリックメニュー刷新、不要項目を非表示にする機能の提供開始"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T00:02:46.010023+00:00",
+      "attempt": 1,
+      "id": "baed61a4dbe0301752e0f27f675ecbde0ae5cb53",
+      "kind": "trend",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 58.2字・60字超の文が 43% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 135.8字・最長 209字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 135.8,
+        "avg_sentence": 58.2,
+        "long_share": 0.429,
+        "max_paragraph": 209,
+        "paragraphs": 6,
+        "sentences": 14
+      },
+      "score": 100,
+      "source": "trends",
+      "title": "金融資産"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T00:02:48.731637+00:00",
+      "attempt": 0,
+      "id": "baed61a4dbe0301752e0f27f675ecbde0ae5cb53",
+      "kind": "trend",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 83.0,
+        "avg_sentence": 41.5,
+        "long_share": 0.1,
+        "max_paragraph": 147,
+        "paragraphs": 10,
+        "sentences": 20
+      },
+      "score": 100,
+      "source": "trends",
+      "title": "金融資産"
     }
   ],
   "short_text_retry": {}

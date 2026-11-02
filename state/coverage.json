@@ -2,6 +2,24 @@
  "hours": 96,
  "items": [
   {
+   "slug": "kinyu-shisan-nainen-jijo-60s",
+   "at": "2026-11-02T00:02:45.234261+00:00",
+   "title": "老後の金融資産と年金事情を調査、60代のリアルな懐事情と節約術",
+   "head": "老後の金融資産と年金事情を調査、60代のリアルな懐事情と節約術 | 金融資産",
+   "text": "老後の金融資産と年金事情を調査、60代のリアルな懐事情と節約術 | 金融資産 | 金融資産 / 老齢年金 / 年金生活 / 貯蓄 / NISA / 物価高 / 老後資金 / 節約 / マネー / 老後 / 年金 / 投資",
+   "urls": [
+    "https://finance.yahoo.co.jp/news/detail/f46868eeea7ab53f91d53ade53064c20f3268ff3"
+   ]
+  },
+  {
+   "slug": "shopify-cto-codex-ai-prototyping",
+   "at": "2026-11-02T00:02:01.434375+00:00",
+   "title": "Shopifyが会議の『スライド発表』を禁止にした理由 OpenAIのCodexで開発はどう変わる？",
+   "head": "Shopifyが会議の『スライド発表』を禁止にした理由 OpenAIのCodexで開発はどう変わる？ | From Ideas to Prototypes with Codex | Shopify’s Mikhail Parakhin",
+   "text": "Shopifyが会議の『スライド発表』を禁止にした理由 OpenAIのCodexで開発はどう変わる？ | From Ideas to Prototypes with Codex | Shopify’s Mikhail Parakhin | Codex / OpenAI / Shopify / プロトタイプ / AI開発 / ミハイル・パラヒン / 使い方 / 業務効率化 / 開発自動化 / OpenAI / ChatGPT / 生成AI / Codex / Shopify / 業務効率化",
+   "urls": []
+  },
+  {
    "slug": "windows11-context-menu-customize-kb5127936",
    "at": "2026-11-01T23:39:18.370510+00:00",
    "title": "Windows 11の右クリックメニューが整理可能に 不要な項目を消せる新機能をプレビュー公開",
@@ -1234,26 +1252,6 @@
    "text": "AI半導体のNVIDIAが工場向けAIの設計図を公開 欧州の大手が設計から製造まで活用 | Europe’s Industrial Leaders Reinvent Engineering and Manufacturing With NVIDIA | NVIDIA FOX / 工場AI / AIエージェント / Omniverse / Cosmos / CUDA-X / cuDSS / Siemens / デジタルツイン / GTC Berlin / NVIDIA / AIエージェント / デジタルツイン / 製造業 / Omniverse / GTC 2026",
    "urls": [
     "https://blogs.nvidia.com/blog/europe-industrial-leaders-engineering-manufacturing/"
-   ]
-  },
-  {
-   "slug": "soumu-kkj-2025-3rd-result",
-   "at": "2026-10-29T00:02:11.747923+00:00",
-   "title": "総務省の経済構造実態調査、2025年三次集計で事業所ごとの売上分布が明らかに",
-   "head": "総務省の経済構造実態調査、2025年三次集計で事業所ごとの売上分布が明らかに | 「2025年経済構造実態調査」三次集計結果 産業横断調査（事業所に関する集計）",
-   "text": "総務省の経済構造実態調査、2025年三次集計で事業所ごとの売上分布が明らかに | 「2025年経済構造実態調査」三次集計結果 産業横断調査（事業所に関する集計） | 総務省統計局 / 経済構造実態調査 / 三次集計 / 産業横断調査 / 事業所統計 / 売上高 / 日本標準産業分類 / e-Stat / ビジネス / 経済 / 統計 / 総務省",
-   "urls": [
-    "https://www.stat.go.jp/data/kkj/kekka/index.html"
-   ]
-  },
-  {
-   "slug": "kddi-iret-ai-use-cases-113",
-   "at": "2026-10-28T23:47:15.419838+00:00",
-   "title": "KDDIグループのKDDIアイレットが社内AI活用事例113件を無料公開 稟議チェックの例も",
-   "head": "KDDIグループのKDDIアイレットが社内AI活用事例113件を無料公開 稟議チェックの例も | KDDI傘下、社内のAI活用事例113件を無料公開 「Gemini Notebook」で稟議データのチェック支援も",
-   "text": "KDDIグループのKDDIアイレットが社内AI活用事例113件を無料公開 稟議チェックの例も | KDDI傘下、社内のAI活用事例113件を無料公開 「Gemini Notebook」で稟議データのチェック支援も | KDDIアイレット / AI活用事例 / 生成AI 事例集 / Gemini Notebook / Claude Code / 稟議 AI / 社内AI活用 / Figma 開発効率化 / 無料公開 / 業務効率化 / 生成AI / Gemini / Claude / KDDIアイレット / 業務効率化",
-   "urls": [
-    "https://www.itmedia.co.jp/aiplus/article/2610/29/2000002685/"
    ]
   }
  ]
