@@ -414,15 +414,14 @@
       "url": "https://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-genie-4/"
     },
     "bb93f5cb923dac27": {
-      "detectedAt": "2026-10-28T17:22:51+00:00",
-      "finishedAt": "2026-10-28T17:23:59+00:00",
-      "outcome": "skipped",
-      "reason": "followup quality: 「M6、Wi-Fi 7などの記述は、この発表では裏付けられていません」→元記事にはWi-Fi 7とBluetooth 6対応（N1ワイヤレスチップ）が明記されており、矛盾している。; 「本記事は『Liquid Retina XDR』で最大1,600ニト、コントラスト比1,000,000:1としていました」→元記事にも確認済みの文脈にもなく、過去記事の内容として裏",
-      "run": "40735167601",
+      "detectedAt": "2026-11-02T04:53:24+00:00",
+      "finishedAt": "2026-11-02T04:57:14+00:00",
+      "outcome": "duplicate",
+      "reason": "通常の回などで処理済み",
+      "run": "41391182313",
       "slug": "",
       "source": "apple-newsroom-jp-all",
-      "sourcePublishedAt": "2026-10-28T17:20:32+00:00",
-      "startedAt": "2026-10-28T17:23:18+00:00",
+      "startedAt": "2026-11-02T04:57:11+00:00",
       "title": "Apple、PROLED XDRディスプレイを搭載した画期的なMacBook Proを発表",
       "url": "https://www.apple.com/jp/newsroom/2026/10/apple-unveils-groundbreaking-macbook-pro-with-proled-xdr-display/"
     },
