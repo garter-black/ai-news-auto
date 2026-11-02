@@ -63,9 +63,7 @@
     "zoohZ1BiHs0": 1
   },
   "failed_web": {},
-  "major_tries": {
-    "7c1aece6152955a3": 2
-  },
+  "major_tries": {},
   "processed": {
     "--kyzoeUuBk": {
       "at": "2026-08-10T15:58:56.932533+00:00",
@@ -7697,6 +7695,12 @@
       "slug": "openai-updated-model-spec-2026",
       "url": "https://openai.com/index/updated-model-spec"
     },
+    "7c1aece6152955a3": {
+      "at": "2026-11-02T23:06:16.212985+00:00",
+      "reason": "major gave up x3: reject: 事実確認を実行できなかった（すべてのモデルで失敗しました: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You ）",
+      "skipped": true,
+      "url": "https://gori.me/macbookpro/172017"
+    },
     "7c5037f9c6108000": {
       "at": "2026-10-26T21:00:58.053392+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（ビデオメッセージ）",
@@ -12700,29 +12704,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T18:03:05.100866+00:00",
-      "attempt": 2,
-      "id": "b2263e9f84127c76",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 70.4字・60字超の文が 64% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 145.2字・最長 233字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 145.2,
-        "avg_sentence": 70.4,
-        "long_share": 0.636,
-        "max_paragraph": 233,
-        "paragraphs": 16,
-        "sentences": 33
-      },
-      "score": 100,
-      "source": "hugging-face-blog",
-      "title": "nemotron-halloween"
-    },
     {
       "accepted": true,
       "at": "2026-10-30T18:03:10.966258+00:00",
@@ -19140,6 +19121,28 @@
         "max_paragraph": 116,
         "paragraphs": 32,
         "sentences": 57
+      },
+      "score": null,
+      "source": "radar-gori.me",
+      "title": "新型MacBook Proは「ほしい」、だけど「活かせない」のジレンマ。新モデルは買いま……"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T23:06:16.212935+00:00",
+      "attempt": 1,
+      "id": "7c1aece6152955a3",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "事実確認を実行できなかった（すべてのモデルで失敗しました: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You ）"
+      ],
+      "readability": {
+        "avg_paragraph": 58.0,
+        "avg_sentence": 31.6,
+        "long_share": 0.015,
+        "max_paragraph": 104,
+        "paragraphs": 37,
+        "sentences": 68
       },
       "score": null,
       "source": "radar-gori.me",
