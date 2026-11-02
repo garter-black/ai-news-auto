@@ -1,12 +1,26 @@
 {
-  "generatedAt": "2026-11-01T00:46:31+00:00",
+  "generatedAt": "2026-11-02T01:20:04+00:00",
   "method": "buffer-metrics",
   "manual": [
     "Chrome で各 url（@saisoku637 の投稿）を開き、ログイン済みのアカウントで返信欄を読む",
     "または https://www.threads.com/activity （アクティビティ → 返信）で直近の返信をまとめて見る",
     "返信の下書きを作ってオーナーに見せ、承認されたものだけを手で投稿する（自動返信はしない）"
   ],
-  "items": [],
-  "checkedPosts": 59,
+  "items": [
+    {
+      "id": "6ae63210cf3a3112f3b8e317",
+      "slug": "intelligent-terminal-local-120b-llm",
+      "post": "コードを書く開発者の皆さん、朗報です。",
+      "url": "https://www.threads.com/@saisoku637/post/DfLeaGllCaM",
+      "sentAt": "2026-11-01T00:45:30.001Z",
+      "comments": 1,
+      "newComments": 1,
+      "views": 517,
+      "commenter": null,
+      "text": null,
+      "metricsUpdatedAt": "2026-11-01T12:06:08.126Z"
+    }
+  ],
+  "checkedPosts": 65,
   "note": "コメント数は Buffer の集計（数時間おくれることがある）。本文と相手は url を Chrome で開いて確認する"
 }
