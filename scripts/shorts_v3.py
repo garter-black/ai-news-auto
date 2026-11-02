@@ -600,15 +600,18 @@ hook の問いに、**具体的な数字と比較で答える**。忙しい会�
      例: 「営業データの集計からグラフ、提案スライドまで、1日中まとめて任せる」「Claude Codeで、1日かけてアプリの修正を進める」
      「月曜の朝に、先週の問い合わせ100件を分類して、返信の下書きまで作らせる」のように、作業の流れが分かる言い方。
      見る人は20〜50代の会社員・個人事業主。場面の中の作業は例として自由に書いてよいが、数字（件数・時間など）は資料にあるものだけ。資料に無い数字を場面に入れない。
+     画面の keyword・sub も場面そのものを短く（例: keyword「集計→提案書を丸投げ」sub「朝から晩まで任せる」）。「長い作業を任せる」のような種類の言葉にしない。
   5. 要らない人・注意（label 例: 要らない人・注意）: これも具体的な仕事の場面で（例: 「1日に数回、メールの言い回しを相談する程度ならPro」）。条件（月払いのみ・アプリ経由は価格が違う）も入れてよい。
   6. 確かめ方・使い方（label 例: 確かめ方・使い方）: どこを押せば確かめられる・試せるか（例: 設定の使用状況）。
-  keyword: 画面に大きく出す言葉。2〜8字。文にしない。句読点を付けない。sub: 補足（14字以内。不要なら空）。
+  keyword: 画面に大きく出す言葉。2〜10字（短いほどよい）。文にしない。句読点を付けない。sub: 補足（14字以内。不要なら空）。
   speech: 読み上げ。短い文で1〜3文・60字以内。keyword の数字・名前を必ず含める。
   block: 下の「画面の文字」一覧の番号（例: 1-23）。target: その行の文字から、この beat の証拠になる部分を**一文字も変えずに**抜き出す（日本語は2〜40字。英語は100字まで）。
   英語の target は文として完結する範囲（文の頭から、文末のピリオドかカンマまで）を選ぶ。文の途中で切らない。
   ja: target が英語のときだけ、target の日本語訳（画面のその英文のすぐ下に訳として出す）。文全体を、自然なです・ます調で（36字以内）。
   直訳の硬さを避け、文の一部だけを訳さない・言葉を足さない・target に無い数字を入れない。製品名は英字のまま。target が日本語なら空文字。hook も同じ。
   英文の頭の返事の語（Yes. / No.）は訳さなくてよい。
+  訳は、その場面の読み上げを裏付ける内容のときだけ付ける。読み上げと関係の薄い英文（例: 要らない人の場面に性能の説明文）を証拠にしない。
+  短い句（「Starting this week,」など）しか証拠に無いときは ja を空にする（訳の吹き出しは出さない）。
 - **同じことを2回言わない。** どの場面も、前の場面に無い新しい情報を1つ足す（倍率・価格・条件を別の場面で言い直さない。絵も同じ倍率を2回見せない）。
 - 読み上げ（hook・beats・conclusion の speech）の合計は{SPEECH_TOTAL_MAX - 30}字前後まで（約60秒）。
 - ladder: 料金の段階を比べる beat があるときだけ（無ければ beat=0・rows は空）。beat はその beat の番号、subject は話の主役のプラン名（例: Ultra）。
@@ -646,6 +649,7 @@ def review_system() -> str:
 4. 必要な人・要らない人が、具体的な1日の仕事の場面になっているか（「資料作り」「レポート」のような種類の名前で終わっていたら不合格。
    例「営業データの集計からグラフ、提案スライドまで1日中まとめて任せる」のように作業の流れが絵になるか）。最後に、どこで確かめられるかが分かるか。
 6. 同じことを2回言っていないか（倍率・価格・条件の言い直し、同じ倍率の絵が2回など）。どの場面も新しい情報を足しているか。
+7. 画面の keyword・sub も具体的か（必要な人の keyword が「長い作業を任せる」のような種類の言葉なら不合格）。訳（ja）がその場面の読み上げを裏付けているか。
 5. 資料（記事と公式ページの文字）に無い数字や事実を足していないか。
 すべて満たすときだけ ok=true。足りないときは ok=false にし、issues に直し方を具体的に4つまで書く（例:「beat3 は倍率をProの1週間分=1杯のように身近に言い換える」）。
 資料に無い数字を足すような直し方は書かない。target（証拠）は画面の文字をそのまま、英語は文の頭から文末かカンマまでの範囲なので、文の途中で切る直し方は書かない。
@@ -780,8 +784,8 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
         out.append("conclusion.text は16字以内。")
     for i, b in enumerate(beats, 1):
         kw = b.get("keyword", "")
-        if not (2 <= len(kw) <= 10) or re.search(r"[、。！？]", kw):
-            out.append(f"beat{i}.keyword は2〜8字で句読点なし（{kw}）。")
+        if not (2 <= len(kw) <= 12) or re.search(r"[、。！？]", kw):
+            out.append(f"beat{i}.keyword は2〜10字で句読点なし（{kw}）。")
         if len(b.get("sub", "")) > 16:
             out.append(f"beat{i}.sub は14字以内。")
         if len(b.get("speech", "")) > 66:
@@ -1764,7 +1768,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         cut = tg.page != prev_page
         wide_block = tg.block.rect[2] - tg.block.rect[0] > 0.5 * page.width
         # 英文に訳を付ける beat は、文全体（複数行）を選択して、その下に訳の吹き出しを出す
-        xl = found[i] and is_english(beat.get("target", "")) and bool(beat.get("ja"))
+        xl = found[i] and is_english(beat.get("target", "")) and len((beat.get("ja") or "").strip()) >= 10  # 短すぎる訳（「今週からです。」など）は出さない
         span = tg.span if xl else tg.rect
         sel = tg.rows if xl else [tg.match]
         line_rect = (tg.block.rect[0], span[1], tg.block.rect[2], span[3]) if wide_block else span
