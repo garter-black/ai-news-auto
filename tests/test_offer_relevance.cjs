@@ -195,3 +195,65 @@ test("本文途中のあわせて読みたい（関連記事）は、直近30日
   const oshi = article({ slug: "oshi", title: "JINENとzzz.inc.が業務提携、推し活の新事業", genreSlug: "business", tags: ["提携", "推し活"], publishedAt: at(1) });
   assert.equal(inlineReadForArticle(bike, [bike, oshi], company, [], now), undefined);
 });
+
+const HOSTING = new Set(offers.b2b.hostingPartners);
+const topicOf = (key) => offers.topics.find((t) => t.key === key);
+
+test("法人・企業向けの記事（ネットワーク・ゼロトラストなど）には個人向けのレンタルサーバー・VPSを出さない。既定はAIツール・スキル", () => {
+  for (const item of [
+    article({ title: "NTT西日本、企業向けゼロトラストの導入・運用支援サービスを開始", genreSlug: "business", genre: "ビジネス" }),
+    article({ title: "マイクロソフトとLumen、企業向けAIネットワークを共同展開へ", genreSlug: "ai" }),
+    article({ title: "法人向けWebサイト構築サービスを提供開始、企業の集客を支援", genreSlug: "business", genre: "ビジネス" }),
+  ]) {
+    const plan = offerPlanForArticle(item);
+    const shown = [...keys(plan.rail), ...keys(plan.inline)];
+    assert.ok(shown.length >= 1, item.title);
+    assert.ok(shown.every((key) => !HOSTING.has(key)), `${item.title}: ${shown}`);
+    assert.ok(readNextForArticle(item).every((link) => !["/compare/rental-server", "/compare/vps-dify-n8n"].includes(link.href)), item.title);
+  }
+  const zeroTrust = offerPlanForArticle(article({ title: "NTT西日本、企業向けゼロトラストの導入・運用支援サービスを開始", genreSlug: "business" }));
+  assert.equal(zeroTrust.offer.topic, "fallback-b2b");
+  assert.ok(keys(zeroTrust.rail).includes("doraverse"));
+  // 話題がサーバー・セルフホストそのものなら、法人向けでもサーバーを出す
+  const dify = offerPlanForArticle(article({ title: "企業向けにDifyのセルフホスト導入支援を開始、VPSで社内AIを構築", genreSlug: "ai" }));
+  assert.ok([...keys(dify.rail), ...keys(dify.inline)].some((key) => HOSTING.has(key)));
+  // 個人の副業の記事は従来どおり
+  assert.ok(keys(offerPlanForArticle(article({ title: "会社員の副業で個人のホームページを開設する人が増加", genreSlug: "business" })).rail).includes("xserver"));
+});
+
+test("枠の見出しは、その枠に並ぶ商品の話題から作る（Geminiの見出しの下にVPNを出さない）", () => {
+  const check = (offer, label) => {
+    if (!offer) return;
+    const topics = new Set(offer.items.map((item) => item.topic));
+    if (topics.size === 1) {
+      const key = [...topics][0];
+      const topic = topicOf(key);
+      if (topic) assert.equal(offer.headline, topic.headline, label);
+      else assert.ok(String(key).startsWith("fallback-"), label);
+    } else {
+      // 複数の話題にまたがる枠は、並ぶ話題の名前から作った見出し
+      for (const key of topics) {
+        const topic = topicOf(key);
+        if (topic && [...topics].indexOf(key) < 2) assert.ok(offer.headline.includes(topic.name), `${label}: ${offer.headline} / ${topic.name}`);
+      }
+    }
+  };
+  const gemini = article({ title: "Gemini、セキュリティ診断とプライバシー保護の新機能を追加", tags: ["Gemini", "セキュリティ", "VPN"], channelSlug: "google" });
+  const plan = offerPlanForArticle(gemini);
+  for (const box of [plan.rail, plan.inline]) {
+    if (!box) continue;
+    if (box.items.some((item) => item.key === "surfshark")) assert.notEqual(box.headline, topicOf("gemini").headline);
+  }
+  // 実データの全記事で、見出しと商品の話題がずれない・右側と本文中が重ならない・どの記事にも1つ以上
+  const dir = path.join(root, "content/articles");
+  for (const file of fs.readdirSync(dir).filter((f) => f.endsWith(".json"))) {
+    const real = JSON.parse(fs.readFileSync(path.join(dir, file), "utf8"));
+    const p = offerPlanForArticle(real);
+    assert.ok(p.rail && p.rail.items.length >= 1, real.slug);
+    check(p.rail, `${real.slug} rail`);
+    check(p.inline, `${real.slug} inline`);
+    const rail = new Set(keys(p.rail));
+    assert.ok(keys(p.inline).every((key) => !rail.has(key)), real.slug);
+    if (p.inline) assert.ok(p.inline.items.length >= 2, real.slug);
+  }
+});

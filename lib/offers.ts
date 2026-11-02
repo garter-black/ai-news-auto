@@ -34,6 +34,8 @@ type Topic = {
   companies?: string;
   /** match に足す語。match は scripts/a8_import.py が上書きする話題があるので、追加の語はこちらに書く */
   alsoMatch?: string;
+  /** 話題の短い名前（例: Gemini・セキュリティ対策）。枠の商品が複数の話題にまたがるとき、見出しをこの名前から作る */
+  name?: string;
 };
 
 type Partner = {
@@ -80,6 +82,19 @@ type Book = {
 
 type FallbackSet = { eyebrow: string; headline: string; lead: string; partners: string[]; bookTopics?: string[] };
 
+/** 法人・企業向けの記事の扱い（content/offers.json の b2b）。isB2BArticle を参照 */
+type B2BConfig = {
+  match: string;
+  genres?: string[];
+  hostingPartners?: string[];
+  hostingTopics?: string[];
+  consumerTopics?: string[];
+  penalty?: number;
+  preferTopics?: string[];
+  bonus?: number;
+  fallbackSet?: string;
+};
+
 type OffersFile = {
   /** 合う話題が無い記事に出す、ジャンルごとの広告（読者全体に役立つもの） */
   articleFallback?: { byGenre: Record<string, string>; default: string; sets: Record<string, FallbackSet> };
@@ -89,6 +104,7 @@ type OffersFile = {
   /** ジャンルごとの既定の話題 */
   fallbackByGenre?: Record<string, string>;
   partners: Record<string, Partner>;
+  b2b?: B2BConfig;
 };
 
 type ProductsFile = {
@@ -127,6 +143,8 @@ export type OfferItem = {
   imageNote?: string;
   /** 記事との関連の点数（記事の枠だけ） */
   relevance?: number;
+  /** この商品を選んだ話題（offers.json の topics の key。既定の広告は fallback-<セット名>）。枠の見出しを商品に合わせるのに使う */
+  topic?: string;
 };
 
 export type Offer = {
@@ -304,6 +322,7 @@ export type TopicScore = { topic: Topic; score: number };
 export function scoreTopics(article: ArticleSummary): TopicScore[] {
   const { offers } = load();
   const text = articleText(article);
+  const b2b = isB2BArticle(article, text) ? offers.b2b : undefined;
   const scored: TopicScore[] = [];
   for (const topic of offers.topics) {
     // ジャンルの違う話題（スポーツ記事に回線、AI記事に投資の本など）は出さない
@@ -312,7 +331,11 @@ export function scoreTopics(article: ArticleSummary): TopicScore[] {
     let score = relevanceScore(topic.alsoMatch ? `${topic.match}|${topic.alsoMatch}` : topic.match, article, text);
     // 発表元だけでは当てない（話題の語が記事に出てくるときの裏付けとして使う）
     if (score > 0 && regex(topic.companies)?.test(text.company)) score += 1;
-    if (score >= (topic.min ?? MIN_SCORE)) scored.push({ topic, score });
+    // 法人・企業向けの記事: 個人向けの話題（副業・家の回線など）は下げて、見出しにはっきり出ているときだけ選ぶ。
+    // 仕事・AIツール・スキルの話題は、基準点を超えたものだけ順位を上げる（届かない話題を引き上げはしない）
+    if (score > 0 && b2b?.consumerTopics?.includes(topic.key)) score -= b2b.penalty ?? 2;
+    if (score < (topic.min ?? MIN_SCORE)) continue;
+    scored.push({ topic, score: score + (b2b?.preferTopics?.includes(topic.key) ? (b2b.bonus ?? 1) : 0) });
   }
   // 同点は offers.json の並び（具体的な話題が上）のまま
   return scored.sort((a, b) => b.score - a.score);
@@ -322,14 +345,95 @@ function escapeRegex(text: string): string {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+/**
+ * 法人・企業向けの記事か（ネットワーク・基幹システム・エンタープライズ向けAIなど）。
+ * 見出しに1語当たるか、タグと要約の両方で裏付けが取れる程度（広告の話題と同じ基準点）。
+ * こうした記事の読者に個人向けのレンタルサーバーを勧めない（記事の話題がサーバーそのもののときを除く）。
+ */
+export function isB2BArticle(article: ArticleSummary, text: ArticleText = articleText(article)): boolean {
+  const config = load().offers.b2b;
+  if (!config?.match) return false;
+  if (config.genres && !config.genres.includes(article.genreSlug)) return false;
+  return relevanceScore(config.match, article, text) >= MIN_SCORE;
+}
+
+/** 記事の話題がサーバー・セルフホストそのものか（offers.json の b2b.hostingTopics の話題が基準点を超えるか） */
+export function matchesHostingTopic(article: ArticleSummary, text: ArticleText = articleText(article)): boolean {
+  const { offers } = load();
+  const keys = offers.b2b?.hostingTopics ?? [];
+  return offers.topics.some((topic) => {
+    if (!keys.includes(topic.key) || !genresOf(topic).includes(article.genreSlug)) return false;
+    const pattern = topic.alsoMatch ? `${topic.match}|${topic.alsoMatch}` : topic.match;
+    return relevanceScore(pattern, article, text) >= (topic.min ?? MIN_SCORE);
+  });
+}
+
+/** 法人・企業向けの記事で、個人向けのサーバー・VPS を外すか */
+function blocksHosting(article: ArticleSummary, text: ArticleText): boolean {
+  return isB2BArticle(article, text) && !matchesHostingTopic(article, text);
+}
+
+/**
+ * 枠の見出し（eyebrow・headline・lead）を、枠に実際に並ぶ商品の話題から作る。
+ * 全部が同じ話題ならその話題の見出し。複数の話題にまたがるときは、話題の短い名前を並べた見出しにする
+ * （「Geminiを使いこなす」の下に VPN が並ぶような、見出しと商品のずれを出さない）。
+ */
+function headingFor(items: OfferItem[], fallbackTopic: Topic): Pick<Offer, "topic" | "eyebrow" | "headline" | "lead"> {
+  const { offers } = load();
+  const order: string[] = [];
+  for (const item of items) if (item.topic && !order.includes(item.topic)) order.push(item.topic);
+  const find = (key: string) => (key === fallbackTopic.key ? fallbackTopic : offers.topics.find((t) => t.key === key));
+  const topics = order.map(find).filter((t): t is Topic => Boolean(t));
+  if (topics.length <= 1) {
+    const topic = topics[0] ?? fallbackTopic;
+    return { topic: topic.key, eyebrow: topic.eyebrow, headline: topic.headline, lead: topic.lead };
+  }
+  const names = [...new Set(topics.map((t) => t.name || t.key))];
+  const shown = names.length > 2 ? `${names.slice(0, 2).join("・")}など` : names.join("と");
+  const hasBook = items.some((item) => item.kind === "book");
+  const hasPartner = items.some((item) => item.kind === "partner");
+  const kinds = hasBook && hasPartner ? "サービスと本" : hasBook ? "本" : "サービス";
+  return {
+    topic: topics[0].key,
+    eyebrow: "この記事の話題に合わせて",
+    headline: `${shown}に役立つ${kinds}`,
+    lead: `${names.join("・")}に関わる${kinds}を、記事との関連が高い順に並べています。料金や条件はリンク先で確認してください。`,
+  };
+}
+
+/**
+ * 関連の高い順の商品から、1つの枠に入れる商品を選ぶ。いちばん上の商品の話題の商品を先に集め（最大 max）、
+ * それで visible に届かないときだけ、残りから関連の高い順に足す（見出しは headingFor が実際の商品から作る）。
+ */
+function pickBox(pool: OfferItem[], max: number, visible: number): OfferItem[] {
+  if (pool.length === 0) return [];
+  const lead = pool[0].topic;
+  const box = pool.filter((item) => item.topic === lead).slice(0, max);
+  for (const item of pool) {
+    if (box.length >= Math.min(visible, max)) break;
+    if (!box.includes(item)) box.push(item);
+  }
+  // 関連の高い順のまま
+  return pool.filter((item) => box.includes(item));
+}
+
+/**
+ * 選んだ商品だけの枠にする（見出しは商品の話題から）。
+ * 表示計測のピクセルは従来どおり候補全体の分をそのまま使う（ASP の計測の扱いを変えない）
+ */
+function boxOffer(offer: Offer, items: OfferItem[], baseTopic: Topic): Offer {
+  return { ...offer, ...headingFor(items, baseTopic), items };
+}
+
 export function offerForArticle(article: ArticleSummary, maxItems = MAX_ITEMS): Offer | undefined {
   // GeForce NOWはクラウドでゲームを動かすサービス。名前にGeForceが含まれるだけで
-  // 高額なローカルAI向けPCを「この記事の選択肢」として勧めない。
-  const headline = `${article.title} ${article.seoTitle ?? ""}`;
-  if (/GeForce\s*NOW|クラウドゲーム/i.test(headline) && !/ローカルAI|ローカルLLM|Ollama|画像生成/i.test(headline)) return undefined;
-  const scored = scoreTopics(article);
+  // 高額なローカルAI向けPCを「この記事の選択肢」として勧めない（articleScored）。
+  const scored = articleScored(article);
   if (scored.length === 0) return undefined;
-  return buildArticleOffer(article, scored, maxItems);
+  const offer = buildArticleOffer(article, scored, maxItems);
+  if (!offer) return undefined;
+  // 枠の見出しは並ぶ商品の話題から（いちばん関連の高い商品の話題を中心に選ぶ）
+  return boxOffer(offer, pickBox(offer.items, maxItems, MAX_ITEMS), scored[0].topic);
 }
 
 export type OfferPlan = {
@@ -349,13 +453,19 @@ export function fallbackOfferForArticle(article: ArticleSummary, maxItems = 12):
   const { offers, products } = load();
   const config = offers.articleFallback;
   if (!config) return undefined;
-  const key = config.byGenre[article.genreSlug] ?? config.default;
+  const text = articleText(article);
+  // 法人・企業向けの記事は、個人向けの副業・家の回線ではなく AIツール・スキル・仕事の効率化（offers.json の b2b）
+  const b2bSet = isB2BArticle(article, text) ? offers.b2b?.fallbackSet : undefined;
+  const key = b2bSet && config.sets[b2bSet] ? b2bSet : config.byGenre[article.genreSlug] ?? config.default;
   const set = config.sets[key] ?? config.sets[config.default];
   if (!set) return undefined;
+  const hosting = blocksHosting(article, text) ? new Set(offers.b2b?.hostingPartners ?? []) : new Set<string>();
+  const topicKey = `fallback-${key}`;
   const built: Built[] = [];
   for (const partner of set.partners) {
+    if (hosting.has(partner)) continue;
     const item = partnerOffer(partner);
-    if (item) built.push({ item: { ...item.item, relevance: 0 }, pixel: item.pixel });
+    if (item) built.push({ item: { ...item.item, relevance: 0, topic: topicKey }, pixel: item.pixel });
   }
   const seen = new Set<string>();
   for (const topic of set.bookTopics ?? []) {
@@ -363,22 +473,47 @@ export function fallbackOfferForArticle(article: ArticleSummary, maxItems = 12):
       if (built.length >= maxItems) break;
       if (seen.has(book.rbId)) continue;
       seen.add(book.rbId);
-      built.push({ item: { ...bookOffer(book), relevance: 0 } });
+      built.push({ item: { ...bookOffer(book), relevance: 0, topic: topicKey } });
     }
   }
-  const topic: Topic = { key: `fallback-${key}`, match: "", eyebrow: set.eyebrow, headline: set.headline, lead: set.lead, partners: set.partners };
+  const topic: Topic = { key: topicKey, match: "", eyebrow: set.eyebrow, headline: set.headline, lead: set.lead, partners: set.partners };
   return finishOffer(topic, built.slice(0, maxItems), { relevance: 0, fallback: true });
 }
 
 /** 記事ページの広告枠の割り当て。右側と本文中で同じ商品を出さない。合う話題が無ければジャンルの既定の広告 */
 export function offerPlanForArticle(article: ArticleSummary): OfferPlan {
-  const offer = offerForArticle(article, 12) ?? fallbackOfferForArticle(article, 12);
-  if (!offer) return {};
-  const pool = offer.items;
-  const rail = { ...offer, items: [...pool.slice(0, 3), ...pool.slice(6, 9)] };
-  const inlineItems = [...pool.slice(3, 6), ...pool.slice(9, 12)];
-  const inline = inlineItems.length >= 2 ? { ...offer, eyebrow: "あわせてチェック", items: inlineItems } : undefined;
-  return { offer, rail, inline };
+  const scored = articleScored(article);
+  const full = (scored.length > 0 ? buildArticleOffer(article, scored, 12) : undefined) ?? fallbackOfferForArticle(article, 12);
+  if (!full) return {};
+  const base = scored[0]?.topic ?? topicOfFallback(full);
+  const pool = full.items;
+  // 右側（1〜3位＋予備3つ）は、いちばん関連の高い商品の話題を中心に。本文中（4〜6位＋予備）は残りから同じ選び方で（右側と重ならない）。
+  // 各枠の見出しは、その枠に並ぶ商品の話題から作る（headingFor）
+  // まず見える3つずつ（右側→本文中）を決め、残りを同じ話題の予備として各枠に3つまで足す
+  const railShown = pickBox(pool, MAX_ITEMS, MAX_ITEMS);
+  const inlineShown = pickBox(pool.filter((item) => !railShown.includes(item)), MAX_ITEMS, MAX_ITEMS);
+  const spare = (shown: OfferItem[], taken: OfferItem[]) => {
+    const topics = new Set(shown.map((item) => item.topic));
+    return pool.filter((item) => !taken.includes(item) && topics.has(item.topic)).slice(0, MAX_ITEMS);
+  };
+  const railItems = [...railShown, ...spare(railShown, [...railShown, ...inlineShown])];
+  const inlineItems = [...inlineShown, ...spare(inlineShown, [...railItems, ...inlineShown])];
+  const offer = boxOffer(full, pool, base);
+  const rail = boxOffer(full, railItems, base);
+  const inline = inlineItems.length >= 2 ? boxOffer(full, inlineItems, base) : undefined;
+  return { offer: { ...offer, ...headingFor(railItems, base) }, rail, inline };
+}
+
+/** offerForArticle と同じ条件で話題を採点する（GeForce NOW の記事などは対象外） */
+function articleScored(article: ArticleSummary): TopicScore[] {
+  const headline = `${article.title} ${article.seoTitle ?? ""}`;
+  if (/GeForce\s*NOW|クラウドゲーム/i.test(headline) && !/ローカルAI|ローカルLLM|Ollama|画像生成/i.test(headline)) return [];
+  return scoreTopics(article);
+}
+
+/** 既定の広告の枠から、見出しの元になる話題を作り直す */
+function topicOfFallback(offer: Offer): Topic {
+  return { key: offer.topic, match: "", eyebrow: offer.eyebrow, headline: offer.headline, lead: offer.lead, partners: [] };
 }
 
 /** 記事に紐づかないページ（一覧ページなど）で、話題を指定して商品枠を作る */
@@ -537,30 +672,33 @@ function finishOffer(topic: Topic, built: Built[], extra: Partial<Offer> = {}): 
 function buildArticleOffer(article: ArticleSummary, scored: TopicScore[], maxItems: number): Offer | undefined {
   const { offers, products } = load();
   const text = articleText(article);
-  const best = new Map<string, Built & { relevance: number }>();
-  const consider = (built: Built | undefined, relevance: number) => {
+  // 法人・企業向けの記事には、個人向けのレンタルサーバー・VPS を出さない（記事の話題がサーバーのときを除く）
+  const hosting = blocksHosting(article, text) ? new Set(offers.b2b?.hostingPartners ?? []) : new Set<string>();
+  const best = new Map<string, Built & { relevance: number; topic: string }>();
+  const consider = (built: Built | undefined, relevance: number, topic: string) => {
     if (!built) return;
     const current = best.get(built.item.key);
-    if (!current || current.relevance < relevance) best.set(built.item.key, { ...built, relevance });
+    if (!current || current.relevance < relevance) best.set(built.item.key, { ...built, relevance, topic });
   };
   for (const { topic, score } of scored) {
     if (!topic.booksOnly) {
       topic.partners.forEach((key, index) => {
         const partner = offers.partners[key];
         const named = partner && [partner.program, partner.name].some((name) => name && regex(escapeRegex(name))?.test(text.title));
-        consider(partnerOffer(key), score - index * 0.1 + (named ? 3 : 0));
+        if (hosting.has(key) && !named) return;
+        consider(partnerOffer(key), score - index * 0.1 + (named ? 3 : 0), topic.key);
       });
     }
     const require = regex(topic.require);
     rotate(validBooks(products?.books?.[topic.key]), article.slug || topic.key).forEach((book, index) => {
       if (require && !require.test(book.title)) return;
-      consider({ item: bookOffer(book) }, score - 1 - index * 0.01);
+      consider({ item: bookOffer(book) }, score - 1 - index * 0.01, topic.key);
     });
   }
   const ranked = [...best.values()]
     .sort((a, b) => b.relevance - a.relevance)
     .slice(0, maxItems)
-    .map(({ item, pixel, relevance }) => ({ item: { ...item, relevance: Math.round(relevance * 10) / 10 }, pixel }));
+    .map(({ item, pixel, relevance, topic }) => ({ item: { ...item, relevance: Math.round(relevance * 10) / 10, topic }, pixel }));
   return finishOffer(scored[0].topic, ranked, { relevance: scored[0].score });
 }
 

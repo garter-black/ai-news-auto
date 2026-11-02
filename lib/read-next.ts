@@ -2,7 +2,7 @@ import fs from "@/lib/content-fs";
 import path from "node:path";
 import type { ArticleSummary } from "@/lib/articles";
 import { CHOOSE_GUIDES } from "@/lib/choose-data";
-import { MIN_SCORE as OFFER_MIN_SCORE, relevanceScore } from "@/lib/offers";
+import { MIN_SCORE as OFFER_MIN_SCORE, isB2BArticle, matchesHostingTopic, relevanceScore } from "@/lib/offers";
 
 /**
  * 記事に合う広告（lib/offers.ts）が無いときに出す「あわせて読みたい」。
@@ -18,7 +18,8 @@ export type ReadNextLink = {
   note?: string;
 };
 
-type Candidate = { href: string; match: string; genres?: string[] };
+/** consumer: 個人向けのサーバー・副業の案内。法人・企業向けの記事には、話題がサーバーそのもののときしか出さない */
+type Candidate = { href: string; match: string; genres?: string[]; consumer?: boolean };
 
 /** 上ほど具体的。同点なら上を選ぶ */
 const CANDIDATES: Candidate[] = [
@@ -30,7 +31,7 @@ const CANDIDATES: Candidate[] = [
   { href: "/guides/gemini-free-plan", match: "Gemini|Google AI|グーグルのAI" },
   { href: "/guides/chatgpt-smartphone", match: "ChatGPT(?:の|を)?(?:スマホ|アプリ|iPhone|Android)|(?:スマホ|iPhone|Android)(?:版|で|の)ChatGPT" },
   { href: "/choose/dify-hosting", match: "\\bDify\\b|ディファイ|n8n" },
-  { href: "/compare/vps-dify-n8n", match: "AIエージェント|(?<!サイバー)エージェント|ワークフロー|セルフホスト|VPS" },
+  { href: "/compare/vps-dify-n8n", match: "AIエージェント|(?<!サイバー)エージェント|ワークフロー|セルフホスト|VPS", consumer: true },
   { href: "/compare/image-generation", match: "画像生成|イラスト|Stable Diffusion|Midjourney|デザインツール|Figma" },
   { href: "/compare/video-editing", match: "動画生成|動画編集|YouTube|ショート動画|配信者" },
   { href: "/compare/ai-voice-recorder", match: "議事録|文字起こし|録音|ボイスレコーダー|音声認識" },
@@ -42,7 +43,7 @@ const CANDIDATES: Candidate[] = [
   { href: "/compare/kids-programming", match: "子ども向け|小学生|中学生|プログラミング教育|プログラミング教室|STEAM" },
   // 働き方・お金
   { href: "/choose/internet-for-ai", match: "光回線|ネット回線|WiMAX|Wi-?Fi|格安SIM|スマホ料金|携帯料金|通信料金|5G|テレワーク|リモートワーク|在宅勤務" },
-  { href: "/compare/rental-server", match: "副業|複業|フリーランス|個人事業|独立|起業|開業|創業|ホームページ|Webサイト|ブログ|WordPress|集客|ネットショップ|ECサイト" },
+  { href: "/compare/rental-server", match: "副業|複業|フリーランス|個人事業|独立|起業|開業|創業|ホームページ|Webサイト|ブログ|WordPress|集客|ネットショップ|ECサイト", consumer: true },
   { href: "/choose/ai-career", match: "転職|求人|採用|就職|雇用|就業者|人材|リスキリング|学び直し|スキル|資格|試験|キャリア|賃金|給与|年収|働き方|人手不足|AI人材" },
 ];
 
@@ -95,8 +96,11 @@ export function resolveReadNext(href: string): ReadNextLink | undefined {
  */
 export function readNextForArticle(article: ArticleSummary, exclude: Iterable<string> = [], limit = 1): ReadNextLink[] {
   const skip = new Set(exclude);
+  // 法人・企業向けの記事（lib/offers.ts の isB2BArticle）には、個人向けのサーバー・副業の案内を出さない
+  const noConsumer = isB2BArticle(article) && !matchesHostingTopic(article);
   const scored = CANDIDATES.flatMap((candidate, order) => {
     if (skip.has(candidate.href)) return [];
+    if (candidate.consumer && noConsumer) return [];
     if (candidate.genres && !candidate.genres.includes(article.genreSlug)) return [];
     const score = relevanceScore(candidate.match, article);
     return score >= MIN_SCORE ? [{ candidate, score, order }] : [];

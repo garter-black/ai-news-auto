@@ -34,7 +34,8 @@
         "business",
         "tech-gadget",
         "public"
-      ]
+      ],
+      "name": "議事録・録音"
     },
     {
       "key": "local",
@@ -64,7 +65,8 @@
         "ai",
         "tech-gadget"
       ],
-      "articleExclude": "GeForce\\s*NOW|クラウドゲーム"
+      "articleExclude": "GeForce\\s*NOW|クラウドゲーム",
+      "name": "ローカルAI用のPC"
     },
     {
       "key": "image",
@@ -95,7 +97,8 @@
         "ai",
         "tech-gadget",
         "business"
-      ]
+      ],
+      "name": "画像生成"
     },
     {
       "key": "video",
@@ -124,7 +127,8 @@
         "tech-gadget",
         "business",
         "entertainment"
-      ]
+      ],
+      "name": "動画づくり"
     },
     {
       "key": "english",
@@ -153,7 +157,8 @@
         "business",
         "public",
         "lifestyle"
-      ]
+      ],
+      "name": "英語"
     },
     {
       "key": "security",
@@ -184,7 +189,8 @@
         "investment"
       ],
       "articleExclude": "ガードレール|AIガバナンス|サステナビリティ",
-      "alsoMatch": "サイバー攻撃|攻撃者|侵入|ハッキング|情報漏え?い|サイバー(?!エージェント)"
+      "alsoMatch": "サイバー攻撃|攻撃者|侵入|ハッキング|情報漏え?い|サイバー(?!エージェント)",
+      "name": "セキュリティ対策"
     },
     {
       "key": "telecom",
@@ -213,7 +219,8 @@
         "business",
         "public",
         "lifestyle"
-      ]
+      ],
+      "name": "ネット回線"
     },
     {
       "key": "telecom-gadget",
@@ -237,7 +244,8 @@
       "fill": [
         "gadget",
         "business"
-      ]
+      ],
+      "name": "ネット回線"
     },
     {
       "key": "gadget",
@@ -263,7 +271,8 @@
         "ai",
         "tech-gadget",
         "lifestyle"
-      ]
+      ],
+      "name": "AIガジェット"
     },
     {
       "key": "kids",
@@ -285,7 +294,8 @@
       ],
       "genres": [
         "ai"
-      ]
+      ],
+      "name": "子どものIT教育"
     },
     {
       "key": "server",
@@ -311,7 +321,8 @@
         "ai",
         "business",
         "tech-gadget"
-      ]
+      ],
+      "name": "サーバー"
     },
     {
       "key": "robotics",
@@ -333,7 +344,8 @@
       ],
       "genres": [
         "ai"
-      ]
+      ],
+      "name": "ロボット・フィジカルAI"
     },
     {
       "key": "semis",
@@ -361,7 +373,8 @@
         "business"
       ],
       "min": 5,
-      "booksOnly": true
+      "booksOnly": true,
+      "name": "半導体・AIインフラ"
     },
     {
       "key": "writing",
@@ -390,7 +403,8 @@
       "genres": [
         "ai",
         "business"
-      ]
+      ],
+      "name": "文章づくり"
     },
     {
       "key": "coding",
@@ -412,7 +426,8 @@
         "business",
         "tech-gadget",
         "public"
-      ]
+      ],
+      "name": "AI開発"
     },
     {
       "key": "claude",
@@ -434,7 +449,8 @@
         "tech-gadget",
         "public"
       ],
-      "companies": "anthropic"
+      "companies": "anthropic",
+      "name": "Claude"
     },
     {
       "key": "agent",
@@ -457,7 +473,8 @@
         "tech-gadget",
         "public"
       ],
-      "min": 5
+      "min": 5,
+      "name": "AIエージェント"
     },
     {
       "key": "gemini",
@@ -479,7 +496,8 @@
         "tech-gadget",
         "public"
       ],
-      "companies": "google"
+      "companies": "google",
+      "name": "Gemini"
     },
     {
       "key": "chatgpt",
@@ -507,7 +525,8 @@
         "tech-gadget",
         "public"
       ],
-      "companies": "openai"
+      "companies": "openai",
+      "name": "ChatGPT"
     },
     {
       "key": "llm",
@@ -534,7 +553,8 @@
         "ai"
       ],
       "min": 5,
-      "booksOnly": true
+      "booksOnly": true,
+      "name": "LLMの基礎"
     },
     {
       "key": "business",
@@ -558,7 +578,8 @@
         "ai",
         "business"
       ],
-      "min": 5
+      "min": 5,
+      "name": "仕事の効率化"
     },
     {
       "key": "invest-nisa",
@@ -584,7 +605,8 @@
         "business",
         "public",
         "lifestyle"
-      ]
+      ],
+      "name": "新NISA"
     },
     {
       "key": "invest-stocks",
@@ -609,7 +631,8 @@
       "genres": [
         "investment"
       ],
-      "articleExclude": "倒産|破産"
+      "articleExclude": "倒産|破産",
+      "name": "株式投資"
     },
     {
       "key": "invest",
@@ -635,7 +658,8 @@
       ],
       "genres": [
         "investment"
-      ]
+      ],
+      "name": "資産づくり"
     },
     {
       "key": "re-invest",
@@ -662,7 +686,8 @@
       "genres": [
         "real-estate",
         "investment"
-      ]
+      ],
+      "name": "不動産投資"
     },
     {
       "key": "re-home",
@@ -684,7 +709,8 @@
       ],
       "genres": [
         "real-estate"
-      ]
+      ],
+      "name": "住まい選び"
     },
     {
       "key": "money-biz",
@@ -707,7 +733,8 @@
         "新NISA 入門",
         "株式投資 入門"
       ],
-      "require": "NISA|投資|株|資産|お金"
+      "require": "NISA|投資|株|資産|お金",
+      "name": "資産づくり"
     },
     {
       "key": "side-biz",
@@ -734,7 +761,8 @@
         "副業 始め方",
         "個人事業 開業"
       ],
-      "require": "副業|起業|独立|フリーランス|個人事業|ブログ|稼"
+      "require": "副業|起業|独立|フリーランス|個人事業|ブログ|稼",
+      "name": "副業・独立"
     },
     {
       "key": "career-skill",
@@ -757,7 +785,8 @@
         "リスキリング",
         "AI 仕事術"
       ],
-      "require": "リスキリング|学び直し|スキル|キャリア|AI"
+      "require": "リスキリング|学び直し|スキル|キャリア|AI",
+      "name": "スキルアップ"
     },
     {
       "key": "remote-work",
@@ -781,7 +810,8 @@
       "search": [
         "テレワーク 仕事術"
       ],
-      "require": "テレワーク|リモート|在宅"
+      "require": "テレワーク|リモート|在宅",
+      "name": "在宅ワーク"
     },
     {
       "key": "tax-filing",
@@ -806,7 +836,8 @@
         "確定申告 個人事業主",
         "節税 入門"
       ],
-      "require": "確定申告|税|節税|個人事業|副業"
+      "require": "確定申告|税|節税|個人事業|副業",
+      "name": "確定申告・節税"
     },
     {
       "key": "furusato",
@@ -829,7 +860,8 @@
       "search": [
         "ふるさと納税"
       ],
-      "require": "ふるさと納税"
+      "require": "ふるさと納税",
+      "name": "ふるさと納税"
     },
     {
       "key": "startup",
@@ -856,7 +888,8 @@
         "起業 会社設立",
         "個人事業 開業"
       ],
-      "require": "起業|開業|会社設立|法人|独立|フリーランス|個人事業"
+      "require": "起業|開業|会社設立|法人|独立|フリーランス|個人事業",
+      "name": "開業・会社設立"
     }
   ],
   "audience": {
@@ -1572,7 +1605,64 @@
         "bookTopics": [
           "invest-nisa"
         ]
+      },
+      "b2b": {
+        "eyebrow": "仕事でAIを活かすなら",
+        "headline": "AIとスキルで、仕事の成果を上げる",
+        "lead": "複数のAIをまとめて試せるサービス、文章づくりのAI、手を動かして学べる講座です。料金や条件はリンク先で確認してください。",
+        "partners": [
+          "doraverse",
+          "value-ai-writer",
+          "skillhacks",
+          "coloso",
+          "aio-diagnosis",
+          "coconala"
+        ],
+        "bookTopics": [
+          "business"
+        ]
       }
     }
+  },
+  "b2b": {
+    "_README": "法人・企業向けの記事（ネットワーク・基幹システム・エンタープライズ向けAIなど）では、個人向けのレンタルサーバー・VPSを出さない（記事の話題がサーバー・セルフホストのときだけ出す）。合う話題が無いときは sets.b2b（AIツール・スキル・仕事の効率化）を出す。consumerTopics は個人向けの話題で、見出しにはっきり出ている記事でないと選ばない（点数を penalty だけ下げる）。preferTopics は仕事・AIツール・スキルの話題で、基準点を超えたときだけ bonus を足して順位を上げる。判定は lib/offers.ts の isB2BArticle。",
+    "match": "法人向け|企業向け|法人顧客|法人利用|法人契約|法人プラン|大企業|エンタープライズ|Enterprise|B2B|BtoB|基幹システム|業務システム|社内システム|情報システム部門|情シス|ゼロトラスト|SASE|SD-WAN|閉域網|企業ネットワーク|社内ネットワーク|ネットワーク基盤|通信基盤|IOWN|\\bAPN\\b|データセンター|システムインテグレーター|\\bSIer\\b|導入支援|運用支援|AIファクトリー|AI Factory",
+    "genres": [
+      "ai",
+      "science",
+      "business",
+      "tech-gadget"
+    ],
+    "hostingPartners": [
+      "xserver",
+      "xserver-vps",
+      "conoha-vps",
+      "shin-server",
+      "lolipop",
+      "sakura"
+    ],
+    "hostingTopics": [
+      "server"
+    ],
+    "consumerTopics": [
+      "side-biz",
+      "telecom",
+      "telecom-gadget",
+      "remote-work",
+      "gadget"
+    ],
+    "penalty": 2,
+    "preferTopics": [
+      "business",
+      "career-skill",
+      "coding",
+      "agent",
+      "chatgpt",
+      "claude",
+      "gemini",
+      "writing"
+    ],
+    "bonus": 1,
+    "fallbackSet": "b2b"
   }
 }
