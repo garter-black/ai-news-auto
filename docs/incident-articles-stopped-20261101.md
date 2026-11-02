@@ -46,3 +46,10 @@ Codexが「SNSには関与しない」と伝えた後、今回指定された速
 - 同じ通常実行の完了を受けて、追加した監視の補助経路が16:12 JSTに自動起動・成功（workflow_run 41283847060、直近3時間9観測・欠測0・nonzero）。元のscheduleが起動しなかった理由自体は不明。Issue発報の実条件成立時の本番観測は未実施。通常の記事自動実行が長時間止まる場合、この補助経路だけでは検知できない点にも注意。
 - この回の生成はGeminiを利用。Groqはモデルの候補一覧に載ったが、Groq生成POSTへの本番切替成功は未検証。上記の古い「Groq 403の原因は未特定」という記述は、後段のUser-Agentに関する検証結果で更新する。回復の永続性・速報の自然発生が継続すること・読者や収益の増加は、まだ確認できない。
 - 回帰試験は `python3 -m unittest tests.test_feed_ai_detection tests.test_llm_failover_incident tests.test_groq_diagnostic tests.test_candidate_health` の11件が成功。pytestはローカルに未インストールのため利用していない。SNSに対する手動投稿・予約変更・強制的な記事生成は行っていない。
+
+## 追加対応（11/2 Claude）
+- 「期間外/日付不明」の内訳: 全127フィード5390件のうち日付不明は20件だけ（Google Developers Blog。フィードに日付が無い）。残りは単に古い記事（各フィードは最新10〜100件を載せ続けるため）。日付の読み取りの失敗が原因ではない。11/2朝は週末明けで、直近48時間に出た記事は全体で38件だった。
+- 日付の無いフィードは「初めて見た時刻」を発表時刻の代わりにする（初回は全件を既読扱い。`state.undated_first_seen`）。
+- 速報の発信元一覧 `scripts/sources_registry.json` を1か所の登録簿にした。RSS で genre の無いものは通常記事のAI候補にも自動で使う（`feeds: false` で除外。GitHub Changelog全体・Stripeは除外）。各発信元のホストはレーダーの公式ホストにも自動で入る（radar.js / radar.py）。テストでAIフィードの全ホストが公式扱いになることを確認。
+- 新規: NVIDIA Developer Blog、Vercel Changelog、Red Hat、ソフトバンクニュース、ドコモ報道発表、CyberAgent Developers、マネーフォワード、ブレインパッド（robots許可・14日内に更新を確認）。官公庁・研究機関は既に登録済み。RSSの無い会社（富士通・NEC・日立・LINEヤフー・PFN・ELYZA・Stockmark等）は今回も見つからず。配信サービスは入れていない。
+- 試算（同じ条件で14日分）: AI判定を通る件数 253件→401件（1日約18件→約29件）。品質ゲート・事実確認は変更なし。80本/日には一次情報の量が足りない。

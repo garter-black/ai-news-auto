@@ -26,11 +26,28 @@ const SOURCE_ORDER = ["request", "techmeme", "itmedia-news", "itmedia-aiplus", "
 // ルール
 // --------------------------------------------------------------------------- //
 
+/** 速報の発信元（rules.sources＋sources_registry.json）のホストも公式扱いにする（一覧の食い違いで「対象外のURL」にしない） */
+export function withSourceHosts(hosts, sources) {
+  const out = [...(hosts || [])];
+  const covered = (h) => out.some((p) => h === p.host || h.endsWith(`.${p.host}`));
+  for (const s of sources || []) {
+    let h;
+    try {
+      h = new URL(s.url).host.toLowerCase().replace(/^www\./, "");
+    } catch {
+      continue;
+    }
+    if (!covered(h)) out.push({ host: h, entity: "*", name: s.name || h });
+  }
+  return out;
+}
+
 export function compileRadar(rules) {
   const r = rules.radar;
   const re = (s) => new RegExp(s, "i");
   return {
     ...r,
+    primary_hosts: withSourceHosts(r.primary_hosts, rules.sources),
     entities: r.entities.map((e) => ({ name: e.name, re: re(e.re), aiOnly: Boolean(e.ai_only) })),
     signal: re(r.signal_re),
     exclude: re(r.exclude_re),
