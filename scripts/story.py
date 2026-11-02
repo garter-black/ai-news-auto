@@ -13,6 +13,10 @@ duplicateOf を読むだけにする（判定を TypeScript と Python で二重
      b. 日本語の題名に英字のまま同じ珍しい固有名詞（Legora・Zendesk など。全記事で6本以下にしか出てこない語）がある
      c. 同じ発信元が6時間以内に出し、題名に同じ珍しい固有名詞がある（1つの事例を何本にも分けた公開。題名か keywords の重なり 0.2 以上）
      d. 日本語の題名の文字バイグラムの類似度が 0.6 以上、または元の題名（動画・元記事）がまったく同じ
+  4. 同じ発信元（channelSlug か出典のホスト）が12時間以内に出した同じジャンルの記事で、題名の類似度 0.3 以上かつ keywords の重なり 0.3 以上
+     （日本語だけの題名で珍しい英字の固有名詞が無いもの。例: 国交省の「秋の叙勲」と「秋の褒章」、同じ機能のデモ動画の続き。2026-11-03）。
+     題名の英字の語が両方に「相手に無い語」を持つとき（MacBook Pro と iMac）は別の製品なので同じ話題にしない。
+     元の題名が両方あるときは、それも似ていること（類似度 0.45 以上。同じ製品のデモ動画の別の回は重複にしない）
      会社が両方わかっていて1社も重ならないとき・ジャンルが違うときは同じ話題にしない。
      製品名は「名前＋版数＋名前」をひとまとめにする（GPT-6 Astra と GPT-6 Sol は別。PS5 のような短い型番は数えない）。
      a は題名か keywords も似ていること（類似度 0.15 以上か keywords の重なり 0.3 以上）、
@@ -52,6 +56,11 @@ SIM_STRONG = 0.6
 SIM_WITH_TOKEN = 0.2
 SIM_RARE = 0.35
 KW_OVERLAP = 0.3
+# 4. 同じ発信元が近い時刻に出した似た記事
+SAME_PUBLISHER_GAP = timedelta(hours=12)
+SAME_PUBLISHER_SIM = 0.3
+SAME_PUBLISHER_KW = 0.3
+SAME_PUBLISHER_SOURCE_SIM = 0.45
 # 解説の形の題名（角度を変えた記事の目印。これだけでは重複を外さない。先の記事へのリンクも要る）
 EXPLAINER_RE = re.compile(r"使い方|比較|違い|選び方|誰が使える|使える？|とは[？?]|始め方|できること|料金.*(整理|まとめ)|プラン別|解説|徹底|まとめ|FAQ|Q&A")
 LOCALE_SEG = re.compile(r"^(?:[a-z]{2}(?:[-_][a-z]{2,4})?|intl)$", re.I)
@@ -244,7 +253,43 @@ def same_story(a: Story, b: Story, df: dict[str, int], window: timedelta = WINDO
         return f"珍しい固有名詞が一致（{'・'.join(rare[:2])} / {sim:.2f}）"
     if sim >= SIM_STRONG and (ents or not (a.ents or b.ents)):
         return f"題名が類似（{sim:.2f}）"
+    if (sim >= SAME_PUBLISHER_SIM and kw >= SAME_PUBLISHER_KW and a.genre == b.genre and same_publisher(a, b)
+            and gap(a, b) <= SAME_PUBLISHER_GAP and not latin_conflict(a, b) and source_titles_close(a, b)):
+        return f"同じ発信元の似た発表（題名 {sim:.2f}・キーワード {kw:.2f}）"
     return None
+
+
+def _host(story: Story) -> str:
+    try:
+        return urllib.parse.urlsplit(str(story.data.get("sourceUrl") or "")).netloc.lower().removeprefix("www.")
+    except ValueError:
+        return ""
+
+
+def same_publisher(a: Story, b: Story) -> bool:
+    """同じ発信元（同じチャンネル・同じフィード、または出典 URL のホストが同じ）"""
+    ca, cb = a.data.get("channelSlug"), b.data.get("channelSlug")
+    if ca and cb and ca == cb:
+        return True
+    ha, hb = _host(a), _host(b)
+    return bool(ha) and ha == hb
+
+
+def _title_latin(story: Story) -> set[str]:
+    return {w.lower() for w in re.findall(r"[A-Za-z]{3,}", unicodedata.normalize("NFKC", story.title))}
+
+
+def source_titles_close(a: Story, b: Story) -> bool:
+    """元の題名（動画・元記事）が両方あるときは、それも似ていること（同じ製品のデモ動画の別の回を重複にしない）"""
+    if not (a.sources and b.sources):
+        return True
+    return dedupe.jaccard(dedupe.bigrams(a.sources[0]), dedupe.bigrams(b.sources[0])) >= SAME_PUBLISHER_SOURCE_SIM
+
+
+def latin_conflict(a: Story, b: Story) -> bool:
+    """題名の英字の語が、両方とも相手に無い語を持つ（MacBook Pro と iMac のように別の製品の可能性が高い）"""
+    la, lb = _title_latin(a), _title_latin(b)
+    return bool(la - lb) and bool(lb - la)
 
 
 def doc_freq(stories: list[Story]) -> dict[str, int]:

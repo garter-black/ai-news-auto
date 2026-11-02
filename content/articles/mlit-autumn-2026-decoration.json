@@ -71,5 +71,7 @@
     ],
     "ar": 1.0,
     "src": "https://www.mlit.go.jp/common/001391890.png"
-  }
+  },
+  "duplicateOf": "mlit-autumn-2026-medals-of-honor",
+  "duplicateReason": "同じ発信元の似た発表（題名 0.33・キーワード 0.33）"
 }

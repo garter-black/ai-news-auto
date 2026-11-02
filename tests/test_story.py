@@ -134,5 +134,30 @@ class NewsSitemapTest(unittest.TestCase):
         self.assertEqual(indexnow.duplicate_slugs(arts), {"b"})
 
 
+class SamePublisherNearDuplicateTest(unittest.TestCase):
+    """同じ発信元が近い時刻に出した似た発表（2026-11-03 の点検で見つかった国交省の「秋の叙勲」と「秋の褒章」）"""
+
+    def test_same_ministry_same_day(self):
+        a = art("mlit-medals", "国土交通省、令和8年秋の褒章受章者を発表 伝達式は11月18日に開催へ", "2026-11-02T16:31:00+00:00",
+                genreSlug="business", ch="mlit", keywords=["国土交通省", "褒章", "令和8年秋", "受章者", "伝達式"],
+                sourceUrl="http://www.mlit.go.jp/report/press/kanbo03_hh_000427.html", videoTitle="令和８年秋の褒章について")
+        b = art("mlit-decoration", "国交省、令和8年秋の叙勲受章者292名を発表 11月26日に伝達式を開催", "2026-11-02T20:12:00+00:00",
+                genreSlug="business", ch="mlit", keywords=["国土交通省", "秋の叙勲", "受章者", "令和8年", "伝達式"],
+                sourceUrl="http://www.mlit.go.jp/report/press/kanbo03_hh_000428.html", videoTitle="令和８年秋の叙勲について")
+        self.assertTrue((same(b, a) or "").startswith("同じ発信元の似た発表"))
+
+    def test_different_products_or_episodes_are_not_duplicates(self):
+        mac = art("mac", "Appleが「M6」搭載の新14インチMacBook Proを発表、最大24時間駆動", "2026-10-28T10:00:00+00:00",
+                  ch="apple", keywords=["Apple", "M6", "MacBook Pro", "発表"], videoTitle="Apple introduces the new MacBook Pro")
+        imac = art("imac", "AppleがM6チップ搭載の新iMacを発表、最高18倍の高速化", "2026-10-28T11:00:00+00:00",
+                   ch="apple", keywords=["Apple", "M6", "iMac", "発表"], videoTitle="Apple unveils new iMac")
+        self.assertIsNone(same(imac, mac))
+        a = art("w1", "OpenAIが示すChatGPT Workのデータエージェント構築手法", "2026-09-20T15:04:00+00:00", ch="openai",
+                keywords=["ChatGPT Work", "データエージェント", "OpenAI"], videoTitle="Use ChatGPT Work to build your data agent")
+        b = art("w2", "OpenAI、ChatGPT Workのデータエージェント活用法を公開", "2026-09-20T19:46:00+00:00", ch="openai",
+                keywords=["ChatGPT Work", "データエージェント", "OpenAI"], videoTitle="Use ChatGPT Work to help teams answer their own data questions")
+        self.assertFalse((same(b, a) or "").startswith("同じ発信元の似た発表"))
+
+
 if __name__ == "__main__":
     unittest.main()
