@@ -1,3 +1,4 @@
+import type { WorkMoney } from "@/lib/work-money";
 import fs from "@/lib/content-fs";
 import path from "node:path";
 import { getAllArticles, type ArticleSummary } from "@/lib/articles";
@@ -27,6 +28,8 @@ export type HowtoGuide = {
   japan: { answer: string; body: string };
   tips: { title: string; body: string }[];
   faq: { q: string; a: string }[];
+  /** 「仕事・お金にどう活かせる？」欄（2026-11-02 以降に作り直した解説だけ） */
+  workMoney?: WorkMoney | null;
   /** 関連ニュースを見つける正規表現（見出しと短い題名に照合） */
   match: string;
   /** 同じ題材のガイドが複数あるとき、記事の疑問に合うガイドを優先する。未一致なら従来順。 */

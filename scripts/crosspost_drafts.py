@@ -28,24 +28,37 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import llm  # noqa: E402
+import persona  # noqa: E402
 from digest import JST, ROOT, article_url, pick_top, site_url, title_of  # noqa: E402
 from quality import readability_problems  # noqa: E402
 
 OUT_DIR = ROOT / "out" / "drafts"
 MIN_CHARS, MAX_CHARS = 800, 1200
 
-SYSTEM = """あなたは「サイソクAIニュース」の編集者です。自社サイトの記事をもとに、note・はてなブログに載せる短い解説を書きます。
+SYSTEM = """あなたは「サイソクニュース」の編集者です。自社サイトの記事をもとに、note・はてなブログに載せる短い解説を書きます。
 目的は、読者が「このニュースは自分にどう関係するのか」を3分でつかめること。記事の言い換えや宣伝文ではなく、読者目線の整理に価値を置きます。
+読者は、""" + persona.PERSONA["who"] + """
+話し方: """ + persona.PERSONA["voice"] + """
 
 # 守ること
 - 事実（社名・製品名・数字・日付・価格・提供範囲）は、与えた「記事データ」に書かれているものだけを使う。推測で数字を作らない。
   記事データに無いことは書かない。分からないことは「記事では触れられていない」と書く。
 - 本文は1000字前後（800〜1200字。空白・記号を除く）。短すぎるのは不合格。下の各章の字数の目安を守る。
-- 1文は50字以内。1段落は1〜3文で、段落の間は必ず空行を入れる。です・ます調。煽らない（「衝撃」「ヤバい」「革命」は使わない）。
+- 読む人は、忙しくてエンジニアではない会社員。硬すぎ・難しすぎは不合格。分量は減らさず、伝え方をやさしくする。
+  - 詳しい先輩が話しかけるように。です・ます調だが、少し会話っぽく（「ざっくり言うと」「つまり」「たとえば」）。
+  - 1文は短く（平均40字以内）。1文に言いたいことは1つだけ。1段落は1〜3文で、段落の間は必ず空行を入れる。
+  - 専門用語は、初めて出たところで普通の言葉で説明するか、普通の言葉に置き換える。
+    お手本:「""" + persona.PLAIN_STYLE_EXAMPLE + """」
+  - 仕事や暮らしの身近な例え・場面を1つ以上入れる（例えで新しい数字や効果を足さない）。
+  - 使わない言い回し: 「〜することが可能です」（→〜できます）、「〜を見据える」、「〜において」（→〜で）、「〜となっております」、
+    「〜と言えるでしょう」、「記事では〜への言及はありませんが」（→〜は書かれていません）。煽らない（「衝撃」「ヤバい」「革命」は使わない）。
 - 構成（Markdown。見出しは ### を3つ）:
-  1. 冒頭（約150字・2段落）: 何が起きたかと、なぜ注目かを一言で。
-  2. ### 自分にどう関係する？（約400字）— 立場を3つ（例: 普段ChatGPTを使う人／仕事で導入を考える人／開発者）。
-     立場ごとに「**立場名**」の行と、何が変わるか・何をすればよいかを2〜3文の短い段落で書く。
+  1. 冒頭（約150字・2段落）: 1段落目は「ざっくり言うと、」で始まる1〜2文の要約。2段落目で、なぜ注目かを短く。
+  2. ### 自分にどう関係する？（約400字）— 次の3つの立場から、記事データで本当に関係が言えるものだけを選ぶ（2つでもよい。無理に3つにしない）:
+     「**会社員として仕事で**」／「**副業・独立を考えている人**」／「**お金・資産づくりの面で**」。
+     立場ごとに「**立場名**」の行と、何が変わるか・明日から何をすればよいかを2〜3文の短い段落で書く（記事データの事実だけ。
+     記事データの「仕事・お金にどう活かせる」があれば参考にする）。関係が薄い立場は書かない。
+     お金・資産づくりの話は一般的な情報と判断材料の提示に留め、特定の銘柄・ファンド・物件の売買をすすめない。「儲かる」「稼げる」と書かない。
   3. ### 今できること・まだできないこと（約250字）— 記事の「使える判定」をもとに、日本から使えるか・無料か・いつからか・誰向けか。
   4. ### 気をつけたい点（約200字）— 料金・提供範囲・記事で未確認の点など。
 - 本文にURLやリンク、元記事への誘導文は書かない（こちらで末尾に付ける）。
@@ -75,6 +88,7 @@ def source_text(article: dict) -> str:
         f"リード: {article.get('lede', '')}",
         "要点:\n" + "\n".join(f"- {h}" for h in article.get("highlights") or []),
         "使える判定: " + json.dumps({k: verdict.get(k) for k in ("status", "japan", "price", "free", "audience", "take")}, ensure_ascii=False),
+        f"{persona.WORK_MONEY_HEADING}: " + " / ".join((article.get("workMoney") or {}).get("points") or ["（記事に記載なし）"]),
         f"発信元: {article.get('sourceName') or article.get('channel', '')}",
         f"公開日: {str(article.get('publishedAt', ''))[:10]}",
         "本文:\n" + str(article.get("body", ""))[:7000],
@@ -94,6 +108,33 @@ def unknown_numbers(draft: str, source: str) -> list[str]:
         if (len(num) >= 2 or "." in num) and num not in src:
             found.append(num)
     return sorted(found)
+
+
+# 伝わりやすさの機械チェック（2026-11-02 オーナー「ちょっと硬いのと、難しすぎる。ボリュームは減らさず、伝え方を変えて」）
+MAX_AVG_SENTENCE = 40
+
+
+def sentences(body: str) -> list[str]:
+    """地の文の文（見出し・箇条書きの記号を除いて「。」「？」「！」で区切る）"""
+    text = "\n".join(line for line in body.splitlines() if not line.lstrip().startswith("#"))
+    text = re.sub(r"[*_`>]|^\s*[-・]\s*", "", text, flags=re.M)
+    return [s.strip() for s in re.split(r"(?<=[。？！?!])|\n", text) if len(s.strip()) >= 2]
+
+
+def style_problems(body: str) -> list[str]:
+    """硬さ・難しさの指摘（平均の文の長さ・硬い言い回し・冒頭の「ざっくり言うと」）。直しの指示に使う"""
+    problems = []
+    found = sentences(body)
+    if found:
+        avg = sum(len(s) for s in found) / len(found)
+        if avg > MAX_AVG_SENTENCE:
+            problems.append(f"文が長い（1文の平均 {avg:.0f}字 / {MAX_AVG_SENTENCE}字以内）。1文に1つのことだけにして分ける（中身は減らさない）")
+    stiff = sorted(set(persona.STIFF_RE.findall(body)))
+    if stiff:
+        problems.append(f"硬い言い回しがある（{'、'.join(stiff)}）。話し言葉に近い言い方に直す（例: することが可能です→できます、において→で）")
+    if not re.sub(r"^[\s*_#>]+", "", body).startswith("ざっくり言うと"):
+        problems.append("冒頭を「ざっくり言うと、」で始まる1〜2文の要約にする")
+    return problems
 
 
 HEADINGS = ("自分にどう関係する？", "今できること・まだできないこと", "気をつけたい点")
@@ -137,6 +178,9 @@ def write_draft(article: dict) -> dict | None:
             hard.append(f"記事データに無い数字がある（{', '.join(bad[:6])}）。記事データにある数字だけを使う")
         if re.search(r"https?://", body):
             hard.append("本文にURLを書かない")
+        if m := persona.ADVICE_RE.search(body):
+            hard.append(f"儲け話・投資助言の表現がある（「{m.group(0)}」）。一般的な情報と判断材料の提示に直す")
+        hard += style_problems(body)
         soft = readability_problems(body)  # 読みやすさは直してほしいが、それだけで落とさない
         data.update(body_markdown=body, model=model, chars=n, warnings=hard + soft)
         if not hard:
@@ -155,7 +199,7 @@ def footer(article: dict, channel: str) -> str:
     url = article_url(article["slug"], channel, "crosspost")
     return (
         "\n\n---\n\n"
-        f"この記事は、サイソクAIニュースの記事「{title_of(article)}」をもとに、要点を短く整理したものです。"
+        f"この記事は、サイソクニュースの記事「{title_of(article)}」をもとに、要点を短く整理したものです。"
         "料金の詳細や発表の全体は元記事にまとめています。\n\n"
         f"元記事: {url}\n"
     )
@@ -211,7 +255,8 @@ def main() -> int:
     jst = datetime.now(timezone.utc).astimezone(JST)
     out = OUT_DIR / f"{jst:%Y-%m-%d}"
     out.mkdir(parents=True, exist_ok=True)
-    articles = pick_top(args.hours, max(1, min(args.n, 3)), ai_only=True)
+    # 読者像の話題（AI・ビジネス/お金/投資・不動産・起業/副業・税や補助金。スポーツなし）から選ぶ
+    articles = pick_top(args.hours, max(1, min(args.n, 3)), persona_topics=True)
     if not articles:
         log("[skip] 対象記事がありません")
         return 0

@@ -8,6 +8,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import persona
+
 
 @dataclass(frozen=True)
 class Genre:
@@ -444,7 +446,8 @@ SPORTS = Genre(
 - 書いてよいのは公式発表（競技団体・リーグ・クラブ・大会主催者・メーカー）に書かれた事実だけ。
   試合結果の速報や選手の発言を他の報道から補わない。
 - 選手個人の私生活・けが・移籍のうわさには触れない。けがは公式発表に書かれた範囲だけ、淡々と書く。
-- 日程・会場・放送/配信・チケット発売日は元記事の表記どおりに書く。""",
+- 日程・会場・放送/配信・チケット発売日は元記事の表記どおりに書く。
+- 扱う範囲（オーナー決定・scripts/persona.py）: """ + persona.SPORTS_SCOPE_RULE,
     outline=_broad_outline("""## どんな発表？
 元記事の内容を `###` 小見出し（中身が分かる言葉）で整理する（最低3つ）。大会・試合の概要、メンバー、ルールや制度の変更、
 新しい用具・サービスなどを元記事から具体的に拾う。
@@ -465,6 +468,8 @@ SPORTS = Genre(
     topic_guard=(
         "競技団体・リーグ・クラブ・大会主催者・スポーツメーカーの公式発表（大会日程、代表発表、"
         "チケット、観戦方法、制度変更、新しい用具やサービス）が対象です。"
+        + persona.SPORTS_SCOPE_RULE
+        + "海外の選手・リーグだけの話題（世界的な大会を除く）と、地方大会の結果や小さなお知らせは is_relevant を false にしてください。"
         + BROAD_HARD_RULES
     ),
 )

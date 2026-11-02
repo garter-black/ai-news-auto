@@ -18,7 +18,7 @@ export default function AboutPage() {
     <LegalPage
       eyebrow="ABOUT"
       title="運営者情報・編集方針"
-      lead={`${siteConfig.siteName}（略称：${siteConfig.shortName}）は、公式発表をもとに、AI・テクノロジーの新情報と「日本で使えるか・料金はいくらか・何に注意するか」を日本語で伝えるニュースメディアです。制作にはAIを使い、情報源と確認方法を開示しています。`}
+      lead={`${siteConfig.siteName}（略称：${siteConfig.nickname}）は、公式発表をもとに、AI・ビジネス・お金・投資・不動産などの新しい動きと「自分にどう関係するか・何をすればいいか」を日本語で伝えるニュースメディアです。制作にはAIを使い、情報源と確認方法を開示しています。`}
       updatedAt="2026年11月2日"
     >
       <h2>運営者情報</h2>
@@ -30,7 +30,11 @@ export default function AboutPage() {
           </tr>
           <tr>
             <th>略称</th>
-            <td>{siteConfig.shortName}</td>
+            <td>{siteConfig.nickname}</td>
+          </tr>
+          <tr>
+            <th>旧サイト名</th>
+            <td>{siteConfig.formerName}（2026年11月に改名）</td>
           </tr>
           <tr>
             <th>公式サイト</th>
@@ -69,9 +73,18 @@ export default function AboutPage() {
 
       <h2>このサイトが提供するもの</h2>
       <p>
-        OpenAI・Google・Anthropicなど海外AI企業の新発表は、英語の公式ブログや発表動画で公開されることがほとんどです。
-        {siteConfig.siteName}は、それらの一次情報をもとに、要点・料金・日本から使えるか・無料で試せるか・注意点を、
-        誰でもわかる日本語の記事にまとめて公開しています。
+        {siteConfig.tagline}
+        {siteConfig.siteName}は、忙しく働きながら、仕事の成果や副収入・独立・資産づくりも考えている人のためのニュースサイトです。
+      </p>
+      <p>
+        AI・テックの新発表、ビジネス・お金・投資、不動産、起業・副業、税金や補助金などの制度について、公式発表などの一次情報をもとに、
+        要点を3行で整理し、「仕事・お金にどう活かせるか」「明日から何ができるか」まで書きます。
+        海外AI企業の英語の発表は、日本から使えるか・料金はいくらか・無料で試せるかも判定しています。
+        日本のスポーツの大きなニュースも扱います。
+      </p>
+      <p>
+        根拠のない儲け話や、あおる見出しは書きません。
+        特定の銘柄や物件の売買をすすめる投資助言は行わず、一般的な情報と判断材料の提示にとどめます。
       </p>
       <p>
         現在

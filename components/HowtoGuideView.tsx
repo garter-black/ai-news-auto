@@ -10,6 +10,8 @@ import { siteConfig } from "@/site.config";
 import { publisherJsonLd } from "@/lib/publisher";
 import { difyDecisionHref } from "@/lib/a8-attribution";
 import DifyCreditEstimator from "@/components/DifyCreditEstimator";
+import WorkMoneyCard from "@/components/WorkMoneyCard";
+import { workMoneyOf } from "@/lib/work-money";
 
 /** 使い方ガイド（/guides/<slug>）。結論 → 手順 → 料金・無料の範囲 → 日本で使える？ → よくある質問 */
 export default function HowtoGuideView({ guide }: { guide: HowtoGuide }) {
@@ -21,6 +23,7 @@ export default function HowtoGuideView({ guide }: { guide: HowtoGuide }) {
   const url = `${siteConfig.url}/guides/${guide.slug}`;
   const checked = formatDate(guide.checkedAt);
   const hasCreditEstimator = guide.slug === "dify-free-api-cost";
+  const workMoney = workMoneyOf(guide.workMoney);
 
   const jsonLd = [
     {
@@ -110,6 +113,8 @@ export default function HowtoGuideView({ guide }: { guide: HowtoGuide }) {
           ))}
         </ul>
       </section>
+
+      {workMoney && <WorkMoneyCard workMoney={workMoney} />}
 
       <p className="mt-6 text-desc leading-[1.95] text-ink-soft">{guide.intro}</p>
 

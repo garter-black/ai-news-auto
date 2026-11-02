@@ -17,6 +17,8 @@ import PushOptIn from "@/components/PushOptIn";
 import InlineRead from "@/components/InlineRead";
 import ReadingMode from "@/components/ReadingMode";
 import VerdictCard from "@/components/VerdictCard";
+import WorkMoneyCard from "@/components/WorkMoneyCard";
+import { workMoneyOf } from "@/lib/work-money";
 import AssetLinks from "@/components/assets/AssetLinks";
 import SourceRecord from "@/components/SourceRecord";
 import { companyOf, thumbSource } from "@/lib/companies";
@@ -142,6 +144,7 @@ export default async function ArticlePage({ params }: Props) {
   // 題材の使い方ガイド（「料金・無料でどこまで」を知りたい読者の受け皿）
   const howto = guide ? undefined : howtoForArticle(article);
   const verdict = verdictOf(article);
+  const workMoney = workMoneyOf(article.workMoney);
   // 全AI記事に、文脈に合った「試すなら」枠を1つ出す。無い場合（AI以外など）は従来の関連ツール枠
   // 右側と本文中で同じ商品を出さないよう、候補を多めに取って2つに分ける。
   // 各枠は候補の中から、この端末でまだ見ていない商品を先に3つ出す（RankingBody）
@@ -363,6 +366,8 @@ export default async function ArticlePage({ params }: Props) {
           )}
           {/* 「使える？」判定 */}
           {verdict && <VerdictCard verdict={verdict} judgedAt={verdict.judgedAt || article.generatedAt || article.publishedAt} />}
+          {/* 「仕事・お金にどう活かせる？」（新しい記事だけ） */}
+          {workMoney && <WorkMoneyCard workMoney={workMoney} />}
           {/* 料金早見表・イベントページへの案内（当てはまる記事だけ） */}
           <AssetLinks article={article} />
 

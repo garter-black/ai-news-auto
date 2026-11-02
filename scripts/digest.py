@@ -19,6 +19,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from indexnow import is_distribution_eligible  # noqa: E402
+import persona  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
@@ -67,7 +68,10 @@ def score(article: dict) -> float:
     return s
 
 
-def pick_top(hours: int = 24, n: int = 5, now: datetime | None = None, ai_only: bool = False) -> list[dict]:
+def pick_top(hours: int = 24, n: int = 5, now: datetime | None = None, ai_only: bool = False,
+             persona_topics: bool = False) -> list[dict]:
+    """persona_topics=True: 読者像の話題（scripts/persona.py の is_persona_topic。スポーツなし）から、お金・不動産・起業の話題も
+    AI と同じ重みで選ぶ（はてなブログの下書き用）"""
     now = now or datetime.now(timezone.utc)
     since = now - timedelta(hours=hours)
     picked = []
@@ -78,8 +82,11 @@ def pick_top(hours: int = 24, n: int = 5, now: datetime | None = None, ai_only: 
             continue
         if ai_only and article.get("genreSlug") != "ai":
             continue
+        if persona_topics and not persona.is_persona_topic(article):
+            continue
         picked.append(article)
-    picked.sort(key=lambda a: (score(a), a.get("generatedAt", "")), reverse=True)
+    boost = persona.topic_boost if persona_topics else (lambda a: 0.0)
+    picked.sort(key=lambda a: (score(a) + boost(a), a.get("generatedAt", "")), reverse=True)
     result = []
     for article in picked:
         # 同じまとめに属する記事は1本だけ（似た話が並ばないように）

@@ -33,6 +33,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import dedupe  # noqa: E402
+import persona  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 RULES_PATH = Path(__file__).resolve().with_name("fast_lane_rules.json")
@@ -599,6 +600,8 @@ def competitor_gaps(items: list[dict], records: list[dict]) -> list[dict]:
             continue
         if it["genre"] == "ai" and not (r_["ai"].search(title) or entities_of(title)):
             continue
+        if it["genre"] == "sports" and not persona.sports_scope(title)[0]:
+            continue  # スポーツは日本のスポーツと世界的な大会だけ（scripts/persona.py）
         hit = next((c for c in clusters if c["genre"] == it["genre"] and (set(it["links"]) & c["links"] or _same_head(title, c["title"]))), None)
         if hit:
             hit["outlets"].add(it["outlet"])

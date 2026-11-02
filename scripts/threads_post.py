@@ -35,6 +35,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from threads_token import API_BASE, load_token, refresh_if_needed  # noqa: E402
 import threads_voice as voice  # noqa: E402
+import persona  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
@@ -115,6 +116,17 @@ def relevance_line(article: dict) -> str:
     return line or str(verdict.get("take") or "").strip()
 
 
+def work_line(article: dict, limit: int = 60) -> str:
+    """「仕事・お金にどう活かせる？」の1つ目（記事の workMoney。事実確認を通ったものだけ）。関係が小さい記事・長すぎる文は使わない"""
+    work_money = article.get("workMoney") or {}
+    if work_money.get("relevance") == "low":
+        return ""
+    point = next((str(p).strip() for p in work_money.get("points") or [] if str(p).strip()), "")
+    if not point or len(point) > limit or persona.ADVICE_RE.search(point):
+        return ""
+    return point
+
+
 def key_fact(article: dict) -> str:
     """要点のうち、数字の入ったものを優先（数字は記事のまま）"""
     points = [EMOJI_RE.sub("", h).strip() for h in article.get("highlights", []) if str(h).strip()]
@@ -168,7 +180,7 @@ def standalone_lines(article: dict, recent: list[str], breaking: bool) -> list[s
             hook, first = opening_line(article, recent)
             article["_hook"] = hook
             hook_line = "" if hook == "breaking" else first
-    lines = [hook_line, title, key_fact(article), relevance_line(article)]
+    lines = [hook_line, title, key_fact(article), work_line(article), relevance_line(article)]
     found: list[str] = []
     for line in lines:
         if line and line not in found and not (found and line in found[-1]):
@@ -211,6 +223,15 @@ def openers(article: dict) -> list[tuple[str, str]]:
         found.append(("caution", f"使う前に料金だけ確認を。{price}です。"))
     if audience and len(audience) <= 8:
         found.append(("callout", f"{audience}の人、これはチェックしてほしい。"))
+    # 読者像（scripts/persona.py）: 仕事・お金にどう効くか。記事の workMoney・判定に根拠があるときだけ
+    work_money = article.get("workMoney") or {}
+    if work_money.get("relevance") == "high":
+        if status == "available" and japan in ("ok", "partial"):
+            found.append(("use_case", "これ、明日からの仕事で試せます。"))
+        elif not verdict:
+            found.append(("use_case", "仕事やお金に、直接かかわる話です。"))
+    if re.search(r"\d", price) and re.search(r"円|ドル|無料", price) and len(price) <= 14:
+        found.append(("money", f"まず料金から。{price}です。"))
     return found
 
 
@@ -767,6 +788,10 @@ def detail_parts(article: dict) -> tuple[str, list[str], str]:
     if len(summary) > 70 or any(overlap(summary, b) >= 12 for b in article.get("highlights", [])):
         summary = ""
     bullets = [EMOJI_RE.sub("", str(h)).strip() for h in article.get("highlights", []) if str(h).strip()][:4]
+    # 仕事・お金にどう活かせるか（記事の workMoney）を要点の後ろに1つ
+    work = work_line(article, 70)
+    if work and len(bullets) < 5 and not any(overlap(work, b) >= 12 for b in bullets):
+        bullets = bullets[:3] + [f"仕事・お金：{work}"]
     verdict = article.get("verdict") or {}
     if verdict.get("status") == "available" and len(bullets) < 4:
         fact = relevance_line(article).rstrip("。").replace("。", "／")

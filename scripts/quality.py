@@ -21,6 +21,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import llm  # noqa: E402
+import persona  # noqa: E402
 
 TITLE_RANGE = (18, 64)
 PASS_SCORE = 70
@@ -91,6 +92,9 @@ FACT_PROMPT = """# 元記事（一次情報。自動抽出なのでメニュー�
 - 広く知られた一般常識・定訳は創作として扱わない（例: SEC＝米証券取引委員会、IPO（上場）前の会社は株式を公開していない、Nasdaq は米国の株式市場）。
 - 次は必ず問題にする: 元記事に無い具体的な数値・日付・価格・機能・発言の創作、元記事との矛盾、
   予定や研究段階のものを提供開始済み・実用化済みのように書くこと、効能・効果の断定、特定個人への憶測。
+- 「仕事・お金にどう活かせる」の欄も記事の一部として同じ基準で確かめる。誰に関係するか・明日からできる行動の提案は
+  一般的な助言として扱ってよいが、元記事に無い金額・節約額・短縮時間・収入の見込み（自分で計算した数字を含む）、
+  提供前のものを今すぐ使えるように書くこと、特定の銘柄・ファンド・物件の売買のすすめ・相場の予想・儲かるといった断定は必ず問題にする。
 
 # 出力
 - grounded: 創作・矛盾が1つも無ければ true。1つでもあれば false。
@@ -237,6 +241,9 @@ def structural_problems(record: dict, kind: str, source_text: str = "") -> list[
         problems.append(f"訳されていない英文が残っている（「{m.group(0)[:40]}…」）")
     if record.get("sourceType") == "web" and (m := VIDEO_LEFTOVER_RE.search(text)):
         problems.append(f"文章が元なのに動画前提の表現がある（「{m.group(0)}」）。「元記事」と書く")
+    if record.get("sourceType") == "web" and kind != "update" and not record.get("workMoney"):
+        problems.append(f"work_money（「{persona.WORK_MONEY_HEADING}」欄）がありません")
+    problems += persona.work_money_problems(record.get("workMoney"))
     if source_text:
         copied = copied_sentences(body, source_text)
         if len(copied) >= 2:
@@ -249,6 +256,12 @@ def _article_for_check(record: dict) -> str:
         f"タイトル: {record.get('title', '')}",
         f"リード: {record.get('lede', '')}",
         "要点: " + " / ".join(record.get("highlights") or []),
+    ]
+    work_money = record.get("workMoney") or {}
+    if work_money.get("points"):
+        # 本文より前に置く（ARTICLE_CAP で切られても必ず事実確認に入るように）
+        parts.append(f"{persona.WORK_MONEY_HEADING}: " + " / ".join(work_money["points"]))
+    parts += [
         f"本文:\n{record.get('body', '')}",
         f"かんたん版:\n{record.get('easy', '')}",
     ]
@@ -421,8 +434,9 @@ SURGICAL_SCHEMA = {
         "highlights": {"type": "ARRAY", "items": {"type": "STRING"}},
         "body_markdown": {"type": "STRING"},
         "easy_markdown": {"type": "STRING"},
+        "work_money_points": {"type": "ARRAY", "items": {"type": "STRING"}},
     },
-    "required": ["title", "lede", "highlights", "body_markdown", "easy_markdown"],
+    "required": ["title", "lede", "highlights", "body_markdown", "easy_markdown", "work_money_points"],
 }
 
 SURGICAL_SYSTEM = """あなたはニュースサイトのデスクです。校閲で指摘された箇所だけを、最小限の手直しで直します。
@@ -438,7 +452,8 @@ SURGICAL_PROMPT = """校閲記者が次の記事に指摘をしました。指�
   訳語の指摘は正しい訳語に直す。直せないときはその文を削る。
 - 指摘されていない文・見出し（## と ###）・表・リンク・数字は一字も変えない。
 - 新しい事実・数字・日付・固有名詞を足さない。
-- タイトル・リード・要点（highlights）・かんたん版も、指摘があればそこだけ直し、なければそのまま返す。
+- タイトル・リード・要点（highlights）・かんたん版・「仕事・お金にどう活かせる」（work_money_points）も、指摘があればそこだけ直し、
+  なければそのまま返す（元の記事に無ければ空配列）。直せない項目は削る。
 
 # 元記事
 <<<
@@ -449,6 +464,7 @@ SURGICAL_PROMPT = """校閲記者が次の記事に指摘をしました。指�
 タイトル: {title}
 リード: {lede}
 要点: {highlights}
+仕事・お金にどう活かせる: {work_money}
 
 本文:
 <<<
@@ -474,6 +490,7 @@ def surgical_fix(record: dict, source_text: str, kind: str, problems: list[str],
     prompt = SURGICAL_PROMPT.format(
         problems="\n".join(f"- {p}" for p in problems[:8]), source=(source_text or "")[:SOURCE_CAP],
         title=record.get("title", ""), lede=record.get("lede", ""), highlights=" / ".join(record.get("highlights") or []),
+        work_money=" / ".join((record.get("workMoney") or {}).get("points") or []) or "（なし）",
         body=body, easy=record.get("easy", ""),
     )
     data, model = llm.generate_json(SURGICAL_SYSTEM, prompt, SURGICAL_SCHEMA, temperature=0.2, max_output_tokens=16384, tier=CHECK_TIER)
@@ -494,6 +511,10 @@ def surgical_fix(record: dict, source_text: str, kind: str, problems: list[str],
     highlights = [str(h).strip() for h in data.get("highlights") or [] if str(h).strip()]
     if highlights:
         fixed["highlights"] = highlights[:3]
+    if record.get("workMoney"):
+        # 指摘で全部削られたら欄ごと無くなり、形のチェックで不合格になる（緩めない）
+        points = [str(p).strip() for p in data.get("work_money_points") or [] if str(p).strip()]
+        fixed["workMoney"] = persona.clean_work_money({**record["workMoney"], "points": points})
     verdict = evaluate(fixed, source_text, kind, context, check_facts=check_facts)
     verdict["fixed_by"] = model
     if verdict["ok"] or verdict.get("soft"):

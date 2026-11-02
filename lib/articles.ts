@@ -1,6 +1,7 @@
 import fs, { hasVirtualFs } from "@/lib/content-fs";
 import path from "node:path";
 import type { Verdict } from "@/lib/verdict";
+import type { WorkMoney } from "@/lib/work-money";
 import { buildIndex, derivedOf, INDEX_VERSION, isArticleLike, withDefaults } from "@/lib/article-index.mjs";
 
 export type TimetableItem = {
@@ -80,6 +81,8 @@ export type Article = {
   timetable: TimetableItem[];
   /** 「使えるか」の判定（まとめ記事・古い記事には無いことがある） */
   verdict?: Verdict | null;
+  /** 「仕事・お金にどう活かせる？」欄（2026-11-02 以降の記事だけ。lib/work-money.ts） */
+  workMoney?: WorkMoney | null;
   affiliates: AffiliateLink[];
   body: string;
   /** 「かんたんに読む」版（専門用語なしの短い解説）。無い記事は切り替えを出さない */

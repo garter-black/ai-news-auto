@@ -30,6 +30,7 @@ from channels import CHANNELS, Channel  # noqa: E402
 from genres import GENRES, GENRES_BY_SLUG  # noqa: E402
 from topics import is_off_topic  # noqa: E402
 import threads_hooks  # noqa: E402
+import persona  # noqa: E402
 
 # --------------------------------------------------------------------------- #
 # 設定
@@ -268,7 +269,9 @@ YouTube上の一次情報（公式発表・専門家の解説）を取材し、�
 - 動画内で確認できない事実は書かない。背景知識で補う箇所は「（編集部注）」と明記する。
 - 数値・価格・固有名詞・登壇者の発言は、提示されたとおり正確に転記する。
   発言を引用するときは「」で括る。原語が英語なら日本語訳を併記する。
-- 読者が次に取るべき行動まで踏み込む。"""
+- 読者が次に取るべき行動まで踏み込む。
+
+""" + persona.SYSTEM_BLOCK
 
 PROMPT_TEMPLATE = """以下のYouTube動画を「映像」と「音声」の両方から徹底的に解析し、日本語のSEO記事を作成してください。
 
@@ -393,6 +396,15 @@ ARTICLE_SCHEMA = {
             "required": ["status", "japan", "price", "audience", "take"],
             "propertyOrdering": ["status", "japan", "price", "free", "audience", "take"],
         },
+        "work_money": {
+            "type": "OBJECT",
+            "properties": {
+                "relevance": {"type": "STRING", "enum": ["high", "medium", "low"]},
+                "points": {"type": "ARRAY", "items": {"type": "STRING"}},
+            },
+            "required": ["relevance", "points"],
+            "propertyOrdering": ["relevance", "points"],
+        },
         "easy_markdown": {"type": "STRING"},
         "body_markdown": {"type": "STRING"},
     },
@@ -412,6 +424,7 @@ ARTICLE_SCHEMA = {
         "timetable",
         "mentioned_tools",
         "verdict",
+        "work_money",
         "easy_markdown",
         "body_markdown",
     ],
@@ -432,6 +445,7 @@ ARTICLE_SCHEMA = {
         "highlights",
         "timetable",
         "verdict",
+        "work_money",
         "easy_markdown",
         "body_markdown",
     ],
@@ -518,8 +532,8 @@ def generate_article(client, entry: dict) -> dict:
             f"  - {g.slug}: {g.name}（{g.description[:48]}…）" for g in GENRES
         ),
     )
-    # Threads の書き出しの型（直近で使った型は避ける）
-    prompt += "\n\n" + threads_hooks.prompt_block()
+    # 「仕事・お金にどう活かせる？」欄（scripts/persona.py）と Threads の書き出しの型（直近で使った型は避ける）
+    prompt += "\n\n" + persona.WORK_MONEY_FIELD + "\n\n" + threads_hooks.prompt_block()
     voice_key, voice_text = pick_voice()
     entry["_voice"] = voice_key
     system_instruction = f"{SYSTEM_INSTRUCTION_BASE}\n\n{genre.persona}\n\n## 今回の語り口\n{voice_text}"
@@ -819,6 +833,8 @@ def build_record(entry: dict, data: dict) -> dict:
         "highlights": clean_list(data.get("highlights"), 3),
         "timetable": timetable[:20],
         "verdict": clean_verdict(data.get("verdict")),
+        # 「仕事・お金にどう活かせる？」欄（記事ページの判定カードの下。無い記事は出さない）
+        "workMoney": persona.clean_work_money(data.get("work_money")),
         "body": normalize_body(data["body_markdown"]),
         # 「かんたんに読む」版（記事ページで「専門家として読む」と切り替えられる）
         "easy": normalize_body(str(data.get("easy_markdown", ""))),

@@ -55,6 +55,7 @@ import followup  # noqa: E402
 import llm  # noqa: E402
 import main as m  # noqa: E402
 import page_watch  # noqa: E402
+import persona  # noqa: E402
 import quality  # noqa: E402
 import story  # noqa: E402
 import trends  # noqa: E402
@@ -380,7 +381,7 @@ def build_broad_prompt(item: dict, text: str, genre, context: str = "") -> str:
         topic_guard=f"  **このジャンルの対象範囲**: {genre.topic_guard}",
         genre_choices="\n".join(f"  - {g.slug}: {g.name}" for g in ALL_GENRES),
     )
-    return prompt + context + "\n\n" + m.threads_hooks.prompt_block()
+    return prompt + context + "\n\n" + persona.WORK_MONEY_FIELD + "\n\n" + m.threads_hooks.prompt_block()
 
 
 def broad_prefilter(item: dict) -> str | None:
@@ -394,6 +395,12 @@ def broad_prefilter(item: dict) -> str | None:
         return f"価値の薄いお知らせ（{m_low.group(0)}）"
     if not item.get("section"):
         return "セクションを判定できない"
+    if item.get("section") == "sports":
+        # スポーツは日本のスポーツだけ（世界的な大会は例外。scripts/persona.py の SPORTS_SCOPE_RULE）
+        feed = feeds.FEEDS_BY_SLUG.get(item.get("source_slug", ""), {})
+        ok, why = persona.sports_scope(f"{title} {item.get('summary', '')[:300]}", japanese_source=not feed.get("foreign"))
+        if not ok:
+            return f"スポーツの対象外（{why}）"
     return None
 
 
@@ -544,7 +551,7 @@ def build_trend_prompt(item: dict, fetched: list[dict], genre, context: str = ""
         outline=TREND_OUTLINE,
         genre_choices="\n".join(f"  - {g.slug}: {g.name}" for g in GENRES),
     )
-    return prompt + context + "\n\n" + m.threads_hooks.prompt_block()
+    return prompt + context + "\n\n" + persona.WORK_MONEY_FIELD + "\n\n" + m.threads_hooks.prompt_block()
 
 
 def build_trend_record(item: dict, fetched: list[dict], data: dict, model_name: str, voice_key: str) -> dict:
@@ -588,7 +595,7 @@ def build_prompt(item: dict, text: str, context: str = "") -> str:
         topic_guard=f"  **このジャンルの対象範囲**: {genre.topic_guard}" if genre.topic_guard else "",
         genre_choices="\n".join(f"  - {g.slug}: {g.name}（{g.description[:48]}…）" for g in GENRES),
     )
-    return prompt + context + "\n\n" + m.threads_hooks.prompt_block()
+    return prompt + context + "\n\n" + persona.WORK_MONEY_FIELD + "\n\n" + m.threads_hooks.prompt_block()
 
 
 def prefilter(item: dict) -> str | None:
@@ -680,6 +687,8 @@ def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_
         "highlights": m.clean_list(data.get("highlights"), 3),
         "timetable": [],
         "verdict": m.clean_verdict(data.get("verdict")),
+        # 「仕事・お金にどう活かせる？」欄（scripts/persona.py。品質ゲートの形・事実確認の対象）
+        "workMoney": persona.clean_work_money(data.get("work_money")),
         "body": m.normalize_body(data["body_markdown"]),
         "easy": m.normalize_body(str(data.get("easy_markdown", ""))),
         "channel": item["source_name"],
@@ -851,13 +860,40 @@ def build_lanes(ai_items: list[dict], broad_items: list[dict], section_filter: s
     return lanes
 
 
-def lane_order(lanes: dict[str, list[dict]]) -> list[str]:
-    """ai を先頭に、幅広い話題は時刻で開始位置をずらして毎回同じセクションが先にならないようにする"""
-    broad = [s for s in BROAD_SLUGS if s in lanes]
-    if broad:
-        shift = datetime.now(JST).hour % len(broad)
-        broad = broad[shift:] + broad[:shift]
-    return (["ai"] if "ai" in lanes else []) + broad
+def lane_order(lanes: dict[str, list[dict]], now: datetime | None = None) -> list[str]:
+    """ai を先頭に、読者像（scripts/persona.py）で優先するレーン（ビジネス・お金／制度）を次に、
+    残りは時刻で開始位置をずらして毎回同じセクションが先にならないようにする。スポーツは最後（1日の上限つき）"""
+    first = [s for s in persona.PRIORITY_LANES if s in lanes]
+    rest = [s for s in BROAD_SLUGS if s in lanes and s not in first and s != "sports"]
+    if rest:
+        shift = (now or datetime.now(JST)).hour % len(rest)
+        rest = rest[shift:] + rest[:shift]
+    last = ["sports"] if "sports" in lanes else []
+    return (["ai"] if "ai" in lanes else []) + first + rest + last
+
+
+def lane_turns(lane: str) -> int:
+    """1巡で何本まで試すか。優先レーンは2本（全体の本数は変えず、順番だけ前に寄せる）"""
+    return 2 if lane in persona.PRIORITY_LANES else 1
+
+
+def persona_rank(item: dict) -> int:
+    """レーン内の並べ替え用（rank_bucket の次）。お金・投資・不動産・起業/副業・税や補助金の話題を先に"""
+    return 0 if persona.PRIORITY_TOPIC_RE.search(f"{item.get('title', '')} {item.get('summary', '')[:200]}") else 1
+
+
+def sports_today(state: dict, now: datetime | None = None) -> int:
+    """今日（JST）作ったスポーツの記事の本数（processed_web の section）"""
+    today = (now or datetime.now(JST)).astimezone(JST).date()
+    count = 0
+    for value in (state.get("processed_web") or {}).values():
+        if isinstance(value, dict) and value.get("slug") and value.get("section") == "sports":
+            try:
+                if datetime.fromisoformat(value["at"]).astimezone(JST).date() == today:
+                    count += 1
+            except (KeyError, ValueError):
+                continue
+    return count
 
 
 # --------------------------------------------------------------------------- #
@@ -1273,8 +1309,9 @@ def main() -> int:
         [i for i in ai_items if i["id"] not in major_ids], [i for i in broad_items if i["id"] not in major_ids], args.section
     )
     # レーン内は 公式・官公庁 → 他社の対応告知 → 配信 の順（同じ順位の中は collect() の順を保つ）
+    # 同じ順位の中では、読者像で優先する話題（お金・投資・不動産・起業/副業・税や補助金）を先にする
     for lane in lanes:
-        lanes[lane].sort(key=rank_bucket)
+        lanes[lane].sort(key=lambda i: (rank_bucket(i), 0 if lane == "ai" else persona_rank(i)))
     log(
         f"[info] 大きなニュース {len(majors)} 件（上限 {args.max_major} 本・tier quality）/ "
         f"候補 AI {len(ai_items)} 件（上限 {ai_limit} 本）/ 幅広い話題 {len(broad_items)} 件（上限 {broad_limit} 本）"
@@ -1532,6 +1569,8 @@ def main() -> int:
                 return "drop", None
             if not is_ai and per_feed.get(cand["source_slug"], 0) >= args.per_feed:
                 return "next", None  # 次の実行に回す
+            if not is_ai and cand.get("section") == "sports" and sports_today(state) >= persona.SPORTS_DAILY_CAP:
+                return "next", None  # スポーツは1日の上限まで（集客の入口。大きなものだけ）
             if is_wire(cand) and wire_attempts[0] >= args.max_wire:
                 return "next", None  # 配信は1回の上限まで。次の実行に回す
         if recent.has_url(cand["url"]):
@@ -1860,6 +1899,23 @@ def main() -> int:
                     active.remove(lane)
                     continue
                 process_web(item, lane, target)
+                # 優先レーンは1巡で2本まで試す（上限・時間は次の巡回の頭で確かめる）
+                for _ in range(lane_turns(lane) - 1):
+                    if total_created() >= remaining or time_up() or llm.all_exhausted(args.tier):
+                        break
+                    if created["broad"] >= broad_limit:
+                        break
+                    extra = None
+                    while pointers[lane] < len(items):
+                        cand = items[pointers[lane]]
+                        pointers[lane] += 1
+                        action, target = pick(cand, is_ai)
+                        if action == "take":
+                            extra = cand
+                            break
+                    if extra is None:
+                        break
+                    process_web(extra, lane, target)
     finally:
         if fast_mode:
             write_fast_results(fast_items, fast_results, state, run_status, run_detected_at)

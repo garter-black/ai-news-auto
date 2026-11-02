@@ -34,6 +34,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import feeds  # noqa: E402
 import llm  # noqa: E402
+import persona  # noqa: E402
 import quality  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -205,13 +206,16 @@ SCHEMA = {
         "japan_body": {"type": "STRING"},
         "tips": {"type": "ARRAY", "items": {"type": "OBJECT", "properties": {"title": {"type": "STRING"}, "body": {"type": "STRING"}}, "required": ["title", "body"]}},
         "faq": {"type": "ARRAY", "items": {"type": "OBJECT", "properties": {"q": {"type": "STRING"}, "a": {"type": "STRING"}}, "required": ["q", "a"]}},
+        "work_money": {"type": "ARRAY", "items": {"type": "STRING"}},
         "used_sources": {"type": "ARRAY", "items": {"type": "INTEGER"}},
     },
-    "required": ["title", "seo_title", "description", "conclusion", "intro", "steps", "pricing", "free_tier", "japan_answer", "japan_body", "tips", "faq", "used_sources"],
+    "required": ["title", "seo_title", "description", "conclusion", "intro", "steps", "pricing", "free_tier", "japan_answer", "japan_body", "tips", "faq", "work_money", "used_sources"],
 }
 
 SYSTEM = """あなたはIT解説サイトの編集者です。AIツールの初心者に向けて、公式のヘルプ・料金ページだけを根拠に、正確でやさしい解説ページを書きます。
-読者はスマホで検索してきた人です。結論を先に書き、1文は短く、専門用語には短い説明を添えます。出力は指定の JSON だけ。"""
+読者はスマホで検索してきた人です。結論を先に書き、1文は短く、専門用語には短い説明を添えます。出力は指定の JSON だけ。
+
+""" + persona.PLAIN_STYLE
 
 PROMPT = """# 書くページ
 - 検索キーワード: {keyword}（ほかに: {queries}）
@@ -244,6 +248,9 @@ PROMPT = """# 書くページ
 - japan_answer: 「日本で使える？」への一言の答え（20字以内。例「使えます（日本語対応）」）。公式ページで確認できないなら「公式ページで確認を」。
 - japan_body: 日本での提供状況・日本語対応・円での支払いについて、公式ページで分かること（100〜250字）。分からないことは分からないと書く。
 - tips: 初心者がつまずきやすい点・安全に使うための注意を2〜4個（body は60〜160字）。個人情報や機密を入力しない等の一般的な注意は書いてよい。
+- work_money: 「{work_money_heading}」欄。2〜3個、各25〜70字の1文。仕事・副業でどんな作業に使えるか、無料でどこまでできるか・
+  有料にする前に何を確かめるかなど、読者が明日から動ける形で書く。料金などの数字は公式ページの表記どおりだけ（節約額・短縮時間を計算しない）。
+  「稼げる」「儲かる」など儲け話にしない。有料プランを勧めない。
 - faq: よくある質問を4〜6個。検索されやすい形の質問（「〇〇は無料で使える？」など）にし、a は60〜180字で結論から。
 - used_sources: 実際に根拠にした公式ページの番号（S1 なら 1）。
 - 分量: intro・steps・japan_body・tips・faq の地の文の合計を2200字以上にする（足りないときは手順と FAQ を公式ページの事実で具体的に。推測で水増ししない）。
@@ -263,7 +270,8 @@ def prose_of(data: dict) -> str:
 def all_text(data: dict) -> str:
     rows = [f"{p.get('plan', '')} {p.get('price', '')} {p.get('note', '')}" for p in data.get("pricing", [])]
     return "\n".join(
-        [data.get("title", ""), data.get("description", ""), *data.get("conclusion", []), prose_of(data), *rows, *data.get("free_tier", []), data.get("japan_answer", "")]
+        [data.get("title", ""), data.get("description", ""), *data.get("conclusion", []), prose_of(data), *rows, *data.get("free_tier", []), data.get("japan_answer", ""),
+         *data.get("work_money", [])]
     )
 
 
@@ -280,6 +288,9 @@ def structural_problems(data: dict, sources: list[dict]) -> list[str]:
         problems.append("steps は3〜7個")
     if not 4 <= len(data.get("faq", [])) <= 6:
         problems.append("faq は4〜6個")
+    if not 1 <= len(data.get("work_money", [])) <= 3:
+        problems.append("work_money は1〜3個")
+    problems += persona.work_money_problems(persona.clean_work_money({"relevance": "high", "points": data.get("work_money", [])}))
     length = len(re.sub(r"\s|#", "", prose_of(data)))
     if length < MIN_PROSE:
         problems.append(f"本文が短い（{length}字 / 基準 {MIN_PROSE}字以上）。公式ページの事実を使って手順・FAQ を具体的に書き足す")
@@ -300,7 +311,10 @@ def to_record(data: dict) -> dict:
     rows = "\n".join(f"- {p.get('plan')}: {p.get('price')}（{p.get('note', '')}）" for p in data.get("pricing", []))
     free = "\n".join(f"- {f}" for f in data.get("free_tier", []))
     body = f"{prose_of(data)}\n\n## 料金\n{rows}\n\n## 無料でできること\n{free}\n\n## 日本で使える？\n{data.get('japan_answer', '')}"
-    return {"title": data.get("title", ""), "lede": data.get("intro", ""), "highlights": data.get("conclusion", []), "body": body}
+    # 「仕事・お金にどう活かせる？」欄も事実確認に入れる（quality._article_for_check が本文より前に置く）
+    work_money = persona.clean_work_money({"relevance": "high", "points": data.get("work_money") or []})
+    return {"title": data.get("title", ""), "lede": data.get("intro", ""), "highlights": data.get("conclusion", []), "body": body,
+            "workMoney": work_money}
 
 
 def check(data: dict, sources: list[dict]) -> dict:
@@ -326,6 +340,7 @@ def generate(topic: dict, sources: list[dict], attempts: int = 3) -> tuple[dict,
             intent=topic.get("intent", ""),
             title=topic["title"],
             today=today_jst(),
+            work_money_heading=persona.WORK_MONEY_HEADING,
             sources=source_block(sources, cap),
             feedback=feedback,
         )
@@ -368,6 +383,7 @@ def assemble(topic: dict, data: dict, fact: dict, sources: list[dict], previous:
         "japan": {"answer": data["japan_answer"].strip(), "body": data["japan_body"].strip()},
         "tips": [{"title": t["title"].strip(), "body": t["body"].strip()} for t in data["tips"]],
         "faq": [{"q": f["q"].strip(), "a": f["a"].strip()} for f in data["faq"]],
+        "workMoney": persona.clean_work_money({"relevance": "high", "points": data.get("work_money") or []}),
         "match": topic.get("match", ""),
         "products": topic.get("products", []),
         "related": [],
