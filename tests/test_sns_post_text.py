@@ -213,13 +213,56 @@ class ReaderQuestionTest(unittest.TestCase):
 
     def test_all_questions_are_clean(self):
         questions = [q for _, qs in voice.READER_QUESTIONS for q in qs] + voice.TOOL_QUESTIONS
-        questions += [q for qs in voice.KIND_QUESTIONS.values() for q in qs]
+        questions += [q.format(name="Pixel 11 Pro") for q in voice.SUBJECT_QUESTIONS + voice.NEGATIVE_QUESTIONS] + voice.GENERIC_QUESTIONS
         for q in questions:
             self.assertTrue(q.endswith("？"), q)
             self.assertLessEqual(len(q.format(topic="ChatGPT")), tp.QUESTION_MAX, q)
             self.assertIsNone(persona.ADVICE_RE.search(q), q)
             self.assertIsNone(persona.STIFF_RE.search(q), q)
             self.assertIsNone(tp.BAIT_RE.search(q), q)
+
+
+class GroundedQuestionTest(unittest.TestCase):
+    def test_tags_alone_do_not_pick_a_topic_question(self):
+        article = {"slug": "gdc", "title": "Google、機密データ領域のAI基盤『GDC』を刷新 検索や新半導体を追加",
+                   "seoTitle": "Google Distributed Cloudとは？新機能", "tags": ["セキュリティ"], "genreSlug": "ai",
+                   "verdict": {"status": "available", "free": True}}
+        q = voice.reader_question(article, "Google", [])
+        self.assertIn("Google Distributed Cloud", q)
+        self.assertNotIn("パスワード", q)
+        self.assertLessEqual(len(q), 40)
+
+    def test_subject_from_headline_quote(self):
+        article = {"slug": "px", "title": "ソフトバンクが「Google Pixel 11 Pro」の料理撮影術を公開",
+                   "seoTitle": "Google Pixel 11 Proの料理撮影術｜AI編集の使い方", "verdict": {"free": True}}
+        q = voice.reader_question(article, "Google", [])
+        self.assertTrue(q.startswith("Google Pixel 11 Pro、"), q)
+        self.assertNotIn("無料", q)
+
+    def test_negative_subject_question_is_not_cheerful(self):
+        q = voice.reader_question({"slug": "a", "title": "ツールXの悪用を確認", "seoTitle": "ツールXとは"}, "", [])
+        self.assertNotIn("使ってみたい", q)
+
+    def test_llm_question_is_checked_and_falls_back(self):
+        article = dict(OLD)
+        with no_weak(), patch.object(tp, "llm_question", return_value="輸入の多い取引先、あなたの会社にもありますか？") as ask:
+            text = tp.compose(dict(article), [], use_llm=True)
+        ask.assert_called_once()
+        self.assertTrue(text.endswith("輸入の多い取引先、あなたの会社にもありますか？"))
+        with no_weak(), patch.object(tp, "llm_question", return_value=""):
+            text = tp.compose(dict(article), [], use_llm=True)
+        self.assertIn("円安", tp.post_blocks_of(text)[2])
+        for bad in ["コメントで教えてください？", "今が買い時ですか？", "便利です。", "あ" * 45 + "？"]:
+            self.assertFalse(tp.question_ok(bad, OLD["title"]), bad)
+        with patch.dict("os.environ", {"GEMINI_API_KEY": ""}):
+            self.assertEqual(tp.llm_question(OLD, OLD["title"]), "")
+
+    def test_generated_question_skips_llm_and_fixed_question_wins(self):
+        with no_weak(), patch.object(tp, "llm_question", side_effect=AssertionError("no LLM")):
+            text = tp.compose(dict(NEW), [], use_llm=True)
+            self.assertTrue(text.endswith("NISAは始めましたか？"))
+            text = tp.compose(dict(NEW), [], fixed_question="楽天証券、使っていますか？")
+        self.assertTrue(text.endswith("楽天証券、使っていますか？"))
 
 
 class PromptTest(unittest.TestCase):

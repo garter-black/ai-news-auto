@@ -345,6 +345,8 @@ jobs:
           BREAKING_PER_DAY: ${{ vars.BREAKING_PER_DAY }}
           # 朝のまとめ・問いかけ投稿（sns_extra.yml）の枠を空けるか。0 で止めて通常の投稿に戻す
           SNS_DIGEST: ${{ vars.SNS_DIGEST }}
+          # 以前の形の記事に、問いかけの1文だけを軽いモデルで書かせる（失敗したら記事の主役から作る問い）
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           # 投稿ごとの反応を取り込んで「勝ちパターン」を学び直してから、次の投稿を選ぶ
           # 反応の学習は1日1回（Buffer の数値も1日1回更新）

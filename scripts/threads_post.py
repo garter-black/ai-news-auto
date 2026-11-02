@@ -309,6 +309,8 @@ def compose(
     recent: list[str] | None = None,
     breaking: bool = False,
     recent_questions: list[str] | None = None,
+    use_llm: bool = False,
+    fixed_question: str = "",
 ) -> str:
     """投稿文（2026-11-02 の形）。書き出し／要約すると、＋事実2文／読者への問いかけ の3つのかたまり。
 
@@ -322,14 +324,13 @@ def compose(
     title = str(article.get("title") or article.get("seoTitle") or "").strip()
     hook = first_line_hook(article, recent, breaking, title)
     blocks = post_blocks_of(article.get("threadsPost", "")) if int(article.get("threadsStyle") or 1) >= 3 else []
-    question = ""
-    if len(blocks) >= 2 and len(clean_lines(blocks[-1])) == 1 and clean_lines(blocks[-1])[0] != hook:
+    # 問いかけ: 決まった問い（Bluesky が Threads と同じ問いを使う）→ 生成時の問い → LLM に問いだけ書かせる → 話題・主役から作る
+    question = fixed_question if question_ok(fixed_question, title) else ""
+    if not question and len(blocks) >= 2 and len(clean_lines(blocks[-1])) == 1 and clean_lines(blocks[-1])[0] != hook:
         last = clean_lines(blocks[-1])[0]
-        if (
-            last.endswith(QUESTION_END) and len(last) <= QUESTION_MAX and not BAIT_RE.search(last)
-            and not persona.ADVICE_RE.search(last) and not persona.STIFF_RE.search(last)
-        ):
-            question = last
+        question = last if question_ok(last, title, QUESTION_MAX) else ""
+    if not question and use_llm:
+        question = llm_question(article, title)
     if not question:
         question = voice.reader_question(article, topic_of(article), recent_questions)
     summary = ""
@@ -350,6 +351,47 @@ def compose(
     text = "\n\n".join(b for b in (hook, summary, question) if b)
     article["_question"] = question
     return ensure_question(text, article, recent_questions)
+
+
+def question_ok(question: str, title: str = "", limit: int = voice.QUESTION_LIMIT) -> bool:
+    """問いかけのチェック: 1文で「？」で終わる・短い・反応のお願いや投資助言や硬い言い回しが無い・見出しの繰り返しでない"""
+    q = str(question or "").strip()
+    return bool(
+        q and q.endswith(QUESTION_END) and len(q) <= limit and "\n" not in q and q.count("？") + q.count("?") <= 2
+        and not BAIT_RE.search(q) and not persona.ADVICE_RE.search(q) and not persona.STIFF_RE.search(q)
+        and not re.search(r"https?://|#\S", q) and not repeats_title(q, title)
+    )
+
+
+def llm_question(article: dict, title: str) -> str:
+    """生成時の問いが無い記事（以前の形の記事など）に、軽いモデルで問いかけの1文だけを書かせる。失敗したら空
+
+    GEMINI_API_KEY があるときだけ。SNS_LLM_QUESTION=0 で止める（そのときは話題・主役から作る問いを使う）
+    """
+    if not os.environ.get("GEMINI_API_KEY") or os.environ.get("SNS_LLM_QUESTION", "1").strip() == "0":
+        return ""
+    prompt = (
+        "次のニュースを読んだ人への問いかけを、1文だけ書く。\n"
+        f"読者: {persona.PERSONA['who']}\n"
+        "- 読者自身の仕事・お金・副業・使っている道具について、一言で答えられる短い問いにする。全角35字以内（40字を超えると使えない）。「？」で終える。\n"
+        "- このニュースの製品・会社・話題に直接つながる問いにする（関係の薄い一般論にしない）。新しい事実や数字は書かない。\n"
+        "- 「コメントしてね」などの反応のお願い、アンケートのふり、売買のすすめ、硬い言い回し、「ざっくり」は使わない。\n"
+        "例:「あなたの会社や取引先では、円安の影響は出ていますか？」「Pixel 11 Proのカメラ、料理や仕事の写真で使ってみたいですか？」\n\n"
+        f"見出し: {title}\n要約: {article.get('description', '')}\n要点: {' / '.join(str(h) for h in article.get('highlights') or [])}"
+    )
+    schema = {"type": "OBJECT", "properties": {"question": {"type": "STRING"}}, "required": ["question"]}
+    try:
+        import llm  # noqa: PLC0415
+
+        data, _ = llm.generate_json("あなたはニュースサイトのSNS担当の編集者です。", prompt, schema, tier="bulk", max_output_tokens=512)
+        question = EMOJI_RE.sub("", str(data.get("question") or "")).strip().strip("「」\"")
+    except Exception as error:  # noqa: BLE001  失敗したら話題・主役から作る問いを使う
+        log(f"  [question] LLM で問いを作れませんでした: {str(error)[:120]}")
+        return ""
+    if not question_ok(question, title):
+        log(f"  [question] LLM の問いがチェックを通りません: {question[:60]}")
+        return ""
+    return question
 
 
 def ensure_question(text: str, article: dict, recent_questions: list[str] | None = None) -> str:
@@ -1424,7 +1466,7 @@ def main() -> int:
         # 下書きモードでは履歴が増えないので、何本目かを足して交互にする（本番は保存済みの履歴で数える）
         # 公式 API の経路（返信を作れない）は従来の形式のまま
         fmt = choose_format(state, article, breaking=False, offset=0 if live else offset) if buffer_channel or not live else "classic"
-        classic_text = compose(article, recent, recent_questions=recent_questions)
+        classic_text = compose(article, recent, recent_questions=recent_questions, use_llm=True)
         text = compose_hook(article, recent) if fmt == "hook_thread" else classic_text
         hook = article.get("_hook") or article.get("threadsHook") or ""
         if hook:

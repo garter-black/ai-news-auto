@@ -120,37 +120,63 @@ READER_QUESTIONS: list[tuple[str, list[str]]] = [
     (r"セキュリティ|脆弱性|攻撃|不正アクセス|ランサム", ["あなたの会社では、セキュリティの見直しはいつしましたか？", "仕事のパスワード管理、何を使っていますか？"]),
 ]
 TOOL_QUESTIONS = ["{topic}、仕事では何に使っていますか？", "{topic}は無料版と有料版、どちらを使っていますか？", "{topic}とほかのAI、仕事ではどれをいちばん使っていますか？"]
-KIND_QUESTIONS = {
-    "free": ["まず仕事のどの作業で試してみたいですか？", "この機能、仕事と副業ならどちらで使いそうですか？"],
-    "dev": ["開発でいちばん使っているAIツール、どれですか？", "AIを使った開発、もう仕事で試していますか？"],
-    "business": ["この機能、仕事と副業ならどちらで使いそうですか？", "いま仕事で使っているAIツール、どれですか？"],
-    "general": ["この機能、仕事と副業ならどちらで使いそうですか？", "ふだんいちばん使っているAI、どれですか？"],
-    "japan_no": ["日本で使えるようになったら、仕事で試してみますか？"],
-    "upcoming": ["使えるようになったら、仕事のどの作業で試したいですか？", "こういうAI、あなたの仕事でも使えそうですか？"],
-    "research": ["こういう技術、あなたの仕事に関わってきそうですか？"],
-    "money": ["このニュース、あなたの仕事や家計に影響はありそうですか？"],
-    "default": ["このニュース、あなたの仕事に関係しそうですか？", "いま仕事で使っているAIツール、どれですか？"],
-}
-AI_GENRES = {"ai", "tech-gadget"}
+# 話題の規則に当たらない記事は、記事そのものの主役（製品・サービス名）で問う（判定から作った一般的な問いは、記事とずれて見えるので使わない）
+SUBJECT_QUESTIONS = [
+    "{name}、仕事で使ってみたいですか？",
+    "{name}、あなたの仕事ならどこで使えそうですか？",
+    "{name}、仕事と副業ならどちらで役立ちそうですか？",
+]
+# 攻撃・悪用・事故などの話題で「使ってみたい？」とは聞かない
+NEGATIVE_RE = re.compile(r"悪用|攻撃|脆弱性|詐欺|不正|流出|漏えい|漏洩|障害|不具合|事故|倒産|破たん|被害|訴訟|停止|リコール")
+NEGATIVE_QUESTIONS = ["{name}の件、あなたの会社でも話題になっていますか？"]
+GENERIC_QUESTIONS = ["このニュース、あなたの仕事に関係しそうですか？"]
+QUESTION_LIMIT = 40
+
+
+def own_text(article: dict) -> str:
+    """記事そのものの言葉（見出し・要約・要点）。タグや判定から足した言葉は含めない"""
+    highlights = " ".join(str(h) for h in article.get("highlights") or [])
+    return f"{article.get('title', '')} {article.get('description', '')} {highlights}"
+
+
+def subjects_of(article: dict) -> list[str]:
+    """記事の主役（製品・サービス・会社の名前）の候補。見出しから取る（SEO 見出しの名前 → 見出しの「」の中 → 見出しの頭）"""
+    found: list[str] = []
+    seo = re.split(r"[｜|：:？?]", str(article.get("seoTitle") or ""))[0].strip()
+    seo = re.sub(r"(の仕組み)?を解説$|とは$|まとめ$|入門$", "", seo).strip()
+    if 2 <= len(seo) <= 24 and not re.search(r"[、。]", seo):
+        found.append(seo)
+    title = str(article.get("title") or "")
+    found += [m for m in re.findall(r"[「『]([^」』]{2,20})[」』]", title)[:1]]
+    head = re.split(r"[、，,\s　]", title)[0]
+    if 2 <= len(head) <= 12:
+        found.append(head)
+    return list(dict.fromkeys(found))
 
 
 def reader_question(article: dict, topic: str, recent: list[str]) -> str:
-    """本文の最後に置く、読者への問いかけ（1文・「？」で終わる）。直近の投稿で使った問いは避ける"""
-    text = f"{article.get('title', '')} {article.get('seoTitle', '')} {' '.join(str(t) for t in article.get('tags') or [])}"
+    """本文の最後に置く、読者への問いかけ（1文・「？」で終わる）。直近の投稿で使った問いは避ける
+
+    話題の規則は、記事の見出し・要約・要点にその言葉があるときだけ使う。無ければ記事の主役の名前で問う。
+    """
+    text = own_text(article)
     options: list[str] = []
     first_rule = 0  # いちばん合う規則の問いの数（この中で記事ごとに順番を変える）
     for pattern, questions in READER_QUESTIONS:
         if re.search(pattern, text):
             options += [q for q in questions if q not in options]
             first_rule = first_rule or len(options)
-    kind = _kind(article)
-    if topic in TOPIC_QUESTION and kind != "japan_no":
+    if topic in TOPIC_QUESTION and topic in text and _kind(article) != "japan_no":
         options += [q.format(topic=topic) for q in TOOL_QUESTIONS]
-    if article.get("genreSlug") in AI_GENRES or not options:
-        options += KIND_QUESTIONS.get(kind) or KIND_QUESTIONS["default"]
-    options = [q for q in dict.fromkeys(options) if not persona.ADVICE_RE.search(q)] or KIND_QUESTIONS["default"]
+    if not options:
+        templates = NEGATIVE_QUESTIONS if NEGATIVE_RE.search(text) else SUBJECT_QUESTIONS
+        for name in subjects_of(article):
+            options = [q.format(name=name) for q in templates if len(q.format(name=name)) <= QUESTION_LIMIT]
+            if options:
+                break
+    options = [q for q in dict.fromkeys(options) if not persona.ADVICE_RE.search(q)] or GENERIC_QUESTIONS
     # 話題にいちばん合う規則の問いから、記事ごとに順番を変えて選ぶ（同じ問いが続かないように）
-    head = options[: first_rule or min(2, len(options))] or options[:1]
+    head = options[: first_rule or len(options)] or options[:1]
     start = sum(ord(c) for c in article.get("slug", "")[::-1]) % len(head)
     ordered = head[start:] + head[:start] + options[len(head):]
     return next((q for q in ordered if q not in recent), ordered[0])

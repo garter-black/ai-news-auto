@@ -137,7 +137,7 @@ def main() -> int:
     for index, article in enumerate(found):
         # 形式の A/B（速報どうしで交互）。下書きでは何本目かを足して交互に見せる
         fmt = tp.choose_format(state, article, breaking=True, offset=0 if live else index)
-        classic_text = tp.compose(article, [], breaking=True, recent_questions=tp.recent_voice(state, "questionText"))
+        classic_text = tp.compose(article, [], breaking=True, recent_questions=tp.recent_voice(state, "questionText"), use_llm=True)
         question = "" if article.get("disaster") else article.get("_question") or ""
         text = tp.compose_hook(article, [], breaking=True) if fmt == "hook_thread" else classic_text
         link = f"{tp.site_url()}/articles/{article['slug']}"
