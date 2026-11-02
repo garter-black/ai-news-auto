@@ -1,6 +1,7 @@
 {
  "pages": {
   "chatgpt-pricing": {
+   "error": "HTTPError: HTTP Error 402: Payment Required",
    "hash": "892dd5fd92438858",
    "lines": [
     "About",
@@ -429,6 +430,7 @@
    "since": "2026-11-02T18:41:16+00:00"
   },
   "chatgpt-release-notes": {
+   "error": "HTTPError: HTTP Error 402: Payment Required",
    "last_date": "2026-10-30",
    "ok": "2026-11-03"
   },

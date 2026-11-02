@@ -3287,6 +3287,12 @@
       "skipped": true,
       "url": "https://www.soumu.go.jp/menu_news/s-news/01gyosei05_02000256.html"
     },
+    "05686213809f9a8f": {
+      "at": "2026-11-02T21:18:59.539191+00:00",
+      "reason": "short text 559",
+      "skipped": true,
+      "url": "https://jtta.or.jp/news/37685"
+    },
     "056aa7df20c31861": {
       "at": "2026-10-30T10:31:14.418790+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -4285,6 +4291,12 @@
       "reason": "quality: 本文が短い（2307字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://blogs.windows.com/japan/2026/10/28/introducing-a-team-knowledge-base-curated-by-copilot-and-agents/"
+    },
+    "1c9bf932d8f98101": {
+      "at": "2026-11-02T21:11:41.918353+00:00",
+      "reason": "short text 486",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/shingi/newpage_77154.html"
     },
     "1caf0a8b5ac4be62": {
       "at": "2026-10-27T19:15:49.048054+00:00",
@@ -6040,6 +6052,13 @@
       "skipped": true,
       "url": "https://blogs.nvidia.co.jp/blog/nvidia-and-supply-chain-partners-expand-capacity-to-accelerate-ai-infrastructure-buildout/"
     },
+    "4cedb5e9b22d6aab": {
+      "at": "2026-11-02T21:17:53.788892+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "本稿は公募や説明会の案内であり、製品・サービス・制度の利用や申請が直接できる情報ではないため、読者にとって実質的な情報とは言えません。",
+      "skipped": true,
+      "url": "https://www.nict.go.jp/press/2026/11/02-1.html"
+    },
     "4d1f48989ead4059": {
       "at": "2026-11-02T16:31:28.975668+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -6186,6 +6205,12 @@
       "slug": "softbank-net-safety-education-oita",
       "url": "https://www.softbank.jp/sbnews/entry/20261027_02"
     },
+    "5122bb9d928b5a06": {
+      "at": "2026-11-02T21:19:01.491128+00:00",
+      "reason": "short text 538",
+      "skipped": true,
+      "url": "https://www.gov-online.go.jp/press_conferences/prime_minister/202611/video-327022.html"
+    },
     "5123d02aff8feaa8": {
       "at": "2026-10-27T03:05:10.759248+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（キャンペーン）",
@@ -6322,6 +6347,12 @@
       "skipped": true,
       "url": "https://www.jst.go.jp/pr/info/info1882/index.html"
     },
+    "54f81c61f607157e": {
+      "at": "2026-11-02T21:19:00.494127+00:00",
+      "reason": "short text 338",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110214"
+    },
     "551fce04f5aa98a3": {
       "at": "2026-10-30T10:12:09.205065+00:00",
       "reason": "prefilter: 扱わない話題（事件事故・ゴシップ・選挙・医療効果・噂）",
@@ -6448,6 +6479,14 @@
       "reason": "prefilter: 価値の薄いお知らせ（審議会）",
       "skipped": true,
       "url": "https://www.fsa.go.jp/singi/singi_kinyu/hokenseido_wg/gijiroku/20261001.html"
+    },
+    "5a11d5ac9aaddd96": {
+      "at": "2026-11-02T21:11:40.002359+00:00",
+      "model": "gemini-3.5-flash",
+      "score": 100,
+      "section": "ai",
+      "slug": "salesforce-acquires-cresta-voice-ai",
+      "url": "https://www.salesforce.com/news/stories/salesforce-signs-definitive-agreement-to-acquire-cresta/"
     },
     "5a508ce5e5172782": {
       "at": "2026-10-26T18:40:05.834526+00:00",
@@ -7378,6 +7417,12 @@
       "section": "ai",
       "slug": "ios-18-7-11-security-update",
       "url": "https://k-tai.watch.impress.co.jp/docs/news/2151840.html"
+    },
+    "73e6b1863c01a835": {
+      "at": "2026-11-02T21:11:41.349271+00:00",
+      "reason": "short text 543",
+      "skipped": true,
+      "url": "https://www.mext.go.jp/b_menu/daijin/detail/mext_00748.html"
     },
     "741a6fe20969700a": {
       "at": "2026-10-30T05:01:45.995019+00:00",
@@ -9264,6 +9309,12 @@
       "skipped": true,
       "url": "https://www.cao.go.jp/consumer/iinkai/2026/501/shiryou/index.html"
     },
+    "a59af32d2ab6e4bb": {
+      "at": "2026-11-02T21:11:40.002544+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（調達）",
+      "skipped": true,
+      "url": "https://www.digital.go.jp/procurement/proper-public-procurement"
+    },
     "a59b66a65276a8b3": {
       "at": "2026-10-28T19:52:40.823109+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（プレゼント）",
@@ -10046,6 +10097,12 @@
       "skipped": true,
       "url": "https://www.jfa.maff.go.jp/j/press/kenkyu/261029.html"
     },
+    "bb5942a1c9ce2622": {
+      "at": "2026-11-02T21:17:54.326220+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（を開催）",
+      "skipped": true,
+      "url": "https://www.nttdata.com/global/ja/news/topics/2026/110200/"
+    },
     "bb741b20541aa733": {
       "at": "2026-10-27T03:05:10.757665+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（年平均成長率）",
@@ -10579,6 +10636,12 @@
       "reason": "quality: 本文が短い（2282字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://aws.amazon.com/jp/blogs/news/spec-it-safe/"
+    },
+    "cb34fef50ca90b51": {
+      "at": "2026-11-02T21:18:58.505215+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（を開催）",
+      "skipped": true,
+      "url": "https://www.jfa.jp/news/00036967/"
     },
     "cb8f474555ed7ccd": {
       "at": "2026-10-27T22:03:18.096293+00:00",
@@ -11686,6 +11749,13 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000114.000048768.html"
     },
+    "e91c5849ebb1c805": {
+      "at": "2026-11-02T21:18:57.942007+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "本件は日米農業・食料安全保障に関する会談の報告であり、新製品・サービス・制度の提供や具体的な数値・価格情報が含まれないため、読者の日常生活に直接影響する情報とは言えません。",
+      "skipped": true,
+      "url": "https://www.maff.go.jp/j/press/yusyutu_kokusai/keizai/261102.html"
+    },
     "e9321f8b1844d168": {
       "at": "2026-11-02T19:52:49.263922+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（会議）",
@@ -12146,6 +12216,14 @@
       "slug": "riken-xray-laser-terahertz-wave",
       "url": "https://www.riken.jp/press/2026/20261028_1/index.html"
     },
+    "f5d82f3888c53393": {
+      "at": "2026-11-02T21:22:04.401635+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "score": 100,
+      "section": "sports",
+      "slug": "jfa-beach-soccer-asia-cup-2026",
+      "url": "https://www.jfa.jp/news/00036969/"
+    },
     "f5dab0c444cc799f": {
       "at": "2026-10-27T03:04:42.977847+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（開店）",
@@ -12554,97 +12632,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T13:21:48.990676+00:00",
-      "attempt": 1,
-      "id": "98aa4f3fa33120c5",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2277字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "title の長さが不適切（93字 / 18〜64字）"
-      ],
-      "readability": {
-        "avg_paragraph": 138.4,
-        "avg_sentence": 64.2,
-        "long_share": 0.571,
-        "max_paragraph": 267,
-        "paragraphs": 13,
-        "sentences": 28
-      },
-      "score": null,
-      "source": "microsoft-research-blog",
-      "title": "From synthetic enterprise data evaluations to real Microsoft Copilot AI confiden"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T13:21:56.481616+00:00",
-      "attempt": 2,
-      "id": "98aa4f3fa33120c5",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2344字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（388字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 123.7,
-        "avg_sentence": 68.7,
-        "long_share": 0.481,
-        "max_paragraph": 217,
-        "paragraphs": 15,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "microsoft-research-blog",
-      "title": "From synthetic enterprise data evaluations to real Microsoft Copilot AI confiden"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T15:21:21.065385+00:00",
-      "attempt": 1,
-      "id": "691aeb39c4445330",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 66.4字・60字超の文が 53% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 124.9字・最長 274字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 124.9,
-        "avg_sentence": 66.4,
-        "long_share": 0.531,
-        "max_paragraph": 274,
-        "paragraphs": 17,
-        "sentences": 32
-      },
-      "score": 100,
-      "source": "nvidia-blog",
-      "title": "Things That Go Beep in the Night: Agentic AI Joins the Search for Extraterrestri"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T15:21:39.707228+00:00",
-      "attempt": 0,
-      "id": "691aeb39c4445330",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 141.1字・最長 310字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 141.1,
-        "avg_sentence": 32.9,
-        "long_share": 0.041,
-        "max_paragraph": 310,
-        "paragraphs": 17,
-        "sentences": 73
-      },
-      "score": 100,
-      "source": "nvidia-blog",
-      "title": "Things That Go Beep in the Night: Agentic AI Joins the Search for Extraterrestri"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T16:01:28.749931+00:00",
@@ -19023,6 +19010,93 @@
       "score": 100,
       "source": "fsa",
       "title": "国際関係,FATF声明の公表について（2026年10月プレナリー）掲載しました。"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T21:11:40.001411+00:00",
+      "attempt": 1,
+      "id": "5a11d5ac9aaddd96",
+      "kind": "ai",
+      "model": "gemini-3.5-flash",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 93.1,
+        "avg_sentence": 39.0,
+        "long_share": 0.065,
+        "max_paragraph": 186,
+        "paragraphs": 13,
+        "sentences": 31
+      },
+      "score": 100,
+      "source": "salesforce-news",
+      "title": "Salesforce Signs Definitive Agreement to Acquire Cresta"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T21:20:37.783514+00:00",
+      "attempt": 1,
+      "id": "f5d82f3888c53393",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "選手はGK3名、フィールドプレイヤー13名で構成されます。 → 元記事ではフィールドプレイヤーは14名記載されており、数値が矛盾しています。",
+        "選手はGKに河合雄介、柴本慎也、古里健の3名、フィールドは14名が名前を連ねました。 → 前述の「13名」と矛盾し、合計人数が一致しません。"
+      ],
+      "readability": {
+        "avg_paragraph": 95.6,
+        "avg_sentence": 33.1,
+        "long_share": 0.0,
+        "max_paragraph": 280,
+        "paragraphs": 9,
+        "sentences": 26
+      },
+      "score": 65,
+      "source": "jfa",
+      "title": "ビーチサッカー日本代表 メンバー・スケジュール AFCビーチサッカーアジアカップタイ2026（11.9-30 タイ／パンガー） #jfa #daihyo"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T21:22:01.302728+00:00",
+      "attempt": 2,
+      "id": "f5d82f3888c53393",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "段落が長い（平均 109.2字・最長 269字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 109.2,
+        "avg_sentence": 31.7,
+        "long_share": 0.032,
+        "max_paragraph": 269,
+        "paragraphs": 9,
+        "sentences": 31
+      },
+      "score": 100,
+      "source": "jfa",
+      "title": "ビーチサッカー日本代表 メンバー・スケジュール AFCビーチサッカーアジアカップタイ2026（11.9-30 タイ／パンガー） #jfa #daihyo"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T21:22:04.395937+00:00",
+      "attempt": 0,
+      "id": "f5d82f3888c53393",
+      "kind": "broad",
+      "model": "",
+      "problems": [
+        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（31.7→31.7字）"
+      ],
+      "readability": {
+        "avg_paragraph": 109.2,
+        "avg_sentence": 31.7,
+        "long_share": 0.032,
+        "max_paragraph": 269,
+        "paragraphs": 9,
+        "sentences": 31
+      },
+      "score": 100,
+      "source": "jfa",
+      "title": "ビーチサッカー日本代表 メンバー・スケジュール AFCビーチサッカーアジアカップタイ2026（11.9-30 タイ／パンガー） #jfa #daihyo"
     }
   ],
   "short_text_retry": {},

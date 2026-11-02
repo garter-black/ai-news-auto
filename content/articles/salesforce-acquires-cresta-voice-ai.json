@@ -1,0 +1,130 @@
+{
+  "slug": "salesforce-acquires-cresta-voice-ai",
+  "sourceType": "web",
+  "sourceUrl": "https://www.salesforce.com/news/stories/salesforce-signs-definitive-agreement-to-acquire-cresta/",
+  "sourceName": "Salesforceニュース",
+  "title": "Salesforceが音声AIのCresta買収へ 顧客対応コールセンターを自動化",
+  "seoTitle": "SalesforceのCresta買収とは？日本提供や音声AI機能を解説",
+  "threadsPost": "電話対応のあり方が、大きく変わりそうです。\n\n要約すると、Salesforceが音声AIのCrestaを買収すると発表しました。\n複雑な顧客からの電話を、AIエージェントが最後まで自動で対応します。\n\nあなたの職場で、電話対応にかかる時間は減っていますか？",
+  "threadsHook": "before_after",
+  "threadsStyle": 3,
+  "writingVoice": "senpai",
+  "lede": "Salesforceが顧客対応向け音声AIプラットフォームを開発するCrestaを買収すると発表しました。電話での複雑な問い合わせを自動で解決するAIエージェントの技術を自社のサービスに取り込みます。",
+  "description": "Salesforceが音声AIツール開発のCrestaを買収すると発表しました。複雑な電話対応を自動化する音声AIエージェントの統合により顧客対応がどう変わるのか解説します。",
+  "keywords": [
+    "Salesforce",
+    "Cresta",
+    "買収",
+    "音声AI",
+    "AIエージェント",
+    "Service Cloud",
+    "Agentforce",
+    "コールセンター",
+    "顧客対応"
+  ],
+  "tags": [
+    "Salesforce",
+    "音声AI",
+    "AIエージェント",
+    "生成AI",
+    "カスタマーサクセス"
+  ],
+  "highlights": [
+    "Salesforceが音声AI開発のCresta買収で最終合意に達したと発表しました。",
+    "Crestaの音声AIは Marriott や Comcast など大手企業で活用されています。",
+    "取引の完了は2028会計年度の第1四半期を予定しています。"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "soon",
+    "japan": "unknown",
+    "price": "不明",
+    "free": null,
+    "audience": "顧客対応担当者",
+    "take": "買収完了は2028会計年度第1四半期の予定です。今後の自社システム連携に注目しましょう。",
+    "judgedAt": "2026-11-02T21:11:38.976054+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "電話サポートの自動化が進み、複雑な一次対応の負担が減る可能性があります。",
+      "自社のコールセンターや顧客対応ツールでAI連携の準備をしておくことが有効です。"
+    ]
+  },
+  "body": "## 概要\nSalesforceが音声AIツールを手がけるCrestaの買収合意を発表しました。\nCrestaは顧客からの電話対応を自動で行うAIエージェントを開発しています。\nこの買収により顧客サポートの電話対応が自動化され業務の効率向上が期待されます。\n\n## 何が発表された？\nSalesforceは顧客体験向け音声プラットフォームを提供するCrestaを買収する最終合意に署名したと発表しました。\n発表によると買収の完了は2028会計年度の第1四半期を予定しています。\n今回の買収は既存サービスの機能強化を目的としたものです。\n買収手続きの完了後もCrestaは現在顧客が利用している主要なコンタクトセンターや電話プラットフォームのサポートを継続します。\n\n## 前と何が違う？\n### 電話での複雑な問い合わせを最後までAIが自動解決\nCrestaの音声AIエージェントは自然なリアルタイム対話が可能です。\n顧客からの途中の割り込みにも柔軟に対応できます。\nMarriott（マリオット）やComcast（コムキャスト）、Alaska Airlines（アラスカ航空）などの大手ブランドで実際に運用されています。\n\n### 人間のオペレーターをリアルタイムで支援・育成\n同じプラットフォームが人間のオペレーターの会話もリアルタイムでガイドします。\nAIエージェントと人間オペレーターの両方を同じ品質基準でテストし改善します。\n会話データから分析を行いサポート品質を継続的に引き上げます。\n\n### Salesforceデータと連携し会話を成果につなげる\n電話の会話データはこれまで個別のシステムに閉じ込められがちでした。\nSalesforceの顧客履歴とCrestaの会話理解力を組み合わせます。\nこれにより問い合わせの解決や顧客維持、売上向上といった直接の成果につなげます。\n\n## 数字で見るとどう変わった？\n元記事内で具体的な数値や評価指標の提示はありません。\n\n## ライバルと比べてどう？\nコールセンター向けの音声AI市場ではさまざまなツールが競合しています。\nCrestaの強みはMarriottなどの大手企業で導入されているエンタープライズ規模の実績です。\nさらにSalesforceのCRM（顧客管理システム）と直接繋がることで顧客情報を活かした対応が可能になります。\n\n## 料金は？\n元記事内では買収額や統合後の利用料金についての言及はありません。\n\n## 日本で使える？\n日本での具体的な提供予定や日本語対応についてはまだ分かっていません。\n現時点での注意点は以下のとおりです。\n- 買収手続きの完了は2028会計年度第1四半期の予定です。\n- 現在Crestaを利用中の企業は既存の電話システムで継続して利用可能です。\n- 詳細な機能統合のスケジュールは公式発表を確認してください。\n\n## 自分にはどう関係する？\n### 会社員として\n顧客対応やコールセンター業務に携わっている場合、電話サポートの自動化やAIによる会話のリアルタイム補助が期待できます。\n問い合わせ対応の負担軽減につながる可能性があります。\n\n### 副業・独立を考えている人\nこの立場への直接の影響は小さいです。\nコールセンターの受託やカスタマーサクセス分野での支援ビジネスを行う際のトレンドとして押さえておくとよいでしょう。\n\n### お金・資産づくりの面で\nこの立場への直接の影響は小さいです。\nSalesforceの大型買収による事業成長の可能性として判断材料の1つに留めてください。\n\n## これまでの流れ\n- **2026年10月28日**：Salesforceが『AIforce』発表 ClaudeやSlackから業務アプリを直接操作へ（[Salesforceが『AIforce』発表 ClaudeやSlackから業務アプリを直接操作へ](/articles/salesforce-aiforce-claude-slack)）\n- **2026年11月3日**：Salesforceが音声AI開発のCresta買収で最終合意と発表\n\n## まとめ\nSalesforceによるCrestaの買収は顧客サポートの電話自動化を大きく加速させます。\nまずは自社の顧客対応業務でどのような自動化が必要か整理しておきましょう。",
+  "easy": "## ひとことで言うと\nSalesforce（セールスフォース）が、電話対応が得意なAIを作る Cresta（クレスタ）という会社を買うと発表しました。\n要するに、電話での問い合わせ対応をAIが代わりにやってくれる時代が本格的にやってきます。\n\n## 何がすごいの？\nこれまでの問い合わせAIは、簡単なチャットのやりとりが得意でした。\nでも、Crestaの音声AIは電話での複雑な相談を最後まで解決できます。\n途中で割り込まれてもスムーズに会話を続けられます。\nマリオットホテルやアラスカ航空といった大企業でも、すでに使われています。\n\n## 自分に関係ある？\n電話でのお客さま対応をしている会社員の人には大きく関係します。\n面倒な電話の聞き取りや入力作業をAIが助けてくれるようになります。\n人間のスタッフへ適切なアドバイスを画面に出してくれる機能もあります。\n\n## 使ってみるには\n買収が終わるのは2028年の始めごろ（2028会計年度第1四半期）の予定です。\n今すぐ全員が使えるわけではないので、まずは公式の発表を見守りましょう。",
+  "channel": "Salesforceニュース",
+  "channelId": "",
+  "channelSlug": "salesforce-news",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Salesforce Signs Definitive Agreement to Acquire Cresta",
+  "publishedAt": "2026-11-02T21:00:00+00:00",
+  "generatedAt": "2026-11-02T21:11:38.976044+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/salesforce-acquires-cresta-voice-ai-3737afb2.jpg",
+  "model": "gemini-3.5-flash",
+  "affiliates": [
+    {
+      "name": "PLAUD",
+      "label": "PLAUD NOTE（AIボイスレコーダー）",
+      "url": "https://px.a8.net/svt/ejp?a8mat=4BELTP+BKRG8I+5J4W+5YZ76",
+      "note": "会議や取材の録音を、AIで文字起こし・要約できるカード型レコーダー",
+      "pixel": "https://www13.a8.net/0.gif?a8mat=4BELTP+BKRG8I+5J4W+5YZ76"
+    }
+  ],
+  "faq": [
+    {
+      "q": "SalesforceのCresta買収で何が発表された？",
+      "a": "Salesforceが音声AIプラットフォームを開発するCrestaを買収する最終合意に達したと発表しました。電話対応を自動化するAIエージェントの技術を取り込みます。"
+    },
+    {
+      "q": "Crestaの音声AIは前と何が違う？",
+      "a": "複雑な電話対応を最後まで自動で解決できる点や、人間のオペレーターをリアルタイムでガイドする機能を持つ点が大きな特徴です。"
+    },
+    {
+      "q": "Cresta買収機能は日本で使える？",
+      "a": "日本での具体的な提供予定や日本語対応はまだ分かっていません。買収手続きの完了は2028会計年度第1四半期を予定しています。"
+    },
+    {
+      "q": "この機能は無料で使える？",
+      "a": "無料枠や統合後の料金プランについての記載は元記事にはありません。"
+    }
+  ],
+  "todayActions": [
+    "Salesforce公式ニュースで今後の統合スケジュールを確認する",
+    "自社の顧客対応で電話業務の自動化が使えるか洗い出す"
+  ],
+  "relatedSlugs": [
+    "salesforce-aiforce-claude-slack"
+  ],
+  "qualityScore": 100,
+  "sourcePublishedAt": "2026-11-02T21:00:00+00:00",
+  "detectedAt": "2026-11-02T21:10:49+00:00",
+  "speedMinutes": 15,
+  "imageCredit": {
+    "kind": "official",
+    "org": "Salesforce",
+    "provider": "Salesforceニュース",
+    "sourceUrl": "https://www.salesforce.com/news/stories/salesforce-signs-definitive-agreement-to-acquire-cresta/",
+    "original": "https://www.salesforce.com/news/wp-content/uploads/sites/3/2026/11/Cresta-Salesforce.png",
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-02T21:23:19+00:00",
+    "imageKind": "logo"
+  },
+  "imageFocus": {
+    "x": 0.495,
+    "y": 0.506,
+    "box": [
+      0.209,
+      0.274,
+      0.781,
+      0.738
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/salesforce-acquires-cresta-voice-ai-3737afb2.jpg"
+  }
+}
