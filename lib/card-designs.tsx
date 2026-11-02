@@ -234,16 +234,22 @@ function dateOf(article: FullArticle): string {
   return `${jst.getUTCFullYear()}.${jst.getUTCMonth() + 1}.${jst.getUTCDate()}`;
 }
 
-/** 写真を枠ぴったりに切り抜いた data URL（暗くしない）。取れなければ null */
+/** 写真を枠ぴったりに切り抜いた data URL（暗くしない）。sharp が無い Cloudflare Workers では元の URL をそのまま使う（CSS の cover で切り抜く） */
 async function photoBox(url: string, width: number, height: number): Promise<string | null> {
   const photo = await fetchPhoto(url).catch(() => null);
-  if (!photo) return null;
+  if (!photo) return /^https:\/\//.test(url) && !(await sharpWorks()) ? url : null;
   try {
     const jpeg = await sharp(photo).resize(width, height, { fit: "cover", position: sharp.strategy.attention }).jpeg({ quality: 86 }).toBuffer();
     return `data:image/jpeg;base64,${jpeg.toString("base64")}`;
   } catch {
     return null;
   }
+}
+
+let sharpOk: Promise<boolean> | null = null;
+function sharpWorks(): Promise<boolean> {
+  sharpOk ??= sharp({ create: { width: 1, height: 1, channels: 3, background: "#fff" } }).png().toBuffer().then(() => true, () => false);
+  return sharpOk;
 }
 
 /** 写真が無いときの枠：ネイビーの地に発表元の名前をうすく */
