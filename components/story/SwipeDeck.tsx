@@ -20,8 +20,11 @@ export type StoryItem = {
   price: string | null;
 };
 
-/** cover は丸の表紙（束どうしで重ならないようサーバー側で選ぶ）。items は新しい順、at で24時間を数える */
-export type Bundle = { key: string; label: string; cover?: string; items: StoryItem[] };
+/**
+ * cover は丸の表紙（束どうしで重ならないようサーバー側で選ぶ）。items は新しい順、at で24時間を数える。
+ * tier は並びの段（0=先頭固定、1=読者の関心の中心、2=その他）。同じ段の中は新しい順
+ */
+export type Bundle = { key: string; label: string; cover?: string; tier?: number; items: StoryItem[] };
 type Mode = "easy" | "expert";
 
 const SAVED_KEY = "saisoku:saved";

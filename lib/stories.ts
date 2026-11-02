@@ -3,7 +3,7 @@ import { coverPath, getAllArticles, type ArticleSummary } from "@/lib/articles";
 import { COMPANIES, companyOf } from "@/lib/companies";
 import { easyGist } from "@/lib/general";
 import { BROAD_SECTIONS } from "@/lib/sections";
-import { STORY_WINDOW_MS } from "@/lib/story-window";
+import { byTierThenNewest, STORY_WINDOW_MS } from "@/lib/story-window";
 import { freeLabel, japanLabel, usability, USABILITY_LABEL } from "@/lib/verdict";
 
 /*
@@ -94,6 +94,18 @@ function toItem(a: ArticleSummary, at: number): StoryItem {
 }
 
 type Timed = { a: ArticleSummary; at: number };
+
+/**
+ * 並びの段。「最新のAIニュース」は常に先頭。
+ * 次に読者（仕事・お金・副業・AIに関心のある20〜50代の働く人）の関心の中心、その他は後ろ。
+ * 段の中は新しい記事がある丸から（開発者向けなどが先頭の次に来ないように）。
+ */
+const PINNED = new Set(["today"]);
+const CORE = new Set([
+  "money", "g-business", "go", "work", "free", "followup",
+  "openai", "anthropic", "google", "microsoft", "nvidia", "agent",
+]);
+const tierOf = (key: string) => (PINNED.has(key) ? 0 : CORE.has(key) ? 1 : 2);
 type Draft = { key: string; label: string; items: Timed[] };
 
 /** 見た目が同じになる画像を見分けるキー（独自カバーは企業色が同じなら見分けがつかない） */
@@ -182,8 +194,9 @@ export function getStoryBundles(now: number = Date.now()): Bundle[] {
   const drafts = candidates
     .map((d) => ({ ...d, items: [...d.items].sort((x, y) => y.at - x.at) }))
     .filter((d) => d.items.length > 0)
-    // 新しい記事がある丸から（同じ時刻なら上の候補順）
-    .sort((x, y) => y.items[0].at - x.items[0].at);
+    // 段ごとに、新しい記事がある丸から（同じ時刻なら上の候補順）
+    .map((d) => ({ ...d, tier: tierOf(d.key), newest: d.items[0].at }))
+    .sort(byTierThenNewest);
 
   const covers = pickCovers(drafts);
   return drafts.map((d, i) => {
@@ -191,6 +204,7 @@ export function getStoryBundles(now: number = Date.now()): Bundle[] {
     return {
       key: d.key,
       label: d.label,
+      tier: d.tier,
       cover: cover ? cover.thumbnail || coverPath(cover) || "" : "",
       items: d.items.map((x) => toItem(x.a, x.at)),
     };

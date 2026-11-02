@@ -5,12 +5,15 @@ const iso=(hoursAgo)=>new Date(NOW-hoursAgo*H).toISOString();
 function article(slug,title,{hours=1,genre='ai',audience='一般ユーザー',tags=[],company='google',...rest}={}){return {slug,title,tags,keywords:[],genreSlug:genre,genre,type:'news',hasEasy:true,generatedAt:iso(hours),publishedAt:iso(hours),highlights:[],thumbnail:'',lede:title,company,verdict:{status:'available',japan:'ok',free:true,audience},...rest}}
 let items=[];
 const COMPANIES=[{slug:'openai',name:'OpenAI',color:'#0a0'},{slug:'google',name:'Google',color:'#00f'}];
+// ブラウザ側の当て直し（静的ページが長くキャッシュされても、閲覧時刻で24時間を数える）
+const winFile=path.join(root,'lib/story-window.ts');
+const win=new Module(winFile,module);win.filename=winFile;win._compile(ts.transpileModule(fs.readFileSync(winFile,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText,winFile);
 const mocks={
  '@/lib/articles':{getAllArticles:()=>items,coverPath:()=>'/cover.png'},
  '@/lib/companies':{COMPANIES,companyOf:(a)=>COMPANIES.find(c=>c.slug===a.company)||{slug:'other',name:'その他',color:'#000'}},
  '@/lib/general':{easyGist:(a)=>a.lede},
  '@/lib/sections':{BROAD_SECTIONS:[{slug:'business',label:'ビジネス・経済'}]},
- '@/lib/story-window':{STORY_WINDOW_MS:24*H},
+ '@/lib/story-window':win.exports,
  '@/lib/verdict':{freeLabel:()=>'',japanLabel:()=>'',usability:(v)=>v.status==='available'?'go':'wait',USABILITY_LABEL:{go:'使える',wait:'まだ'}}
 };
 const source=ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
@@ -40,9 +43,23 @@ test('企業の丸は「30日」ではなく名前だけ、新しい記事があ
  const list=bundles();
  assert.ok(!list.some(b=>/30日/.test(b.label)));
  assert.equal(find('openai').label,'OpenAI');
- const firstAt=list.map(b=>Date.parse(b.items[0].at));assert.deepEqual(firstAt,[...firstAt].sort((x,y)=>y-x));
+ for(const tier of [1,2]){const t=list.filter(b=>b.tier===tier).map(b=>Date.parse(b.items[0].at));assert.deepEqual(t,[...t].sort((x,y)=>y-x));}
  assert.ok(list.findIndex(b=>b.key==='openai')<list.findIndex(b=>b.key==='money'));
  assert.ok(list.findIndex(b=>b.key==='money')<list.findIndex(b=>b.key==='google'));
+});
+test('最新のAIニュースが先頭、次は読者の関心の中心の段、開発者向けなどはその後（段の中は新しい順）',()=>{
+ items=[
+  article('dev','開発者向けの新しいSDKを公開',{hours:0.5,audience:'開発者'}),
+  article('o','ChatGPTの料金が改定',{company:'openai',hours:3,verdict:{status:'soon',japan:'ok',free:false,audience:'一般ユーザー'}}),
+  article('b','日銀が金利を発表',{genre:'business',hours:2,verdict:undefined}),
+ ];
+ const list=bundles();const keys=list.map(b=>b.key);
+ assert.equal(keys[0],'today');
+ assert.deepEqual(keys.filter(k=>k!=='google'),['today','money','g-business','openai','dev']);
+ assert.ok(keys.indexOf('google')<keys.indexOf('dev'));
+ assert.deepEqual(list.map(b=>b.tier),[0,1,1,1,1,2]);
+ const later=win.exports.liveBundles(list,NOW+1*H);
+ assert.deepEqual(later.map(b=>b.key),keys);
 });
 test('仕事の丸は見出しで判定し、開発者・情シス向けの記事は入れない',()=>{
  items=[
@@ -71,9 +88,6 @@ test('重複記事は丸に入れない',()=>{
  assert.deepEqual(find('today').items.map(a=>a.slug),['main']);
 });
 
-// ブラウザ側の当て直し（静的ページが長くキャッシュされても、閲覧時刻で24時間を数える）
-const winFile=path.join(root,'lib/story-window.ts');
-const win=new Module(winFile,module);win.filename=winFile;win._compile(ts.transpileModule(fs.readFileSync(winFile,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText,winFile);
 test('閲覧時に24時間を過ぎた記事を外し、空の丸を消して新しい順に並べ直す',()=>{
  items=[article('o1','ChatGPTの発表',{company:'openai',hours:20,thumbnail:'/o1.jpg'}),article('g1','Geminiの発表',{hours:10,thumbnail:'/g1.jpg'}),article('g2','Geminiの続き',{hours:2,thumbnail:'/g2.jpg'})];
  const built=bundles();
@@ -81,6 +95,6 @@ test('閲覧時に24時間を過ぎた記事を外し、空の丸を消して新
  assert.equal(later.find(b=>b.key==='openai'),undefined);
  const google=later.find(b=>b.key==='google');assert.deepEqual(google.items.map(a=>a.slug),['g2','g1']);
  assert.ok(google.items.some(it=>it.image===google.cover));
- const t=later.map(b=>Date.parse(b.items[0].at));assert.deepEqual(t,[...t].sort((x,y)=>y-x));
+ assert.equal(later[0].key,'today');
  assert.deepEqual(win.exports.liveBundles(built,NOW+30*H),[]);
 });

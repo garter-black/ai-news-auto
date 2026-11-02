@@ -7,7 +7,15 @@ import type { Bundle } from "@/components/story/SwipeDeck";
  */
 export const STORY_WINDOW_MS = 24 * 3_600_000;
 
-/** 今から24時間以内の記事だけを残し、0本の丸は消して、新しい記事がある丸から並べ直す */
+/** 並び順：段（tier）が小さい丸から、同じ段の中は新しい記事（newest はミリ秒）がある丸から */
+export function byTierThenNewest(x: { tier?: number; newest: number }, y: { tier?: number; newest: number }): number {
+  return (x.tier ?? 2) - (y.tier ?? 2) || y.newest - x.newest;
+}
+
+const rank = (b: Bundle) => ({ tier: b.tier, newest: Date.parse(b.items[0].at) });
+export const compareBundles = (x: Bundle, y: Bundle) => byTierThenNewest(rank(x), rank(y));
+
+/** 今から24時間以内の記事だけを残し、0本の丸は消して、段ごとに新しい順で並べ直す */
 export function liveBundles(bundles: Bundle[], now: number): Bundle[] {
   return bundles
     .map((b) => {
@@ -16,5 +24,5 @@ export function liveBundles(bundles: Bundle[], now: number): Bundle[] {
       return { ...b, cover, items };
     })
     .filter((b) => b.items.length > 0)
-    .sort((x, y) => Date.parse(y.items[0].at) - Date.parse(x.items[0].at));
+    .sort(compareBundles);
 }
