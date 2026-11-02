@@ -76,7 +76,8 @@ class SelectTest(unittest.TestCase):
 
 class VariantTest(unittest.TestCase):
     def rec(self, variant, hours=1, status="posted"):
-        return {"at": (NOW - timedelta(hours=hours)).isoformat(), "status": status, "variant": variant}
+        at = (NOW - timedelta(hours=hours)).isoformat()
+        return {"at": at, "postedAt": at, "status": status, "variant": variant}
 
     def test_alternate_within_day(self):
         self.assertEqual(fu.pick_variant({"videos": {}}, NOW, "2026-11-10"), "short")
@@ -89,6 +90,50 @@ class VariantTest(unittest.TestCase):
     def test_after_ab(self):
         self.assertEqual(fu.pick_variant({"videos": {"a": self.rec("short")}}, NOW, "2026-11-02"), "short")
         self.assertEqual(fu.pick_variant({"videos": {}}, NOW, "2026-11-02", "full"), "full")
+
+
+class PostTimingTest(unittest.TestCase):
+    F = {"ab_until": "2026-11-10", "after_ab": "short"}
+
+    def ready(self, minutes_since_text, variant_ok=("short", "full")):
+        post = {"title": "t", "url": "https://ai-tech-express.jp/articles/x", "total": 30, "voice": {"credit": "VOICEVOX:九州そら"}, "script_v3": {"hook": {"text": "問い？"}, "summary": "要約すると、答えです。"}}
+        return {
+            "status": "ready", "textAt": (NOW - timedelta(minutes=minutes_since_text)).isoformat(),
+            "versions": {k: {"ok": k in variant_ok, "post": post} for k in ("short", "full")},
+            "urls": {k: f"https://ai-tech-express.jp/video/x-{k}.mp4" for k in variant_ok},
+        }  # fmt: skip
+
+    def test_published_at_uses_due(self):
+        self.assertEqual(fu.published_at({"postedAt": "2026-11-02T10:00:00+00:00", "dueAt": "2026-11-02T12:00:00+00:00"}).hour, 12)
+
+    def test_future_due_is_not_candidate(self):
+        p = {"posted": {"a": {"postedAt": (NOW - timedelta(hours=1)).isoformat(), "dueAt": (NOW + timedelta(hours=2)).isoformat()}}}
+        self.assertEqual(fu.candidates(p, {"videos": {}}, NOW, 12, load_article=lambda s: {}, eligible=lambda a: True, score=lambda a: 1), [])
+
+    def test_quiet_hours_and_gap(self):
+        night = datetime(2026, 11, 2, 18, 0, tzinfo=timezone.utc)  # 日本時間 3:00
+        self.assertFalse(fu.can_post_now({"videos": {}}, night)[0])
+        recent = {"videos": {"a": {"status": "posted", "postedAt": (NOW - timedelta(minutes=10)).isoformat()}}}
+        self.assertFalse(fu.can_post_now(recent, NOW)[0])
+        self.assertTrue(fu.can_post_now({"videos": {}}, NOW)[0])
+
+    def test_post_one_oldest_ready_and_variant(self):
+        state = {"videos": {"new": self.ready(5), "old": self.ready(90), "mid": self.ready(40)}}
+        sent = []
+        out = fu.post_one(state, NOW, self.F, lambda slug, body, url: sent.append((slug, url)) or {"status": "posted", "bufferId": "b1", "postedAt": NOW.isoformat()})
+        self.assertEqual(out["slug"], "old")  # 文面から20分たっていない new は待つ
+        self.assertEqual(out["variant"], "short")  # その日の最初は短い版
+        self.assertIn("utm_content=short", out["body"])
+        self.assertEqual(sent, [("old", "https://ai-tech-express.jp/video/x-short.mp4")])
+        # 間隔（40分）をあけるので、同じ回・すぐ次の回には出さない
+        self.assertIsNone(fu.post_one(state, NOW + timedelta(minutes=5), self.F, lambda *a: self.fail("出してはいけない")))
+        out2 = fu.post_one(state, NOW + timedelta(minutes=45), self.F, lambda slug, body, url: {"status": "posted", "postedAt": (NOW + timedelta(minutes=45)).isoformat()})
+        self.assertEqual((out2["slug"], out2["variant"]), ("mid", "full"))  # 次は全部の版
+
+    def test_post_one_falls_back_to_passing_version(self):
+        state = {"videos": {"a": self.ready(60, variant_ok=("full",))}}
+        out = fu.post_one(state, NOW, self.F, lambda *a: {"status": "posted", "postedAt": NOW.isoformat()})
+        self.assertEqual(out["variant"], "full")
 
 
 class ComposeTest(unittest.TestCase):

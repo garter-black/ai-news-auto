@@ -35,6 +35,8 @@
   3. 品質ゲートに落ちた・時間切れ・置けなかった → その版は出さない・再挑戦しない（記録は state/sns_video.json）。
   4. Buffer は出た投稿への返信を作れないので、動画は**別の投稿**として出す（本文＋動画。本文の最後に記事のリンク）。
   5. Buffer にはっきり断られても、受理されたか分からない失敗でも、二重投稿を避けるため再送しない。
+  6. 出す時刻: 文面の投稿が Threads に出て（dueAt）20分以上たってから。1回の実行で出すのは1本だけ、動画の投稿どうしは40分以上あける。
+     深夜（日本時間 1〜6時台）は出さず、朝の回に回す。作るのは先にやっておく（status=ready で待つ）。
 """
 
 from __future__ import annotations
@@ -107,6 +109,27 @@ def _today(rec: dict, now: datetime) -> bool:
     return bool(at and at.astimezone(JST).date() == now.astimezone(JST).date())
 
 
+def published_at(rec: dict) -> datetime | None:
+    """文面の投稿が Threads に出た（出る）時刻。Buffer の予約は dueAt（作った時刻 postedAt より後のことがある）"""
+    return _parse(rec.get("sentAt") or rec.get("dueAt") or rec.get("postedAt") or "")
+
+
+# 動画の投稿を出してよい時間（日本時間）。深夜（1〜6時台）は出さず朝に回す（速報の静かな時間 BREAKING_QUIET_HOURS_JST と同じ考え）
+QUIET_HOURS_JST = range(1, 7)
+MIN_GAP_MIN = 40  # 動画の投稿どうしの間隔（同じ時間帯に続けて出さない）
+AFTER_TEXT_MIN = 20  # 文面の投稿が出てから動画を出すまでの最短
+
+
+def can_post_now(state: dict, now: datetime) -> tuple[bool, str]:
+    """静かな時間・前の動画の投稿からの間隔を見て、今この回で動画を1本出してよいか"""
+    if now.astimezone(JST).hour in QUIET_HOURS_JST:
+        return False, "深夜（1〜6時台）は出さない"
+    last = max((_parse(r.get("postedAt", "")) for r in (state.get("videos") or {}).values() if r.get("status") == "posted" and r.get("postedAt")), default=None)
+    if last and now - last < timedelta(minutes=MIN_GAP_MIN):
+        return False, f"前の動画の投稿から{MIN_GAP_MIN}分たっていない"
+    return True, ""
+
+
 def used_today(state: dict, now: datetime) -> int:
     """今日（日本時間）に作った本数（ゲート不合格・失敗も、作る手間がかかったので数える。途中で止まったものは数えない）"""
     return sum(1 for rec in (state.get("videos") or {}).values() if _today(rec, now) and rec.get("status") != "started")
@@ -120,7 +143,7 @@ def pick_variant(state: dict, now: datetime, ab_until: str, after_ab: str = "sho
         until = None
     if until is not None and now.astimezone(JST).date() > until:
         return after_ab if after_ab in ("short", "full") else "short"
-    shown = sum(1 for rec in (state.get("videos") or {}).values() if _today(rec, now) and rec.get("variant") and rec.get("status") in ("posted", "dry_run", "uploaded"))
+    shown = sum(1 for rec in (state.get("videos") or {}).values() if rec.get("variant") and rec.get("status") == "posted" and _today({"at": rec.get("postedAt", "")}, now))
     return "short" if shown % 2 == 0 else "full"
 
 
@@ -142,7 +165,7 @@ def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_a
     done = set((state.get("videos") or {}).keys())
     rows = []
     for slug, rec in (posted.get("posted") or {}).items():
-        at = _parse(rec.get("postedAt") or rec.get("sentAt") or "")
+        at = published_at(rec)
         if slug in done or not at or now - at > timedelta(hours=window_h) or at > now:
             continue
         try:
@@ -236,7 +259,17 @@ def write_embed(slug: str, info: dict) -> None:
     path.write_text(json.dumps(article, ensure_ascii=False, indent=2) + "\n", "utf-8")
 
 
-def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = False, make_versions=None, select=None) -> list[dict]:
+def post_report(report: dict) -> dict:
+    """投稿文を作るのに要る所だけ（state に残して、あとの回で出す）"""
+    sv3 = report.get("script_v3") or {}
+    return {
+        "title": report.get("title", ""), "url": report.get("url", ""), "total": report.get("total"), "voice": report.get("voice") or {},
+        "script_v3": {"hook": {"text": (sv3.get("hook") or {}).get("text", "")}, "summary": sv3.get("summary", "")},
+    }  # fmt: skip
+
+
+def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = False, make_versions=None, select=None, poster=None) -> list[dict]:
+    """1回分: ①新しく SNS に出た記事の動画を作る（2つの版）→ 置く → 記事に載せる ②用意できた動画を1本だけ投稿する（静かな時間・間隔を守る）"""
     f = flags(env)
     now = now or datetime.now(timezone.utc)
     state = load_json(STATE, {"videos": {}})
@@ -255,23 +288,18 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
         make_versions = v3.make_versions
     results = []
     for slug in picks:
-        rec = {"at": now.isoformat(timespec="seconds"), "status": "started"}
+        rec = {"at": now.isoformat(timespec="seconds"), "status": "started", "textAt": (published_at((posted.get("posted") or {}).get(slug) or {}) or now).isoformat(timespec="seconds")}
         state["videos"][slug] = rec
         save_state(state)  # 途中で落ちても同じ記事を二度作らない
         reports = make_versions(slug, OUT)
         ok = {k: bool((r.get("gate") or {}).get("ok")) and (OUT / f"{slug}__v3{'short' if k == 'short' else ''}.mp4").exists() for k, r in reports.items()}
-        rec["versions"] = {k: {"ok": ok[k], "seconds": r.get("total"), "reasons": (r.get("gate") or {}).get("reasons", [])[:3]} for k, r in reports.items()}
+        rec["versions"] = {k: {"ok": ok[k], "seconds": r.get("total"), "reasons": (r.get("gate") or {}).get("reasons", [])[:3], **({"post": post_report(r)} if ok[k] else {})} for k, r in reports.items()}
         rec["timings"] = {k: r.get("timings") for k, r in reports.items()}
-        variant = pick_variant(state, now, f["ab_until"], f["after_ab"])
-        if not ok.get(variant):  # 出す予定の版が落ちたら、もう一方が合格していればそれを出す
-            variant = next((k for k in ("short", "full") if ok.get(k)), "")
-        if not variant:
+        if not any(ok.values()):
             rec["status"] = "gate_failed"
             save_state(state)
             results.append({"slug": slug, **rec})
             continue
-        report = reports[variant]
-        rec.update({"variant": variant, "body": compose_post(report, variant), "link": article_link(report, variant)})
         if not f["upload"]:
             rec["status"] = "dry_run"
             save_state(state)
@@ -285,7 +313,7 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
                     urls[k] = upload_r2(mp4, f["bucket"], f["public_base"], f"videos/{now.astimezone(JST):%Y%m%d}/{mp4.name}") if f["store"] == "r2" else upload_kv(mp4, slug)
             if ok.get("full"):
                 urls["poster"] = upload_kv(poster_of(OUT / f"{slug}__v3.mp4"), slug, "jpg")
-            rec.update({"status": "uploaded", "urls": urls})
+            rec.update({"status": "ready", "urls": urls})
         except Exception as error:  # noqa: BLE001 - 置けなければ動画なし
             rec.update({"status": "upload_failed", "error": str(error)[:300]})
             save_state(state)
@@ -293,15 +321,51 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
             continue
         if f["embed"] and urls.get("full"):
             try:
-                write_embed(slug, {"src": urls["full"], "poster": urls.get("poster", ""), "seconds": round(float(reports["full"].get("total") or 0), 1), "title": reports["full"].get("title", ""), "credit": (reports["full"].get("voice") or {}).get("credit", "")})
+                full = reports["full"]
+                write_embed(slug, {"src": urls["full"], "poster": urls.get("poster", ""), "seconds": round(float(full.get("total") or 0), 1), "title": full.get("title", ""), "credit": (full.get("voice") or {}).get("credit", "")})
                 rec["embedded"] = True
             except Exception as error:  # noqa: BLE001
                 rec["embedError"] = str(error)[:200]
-        if f["post"]:
-            rec.update(post_video(slug, rec["body"], urls[variant]))
         save_state(state)
         results.append({"slug": slug, **rec})
+    if f["post"]:
+        out = post_one(state, now, f, poster or post_video)
+        if out:
+            results.append(out)
+        save_state(state)
     return results
+
+
+def post_one(state: dict, now: datetime, f: dict, poster) -> dict | None:
+    """用意できた動画（ready）を1本だけ出す。文面の投稿が出てから20分以上・24時間以内・古い順。静かな時間と間隔を守る"""
+    allowed, why = can_post_now(state, now)
+    if not allowed:
+        log(f"[video-followup] この回は動画を出さない: {why}")
+        return None
+    ready = []
+    for slug, rec in (state.get("videos") or {}).items():
+        text_at = _parse(rec.get("textAt", "")) or _parse(rec.get("at", ""))
+        if rec.get("status") != "ready" or not text_at:
+            continue
+        if now - text_at < timedelta(minutes=AFTER_TEXT_MIN) or now - text_at > timedelta(hours=24):
+            continue
+        ready.append((text_at, slug, rec))
+    if not ready:
+        return None
+    ready.sort()
+    _, slug, rec = ready[0]
+    variant = pick_variant(state, now, f["ab_until"], f["after_ab"])
+    versions = rec.get("versions") or {}
+    if not (versions.get(variant) or {}).get("ok") or variant not in (rec.get("urls") or {}):
+        variant = next((k for k in ("short", "full") if (versions.get(k) or {}).get("ok") and k in (rec.get("urls") or {})), "")
+    if not variant:
+        rec["status"] = "post_skipped"
+        return {"slug": slug, **rec}
+    body = compose_post(versions[variant]["post"], variant)
+    rec.update({"variant": variant, "body": body, "link": article_link(versions[variant]["post"], variant)})
+    rec.update(poster(slug, body, rec["urls"][variant]))
+    log(f"[video-followup] 投稿 {slug}（{variant}）: {rec.get('status')} {rec.get('bufferId', '')} {rec.get('error', '')}")
+    return {"slug": slug, **rec}
 
 
 def post_video(slug: str, body: str, video_url: str) -> dict:
@@ -316,8 +380,8 @@ def post_video(slug: str, body: str, video_url: str) -> dict:
             raise RuntimeError("Buffer に Threads のチャンネルが無い")
         post_id = threads_post.create_post(api_key, buffer_input(channel["id"], body, video_url, threads_post.topic_of(shorts.load_article(slug))))
         return {"status": "posted", "bufferId": post_id, "postedAt": datetime.now(timezone.utc).isoformat(timespec="seconds")}
-    except RuntimeError as error:
-        return {"status": "post_failed", "error": str(error)[:300]}
+    except Exception as error:  # noqa: BLE001 - 受理されたか分からない失敗も含め、再送しない
+        return {"status": "post_failed", "error": str(error)[:300], "postedAt": datetime.now(timezone.utc).isoformat(timespec="seconds")}
 
 
 def ab_rows(state: dict, metrics: dict, visits: dict) -> dict:

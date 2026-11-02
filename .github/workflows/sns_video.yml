@@ -9,7 +9,7 @@ name: SNS video follow-up (flagged, default off)
 #   SNS_VIDEO_EMBED=on     … 記事 JSON に video を書く（次のデプロイで記事ページに動画が出る）
 #   SNS_VIDEO_POST=live    … Buffer で Threads に出す（オーナーの確認のあと）
 #   SNS_VIDEO_AB_UNTIL=YYYY-MM-DD … この日まで投稿ごとに short / full を交互（記事のリンクに utm_content=short|full）
-# 手動実行（workflow_dispatch）は、Variables に関係なく「作るだけ（投稿しない）」で試せる。
+# 手動実行（workflow_dispatch）は投稿しない（作る・置く・記事に載せるは Variables に従う）。
 on:
   schedule:
     - cron: "45 * * * *"  # 毎時45分（文面の投稿 15/35/55 分のあと）。SNS_VIDEO_FOLLOWUP=on のときだけ動く
@@ -68,9 +68,10 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # 手動実行は「作るだけ」。投稿・アップロードは定期実行で Variables が on/live のときだけ
           SNS_VIDEO_FOLLOWUP: ${{ github.event_name == 'workflow_dispatch' && 'on' || vars.SNS_VIDEO_FOLLOWUP }}
-          SNS_VIDEO_UPLOAD: ${{ github.event_name == 'schedule' && vars.SNS_VIDEO_UPLOAD || 'off' }}
+          # 置く・記事に載せるは手動実行でも Variables に従う。投稿だけは定期実行のときだけ（決まった時刻の流れの中で出す）
+          SNS_VIDEO_UPLOAD: ${{ vars.SNS_VIDEO_UPLOAD || 'off' }}
           SNS_VIDEO_POST: ${{ github.event_name == 'schedule' && vars.SNS_VIDEO_POST || 'off' }}
-          SNS_VIDEO_EMBED: ${{ github.event_name == 'schedule' && vars.SNS_VIDEO_EMBED || 'off' }}
+          SNS_VIDEO_EMBED: ${{ vars.SNS_VIDEO_EMBED || 'off' }}
           SNS_VIDEO_DAILY_MAX: ${{ vars.SNS_VIDEO_DAILY_MAX || '12' }}
           SNS_VIDEO_PER_RUN: ${{ vars.SNS_VIDEO_PER_RUN || '3' }}
           SNS_VIDEO_AB_UNTIL: ${{ vars.SNS_VIDEO_AB_UNTIL }}
