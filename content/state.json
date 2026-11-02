@@ -7331,6 +7331,14 @@
       "skipped": true,
       "url": "https://www.nli-research.co.jp/topics_detail1/id=87228?site=nli"
     },
+    "7654ed0c5356186b": {
+      "at": "2026-11-02T17:11:43.212524+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "tohoku-atotsugi-connect-sendai-2026",
+      "url": "https://j-net21.smrj.go.jp/news/bt5puv00000105io.html"
+    },
     "76f2e7e1339672d5": {
       "at": "2026-10-27T03:04:42.978433+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（周年）",
@@ -10894,6 +10902,14 @@
       "slug": "ps5-marvels-wolverine-photo-mode-guide",
       "url": "https://blog.ja.playstation.com/2026/10/26/20261026-marvels-wolverine-photo-mode-o/"
     },
+    "d9642dffdf582468": {
+      "at": "2026-11-02T17:11:31.904869+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "atlassian-gartner-leader-marketing-2026",
+      "url": "https://www.atlassian.com/blog/company-news/gartner-marketing-work-management-2026"
+    },
     "d975b1f51a07385e": {
       "at": "2026-10-27T20:31:17.370179+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12270,96 +12286,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:11:50.407193+00:00",
-      "attempt": 2,
-      "id": "b4c408b70c6f4acf",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1533字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（282字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 140.7,
-        "avg_sentence": 58.6,
-        "long_share": 0.542,
-        "max_paragraph": 232,
-        "paragraphs": 10,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "soumu",
-      "title": "令和8年度特定地域づくり事業推進交付金の交付決定"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:12:02.488843+00:00",
-      "attempt": 1,
-      "id": "45dc27e1a62d379a",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1794字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（323字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 124.1,
-        "avg_sentence": 50.6,
-        "long_share": 0.148,
-        "max_paragraph": 234,
-        "paragraphs": 11,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "cao",
-      "title": "第14回人工知能（AI）技術の利用と消費者問題に関する専門調査会【11月５日開催】"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:12:09.204891+00:00",
-      "attempt": 2,
-      "id": "45dc27e1a62d379a",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 145.0,
-        "avg_sentence": 55.8,
-        "long_share": 0.423,
-        "max_paragraph": 253,
-        "paragraphs": 10,
-        "sentences": 26
-      },
-      "score": null,
-      "source": "cao",
-      "title": "第14回人工知能（AI）技術の利用と消費者問題に関する専門調査会【11月５日開催】"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:12:16.576851+00:00",
-      "attempt": 1,
-      "id": "5af2f33cb41b4881",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（379字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 150.7,
-        "avg_sentence": 51.8,
-        "long_share": 0.312,
-        "max_paragraph": 272,
-        "paragraphs": 11,
-        "sentences": 32
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "輸入食品に対する検査命令の実施 - （中国産おくら、その加工品）"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T10:12:22.321813+00:00",
@@ -18823,6 +18749,95 @@
       "score": 100,
       "source": "nomura-re",
       "title": "羽田からひろがる、新たな出会い 「あわい -awai2026- 」開催決定（羽田みらい開発）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T17:11:28.945757+00:00",
+      "attempt": 1,
+      "id": "d9642dffdf582468",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 50.5字・60字超の文が 27% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 65.4,
+        "avg_sentence": 50.5,
+        "long_share": 0.273,
+        "max_paragraph": 117,
+        "paragraphs": 17,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "atlassian-blog",
+      "title": "For the third year running, Atlassian named a Leader in the Gartner® Magic Quadr"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T17:11:31.904135+00:00",
+      "attempt": 0,
+      "id": "d9642dffdf582468",
+      "kind": "ai",
+      "model": "",
+      "problems": [
+        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（50.5→50.5字）"
+      ],
+      "readability": {
+        "avg_paragraph": 65.4,
+        "avg_sentence": 50.5,
+        "long_share": 0.273,
+        "max_paragraph": 117,
+        "paragraphs": 17,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "atlassian-blog",
+      "title": "For the third year running, Atlassian named a Leader in the Gartner® Magic Quadr"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T17:11:39.837387+00:00",
+      "attempt": 1,
+      "id": "7654ed0c5356186b",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 45.2字・60字超の文が 13% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 148.6字・最長 182字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 148.6,
+        "avg_sentence": 45.2,
+        "long_share": 0.13,
+        "max_paragraph": 182,
+        "paragraphs": 7,
+        "sentences": 23
+      },
+      "score": 100,
+      "source": "jnet21",
+      "title": "仙台でアトツギ交流会、家業の強みを活かした新規事業に挑戦"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T17:11:43.211981+00:00",
+      "attempt": 0,
+      "id": "7654ed0c5356186b",
+      "kind": "broad",
+      "model": "",
+      "problems": [
+        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（45.2→45.2字）"
+      ],
+      "readability": {
+        "avg_paragraph": 148.6,
+        "avg_sentence": 45.2,
+        "long_share": 0.13,
+        "max_paragraph": 182,
+        "paragraphs": 7,
+        "sentences": 23
+      },
+      "score": 100,
+      "source": "jnet21",
+      "title": "仙台でアトツギ交流会、家業の強みを活かした新規事業に挑戦"
     }
   ],
   "short_text_retry": {},

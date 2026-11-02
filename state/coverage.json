@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "tohoku-atotsugi-connect-sendai-2026",
+   "at": "2026-11-02T17:11:38.848296+00:00",
+   "title": "東北経済産業局、仙台でアトツギ交流会を開催 家業の強み活かした新規事業へ挑戦",
+   "head": "東北経済産業局、仙台でアトツギ交流会を開催 家業の強み活かした新規事業へ挑戦 | 仙台でアトツギ交流会、家業の強みを活かした新規事業に挑戦",
+   "text": "東北経済産業局、仙台でアトツギ交流会を開催 家業の強み活かした新規事業へ挑戦 | 仙台でアトツギ交流会、家業の強みを活かした新規事業に挑戦 | アトツギ / 事業承継 / 東北経済産業局 / 仙台市 / 新規事業 / 中小企業 / 後継者 / アトツギ甲子園 / ビジネス / 事業承継 / 経営戦略 / イベント",
+   "urls": [
+    "https://j-net21.smrj.go.jp/news/bt5puv00000105io.html"
+   ]
+  },
+  {
+   "slug": "atlassian-gartner-leader-marketing-2026",
+   "at": "2026-11-02T17:11:28.084116+00:00",
+   "title": "タスク管理のアトラシアン、マーケティング業務管理部門で3年連続「リーダー」に選出",
+   "head": "タスク管理のアトラシアン、マーケティング業務管理部門で3年連続「リーダー」に選出 | For the third year running, Atlassian named a Leader in the Gartner® Magic Quadrant™ for Marketing Work Management",
+   "text": "タスク管理のアトラシアン、マーケティング業務管理部門で3年連続「リーダー」に選出 | For the third year running, Atlassian named a Leader in the Gartner® Magic Quadrant™ for Marketing Work Management | Atlassian / アトラシアン / Gartner / ガートナー / マーケティング業務管理 / Teamwork Collection / チームワーク / 生成AI / ソフトウェア / マーケティング / 仕事術",
+   "urls": [
+    "https://www.atlassian.com/blog/company-news/gartner-marketing-work-management-2026"
+   ]
+  },
+  {
    "slug": "haneda-innov-city-awai-2026",
    "at": "2026-11-02T16:52:07.685366+00:00",
    "title": "羽田みらい開発、『あわい -awai2026-』を2026年11月に開催へ 大田区の大型施設で",
@@ -1591,26 +1611,6 @@
    "text": "JFAがストルツメディカル・ジャパンとサポーター契約 選手の傷害予防とコンディショニングを支援 | ストルツメディカル・ジャパン株式会社とJFAサポーター契約を締結 ～選手のコンディショニングと傷害予防を支えるメディカルサポートを強化～ #jfa | JFA / ストルツメディカル・ジャパン / 日本サッカー協会 / メディカルサポート / 体外衝撃波治療器 / スポーツ医科学 / コンディショニング / 傷害予防 / サッカー / 日本代表 / JFA / メディカル",
    "urls": [
     "https://www.jfa.jp/news/00036960/"
-   ]
-  },
-  {
-   "slug": "playstation-partner-awards-2026-announcement",
-   "at": "2026-10-29T17:06:19.217271+00:00",
-   "title": "プレイステーションの年間表彰「PS Partner Awards 2026」12月3日開催決定、本日よりユーザー投票も開始",
-   "head": "プレイステーションの年間表彰「PS Partner Awards 2026」12月3日開催決定、本日よりユーザー投票も開始 | 「PlayStation® Partner Awards 2026 Japan Asia」12月3日開催決定！",
-   "text": "プレイステーションの年間表彰「PS Partner Awards 2026」12月3日開催決定、本日よりユーザー投票も開始 | 「PlayStation® Partner Awards 2026 Japan Asia」12月3日開催決定！ | PlayStation Partner Awards / PSアワード / プレイステーション / プレイヤーズチョイスアワード / インディーゲーム / PS5 Pro / ユーザ投票 / ゲームアワード / SIE / 受賞タイトル / ゲーム / PlayStation / イベント / エンタメ",
-   "urls": [
-    "https://blog.ja.playstation.com/2026/10/29/20261029-pspawards-event-announcement-s/"
-   ]
-  },
-  {
-   "slug": "openai-frontier-model-misalignment-monitoring",
-   "at": "2026-10-29T17:03:13.249705+00:00",
-   "title": "ChatGPTのOpenAIがAIモデルの隠れた誤作動を防ぐ多層モニタリングシステムを公開",
-   "head": "ChatGPTのOpenAIがAIモデルの隠れた誤作動を防ぐ多層モニタリングシステムを公開 | How we detect frontier model misalignment",
-   "text": "ChatGPTのOpenAIがAIモデルの隠れた誤作動を防ぐ多層モニタリングシステムを公開 | How we detect frontier model misalignment | OpenAI / AI誤作動 / フロンティアモデル / セキュリティ / モニタリングシステム / アクティベーションプローブ / 強化学習 / コード生成 / 生成AI / LLM / セキュリティ / OpenAI",
-   "urls": [
-    "https://openai.com/index/how-we-detect-frontier-model-misalignment"
    ]
   }
  ]

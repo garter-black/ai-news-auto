@@ -1,0 +1,98 @@
+{
+  "slug": "atlassian-gartner-leader-marketing-2026",
+  "sourceType": "web",
+  "sourceUrl": "https://www.atlassian.com/blog/company-news/gartner-marketing-work-management-2026",
+  "sourceName": "Atlassian公式ブログ",
+  "title": "タスク管理のアトラシアン、マーケティング業務管理部門で3年連続「リーダー」に選出",
+  "seoTitle": "アトラシアン、Gartnerのマーケティング管理で3年連続リーダーに選出",
+  "threadsPost": "マーケティングの仕事、ツールが散らばって大変になっていませんか？\n\n要約すると、アトラシアンが米ガートナー社の調査で3年連続リーダーに選ばれました。\n散らばった計画やAIを一つにつなぐ基盤が評価されています。\n\nあなたのチームでは、複数のツールの連携に困っていませんか？",
+  "threadsHook": "question",
+  "threadsStyle": 3,
+  "writingVoice": "friendly",
+  "lede": "アトラシアン公式ブログによると、同社のマーケティング業務管理基盤が米ガートナー社のマジック・クアドラントで3年連続「リーダー」に選出されました。散らばりがちなチームやAIを一つにつなぐ仕組みが評価されています。",
+  "description": "アトラシアンが米ガートナー社の2026年マジック・クアドラント（マーケティング業務管理プラットフォーム部門）で3年連続リーダーに選出されました。",
+  "keywords": [
+    "Atlassian",
+    "アトラシアン",
+    "Gartner",
+    "ガートナー",
+    "マーケティング業務管理",
+    "Teamwork Collection",
+    "チームワーク"
+  ],
+  "tags": [
+    "生成AI",
+    "ソフトウェア",
+    "マーケティング",
+    "仕事術"
+  ],
+  "highlights": [
+    "アトラシアンが米ガートナー社のマジック・クアドラントで3年連続リーダーに選出されました。",
+    "ConfluenceやJiraなどのツールを連携させる「Teamwork Collection」を展開しています。",
+    "社内のデータや関係性を結ぶ「Teamwork Graph」によりAIの精度を高めています。"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "ok",
+    "price": "法人向け",
+    "free": null,
+    "audience": "マーケター",
+    "take": "チームのツールが散らばっているなら、アトラシアンの連携基盤を確認してみましょう。",
+    "judgedAt": "2026-11-02T17:11:28.084076+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "マーケティングや営業など多くのチームを横断してプロジェクトを進める管理職や担当者が影響を受けます。",
+      "散らばった資料やスケジュールを一つの基盤につなぎ、AIを活用して業務の無駄を減らすヒントになります。"
+    ]
+  },
+  "body": "## 概要\nアトラシアン公式ブログによると、同社のマーケティング業務管理プラットフォームが米ガートナー社の評価で3年連続「リーダー」に選ばれました。計画から実行までの作業を一つにつなぎ、AIを活用して業務をスムーズにする仕組みが評価されています。\n\n## 何が発表された？\n米ガートナー社の「2026年マジック・クアドラント（マーケティング業務管理プラットフォーム部門）」において、アトラシアンが3年連続でリーダーに選出されたという発表です。\n\nマーケティングの仕事はクリエイティブ、営業、法務、財務など多くのチームが関わります。しかし、計画やデータが別のシステムに散らばりやすいという課題があります。\n\nアトラシアンは、自社のツール群を組み合わせてこの課題を解決する「Teamwork Collection」を提供しています。\n\n## どのような仕組みで支えているのか？\nアトラシアンの発表によると、複数のツールとAIを連携させることで業務の効率化を図っています。\n\n### Confluenceによる計画の共有\nConfluenceを使って、計画やアイデア、社内の知識を一つの場所にまとめて共有できます。\n\n### Jiraによる作業の調整\nJiraを使って、計画を具体的なタスクに落とし込み、担当者や承認のプロセスを明確に管理できます。\n\n### RovoによるAIの活用\nRovoなどのAIエージェントを導入し、過去のキャンペーン結果を踏まえた戦略の立案や、進捗の確認をサポートします。\n\n## 数字で見るとどう変わった？\n今回の公式発表において、具体的なベンチマーク数値や比較データの提示はありません。\n\n## ライバルと比べてどう？\n今回のガートナー社の調査における他の競合企業との具体的な比較数値や優劣の詳細は、公式ブログ内では触れられていません。\n\n## 料金は？\n公式ブログ内では具体的な価格や料金プランについての言及はありません。\n\n## 日本で使える？\n日本から利用可能です。アトラシアンが提供する各ツール（ConfluenceやJiraなど）はすでに日本国内の企業やチーム向けに広く展開されています。詳細な機能や導入については公式サイトから確認できます。\n\n## 自分にはどう関係する？\n\n### エンジニアなら\nマーケティングや他部署のシステム連携の仕組みを知ることで、社内のデータ基盤やツール統合の全体像を把握しやすくなります。\n\n### 企画・マーケティングなら\n散らばりがちなキャンペーンの計画やアイデアを一つの基盤にまとめ、AIのサポートを受けながら進行管理を効率化するヒントになります。\n\n### 経営者・管理者なら\n組織全体のプロジェクトの進捗や、部署をまたいだ連携の無駄を減らし、意思決定のスピードを上げるためのシステム選びの参考になります。\n\n## これまでの流れ\n- **2026年11月1日**：アトラシアンがAIの精度を高める新枠組み「Context Quality Score（CQS）」を発表（[アトラシアンがAIの精度を高める「CQS」を発表 散らばったデータを整理して回答の質を向上](/articles/atlassian-context-quality-score-cqs)）\n- **2026年11月1日**：企業向けのAIエージェント管理機能を発表（[タスク管理のAtlassianがAIエージェントの野良増殖を防ぐ管理機能を発表](/articles/atlassian-tackling-agent-sprawl)）\n- **2026年11月3日**：マーケティング業務管理プラットフォーム部門で3年連続リーダーに選出されたことを発表\n\nアトラシアンは、AIの精度向上やエージェントの管理機能に続き、業務管理基盤全体の評価を受ける形で展開を進めています。\n\n## まとめ\nアトラシアンのツールを活用しているチームは、自社のワークフローとAIの連携がどのように進められているかを確認してみましょう。公式レポートをダウンロードして、今後の業務管理の参考にしてみてください。",
+  "easy": "## ひとことで言うと\nタスク管理ツールで知られるアトラシアンが、マーケティングの仕事を効率よく進める仕組みで高い評価を受けました。\n\n## 何がすごいの？\n企画のConfluenceや、作業のJira、動画のLoomなどを一つにつなぎ、AIが仕事を手伝ってくれる点です。散らばった情報を探す手間が減ります。\n\n## 自分に関係ある？\n多くのチームや外部のパートナーと協力して仕事を進める人にとって、情報の共有や確認の手間を減らすための参考になります。\n\n## 使ってみるには\nすでに提供されているアトラシアンの各種ツールや連携機能を確認し、自社のチームでどう活用できるか試してみることができます。",
+  "channel": "Atlassian公式ブログ",
+  "channelId": "",
+  "channelSlug": "atlassian-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "For the third year running, Atlassian named a Leader in the Gartner® Magic Quadrant™ for Marketing Work Management",
+  "publishedAt": "2026-11-02T17:00:00+00:00",
+  "generatedAt": "2026-11-02T17:11:28.084116+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/atlassian-gartner-leader-marketing-2026-fbc12e34.jpg",
+  "model": "gemini-3.5-flash-lite",
+  "affiliates": [],
+  "relatedSlugs": [
+    "atlassian-context-quality-score-cqs",
+    "atlassian-tackling-agent-sprawl"
+  ],
+  "qualityScore": 100,
+  "sourcePublishedAt": "2026-11-02T17:00:00+00:00",
+  "detectedAt": "2026-11-02T17:10:58+00:00",
+  "speedMinutes": 15,
+  "imageCredit": {
+    "kind": "official",
+    "org": "Atlassian",
+    "provider": "Atlassian公式ブログ",
+    "sourceUrl": "https://www.atlassian.com/blog/company-news/gartner-marketing-work-management-2026",
+    "original": "https://atlassianblog.wpengine.com/wp-content/uploads/2025/12/blog_1120x545.png",
+    "width": 1200,
+    "height": 584,
+    "at": "2026-11-02T17:12:38+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.564,
+    "y": 0.554,
+    "box": [
+      0.247,
+      0.109,
+      0.881,
+      1.0
+    ],
+    "ar": 2.0548,
+    "src": "https://ai-tech-express.jp/img/atlassian-gartner-leader-marketing-2026-fbc12e34.jpg"
+  }
+}
