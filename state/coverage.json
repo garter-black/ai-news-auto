@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "deepseek-harness-creator-mode",
+   "at": "2026-11-02T17:44:35.562626+00:00",
+   "title": "中国DeepSeekのAI助手に「クリエイターモード」 文章で指示して3D表示や動画編集の道具を作成",
+   "head": "中国DeepSeekのAI助手に「クリエイターモード」 文章で指示して3D表示や動画編集の道具を作成 | DeepSeek releases a \"creator mode\" that allows users of DeepSeek Harness to create custom plugins, like a 3D model renderer and a video editing workbench",
+   "text": "中国DeepSeekのAI助手に「クリエイターモード」 文章で指示して3D表示や動画編集の道具を作成 | DeepSeek releases a \"creator mode\" that allows users of DeepSeek Harness to create custom plugins, like a 3D model renderer and a video editing workbench | DeepSeek Harness / DeepSeek クリエイターモード / DeepSeek プラグイン / DeepSeek とは / AIエージェント / DeepSeek 日本 / DeepSeek 料金 / 3Dモデル AI / 動画編集 AI / 中国 AI / DeepSeek / DeepSeek Harness / AIエージェント / 生成AI / プラグイン",
+   "urls": [
+    "https://www.bloomberg.com/news/articles/2026-11-02/deepseek-boosts-ai-agent-offering-with-new-creator-mode"
+   ]
+  },
+  {
    "slug": "kanto-gx-connect-matching-tokyo",
    "at": "2026-11-02T17:37:41.776273+00:00",
    "title": "関東経済産業局、省エネ・脱炭素の技術を持つ6社と企業をつなぐマッチングイベントを東京で開催",
@@ -1611,16 +1621,6 @@
    "text": "AWS、NVIDIAの最新マルチモーダルAI『Nemotron 3.5 Super VL』をサポート | Accelerate agentic AI with NVIDIA Nemotron models on Amazon EKS and SageMaker HyperPod EKS | AWS / NVIDIA / Nemotron / Amazon EKS / マルチモーダルAI / SageMaker HyperPod / 生成AI / 生成AI / LLM / AWS / NVIDIA / Kubernetes",
    "urls": [
     "https://aws.amazon.com/blogs/machine-learning/accelerate-agentic-ai-with-nvidia-nemotron-models-on-amazon-eks-and-sagemaker-hyperpod-eks/"
-   ]
-  },
-  {
-   "slug": "riken-gibberellin-root-growth-2026",
-   "at": "2026-10-29T17:44:56.271851+00:00",
-   "title": "理化学研究所など、植物ホルモンが根の成長を操る仕組みを解明",
-   "head": "理化学研究所など、植物ホルモンが根の成長を操る仕組みを解明 | 植物ホルモンが「働く場所」を操る",
-   "text": "理化学研究所など、植物ホルモンが根の成長を操る仕組みを解明 | 植物ホルモンが「働く場所」を操る | ジベレリン / 植物ホルモン / 理化学研究所 / 埼玉大学 / 根の成長 / シロイヌナズナ / 合成GA / GA受容体 / 科学 / 生物 / 植物 / 研究成果",
-   "urls": [
-    "https://www.riken.jp/press/2026/20261029_2/index.html"
    ]
   }
  ]
