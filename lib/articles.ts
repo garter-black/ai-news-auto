@@ -131,6 +131,8 @@ export type ArticleDerived = {
   hasEasy: boolean;
   /** 「日本で使える？無料？料金・使い方」の見出しがあるか（検索に出す条件） */
   hasJapanValue: boolean;
+  /** 同じ発表の重複記事のうち代表でない（索引を作るときに付く。記事ページ単体では付かない） */
+  duplicate?: boolean;
   /** 「かんたん」版の「ひとことで言うと」段落（無ければ空。表示側でリード文に戻す） */
   easyGist: string;
   /** まとめ記事が統合した本数 */

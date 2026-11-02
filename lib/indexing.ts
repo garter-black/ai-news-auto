@@ -1,4 +1,4 @@
-import { getAllArticles, type ArticleSummary } from "@/lib/articles";
+import type { ArticleSummary } from "@/lib/articles";
 
 /**
  * Google に見せる記事を選ぶ（サイトでは全記事を読める。noindex でも一覧・内部リンクには残す）。
@@ -28,29 +28,6 @@ function isFocus(article: ArticleSummary): boolean {
   return AI_TOPIC.test(`${article.title} ${(article.tags ?? []).join(" ")}`);
 }
 
-/** 重複の判定に使う題名（記号・空白を除く） */
-function titleKey(title: string): string {
-  return title.replace(/[\s「」『』【】()（）・、。！？!?:：|｜\-—〜~"'“”]/g, "").toLowerCase();
-}
-
-let duplicates: Set<string> | null = null;
-/** 代表でない重複記事の slug（本文の長い方を代表、同じなら先に載った方） */
-export function duplicateSlugs(): Set<string> {
-  if (duplicates) return duplicates;
-  const keep = new Set<string>();
-  const out = new Set<string>();
-  const ordered = getAllArticles()
-    .filter((a) => a.type !== "roundup")
-    .sort((a, b) => b.bodyLength - a.bodyLength || (a.generatedAt < b.generatedAt ? -1 : 1));
-  for (const a of ordered) {
-    const keys = [`t:${titleKey(a.title)}`, ...(a.sourceUrl ? [`u:${a.sourceUrl}`] : [])];
-    if (keys.some((k) => keep.has(k))) out.add(a.slug);
-    else for (const k of keys) keep.add(k);
-  }
-  duplicates = out;
-  return out;
-}
-
 /** 検索に出さない理由（出すなら null）。判定の説明・集計に使う */
 export function noindexReason(article: ArticleSummary): string | null {
   if (typeof article.indexable === "boolean") return article.indexable ? null : "manual";
@@ -59,7 +36,8 @@ export function noindexReason(article: ArticleSummary): string | null {
   if (article.bodyLength < THIN_BODY) return "thin";
   if (!isFocus(article)) return "off-focus";
   if (!article.verdict && !article.hasJapanValue) return "no-japan-value";
-  if (duplicateSlugs().has(article.slug)) return "duplicate";
+  // 重複の印は索引を作るときに付ける（lib/article-index.mjs の markDuplicates）
+  if (article.duplicate) return "duplicate";
   return null;
 }
 

@@ -39,6 +39,7 @@ import {
   formatDateTime,
   getAllArticles,
   getArticle,
+  getArticleSummary,
   getNextReads,
   getRelatedArticles,
   isVideo,
@@ -87,7 +88,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     keywords: article.keywords,
     alternates: { canonical: url },
     // 薄くなりやすい記事はサイトでは読めるが、検索には出さない（lib/indexing.ts）
-    ...(isIndexable(article) ? {} : { robots: { index: false, follow: true } }),
+    ...(isIndexable({ ...article, duplicate: getArticleSummary(article.slug)?.duplicate }) ? {} : { robots: { index: false, follow: true } }),
     openGraph: {
       type: "article",
       url,
