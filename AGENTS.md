@@ -193,6 +193,8 @@
 
 - Claude の使いどころ（2026-11-03 オーナー決定）: Claude（API のクレジットも CLI のサブスクリプションも）は**速報・SNS に出しそうな記事・動画の台本だけ**。順番は Claude API → Claude CLI → 無料モデル。ほかの記事・品質チェック・画像などは無料モデルだけ。呼び出しは `llm.generate_json(..., visibility="high", purpose="breaking"|"sns"|"video"|"video_review")`。API は月 $95（補充日 毎月4日で区切る）・1日の目安・purpose ごとの回数上限を `state/claude_api_usage*.json` で守り、クレジット切れは次の補充日まで自動で使わない。仕組みは `scripts/llm.py` の冒頭。
 
+- 記事の「すぐできること」（2026-11-03 の比較調査 `out/記事の比較調査_2026-11-03.md` の6章）: 日本での提供の表 `content/japan_availability.json`（人が確かめて更新。出典と確認日つき。確かめられないものは unknown）を `scripts/japan_availability.py` が生成・事実確認・判定に使う（一般提供中の製品だけ unknown を直す）。料金・使い方ガイドへの固定リンクは `lib/guide-links.ts`。判定カードはジャンル別（`lib/verdict.ts` の `verdictKind`）。FAQ・今日やることは合うジャンルだけ。サイソクが自分で試したように読める書き方（「筆者」など）と、題名の約束に本文が答えていない記事は品質ゲートで落とす。公開済みの記事の機械的な手直しは `python3 scripts/article_quickfix.py [--apply]`。
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know
