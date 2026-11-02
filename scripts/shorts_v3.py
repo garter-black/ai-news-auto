@@ -553,12 +553,13 @@ SCRIPT_SCHEMA = {
             "required": ["beat", "unit", "subject", "rows"],
         },
         "conclusion": {"type": "OBJECT", "properties": {"text": {"type": "STRING"}, "speech": {"type": "STRING"}}, "required": ["text", "speech"]},
+        "short_beats": {"type": "ARRAY", "items": {"type": "INTEGER"}},
         "title": {"type": "STRING"},
         "summary": {"type": "STRING"},
         "hashtags": {"type": "ARRAY", "items": {"type": "STRING"}},
     },
-    "propertyOrdering": ["hook", "beats", "compare", "ladder", "units", "conclusion", "title", "summary", "hashtags"],
-    "required": ["hook", "beats", "compare", "ladder", "units", "conclusion", "title", "summary", "hashtags"],
+    "propertyOrdering": ["hook", "beats", "compare", "ladder", "units", "conclusion", "short_beats", "title", "summary", "hashtags"],
+    "required": ["hook", "beats", "compare", "ladder", "units", "conclusion", "short_beats", "title", "summary", "hashtags"],
 }
 
 
@@ -628,6 +629,8 @@ hook の問いに、**具体的な数字と比較で答える**。忙しい会�
   rows は2〜4行で name と count（公式の倍率の数字どおり。例: Pro 1・Max 5・Ultra 10。12まで）。公式に倍率が無ければ使わない。
 - compare: 2つを倍率で比べる事実があり、ladder を使わないときだけ。beat はその beat の番号、base は基準（例: Pro）、subject は相手（例: Ultra）、
   ratio は資料の表記どおりの倍率（例: 10倍）。無ければ beat=0、他は空文字。
+- short_beats: SNS 用の短い版（30〜40秒）に使う beat の番号を2つ（例: [1, 2]）。1つめは「答え」、2つめは「並べて初めて分かる違い」を言う beat。
+  短い版は hook → この2つ → 「◯◯は記事で」で終わるので、この2つだけで問いへの本当の答えが伝わる beat を選ぶ。
 - conclusion: 最後の一言。text は16字以内で hook の問いに答える。speech は14〜30字。
 - title: 40字以内・主役の名前を入れて事実をそのまま。summary: 説明欄の要約。「要約すると、」で始めて80〜140字。hashtags: 3〜4個（#付き）。
 
@@ -1042,6 +1045,67 @@ def speech_for_tts(text: str) -> str:
     return out
 
 
+SHORT_RANGE = (20.0, 45.0)  # SNS 用の短い版（30〜40秒が目安）
+
+
+def length_targets(script: dict) -> tuple[float, float, tuple[float, float]]:
+    """(読み直しの下限, 上限, ゲートの範囲)。短い版・承認済みの台本・ふだんで変える"""
+    if script.get("_variant") == "short":
+        return 24.0, 42.0, SHORT_RANGE
+    if script.get("_approved"):
+        return TARGET_MIN, 108.0, APPROVED_RANGE
+    return TARGET_MIN, TARGET_MAX, LENGTH_RANGE
+
+
+def short_script(script: dict) -> dict:
+    """同じ台本から SNS 用の短い版を作る（LLM は呼ばない）: hook → 答え → 並べて初めて分かる違い → 「◯◯は記事で」。
+    beat の番号を持つ ladder・units・flows・compare は新しい番号に付け替える"""
+    beats = script.get("beats") or []
+    n = len(beats)
+    picks = [int(i) for i in (script.get("short_beats") or []) if isinstance(i, (int, float)) and 1 <= int(i) <= n]
+    picks = list(dict.fromkeys(picks))[:2]
+    if len(picks) < 2:  # 台本に無いとき: 答え（1つめ）＋ 比較のグラフの beat（無ければ2つめ）
+        graph = [int((script.get(k) or {}).get("beat") or 0) for k in ("ladder", "compare")] + [int(L.get("beat") or 0) for L in script.get("ladders") or []]
+        second = next((b for b in graph if b and b != 1), 2 if n >= 2 else 0)
+        picks = [b for b in dict.fromkeys([1, second]) if 1 <= b <= n]
+    # 30秒に届かない（読み上げが約145字未満）なら、グラフの場面 → 次の場面の順に1つ足す（短すぎて答えが薄くならないように）
+    def chars(ps: list[int]) -> int:
+        return len((script.get("hook") or {}).get("speech", "")) + sum(len(beats[i - 1].get("speech", "")) for i in ps) + 24
+
+    if chars(picks) < 145 and len(picks) < n:
+        graph = [int((script.get(k) or {}).get("beat") or 0) for k in ("ladder", "compare", "units")] + [int(L.get("beat") or 0) for L in script.get("ladders") or []]
+        extra = [b for b in graph if b and b not in picks] + [b for b in range(1, n + 1) if b not in picks]
+        if extra and chars(picks + [extra[0]]) <= 210:
+            picks.append(extra[0])
+    picks.sort()
+    remap = {old: new for new, old in enumerate(picks, 1)}
+    out = json.loads(json.dumps(script, ensure_ascii=False))
+    out["beats"] = [out["beats"][i - 1] for i in picks]
+
+    def moved(obj: dict) -> dict:
+        obj = dict(obj or {})
+        obj["beat"] = remap.get(int(obj.get("beat") or 0), 0)
+        return obj
+
+    for key in ("ladder", "compare", "units"):
+        if key in out:
+            out[key] = moved(out[key])
+    for key in ("ladders", "flows"):
+        if key in out:
+            out[key] = [moved(x) for x in out[key] if remap.get(int(x.get("beat") or 0))]
+    skipped = [(b.get("label") or "").strip() for i, b in enumerate(beats, 1) if i not in picks and (b.get("label") or "").strip()]
+    skipped = [x for x in skipped if x not in ("答え",)]
+    # 締めの「◯◯は記事で」: 「必要な人」系と「確かめ方」系を優先（無ければ最後の2つ）
+    who = next((x for x in skipped if re.search(r"必要|向いて|使い方|活用|こんな", x)), None)
+    how = next((x for x in skipped if re.search(r"確かめ|試し|始め|今できる|次の一歩", x)), None)
+    tail = [x for x in (who, how) if x] or skipped[-2:]
+    text = f"{'・'.join(tail)}は記事で" if tail and len("・".join(tail)) <= 12 else "詳しくは記事で"
+    speech = f"{'や'.join(tail)}は、記事で詳しく解説しています。" if tail and len("・".join(tail)) <= 12 else "詳しくは、記事で解説しています。"
+    out["conclusion"] = {"text": text, "speech": speech}
+    out["_variant"] = "short"
+    return out
+
+
 def make_tts(kind: str, speed: float):
     """v3 の声: VOICEVOX は V3_VOICE（話者・スタイル・高さ・抑揚）。それ以外は v2 と同じ"""
     if kind == "voicevox" or (kind == "auto" and shorts.VoiceVox.available()):
@@ -1079,13 +1143,14 @@ def narrate(script: dict, tts_kind: str, work: Path) -> Narration:
         # 長さが外れたら、声の部分の長さから必要な速さを1回で計算して読み直す（何度も合成すると遅い）
         voiced = sum(len(c) for c in clips) / SR
         fixed = total - voiced
-        if total < TARGET_MIN and speed > base_speed - 0.08:
-            speed = max(base_speed - 0.08, speed * voiced / max(TARGET_MIN + 0.6 - fixed, 1.0))
+        t_min, t_max, _ = length_targets(script)
+        if total < t_min and speed > base_speed - 0.08:
+            speed = max(base_speed - 0.08, speed * voiced / max(t_min + 0.6 - fixed, 1.0))
             log(f"   [v3] {total:.1f}秒で短い → 速さ {speed:.2f} で読み直し")
             continue
-        if total <= (TARGET_MAX if not script.get("_approved") else 108.0) or speed >= base_speed + 0.1:
+        if total <= t_max or speed >= base_speed + 0.1:
             break
-        speed = min(base_speed + 0.1, speed * voiced / max(TARGET_MAX - 0.6 - fixed, 1.0))
+        speed = min(base_speed + 0.1, speed * voiced / max(t_max - 0.6 - fixed, 1.0))
         log(f"   [v3] {total:.1f}秒で長い → 速さ {speed:.2f} で読み直し")
     samples = np.zeros(int(math.ceil(total * SR)) + 1, dtype=np.float32)
     for line, clip in zip(lines, clips):
@@ -2827,7 +2892,7 @@ def make_video(
     timer = Timer()
     RENDERED.clear()
     out_dir.mkdir(parents=True, exist_ok=True)
-    name = f"{slug}__v3"
+    name = f"{slug}__v3" + ("short" if (script or {}).get("_variant") == "short" else "")
     mp4 = out_dir / f"{name}.mp4"
     report: dict = {"slug": slug, "version": VERSION, "design": "v3", "design_name": "画面で見せる型", "errors": []}
     plan = None
@@ -2896,7 +2961,8 @@ def make_video(
                 "charts": [{"t0": round(c.t0, 3), "t1": round(c.t1, 3), "base": c.base, "subject": c.subject, "ratio": c.ratio} for c in plan.charts],
                 "ladders": [{"t0": round(L.t0, 3), "t1": round(L.t1, 3), "mode": L.mode, "unit": L.unit, "title": L.title, "subject": L.subject, "rows": [{k: r.get(k, "") for k in ("name", "price", "usage", "mult", "count") if k in r} for r in L.rows]} for L in plan.ladders],
                 "official_text": official_text(plan.pages),
-                "length_range": list(APPROVED_RANGE if plan.script.get("_approved") else LENGTH_RANGE),
+                "length_range": list(length_targets(plan.script)[2]),
+                "variant": plan.script.get("_variant", "full"),
                 "panel": list(PANEL),
                 "targets": [{"page": t.page + 1, "block": t.block.id, "text": t.text, "block_text": t.block.text[:160]} if t else None for t in plan.targets],
                 **make_meta(a, plan.script, plan.narr.voice, plan.pages),
@@ -2921,6 +2987,25 @@ def make_video(
     return report
 
 
+def make_versions(slug: str, out_dir: Path, tts: str = "voicevox", reuse: bool = False, extra_pages: list[str] | None = None, **kw) -> dict:
+    """同じ台本から2本: サイト用（全部）と SNS 用（短い版）。ページの撮影と台本は1回だけ。
+    戻り値 {"full": report, "short": report}。どちらも例外は投げず report に残す"""
+    a = shorts.load_article(slug)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        pages = capture_pages(page_urls(a, extra_pages))
+        script = latin_names(load_script(slug, a, pages, out_dir, reuse)) if pages else None
+    except Exception as error:  # noqa: BLE001
+        log(f"[v3] {slug}: 台本を作れない {type(error).__name__}: {error}")
+        pages, script = None, None
+    if not pages or not script:
+        empty = {"slug": slug, "errors": ["公式ページか台本が無い"], "gate": {"ok": False, "reasons": ["公式ページか台本が無い"]}}
+        return {"full": empty, "short": empty}
+    full = make_video(slug, out_dir, tts, profile=kw.get("profile"), article=a, pages=pages, script=json.loads(json.dumps(script, ensure_ascii=False)))
+    short = make_video(slug, out_dir, tts, profile=kw.get("profile"), article=a, pages=pages, script=short_script(script))
+    return {"full": full, "short": short}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="SNS 用ショート動画 v3（画面で見せる型）")
     parser.add_argument("slugs", nargs="+")
@@ -2930,13 +3015,19 @@ def main() -> None:
     parser.add_argument("--profile", choices=list(gate.PROFILES))
     parser.add_argument("--no-bgm", action="store_true")
     parser.add_argument("--pages", nargs="*", default=[], help="足して撮る公式ページ（他社の料金表など）")
+    parser.add_argument("--short", action="store_true", help="同じ台本から SNS 用の短い版を作る（--reuse-script と一緒に）")
     args = parser.parse_args()
     import llm
 
     llm._load_env_local()
     failed = 0
     for slug in args.slugs:
-        r = make_video(slug, Path(args.out), args.tts, args.reuse_script, args.profile, bgm=not args.no_bgm, extra_pages=args.pages)
+        if args.short:
+            path = Path(args.out) / f"{slug}.v3script.json"
+            base = latin_names(json.loads(path.read_text("utf-8")))
+            r = make_video(slug, Path(args.out), args.tts, False, args.profile, bgm=not args.no_bgm, extra_pages=args.pages, script=short_script(base))
+        else:
+            r = make_video(slug, Path(args.out), args.tts, args.reuse_script, args.profile, bgm=not args.no_bgm, extra_pages=args.pages)
         failed += 0 if r["gate"]["ok"] else 1
     sys.exit(1 if failed else 0)
 

@@ -10,6 +10,7 @@
 import { default as handler } from "../.open-next/worker.js";
 import { flushHeld, handlePush, type PushEnv } from "./push";
 import { handleAff, type AffEnv } from "./aff";
+import { countVideoVisit, serveVideo } from "./video";
 // @ts-ignore ビルド時に生成される（scripts/cf_content.mjs。JS・CSS のファイル名の組のハッシュ）
 import codeInfo from "../.open-next/saisoku-code.json";
 
@@ -167,51 +168,6 @@ async function serveImage(request: Request, url: URL, env: Env, ctx: Ctx): Promi
   return request.method === "HEAD" ? new Response(null, { headers: response.headers }) : response;
 }
 
-const VIDEO_NAME = /^\/video\/([A-Za-z0-9][A-Za-z0-9_-]{0,160}\.mp4)$/;
-
-/**
- * SNS 用の解説動画（scripts/sns_video_followup.py が Workers KV の saisoku-images に「video/<slug>-<hash>.mp4」で置く。1本 25MiB 未満）。
- * 名前に中身のハッシュが入っていて変わらないので1年使い回す。エッジには全体（200）を置き、
- * Range（bytes=a-b）の要求にはそこから切り出して 206 で返す（動画プレーヤーや SNS の取り込みが Range を使うため）
- */
-async function serveVideo(request: Request, url: URL, env: Env, ctx: Ctx): Promise<Response> {
-  const match = VIDEO_NAME.exec(url.pathname);
-  if (!match || (request.method !== "GET" && request.method !== "HEAD")) return new Response("Not Found", { status: 404 });
-  const edge = (caches as unknown as { default: Cache }).default;
-  const key = new Request(`${url.origin}${url.pathname}`, { method: "GET" });
-  let full = await edge.match(key);
-  if (!full) {
-    const kv = env.IMAGES_KV as KvNamespace | undefined;
-    const body = kv ? await kv.get(`video/${match[1]}`, "arrayBuffer") : null;
-    if (!body) return new Response("Not Found", { status: 404, headers: { "Cache-Control": "public, max-age=60" } });
-    full = new Response(body, {
-      headers: {
-        "Content-Type": "video/mp4",
-        "Content-Length": String(body.byteLength),
-        "Accept-Ranges": "bytes",
-        "Cache-Control": "public, max-age=31536000, immutable",
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
-    ctx.waitUntil(edge.put(key, full.clone()));
-  }
-  const headers = new Headers(full.headers);
-  const range = /^bytes=(\d*)-(\d*)$/.exec(request.headers.get("Range") || "");
-  if (!range || (range[1] === "" && range[2] === "")) {
-    return request.method === "HEAD" ? new Response(null, { headers }) : new Response(full.body, { headers });
-  }
-  const buf = await full.arrayBuffer();
-  const size = buf.byteLength;
-  const start = range[1] === "" ? Math.max(0, size - Number(range[2])) : Number(range[1]);
-  const end = range[1] === "" || range[2] === "" ? size - 1 : Math.min(Number(range[2]), size - 1);
-  if (start >= size || start > end) {
-    return new Response(null, { status: 416, headers: { "Content-Range": `bytes */${size}`, "Accept-Ranges": "bytes" } });
-  }
-  headers.set("Content-Range", `bytes ${start}-${end}/${size}`);
-  headers.set("Content-Length", String(end - start + 1));
-  return new Response(request.method === "HEAD" ? null : buf.slice(start, end + 1), { status: 206, headers });
-}
-
 /** 記事 JSON などを先読みしてから OpenNext（Next）で描く */
 async function render(request: Request, url: URL, env: Env, ctx: Ctx): Promise<Response> {
   // 静的ファイルは OpenNext/アセットに任せる（先読み不要）
@@ -244,6 +200,8 @@ export default {
     if (url.pathname.startsWith("/api/push/")) return handlePush(request, url, env as unknown as PushEnv, ctx);
     // 提携リンクのクリックの自前集計（cloudflare/aff.ts）
     if (url.pathname.startsWith("/api/aff/")) return handleAff(request, url, env as unknown as AffEnv, ctx);
+
+    countVideoVisit(request, url, env, ctx);
 
     const cacheKey = edgeCacheKey(request, url, env);
     const edge = cacheKey ? (caches as unknown as { default: Cache }).default : null;

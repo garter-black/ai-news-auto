@@ -65,6 +65,17 @@ export type ImageCredit = {
   model?: string;
 };
 
+export type ArticleVideoInfo = {
+  /** /video/<名前>.mp4（cloudflare/video.ts が KV から Range つきで配信） */
+  src: string;
+  /** /video/<名前>.jpg（つかみの画面） */
+  poster?: string;
+  seconds?: number;
+  title?: string;
+  /** 声のクレジット（例 VOICEVOX:九州そら） */
+  credit?: string;
+};
+
 export type Article = {
   slug: string;
   /** "roundup" は複数記事を統合した横断まとめ。省略時は通常記事 */
@@ -132,6 +143,8 @@ export type Article = {
   updates?: ArticleUpdate[];
   /** 「これまでの流れ」で文脈に使った過去記事の slug */
   relatedSlugs?: string[];
+  /** 解説動画（サイト用の全部の版）。scripts/sns_video_followup.py が書く。components/ArticleVideo.tsx が押したときだけ読み込む */
+  video?: ArticleVideoInfo | null;
   thumbnail: string;
   /** 写真の出典。stock・ai のときは記事ページに「写真はイメージです」とクレジットを出す */
   imageCredit?: ImageCredit;

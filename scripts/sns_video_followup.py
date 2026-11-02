@@ -1,29 +1,40 @@
 #!/usr/bin/env python3
-"""SNS（Threads）に投稿した記事だけ、長めの解説動画（v3）を作り、あとから「動画で解説」の投稿として出す。
+"""SNS（Threads）に投稿した記事の解説動画を作り、あとから「動画で解説」の投稿として出す。記事ページにも動画を載せる。
 
-2026-11-03 オーナー決定: 「当面は SNS に投稿する記事だけ動画を作る」「まず Threads に1日2本」。
+2026-11-03 オーナー決定
+  - SNS に投稿した記事は**全部**動画にする（今は Threads 1日約9枠）。それ以外の記事は収益が伸びてから。
+  - 同じ台本から2本を自動で作る: サイト用（全部・80〜100秒）と SNS 用（短い版・30〜40秒。問い → 答え → 並べて初めて分かる違い
+    →「◯◯は記事で」）。短い版も本当の答えを言う（中身の無い引きにしない）。2本目のために LLM は呼ばない（shorts_v3.short_script）。
+  - 1週間の A/B: **同じ日の中で投稿ごとに**短い版と全部の版を交互に出す。版を記録し、記事のリンクに
+    utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=short|full を付ける（worker が記事への訪問を版ごとに数える）。
+  - 記事のリンクは投稿の本文に入れる（返信は作らない。threads_post.py と同じ決まり）。
+  - 記事ページにはサイト用を載せる（components/ArticleVideo.tsx。押したときだけ読み込む・ポスター画像・音つき自動再生なし）。
+
 **既定ではすべて止まっている（フラグ）。** 投稿を有効にするのはオーナーの確認のあと。
 
-  python3 scripts/sns_video_followup.py --plan        # 対象の記事と、今日あと何本作れるかを表示するだけ（何も作らない）
+  python3 scripts/sns_video_followup.py --plan        # 対象の記事と、今日あと何本作れるかを表示するだけ
   python3 scripts/sns_video_followup.py               # フラグに従って 作る → 置く → 出す（既定は何もしない）
+  python3 scripts/sns_video_followup.py --ab-report   # 短い版と全部の版の比べ（投稿ごとの平均: 記事への訪問・いいね・返信・再投稿・表示）
+  python3 scripts/sns_video_followup.py --draft-test REPORT VIDEO_URL [--yes]   # Buffer に下書きを1本（--yes が無ければ表示だけ）
 
 フラグ（環境変数。GitHub では Actions の Variables）
-  SNS_VIDEO_FOLLOWUP=on    動画を作る（台本 → 声 → 描画 → 品質ゲート）。off なら何もしない
-  SNS_VIDEO_UPLOAD=on      ゲートに合格した動画を公開 URL に置く（既定は Workers KV の saisoku-images →
-                           https://ai-tech-express.jp/video/<slug>-<hash>.mp4。cloudflare/worker.ts が Range つきで配信。新しい鍵は不要）
-  SNS_VIDEO_POST=live      Buffer で Threads に出す。それ以外は投稿文の下書きを表示・記録するだけ
-  SNS_VIDEO_DAILY_MAX=2    1日（日本時間）に出す本数の上限
+  SNS_VIDEO_FOLLOWUP=on    動画を作る（台本 → 声 → 2本の描画 → 品質ゲート）。off なら何もしない
+  SNS_VIDEO_UPLOAD=on      合格した動画とポスター画像を Workers KV（saisoku-images）に置く → https://ai-tech-express.jp/video/<名前>
+                           （cloudflare/video.ts が Range つきで配信。書き込みは images.kv_put と同じデプロイ用トークン。新しい鍵は不要）
+  SNS_VIDEO_EMBED=on       記事 JSON に video（サイト用の URL・ポスター・秒数）を書く → 次のデプロイで記事ページに出る
+  SNS_VIDEO_POST=live      Buffer で Threads に出す。それ以外は投稿文を記録するだけ
+  SNS_VIDEO_DAILY_MAX=12   1日（日本時間）に作る本数の上限（SNS の投稿の数より多めに）
+  SNS_VIDEO_PER_RUN=3      1回の実行で作る本数（1本 約5分）
   SNS_VIDEO_WINDOW_H=12    Threads に投稿してから何時間以内の記事を対象にするか
-  SNS_VIDEO_STORE=kv       置き場所（kv＝既定 / r2）。r2 のときは SNS_VIDEO_R2_BUCKET・SNS_VIDEO_PUBLIC_BASE と R2 の権限が要る
+  SNS_VIDEO_AB_UNTIL=YYYY-MM-DD   この日（日本時間）まで短い版と全部の版を交互に出す。過ぎたら SNS_VIDEO_AFTER_AB（既定 short）
+  SNS_VIDEO_STORE=kv       置き場所（kv＝既定 / r2。r2 は SNS_VIDEO_R2_BUCKET・SNS_VIDEO_PUBLIC_BASE と R2 の権限が要る）
 
-流れと約束（scripts/sns_video.py の約束を引き継ぐ）
-  1. 文面の投稿は今までどおり先に出る（threads_post.py。このスクリプトは文面の投稿に一切さわらない）。
-  2. 対象: state/threads_posted.json に載った記事のうち、投稿から SNS_VIDEO_WINDOW_H 時間以内・まだ動画を作っていない・
-     公式ページを撮れる記事（v3 の対象）。点数（threads_post.score）の高い順に、1日 SNS_VIDEO_DAILY_MAX 本まで。
-  3. 台本は Claude API（ANTHROPIC_API_KEY があるとき。台本 Opus・レビュー Sonnet）→ Claude CLI → 無料モデル（scripts/llm.py）。
-  4. 品質ゲートに落ちた・時間切れ・置けなかった → その記事は「動画なし」（何も出さない・再挑戦しない）。
-  5. Buffer は既に出た投稿への返信を作れないので、動画は**別の投稿**として出す（本文＋動画、返信に記事のリンクとクレジット）。
-  6. Buffer にはっきり断られたら記録して終わり。受理されたか分からない失敗（時間切れ・通信断）は二重投稿を避けるため再送しない。
+約束（scripts/sns_video.py の約束を引き継ぐ）
+  1. 文面の投稿は今までどおり先に出る（threads_post.py。このスクリプトは文面の投稿にさわらない）。
+  2. 台本は Claude API（purpose=video。予算の範囲）→ Claude CLI → 無料モデル。どの経路でも事実の検査と編集長のレビューは同じに通す。
+  3. 品質ゲートに落ちた・時間切れ・置けなかった → その版は出さない・再挑戦しない（記録は state/sns_video.json）。
+  4. Buffer は出た投稿への返信を作れないので、動画は**別の投稿**として出す（本文＋動画。本文の最後に記事のリンク）。
+  5. Buffer にはっきり断られても、受理されたか分からない失敗でも、二重投稿を避けるため再送しない。
 """
 
 from __future__ import annotations
@@ -33,7 +44,7 @@ import json
 import os
 import subprocess
 import sys
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -41,9 +52,13 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 STATE = ROOT / "state" / "sns_video.json"
 POSTED = ROOT / "state" / "threads_posted.json"
+ARTICLES = ROOT / "content" / "articles"
 OUT = ROOT / "out" / "sns_video_followup"
+SITE = "https://ai-tech-express.jp"
 JST = timezone(timedelta(hours=9))
 MAX_CHARS = 480
+KV_LIMIT = 25 * 1024 * 1024  # Workers KV の1つの値の上限
+CAMPAIGN = "sns_video"
 
 
 def log(msg: str) -> None:
@@ -55,9 +70,13 @@ def flags(env: dict | None = None) -> dict:
     return {
         "followup": env.get("SNS_VIDEO_FOLLOWUP", "off") == "on",
         "upload": env.get("SNS_VIDEO_UPLOAD", "off") == "on",
+        "embed": env.get("SNS_VIDEO_EMBED", "off") == "on",
         "post": env.get("SNS_VIDEO_POST", "off") == "live",
-        "daily_max": int(env.get("SNS_VIDEO_DAILY_MAX", "2") or 2),
+        "daily_max": int(env.get("SNS_VIDEO_DAILY_MAX", "12") or 12),
+        "per_run": int(env.get("SNS_VIDEO_PER_RUN", "3") or 3),
         "window_h": float(env.get("SNS_VIDEO_WINDOW_H", "12") or 12),
+        "ab_until": env.get("SNS_VIDEO_AB_UNTIL", ""),
+        "after_ab": env.get("SNS_VIDEO_AFTER_AB", "short") or "short",
         "store": env.get("SNS_VIDEO_STORE", "kv") or "kv",
         "bucket": env.get("SNS_VIDEO_R2_BUCKET", ""),
         "public_base": env.get("SNS_VIDEO_PUBLIC_BASE", "").rstrip("/"),
@@ -83,19 +102,30 @@ def _parse(ts: str) -> datetime | None:
         return None
 
 
+def _today(rec: dict, now: datetime) -> bool:
+    at = _parse(rec.get("at", ""))
+    return bool(at and at.astimezone(JST).date() == now.astimezone(JST).date())
+
+
 def used_today(state: dict, now: datetime) -> int:
-    """今日（日本時間）に出した（または出す予定で作った）本数。ゲート不合格・失敗は数えない"""
-    today = now.astimezone(JST).date()
-    n = 0
-    for rec in (state.get("videos") or {}).values():
-        at = _parse(rec.get("at", ""))
-        if at and at.astimezone(JST).date() == today and rec.get("status") in ("posted", "dry_run", "uploaded"):
-            n += 1
-    return n
+    """今日（日本時間）に作った本数（ゲート不合格・失敗も、作る手間がかかったので数える。途中で止まったものは数えない）"""
+    return sum(1 for rec in (state.get("videos") or {}).values() if _today(rec, now) and rec.get("status") != "started")
+
+
+def pick_variant(state: dict, now: datetime, ab_until: str, after_ab: str = "short") -> str:
+    """SNS に出す版。A/B の間は、**同じ日の中で投稿ごとに**短い版 → 全部の版 → 短い版…と交互（その日に出した数で決める）"""
+    try:
+        until = date.fromisoformat(ab_until) if ab_until else None
+    except ValueError:
+        until = None
+    if until is not None and now.astimezone(JST).date() > until:
+        return after_ab if after_ab in ("short", "full") else "short"
+    shown = sum(1 for rec in (state.get("videos") or {}).values() if _today(rec, now) and rec.get("variant") and rec.get("status") in ("posted", "dry_run", "uploaded"))
+    return "short" if shown % 2 == 0 else "full"
 
 
 def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_article=None, eligible=None, score=None) -> list[str]:
-    """Threads に投稿済み・窓の中・まだ動画を作っていない・v3 の対象の記事を、点数の高い順に"""
+    """Threads に投稿済み・窓の中・まだ動画を作っていない・v3 の対象の記事を、Threads の点数の高い順に"""
     import shorts
     import shorts_v3 as v3
     import threads_post
@@ -120,65 +150,60 @@ def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_a
     return [slug for _, _, slug in rows]
 
 
-def compose_post(report: dict) -> tuple[str, str]:
-    """動画の投稿文（本文・返信）。本文: 問い＋「動画で◯秒にまとめました」＋要約。返信: 記事のリンクとクレジット"""
+def article_link(report: dict, variant: str) -> str:
+    """記事のリンク（Threads の UTM ＋ 版）。threads_post.utm_link と同じ形"""
+    import threads_post
+
+    return threads_post.utm_link(report.get("url", ""), "threads", CAMPAIGN, variant)
+
+
+def compose_post(report: dict, variant: str = "short") -> str:
+    """動画の投稿文: 問い＋「◯秒で解説」＋要約。本文の最後に記事のリンクと音声のクレジット（返信は作らない）"""
     sv3 = report.get("script_v3") or {}
     hook = ((sv3.get("hook") or {}).get("text") or report.get("title") or "").strip()
     seconds = int(round(float(report.get("total") or 0)))
     summary = (sv3.get("summary") or "").strip()
     head = f"{hook}\n公式ページの画面を見ながら、{seconds}秒で解説しました。"
-    body = f"{head}\n\n{summary}" if summary else head
-    if len(body) > MAX_CHARS:
-        body = body[: MAX_CHARS - 1] + "…"
-    lines = ["▼記事はこちら", report.get("url", "")]
     voice = (report.get("voice") or {}).get("credit")
-    if voice:
-        lines.append(f"音声：{voice}")
-    hosts = "・".join(dict.fromkeys(p.get("host", "") for p in report.get("pages") or [] if p.get("host")))
-    if hosts:
-        lines.append(f"画面：{hosts}（公式ページ）")
-    lines.append("BGM・効果音：サイソクニュース自作")
-    return body, "\n".join(x for x in lines if x)
+    tail = f"\n\n詳しくはこちら👇\n{article_link(report, variant)}" + (f"\n音声：{voice}" if voice else "")
+    room = MAX_CHARS - len(head) - len(tail) - 2
+    if summary and room > 20:
+        body = f"{head}\n\n{summary if len(summary) <= room else summary[: room - 1] + '…'}"
+    else:
+        body = head
+    return body + tail
 
 
-def buffer_input(channel_id: str, body: str, reply: str, video_url: str, link: str, title: str, topic: str = "") -> dict:
-    """Buffer の createPost の入力（本文＋動画、返信にリンクカード）。いますぐ出す"""
-    thread = [
-        {"text": body, "assets": [{"video": {"url": video_url}}]},
-        {"text": reply, "assets": [], "metadata": {"threads": {"linkAttachment": {"url": link, "title": title}}}},
-    ]
-    meta = {"thread": thread}
+def buffer_input(channel_id: str, body: str, video_url: str, topic: str = "") -> dict:
+    """Buffer の createPost の入力（本文＋動画。いますぐ出す。返信は作らない）"""
+    meta: dict = {"thread": [{"text": body, "assets": [{"video": {"url": video_url}}]}]}
     if topic:
         meta["topic"] = topic
     return {"channelId": channel_id, "text": body, "schedulingType": "automatic", "mode": "shareNow", "assets": [], "metadata": {"threads": meta}}
 
 
-KV_LIMIT = 25 * 1024 * 1024  # Workers KV の1つの値の上限
-
-
-def video_name(slug: str, data: bytes) -> str:
+def video_name(slug: str, data: bytes, ext: str = "mp4") -> str:
     """配信の名前（中身のハッシュ入り＝変わらないので1年キャッシュできる）"""
     import hashlib
 
     safe = "".join(c if c.isalnum() or c in "-_" else "-" for c in slug)[:120]
-    return f"{safe}-{hashlib.sha256(data).hexdigest()[:10]}.mp4"
+    return f"{safe}-{hashlib.sha256(data).hexdigest()[:10]}.{ext}"
 
 
-def upload_kv(mp4: Path, slug: str, site: str = "https://ai-tech-express.jp") -> str:
-    """Workers KV（saisoku-images）に video/<名前> で置き、サイトの /video/<名前> の URL を返す。
-    書き込みは scripts/images.py の kv_put と同じ（CF_KV_TOKEN＝デプロイ用のトークン。新しい鍵は不要）"""
+def upload_kv(path: Path, slug: str, ext: str = "mp4") -> str:
+    """Workers KV（saisoku-images）に video/<名前> で置き、サイトの /video/<名前> の URL を返す"""
     import images
 
-    data = mp4.read_bytes()
+    data = path.read_bytes()
     if len(data) >= KV_LIMIT:
-        raise RuntimeError(f"動画が KV の上限より大きい（{len(data) / 1e6:.1f}MB）")
-    name = video_name(slug, data)
+        raise RuntimeError(f"KV の上限より大きい（{len(data) / 1e6:.1f}MB）")
+    name = video_name(slug, data, ext)
     images.kv_put(f"video/{name}", data)
-    return f"{site.rstrip('/')}/video/{name}"
+    return f"{SITE}/video/{name}"
 
 
 def upload_r2(mp4: Path, bucket: str, public_base: str, key: str) -> str:
-    """Cloudflare R2 に置いて公開 URL を返す（wrangler。CLOUDFLARE_API_TOKEN に R2 の書き込み権限が要る）"""
+    """（予備）Cloudflare R2 に置いて公開 URL を返す（wrangler。CLOUDFLARE_API_TOKEN に R2 の書き込み権限が要る）"""
     if not bucket or not public_base:
         raise RuntimeError("SNS_VIDEO_R2_BUCKET / SNS_VIDEO_PUBLIC_BASE が未設定")
     cmd = ["npx", "--yes", "wrangler", "r2", "object", "put", f"{bucket}/{key}", "--file", str(mp4), "--content-type", "video/mp4", "--remote"]
@@ -188,82 +213,171 @@ def upload_r2(mp4: Path, bucket: str, public_base: str, key: str) -> str:
     return f"{public_base}/{key}"
 
 
-def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = False) -> list[dict]:
+def poster_of(mp4: Path, at: float = 0.6) -> Path:
+    """記事ページのポスター画像（つかみの問いが出ている所。1280x720 の JPEG）"""
+    import shorts
+
+    out = mp4.with_suffix(".poster.jpg")
+    subprocess.run([shorts.ffmpeg_bin(), "-y", "-loglevel", "error", "-ss", f"{at}", "-i", str(mp4), "-frames:v", "1", "-vf", "scale=1280:720:flags=area", "-q:v", "3", str(out)], check=True)
+    return out
+
+
+def write_embed(slug: str, info: dict) -> None:
+    """記事 JSON に video を書く（components/ArticleVideo.tsx が使う。次のデプロイで記事ページに出る）"""
+    path = ARTICLES / f"{slug}.json"
+    article = json.loads(path.read_text("utf-8"))
+    article["video"] = info
+    path.write_text(json.dumps(article, ensure_ascii=False, indent=2) + "\n", "utf-8")
+
+
+def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = False, make_versions=None) -> list[dict]:
     f = flags(env)
     now = now or datetime.now(timezone.utc)
     state = load_json(STATE, {"videos": {}})
     state.setdefault("videos", {})
     posted = load_json(POSTED, {"posted": {}})
-    left = max(0, f["daily_max"] - used_today(state, now))
+    left = max(0, min(f["per_run"], f["daily_max"] - used_today(state, now)))
     picks = candidates(posted, state, now, f["window_h"])[:left] if left else []
-    log(f"[video-followup] フラグ {json.dumps({k: f[k] for k in ('followup', 'upload', 'post', 'daily_max')})}・今日あと{left}本・対象 {picks}")
+    log(f"[video-followup] フラグ {json.dumps({k: f[k] for k in ('followup', 'upload', 'embed', 'post', 'daily_max', 'per_run')})}・この回 {left}本まで・対象 {picks}")
     if plan_only or not f["followup"]:
         if not f["followup"]:
             log("[video-followup] SNS_VIDEO_FOLLOWUP が on ではないので、何も作らない")
         return [{"slug": s, "status": "planned"} for s in picks]
-    import shorts_v3 as v3
-    import threads_post
+    if make_versions is None:
+        import shorts_v3 as v3
 
+        make_versions = v3.make_versions
     results = []
     for slug in picks:
         rec = {"at": now.isoformat(timespec="seconds"), "status": "started"}
         state["videos"][slug] = rec
         save_state(state)  # 途中で落ちても同じ記事を二度作らない
-        report = v3.make_video(slug, OUT)
-        rec.update({"seconds": report.get("total"), "timings": report.get("timings"), "gate": (report.get("gate") or {}).get("ok")})
-        mp4 = OUT / f"{slug}__v3.mp4"
-        if not (report.get("gate") or {}).get("ok") or not mp4.exists():
-            rec.update({"status": "gate_failed", "reasons": (report.get("gate") or {}).get("reasons", [])[:5]})
+        reports = make_versions(slug, OUT)
+        ok = {k: bool((r.get("gate") or {}).get("ok")) and (OUT / f"{slug}__v3{'short' if k == 'short' else ''}.mp4").exists() for k, r in reports.items()}
+        rec["versions"] = {k: {"ok": ok[k], "seconds": r.get("total"), "reasons": (r.get("gate") or {}).get("reasons", [])[:3]} for k, r in reports.items()}
+        rec["timings"] = {k: r.get("timings") for k, r in reports.items()}
+        variant = pick_variant(state, now, f["ab_until"], f["after_ab"])
+        if not ok.get(variant):  # 出す予定の版が落ちたら、もう一方が合格していればそれを出す
+            variant = next((k for k in ("short", "full") if ok.get(k)), "")
+        if not variant:
+            rec["status"] = "gate_failed"
             save_state(state)
             results.append({"slug": slug, **rec})
             continue
-        body, reply = compose_post(report)
-        rec.update({"body": body, "reply": reply})
+        report = reports[variant]
+        rec.update({"variant": variant, "body": compose_post(report, variant), "link": article_link(report, variant)})
         if not f["upload"]:
             rec["status"] = "dry_run"
             save_state(state)
             results.append({"slug": slug, **rec})
             continue
         try:
-            if f["store"] == "r2":
-                url = upload_r2(mp4, f["bucket"], f["public_base"], f"videos/{now.astimezone(JST):%Y%m%d}/{slug}.mp4")
-            else:
-                url = upload_kv(mp4, slug)
-            rec.update({"status": "uploaded", "videoUrl": url})
+            urls = {}
+            for k in ("full", "short"):
+                if ok.get(k):
+                    mp4 = OUT / f"{slug}__v3{'short' if k == 'short' else ''}.mp4"
+                    urls[k] = upload_r2(mp4, f["bucket"], f["public_base"], f"videos/{now.astimezone(JST):%Y%m%d}/{mp4.name}") if f["store"] == "r2" else upload_kv(mp4, slug)
+            if ok.get("full"):
+                urls["poster"] = upload_kv(poster_of(OUT / f"{slug}__v3.mp4"), slug, "jpg")
+            rec.update({"status": "uploaded", "urls": urls})
         except Exception as error:  # noqa: BLE001 - 置けなければ動画なし
             rec.update({"status": "upload_failed", "error": str(error)[:300]})
             save_state(state)
             results.append({"slug": slug, **rec})
             continue
-        if f["post"]:
-            api_key = os.environ.get("BUFFER_API_KEY", "")
+        if f["embed"] and urls.get("full"):
             try:
-                channel = threads_post.buffer_threads_channel(api_key)
-                if not channel:
-                    raise RuntimeError("Buffer に Threads のチャンネルが無い")
-                import shorts
-
-                article = shorts.load_article(slug)
-                link = report.get("url", "")
-                post_id = threads_post.create_post(api_key, buffer_input(channel["id"], body, reply, url, link, report.get("title", ""), threads_post.topic_of(article)))
-                rec.update({"status": "posted", "bufferId": post_id})
-            except RuntimeError as error:
-                # Buffer の MutationError（はっきり断られた）も通信の失敗も、再送はしない（約束6）
-                rec.update({"status": "post_failed", "error": str(error)[:300]})
+                write_embed(slug, {"src": urls["full"], "poster": urls.get("poster", ""), "seconds": round(float(reports["full"].get("total") or 0), 1), "title": reports["full"].get("title", ""), "credit": (reports["full"].get("voice") or {}).get("credit", "")})
+                rec["embedded"] = True
+            except Exception as error:  # noqa: BLE001
+                rec["embedError"] = str(error)[:200]
+        if f["post"]:
+            rec.update(post_video(slug, rec["body"], urls[variant]))
         save_state(state)
         results.append({"slug": slug, **rec})
     return results
 
 
-def draft_test(report_path: Path, video_url: str, yes: bool = False) -> dict:
+def post_video(slug: str, body: str, video_url: str) -> dict:
+    """Buffer で Threads に出す。失敗しても再送しない（約束5）"""
+    import shorts
+    import threads_post
+
+    api_key = os.environ.get("BUFFER_API_KEY", "")
+    try:
+        channel = threads_post.buffer_threads_channel(api_key)
+        if not channel:
+            raise RuntimeError("Buffer に Threads のチャンネルが無い")
+        post_id = threads_post.create_post(api_key, buffer_input(channel["id"], body, video_url, threads_post.topic_of(shorts.load_article(slug))))
+        return {"status": "posted", "bufferId": post_id, "postedAt": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+    except RuntimeError as error:
+        return {"status": "post_failed", "error": str(error)[:300]}
+
+
+def ab_rows(state: dict, metrics: dict, visits: dict) -> dict:
+    """短い版と全部の版の比べ: 投稿ごとの平均（記事への訪問・いいね・返信・再投稿・表示）"""
+    out: dict = {}
+    for slug, rec in (state.get("videos") or {}).items():
+        if rec.get("status") != "posted" or rec.get("variant") not in ("short", "full"):
+            continue
+        m = (metrics.get(rec.get("bufferId", "")) or {}).get("metrics") or {}
+        row = out.setdefault(rec["variant"], {"posts": 0, "visits": 0.0, "likes": 0.0, "replies": 0.0, "reposts": 0.0, "views": 0.0})
+        row["posts"] += 1
+        row["visits"] += visits.get((slug, rec["variant"]), 0)
+        row["likes"] += float(m.get("reactions", m.get("likes", 0)) or 0)
+        row["replies"] += float(m.get("comments", m.get("replies", 0)) or 0)
+        row["reposts"] += float(m.get("reposts", 0) or 0)
+        row["views"] += float(m.get("views", m.get("impressions", 0)) or 0)
+    for row in out.values():
+        for k in ("visits", "likes", "replies", "reposts", "views"):
+            row[k] = round(row[k] / max(row["posts"], 1), 2)
+    return out
+
+
+def fetch_visits() -> dict:
+    """worker が数えた「動画投稿から記事に来た人」（AFF_KV の v:<日付>:<slug>:<版>:...）を (slug, 版) ごとに"""
+    import urllib.parse
+    import urllib.request
+
+    import images
+
+    ns = os.environ.get("AFF_KV_ID") or "5de7984f700648c58d0400adaf75a614"
+    counts: dict = {}
+    cursor = ""
+    while True:
+        url = f"https://api.cloudflare.com/client/v4/accounts/{images.ACCOUNT_ID}/storage/kv/namespaces/{ns}/keys?prefix=v:&limit=1000" + (f"&cursor={urllib.parse.quote(cursor)}" if cursor else "")
+        req = urllib.request.Request(url, headers={"Authorization": f"Bearer {images.cf_token('kv')}"})
+        with urllib.request.urlopen(req, timeout=60) as res:
+            body = json.loads(res.read())
+        for key in body.get("result") or []:
+            parts = key["name"].split(":")
+            if len(parts) >= 5:
+                counts[(parts[2], parts[3])] = counts.get((parts[2], parts[3]), 0) + 1
+        cursor = (body.get("result_info") or {}).get("cursor") or ""
+        if not cursor:
+            return counts
+
+
+def ab_report() -> dict:
+    import threads_learn
+
+    state = load_json(STATE, {"videos": {}})
+    metrics = threads_learn.fetch_metrics(os.environ.get("BUFFER_API_KEY", "")) if os.environ.get("BUFFER_API_KEY") else {}
+    try:
+        visits = fetch_visits()
+    except Exception as error:  # noqa: BLE001
+        log(f"[video-followup] 記事への訪問を読めない: {type(error).__name__}")
+        visits = {}
+    return ab_rows(state, metrics, visits)
+
+
+def draft_test(report_path: Path, video_url: str, yes: bool = False, variant: str = "short") -> dict:
     """Buffer に Threads の動画投稿を**下書き**（saveToDraft・公開しない）で1本作り、Threads で動画が通るかを確かめる。
     yes=False なら Buffer に送る入力を表示するだけ（何も送らない）"""
     import threads_post
 
     report = json.loads(Path(report_path).read_text("utf-8"))
-    body, reply = compose_post(report)
-    inp = buffer_input("<threads のチャンネル>", body, reply, video_url, report.get("url", ""), report.get("title", ""))
-    inp.pop("mode", None)
+    inp = buffer_input("<threads のチャンネル>", compose_post(report, variant), video_url)
     inp.update({"mode": "addToQueue", "saveToDraft": True})
     if not yes:
         log("[video-followup] 下書きのテスト（送らない）。--yes を付けたときだけ Buffer に下書きを作る")
@@ -279,6 +393,7 @@ def draft_test(report_path: Path, video_url: str, yes: bool = False) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description="SNS に投稿した記事の動画を作って後から出す（既定は止まっている）")
     parser.add_argument("--plan", action="store_true", help="対象と残りの本数を表示するだけ")
+    parser.add_argument("--ab-report", action="store_true", help="短い版と全部の版の比べ")
     parser.add_argument("--draft-test", nargs=2, metavar=("REPORT_JSON", "VIDEO_URL"), help="Buffer に Threads の動画の下書きを作るテスト（--yes が無ければ表示だけ）")
     parser.add_argument("--yes", action="store_true", help="--draft-test を本当に送る")
     args = parser.parse_args()
@@ -287,6 +402,9 @@ def main() -> None:
     llm._load_env_local()
     if args.draft_test:
         print(json.dumps(draft_test(Path(args.draft_test[0]), args.draft_test[1], args.yes), ensure_ascii=False, indent=2))
+        return
+    if args.ab_report:
+        print(json.dumps(ab_report(), ensure_ascii=False, indent=2))
         return
     for row in run(plan_only=args.plan):
         print(json.dumps(row, ensure_ascii=False))

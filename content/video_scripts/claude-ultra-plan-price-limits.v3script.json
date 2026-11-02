@@ -1,24 +1,148 @@
 {
- "hook": {"text": "月200ドル、あなたに必要？", "payoff": "月200ドル", "speech": "Claudeの最上位、月200ドル。あなたに必要？", "block": "2-42", "target": "$200", "ja": ""},
+ "hook": {
+  "text": "月200ドル、あなたに必要？",
+  "payoff": "月200ドル",
+  "speech": "Claudeの最上位、月200ドル。あなたに必要？",
+  "block": "2-42",
+  "target": "$200",
+  "ja": ""
+ },
  "beats": [
-  {"label": "答え", "keyword": "多くはPro", "sub": "月20ドルで足りる", "speech": "要約すると、ほとんどの人はPro、月20ドルで足ります。", "block": "2-17", "target": "月払いの場合は $20", "ja": ""},
-  {"label": "プランの比較", "keyword": "料金は3段階", "sub": "Proの5倍・10倍", "speech": "料金は3段階です。Proが20ドル、Maxが100ドルでProの5倍、Ultraが200ドルで10倍使えます。", "block": "2-47", "target": "Pro の 10 倍の使用量（毎週）*", "ja": ""},
-  {"label": "ポイント", "keyword": "1ドルあたりは同じ", "sub": "違いは5時間の上限", "speech": "ポイントは、1ドルあたりに使える量はMaxもUltraも同じこと。違いは、Ultraには5時間ごとの上限がないことです。", "block": "2-46", "target": "5 時間制限なし‡", "ja": ""},
-  {"label": "必要な人", "keyword": "集計→提案資料", "sub": "朝から夕方まで任せる", "speech": "たとえば、朝から営業データを集めて、グラフにして、夕方までに提案資料を仕上げる。こんな使い方だと途中で上限に当たるので、Ultraが向いています。", "block": "1-11", "target": "Hand Claude work like reports, spreadsheets, and presentations, and it keeps going in the background.", "ja": "レポートや表計算、プレゼン資料をClaudeに任せると、裏で作業を続けます。"},
-  {"label": "開発する人", "keyword": "API枠 $200分", "sub": "Maxは$100分", "speech": "もう1つの違いは、毎月のAPIの利用分。Ultraは200ドル分、Maxは100ドル分付きます。自分でアプリやツールを作る人には、うれしい特典です。", "block": "1-12", "target": "Ultra plans include monthly credits for the Claude API.", "ja": "Ultraプランには、Claude APIの毎月のクレジットが付きます。"},
-  {"label": "要らない人", "keyword": "時々の相談ならPro", "sub": "要約や言い回しの相談", "speech": "逆に、メールの言い回しを相談したり、資料を時々要約したりする程度なら、Proで十分です。", "block": "2-15", "target": "日常業務に", "ja": ""},
-  {"label": "確かめ方", "keyword": "設定→使用状況", "sub": "上限にどれだけ近いか", "speech": "自分に必要かは、設定の「使用状況」で、上限にどれだけ近いかを見れば分かります。", "block": "1-36", "target": "To check, go to Settings > Usage.", "ja": "確かめるには、設定の「使用状況」を開きます。"}
+  {
+   "label": "答え",
+   "keyword": "多くはPro",
+   "sub": "月20ドルで足りる",
+   "speech": "要約すると、ほとんどの人はPro、月20ドルで足ります。",
+   "block": "2-17",
+   "target": "月払いの場合は $20",
+   "ja": ""
+  },
+  {
+   "label": "プランの比較",
+   "keyword": "料金は3段階",
+   "sub": "Proの5倍・10倍",
+   "speech": "料金は3段階です。Proが20ドル、Maxが100ドルでProの5倍、Ultraが200ドルで10倍使えます。",
+   "block": "2-47",
+   "target": "Pro の 10 倍の使用量（毎週）*",
+   "ja": ""
+  },
+  {
+   "label": "ポイント",
+   "keyword": "1ドルあたりは同じ",
+   "sub": "違いは5時間の上限",
+   "speech": "ポイントは、1ドルあたりに使える量はMaxもUltraも同じこと。違いは、Ultraには5時間ごとの上限がないことです。",
+   "block": "2-46",
+   "target": "5 時間制限なし‡",
+   "ja": ""
+  },
+  {
+   "label": "必要な人",
+   "keyword": "集計→提案資料",
+   "sub": "朝から夕方まで任せる",
+   "speech": "たとえば、朝から営業データを集めて、グラフにして、夕方までに提案資料を仕上げる。こんな使い方だと途中で上限に当たるので、Ultraが向いています。",
+   "block": "1-11",
+   "target": "Hand Claude work like reports, spreadsheets, and presentations, and it keeps going in the background.",
+   "ja": "レポートや表計算、プレゼン資料をClaudeに任せると、裏で作業を続けます。"
+  },
+  {
+   "label": "開発する人",
+   "keyword": "API枠 $200分",
+   "sub": "Maxは$100分",
+   "speech": "もう1つの違いは、毎月のAPIの利用分。Ultraは200ドル分、Maxは100ドル分付きます。自分でアプリやツールを作る人には、うれしい特典です。",
+   "block": "1-12",
+   "target": "Ultra plans include monthly credits for the Claude API.",
+   "ja": "Ultraプランには、Claude APIの毎月のクレジットが付きます。"
+  },
+  {
+   "label": "要らない人",
+   "keyword": "時々の相談ならPro",
+   "sub": "要約や言い回しの相談",
+   "speech": "逆に、メールの言い回しを相談したり、資料を時々要約したりする程度なら、Proで十分です。",
+   "block": "2-15",
+   "target": "日常業務に",
+   "ja": ""
+  },
+  {
+   "label": "確かめ方",
+   "keyword": "設定→使用状況",
+   "sub": "上限にどれだけ近いか",
+   "speech": "自分に必要かは、設定の「使用状況」で、上限にどれだけ近いかを見れば分かります。",
+   "block": "1-36",
+   "target": "To check, go to Settings > Usage.",
+   "ja": "確かめるには、設定の「使用状況」を開きます。"
+  }
  ],
- "compare": {"beat": 0, "base": "", "subject": "", "ratio": ""},
- "ladder": {"beat": 2, "subject": "Ultra", "title": "料金と使える量（毎週）", "source": "公式の料金ページより", "rows": [
-   {"name": "Pro", "price": "$20/月", "usage": "基準", "mult": "1", "block": "2-17", "target": "月払いの場合は $20"},
-   {"name": "Max", "price": "$100/月", "usage": "Proの5倍", "mult": "5", "block": "2-31", "target": "$100"},
-   {"name": "Ultra", "price": "$200/月", "usage": "Proの10倍", "mult": "10", "block": "2-42", "target": "$200"}]},
- "units": {"beat": 0, "unit": "", "subject": "", "rows": []},
- "flows": [{"beat": 4, "title": "朝から夕方まで、1日つづく作業", "steps": ["営業データを集める", "グラフにする", "提案資料を仕上げる"], "note": "途中で上限に当たるなら、Ultra"}],
- "conclusion": {"text": "迷ったらProかMaxから", "speech": "迷ったら、まずProかMaxで試して、上限に何度も当たるようならUltraへ。"},
+ "compare": {
+  "beat": 0,
+  "base": "",
+  "subject": "",
+  "ratio": ""
+ },
+ "ladder": {
+  "beat": 2,
+  "subject": "Ultra",
+  "title": "料金と使える量（毎週）",
+  "source": "公式の料金ページより",
+  "rows": [
+   {
+    "name": "Pro",
+    "price": "$20/月",
+    "usage": "基準",
+    "mult": "1",
+    "block": "2-17",
+    "target": "月払いの場合は $20"
+   },
+   {
+    "name": "Max",
+    "price": "$100/月",
+    "usage": "Proの5倍",
+    "mult": "5",
+    "block": "2-31",
+    "target": "$100"
+   },
+   {
+    "name": "Ultra",
+    "price": "$200/月",
+    "usage": "Proの10倍",
+    "mult": "10",
+    "block": "2-42",
+    "target": "$200"
+   }
+  ]
+ },
+ "units": {
+  "beat": 0,
+  "unit": "",
+  "subject": "",
+  "rows": []
+ },
+ "flows": [
+  {
+   "beat": 4,
+   "title": "朝から夕方まで、1日つづく作業",
+   "steps": [
+    "営業データを集める",
+    "グラフにする",
+    "提案資料を仕上げる"
+   ],
+   "note": "途中で上限に当たるなら、Ultra"
+  }
+ ],
+ "conclusion": {
+  "text": "迷ったらProかMaxから",
+  "speech": "迷ったら、まずProかMaxで試して、上限に何度も当たるようならUltraへ。"
+ },
  "title": "Claudeの最上位プランUltra、月200ドルは必要？ Pro・Maxと比較",
  "summary": "要約すると、ほとんどの人はProの月20ドルで足ります。Maxは100ドルでProの5倍、Ultraは200ドルで10倍。1ドルあたりの量は同じで、違いはUltraに5時間ごとの上限がないことと、毎月のAPIクレジットです。",
- "hashtags": ["#Claude", "#Anthropic", "#生成AI", "#AI活用"],
- "_approved": "2026-11-03 オーナー承認の台本（読み上げは一字も変えない）"
+ "hashtags": [
+  "#Claude",
+  "#Anthropic",
+  "#生成AI",
+  "#AI活用"
+ ],
+ "_approved": "2026-11-03 オーナー承認の台本（読み上げは一字も変えない）",
+ "short_beats": [
+  1,
+  3
+ ]
 }

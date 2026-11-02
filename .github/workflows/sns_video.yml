@@ -1,12 +1,14 @@
 name: SNS video follow-up (flagged, default off)
 
-# SNS（Threads）に投稿した記事だけ、長めの解説動画（v3）を作り、あとから「動画で解説」の投稿として出す。
-# 2026-11-03 オーナー決定「当面は SNS に投稿する記事だけ」「まず Threads に1日2本」。
+# SNS（Threads）に投稿した記事の解説動画（v3）を作り、あとから「動画で解説」の投稿として出す。記事ページにもサイト用を載せる。
+# 2026-11-03 オーナー決定「SNS に投稿した記事は全部」「同じ台本からサイト用（全部）と SNS 用（短い版）」「1週間、投稿ごとに短い版と全部の版を交互（A/B）」。
 # **既定では何もしない。** Actions の Variables で順に有効にする（docs/sns-video-v3-20261102.md「自動化の計画」）:
 #   SNS_VIDEO_FOLLOWUP=on  … 定期実行で動画を作る（ゲートまで。投稿しない）
 #   SNS_VIDEO_UPLOAD=on    … 合格した動画を Workers KV（saisoku-images）に置き、https://ai-tech-express.jp/video/<名前>.mp4 で配信（新しい鍵は不要。
 #                            配信は cloudflare/worker.ts の /video/。サイトのデプロイ後に有効）
+#   SNS_VIDEO_EMBED=on     … 記事 JSON に video を書く（次のデプロイで記事ページに動画が出る）
 #   SNS_VIDEO_POST=live    … Buffer で Threads に出す（オーナーの確認のあと）
+#   SNS_VIDEO_AB_UNTIL=YYYY-MM-DD … この日まで投稿ごとに short / full を交互（記事のリンクに utm_content=short|full）
 # 手動実行（workflow_dispatch）は、Variables に関係なく「作るだけ（投稿しない）」で試せる。
 on:
   schedule:
@@ -28,7 +30,7 @@ jobs:
   followup:
     if: ${{ github.event_name == 'workflow_dispatch' || vars.SNS_VIDEO_FOLLOWUP == 'on' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 50  # 1回 最大3本 × 2つの版
     steps:
       - name: VOICEVOX を裏で起動
         run: nohup sh -c 'docker run -d --rm --name voicevox -p 50021:50021 voicevox/voicevox_engine:cpu-latest' > /tmp/voicevox.log 2>&1 &
@@ -65,7 +67,11 @@ jobs:
           SNS_VIDEO_FOLLOWUP: ${{ github.event_name == 'workflow_dispatch' && 'on' || vars.SNS_VIDEO_FOLLOWUP }}
           SNS_VIDEO_UPLOAD: ${{ github.event_name == 'schedule' && vars.SNS_VIDEO_UPLOAD || 'off' }}
           SNS_VIDEO_POST: ${{ github.event_name == 'schedule' && vars.SNS_VIDEO_POST || 'off' }}
-          SNS_VIDEO_DAILY_MAX: ${{ vars.SNS_VIDEO_DAILY_MAX || '2' }}
+          SNS_VIDEO_EMBED: ${{ github.event_name == 'schedule' && vars.SNS_VIDEO_EMBED || 'off' }}
+          SNS_VIDEO_DAILY_MAX: ${{ vars.SNS_VIDEO_DAILY_MAX || '12' }}
+          SNS_VIDEO_PER_RUN: ${{ vars.SNS_VIDEO_PER_RUN || '3' }}
+          SNS_VIDEO_AB_UNTIL: ${{ vars.SNS_VIDEO_AB_UNTIL }}
+          SNS_VIDEO_AFTER_AB: ${{ vars.SNS_VIDEO_AFTER_AB || 'short' }}
           SNS_VIDEO_STORE: ${{ vars.SNS_VIDEO_STORE || 'kv' }}
         run: |
           if [ "${{ github.event.inputs.plan_only }}" = "true" ]; then
@@ -83,21 +89,35 @@ jobs:
             out/sns_video_followup/*.json
           retention-days: 7
           if-no-files-found: ignore
-      - name: 記録を main に残す（動画の記録・Claude API の使用量）
+      - name: 記録を main に残す（動画の記録・Claude API の使用量・記事の video）
         if: ${{ always() && github.event.inputs.plan_only != 'true' }}
         continue-on-error: true
         run: |
           files="state/sns_video.json state/claude_api_usage_video.json"
           changed=""; for f in $files; do [ -f "$f" ] && [ -n "$(git status --porcelain "$f")" ] && changed="$changed $f"; done
-          [ -z "$changed" ] && exit 0
+          embeds=$(git status --porcelain content/articles | awk '{print $2}')
+          [ -z "$changed$embeds" ] && exit 0
           for f in $changed; do cp "$f" "$RUNNER_TEMP/$(basename "$f")"; done
+          mkdir -p "$RUNNER_TEMP/embeds"; for f in $embeds; do cp "$f" "$RUNNER_TEMP/embeds/"; done
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           for i in 1 2 3; do
             git fetch --depth 1 origin main && git reset --hard origin/main
             [ -f "$RUNNER_TEMP/sns_video.json" ] && cp "$RUNNER_TEMP/sns_video.json" state/sns_video.json
             [ -f "$RUNNER_TEMP/claude_api_usage_video.json" ] && python scripts/llm.py --merge-api-usage "$RUNNER_TEMP/claude_api_usage_video.json" state/claude_api_usage_video.json
-            git add state/sns_video.json state/claude_api_usage_video.json 2>/dev/null
+            # 記事の video だけを最新の記事 JSON に書き戻す（ほかの項目は main のまま）
+            for f in "$RUNNER_TEMP"/embeds/*.json; do [ -f "$f" ] || continue
+              python - "$f" "content/articles/$(basename "$f")" <<'PY'
+          import json, sys
+          src, dst = sys.argv[1], sys.argv[2]
+          video = json.load(open(src)).get("video")
+          art = json.load(open(dst))
+          if video and art.get("video") != video:
+              art["video"] = video
+              open(dst, "w").write(json.dumps(art, ensure_ascii=False, indent=2) + "\n")
+          PY
+            done
+            git add state/sns_video.json state/claude_api_usage_video.json content/articles 2>/dev/null
             if git diff --cached --quiet; then exit 0; fi
             git commit -m "chore(video): SNS 動画の記録を更新 [no-deploy]"
             git push origin HEAD:main && exit 0

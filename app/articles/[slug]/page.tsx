@@ -32,6 +32,7 @@ import { STATUS_LABEL, freeLabel, japanLabel, verdictOf } from "@/lib/verdict";
 import { offerPlanForArticle } from "@/lib/offers";
 import { readNextForArticle } from "@/lib/read-next";
 import ReadNextBox from "@/components/ReadNextBox";
+import ArticleVideo from "@/components/ArticleVideo";
 import { shopLinkForArticle } from "@/lib/amazon";
 import ShopLinks from "@/components/ShopLinks";
 import Morph from "@/components/Morph";
@@ -375,6 +376,8 @@ export default async function ArticlePage({ params }: Props) {
               </ol>
             </section>
           )}
+          {/* 解説動画（SNS に出した記事だけ。押したときだけ読み込む） */}
+          {article.video?.src ? <ArticleVideo video={article.video} /> : null}
           {/* 「使える？」判定 */}
           {verdict && <VerdictCard verdict={verdict} judgedAt={verdict.judgedAt || article.generatedAt || article.publishedAt} />}
           {/* 「仕事・お金にどう活かせる？」（新しい記事だけ） */}
