@@ -338,14 +338,14 @@
     },
     "7c1aece6152955a3": {
       "detectedAt": "2026-11-02T22:45:24+00:00",
-      "finishedAt": "2026-11-02T22:53:58+00:00",
+      "finishedAt": "2026-11-02T23:00:58+00:00",
       "outcome": "retry",
       "reason": "作れなかった（次の起動で再挑戦）",
-      "run": "41540059081",
+      "run": "41541140309",
       "slug": "",
       "source": "radar-gori.me",
       "sourcePublishedAt": "2026-11-02T22:45:24+00:00",
-      "startedAt": "2026-11-02T22:46:57+00:00",
+      "startedAt": "2026-11-02T22:54:47+00:00",
       "title": "新型MacBook Proは「ほしい」、だけど「活かせない」のジレンマ。新モデルは買いま……",
       "url": "https://gori.me/macbookpro/172017"
     },
