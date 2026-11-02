@@ -107,7 +107,7 @@ FEEDS: list[dict] = [
     {"slug": "atlassian-blog", "name": "Atlassian公式ブログ", "url": "https://www.atlassian.com/blog/rss", "lang": "en", "priority": 3, "ai_only": True, "kind": "company"},
     {"slug": "docker-blog", "name": "Docker公式ブログ", "url": "https://www.docker.com/feed/", "lang": "en", "priority": 3, "ai_only": True, "kind": "company"},
     # --- 2026-11-02 追加（候補不足の対策。robots.txt 許可・直近14日に更新ありを確認。数字は14日のAI関連件数） ---
-    {"slug": "nvidia-developer-blog", "name": "NVIDIA Developer Blog", "url": "https://developer.nvidia.com/blog/feed", "lang": "en", "priority": 3, "ai_only": True, "kind": "official", "primary_for": "nvidia"},  # 22
+    {"slug": "nvidia-developer-blog", "name": "NVIDIA Developer Blog", "url": "https://developer.nvidia.com/blog/feed", "lang": "en", "priority": 3, "ai_only": True, "kind": "company"},  # 22。技術解説が多いので大きなニュース扱いにしない
     {"slug": "softbank-news-ai", "name": "ソフトバンクニュース", "url": "https://www.softbank.jp/sbnews/feed", "lang": "ja", "priority": 2, "ai_only": True, "kind": "company"},  # 8
     {"slug": "docomo-news-release-ai", "name": "NTTドコモ 報道発表", "url": "https://www.docomo.ne.jp/info/rss/news_release.rdf", "lang": "ja", "priority": 2, "ai_only": True, "kind": "company"},  # 5
     {"slug": "cyberagent-developers", "name": "CyberAgent Developers Blog", "url": "https://developers.cyberagent.co.jp/blog/feed/", "lang": "ja", "priority": 3, "ai_only": True, "kind": "company"},  # 3

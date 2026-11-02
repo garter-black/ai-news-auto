@@ -1610,7 +1610,9 @@ def main() -> int:
             return
         # 速報（scripts/breaking_post.py がデプロイ直後に SNS へ出す）。
         # 速報レーンの記事は Worker が主要企業の公式発表と判定したものなので、必ず速報にする（公開したらすぐ SNS へ）
-        if major and (is_breaking(item) or item.get("fast")):
+        # 通常の収集から来たものは、発表から12時間以内のときだけ速報にする（古い発表に【速報】を付けない）
+        fresh = item.get("published_at") and item["published_at"] > datetime.now(timezone.utc) - timedelta(hours=12)
+        if major and ((is_breaking(item) and fresh) or item.get("fast")):
             record["breaking"] = True
         stamp_times(record, item, run_detected_at)
         path = m.write_article(record)
