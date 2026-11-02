@@ -604,13 +604,16 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
     return out
 
 
+STYLE_PREFIXES = ("speech で数字", "speech に英単語")
+
+
 def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
     import llm
 
     prompt = f"# 資料\n{script_material(article, pages)}\n\n上の資料だけを使って、決まりどおりの台本を JSON で書いてください。"
     feedback, last = "", ""
     tier = os.environ.get("V3_LLM_TIER", "quality")
-    for attempt in range(1, 6):
+    for attempt in range(1, 7):
         try:
             data, model = llm.generate_json(script_system(), prompt + feedback, SCRIPT_SCHEMA, temperature=0.5, max_output_tokens=4096, tier=tier)
         except RuntimeError:
@@ -621,7 +624,11 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
             continue
         data["beats"] = [b for b in data.get("beats") or [] if isinstance(b, dict)][:4]
         problems = script_problems(data, article, pages)
-        if not problems:
+        style = [p for p in problems if p.startswith(STYLE_PREFIXES)]
+        if not problems or (attempt >= 4 and len(style) == len(problems)):
+            if problems:  # 読み・長さだけは最後に妥協する（事実・証拠の問題は必ず直す。入らない文字は描画で止まる）
+                log(f"   [v3] 読み・長さの注意を残して採用: {problems}")
+                data["_notes"] = problems
             return data, model
         last = "; ".join(problems)
         log(f"   [v3] 台本の書き直し（{attempt}）: {last[:300]}")

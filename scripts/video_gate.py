@@ -213,13 +213,24 @@ def fact_problems(script: dict, article: dict) -> list[str]:
 _TERM = re.compile(r"[A-Za-z][A-Za-z0-9.+\-]*|[ァ-ヴー]{2,}|[一-龥々]{2,}")
 
 
+def _term_in(term: str, sentence: str) -> bool:
+    """語が文にあるか。漢字・カタカナの語は2字のまとまりのどれかがあればよい（脆弱性発見 ↔ 弱点発見 のような言い換え）"""
+    low = sentence.lower()
+    if term.lower() in low:
+        return True
+    if re.fullmatch(r"[ァ-ヴー一-龥々]{3,}", term):
+        return any(term[i : i + 2] in sentence for i in range(len(term) - 1))
+    return False
+
+
 def number_context_problems(script_v3: dict, article: dict) -> list[str]:
     """v3: 画面・読み上げの数字が、記事の中で同じ話題の文に出てくるか。
     例: 「APIクレジット 月200ドル分」は、記事に 200 があっても APIクレジットの文に無ければ失敗（別ページの数字の混入を防ぐ）"""
     material = norm(material_text(article))
     sentences = [x for x in re.split(r"[。\n]|(?<=[.!?])\s", material) if x.strip()]
     hook = script_v3.get("hook") or {}
-    items = [("hook", f"{hook.get('text', '')} {hook.get('payoff', '')}", hook.get("speech", ""))]
+    # つかみは問いかけの言葉が多いので、答えの数字（payoff）の言葉だけで見る
+    items = [("hook", hook.get("payoff", ""), hook.get("speech", ""))]
     items += [(f"beat{i}", f"{b.get('keyword', '')} {b.get('sub', '')}", b.get("speech", "")) for i, b in enumerate(script_v3.get("beats") or [], 1)]
     concl = script_v3.get("conclusion") or {}
     items.append(("conclusion", concl.get("text", ""), concl.get("speech", "")))
@@ -233,7 +244,7 @@ def number_context_problems(script_v3: dict, article: dict) -> list[str]:
             hits = [s for s in sentences if pat.search(s)]
             if not hits:
                 continue  # 記事に無い数字は fact_problems が落とす
-            if terms and not any(t.lower() in s.lower() for s in hits for t in terms):
+            if terms and not any(_term_in(t, s) for s in hits for t in terms):
                 problems.append(f"{name}: 数字 {num} が記事の中で「{'・'.join(sorted(terms)[:3])}」と同じ文に出てこない（別の話の数字では？）")
     return problems
 
