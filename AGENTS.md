@@ -71,7 +71,7 @@
 | `deploy_cloudflare.yml` | サイトの公開 |
 | `breaking_post.yml` | 速報のSNS即時投稿＋プッシュ通知 |
 | `sns_extra.yml` | 朝7:30のまとめ投稿、火・金の問いかけ投稿 |
-| `bluesky.yml` | Bluesky への投稿（Threads の写し＋直近の良い記事。1日24本まで・40分以上あける） |
+| `bluesky.yml` | Bluesky への投稿（Threads の写し＋直近の良い記事。1日24本まで・40分以上あける。記事の自動処理の後にも動く） |
 | `evergreen.yml` | 「使い方・料金」解説記事を1日4本 |
 | `missed_check.yml` | 毎朝8:30、取りこぼした大ニュースがないか確認 |
 | `newsletter.yml` | 毎朝7時のメルマガ |

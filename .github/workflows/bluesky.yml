@@ -2,9 +2,14 @@ name: Bluesky post
 
 # Bluesky への投稿（scripts/bluesky_post.py）。Threads の通常の枠の約20分後・朝のまとめを出す。速報は breaking_post.yml からすぐ出す
 # --fill: Threads 側に出すものがないときは、直近12時間の良い記事を1本（1日24本まで・通常は40分以上あける・深夜1〜5時は出さない）
+# GitHub の schedule は数時間おきにしか動かないことがあるため、記事の自動処理（約20分ごと）が終わるたびにも動かす
 on:
   schedule:
     - cron: "*/10 * * * *"
+  workflow_run:
+    workflows: ["Auto Article Pipeline"]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
     inputs:
       dry_run:
@@ -21,6 +26,11 @@ concurrency:
 
 jobs:
   post:
+    # workflow_run は同じリポジトリの main の処理が終わったときだけ（外部 PR からは動かさない）
+    if: >-
+      ${{ github.event_name != 'workflow_run' ||
+          (github.event.workflow_run.head_repository.full_name == github.repository &&
+           github.event.workflow_run.head_branch == 'main') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
