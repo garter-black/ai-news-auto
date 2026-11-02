@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "mof-jgbsp-121st-meeting-schedule",
+   "at": "2026-11-02T12:12:17.365638+00:00",
+   "title": "財務省、国債市場特別参加者会合の第121回を開催へ 11月26日に最近の市場状況を議論",
+   "head": "財務省、国債市場特別参加者会合の第121回を開催へ 11月26日に最近の市場状況を議論 | 国債市場特別参加者会合（第121回）開催日程",
+   "text": "財務省、国債市場特別参加者会合の第121回を開催へ 11月26日に最近の市場状況を議論 | 国債市場特別参加者会合（第121回）開催日程 | 国債市場特別参加者会合 / 財務省 / 国債市場 / 金利 / 理財局 / 経済政策 / 市場見通し / 公表資料 / 金融 / ビジネス / 経済 / 統計",
+   "urls": [
+    "https://www.mof.go.jp/about_mof/councils/meeting_of_jgbsp/press_release/261102.html"
+   ]
+  },
+  {
    "slug": "katayama-mof-budget-2027-tax-estimate",
    "at": "2026-11-02T11:51:14.117922+00:00",
    "title": "片山財務相、2027年度予算に向けて「税収見積りの精度と透明性を高める」と記者会見で表明",
@@ -1553,22 +1563,6 @@
    "title": "Googleの生成AI『Gemini』に最新モデル『Gemini 4 Carbon』登場 総合首位で料金も手頃に",
    "head": "Googleの生成AI『Gemini』に最新モデル『Gemini 4 Carbon』登場 総合首位で料金も手頃に | Google \"Carbon\" just won everything...",
    "text": "Googleの生成AI『Gemini』に最新モデル『Gemini 4 Carbon』登場 総合首位で料金も手頃に | Google \"Carbon\" just won everything... | Gemini 4 Carbon / Google / Gemini / AIモデル / ベンチマーク / 料金 / 使い方 / 日本 / セキュリティ / プログラミング / AIツール / 検証 / 生成AI / LLM / Google Gemini / Gemini 4 Carbon",
-   "urls": []
-  },
-  {
-   "slug": "google-gemini-live-plant-robot-sprout",
-   "at": "2026-10-29T12:02:38.754500+00:00",
-   "title": "GoogleのAI『Gemini Live』で植物が自律移動　日光を探して会話するロボット『Sprout』開発",
-   "head": "GoogleのAI『Gemini Live』で植物が自律移動　日光を探して会話するロボット『Sprout』開発 | 🪴 Building an autonomous plant rover with Gemini Live",
-   "text": "GoogleのAI『Gemini Live』で植物が自律移動　日光を探して会話するロボット『Sprout』開発 | 🪴 Building an autonomous plant rover with Gemini Live | Google Gemini / Gemini Live / Gemini Flash / Sprout / ロボティクス / 自律走行ロボット / Robotics ER 2.0 / AIロボット / 使い方 / 概要 / Google / 開発者向け / 生成AI / Google Gemini / ロボティクス / Gemini Live / ハードウェア",
-   "urls": []
-  },
-  {
-   "slug": "microsoft-azure-physical-ai-iot",
-   "at": "2026-10-29T12:01:51.265421+00:00",
-   "title": "マイクロソフトが示す「フィジカルAI」とは？Azure IoT連携で現場ロボットはどう賢くなるか",
-   "head": "マイクロソフトが示す「フィジカルAI」とは？Azure IoT連携で現場ロボットはどう賢くなるか | Make Machines Smarter with Physical AI",
-   "text": "マイクロソフトが示す「フィジカルAI」とは？Azure IoT連携で現場ロボットはどう賢くなるか | Make Machines Smarter with Physical AI | フィジカルAI / Azure IoT / Microsoft / Azure IoT Hub / Azure IoT Operations / Azure Device Registry / 産業用AI / OTセキュリティ / エッジAI / フィジカルAIの使い方 / Microsoft / Copilot / Microsoft Azure / フィジカルAI / Azure IoT / 産業用AI / ロボティクス",
    "urls": []
   }
  ]
