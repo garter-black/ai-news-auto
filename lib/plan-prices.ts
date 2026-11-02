@@ -1,11 +1,10 @@
-import fs from "@/lib/content-fs";
-import path from "node:path";
+import { getPricingProduct } from "@/lib/pricing";
 
 /**
  * AI の月額プランの段と為替（図・計算機の共通の読み口）。
  *
- * 元データは content/pricing/<製品>.json と content/pricing/_fx.json（scripts/pricing_watch.py が公式の料金ページと
- * ECB の参照レートから毎日作る）。まだ無い環境・読めないときは、下の「日付つきの控え」を使う。
+ * 元データは content/pricing/<製品>.json（lib/pricing.ts の getPricingProduct。scripts/pricing_watch.py が公式の料金ページと
+ * ECB の参照レートから毎日作る）。読めないときは、下の「日付つきの控え」を使う。
  * 控えの値も公式ページ（claude.com/pricing・ECB）で確かめたもので、確認日を必ず表示する。
  */
 
@@ -42,8 +41,6 @@ export type PlanProduct = {
   plans: Plan[];
   fallback: boolean;
 };
-
-const PRICING_DIR = [process.cwd(), "content", "pricing"].join(path.sep);
 
 /** 控え：Claude の個人向けプラン（claude.com/pricing を 2026-11-02 に確認。content/howto/claude-pricing.json と同じ数字） */
 const CLAUDE_FALLBACK: PlanProduct = {
@@ -82,14 +79,6 @@ type RawProduct = {
   taxNote?: string;
   plans?: RawPlan[];
 };
-
-function readJson<T>(file: string): T | null {
-  try {
-    return JSON.parse(fs.readFileSync(file, "utf8")) as T;
-  } catch {
-    return null;
-  }
-}
 
 function toPrice(raw: RawPrice): PlanPrice | null {
   if (typeof raw.amount !== "number" || !Number.isFinite(raw.amount) || raw.amount < 0) return null;
@@ -130,24 +119,22 @@ function toProduct(raw: RawProduct, slug: string): PlanProduct | null {
   };
 }
 
+const PLAN_PRODUCTS = ["claude", "chatgpt", "gemini", "copilot", "perplexity"] as const;
+
 let cache: { products: PlanProduct[]; fx: Fx } | null = null;
 
 function load(): { products: PlanProduct[]; fx: Fx } {
   if (cache) return cache;
   const products: PlanProduct[] = [];
-  let names: string[] = [];
-  try {
-    names = fs.readdirSync(PRICING_DIR).filter((n) => n.endsWith(".json") && !n.startsWith("_"));
-  } catch {
-    names = [];
-  }
-  for (const name of names.sort()) {
-    const raw = readJson<RawProduct>([PRICING_DIR, name].join(path.sep));
-    const product = raw && toProduct(raw, name.replace(/\.json$/, ""));
+  let rawFx: { rate?: number; date?: string; source?: string } | undefined;
+  for (const id of PLAN_PRODUCTS) {
+    const raw = getPricingProduct(id) as unknown as (RawProduct & { fx?: { rate?: number; date?: string; source?: string } }) | null;
+    if (!raw) continue;
+    rawFx ??= raw.fx;
+    const product = toProduct(raw, id);
     if (product) products.push(product);
   }
   if (!products.some((p) => p.product === "claude")) products.unshift(CLAUDE_FALLBACK);
-  const rawFx = readJson<{ rate?: number; date?: string; source?: string }>([PRICING_DIR, "_fx.json"].join(path.sep));
   const fx: Fx =
     rawFx && typeof rawFx.rate === "number" && rawFx.rate > 50 && rawFx.rate < 400 && rawFx.date
       ? { rate: rawFx.rate, date: rawFx.date, source: rawFx.source ?? "", fallback: false }

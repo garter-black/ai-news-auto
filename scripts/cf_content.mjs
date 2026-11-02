@@ -27,8 +27,7 @@ const addDir = (rel, filter = (name) => name.endsWith(".json")) => {
   return names;
 };
 
-// content/pricing は料金の段の図・計算機（lib/plan-prices.ts）が実行時に読む（無ければ飛ばす）
-for (const dir of ["content/guides", "content/howto", "content/buying-guides", "content/products", "content/digests", "content/pricing"]) {
+for (const dir of ["content/guides", "content/howto", "content/buying-guides", "content/products", "content/digests"]) {
   for (const name of addDir(dir) ?? []) addFile(`${dir}/${name}`);
 }
 for (const rel of ["content/index.json", "content/offers.json", "content/products.json", "content/state.json", "affiliate_links.json", "monetization.json"]) {
