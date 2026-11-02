@@ -5,6 +5,7 @@ import { ImageResponse } from "next/og";
 import sharp from "sharp";
 import { coverPath, getAllArticles, getArticle, PRERENDER_LIMIT, type FullArticle } from "@/lib/articles";
 import { companyOf } from "@/lib/companies";
+import { officialCreditText } from "@/lib/image-credit";
 import { siteConfig } from "@/site.config";
 import {
   basePhoto,
@@ -193,10 +194,11 @@ async function reachablePhoto(url: string): Promise<string | null> {
   return null;
 }
 
-/** カバー左上の注記（フリー素材・AI 生成のときだけ。CC BY は作者とライセンスの表示が条件） */
+/** カバー左上の注記（フリー素材・AI 生成・公式発表の写真のとき。CC BY は作者とライセンスの表示が条件） */
 function coverCredit(article: FullArticle): string {
   const c = article.imageCredit;
   if (c?.kind === "ai") return "画像はイメージ（AI生成）";
+  if (c?.kind === "official") return officialCreditText(c) ?? "";
   if (c?.kind !== "stock") return "";
   const who = (c.creator || "").slice(0, 28);
   return c.license?.startsWith("CC BY") ? `写真はイメージ　Photo: ${who} / ${c.license}` : "写真はイメージ";

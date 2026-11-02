@@ -52,6 +52,7 @@ import {
   tagHref,
 } from "@/lib/articles";
 import { Highlight } from "@/lib/highlight";
+import { isOwnImage } from "@/lib/thumb-url";
 import {
   extractHeadings,
   renderMarkdown,
@@ -187,7 +188,9 @@ export default async function ArticlePage({ params }: Props) {
       "@type": "NewsArticle",
       headline: article.title,
       description: article.description,
-      image: [coverPath(article), article.thumbnail]
+      // サイトで配信する写真（/img/、幅 1200px の JPEG）があれば先頭に置く（Google Discover の大きな画像。robots は max-image-preview:large）。
+      // 写真が無い・外部の画像の記事は従来どおり見出し入りのカバーが先
+      image: (isOwnImage(article.thumbnail) ? [article.thumbnail, coverPath(article)] : [coverPath(article), article.thumbnail])
         .filter(Boolean)
         .map((src) => (src!.startsWith("/") ? `${siteConfig.url}${src}` : src)),
       // サイソクに載せた日時（ニュースサイトマップ・フィードと同じ。元の発表日時は本文側に表示）

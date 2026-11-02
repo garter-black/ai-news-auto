@@ -130,12 +130,13 @@ function forEdge(response: Response, env: Env): Response {
 
 type KvNamespace = { get(key: string, type: "arrayBuffer"): Promise<ArrayBuffer | null> };
 
-const IMAGE_NAME = /^\/img\/([A-Za-z0-9][A-Za-z0-9_-]{0,160}\.(jpg|sm\.webp))$/;
+const IMAGE_NAME = /^\/img\/(([A-Za-z0-9][A-Za-z0-9_-]{0,160})\.(jpg|sm\.webp|w(?:400|800|1200)\.webp))$/;
 
 /**
- * 記事の写真（フリー素材・AI 生成。scripts/images.py が Workers KV の saisoku-images に置く）。
+ * 記事の写真（フリー素材・AI 生成・公式発表の写真。scripts/images.py が Workers KV の saisoku-images に置く）。
  * 名前に中身のハッシュが入っていて変わらないので、ブラウザ・エッジとも1年使い回す。
- * エッジのキャッシュはデプロイの版に関係なく使う（KV の読み出しはキャッシュが無いときだけ）
+ * エッジのキャッシュはデプロイの版に関係なく使う（KV の読み出しはキャッシュが無いときだけ）。
+ * 幅ごとの WebP（.w400 / .w800 / .w1200、lib/thumb-url.ts の srcset）がまだ無い古い写真は、元の .jpg を短いキャッシュで返す
  */
 async function serveImage(request: Request, url: URL, env: Env, ctx: Ctx): Promise<Response> {
   const match = IMAGE_NAME.exec(url.pathname);
@@ -145,12 +146,19 @@ async function serveImage(request: Request, url: URL, env: Env, ctx: Ctx): Promi
   let response = await edge.match(key);
   if (!response) {
     const kv = env.IMAGES_KV as KvNamespace | undefined;
-    const body = kv ? await kv.get(match[1], "arrayBuffer") : null;
+    let body = kv ? await kv.get(match[1], "arrayBuffer") : null;
+    let type = match[3] === "jpg" ? "image/jpeg" : "image/webp";
+    let cache = "public, max-age=31536000, immutable";
+    if (!body && kv && match[3].startsWith("w")) {
+      body = await kv.get(`${match[2]}.jpg`, "arrayBuffer");
+      type = "image/jpeg";
+      cache = "public, max-age=600";
+    }
     if (!body) return new Response("Not Found", { status: 404, headers: { "Cache-Control": "public, max-age=60" } });
     response = new Response(body, {
       headers: {
-        "Content-Type": match[2] === "jpg" ? "image/jpeg" : "image/webp",
-        "Cache-Control": "public, max-age=31536000, immutable",
+        "Content-Type": type,
+        "Cache-Control": cache,
         "Access-Control-Allow-Origin": "*",
       },
     });

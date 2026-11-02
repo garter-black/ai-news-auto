@@ -39,8 +39,16 @@ export type ArticleUpdate = {
  * source=元記事の写真 / stock=フリー素材（CC0・PD・CC BY）/ ai=Workers AI で生成したイメージ
  */
 export type ImageCredit = {
-  kind: "source" | "stock" | "ai";
+  /** official: 公式発表（自社サイト・プレスリリース配信）の写真を縮小して自前で配信。source: 元記事の写真への直リンク（旧方式） */
+  kind: "source" | "official" | "stock" | "ai";
   provider?: string;
+  /** official: 写真を出した会社・団体の名前 */
+  org?: string;
+  /** official: プレスリリース配信サービスの名前（PR TIMES など。自社サイトの発表なら無し） */
+  via?: string;
+  /** official: 保存した JPEG の大きさ（幅は最大 1200px） */
+  width?: number;
+  height?: number;
   title?: string;
   creator?: string;
   creatorUrl?: string;
@@ -172,6 +180,7 @@ export type ArticleSummary = Pick<
   | "updatedAt"
   | "relatedSlugs"
   | "thumbnail"
+  | "imageCredit"
   | "speedMinutes"
 > &
   ArticleDerived;

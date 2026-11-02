@@ -6,6 +6,7 @@ import RelTime from "@/components/RelTime";
 import type { ArticleSummary } from "@/lib/articles";
 import { companyOf, thumbSource } from "@/lib/companies";
 import { Highlight } from "@/lib/highlight";
+import { officialCreditText } from "@/lib/image-credit";
 
 /**
  * トップの主役。
@@ -16,12 +17,14 @@ export default function HomeHero({ lead }: { lead: ArticleSummary }) {
   const isRoundup = lead.type === "roundup";
   const sources = lead.sourceCount;
   const href = `/articles/${lead.slug}`;
+  const credit = officialCreditText(lead.imageCredit);
 
   return (
     <section
       aria-label="注目の記事"
       className="grid items-center gap-6 lg:grid-cols-[1.12fr_1fr] lg:gap-12"
     >
+      <div className="min-w-0">
       <Link
         href={href}
         tabIndex={-1}
@@ -50,6 +53,9 @@ export default function HomeHero({ lead }: { lead: ArticleSummary }) {
           </span>
         )}
       </Link>
+      {/* 公式発表の写真は発表した会社・団体の名前を小さく添える（lib/image-credit.ts。記事ページと同じ文） */}
+      {credit && <p className="mt-2 px-1 text-note leading-relaxed text-ink-soft">{credit}</p>}
+      </div>
 
       <div className="flex min-w-0 flex-col gap-4">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-meta">

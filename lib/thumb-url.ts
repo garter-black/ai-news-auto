@@ -13,16 +13,20 @@ export function smallThumb(url: string, youtube: "hqdefault" | "mqdefault" = "hq
 }
 
 /**
- * サイトの写真（/img/<名前>.jpg、1200×630）を枠の幅で選ばせる候補（srcset）。
- * 640 は一覧用 WebP（変換なし）、960・1200 は Cloudflare の画像変換（AVIF/WebP。ゾーン内の画像だけ変換できる）。
- * スマホでも 1200px の JPEG（約130KB）を読んでいたのを 30〜60KB にする（LCP 対策）
+ * サイトの写真（/img/<名前>.jpg。scripts/images.py が Workers KV に置く）を枠の幅で選ばせる候補（srcset）。
+ * 幅 400 / 640 / 800 / 1200 の WebP を KV に用意してある（無い古い写真は worker が元の JPEG を返す）。
+ * スマホは 400〜800px（10〜30KB）で足り、PC の大きな枠だけ 1200px を読む（LCP 対策）
  */
 export function ownSrcSet(url: string): string | null {
   const own = OWN_IMAGE.exec(url);
   if (!own) return null;
   const path = own[1].replace(/^https:\/\/[^/]+/, "");
-  const cdn = (w: number) => `/cdn-cgi/image/width=${w},quality=72,format=auto,fit=scale-down${path}.jpg ${w}w`;
-  return `${path}.sm.webp 640w, ${cdn(960)}, ${cdn(1200)}`;
+  return `${path}.w400.webp 400w, ${path}.sm.webp 640w, ${path}.w800.webp 800w, ${path}.w1200.webp 1200w`;
+}
+
+/** サイトの写真（/img/<名前>.jpg、幅 1200px までの JPEG）か */
+export function isOwnImage(url: string | undefined): boolean {
+  return Boolean(url && OWN_IMAGE.test(url));
 }
 
 const YT_MAXRES_WEBP = /^https:\/\/i\.ytimg\.com\/vi_webp\/([^/]+)\/maxresdefault\.webp$/;

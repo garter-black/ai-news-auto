@@ -2,13 +2,16 @@
 """記事の写真を選ぶ（3段階）。写真の無い記事・ロゴだけの記事を、大手ニュースサイトのような写真入りにする。
 
   1. 元記事の写真: og:image / twitter:image / 本文中のいちばん大きい画像。
-     幅 800px 未満・極端な縦横比・ロゴ（無地の地に文字だけ）・サイト共通の既定画像は使わない
+     **公式の発表（会社・団体の自社サイト、PR TIMES などのプレスリリース配信）の記事だけ**。ダウンロードして
+     幅 1200px まで縮小（切り抜かない）し、自前の KV から配信する。記事には「画像：◯◯（公式発表より）」と出す。
+     ほかのニュースサイト・ブログ・SNS・不明な発信元の写真は保存も直リンクもしない（2・3 にする）。
+     幅 800px 未満・極端な縦横比・ロゴ（無地の地に文字だけ）・サイト共通の既定画像・文字や図が主役の画像（Workers AI で判定）は使わない
   2. フリー素材: Wikimedia Commons と Openverse（CC0・パブリックドメイン・CC BY だけ。商用可・改変可）。
      検索語は記事から軽量モデル（scripts/llm.py の bulk）が作る具体的な英語の名詞句
   3. AI 生成: Cloudflare Workers AI（flux-2-klein-4b → flux-1-schnell）。文字・ロゴ・実在の人物なし。1日 IMAGE_AI_DAILY_MAX 枚まで
 
-2・3 の画像は 1200×630 の JPEG（約100KB）と一覧用 640×336 の WebP（約30KB）にして
-Workers KV（saisoku-images）へ置き、サイトの /img/<名前> で配信する（cloudflare/worker.ts）。
+2・3 の画像は 1200×630 の JPEG（約100KB）、1 は縦横比そのままの幅 1200px までの JPEG にし、どれも幅 400 / 640（.sm）/ 800 / 1200 の
+WebP を添えて Workers KV（saisoku-images）へ置き、サイトの /img/<名前> で配信する（cloudflare/worker.ts。srcset は lib/thumb-url.ts）。
 記事 JSON には thumbnail（画像の URL）と imageCredit（出典・ライセンス・作者）を書く。
 YouTube のサムネイルはそのまま使う。
 
@@ -18,6 +21,8 @@ YouTube のサムネイルはそのまま使う。
   python3 scripts/images.py --slug <slug> --dry-run
   python3 scripts/images.py --recheck-source        # 元記事の写真を採用した記事を今の基準で見直す
   python3 scripts/images.py --retry-ai --max 30     # AI 生成にした記事でフリー素材を探し直す（Commons が落ちていた日の後に）
+  python3 scripts/images.py --cache-official --max 100  # 外部の写真を直リンクしている記事を直す（公式は自前に保存、それ以外は 2・3）
+  python3 scripts/images.py --variants --max 400        # 前からある自前の写真に幅ごとの WebP を足す
 
 必要な環境変数: CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_API_TOKEN（Workers AI）/ CF_KV_TOKEN（KV への書き込み。無ければ
 CLOUDFLARE_API_TOKEN）。手元では wrangler のログイン情報を使う。検索語づくりは GEMINI_API_KEY など（llm.py と同じ）。
@@ -190,6 +195,47 @@ def kv_put(key: str, data: bytes) -> None:
         time.sleep(2 + attempt * 3)
 
 
+def kv_list() -> set[str]:
+    """KV（saisoku-images）にある名前の一覧"""
+    names: set[str] = set()
+    cursor = ""
+    while True:
+        url = f"https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/storage/kv/namespaces/{KV_NAMESPACE}/keys?limit=1000" + (f"&cursor={urllib.parse.quote(cursor)}" if cursor else "")
+        req = urllib.request.Request(url, headers={"Authorization": f"Bearer {cf_token('kv')}"})
+        with urllib.request.urlopen(req, timeout=60) as res:
+            body = json.loads(res.read())
+        names |= {item["name"] for item in body.get("result") or []}
+        cursor = ((body.get("result_info") or {}).get("cursor")) or ""
+        if not cursor:
+            return names
+
+
+def backfill_variants(articles: dict, dry_run: bool, limit: int, budget: float, started: float) -> Counter:
+    """前からある自前の写真（.jpg と .sm.webp だけ）に、幅ごとの WebP（.w400 / .w800 / .w1200）を足す"""
+    have = kv_list()
+    keys = sorted({m.group(1) for a in articles.values() if (m := re.match(re.escape(IMAGE_BASE) + r"([A-Za-z0-9][A-Za-z0-9_-]*)\.jpg$", a.get("thumbnail") or ""))})
+    todo = [k for k in keys if f"{k}.jpg" in have and any(f"{k}.{n}.webp" not in have for n, _ in VARIANT_WIDTHS)]
+    log(f"[img] 幅ごとの WebP が無い写真 {len(todo)} 枚（自前の写真 {len(keys)} 枚）")
+    tally: Counter = Counter()
+    for key in todo[:limit]:
+        if budget and time.time() - started > budget:
+            log("[img] 時間切れ。残りは次の回に回す")
+            break
+        try:
+            data, _, _ = http_get(f"{IMAGE_BASE}{key}.jpg", ua=BOT_UA, timeout=30)
+            variants = webp_variants(open_image(data))
+            for name, body in variants.items():
+                if f"{key}.{name}.webp" in have:
+                    continue
+                if not dry_run:
+                    kv_put(f"{key}.{name}.webp", body)
+            tally["variants"] += 1
+        except Exception as error:  # noqa: BLE001
+            log(f"   [img] {key}: {str(error)[:120]}")
+            tally["error"] += 1
+    return tally
+
+
 # --------------------------------------------------------------------------- #
 # 画像の検査
 # --------------------------------------------------------------------------- #
@@ -270,6 +316,131 @@ def is_youtube(url: str) -> bool:
 
 def is_ours(url: str) -> bool:
     return (url or "").startswith(IMAGE_BASE)
+
+
+# --------------------------------------------------------------------------- #
+# 公式の発表か（元記事の写真を自前で保存して配信してよいか）
+# --------------------------------------------------------------------------- #
+# 元記事の写真は「その会社・団体が自分のサイトで出した発表（ニュースルーム・公式ブログ・官公庁・研究機関）」と
+# 「報道向けに素材を配るプレスリリース配信（PR TIMES など）」のものだけ使い、縮小して自前の KV から配信する（出典を表示）。
+# ほかのニュースサイト・ブログ・SNS・不明な発信元の写真は保存も直リンクもせず、フリー素材・AI 生成にする。
+
+# プレスリリース配信（channelSlug → 表示名）。配信元のホストでも判定する
+WIRE_CHANNELS = {
+    "prtimes": "PR TIMES",
+    "prtimes-all": "PR TIMES",
+    "atpress": "@Press",
+    "value-press": "ValuePress",
+    "dreamnews": "ドリームニューズ",
+    "kyodo-prwire": "共同通信PRワイヤー",
+}
+WIRE_HOSTS = {
+    "prtimes.jp": "PR TIMES",
+    "atpress.ne.jp": "@Press",
+    "newscast.jp": "@Press",
+    "value-press.com": "ValuePress",
+    "dreamnews.jp": "ドリームニューズ",
+    "kyodonewsprwire.jp": "共同通信PRワイヤー",
+    "businesswire.com": "Business Wire",
+    "prnewswire.com": "PR Newswire",
+    "globenewswire.com": "GlobeNewswire",
+}
+# ニュースサイト・まとめ（公式ではない）。fast_lane_rules.json の radar.outlets に加えて
+MEDIA_HOSTS = {"news.yahoo.co.jp", "yahoo.co.jp", "nikkei.com", "asahi.com", "yomiuri.co.jp", "mainichi.jp", "sankei.com", "nhk.or.jp", "nytimes.com", "note.com", "medium.com"}
+
+_official_slugs: set[str] | None = None
+
+
+def _host_in(host: str, hosts) -> str | None:
+    host = (host or "").lower().split(":")[0]
+    for h in hosts:
+        if host == h or host.endswith("." + h):
+            return h
+    return None
+
+
+def official_slugs() -> set[str]:
+    """公式の発表のフィード（scripts/feeds.py の FEEDS・BROAD_FEEDS と速報レーンの発信元）の channelSlug"""
+    global _official_slugs
+    if _official_slugs is None:
+        slugs: set[str] = {"radar-official"}
+        try:
+            import feeds  # noqa: PLC0415
+
+            slugs |= set(feeds.FEEDS_BY_SLUG)
+        except Exception as error:  # noqa: BLE001
+            log(f"   [img] feeds.py を読めない: {str(error)[:80]}")
+        try:
+            rules = json.loads((ROOT / "scripts" / "fast_lane_rules.json").read_text("utf-8"))
+            slugs |= {s.get("slug") for s in rules.get("sources") or [] if s.get("slug")}
+            for outlet in (rules.get("radar") or {}).get("outlets") or []:
+                if outlet.get("host"):
+                    MEDIA_HOSTS.add(outlet["host"])
+        except Exception:  # noqa: BLE001
+            pass
+        try:
+            registry = json.loads((ROOT / "scripts" / "sources_registry.json").read_text("utf-8"))
+            for value in registry.values():
+                if isinstance(value, list):
+                    slugs |= {s.get("slug") for s in value if isinstance(s, dict) and s.get("slug")}
+        except Exception:  # noqa: BLE001
+            pass
+        _official_slugs = slugs
+    return _official_slugs
+
+
+def official_source(article: dict) -> dict | None:
+    """公式の発表なら {"wire": 配信サービス名 or ""}、そうでなければ None"""
+    if article.get("sourceType") != "web":
+        return None
+    page = article.get("sourceUrl") or ""
+    host = urllib.parse.urlparse(page).netloc.lower()
+    slug = article.get("channelSlug") or ""
+    if not host or slug == "trends" or (slug.startswith("radar-") and slug != "radar-official"):
+        return None
+    official_slugs()  # MEDIA_HOSTS に radar.outlets を足す
+    if _host_in(host, MEDIA_HOSTS):
+        return None
+    wire = WIRE_CHANNELS.get(slug) or WIRE_HOSTS.get(_host_in(host, WIRE_HOSTS) or "")
+    if wire:
+        return {"wire": wire}
+    if slug in official_slugs():
+        return {"wire": ""}
+    return None
+
+
+# 発信元の名前（sourceName）から会社・団体名だけを取り出す（「NVIDIA公式ブログ」→「NVIDIA」）
+_ORG_PAREN = re.compile(r"[（(](日本|日本語|AI|Gemini|Copilot|About Amazon|ニュースルーム|新製品|サービス|料金|製品ニュース)[）)]")
+_ORG_TAIL = re.compile(
+    r"(?:[\s.・]*(?:公式ブログ|公式ニュース|日本版ブログ|公式|グローバルニュースルーム|ニュースルーム|ニュースリリース|ニュースセンター|プレスリリース|報道発表|"
+    r"トピックス|ニュース|ブログ|Machine Learning Blog|Developer Blog|Newsroom|Blog|Wire|Source|Changelog|Japan|日本語|日本))+$",
+    re.I,
+)
+
+
+def org_name(article: dict) -> str:
+    name = (article.get("sourceName") or article.get("channel") or "").strip()
+    short = _ORG_TAIL.sub("", _ORG_PAREN.sub("", name)).strip(" ・.")
+    return short or name
+
+
+PAGE_META: dict[str, dict] = {}  # 元記事のページ → {"title", "author"}（source_candidates が入れる）
+
+
+def wire_org(article: dict) -> str:
+    """プレスリリース配信の記事の、発表した会社・団体の名前（分からなければ空）"""
+    meta = PAGE_META.get(article.get("sourceUrl") or "") or {}
+    if meta.get("author"):
+        return meta["author"]
+    title = meta.get("title") or ""
+    match = re.search(r"(?:\||｜| - )\s*([^|｜]{2,60}?)のプレスリリース\s*$", title)
+    if match:
+        return match.group(1).strip()
+    # @Press は「題名 | 会社名」
+    parts = [p.strip() for p in re.split(r"\s\|\s", title) if p.strip()]
+    if len(parts) >= 2 and not re.search(r"(@Press|PR TIMES|プレスリリース|ニュースリリース|配信)", parts[-1]) and len(parts[-1]) <= 40:
+        return parts[-1]
+    return ""
 
 
 # --------------------------------------------------------------------------- #
@@ -371,6 +542,14 @@ def source_candidates(page_url: str, known: str) -> list[str]:
         parser.feed(text or data.decode("utf-8", "ignore"))
     except Exception:  # noqa: BLE001
         pass
+    # 出典の表示用（プレスリリース配信の記事は、発表した会社の名前を題名・構造化データから取る）
+    raw = text or ""
+    title = re.search(r"<title[^>]*>([^<]{1,300})</title>", raw, re.I)
+    author = re.search(r'"author"\s*:\s*\{[^{}]{0,200}?"name"\s*:\s*"([^"]{1,60})"', raw)
+    PAGE_META[page_url] = {
+        "title": html.unescape(title.group(1)).strip() if title else "",
+        "author": html.unescape(author.group(1)).strip() if author else "",
+    }
     for key in ("og:image", "og:image:secure_url", "og:image:url", "twitter:image", "twitter:image:src", "image_src"):
         if parser.meta.get(key):
             out.append(parser.meta[key])
@@ -385,13 +564,14 @@ def source_candidates(page_url: str, known: str) -> list[str]:
     return result
 
 
-def pick_source_image(article: dict, repeats: Counter) -> tuple[str | None, str]:
-    """(使える元記事の画像URL, 使わなかった理由)"""
+def pick_source_image(article: dict, repeats: Counter) -> tuple[str | None, object, str]:
+    """(使える元記事の画像URL, その画像, 使わなかった理由)"""
     current = article.get("thumbnail", "") or ""
     reasons = []
     page = article.get("sourceUrl", "") if article.get("sourceType") == "web" else ""
     # 一覧に同じ写真が並ばないよう、ほかの記事で使っていない画像を優先する（無ければ使用済みでも使う）
     fallback = None
+    fallback_image = None
     for index, url in enumerate(source_candidates(page, current)[:6]):
         used = repeats.get(url, 0) - (1 if url == current else 0)
         problem = url_problem(url, repeats.get(url, 0))
@@ -419,16 +599,16 @@ def pick_source_image(article: dict, repeats: Counter) -> tuple[str | None, str]
         if used > 0:
             # 2本までは同じ発表の写真を共有してよい。3本目からは素材・AI で変化を付ける
             if used < 2:
-                fallback = url
+                fallback, fallback_image = url, image
             else:
                 reasons.append(f"ほかの{used}本と同じ写真")
             continue
         repeats[url] += 0 if url == current else 1
-        return url, ""
+        return url, image, ""
     if fallback:
         repeats[fallback] += 0 if fallback == current else 1
-        return fallback, ""
-    return None, " / ".join(dict.fromkeys(reasons)) or "候補なし"
+        return fallback, fallback_image, ""
+    return None, None, " / ".join(dict.fromkeys(reasons)) or "候補なし"
 
 
 # --------------------------------------------------------------------------- #
@@ -1047,32 +1227,60 @@ def generate_ai(plan: dict, article: dict, fast: bool = False) -> tuple[object, 
 # --------------------------------------------------------------------------- #
 
 
-def render(image) -> tuple[bytes, bytes]:
-    """1200×630 の JPEG（140KB 以下）と 640×336 の WebP"""
-    fitted = ImageOps.fit(image, (OUT_W, OUT_H), method=Image.LANCZOS, centering=(0.5, 0.45))
+# 幅ごとの WebP（表示する枠の幅でブラウザが選ぶ srcset。lib/thumb-url.ts の ownSrcSet と同じ名前）
+#   <名前>.w400.webp / .sm.webp（640。一覧用・従来どおり）/ .w800.webp / .w1200.webp。元の .jpg は SNS カード・構造化データ用
+VARIANT_WIDTHS = (("w400", 400), ("sm", 640), ("w800", 800), ("w1200", 1200))
+
+
+def _jpeg(image) -> bytes:
     jpeg = b""
     for quality in (84, 80, 76, 72, 68, 62, 56, 50, 44, 38):
         buf = io.BytesIO()
-        fitted.save(buf, "JPEG", quality=quality, optimize=True, progressive=True, subsampling=2)
+        image.save(buf, "JPEG", quality=quality, optimize=True, progressive=True, subsampling=2)
         jpeg = buf.getvalue()
         if len(jpeg) <= JPEG_MAX_BYTES:
             break
-    small = fitted.resize((SMALL_W, SMALL_H), Image.LANCZOS)
-    buf = io.BytesIO()
-    small.save(buf, "WEBP", quality=74, method=6)
-    return jpeg, buf.getvalue()
+    return jpeg
 
 
-def store(slug: str, image, dry_run: bool) -> str:
-    jpeg, webp = render(image)
+def webp_variants(image) -> dict[str, bytes]:
+    """幅 400 / 640 / 800 / 1200 の WebP（元より大きくはしない。縦横比はそのまま）"""
+    out: dict[str, bytes] = {}
+    w, h = image.size
+    for name, width in VARIANT_WIDTHS:
+        width = min(width, w)
+        resized = image if width == w else image.resize((width, max(1, round(h * width / w))), Image.LANCZOS)
+        buf = io.BytesIO()
+        resized.save(buf, "WEBP", quality=74 if width <= 640 else 72, method=6)
+        out[name] = buf.getvalue()
+    return out
+
+
+def render(image, keep_aspect: bool = False) -> tuple[bytes, dict[str, bytes]]:
+    """JPEG（140KB 以下）と幅ごとの WebP。
+    フリー素材・AI 生成は 1200×630 に切り抜く。公式発表の写真（keep_aspect）は切り抜かず、幅 1200 まで縮小するだけ"""
+    if keep_aspect:
+        w, h = image.size
+        fitted = image if w <= OUT_W else image.resize((OUT_W, round(h * OUT_W / w)), Image.LANCZOS)
+    else:
+        fitted = ImageOps.fit(image, (OUT_W, OUT_H), method=Image.LANCZOS, centering=(0.5, 0.45))
+    return _jpeg(fitted), webp_variants(fitted)
+
+
+def store(slug: str, image, dry_run: bool, keep_aspect: bool = False) -> tuple[str, tuple[int, int]]:
+    """KV に置いて (/img/<名前>.jpg の URL, (幅, 高さ)) を返す"""
+    jpeg, variants = render(image, keep_aspect)
     key = f"{slug[:120]}-{hashlib.sha1(jpeg).hexdigest()[:8]}"
     if PREVIEW_DIR:
         (PREVIEW_DIR / f"{key}.jpg").write_bytes(jpeg)
     if not dry_run:
         kv_put(f"{key}.jpg", jpeg)
-        kv_put(f"{key}.sm.webp", webp)
-    log(f"   [img] 保存 {key}.jpg（{len(jpeg) // 1024}KB）/ .sm.webp（{len(webp) // 1024}KB）" + ("（dry-run）" if dry_run else ""))
-    return f"{IMAGE_BASE}{key}.jpg"
+        for name, data in variants.items():
+            kv_put(f"{key}.{name}.webp", data)
+    size = open_image(jpeg).size
+    sizes = " / ".join(f".{n}.webp {len(d) // 1024}KB" for n, d in variants.items())
+    log(f"   [img] 保存 {key}.jpg（{size[0]}×{size[1]}・{len(jpeg) // 1024}KB）{sizes}" + ("（dry-run）" if dry_run else ""))
+    return f"{IMAGE_BASE}{key}.jpg", size
 
 
 # --------------------------------------------------------------------------- #
@@ -1133,16 +1341,44 @@ def process(path: Path, article: dict, ctx: dict) -> str:
                 save(path, article)
             return "inherit"
 
-    # 1. 元記事の写真（AI 画像の探し直しでは検査済みなので飛ばす）
-    if not ctx.get("retry_ai"):
-        url, why = pick_source_image(article, ctx["repeats"])
-        if url:
-            log(f"   [img] 元記事の写真を使う: {url[:100]}")
-            article["thumbnail"] = url
-            article["imageCredit"] = {"kind": "source", "provider": article.get("sourceName") or article.get("channel", ""), "sourceUrl": article.get("sourceUrl", "")}
+    # 1. 元記事の写真。公式の発表（会社・団体の自社サイト、プレスリリース配信）だけ使い、縮小して自前の KV から配信する。
+    #    ほかのニュースサイト・ブログ・SNS の写真は保存も直リンクもしない（AI 画像の探し直しでは検査済みなので飛ばす）
+    official = official_source(article)
+    if not ctx.get("retry_ai") and official is None:
+        log("   [img] 公式の発表ではないので元記事の写真は使わない")
+    elif not ctx.get("retry_ai"):
+        url, image, why = pick_source_image(article, ctx["repeats"])
+        if url and image is not None:
+            org = wire_org(article) if official["wire"] else org_name(article)
+            reuse = ctx["official_by_original"].get(url)
+            if reuse:
+                new_url, size = reuse["thumbnail"], (reuse["credit"].get("width"), reuse["credit"].get("height"))
+                log(f"   [img] 公式発表の写真（保存済みを使い回す）: {new_url}")
+            else:
+                log(f"   [img] 公式発表の写真を保存して使う: {url[:100]}")
+                try:
+                    new_url, size = store(slug, image, ctx["dry_run"], keep_aspect=True)
+                except Exception as error:  # noqa: BLE001
+                    log(f"   [img] 保存に失敗: {str(error)[:120]}")
+                    return "error"
+            credit = {
+                "kind": "official",
+                "org": org or official["wire"],
+                "provider": article.get("sourceName") or article.get("channel", ""),
+                "sourceUrl": article.get("sourceUrl", ""),
+                "original": url,
+                "width": size[0],
+                "height": size[1],
+                "at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            }
+            if official["wire"]:
+                credit["via"] = official["wire"]
+            article["thumbnail"] = new_url
+            article["imageCredit"] = credit
+            ctx["official_by_original"][url] = {"thumbnail": new_url, "credit": credit}
             if not ctx["dry_run"]:
                 save(path, article)
-            return "source"
+            return "official"
         log(f"   [img] 元記事の写真は使わない: {why}")
 
     # 2. フリー素材 → 3. AI 生成
@@ -1187,7 +1423,7 @@ def process(path: Path, article: dict, ctx: dict) -> str:
         log(f"   [img] AI 生成: {model}")
 
     try:
-        new_url = store(slug, image, ctx["dry_run"])
+        new_url, _ = store(slug, image, ctx["dry_run"])
     except Exception as error:  # noqa: BLE001
         log(f"   [img] 保存に失敗: {str(error)[:120]}")
         return "error"
@@ -1246,6 +1482,8 @@ def main() -> int:
     parser.add_argument("--ai-only", action="store_true", help="素材を探さず AI 生成だけ（確認用）")
     parser.add_argument("--recheck-source", action="store_true", help="元記事の写真を採用した記事を今の基準で見直す")
     parser.add_argument("--retry-ai", action="store_true", help="AI 生成の画像の記事でフリー素材を探し直す（見つからなければそのまま）")
+    parser.add_argument("--cache-official", action="store_true", help="外部の写真を直リンクしている記事を直す（公式発表の写真は自前に保存、それ以外はフリー素材・AI 生成に）")
+    parser.add_argument("--variants", action="store_true", help="前からある自前の写真に幅ごとの WebP を足す")
     parser.add_argument("--dry-run", action="store_true", help="保存しない")
     parser.add_argument("--preview", help="出来上がった JPEG をこのフォルダにも書く（確認用）")
     parser.add_argument("--shard", help="並列実行の分担（例: 0/3）")
@@ -1270,12 +1508,23 @@ def main() -> int:
         "repeats": repeats,
         "used_stock": {(a.get("imageCredit") or {}).get("sourceUrl") for a in articles.values() if (a.get("imageCredit") or {}).get("kind") == "stock"},
         "credit_by_thumb": {a["thumbnail"]: a["imageCredit"] for a in articles.values() if a.get("imageCredit") and is_ours(a.get("thumbnail", ""))},
+        # 保存済みの公式発表の写真（元の URL → 自前の URL）。同じ写真を記事ごとに保存し直さない
+        "official_by_original": {
+            a["imageCredit"]["original"]: {"thumbnail": a["thumbnail"], "credit": a["imageCredit"]}
+            for a in articles.values()
+            if (a.get("imageCredit") or {}).get("kind") == "official" and a["imageCredit"].get("original") and is_ours(a.get("thumbnail", ""))
+        },
         "dry_run": args.dry_run,
         "fast": args.fast,
         "ai_only": args.ai_only,
         "defer_hours": args.defer_hours,
         "retry_ai": args.retry_ai,
     }
+
+    if args.variants:
+        tally = backfill_variants(articles, args.dry_run, args.max, args.budget, started)
+        log(f"[img] 結果: {dict(tally)}")
+        return 0
 
     ordered = sorted(articles.items(), key=newest_first, reverse=True)
     if args.slug:
@@ -1285,6 +1534,15 @@ def main() -> int:
     elif args.recheck_source:
         # 元記事の写真を採用した記事を、今の基準（文字・図が主役の画像は不採用）で見直す
         targets = [(p, a) for p, a in ordered if (a.get("imageCredit") or {}).get("kind") == "source"]
+        for _, a in targets:
+            a.pop("imageCredit", None)
+    elif args.cache_official:
+        # 外部のサイトの写真を直リンクしている記事（YouTube のサムネイル・地震の記事は除く）
+        targets = [
+            (p, a)
+            for p, a in ordered
+            if a.get("thumbnail") and not is_ours(a["thumbnail"]) and not is_youtube(a["thumbnail"]) and not a.get("noPhoto")
+        ]
         for _, a in targets:
             a.pop("imageCredit", None)
     elif args.retry_ai:
