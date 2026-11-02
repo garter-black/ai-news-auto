@@ -7904,6 +7904,14 @@
       "skipped": true,
       "url": "https://www.au.com/information/topic/pontapass/2026-003/"
     },
+    "8bc0d6eec5badada": {
+      "at": "2026-11-02T09:51:28.797534+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "mof-jgb-interest-rate-202610",
+      "url": "https://www.mof.go.jp/jgbs/reference/interest_rate/jgbcm.csv"
+    },
     "8be9d9b68151b035": {
       "at": "2026-10-27T00:51:32.495681+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11920,28 +11928,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T06:51:53.376557+00:00",
-      "attempt": 0,
-      "id": "23ac914e0e3febaf",
-      "kind": "broad",
-      "model": "",
-      "problems": [
-        "読みやすさ基準外のまま受理: 書き直し後の確認に不合格: 「2026年10月末時点で614自治体が先行実施に参加」→元記事では「2026年10月28日時点」とされており、月末時点という表現は正確ではない。; 「マイナンバーカードを健康保険証として使うことで、受給者証の役割も兼ねさせることが可能になります」→元記事には「"
-      ],
-      "readability": {
-        "avg_paragraph": 156.8,
-        "avg_sentence": 47.5,
-        "long_share": 0.182,
-        "max_paragraph": 252,
-        "paragraphs": 10,
-        "sentences": 33
-      },
-      "score": 100,
-      "source": "digital-agency",
-      "title": "自治体・医療機関等をつなぐ情報連携システム（Public Medical Hub：PMH）に係る「先行実施事業の実施状況」「自治体・自治体システムベンダー向けの"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T07:11:12.417407+00:00",
@@ -18523,6 +18509,26 @@
       "score": 100,
       "source": "nli-research",
       "title": "乖離する企業の２つの「物価」見通し－物価見通しは２％超でも自社の中期の販売価格見通しは１％未満"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T09:51:28.796695+00:00",
+      "attempt": 1,
+      "id": "8bc0d6eec5badada",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 101.9,
+        "avg_sentence": 44.3,
+        "long_share": 0.087,
+        "max_paragraph": 134,
+        "paragraphs": 10,
+        "sentences": 23
+      },
+      "score": 100,
+      "source": "mof",
+      "title": "国債金利情報(令和8年10月30日)"
     }
   ],
   "short_text_retry": {},
