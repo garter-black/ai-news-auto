@@ -7525,6 +7525,15 @@
       "skipped": true,
       "url": "https://www.maff.go.jp/j/press/syouan/nouan/261027.html"
     },
+    "85c82f0a957177ca": {
+      "at": "2026-11-02T05:03:21.511808+00:00",
+      "major": true,
+      "model": "claude:sonnet",
+      "score": 95,
+      "section": "ai",
+      "slug": "chatgpt-codex-shared-usage-limits",
+      "url": "https://help.openai.com/en/articles/20001625-understanding-chatgpt-and-codex-usage-limits"
+    },
     "85d975255b4f9d00": {
       "at": "2026-10-29T15:58:58.789191+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -11634,30 +11643,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:01:38.846690+00:00",
-      "attempt": 1,
-      "id": "c51c36735c001787",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1326字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（377字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 124.7,
-        "avg_sentence": 56.1,
-        "long_share": 0.45,
-        "max_paragraph": 198,
-        "paragraphs": 9,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "stat",
-      "title": "令和6年全国家計構造調査 年間収入・資産分布等に関する結果（ジニ係数、貧困率等を除く）"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T05:01:45.994927+00:00",
@@ -18316,6 +18301,26 @@
       "score": 86,
       "source": "radar-official",
       "title": "What is the Ultra plan? | Claude Help Center"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T05:03:21.510496+00:00",
+      "attempt": 1,
+      "id": "85c82f0a957177ca",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 57.7,
+        "avg_sentence": 30.0,
+        "long_share": 0.06,
+        "max_paragraph": 137,
+        "paragraphs": 26,
+        "sentences": 50
+      },
+      "score": 95,
+      "source": "radar-official",
+      "title": "ChatGPTの「Chat」と「Work」を統合、利用枠はCodexと共通に"
     }
   ],
   "short_text_retry": {},

@@ -310,6 +310,19 @@
       "title": "ソフトバンク、新型「iPad mini（A20 Pro）」価格発表 11万9800円～",
       "url": "https://k-tai.watch.impress.co.jp/docs/news/2151814.html"
     },
+    "85c82f0a957177ca": {
+      "detectedAt": "2026-11-02T05:01:24+00:00",
+      "finishedAt": "2026-11-02T05:03:21+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41391708809",
+      "slug": "chatgpt-codex-shared-usage-limits",
+      "source": "radar-official",
+      "sourcePublishedAt": "2026-11-02T05:01:24+00:00",
+      "startedAt": "2026-11-02T05:02:47+00:00",
+      "title": "ChatGPTの「Chat」と「Work」を統合、利用枠はCodexと共通に",
+      "url": "https://help.openai.com/en/articles/20001625-understanding-chatgpt-and-codex-usage-limits"
+    },
     "8e5047be2ea6e246": {
       "detectedAt": "2026-11-02T04:53:24+00:00",
       "finishedAt": "2026-11-02T04:55:51+00:00",
