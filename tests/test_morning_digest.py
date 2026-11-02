@@ -311,7 +311,7 @@ class BlueskyCompatibilityTests(unittest.TestCase):
                 result=bp.plan('digest-20261029',{'style':'digest','items':['old'],'dueAt':'2026-10-28T22:30:00+00:00'})
         self.assertIn('2026/10/29',result['text'])
         self.assertIn('今朝',result['text'])
-        self.assertEqual(result['title'],'AIニュースまとめ｜サイソクAIニュース')
+        self.assertEqual(result['title'],'AIニュースまとめ｜サイソクニュース')
 
     def test_new_late_digest_uses_exact_saved_text_even_without_article_files(self):
         text='今日のAIニュース3本（2026/10/30）\n・確認済みの本文'

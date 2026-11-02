@@ -254,8 +254,8 @@ def threads_input(channel_id: str, post: dict, when: dict) -> dict:
     if post["reply"]:
         thread.append({"text": post["reply"], "assets": [], "metadata": {"threads": {"linkAttachment": {
             "url": tp.utm_link(post["link"], "threads", "digest"),
-            "title": "サイソクAIニュース 新着一覧",
-            "description": "AI・テックの公式発表を、速く・分かりやすく。",
+            "title": "サイソクニュース 新着一覧",
+            "description": "AI・ビジネス・お金の公式発表を、速く・分かりやすく。",
             "thumbnail": {"url": f"{tp.site_url()}/logo.png"},
         }}}})
     return {

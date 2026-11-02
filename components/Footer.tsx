@@ -57,7 +57,7 @@ export default function Footer() {
             <p className="mt-8 max-w-md text-note leading-[1.8] text-muted">
               当サイトはA8.netなどのアフィリエイトプログラムに参加しており、
               記事内に広告（プロモーション）を含む場合があります。
-              <span className="mt-1 block">Amazonのアソシエイトとして、サイソクAIニュースは適格販売により収入を得ています。</span>
+              <span className="mt-1 block">Amazonのアソシエイトとして、{siteConfig.siteName}は適格販売により収入を得ています。</span>
             </p>
 
             <p className="mt-6 text-note font-bold text-ink">

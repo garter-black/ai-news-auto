@@ -17,7 +17,7 @@ export type Mail = {
 export type SendResult = { sent: true; provider: string } | { sent: false; reason: string };
 
 const DEFAULT_FROM = "news@ai-tech-express.jp";
-const FROM_NAME = "サイソクAIニュース";
+const FROM_NAME = "サイソクニュース";
 
 export function mailerConfigured(env: NewsletterEnv): boolean {
   return Boolean((env.CF_EMAIL_TOKEN && env.CLOUDFLARE_ACCOUNT_ID) || env.RESEND_API_KEY);

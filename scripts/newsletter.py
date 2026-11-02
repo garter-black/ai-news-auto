@@ -31,7 +31,7 @@ from digest import JST, ROOT, article_url, pick_top, site_url, summary_lines, ti
 
 KV_NAMESPACE_ID = os.environ.get("NEWSLETTER_KV_ID", "d0108c8275074124b8fdfbd577111999")
 FROM_ADDRESS = os.environ.get("NEWSLETTER_FROM", "news@ai-tech-express.jp")
-FROM_NAME = "サイソクAIニュース"
+FROM_NAME = "サイソクニュース"
 # 送信の上限（Resend の無料枠は1日100通。確認メールも数える）
 DAILY_MAX = int(os.environ.get("NEWSLETTER_DAILY_MAX", "95"))
 
@@ -170,19 +170,19 @@ def build_digest(articles: list[dict], date_label: str, campaign: str) -> dict:
     ]
     lead = items[0]["title"]
     lead = lead if len(lead) <= 28 else lead[:27] + "…"
-    subject = f"【サイソク朝刊 {date_label}】{lead}ほか{len(items) - 1}本" if len(items) > 1 else f"【サイソク朝刊 {date_label}】{lead}"
+    subject = f"【サイソクニュース朝刊 {date_label}】{lead}ほか{len(items) - 1}本" if len(items) > 1 else f"【サイソクニュース朝刊 {date_label}】{lead}"
     return {"subject": subject, "items": items, "date": date_label}
 
 
 def render(digest: dict, unsubscribe_url: str) -> tuple[str, str]:
-    text_parts = [f"サイソクAIニュース 朝刊（{digest['date']}）", "昨日のAIニュースから、押さえておきたい5本です。", ""]
+    text_parts = [f"サイソクニュース 朝刊（{digest['date']}）", "昨日のAIニュースから、押さえておきたい5本です。", ""]
     for i, item in enumerate(digest["items"], 1):
         text_parts += [f"{i}. {item['title']}", *[f"   ・{line}" for line in item["lines"]], f"   {item['url']}", ""]
     text_parts += [
         "―",
         f"すべての記事: {site_url()}/?utm_source=newsletter&utm_medium=email",
         f"配信の解除: {unsubscribe_url}",
-        "サイソクAIニュース（記事はAIが一次情報を解析して作成しています。重要な判断は公式発表をご確認ください）",
+        "サイソクニュース（記事はAIが一次情報を解析して作成しています。重要な判断は公式発表をご確認ください）",
     ]
     text = "\n".join(text_parts)
 
@@ -202,7 +202,7 @@ def render(digest: dict, unsubscribe_url: str) -> tuple[str, str]:
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f1"><tr><td align="center" style="padding:24px 12px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#fff;border-top:3px solid #111;font-family:'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',Meiryo,sans-serif;color:#111">
 <tr><td style="padding:24px 24px 6px">
-<p style="margin:0;font-size:12px;font-weight:700;letter-spacing:.08em;color:#62625d">サイソクAIニュース 朝刊 ・ {esc(digest['date'])}</p>
+<p style="margin:0;font-size:12px;font-weight:700;letter-spacing:.08em;color:#62625d">サイソクニュース 朝刊 ・ {esc(digest['date'])}</p>
 <p style="margin:8px 0 0;font-size:15px;line-height:1.8;color:#3b3b37">昨日のAIニュースから、押さえておきたい5本です。</p>
 </td></tr>
 <tr><td style="padding:0 24px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">{rows}</table></td></tr>
@@ -215,15 +215,15 @@ def render(digest: dict, unsubscribe_url: str) -> tuple[str, str]:
 
 def confirm_mail(sub_id: str, token: str) -> tuple[str, str, str]:
     url = f"{site_url()}/api/newsletter/confirm?id={sub_id}&t={token}"
-    subject = "【サイソク】メール配信の登録を確認してください"
+    subject = "【サイソクニュース】メール配信の登録を確認してください"
     text = (
-        "サイソクAIニュースのメール配信にご登録いただき、ありがとうございます。\n\n"
+        "サイソクニュースのメール配信にご登録いただき、ありがとうございます。\n\n"
         f"下のリンクを開くと登録が完了し、翌朝7時から配信が始まります。\n{url}\n\n"
         "お心当たりがない場合は、このメールを破棄してください。登録はされません。"
     )
     body = (
         '<!doctype html><html lang="ja"><body style="font-family:sans-serif;color:#111;line-height:1.9">'
-        "<p>サイソクAIニュースのメール配信にご登録いただき、ありがとうございます。</p>"
+        "<p>サイソクニュースのメール配信にご登録いただき、ありがとうございます。</p>"
         f'<p><a href="{html.escape(url)}" style="display:inline-block;background:#0a6fa0;color:#fff;padding:12px 22px;text-decoration:none;font-weight:700">登録を完了する</a></p>'
         '<p style="font-size:12px;color:#62625d">お心当たりがない場合は、このメールを破棄してください。登録はされません。</p></body></html>'
     )

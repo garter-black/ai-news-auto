@@ -21,6 +21,7 @@ OUT = ROOT / "app" / "_fonts" / "dela-gothic-one-subset.woff2"
 # いま font-display で出している文言（Header・Footer・Thumb のロゴ、RailRanking・compare の見出し）
 TEXTS = [
     "サイソク",
+    "サイソクニュース",
     "サイソクのおすすめ選",
     "今日の話題をもっと深く知る3選",
     "もっと深く知るための3選",

@@ -1,6 +1,6 @@
 # ニュースアプリ・Google ニュース 申請資料
 
-作成: 2026-10-27。サイト: https://ai-tech-express.jp（サイソクAIニュース）
+作成: 2026-10-27（2026-11-02 に媒体名を「サイソクAIニュース」から「サイソクニュース」へ変更）。サイト: https://ai-tech-express.jp（サイソクニュース）
 
 各社の条件は公式ヘルプで確認した内容です（出典 URL は各節に記載）。
 `【要記入】` は運営者本人にしか書けない項目です。実在しない情報は書かないでください。
@@ -31,7 +31,7 @@
 | https://ai-tech-express.jp/feeds/gunosy.xml | グノシー（GunosyFeed 3.2） | 全文。表は段落に展開、本文中のリンクは外して出典リンクだけ残す。`guid` は URL でない値。直近10日・最大50本 |
 | https://ai-tech-express.jp/feeds/news.xml | 汎用（NewsPicks・LINE NEWS など仕様非公開の配信先） | 全文・`enclosure`・`media:content`。直近14日・最大50本 |
 | https://ai-tech-express.jp/feed.xml | 読者・RSS リーダー向け（従来どおり） | 要約のみ・全記事50本 |
-| https://ai-tech-express.jp/news-sitemap.xml | Google ニュース | 直近48時間・媒体名「サイソクAIニュース」・言語 ja |
+| https://ai-tech-express.jp/news-sitemap.xml | Google ニュース | 直近48時間・媒体名「サイソクニュース」・言語 ja |
 
 ロゴ画像:
 - 横長 600×100: https://ai-tech-express.jp/feeds/logo-wide.png
@@ -45,7 +45,7 @@
 ## 2. 共通の文面（コピーして使う）
 
 **媒体名**
-サイソクAIニュース
+サイソクニュース
 
 **媒体 URL**
 https://ai-tech-express.jp
@@ -60,7 +60,7 @@ koyuiw7@gmail.com（お問い合わせページ: https://ai-tech-express.jp/cont
 2026年7月（独自ドメインは 2026年7月30日から）
 
 **媒体概要（約200字）**
-> サイソクAIニュースは、OpenAI・Google・Anthropicなど海外AI企業の新発表を、最速で日本語に整理して届けるニュースサイトです。公式ブログや発表動画などの一次情報をもとに、要点・料金・日本から使えるか・無料で試せるかを判定し、専門用語を使わない「かんたん版」もあわせて掲載します。記事の作成には生成AIを使い、元の発表との照合を経て公開しています。全記事に出典へのリンクを明記しています。
+> サイソクニュースは、OpenAI・Google・Anthropicなど海外AI企業の新発表を、最速で日本語に整理して届けるニュースサイトです。公式ブログや発表動画などの一次情報をもとに、要点・料金・日本から使えるか・無料で試せるかを判定し、専門用語を使わない「かんたん版」もあわせて掲載します。記事の作成には生成AIを使い、元の発表との照合を経て公開しています。全記事に出典へのリンクを明記しています。
 
 **編集方針の要約**
 > ・企業・研究機関・官公庁の公式発表などの一次情報を根拠にし、全記事に出典へのリンクを載せます。
@@ -107,7 +107,7 @@ koyuiw7@gmail.com（お問い合わせページ: https://ai-tech-express.jp/cont
 | メールアドレス | koyuiw7@gmail.com |
 | 記事利用への同意 | 内容を読んで同意（タイトル・サムネイル・リンクの表示、タイトルの調整など） |
 | RSS 配信の希望 | 希望する → https://ai-tech-express.jp/feeds/news.xml |
-| 媒体名 | サイソクAIニュース |
+| 媒体名 | サイソクニュース |
 | 媒体 URL | https://ai-tech-express.jp |
 | 会社名（個人の場合は個人名） | 【要記入: 本名】 |
 | 問い合わせページ URL | https://ai-tech-express.jp/contact （Web フォーム推奨とあるので、Google フォームを作ってこのページに置くとよい） |
@@ -126,7 +126,7 @@ koyuiw7@gmail.com（お問い合わせページ: https://ai-tech-express.jp/cont
 - 生成 AI: 価値を足さずに大量生成するとスパム扱いになり得る。人による事実確認と、どう作ったかの開示を推奨。https://developers.google.com/search/docs/fundamentals/using-gen-ai-content
 
 サイト側で済んでいること:
-- ニュースサイトマップ（媒体名を「サイソクAIニュース」に統一）・robots.txt に記載
+- ニュースサイトマップ（媒体名を「サイソクニュース」に統一）・robots.txt に記載
 - 記事の NewsArticle 構造化データ（見出し・掲載日時・更新日時・1200×630 画像・著者・発行者とロゴ・無料記事・編集方針と訂正方針・AI 利用の開示 `backstory`）
 - `max-image-preview:large`
 - 運営者情報・お問い合わせ・編集方針ページ、記事末尾の AI 利用の開示
@@ -149,7 +149,7 @@ koyuiw7@gmail.com（お問い合わせページ: https://ai-tech-express.jp/cont
 | 住所 | 【要記入】 |
 | 電話番号 | 【要記入】 |
 | サイト URL | https://ai-tech-express.jp |
-| サイト名 | サイソクAIニュース |
+| サイト名 | サイソクニュース |
 | 月間 PV / 月間 UU | 【要記入: 実数】／約600〜900 |
 | 1日の配信本数（広告・プレスリリース転載・他社転載を除く） | 約5本 |
 | 主な配信先 | なし（自社サイトのみ）。NewsPicks に申請中、と書けるなら書く |

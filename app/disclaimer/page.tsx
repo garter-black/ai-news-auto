@@ -84,7 +84,7 @@ export default function DisclaimerPage() {
       </ul>
       <p>
         当サイトは、Amazon.co.jpを宣伝しリンクすることによってサイトが紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである、Amazonアソシエイト・プログラムの参加者です。
-        <strong>Amazonのアソシエイトとして、サイソクAIニュースは適格販売により収入を得ています。</strong>
+        <strong>Amazonのアソシエイトとして、{siteConfig.siteName}は適格販売により収入を得ています。</strong>
         Amazonへのリンクには価格や商品画像を載せず、商品名・検索結果へのテキストリンクのみを掲載しています。
       </p>
       <p>

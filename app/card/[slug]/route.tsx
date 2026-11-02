@@ -245,12 +245,12 @@ async function renderCard(article: FullArticle): Promise<ImageResponse> {
                 color: "rgba(255,255,255,0.14)",
               }}
             >
-              {isOther ? sourceName || "AI NEWS" : company.name}
+              {isOther ? sourceName || "NEWS" : company.name}
             </div>
           )}
           {/* ロゴ */}
           <div style={{ position: "absolute", right: 52, top: 44, display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ display: "flex", fontFamily: "Dela", fontSize: 40, color: "#fff", textShadow: "0 2px 6px rgba(0,0,0,0.55), 0 0 18px rgba(0,0,0,0.45)" }}>サイソク</div>
+            <div style={{ display: "flex", fontFamily: "Dela", fontSize: 40, color: "#fff", textShadow: "0 2px 6px rgba(0,0,0,0.55), 0 0 18px rgba(0,0,0,0.45)" }}>サイソクニュース</div>
             <div style={{ width: 14, height: 14, borderRadius: 7, background: RED, marginTop: -18 }} />
           </div>
         </div>

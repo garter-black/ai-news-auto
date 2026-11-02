@@ -22,9 +22,10 @@ class FakeFetcher:
 
 class IdentityTest(unittest.TestCase):
     def fixture(self, *, robots_meta="index, follow", news=True, publisher_url=BASE):
-        publisher = {"@type": "NewsMediaOrganization", "@id": BASE + "/#publisher", "name": "サイソクAIニュース",
+        publisher = {"@type": "NewsMediaOrganization", "@id": BASE + "/#publisher", "name": "サイソクニュース",
+                     "alternateName": ["サイソクAIニュース", "サイソク"],
                      "url": publisher_url, "logo": {"url": BASE + "/icons/icon-512.png"}}
-        website = {"@type": "WebSite", "name": "サイソクAIニュース", "url": BASE, "publisher": publisher}
+        website = {"@type": "WebSite", "name": "サイソクニュース", "url": BASE, "publisher": publisher}
         html = (f'<link rel="canonical" href="{BASE}/"><meta name="robots" content="{robots_meta}">'
                 '<link rel="icon" href="/favicon.ico?v=1"><link rel="icon" href="/icons/icon-512.png">'
                 '<a href="/articles/sample">Article</a>'

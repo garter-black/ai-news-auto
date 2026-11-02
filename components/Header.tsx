@@ -29,7 +29,7 @@ export default function Header() {
         <div className="mx-auto flex h-14 max-w-[1240px] items-center gap-6 px-4 sm:px-8">
           <Link href="/" className="flex shrink-0 items-baseline gap-3">
             <span className="font-display text-[1.35rem] leading-none text-mast-ink">{siteConfig.shortName}</span>
-            <span className="hidden text-meta font-bold text-mast-muted sm:inline md:hidden lg:inline">{siteConfig.tagline}</span>
+            <span className="hidden text-meta font-bold text-mast-muted sm:inline md:hidden xl:inline">{siteConfig.tagline}</span>
           </Link>
 
           <HeaderNav items={NAV} />

@@ -127,7 +127,7 @@ def plan(key: str, entry: dict) -> dict | None:
                 return None
             text = md.compose(items, datetime.fromisoformat(recorded_at.replace("Z", "+00:00")))
         link = tp.utm_link(f"{tp.site_url()}/news", "bluesky", "digest")
-        return {"text": text, "link": link, "title": "AIニュースまとめ｜サイソクAIニュース",
+        return {"text": text, "link": link, "title": "AIニュースまとめ｜サイソクニュース",
                 "desc": "直近のAIニュースを1分で。", "images": [f"{tp.site_url()}/cover/{items[0]['slug']}"] if items else []}
     path = tp.ARTICLES_DIR / f"{key}.json"
     if not path.exists():

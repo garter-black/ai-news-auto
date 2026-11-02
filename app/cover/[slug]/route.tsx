@@ -266,7 +266,7 @@ async function renderCover(article: FullArticle): Promise<ImageResponse> {
               color: "rgba(255,255,255,0.14)",
             }}
           >
-            {isOther ? sourceName || "AI NEWS" : company.name}
+            {isOther ? sourceName || "NEWS" : company.name}
           </div>
         )}
 
@@ -301,7 +301,7 @@ async function renderCover(article: FullArticle): Promise<ImageResponse> {
             textShadow: "0 2px 10px rgba(0,0,0,0.45)",
           }}
         >
-          サイソク
+          サイソクニュース
         </div>
 
         {/* 見出し：左に企業色の縦線、上に赤いラベル */}

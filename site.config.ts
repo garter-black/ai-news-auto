@@ -3,14 +3,19 @@
  * NEXT_PUBLIC_SITE_URL は Vercel の環境変数で本番ドメインに差し替える。
  */
 export const siteConfig = {
-  name: "サイソク",
-  shortName: "サイソク",
-  // 検索結果でアイコンの横に出るサイト名。何に特化したサイトかが伝わる名前にする
-  siteName: "サイソクAIニュース",
-  // 「催促」と読み違えられないよう、タグラインとタイトルで必ず「最速」を併記する
-  tagline: "最速で、要点だけ。",
+  // 2026-11-02 に「サイソクAIニュース」から改名（SNS 4つと同じ名前）。旧名は formerName として構造化データに残す
+  name: "サイソクニュース",
+  shortName: "サイソクニュース",
+  // 本文で使う略称（「サイソクの判断」など）
+  nickname: "サイソク",
+  // 検索結果でアイコンの横に出るサイト名
+  siteName: "サイソクニュース",
+  // 旧名。JSON-LD の alternateName に入れ、Google に同じ媒体だと伝える（消さない）
+  formerName: "サイソクAIニュース",
+  // 「催促」と読み違えられないよう、題名では「最速」を併記する（app/layout.tsx）
+  tagline: "仕事とお金の“旬”を、どこよりも速く。",
   description:
-    "OpenAI・Google・Anthropicなど海外AIの新発表を、最速で日本語に。新機能が今すぐ使えるか、日本から使えるか、無料で試せるかまで判定して、誰でもわかる言葉で解説します。",
+    "AI・ビジネス・お金・投資・不動産の新しい動きを、公式発表から最短数分で。「自分にどう関係する？何をすればいい？」まで3行で。",
   url:
     process.env.NEXT_PUBLIC_SITE_URL ??
     (process.env.VERCEL_PROJECT_PRODUCTION_URL

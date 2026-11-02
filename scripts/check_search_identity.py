@@ -21,6 +21,9 @@ import xml.etree.ElementTree as ET
 
 USER_AGENT = "SaisokuSearchIdentityAudit/1.0 (+https://ai-tech-express.jp/about; read-only)"
 MAX_BODY = 2_000_000
+# 2026-11-02 に改名。旧名は alternateName に残っていること（Google が同じ媒体とつなげるため）
+SITE_NAME = "サイソクニュース"
+FORMER_NAME = "サイソクAIニュース"
 MAX_IMAGE = 1_000_000
 
 
@@ -181,7 +184,7 @@ def audit(base, legacy_base, *, fetcher=None, legacy_retired=False, article_path
     except (ValueError, TypeError):
         check("jsonld_parse", False, "invalid JSON-LD")
     websites = [node for node in structured if has_type(node, "WebSite")]
-    check("website", len(websites) == 1 and websites[0].get("name") == "サイソクAIニュース"
+    check("website", len(websites) == 1 and websites[0].get("name") == SITE_NAME
           and same_base(websites[0].get("url"), base), {"count": len(websites)})
     publisher = websites[0].get("publisher", {}) if websites else {}
     publisher = publisher if isinstance(publisher, dict) else {}
@@ -189,9 +192,10 @@ def audit(base, legacy_base, *, fetcher=None, legacy_retired=False, article_path
         publisher = next((node for node in structured if node.get("@id") == publisher["@id"] and "name" in node), publisher)
     check("publisher_identity", has_type(publisher, "NewsMediaOrganization")
           and publisher.get("@id") == base + "/#publisher"
-          and publisher.get("name") == "サイソクAIニュース"
+          and publisher.get("name") == SITE_NAME
+          and FORMER_NAME in (publisher.get("alternateName") or [])
           and same_base(publisher.get("url"), base),
-          {key: publisher.get(key) for key in ["@type", "@id", "name", "url"]})
+          {key: publisher.get(key) for key in ["@type", "@id", "name", "alternateName", "url"]})
     logo = publisher.get("logo", {})
     logo_url = logo.get("url", logo.get("contentUrl", "")) if isinstance(logo, dict) else logo
     logo_url = parse.urljoin(base + "/", logo_url) if isinstance(logo_url, str) and logo_url else ""

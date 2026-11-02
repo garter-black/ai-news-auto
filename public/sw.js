@@ -1,5 +1,5 @@
 /*
- * サイソクAIニュースの Service Worker。速報のプッシュ通知を表示し、押したら記事を開くだけ。
+ * サイソクニュースの Service Worker。速報のプッシュ通知を表示し、押したら記事を開くだけ。
  * ページの読み込み・キャッシュには一切関わらない（fetch のハンドラを置かない。古いページを返さないため）。
  * 送信側は cloudflare/push.ts、登録の画面は components/PushOptIn.tsx。
  */
@@ -22,7 +22,7 @@ self.addEventListener("push", (event) => {
   } catch {
     data = { body: event.data ? event.data.text() : "" };
   }
-  const title = data.title || "サイソクAIニュース";
+  const title = data.title || "サイソクニュース";
   event.waitUntil(
     self.registration.showNotification(title, {
       body: data.body || "",
