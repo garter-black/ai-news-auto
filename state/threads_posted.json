@@ -2843,7 +2843,8 @@
       "permalink": "",
       "channels": {
         "twitter": "6ae7d433902c3fb1dec55fa1",
-        "facebook": "6ae7d43301fa08ffbe74ab0c"
+        "facebook": "6ae7d43301fa08ffbe74ab0c",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzcrlwdsec2z"
       },
       "hook": "callout",
       "score": 5,
@@ -2855,7 +2856,8 @@
       "questionText": "開発で使ってみたいですか？",
       "comment": "編集部：開発の手間が少し減りそうです。",
       "dueAt": "2026-11-02T06:30:00+00:00",
-      "postedAt": "2026-11-02T00:07:16+00:00"
+      "postedAt": "2026-11-02T00:07:16+00:00",
+      "blueskyAt": "2026-11-02T07:13:59+00:00"
     },
     "chatgpt-codex-shared-usage-limits": {
       "id": "6ae825127817c41d1a46dd3e",
