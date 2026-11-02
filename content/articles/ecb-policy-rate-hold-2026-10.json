@@ -65,5 +65,68 @@
     "query": "ecb building",
     "original": "https://www.nli-research.co.jp/files/topics/87227_ext_03_0.jpg",
     "at": "2026-10-30T09:55:37+00:00"
-  }
+  },
+  "charts": [
+    {
+      "kind": "before_after",
+      "title": "主な数字の前と今",
+      "unit": "%",
+      "groups": [
+        {
+          "label": "サービスインフレ率",
+          "items": [
+            {
+              "label": "8月",
+              "value": 3.0,
+              "display": "3.0%"
+            },
+            {
+              "label": "9月",
+              "value": 3.2,
+              "display": "3.2%",
+              "highlight": true
+            }
+          ]
+        },
+        {
+          "label": "エネルギーインフレ率",
+          "items": [
+            {
+              "label": "8月",
+              "value": 14.3,
+              "display": "14.3%"
+            },
+            {
+              "label": "9月",
+              "value": 18.9,
+              "display": "18.9%",
+              "highlight": true
+            }
+          ]
+        },
+        {
+          "label": "雇用者報酬伸び率 (4-6月期)",
+          "items": [
+            {
+              "label": "1-3月期",
+              "value": 3.6,
+              "display": "3.6%"
+            },
+            {
+              "label": "4-6月期",
+              "value": 3.3,
+              "display": "3.3%",
+              "highlight": true
+            }
+          ]
+        }
+      ],
+      "afterHeading": "数字で見ると？",
+      "from": "table",
+      "source": {
+        "name": "ニッセイ基礎研究所",
+        "url": "https://www.nli-research.co.jp/topics_detail1/id=87227?site=nli"
+      }
+    }
+  ]
 }

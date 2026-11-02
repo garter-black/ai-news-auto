@@ -87,5 +87,36 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/rakuten-sec-1500-million-accounts-53309c75.jpg"
-  }
+  },
+  "charts": [
+    {
+      "kind": "before_after",
+      "title": "口座数の変化",
+      "unit": "口座",
+      "groups": [
+        {
+          "label": "口座数の変化",
+          "items": [
+            {
+              "label": "2026年4月",
+              "value": 14000000.0,
+              "display": "1,400万口座"
+            },
+            {
+              "label": "2026年11月（今回）",
+              "value": 15000000.0,
+              "display": "1,500万口座",
+              "highlight": true
+            }
+          ]
+        }
+      ],
+      "afterHeading": "数字で見ると？",
+      "from": "from-to",
+      "source": {
+        "name": "楽天グループ プレスリリース",
+        "url": "https://corp.rakuten.co.jp/news/press/2026/1102_02.html"
+      }
+    }
+  ]
 }

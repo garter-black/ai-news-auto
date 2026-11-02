@@ -79,5 +79,36 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T03:50:59+00:00"
-  }
+  },
+  "charts": [
+    {
+      "kind": "before_after",
+      "title": "プロンプト注入の攻撃成功率",
+      "unit": "%",
+      "groups": [
+        {
+          "label": "プロンプト注入の攻撃成功率",
+          "items": [
+            {
+              "label": "Argon",
+              "value": 0.7,
+              "display": "0.7%"
+            },
+            {
+              "label": "Carbon",
+              "value": 0.0,
+              "display": "0.0%",
+              "highlight": true
+            }
+          ]
+        }
+      ],
+      "afterHeading": "数字で見るとどう変わった？",
+      "from": "table",
+      "source": {
+        "name": "Google公式ブログ",
+        "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/"
+      }
+    }
+  ]
 }

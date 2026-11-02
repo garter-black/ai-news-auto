@@ -101,5 +101,84 @@
   "model": "gemini-3.6-flash",
   "affiliates": [],
   "duplicateOf": "gemini-4-carbon-cybersecurity-model",
-  "duplicateReason": "製品名が一致（gemini4carbon）"
+  "duplicateReason": "製品名が一致（gemini4carbon）",
+  "charts": [
+    {
+      "kind": "before_after",
+      "title": "Gemini 4 Argon → Gemini 4 Carbon",
+      "unit": "%",
+      "groups": [
+        {
+          "label": "コーディング自律性（SWE-sweep）",
+          "items": [
+            {
+              "label": "Gemini 4 Argon",
+              "value": 4.3,
+              "display": "4.3%"
+            },
+            {
+              "label": "Gemini 4 Carbon",
+              "value": 9.6,
+              "display": "9.6%",
+              "highlight": true
+            }
+          ]
+        },
+        {
+          "label": "端末操作（Terminal-Bench 4.0）",
+          "items": [
+            {
+              "label": "Gemini 4 Argon",
+              "value": 57.1,
+              "display": "57.1%"
+            },
+            {
+              "label": "Gemini 4 Carbon",
+              "value": 65.0,
+              "display": "65.0%",
+              "highlight": true
+            }
+          ]
+        },
+        {
+          "label": "OS操作（OSWorld-23）",
+          "items": [
+            {
+              "label": "Gemini 4 Argon",
+              "value": 74.7,
+              "display": "74.7%"
+            },
+            {
+              "label": "Gemini 4 Carbon",
+              "value": 81.5,
+              "display": "81.5%",
+              "highlight": true
+            }
+          ]
+        },
+        {
+          "label": "脆弱性攻撃（ExploitGym）",
+          "items": [
+            {
+              "label": "Gemini 4 Argon",
+              "value": 42.0,
+              "display": "42.0%"
+            },
+            {
+              "label": "Gemini 4 Carbon",
+              "value": 54.8,
+              "display": "54.8%",
+              "highlight": true
+            }
+          ]
+        }
+      ],
+      "afterHeading": "数字で見るとどう変わった？",
+      "from": "table",
+      "source": {
+        "name": "Matthew Berman",
+        "url": "https://www.youtube.com/watch?v=zhnJo7s91ls"
+      }
+    }
+  ]
 }

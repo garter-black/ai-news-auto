@@ -64,5 +64,36 @@
     "query": "smartphone payment",
     "original": "https://www.nli-research.co.jp/files/topics/87193_ext_03_0.jpg",
     "at": "2026-10-28T20:54:43+00:00"
-  }
+  },
+  "charts": [
+    {
+      "kind": "before_after",
+      "title": "対面決済の現金比率",
+      "unit": "%",
+      "groups": [
+        {
+          "label": "対面決済の現金比率",
+          "items": [
+            {
+              "label": "2019年",
+              "value": 71.0,
+              "display": "71%"
+            },
+            {
+              "label": "2025年",
+              "value": 14.0,
+              "display": "14%",
+              "highlight": true
+            }
+          ]
+        }
+      ],
+      "afterHeading": "数字で見ると？",
+      "from": "table",
+      "source": {
+        "name": "ニッセイ基礎研究所",
+        "url": "https://www.nli-research.co.jp/topics_detail1/id=87193?site=nli"
+      }
+    }
+  ]
 }

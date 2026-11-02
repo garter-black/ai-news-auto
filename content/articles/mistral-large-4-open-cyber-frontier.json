@@ -131,5 +131,36 @@
     ],
     "ar": 1.7778,
     "src": "https://i.ytimg.com/vi/FczbSauVvjw/maxresdefault.jpg"
-  }
+  },
+  "charts": [
+    {
+      "kind": "before_after",
+      "title": "総パラメータ数",
+      "unit": "",
+      "groups": [
+        {
+          "label": "総パラメータ数",
+          "items": [
+            {
+              "label": "Mistral Large 3",
+              "value": 600000000000.0,
+              "display": "約6000億（600B）"
+            },
+            {
+              "label": "Mistral Large 4",
+              "value": 1000000000000.0,
+              "display": "約1兆（1T）",
+              "highlight": true
+            }
+          ]
+        }
+      ],
+      "afterHeading": "数字で見るとどう変わった？",
+      "from": "table",
+      "source": {
+        "name": "Hugging Face",
+        "url": "https://www.youtube.com/watch?v=FczbSauVvjw"
+      }
+    }
+  ]
 }
