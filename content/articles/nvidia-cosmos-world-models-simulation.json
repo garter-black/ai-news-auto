@@ -1,0 +1,96 @@
+{
+  "slug": "nvidia-cosmos-world-models-simulation",
+  "sourceType": "web",
+  "sourceUrl": "https://developer.nvidia.com/blog/build-world-models-for-interactive-simulation-with-nvidia-cosmos/",
+  "sourceName": "NVIDIA Developer Blog",
+  "title": "NVIDIAが物理AI向け世界モデル「Cosmos」を拡張 自動運転やロボットのシミュレーションを高速化",
+  "seoTitle": "NVIDIA Cosmosとは？ロボット・自動運転向け世界モデルの機能と使い方",
+  "threadsPost": "ついに来た。自動運転やロボット開発に使えるNVIDIAの新しい世界モデル。\n\n要約すると、NVIDIAが物理AI向けプラットフォーム「Cosmos」を拡張し、ロボットや自動運転向けのシミュレーション機能などを公開した。\nH200 GPU環境で高速な推論も実現している。\n\n自動運転やロボットの開発に携わっていますか？",
+  "threadsHook": "finally",
+  "threadsStyle": 3,
+  "writingVoice": "honest",
+  "lede": "NVIDIAは、物理AI向けの世界モデルと開発ツール「NVIDIA Cosmos」の拡張を発表した。Cosmos Frameworkや新機能により、自動運転やロボット、外科手術のシミュレーション環境構築が加速する。",
+  "description": "NVIDIAが物理AI向け世界モデル基盤「NVIDIA Cosmos」の最新情報を公開。自動運転やロボット、外科手術のシミュレーション機能や、NIMによる高速推論の仕組みを解説します。",
+  "keywords": [
+    "NVIDIA Cosmos",
+    "世界モデル",
+    "物理AI",
+    "自動運転シミュレーション",
+    "ロボット",
+    "Cosmos NIM",
+    "生成AI",
+    "H200"
+  ],
+  "tags": [
+    "生成AI",
+    "ロボティクス",
+    "自動運転",
+    "NVIDIA",
+    "開発ツール"
+  ],
+  "highlights": [
+    "物理AI向け世界基盤モデルと開発ツール「NVIDIA Cosmos」の機能拡張を発表した。",
+    "自動運転やロボット、外科手術のシミュレーション用レシピとチェックポイントを公開した。",
+    "Cosmos NIMマイクロサービスにより、H200 GPU環境で約2〜3倍の高速化を実現する。"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "ok",
+    "price": "オープンソース・API",
+    "free": true,
+    "audience": "開発者・研究者",
+    "take": "公開されたレシピとリポジトリを確認し、手元の環境でシミュレーションや推論の検証を始めましょう。",
+    "judgedAt": "2026-11-02T17:35:57.689438+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "自動運転やロボット、医療分野のシミュレーション開発に携わるエンジニアや研究者に直接関係する。",
+      "Cosmos FrameworkやNIMを活用することで、物理AIモデルの学習や推論の効率化が期待できる。"
+    ]
+  },
+  "body": "## 概要\nNVIDIAは「世界モデル」の開発基盤「NVIDIA Cosmos」の最新情報を公開しました。物理世界を理解して予測するための基盤です。\n\n自動運転やロボット、外科手術などの分野で、リアルなシミュレーションデータを効率よく生成できるようになります。\n\n## 何が発表された？\nNVIDIA Developer Blogによると、物理AI向けの世界モデルと開発ツール群が拡充されました。「NVIDIA Cosmos」のフレームワークおよび推論ツールが対象です。\n\n今回の発表は、研究者や開発者のための仕組みを整えたものです。自前のセンサーやタスクに合わせてモデルを適応させ、実際のアプリケーションへスムーズに展開できます。\n\nプラットフォームの主な構成要素は次のとおりです。\n\n- Cosmos Framework：トレーニング、強化学習、最適化、推論を行うためのオープンでモジュール式のツール\n- Cosmos NIMマイクロサービス：量子化やルーティングによりGPUアクセラレーションを提供する推論用コンテナ\n- Cosmos 3 Nanoシミュレーションレシピ：自動運転やロボット、手術シナリオ向けの同期されたカメラ映像やLiDAR（光による測距）の観測データを生成\n\n## 前と何が違う？\n### 自動運転向けの同期ビデオ・LiDAR生成\nCosmos3-Nano-Transfer-Autoは、プロンプトと周辺地図情報（WSMコントロール）を読み込みます。これで30 fpsのマルチビュー動画とLiDARデータを同時に生成します。昼のドライブ映像を雨の夜の映像に変化させるなど、条件を変えた合成データを効率よく作ることができます。\n\n### 自律走行のリアルタイムシミュレーション\nCosmos3-Nano-Sim-Autoは、AIのポリシーや人間の操作に合わせてカメラ映像やLiDAR観測データを段階的に生成します。物理シミュレータと連携する仕組みです。これで、閉じられたループの中で自律走行ポリシーを評価できるようになります。\n\n### ロボットアームや外科手術のシミュレーション\nロボットのデモ動画における視点変更を行う「Sim-Transfer」が提供されます。双腕ロボットの次の動きを予測する「Sim-Bimanual」もあります。さらに、外科手術の複雑な物理挙動を再現するモデルも含まれています。手術動画とロボットの動きから視覚的ダイナミクスを学ぶモデルです。\n\n## 数字で見るとどう変わった？\n公式ブログで示された数値やメモリ要件は次のとおりです。\n\n- Cosmos NIMの推論速度：H200 GPU環境において、量子化やキャッシュ制御の最適化により、従来比で約2〜3倍の高速化を達成。\n- メモリ要件：Cosmos3-Nanoの生成では、BF16で58 GiB、オフロードを使用したFP8で44 GiBのGPUメモリが必要。\n- 生成仕様：Transfer-Autoでは、30 fpsの入力・出力ビデオで、480pまたは720pの解像度で最大400フレームの生成をサポート。\n\n## ライバルと比べてどう？\nCosmosは、NVIDIAのハードウェアと深く統合されています。HopperやBlackwellなどのGPUと連携します。自動運転やロボット工学に特化した物理AIの開発基盤です。\n\n汎用的な動画生成モデルとは異なります。LiDARデータやロボットのキネマティクス（運動学）と直接連携できる点が大きな特徴です。\n\n## 料金は？\n公式ブログ内では具体的な価格の言及はありません。モデルのチェックポイントやフレームワークはオープンに提供されています。対応するGPU環境を用意して利用する形になります。\n\n## 日本で使える？\n日本国内のユーザーも利用できます。インターネット経由でNVIDIA Developer BlogやGitHub、Hugging Faceなどの公開リポジトリにアクセスします。\n\n今日から試すための大まかな手順は次のとおりです。\n\n- 公式の開発者ブログや関連ドキュメントを確認する。\n- 推奨されるNVIDIA GPU（HopperやBlackwellなど）と十分なメモリを備えた開発環境を準備する。\n- Hugging Faceなどから必要なモデルのチェックポイントをダウンロードする。\n- Cosmos Frameworkのスクリプトを使って推論やシミュレーションの検証を行う。\n\n## 自分にはどう関係する？\n### エンジニアなら\n自動運転やロボット制御、医療シミュレーションの開発において活用できます。高品質な合成データを効率よく作成する手段になります。\n\n### 企画・マーケティングなら\nシミュレーション技術が向上します。新しいロボットや自動運転システムの開発期間短縮や検証コスト削減の可能性を見据えることができます。\n\n### 経営者・管理者なら\n物理AI分野への投資対効果を高めるための基盤技術として役立ちます。NVIDIAエコシステムを活用した開発体制の強化を検討する材料になります。\n\n## まとめ\nNVIDIA Cosmosを活用することで、物理AIの開発者は高品質なシミュレーションデータを自前で素早く用意できるようになります。まずは公式ドキュメントとサンプルコードに目を通してください。そして手元の環境で動作確認を進めてみてください。",
+  "easy": "## ひとことで言うと\nNVIDIAが、車やロボットの動きをAIに学ばせるための新しい仕組み（世界モデル）と開発ツールを公開しました。\n\n## 何がすごいの？\nカメラ映像やLiDAR（光を使った測距センサー）のデータを組み合わせて、自動運転やロボットの動きをリアルに再現できるシミュレーションを作れます。また、専用の高速化ツール（Cosmos NIM）を使うことで、AIの処理速度がこれまでの約2〜3倍になります。\n\n## 自分に関係ある？\n自動運転やロボットの開発、あるいはAIを使ったシミュレーションに関わるエンジニアや研究者にとって、開発を大きく進めるための強力な道具になります。\n\n## 使ってみるには\n公式の開発者向けブログやリポジトリから、Cosmos Frameworkやサンプルコードをダウンロードして利用できます。PyTorchなどの環境が必要です。",
+  "channel": "NVIDIA Developer Blog",
+  "channelId": "",
+  "channelSlug": "nvidia-developer-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Build World Models for Interactive Simulation with NVIDIA Cosmos",
+  "publishedAt": "2026-11-02T17:00:00+00:00",
+  "generatedAt": "2026-11-02T17:35:57.689487+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/nvidia-cosmos-world-models-simulation-9d78afc4.jpg",
+  "model": "gemini-3.5-flash-lite",
+  "affiliates": [],
+  "qualityScore": 100,
+  "sourcePublishedAt": "2026-11-02T17:00:00+00:00",
+  "detectedAt": "2026-11-02T17:30:58+00:00",
+  "speedMinutes": 41,
+  "imageCredit": {
+    "kind": "official",
+    "org": "NVIDIA",
+    "provider": "NVIDIA Developer Blog",
+    "sourceUrl": "https://developer.nvidia.com/blog/build-world-models-for-interactive-simulation-with-nvidia-cosmos/",
+    "original": "https://developer.download.nvidia.com/devblogs/mads94-093-i2v-surround-grid-v5-master.mp4",
+    "width": 1200,
+    "height": 960,
+    "at": "2026-11-02T17:40:12+00:00",
+    "imageKind": "video"
+  },
+  "imageFocus": {
+    "x": 0.486,
+    "y": 0.42,
+    "box": [
+      0.0,
+      0.0,
+      0.972,
+      0.84
+    ],
+    "ar": 1.25,
+    "src": "https://ai-tech-express.jp/img/nvidia-cosmos-world-models-simulation-9d78afc4.jpg"
+  }
+}

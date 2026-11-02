@@ -172,3 +172,26 @@ test("あわせて読みたい（選び方ガイド）はタグ1つだけでは�
   assert.equal(chooseGuideForArticle(article({ title: "楽天モバイルの新料金プラン、データ容量無制限に", tags: ["楽天モバイル"], genreSlug: "tech-gadget" }))?.slug, "internet-for-ai");
   assert.equal(chooseGuideForArticle(article({ title: "転職市場でAI人材の求人が増加", genreSlug: "business" }))?.slug, "ai-career");
 });
+
+test("本文途中のあわせて読みたい（関連記事）は、直近30日の同じ話題の記事だけ。無ければ出さない", () => {
+  const { inlineReadForArticle } = load(path.join(root, "lib/read-next.ts"));
+  const now = Date.parse("2026-11-03T00:00:00Z");
+  const day = 86_400_000;
+  const at = (days) => new Date(now - days * day).toISOString();
+  const company = (a) => a.channelSlug || "other";
+  const src = article({ slug: "src", title: "フットサル日本代表、強豪モロッコと対戦", genreSlug: "sports", tags: ["フットサル", "フットサル日本代表", "スポーツ"], keywords: ["モロッコ"], publishedAt: at(0) });
+  const same = article({ slug: "same", title: "フットサル日本代表、国内キャンプのメンバーを発表", genreSlug: "sports", tags: ["フットサル", "フットサル日本代表"], publishedAt: at(3) });
+  const old = article({ slug: "old", title: "フットサル日本代表、強化試合の日程が決定", genreSlug: "sports", tags: ["フットサル", "フットサル日本代表"], publishedAt: at(45) });
+  const loose = article({ slug: "loose", title: "なでしこジャパン、チケットを追加販売", genreSlug: "sports", tags: ["スポーツ", "サッカー"], publishedAt: at(1) });
+  const other = article({ slug: "other", title: "フットサル日本代表の特集番組", genreSlug: "entertainment", tags: ["フットサル", "フットサル日本代表"], publishedAt: at(1) });
+  const pool = [src, same, old, loose, other];
+  assert.equal(inlineReadForArticle(src, pool, company, [], now)?.slug, "same");
+  // 同じ話題でも30日より前・別ジャンル・関係の薄い記事は出さない
+  assert.equal(inlineReadForArticle(src, [src, old, loose, other], company, [], now), undefined);
+  // 記事末の「次に読むならこれ」と同じ記事は除ける
+  assert.equal(inlineReadForArticle(src, pool, company, ["same"], now), undefined);
+  // 語が1つ（「提携」など）当たっただけでは出さない
+  const bike = article({ slug: "bike", title: "Hondaが電動マウンテンバイクを公開、独社と提携", genreSlug: "business", tags: ["Honda", "提携", "電動アシスト自転車"], publishedAt: at(0) });
+  const oshi = article({ slug: "oshi", title: "JINENとzzz.inc.が業務提携、推し活の新事業", genreSlug: "business", tags: ["提携", "推し活"], publishedAt: at(1) });
+  assert.equal(inlineReadForArticle(bike, [bike, oshi], company, [], now), undefined);
+});

@@ -28,10 +28,13 @@ import { getProduct, productForArticle } from "@/lib/products";
 import { buyingGuideForTopic, guideShortName } from "@/lib/buying-guides";
 import { chooseGuideForArticle } from "@/lib/choose";
 import type { ChooseGuide } from "@/lib/choose-data";
-import { STATUS_LABEL, freeLabel, japanLabel, verdictOf } from "@/lib/verdict";
+import { STATUS_LABEL, freeLabel, japanLabel, verdictKind, verdictOf } from "@/lib/verdict";
+import { guideLinksForArticle, insertAfterPricingSection } from "@/lib/guide-links";
+import ArticleFaq from "@/components/ArticleFaq";
+import TodayActions from "@/components/TodayActions";
 import { offerPlanForArticle } from "@/lib/offers";
 import { getCta } from "@/lib/monetization";
-import { readNextForArticle } from "@/lib/read-next";
+import { inlineReadForArticle, readNextForArticle } from "@/lib/read-next";
 import ReadNextBox from "@/components/ReadNextBox";
 import ArticleVideo from "@/components/ArticleVideo";
 import { shopLinkForArticle } from "@/lib/amazon";
@@ -148,7 +151,13 @@ export default async function ArticlePage({ params }: Props) {
   // 題材の使い方ガイド（「料金・無料でどこまで」を知りたい読者の受け皿）
   const howto = guide ? undefined : howtoForArticle(article);
   const verdict = verdictOf(article);
+  const cardKind = verdictKind(article);
   const workMoney = workMoneyOf(article.workMoney);
+  // 同じ製品の料金・使い方ガイドへの固定の案内（要点のすぐ下と、本文の料金の章の下。lib/guide-links.ts）
+  const guideLinks = guideLinksForArticle(article);
+  const pricingLink = guideLinks.find((link) => link.kind === "pricing");
+  const articleFaq = (article.faq ?? []).filter((row) => row.q && row.a);
+  const todayActions = article.todayActions ?? [];
   // 広告枠は記事との関連の点数が基準を超えた商品だけを、関連の高い順に出す（lib/offers.ts）。
   // 右側（1〜3位）と本文中（4〜6位）で同じ商品は出さない。
   // 各枠は候補の中から、この端末でまだ見ていない商品を先に3つ出す（RankingBody）
@@ -180,7 +189,7 @@ export default async function ArticlePage({ params }: Props) {
   const easyMinutes = Math.max(1, Math.round(easy.length / 500));
   const easyHtml = easy ? await renderMarkdown(easy, affiliates.map((a) => a.url)) : "";
   const html = await renderMarkdown(
-    article.body,
+    insertAfterPricingSection(article.body, pricingLink),
     affiliates.map((a) => a.url),
   );
   // 第3章の前に広告、さらに後半の前に収益導線を挟む
@@ -196,11 +205,18 @@ export default async function ArticlePage({ params }: Props) {
   // 読み終えた人に「次の1本」を大きく見せる。本文の途中にも1本だけ差し込む
   const nextReads = getNextReads(article, (a) => companyOf(a).slug);
   const nextSlugs = new Set(nextReads.map((n) => n.article.slug));
+  // 本文途中の「あわせて読みたい」は、同じ話題・同じ企業の直近30日の記事だけ（基準点に届かなければ出さない）。
+  // 記事末の「次に読むならこれ」の1本目とは重ねない
+  const inlineRead = inlineReadForArticle(article, getAllArticles(), (a) => companyOf(a).slug, nextReads.slice(0, 1).map((n) => n.article.slug));
   const related = getRelatedArticles(article, 8).filter((a) => !nextSlugs.has(a.slug)).slice(0, 4);
 
   // 判定カードに見えている問いと答えを、そのまま FAQ の構造化データにする（AI検索の引用向け）
   const name = article.seoTitle?.split(/[｜|：:]/)[0]?.trim() || "この発表";
-  const faq = verdict
+  // 本文の「よくある質問」（記事に表示している問いと答え）があればそれを使う。
+  // Google の FAQ のリッチリザルトは 2026-05 に終了したが、ページに見えている Q&A の印は他の検索・AI の答えに使われうるので残す
+  const faq = articleFaq.length >= 3
+    ? articleFaq.map((row) => ({ q: row.q, a: row.a }))
+    : verdict && cardKind === "product"
     ? [
         { q: `${name}は今すぐ使える？`, a: `${STATUS_LABEL[verdict.status]}。${verdict.take}` },
         { q: `${name}は日本から使える？`, a: japanLabel(verdict) },
@@ -383,10 +399,31 @@ export default async function ArticlePage({ params }: Props) {
               </ol>
             </section>
           )}
+          {/* 同じ製品の料金・使い方ガイド（あるときだけ。要点のすぐ下に固定） */}
+          {guideLinks.length > 0 && (
+            <nav aria-label="この製品のガイド" className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-note">
+              {guideLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="font-bold text-ink-soft underline decoration-line-strong underline-offset-4 hover:text-accent hover:decoration-accent"
+                >
+                  {link.kind === "pricing" ? "料金ガイド：" : link.kind === "howto" ? "使い方ガイド：" : "ガイド："}
+                  {link.label} →
+                </Link>
+              ))}
+            </nav>
+          )}
           {/* 解説動画（SNS に出した記事だけ。押したときだけ読み込む） */}
           {article.video?.src ? <ArticleVideo video={article.video} /> : null}
           {/* 「使える？」判定 */}
-          {verdict && <VerdictCard verdict={verdict} judgedAt={verdict.judgedAt || article.generatedAt || article.publishedAt} />}
+          {verdict && (
+            <VerdictCard
+              verdict={verdict}
+              cardKind={cardKind}
+              judgedAt={verdict.judgedAt || article.generatedAt || article.publishedAt}
+            />
+          )}
           {/* 「仕事・お金にどう活かせる？」（新しい記事だけ） */}
           {workMoney && <WorkMoneyCard workMoney={workMoney} />}
           {/* 料金早見表・イベントページへの案内（当てはまる記事だけ） */}
@@ -406,7 +443,7 @@ export default async function ArticlePage({ params }: Props) {
               </Link>
             </p>
           ) : null}
-          {howto && (
+          {howto && !guideLinks.some((link) => link.href === `/guides/${howto.slug}`) && (
             <p className="mt-2 text-note">
               <Link
                 href={`/guides/${howto.slug}`}
@@ -416,7 +453,7 @@ export default async function ArticlePage({ params }: Props) {
               </Link>
             </p>
           )}
-          {!product && guide && (
+          {!product && guide && !guideLinks.some((link) => link.href === `/guides/${guide.slug}`) && (
             <Link
               href={`/guides/${guide.slug}`}
               className="group mt-4 flex items-center gap-3 rounded-2xl border border-line px-5 py-3.5 transition-colors hover:border-ink"
@@ -607,7 +644,7 @@ export default async function ArticlePage({ params }: Props) {
 
           {/* 本文（前半） */}
           <article className="prose mt-10 max-w-[40em]" dangerouslySetInnerHTML={{ __html: bodyTop }} />
-          {bodyMid && <InlineRead item={nextReads[2] ?? nextReads[1]} />}
+          {bodyMid && inlineRead && <InlineRead item={{ article: inlineRead, reason: "同じ話題の記事" }} />}
 
           {/* ② 記事中盤の広告枠 */}
           {bodyMid && <AdSlot position="article-middle" className="my-10" />}
@@ -637,6 +674,10 @@ export default async function ArticlePage({ params }: Props) {
           )}
           </div>
           </div>
+
+          {/* 今日やること（2〜3個）と、よくある質問（3〜5問）。合うジャンルの新しい記事だけ */}
+          {todayActions.length >= 2 && <TodayActions actions={todayActions} />}
+          {articleFaq.length >= 3 && <ArticleFaq items={articleFaq} />}
 
           {/* 出典（公式）・日時・確認方法・更新履歴 */}
           {!isRoundup && (

@@ -461,6 +461,14 @@ mark {
   font-size: 1.0625em;
 }
 
+/* 本文の料金の章の下に差し込む、料金ガイドへの1行（lib/guide-links.ts） */
+.prose .guide-link-note {
+  border-left: 3px solid var(--accent);
+  padding: 0.5em 0.9em;
+  font-size: 0.9375em;
+  font-weight: 700;
+}
+
 /* 本文の太字は要点。蛍光ペンで引く */
 .prose :where(strong) {
   background-image: linear-gradient(var(--marker), var(--marker));

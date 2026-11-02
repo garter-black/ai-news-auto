@@ -115,3 +115,71 @@ export function readNextForArticle(article: ArticleSummary, exclude: Iterable<st
   }
   return links;
 }
+
+/** 本文途中の「あわせて読みたい」（関連記事1本）の候補にする期間 */
+const INLINE_READ_DAYS = 30;
+/** 全記事に付くような語・社名だけのタグでは、同じ話題と言えない */
+const GENERIC_TERMS = new Set(
+  ["AI", "AIツール", "AIニュース", "生成AI", "人工知能", "テクノロジー", "AIエージェント", "LLM", "OpenAI", "Microsoft", "Google", "NVIDIA", "Meta", "Anthropic", "Hugging Face", "DeepSeek", "ChatGPT", "Gemini", "Claude", "使い方", "料金", "無料", "日本語", "とは", "開発", "アップデート", "ニュース", "発表", "調査", "ビジネス", "デザイン", "提携", "業務提携", "連携", "協定", "地域", "イベント", "キャンペーン", "セール", "新製品", "新サービス"].map((w) => w.toLowerCase()),
+);
+
+/** タグ・キーワードごとの記事数。多くの記事に付く語（「金融」「提携」「デザイン」や発表元の名前）は話題の手がかりにしない */
+const termCounts = new WeakMap<object, Map<string, number>>();
+function countsOf(candidates: ArticleSummary[]): Map<string, number> {
+  let counts = termCounts.get(candidates);
+  if (!counts) {
+    counts = new Map();
+    for (const item of candidates) {
+      for (const word of new Set([...(item.tags ?? []), ...(item.keywords ?? [])].map((w) => w.trim().toLowerCase()))) {
+        counts.set(word, (counts.get(word) ?? 0) + 1);
+      }
+    }
+    termCounts.set(candidates, counts);
+  }
+  return counts;
+}
+
+function escapeRegex(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * 本文の途中に1本だけ出す関連記事。「あわせて読みたい」のガイドと同じ基準点（MIN_SCORE）を使う。
+ * 元の記事の具体的なタグ・キーワード（多くの記事に付く語は除く）が、候補の見出しに出る（4点）か、タグと要約の両方に出るものだけ。
+ * 当たった語が2つ以上のものだけ。同じ企業の発表なら1点足して先に出す（企業だけでは当てない）。直近30日・同じジャンルの記事から、点数の高い順・新しい順。
+ * 当たる記事が無ければ何も出さない（関係のない記事で埋めない）。
+ */
+export function inlineReadForArticle<T extends ArticleSummary>(
+  article: ArticleSummary,
+  candidates: T[],
+  companySlugOf: (a: ArticleSummary) => string,
+  exclude: Iterable<string> = [],
+  now = Date.now(),
+): T | undefined {
+  const counts = countsOf(candidates);
+  // 全記事の1.5%（最低5本）を超えて付いている語は、話題ではなくジャンルや発表元の名前とみなす
+  const maxCount = Math.max(5, Math.round(candidates.length * 0.015));
+  const terms = [...new Set([...(article.tags ?? []), ...(article.keywords ?? [])].map((w) => w.trim()))].filter(
+    (w) => w.length >= 2 && !GENERIC_TERMS.has(w.toLowerCase()) && (counts.get(w.toLowerCase()) ?? 0) <= maxCount,
+  );
+  if (terms.length === 0) return undefined;
+  const pattern = terms.map(escapeRegex).join("|");
+  const skip = new Set([article.slug, ...exclude]);
+  const company = companySlugOf(article);
+  const since = now - INLINE_READ_DAYS * 86_400_000;
+  let best: { item: T; score: number; time: number } | undefined;
+  for (const item of candidates) {
+    if (skip.has(item.slug) || item.genreSlug !== article.genreSlug) continue;
+    const time = Date.parse(item.publishedAt);
+    if (!Number.isFinite(time) || time < since || time > now) continue;
+    let score = relevanceScore(pattern, item);
+    const sameCompany = company !== "other" && companySlugOf(item) === company;
+    if (score > 0 && sameCompany) score += 1;
+    if (score < MIN_SCORE) continue;
+    // 語が1つ当たっただけでは偶然のことがある（同じ発表元でも別の話題がある）。2語以上の裏付けを求める
+    const text = [item.title, item.seoTitle ?? "", ...(item.tags ?? []), ...(item.keywords ?? []), item.lede ?? "", item.description ?? "", ...(item.highlights ?? [])].join(" ").toLowerCase();
+    if (terms.filter((term) => text.includes(term.toLowerCase())).length < 2) continue;
+    if (!best || score > best.score || (score === best.score && time > best.time)) best = { item, score, time };
+  }
+  return best?.item;
+}

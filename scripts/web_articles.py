@@ -52,6 +52,7 @@ import dedupe  # noqa: E402
 import fast_lane  # noqa: E402
 import feeds  # noqa: E402
 import followup  # noqa: E402
+import japan_availability  # noqa: E402
 import llm  # noqa: E402
 import main as m  # noqa: E402
 import page_watch  # noqa: E402
@@ -235,7 +236,9 @@ WEB_SOURCE_NOTE = """## 今回の取材対象（重要）
 - 元記事に書かれていない事実・数値・価格・日付・発言は作らない。
   一般的な背景知識で補う場合は「（編集部注）」と明記し、具体的な数値は書かない。
 - 読者にとって重要で元記事から確認できない条件は不明と示す。材料のない章を無理に作らず、水増ししない。
-- 編集部の見方は、確認済みの事実を根拠にし、「編集部の見方」と明示して事実と区別する。根拠のない体験談・比較・推測は書かない。"""
+- 編集部の見方は、確認済みの事実を根拠にし、「編集部の見方」と明示して事実と区別する。根拠のない体験談・比較・推測は書かない。
+- サイソク（編集部）は自分では試していない。「筆者のテスト環境では」「私たちが試したところ」「実際に使ってみると」のように、
+  自分で試した・使ったように書かない。元記事の書き手が試した結果なら「〇〇（媒体名）の記者が試したところ」と、誰が試したかを書く。"""
 
 WEB_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を読み解き、日本語のSEO記事を作成してください。
 
@@ -393,7 +396,8 @@ def build_broad_prompt(item: dict, text: str, genre, context: str = "") -> str:
         topic_guard=f"  **このジャンルの対象範囲**: {genre.topic_guard}",
         genre_choices="\n".join(f"  - {g.slug}: {g.name}" for g in ALL_GENRES),
     )
-    return prompt + context + "\n\n" + persona.WORK_MONEY_FIELD + "\n\n" + m.threads_hooks.prompt_block()
+    return (prompt + context + extra_fields_block(genre.slug) + "\n\n" + persona.WORK_MONEY_FIELD
+            + "\n\n" + m.threads_hooks.prompt_block())
 
 
 def broad_prefilter(item: dict) -> str | None:
@@ -434,6 +438,162 @@ WEB_SCHEMA = copy.deepcopy(m.ARTICLE_SCHEMA)
 for _schema in (WEB_SCHEMA, TREND_SCHEMA):
     _schema["properties"]["related_used"] = {"type": "ARRAY", "items": {"type": "STRING"}}
     _schema["propertyOrdering"].append("related_used")
+    # ジャンル別の判定カード（スポーツ: いつ・放送/配信、制度: 開始日・期限）。任意の項目
+    _verdict = _schema["properties"]["verdict"]
+    _verdict["properties"]["when"] = {"type": "STRING"}
+    _verdict["properties"]["broadcast"] = {"type": "STRING"}
+    _verdict["propertyOrdering"] += ["when", "broadcast"]
+    # よくある質問（3〜5問）と「今日やること」（2〜3個）。合うジャンルだけ。任意の項目
+    _schema["properties"]["faq"] = {
+        "type": "ARRAY",
+        "items": {
+            "type": "OBJECT",
+            "properties": {"q": {"type": "STRING"}, "a": {"type": "STRING"}},
+            "required": ["q", "a"],
+            "propertyOrdering": ["q", "a"],
+        },
+    }
+    _schema["properties"]["today_actions"] = {"type": "ARRAY", "items": {"type": "STRING"}}
+    _schema["propertyOrdering"] += ["faq", "today_actions"]
+
+# FAQ と「今日やること」を書くジャンル（AI・製品、お金・税・制度、使い方の話題）。スポーツ・エンタメ・科学は書かない
+FAQ_GENRES = {"ai", "investment", "business", "public", "tech-gadget", "lifestyle", "real-estate"}
+# 読者が使う・買う・申し込むものが無い「数字の話題」（統計・業績・倒産件数など）。判定カードは出さない
+DATA_TOPIC_RE = re.compile(
+    r"統計|倒産|件数|調査結果|決算|業績|自社株買い|株主還元|配当|(?<![A-Za-z])GDP(?![A-Za-z])|指数|物価|消費者物価|雇用統計|失業率|景気|"
+    r"口座数|契約数|販売台数|出荷台数|上方修正|下方修正|前年同月比|前年比|月例経済|日銀短観|短観|有効求人倍率"
+)
+DATA_GENRES = {"business", "investment", "science", "real-estate"}
+
+FAQ_TODAY_FIELD = """# faq と today_actions（記事ページの「よくある質問」「今日やること」欄）
+- faq: 読者が検索しそうな疑問を3〜5個（q と a）。質問は次の候補から、**この記事に答えがあるものだけ**選ぶ:
+  無料で使える？／日本で使える？／いつから？／いくら？／前と何が違う？／誰に向いている？／どうやって申し込む・始める？／注意点は？
+  q は製品名・制度名を入れた20〜40字の疑問文（例「Claude Ultraは無料で使える？」）。
+  a は40〜120字。**body_markdown と元記事、「当サイトで確認済み」の欄に書かれた事実だけ**で答える。新しい数字・条件を足さない。
+  答えが「元記事には書かれていません」になる質問は入れない。3個そろわないなら空配列 []。
+- today_actions: 「今日やること」を2〜3個。各20〜60字の1文で、読者が今日できる具体的な行動を書く（例「設定の使用状況画面で、今の上限を確かめる」）。
+  画面の場所・ボタン名は元記事にあるときだけ書く。無ければ「公式の設定画面で確認する」のように書き、場所を作らない。
+  提供予定・研究段階・統計や業績の話題で、読者が今日できることが無ければ空配列 []。特定の銘柄・物件の売買はすすめない。"""
+FAQ_TODAY_OFF = """# faq と today_actions
+- このジャンルでは faq と today_actions は空配列 [] にする。"""
+
+VERDICT_SPORTS = """# verdict（スポーツの判定カード。製品の言い方はしない）
+- スポーツの話題では、verdict を「観戦・参加できるか」の判定として埋める。「日本で使える」「日本でも提供予定」「無料で試せる」のような製品の言い方は使わない。
+  - status: available（チケット発売中・観戦や参加ができる）/ limited（抽選・会員先行・一部だけ）/ soon（発売前・開催前で、まだ申し込めない）。demo は使わない
+  - japan: 常に ok（日本の大会・試合なので。カードには出さない）
+  - when: 試合・大会・発売の日時（例「11月29日（土）19:00」）。元記事に無ければ「記載なし」
+  - broadcast: テレビ放送・ネット配信（例「日本テレビ系で生中継、TVerで配信」）。元記事に書かれているときだけ。無ければ「記載なし」
+  - price: チケット・参加費（例「3,000円〜」）。無ければ「記載なし」。free は無料なら true、有料なら false、不明なら null
+  - audience: 誰向けか（例「現地観戦したい人」）。take: 次に何をすればいいか1文"""
+VERDICT_PUBLIC = """# verdict（制度の判定カード）
+- 制度・手続き・給付の話題では、verdict を「申し込めるか」の判定として埋める（会議の案内・統計・方針だけなら null）。
+  - status: available（受付中・もう始まっている）/ limited（対象が限られる・一部の地域だけ）/ soon（これから始まる）/ demo（案・検討中・意見募集中）
+  - japan: 常に ok（日本の制度なので。カードには出さない）
+  - when: 開始日・申込期限（例「12月1日から／期限は1月31日」）。元記事に無ければ「記載なし」
+  - price: 費用・金額（給付額・手数料など）。audience: 対象者（例「個人事業主」）"""
+VERDICT_DATA = """# verdict（数字の話題）
+- 統計・業績・決算・倒産件数・口座数・自社株買い・相場など、読者が使う・買う・申し込むものが無い話題では verdict は **null** にする。"""
+
+
+def extra_fields_block(genre_slug: str) -> str:
+    """ジャンルに合わせた faq・today_actions・判定カードの書き方（プロンプトの末尾に足す）"""
+    parts = [FAQ_TODAY_FIELD if genre_slug in FAQ_GENRES else FAQ_TODAY_OFF]
+    if genre_slug == "sports":
+        parts.append(VERDICT_SPORTS)
+    elif genre_slug == "public":
+        parts.append(VERDICT_PUBLIC)
+    if genre_slug in DATA_GENRES:
+        parts.append(VERDICT_DATA)
+    return "\n\n" + "\n\n".join(parts)
+
+
+def verdict_kind(genre_slug: str) -> str:
+    """判定カードの種類（サイトの lib/verdict.ts の verdictKind と同じ）"""
+    return {"sports": "sports", "public": "public"}.get(genre_slug, "product")
+
+
+def genre_verdict(raw: object, genre_slug: str, record: dict) -> dict | None:
+    """生成された判定をジャンルに合わせて整える。
+    数字の話題（統計・業績など）は判定カードを出さない。スポーツ・制度は種類（kind）と「いつ」「放送・配信」を残す。
+    製品の判定で japan が unknown のままなら、日本での提供の表（content/japan_availability.json）で直す（一般提供中のときだけ）"""
+    verdict = m.clean_verdict(raw)
+    if not verdict:
+        return None
+    text = f"{record.get('title', '')} {record.get('seoTitle', '')} {' '.join(record.get('tags') or [])}"
+    if genre_slug in DATA_GENRES and DATA_TOPIC_RE.search(text):
+        return None
+    kind = verdict_kind(genre_slug)
+    if kind != "product":
+        verdict["kind"] = kind
+        verdict["japan"] = "ok"  # 日本の大会・制度。カードには出さない
+        for key in ("when", "broadcast") if kind == "sports" else ("when",):
+            value = re.sub(r"\s+", " ", str((raw or {}).get(key) or "")).strip()[:40] if isinstance(raw, dict) else ""
+            if value:
+                verdict[key] = value
+        if verdict["status"] == "demo" and kind == "sports":
+            verdict["status"] = "soon"
+        return verdict
+    return japan_availability.apply_to_verdict(verdict, record)
+
+
+def clean_faq(raw: object) -> list[dict]:
+    """生成された faq を整える（3〜5問。足りなければ出さない）"""
+    out, seen = [], set()
+    for row in raw if isinstance(raw, list) else []:
+        if not isinstance(row, dict):
+            continue
+        q = re.sub(r"\s+", " ", str(row.get("q") or "")).strip()
+        a = re.sub(r"\s+", " ", str(row.get("a") or "")).strip()
+        if not q or not a or q in seen or quality.FAQ_UNANSWERED_RE.search(a):
+            continue
+        seen.add(q)
+        out.append({"q": q[:60], "a": a[:200]})
+    return out[:5] if len(out) >= 3 else []
+
+
+def clean_actions(raw: object) -> list[str]:
+    out = []
+    for value in raw if isinstance(raw, list) else []:
+        text = re.sub(r"\s+", " ", str(value or "")).strip().lstrip("・-*　 0123456789.)）").strip()
+        if text and text not in out:
+            out.append(text[:90])
+    return out[:3] if len(out) >= 2 else []
+
+
+SEO_MAX_WIDTH = 30
+
+
+def _width(text: str) -> float:
+    """全角1・半角0.5で数えた幅"""
+    return sum(0.5 if ord(c) < 0x2E80 else 1 for c in text)
+
+
+def fallback_seo_title(title: str) -> str:
+    """seo_title が空のときの短い題名。見出しを区切り（空白・読点・句点・？）ごとに足していき、全角30字に収まるところまで。
+    区切りでうまく短くできない（18字未満になる）ときは、言葉の途中で切らず見出しのまま（検索結果では Google が省略する）"""
+    title = re.sub(r"\s+", " ", title or "").replace("！", "").replace("!", "").strip()
+    if _width(title) <= SEO_MAX_WIDTH:
+        return title
+    out = ""
+    # 半角の空白は日本語のあとだけで区切る（「BANK ACADEMY」のような英語の名前の途中で切らない）
+    for part in re.split(r"(?<=[　、。？?])|(?<=[^\x00-\x7f] )", title):
+        if _width(out + part) > SEO_MAX_WIDTH:
+            break
+        out += part
+    out = out.rstrip("、。・｜：:| 　")
+    return out if _width(out) >= 18 else title
+
+
+FIRST_PERSON_FIX_RE = re.compile(r"筆者(?=の|が|は|も|1台|１台)")
+
+
+def fix_press_first_person(record: dict, outlet: str) -> None:
+    """報道が元の記事で、元記事の「筆者」（他社の記者）をサイソクの話と読めないよう「〇〇の記者」に直す。record をその場で書き換える"""
+    for key in ("body", "easy", "lede"):
+        text = record.get(key)
+        if isinstance(text, str) and "筆者" in text:
+            record[key] = FIRST_PERSON_FIX_RE.sub(f"{outlet}の記者", text)
+    record["highlights"] = [FIRST_PERSON_FIX_RE.sub(f"{outlet}の記者", h) for h in record.get("highlights") or []]
 
 TREND_SOURCE_NOTE = """## 今回の取材対象（重要）
 今回は動画ではなく、日本でいま話題になっているキーワードと、それを報じた複数の報道記事が資料です。
@@ -563,7 +723,8 @@ def build_trend_prompt(item: dict, fetched: list[dict], genre, context: str = ""
         outline=TREND_OUTLINE,
         genre_choices="\n".join(f"  - {g.slug}: {g.name}" for g in GENRES),
     )
-    return prompt + context + "\n\n" + persona.WORK_MONEY_FIELD + "\n\n" + m.threads_hooks.prompt_block()
+    return (prompt + context + extra_fields_block(genre.slug) + "\n\n" + persona.WORK_MONEY_FIELD
+            + "\n\n" + m.threads_hooks.prompt_block())
 
 
 def build_trend_record(item: dict, fetched: list[dict], data: dict, model_name: str, voice_key: str) -> dict:
@@ -607,7 +768,34 @@ def build_prompt(item: dict, text: str, context: str = "") -> str:
         topic_guard=f"  **このジャンルの対象範囲**: {genre.topic_guard}" if genre.topic_guard else "",
         genre_choices="\n".join(f"  - {g.slug}: {g.name}（{g.description[:48]}…）" for g in GENRES),
     )
-    return prompt + context + "\n\n" + persona.WORK_MONEY_FIELD + "\n\n" + m.threads_hooks.prompt_block()
+    return (prompt + context + extra_fields_block(genre.slug) + "\n\n" + persona.WORK_MONEY_FIELD
+            + "\n\n" + m.threads_hooks.prompt_block())
+
+
+def check_context_for(title: str, text: str, related: list[dict]) -> str:
+    """事実確認に渡す確認済みの事実（過去記事＋日本での提供の表）"""
+    return "\n\n".join(x for x in (archive.check_block(related), japan_availability.check_block(title, text)) if x)
+
+
+def compose(item: dict, text: str, lane: str, related: list[dict], voice_text: str):
+    """1本の記事の生成に渡すもの一式（通常の実行と、試し書きの道具が同じものを使う）。
+    戻り値: (genre, system, prompt, schema, kind, check_context)"""
+    context = archive.prompt_block(related) + japan_availability.prompt_block(item["title"], text)
+    if item.get("late"):
+        context += LATE_NOTE.format(date=f"{item['published_at'].astimezone(JST):%Y年%m月%d日}")
+    secondary_note = f"\n\n{SECONDARY_SOURCE_NOTE.format(name=item['source_name'])}" if item.get("secondary") else ""
+    if lane == "ai":
+        genre = AI
+        system = f"{m.SYSTEM_INSTRUCTION_BASE}\n\n{AI.persona}\n\n{WEB_SOURCE_NOTE}{secondary_note}\n\n## 今回の語り口\n{voice_text}"
+        prompt, schema, kind = build_prompt(item, text, context), WEB_SCHEMA, "ai"
+    else:
+        genre = GENRES_BY_SLUG[lane]
+        system = (
+            f"{m.SYSTEM_INSTRUCTION_BASE}\n\n{genre.persona}\n\n{WEB_SOURCE_NOTE}{secondary_note}\n\n{BROAD_SOURCE_NOTE}"
+            f"\n\n## 今回の語り口\n{voice_text}"
+        )
+        prompt, schema, kind = build_broad_prompt(item, text, genre, context), TREND_SCHEMA, "broad"
+    return genre, system, prompt, schema, kind, check_context_for(item["title"], text, related)
 
 
 def prefilter(item: dict) -> str | None:
@@ -622,7 +810,9 @@ SECONDARY_SOURCE_NOTE = """## 今回の元記事は報道です（重要）
 今回の元記事は企業の公式発表ではなく、報道機関「{name}」の記事です（公式の発表文が見つからなかったため）。
 - リードと本文の最初の段落で「{name}の報道によると」のように、報道が出典であることを必ず書く。見出しでも公式発表と断定しない。
 - 元記事が紹介している企業の発表・発言は「（{name}によると）」と添えて書き、元記事に無い公式の数字・発言・引用は作らない。
-- 報道の見立て・推測・未確認の情報は事実として書かない。元記事の文を書き写さず、自分の言葉で要約する。"""
+- 報道の見立て・推測・未確認の情報は事実として書かない。元記事の文を書き写さず、自分の言葉で要約する。
+- 元記事の「筆者」「私」「記者」は、サイソクではなく{name}の記者のこと。「{name}の記者のテスト環境では」のように書き換え、
+  サイソクが自分で試したように読める書き方（「筆者のテスト環境では」「私たちが試した」）はしない。"""
 
 
 def source_age(item: dict, now: datetime | None = None) -> timedelta | None:
@@ -687,7 +877,8 @@ def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_
         "sourceUrl": item["url"],
         "sourceName": item["source_name"],
         "title": str(data["title"]).strip(),
-        "seoTitle": str(data.get("seo_title", "")).strip(),
+        # 検索結果の短い題名。空なら見出しから作る（空のままだと検索結果に長い見出しがそのまま出る）
+        "seoTitle": str(data.get("seo_title", "")).strip() or fallback_seo_title(str(data["title"])),
         "threadsPost": m.normalize_body(str(data.get("threads_post", ""))).strip(),
         "threadsHook": m.threads_hooks.clean_hook(data.get("threads_hook")),
         "threadsStyle": m.threads_hooks.POST_STYLE,
@@ -698,7 +889,7 @@ def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_
         "tags": m.clean_list(data.get("tags"), 8),
         "highlights": m.clean_list(data.get("highlights"), 3),
         "timetable": [],
-        "verdict": m.clean_verdict(data.get("verdict")),
+        "verdict": None,  # 下で genre_verdict（ジャンル別の判定・日本での提供の表）
         # 「仕事・お金にどう活かせる？」欄（scripts/persona.py。品質ゲートの形・事実確認の対象）
         "workMoney": persona.clean_work_money(data.get("work_money")),
         "body": m.normalize_body(data["body_markdown"]),
@@ -724,6 +915,17 @@ def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_
     }
     if not record["body"].strip():
         raise ValueError("本文が空です")
+    record["verdict"] = genre_verdict(data.get("verdict"), resolved.slug, record)
+    # 判定を日本での提供の表で直したら、本文の「日本で使える？」の「まだ分かりません」も表の答えにそろえる
+    record["body"] = japan_availability.fix_japan_section(record["body"], record)
+    # よくある質問（3〜5問）と「今日やること」（2〜3個）。合うジャンルだけ（FAQ_GENRES）
+    if resolved.slug in FAQ_GENRES:
+        if faq := clean_faq(data.get("faq")):
+            record["faq"] = faq
+        if actions := clean_actions(data.get("today_actions")):
+            record["todayActions"] = actions
+    if item.get("secondary"):
+        fix_press_first_person(record, item["source_name"])
     affiliates = m.match_affiliates(record, data.get("mentioned_tools") or [])
     if affiliates:
         record["affiliates"] = affiliates
@@ -1704,24 +1906,10 @@ def main() -> int:
                 return
 
         related = arch.related(item["title"], text, item["url"], "ai" if is_ai else lane)
-        context = archive.prompt_block(related)
-        if item.get("late"):
-            context += LATE_NOTE.format(date=f"{item['published_at'].astimezone(JST):%Y年%m月%d日}")
-        secondary_note = f"\n\n{SECONDARY_SOURCE_NOTE.format(name=item['source_name'])}" if item.get("secondary") else ""
         if related:
             log(f"   [context] 過去記事 {len(related)} 本: {', '.join(r['slug'] for r in related)}")
         voice_key, voice_text = m.pick_voice()
-        if is_ai:
-            genre = AI
-            system = f"{m.SYSTEM_INSTRUCTION_BASE}\n\n{AI.persona}\n\n{WEB_SOURCE_NOTE}{secondary_note}\n\n## 今回の語り口\n{voice_text}"
-            prompt, schema, kind = build_prompt(item, text, context), WEB_SCHEMA, "ai"
-        else:
-            genre = GENRES_BY_SLUG[lane]
-            system = (
-                f"{m.SYSTEM_INSTRUCTION_BASE}\n\n{genre.persona}\n\n{WEB_SOURCE_NOTE}{secondary_note}\n\n{BROAD_SOURCE_NOTE}"
-                f"\n\n## 今回の語り口\n{voice_text}"
-            )
-            prompt, schema, kind = build_broad_prompt(item, text, genre, context), TREND_SCHEMA, "broad"
+        genre, system, prompt, schema, kind, check_context = compose(item, text, lane, related, voice_text)
 
         def build(data, model, item=item, page=page, voice_key=voice_key, genre=genre, related=related):
             if str(data.get("genre", "")).strip() not in GENRES_BY_SLUG:
@@ -1740,7 +1928,7 @@ def main() -> int:
             log(f"   [llm] 目立つ記事（{purpose}）: Claude API → Claude CLI → 無料モデルの順")
         try:
             status, record, model_name, info = gated(
-                item, kind, system, prompt, schema, f"{source_header(item)}\n\n{text}", build, archive.check_block(related),
+                item, kind, system, prompt, schema, f"{source_header(item)}\n\n{text}", build, check_context,
                 tier=major_tier() if major else None, attempts=MAJOR_ATTEMPTS if major else 2, purpose=purpose,
             )
         finally:
@@ -1848,7 +2036,7 @@ def main() -> int:
                     continue
             genre = GENRES_BY_SLUG.get(q.get("genre") or "", AI)
             related = arch.related(q["title"], source_text, fetched[0]["url"], genre.slug)
-            context = archive.prompt_block(related)
+            context = archive.prompt_block(related) + japan_availability.prompt_block(q["title"], source_text)
             voice_key, voice_text = m.pick_voice()
             system = (
                 f"{m.SYSTEM_INSTRUCTION_BASE}\n\n{genre.persona}\n\n"
@@ -1862,7 +2050,7 @@ def main() -> int:
                 lambda data, model, q=q, fetched=fetched, voice_key=voice_key, related=related: attach_related(
                     build_trend_record(q, fetched, data, model, voice_key), data, related
                 ),
-                archive.check_block(related),
+                check_context_for(q["title"], source_text, related),
             )
             if status == "fail":
                 if state["failed_web"].get(q["id"], 0) >= MAX_FAILURES:

@@ -1,0 +1,258 @@
+{
+  "_about": "主要な製品・サービスを日本で使えるかの表（人が確かめて更新する）。scripts/japan_availability.py が記事の生成プロンプト・判定（verdict.japan）・「日本で使える？」の章で使う。japan は ok（日本で使える）/ partial（条件付き・英語のみ等）/ no（日本では提供なし）/ unknown（確認できていない）。確かめられないものは unknown のままにする。新しいモデル・機能が一部の人だけ・地域限定で出たときは、この表があっても判定は unknown のまま（scripts/japan_availability.py の apply_to_verdict）。",
+  "updatedAt": "2026-11-03",
+  "items": [
+    {
+      "id": "chatgpt",
+      "name": "ChatGPT",
+      "covers": "ChatGPT（無料・Plus・Pro などの個人向けプラン）と OpenAI の API",
+      "match": "ChatGPT|OpenAI API|GPT-\\d",
+      "japan": "ok",
+      "japanese": true,
+      "note": "公式の料金ページ・ヘルプが日本語で公開されている。API の対応国の一覧に日本がある。料金ページの表示はドル建てで、円での月額は公式ページでは案内されていない。",
+      "sources": [
+        {
+          "url": "https://chatgpt.com/ja-JP/pricing/",
+          "checkedAt": "2026-10-31"
+        },
+        {
+          "url": "https://developers.openai.com/api/docs/supported-countries",
+          "checkedAt": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "claude",
+      "name": "Claude",
+      "covers": "Claude（claude.ai の無料・Pro・Max・Ultra、Team・Enterprise）、Claude Code、Claude API",
+      "match": "Claude|Anthropic",
+      "japan": "ok",
+      "japanese": true,
+      "note": "Anthropic の対応国・地域の一覧に日本がある。ヘルプは日本語で読め、日本語で使える。料金はドル建て（税別）。",
+      "sources": [
+        {
+          "url": "https://www.anthropic.com/supported-countries",
+          "checkedAt": "2026-11-03"
+        },
+        {
+          "url": "https://claude.com/pricing",
+          "checkedAt": "2026-11-02"
+        }
+      ]
+    },
+    {
+      "id": "gemini",
+      "name": "Gemini（Googleの生成AI）",
+      "covers": "Gemini アプリ（無料・Google AI Plus / Pro / Ultra）",
+      "match": "Gemini(?! ?(?:Robotics|Notebook))",
+      "japan": "ok",
+      "japanese": true,
+      "note": "Gemini アプリの対応国に日本、対応言語に日本語がある。日本向けの料金ページは円建て（Google AI Pro は月2,900円など）。機能は地域・言語で違うことがある。",
+      "sources": [
+        {
+          "url": "https://support.google.com/gemini/answer/13575153?hl=ja",
+          "checkedAt": "2026-11-03"
+        },
+        {
+          "url": "https://gemini.google/jp/subscriptions/",
+          "checkedAt": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "id": "notebooklm",
+      "name": "NotebookLM（Gemini Notebook）",
+      "covers": "NotebookLM / Gemini Notebook",
+      "match": "NotebookLM|Gemini Notebook",
+      "japan": "ok",
+      "japanese": null,
+      "note": "公式ヘルプの対応国・地域の一覧に日本がある。",
+      "sources": [
+        {
+          "url": "https://support.google.com/gemininotebook/answer/16206563?hl=ja",
+          "checkedAt": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "id": "google-workspace",
+      "name": "Google の主なサービス（検索・Gmail・Google Workspace）",
+      "covers": "Google 検索、Gmail、Google ドライブ、Google Workspace",
+      "match": "Google Workspace|Gmail|Google ドライブ|Googleドライブ|Google検索|Google 検索",
+      "japan": "ok",
+      "japanese": true,
+      "note": "日本向けの Google Workspace の料金ページがあり、円建て（Business Starter は1人月800円・税別など）。",
+      "sources": [
+        {
+          "url": "https://workspace.google.com/intl/ja/pricing",
+          "checkedAt": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "microsoft-copilot",
+      "name": "Microsoft Copilot・Microsoft 365（Office）",
+      "covers": "Microsoft 365 Personal / Family / Premium（Word・Excel・PowerPoint と Copilot）、Microsoft 365 Copilot",
+      "match": "Microsoft 365|Microsoft Copilot|(?<![A-Za-z])Office(?![A-Za-z])|(?<!GitHub )Copilot(?! ?(?:SDK|app|アプリ|Studio))|(?<![A-Za-z])Excel(?![A-Za-z])|PowerPoint",
+      "japan": "ok",
+      "japanese": true,
+      "note": "日本マイクロソフトの公式ページがあり、円建て（Microsoft 365 Personal は月2,130円など）。",
+      "sources": [
+        {
+          "url": "https://www.microsoft.com/ja-jp/microsoft-copilot/for-individuals",
+          "checkedAt": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "windows",
+      "name": "Windows",
+      "covers": "Windows 11 と、その更新プログラム（日本語版）",
+      "match": "(?<![A-Za-z])Windows(?![A-Za-z])",
+      "japan": "ok",
+      "japanese": true,
+      "note": "日本語版の Windows が提供されている。ただし更新プログラムの新機能は段階的に配られ、日本語版にいつ来るかは更新ごとに違う。",
+      "sources": [
+        {
+          "url": "https://www.microsoft.com/ja-jp/windows",
+          "checkedAt": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "github-copilot",
+      "name": "GitHub Copilot",
+      "covers": "GitHub Copilot（Free・Pro・Pro+・Business・Enterprise など）",
+      "match": "GitHub Copilot",
+      "japan": "ok",
+      "japanese": null,
+      "note": "公式ドキュメントが日本語で公開されていて、国による制限の記載はない。料金はドル建て。",
+      "sources": [
+        {
+          "url": "https://docs.github.com/ja/copilot/get-started/plans",
+          "checkedAt": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "iphone",
+      "name": "iPhone・Apple のサービス",
+      "covers": "iPhone、iCloud、Apple Music などの Apple のサービス",
+      "match": "iPhone|iPad|(?<![A-Za-z])Mac(?:Book)?(?![A-Za-z])|iCloud|Apple Music|Apple Pay|(?<![A-Za-z])iOS(?![A-Za-z])|macOS",
+      "japan": "ok",
+      "japanese": true,
+      "note": "Apple（日本）の公式ページで販売・提供されている。新製品の日本での発売日は製品ごとに確かめる。",
+      "sources": [
+        {
+          "url": "https://www.apple.com/jp/iphone/",
+          "checkedAt": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "apple-intelligence",
+      "name": "Apple Intelligence",
+      "covers": "Apple Intelligence（iOS 27 / iPadOS 27 / macOS 27 の対応機種）",
+      "match": "Apple Intelligence",
+      "japan": "ok",
+      "japanese": true,
+      "note": "対応言語に日本語がある。機能ごとに対応する言語・地域が違う。",
+      "sources": [
+        {
+          "url": "https://support.apple.com/en-us/121115",
+          "checkedAt": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "notion",
+      "name": "Notion",
+      "covers": "Notion（ワークスペース・Notion AI）",
+      "match": "(?<![A-Za-z])Notion(?![A-Za-z])",
+      "japan": "ok",
+      "japanese": true,
+      "note": "日本語の公式サイトがある。",
+      "sources": [
+        {
+          "url": "https://www.notion.com/ja",
+          "checkedAt": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "canva",
+      "name": "Canva",
+      "covers": "Canva（無料・Canvaプロ・Canvaビジネス）",
+      "match": "Canva",
+      "japan": "ok",
+      "japanese": true,
+      "note": "日本向けの料金ページがあり、円建て（Canvaプロは年11,800円など）。",
+      "sources": [
+        {
+          "url": "https://www.canva.com/ja_jp/pricing/",
+          "checkedAt": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "perplexity",
+      "name": "Perplexity",
+      "covers": "Perplexity（検索AI）",
+      "match": "Perplexity",
+      "japan": "unknown",
+      "japanese": true,
+      "note": "日本語のページはあるが、提供地域の一覧は確認できていない。",
+      "sources": [
+        {
+          "url": "https://www.perplexity.ai/ja/hub/blog",
+          "checkedAt": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "midjourney",
+      "name": "Midjourney",
+      "covers": "Midjourney（画像生成AI）",
+      "match": "Midjourney",
+      "japan": "unknown",
+      "japanese": null,
+      "note": "公式のプラン説明ページを確認できず、日本での提供状況は未確認。",
+      "sources": [
+        {
+          "url": "https://docs.midjourney.com/",
+          "checkedAt": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "meta-ai",
+      "name": "Meta AI",
+      "covers": "Meta AI（Facebook・Instagram・WhatsApp の AI アシスタント）",
+      "match": "Meta AI",
+      "japan": "unknown",
+      "japanese": null,
+      "note": "日本での提供は確認できていない（Muse の日本提供は content/howto/meta-muse-japan-availability.json を参照）。",
+      "sources": [
+        {
+          "url": "https://www.meta.ai/",
+          "checkedAt": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "grok",
+      "name": "Grok",
+      "covers": "Grok（xAI の対話AI）",
+      "match": "Grok",
+      "japan": "unknown",
+      "japanese": null,
+      "note": "日本での提供状況は確認できていない。",
+      "sources": [
+        {
+          "url": "https://x.ai/grok",
+          "checkedAt": "2026-11-03"
+        }
+      ]
+    }
+  ]
+}
