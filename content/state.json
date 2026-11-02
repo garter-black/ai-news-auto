@@ -4636,6 +4636,14 @@
       "skipped": true,
       "url": "https://www.kirinholdings.com/jp/newsroom/release/2026/1028_01.html"
     },
+    "2a181a0a4fb64895": {
+      "at": "2026-11-02T11:51:18.751815+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "katayama-mof-budget-2027-tax-estimate",
+      "url": "https://www.mof.go.jp/public_relations/conference/my20261102.html"
+    },
     "2a5a7cff7cbf0317": {
       "at": "2026-10-26T22:40:58.175170+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（市場調査レポート）",
@@ -12022,50 +12030,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-30T08:11:09.399113+00:00",
-      "attempt": 2,
-      "id": "5d89b13d8af0e9fe",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2217字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 117.8,
-        "avg_sentence": 89.8,
-        "long_share": 0.905,
-        "max_paragraph": 164,
-        "paragraphs": 16,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "aws-japan-blog",
-      "title": "エージェント時代の運用：re:Invent 2026 の AIOps セッション"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:11:20.821313+00:00",
-      "attempt": 1,
-      "id": "c5ebf1cac4c8fd5d",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（320字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 118.4,
-        "avg_sentence": 50.8,
-        "long_share": 0.238,
-        "max_paragraph": 171,
-        "paragraphs": 9,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "jfa",
-      "title": "フットサル日本代表 メンバー・スケジュール 国際親善試合 フットサルモロッコ代表戦（11.6/11.8 大分／クラサス武道スポーツセンター） #jfa #dai"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-30T08:11:27.577898+00:00",
       "attempt": 2,
       "id": "c5ebf1cac4c8fd5d",
@@ -18599,6 +18563,49 @@
       "score": 100,
       "source": "toyota",
       "title": "[トヨタイムズ記事] 物流、スポーツ、教育、食... 広がる水素の可能性"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T11:51:14.868984+00:00",
+      "attempt": 1,
+      "id": "2a181a0a4fb64895",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 58.4字・60字超の文が 46% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 140.1字・最長 190字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 140.1,
+        "avg_sentence": 58.4,
+        "long_share": 0.458,
+        "max_paragraph": 190,
+        "paragraphs": 10,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "mof",
+      "title": "片山財務大臣兼内閣府特命担当大臣繰上げ閣議後記者会見の概要(令和8年11月2日(月曜日))"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T11:51:18.750572+00:00",
+      "attempt": 0,
+      "id": "2a181a0a4fb64895",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 85.8,
+        "avg_sentence": 27.5,
+        "long_share": 0.0,
+        "max_paragraph": 186,
+        "paragraphs": 17,
+        "sentences": 53
+      },
+      "score": 100,
+      "source": "mof",
+      "title": "片山財務大臣兼内閣府特命担当大臣繰上げ閣議後記者会見の概要(令和8年11月2日(月曜日))"
     }
   ],
   "short_text_retry": {},
