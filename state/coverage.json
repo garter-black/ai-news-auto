@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "soumu-local-allocation-tax-nov-2026",
+   "at": "2026-11-02T19:11:46.644550+00:00",
+   "title": "総務省の令和8年度普通交付税11月交付、全国の自治体に向け11月5日に実施",
+   "head": "総務省の令和8年度普通交付税11月交付、全国の自治体に向け11月5日に実施 | 令和8年度普通交付税の11月交付",
+   "text": "総務省の令和8年度普通交付税11月交付、全国の自治体に向け11月5日に実施 | 令和8年度普通交付税の11月交付 | 普通交付税 / 総務省 / 地方交付税 / 道府県分 / 市町村分 / 11月交付 / 令和8年度 / 自治体財政 / 税金 / 社会 / 行政",
+   "urls": [
+    "https://www.soumu.go.jp/menu_news/s-news/01zaisei04_02000191.html"
+   ]
+  },
+  {
+   "slug": "kpn-elevenlabs-mobiel-ai-netherlands",
+   "at": "2026-11-02T19:11:38.274561+00:00",
+   "title": "オランダ通信大手KPN、ElevenLabsの音声AIで中小企業向け「Mobiel AI」提供開始",
+   "head": "オランダ通信大手KPN、ElevenLabsの音声AIで中小企業向け「Mobiel AI」提供開始 | How KPN is bringing voice AI to the Netherlands' entrepreneurs with Mobiel AI",
+   "text": "オランダ通信大手KPN、ElevenLabsの音声AIで中小企業向け「Mobiel AI」提供開始 | How KPN is bringing voice AI to the Netherlands' entrepreneurs with Mobiel AI | ElevenLabs / KPN / 音声AI / Mobiel AI / オランダ / 留守番電話文字起こし / 中小企業 / カスタマーサポート / 生成AI / 音声AI / ビジネス / AIサービス",
+   "urls": [
+    "https://elevenlabs.io/blog/kpn-mobiel-ai"
+   ]
+  },
+  {
    "slug": "boj-ueda-press-conf-oct30",
    "at": "2026-11-02T18:51:05.009375+00:00",
    "title": "日本銀行の植田総裁、10月30日の記者会見を実施 金利や景気の動向について語る",
@@ -1625,26 +1645,6 @@
    "text": "東京都、高齢者の生活実態調査結果を公表　ひとり暮らしが約3割に増加 | 「高齢者の生活実態」の結果 令和7年度東京都福祉保健基礎調査 | 東京都 / 高齢者 / 生活実態調査 / ひとり暮らし / デジタル利用 / 就業年齢 / 福祉保健局 / 高齢者福祉 / 社会 / 行政 / 高齢者福祉 / 調査",
    "urls": [
     "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102916"
-   ]
-  },
-  {
-   "slug": "tokyo-world-diabetes-day-2026",
-   "at": "2026-10-29T19:12:02.001949+00:00",
-   "title": "東京都が11月7日から糖尿病予防のブルーライトアップを実施、ガイドブックも公開",
-   "head": "東京都が11月7日から糖尿病予防のブルーライトアップを実施、ガイドブックも公開 | 糖尿病への正しい理解の輪を広げよう！11月14日は「World Diabetes Day（ワールド ダイアベティス デイ）」（世界糖尿病デー）",
-   "text": "東京都が11月7日から糖尿病予防のブルーライトアップを実施、ガイドブックも公開 | 糖尿病への正しい理解の輪を広げよう！11月14日は「World Diabetes Day（ワールド ダイアベティス デイ）」（世界糖尿病デー） | 世界糖尿病デー / 東京都 / 糖尿病予防 / ブルーライトアップ / 健康診断 / 生活習慣病 / 糖尿病予備群 / とうきょう健康ステーション / 社会・行政 / 健康・医療 / 東京都",
-   "urls": [
-    "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102914"
-   ]
-  },
-  {
-   "slug": "github-copilot-plugin-controls-ga",
-   "at": "2026-10-29T19:11:41.985878+00:00",
-   "title": "GitHub Copilot、組織ごとのプラグイン管理が一般提供へ。開発チームの標準ツールを自動導入",
-   "head": "GitHub Copilot、組織ごとのプラグイン管理が一般提供へ。開発チームの標準ツールを自動導入 | Repository plugin defaults and enterprise plugin controls generally available",
-   "text": "GitHub Copilot、組織ごとのプラグイン管理が一般提供へ。開発チームの標準ツールを自動導入 | Repository plugin defaults and enterprise plugin controls generally available | GitHub Copilot / プラグイン管理 / Enterprise / VS Code / Copilot CLI / 開発環境 / 一般提供 / GitHub / 生成AI / 開発ツール / GitHub / Copilot",
-   "urls": [
-    "https://github.blog/changelog/2026-10-28-repository-plugin-defaults-and-enterprise-plugin-controls-generally-available"
    ]
   }
  ]

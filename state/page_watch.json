@@ -1,7 +1,7 @@
 {
  "pages": {
   "chatgpt-pricing": {
-   "hash": "892dd5fd92438858",
+   "hash": "2cf63d272fbcbaf4",
    "lines": [
     "About",
     "Features",
@@ -70,7 +70,7 @@
     "Learn more",
     "Individual",
     "Business & Enterprise",
-    "Intelligence for everyday tasks",
+    "Best for trying out ChatGPT",
     "/ month",
     "Get Free",
     "Unlimited text chats with GPT-6",
@@ -83,7 +83,7 @@
     "Limited ChatGPT Work access on desktop",
     "Have an existing plan? See billing help⁠",
     "Unlimited text chats subject to abuse guardrails. Learn more⁠",
-    "Expanded access",
+    "Best for longer conversations",
     "Get Go",
     "Everything in Free and:",
     "More messages with tools",
@@ -92,7 +92,7 @@
     "More voice chats",
     "Longer memory",
     "This plan may include ads. Learn more⁠",
-    "Do more with advanced intelligence",
+    "Best for advanced work and productivity",
     "Get Plus",
     "Everything in Go and:",
     "Advanced reasoning models with GPT-6",
@@ -105,7 +105,7 @@
     "Expanded access to ChatGPT Work on desktop, web, and mobile",
     "Early access to new features",
     "Limits apply⁠",
-    "Maximize your productivity",
+    "Best for research and coding",
     "From",
     "Get Pro",
     "Everything in Plus and:",
@@ -433,7 +433,13 @@
    "ok": "2026-11-03"
   },
   "claude-api-release-notes": {
-   "last_date": "2026-10-30",
+   "last_date": "2026-11-02",
+   "minor": [
+    {
+     "date": "2026-11-02",
+     "title": "Claude API: Long conversations and agent loops on the Messages API can now send smaller requests and get a lower time to"
+    }
+   ],
    "ok": "2026-11-03"
   },
   "claude-apps-release-notes": {

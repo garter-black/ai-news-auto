@@ -4221,6 +4221,14 @@
       "skipped": true,
       "url": "https://www.soumu.go.jp/menu_news/s-news/01kanbo01_02001188.html"
     },
+    "1b616ac07b1e1fa7": {
+      "at": "2026-11-02T19:11:40.559855+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "kpn-elevenlabs-mobiel-ai-netherlands",
+      "url": "https://elevenlabs.io/blog/kpn-mobiel-ai"
+    },
     "1b68d707a7a4b7cc": {
       "at": "2026-10-30T10:31:02.170316+00:00",
       "reason": "prefilter: 扱わない話題（事件事故・ゴシップ・選挙・医療効果・噂）",
@@ -9513,6 +9521,14 @@
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102803"
     },
+    "b083716eb979e302": {
+      "at": "2026-11-02T19:11:47.469097+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "public",
+      "slug": "soumu-local-allocation-tax-nov-2026",
+      "url": "https://www.soumu.go.jp/menu_news/s-news/01zaisei04_02000191.html"
+    },
     "b0d3e2edc6f50b4d": {
       "at": "2026-10-30T08:51:13.509715+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12420,72 +12436,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T11:11:26.735035+00:00",
-      "attempt": 0,
-      "id": "a4be21c02d238c64",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 54.6,
-        "avg_sentence": 40.6,
-        "long_share": 0.143,
-        "max_paragraph": 94,
-        "paragraphs": 26,
-        "sentences": 35
-      },
-      "score": 100,
-      "source": "mhlw",
-      "title": "「遺族年金受給者実態調査」にご協力ください"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T11:31:03.311877+00:00",
-      "attempt": 1,
-      "id": "f8b8be765cc510a3",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1134字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（297字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 129.0,
-        "avg_sentence": 47.5,
-        "long_share": 0.158,
-        "max_paragraph": 173,
-        "paragraphs": 7,
-        "sentences": 19
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "医療施設動態調査（令和8(2026)年8月末概数）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T11:31:20.066203+00:00",
-      "attempt": 2,
-      "id": "f8b8be765cc510a3",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1531字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（300字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 138.9,
-        "avg_sentence": 47.9,
-        "long_share": 0.172,
-        "max_paragraph": 183,
-        "paragraphs": 10,
-        "sentences": 29
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "医療施設動態調査（令和8(2026)年8月末概数）"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T11:31:30.777582+00:00",
@@ -18923,6 +18873,68 @@
       "score": 100,
       "source": "boj",
       "title": "【記者会見】植田総裁（10月30日分）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T19:11:30.987492+00:00",
+      "attempt": 1,
+      "id": "1b616ac07b1e1fa7",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "題名で料金・価格を約束しているのに、本文に金額（円・ドル・無料など）が無い。元記事の金額を書くか、題名から料金の話を外す"
+      ],
+      "readability": {
+        "avg_paragraph": 84.2,
+        "avg_sentence": 45.6,
+        "long_share": 0.167,
+        "max_paragraph": 134,
+        "paragraphs": 13,
+        "sentences": 24
+      },
+      "score": null,
+      "source": "elevenlabs-blog",
+      "title": "How KPN is bringing voice AI to the Netherlands' entrepreneurs with Mobiel AI"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T19:11:40.558818+00:00",
+      "attempt": 2,
+      "id": "1b616ac07b1e1fa7",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 82.3,
+        "avg_sentence": 43.9,
+        "long_share": 0.133,
+        "max_paragraph": 154,
+        "paragraphs": 16,
+        "sentences": 30
+      },
+      "score": 100,
+      "source": "elevenlabs-blog",
+      "title": "How KPN is bringing voice AI to the Netherlands' entrepreneurs with Mobiel AI"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T19:11:47.468298+00:00",
+      "attempt": 1,
+      "id": "b083716eb979e302",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 76.7,
+        "avg_sentence": 40.6,
+        "long_share": 0.059,
+        "max_paragraph": 113,
+        "paragraphs": 9,
+        "sentences": 17
+      },
+      "score": 100,
+      "source": "soumu",
+      "title": "令和8年度普通交付税の11月交付"
     }
   ],
   "short_text_retry": {},
