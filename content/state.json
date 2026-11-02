@@ -4810,6 +4810,16 @@
       "skipped": true,
       "url": "https://openai.com/index/legora-agentic-operating-system-for-legal-work"
     },
+    "30737b7a64596bc9": {
+      "at": "2026-11-02T07:21:44.997211+00:00",
+      "breaking": true,
+      "major": true,
+      "model": "claude:sonnet",
+      "score": 96,
+      "section": "business",
+      "slug": "cyberagent-fy2026-results-date",
+      "url": "https://www.cyberagent.co.jp/news/detail/id=33973"
+    },
     "30c26e066d3951dd": {
       "at": "2026-10-27T01:54:15.440638+00:00",
       "reason": "prefilter: 告知・お知らせ系",
@@ -11807,30 +11817,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-30T06:12:30.053005+00:00",
-      "attempt": 2,
-      "id": "e30d6cc077fe7638",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1490字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（326字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 139.7,
-        "avg_sentence": 59.9,
-        "long_share": 0.524,
-        "max_paragraph": 163,
-        "paragraphs": 9,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "jfa",
-      "title": "2026/27シーズン JFA・Ｊリーグ特別指定選手に松田和輝選手（順天堂大）を認定 #jfa"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-30T06:12:43.723581+00:00",
       "attempt": 1,
       "id": "792b349685b03dc3",
@@ -18424,6 +18410,26 @@
       "score": 100,
       "source": "rakuten",
       "title": "国内（証券単体）最多！楽天証券、証券総合口座数1,500万口座突破のお知らせ"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T07:21:44.996274+00:00",
+      "attempt": 1,
+      "id": "30737b7a64596bc9",
+      "kind": "broad",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 49.5,
+        "avg_sentence": 29.4,
+        "long_share": 0.0,
+        "max_paragraph": 79,
+        "paragraphs": 19,
+        "sentences": 32
+      },
+      "score": 96,
+      "source": "cyberagent-news",
+      "title": "2026年9月期 通期決算発表のお知らせ"
     }
   ],
   "short_text_retry": {},

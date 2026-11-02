@@ -54,11 +54,11 @@
     "gemini-3.5-flash-lite": 37
   },
   "2026-11-01": {
-    "cf-image:flux-1-schnell": 2,
+    "cf-image:flux-1-schnell": 3,
     "cf-image:flux-2-klein-4b": 22,
-    "claude:sonnet": 10,
+    "claude:sonnet": 12,
     "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 1,
-    "cloudflare:@cf/openai/gpt-oss-120b": 85,
+    "cloudflare:@cf/openai/gpt-oss-120b": 87,
     "gemini-3.1-flash-lite": 1,
     "gemini-3.5-flash-lite": 227
   }
