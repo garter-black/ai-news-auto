@@ -1271,11 +1271,23 @@ def wrapped(text: str, face: str, sizes: range, width: int, rows_max: int, color
 
 
 def big_lines(text: str) -> np.ndarray:
-    """つかみ・締めの大きな文字: 2行に入る大きさ（72px 以上）ならそれで、無理なら3行"""
-    try:
-        return wrapped(text, "black", range(86, 70, -2), COL_W, 2)
-    except RuntimeError:
-        return wrapped(text, "black", range(80, 48, -2), COL_W, 3)
+    """つかみ・締めの大きな文字: 文節の途中で折り返さない、いちばん大きな文字（2行 → 3行の順に探す）"""
+    bounds, at = {0, len(text)}, 0
+    for ph in v2._phrases(text):
+        at += len(ph)
+        bounds.add(at)
+    for rows_max, sizes in ((2, range(86, 62, -2)), (3, range(80, 60, -2)), (2, range(60, 48, -2))):
+        for size in sizes:
+            rows = v2.wrap_jp(text, shorts.font("black", size), COL_W - 8)
+            cuts, at = set(), 0
+            for r in rows:
+                at += len(r)
+                cuts.add(at)
+            if len(rows) <= rows_max and "".join(rows) == text and cuts <= bounds:
+                sprites = [render_text(accent_segments(r, "black"), size) for r in rows]
+                if all(sp.shape[1] <= COL_W for sp in sprites):
+                    return stack(sprites, int(size * 0.22))
+    return wrapped(text, "black", range(80, 44, -2), COL_W, 3)
 
 
 def subtitle_sprite(text: str) -> np.ndarray:
@@ -1442,6 +1454,10 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
             spots.append(Spot(b_t + 0.3, nxt - 0.08, tg.page, tg.rect, tg.match, b_t + 0.55))
             clicks.append(Click(b_t + 0.55, tg.page, *click_point(tg)))
             ev(b_t + 0.55, "click")
+            if nxt - b_t > 3.3:  # 長い beat: 途中で少し引いて行の前後も見せる（3.6秒より長く止まらない）
+                m_t = b_t + (nxt - b_t) * 0.55
+                moves.append(Move(m_t, 0.6, frame_rect(page, tg.page, line_rect, 0.96, 1.4, zmin=1.15)))
+                ev(m_t, "move", f"beat{i}: 少し引く")
         else:
             spots.append(Spot(a_t + 0.3, nxt - 0.08, tg.page, tg.rect, tg.match, a_t + 0.55))
         if found[i] and is_english(beat.get("target", "")) and beat.get("ja") and sub_end - (a_t + 0.5) > 0.6:
