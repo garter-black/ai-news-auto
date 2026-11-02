@@ -24,7 +24,7 @@ ANSWER = {
     "no": "日本では提供されていません",
 }
 # 「日本で使える？」の章の書き出しが「分からない」になっている
-UNKNOWN_ANSWER_RE = re.compile(r"まだ分かりません|分かりません|わかりません|不明です|確認できていません|確認できません|記載がありません|書かれていません")
+UNKNOWN_ANSWER_RE = re.compile(r"まだ分かりません|述べていません|触れていません|言及なし|分かりません|わかりません|不明です|確認できていません|確認できません|記載がありません|書かれていません")
 # 日本での提供・日本語対応を「確認できない」とだけ言う箇条書き（表の答えと食い違うので消す）
 UNKNOWN_BULLET_RE = re.compile(
     r"^\s*[-*・]\s*.*(?:提供地域|日本での提供|日本から|日本語(?:への)?対応|地域の案内).*"
@@ -73,12 +73,21 @@ def matches(text: str, items: list[dict] | None = None) -> list[dict]:
     return [item for _, _, item in found]
 
 
+SUBJECT_SPLIT_RE = re.compile(r"[｜|：:？?]|とは|[ 　、](?=[^A-Za-z0-9])")
+
+
+def subject(text: str) -> str:
+    """題名の主題の部分（「Claude Ultraプランとは？料金…」→「Claude Ultraプラン」）"""
+    return SUBJECT_SPLIT_RE.split((text or "").strip(), maxsplit=1)[0]
+
+
 def main_product(record_or_title: dict | str) -> dict | None:
-    """記事の主役の製品（見出し・短い題名でいちばん先に出てくるもの）"""
+    """記事の主役の製品（短い題名の主題の部分、無ければ見出しの最初のまとまりに出てくるもの）。
+    主題に出てこない製品（「CodeRabbit、OpenAIの新AI…」の OpenAI など）は主役にしない"""
     if isinstance(record_or_title, dict):
-        text = f"{record_or_title.get('title', '')} {record_or_title.get('seoTitle', '')}"
+        text = subject(record_or_title.get("seoTitle") or "") or subject(record_or_title.get("title") or "")
     else:
-        text = record_or_title
+        text = subject(record_or_title)
     hits = matches(text)
     return hits[0] if hits else None
 

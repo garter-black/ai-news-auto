@@ -4360,6 +4360,15 @@
       "slug": "boj-governor-press-conference-oct30",
       "url": "http://www.boj.or.jp/about/release/sousaidouga.htm"
     },
+    "2122a3d533d50001": {
+      "at": "2026-11-02T17:44:49.496197+00:00",
+      "major": true,
+      "model": "claude:sonnet",
+      "score": 100,
+      "section": "ai",
+      "slug": "deepseek-harness-creator-mode",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-02/deepseek-boosts-ai-agent-offering-with-new-creator-mode"
+    },
     "2122e422380b5543": {
       "at": "2026-10-26T16:50:25.785682+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（講座）",
@@ -12331,29 +12340,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-30T10:31:14.418750+00:00",
-      "attempt": 2,
-      "id": "056aa7df20c31861",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1544字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（383字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 125.8,
-        "avg_sentence": 53.9,
-        "long_share": 0.19,
-        "max_paragraph": 170,
-        "paragraphs": 9,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "soumu",
-      "title": "デジタルインフラ整備計画2030に基づく5Gインフラの整備状況（令和7年度末）の公表"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-30T10:31:23.312461+00:00",
       "attempt": 1,
       "id": "6159e6840e0fe956",
@@ -18865,6 +18851,26 @@
       "score": 100,
       "source": "jnet21",
       "title": "省エネ・コスト削減技術が集結、東京でマッチングイベント"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T17:44:49.494766+00:00",
+      "attempt": 1,
+      "id": "2122a3d533d50001",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 53.1,
+        "avg_sentence": 32.7,
+        "long_share": 0.064,
+        "max_paragraph": 114,
+        "paragraphs": 29,
+        "sentences": 47
+      },
+      "score": 100,
+      "source": "radar-bloomberg.com",
+      "title": "DeepSeek releases a \"creator mode\" that allows users of DeepSeek Harness to crea"
     }
   ],
   "short_text_retry": {},

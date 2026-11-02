@@ -15,6 +15,7 @@ import genres  # noqa: E402
 import japan_availability as ja  # noqa: E402
 import persona  # noqa: E402
 import quality  # noqa: E402
+import roundup  # noqa: E402
 import web_articles as w  # noqa: E402
 
 CLAUDE_BODY = """## 概要
@@ -200,6 +201,25 @@ class FaqAndSeoTests(unittest.TestCase):
             rec = w.build_web_record(item, data, {}, "mock", "test")
         self.assertEqual(rec["seoTitle"], "防衛特別所得税とは？2027年1月から所得税に1%上乗せ")
         self.assertLessEqual(w._width(rec["seoTitle"]), w.SEO_MAX_WIDTH)
+
+
+class RoundupLabelTests(unittest.TestCase):
+    def test_internal_labels_are_replaced(self):
+        rec = {
+            "type": "roundup", "title": "まとめ", "lede": "記事1と記事2から", "description": "", "easy": "",
+            "highlights": ["記事３によると"],
+            "body": "## 時系列で見る発表の流れ\n| 日付 | スラッグ |\n|---|---|\n| 8月 | 記事1、記事2 |\n\n提供された記事を見ると、記事9は無い。",
+            "sources": [{"slug": "no-such-article-xyz", "title": "楽天銀行・楽天証券・楽天カード併用のメリットとマネーブリッジ活用法を解説"},
+                        {"slug": "", "title": "短い題"}, {"slug": "", "title": "三つ目"}],
+        }
+        roundup.clean_record_labels(rec)
+        self.assertEqual(roundup.internal_label_problems(rec), [])
+        self.assertIn("## いつ、何が発表された？", rec["body"])
+        self.assertIn("「楽天銀行・楽天証券・楽天カード併用の…」", rec["body"])
+        self.assertNotIn("](/articles/no-such-article-xyz)", rec["body"])  # 無い記事へはリンクしない
+        self.assertIn("元の記事", rec["body"])
+        self.assertEqual(rec["highlights"], ["「三つ目」によると"])
+        self.assertNotIn("時系列で見る発表の流れ", roundup.PROMPT)
 
 
 if __name__ == "__main__":

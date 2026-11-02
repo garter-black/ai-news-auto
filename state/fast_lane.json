@@ -78,6 +78,19 @@
       "title": "DeepSeek open sources Super-Agent as a research prototype, a proactive coding agent it says can monitor group chats for coding issues and suggest solutions",
       "url": "https://www.bloomberg.com/news/articles/2026-11-01/deepseek-drops-enhanced-coding-agent-with-aim-to-rival-anthropic"
     },
+    "2122a3d533d50001": {
+      "detectedAt": "2026-11-02T17:41:24+00:00",
+      "finishedAt": "2026-11-02T17:44:49+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41493684573",
+      "slug": "deepseek-harness-creator-mode",
+      "source": "radar-bloomberg.com",
+      "sourcePublishedAt": "2026-11-02T17:41:24+00:00",
+      "startedAt": "2026-11-02T17:42:57+00:00",
+      "title": "DeepSeek releases a \"creator mode\" that allows users of DeepSeek Harness to create custom plugins, like a 3D model renderer and a video editing workbench",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-02/deepseek-boosts-ai-agent-offering-with-new-creator-mode"
+    },
     "274aedb084ae6e00": {
       "detectedAt": "2026-10-28T02:17:51+00:00",
       "finishedAt": "2026-10-28T02:28:35+00:00",

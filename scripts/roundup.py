@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
 import time
 from datetime import datetime, timezone
@@ -71,8 +72,8 @@ PROMPT = """以下は「{topic}」について書かれた {count} 本の記事�
 各項目について「どの発表で明らかになったか」が分かるようにする。
 これがこの記事の核心なので、最も厚く書くこと。
 
-## 時系列で見る発表の流れ
-いつ何が公開され、何が積み上がってきたかを時系列に整理する。
+## いつ、何が発表された？
+いつ何が公開され、何が積み上がってきたかを日付順に整理する。
 個別記事を読んでも分からない「順序と積み上がり」を示す。
 
 ## 横断して見えてくること
@@ -93,6 +94,8 @@ PROMPT = """以下は「{topic}」について書かれた {count} 本の記事�
 - 本文は5000〜8000字。
 - 表を最低2つ含める（統合機能一覧と時系列）。
 - 内部リンクは提供されたスラッグを正確に使う。存在しないスラッグを作らない。
+- 読者に見える文・表に、作業用の言葉を書かない: 「記事1」「記事2」のような番号、「スラッグ」、「提供された記事」。
+  どの記事の話かを示すときは、記事タイトル（短くしてよい）か発信元の名前で書く。表の出典の列も同じ。
 
 # 各フィールドの要件
 - title: 38〜52文字。「{topic}」を含め、まとめ記事だと分かる表現にする。
@@ -248,6 +251,61 @@ def generate(client, topic: str, articles: list[dict]) -> dict:
     raise RuntimeError(f"生成に失敗: {last_error}")
 
 
+# 作業用の言葉（プロンプトの「--- 記事1 ---」など）が読者に見える文に漏れたもの
+INTERNAL_LABEL_RE = re.compile(r"記事([0-9０-９]{1,2})(?![0-9０-９])")
+INTERNAL_WORDS = (
+    ("## 時系列で見る発表の流れ", "## いつ、何が発表された？"),
+    ("時系列で見る発表の流れ", "発表の流れ"),
+    ("提供された記事", "元の記事"),
+    ("提供記事", "元の記事"),
+    ("（スラッグ）", ""),
+    (" / スラッグ", ""),
+    ("とスラッグ", ""),
+    ("主要スラッグ", "記事"),
+    ("スラッグ", "記事"),
+)
+
+
+def short_title(title: str, limit: int = 18) -> str:
+    title = re.sub(r"\s+", " ", title or "").strip()
+    return title if len(title) <= limit else title[:limit].rstrip("、・ ") + "…"
+
+
+def clean_internal_labels(text: str, sources: list[dict]) -> str:
+    """「記事1」→ その記事の短い題名（リンクつき）。「時系列で見る発表の流れ」「スラッグ」なども読者向けの言葉に直す"""
+    if not text:
+        return text
+
+    def label(match: re.Match) -> str:
+        n = int(match.group(1).translate(str.maketrans("０１２３４５６７８９", "0123456789")))
+        if not 1 <= n <= len(sources):
+            return "元の記事"
+        src = sources[n - 1]
+        name = f"「{short_title(src.get('title', ''))}」"
+        slug = src.get("slug")
+        return f"[{name}](/articles/{slug})" if slug and (ARTICLES_DIR / f"{slug}.json").exists() else name
+
+    for old, new in INTERNAL_WORDS:
+        text = text.replace(old, new)
+    return INTERNAL_LABEL_RE.sub(label, text)
+
+
+def internal_label_problems(record: dict) -> list[str]:
+    """読者に見える欄に作業用の言葉が残っていないか（書き出す前の確認）"""
+    text = "\n".join(str(record.get(k) or "") for k in ("title", "lede", "description", "body", "easy")) + "\n".join(record.get("highlights") or [])
+    found = sorted({m.group(0) for m in INTERNAL_LABEL_RE.finditer(text)} | {w for w, _ in INTERNAL_WORDS[:3] if w in text})
+    return [f"作業用の言葉が残っている（{'・'.join(found[:5])}）"] if found else []
+
+
+def clean_record_labels(record: dict) -> dict:
+    sources = record.get("sources") or []
+    for key in ("title", "lede", "description", "body", "easy", "threadsPost"):
+        if isinstance(record.get(key), str):
+            record[key] = clean_internal_labels(record[key], sources)
+    record["highlights"] = [clean_internal_labels(h, sources) for h in record.get("highlights") or []]
+    return record
+
+
 def build_record(topic: str, data: dict, members: list[dict]) -> dict:
     genre = GENRES_BY_SLUG.get(members[0].get("genreSlug", ""))
     now = datetime.now(timezone.utc).isoformat()
@@ -347,7 +405,10 @@ def main() -> int:
             log(f"   [NG] {error}")
             continue
 
-        record = build_record(cluster.key, data, members)
+        record = clean_record_labels(build_record(cluster.key, data, members))
+        if problems := internal_label_problems(record):
+            log(f"   [NG] {problems[0]}")
+            continue
         # 既存があればスラッグを引き継いでURLを変えない
         if old:
             record["slug"] = old["slug"]
