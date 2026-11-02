@@ -108,6 +108,9 @@
     "boj-outlook-report-october": {
       "liveAt": "2026-11-02T05:54:28+00:00"
     },
+    "boj-tankan-price-forecast-gap": {
+      "liveAt": "2026-11-02T10:02:34+00:00"
+    },
     "caa-consumer-safety-report-oct2026": {
       "liveAt": "2026-10-29T07:13:54+00:00"
     },
@@ -449,6 +452,9 @@
     },
     "mistral-large-4-preview": {
       "liveAt": "2026-10-29T14:40:23+00:00"
+    },
+    "mof-jgb-interest-rate-202610": {
+      "liveAt": "2026-11-02T10:02:33+00:00"
     },
     "mof-tax-stamp-revenue-sep-2026": {
       "liveAt": "2026-11-02T09:17:51+00:00"
