@@ -234,6 +234,9 @@
     "eurozone-gdp-2026-q3-slowdown": {
       "liveAt": "2026-11-02T14:55:32+00:00"
     },
+    "eurozone-unemployment-rate-sep-2026": {
+      "liveAt": "2026-11-02T16:20:42+00:00"
+    },
     "fage-suntory-skincare-2026-nov": {
       "liveAt": "2026-11-02T04:35:57+00:00"
     },
@@ -593,6 +596,9 @@
     },
     "nvidia-tensorrt-edge-llm-edge-ai": {
       "liveAt": "2026-11-02T03:34:05+00:00"
+    },
+    "nvidia-workload-map-ai-frameworks": {
+      "liveAt": "2026-11-02T16:20:43+00:00"
     },
     "ocean-acidification-foraminifera-alkalinity": {
       "liveAt": "2026-10-29T01:44:43+00:00"
