@@ -27,7 +27,7 @@ const addDir = (rel, filter = (name) => name.endsWith(".json")) => {
   return names;
 };
 
-for (const dir of ["content/guides", "content/howto", "content/buying-guides", "content/products"]) {
+for (const dir of ["content/guides", "content/howto", "content/buying-guides", "content/products", "content/digests"]) {
   for (const name of addDir(dir) ?? []) addFile(`${dir}/${name}`);
 }
 for (const rel of ["content/index.json", "content/offers.json", "content/products.json", "content/state.json", "affiliate_links.json", "monetization.json"]) {

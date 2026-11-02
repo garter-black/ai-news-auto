@@ -1,0 +1,21 @@
+{
+  "id": "20261102",
+  "date": "2026-11-02",
+  "heading": "今朝のAIニュース3本",
+  "createdAt": "2026-11-01T22:30:00+00:00",
+  "items": [
+    {
+      "slug": "nvidia-gtc-berlin-healthcare-ai-holoscan5",
+      "headline": "AI半導体のNVIDIAが医療向けAI発表"
+    },
+    {
+      "slug": "google-deepmind-genie-4-world-model-sffpkujd_jk",
+      "headline": "Google DeepMind、新AI「Genie 4」を発表"
+    },
+    {
+      "slug": "mistral-large-4-open-cyber-frontier",
+      "headline": "仏AIのミストラルが新AIモデル『Mistral Large 4』を公開"
+    }
+  ],
+  "aiImage": "https://ai-tech-express.jp/img/digest-20261102-bg-2a46a6cd.jpg"
+}

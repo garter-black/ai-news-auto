@@ -179,7 +179,8 @@ async function render(request: Request, url: URL, env: Env, ctx: Ctx): Promise<R
       if (url.pathname.startsWith("/article-preview/") || url.pathname === "/article-concept" || url.pathname.startsWith("/article-concept/")) {
         await loadArticle(env, url.searchParams.get("slug") || "openai-gpt-6-1-terra-announcement");
       }
-      if (url.pathname.startsWith("/cover/") || url.pathname.startsWith("/card/")) await loadFonts(env);
+      // 朝のまとめのシェア画像（app/digest/[id]/share.png・card.png）もカバーと同じフォントで描く
+      if (url.pathname.startsWith("/cover/") || url.pathname.startsWith("/card/") || /^\/digest\/\d{8}\/(share|card)\.png$/.test(url.pathname)) await loadFonts(env);
     } catch (error) {
       console.error("[worker] content preload failed", error);
       return new Response("Service Unavailable", { status: 503, headers: { "Retry-After": "5" } });

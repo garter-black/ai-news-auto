@@ -71,6 +71,7 @@ const nextConfig: NextConfig = {
       "./content/howto/**/*.json",
       "./content/products/**/*.json",
       "./content/buying-guides/**/*.json",
+      "./content/digests/**/*.json",
       "./content/offers.json",
       "./content/products.json",
       "./content/state.json",
