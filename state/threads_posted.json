@@ -2964,6 +2964,28 @@
       "questionText": "AIの電気代が自分の電気料金に響くか、気になりますか？",
       "postedAt": "2026-11-02T15:11:47+00:00",
       "blueskyAt": "2026-11-02T15:11:49+00:00"
+    },
+    "honda-rn0-emtb-eicma-2026": {
+      "id": "6ae8adba2810e4a79d3552c2",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae8adc431e164b233ee251c",
+        "facebook": "6ae8adc92810e4a79d355972",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzdnn5qq3u2y"
+      },
+      "dueAt": "2026-11-02T15:35:18+00:00",
+      "hook": "breaking",
+      "breaking": true,
+      "score": -2,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "自動車・二輪",
+      "question": true,
+      "questionText": "趣味の道具にかけるお金、何を重視して選びますか？",
+      "postedAt": "2026-11-02T15:35:43+00:00",
+      "blueskyAt": "2026-11-02T15:35:45+00:00"
     }
   },
   "extraPending": {}
