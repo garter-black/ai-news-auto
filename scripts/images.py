@@ -7,14 +7,13 @@
      ダウンロードして幅 1200px まで縮小（切り抜かない）し、自前の KV から配信する。記事には「画像：◯◯（公式発表より）」と出す。
      ほかの報道機関・通信社（ロイター・AP・Getty・日経・ITmedia など）の写真、他人の SNS の画像、関連記事のカード・メニュー・
      古い宣伝画像は使わない。ほかのニュースサイト・ブログ・不明な発信元の記事では元記事の画像を使わない
-  2. 数字の図: 統計・調査・件数・ランキング・決算の数字のニュースは、大事な数字（「6件」「52カ月連続」）と発表した団体の名前を
+  2. 数字の図: 大事な数字が1つ記事の芯になっている統計・調査・件数のニュースは、その数字（「6件」「2.817%」）と発表した団体の名前を
      白地・ネイビー・赤1か所・Noto Sans JP Black で描いた図（render_figure）。数字は記事の文にあるものだけ
-  3. フリー素材: Wikimedia Commons と Openverse（CC0・パブリックドメイン・CC BY だけ。商用可・改変可）。
-     写して意味のある具体的な物（製品・食べ物・乗り物・建物・場所・試合など）の記事だけ。関係の確認も厳しめ
-  4. 公式の文字の多い図・ロゴだけの画像（関係の無い場面の写真よりは良い）
-  5. AI 生成: Cloudflare Workers AI（flux-2-klein-4b → flux-1-schnell）。具体的な物の記事だけ。文字・ロゴ・実在の人物なし。
-     1日 IMAGE_AI_DAILY_MAX 枚まで
-  6. どれも無ければ、話題の短い言葉を大きく描いた文字の図
+  3. AI 生成: Cloudflare Workers AI（flux-2-klein-4b → flux-1-schnell）。前からの写真風のプロンプト。話題を問わない。
+     文字・ロゴ・実在の人物なし。1日 IMAGE_AI_DAILY_MAX 枚まで
+  4. フリー素材: Wikimedia Commons と Openverse（CC0・パブリックドメイン・CC BY だけ）。AI が使えないとき。関係の確認は厳しめ
+  5. 公式のロゴ・文字の多い図・バナー
+  6. どれも無ければ（最後の手段）、話題の短い言葉を大きく描いた文字の図
 
 2・3 の画像は 1200×630 の JPEG（約100KB）、1 は縦横比そのままの幅 1200px までの JPEG にし、どれも幅 400 / 640（.sm）/ 800 / 1200 の
 WebP を添えて Workers KV（saisoku-images）へ置き、サイトの /img/<名前> で配信する（cloudflare/worker.ts。srcset は lib/thumb-url.ts）。
@@ -1864,6 +1863,12 @@ def trim_dark_band(image):
     return image.crop((0, 0, w, h - cut)) if cut >= 3 else image
 
 
+def shows_face(image) -> bool:
+    """人の顔がはっきり写っているか（判定できないときは False）"""
+    text = cf_vision(image, "Is a human face clearly visible in this image (not just hands, a back view or a tiny blurred figure)? Answer yes or no.", max_tokens=5)
+    return (text or "").strip().lower().startswith("yes")
+
+
 def generate_ai(plan: dict, article: dict, fast: bool = False) -> tuple[object, str] | None:
     if ai_used_today() >= AI_DAILY_MAX:
         log(f"   [img] AI 生成は今日の上限（{AI_DAILY_MAX}枚）に達した")
@@ -2036,15 +2041,30 @@ def process(path: Path, article: dict, ctx: dict) -> str:
     log(f"   [img] 検索語: {plan['queries']} / {plan.get('query_ja')} 具体物={plan['concrete']} データ={plan['data_news']} 数字={plan['number']}{plan['unit']}「{plan['label']}」 ({plan['model']})")
     org = (wire_org(article) or official["wire"]) if official and official["wire"] else (org_name(article) if official else "")
 
-    # 2. 統計・調査・件数のニュースは、大事な数字の図（関係の無い素材写真・AI のイメージにしない）
+    # 2. 大事な数字が1つ記事の芯になっている統計・調査・件数のニュースは、数字の図
     spec = figure_spec(plan, article)
     if plan["data_news"] and spec and not ctx.get("retry_ai"):
         return use_figure(path, article, ctx, spec, org)
 
-    # 3. フリー素材（写して意味のある具体的な物の記事だけ。関係の確認も厳しめ）
     credit: dict = {}
     image = None
-    if not ctx.get("ai_only") and plan["concrete"]:
+    # 3. AI 生成（前からの写真風のプロンプト。話題を問わない。実在の人物は描かない。1日 IMAGE_AI_DAILY_MAX 枚まで）
+    if not ctx.get("retry_ai"):
+        made = None
+        for _ in range(2):
+            made = generate_ai(plan, article, fast=ctx.get("fast", False))
+            # 顔のはっきり見える人物は描かない（実在の人物と誤解される・作り物の人物を載せない）。1回だけ作り直す
+            if made and shows_face(made[0]):
+                log("   [img] AI 画像に人の顔が写ったので作り直す")
+                made = None
+                continue
+            break
+        if made:
+            image, model = made
+            credit = {"kind": "ai", "model": model, "prompt": plan.get("scene", "")[:300], "provider": "Cloudflare Workers AI"}
+            log(f"   [img] AI 生成: {model}")
+    # 4. フリー素材（AI が使えないとき。記事と関係がはっきりしたものだけ）
+    if image is None and not ctx.get("ai_only"):
         pick, image = find_stock(article, plan, ctx["used_stock"])
         if pick and image is not None:
             credit = {
@@ -2060,27 +2080,14 @@ def process(path: Path, article: dict, ctx: dict) -> str:
             }
             ctx["used_stock"].add(pick["sourceUrl"])
             log(f"   [img] 素材: {pick['title'][:60]}（{pick['creator'][:30]} / {pick['license']}）")
-    elif not plan["concrete"]:
-        log("   [img] 写して意味のある具体的な物が無い記事なので、素材写真・AI のイメージは使わない")
     if image is None and ctx.get("retry_ai"):
         log("   [img] 素材が見つからないので今の画像のまま")
         return "kept"
-    # 4. 公式の文字の多い図・ロゴ（関係の無い場面の写真より良い）
-    if image is None and best:
-        return use_official(path, article, ctx, best, official)
-    if image is None and plan["concrete"]:
-        if _wiki_failures > 0 and not ctx.get("fast") and not ctx.get("ai_only") and age_hours(article) < ctx["defer_hours"]:
-            # Commons が落ちているだけなら AI の枠を使わず、次の回に探し直す（速報の回と、何時間も直らないときは AI）
-            log("   [img] Wikimedia Commons に繋がらないので次の回に回す")
-            return "deferred"
-        # 5. AI 生成（具体的な物の記事だけ。実在の人物は描かない）
-        made = generate_ai(plan, article, fast=ctx.get("fast", False))
-        if made:
-            image, model = made
-            credit = {"kind": "ai", "model": model, "prompt": plan.get("scene", "")[:300], "provider": "Cloudflare Workers AI"}
-            log(f"   [img] AI 生成: {model}")
     if image is None:
-        # 6. どれも無ければ文字の図（数字があれば数字、無ければ話題の短い言葉）
+        # 5. 公式のロゴ・文字の多い図・バナー（AI も素材も無いとき）
+        if best:
+            return use_official(path, article, ctx, best, official)
+        # 6. 最後の手段: 文字の図（数字があれば数字、無ければ話題の短い言葉）
         label = plan.get("label") or ""
         if spec or label:
             return use_figure(path, article, ctx, spec or {"number": "", "unit": "", "label": label}, org)

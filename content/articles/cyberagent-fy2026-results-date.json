@@ -56,7 +56,7 @@
   "videoTitle": "2026年9月期 通期決算発表のお知らせ",
   "publishedAt": "2026-11-02T06:51:36+00:00",
   "generatedAt": "2026-11-02T07:21:40.139608+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/cyberagent-fy2026-results-date-f361de87.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/cyberagent-fy2026-results-date-0fe556e1.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "qualityScore": 96,
@@ -66,14 +66,10 @@
   "fastLane": true,
   "speedMinutes": 34,
   "imageCredit": {
-    "kind": "official",
-    "org": "サイバーエージェント",
-    "provider": "サイバーエージェント ニュース",
-    "sourceUrl": "https://www.cyberagent.co.jp/news/detail/id=33973",
-    "original": "https://www.cyberagent.co.jp/files/user/img/common/fb_img_ca.png",
-    "width": 1200,
-    "height": 630,
-    "at": "2026-11-02T11:54:39+00:00",
-    "imageKind": "logo"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close‑up of a printed financial report and a laptop on a tidy office desk, with soft natural light from a window.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T12:02:28+00:00"
   }
 }

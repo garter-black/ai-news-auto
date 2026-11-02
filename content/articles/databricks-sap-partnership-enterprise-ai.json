@@ -55,21 +55,17 @@
   "videoTitle": "Databricks and SAP unleash end-to-end data & AI capabilities to level up enterprise AI transformation",
   "publishedAt": "2026-10-30T21:00:00+00:00",
   "generatedAt": "2026-11-02T03:11:10.178562+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/databricks-sap-partnership-enterprise-ai-225864fe.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/databricks-sap-partnership-enterprise-ai-f40686a5.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-30T21:00:00+00:00",
   "detectedAt": "2026-11-02T03:10:44+00:00",
   "imageCredit": {
-    "kind": "official",
-    "org": "Databricks",
-    "provider": "Databricks公式ブログ",
-    "sourceUrl": "https://www.databricks.com/blog/databricks-and-sap-unleash-end-end-data-ai-capabilities-level-enterprise-ai-transformation",
-    "original": "https://www.databricks.com/sites/default/files/2026-10/2026-10-Blog-SAP-Databricks-expands-with-a-new-Data-Accelerator-for-SAP-OG-1200x628-2x.png",
-    "width": 1200,
-    "height": 630,
-    "at": "2026-11-02T11:54:28+00:00",
-    "imageKind": "logo"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A modern data center aisle with rows of illuminated server racks under cool white lighting.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T12:03:05+00:00"
   }
 }

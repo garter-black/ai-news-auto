@@ -55,7 +55,7 @@
   "videoTitle": "週刊生成AI with AWS – 2026/10/26 週",
   "publishedAt": "2026-11-02T05:32:10+00:00",
   "generatedAt": "2026-11-02T05:48:37.489833+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/openai-gpt-61-terra-amazon-bedrock-2dd1c0bb.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/openai-gpt-61-terra-amazon-bedrock-d9060bb8.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -63,12 +63,10 @@
   "detectedAt": "2026-11-02T05:48:05+00:00",
   "speedMinutes": 20,
   "imageCredit": {
-    "kind": "figure",
-    "provider": "サイソクニュース",
-    "number": "",
-    "label": "新AIモデルTerra",
-    "sourceUrl": "https://aws.amazon.com/jp/blogs/news/weekly-genai-20261026/",
-    "at": "2026-11-02T11:54:58+00:00",
-    "org": "AWS"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A sleek data center aisle lined with server racks under cool white lighting, with a close‑up of a hand on a keyboard and a computer monitor displaying abstract visual data.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T12:03:16+00:00"
   }
 }

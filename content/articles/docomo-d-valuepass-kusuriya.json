@@ -53,7 +53,7 @@
   "videoTitle": "dバリューパスに「薬屋のひとりごと」が新たに追加されました",
   "publishedAt": "2026-11-02T02:00:00+00:00",
   "generatedAt": "2026-11-02T02:11:23.273577+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/docomo-d-valuepass-kusuriya-63ff2b00.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/docomo-d-valuepass-kusuriya-35b3df5a.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -61,12 +61,10 @@
   "detectedAt": "2026-11-02T02:10:48+00:00",
   "speedMinutes": 15,
   "imageCredit": {
-    "kind": "figure",
-    "provider": "サイソクニュース",
-    "number": "",
-    "label": "dバリューパス新コンテンツ",
-    "sourceUrl": "https://www.docomo.ne.jp/service/dvaluepass/contents_list/character.html",
-    "at": "2026-11-02T11:54:21+00:00",
-    "org": "NTTドコモ"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close-up of a hand holding a smartphone displaying a novel page with a subtle wallpaper visible on the screen, lit by soft natural light.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T12:03:48+00:00"
   }
 }

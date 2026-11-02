@@ -47,7 +47,7 @@
   "videoTitle": "経済・物価情勢の展望（10月、全文）",
   "publishedAt": "2026-11-02T05:00:00+00:00",
   "generatedAt": "2026-11-02T05:48:48.756378+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/boj-outlook-report-october-aa57b174.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/boj-outlook-report-october-e51aa977.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -55,12 +55,10 @@
   "detectedAt": "2026-11-02T05:48:05+00:00",
   "speedMinutes": 52,
   "imageCredit": {
-    "kind": "figure",
-    "provider": "サイソクニュース",
-    "number": "",
-    "label": "経済見通し",
-    "sourceUrl": "http://www.boj.or.jp/mopo/outlook/gor2610b.pdf",
-    "at": "2026-11-02T11:54:25+00:00",
-    "org": "日本銀行"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A modern glass‑front office building representing a central bank, set against a clear sky in Tokyo with soft daylight, and a few people seen from behind entering the entrance.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T12:02:23+00:00"
   }
 }
