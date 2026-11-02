@@ -87,6 +87,23 @@ class ComposeTest(unittest.TestCase):
         self.assertEqual(second["metadata"]["threads"]["linkAttachment"]["url"], self.REPORT["url"])
         self.assertEqual(inp["mode"], "shareNow")
 
+    def test_video_name_and_store(self):
+        a, b = fu.video_name("claude-ultra", b"x"), fu.video_name("claude-ultra", b"y")
+        self.assertTrue(a.startswith("claude-ultra-") and a.endswith(".mp4"))
+        self.assertNotEqual(a, b)  # 中身が変われば名前も変わる（1年キャッシュしても古い動画が出ない）
+        self.assertEqual(fu.flags({})["store"], "kv")
+
+    def test_draft_test_does_not_send_without_yes(self):
+        import json
+        import tempfile
+
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as fh:
+            json.dump(self.REPORT, fh, ensure_ascii=False)
+        res = fu.draft_test(Path(fh.name), "https://ai-tech-express.jp/video/x.mp4")
+        self.assertFalse(res["sent"])
+        self.assertTrue(res["input"]["saveToDraft"])
+        self.assertEqual(res["input"]["mode"], "addToQueue")
+
     def test_run_does_nothing_when_off(self):
         rows = fu.run(now=NOW, env={}, plan_only=False)
         self.assertTrue(all(r["status"] == "planned" for r in rows))

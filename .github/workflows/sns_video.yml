@@ -4,7 +4,8 @@ name: SNS video follow-up (flagged, default off)
 # 2026-11-03 オーナー決定「当面は SNS に投稿する記事だけ」「まず Threads に1日2本」。
 # **既定では何もしない。** Actions の Variables で順に有効にする（docs/sns-video-v3-20261102.md「自動化の計画」）:
 #   SNS_VIDEO_FOLLOWUP=on  … 定期実行で動画を作る（ゲートまで。投稿しない）
-#   SNS_VIDEO_UPLOAD=on    … 合格した動画を R2 に置く（SNS_VIDEO_R2_BUCKET・SNS_VIDEO_PUBLIC_BASE と R2 の書き込み権限のトークンが要る）
+#   SNS_VIDEO_UPLOAD=on    … 合格した動画を Workers KV（saisoku-images）に置き、https://ai-tech-express.jp/video/<名前>.mp4 で配信（新しい鍵は不要。
+#                            配信は cloudflare/worker.ts の /video/。サイトのデプロイ後に有効）
 #   SNS_VIDEO_POST=live    … Buffer で Threads に出す（オーナーの確認のあと）
 # 手動実行（workflow_dispatch）は、Variables に関係なく「作るだけ（投稿しない）」で試せる。
 on:
@@ -58,15 +59,14 @@ jobs:
           CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
           CLAUDE_API_DAILY_CALLS_VIDEO: ${{ vars.CLAUDE_API_DAILY_CALLS_VIDEO }}
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_R2_TOKEN }}
+          CF_KV_TOKEN: ${{ secrets.CF_DEPLOY_TOKEN }}  # images.py の kv_put と同じ（Workers KV Storage:Edit）
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # 手動実行は「作るだけ」。投稿・アップロードは定期実行で Variables が on/live のときだけ
           SNS_VIDEO_FOLLOWUP: ${{ github.event_name == 'workflow_dispatch' && 'on' || vars.SNS_VIDEO_FOLLOWUP }}
           SNS_VIDEO_UPLOAD: ${{ github.event_name == 'schedule' && vars.SNS_VIDEO_UPLOAD || 'off' }}
           SNS_VIDEO_POST: ${{ github.event_name == 'schedule' && vars.SNS_VIDEO_POST || 'off' }}
           SNS_VIDEO_DAILY_MAX: ${{ vars.SNS_VIDEO_DAILY_MAX || '2' }}
-          SNS_VIDEO_R2_BUCKET: ${{ vars.SNS_VIDEO_R2_BUCKET }}
-          SNS_VIDEO_PUBLIC_BASE: ${{ vars.SNS_VIDEO_PUBLIC_BASE }}
+          SNS_VIDEO_STORE: ${{ vars.SNS_VIDEO_STORE || 'kv' }}
         run: |
           if [ "${{ github.event.inputs.plan_only }}" = "true" ]; then
             python scripts/sns_video_followup.py --plan

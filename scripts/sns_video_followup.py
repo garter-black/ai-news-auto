@@ -9,11 +9,12 @@
 
 フラグ（環境変数。GitHub では Actions の Variables）
   SNS_VIDEO_FOLLOWUP=on    動画を作る（台本 → 声 → 描画 → 品質ゲート）。off なら何もしない
-  SNS_VIDEO_UPLOAD=on      ゲートに合格した動画を Cloudflare R2 に置いて公開 URL にする
+  SNS_VIDEO_UPLOAD=on      ゲートに合格した動画を公開 URL に置く（既定は Workers KV の saisoku-images →
+                           https://ai-tech-express.jp/video/<slug>-<hash>.mp4。cloudflare/worker.ts が Range つきで配信。新しい鍵は不要）
   SNS_VIDEO_POST=live      Buffer で Threads に出す。それ以外は投稿文の下書きを表示・記録するだけ
   SNS_VIDEO_DAILY_MAX=2    1日（日本時間）に出す本数の上限
   SNS_VIDEO_WINDOW_H=12    Threads に投稿してから何時間以内の記事を対象にするか
-  SNS_VIDEO_R2_BUCKET / SNS_VIDEO_PUBLIC_BASE   R2 のバケット名と、公開 URL の頭（例 https://media.ai-tech-express.jp）
+  SNS_VIDEO_STORE=kv       置き場所（kv＝既定 / r2）。r2 のときは SNS_VIDEO_R2_BUCKET・SNS_VIDEO_PUBLIC_BASE と R2 の権限が要る
 
 流れと約束（scripts/sns_video.py の約束を引き継ぐ）
   1. 文面の投稿は今までどおり先に出る（threads_post.py。このスクリプトは文面の投稿に一切さわらない）。
@@ -57,6 +58,7 @@ def flags(env: dict | None = None) -> dict:
         "post": env.get("SNS_VIDEO_POST", "off") == "live",
         "daily_max": int(env.get("SNS_VIDEO_DAILY_MAX", "2") or 2),
         "window_h": float(env.get("SNS_VIDEO_WINDOW_H", "12") or 12),
+        "store": env.get("SNS_VIDEO_STORE", "kv") or "kv",
         "bucket": env.get("SNS_VIDEO_R2_BUCKET", ""),
         "public_base": env.get("SNS_VIDEO_PUBLIC_BASE", "").rstrip("/"),
     }
@@ -151,6 +153,30 @@ def buffer_input(channel_id: str, body: str, reply: str, video_url: str, link: s
     return {"channelId": channel_id, "text": body, "schedulingType": "automatic", "mode": "shareNow", "assets": [], "metadata": {"threads": meta}}
 
 
+KV_LIMIT = 25 * 1024 * 1024  # Workers KV の1つの値の上限
+
+
+def video_name(slug: str, data: bytes) -> str:
+    """配信の名前（中身のハッシュ入り＝変わらないので1年キャッシュできる）"""
+    import hashlib
+
+    safe = "".join(c if c.isalnum() or c in "-_" else "-" for c in slug)[:120]
+    return f"{safe}-{hashlib.sha256(data).hexdigest()[:10]}.mp4"
+
+
+def upload_kv(mp4: Path, slug: str, site: str = "https://ai-tech-express.jp") -> str:
+    """Workers KV（saisoku-images）に video/<名前> で置き、サイトの /video/<名前> の URL を返す。
+    書き込みは scripts/images.py の kv_put と同じ（CF_KV_TOKEN＝デプロイ用のトークン。新しい鍵は不要）"""
+    import images
+
+    data = mp4.read_bytes()
+    if len(data) >= KV_LIMIT:
+        raise RuntimeError(f"動画が KV の上限より大きい（{len(data) / 1e6:.1f}MB）")
+    name = video_name(slug, data)
+    images.kv_put(f"video/{name}", data)
+    return f"{site.rstrip('/')}/video/{name}"
+
+
 def upload_r2(mp4: Path, bucket: str, public_base: str, key: str) -> str:
     """Cloudflare R2 に置いて公開 URL を返す（wrangler。CLOUDFLARE_API_TOKEN に R2 の書き込み権限が要る）"""
     if not bucket or not public_base:
@@ -199,7 +225,10 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
             results.append({"slug": slug, **rec})
             continue
         try:
-            url = upload_r2(mp4, f["bucket"], f["public_base"], f"videos/{now.astimezone(JST):%Y%m%d}/{slug}.mp4")
+            if f["store"] == "r2":
+                url = upload_r2(mp4, f["bucket"], f["public_base"], f"videos/{now.astimezone(JST):%Y%m%d}/{slug}.mp4")
+            else:
+                url = upload_kv(mp4, slug)
             rec.update({"status": "uploaded", "videoUrl": url})
         except Exception as error:  # noqa: BLE001 - 置けなければ動画なし
             rec.update({"status": "upload_failed", "error": str(error)[:300]})
@@ -226,13 +255,39 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
     return results
 
 
+def draft_test(report_path: Path, video_url: str, yes: bool = False) -> dict:
+    """Buffer に Threads の動画投稿を**下書き**（saveToDraft・公開しない）で1本作り、Threads で動画が通るかを確かめる。
+    yes=False なら Buffer に送る入力を表示するだけ（何も送らない）"""
+    import threads_post
+
+    report = json.loads(Path(report_path).read_text("utf-8"))
+    body, reply = compose_post(report)
+    inp = buffer_input("<threads のチャンネル>", body, reply, video_url, report.get("url", ""), report.get("title", ""))
+    inp.pop("mode", None)
+    inp.update({"mode": "addToQueue", "saveToDraft": True})
+    if not yes:
+        log("[video-followup] 下書きのテスト（送らない）。--yes を付けたときだけ Buffer に下書きを作る")
+        return {"input": inp, "sent": False}
+    api_key = os.environ.get("BUFFER_API_KEY", "")
+    channel = threads_post.buffer_threads_channel(api_key)
+    if not channel:
+        raise RuntimeError("Buffer に Threads のチャンネルが無い")
+    inp["channelId"] = channel["id"]
+    return {"input": inp, "sent": True, "draftId": threads_post.create_post(api_key, inp)}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="SNS に投稿した記事の動画を作って後から出す（既定は止まっている）")
     parser.add_argument("--plan", action="store_true", help="対象と残りの本数を表示するだけ")
+    parser.add_argument("--draft-test", nargs=2, metavar=("REPORT_JSON", "VIDEO_URL"), help="Buffer に Threads の動画の下書きを作るテスト（--yes が無ければ表示だけ）")
+    parser.add_argument("--yes", action="store_true", help="--draft-test を本当に送る")
     args = parser.parse_args()
     import llm
 
     llm._load_env_local()
+    if args.draft_test:
+        print(json.dumps(draft_test(Path(args.draft_test[0]), args.draft_test[1], args.yes), ensure_ascii=False, indent=2))
+        return
     for row in run(plan_only=args.plan):
         print(json.dumps(row, ensure_ascii=False))
 
