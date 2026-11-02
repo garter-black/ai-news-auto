@@ -345,6 +345,9 @@
     "meta-waddle-world-ai-pet": {
       "liveAt": "2026-10-28T12:11:15+00:00"
     },
+    "mext-foreign-education-data-2026": {
+      "liveAt": "2026-11-02T02:05:57+00:00"
+    },
     "mhlw-cybersecurity-alert-2026": {
       "liveAt": "2026-10-30T08:35:07+00:00"
     },
@@ -513,8 +516,14 @@
     "riken-quantum-state-smoothing": {
       "liveAt": "2026-10-30T05:54:57+00:00"
     },
+    "riken-utokyo-3d-live-cell-microscope": {
+      "liveAt": "2026-11-02T02:05:57+00:00"
+    },
     "riken-xray-laser-terahertz-wave": {
       "liveAt": "2026-10-28T18:06:19+00:00"
+    },
+    "sakana-ai-symposium-2026-sawara": {
+      "liveAt": "2026-11-02T02:05:57+00:00"
     },
     "salesforce-agentic-ai-roi-survey-2026": {
       "liveAt": "2026-10-27T16:28:51+00:00"
