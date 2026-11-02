@@ -3609,6 +3609,14 @@
       "skipped": true,
       "url": "https://www.ipa.go.jp/shiken/syllabus/henkou/2026/20260630.html"
     },
+    "0fcb48d7b86dff5e": {
+      "at": "2026-11-02T03:11:14.087669+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "databricks-sap-partnership-enterprise-ai",
+      "url": "https://www.databricks.com/blog/databricks-and-sap-unleash-end-end-data-ai-capabilities-level-enterprise-ai-transformation"
+    },
     "0fed12977c1a8fbf": {
       "at": "2026-10-28T19:33:35.339413+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -8473,6 +8481,14 @@
       "updated": "mistral-large-4-preview",
       "url": "https://huggingface.co/blog/mistral-large4"
     },
+    "a189685b4c1284e8": {
+      "at": "2026-11-02T03:11:26.618595+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "toyota-wec-monza-2026-preview",
+      "url": "https://jp.toyota-racing-newsroom.com/blog/wec/artikel/6-hours-of-monza-preview/text"
+    },
     "a1acac0595f7482c": {
       "at": "2026-10-30T10:32:10.073941+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（職員）",
@@ -11500,98 +11516,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T03:42:04.460794+00:00",
-      "attempt": 2,
-      "id": "4547043af805dc93",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（341字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 141.6,
-        "avg_sentence": 51.5,
-        "long_share": 0.212,
-        "max_paragraph": 236,
-        "paragraphs": 12,
-        "sentences": 33
-      },
-      "score": null,
-      "source": "ipa",
-      "title": "プロフェッショナルデジタルスキル（データ・AI）試験（仮称） 科目Bのサンプル問題を公表しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T03:42:14.084721+00:00",
-      "attempt": 1,
-      "id": "96392a0c8111c13f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1434字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（317字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 53.0,
-        "avg_sentence": 46.3,
-        "long_share": 0.25,
-        "max_paragraph": 87,
-        "paragraphs": 21,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "caa",
-      "title": "令和8年12月1日に施行される改正公益通報者保護法の法定指針の内容を説明した動画を公表しました。"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T03:42:19.797890+00:00",
-      "attempt": 2,
-      "id": "96392a0c8111c13f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1421字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（283字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 128.3,
-        "avg_sentence": 51.3,
-        "long_share": 0.28,
-        "max_paragraph": 202,
-        "paragraphs": 10,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "caa",
-      "title": "令和8年12月1日に施行される改正公益通報者保護法の法定指針の内容を説明した動画を公表しました。"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T03:42:29.814265+00:00",
-      "attempt": 1,
-      "id": "e5ec03234183a95a",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 62.5字・60字超の文が 46% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 187.5字・最長 294字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 187.5,
-        "avg_sentence": 62.5,
-        "long_share": 0.458,
-        "max_paragraph": 294,
-        "paragraphs": 8,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "xbox-wire-jp",
-      "title": "ウェイストランド体験を表参道で！「Fallout」× TOWER RECORDS CAFE コラボ先行体験をファンの声とともにお届け"
-    },
     {
       "accepted": true,
       "at": "2026-10-30T03:42:36.522831+00:00",
@@ -18214,6 +18138,93 @@
       "score": 100,
       "source": "ipa",
       "title": "DX認定制度 認定事業者の公表（2026年11月1日認定適用）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T03:11:10.844019+00:00",
+      "attempt": 1,
+      "id": "0fcb48d7b86dff5e",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 60.0字・60字超の文が 46% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 102.9,
+        "avg_sentence": 60.0,
+        "long_share": 0.458,
+        "max_paragraph": 167,
+        "paragraphs": 14,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "databricks-blog",
+      "title": "Databricks and SAP unleash end-to-end data & AI capabilities to level up enterpr"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T03:11:14.087312+00:00",
+      "attempt": 0,
+      "id": "0fcb48d7b86dff5e",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 108.8,
+        "avg_sentence": 35.4,
+        "long_share": 0.023,
+        "max_paragraph": 176,
+        "paragraphs": 14,
+        "sentences": 43
+      },
+      "score": 100,
+      "source": "databricks-blog",
+      "title": "Databricks and SAP unleash end-to-end data & AI capabilities to level up enterpr"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T03:11:23.074303+00:00",
+      "attempt": 1,
+      "id": "a189685b4c1284e8",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 62.4字・60字超の文が 41% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 137.2字・最長 206字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 137.2,
+        "avg_sentence": 62.4,
+        "long_share": 0.409,
+        "max_paragraph": 206,
+        "paragraphs": 10,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "toyota",
+      "title": "WEC 2026年シーズン 第8戦 モンツァ6時間レース ： プレビュー マニファクチャラーチャンピオンとして最終戦に挑む"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T03:11:26.618195+00:00",
+      "attempt": 0,
+      "id": "a189685b4c1284e8",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 141.9字・最長 208字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 141.9,
+        "avg_sentence": 41.7,
+        "long_share": 0.176,
+        "max_paragraph": 208,
+        "paragraphs": 10,
+        "sentences": 34
+      },
+      "score": 100,
+      "source": "toyota",
+      "title": "WEC 2026年シーズン 第8戦 モンツァ6時間レース ： プレビュー マニファクチャラーチャンピオンとして最終戦に挑む"
     }
   ],
   "short_text_retry": {},
