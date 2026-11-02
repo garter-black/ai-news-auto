@@ -2605,7 +2605,8 @@
       "permalink": "",
       "channels": {
         "twitter": "6ae7825e4c17af1b87165347",
-        "facebook": "6ae7825e142f545151f48eb4"
+        "facebook": "6ae7825e142f545151f48eb4",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzcalcxukj2z"
       },
       "hook": "breaking",
       "score": 6,
@@ -2616,7 +2617,8 @@
       "question": false,
       "comment": "編集部：無料で試せるのはありがたいところ。",
       "dueAt": "2026-11-02T00:45:00+00:00",
-      "postedAt": "2026-11-01T18:18:06+00:00"
+      "postedAt": "2026-11-01T18:18:06+00:00",
+      "blueskyAt": "2026-11-02T02:09:25+00:00"
     },
     "digest-20261102": {
       "style": "digest",
