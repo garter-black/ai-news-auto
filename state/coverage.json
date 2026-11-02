@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "mof-tobacco-retail-price-approval",
+   "at": "2026-11-02T13:21:36.870083+00:00",
+   "title": "財務省が製造たばこの小売定価の認可情報を公開、随時更新される変更手続きを整理",
+   "head": "財務省が製造たばこの小売定価の認可情報を公開、随時更新される変更手続きを整理 | 製造たばこの小売定価の認可",
+   "text": "財務省が製造たばこの小売定価の認可情報を公開、随時更新される変更手続きを整理 | 製造たばこの小売定価の認可 | 財務省 / たばこ / 小売定価 / 価格改定 / 認可 / たばこ税 / ビジネス / 経済 / ビジネス / 統計 / 小売",
+   "urls": [
+    "https://www.mof.go.jp/policy/tab_salt/topics/kouriteika.html"
+   ]
+  },
+  {
    "slug": "toyota-crown-estate-minor-change",
    "at": "2026-11-02T12:31:23.304103+00:00",
    "title": "トヨタの新型SUV『クラウン（エステート）』が一部改良、プラグインハイブリッドモデルなどを発売",
@@ -1542,14 +1552,6 @@
     "https://mistral.ai/news/mistral-large-4/",
     "https://huggingface.co/blog/mistral-large4"
    ]
-  },
-  {
-   "slug": "legora-openai-legal-transformation-case-study",
-   "at": "2026-10-29T12:57:26.699835+00:00",
-   "title": "ChatGPTのOpenAIがAI法務プラットフォーム Legora 事例を公開 契約書レビュー1万件も数分で自動化",
-   "head": "ChatGPTのOpenAIがAI法務プラットフォーム Legora 事例を公開 契約書レビュー1万件も数分で自動化 | How Legora is transforming legal work with OpenAI",
-   "text": "ChatGPTのOpenAIがAI法務プラットフォーム Legora 事例を公開 契約書レビュー1万件も数分で自動化 | How Legora is transforming legal work with OpenAI | Legora / OpenAI / ChatGPT / 法務AI / 契約書レビュー / デューデリジェンス / リーガルテック / AI活用事例 / OpenAI / ChatGPT / Legora / リーガルテック / 事例紹介 / 契約書自動化",
-   "urls": []
   }
  ]
 }

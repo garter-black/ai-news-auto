@@ -4073,6 +4073,12 @@
       "slug": "aws-connect-ai-agents-guardrails",
       "url": "https://aws.amazon.com/jp/blogs/news/implementing-responsible-ai-in-contact-centers-with-connect-ai-agents-guardrails/"
     },
+    "194831daebd18d98": {
+      "at": "2026-11-02T13:21:29.437945+00:00",
+      "reason": "prefilter: タイトルが短すぎる（一覧リンク等）",
+      "skipped": true,
+      "url": "https://global.toyota/jp/newsroom/toyota/44936457.html"
+    },
     "194ab4b69c2cec81": {
       "at": "2026-10-28T18:00:07.036477+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11158,6 +11164,14 @@
       "slug": "mosquito-mating-gene-discovery",
       "url": "https://www.jst.go.jp/pr/announce/20261028/index.html"
     },
+    "e6d56825e06fc5a3": {
+      "at": "2026-11-02T13:21:41.531788+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "mof-tobacco-retail-price-approval",
+      "url": "https://www.mof.go.jp/policy/tab_salt/topics/kouriteika.html"
+    },
     "e79beef34ab784c9": {
       "at": "2026-10-30T10:11:03.298267+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12062,50 +12076,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:12:00.077182+00:00",
-      "attempt": 2,
-      "id": "2ceac02ca0b5a6ae",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "早稲田大学法学学術院法学部長の石田京子教授→元記事には「早稲田大学法学学術院法学部教授」と記載されており、「学部長」の役職は元記事にないため過大な肩書。"
-      ],
-      "readability": {
-        "avg_paragraph": 147.0,
-        "avg_sentence": 52.5,
-        "long_share": 0.25,
-        "max_paragraph": 290,
-        "paragraphs": 10,
-        "sentences": 28
-      },
-      "score": 90,
-      "source": "cao",
-      "title": "第13回人工知能（AI）技術の利用と消費者問題に関する専門調査会【10月29日開催】"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:12:07.277281+00:00",
-      "attempt": 1,
-      "id": "f7f7d6f123a4b8f0",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1746字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 123.3,
-        "avg_sentence": 58.7,
-        "long_share": 0.381,
-        "max_paragraph": 216,
-        "paragraphs": 10,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "ipa",
-      "title": "DX認定制度 ウェブフォーム申請の操作説明動画を公開しました"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T08:12:17.270219+00:00",
@@ -18638,6 +18608,50 @@
       "score": 100,
       "source": "toyota",
       "title": "クラウン（エステート）を一部改良"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T13:21:38.052722+00:00",
+      "attempt": 1,
+      "id": "e6d56825e06fc5a3",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 49.4字・60字超の文が 13% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 113.6,
+        "avg_sentence": 49.4,
+        "long_share": 0.13,
+        "max_paragraph": 152,
+        "paragraphs": 10,
+        "sentences": 23
+      },
+      "score": 100,
+      "source": "mof",
+      "title": "製造たばこの小売定価の認可"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T13:21:41.531050+00:00",
+      "attempt": 0,
+      "id": "e6d56825e06fc5a3",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 47.4字・60字超の文が 12% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 47.4,
+        "avg_sentence": 47.4,
+        "long_share": 0.125,
+        "max_paragraph": 71,
+        "paragraphs": 24,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "mof",
+      "title": "製造たばこの小売定価の認可"
     }
   ],
   "short_text_retry": {},
