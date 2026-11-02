@@ -6281,6 +6281,12 @@
       "skipped": true,
       "url": "https://www.atpress.ne.jp/news/642375"
     },
+    "612cc780797c9fc6": {
+      "at": "2026-11-02T02:51:24.657873+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（採用）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/kouseiroudoushou/saiyou/ninkituki/ninki-gyoumukaikakusuishinsenmonkan.html"
+    },
     "61401816becf4736": {
       "at": "2026-10-30T05:54:26.203429+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（募集）",
@@ -8405,6 +8411,12 @@
       "slug": "india-upi-cashless-revolution",
       "url": "https://www.nli-research.co.jp/topics_detail1/id=87193?site=nli"
     },
+    "a04be811bb04ce2e": {
+      "at": "2026-11-02T02:51:24.657899+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（会議）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/acp-jinseikaigi/"
+    },
     "a06c1b81e0e42828": {
       "at": "2026-10-26T15:09:45.887874+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -8792,6 +8804,14 @@
       "reason": "大臣の定例記者会見における個別発言の記録であり、国民生活に関わる新しい制度、法律、料金、規制などの具体的な発表を含まないため。",
       "skipped": true,
       "url": "https://www.gov-online.go.jp/press_conferences/chief_cabinet_secretary/202610/video-326837.html"
+    },
+    "ae8372a9c3c19778": {
+      "at": "2026-11-02T02:51:24.657678+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "nvidia-ai-cluster-runtime-dynamo",
+      "url": "https://developer.nvidia.com/blog/build-a-validated-kubernetes-runtime-for-nvidia-dynamo/"
     },
     "aefb3df85eab9497": {
       "at": "2026-10-26T11:32:24.733113+00:00",
@@ -9618,6 +9638,14 @@
       "section": "ai",
       "slug": "gemini-edit-files-directly",
       "url": "https://blog.google/innovation-and-ai/products/gemini-app/edit-files-directly/"
+    },
+    "c94fa0fe456c6e41": {
+      "at": "2026-11-02T02:51:42.284565+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "tech-gadget",
+      "slug": "ipa-dx-certification-nov-2026",
+      "url": "https://disclosure.dx-portal.ipa.go.jp/"
     },
     "c9a13ebac0afcac0": {
       "at": "2026-10-26T14:31:00.675093+00:00",
@@ -11472,120 +11500,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T03:21:56.667541+00:00",
-      "attempt": 2,
-      "id": "09f3bad4d1c00581",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 61.3字・60字超の文が 48% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 82.9,
-        "avg_sentence": 61.3,
-        "long_share": 0.478,
-        "max_paragraph": 136,
-        "paragraphs": 17,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "mhlw",
-      "title": "キャリアコンサルタントになりたい方へ（キャリアコンサルタント養成講習一覧を更新しました）"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T03:22:00.562979+00:00",
-      "attempt": 0,
-      "id": "09f3bad4d1c00581",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 86.4,
-        "avg_sentence": 28.8,
-        "long_share": 0.0,
-        "max_paragraph": 141,
-        "paragraphs": 18,
-        "sentences": 54
-      },
-      "score": 100,
-      "source": "mhlw",
-      "title": "キャリアコンサルタントになりたい方へ（キャリアコンサルタント養成講習一覧を更新しました）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T03:41:47.554732+00:00",
-      "attempt": 1,
-      "id": "945983c3baeb8f93",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1503字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（359字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 111.0,
-        "avg_sentence": 61.0,
-        "long_share": 0.55,
-        "max_paragraph": 190,
-        "paragraphs": 11,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "boj",
-      "title": "「指数連動型上場投資信託受益権等の処分の指針」の一部改正について"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T03:41:53.006999+00:00",
-      "attempt": 2,
-      "id": "945983c3baeb8f93",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1396字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（329字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 119.1,
-        "avg_sentence": 56.4,
-        "long_share": 0.316,
-        "max_paragraph": 199,
-        "paragraphs": 9,
-        "sentences": 19
-      },
-      "score": null,
-      "source": "boj",
-      "title": "「指数連動型上場投資信託受益権等の処分の指針」の一部改正について"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T03:41:58.225376+00:00",
-      "attempt": 1,
-      "id": "4547043af805dc93",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1605字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（321字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 151.1,
-        "avg_sentence": 71.6,
-        "long_share": 0.684,
-        "max_paragraph": 230,
-        "paragraphs": 9,
-        "sentences": 19
-      },
-      "score": null,
-      "source": "ipa",
-      "title": "プロフェッショナルデジタルスキル（データ・AI）試験（仮称） 科目Bのサンプル問題を公表しました"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T03:42:04.460794+00:00",
@@ -18188,7 +18102,143 @@
       "score": 100,
       "source": "morinaga",
       "title": "松生クリニック 松生恒夫先生との共同研究 ココアによる排便頻度の改善および一部の腸内細菌の割合への影響について 第59回 日本栄養食糧学会 中国・四国支部大会で"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T02:51:20.381545+00:00",
+      "attempt": 1,
+      "id": "ae8372a9c3c19778",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 64.5字・60字超の文が 58% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 129.1字・最長 319字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 129.1,
+        "avg_sentence": 64.5,
+        "long_share": 0.583,
+        "max_paragraph": 319,
+        "paragraphs": 12,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "nvidia-developer-blog",
+      "title": "Build a Validated Kubernetes Runtime for NVIDIA Dynamo"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T02:51:24.657201+00:00",
+      "attempt": 0,
+      "id": "ae8372a9c3c19778",
+      "kind": "ai",
+      "model": "",
+      "problems": [
+        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（64.5→64.5字）"
+      ],
+      "readability": {
+        "avg_paragraph": 129.1,
+        "avg_sentence": 64.5,
+        "long_share": 0.583,
+        "max_paragraph": 319,
+        "paragraphs": 12,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "nvidia-developer-blog",
+      "title": "Build a Validated Kubernetes Runtime for NVIDIA Dynamo"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T02:51:32.113584+00:00",
+      "attempt": 1,
+      "id": "c94fa0fe456c6e41",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "easy_markdown が「## ひとことで言うと」から始まっていない"
+      ],
+      "readability": {
+        "avg_paragraph": 48.0,
+        "avg_sentence": 48.0,
+        "long_share": 0.217,
+        "max_paragraph": 106,
+        "paragraphs": 23,
+        "sentences": 23
+      },
+      "score": null,
+      "source": "ipa",
+      "title": "DX認定制度 認定事業者の公表（2026年11月1日認定適用）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T02:51:38.716000+00:00",
+      "attempt": 2,
+      "id": "c94fa0fe456c6e41",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 52.6字・60字超の文が 30% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 134.4字・最長 196字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 134.4,
+        "avg_sentence": 52.6,
+        "long_share": 0.304,
+        "max_paragraph": 196,
+        "paragraphs": 9,
+        "sentences": 23
+      },
+      "score": 100,
+      "source": "ipa",
+      "title": "DX認定制度 認定事業者の公表（2026年11月1日認定適用）"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T02:51:42.284171+00:00",
+      "attempt": 0,
+      "id": "c94fa0fe456c6e41",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 125.6字・最長 220字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 125.6,
+        "avg_sentence": 30.6,
+        "long_share": 0.0,
+        "max_paragraph": 220,
+        "paragraphs": 10,
+        "sentences": 41
+      },
+      "score": 100,
+      "source": "ipa",
+      "title": "DX認定制度 認定事業者の公表（2026年11月1日認定適用）"
     }
   ],
-  "short_text_retry": {}
+  "short_text_retry": {},
+  "undated_first_seen": {
+    "google-developers-blog": {
+      "04f99d5cae6e3a2b": "baseline",
+      "0e6a065233b2d932": "baseline",
+      "323f247c66dac3b7": "baseline",
+      "39cd6fa98e8c0f6f": "baseline",
+      "454358741d5d990e": "baseline",
+      "5242b0a9a92ab49c": "baseline",
+      "536f539d104eb80e": "baseline",
+      "63e8e09612a89820": "baseline",
+      "65a08b362ab42df1": "baseline",
+      "862a1e12615dce30": "baseline",
+      "87a563b673727f20": "baseline",
+      "94c00d4f786c7365": "baseline",
+      "a5e8cd8d3d0fa545": "baseline",
+      "ad2d1a0152d0c640": "baseline",
+      "b0d16b78d77a4b37": "baseline",
+      "d20e41732b48ac19": "baseline",
+      "d56ce964f320141c": "baseline",
+      "e86d15bb7cc7c06c": "baseline",
+      "ebb357b735760a11": "baseline",
+      "f515afb7dcdd940d": "baseline"
+    }
+  }
 }

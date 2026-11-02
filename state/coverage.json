@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "ipa-dx-certification-nov-2026",
+   "at": "2026-11-02T02:51:37.888098+00:00",
+   "title": "IPAのDX認定制度、2026年11月1日適用で118件の事業者を新たに公表",
+   "head": "IPAのDX認定制度、2026年11月1日適用で118件の事業者を新たに公表 | DX認定制度 認定事業者の公表（2026年11月1日認定適用）",
+   "text": "IPAのDX認定制度、2026年11月1日適用で118件の事業者を新たに公表 | DX認定制度 認定事業者の公表（2026年11月1日認定適用） | IPA / DX認定制度 / 経済産業省 / 情報処理推進機構 / DX認定事業者 / 中小企業 / 大企業 / 2026年11月 / ビジネス / セキュリティ / アプリ / 通信",
+   "urls": [
+    "https://disclosure.dx-portal.ipa.go.jp/"
+   ]
+  },
+  {
+   "slug": "nvidia-ai-cluster-runtime-dynamo",
+   "at": "2026-11-02T02:51:19.694364+00:00",
+   "title": "AI半導体のNVIDIAが公開、大規模AI向けのKubernetes実行基盤『AICR』とは",
+   "head": "AI半導体のNVIDIAが公開、大規模AI向けのKubernetes実行基盤『AICR』とは | Build a Validated Kubernetes Runtime for NVIDIA Dynamo",
+   "text": "AI半導体のNVIDIAが公開、大規模AI向けのKubernetes実行基盤『AICR』とは | Build a Validated Kubernetes Runtime for NVIDIA Dynamo | NVIDIA / Kubernetes / Dynamo / AICR / AI / 推論 / インフラ / 分散推論 / 生成AI / LLM / 開発ツール / インフラ",
+   "urls": [
+    "https://developer.nvidia.com/blog/build-a-validated-kubernetes-runtime-for-nvidia-dynamo/"
+   ]
+  },
+  {
    "slug": "morinaga-cocoa-bowel-movement-study",
    "at": "2026-11-02T02:31:14.850786+00:00",
    "title": "森永製菓が松生クリニックと共同研究、ココア摂取による排便頻度の改善効果を発表",
@@ -1249,26 +1269,6 @@
    "text": "任天堂、『あつまれ どうぶつの森』で「ゼルダの伝説」40周年コラボのマイデザインを配布開始 | 『あつまれ どうぶつの森』で「ゼルダの伝説」のマイデザインを配布中。 | あつまれ どうぶつの森 / ゼルダの伝説 / マイデザイン / Ninten島 / Nintendo Switch Online / amiibo / 任天堂 / トピックス / ゲーム / エンタメ / Nintendo Switch",
    "urls": [
     "https://www.nintendo.com/jp/topics/article/72628ca2-91a6-42e6-8041-82df388b3f0c"
-   ]
-  },
-  {
-   "slug": "hiroshima-u-ai-home-visit-nursing",
-   "at": "2026-10-29T02:42:11.274776+00:00",
-   "title": "広島大学などの研究チームが訪問看護師向けAIの実験成果を発表、心不全の診療ガイドライン学習で精神的努力が低減",
-   "head": "広島大学などの研究チームが訪問看護師向けAIの実験成果を発表、心不全の診療ガイドライン学習で精神的努力が低減 | 【研究成果】AI活用で訪問看護師の精神的負担が低減 ～診療ガイドライン学習AIを用いた比較実験で検証～",
-   "text": "広島大学などの研究チームが訪問看護師向けAIの実験成果を発表、心不全の診療ガイドライン学習で精神的努力が低減 | 【研究成果】AI活用で訪問看護師の精神的負担が低減 ～診療ガイドライン学習AIを用いた比較実験で検証～ | 広島大学 / 大阪公立大学 / 訪問看護 / 生成AI / 診療ガイドライン / 心不全 / 看護師 / 精神的負担 / 科学 / 医療 / AI",
-   "urls": [
-    "https://www.hiroshima-u.ac.jp/news/100962"
-   ]
-  },
-  {
-   "slug": "ntt-tx-foresight-voice-mining-ai-navigation",
-   "at": "2026-10-29T02:41:55.318925+00:00",
-   "title": "NTTテクノクロスのコールセンター向けAI支援『ForeSight Voice Mining』に新機能 追加料金や開始時期は？",
-   "head": "NTTテクノクロスのコールセンター向けAI支援『ForeSight Voice Mining』に新機能 追加料金や開始時期は？ | NTTテクノクロス、「ForeSight Voice Mining®」に「AIナビゲーション」機能を追加 ～会話に合わせて次に案内すべき内容をリアルタイムで提示可能に～",
-   "text": "NTTテクノクロスのコールセンター向けAI支援『ForeSight Voice Mining』に新機能 追加料金や開始時期は？ | NTTテクノクロス、「ForeSight Voice Mining®」に「AIナビゲーション」機能を追加 ～会話に合わせて次に案内すべき内容をリアルタイムで提示可能に～ | NTTテクノクロス / ForeSight Voice Mining / CTBASE / AIナビゲーション / コールセンター / オペレーター支援 / 音声認識 / トークスクリプト / 応対品質 / 音声認識 / 生成AI / コールセンター / 業務効率化",
-   "urls": [
-    "https://www.ntt-tx.co.jp/whatsnew/2026/261029.html"
    ]
   }
  ]
