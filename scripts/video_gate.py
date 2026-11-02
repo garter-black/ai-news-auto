@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
 import shutil
 import struct
@@ -206,6 +207,34 @@ def fact_problems(script: dict, article: dict) -> list[str]:
         value = re.sub(r"\s+", "", norm(str(n.get("value", ""))))
         if value and value not in mat_compact:
             problems.append(f"数字カード「{n.get('value')}」が記事の表記どおりではない")
+    return problems
+
+
+_TERM = re.compile(r"[A-Za-z][A-Za-z0-9.+\-]*|[ァ-ヴー]{2,}|[一-龥々]{2,}")
+
+
+def number_context_problems(script_v3: dict, article: dict) -> list[str]:
+    """v3: 画面・読み上げの数字が、記事の中で同じ話題の文に出てくるか。
+    例: 「APIクレジット 月200ドル分」は、記事に 200 があっても APIクレジットの文に無ければ失敗（別ページの数字の混入を防ぐ）"""
+    material = norm(material_text(article))
+    sentences = [x for x in re.split(r"[。\n]|(?<=[.!?])\s", material) if x.strip()]
+    hook = script_v3.get("hook") or {}
+    items = [("hook", f"{hook.get('text', '')} {hook.get('payoff', '')}", hook.get("speech", ""))]
+    items += [(f"beat{i}", f"{b.get('keyword', '')} {b.get('sub', '')}", b.get("speech", "")) for i, b in enumerate(script_v3.get("beats") or [], 1)]
+    concl = script_v3.get("conclusion") or {}
+    items.append(("conclusion", concl.get("text", ""), concl.get("speech", "")))
+    problems = []
+    for name, screen, speech in items:
+        text = norm(f"{screen} {speech}")
+        terms = {t for t in _TERM.findall(norm(screen)) if t not in LATIN_OK and not re.fullmatch(r"\d+", t)}
+        terms -= {"ドル", "時間", "毎週", "毎月", "月額", "プラン"}
+        for num in set(re.findall(r"\d+(?:\.\d+)?", text)):
+            pat = re.compile(r"(?<![\d.])" + re.escape(num) + r"(?![\d])")
+            hits = [s for s in sentences if pat.search(s)]
+            if not hits:
+                continue  # 記事に無い数字は fact_problems が落とす
+            if terms and not any(t.lower() in s.lower() for s in hits for t in terms):
+                problems.append(f"{name}: 数字 {num} が記事の中で「{'・'.join(sorted(terms)[:3])}」と同じ文に出てこない（別の話の数字では？）")
     return problems
 
 
@@ -556,6 +585,9 @@ def check_content(report: dict, article: dict, profile: dict, result: GateResult
         result.reasons.append("動画の記事と照合した記事が違う")
     for p in fact_problems(script, article):
         result.reasons.append(f"事実: {p}")
+    if report.get("script_v3"):
+        for p in number_context_problems(report["script_v3"], article):
+            result.reasons.append(f"事実: {p}")
     for p in title_problems(script, article, report.get("company", "")):
         result.reasons.append(f"題: {p}")
     credits = report.get("credits_shown") or []
@@ -576,6 +608,171 @@ def check_content(report: dict, article: dict, profile: dict, result: GateResult
         result.reasons.append("締めにサイトの URL が無い")
 
 
+# --------------------------------------------------------------------------- #
+# v3「画面で見せる型」の追加基準（report["version"] == "v3" のときだけ）
+# --------------------------------------------------------------------------- #
+
+V3_SEC = (20.0, 32.0)
+V3_MIN_CHANGES = 10
+V3_AVG_SEGMENT = (1.5, 3.0)
+V3_MAX_SEGMENT = 3.6  # これより長く何も変わらない区間があれば失敗
+V3_MOTION_MIN = 0.6  # 区間ごとのフレーム差（108x192・白黒・10fps の平均絶対差）。止まった画面は 0
+V3_EVENT_MIN = 1.2  # 「変わった」と言える差（変化の直後 0.8 秒の最大値）
+V3_SEPARATION = (12.0, 18.0)  # 声と BGM の差（声が出ている間の RMS の差・dB）
+V3_TITLE_MAX = 2.0  # つかみ（題）の文字は 2 秒までに消す
+V3_TEXT_RATIO = 0.18  # 1フレームの中で文字が占める面積の上限
+V3_MAX_FONTS = 2
+V3_CAPTION_ROLES = ("hook", "keyword", "sub", "conclusion", "source")
+# 飾りの線・帯・枠を描く呼び出し。v3 の描画ではマスク（_mask_*）・比較グラフの棒（data_bars）・カーソル（_cursor_sprite）以外で禁止
+LINT_CALLS = {"line", "rectangle", "rounded_rectangle", "polygon", "draw_rect", "hline", "vline", "drawbox"}
+LINT_ALLOWED = ("_mask_", "data_bars", "_cursor_sprite")
+
+
+def lint_renderer(path: Path) -> list[str]:
+    """描画のソースに、線・帯・枠を描く呼び出しが無いか（許可した関数の中だけ可）"""
+    import ast
+
+    tree = ast.parse(Path(path).read_text("utf-8"))
+    problems = []
+
+    def visit(node, func: str) -> None:
+        for child in ast.iter_child_nodes(node):
+            name = child.name if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)) else func
+            if isinstance(child, ast.Call):
+                attr = child.func.attr if isinstance(child.func, ast.Attribute) else getattr(child.func, "id", "")
+                if attr in LINT_CALLS and not any(func.startswith(a) for a in LINT_ALLOWED):
+                    problems.append(f"{Path(path).name}:{child.lineno} {func or '(top)'} が {attr}() を描いている")
+            if isinstance(child, ast.Constant) and isinstance(child.value, str) and "drawbox" in child.value:
+                problems.append(f"{Path(path).name}:{child.lineno} ffmpeg の drawbox（帯）を使っている")
+            visit(child, name)
+
+    visit(tree, "")
+    return problems
+
+
+def motion_series(path: Path, fps: int = 10) -> list[float]:
+    """隣り合うフレームの平均絶対差（108x192 の白黒）。差の i 番目は i/fps〜(i+1)/fps 秒"""
+    import numpy as np
+
+    w, h = 108, 192
+    raw = subprocess.run(
+        [_bin("ffmpeg"), "-hide_banner", "-loglevel", "error", "-i", str(path), "-vf", f"fps={fps},scale={w}:{h}", "-pix_fmt", "gray", "-f", "rawvideo", "-"],
+        capture_output=True, timeout=180, check=True,
+    ).stdout  # fmt: skip
+    a = np.frombuffer(raw, dtype=np.uint8)
+    n = len(a) // (w * h)
+    a = a[: n * w * h].reshape(n, h, w).astype(np.float32)
+    return [float(x) for x in np.abs(np.diff(a, axis=0)).mean(axis=(1, 2))]
+
+
+def _visible(texts: list[dict], t: float) -> list[dict]:
+    return [x for x in texts if float(x.get("t0", 0)) - 1e-6 <= t < float(x.get("t1", 0))]
+
+
+def text_ratio_max(texts: list[dict], total: float) -> tuple[float, float]:
+    """文字の枠（重なりは1回）が画面に占める割合の最大と、その時刻"""
+    import numpy as np
+
+    worst, at = 0.0, 0.0
+    t = 0.0
+    while t < total:
+        grid = np.zeros((H // 8, W // 8), dtype=bool)
+        for x in _visible(texts, t):
+            b = x["bbox"]
+            grid[max(0, int(b[1]) // 8) : int(math.ceil(b[3] / 8)), max(0, int(b[0]) // 8) : int(math.ceil(b[2] / 8))] = True
+        r = float(grid.mean())
+        if r > worst:
+            worst, at = r, t
+        t += 0.1
+    return worst, at
+
+
+def _overlap(a, b) -> float:
+    return max(0.0, min(a[2], b[2]) - max(a[0], b[0])) * max(0.0, min(a[3], b[3]) - max(a[1], b[1]))
+
+
+def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, article: dict | None = None, renderer: Path | None = None) -> None:
+    m = result.metrics
+    if not (V3_SEC[0] <= duration <= V3_SEC[1]):
+        result.reasons.append(f"v3: 長さが {V3_SEC[0]:.0f}〜{V3_SEC[1]:.0f}秒の外（{duration:.1f}秒）")
+    end = float(report.get("end_start") or duration)
+    # 場面の変化（カメラの移動・切り替え・数字・グラフ）。クリックは数えない
+    changes = sorted({round(e["t"], 2) for e in report.get("events") or [] if e.get("kind") in ("move", "cut", "chart", "pop") and e["t"] < end - 0.3})
+    bounds = [0.0] + [t for t in changes if t > 0.3] + [end]
+    segs = [(a, b) for a, b in zip(bounds, bounds[1:]) if b - a > 0.05]
+    avg = (end / len(segs)) if segs else 99
+    m.update({"v3_changes": len(changes), "v3_avg_segment": round(avg, 2), "v3_max_segment": round(max((b - a for a, b in segs), default=99), 2)})
+    if len(changes) < V3_MIN_CHANGES:
+        result.reasons.append(f"v3: 画面の変化が少ない（{len(changes)}回 < {V3_MIN_CHANGES}回）")
+    if not (V3_AVG_SEGMENT[0] <= avg <= V3_AVG_SEGMENT[1]):
+        result.reasons.append(f"v3: 1場面の平均が {V3_AVG_SEGMENT[0]}〜{V3_AVG_SEGMENT[1]}秒の外（{avg:.2f}秒）")
+    if m["v3_max_segment"] > V3_MAX_SEGMENT:
+        result.reasons.append(f"v3: {m['v3_max_segment']:.1f}秒間なにも変わらない区間がある（{V3_MAX_SEGMENT}秒まで）")
+    # 実際の動き（動画のフレーム差）: 各区間が止まっていない・変化の直後に本当に絵が変わっている
+    diffs = motion_series(mp4)
+    step = 0.1
+    seg_scores = []
+    for a, b in segs:
+        part = diffs[int(a / step) : max(int(a / step) + 1, int(b / step))]
+        seg_scores.append(round(sum(part) / max(len(part), 1), 2))
+    m["v3_motion"] = seg_scores
+    still = [f"{a:.1f}〜{b:.1f}秒({s})" for (a, b), s in zip(segs, seg_scores) if s < V3_MOTION_MIN]
+    if still:
+        result.reasons.append(f"v3: 動きが足りない区間 {', '.join(still[:4])}（基準 {V3_MOTION_MIN}）")
+    weak = []
+    for t in changes:
+        win = diffs[int(t / step) : int((t + 0.8) / step) + 1]
+        if not win or max(win) < V3_EVENT_MIN:
+            weak.append(f"{t:.1f}秒")
+    if weak:
+        result.reasons.append(f"v3: 変化と記録した所で絵がほとんど変わっていない（{', '.join(weak[:4])}）")
+    # 声と BGM の差
+    sep = (report.get("audio") or {}).get("separation_db")
+    m["v3_separation_db"] = sep
+    if sep is None or not (V3_SEPARATION[0] <= sep <= V3_SEPARATION[1]):
+        result.reasons.append(f"v3: 声とBGMの差が {V3_SEPARATION[0]:.0f}〜{V3_SEPARATION[1]:.0f}dB の外（{sep}）")
+    texts = report.get("texts") or []
+    # 題（つかみ）を出しっぱなしにしない
+    for x in texts:
+        if x.get("role") in ("hook", "title") and float(x.get("t1", 0)) > V3_TITLE_MAX + 1e-6:
+            result.reasons.append(f"v3: つかみの文字が {V3_TITLE_MAX:.0f}秒を過ぎても出ている（{x.get('t1')}秒まで）")
+    ratio, at = text_ratio_max(texts, end)
+    m["v3_text_ratio"] = round(ratio, 3)
+    if ratio > V3_TEXT_RATIO:
+        result.reasons.append(f"v3: 文字が画面の {ratio:.0%} を占める（{at:.1f}秒。上限 {V3_TEXT_RATIO:.0%}）")
+    # 字幕が注目の場所（大事な画面の文字）にかぶらない
+    for f in report.get("focus") or []:
+        for x in texts:
+            if x.get("role") not in V3_CAPTION_ROLES:
+                continue
+            if float(x["t0"]) < float(f["t1"]) and float(f["t0"]) < float(x["t1"]) and _overlap(x["bbox"], f["bbox"]) > 0:
+                result.reasons.append(f"v3: 文字「{str(x.get('text'))[:10]}」が注目の場所にかぶる（{f['t0']}秒〜）")
+                break
+    # 画面に描いた数字（キーワード・グラフ・締め）がすべて記事にあり、グラフの倍率は台本と同じ表記
+    material_numbers = number_tokens(material_text(article or {})) | {"0"}
+    for text in report.get("rendered_strings") or []:
+        if text.startswith(("音声：", "出典：", "公式ページ：")) or text in ("ai-tech-express.jp",):
+            continue
+        if bad := numbers_ok(text, material_numbers):
+            result.reasons.append(f"v3: 画面の数字 {', '.join(sorted(set(bad)))} が記事に無い（{text[:16]}）")
+    sv3 = report.get("script_v3") or {}
+    comp = sv3.get("compare") or {}
+    for ch in report.get("charts") or []:
+        if norm(ch.get("ratio", "")) != norm(comp.get("ratio", "")) or not ch.get("ratio"):
+            result.reasons.append(f"v3: グラフの倍率「{ch.get('ratio')}」が台本「{comp.get('ratio')}」と違う")
+        spoken = norm(" ".join(b.get("keyword", "") + b.get("speech", "") for b in sv3.get("beats") or []))
+        for d in re.findall(r"\d+(?:\.\d+)?", norm(ch.get("ratio", ""))):
+            if d not in spoken:
+                result.reasons.append(f"v3: グラフの数字 {d} がキーワード・読み上げに無い")
+    fonts = report.get("fonts") or []
+    if not fonts or len(set(fonts)) > V3_MAX_FONTS:
+        result.reasons.append(f"v3: 書体は{V3_MAX_FONTS}つまで（{fonts}）")
+    # 描画のソースに線・帯・枠が無い
+    renderer = renderer or Path(__file__).resolve().parent / "shorts_v3.py"
+    for p in lint_renderer(renderer):
+        result.reasons.append(f"v3: 飾りの線・帯: {p}")
+
+
 def check_video(mp4: Path, report: dict, article: dict, profile: str = "production") -> GateResult:
     """動画を投稿に付けてよいか。例外は投げず、問題はすべて reasons に入れる"""
     result = GateResult(ok=False)
@@ -591,6 +788,8 @@ def check_video(mp4: Path, report: dict, article: dict, profile: str = "producti
         check_texts(report, result)
         check_visual(mp4, result)
         check_content(report, article, prof, result)
+        if report.get("version") == "v3":
+            check_v3(mp4, report, duration, result, article)
         for err in report.get("errors") or []:
             result.reasons.append(f"描画: {err}")
     except Exception as error:  # noqa: BLE001 - 検査そのものが壊れても「不合格」として返す

@@ -1,0 +1,80 @@
+name: SNS video v3 (manual)
+
+# SNS 動画 v3「画面で見せる型」を本番の声（VOICEVOX）で書き出し、Artifacts に置くだけ。投稿はしない。
+# 手動実行のみ（スケジュールなし）。各段階の秒数は report.json の timings と、このログの「時間」に出る。
+# 速さのために: VOICEVOX は最初に裏で起動（取得と並行）・ブラウザはランナーにある Chrome・日本語フォントは repo の Noto を使う。
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: "記事の slug（スペース区切り）"
+        required: true
+      speaker:
+        description: "VOICEVOX の話者名"
+        default: "冥鳴ひまり"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shorts-v3-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: VOICEVOX を裏で起動（以降の準備と並行）
+        run: |
+          echo "JOB_T0=$(date +%s)" >> "$GITHUB_ENV"
+          nohup sh -c 'docker run -d --rm --name voicevox -p 50021:50021 voicevox/voicevox_engine:cpu-latest' > /tmp/voicevox.log 2>&1 &
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: 準備（Python・Claude CLI・日本語フォント）
+        run: |
+          npm i -g @anthropic-ai/claude-code > /tmp/claude-install.log 2>&1 &
+          pip install -r requirements.txt numpy pillow budoux opencv-python-headless playwright imageio-ffmpeg
+          mkdir -p ~/.local/share/fonts && cp assets/fonts/NotoSansJP-*.otf ~/.local/share/fonts/ && fc-cache -f > /dev/null
+          which ffmpeg || echo "ffmpeg はランナーに無いので imageio-ffmpeg を使う"
+          google-chrome --version
+          wait
+          echo "準備: $(( $(date +%s) - JOB_T0 ))秒"
+      - name: 書き出し
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          CLAUDE_DAILY_MAX: ${{ vars.CLAUDE_DAILY_MAX || '40' }}
+          VOICEVOX_SPEAKER: ${{ github.event.inputs.speaker || '冥鳴ひまり' }}
+          SLUGS: ${{ github.event.inputs.slugs }}
+        run: |
+          set +e
+          for slug in $SLUGS; do
+            t=$(date +%s)
+            python scripts/shorts_v3.py "$slug" --tts voicevox --out out/shorts_v3 --profile production
+            echo "時間: $slug $(( $(date +%s) - t ))秒（ジョブ開始から $(( $(date +%s) - JOB_T0 ))秒）"
+          done
+          docker logs voicevox 2>&1 | tail -3 || true
+          python - <<'EOF'
+          import json, glob
+          for p in sorted(glob.glob("out/shorts_v3/*.report.json")):
+              r = json.load(open(p))
+              g = r.get("gate", {})
+              print(r["slug"], "合格" if g.get("ok") else "不合格", r.get("timings"), g.get("reasons"))
+          EOF
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: shorts-v3-${{ github.run_number }}
+          path: |
+            out/shorts_v3/*.mp4
+            out/shorts_v3/*.png
+            out/shorts_v3/*.json
+          retention-days: 7

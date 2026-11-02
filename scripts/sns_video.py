@@ -14,6 +14,11 @@
   5. Buffer では動画は公開 URL で渡す（アップロード不可）。Facebook / Threads / Bluesky は
      動画とリンクカード（linkAttachment）を同時に付けられないので、動画付きのときリンクは本文か返信に置く。
 
+  6. 速報（v3・画面で見せる型）は「後追い」で付ける（docs/sns-video-v3-20261102.md）:
+     文面の投稿は今までどおりすぐ出す（動画を待たない）。動画は別のジョブで作り、記事の公開から 10 分以内に
+     ゲート合格したときだけ、同じ投稿への返信（Threads / Bluesky）か別の投稿（X / Facebook）として出す。
+     10 分を過ぎたら、その記事の動画は出さない（古い速報の動画は流さない）。後追いの投稿にも 4 の約束を当てはめる。
+
   使い方（組み込み時のイメージ）:
       video = sns_video.video_for_post(slug)              # 失敗なら None（例外なし）
       sns_video.post_with_fallback(
@@ -58,8 +63,12 @@ class DefiniteRejection(Exception):
 
 
 def _default_render(slug: str, design: str, out_dir: Path, tts: str, timeout: float) -> Path | None:
-    """別プロセスで描画する（時間切れなら止められるように）。合格したら report のパスを返す"""
-    cmd = [sys.executable, str(ROOT / "scripts" / "shorts_v2.py"), slug, "--design", design, "--tts", tts, "--out", str(out_dir), "--profile", "production"]
+    """別プロセスで描画する（時間切れなら止められるように）。合格したら report のパスを返す。
+    design="v3" は「画面で見せる型」（scripts/shorts_v3.py）"""
+    if design == "v3":
+        cmd = [sys.executable, str(ROOT / "scripts" / "shorts_v3.py"), slug, "--tts", tts, "--out", str(out_dir), "--profile", "production"]
+    else:
+        cmd = [sys.executable, str(ROOT / "scripts" / "shorts_v2.py"), slug, "--design", design, "--tts", tts, "--out", str(out_dir), "--profile", "production"]
     try:
         subprocess.run(cmd, timeout=timeout, capture_output=True, text=True, check=False)
     except subprocess.TimeoutExpired:
