@@ -426,6 +426,10 @@
     "English United States"
    ],
    "ok": "2026-11-02",
+   "pending": {
+    "at": "2026-11-02T06:31:16+00:00",
+    "hash": "7f77f9fe346ec3cc"
+   },
    "since": "2026-11-02T04:41:50+00:00"
   },
   "chatgpt-release-notes": {

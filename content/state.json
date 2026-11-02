@@ -3898,6 +3898,13 @@
       "skipped": true,
       "url": "https://www.fsa.go.jp/common/recruit/index-general-b.html"
     },
+    "15bc77d1d5c407dd": {
+      "at": "2026-11-02T06:31:35.448861+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "quality: easy_markdown が「## ひとことで言うと」から始まっていない",
+      "skipped": true,
+      "url": "https://blog.jetbrains.com/mps/2026/11/mps-2026-1-2-released/"
+    },
     "160a9be6e09b24c8": {
       "at": "2026-10-30T19:11:07.941986+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -8948,6 +8955,14 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000303.000110808.html"
     },
+    "ae5fe6dae047dbd8": {
+      "at": "2026-11-02T06:32:24.129873+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "google-knowledge-catalog-self-learning-enrichment",
+      "url": "https://cloud.google.com/blog/ja/products/data-analytics/knowledge-catalog-self-learning-context-enrichment-for-ai-agents/"
+    },
     "ae680961cd59a8ca": {
       "at": "2026-10-28T19:33:44.552649+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -10910,6 +10925,14 @@
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/047893/"
     },
+    "e8900429157eddb0": {
+      "at": "2026-11-02T06:31:39.764047+00:00",
+      "kind": "update",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "updated": "xreal-aura-android-xr-glasses",
+      "url": "https://www.docomo.ne.jp/info/news_release/2026/11/02_00.html"
+    },
     "e8df7bb1949b3e4c": {
       "at": "2026-10-28T23:12:45.343512+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（委員会）",
@@ -11384,6 +11407,14 @@
       "slug": "boj-current-account-october",
       "url": "http://www.boj.or.jp/statistics/boj/fm/juqf/juqf10.xlsx"
     },
+    "f68217fc0ef9c362": {
+      "at": "2026-11-02T06:32:01.294516+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "entertainment",
+      "slug": "playstation-blog-nov-2026-games",
+      "url": "https://blog.ja.playstation.com/2026/11/02/20261102-monthly-picks-s/"
+    },
     "f682eb9635b69ed3": {
       "at": "2026-10-27T03:04:42.977762+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（受賞）",
@@ -11742,209 +11773,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:36:31.813479+00:00",
-      "attempt": 1,
-      "id": "f38d31ba51354487",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1780字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 132.5,
-        "avg_sentence": 63.3,
-        "long_share": 0.522,
-        "max_paragraph": 286,
-        "paragraphs": 11,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "qst",
-      "title": "「沈黙の臓器」肝臓の酵素活性低下の可視化に成功 ～肝疾患に関わる酵素の働きを体外から捉える“超偏極MRI技術”を開発～"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:36:41.865400+00:00",
-      "attempt": 2,
-      "id": "f38d31ba51354487",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 89.6字・60字超の文が 83% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 201.5字・最長 333字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 201.5,
-        "avg_sentence": 89.6,
-        "long_share": 0.833,
-        "max_paragraph": 333,
-        "paragraphs": 8,
-        "sentences": 18
-      },
-      "score": 100,
-      "source": "qst",
-      "title": "「沈黙の臓器」肝臓の酵素活性低下の可視化に成功 ～肝疾患に関わる酵素の働きを体外から捉える“超偏極MRI技術”を開発～"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T05:36:50.165662+00:00",
-      "attempt": 0,
-      "id": "f38d31ba51354487",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 129.1字・最長 165字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 129.1,
-        "avg_sentence": 34.1,
-        "long_share": 0.057,
-        "max_paragraph": 165,
-        "paragraphs": 14,
-        "sentences": 53
-      },
-      "score": 100,
-      "source": "qst",
-      "title": "「沈黙の臓器」肝臓の酵素活性低下の可視化に成功 ～肝疾患に関わる酵素の働きを体外から捉える“超偏極MRI技術”を開発～"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:53:22.651321+00:00",
-      "attempt": 1,
-      "id": "93e3a99db3614882",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1065字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（291字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 105.7,
-        "avg_sentence": 55.9,
-        "long_share": 0.353,
-        "max_paragraph": 179,
-        "paragraphs": 9,
-        "sentences": 17
-      },
-      "score": null,
-      "source": "soumu",
-      "title": "福井県「核燃料税」の新設（更新）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:53:29.926601+00:00",
-      "attempt": 2,
-      "id": "93e3a99db3614882",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（314字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 147.3,
-        "avg_sentence": 61.4,
-        "long_share": 0.458,
-        "max_paragraph": 267,
-        "paragraphs": 10,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "soumu",
-      "title": "福井県「核燃料税」の新設（更新）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:53:47.210135+00:00",
-      "attempt": 1,
-      "id": "d50588a2942a381b",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1521字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 134.2,
-        "avg_sentence": 53.7,
-        "long_share": 0.4,
-        "max_paragraph": 196,
-        "paragraphs": 8,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "11月は｢人材開発促進月間｣です"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:53:56.669002+00:00",
-      "attempt": 2,
-      "id": "d50588a2942a381b",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 116.1,
-        "avg_sentence": 58.0,
-        "long_share": 0.462,
-        "max_paragraph": 156,
-        "paragraphs": 13,
-        "sentences": 26
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "11月は｢人材開発促進月間｣です"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:54:06.358471+00:00",
-      "attempt": 1,
-      "id": "ad3ed351c05b66a9",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1414字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（363字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 132.1,
-        "avg_sentence": 51.7,
-        "long_share": 0.304,
-        "max_paragraph": 154,
-        "paragraphs": 9,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "mext",
-      "title": "高等教育の修学支援新制度の対象機関（確認大学等）の公表（令和8年10月30日）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:54:12.666928+00:00",
-      "attempt": 2,
-      "id": "ad3ed351c05b66a9",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1670字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 124.6,
-        "avg_sentence": 47.9,
-        "long_share": 0.192,
-        "max_paragraph": 213,
-        "paragraphs": 10,
-        "sentences": 26
-      },
-      "score": null,
-      "source": "mext",
-      "title": "高等教育の修学支援新制度の対象機関（確認大学等）の公表（令和8年10月30日）"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T05:54:20.730464+00:00",
@@ -18393,6 +18221,192 @@
       "score": 100,
       "source": "samsung-jp",
       "title": "Samsung、ユース オリンピック競技大会（ダカール2026）で Samsung Galaxy技術と選手向けプログラムを提供"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T06:31:29.626224+00:00",
+      "attempt": 1,
+      "id": "15bc77d1d5c407dd",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "タイトル: JetBrainsの開発ツール「MPS」が複数バージョンを更新、重大な脆弱性に対正当化 → 「対正当化」という表現は誤字であり不自然である。"
+      ],
+      "readability": {
+        "avg_paragraph": 187.0,
+        "avg_sentence": 66.0,
+        "long_share": 0.529,
+        "max_paragraph": 249,
+        "paragraphs": 6,
+        "sentences": 17
+      },
+      "score": 90,
+      "source": "jetbrains-blog",
+      "title": "New Bug-Fix Releases for MPS Versions 2026.2 RC2, 2026.1.2, 2025.3.3, 2025.2.5, "
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T06:31:35.448828+00:00",
+      "attempt": 2,
+      "id": "15bc77d1d5c407dd",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "easy_markdown が「## ひとことで言うと」から始まっていない"
+      ],
+      "readability": {
+        "avg_paragraph": 85.1,
+        "avg_sentence": 68.9,
+        "long_share": 0.571,
+        "max_paragraph": 159,
+        "paragraphs": 17,
+        "sentences": 21
+      },
+      "score": null,
+      "source": "jetbrains-blog",
+      "title": "New Bug-Fix Releases for MPS Versions 2026.2 RC2, 2026.1.2, 2025.3.3, 2025.2.5, "
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T06:31:39.763296+00:00",
+      "attempt": 1,
+      "id": "e8900429157eddb0",
+      "kind": "update",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "score": 100,
+      "source": "ntt-news",
+      "title": "ドコモ、Android XR搭載の次世代XRグラス「XREAL AURA」を発売"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T06:31:48.665403+00:00",
+      "attempt": 1,
+      "id": "f68217fc0ef9c362",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "title / seo_title に感嘆符がある"
+      ],
+      "readability": {
+        "avg_paragraph": 116.6,
+        "avg_sentence": 50.5,
+        "long_share": 0.2,
+        "max_paragraph": 211,
+        "paragraphs": 13,
+        "sentences": 30
+      },
+      "score": null,
+      "source": "playstation-blog-jp",
+      "title": "11月発売のPS5®/PS4®注目ソフトはこれだ！【今月のおすすめ新作ガイド】"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T06:31:57.241182+00:00",
+      "attempt": 2,
+      "id": "f68217fc0ef9c362",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 48.1字・60字超の文が 22% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 108.2,
+        "avg_sentence": 48.1,
+        "long_share": 0.222,
+        "max_paragraph": 182,
+        "paragraphs": 12,
+        "sentences": 27
+      },
+      "score": 100,
+      "source": "playstation-blog-jp",
+      "title": "11月発売のPS5®/PS4®注目ソフトはこれだ！【今月のおすすめ新作ガイド】"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T06:32:01.293696+00:00",
+      "attempt": 0,
+      "id": "f68217fc0ef9c362",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 113.2,
+        "avg_sentence": 29.5,
+        "long_share": 0.0,
+        "max_paragraph": 189,
+        "paragraphs": 12,
+        "sentences": 46
+      },
+      "score": 100,
+      "source": "playstation-blog-jp",
+      "title": "11月発売のPS5®/PS4®注目ソフトはこれだ！【今月のおすすめ新作ガイド】"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T06:32:11.896866+00:00",
+      "attempt": 1,
+      "id": "ae5fe6dae047dbd8",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "title の長さが不適切（66字 / 18〜64字）"
+      ],
+      "readability": {
+        "avg_paragraph": 105.8,
+        "avg_sentence": 56.4,
+        "long_share": 0.433,
+        "max_paragraph": 252,
+        "paragraphs": 16,
+        "sentences": 30
+      },
+      "score": null,
+      "source": "google-cloud-blog-ja",
+      "title": "Knowledge Catalog に新しい自己学習型コンテキスト エンリッチメントを導入"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T06:32:19.195099+00:00",
+      "attempt": 2,
+      "id": "ae5fe6dae047dbd8",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 63.1字・60字超の文が 52% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 112.6,
+        "avg_sentence": 63.1,
+        "long_share": 0.52,
+        "max_paragraph": 216,
+        "paragraphs": 14,
+        "sentences": 25
+      },
+      "score": 100,
+      "source": "google-cloud-blog-ja",
+      "title": "Knowledge Catalog に新しい自己学習型コンテキスト エンリッチメントを導入"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T06:32:24.129188+00:00",
+      "attempt": 0,
+      "id": "ae5fe6dae047dbd8",
+      "kind": "ai",
+      "model": "",
+      "problems": [
+        "読みやすさ基準外のまま受理: 書き直し後の確認に不合格: ライバルと比べてどう？の「Google Cloud版の強みは別ティースにあります」→「別ティース」という言葉が誤字であり、意味が不明瞭。"
+      ],
+      "readability": {
+        "avg_paragraph": 112.6,
+        "avg_sentence": 63.1,
+        "long_share": 0.52,
+        "max_paragraph": 216,
+        "paragraphs": 14,
+        "sentences": 25
+      },
+      "score": 100,
+      "source": "google-cloud-blog-ja",
+      "title": "Knowledge Catalog に新しい自己学習型コンテキスト エンリッチメントを導入"
     }
   ],
   "short_text_retry": {},
