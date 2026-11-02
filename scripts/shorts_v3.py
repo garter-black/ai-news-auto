@@ -2561,7 +2561,8 @@ def text_records(plan: Plan) -> list[dict]:
             if not place:
                 continue
             x, y = PANEL[0] + place[0], PANEL[1] + place[1]
-            bbox = [float(x), float(y), float(x + spr.shape[1] - CALLOUT_SH * 2), float(y + spr.shape[0] - CALLOUT_SH * 2)]
+            # 文字の面積は吹き出しの中の文字の所だけ（余白・影は数えない）。かぶりの検査はこの枠＋余白で十分（英文の行の外に置いている）
+            bbox = [float(x + 26), float(y + 16), float(x + spr.shape[1] - CALLOUT_SH * 2 - 26), float(y + spr.shape[0] - CALLOUT_SH * 2 - 16)]
             rows.append(("subtitle", sub.text, spr, bbox, w0, w1))
     for role, text, spr, bbox, t0, t1 in rows:
         if role in ("hook", "keyword", "sub", "conclusion", "eyebrow"):
