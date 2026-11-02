@@ -31,7 +31,7 @@ import type { ChooseGuide } from "@/lib/choose-data";
 import { STATUS_LABEL, freeLabel, japanLabel, verdictOf } from "@/lib/verdict";
 import { offerPlanForArticle } from "@/lib/offers";
 import { getCta } from "@/lib/monetization";
-import { readNextForArticle } from "@/lib/read-next";
+import { inlineReadForArticle, readNextForArticle } from "@/lib/read-next";
 import ReadNextBox from "@/components/ReadNextBox";
 import ArticleVideo from "@/components/ArticleVideo";
 import { shopLinkForArticle } from "@/lib/amazon";
@@ -196,6 +196,9 @@ export default async function ArticlePage({ params }: Props) {
   // 読み終えた人に「次の1本」を大きく見せる。本文の途中にも1本だけ差し込む
   const nextReads = getNextReads(article, (a) => companyOf(a).slug);
   const nextSlugs = new Set(nextReads.map((n) => n.article.slug));
+  // 本文途中の「あわせて読みたい」は、同じ話題・同じ企業の直近30日の記事だけ（基準点に届かなければ出さない）。
+  // 記事末の「次に読むならこれ」の1本目とは重ねない
+  const inlineRead = inlineReadForArticle(article, getAllArticles(), (a) => companyOf(a).slug, nextReads.slice(0, 1).map((n) => n.article.slug));
   const related = getRelatedArticles(article, 8).filter((a) => !nextSlugs.has(a.slug)).slice(0, 4);
 
   // 判定カードに見えている問いと答えを、そのまま FAQ の構造化データにする（AI検索の引用向け）
@@ -607,7 +610,7 @@ export default async function ArticlePage({ params }: Props) {
 
           {/* 本文（前半） */}
           <article className="prose mt-10 max-w-[40em]" dangerouslySetInnerHTML={{ __html: bodyTop }} />
-          {bodyMid && <InlineRead item={nextReads[2] ?? nextReads[1]} />}
+          {bodyMid && inlineRead && <InlineRead item={{ article: inlineRead, reason: "同じ話題の記事" }} />}
 
           {/* ② 記事中盤の広告枠 */}
           {bodyMid && <AdSlot position="article-middle" className="my-10" />}
