@@ -7848,6 +7848,15 @@
       "slug": "shiharai-kikin-reorganization-medical-dx",
       "url": "https://www.nli-research.co.jp/topics_detail1/id=87173?site=nli"
     },
+    "8e5047be2ea6e246": {
+      "at": "2026-11-02T04:55:51.992946+00:00",
+      "major": true,
+      "model": "claude:sonnet",
+      "score": 86,
+      "section": "ai",
+      "slug": "claude-ultra-plan-price-limits",
+      "url": "https://support.claude.com/en/articles/17728952-what-is-the-ultra-plan"
+    },
     "8e811dafcc2d0858": {
       "at": "2026-10-29T03:01:46.246225+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（説明会）",
@@ -11625,28 +11634,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:42:54.984102+00:00",
-      "attempt": 2,
-      "id": "d88212c96781972a",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1794字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 163.4,
-        "avg_sentence": 58.8,
-        "long_share": 0.44,
-        "max_paragraph": 248,
-        "paragraphs": 9,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "nli-research",
-      "title": "米ＧＤＰ（26年7－9月期）－前期比年率+3.4％と前期から伸びが大幅に加速、市場予想（+3.2％）も上回る"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T05:01:38.846690+00:00",
@@ -18309,6 +18296,26 @@
       "score": 100,
       "source": "toyota",
       "title": "ランドクルーザー“FJ”に丸目ヘッドランプとアドベンチャーバンパーを外装オプションとして新規設定"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T04:55:51.991697+00:00",
+      "attempt": 1,
+      "id": "8e5047be2ea6e246",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 67.1,
+        "avg_sentence": 29.1,
+        "long_share": 0.0,
+        "max_paragraph": 116,
+        "paragraphs": 26,
+        "sentences": 60
+      },
+      "score": 86,
+      "source": "radar-official",
+      "title": "What is the Ultra plan? | Claude Help Center"
     }
   ],
   "short_text_retry": {},

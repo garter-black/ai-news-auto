@@ -310,6 +310,19 @@
       "title": "ソフトバンク、新型「iPad mini（A20 Pro）」価格発表 11万9800円～",
       "url": "https://k-tai.watch.impress.co.jp/docs/news/2151814.html"
     },
+    "8e5047be2ea6e246": {
+      "detectedAt": "2026-11-02T04:53:24+00:00",
+      "finishedAt": "2026-11-02T04:55:51+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41390998665",
+      "slug": "claude-ultra-plan-price-limits",
+      "source": "radar-official",
+      "sourcePublishedAt": "2026-11-02T04:53:24+00:00",
+      "startedAt": "2026-11-02T04:54:49+00:00",
+      "title": "What is the Ultra plan? | Claude Help Center",
+      "url": "https://support.claude.com/en/articles/17728952-what-is-the-ultra-plan"
+    },
     "96882ab7e78168fa": {
       "detectedAt": "2026-11-01T22:37:24+00:00",
       "finishedAt": "2026-11-01T22:40:16+00:00",
