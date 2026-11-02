@@ -1903,7 +1903,10 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         t_in, t_out = line.start - 0.1, lines[i + 1].start - 0.06
         label = (beat.get("label") or EYEBROWS[min(i, len(EYEBROWS)) - 1]).strip()
         brow = fit_line(label, "bold", range(28, 20, -2), COL_W, color=BLUE, accent=False, tracking=0.08)
-        kw = fit_line(beat["keyword"], "black", range(132, 52, -4), COL_W)
+        try:
+            kw = fit_line(beat["keyword"], "black", range(132, 56, -4), COL_W)
+        except RuntimeError:  # 長い場面のキーワードは2行に（文節で折り返す）
+            kw = wrapped(beat["keyword"], "black", range(76, 46, -2), COL_W, 2)
         parts = [("eyebrow", brow, 0), ("keyword", kw, 18)]
         if beat.get("sub"):
             parts.append(("sub", fit_line(beat["sub"], "bold", range(42, 30, -2), COL_W, color=MUTED, accent=False), 30))
