@@ -10,7 +10,7 @@
     "7cJlIJpKBW4": 1,
     "8K08Ywgduno": 1,
     "AIH_9dOpAmU": 1,
-    "DDjr6gXqtN8": 1,
+    "DDjr6gXqtN8": 2,
     "EuN8WCWQf7g": 1,
     "FL6mI_Br-mc": 1,
     "G_DxnqhIfgk": 1,
@@ -2887,6 +2887,10 @@
     "uVS88gnaxcg": {
       "at": "2026-09-01T20:17:20.444556+00:00",
       "slug": "anthropic-releases-claude-fable-5-1"
+    },
+    "ubpXEv4lF0k": {
+      "at": "2026-11-02T00:22:02.969007+00:00",
+      "slug": "openai-agent-sandbox-escape-huggingface"
     },
     "ugpxU7Ve-Ig": {
       "at": "2026-08-02T13:03:15.220826+00:00",
@@ -10557,6 +10561,14 @@
       "skipped": true,
       "url": "https://www.meiji.co.jp/corporate/pressrelease/2026/10_21/index.html?link=rss"
     },
+    "e8f2f6f028b691d7": {
+      "at": "2026-11-02T00:22:39.237407+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "lifestyle",
+      "slug": "craft-boss-croissant-latte",
+      "url": "https://www.suntory.co.jp/softdrink/news/pr/article/2026/SBF1747.html?rss=0000000029"
+    },
     "e91762e35ba63f19": {
       "at": "2026-10-26T15:55:32.112618+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11347,51 +11359,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:41:38.873488+00:00",
-      "attempt": 1,
-      "id": "2f24a87add5bcdc5",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2293字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 119.7,
-        "avg_sentence": 57.9,
-        "long_share": 0.419,
-        "max_paragraph": 191,
-        "paragraphs": 15,
-        "sentences": 31
-      },
-      "score": null,
-      "source": "ntt-news-ai",
-      "title": "NTTテクノクロス、オンプレミスIP-PBX「Crossway®」に「AI音声通訳」オプションを提供開始 ～機密情報を外部に出さず、構内電話でリアルタイム通訳～"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:41:48.750629+00:00",
-      "attempt": 2,
-      "id": "2f24a87add5bcdc5",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2291字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（384字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 147.5,
-        "avg_sentence": 65.6,
-        "long_share": 0.519,
-        "max_paragraph": 262,
-        "paragraphs": 12,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "ntt-news-ai",
-      "title": "NTTテクノクロス、オンプレミスIP-PBX「Crossway®」に「AI音声通訳」オプションを提供開始 ～機密情報を外部に出さず、構内電話でリアルタイム通訳～"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T02:41:57.298720+00:00",
@@ -18091,6 +18058,51 @@
       "score": 100,
       "source": "trends",
       "title": "金融資産"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T00:22:35.754844+00:00",
+      "attempt": 1,
+      "id": "e8f2f6f028b691d7",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 51.6字・60字超の文が 18% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 141.9字・最長 169字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 141.9,
+        "avg_sentence": 51.6,
+        "long_share": 0.182,
+        "max_paragraph": 169,
+        "paragraphs": 8,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "suntory",
+      "title": "～人気ベーカリー\"パンとエスプレッソと\"共同開発～ クロワッサンとカフェラテを同時に頬張る、あの幸せな味わいを再現！「クラフトボス クロワッサンラテ」新発売"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T00:22:39.236911+00:00",
+      "attempt": 0,
+      "id": "e8f2f6f028b691d7",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 144.8字・最長 175字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 144.8,
+        "avg_sentence": 36.2,
+        "long_share": 0.062,
+        "max_paragraph": 175,
+        "paragraphs": 8,
+        "sentences": 32
+      },
+      "score": 100,
+      "source": "suntory",
+      "title": "～人気ベーカリー\"パンとエスプレッソと\"共同開発～ クロワッサンとカフェラテを同時に頬張る、あの幸せな味わいを再現！「クラフトボス クロワッサンラテ」新発売"
     }
   ],
   "short_text_retry": {}
