@@ -5748,6 +5748,14 @@
       "slug": "futsal-japan-morocco-oita-2026",
       "url": "https://www.jfa.jp/news/00036963/"
     },
+    "4c4b5e3ad9bf29d0": {
+      "at": "2026-11-02T07:11:29.084445+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "artex-agentic-offensive-frameworks",
+      "url": "https://cloud.google.com/blog/ja/topics/threat-intelligence/artex-and-friends-enter-agentic-offensive-frameworks/"
+    },
     "4c5c673386bda904": {
       "at": "2026-10-27T23:22:57.313216+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -10442,6 +10450,14 @@
       "skipped": true,
       "url": "https://www.nli-research.co.jp/topics_detail1/id=87225?site=nli"
     },
+    "d898b87514cc41e2": {
+      "at": "2026-11-02T07:11:50.054477+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "rakuten-sec-1500-million-accounts",
+      "url": "https://corp.rakuten.co.jp/news/press/2026/1102_02.html"
+    },
     "d8a8903606ffb523": {
       "at": "2026-10-28T19:12:53.361927+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11789,119 +11805,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:11:54.409479+00:00",
-      "attempt": 2,
-      "id": "c67ca313b240bcd406c01c3b192862c775d53459",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1096字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（296字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 123.8,
-        "avg_sentence": 55.0,
-        "long_share": 0.333,
-        "max_paragraph": 190,
-        "paragraphs": 8,
-        "sentences": 18
-      },
-      "score": null,
-      "source": "trends",
-      "title": "第一三共 株価"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:12:02.236359+00:00",
-      "attempt": 1,
-      "id": "edcaaa64958b4e3e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2417字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（384字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 146.2,
-        "avg_sentence": 62.0,
-        "long_share": 0.515,
-        "max_paragraph": 244,
-        "paragraphs": 14,
-        "sentences": 33
-      },
-      "score": null,
-      "source": "aws-japan-blog",
-      "title": "【随時更新】Inter BEE 2026 AWS ブースのご案内：人が創り、人が決める。AI エージェントが支える次世代放送局"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:12:11.117042+00:00",
-      "attempt": 2,
-      "id": "edcaaa64958b4e3e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 59.3字・60字超の文が 50% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 146.5字・最長 223字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 146.5,
-        "avg_sentence": 59.3,
-        "long_share": 0.5,
-        "max_paragraph": 223,
-        "paragraphs": 17,
-        "sentences": 42
-      },
-      "score": 100,
-      "source": "aws-japan-blog",
-      "title": "【随時更新】Inter BEE 2026 AWS ブースのご案内：人が創り、人が決める。AI エージェントが支える次世代放送局"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T06:12:16.696521+00:00",
-      "attempt": 0,
-      "id": "edcaaa64958b4e3e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 34.9,
-        "avg_sentence": 34.5,
-        "long_share": 0.027,
-        "max_paragraph": 76,
-        "paragraphs": 74,
-        "sentences": 75
-      },
-      "score": 100,
-      "source": "aws-japan-blog",
-      "title": "【随時更新】Inter BEE 2026 AWS ブースのご案内：人が創り、人が決める。AI エージェントが支える次世代放送局"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:12:24.502915+00:00",
-      "attempt": 1,
-      "id": "e30d6cc077fe7638",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1661字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（325字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 106.9,
-        "avg_sentence": 50.9,
-        "long_share": 0.429,
-        "max_paragraph": 147,
-        "paragraphs": 10,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "jfa",
-      "title": "2026/27シーズン JFA・Ｊリーグ特別指定選手に松田和輝選手（順天堂大）を認定 #jfa"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T06:12:30.053005+00:00",
@@ -18412,6 +18315,115 @@
       "score": 100,
       "source": "ntt-news",
       "title": "自己株式の取得状況に関するお知らせ（会社法第165条第2項の規定による定款の定めに基づく自己株式の取得）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T07:11:25.411693+00:00",
+      "attempt": 1,
+      "id": "4c4b5e3ad9bf29d0",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 60.1字・60字超の文が 33% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 96.2,
+        "avg_sentence": 60.1,
+        "long_share": 0.333,
+        "max_paragraph": 188,
+        "paragraphs": 15,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "google-cloud-blog-ja",
+      "title": "ARTEX とその同類: エージェント型攻撃フレームワークの登場"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T07:11:29.083439+00:00",
+      "attempt": 0,
+      "id": "4c4b5e3ad9bf29d0",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 105.5,
+        "avg_sentence": 29.8,
+        "long_share": 0.019,
+        "max_paragraph": 199,
+        "paragraphs": 15,
+        "sentences": 53
+      },
+      "score": 100,
+      "source": "google-cloud-blog-ja",
+      "title": "ARTEX とその同類: エージェント型攻撃フレームワークの登場"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T07:11:38.242968+00:00",
+      "attempt": 1,
+      "id": "d898b87514cc41e2",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "未向けの「こどもNISA」→「未成年のお客様」の脱落による表現の不自然さがある"
+      ],
+      "readability": {
+        "avg_paragraph": 95.8,
+        "avg_sentence": 49.6,
+        "long_share": 0.276,
+        "max_paragraph": 190,
+        "paragraphs": 15,
+        "sentences": 29
+      },
+      "score": 90,
+      "source": "rakuten",
+      "title": "国内（証券単体）最多！楽天証券、証券総合口座数1,500万口座突破のお知らせ"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T07:11:45.793558+00:00",
+      "attempt": 2,
+      "id": "d898b87514cc41e2",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 60.0字・60字超の文が 41% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 165.0字・最長 205字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 165.0,
+        "avg_sentence": 60.0,
+        "long_share": 0.409,
+        "max_paragraph": 205,
+        "paragraphs": 8,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "rakuten",
+      "title": "国内（証券単体）最多！楽天証券、証券総合口座数1,500万口座突破のお知らせ"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T07:11:50.053760+00:00",
+      "attempt": 0,
+      "id": "d898b87514cc41e2",
+      "kind": "broad",
+      "model": "",
+      "problems": [
+        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（60.0→60.0字）"
+      ],
+      "readability": {
+        "avg_paragraph": 165.0,
+        "avg_sentence": 60.0,
+        "long_share": 0.409,
+        "max_paragraph": 205,
+        "paragraphs": 8,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "rakuten",
+      "title": "国内（証券単体）最多！楽天証券、証券総合口座数1,500万口座突破のお知らせ"
     }
   ],
   "short_text_retry": {},

@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "rakuten-sec-1500-million-accounts",
+   "at": "2026-11-02T07:11:45.108579+00:00",
+   "title": "楽天証券の総合口座が1,500万を突破、国内単体で最多に",
+   "head": "楽天証券の総合口座が1,500万を突破、国内単体で最多に | 国内（証券単体）最多！楽天証券、証券総合口座数1,500万口座突破のお知らせ",
+   "text": "楽天証券の総合口座が1,500万を突破、国内単体で最多に | 国内（証券単体）最多！楽天証券、証券総合口座数1,500万口座突破のお知らせ | 楽天証券 / 口座数 / 1500万口座 / 証券会社 / 資産づくり / NISA / 手数料無料 / キャンペーン / 金融 / 証券 / ビジネス / 経済",
+   "urls": [
+    "https://corp.rakuten.co.jp/news/press/2026/1102_02.html"
+   ]
+  },
+  {
+   "slug": "artex-agentic-offensive-frameworks",
+   "at": "2026-11-02T07:11:24.665367+00:00",
+   "title": "Google、自律型攻撃フレームワーク「ARTEX」の悪用を確認　企業への侵入がマシンスピードに",
+   "head": "Google、自律型攻撃フレームワーク「ARTEX」の悪用を確認　企業への侵入がマシンスピードに | ARTEX とその同類: エージェント型攻撃フレームワークの登場",
+   "text": "Google、自律型攻撃フレームワーク「ARTEX」の悪用を確認　企業への侵入がマシンスピードに | ARTEX とその同類: エージェント型攻撃フレームワークの登場 | ARTEX / Mandiant / エージェント型攻撃フレームワーク / Google Threat Intelligence Group / GTIG / ペネトレーションテスト / サイバーセキュリティ / PentAGI / 生成AI / LLM / セキュリティ / サイバー攻撃",
+   "urls": [
+    "https://cloud.google.com/blog/ja/topics/threat-intelligence/artex-and-friends-enter-agentic-offensive-frameworks/"
+   ]
+  },
+  {
    "slug": "ntt-share-buyback-october-2026",
    "at": "2026-11-02T06:51:33.325985+00:00",
    "title": "NTTが10月に自社株買い約272億円を実施、取得総数は1億5,000万株超に",
