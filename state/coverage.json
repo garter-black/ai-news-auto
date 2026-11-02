@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "toyota-land-cruiser-fj-options",
+   "at": "2026-11-02T04:51:28.587699+00:00",
+   "title": "トヨタのランドクルーザー“FJ”、2027年1月上旬以降に発売 丸目ヘッドランプなど外装オプションを新規設定",
+   "head": "トヨタのランドクルーザー“FJ”、2027年1月上旬以降に発売 丸目ヘッドランプなど外装オプションを新規設定 | ランドクルーザー“FJ”に丸目ヘッドランプとアドベンチャーバンパーを外装オプションとして新規設定",
+   "text": "トヨタのランドクルーザー“FJ”、2027年1月上旬以降に発売 丸目ヘッドランプなど外装オプションを新規設定 | ランドクルーザー“FJ”に丸目ヘッドランプとアドベンチャーバンパーを外装オプションとして新規設定 | トヨタ / ランドクルーザーFJ / ランクル / 新型車 / 丸目ヘッドランプ / アドベンチャーバンパー / 外装オプション / 自動車 / ビジネス / 自動車 / 新車情報 / トヨタ",
+   "urls": [
+    "https://global.toyota/jp/newsroom/toyota/44936636.html"
+   ]
+  },
+  {
+   "slug": "google-cloud-ai-infrastructure-october-updates",
+   "at": "2026-11-02T04:51:17.175307+00:00",
+   "title": "Google CloudがAI基盤の10月アップデート発表、GKEやTPU向けの高速化技術が続々",
+   "head": "Google CloudがAI基盤の10月アップデート発表、GKEやTPU向けの高速化技術が続々 | What’s new in AI infrastructure and orchestration in October",
+   "text": "Google CloudがAI基盤の10月アップデート発表、GKEやTPU向けの高速化技術が続々 | What’s new in AI infrastructure and orchestration in October | Google Cloud / GKE / AIインフラ / llm-d / TPU / Google Kubernetes Engine / AI Hypercomputer / Cloud Run / 生成AI / LLM / クラウド / 開発ツール / インフラ",
+   "urls": [
+    "https://cloud.google.com/blog/topics/ai-infrastructure/whats-new-in-ai-infrastructure-this-month/"
+   ]
+  },
+  {
    "slug": "nvidia-nemoclaw-agent-platform",
    "at": "2026-11-02T04:32:04.169933+00:00",
    "title": "AI半導体のNVIDIAがオープンなAIエージェント構築基盤「NemoClaw」を発表",
