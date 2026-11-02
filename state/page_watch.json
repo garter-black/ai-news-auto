@@ -1,7 +1,7 @@
 {
  "pages": {
   "chatgpt-pricing": {
-   "hash": "892dd5fd92438858",
+   "hash": "2cf63d272fbcbaf4",
    "lines": [
     "About",
     "Features",
@@ -70,7 +70,7 @@
     "Learn more",
     "Individual",
     "Business & Enterprise",
-    "Intelligence for everyday tasks",
+    "Best for trying out ChatGPT",
     "/ month",
     "Get Free",
     "Unlimited text chats with GPT-6",
@@ -83,7 +83,7 @@
     "Limited ChatGPT Work access on desktop",
     "Have an existing plan? See billing help⁠",
     "Unlimited text chats subject to abuse guardrails. Learn more⁠",
-    "Expanded access",
+    "Best for longer conversations",
     "Get Go",
     "Everything in Free and:",
     "More messages with tools",
@@ -92,7 +92,7 @@
     "More voice chats",
     "Longer memory",
     "This plan may include ads. Learn more⁠",
-    "Do more with advanced intelligence",
+    "Best for advanced work and productivity",
     "Get Plus",
     "Everything in Go and:",
     "Advanced reasoning models with GPT-6",
@@ -105,7 +105,7 @@
     "Expanded access to ChatGPT Work on desktop, web, and mobile",
     "Early access to new features",
     "Limits apply⁠",
-    "Maximize your productivity",
+    "Best for research and coding",
     "From",
     "Get Pro",
     "Everything in Plus and:",
@@ -426,10 +426,6 @@
     "English United States"
    ],
    "ok": "2026-11-02",
-   "pending": {
-    "at": "2026-11-02T07:41:03+00:00",
-    "hash": "b722b25ddf3e2e79"
-   },
    "since": "2026-11-02T04:41:50+00:00"
   },
   "chatgpt-release-notes": {

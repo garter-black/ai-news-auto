@@ -6,9 +6,11 @@
   "companyName": "NVIDIA",
   "category": "半導体・インフラ",
   "overview": {
-    "text": "Blackwellは、NVIDIAが開発した次世代GPUアーキテクチャです。AI処理や3Dグラフィックス描画で高い性能を発揮します。",
+    "text": "Blackwellは、米NVIDIAが開発した次世代GPUアーキテクチャです。AI処理や大規模言語モデルの学習を加速します。",
     "sources": [
+      "google-distributed-cloud-ai-innovations-2026",
       "nvidia-rtx-spark-announcement",
+      "nvidia-ai-infrastructure-fungible-durable-productive",
       "nvidia-dgx-10-years-history-vera-rubin",
       "nvidia-rtx-spark-superchip-announcement"
     ]
@@ -16,71 +18,75 @@
   "facts": [
     {
       "label": "提供開始",
-      "value": "提供はこれから",
+      "value": "一般提供を開始",
       "sources": [
-        "nvidia-rtx-spark-announcement",
-        "nvidia-dgx-10-years-history-vera-rubin",
-        "nvidia-vera-rubin-performance-coreweave",
-        "nvidia-rtx-spark-superchip-announcement"
+        "google-distributed-cloud-ai-innovations-2026"
       ]
     },
     {
       "label": "日本での提供",
-      "value": "案内はありません",
+      "value": "条件付きで導入が可能",
       "sources": [
-        "nvidia-rtx-spark-announcement"
+        "google-distributed-cloud-ai-innovations-2026"
       ]
     },
     {
       "label": "向いている人",
-      "value": "開発者",
+      "value": "情報システム管理者や開発者",
       "sources": [
-        "nvidia-rtx-spark-announcement",
-        "nvidia-rtx-spark-superchip-announcement"
+        "google-distributed-cloud-ai-innovations-2026",
+        "nvidia-rtx-spark-announcement"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "FP4精度におけるAI処理性能で1 petaFLOPを達成しています。",
+      "text": "Blackwell UltraアーキテクチャのHGX B300システムを採用しています。",
+      "sources": [
+        "google-distributed-cloud-ai-innovations-2026"
+      ]
+    },
+    {
+      "text": "FP4精度で1 petaFLOPのAI処理性能を実現します。",
       "sources": [
         "nvidia-rtx-spark-announcement",
         "nvidia-rtx-spark-superchip-announcement"
       ]
     },
     {
-      "text": "4Kレンダリングと100fps超のゲームプレイを同時に処理できます。",
+      "text": "6,144基のCUDAコアを搭載しています。",
       "sources": [
-        "nvidia-rtx-spark-announcement"
-      ]
-    },
-    {
-      "text": "モバイル機でのローカルAIモデル学習を可能にします。",
-      "sources": [
-        "nvidia-rtx-spark-announcement"
+        "nvidia-rtx-spark-announcement",
+        "nvidia-rtx-spark-superchip-announcement"
       ]
     }
   ],
   "pricing": [],
   "japan": [
     {
-      "text": "発表の時点では、日本での提供について案内はありません。",
+      "text": "Google Distributed Cloudの提供体制やリージョン展開に準じて導入が可能です。",
       "sources": [
-        "nvidia-rtx-spark-announcement"
+        "google-distributed-cloud-ai-innovations-2026"
       ]
     }
   ],
   "howto": [
     {
-      "text": "パートナー企業を通じて製品展開される新たなPCカテゴリーとして提供されます。",
+      "text": "Google Cloudの公式ブログやGDCのドキュメントページにアクセスします。",
       "sources": [
-        "nvidia-rtx-spark-announcement"
+        "google-distributed-cloud-ai-innovations-2026"
+      ]
+    },
+    {
+      "text": "詳細なデモや見積もりについてGoogle Cloudの担当者に相談できます。",
+      "sources": [
+        "google-distributed-cloud-ai-innovations-2026"
       ]
     }
   ],
   "differences": [
     {
-      "text": "HopperアーキテクチャからBlackwellへと進化しました。",
+      "text": "HopperからBlackwellへの移行により、自律型AIを支える超広帯域と大容量メモリを備えました。",
       "sources": [
         "nvidia-dgx-10-years-history-vera-rubin"
       ]
@@ -88,32 +94,31 @@
   ],
   "faq": [
     {
-      "q": "誰に向いている？",
-      "a": "開発者に向いています。",
+      "q": "誰に向いている製品ですか？",
+      "a": "情報システム管理者や開発者を対象としています。",
+      "sources": [
+        "google-distributed-cloud-ai-innovations-2026",
+        "nvidia-rtx-spark-announcement"
+      ]
+    },
+    {
+      "q": "AI処理性能はどのくらいですか？",
+      "a": "FP4精度において1 petaFLOPの性能を発揮します。",
       "sources": [
         "nvidia-rtx-spark-announcement",
         "nvidia-rtx-spark-superchip-announcement"
       ]
     },
     {
-      "q": "AI演算性能はどのくらい？",
-      "a": "FP4精度において1 petaFLOPに達します。",
+      "q": "どのようなシステムに採用されていますか？",
+      "a": "NVIDIA HGX B300システムなどに採用されています。",
       "sources": [
-        "nvidia-rtx-spark-announcement",
-        "nvidia-rtx-spark-superchip-announcement"
+        "google-distributed-cloud-ai-innovations-2026"
       ]
     },
     {
-      "q": "メモリは何GBを搭載している？",
-      "a": "128GBのLPDDR5Xユニファイドメモリを搭載しています。",
-      "sources": [
-        "nvidia-rtx-spark-announcement",
-        "nvidia-rtx-spark-superchip-announcement"
-      ]
-    },
-    {
-      "q": "CPUとの接続はどうなっている？",
-      "a": "NVLink C2Cによって毎秒600GBの帯域で接続されています。",
+      "q": "CUDAコア数はいくつですか？",
+      "a": "6,144基のCUDAコアを搭載しています。",
       "sources": [
         "nvidia-rtx-spark-announcement",
         "nvidia-rtx-spark-superchip-announcement"
@@ -124,12 +129,12 @@
     {
       "date": "2026-08-06",
       "slug": "nvidia-rtx-spark-superchip-announcement",
-      "event": "モバイル向けRTX Sparkを発表"
+      "event": "モバイル向けRTX Spark superchipを発表"
     },
     {
       "date": "2026-10-15",
       "slug": "nvidia-rtx-spark-announcement",
-      "event": "RTX Sparkを発表"
+      "event": "Blackwell GPU搭載のRTX Sparkを発表"
     }
   ],
   "related": [
@@ -139,6 +144,7 @@
     "nemotron"
   ],
   "articles": [
+    "google-distributed-cloud-ai-innovations-2026",
     "nvidia-rtx-spark-announcement",
     "nvidia-ai-infrastructure-fungible-durable-productive",
     "nvidia-dgx-10-years-history-vera-rubin",
@@ -149,9 +155,9 @@
   "linkFrom": [
     "nvidia-rtx-spark-announcement"
   ],
-  "signature": "4174ddf97f8cb9ff",
+  "signature": "ec4ef5b374088e7c",
   "primarySignature": "1c34aa67dddde023",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:50:46+00:00",
-  "updatedAt": "2026-10-27T10:50:46+00:00"
+  "updatedAt": "2026-11-02T08:02:08+00:00"
 }

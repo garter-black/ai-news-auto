@@ -5608,6 +5608,12 @@
       "slug": "salesforce-aiforce-claude-slack",
       "url": "https://www.salesforce.com/jp/news/stories/japan-claudeforce-and-slackforce-domo/"
     },
+    "4786e2414a5ef0df": {
+      "at": "2026-11-02T08:01:23.531274+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（懇談会）",
+      "skipped": true,
+      "url": "https://www.mof.go.jp/about_mof/councils/meeting_of_jgbi/press_release/261102.html"
+    },
     "47e91147967a45c4": {
       "at": "2026-10-27T21:44:36.890575+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -6401,6 +6407,13 @@
       "skipped": true,
       "url": "https://www.mhlw.go.jp/stf/kouseiroudoushou/saiyou/ninkituki/ninki-gyoumukaikakusuishinsenmonkan.html"
     },
+    "613010f141cb0ebf": {
+      "at": "2026-11-02T08:01:23.531220+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "quality: title の長さが不適切（65字 / 18〜64字）",
+      "skipped": true,
+      "url": "https://www.sbintuitions.co.jp/blog/entry/2026/11/02/01"
+    },
     "61401816becf4736": {
       "at": "2026-10-30T05:54:26.203429+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（募集）",
@@ -6962,6 +6975,14 @@
       "reason": "prefilter: 価値の薄いお知らせ（周年）",
       "skipped": true,
       "url": "https://www.kantei.go.jp/jp/105/actions/202610/29chuokai.html"
+    },
+    "71a098c0e2d097d6": {
+      "at": "2026-11-02T08:01:59.015134+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "google-distributed-cloud-ai-innovations-2026",
+      "url": "https://cloud.google.com/blog/ja/topics/hybrid-cloud/new-innovations-in-google-distributed-cloud/"
     },
     "71b8566a1f06ece6": {
       "at": "2026-10-26T20:21:25.132784+00:00",
@@ -10176,6 +10197,14 @@
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/024740/"
     },
+    "d13c5cabe6d2ffd0": {
+      "at": "2026-11-02T08:01:35.797046+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "craft-beer-shipments-2026-tsr",
+      "url": "https://www.tsr-net.co.jp/data/detail/1203392_1527.html"
+    },
     "d2282bcce1625c64": {
       "at": "2026-10-30T22:01:11.556786+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11837,165 +11866,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:13:11.310655+00:00",
-      "attempt": 1,
-      "id": "a8a878b3129862cf",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1297字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（340字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 117.2,
-        "avg_sentence": 52.8,
-        "long_share": 0.3,
-        "max_paragraph": 178,
-        "paragraphs": 9,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "最近の歯科医療費（電算処理分）の動向 令和8年度6月号"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:13:16.132641+00:00",
-      "attempt": 2,
-      "id": "a8a878b3129862cf",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1248字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（369字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 106.7,
-        "avg_sentence": 48.0,
-        "long_share": 0.1,
-        "max_paragraph": 156,
-        "paragraphs": 9,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "最近の歯科医療費（電算処理分）の動向 令和8年度6月号"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:13:23.562675+00:00",
-      "attempt": 1,
-      "id": "afb1d0948e79346c",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1638字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（320字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 133.4,
-        "avg_sentence": 55.6,
-        "long_share": 0.333,
-        "max_paragraph": 191,
-        "paragraphs": 10,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "soumu",
-      "title": "消防防災科学技術研究推進制度の令和8年度第2期緊急枠研究開発課題の採択"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:13:32.346632+00:00",
-      "attempt": 2,
-      "id": "afb1d0948e79346c",
-      "kind": "broad",
-      "model": "gemini-3.1-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 49.8字・60字超の文が 18% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 116.2,
-        "avg_sentence": 49.8,
-        "long_share": 0.179,
-        "max_paragraph": 164,
-        "paragraphs": 12,
-        "sentences": 28
-      },
-      "score": 100,
-      "source": "soumu",
-      "title": "消防防災科学技術研究推進制度の令和8年度第2期緊急枠研究開発課題の採択"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T06:13:36.047719+00:00",
-      "attempt": 0,
-      "id": "afb1d0948e79346c",
-      "kind": "broad",
-      "model": "gemini-3.1-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 62.5,
-        "avg_sentence": 29.3,
-        "long_share": 0.0,
-        "max_paragraph": 103,
-        "paragraphs": 22,
-        "sentences": 47
-      },
-      "score": 100,
-      "source": "soumu",
-      "title": "消防防災科学技術研究推進制度の令和8年度第2期緊急枠研究開発課題の採択"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:31:44.898758+00:00",
-      "attempt": 1,
-      "id": "194aeeabb9a24578",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1399字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（294字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 51.4,
-        "avg_sentence": 51.4,
-        "long_share": 0.368,
-        "max_paragraph": 104,
-        "paragraphs": 19,
-        "sentences": 19
-      },
-      "score": null,
-      "source": "ntt-news-ai",
-      "title": "NTTインテグレーション、IBM Spyreを活用したAI導入検証サービス「Spyreトライアルサービス」を提供開始 ～実機環境でのAI推論・RAG検証を通じ、"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:31:57.226824+00:00",
-      "attempt": 2,
-      "id": "194aeeabb9a24578",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1883字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 122.2,
-        "avg_sentence": 63.5,
-        "long_share": 0.52,
-        "max_paragraph": 204,
-        "paragraphs": 13,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "ntt-news-ai",
-      "title": "NTTインテグレーション、IBM Spyreを活用したAI導入検証サービス「Spyreトライアルサービス」を提供開始 ～実機環境でのAI推論・RAG検証を通じ、"
-    },
     {
       "accepted": true,
       "at": "2026-10-30T06:34:07.390772+00:00",
@@ -18448,6 +18318,159 @@
       "score": 100,
       "source": "tsr",
       "title": "2026年10月の「円安」倒産6件、52カ月連続発生 1-10月累計67件、前年（1-12月）件数を超える"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T08:01:18.049360+00:00",
+      "attempt": 1,
+      "id": "613010f141cb0ebf",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "title の長さが不適切（70字 / 18〜64字）"
+      ],
+      "readability": {
+        "avg_paragraph": 98.9,
+        "avg_sentence": 71.4,
+        "long_share": 0.722,
+        "max_paragraph": 175,
+        "paragraphs": 13,
+        "sentences": 18
+      },
+      "score": null,
+      "source": "sbintuitions-blog",
+      "title": "Sarashina3.2 mini thinking の安全性"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T08:01:23.531185+00:00",
+      "attempt": 2,
+      "id": "613010f141cb0ebf",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "title の長さが不適切（65字 / 18〜64字）"
+      ],
+      "readability": {
+        "avg_paragraph": 96.8,
+        "avg_sentence": 59.9,
+        "long_share": 0.381,
+        "max_paragraph": 149,
+        "paragraphs": 13,
+        "sentences": 21
+      },
+      "score": null,
+      "source": "sbintuitions-blog",
+      "title": "Sarashina3.2 mini thinking の安全性"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T08:01:31.987816+00:00",
+      "attempt": 1,
+      "id": "d13c5cabe6d2ffd0",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 56.2字・60字超の文が 38% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 168.6字・最長 236字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 168.6,
+        "avg_sentence": 56.2,
+        "long_share": 0.375,
+        "max_paragraph": 236,
+        "paragraphs": 8,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "tsr",
+      "title": "主な「地ビールメーカー」1-8月出荷量は2年連続で増加 ビールメーカーの６割弱が前年割れ、首位は「エチゴビール」"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T08:01:35.796079+00:00",
+      "attempt": 0,
+      "id": "d13c5cabe6d2ffd0",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 103.2,
+        "avg_sentence": 27.4,
+        "long_share": 0.0,
+        "max_paragraph": 141,
+        "paragraphs": 13,
+        "sentences": 49
+      },
+      "score": 100,
+      "source": "tsr",
+      "title": "主な「地ビールメーカー」1-8月出荷量は2年連続で増加 ビールメーカーの６割弱が前年割れ、首位は「エチゴビール」"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T08:01:45.013506+00:00",
+      "attempt": 1,
+      "id": "71a098c0e2d097d6",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "title の長さが不適切（71字 / 18〜64字）"
+      ],
+      "readability": {
+        "avg_paragraph": 156.7,
+        "avg_sentence": 60.6,
+        "long_share": 0.548,
+        "max_paragraph": 220,
+        "paragraphs": 12,
+        "sentences": 31
+      },
+      "score": null,
+      "source": "google-cloud-blog-ja",
+      "title": "ソブリン AI の新時代を切り開く: Google Distributed Cloud の最新イノベーション"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T08:01:53.752276+00:00",
+      "attempt": 2,
+      "id": "71a098c0e2d097d6",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 66.6字・60字超の文が 50% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 112.8,
+        "avg_sentence": 66.6,
+        "long_share": 0.5,
+        "max_paragraph": 200,
+        "paragraphs": 13,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "google-cloud-blog-ja",
+      "title": "ソブリン AI の新時代を切り開く: Google Distributed Cloud の最新イノベーション"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T08:01:59.013773+00:00",
+      "attempt": 0,
+      "id": "71a098c0e2d097d6",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 121.9字・最長 218字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 121.9,
+        "avg_sentence": 40.6,
+        "long_share": 0.103,
+        "max_paragraph": 218,
+        "paragraphs": 13,
+        "sentences": 39
+      },
+      "score": 100,
+      "source": "google-cloud-blog-ja",
+      "title": "ソブリン AI の新時代を切り開く: Google Distributed Cloud の最新イノベーション"
     }
   ],
   "short_text_retry": {},
