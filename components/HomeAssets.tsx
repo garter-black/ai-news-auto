@@ -20,7 +20,7 @@ export default function HomeAssets() {
 
   return (
     <section aria-labelledby="assets-heading" className="mt-10">
-      <h2 id="assets-heading" className="text-meta font-bold tracking-wide text-muted">
+      <h2 id="assets-heading" className="t-h2">
         サイソクで調べられること
       </h2>
       <ul className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-4">
@@ -36,7 +36,7 @@ export default function HomeAssets() {
           </li>
         ))}
       </ul>
-      <p className="mt-3 text-meta text-muted">
+      <p className="mt-3 text-note text-muted">
         記事は企業・官公庁の公式発表だけをもとに作り、出典と自動照合してから公開しています。
         <Link href="/editorial-policy" className="ml-1 underline underline-offset-4 hover:text-ink">
           制作と確認の方法
