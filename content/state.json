@@ -7364,6 +7364,14 @@
       "skipped": true,
       "url": "https://www.gov-online.go.jp/press_conferences/prime_minister/202610/video-326726.html"
     },
+    "7c6b46d680c874e7": {
+      "at": "2026-11-02T14:11:21.979003+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "docker-blueprint-alliance-agent-baseline",
+      "url": "https://www.docker.com/blog/docker-blueprint-alliance-agent-baseline/"
+    },
     "7c79f813d2ba2b20": {
       "at": "2026-10-27T17:52:12.151057+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11231,6 +11239,14 @@
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/047893/"
     },
+    "e887449fa547326c": {
+      "at": "2026-11-02T14:11:49.973834+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "katayama-mof-press-conference-oct2026",
+      "url": "https://www.mof.go.jp/public_relations/conference/my20261030.html"
+    },
     "e8900429157eddb0": {
       "at": "2026-11-02T06:31:39.764047+00:00",
       "kind": "update",
@@ -12093,118 +12109,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:12:59.887176+00:00",
-      "attempt": 2,
-      "id": "a36d3c4140ba175e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2430字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 122.8,
-        "avg_sentence": 57.6,
-        "long_share": 0.406,
-        "max_paragraph": 194,
-        "paragraphs": 15,
-        "sentences": 32
-      },
-      "score": null,
-      "source": "google-cloud-blog-ja",
-      "title": "境界セキュリティのモダナイズ: VPC Service Controls によるスケーラブルな境界"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:13:12.868742+00:00",
-      "attempt": 1,
-      "id": "473c3f7c341001bd",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 56.6字・60字超の文が 38% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 150.9字・最長 275字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 150.9,
-        "avg_sentence": 56.6,
-        "long_share": 0.375,
-        "max_paragraph": 275,
-        "paragraphs": 12,
-        "sentences": 32
-      },
-      "score": 100,
-      "source": "digital-agency",
-      "title": "GビズIDの利用状況に関するダッシュボードを更新しました"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T08:13:16.892702+00:00",
-      "attempt": 0,
-      "id": "473c3f7c341001bd",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 52.1字・60字超の文が 34% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 52.1,
-        "avg_sentence": 52.1,
-        "long_share": 0.343,
-        "max_paragraph": 79,
-        "paragraphs": 35,
-        "sentences": 35
-      },
-      "score": 100,
-      "source": "digital-agency",
-      "title": "GビズIDの利用状況に関するダッシュボードを更新しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:13:28.100851+00:00",
-      "attempt": 1,
-      "id": "cc60641d57aa6367",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2490字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "title の長さが不適切（66字 / 18〜64字）"
-      ],
-      "readability": {
-        "avg_paragraph": 129.6,
-        "avg_sentence": 64.8,
-        "long_share": 0.733,
-        "max_paragraph": 212,
-        "paragraphs": 15,
-        "sentences": 30
-      },
-      "score": null,
-      "source": "google-cloud-blog-ja",
-      "title": "BigQuery ObjectRef の一般提供を開始: 会話分析用のマルチモーダル データ プラットフォームをすべて SQL で構築"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:13:35.397513+00:00",
-      "attempt": 2,
-      "id": "cc60641d57aa6367",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2416字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 109.2,
-        "avg_sentence": 67.8,
-        "long_share": 0.552,
-        "max_paragraph": 227,
-        "paragraphs": 18,
-        "sentences": 29
-      },
-      "score": null,
-      "source": "google-cloud-blog-ja",
-      "title": "BigQuery ObjectRef の一般提供を開始: 会話分析用のマルチモーダル データ プラットフォームをすべて SQL で構築"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T08:31:09.414293+00:00",
@@ -18667,6 +18571,113 @@
       "score": 93,
       "source": "radar-9to5google.com",
       "title": "Google Messages update rolling out new app icon with gradient design"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T14:11:17.545368+00:00",
+      "attempt": 1,
+      "id": "7c6b46d680c874e7",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 64.9字・60字超の文が 48% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 106.6,
+        "avg_sentence": 64.9,
+        "long_share": 0.478,
+        "max_paragraph": 172,
+        "paragraphs": 14,
+        "sentences": 23
+      },
+      "score": 100,
+      "source": "docker-blog",
+      "title": "The Ecosystem is the Answer: Docker, the Blueprint Alliance, and the Importance "
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T14:11:21.977919+00:00",
+      "attempt": 0,
+      "id": "7c6b46d680c874e7",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 111.1,
+        "avg_sentence": 42.1,
+        "long_share": 0.108,
+        "max_paragraph": 180,
+        "paragraphs": 14,
+        "sentences": 37
+      },
+      "score": 100,
+      "source": "docker-blog",
+      "title": "The Ecosystem is the Answer: Docker, the Blueprint Alliance, and the Importance "
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T14:11:30.234322+00:00",
+      "attempt": 1,
+      "id": "e887449fa547326c",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "easy_markdown が「## ひとことで言うと」から始まっていない"
+      ],
+      "readability": {
+        "avg_paragraph": 148.4,
+        "avg_sentence": 55.7,
+        "long_share": 0.375,
+        "max_paragraph": 205,
+        "paragraphs": 9,
+        "sentences": 24
+      },
+      "score": null,
+      "source": "mof",
+      "title": "片山財務大臣兼内閣府特命担当大臣閣議後記者会見の概要(令和8年10月30日(金曜日))"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T14:11:45.401229+00:00",
+      "attempt": 2,
+      "id": "e887449fa547326c",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 55.8字・60字超の文が 27% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 161.2字・最長 211字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 161.2,
+        "avg_sentence": 55.8,
+        "long_share": 0.269,
+        "max_paragraph": 211,
+        "paragraphs": 9,
+        "sentences": 26
+      },
+      "score": 100,
+      "source": "mof",
+      "title": "片山財務大臣兼内閣府特命担当大臣閣議後記者会見の概要(令和8年10月30日(金曜日))"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T14:11:49.973144+00:00",
+      "attempt": 0,
+      "id": "e887449fa547326c",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 77.5,
+        "avg_sentence": 37.8,
+        "long_share": 0.024,
+        "max_paragraph": 189,
+        "paragraphs": 20,
+        "sentences": 41
+      },
+      "score": 100,
+      "source": "mof",
+      "title": "片山財務大臣兼内閣府特命担当大臣閣議後記者会見の概要(令和8年10月30日(金曜日))"
     }
   ],
   "short_text_retry": {},

@@ -1,0 +1,80 @@
+{
+  "slug": "docker-blueprint-alliance-agent-baseline",
+  "sourceType": "web",
+  "sourceUrl": "https://www.docker.com/blog/docker-blueprint-alliance-agent-baseline/",
+  "sourceName": "Docker公式ブログ",
+  "title": "Docker、AIエージェントの安全な活用を目指す「Blueprint Alliance」に参画",
+  "seoTitle": "Dockerとは？AIエージェントの安全基準を策定する仕組みを解説",
+  "threadsPost": "AIエージェントの安全基準、どう作ればいいか迷っていませんか？\n\n要約すると、Dockerが12社で「Blueprint Alliance」を立ち上げました。\nAIエージェントの安全な管理に向けた共通基準を作ります。\n\nあなたの会社では、業務でのAIエージェントの利用ルールは決まっていますか？",
+  "threadsHook": "question",
+  "threadsStyle": 3,
+  "writingVoice": "qa",
+  "lede": "Docker公式ブログによると、同社はAIエージェントの安全な活用を支えるため「Blueprint Alliance」および「Agent Baseline」に参画しました。急増するAIエージェントの統制とセキュリティの課題解決を目指します。",
+  "description": "Dockerが参画したAIエージェントのセキュリティ基準「Blueprint Alliance」と「Agent Baseline」の概要を解説します。",
+  "keywords": [
+    "Docker",
+    "Blueprint Alliance",
+    "Agent Baseline",
+    "AIエージェント",
+    "セキュリティ",
+    "ガバナンス",
+    "Docker Sandboxes",
+    "Open Container Initiative"
+  ],
+  "tags": [
+    "生成AI",
+    "セキュリティ",
+    "コンテナ",
+    "開発ツール"
+  ],
+  "highlights": [
+    "フォーチュン500企業のAIエージェント導入数は2028年に15万件へ急増する見込みです。",
+    "Blueprint AllianceにはOktaやAWSなど12社が参画し、4つの疑問に答える共通基準を作ります。",
+    "Agent Baselineでは、6つの成果と35のオープンな管理項目が定義されています。"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "ok",
+    "price": "オープンソース・仕様公開",
+    "free": true,
+    "audience": "開発者・セキュリティ担当",
+    "take": "公開されたフレームワークを確認し、自社のAIエージェント運用の安全性を評価しましょう。",
+    "judgedAt": "2026-11-02T14:11:16.863813+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "企業のセキュリティ担当者や開発者は、AIエージェント導入時のガバナンス設計に活用できます。",
+      "公式サイトから「Blueprint Alliance」のホワイトペーパーや「Agent Baseline」の管理項目を確認できます。"
+    ]
+  },
+  "body": "## 概要\nDocker公式ブログによりますと、同社はAIエージェントの安全な活用を支えるため「Blueprint Alliance」および「Agent Baseline」に参画しました。これは、急増するAIエージェントの統制とセキュリティの課題を解決するための取り組みです。企業のセキュリティリーダーが直面するジレンマに対し、エコシステム全体で共通の基準を作ります。\n\n## 何が発表された？\nDocker公式ブログによると、Gartnerの予測があります。フォーチュン500企業のAIエージェント利用数が2025年の15件未満から、2028年には15万件以上に急増するとのことです。一方で、適切なガバナンスがあると答えた組織は13パーセントにとどまります。この状況に対応するため、Dockerは複数の取り組みに参画しました。\n\n参画した主な取り組みと参画企業は次のとおりです。\n- **Blueprint Alliance**: Okta、AWS、CrowdStrike、Databricks、Docker、Google Cloud、Lovable、Proofpoint、Salesforce、ServiceNow、Wiz、Zscalerの12社が founding member（創設メンバー）として参画。GE AppliancesとWorld Central Kitchenがstrategic advisor（戦略的アドバイザー）として参加。\n- **Agent Baseline**: 脅威リストと企業が必要とする機能のギャップを埋めるための基準。Docker、Snyk、Keycardがドラフトを作成し、現在のバージョンはv1.0-draft。\n\n## なぜこの仕組みが必要なのか？\nAIエージェントの普及期において、企業は選択を迫られています。それはセキュリティと利便性の間の選択です。従来のセキュリティ統制は、AIエージェントの持つ特性に対応していません。\n\n元記事では、AIエージェントにおける新しいリスクとして次の5つを挙げています。\n- **Runtime reprogramming（実行時の再プログラミング）**: ユーザーやエージェント自身が、リリースサイクルなしで自然言語によって動作を変更できる。\n- **Borrowed identity（借用されたID）**: エージェントは通常ユーザーのIDを引き継ぎます。そのため、ユーザーが読み取り、変更、削除できるものはすべてエージェントも操作できます。\n- **Autonomy（自律性）**: エージェントは非同期で動きます。さらに、サブエージェントを生成して権限を引き継ぐため、誤った指示が実行される危険があります。\n- **Risky combinations（リスクのある組み合わせ）**: 既知の脆弱性がないツールでも問題がおきます。不正な入力から機密データや外部通信へ至る経路を完了させてしまうことがあります。\n- **A shorter response window（より短い対応ウインドウ）**: プロセスを終了させるだけでは不十分です。認証情報やセッションを無効化して封じ込める必要があります。\n\n## Blueprint Allianceは何を解決するのか？\nBlueprint Allianceは「参照アーキテクチャ」を定めています。これは、複数のベンダーやツールがどのように連携すべきかを示すものです。オープンなマルチベンダーの参照アーキテクチャは、次の4つの疑問に答えます。\n- Where are my agents?（エージェントはどこにいるか）\n- What can they do?（何ができるか）\n- What are they doing?（何をしているか）\n- How do I respond?（どう対応するか）\n\nメンバー企業はいくつかのことにコミットしています。MCP、OCSF、SSF、CAEPの各規格における相互運用性テストの実施や、リファレンス統合の公開です。\n\n一方、Agent Baselineの役割もあります。各ピースが何を満たすべきかを定義し、検証できるようにします。6つの成果（Discover、Constrain、Authorize、Observe、Validate、Respond）と35のオープンでバージョン管理されたコントロールを定義しています。監査やRFPの回答で引用できる永続的な識別子が付属しています。\n\n## Dockerの役割と実行環境の保護\n多くのAllianceメンバーは外部からエージェントを管理します。これに対し、Dockerはエージェントが実行される「内部の環境」を管理します。エージェントが行動の提案から実行へ移行するにつれて、モデルだけでなく実行場所への信頼も必要になります。\n\nDockerにはいくつかの強力な機能があります。「Docker Sandboxes」による隔離された実行環境（CON-03で求められる条件）を提供しています。さらに「Docker MCP Gateway」や「Docker Hardened Images」を通じて、ツールアクセスやサプライチェーンをカバーしています。\n\n## 自分にはどう関係する？\n### エンジニアなら\nAIエージェントを開発・導入する際の良い方法がわかります。Docker Sandboxesなどの実行環境を活用して、権限やツールアクセスを適切に隔離・管理する方法を確認できます。\n\n### 企画・マーケティングなら\n社内でAIエージェントを業務に導入する場面を考えてみます。その際、セキュリティと利便性を両立させるための業界共通の参照アーキテクチャやガイドラインの存在を把握できます。\n\n### 経営者・管理者なら\n急増するAIエージェントのガバナンスとセキュリティリスクに対応できます。Allianceが提供するオープンな基準を活用したリスク評価やポリシー策定を進めるヒントになります。\n\n## まとめ\n共通の基準とエコシステム全体の協力が進んでいます。これにより、AIエージェントの安全な導入とガバナンスの確立が進みます。\n読者は公式サイト（blueprintalliance.ai や agentbaseline.org）にアクセスできます。詳細なホワイトペーパーや管理項目を確認し、自社のセキュリティ対策に役立てることができます。",
+  "easy": "## ひとことで言うと\nDockerが、AIエージェントを安全に会社で使うための共通ルール作りに加わりました。\n\n## 何がすごいの？\nAIエージェントは、ルールなしで使うとセキュリティの穴になります。しかし、禁止すると現場の仕事が進みません。そこで大手企業が協力し、安全に使うための共通の基準を作りました。\n\n## 自分に関係ある？\n会社でAIエージェントの導入や管理に関わる開発者やセキュリティ担当者なら、知っておくべき共通ルールがまとまっています。\n\n## 使ってみるには\n公式サイト（blueprintalliance.ai や agentbaseline.org）から、公開されている基準やホワイトペーパーを今日から確認できます。",
+  "channel": "Docker公式ブログ",
+  "channelId": "",
+  "channelSlug": "docker-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "The Ecosystem is the Answer: Docker, the Blueprint Alliance, and the Importance of Collaboration in the Agentic Era",
+  "publishedAt": "2026-11-02T14:00:00+00:00",
+  "generatedAt": "2026-11-02T14:11:16.863881+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/docker-blueprint-alliance-agent-baseline-677a4308.jpg",
+  "model": "gemini-3.5-flash-lite",
+  "affiliates": [],
+  "qualityScore": 100,
+  "sourcePublishedAt": "2026-11-02T14:00:00+00:00",
+  "detectedAt": "2026-11-02T14:10:46+00:00",
+  "speedMinutes": 15,
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close‑up view of a modern data‑center server rack with illuminated panels, a metallic padlock attached to a cabinet door, and a rolled‑up technical blueprint lying on a desk, lit by soft overhead lighting.",
+    "provider": "Cloudflare Workers AI",
+    "original": "https://www.docker.com/app/uploads/2025/03/image.png",
+    "at": "2026-11-02T14:12:44+00:00"
+  }
+}
