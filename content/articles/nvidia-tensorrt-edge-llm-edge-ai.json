@@ -56,7 +56,7 @@
   "videoTitle": "Run AI Models for Edge Application Development with Just a Few Commands",
   "publishedAt": "2026-10-30T20:33:18+00:00",
   "generatedAt": "2026-11-02T03:31:20.769184+00:00",
-  "thumbnail": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/03/four-stacked-nvidia-dgx-spark-2048x1152.png",
+  "thumbnail": "https://ai-tech-express.jp/img/nvidia-tensorrt-edge-llm-edge-ai-1fe76d8f.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "relatedSlugs": [
@@ -68,8 +68,13 @@
   "sourcePublishedAt": "2026-10-30T20:33:18+00:00",
   "detectedAt": "2026-11-02T03:30:50+00:00",
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "NVIDIA",
     "provider": "NVIDIA Developer Blog",
-    "sourceUrl": "https://developer.nvidia.com/blog/run-ai-models-for-edge-application-development-with-just-a-few-commands/"
+    "sourceUrl": "https://developer.nvidia.com/blog/run-ai-models-for-edge-application-development-with-just-a-few-commands/",
+    "original": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/03/four-stacked-nvidia-dgx-spark-2048x1152.png",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T04:00:31+00:00"
   }
 }

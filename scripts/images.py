@@ -1250,8 +1250,13 @@ def webp_variants(image) -> dict[str, bytes]:
     for name, width in VARIANT_WIDTHS:
         width = min(width, w)
         resized = image if width == w else image.resize((width, max(1, round(h * width / w))), Image.LANCZOS)
-        buf = io.BytesIO()
-        resized.save(buf, "WEBP", quality=74 if width <= 640 else 72, method=6)
+        # 細かい写真で重くなりすぎないよう、幅に応じた上限（1200px で約90KB）まで画質を下げる
+        cap = width * 75
+        for quality in ((74 if width <= 640 else 72), 64, 56, 48):
+            buf = io.BytesIO()
+            resized.save(buf, "WEBP", quality=quality, method=6)
+            if buf.tell() <= cap:
+                break
         out[name] = buf.getvalue()
     return out
 

@@ -52,7 +52,7 @@
   "videoTitle": "『ピクミン4 Nintendo Switch 2 Edition + だれでもチャレンジ! ダンドリ検定』の体験版が配信開始。「Pikmin Day Direct」で公開した情報もご紹介。",
   "publishedAt": "2026-11-02T02:41:00+00:00",
   "generatedAt": "2026-11-02T03:31:37.283655+00:00",
-  "thumbnail": "https://assets.topics.apps-jp.nintendo.com/image/2026/10/28054547133570/1280/066838bd0f4b49959f9fd746616eee63.webp",
+  "thumbnail": "https://ai-tech-express.jp/img/pikmin-4-switch-2-edition-demo-a371c72f.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -60,8 +60,13 @@
   "detectedAt": "2026-11-02T03:30:50+00:00",
   "speedMinutes": 54,
   "imageCredit": {
-    "kind": "source",
+    "kind": "official",
+    "org": "任天堂",
     "provider": "任天堂 トピックス",
-    "sourceUrl": "https://www.nintendo.com/jp/topics/article/8a0fad53-c589-4304-98b2-f86bd3d5764f"
+    "sourceUrl": "https://www.nintendo.com/jp/topics/article/8a0fad53-c589-4304-98b2-f86bd3d5764f",
+    "original": "https://assets.topics.apps-jp.nintendo.com/image/2026/10/28054547133570/1280/066838bd0f4b49959f9fd746616eee63.webp",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T04:00:16+00:00"
   }
 }
