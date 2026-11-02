@@ -2701,7 +2701,8 @@
       "permalink": "",
       "channels": {
         "twitter": "6ae7b8e501fa08ffbe6d2fc1",
-        "facebook": "6ae7b8e5779ee9f13cba7ab2"
+        "facebook": "6ae7b8e5779ee9f13cba7ab2",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzchhuytmc2d"
       },
       "hook": "surprise",
       "score": 5,
@@ -2713,7 +2714,8 @@
       "questionText": "気になった点はありますか？",
       "comment": "編集部：実用化までの道のりにも注目したいです。",
       "dueAt": "2026-11-02T03:15:00+00:00",
-      "postedAt": "2026-11-01T22:10:45+00:00"
+      "postedAt": "2026-11-01T22:10:45+00:00",
+      "blueskyAt": "2026-11-02T04:12:46+00:00"
     },
     "oracle-ai-workspace-chatgpt": {
       "id": "6ae7c053d016796999f50331",
