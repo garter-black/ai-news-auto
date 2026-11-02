@@ -40,7 +40,8 @@ export const metadata: Metadata = {
     type: "website",
     siteName: siteConfig.siteName,
     locale: siteConfig.locale,
-    url: siteConfig.url,
+    // og:url はここに置かない（openGraph を持たない下層ページ（/tools など）が og:url=トップを引き継ぎ、
+    // Facebook・LINE でシェアするとトップのシェアとして扱われていた）。トップの og:url は app/page.tsx
     title: `${siteConfig.siteName} AI・ビジネス・お金の新しい動きが最速でわかる`,
     description: siteConfig.description,
   },

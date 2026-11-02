@@ -14,9 +14,22 @@ import { offerForArticle } from "@/lib/offers";
 import { getAllArticles, getAllGenres, tagSlug, type ArticleSummary } from "@/lib/articles";
 import { companyCounts, thumbSource } from "@/lib/companies";
 import { broadGenresWithArticles, getBroadArticles, isBroadGenre } from "@/lib/sections";
+import type { Metadata } from "next";
 import { siteConfig } from "@/site.config";
 
 export const revalidate = false;
+
+// トップだけ og:url を自分（＝サイトのURL）にする。下層ページに引き継がせないため layout には置かない
+export const metadata: Metadata = {
+  openGraph: {
+    type: "website",
+    siteName: siteConfig.siteName,
+    locale: siteConfig.locale,
+    url: siteConfig.url,
+    title: `${siteConfig.siteName} AI・ビジネス・お金の新しい動きが最速でわかる`,
+    description: siteConfig.description,
+  },
+};
 
 const TIMELINE_SIZE = 24;
 const NEWS_SIZE = 12;
