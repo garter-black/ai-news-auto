@@ -11,7 +11,7 @@ duplicateOf を読むだけにする（判定を TypeScript と Python で二重
   3. 同じ会社（radar の entities）で、
      a. 題名に同じ「名前＋版数」の製品名（genie4・gemini4carbon など）がある
      b. 日本語の題名に英字のまま同じ珍しい固有名詞（Legora・Zendesk など。全記事で6本以下にしか出てこない語）がある
-     c. 同じ発信元が6時間以内に出し、題名に同じ珍しい固有名詞がある（1つの事例を何本にも分けた公開）
+     c. 同じ発信元が6時間以内に出し、題名に同じ珍しい固有名詞がある（1つの事例を何本にも分けた公開。題名か keywords の重なり 0.2 以上）
      d. 日本語の題名の文字バイグラムの類似度が 0.6 以上、または元の題名（動画・元記事）がまったく同じ
      会社が両方わかっていて1社も重ならないとき・ジャンルが違うときは同じ話題にしない。
      製品名は「名前＋版数＋名前」をひとまとめにする（GPT-6 Astra と GPT-6 Sol は別。PS5 のような短い型番は数えない）。
@@ -237,7 +237,8 @@ def same_story(a: Story, b: Story, df: dict[str, int], window: timedelta = WINDO
         return f"製品名が一致（{'・'.join(products[:2])}）"
     same_drop = (a.data.get("channelSlug") and a.data.get("channelSlug") == b.data.get("channelSlug")
                  and a.src and b.src and abs(a.src - b.src) <= timedelta(hours=6))
-    if rare and same_drop:
+    kw = dedupe.jaccard(a.kw, b.kw)
+    if rare and same_drop and (sim >= SIM_WITH_TOKEN or kw >= SIM_WITH_TOKEN):
         return f"同じ発信元が同時に出した同じ話題（{'・'.join(rare[:2])}）"
     if rare and (ents or not (a.ents or b.ents)) and (sim >= SIM_RARE or (sim >= SIM_WITH_TOKEN and kw >= KW_OVERLAP)):
         return f"珍しい固有名詞が一致（{'・'.join(rare[:2])} / {sim:.2f}）"

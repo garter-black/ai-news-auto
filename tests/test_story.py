@@ -63,6 +63,13 @@ class SameStoryTest(unittest.TestCase):
                 channel="Databricks公式ブログ")
         self.assertIsNone(same(a, b))
 
+    def test_same_launch_day_different_products(self):
+        a = art("a", "GoogleがPixel Watch 5を発表、オフラインGeminiと呼吸緊急検出を搭載", "2026-10-20T18:00:00+00:00", ch="google-blog",
+                keywords=["Pixel Watch 5", "Gemini", "ヘルスケア"])
+        b = art("b", "Googleの紛失防止タグ「Pixel Tag」が11月11日発売。薄型で電池交換も簡単", "2026-10-20T18:05:00+00:00", ch="google-blog",
+                keywords=["Pixel Tag", "紛失防止", "発売日"])
+        self.assertIsNone(same(a, b))
+
     def test_reupload_with_same_source_title(self):
         a = art("a", "ZendeskがChatGPT Enterpriseを全社導入", "2026-10-30T12:00:00+00:00", videoTitle="ChatGPT Enterprise at Zendesk: Putting Company Data to Work")
         b = art("b", "カスタマーサポート大手Zendeskが社内で600のAIアプリ", "2026-11-01T00:00:00+00:00",

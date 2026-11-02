@@ -18,7 +18,7 @@
 - 印は付けたら外さない（`python3 scripts/story.py mark --recompute` のときだけ付け直す）。
 - 生成前にも同じ判定で外す: 動画（`scripts/main.py`）は見送り、公式フィード（`scripts/web_articles.py`）は大きなニュースなら
   続報の判定（`updates`）へ、それ以外は見送り。`auto_run.yml` の「Mark duplicate stories」が別の回・別レーンで作られた重複を拾う。
-- 2026-11-02 の実施結果: 47本に印（Legora・Genie 4・Gemini 4 Carbon・Zendesk・Mistral Large 4・Gemini Robotics 2・GPT-6 Astra の
+- 2026-11-02 の実施結果: 46本に印（Legora・Genie 4・Gemini 4 Carbon・Zendesk・Mistral Large 4・Gemini Robotics 2・GPT-6 Astra の
   初見動画など）。「同じ分に3本」の Legora は、OpenAI が YouTube に同じ事例の動画を3本同時に出し、動画の経路に重複判定が無かったのが原因
   （並行実行の競合ではない。auto_run は concurrency で直列）。
 
