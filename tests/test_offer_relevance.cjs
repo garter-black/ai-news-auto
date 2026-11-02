@@ -38,17 +38,21 @@ const base = { slug: "t", title: "", seoTitle: "", lede: "", description: "", hi
 const article = (fields) => ({ ...base, ...fields });
 const keys = (offer) => (offer?.items ?? []).map((item) => item.key);
 
-test("関係のない記事（スポーツ・芸能）には広告を出さず、自前のガイドを案内する", () => {
+test("関係のない記事（スポーツ・芸能）には広告もガイドも出さない（関係のない既定のガイドを出さない）", () => {
   for (const item of [
-    article({ title: "フットサル日本代表、強豪モロッコと対戦", genreSlug: "sports", tags: ["サッカー"] }),
-    article({ title: "任天堂、新作ゲームの体験版を配信", genreSlug: "entertainment", tags: ["ゲーム"] }),
+    article({ title: "フットサル日本代表、強豪モロッコと対戦", genreSlug: "sports", genre: "スポーツ", tags: ["サッカー"] }),
+    article({ title: "任天堂、新作ゲームの体験版を配信", genreSlug: "entertainment", genre: "エンタメ", tags: ["ゲーム"] }),
   ]) {
     assert.deepEqual(offerPlanForArticle(item), {});
-    const [next] = readNextForArticle(item);
-    assert.ok(next, item.title);
-    assert.match(next.href, /^\/(guides|choose|compare)\//);
-    assert.ok(next.label.length > 0);
+    assert.deepEqual(readNextForArticle(item), [], item.title);
   }
+});
+
+test("ガイドが当たらないお金・税金の記事は、そのジャンルの最新ニュース一覧へ案内する", () => {
+  const tax = article({ title: "2027年開始の防衛特別所得税とは", genreSlug: "investment", genre: "投資・マネー" });
+  assert.deepEqual(readNextForArticle(tax).map((l) => [l.href, l.kind]), [["/genres/investment", "category"]]);
+  const award = article({ title: "秋の褒章、消防関係の受章者が決定", genreSlug: "public", genre: "公共" });
+  assert.deepEqual(readNextForArticle(award), []);
 });
 
 test("副業・独立の記事にはサーバーや外注の広告を出す", () => {
@@ -104,9 +108,11 @@ test("A8の提携リンクとピクセルは登録値のまま使う", () => {
 });
 
 test("あわせて読みたいは同じページに出ているガイドを選ばず、話題に合うものを優先する", () => {
-  const item = article({ title: "転職市場でAI人材の求人が増加", genreSlug: "business" });
+  const item = article({ title: "転職市場でAI人材の求人が増加", genreSlug: "business", genre: "ビジネス" });
   assert.equal(readNextForArticle(item)[0].href, "/choose/ai-career");
-  assert.notEqual(readNextForArticle(item, ["/choose/ai-career"])[0].href, "/choose/ai-career");
+  assert.ok(readNextForArticle(item, ["/choose/ai-career"]).every((l) => l.href !== "/choose/ai-career"));
+  // 機種のレビューに ChatGPT のガイドは出さない
+  assert.deepEqual(readNextForArticle(article({ title: "折りたたみスマホGalaxy Z Fold8の使い心地", genreSlug: "tech-gadget", genre: "ガジェット" })), []);
   const phishing = article({ title: "金融庁、個人情報流出の相談窓口を開設", genreSlug: "public" });
   assert.equal(readNextForArticle(phishing)[0].href, "/compare/security-software");
 });

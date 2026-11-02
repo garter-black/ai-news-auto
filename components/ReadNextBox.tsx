@@ -5,6 +5,7 @@ const KIND_LABEL: Record<ReadNextLink["kind"], string> = {
   choose: "選び方",
   compare: "比較",
   guide: "使い方",
+  category: "一覧",
 };
 
 /**

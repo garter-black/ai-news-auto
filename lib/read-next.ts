@@ -2,7 +2,7 @@ import fs from "@/lib/content-fs";
 import path from "node:path";
 import type { ArticleSummary } from "@/lib/articles";
 import { CHOOSE_GUIDES } from "@/lib/choose-data";
-import { relevanceScore } from "@/lib/offers";
+import { MIN_SCORE as OFFER_MIN_SCORE, relevanceScore } from "@/lib/offers";
 
 /**
  * 記事に合う広告（lib/offers.ts）が無いときに出す「あわせて読みたい」。
@@ -13,7 +13,7 @@ import { relevanceScore } from "@/lib/offers";
 
 export type ReadNextLink = {
   href: string;
-  kind: "choose" | "compare" | "guide";
+  kind: "choose" | "compare" | "guide" | "category";
   label: string;
   note?: string;
 };
@@ -28,7 +28,7 @@ const CANDIDATES: Candidate[] = [
   { href: "/guides/chatgpt-pricing", match: "ChatGPT|OpenAI|GPT-?\\d" },
   { href: "/guides/notebooklm-how-to-use", match: "NotebookLM" },
   { href: "/guides/gemini-free-plan", match: "Gemini|Google AI|グーグルのAI" },
-  { href: "/guides/chatgpt-smartphone", match: "スマホ|スマートフォン|iPhone|Android|Pixel|Galaxy" },
+  { href: "/guides/chatgpt-smartphone", match: "ChatGPT(?:の|を)?(?:スマホ|アプリ|iPhone|Android)|(?:スマホ|iPhone|Android)(?:版|で|の)ChatGPT" },
   { href: "/choose/dify-hosting", match: "\\bDify\\b|ディファイ|n8n" },
   { href: "/compare/vps-dify-n8n", match: "AIエージェント|(?<!サイバー)エージェント|ワークフロー|セルフホスト|VPS" },
   { href: "/compare/image-generation", match: "画像生成|イラスト|Stable Diffusion|Midjourney|デザインツール|Figma" },
@@ -46,17 +46,16 @@ const CANDIDATES: Candidate[] = [
   { href: "/choose/ai-career", match: "転職|求人|採用|就職|雇用|就業者|人材|リスキリング|学び直し|スキル|資格|試験|キャリア|賃金|給与|年収|働き方|人手不足|AI人材" },
 ];
 
-/** どれにも当たらないときの行き先（ジャンルごと）。読者の関心が高く、どの記事から読んでも役に立つもの */
-const DEFAULT_BY_GENRE: Record<string, string> = {
-  ai: "/guides/chatgpt-how-to-use",
-  "tech-gadget": "/guides/chatgpt-smartphone",
-  business: "/choose/ai-career",
-  public: "/choose/ai-career",
-};
-const DEFAULT_HREF = "/guides/chatgpt-free-plan";
+/**
+ * どのガイドも当たらない、お金・税金・ビジネスの記事だけ、そのジャンルの最新ニュース一覧（/genres/<slug>）へ案内する。
+ * それ以外（スポーツ・芸能など）は何も出さない。関係のない既定のガイドは出さない。
+ */
+const MONEY_GENRES = new Set(["business", "investment", "real-estate"]);
+const MONEY_TITLE =
+  /お金|マネー|家計|節約|資産|投資|NISA|iDeCo|証券|年金|老後|税|確定申告|インボイス|金利|ローン|物価|値上げ|円安|円高|給付|補助金|助成金|支援金|賃金|給与|給料|ボーナス|手取り|副業|転職|就職|働き方|中小企業|個人事業|起業/;
 
-/** 「あわせて読みたい」に出す最低点。タグ（2点）だけでも当てる。広告ではないので広告枠より緩い */
-const MIN_SCORE = 2;
+/** ガイドを出す基準点。広告枠（lib/offers.ts の MIN_SCORE）と同じ。見出しに当たるか、タグと要約の両方で裏付けが要る */
+const MIN_SCORE = OFFER_MIN_SCORE;
 
 function readJson<T>(dir: string, slug: string): T | null {
   const full = path.join(/*turbopackIgnore: true*/ process.cwd(), "content", dir, `${slug}.json`);
@@ -91,8 +90,8 @@ export function resolveReadNext(href: string): ReadNextLink | undefined {
 }
 
 /**
- * 記事に合うガイドを関連の高い順に返す。exclude は同じページに既に出ているリンク（重複させない）。
- * 当たるものが無ければジャンルの既定のガイドを1つ返す。
+ * 記事に合うガイドを関連の高い順に返す（基準点以上だけ）。exclude は同じページに既に出ているリンク（重複させない）。
+ * 当たるものが無ければ、お金・税金・ビジネスの記事だけジャンルの最新ニュース一覧を返す。それ以外は空。
  */
 export function readNextForArticle(article: ArticleSummary, exclude: Iterable<string> = [], limit = 1): ReadNextLink[] {
   const skip = new Set(exclude);
@@ -109,11 +108,10 @@ export function readNextForArticle(article: ArticleSummary, exclude: Iterable<st
     if (link) links.push(link);
     if (links.length >= limit) return links;
   }
-  for (const href of [DEFAULT_BY_GENRE[article.genreSlug] ?? DEFAULT_HREF, DEFAULT_HREF, "/choose/ai-career"]) {
-    if (links.length >= limit) break;
-    if (skip.has(href) || links.some((l) => l.href === href)) continue;
-    const link = resolveReadNext(href);
-    if (link) links.push(link);
+  const money = MONEY_GENRES.has(article.genreSlug) || (article.genreSlug === "public" && MONEY_TITLE.test(article.title));
+  const href = `/genres/${article.genreSlug}`;
+  if (links.length === 0 && money && article.genre && !skip.has(href)) {
+    links.push({ href, kind: "category", label: `${article.genre}の最新ニュース`, note: "仕事とお金に関わる発表を、新しい順にまとめて読めます。" });
   }
   return links;
 }
