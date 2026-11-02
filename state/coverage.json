@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "ntt-share-buyback-october-2026",
+   "at": "2026-11-02T06:51:33.325985+00:00",
+   "title": "NTTが10月に自社株買い約272億円を実施、取得総数は1億5,000万株超に",
+   "head": "NTTが10月に自社株買い約272億円を実施、取得総数は1億5,000万株超に | 自己株式の取得状況に関するお知らせ（会社法第165条第2項の規定による定款の定めに基づく自己株式の取得）",
+   "text": "NTTが10月に自社株買い約272億円を実施、取得総数は1億5,000万株超に | 自己株式の取得状況に関するお知らせ（会社法第165条第2項の規定による定款の定めに基づく自己株式の取得） | NTT / 自己株式取得 / 自社株買い / 株式市場 / 東証 / IR / 企業財務 / ビジネス / 金融 / 株式 / 経済",
+   "urls": [
+    "https://group.ntt/jp/newsrelease/2026/11/02/261102b.html"
+   ]
+  },
+  {
+   "slug": "ntt-east-omakase-net-shukyaku",
+   "at": "2026-11-02T06:51:22.293528+00:00",
+   "title": "NTT東日本が中小企業の集客を支援する新サービス「おまかせネット集客サポート」を月額2,750円で提供開始",
+   "head": "NTT東日本が中小企業の集客を支援する新サービス「おまかせネット集客サポート」を月額2,750円で提供開始 | AI検索時代における地域の中小企業・店舗の集客力向上を支援する「おまかせネット集客サポート」を提供開始",
+   "text": "NTT東日本が中小企業の集客を支援する新サービス「おまかせネット集客サポート」を月額2,750円で提供開始 | AI検索時代における地域の中小企業・店舗の集客力向上を支援する「おまかせネット集客サポート」を提供開始 | NTT東日本 / おまかせネット集客サポート / AI検索 / 集客力向上 / 中小企業 / 店舗集客 / 口コミ管理 / 情報一元管理 / 生成AI / マーケティング / 中小企業支援 / NTT東日本",
+   "urls": [
+    "https://www.ntt-east.co.jp/release/detail/20261102_02.html"
+   ]
+  },
+  {
    "slug": "google-knowledge-catalog-self-learning-enrichment",
    "at": "2026-11-02T06:32:18.438887+00:00",
    "title": "Googleのデータカタログ『Knowledge Catalog』に自己学習型AI機能 新機能の概要と仕組み",
@@ -1350,26 +1370,6 @@
    "head": "マイクロソフトが示す「フィジカルAI」とは？Azure IoT連携で現場ロボットはどう賢くなるか | Make Machines Smarter with Physical AI",
    "text": "マイクロソフトが示す「フィジカルAI」とは？Azure IoT連携で現場ロボットはどう賢くなるか | Make Machines Smarter with Physical AI | フィジカルAI / Azure IoT / Microsoft / Azure IoT Hub / Azure IoT Operations / Azure Device Registry / 産業用AI / OTセキュリティ / エッジAI / フィジカルAIの使い方 / Microsoft / Copilot / Microsoft Azure / フィジカルAI / Azure IoT / 産業用AI / ロボティクス",
    "urls": []
-  },
-  {
-   "slug": "caa-consumer-safety-report-oct2026",
-   "at": "2026-10-29T06:52:34.645043+00:00",
-   "title": "消費者庁が重大事故の発生状況を公表、生命・身体被害に関わる事案は113件",
-   "head": "消費者庁が重大事故の発生状況を公表、生命・身体被害に関わる事案は113件 | 消費者安全法の重大事故等に係る公表について(10月29日)",
-   "text": "消費者庁が重大事故の発生状況を公表、生命・身体被害に関わる事案は113件 | 消費者安全法の重大事故等に係る公表について(10月29日) | 消費者庁 / 消費者事故 / 重大事故 / 消費者安全法 / 安全管理 / 製品安全 / 暮らしの安全 / 行政情報 / 暮らし / 消費者トラブル / 安全",
-   "urls": [
-    "https://www.caa.go.jp/notice/entry/047971/"
-   ]
-  },
-  {
-   "slug": "ntt-data-strategy-spark-ai-consulting",
-   "at": "2026-10-29T06:51:47.348155+00:00",
-   "title": "NTTデータ経営研究所、AIで未来の兆しを先読みするコンサル支援「SPARK」を開始",
-   "head": "NTTデータ経営研究所、AIで未来の兆しを先読みするコンサル支援「SPARK」を開始 | 「SPARK」始動 ─ AIで未来を先読みする、人間との学習ループ ～NTTデータ経営研究所、AIを活用したコンサルティングサービス「SPARK」を提供開始～",
-   "text": "NTTデータ経営研究所、AIで未来の兆しを先読みするコンサル支援「SPARK」を開始 | 「SPARK」始動 ─ AIで未来を先読みする、人間との学習ループ ～NTTデータ経営研究所、AIを活用したコンサルティングサービス「SPARK」を提供開始～ | NTTデータ経営研究所 / SPARK / AIコンサルティング / AI Foresight & Intelligence / 意思決定支援 / 経営戦略 / 生成AI / AIエージェント / AI / コンサルティング / 経営戦略 / 生成AI",
-   "urls": [
-    "https://www.nttdata-strategy.com/newsrelease/261029/"
-   ]
   }
  ]
 }

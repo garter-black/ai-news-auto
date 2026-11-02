@@ -6014,6 +6014,14 @@
       "slug": "figma-weave-creative-workflow",
       "url": "https://www.figma.com/blog/the-tldr-on-figma-weave/"
     },
+    "54a1ebf3c41048cd": {
+      "at": "2026-11-02T06:51:37.734692+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "ntt-share-buyback-october-2026",
+      "url": "https://group.ntt/jp/newsrelease/2026/11/02/261102b.html"
+    },
     "54b214d174b0abcd": {
       "at": "2026-10-29T00:01:45.038131+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9076,6 +9084,14 @@
       "skipped": true,
       "url": "https://kyodonewsprwire.jp/release/202610268696"
     },
+    "b26279cb5133a651": {
+      "at": "2026-11-02T06:51:26.344769+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "ntt-east-omakase-net-shukyaku",
+      "url": "https://www.ntt-east.co.jp/release/detail/20261102_02.html"
+    },
     "b264e1ebbe7f23a4": {
       "at": "2026-10-26T14:13:35.074159+00:00",
       "reason": "prefilter: 告知・お知らせ系",
@@ -11773,126 +11789,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:54:20.730464+00:00",
-      "attempt": 1,
-      "id": "2f0f1fe3e901c32e",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1154字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（295字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 93.4,
-        "avg_sentence": 46.7,
-        "long_share": 0.05,
-        "max_paragraph": 148,
-        "paragraphs": 10,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "最近の調剤医療費（電算処理分）の動向 令和8年度6月号"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:54:26.203321+00:00",
-      "attempt": 2,
-      "id": "2f0f1fe3e901c32e",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1494字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（389字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 115.9,
-        "avg_sentence": 60.7,
-        "long_share": 0.667,
-        "max_paragraph": 224,
-        "paragraphs": 11,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "最近の調剤医療費（電算処理分）の動向 令和8年度6月号"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:11:33.416363+00:00",
-      "attempt": 1,
-      "id": "91bb2960b5507835371cfe597ccd14fcdb4a5069",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1461字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（333字 / 基準 400字以上）",
-        "title / seo_title に感嘆符がある",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 141.3,
-        "avg_sentence": 63.6,
-        "long_share": 0.5,
-        "max_paragraph": 260,
-        "paragraphs": 9,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "trends",
-      "title": "psplus フリープレイ"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:11:40.148566+00:00",
-      "attempt": 2,
-      "id": "91bb2960b5507835371cfe597ccd14fcdb4a5069",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "「4,389円の『トゥームレイダー IV-VI リマスター』」→元記事内に価格の記載はありません。"
-      ],
-      "readability": {
-        "avg_paragraph": 184.2,
-        "avg_sentence": 61.4,
-        "long_share": 0.37,
-        "max_paragraph": 335,
-        "paragraphs": 9,
-        "sentences": 27
-      },
-      "score": 85,
-      "source": "trends",
-      "title": "psplus フリープレイ"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:11:49.278412+00:00",
-      "attempt": 1,
-      "id": "c67ca313b240bcd406c01c3b192862c775d53459",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1114字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（300字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 140.7,
-        "avg_sentence": 49.2,
-        "long_share": 0.25,
-        "max_paragraph": 182,
-        "paragraphs": 7,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "trends",
-      "title": "第一三共 株価"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T06:11:54.409479+00:00",
@@ -18407,6 +18303,115 @@
       "score": 100,
       "source": "google-cloud-blog-ja",
       "title": "Knowledge Catalog に新しい自己学習型コンテキスト エンリッチメントを導入"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T06:51:16.519351+00:00",
+      "attempt": 1,
+      "id": "b26279cb5133a651",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "easy_markdown が「## ひとことで言うと」から始まっていない"
+      ],
+      "readability": {
+        "avg_paragraph": 94.8,
+        "avg_sentence": 49.3,
+        "long_share": 0.24,
+        "max_paragraph": 225,
+        "paragraphs": 13,
+        "sentences": 25
+      },
+      "score": null,
+      "source": "ntt-news-ai",
+      "title": "AI検索時代における地域の中小企業・店舗の集客力向上を支援する「おまかせネット集客サポート」を提供開始"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T06:51:23.258526+00:00",
+      "attempt": 2,
+      "id": "b26279cb5133a651",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 47.3字・60字超の文が 14% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 76.4,
+        "avg_sentence": 47.3,
+        "long_share": 0.143,
+        "max_paragraph": 120,
+        "paragraphs": 13,
+        "sentences": 21
+      },
+      "score": 100,
+      "source": "ntt-news-ai",
+      "title": "AI検索時代における地域の中小企業・店舗の集客力向上を支援する「おまかせネット集客サポート」を提供開始"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T06:51:26.343786+00:00",
+      "attempt": 0,
+      "id": "b26279cb5133a651",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 53.6,
+        "avg_sentence": 34.0,
+        "long_share": 0.033,
+        "max_paragraph": 120,
+        "paragraphs": 19,
+        "sentences": 30
+      },
+      "score": 100,
+      "source": "ntt-news-ai",
+      "title": "AI検索時代における地域の中小企業・店舗の集客力向上を支援する「おまかせネット集客サポート」を提供開始"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T06:51:34.066692+00:00",
+      "attempt": 1,
+      "id": "54a1ebf3c41048cd",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 54.2字・60字超の文が 29% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 126.6字・最長 181字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 126.6,
+        "avg_sentence": 54.2,
+        "long_share": 0.286,
+        "max_paragraph": 181,
+        "paragraphs": 9,
+        "sentences": 21
+      },
+      "score": 100,
+      "source": "ntt-news",
+      "title": "自己株式の取得状況に関するお知らせ（会社法第165条第2項の規定による定款の定めに基づく自己株式の取得）"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T06:51:37.733774+00:00",
+      "attempt": 0,
+      "id": "54a1ebf3c41048cd",
+      "kind": "broad",
+      "model": "",
+      "problems": [
+        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（54.2→54.2字）"
+      ],
+      "readability": {
+        "avg_paragraph": 126.6,
+        "avg_sentence": 54.2,
+        "long_share": 0.286,
+        "max_paragraph": 181,
+        "paragraphs": 9,
+        "sentences": 21
+      },
+      "score": 100,
+      "source": "ntt-news",
+      "title": "自己株式の取得状況に関するお知らせ（会社法第165条第2項の規定による定款の定めに基づく自己株式の取得）"
     }
   ],
   "short_text_retry": {},
