@@ -62,6 +62,7 @@ import persona  # noqa: E402
 import quality  # noqa: E402
 import story  # noqa: E402
 import trends  # noqa: E402
+import ui_claims  # noqa: E402
 from genres import AI, ALL_GENRES, BROAD_GENRES, GENRES, GENRES_BY_SLUG  # noqa: E402
 
 RUN_TIME_BUDGET_SEC = 25 * 60
@@ -242,6 +243,9 @@ WEB_SOURCE_NOTE = """## 今回の取材対象（重要）
   「計算済みの数字」の欄にあるものだけを表記どおり（「約」を含む）に使い、「（サイソク編集部の計算）」と添える。
 - 読者にとって重要で元記事から確認できない条件は不明と示す。材料のない章を無理に作らず、水増ししない。
 - 編集部の見方は、確認済みの事実を根拠にし、「編集部の見方」と明示して事実と区別する。根拠のない体験談・比較・推測は書かない。
+- 画面の道順（「設定 > 使用状況」）・メニュー名・ボタン名・英語の画面の文字（"Add source"）・番号つきの操作手順は、
+  元記事か「確認済みの事実の束」（取りに行った公式ページ・当サイトのガイド）に書かれているものだけを書く。無ければ場所や手順を作らず、
+  「公式ヘルプの手順を確認してください」と書く（根拠の無い手順は、プログラムがこの一文に置き換える）。
 - サイソク（編集部）は自分では試していない。「筆者のテスト環境では」「私たちが試したところ」「実際に使ってみると」のように、
   自分で試した・使ったように書かない。元記事の書き手が試した結果なら「〇〇（媒体名）の記者が試したところ」と、誰が試したかを書く。"""
 
@@ -983,6 +987,7 @@ def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_
     record["verdict"] = genre_verdict(data.get("verdict"), resolved.slug, record)
     # 判定を日本での提供の表で直したら、本文の「日本で使える？」の「まだ分かりません」も表の答えにそろえる
     record["body"] = japan_availability.fix_japan_section(record["body"], record)
+    fix_ui_steps(record, item, page, bundle)
     if bundle is not None and not bundle.empty():
         strip_fact_ids(record)
         # 料金の段の表はプログラムが差し込む（LLM に表を書かせない）。束の中身は品質ゲートの数字・出典の照合に使う（書き出す前に外す）
@@ -1010,6 +1015,30 @@ def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_
 
 
 FACT_ID_RE = re.compile(r"\s?[（(\[]\s?[FC]\d{1,2}(?:\s?[、,・]\s?[FC]\d{1,2})*\s?[）)\]]")
+
+
+HELP_URL_RE = re.compile(r"support\.|help\.|/help|/docs?/|/faq", re.I)
+
+
+def fix_ui_steps(record: dict, item: dict, page: dict | None, bundle: facts_bundle.Bundle | None) -> None:
+    """根拠の無い画面の操作手順（道順・ボタン名・手順の行）を「公式ヘルプの手順を確認してください（リンク）」に置き換える。
+    根拠 = 元記事＋確かな事実の束（取りに行った公式ページ・当サイトのガイド）。record をその場で書き換える"""
+    groups = bundle.groups if bundle is not None else []
+    source = "\n".join([str((page or {}).get("text") or ""), str(item.get("content") or "")] + [g.body for g in groups])
+    if not source.strip():
+        return
+    allowed = ui_claims.Allowed(source)
+    link = next((g for g in groups if g.label in ("関連ページ", "公的資料") and HELP_URL_RE.search(g.url)), None)
+    if link:
+        url, name = link.url, link.name.split("「")[0]
+    else:
+        url = item.get("url", "")
+        name = "公式ヘルプ" if HELP_URL_RE.search(url) else f"{item.get('source_name') or '発表元'}の案内"
+    for key in ("body", "easy"):
+        new, replaced = ui_claims.rewrite(record.get(key) or "", allowed, url, name)
+        if replaced:
+            record[key] = new
+            log(f"   [ui] 根拠の無い画面の手順を公式ヘルプへの案内に置き換え（{key}）: {'、'.join(replaced[:3])}"[:200])
 
 
 def strip_fact_ids(record: dict) -> None:
