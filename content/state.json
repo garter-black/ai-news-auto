@@ -4087,6 +4087,16 @@
       "slug": "aws-connect-ai-agents-guardrails",
       "url": "https://aws.amazon.com/jp/blogs/news/implementing-responsible-ai-in-contact-centers-with-connect-ai-agents-guardrails/"
     },
+    "19244c7aa2063fd3": {
+      "at": "2026-11-02T15:08:11.527786+00:00",
+      "breaking": true,
+      "major": true,
+      "model": "claude:sonnet",
+      "score": 93,
+      "section": "ai",
+      "slug": "openai-grid-protectors-program",
+      "url": "https://openai.com/index/grid-protectors-program"
+    },
     "194831daebd18d98": {
       "at": "2026-11-02T13:21:29.437945+00:00",
       "reason": "prefilter: タイトルが短すぎる（一覧リンク等）",
@@ -12167,29 +12177,6 @@
   "quality_log": [
     {
       "accepted": true,
-      "at": "2026-10-30T08:31:54.999561+00:00",
-      "attempt": 1,
-      "id": "0872902dfeb6a015",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 56.4字・60字超の文が 43% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 158.0字・最長 226字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 158.0,
-        "avg_sentence": 56.4,
-        "long_share": 0.429,
-        "max_paragraph": 226,
-        "paragraphs": 10,
-        "sentences": 28
-      },
-      "score": 100,
-      "source": "mhlw",
-      "title": "不正アクセスによる情報漏えい等の事案を踏まえたセキュリティ対策の徹底について（注意喚起）"
-    },
-    {
-      "accepted": true,
       "at": "2026-10-30T08:31:58.768626+00:00",
       "attempt": 0,
       "id": "0872902dfeb6a015",
@@ -18718,6 +18705,26 @@
       "score": 100,
       "source": "nli-research",
       "title": "ユーロ圏ＧＤＰ（2026年7-9月期）－主要4か国はいずれも前期比伸び率が低下"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T15:08:11.526450+00:00",
+      "attempt": 1,
+      "id": "19244c7aa2063fd3",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 72.3,
+        "avg_sentence": 35.0,
+        "long_share": 0.065,
+        "max_paragraph": 138,
+        "paragraphs": 30,
+        "sentences": 62
+      },
+      "score": 93,
+      "source": "openai-news",
+      "title": "Introducing the Grid Protectors Program"
     }
   ],
   "short_text_retry": {},
