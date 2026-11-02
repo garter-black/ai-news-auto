@@ -65,5 +65,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.mlit.go.jp/common/001391890.png",
     "at": "2026-11-02T16:32:04+00:00"
+  },
+  "imageFocus": {
+    "x": 0.391,
+    "y": 0.399,
+    "box": [
+      0.0,
+      0.0,
+      0.781,
+      0.798
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/mlit-autumn-2026-medals-of-honor-98a6a40c.jpg"
   }
 }

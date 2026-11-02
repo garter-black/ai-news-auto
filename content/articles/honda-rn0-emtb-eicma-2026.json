@@ -56,31 +56,30 @@
   "videoTitle": "＜EICMA 2026＞ Honda初のハイエンド電動アシストマウンテンバイク「Honda RN0」を世界初公開 ～二輪車開発で培ったノウハウと最新e-MTB技術を融合し、 新たなライディング体験を提供～",
   "publishedAt": "2026-11-02T15:30:20.777000+00:00",
   "generatedAt": "2026-11-02T15:31:56.562982+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/honda-rn0-emtb-eicma-2026-79a596a9.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/honda-rn0-emtb-eicma-2026-dcda37cd.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "qualityScore": 95,
   "breaking": true,
   "detectedAt": "2026-11-02T15:30:20+00:00",
   "fastLane": true,
-  "imageCredit": {
-    "kind": "ai",
-    "model": "flux-1-schnell",
-    "prompt": "An electric mountain bike is positioned on a misty forest trail surrounded by pine trees, illuminated by soft morning light, with the motor and battery pack clearly visible and no logos or signage.",
-    "provider": "Cloudflare Workers AI",
-    "original": "https://global.honda/content/dam/site/global-jp/news-new/cq_img/2026/11/2261103e/2261103e_og.jpg",
-    "at": "2026-11-02T15:32:30+00:00"
-  },
   "imageFocus": {
-    "x": 0.356,
-    "y": 0.535,
+    "x": 0.449,
+    "y": 0.497,
     "box": [
+      0.091,
       0.0,
-      0.071,
-      0.713,
-      1.0
+      0.806,
+      0.994
     ],
     "ar": 1.9048,
-    "src": "https://ai-tech-express.jp/img/honda-rn0-emtb-eicma-2026-79a596a9.jpg"
+    "src": "https://ai-tech-express.jp/img/honda-rn0-emtb-eicma-2026-dcda37cd.jpg"
+  },
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A sleek electric mountain bike is positioned on a forest trail, showing its motor and battery, with a rider’s hands gripping the handlebars under soft morning light.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T16:54:25+00:00"
   }
 }

@@ -10,7 +10,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { CARD_H, CARD_W, NOTE, TAG, cornerRect, overlap, photoOnlyLayout } from "../lib/card-geometry.ts";
+import { CARD_H, CARD_W, NOTE, NOTE_SMALL, TAG, TAG_SMALL, TRIM_MAX, cornerRect, overlap, photoOnlyLayout } from "../lib/card-geometry.ts";
 
 const limit = Number(process.argv[2] || 30);
 const dir = path.join(process.cwd(), "content", "articles");
@@ -37,15 +37,20 @@ for (const a of articles) {
   const layout = photoOnlyLayout(a, NOTE_KINDS.has(a.imageCredit?.kind));
   const s = layout.subject;
   const problems = [];
+  const warn = [];
   const eps = 1;
-  if (s.x < -eps || s.y < -eps || s.x + s.w > CARD_W + eps || s.y + s.h > CARD_H + eps) problems.push("主役がカードの外で切れる");
+  // 主役の本体（余白を除いた枠）がカードの外に出ていないか。端まで続く背景（TRIM_MAX まで）は両側から少し削ってよい
+  const k = layout.core;
+  const tol = CARD_W * TRIM_MAX * 0.6;
+  if (k.x < -tol || k.y < -tol || k.x + k.w > CARD_W + tol || k.y + k.h > CARD_H + tol) problems.push("主役がカードの外で切れる");
+  else if (k.x < -eps || k.y < -eps || k.x + k.w > CARD_W + eps || k.y + k.h > CARD_H + eps) warn.push("端まで続く主役の枠を両側から少し削った");
   const c = layout.core;
-  if (overlap(cornerRect(layout.tag, TAG), c) > 0) problems.push(`ロゴ札(${layout.tag})が主役にかかる`);
-  if (layout.note && overlap(cornerRect(layout.note, NOTE), c) > 0) problems.push(`注記(${layout.note})が主役にかかる`);
+  if (layout.tag && overlap(cornerRect(layout.tag, layout.tagSize === "small" ? TAG_SMALL : TAG), c) > 0) problems.push(`ロゴ札(${layout.tag})が主役にかかる`);
+  if (layout.note && overlap(cornerRect(layout.note, layout.noteSize === "small" ? NOTE_SMALL : NOTE), c) > 0) warn.push(`注記(${layout.note})が主役に少しかかる`);
   if (!hasFocus) unknown++;
   if (problems.length && hasFocus) bad++;
-  rows.push({ slug: a.slug, fit: layout.mode, tag: layout.tag, note: layout.note, problems: hasFocus ? problems : ["主役の位置なし（写真全体を主役とみなす）"] });
+  rows.push({ slug: a.slug, fit: layout.mode, tag: layout.tag ? `${layout.tag}${layout.tagSize === "small" ? "(小)" : ""}` : "なし", note: layout.note, problems: hasFocus ? problems : ["主役の位置なし（写真全体を主役とみなす）"], warn });
 }
-for (const r of rows) console.log(`${r.problems.length ? "NG" : "OK"} ${r.fit.padEnd(7)} tag=${r.tag} note=${r.note ?? "-"} ${r.slug} ${r.problems.join(" / ")}`);
+for (const r of rows) console.log(`${r.problems.length ? "NG" : "OK"} ${r.fit.padEnd(7)} tag=${r.tag} note=${r.note ?? "-"} ${r.slug} ${[...r.problems, ...r.warn].join(" / ")}`);
 console.log(`\n${rows.length} 本中 NG ${bad} 本（主役の位置なし ${unknown} 本）`);
 process.exit(bad ? 1 : 0);

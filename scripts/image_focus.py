@@ -145,6 +145,17 @@ def subject_box(data: bytes) -> dict | None:
     }
 
 
+def keep_box(box: list[float], margin: float = 0.015) -> list[float]:
+    """切り抜きで守る範囲：枠の余白（MARGIN）を除いた主役の本体＋少しの余白。写真の端に接している辺はそのまま（lib/card-geometry.ts と同じ）"""
+    core = [
+        box[0] if box[0] <= 0.001 else box[0] + MARGIN,
+        box[1] if box[1] <= 0.001 else box[1] + MARGIN,
+        box[2] if box[2] >= 0.999 else box[2] - MARGIN,
+        box[3] if box[3] >= 0.999 else box[3] - MARGIN,
+    ]
+    return [max(0.0, core[0] - margin), max(0.0, core[1] - margin), min(1.0, core[2] + margin), min(1.0, core[3] + margin)]
+
+
 def fetch(url: str) -> bytes:
     request = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "image/*"})
     with urllib.request.urlopen(request, timeout=20) as res:
