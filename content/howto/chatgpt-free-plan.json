@@ -132,5 +132,7 @@
   "updatedAt": "2026-10-30T16:29:51+09:00",
   "checkedAt": "2026-10-30T16:26:48+09:00",
   "editorialNote": "2026年10月30日にOpenAIの無料プラン・添付・Plusの専門FAQなど一次資料の本文を確認し、表示ごとの対処手順に整理しました。実機で上限に達する試験、課金、日本の購入画面の確認、別AIによる再検査は行っていません。",
-  "refreshMode": "editorial"
+  "refreshMode": "editorial",
+  "needsReview": "2026-11-03T06:55:26+09:00",
+  "needsReviewReason": "関連ニュース「ChatGPT Proに月最大500ドルのAPI利用枠 自作アプリやAI開発向け」"
 }
