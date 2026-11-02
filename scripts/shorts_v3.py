@@ -1593,12 +1593,14 @@ def callout_place(sub: "Subtitle", cam: "Cam") -> tuple[int, int, int, int, bool
     if cam.page != sub.page:
         return None
     rows = [(*cam.map(r[0], r[1]), *cam.map(r[2], r[3])) for r in sub.rows]
-    vis = [r for r in rows if r[3] > 0 and r[1] < PH and r[2] > 0 and r[0] < PW] or rows
+    vis = [r for r in rows if r[3] > 0 and r[1] < PH]  # 横にはみ出した行も避ける（行の一部が見えていれば隠さない）
+    if not vis:  # 英文が画面に無い（カメラが別の所）なら出さない
+        return None
     top, bottom = min(r[1] for r in vis), max(r[3] for r in vis)
     sh = CALLOUT_SH
     h, w = sub.sprite.shape[0] - sh * 2, sub.sprite.shape[1] - sh * 2
     margin = 36
-    anchor = min(r[0] for r in vis)
+    anchor = max(0, min(r[0] for r in vis))
     x = int(min(max(anchor - 6, margin), PW - margin - w))
     py_gap = CALLOUT_GAP + POINTER[1]
     if bottom + py_gap + h <= PH - margin:
@@ -1675,6 +1677,18 @@ def column_group(parts: list[tuple[str, np.ndarray, int]], center_y: int) -> lis
     top = int(center_y - (key_mid if key_mid is not None else y / 2))
     top = max(COL[1], min(top, COL[3] - y))
     return [(role, spr, COL[0], top + yy) for (role, spr, _), yy in zip(parts, ys)]
+
+
+def time_windows(t0: float, t1: float, step: float = 0.5) -> list[tuple[float, float, float]]:
+    """0.5秒の決まった刻み（全体で共通）で区切る: (始まり, 終わり, その刻みの真ん中の時刻)。同じ刻みは同じ時刻のカメラで測る"""
+    out = []
+    k = math.floor(t0 / step)
+    while k * step < t1 - 1e-6:
+        a, b = max(t0, k * step), min(t1, (k + 1) * step)
+        if b - a > 1e-3:
+            out.append((a, b, (k + 0.5) * step))
+        k += 1
+    return out
 
 
 def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -> Plan:
@@ -1796,10 +1810,17 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
                 ev(t_end - 0.1, "move", f"beat{i}: 画面へ戻る")
             continue
         if i == comp_beat:
-            charts.append(Chart(b_t, nxt - 0.06, comp["base"], comp["subject"], comp["ratio"]))
+            c_end = min(nxt - 0.06, b_t + 2.8)  # グラフは2.8秒まで。残りは画面へ戻る（止まった絵を長く出さない）
+            charts.append(Chart(b_t, c_end, comp["base"], comp["subject"], comp["ratio"]))
             ev(b_t, "chart", "比較のグラフ")
             spots.append(Spot(a_t + 0.35, b_t, tg.page, span, sel, a_t + 0.6))
             sub_end = b_t - 0.05
+            if nxt - c_end > 0.8:
+                moves.append(Move(c_end - 0.1, 0.6, block_cam))
+                ev(c_end - 0.1, "move", f"beat{i}: 画面へ戻る")
+                spots.append(Spot(c_end + 0.3, nxt - 0.08, tg.page, span, sel, c_end + 0.4))
+                if xl and nxt - c_end > 1.6:
+                    sub_spans.append((c_end + 0.6, nxt - 0.08, i))
         elif nxt - b_t > 0.9:
             zr = tg.zoom_rect
             moves.append(Move(b_t, 0.6, frame_rect(page, tg.page, zr, 0.36 if tg.focus else 0.7, ZOOM_MAX, zmin=1.7, line=tg.rect, chars=tg.line_chars)))
@@ -1914,12 +1935,16 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
 
     # 注目の場所（画面上の枠）: 字幕がかぶらないかをゲートで見る
     focus = []
-    for sp in spots:
-        cam = camera.at((sp.t0 + sp.t1) / 2)
-        if cam.page == sp.page:
+    for sp in spots:  # カメラが動くので 0.5秒ごとの位置で記録する（字幕の吹き出しも同じ刻みで記録して比べる）
+        for w0, w1, wm in time_windows(sp.t0, sp.t1):
+            cam = camera.at(wm)
+            if cam.page != sp.page:
+                continue
             x0, y0 = cam.map(sp.rect[0], sp.rect[1])
             x1, y1 = cam.map(sp.rect[2], sp.rect[3])
-            focus.append({"t0": round(sp.t0, 3), "t1": round(sp.t1, 3), "bbox": [round(PANEL[0] + max(0, x0), 1), round(PANEL[1] + max(0, y0), 1), round(PANEL[0] + min(PW, x1), 1), round(PANEL[1] + min(PH, y1), 1)]})
+            if x1 <= 0 or y1 <= 0 or x0 >= PW or y0 >= PH:
+                continue
+            focus.append({"t0": round(w0, 3), "t1": round(w1, 3), "bbox": [round(PANEL[0] + max(0, x0), 1), round(PANEL[1] + max(0, y0), 1), round(PANEL[0] + min(PW, x1), 1), round(PANEL[1] + min(PH, y1), 1)]})
 
     events.sort(key=lambda e: e["t"])
     return Plan(article, script, narr, pages, targets, camera, spots, clicks, charts, texts, subtitles, events, focus, credits, ladders)
@@ -2513,14 +2538,15 @@ SAFE_V3 = (40, 30, W - 40, H - 30)
 def text_records(plan: Plan) -> list[dict]:
     out = []
     rows = [(item.role, item.text, item.sprite, item.bbox(), item.t0, item.t1) for item in plan.texts]
-    for sub in plan.subtitles:  # 吹き出しはカメラと動くので、出ている間の真ん中の時刻の位置で記録する
+    for sub in plan.subtitles:  # 吹き出しはカメラと動くので、0.5秒ごとの位置で記録する（注目の場所と同じ刻み）
         spr = sub.sprite
-        place = callout_place(sub, plan.camera.at((sub.t0 + sub.t1) / 2))
-        if not place:
-            continue
-        x, y = PANEL[0] + place[0], PANEL[1] + place[1]
-        bbox = [float(x), float(y), float(x + spr.shape[1] - CALLOUT_SH * 2), float(y + spr.shape[0] - CALLOUT_SH * 2)]
-        rows.append(("subtitle", sub.text, spr, bbox, sub.t0, sub.t1))
+        for w0, w1, wm in time_windows(sub.t0, sub.t1):
+            place = callout_place(sub, plan.camera.at(wm))
+            if not place:
+                continue
+            x, y = PANEL[0] + place[0], PANEL[1] + place[1]
+            bbox = [float(x), float(y), float(x + spr.shape[1] - CALLOUT_SH * 2), float(y + spr.shape[0] - CALLOUT_SH * 2)]
+            rows.append(("subtitle", sub.text, spr, bbox, w0, w1))
     for role, text, spr, bbox, t0, t1 in rows:
         if role in ("hook", "keyword", "sub", "conclusion", "eyebrow"):
             box = list(COL)
