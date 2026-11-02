@@ -6383,6 +6383,14 @@
       "slug": "rice-market-trends-september-2026",
       "url": "https://www.maff.go.jp/j/press/nousan/kikaku/261030.html"
     },
+    "598c6194c0d34c23": {
+      "at": "2026-11-02T19:34:35.973911+00:00",
+      "model": "claude:sonnet",
+      "score": 100,
+      "section": "ai",
+      "slug": "qodo-codex-plugin-code-review",
+      "url": "https://openai.com/index/qodo-codex-plugin"
+    },
     "5992879ed38f66ca": {
       "at": "2026-10-28T01:32:51.270104+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -11134,6 +11142,14 @@
       "skipped": true,
       "url": "https://www.soumu.go.jp/menu_news/s-news/01kiban03_02001027.html"
     },
+    "dc539634bf50a02a": {
+      "at": "2026-11-02T19:34:58.490638+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "public",
+      "slug": "tokyo-tax-council-meeting-2026",
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110201"
+    },
     "dc6d08ea287b7fef": {
       "at": "2026-10-28T23:12:45.343569+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（委員会）",
@@ -11657,6 +11673,13 @@
       "reason": "prefilter: 価値の薄いお知らせ（協賛）",
       "skipped": true,
       "url": "https://www.suntory.co.jp/news/article/2026/15161.html?rss=0000000029"
+    },
+    "ec2f34ec5f6ac583": {
+      "at": "2026-11-02T19:34:42.589607+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "大臣の定例記者会見における個別発言の予定・概要であり、国民向けの新しい制度、給付、料金改定、規制等の直接的な変更が含まれていないため。",
+      "skipped": true,
+      "url": "https://www.gov-online.go.jp/press_conferences/minister_of_state/202610/video-326991.html"
     },
     "ec44a9ae423be13a": {
       "at": "2026-10-27T01:53:58.777632+00:00",
@@ -12436,76 +12459,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T11:31:30.777582+00:00",
-      "attempt": 1,
-      "id": "438d462e6f68d1b6",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（921字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（231字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 80.6,
-        "avg_sentence": 44.8,
-        "long_share": 0.111,
-        "max_paragraph": 178,
-        "paragraphs": 10,
-        "sentences": 18
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "令和６（2024）年度 国民医療費"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T11:31:47.598312+00:00",
-      "attempt": 2,
-      "id": "438d462e6f68d1b6",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1181字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（275字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 106.0,
-        "avg_sentence": 53.0,
-        "long_share": 0.35,
-        "max_paragraph": 137,
-        "paragraphs": 10,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "令和６（2024）年度 国民医療費"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T11:42:28.314831+00:00",
-      "attempt": 1,
-      "id": "fefa1b6c88ebec6f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（321字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 152.2,
-        "avg_sentence": 47.8,
-        "long_share": 0.286,
-        "max_paragraph": 236,
-        "paragraphs": 11,
-        "sentences": 35
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "第１回「令和８年度管理栄養士国家試験出題基準（ガイドライン）改定検討会」開催案内"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T11:42:34.849876+00:00",
@@ -18935,6 +18888,68 @@
       "score": 100,
       "source": "soumu",
       "title": "令和8年度普通交付税の11月交付"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T19:32:58.103657+00:00",
+      "attempt": 1,
+      "id": "598c6194c0d34c23",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "題名で「日本で使えるか」を約束しているのに、本文の「日本で使える？」が「分からない」で始まっている。「当サイトで確認済み」の欄に答えがあればそれで答え、無ければ題名から日本の話を外す"
+      ],
+      "readability": {
+        "avg_paragraph": 59.8,
+        "avg_sentence": 30.4,
+        "long_share": 0.036,
+        "max_paragraph": 97,
+        "paragraphs": 28,
+        "sentences": 55
+      },
+      "score": null,
+      "source": "openai-news",
+      "title": "Qodo builds context into AI code review with Codex"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T19:34:35.972926+00:00",
+      "attempt": 2,
+      "id": "598c6194c0d34c23",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 71.9,
+        "avg_sentence": 32.2,
+        "long_share": 0.045,
+        "max_paragraph": 137,
+        "paragraphs": 30,
+        "sentences": 67
+      },
+      "score": 100,
+      "source": "openai-news",
+      "title": "Qodo builds context into AI code review with Codex"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T19:34:58.489990+00:00",
+      "attempt": 1,
+      "id": "dc539634bf50a02a",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 74.6,
+        "avg_sentence": 37.3,
+        "long_share": 0.05,
+        "max_paragraph": 111,
+        "paragraphs": 10,
+        "sentences": 20
+      },
+      "score": 100,
+      "source": "tokyo-metro",
+      "title": "令和8年度東京都税制調査会第3回総会の開催及び知事への報告の手交について"
     }
   ],
   "short_text_retry": {},
