@@ -4074,6 +4074,14 @@
       "skipped": true,
       "url": "https://www.nintendo.com/jp/topics/article/535d4142-2649-4eeb-b0c2-00c801c95fd4"
     },
+    "184a6aa8506f2781": {
+      "at": "2026-11-02T20:55:29.192744+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "public",
+      "slug": "fsa-fatf-statement-2026-10",
+      "url": "https://www.fsa.go.jp/inter/fatf/20261102/20261102.html"
+    },
     "186a8635f667b78e": {
       "at": "2026-10-26T15:01:11.635523+00:00",
       "reason": "dedupe: 固有名詞が一致（claude・code）: biztex-executive-ai-1day-training",
@@ -12548,51 +12556,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-30T13:21:29.543849+00:00",
-      "attempt": 1,
-      "id": "9cda69f4c6975ef5c38025132289b9cc53f7db8a",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1121字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（388字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 147.0,
-        "avg_sentence": 54.2,
-        "long_share": 0.316,
-        "max_paragraph": 214,
-        "paragraphs": 7,
-        "sentences": 19
-      },
-      "score": null,
-      "source": "trends",
-      "title": "ラグタグ"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T13:21:35.229723+00:00",
-      "attempt": 2,
-      "id": "9cda69f4c6975ef5c38025132289b9cc53f7db8a",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1215字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 139.1,
-        "avg_sentence": 53.0,
-        "long_share": 0.333,
-        "max_paragraph": 166,
-        "paragraphs": 8,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "trends",
-      "title": "ラグタグ"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-30T13:21:48.990676+00:00",
       "attempt": 1,
       "id": "98aa4f3fa33120c5",
@@ -19018,6 +18981,48 @@
       "score": 100,
       "source": "gov-online",
       "title": "防災庁発足式-令和8年11月2日"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T20:51:18.395149+00:00",
+      "attempt": 1,
+      "id": "184a6aa8506f2781",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 49.8字・60字超の文が 21% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 108.5,
+        "avg_sentence": 49.8,
+        "long_share": 0.208,
+        "max_paragraph": 193,
+        "paragraphs": 11,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "fsa",
+      "title": "国際関係,FATF声明の公表について（2026年10月プレナリー）掲載しました。"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T20:55:29.189746+00:00",
+      "attempt": 0,
+      "id": "184a6aa8506f2781",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 112.5,
+        "avg_sentence": 29.5,
+        "long_share": 0.0,
+        "max_paragraph": 207,
+        "paragraphs": 11,
+        "sentences": 42
+      },
+      "score": 100,
+      "source": "fsa",
+      "title": "国際関係,FATF声明の公表について（2026年10月プレナリー）掲載しました。"
     }
   ],
   "short_text_retry": {},
