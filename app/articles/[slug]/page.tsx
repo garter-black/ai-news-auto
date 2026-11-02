@@ -5,7 +5,7 @@ import ImageCredit from "@/components/ImageCredit";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import AdSlot from "@/components/AdSlot";
-import MobilePrBar from "@/components/rail/MobilePrBar";
+import MobilePrBar from "@/components/rail/MobilePrBarLazy";
 import RailRanking from "@/components/rail/RailRanking";
 import ArticleCard from "@/components/ArticleCard";
 import CompanyMark from "@/components/CompanyMark";
@@ -390,7 +390,12 @@ export default async function ArticlePage({ params }: Props) {
               </span>
             )}
             <span className="text-muted">
-              <RelTime iso={article.publishedAt} className="index-num font-semibold text-ink" />
+              {/* 表示後に「3時間前」「昨日 13:55」などへ置き換わる。新しい記事は置き換え後の幅を先に取っておき、
+                  行の折り返しが変わって下の要点が押し下げられる（CLS）のを防ぐ */}
+              <RelTime
+                iso={article.publishedAt}
+                className={`index-num font-semibold text-ink ${isRecent(article.publishedAt) ? "inline-block min-w-[6.5em]" : ""}`}
+              />
               <span className="index-num ml-1.5">（{formatDate(article.publishedAt)}）</span>
             </span>
             {article.generatedAt && formatDateTime(article.generatedAt) && (
@@ -573,13 +578,14 @@ export default async function ArticlePage({ params }: Props) {
                     className="group relative block aspect-video bg-surface-2"
                     aria-label={`出典「${article.videoTitle}」を${sourceName}で読む`}
                   >
+                    {/* 写真は要点・判定カードの下（スマホで約1,700px、PCで約1,350px下）にあり、最初の画面の LCP は見出しの文字。
+                        先読み・高優先度にすると見出しの表示に要る CSS・JS と回線を取り合うので、近づいてから読む */}
                     <Thumb
                       src={article.thumbnail}
                       source={thumbSource(article)}
                       alt=""
                       fill
-                      priority
-                      sizes="(max-width: 1024px) 100vw, 860px"
+                      sizes="(max-width: 639px) calc(100vw - 40px), (max-width: 1023px) calc(100vw - 64px), 820px"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
                     />
                   </a>
@@ -628,12 +634,12 @@ export default async function ArticlePage({ params }: Props) {
                   className="group relative block aspect-video"
                   aria-label={`元動画「${article.videoTitle}」をYouTubeで見る`}
                 >
+                  {/* 上の写真と同じく最初の画面の外なので、近づいてから読む */}
                   <Thumb
                     src={article.thumbnail}
                     alt=""
                     fill
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 860px"
+                    sizes="(max-width: 639px) calc(100vw - 40px), (max-width: 1023px) calc(100vw - 64px), 820px"
                     className="object-cover opacity-90 transition-opacity group-hover:opacity-100"
                   />
                   {/* 元動画のサムネイルが消えてイメージ写真に替えた記事は、再生ボタンを出さない */}
@@ -910,6 +916,12 @@ function CompareLink({ slug, name, className = "" }: { slug: string; name: strin
       <span aria-hidden className="ml-auto text-muted">→</span>
     </Link>
   );
+}
+
+/** 表示時に経過時間（「3時間前」「昨日 13:55」）へ置き換わりうる新しさか。ページは最長1日キャッシュされるので3日まで見る */
+function isRecent(iso: string): boolean {
+  const time = Date.parse(iso);
+  return Number.isFinite(time) && Date.now() - time < 3 * 86_400_000;
 }
 
 /** "12:34" / "1:02:03" → 秒 */

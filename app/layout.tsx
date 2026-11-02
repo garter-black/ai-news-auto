@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Script from "next/script";
-import { Analytics } from "@vercel/analytics/next";
+import dynamic from "next/dynamic";
+import DeferredScript from "@/components/DeferredScript";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import RevenueFunnelTracker from "@/components/RevenueFunnelTracker";
@@ -55,6 +55,13 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Vercel Analytics。Cloudflare では NEXT_PUBLIC_VERCEL_ANALYTICS=off で外す（scripts/cf_build.sh）。
+ * 外すときはビルドで読み込み自体が消えるよう、使うときだけ読み込む（全ページの JS から約 2KB 減る）
+ */
+const VercelAnalytics =
+  process.env.NEXT_PUBLIC_VERCEL_ANALYTICS !== "off" ? dynamic(() => import("@vercel/analytics/next").then((m) => m.Analytics)) : null;
+
 /** 本文の Noto Sans JP（可変フォント 1 本で 400〜900。docs/typography.md） */
 const NOTO_CSS = "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..900&display=swap";
 
@@ -105,12 +112,12 @@ export default function RootLayout({
         />
 
         {/* AdSense 本体。NEXT_PUBLIC_ADSENSE_CLIENT を設定すると自動で有効化される。
-            ページの読み込み後に読む（先読みすると本文・写真の表示と回線を取り合い LCP が遅れる） */}
+            ページの読み込みが終わってから、読者の操作かブラウザが空いたとき（3.5秒後以降）に読む。
+            早く読むと本文・写真の表示や最初の操作と回線・CPU を取り合う（LCP・INP が遅れる）。
+            広告枠（AdSlot）の push はスクリプトより先に積んでおけるので、遅らせても枠は埋まる */}
         {adsenseClient && (
-          <Script
+          <DeferredScript
             id="adsbygoogle-init"
-            async
-            strategy="lazyOnload"
             crossOrigin="anonymous"
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
           />
@@ -124,14 +131,14 @@ export default function RootLayout({
         {/* Vercelダッシュボードで Web Analytics を有効にした時点で計測が始まる。
             無効のうちは何も送信されないので、先に仕込んでおいて問題ない。
             Cloudflare では NEXT_PUBLIC_VERCEL_ANALYTICS=off で外す */}
-        {process.env.NEXT_PUBLIC_VERCEL_ANALYTICS !== "off" && <Analytics />}
-        {/* Cloudflare Web Analytics。トークンを設定したときだけ読み込む */}
+        {VercelAnalytics && <VercelAnalytics />}
+        {/* Cloudflare Web Analytics。トークンを設定したときだけ読み込む（表示が終わってから） */}
         {cfBeaconToken && (
-          <Script
+          <DeferredScript
             id="cf-beacon"
-            strategy="afterInteractive"
+            delayMs={0}
             src="https://static.cloudflareinsights.com/beacon.min.js"
-            data-cf-beacon={JSON.stringify({ token: cfBeaconToken })}
+            dataset={{ cfBeacon: JSON.stringify({ token: cfBeaconToken }) }}
           />
         )}
       </body>

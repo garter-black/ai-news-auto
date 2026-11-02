@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { CALCULATORS, type ArticleCalculator } from "@/lib/calculators";
 import { getFx, getPlanProducts } from "@/lib/plan-prices";
-import UsdJpyCalc from "@/components/calc/UsdJpyCalc";
-import PlanCostCalc from "@/components/calc/PlanCostCalc";
-import DefenseTaxCalc from "@/components/calc/DefenseTaxCalc";
+import dynamic from "next/dynamic";
+
+// 計算機は記事ごとに1種類だけ。使う種類の JS だけを読むよう、種類ごとに分けて読み込む（サーバーでの描画はそのまま）
+const UsdJpyCalc = dynamic(() => import("@/components/calc/UsdJpyCalc"));
+const PlanCostCalc = dynamic(() => import("@/components/calc/PlanCostCalc"));
+const DefenseTaxCalc = dynamic(() => import("@/components/calc/DefenseTaxCalc"));
 
 /** 計算機ごとの注意書き（数字の前提。必ず表示する） */
 export const CALC_NOTES: Record<ArticleCalculator["kind"], string> = {
