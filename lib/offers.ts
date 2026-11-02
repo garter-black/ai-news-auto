@@ -78,7 +78,11 @@ type Book = {
   keyword?: string;
 };
 
+type FallbackSet = { eyebrow: string; headline: string; lead: string; partners: string[]; bookTopics?: string[] };
+
 type OffersFile = {
+  /** 合う話題が無い記事に出す、ジャンルごとの広告（読者全体に役立つもの） */
+  articleFallback?: { byGenre: Record<string, string>; default: string; sets: Record<string, FallbackSet> };
   topics: Topic[];
   audience: Record<string, string>;
   fallback: string;
@@ -138,6 +142,8 @@ export type Offer = {
   timedPixels?: { url: string; activeUntil: string }[];
   /** いちばん関連の高い話題の点数（記事の枠だけ） */
   relevance?: number;
+  /** 記事に合う話題が無く、ジャンルの既定の広告を出している */
+  fallback?: boolean;
 };
 
 const MAX_ITEMS = 3;
@@ -283,9 +289,38 @@ export type OfferPlan = {
   inline?: Offer;
 };
 
-/** 記事ページの広告枠の割り当て。右側と本文中で同じ商品を出さない */
+/**
+ * 記事に合う話題が無いときの広告。どの記事にも広告枠を1つは出す（オーナー指示 2026-11-02）。
+ * 読者（20〜50代の働く男性：仕事・お金・副業・AI）に幅広く役立つ商品を、ジャンルごとに content/offers.json の articleFallback で決める。
+ */
+export function fallbackOfferForArticle(article: ArticleSummary, maxItems = 12): Offer | undefined {
+  const { offers, products } = load();
+  const config = offers.articleFallback;
+  if (!config) return undefined;
+  const key = config.byGenre[article.genreSlug] ?? config.default;
+  const set = config.sets[key] ?? config.sets[config.default];
+  if (!set) return undefined;
+  const built: Built[] = [];
+  for (const partner of set.partners) {
+    const item = partnerOffer(partner);
+    if (item) built.push({ item: { ...item.item, relevance: 0 }, pixel: item.pixel });
+  }
+  const seen = new Set<string>();
+  for (const topic of set.bookTopics ?? []) {
+    for (const book of rotate(products?.books?.[topic] ?? [], article.slug || topic)) {
+      if (built.length >= maxItems) break;
+      if (seen.has(book.rbId)) continue;
+      seen.add(book.rbId);
+      built.push({ item: { ...bookOffer(book), relevance: 0 } });
+    }
+  }
+  const topic: Topic = { key: `fallback-${key}`, match: "", eyebrow: set.eyebrow, headline: set.headline, lead: set.lead, partners: set.partners };
+  return finishOffer(topic, built.slice(0, maxItems), { relevance: 0, fallback: true });
+}
+
+/** 記事ページの広告枠の割り当て。右側と本文中で同じ商品を出さない。合う話題が無ければジャンルの既定の広告 */
 export function offerPlanForArticle(article: ArticleSummary): OfferPlan {
-  const offer = offerForArticle(article, 12);
+  const offer = offerForArticle(article, 12) ?? fallbackOfferForArticle(article, 12);
   if (!offer) return {};
   const pool = offer.items;
   const rail = { ...offer, items: [...pool.slice(0, 3), ...pool.slice(6, 9)] };

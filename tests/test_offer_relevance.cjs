@@ -38,14 +38,30 @@ const base = { slug: "t", title: "", seoTitle: "", lede: "", description: "", hi
 const article = (fields) => ({ ...base, ...fields });
 const keys = (offer) => (offer?.items ?? []).map((item) => item.key);
 
-test("関係のない記事（スポーツ・芸能）には広告もガイドも出さない（関係のない既定のガイドを出さない）", () => {
+test("関係のない記事（スポーツ・芸能）も広告枠は出す（ジャンルの既定の広告）。関係のないガイドは出さない", () => {
   for (const item of [
     article({ title: "フットサル日本代表、強豪モロッコと対戦", genreSlug: "sports", genre: "スポーツ", tags: ["サッカー"] }),
     article({ title: "任天堂、新作ゲームの体験版を配信", genreSlug: "entertainment", genre: "エンタメ", tags: ["ゲーム"] }),
   ]) {
-    assert.deepEqual(offerPlanForArticle(item), {});
+    const plan = offerPlanForArticle(item);
+    assert.equal(plan.offer.fallback, true);
+    assert.equal(plan.offer.topic, "fallback-life");
+    assert.ok(keys(plan.rail).some((key) => /wifi|wimax|hikari/.test(key)));
     assert.deepEqual(readNextForArticle(item), [], item.title);
   }
+});
+
+test("全ジャンルの記事に広告を1つ以上出し、右側と本文中で重ならない", () => {
+  const expected = { ai: "fallback-ai", science: "fallback-ai", business: "fallback-work", "tech-gadget": "fallback-gadget", investment: "fallback-money", "real-estate": "fallback-money", public: "fallback-money", sports: "fallback-life", entertainment: "fallback-life", lifestyle: "fallback-life", other: "fallback-work" };
+  for (const [genreSlug, topic] of Object.entries(expected)) {
+    const plan = offerPlanForArticle(article({ title: "褒章の受章者が決定", genreSlug }));
+    assert.equal(plan.offer.topic, topic, genreSlug);
+    assert.ok(plan.rail.items.length >= 1, genreSlug);
+    const rail = new Set(keys(plan.rail));
+    assert.ok(keys(plan.inline).every((key) => !rail.has(key)), genreSlug);
+  }
+  // 合う話題がある記事は従来どおり関連の高い広告（既定の広告ではない）
+  assert.notEqual(offerPlanForArticle(article({ title: "新NISAの口座数が増加", genreSlug: "business" })).offer.fallback, true);
 });
 
 test("ガイドが当たらないお金・税金の記事は、そのジャンルの最新ニュース一覧へ案内する", () => {
@@ -64,8 +80,10 @@ test("副業・独立の記事にはサーバーや外注の広告を出す", ()
 test("NISA・証券口座の記事（ビジネス）にはネット証券、株式会社という語だけでは出さない", () => {
   const nisa = offerPlanForArticle(article({ title: "楽天証券の総合口座が1,500万を突破", genreSlug: "business" }));
   assert.ok(keys(nisa.rail).some((key) => key === "matsui" || key === "dmm-kabu"));
-  assert.deepEqual(offerPlanForArticle(article({ title: "株式会社〇〇が新工場を建設", genreSlug: "business" })), {});
-  assert.deepEqual(offerPlanForArticle(article({ title: "円安倒産、52カ月連続で株式会社の倒産が発生", genreSlug: "business", tags: ["倒産"] })), {});
+  // 関連では選ばれず、ジャンルの既定の広告（副業・スキル）になる
+  assert.equal(offerForArticle(article({ title: "株式会社〇〇が新工場を建設", genreSlug: "business" }), 12), undefined);
+  assert.equal(offerForArticle(article({ title: "円安倒産、52カ月連続で株式会社の倒産が発生", genreSlug: "business", tags: ["倒産"] }), 12), undefined);
+  assert.equal(offerPlanForArticle(article({ title: "株式会社〇〇が新工場を建設", genreSlug: "business" })).offer.topic, "fallback-work");
 });
 
 test("在宅勤務の記事には回線を出す", () => {
@@ -74,8 +92,9 @@ test("在宅勤務の記事には回線を出す", () => {
 });
 
 test("社名の一部（サイバーエージェント）でセキュリティやAIエージェントの広告を出さない", () => {
-  const plan = offerPlanForArticle(article({ title: "ABEMA運営のサイバーエージェント、通期決算を発表へ", genreSlug: "business" }));
-  assert.ok(!keys(plan.offer).some((key) => ["norton", "virusbuster", "eset", "surfshark", "xserver-vps", "doraverse"].includes(key)));
+  const item = article({ title: "ABEMA運営のサイバーエージェント、通期決算を発表へ", genreSlug: "business" });
+  assert.equal(offerForArticle(item, 12), undefined);
+  assert.ok(!keys(offerPlanForArticle(item).offer).some((key) => ["norton", "virusbuster", "eset", "surfshark"].includes(key)));
 });
 
 test("見出しの「ChatGPTのOpenAI」のような会社の説明だけでは話題にしない", () => {
@@ -94,8 +113,9 @@ test("関連の高い順に並び、右側と本文中で同じ商品を出さ�
 });
 
 test("A8の提携リンクとピクセルは登録値のまま使う", () => {
-  for (const title of ["副業でブログを始める", "在宅勤務の回線", "新NISAの口座数が増加", "会議の議事録を文字起こし", "フィッシング詐欺が急増"]) {
-    const offer = offerForArticle(article({ title, genreSlug: "business" }), 12) ?? offerForArticle(article({ title }), 12);
+  for (const title of ["副業でブログを始める", "在宅勤務の回線", "新NISAの口座数が増加", "会議の議事録を文字起こし", "フィッシング詐欺が急増", "sports", "entertainment", "public", "tech-gadget"]) {
+    const genre = ["sports", "entertainment", "public", "tech-gadget"].includes(title) ? title : "business";
+    const offer = offerForArticle(article({ title, genreSlug: genre }), 12) ?? offerForArticle(article({ title }), 12) ?? offerPlanForArticle(article({ title, genreSlug: genre })).offer;
     assert.ok(offer, title);
     for (const item of offer.items.filter((i) => i.kind === "partner")) {
       const partner = offers.partners[item.key];

@@ -1298,5 +1298,86 @@
     "ai": "business",
     "investment": "invest",
     "real-estate": "re-home"
+  },
+  "articleFallback": {
+    "_README": "記事に合う話題が基準点に届かないときの、ジャンルごとの広告（読者＝20〜50代の働く男性向けに幅広く役立つもの）。どの記事にも広告枠を1つは出す（オーナー指示 2026-11-02）。関連の高い順で選べた記事には使わない。",
+    "byGenre": {
+      "ai": "ai",
+      "science": "ai",
+      "business": "work",
+      "tech-gadget": "gadget",
+      "investment": "money",
+      "real-estate": "money",
+      "public": "money",
+      "sports": "life",
+      "entertainment": "life",
+      "lifestyle": "life"
+    },
+    "default": "work",
+    "sets": {
+      "ai": {
+        "eyebrow": "AIを仕事に活かすなら",
+        "headline": "AIを使いこなす、学びとツール",
+        "lead": "複数のAIをまとめて試せるサービスや、手を動かして学べる講座です。無料の範囲や条件を確かめてから選びましょう。",
+        "partners": [
+          "doraverse",
+          "skillhacks",
+          "coloso",
+          "xserver-vps"
+        ],
+        "bookTopics": [
+          "business"
+        ]
+      },
+      "work": {
+        "eyebrow": "仕事の幅を広げるなら",
+        "headline": "副業・スキルアップの第一歩",
+        "lead": "得意を売る、スキルを学ぶ、自分のサイトを持つ。小さく始められる選択肢です。料金や条件はリンク先で確認してください。",
+        "partners": [
+          "coconala",
+          "skillhacks",
+          "xserver",
+          "shin-server",
+          "doraverse"
+        ]
+      },
+      "money": {
+        "eyebrow": "お金のニュースを自分ごとにするなら",
+        "headline": "資産づくりの準備を、今のうちに",
+        "lead": "税金や制度の変化は、家計と資産づくりに直結します。口座開設は無料のところが多いので、手数料や条件を比べてから選びましょう。",
+        "partners": [
+          "matsui",
+          "dmm-kabu"
+        ],
+        "bookTopics": [
+          "invest-nisa",
+          "invest"
+        ]
+      },
+      "gadget": {
+        "eyebrow": "ガジェットとネット環境",
+        "headline": "毎日使う道具とネット環境を見直す",
+        "lead": "イヤホンやスマートリングの専門店と、工事不要のWi-Fiです。価格・在庫・条件はリンク先で確認してください。",
+        "partners": [
+          "e-earphone",
+          "ringconn",
+          "gmo-home-wifi",
+          "gmo-wimax",
+          "gmo-hikari"
+        ]
+      },
+      "life": {
+        "eyebrow": "毎日の動画・配信を快適に",
+        "headline": "試合も動画も、止まらないネット環境で",
+        "lead": "配信や動画を家でも外でも快適に見るなら、回線の見直しが近道です。仕事に効くスキル講座もあわせて紹介します。",
+        "partners": [
+          "gmo-home-wifi",
+          "gmo-wimax",
+          "skillhacks",
+          "gmo-hikari",
+          "coconala"
+        ]
+      }
+    }
   }
 }

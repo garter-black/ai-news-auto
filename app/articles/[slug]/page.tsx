@@ -157,17 +157,17 @@ export default async function ArticlePage({ params }: Props) {
   const shopLink = shopLinkForArticle(article);
   // 回線・転職など、記事の話題に合う選び方ガイド（見出しとタグが合うときだけ）
   const chooseGuide = chooseGuideForArticle(article);
-  // 合う広告が無い枠には、関係の薄い広告を詰めずに自前のガイド・比較ページを案内する。
-  // 同じページに既に出ているガイドは選ばない
+  // 記事に合う自前のガイド・比較ページ（基準点以上のときだけ）。同じページに既に出ているガイドは選ばない
   const shownGuides = [
     howto && `/guides/${howto.slug}`,
     !product && guide && `/guides/${guide.slug}`,
     chooseGuide && `/choose/${chooseGuide.slug}`,
     buyingGuide && `/compare/${buyingGuide.slug}`,
   ].filter((href): href is string => Boolean(href));
-  const readNext = !inlineOffer || !offer ? readNextForArticle(article, shownGuides)[0] : undefined;
-  // 本文中は、本文の広告枠が空いていて、選び方ガイドの囲みも無いときだけ（同じ見た目の囲みを並べない）
-  const readNextInline = !inlineOffer && !chooseGuide ? readNext : undefined;
+  // 広告枠は全記事に出す（合う話題が無ければジャンルの既定の広告）。ガイドは記事に合うものがあるときだけ、広告に添えて出す
+  const readNext = readNextForArticle(article, shownGuides).find((link) => link.kind !== "category" || !offer);
+  // 本文中は、選び方ガイドの囲みが無いときだけ（同じ見た目の囲みを並べない）
+  const readNextInline = !chooseGuide ? readNext : undefined;
   // 右側に広告が無いときは右側の先頭にも出す。PC は右側、スマホは本文中（1画面に1つだけ）
   const readNextRail = !offer ? readNext : undefined;
   const readNextInlineClass = readNextRail && readNextInline ? "lg:hidden" : "";
