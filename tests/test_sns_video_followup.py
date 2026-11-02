@@ -65,6 +65,13 @@ class SelectTest(unittest.TestCase):
     def test_order_window_and_eligibility(self):
         self.assertEqual(self.pick(posted(a=1, b=2, c=3, old=20, news=1)), ["b", "c", "a"])
 
+    def test_retry_dry_run_when_upload_on(self):
+        state = {"videos": {"b": {"status": "dry_run"}, "c": {"status": "gate_failed"}}}
+        args = (posted(a=1, b=2, c=3), state, NOW, 12)
+        kw = {"load_article": lambda s: {"slug": s}, "eligible": lambda a: True, "score": lambda a: {"a": 1, "b": 5, "c": 3}[a["slug"]]}
+        self.assertEqual(fu.candidates(*args, **kw), ["a"])
+        self.assertEqual(fu.candidates(*args, retry_dry=True, **kw), ["b", "a"])
+
     def test_skip_done(self):
         self.assertEqual(self.pick(posted(a=1, b=2), {"videos": {"b": {"status": "gate_failed"}}}), ["a"])
 

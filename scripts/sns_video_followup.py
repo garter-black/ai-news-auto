@@ -147,7 +147,7 @@ def pick_variant(state: dict, now: datetime, ab_until: str, after_ab: str = "sho
     return "short" if shown % 2 == 0 else "full"
 
 
-def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_article=None, eligible=None, score=None) -> list[str]:
+def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_article=None, eligible=None, score=None, retry_dry: bool = False) -> list[str]:
     """Threads に投稿済み・窓の中・まだ動画を作っていない・v3 の対象の記事を、Threads の点数の高い順に"""
     # 重いモジュール（Pillow・numpy）は、既定の関数を使うときだけ読み込む（テストは軽い環境でも動く）
     if load_article is None:
@@ -162,7 +162,8 @@ def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_a
         import threads_post
 
         score = threads_post.score
-    done = set((state.get("videos") or {}).keys())
+    # 作ったが置かなかった（dry_run）記事は、置くのを有効にしたあとはもう一度作る（窓の中なら）
+    done = {k for k, r in (state.get("videos") or {}).items() if not (retry_dry and r.get("status") == "dry_run")}
     rows = []
     for slug, rec in (posted.get("posted") or {}).items():
         at = published_at(rec)
@@ -276,7 +277,8 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
     state.setdefault("videos", {})
     posted = load_json(POSTED, {"posted": {}})
     left = max(0, min(f["per_run"], f["daily_max"] - used_today(state, now)))
-    picks = (select or candidates)(posted, state, now, f["window_h"])[:left] if left else []
+    pick_fn = select or (lambda p, s, n, w: candidates(p, s, n, w, retry_dry=f["upload"]))
+    picks = pick_fn(posted, state, now, f["window_h"])[:left] if left else []
     log(f"[video-followup] フラグ {json.dumps({k: f[k] for k in ('followup', 'upload', 'embed', 'post', 'daily_max', 'per_run')})}・この回 {left}本まで・対象 {picks}")
     if plan_only or not f["followup"]:
         if not f["followup"]:
