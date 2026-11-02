@@ -1,0 +1,84 @@
+{
+  "slug": "google-agent-compute-engine-governance",
+  "sourceType": "web",
+  "sourceUrl": "https://cloud.google.com/blog/ja/topics/ai-infrastructure/introducing-agent-compute-engine-and-expanded-agent-governance/",
+  "sourceName": "Google Cloud 公式ブログ（日本）",
+  "title": "Google、AIエージェント専用の新型コンピュート『Agent Compute Engine』とガバナンス機能を発表",
+  "seoTitle": "Google Agent Compute Engineとは？料金や特徴を解説",
+  "threadsPost": "GoogleがAIエージェント専用の新型コンピュート『Agent Compute Engine』を発表しました。起動待ちをなくすマイクロVMや、クラウド全体をまたぐガバナンス機能で、自律型エージェントの安全な大規模運用を支えます。",
+  "threadsHook": "breaking",
+  "threadsStyle": 2,
+  "writingVoice": "honest",
+  "lede": "Google Cloud公式ブログによると、AIエージェント専用に設計された新型コンピュート『Agent Compute Engine』と、拡張されたエージェントガバナンス機能が発表されました。大量の自律型エージェントを安全かつ高速に実行するための基盤となります。",
+  "description": "Google Cloudが発表したAIエージェント専用コンピュート『Agent Compute Engine』とガバナンス機能の仕組み、特長、提供状況を分かりやすく解説します。",
+  "keywords": [
+    "Google Cloud",
+    "Agent Compute Engine",
+    "Gemini",
+    "AIエージェント",
+    "GKE",
+    "ガバナンス",
+    "マイクロVM",
+    "インフラ"
+  ],
+  "tags": [
+    "生成AI",
+    "インフラストラクチャ",
+    "Google Cloud",
+    "Kubernetes"
+  ],
+  "highlights": [
+    "AIエージェント専用に設計された『Agent Compute Engine』がプレビュー提供へ",
+    "高速起動するマイクロVMにより、エージェントの起動待ちやアイドル時のコストを最適化",
+    "Agent GatewayやAgent Identityなど、環境を問わない包括的なガバナンス機能を拡張"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "soon",
+    "japan": "partial",
+    "price": "不明",
+    "free": null,
+    "audience": "開発者・管理者",
+    "take": "プレビュー版の提供開始時期や具体的な料金プランに注目しておきましょう。",
+    "judgedAt": "2026-11-02T07:41:20.031535+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "AIエージェントのシステム開発や運用に関わるエンジニアやプラットフォームチームに直接影響します。",
+      "マルチクラウドやオンプレミス環境で稼働するエージェントの一元的なセキュリティ管理が可能になります。"
+    ]
+  },
+  "body": "## 概要\nGoogle Cloud公式ブログによると、新しいサービスが発表されました。自律型AIエージェントを安全かつ大規模に実行するための専用コンピュートサービスです。名前は『Agent Compute Engine』といいます。拡張されたエージェントガバナンス機能も同時に発表されました。専用のマイクロVMと強固なセキュリティを採用しています。これにより、エージェントの効率的な運用を支えることが可能です。\n\n## 何が発表された？\n今回の発表は、ビジネス向け『Gemini』を支えてきたインフラの知見をもとに開発されました。AIエージェント特化型の新しいインフラおよび管理ソリューションです。従来の汎用的なコンピューティング基盤とは異なっています。AIエージェントの反復的なライフサイクルに合わせて最適化されている点が特徴です。\n\n発表された主な要素は次のとおりです。\n- Agent Compute Engine: ハードウェアレベルで分離されたランタイムサンドボックスを提供する専用コンピュートサービス（今後数か月以内にプレビュー版を提供予定）\n- Agent Substrate: GKE上で動作するオープンソースの実行ランタイム\n- 拡張されたエージェントガバナンス: Agent GatewayやAgent Identityなどを通じた、多様な環境での統合管理機能\n\n## Agent Compute Engineの仕組みと特長は何？\nAgent Compute Engineは専用の仕組みを持っています。エージェントのコード実行やツール操作といったワークロードを処理するために構築されました。主な特長は次のとおりです。\n\n### 高速起動するマイクロVM\nエージェントは起動や一時停止を頻繁に繰り返します。Agent Compute Engineは専用の技術を採用しました。コピーオンライトメモリ共有を利用して単一のOSテンプレート上で複数のエージェントを実行します。エージェントが応答を待つアイドル状態のときはマイクロVMを一時停止します。スナップショットから即座に再開できるため、効率的な運用が可能です。\n\n### シリコンベースの多層防御\nこのサービスはGoogleのオフロードインフラストラクチャプロセッシングユニット（IPU）上で実行されます。そのプロセッシングユニットの名前は『Titanium』です。独自のゲストカーネルとルートアクセスを持っています。ハードウェア分離型のCloud Hypervisor境界を介して保護を行います。信頼できないコードや敵対的なコードの実行リスクからシステムを守ります。\n\n### 永続性とエンタープライズ統合\n各マイクロVMには独自の『Hyperdisk』が割り当てられます。これにより、複数のセッションにわたってエージェントデータを永続化します。さらにGoogleのクラウドおよびIDファブリックと直接統合されています。統一されたIDモデルと監査可能性を実現しました。\n\n## GKEで使えるAgent Substrateとは？\nカスタマイズやマルチクラウドでのポータビリティを求めるチーム向けの機能です。『Agent Substrate』が提供されます。これはGoogle Kubernetes Engine（GKE）上で動作するオープンソースの実行ランタイムです。\n\n高密度なコンピュート環境でありながら特別な仕様を持っています。各エージェントに対して完全なカーネル分離とIDベースのネットワークセキュリティを維持します。20万エージェント規模のベンチマーク検証が行われました。その結果、一時停止および再開のレイテンシを500ミリ秒未満に抑えることに成功しています。同時に毎秒500回のアクティベーションを維持したとされています。\n\n## ガバナンス機能はどう拡張された？\n組織でのエージェント導入が日々進んでいます。しかし、シャドー AIやデータの持ち出しといったリスクが発生しています。これら防ぐためにガバナンス機能の適用範囲が拡大されました。具体的にはGoogle Cloudランタイム、クロスクラウド、オンプレミス、クライアントデバイスへと広がっています。\n\nいくつかの新しいツールが用意されました。『Agent Gateway』や『Agent Registry』、『Agent Identity』などを組み合わせて使用します。これによりトラフィックの制御が可能です。さらに承認されたツールの中央リポジトリ管理も行えます。SPIFFE標準に基づく一意なIDの付与も実現しました。OpenTelemetryに準拠したオブザーバビリティも提供されます。さらに、今四半期のプレビュー版では追加の機能も登場します。きめ細かいトークンとコストのガバナンスや、モデルルーティング機能なども追加される予定です。\n\n## 料金や提供開始時期は？\nGoogle Cloud公式ブログに情報が記載されています。『Agent Compute Engine』は今後数か月以内にプレビュー版の提供が予定されています。また、クロスクラウド展開向けのEnvoyプロキシベースのポリシー適用ポイントも登場します。エンドポイント上のローカルエージェント向けガバナンスも近日中にプレビュー版が提供される予定です。具体的な価格や無料枠についての詳細な言及は記事内にありません。\n\n## 日本で使える？\n日本国内での具体的な提供リージョンや利用可否についての明言はありません。記事内にはその旨が記載されていませんでした。グローバル展開されるGoogle Cloudのインフラストラクチャに準拠する形になります。また、プレビュー版の提供スケジュールに準じる形になるとみられます。\n\n## 自分にはどう関係する？\n\n### エンジニアなら\nAgent Compute Engineを活用できます。また、GKE向けのAgent Substrateを活用することも可能です。これにより自律型エージェントのパフォーマンスを高められます。同時にセキュリティを両立したシステム設計が可能になります。\n\n### 経営者・管理者なら\nエージェントの無秩序な増加が懸念されます。シャドーAIやコストの肥大化を防ぐことが重要です。組織全体でエージェントの稼働状況を把握できます。さらに権限を安全に統制するための基盤として検討できます。\n\n## まとめ\n今後は新しい情報が発表される見込みです。プレビュー版の提供スケジュールや具体的な利用要件の発表に注目が集まります。関心のある方は公式サイトを確認してください。公式ブログから詳細の確認や問い合わせを行うことができます。",
+  "easy": "## ひとことで言うと\nGoogleが、AIエージェント専用の新しいコンピューター基盤と、安全に管理する仕組みを発表しました。\n\n## 何がすごいの？\nAIエージェントが仕事をするための専用の小さなコンピューター（マイクロVM）を高速で起動・停止させ、無駄なコストや待ち時間をなくします。また、複数のエージェントが勝手に暴走しないように、セキュリティやアクセス権を一元管理する機能が強化されました。\n\n## 自分に関係ある？\nAIを使ったシステムの開発や運用に関わるエンジニアや管理者なら、大規模なエージェントを安全に動かすための基盤としてチェックしておきたい内容です。\n\n## 使ってみるには\n『Agent Compute Engine』は今後数か月以内にプレビュー版の提供が予定されています。公式ブログや案内から登録や詳細の確認が可能です。",
+  "channel": "Google Cloud 公式ブログ（日本）",
+  "channelId": "",
+  "channelSlug": "google-cloud-blog-ja",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Agent Compute Engine と拡張されたエージェント ガバナンスのご紹介",
+  "publishedAt": "2026-11-02T02:00:00+00:00",
+  "generatedAt": "2026-11-02T07:41:20.031584+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/google-agent-compute-engine-governance-c684582b.jpg",
+  "model": "gemini-3.5-flash-lite",
+  "affiliates": [],
+  "qualityScore": 100,
+  "sourcePublishedAt": "2026-11-02T02:00:00+00:00",
+  "detectedAt": "2026-11-02T07:40:43+00:00",
+  "imageCredit": {
+    "kind": "stock",
+    "title": "SSD sled",
+    "creator": "Flanoz",
+    "creatorUrl": "",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "provider": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:SSD_sled.jpg",
+    "query": "computer hardware",
+    "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/ACE_hero.max-2600x2600.png",
+    "at": "2026-11-02T07:43:10+00:00"
+  }
+}

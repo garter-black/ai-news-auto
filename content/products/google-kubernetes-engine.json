@@ -1,0 +1,200 @@
+{
+  "slug": "google-kubernetes-engine",
+  "name": "Google Kubernetes Engine",
+  "aliases": [
+    "GKE"
+  ],
+  "company": "google",
+  "companyName": "Google",
+  "category": "半導体・インフラ",
+  "overview": {
+    "text": "Google Kubernetes Engine（GKE）は、コンテナ管理サービスです。Googleが提供しており、2026年10月にアップデートが発表されました。",
+    "sources": [
+      "google-cloud-ai-infrastructure-october-updates",
+      "google-gke-inference-gateway-4x-speed"
+    ]
+  },
+  "facts": [
+    {
+      "label": "料金",
+      "value": "各種サービス料金に準拠",
+      "sources": [
+        "google-cloud-ai-infrastructure-october-updates"
+      ]
+    },
+    {
+      "label": "提供開始",
+      "value": "2026年10月アップデート",
+      "sources": [
+        "google-cloud-ai-infrastructure-october-updates"
+      ]
+    },
+    {
+      "label": "日本での提供",
+      "value": "日本国内で利用可能",
+      "sources": [
+        "google-cloud-ai-infrastructure-october-updates",
+        "google-gke-inference-gateway-4x-speed"
+      ]
+    },
+    {
+      "label": "向いている人",
+      "value": "インフラエンジニアやAIエンジニア",
+      "sources": [
+        "google-cloud-ai-infrastructure-october-updates",
+        "google-gke-inference-gateway-4x-speed"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "text": "CPU startup boost機能で初期化時のCPUリソースを引き上げます。起動を最大2倍に加速できます。",
+      "sources": [
+        "google-cloud-ai-infrastructure-october-updates"
+      ]
+    },
+    {
+      "text": "GKE Inference Gatewayを導入できます。総スループットを4.07倍に向上可能です。",
+      "sources": [
+        "google-gke-inference-gateway-4x-speed"
+      ]
+    },
+    {
+      "text": "キュー深度とキャッシュ使用率に基づき動的にリクエストを割り当てます。処理の遅延を防ぎます。",
+      "sources": [
+        "google-gke-inference-gateway-4x-speed"
+      ]
+    },
+    {
+      "text": "GKE上で動作するオープンソースの実行ランタイム「Agent Substrate」を利用できます。",
+      "sources": [
+        "google-agent-compute-engine-governance"
+      ]
+    }
+  ],
+  "pricing": [
+    {
+      "text": "各機能の料金は各種サービスや既存のGKEの料金プランに準拠します。",
+      "sources": [
+        "google-cloud-ai-infrastructure-october-updates"
+      ]
+    },
+    {
+      "text": "GKE Inference Gateway自体の追加料金についての言及はありません。",
+      "sources": [
+        "google-gke-inference-gateway-4x-speed"
+      ]
+    }
+  ],
+  "japan": [
+    {
+      "text": "日本国内のGoogle Cloud環境において対象のGKE機能を利用できます。",
+      "sources": [
+        "google-cloud-ai-infrastructure-october-updates"
+      ]
+    },
+    {
+      "text": "GKEを利用可能なすべてのリージョンで使用可能です。",
+      "sources": [
+        "google-gke-inference-gateway-4x-speed"
+      ]
+    }
+  ],
+  "howto": [
+    {
+      "text": "公式ドキュメントでGKE Inference Gatewayの設定方法を確認します。",
+      "sources": [
+        "google-gke-inference-gateway-4x-speed"
+      ]
+    },
+    {
+      "text": "GitHubで公開されているllm-dプロジェクトを環境に統合します。",
+      "sources": [
+        "google-gke-inference-gateway-4x-speed"
+      ]
+    },
+    {
+      "text": "既存のvLLMアクセラレータプールをゲートウェイ配下にデプロイします。",
+      "sources": [
+        "google-gke-inference-gateway-4x-speed"
+      ]
+    }
+  ],
+  "differences": [
+    {
+      "text": "従来のラウンドロビン方式では負荷を把握できず遅延を招いていましたが、ゲートウェイは余力のあるノードへ振り分けます。",
+      "sources": [
+        "google-gke-inference-gateway-4x-speed"
+      ]
+    },
+    {
+      "text": "以前は各ノードが同じ計算をやり直していましたが、キャッシュを考慮したルーティングで計算結果を再利用できます。",
+      "sources": [
+        "google-gke-inference-gateway-4x-speed"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "費用はどのようになりますか？",
+      "a": "既存のGoogle CloudのGKEや各サービスの利用料金および従量課金に準拠します。",
+      "sources": [
+        "google-cloud-ai-infrastructure-october-updates"
+      ]
+    },
+    {
+      "q": "CPUの起動はどのくらい速くなりますか？",
+      "a": "CPU startup boost機能により、コールドスタートの遅延を最大2倍に加速させることができます。",
+      "sources": [
+        "google-cloud-ai-infrastructure-october-updates"
+      ]
+    },
+    {
+      "q": "スループットはどれくらい向上しますか？",
+      "a": "ZenteiQ社の事例では、アクセラレータあたりの総スループットが4.07倍に向上しました。",
+      "sources": [
+        "google-gke-inference-gateway-4x-speed"
+      ]
+    },
+    {
+      "q": "どのような人が活用できますか？",
+      "a": "インフラコストの効率化やAIモデルの推論処理を進めたいエンジニアに向いています。",
+      "sources": [
+        "google-cloud-ai-infrastructure-october-updates",
+        "google-gke-inference-gateway-4x-speed"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2026-10-29",
+      "slug": "google-gke-inference-gateway-4x-speed",
+      "event": "GKEにAI推論の加速機能などを発表"
+    },
+    {
+      "date": "2026-10-31",
+      "slug": "google-cloud-ai-infrastructure-october-updates",
+      "event": "AIインフラの10月アップデートを発表"
+    }
+  ],
+  "related": [
+    "project-suncatcher",
+    "gemini-robotics-2",
+    "gemini-4-argon",
+    "antigravity"
+  ],
+  "articles": [
+    "google-agent-compute-engine-governance",
+    "google-cloud-ai-infrastructure-october-updates",
+    "google-gke-inference-gateway-4x-speed"
+  ],
+  "linkFrom": [
+    "google-cloud-ai-infrastructure-october-updates",
+    "google-gke-inference-gateway-4x-speed"
+  ],
+  "signature": "f9e03b3d18c01eaa",
+  "primarySignature": "52ec4a437c5494b7",
+  "model": "gemini-3.5-flash-lite",
+  "createdAt": "2026-11-02T07:41:49+00:00",
+  "updatedAt": "2026-11-02T07:41:49+00:00"
+}
