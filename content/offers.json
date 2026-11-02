@@ -1,12 +1,12 @@
 {
   "_README": [
-    "記事の途中に出す「試すなら」枠の定義。上から順に照合し、最初に当たった話題を使う。",
-    "match は記事のタイトル・タグ・キーワードに照合する正規表現（大文字小文字は区別しない）。",
-    "どれにも当たらない記事は audience（判定の「向いている人」）で選び、それでも無ければ fallback を使う。",
-    "partners は A8 で提携済みの商品（写真は各社が商品リンク用に許可している公式画像）。",
-    "search は楽天ブックスの検索語。scripts/rakuten_books.py が売れ筋から本を選んで content/products.json に保存する。",
-    "fill は商品が3つに満たないときに補う話題（上から順）。どの記事でも必ず3つ並ぶようにする。",
-    "genre を書いた話題はそのジャンルの記事だけに使う（省略時は ai）。fallbackByGenre はジャンルごとの既定の話題。minYear は本の発売年の下限（省略時 2025）。"
+    "記事の広告枠（右側の1〜3位・本文中の4〜6位）の定義。lib/offers.ts が記事ごとに全話題を採点し、基準点を超えた話題の商品だけを関連の高い順に並べる。",
+    "採点: 見出し（title・seoTitle）に match が当たると4点、タグ・キーワードで2点、リード・要約で1点。別の語が複数当たると少し加点。companies は発表元（channelSlug・sourceName）に当たると1点。",
+    "基準点は4点（min で話題ごとに上げられる）。articleExclude が見出しに当たる記事にはその話題を使わない。どの話題も基準点に届かない記事には広告を出さず、関連するガイド・比較ページ（lib/read-next.ts）を「あわせて読みたい」で案内する。",
+    "genres はその話題を使う記事のジャンル（省略時は genre、それも無ければ ai だけ）。booksOnly の話題は本だけを出し、提携商品は出さない。",
+    "partners は A8 で提携済みの商品（写真は各社が商品リンク用に許可している公式画像）。リンク・計測ピクセルは affiliate_links.json の値をそのまま使う。",
+    "search は楽天ブックスの検索語。scripts/rakuten_books.py が売れ筋から本を選んで content/products.json に保存する。記事では本の題名が require にも当たるときだけ出す。",
+    "fill は一覧ページ（offerForTopic）で商品が3つに満たないときに補う話題。記事ページでは使わない（関係の薄い商品で枠を埋めない）。minYear は本の発売年の下限（省略時 2025）。"
   ],
   "topics": [
     {
@@ -28,7 +28,13 @@
         "business",
         "chatgpt"
       ],
-      "exclude": "先生|校務|教師"
+      "exclude": "先生|校務|教師",
+      "genres": [
+        "ai",
+        "business",
+        "tech-gadget",
+        "public"
+      ]
     },
     {
       "key": "local",
@@ -53,7 +59,12 @@
         "llm",
         "coding"
       ],
-      "exclude": "医療"
+      "exclude": "医療",
+      "genres": [
+        "ai",
+        "tech-gadget"
+      ],
+      "articleExclude": "GeForce\\s*NOW|クラウドゲーム"
     },
     {
       "key": "image",
@@ -79,6 +90,11 @@
       "fill": [
         "chatgpt",
         "business"
+      ],
+      "genres": [
+        "ai",
+        "tech-gadget",
+        "business"
       ]
     },
     {
@@ -102,6 +118,12 @@
       "fill": [
         "image",
         "business"
+      ],
+      "genres": [
+        "ai",
+        "tech-gadget",
+        "business",
+        "entertainment"
       ]
     },
     {
@@ -125,6 +147,12 @@
       "fill": [
         "chatgpt",
         "business"
+      ],
+      "genres": [
+        "ai",
+        "business",
+        "public",
+        "lifestyle"
       ]
     },
     {
@@ -146,7 +174,17 @@
       "require": "セキュリティ|サイバー|ハッカー|情報漏",
       "fill": [
         "business"
-      ]
+      ],
+      "genres": [
+        "ai",
+        "tech-gadget",
+        "business",
+        "public",
+        "lifestyle",
+        "investment"
+      ],
+      "articleExclude": "ガードレール|AIガバナンス|サステナビリティ",
+      "alsoMatch": "サイバー攻撃|攻撃者|侵入|ハッキング|情報漏え?い|サイバー(?!エージェント)"
     },
     {
       "key": "telecom",
@@ -169,6 +207,12 @@
       "fill": [
         "gadget",
         "business"
+      ],
+      "genres": [
+        "ai",
+        "business",
+        "public",
+        "lifestyle"
       ]
     },
     {
@@ -214,6 +258,11 @@
       "fill": [
         "voice",
         "business"
+      ],
+      "genres": [
+        "ai",
+        "tech-gadget",
+        "lifestyle"
       ]
     },
     {
@@ -233,6 +282,9 @@
       "require": "子ども|こども|プログラミング|教育|AI",
       "fill": [
         "coding"
+      ],
+      "genres": [
+        "ai"
       ]
     },
     {
@@ -254,6 +306,11 @@
       "fill": [
         "coding",
         "agent"
+      ],
+      "genres": [
+        "ai",
+        "business",
+        "tech-gadget"
       ]
     },
     {
@@ -273,11 +330,14 @@
       "fill": [
         "llm",
         "business"
+      ],
+      "genres": [
+        "ai"
       ]
     },
     {
       "key": "semis",
-      "match": "NVIDIA|エヌビディア|半導体|データセンター|AIインフラ|GPU",
+      "match": "NVIDIA|エヌビディア|半導体|データセンター|AIインフラ|GPU|HBM",
       "eyebrow": "この分野を深く知るなら",
       "headline": "AIを支える半導体とインフラの全体像",
       "lead": "GPUの性能競争やデータセンター投資を理解すると、発表の重みが読めるようになります。",
@@ -294,7 +354,14 @@
       "fill": [
         "llm",
         "business"
-      ]
+      ],
+      "genres": [
+        "ai",
+        "tech-gadget",
+        "business"
+      ],
+      "min": 5,
+      "booksOnly": true
     },
     {
       "key": "writing",
@@ -319,6 +386,10 @@
       "fill": [
         "chatgpt",
         "business"
+      ],
+      "genres": [
+        "ai",
+        "business"
       ]
     },
     {
@@ -335,6 +406,12 @@
       "require": "Claude Code|Codex|コーディング|AI駆動|Copilot|プログラミング|Cursor",
       "fill": [
         "business"
+      ],
+      "genres": [
+        "ai",
+        "business",
+        "tech-gadget",
+        "public"
       ]
     },
     {
@@ -350,11 +427,18 @@
       "require": "Claude",
       "fill": [
         "business"
-      ]
+      ],
+      "genres": [
+        "ai",
+        "business",
+        "tech-gadget",
+        "public"
+      ],
+      "companies": "anthropic"
     },
     {
       "key": "agent",
-      "match": "AIエージェント|エージェント|Agent|MCP|自動化",
+      "match": "AIエージェント|(?<!サイバー)エージェント|\\bAgents?\\b|MCP|自動化",
       "eyebrow": "この記事の技術を試すなら",
       "headline": "AIエージェントを、自分の仕事に組み込む",
       "lead": "任せる仕事の切り出し方と、失敗しない設計の考え方を押さえておくと早いです。",
@@ -366,11 +450,18 @@
       "require": "エージェント",
       "fill": [
         "business"
-      ]
+      ],
+      "genres": [
+        "ai",
+        "business",
+        "tech-gadget",
+        "public"
+      ],
+      "min": 5
     },
     {
       "key": "gemini",
-      "match": "Gemini|Google|DeepMind|NotebookLM",
+      "match": "Gemini|NotebookLM|Google AI Studio|Bard",
       "eyebrow": "この記事の技術を試すなら",
       "headline": "GeminiとGoogleのAIを使いこなす",
       "lead": "GmailやドキュメントなどGoogleの道具とつなげると、Geminiの真価が出ます。",
@@ -381,7 +472,14 @@
       "require": "Gemini|NotebookLM",
       "fill": [
         "business"
-      ]
+      ],
+      "genres": [
+        "ai",
+        "business",
+        "tech-gadget",
+        "public"
+      ],
+      "companies": "google"
     },
     {
       "key": "chatgpt",
@@ -402,7 +500,14 @@
       "exclude": "英語|60歳|シニア",
       "fill": [
         "business"
-      ]
+      ],
+      "genres": [
+        "ai",
+        "business",
+        "tech-gadget",
+        "public"
+      ],
+      "companies": "openai"
     },
     {
       "key": "llm",
@@ -424,7 +529,12 @@
       "require": "LLM|言語モデル|機械学習|深層学習|ディープラーニング|Transformer|生成AI|AI",
       "fill": [
         "business"
-      ]
+      ],
+      "genres": [
+        "ai"
+      ],
+      "min": 5,
+      "booksOnly": true
     },
     {
       "key": "business",
@@ -443,11 +553,15 @@
       "exclude": "経理|薬剤師|看護|医師|教師|フリーランス|士業|60歳|70歳|シニア",
       "fill": [
         "chatgpt"
-      ]
+      ],
+      "genres": [
+        "ai",
+        "business"
+      ],
+      "min": 5
     },
     {
       "key": "invest-nisa",
-      "genre": "investment",
       "match": "NISA|iDeCo|投資信託|インデックス|オルカン|積立|つみたて|S&P",
       "eyebrow": "この記事のテーマを深く知るなら",
       "headline": "新NISAを、迷わず始めて続ける",
@@ -464,12 +578,17 @@
       "exclude": "奴隷|陰謀",
       "fill": [
         "invest"
+      ],
+      "genres": [
+        "investment",
+        "business",
+        "public",
+        "lifestyle"
       ]
     },
     {
       "key": "invest-stocks",
-      "genre": "investment",
-      "match": "株|銘柄|配当|決算|日経平均|米国|ETF|為替",
+      "match": "株価|株式|銘柄|配当|決算|日経平均|米国株|ETF|為替|自社株",
       "eyebrow": "この記事のテーマを深く知るなら",
       "headline": "株の選び方を、基礎から身につける",
       "lead": "ニュースの数字を自分の判断に使えるようになると、相場の見え方が変わります。",
@@ -486,11 +605,14 @@
       "fill": [
         "invest-nisa",
         "invest"
-      ]
+      ],
+      "genres": [
+        "investment"
+      ],
+      "articleExclude": "倒産|破産"
     },
     {
       "key": "invest",
-      "genre": "investment",
       "match": "投資|資産|お金|家計|節約|年金",
       "eyebrow": "この記事のテーマを深く知るなら",
       "headline": "お金の増やし方を、1冊で整理する",
@@ -510,11 +632,13 @@
       "fill": [
         "invest-nisa",
         "invest-stocks"
+      ],
+      "genres": [
+        "investment"
       ]
     },
     {
       "key": "re-invest",
-      "genre": "real-estate",
       "match": "不動産投資|収益物件|利回り|大家|アパート経営|賃貸経営|区分|一棟",
       "eyebrow": "この記事のテーマを深く知るなら",
       "headline": "不動産投資を、数字で判断できるようになる",
@@ -534,11 +658,14 @@
         "re-home",
         "invest-nisa"
       ],
-      "exclude": "大家さんと僕"
+      "exclude": "大家さんと僕",
+      "genres": [
+        "real-estate",
+        "investment"
+      ]
     },
     {
       "key": "re-home",
-      "genre": "real-estate",
       "match": "住宅|マイホーム|ローン|新築|中古|マンション|戸建|金利",
       "eyebrow": "この記事のテーマを深く知るなら",
       "headline": "家を買う前に、知っておきたいこと",
@@ -554,7 +681,107 @@
       "fill": [
         "re-invest",
         "invest-nisa"
+      ],
+      "genres": [
+        "real-estate"
       ]
+    },
+    {
+      "key": "money-biz",
+      "genres": [
+        "business",
+        "public",
+        "lifestyle",
+        "tech-gadget"
+      ],
+      "match": "新?NISA|iDeCo|投資信託|証券口座|ネット証券|総合口座|証券会社|株価|株式投資|個別株|自社株買い|配当|日経平均|TOPIX|ETF|資産運用|資産形成|オルカン|つみたて投資|積立投資",
+      "articleExclude": "倒産|破産",
+      "eyebrow": "この記事をお金の判断に活かすなら",
+      "headline": "ニュースを資産づくりにつなげる",
+      "lead": "株価や制度の動きは、口座の手数料や使えるサービスで受け取り方が変わります。口座開設は無料のところが多いので、条件を比べてから選びましょう。",
+      "partners": [
+        "matsui",
+        "dmm-kabu"
+      ],
+      "search": [
+        "新NISA 入門",
+        "株式投資 入門"
+      ],
+      "require": "NISA|投資|株|資産|お金"
+    },
+    {
+      "key": "side-biz",
+      "genres": [
+        "ai",
+        "business",
+        "public",
+        "lifestyle",
+        "tech-gadget",
+        "investment"
+      ],
+      "match": "副業|複業|フリーランス|個人事業主?|独立|起業|開業|創業|スモールビジネス|ネットショップ|ECサイト|ホームページ|自社サイト|Webサイト制作|ブログ|アフィリエイト|ドメイン|ネット集客|Web集客|集客",
+      "eyebrow": "副業・独立に活かすなら",
+      "headline": "小さく始める、自分の仕事の土台づくり",
+      "lead": "副業や独立の第一歩は、自分のサイトと頼れる外注先。月数百円〜千円台から始められる選択肢です。",
+      "partners": [
+        "xserver",
+        "shin-server",
+        "coconala",
+        "lolipop",
+        "xserver-vps"
+      ],
+      "search": [
+        "副業 始め方",
+        "個人事業 開業"
+      ],
+      "require": "副業|起業|独立|フリーランス|個人事業|ブログ|稼"
+    },
+    {
+      "key": "career-skill",
+      "genres": [
+        "ai",
+        "business",
+        "public",
+        "lifestyle",
+        "investment"
+      ],
+      "match": "リスキリング|学び直し|スキルアップ|AI人材|デジタル人材|IT人材|プログラミング学習|プログラミング教育|オンライン講座|社会人教育|職業訓練|教育訓練給付",
+      "eyebrow": "スキルを伸ばすなら",
+      "headline": "AI時代に通用するスキルを、今から",
+      "lead": "仕事の中身が変わるいま、手を動かして学べる講座が近道です。無料体験や返金条件を確かめてから選びましょう。",
+      "partners": [
+        "skillhacks",
+        "coloso"
+      ],
+      "search": [
+        "リスキリング",
+        "AI 仕事術"
+      ],
+      "require": "リスキリング|学び直し|スキル|キャリア|AI"
+    },
+    {
+      "key": "remote-work",
+      "genres": [
+        "ai",
+        "business",
+        "public",
+        "lifestyle",
+        "tech-gadget"
+      ],
+      "match": "テレワーク|リモートワーク|在宅勤務|在宅ワーク|ワーケーション|オンライン会議|Web会議|サテライトオフィス",
+      "eyebrow": "在宅で働くなら",
+      "headline": "家で仕事をするなら、まず回線と作業環境",
+      "lead": "会議が途切れる、ファイルが重い。在宅の困りごとの多くは回線で解決します。工事不要の選び方もあります。",
+      "partners": [
+        "gmo-hikari",
+        "gmo-home-wifi",
+        "gmo-wimax",
+        "xserver-cloudpc"
+      ],
+      "search": [
+        "テレワーク 仕事術"
+      ],
+      "require": "テレワーク|リモート|在宅"
     }
   ],
   "audience": {
