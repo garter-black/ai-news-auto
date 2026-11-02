@@ -269,6 +269,90 @@
         "poster": "https://ai-tech-express.jp/video/openai-grid-protectors-program-2737691465.jpg"
       },
       "embedded": true
+    },
+    "google-ai-news-october-2026": {
+      "at": "2026-11-02T21:27:03+00:00",
+      "status": "ready",
+      "tries": 1,
+      "textAt": "2026-11-02T21:00:35+00:00",
+      "versions": {
+        "full": {
+          "ok": true,
+          "seconds": 53.746,
+          "reasons": [],
+          "post": {
+            "title": "Google、10月のAI発表を総括 Gemini 4 Argonは提供済み、…",
+            "url": "https://ai-tech-express.jp/articles/google-ai-news-october-2026",
+            "total": 53.746,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "Gemini 4、仕事でもう使える？"
+              },
+              "summary": "要約すると、Google公式ブログが10月のAI発表をまとめました。Gemini 4 Argonはコード・財務分析・法務向けに世界で提供済みですが、APIの無料枠では使えません。2週間後に発表されたCarbonは試験中です。AI製かを確かめるSynthID Detectorは英語で世界に広がりました。"
+            }
+          }
+        },
+        "short": {
+          "ok": true,
+          "seconds": 36.916,
+          "reasons": [],
+          "post": {
+            "title": "Google、10月のAI発表を総括 Gemini 4 Argonは提供済み、…",
+            "url": "https://ai-tech-express.jp/articles/google-ai-news-october-2026",
+            "total": 36.916,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "Gemini 4、仕事でもう使える？"
+              },
+              "summary": "要約すると、Google公式ブログが10月のAI発表をまとめました。Gemini 4 Argonはコード・財務分析・法務向けに世界で提供済みですが、APIの無料枠では使えません。2週間後に発表されたCarbonは試験中です。AI製かを確かめるSynthID Detectorは英語で世界に広がりました。"
+            }
+          }
+        }
+      },
+      "timings": {
+        "full": {
+          "script": 0.0,
+          "tts": 23.28,
+          "plan_audio": 3.67,
+          "render": 49.02,
+          "gate": 5.5,
+          "sheet": 2.32,
+          "total": 84.0
+        },
+        "short": {
+          "script": 0.0,
+          "tts": 15.33,
+          "plan_audio": 3.07,
+          "render": 34.32,
+          "gate": 4.02,
+          "sheet": 1.56,
+          "total": 58.4
+        }
+      },
+      "ok": true,
+      "reason": "",
+      "pages": [
+        "ai.google.dev",
+        "blog.google"
+      ],
+      "urls": {
+        "full": "https://ai-tech-express.jp/video/google-ai-news-october-2026-f16c2bd2b2.mp4",
+        "short": "https://ai-tech-express.jp/video/google-ai-news-october-2026-661bdf3483.mp4",
+        "poster": "https://ai-tech-express.jp/video/google-ai-news-october-2026-6b85adc34f.jpg"
+      },
+      "embedded": true
     }
   }
 }
