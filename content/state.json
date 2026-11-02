@@ -3208,6 +3208,12 @@
       "skipped": true,
       "url": "https://cloud.google.com/blog/ja/topics/hybrid-cloud/managed-rag-search-inside-the-sovereign-perimeter-gemini-on-gdc-enterprise-search/"
     },
+    "01b6483928a89cb1": {
+      "at": "2026-11-02T02:31:06.744547+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（協賛）",
+      "skipped": true,
+      "url": "https://www.ntt-east.co.jp/release/detail/20261102_01.html"
+    },
     "01c050212d7cc79e": {
       "at": "2026-10-27T20:13:19.059779+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（キャンペーン）",
@@ -5299,6 +5305,12 @@
       "section": "tech-gadget",
       "slug": "it-passport-study-survey-ipa",
       "url": "https://www.ipa.go.jp/shiken/kubun/ip/ip_goukaku_anq_all.html"
+    },
+    "426417b54af838bd": {
+      "at": "2026-11-02T02:30:59.157114+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（募集）",
+      "skipped": true,
+      "url": "https://www.jfa.jp/news/00036965/"
     },
     "42cef1bdc3da9dbc": {
       "at": "2026-10-28T03:54:56.716616+00:00",
@@ -8275,6 +8287,14 @@
       "slug": "kddi-ai-vulnerability-management-solution",
       "url": "https://newsroom.kddi.com/news/detail/kddi_nr-1212_4787.html"
     },
+    "9c7a77eecf318472": {
+      "at": "2026-11-02T02:31:18.217044+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "lifestyle",
+      "slug": "morinaga-cocoa-bowel-movement-study",
+      "url": "https://www.morinaga.co.jp/company/newsrelease/detail.php?no=3229"
+    },
     "9cd6e2587ed02367": {
       "at": "2026-10-26T12:39:03.007958+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9057,6 +9077,12 @@
       "reason": "prefilter: 告知・お知らせ系",
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000296.000073594.html"
+    },
+    "b7d4230bdc972f02": {
+      "at": "2026-11-02T02:30:59.157176+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（を掲載しました）",
+      "skipped": true,
+      "url": "https://www.digital.go.jp/speech/minister-261102-01"
     },
     "b7dc23ae3cdc5826": {
       "at": "2026-10-28T01:06:40.222980+00:00",
@@ -11251,6 +11277,12 @@
       "skipped": true,
       "url": "https://www.soumu.go.jp/main_sosiki/joho_tsusin/policyreports/joho_tsusin/shohishahogo/02kiban08_04000529.html"
     },
+    "fa0226b7f31ce0ce": {
+      "at": "2026-11-02T02:31:06.744480+00:00",
+      "reason": "short text 575",
+      "skipped": true,
+      "url": "https://www.kantei.go.jp/jp/tyoukanpress/202611/2_a.html"
+    },
     "fa1d0120c8c5ef27": {
       "at": "2026-10-26T12:40:42.848481+00:00",
       "reason": "dedupe: 固有名詞が一致（app・samurai・samuraiapp）: SamuraiAX、業務AIエージェントOS「Samurai App」で、会議の",
@@ -11440,50 +11472,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T03:02:33.801411+00:00",
-      "attempt": 0,
-      "id": "5ffe8be254533625",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 180.4字・最長 251字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 180.4,
-        "avg_sentence": 36.9,
-        "long_share": 0.023,
-        "max_paragraph": 251,
-        "paragraphs": 9,
-        "sentences": 44
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "雇用関連統計2026年９月－就業者数は振れが大きい中で増加傾向"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T03:21:48.381332+00:00",
-      "attempt": 1,
-      "id": "09f3bad4d1c00581",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（279字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 77.3,
-        "avg_sentence": 49.7,
-        "long_share": 0.143,
-        "max_paragraph": 169,
-        "paragraphs": 18,
-        "sentences": 28
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "キャリアコンサルタントになりたい方へ（キャリアコンサルタント養成講習一覧を更新しました）"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T03:21:56.667541+00:00",
@@ -18158,6 +18146,48 @@
       "score": 100,
       "source": "docomo-service",
       "title": "dバリューパスに「薬屋のひとりごと」が新たに追加されました"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T02:31:15.563770+00:00",
+      "attempt": 1,
+      "id": "9c7a77eecf318472",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 47.0字・60字超の文が 21% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 99.2,
+        "avg_sentence": 47.0,
+        "long_share": 0.211,
+        "max_paragraph": 128,
+        "paragraphs": 9,
+        "sentences": 19
+      },
+      "score": 100,
+      "source": "morinaga",
+      "title": "松生クリニック 松生恒夫先生との共同研究 ココアによる排便頻度の改善および一部の腸内細菌の割合への影響について 第59回 日本栄養食糧学会 中国・四国支部大会で"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T02:31:18.216507+00:00",
+      "attempt": 0,
+      "id": "9c7a77eecf318472",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 100.4,
+        "avg_sentence": 36.2,
+        "long_share": 0.04,
+        "max_paragraph": 128,
+        "paragraphs": 9,
+        "sentences": 25
+      },
+      "score": 100,
+      "source": "morinaga",
+      "title": "松生クリニック 松生恒夫先生との共同研究 ココアによる排便頻度の改善および一部の腸内細菌の割合への影響について 第59回 日本栄養食糧学会 中国・四国支部大会で"
     }
   ],
   "short_text_retry": {}
