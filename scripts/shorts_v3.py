@@ -236,6 +236,7 @@ class Page:
     blocks: list[Block]
     title: str = ""
     seconds: float = 0.0
+    own: bool = False  # サイソクニュース自身の記事ページ（公式ページが撮れないときの画面。事実の出どころには数えない）
 
     @property
     def width(self) -> int:
@@ -280,6 +281,7 @@ async def _capture_one(browser, url: str, page_no: int, timeout_ms: int) -> Page
         resp = await page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
         if not resp or resp.status >= 400:
             log(f"   [v3] 撮れない（HTTP {resp.status if resp else '?'}）: {url}")
+            CAPTURE_FAILS.append(f"{urllib.parse.urlparse(url).netloc}: HTTP {resp.status if resp else '?'}")
             return None
         try:
             await page.wait_for_load_state("networkidle", timeout=5000)
@@ -288,9 +290,12 @@ async def _capture_one(browser, url: str, page_no: int, timeout_ms: int) -> Page
         title = await page.title()
         if re.search(r"just a moment|attention required|access denied", title, re.I):
             log(f"   [v3] ボット確認の画面なので使わない: {url}")
+            CAPTURE_FAILS.append(f"{urllib.parse.urlparse(url).netloc}: ボット確認")
             return None
         await page.evaluate(SCROLL_JS, CAPTURE_MAX_H)
         await page.evaluate(HIDE_JS)
+        if urllib.parse.urlparse(url).netloc.removeprefix("www.") == SITE:
+            await page.evaluate(OWN_HIDE_JS)  # 自分の記事: 広告・提携リンクの箱は隠す（画面の証拠は記事の本文・表・要点だけ）
         # 読み込みに失敗した・まだのフォントをもう一度読む（失敗すると本文が明朝の代わりの字になる）
         await page.evaluate("Promise.race([Promise.all([...document.fonts].filter(f => f.status !== 'loaded').map(f => f.load().catch(() => null))), new Promise(r => setTimeout(r, 4000))]).then(() => true)")
         await page.evaluate("document.fonts.ready.then(() => true)")
@@ -321,6 +326,7 @@ async def _capture_one(browser, url: str, page_no: int, timeout_ms: int) -> Page
             data = after
     except Exception as error:  # noqa: BLE001
         log(f"   [v3] 撮影に失敗: {url}: {type(error).__name__}: {str(error)[:120]}")
+        CAPTURE_FAILS.append(f"{urllib.parse.urlparse(url).netloc}: {type(error).__name__}")
         return None
     finally:
         await ctx.close()
@@ -345,7 +351,7 @@ async def _capture_one(browser, url: str, page_no: int, timeout_ms: int) -> Page
         return None
     host = urllib.parse.urlparse(url).netloc.removeprefix("www.")
     blocks = _blocks_from(data, page_no)
-    return Page(url, host, img, blocks, title, round(time.time() - started, 1))
+    return Page(url, host, img, blocks, title, round(time.time() - started, 1), own=host == SITE)
 
 
 async def _capture_all(urls: list[str], timeout_ms: int) -> list[Page | None]:
@@ -360,6 +366,38 @@ async def _capture_all(urls: list[str], timeout_ms: int) -> list[Page | None]:
             return await asyncio.gather(*[_capture_one(browser, u, i + 1, timeout_ms) for i, u in enumerate(urls)])
         finally:
             await browser.close()
+
+
+CAPTURE_FAILS: list[str] = []  # 撮れなかったページと理由（動画を作れなかった理由の記録に使う）
+
+OWN_HIDE_JS = r"""() => {
+  const kill = (el) => el && el.style.setProperty('display', 'none', 'important');
+  document.querySelectorAll('[data-ad-position], ins.adsbygoogle, iframe, aside, [data-aff-rank], a[rel~="sponsored"]').forEach((el) => {
+    kill(el);
+    const box = el.closest('section, div');
+    if (box && /^(広告|PR)/.test((box.innerText || '').trim())) kill(box);
+  });
+  for (const el of document.querySelectorAll('span, p')) if (/^本ページはプロモーションを含みます/.test((el.innerText || '').trim())) kill(el);
+}"""
+
+# 公式ページがボット対策などで撮れないとき、同じ会社の撮れる公式ページ（ボット対策は回避しない）
+COMPANY_FALLBACKS = [
+    (re.compile(r"(^|\.)(openai\.com|chatgpt\.com)$"), ["https://developers.openai.com/api/docs/changelog", "https://developers.openai.com/api/docs/pricing"]),
+    (re.compile(r"(^|\.)(anthropic\.com|claude\.ai)$"), ["https://claude.com/pricing", "https://platform.claude.com/docs/en/release-notes/overview"]),
+]
+
+
+def fallback_urls(article: dict, tried: list[str]) -> list[str]:
+    """撮れなかった公式ページの代わり: 同じ会社の撮れる公式ページ（開発者向けの資料・料金表など）"""
+    out: list[str] = []
+    hosts = {urllib.parse.urlparse(u).netloc.removeprefix("www.") for u in tried}
+    topic = f"{article.get('title', '')} {' '.join(article.get('tags') or [])}"
+    for pattern, urls in COMPANY_FALLBACKS:
+        if any(pattern.search(h) for h in hosts):
+            out += urls
+            if re.search(r"Codex", topic, re.I) and "openai" in pattern.pattern:
+                out.append("https://developers.openai.com/codex")
+    return [u for u in dict.fromkeys(out) if u not in tried]
 
 
 def capture_pages(urls: list[str], timeout_ms: int = 25000) -> list[Page]:
@@ -690,6 +728,8 @@ def official_text(pages: list[Page], limit: int | None = None) -> str:
     （「Max / 終日の業務に / $100 / 月額 / Pro の 5 倍の使用量」が同じ行＝同じ話題として数字の文脈を確かめられる）"""
     out = []
     for page in pages:
+        if page.own:  # 自分の記事は事実の出どころにしない（数字は記事 JSON と本物の公式ページで照合する）
+            continue
         out.append(f"## {page.host}（{page.title[:50]}）")
         line: list[str] = []
         for b in page.blocks:
@@ -994,7 +1034,49 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
             data["_notes"] = problems
         data["_reviews"] = reviews
         return data, model
+    # まだ通らない: ①証拠の行だけで書き直す（温度を下げる）×2 → ②記事の要点と確かめた数字だけの簡単な台本 ×2（あきらめない）
+    for phase, note in (("strict", STRICT_NOTE), ("strict", STRICT_NOTE), ("simple", SIMPLE_NOTE), ("simple", SIMPLE_NOTE)):
+        try:
+            data, model = llm.generate_json(script_system() + note, prompt + feedback, SCRIPT_SCHEMA, temperature=0.2, max_output_tokens=8192, tier=tier, visibility="high", purpose="video")
+        except RuntimeError as error:
+            last = f"{last}; {error}"
+            continue
+        data["beats"] = [b for b in data.get("beats") or [] if isinstance(b, dict)][:BEATS_MAX]
+        latin_names(data)
+        problems = script_problems(data, article, pages)
+        style = [p for p in problems if p.startswith(STYLE_PREFIXES)]
+        for p in style:  # 区切りの直らない訳は出さない（上と同じ）
+            if m := re.match(r"target の区切り: (beat(\d)|hook)\.", p):
+                item = data["hook"] if m.group(1) == "hook" else data["beats"][int(m.group(2)) - 1]
+                item["ja"] = ""
+        if len(style) == len(problems):
+            log(f"   [v3] {phase} の台本で採用（{'・'.join(problems)[:200] or '問題なし'}）")
+            data["_mode"] = phase
+            if problems:
+                data["_notes"] = problems
+            return data, model
+        last = "; ".join(problems)
+        log(f"   [v3] {phase} の台本も書き直し: {last[:300]}")
+        feedback = (
+            "\n\n# 前回の台本で、資料・画面の文字に無かった主張（すべて消すか、資料の文どおりに直す）\n" + "\n".join(f"- {p}" for p in problems)
+            + "\n\n# 前回の台本\n" + json.dumps(data, ensure_ascii=False)
+        )  # fmt: skip
     raise RuntimeError(f"台本を作れませんでした: {last[:400]}")
+
+
+STRICT_NOTE = """
+
+# いちばん大事（前回までの台本が事実の検査に通らなかった）
+- 数字・名前・事実は「資料」の文と「画面の文字」の行に書かれているものだけ。行の文字を言い換えるときも数字は変えない。
+- 証拠（block / target）は、その場面で言う数字や名前が**その行に書かれている**ものだけを選ぶ。合う行が無い主張は台本から消す。
+- 数字は減らしてよい。迷う数字は書かない。"""
+
+SIMPLE_NOTE = """
+
+# 簡単な台本にする（事実の検査に通ることを最優先）
+- 記事の「要点」と「判定」に書かれた事実と数字だけを使う。比べる表（ladder・units・compare）は使わない（beat=0・rows は空）。
+- beats はちょうど5つ: 答え → 何が変わった → 必要な人（具体的な仕事の場面）→ 注意・条件 → 確かめ方。読み上げの合計は200〜280字。
+- 証拠は、その場面の言葉や数字がそのまま書かれた「画面の文字」の行（記事の要点・表の行など）。英語の行なら ja に訳を。"""
 
 
 # --------------------------------------------------------------------------- #
@@ -1801,7 +1883,7 @@ class Plan:
 
 
 def _source_label(page: Page) -> str:
-    return f"公式ページ　{page.host}"
+    return f"記事の画面　{page.host}" if page.own else f"公式ページ　{page.host}"
 
 
 EYEBROWS = ["何が変わった", "使いどころ", "知っておきたい", "次の一歩"]
@@ -2109,7 +2191,11 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         texts.append(TextItem("source", label, spr, COL[0], SOURCE_Y, a, b, anim="rise" if a > 0 else "none"))
     voice = narr.voice
     voice_text = f"音声 {voice['credit']}" if voice.get("credit") else "音声 試作の声（本番は VOICEVOX）"
-    hosts = "・".join(dict.fromkeys(p.host for p in pages))
+    official_hosts = [p.host for p in pages if not p.own]
+    if not official_hosts:  # 自分の記事だけで作ったときは、出典の公式ページを書く
+        src = article.get("sourceUrl") or ""
+        official_hosts = [urllib.parse.urlparse(src).netloc.removeprefix("www.")] if src else []
+    hosts = "・".join(dict.fromkeys(official_hosts)) + ("・本記事" if any(p.own for p in pages) else "")
     credit = f"{voice_text}　画面 {hosts}（公式）"
     try:
         host_row = fit_line(f"画面 {hosts}（公式）", "bold", range(22, 15, -1), COL_W, color=SOFT, accent=False)
@@ -2879,7 +2965,9 @@ def make_meta(a: dict, script: dict, voice: dict, pages: list[Page]) -> dict:
     if voice.get("credit"):
         lines.append(f"音声：{voice['credit']}")
     for p in pages:
-        lines.append(f"画面：{p.host}（公式ページ） {p.url}")
+        lines.append(f"画面：{p.host}（本記事） {p.url}" if p.own else f"画面：{p.host}（公式ページ） {p.url}")
+    if any(p.own for p in pages) and a.get("sourceUrl"):
+        lines.append(f"出典：{a['sourceUrl']}")
     lines.append("BGM・効果音：サイソクニュース自作")
     lines.append(SITE)
     lines += ["", " ".join(tags)]
@@ -3041,14 +3129,32 @@ def make_versions(slug: str, out_dir: Path, tts: str = "voicevox", reuse: bool =
     戻り値 {"full": report, "short": report}。どちらも例外は投げず report に残す"""
     a = shorts.load_article(slug)
     out_dir.mkdir(parents=True, exist_ok=True)
+    CAPTURE_FAILS.clear()
+    reason = ""
+    pages, script = [], None
     try:
-        pages = capture_pages(page_urls(a, extra_pages))
-        script = latin_names(load_script(slug, a, pages, out_dir, reuse)) if pages else None
+        urls = page_urls(a, extra_pages)
+        pages = capture_pages(urls) if urls else []
+        source = v2.official_page_url(a)
+        have_source = bool(source) and any(p.url == source for p in pages)
+        if urls and not have_source:  # 出典の公式ページが撮れない → 同じ会社の撮れる公式ページを足す
+            extra = fallback_urls(a, urls)
+            if extra:
+                pages = capture_pages([p.url for p in pages] + extra)
+        if not have_source:  # 出典の公式ページが無い・撮れない → 自分の記事ページ（料金表・要点・FAQ）も画面に使う
+            own = capture_pages([p.url for p in pages] + [f"https://{SITE}/articles/{slug}"])
+            pages = own or pages
+        if not pages:
+            reason = "撮れるページが無い（" + "・".join(CAPTURE_FAILS[:3]) + "）"
+        else:
+            script = latin_names(load_script(slug, a, pages, out_dir, reuse))
     except Exception as error:  # noqa: BLE001
-        log(f"[v3] {slug}: 台本を作れない {type(error).__name__}: {error}")
-        pages, script = None, None
+        reason = reason or f"台本を作れない: {str(error)[:200]}"
+        log(f"[v3] {slug}: {reason}")
+        script = None
     if not pages or not script:
-        empty = {"slug": slug, "errors": ["公式ページか台本が無い"], "gate": {"ok": False, "reasons": ["公式ページか台本が無い"]}}
+        reason = reason or "台本を作れない"
+        empty = {"slug": slug, "errors": [reason], "gate": {"ok": False, "reasons": [reason]}, "failReason": reason, "captureFails": list(CAPTURE_FAILS)}
         return {"full": empty, "short": empty}
     full = make_video(slug, out_dir, tts, profile=kw.get("profile"), article=a, pages=pages, script=json.loads(json.dumps(script, ensure_ascii=False)))
     short = make_video(slug, out_dir, tts, profile=kw.get("profile"), article=a, pages=pages, script=short_script(script))

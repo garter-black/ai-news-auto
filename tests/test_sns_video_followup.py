@@ -143,6 +143,24 @@ class PostTimingTest(unittest.TestCase):
         self.assertEqual(out["variant"], "full")
 
 
+class DailyRateTest(unittest.TestCase):
+    def test_daily_rates_and_reasons(self):
+        day = "2026-11-03T01:00:00+00:00"  # 日本時間 11/3 10:00
+        state = {"videos": {
+            "a": {"at": day, "status": "ready", "ok": True},
+            "b": {"at": day, "status": "gate_failed", "ok": False, "reason": "full: 撮れるページが無い（openai.com: HTTP 403） / short: 同じ"},
+            "c": {"at": day, "status": "posted", "ok": True},
+            "d": {"at": day, "status": "started"},
+        }}  # fmt: skip
+        rates = fu.daily_rates(state)["2026-11-03"]
+        self.assertEqual((rates["tried"], rates["ok"], rates["rate"]), (3, 2, 0.67))
+        self.assertEqual(list(rates["reasons"].values()), [1])
+
+    def test_fail_reason(self):
+        reports = {"full": {"failReason": "台本を作れない: x"}, "short": {"gate": {"reasons": ["v3: 長さ"]}}}
+        self.assertEqual(fu.fail_reason(reports, {"full": False, "short": True}), "full: 台本を作れない: x")
+
+
 class ComposeTest(unittest.TestCase):
     def test_post_text_link_in_body(self):
         body = fu.compose_post(REPORT, "full")

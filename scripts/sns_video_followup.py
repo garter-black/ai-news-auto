@@ -297,6 +297,9 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
         ok = {k: bool((r.get("gate") or {}).get("ok")) and (OUT / f"{slug}__v3{'short' if k == 'short' else ''}.mp4").exists() for k, r in reports.items()}
         rec["versions"] = {k: {"ok": ok[k], "seconds": r.get("total"), "reasons": (r.get("gate") or {}).get("reasons", [])[:3], **({"post": post_report(r)} if ok[k] else {})} for k, r in reports.items()}
         rec["timings"] = {k: r.get("timings") for k, r in reports.items()}
+        rec["ok"] = any(ok.values())
+        rec["reason"] = fail_reason(reports, ok)
+        rec["pages"] = sorted({p.get("host", "") for r in reports.values() for p in (r.get("pages") or [])})
         if not any(ok.values()):
             rec["status"] = "gate_failed"
             save_state(state)
@@ -336,6 +339,37 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
             results.append(out)
         save_state(state)
     return results
+
+
+def fail_reason(reports: dict, ok: dict) -> str:
+    """動画を作れなかった（片方だけ落ちた）理由を1行で（記録・日ごとの成功率の内訳に使う）"""
+    out = []
+    for k, r in reports.items():
+        if ok.get(k):
+            continue
+        why = r.get("failReason") or "・".join((r.get("gate") or {}).get("reasons", [])[:2]) or "不明"
+        out.append(f"{k}: {why[:160]}")
+    return " / ".join(dict.fromkeys(out))
+
+
+def daily_rates(state: dict) -> dict:
+    """日（日本時間）ごとの、動画を作れた割合と、作れなかった理由の内訳"""
+    days: dict = {}
+    for rec in (state.get("videos") or {}).values():
+        at = _parse(rec.get("at", ""))
+        if not at or rec.get("status") == "started":
+            continue
+        d = days.setdefault(at.astimezone(JST).date().isoformat(), {"tried": 0, "ok": 0, "reasons": {}})
+        d["tried"] += 1
+        good = rec.get("ok") if "ok" in rec else rec.get("status") in ("ready", "posted", "dry_run", "uploaded")
+        if good:
+            d["ok"] += 1
+        else:
+            key = (rec.get("reason") or rec.get("status") or "不明").split(" / ")[0][:60]
+            d["reasons"][key] = d["reasons"].get(key, 0) + 1
+    for d in days.values():
+        d["rate"] = round(d["ok"] / max(d["tried"], 1), 2)
+    return dict(sorted(days.items()))
 
 
 def post_one(state: dict, now: datetime, f: dict, poster) -> dict | None:
@@ -440,7 +474,7 @@ def ab_report() -> dict:
     except Exception as error:  # noqa: BLE001
         log(f"[video-followup] 記事への訪問を読めない: {type(error).__name__}")
         visits = {}
-    return ab_rows(state, metrics, visits)
+    return {"ab": ab_rows(state, metrics, visits), "daily": daily_rates(state)}
 
 
 def draft_test(report_path: Path, video_url: str, yes: bool = False, variant: str = "short") -> dict:
