@@ -252,7 +252,8 @@ def build(kind: str, state: dict, now: datetime) -> dict | None:
         "reply": REPLY_LINES[jst.toordinal() % len(REPLY_LINES)] if jst.hour < 10 else REPLY_LINES[0], "link": link,
         "x_text": compose_x(items, tp.utm_link(link, "x", "digest"), now),
         "slot": tp.DIGEST_SLOT_JST, "items": [a["slug"] for a in items],
-        "image": f"{tp.site_url()}/digest/{edition['id']}/card.png", "edition": edition,
+        # ?v= はデザイン名（デザインを変えた日に古い画像のキャッシュを使わない）
+        "image": f"{tp.site_url()}/digest/{edition['id']}/card.png?v={dp.design()}", "edition": edition,
     }
 
 
@@ -304,7 +305,7 @@ def link_card(post: dict) -> dict:
             "title": f"{post['text'].splitlines()[0]}｜サイソクニュース",
             "description": "・".join(i.get("headline", "") for i in (post.get("edition") or {}).get("items", []))[:120]
             or "AI・ビジネス・お金の公式発表を、速く・分かりやすく。",
-            "thumbnail": {"url": post["link"].rstrip("/") + "/share.png"},
+            "thumbnail": {"url": f"{post['link'].rstrip('/')}/share.png?v={dp.design()}"},
         }
     return {
         "title": "サイソクニュース 新着一覧",

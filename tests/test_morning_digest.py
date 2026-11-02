@@ -386,7 +386,7 @@ class DigestPageTest(unittest.TestCase):
     def test_build_links_to_the_edition_page_with_utm_and_image(self):
         p = digest_post()
         self.assertEqual(p['link'], 'https://ai-tech-express.jp/digest/20261030')
-        self.assertEqual(p['image'], 'https://ai-tech-express.jp/digest/20261030/card.png')
+        self.assertEqual(p['image'], f'https://ai-tech-express.jp/digest/20261030/card.png?v={md.dp.design()}')
         self.assertIn('https://ai-tech-express.jp/digest/20261030?utm_source=x&utm_medium=social&utm_campaign=digest', p['x_text'])
         self.assertIn('・Google DeepMind、新AI「Genie 4」を発表', p['text'])
         self.assertEqual(p['edition']['id'], '20261030')
@@ -400,7 +400,7 @@ class DigestPageTest(unittest.TestCase):
         self.assertEqual(thread[0]['assets'], [{'image': {'url': p['image']}}])
         card = thread[1]['metadata']['threads']['linkAttachment']
         self.assertEqual(card['url'], 'https://ai-tech-express.jp/digest/20261030?utm_source=threads&utm_medium=social&utm_campaign=digest')
-        self.assertEqual(card['thumbnail']['url'], 'https://ai-tech-express.jp/digest/20261030/share.png')
+        self.assertEqual(card['thumbnail']['url'], f'https://ai-tech-express.jp/digest/20261030/share.png?v={md.dp.design()}')
         self.assertEqual(md.x_input('x', p, {'mode': 'shareNow'})['assets'], [{'image': {'url': p['image']}}])
 
     def test_prepare_falls_back_to_news_without_image(self):
@@ -467,7 +467,7 @@ class DigestPageTest(unittest.TestCase):
         entry = {'style': 'digest', 'items': [], 'postPlan': p}
         got = bp.plan('digest-20261030', entry)
         self.assertEqual(got['link'], 'https://ai-tech-express.jp/digest/20261030?utm_source=bluesky&utm_medium=social&utm_campaign=digest')
-        self.assertEqual(got['images'][0], 'https://ai-tech-express.jp/digest/20261030/share.png')
+        self.assertEqual(got['images'][0], f'https://ai-tech-express.jp/digest/20261030/share.png?v={md.dp.design()}')
         old = bp.plan('digest-20261029', {'style': 'digest', 'items': [], 'postPlan': {**p, 'link': 'https://ai-tech-express.jp/news'}})
         self.assertTrue(old['link'].startswith('https://ai-tech-express.jp/news?'))
 
