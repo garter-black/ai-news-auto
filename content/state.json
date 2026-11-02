@@ -6858,6 +6858,13 @@
       "skipped": true,
       "url": "https://www.jst.go.jp/pr/announce/20261028-2/index.html"
     },
+    "66a947a7e4a10f75": {
+      "at": "2026-11-02T20:11:57.067498+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "quality: 題名で料金・価格を約束しているのに、本文に金額（円・ドル・無料など）が無い。元記事の金額を書くか、題名から料金の話を外す",
+      "skipped": true,
+      "url": "https://elevenlabs.io/blog/angle-health"
+    },
     "66c4ad230d132d33": {
       "at": "2026-10-26T15:53:57.507918+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11264,6 +11271,14 @@
       "slug": "lumen-microsoft-enterprise-ai-networks",
       "url": "https://news.microsoft.com/source/2026/11/02/lumen-and-microsoft-expand-collaboration-to-co-sell-enterprise-ai-ready-networks/"
     },
+    "de8ee9d6403bde44": {
+      "at": "2026-11-02T20:12:13.263841+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "mlit-autumn-2026-decoration",
+      "url": "http://www.mlit.go.jp/report/press/kanbo03_hh_000428.html"
+    },
     "df509a4d80d7bfe0": {
       "at": "2026-10-26T14:32:40.134976+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12517,97 +12532,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T11:42:49.670032+00:00",
-      "attempt": 2,
-      "id": "43bbd8684f7d32bd",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1777字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（265字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 127.5,
-        "avg_sentence": 54.0,
-        "long_share": 0.308,
-        "max_paragraph": 202,
-        "paragraphs": 11,
-        "sentences": 26
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "新型コロナウイルス感染症に関する報道発表資料を更新しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T12:17:49.222302+00:00",
-      "attempt": 1,
-      "id": "ec2079a5cdf6ce4a",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1735字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（338字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 146.6,
-        "avg_sentence": 57.3,
-        "long_share": 0.478,
-        "max_paragraph": 227,
-        "paragraphs": 9,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "インフルエンザの発生状況を更新しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T12:17:55.401410+00:00",
-      "attempt": 2,
-      "id": "ec2079a5cdf6ce4a",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1586字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（306字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 133.9,
-        "avg_sentence": 53.6,
-        "long_share": 0.2,
-        "max_paragraph": 199,
-        "paragraphs": 10,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "インフルエンザの発生状況を更新しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T13:21:11.772428+00:00",
-      "attempt": 1,
-      "id": "d29cd6cf0fec0f2f388b4fb4ad0a95578914c99f",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1312字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 118.0,
-        "avg_sentence": 46.2,
-        "long_share": 0.13,
-        "max_paragraph": 222,
-        "paragraphs": 9,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "trends",
-      "title": "kddi"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T13:21:18.473414+00:00",
@@ -18995,6 +18919,93 @@
       "score": 100,
       "source": "mext",
       "title": "令和8年度 文化功労者及び文化勲章受章者について"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T20:11:47.354770+00:00",
+      "attempt": 1,
+      "id": "66a947a7e4a10f75",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "easy_markdown が「## ひとことで言うと」から始まっていない"
+      ],
+      "readability": {
+        "avg_paragraph": 86.1,
+        "avg_sentence": 56.2,
+        "long_share": 0.391,
+        "max_paragraph": 197,
+        "paragraphs": 15,
+        "sentences": 23
+      },
+      "score": null,
+      "source": "elevenlabs-blog",
+      "title": "Angle Health’s ElevenAgents pilot handles 90% of provider calls without a transf"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T20:11:57.067467+00:00",
+      "attempt": 2,
+      "id": "66a947a7e4a10f75",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "題名で料金・価格を約束しているのに、本文に金額（円・ドル・無料など）が無い。元記事の金額を書くか、題名から料金の話を外す"
+      ],
+      "readability": {
+        "avg_paragraph": 66.1,
+        "avg_sentence": 43.4,
+        "long_share": 0.219,
+        "max_paragraph": 182,
+        "paragraphs": 21,
+        "sentences": 32
+      },
+      "score": null,
+      "source": "elevenlabs-blog",
+      "title": "Angle Health’s ElevenAgents pilot handles 90% of provider calls without a transf"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T20:12:07.649095+00:00",
+      "attempt": 1,
+      "id": "de8ee9d6403bde44",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 56.0字・60字超の文が 35% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 128.9字・最長 270字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 128.9,
+        "avg_sentence": 56.0,
+        "long_share": 0.348,
+        "max_paragraph": 270,
+        "paragraphs": 10,
+        "sentences": 23
+      },
+      "score": 100,
+      "source": "mlit-press",
+      "title": "令和８年秋の叙勲について"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T20:12:13.259583+00:00",
+      "attempt": 0,
+      "id": "de8ee9d6403bde44",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 84.9,
+        "avg_sentence": 35.8,
+        "long_share": 0.0,
+        "max_paragraph": 181,
+        "paragraphs": 16,
+        "sentences": 38
+      },
+      "score": 100,
+      "source": "mlit-press",
+      "title": "令和８年秋の叙勲について"
     }
   ],
   "short_text_retry": {},
