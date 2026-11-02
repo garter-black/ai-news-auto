@@ -59,3 +59,58 @@ test('記事の関連書籍は話題に合うタイトルだけ選ぶ',()=>{
  assert.ok(books.length>0);
  assert.ok(books.every(i=>/議事録|文字起こし|音声|会議|録音|ボイス|transcri/i.test(i.name)));
 });
+
+// 未設定（YOUR_ID など）や計測IDの無いリンクは、どの枠にも出さない
+const {isValidAffiliateUrl,offerPlanForArticle,fallbackOfferForArticle}=mod.exports;
+function freshOffers(dir){
+ const m=new Module(sourcePath,module);m.filename=sourcePath;m.paths=Module._nodeModulePaths(path.dirname(sourcePath));const req=m.require.bind(m);m.require=(name)=>name==='@/lib/content-fs'?fs:req(name);m._compile(compiled,sourcePath);
+ const cwd=process.cwd();
+ return (fn)=>{process.chdir(dir);try{return fn(m.exports);}finally{process.chdir(cwd);}};
+}
+test('提携リンクの形を確かめる（A8・主要ASPだけ、プレースホルダは不可）',()=>{
+ for(const ok of ['https://px.a8.net/svt/ejp?a8mat=4BEPPU+DBVECY+3XCC+6AZAQ','https://px.a8.net/svt/ejp?a8mat=4BEPPU+DBVECY+3XCC+6AZAQ&a8ejpredirect=https%3A%2F%2Fwww.matsui.co.jp%2F','https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fx']) assert.equal(isValidAffiliateUrl(ok),true,ok);
+ for(const ng of ['https://www.rakuten-sec.co.jp/?ref=YOUR_ID','https://px.a8.net/svt/ejp?a8mat=YOUR_ID','https://px.a8.net/svt/ejp?a8mat=4BEPPU+DBVECY+3XCC+6AZAQ&a8ejpredirect=https%3A%2F%2Fexample.com%2F','https://px.a8.net/svt/ejp?a8mat=','https://px.a8.net/svt/ejp','http://px.a8.net/svt/ejp?a8mat=4BEPPU+DBVECY+3XCC+6AZAQ','https://www.sbisec.co.jp/','https://px.a8.net.evil.example/svt/ejp?a8mat=4BEPPU+DBVECY+3XCC+6AZAQ','javascript:alert(1)','',null,undefined]) assert.equal(isValidAffiliateUrl(ng),false,String(ng));
+});
+test('登録済みの提携商品と本はすべて正しい提携リンクで出る',()=>{
+ for(const [key,p] of Object.entries(offers.partners)){
+  const item=partnerItem(key);
+  if(p.hidden){assert.equal(item,undefined,key);continue;}
+  assert.ok(item,key);assert.ok(isValidAffiliateUrl(item.item.url),key);
+ }
+ for(const genreSlug of ['ai','business','investment','real-estate','public','sports','tech-gadget','entertainment','lifestyle','science']){
+  const plan=offerPlanForArticle({...article,slug:`g-${genreSlug}`,title:'褒章の受章者が決定',genreSlug});
+  for(const item of [...(plan.rail?.items??[]),...(plan.inline?.items??[])]) assert.ok(isValidAffiliateUrl(item.url),`${genreSlug} ${item.key}`);
+ }
+});
+test('プレースホルダの残った提携先（楽天証券 YOUR_ID など）は広告に出さない',()=>{
+ const dir=fs.mkdtempSync(path.join(require('node:os').tmpdir(),'offers-'));
+ fs.mkdirSync(path.join(dir,'content'));
+ const fixture=JSON.parse(JSON.stringify(offers));
+ fixture.partners['rakuten-sec-test']={program:'楽天証券',name:'楽天証券',label:'楽天証券',price:null,image:null,page:null,shop:'楽天証券'};
+ fixture.partners['bad-link-test']={program:'松井証券',name:'壊れた素材',label:'壊れた素材',price:null,image:null,page:null,shop:'A8',link:'https://px.a8.net/svt/ejp?a8mat=YOUR_ID',pixel:'https://www10.a8.net/0.gif?a8mat=YOUR_ID'};
+ fixture.partners['no-id-test']={program:'公式だけ',name:'計測なし',label:'計測なし',price:null,image:null,page:null,shop:'公式'};
+ const topic=fixture.topics.find(t=>(fixture.fallbackByGenre?.business??'')===t.key)??fixture.topics[0];
+ for(const t of fixture.topics) if(/nisa|invest|sec/i.test(t.key)) t.partners=['rakuten-sec-test','bad-link-test','no-id-test',...t.partners];
+ fixture.articleFallback.sets.money.partners=['rakuten-sec-test','bad-link-test','no-id-test',...fixture.articleFallback.sets.money.partners];
+ const affLinks={...links,'公式だけ':{url:'https://www.example-sec.co.jp/'}};
+ assert.match(affLinks['楽天証券'].url,/YOUR_ID/);
+ fs.writeFileSync(path.join(dir,'content/offers.json'),JSON.stringify(fixture));
+ fs.copyFileSync(path.join(root,'content/products.json'),path.join(dir,'content/products.json'));
+ fs.writeFileSync(path.join(dir,'affiliate_links.json'),JSON.stringify(affLinks));
+ const run=freshOffers(dir);
+ run(({partnerItem,offerPlanForArticle,fallbackOfferForArticle,isValidAffiliateUrl})=>{
+  for(const key of ['rakuten-sec-test','bad-link-test','no-id-test']) assert.equal(partnerItem(key),undefined,key);
+  const items=[];const pixels=[];
+  for(const a of [{...article,slug:'nisa',title:'楽天証券の新NISA口座が1,500万を突破',genreSlug:'business'},{...article,slug:'nisa2',title:'新NISAの積立投資',genreSlug:'investment'},{...article,slug:'fb',title:'褒章の受章者が決定',genreSlug:'investment'}]){
+   const plan=offerPlanForArticle(a);
+   for(const o of [plan.offer,plan.rail,plan.inline].filter(Boolean)){items.push(...o.items);pixels.push(...o.pixels,...(o.timedPixels??[]).map(p=>p.url));}
+  }
+  const fb=fallbackOfferForArticle({...article,slug:'fb2',title:'褒章',genreSlug:'investment'});
+  items.push(...fb.items);pixels.push(...fb.pixels);
+  assert.ok(items.length>0);
+  assert.ok(items.every(i=>!['rakuten-sec-test','bad-link-test','no-id-test'].includes(i.key)));
+  assert.ok(items.every(i=>isValidAffiliateUrl(i.url)));
+  assert.ok(pixels.every(p=>!/YOUR_ID/.test(p)));
+ });
+ fs.rmSync(dir,{recursive:true,force:true});
+});

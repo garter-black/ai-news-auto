@@ -160,8 +160,8 @@ export default function Footer() {
       <div className="border-t border-line">
         <div className="mx-auto max-w-[1240px] px-5 py-6 sm:px-8">
           <p className="text-note leading-[1.9] text-muted">
-            本サイトの記事は、公開されている動画を生成AIが解析して自動生成したものです。
-            誤りが含まれる可能性があるため、重要な判断の際は必ず元動画および各社の公式発表をご確認ください。
+            本サイトの記事は、公開されている動画や公式発表・報道を生成AIが解析・要約して自動生成したものです（出典は各記事に記載）。
+            誤りが含まれる可能性があるため、重要な判断の際は必ず出典および各社の公式発表をご確認ください。
             {hasActiveAffiliate() &&
               "当サイトは広告およびアフィリエイトプログラムによる収益を得ています。"}
           </p>

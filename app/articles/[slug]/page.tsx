@@ -30,6 +30,7 @@ import { chooseGuideForArticle } from "@/lib/choose";
 import type { ChooseGuide } from "@/lib/choose-data";
 import { STATUS_LABEL, freeLabel, japanLabel, verdictOf } from "@/lib/verdict";
 import { offerPlanForArticle } from "@/lib/offers";
+import { getCta } from "@/lib/monetization";
 import { readNextForArticle } from "@/lib/read-next";
 import ReadNextBox from "@/components/ReadNextBox";
 import ArticleVideo from "@/components/ArticleVideo";
@@ -185,6 +186,12 @@ export default async function ArticlePage({ params }: Props) {
   // 第3章の前に広告、さらに後半の前に収益導線を挟む
   const [bodyTop, afterAd] = splitBeforeHeading(html, 3);
   const [bodyMid, bodyTail] = splitBeforeHeading(afterAd, 4);
+  // 本文中の PR は1か所だけ（PC は右側の1〜3位＋本文中1つ、スマホは本文中1つ＋ページ下の1〜3位の最大2つ）。
+  // 同じページに PR の囲みが3つ以上並ぶと広告だらけに見えるため（2026-11-03 監査）。優先順:
+  // 本文中の4〜6位（Amazon/楽天の1行は同じ囲みの中）→ Amazon/楽天の1行だけ → 収益導線（monetization.json）の中盤 → 記事末
+  const inlineCta = bodyTail && !inlineOffer && !shopLink && getCta(article.genreSlug, "inline") ? "inline" : undefined;
+  const primaryCta = !inlineOffer && !shopLink && !inlineCta && getCta(article.genreSlug, "primary") ? "primary" : undefined;
+  const hasInlinePr = Boolean(inlineOffer || shopLink || inlineCta || primaryCta);
   const headings = extractHeadings(article.body);
   // 読み終えた人に「次の1本」を大きく見せる。本文の途中にも1本だけ差し込む
   const nextReads = getNextReads(article, (a) => companyOf(a).slug);
@@ -319,7 +326,7 @@ export default async function ArticlePage({ params }: Props) {
           <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-meta">
             <CompanyMark company={company} size={20} withName />
             <span className="rounded-sm border border-line-strong px-2 py-[1px] text-badge font-bold text-ink-soft">
-              {isRoundup ? `まとめ ${article.sources?.length ?? 0}本` : article.sourceType === "web" ? "公開情報" : "動画紹介"}
+              {isRoundup ? `まとめ ${article.sources?.length ?? 0}本` : video ? "動画紹介" : "公開情報"}
             </span>
             {speedLabel(article) && (
               <span className="rounded-sm border border-live/40 px-2 py-[1px] text-badge font-bold text-live">
@@ -616,12 +623,14 @@ export default async function ArticlePage({ params }: Props) {
           {bodyTail && inlineOffer && (
             <div className="my-10 max-w-[46em]">
               <RailRanking offer={inlineOffer} wide id="offer-inline" title={inlineOffer.headline} />
+              {/* Amazon / 楽天の1行は、本文中の PR の囲みと同じ場所にまとめる（PR を別々に並べない） */}
+              {shopLink && <ShopLinks link={shopLink} className="mt-3" />}
               {buyingGuide && <CompareLink slug={buyingGuide.slug} name={guideShortName(buyingGuide)} className="flex lg:hidden" />}
             </div>
           )}
           {bodyTail && readNextInline && <ReadNextBox link={readNextInline} className={`my-10 ${readNextInlineClass}`} />}
-          {bodyTail && shopLink && <ShopLinks link={shopLink} className="my-10" />}
-          {bodyTail && <CtaBanner genreSlug={article.genreSlug} slot="inline" className="my-10" />}
+          {bodyTail && !inlineOffer && shopLink && <ShopLinks link={shopLink} className="my-10" />}
+          {bodyTail && inlineCta && <CtaBanner genreSlug={article.genreSlug} slot="inline" className="my-10" />}
 
           {bodyTail && (
             <article className="prose max-w-[40em]" dangerouslySetInnerHTML={{ __html: bodyTail }} />
@@ -679,8 +688,8 @@ export default async function ArticlePage({ params }: Props) {
 
           {!bodyTail && chooseGuide && <ChooseGuideNote guide={chooseGuide} className="mt-12" />}
 
-          {/* 記事末の主導線 */}
-          <CtaBanner genreSlug={article.genreSlug} slot="primary" className="mt-12" />
+          {/* 記事末の主導線（本文中に PR が無い記事だけ） */}
+          {primaryCta && <CtaBanner genreSlug={article.genreSlug} slot="primary" className="mt-12" />}
 
           {/* 毎朝のメール配信と速報のプッシュ通知（また来てもらう導線） */}
           <NewsletterSignup variant="article" />
@@ -690,11 +699,12 @@ export default async function ArticlePage({ params }: Props) {
           {!bodyTail && inlineOffer && (
             <div className="mt-12 max-w-[46em]">
               <RailRanking offer={inlineOffer} wide id="offer-inline" title={inlineOffer.headline} />
+              {shopLink && <ShopLinks link={shopLink} className="mt-3" />}
               {buyingGuide && <CompareLink slug={buyingGuide.slug} name={guideShortName(buyingGuide)} className="flex lg:hidden" />}
             </div>
           )}
           {!bodyTail && readNextInline && <ReadNextBox link={readNextInline} className={`mt-12 ${readNextInlineClass}`} />}
-          {!bodyTail && shopLink && <ShopLinks link={shopLink} className="mt-12" />}
+          {!bodyTail && !inlineOffer && shopLink && <ShopLinks link={shopLink} className="mt-12" />}
 
           {article.tags.length > 0 && (
             <div className="mt-12 flex flex-wrap gap-2">
@@ -711,10 +721,11 @@ export default async function ArticlePage({ params }: Props) {
           )}
 
           <p className="mt-10 rounded-2xl bg-surface px-5 py-4 text-note leading-relaxed text-muted">
+            {/* 出典の種類（動画 / 公式発表・報道）に合わせた注記。動画の文言は動画から作った記事だけ */}
             {article.disclaimer ||
-              (web
-                ? `本記事は${sourceName}の発表内容をAIが解析して自動生成したものです。誤りが含まれる可能性があるため、正確な情報は元記事をご確認ください。`
-                : "本記事は元動画の映像・音声をAIが解析して自動生成したものです。誤りが含まれる可能性があるため、正確な情報は公式発表をご確認ください。")}
+              (video
+                ? "本記事は元動画の映像・音声をAIが解析して自動生成したものです。誤りが含まれる可能性があるため、正確な情報は公式発表をご確認ください。"
+                : `本記事は${web && sourceName ? `${sourceName}の発表内容` : "公開されている情報"}をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な情報は${web ? "元記事" : "公式発表"}をご確認ください。`)}
             {sourceUrl && (
               <a
                 href={sourceUrl}
@@ -722,7 +733,7 @@ export default async function ArticlePage({ params }: Props) {
                 rel={web ? "noopener" : "noopener noreferrer"}
                 className="mx-1 text-accent underline"
               >
-                {web ? "元記事を読む" : "元動画を見る"}
+                {video ? "元動画を見る" : "元記事を読む"}
               </a>
             )}
             （解析モデル: {article.model}）
@@ -773,8 +784,9 @@ export default async function ArticlePage({ params }: Props) {
         </aside>
       </div>
 
-      {/* スマホ：読み進めると画面下にイチオシを出す */}
-      {offer && <MobilePrBar item={offer.items[0]} watchId="offer-inline" />}
+      {/* スマホ：読み進めると画面下にイチオシを出す。本文中に PR がある記事は出さない
+          （スマホの PR は本文中1つ＋ページ下の1〜3位の最大2つ。画面下の帯まで重ねると3つになる） */}
+      {offer && !hasInlinePr && <MobilePrBar item={offer.items[0]} watchId="offer-inline" />}
     </div>
   );
 }

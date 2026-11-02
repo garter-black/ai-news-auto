@@ -181,6 +181,58 @@ function load() {
   return loaded;
 }
 
+/** 未設定のまま残った値（YOUR_ID など）。リンク・ピクセルのどこかに含まれていたら出さない */
+const PLACEHOLDER = /YOUR[_-]?ID|your_aff_link|PLACEHOLDER|XXXX|example\.(?:com|jp|net)|[<>{}]/i;
+/** A8 の素材ID（a8mat=4BEPPU+DBVECY+3XCC+6AZAQ の形） */
+const A8MAT = /^[0-9A-Z]+(?:\+[0-9A-Z]+){3}$/;
+
+/**
+ * 実在する提携リンクの形か。計測IDの無い公式サイトや、プレースホルダの残ったリンクは広告として出さない。
+ * A8（px/rpx.a8.net）は a8mat の形まで確かめる。それ以外は主要な ASP・楽天・Amazon の配信元だけ認める。
+ */
+export function isValidAffiliateUrl(raw: string | null | undefined): boolean {
+  if (!raw || typeof raw !== "string") return false;
+  let decoded = raw;
+  try {
+    decoded = decodeURIComponent(raw);
+  } catch {
+    // 壊れたエンコードはそのまま照合する
+  }
+  if (PLACEHOLDER.test(raw) || PLACEHOLDER.test(decoded)) return false;
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    return false;
+  }
+  if (url.protocol !== "https:") return false;
+  const host = url.hostname.toLowerCase();
+  if (host === "px.a8.net" || host === "rpx.a8.net") {
+    // searchParams は「+」を空白に変えるので、生の値で確かめる
+    const a8mat = /[?&]a8mat=([^&#]*)/.exec(url.search)?.[1] ?? "";
+    return url.pathname === "/svt/ejp" && A8MAT.test(a8mat);
+  }
+  if (host === "af.moshimo.com") return /^\d+$/.test(url.searchParams.get("a_id") ?? "");
+  if (host === "ck.jp.ap.valuecommerce.com") return /^\d+$/.test(url.searchParams.get("sid") ?? "") && /^\d+$/.test(url.searchParams.get("pid") ?? "");
+  if (host === "h.accesstrade.net") return url.pathname.length > 1 || url.search.length > 1;
+  if (host === "t.afi-b.com") return url.pathname.length > 1;
+  if (host === "hb.afl.rakuten.co.jp") return url.pathname.length > 1;
+  if (host === "amzn.to") return url.pathname.length > 1;
+  if (host === "www.amazon.co.jp" || host === "amazon.co.jp") return /^[\w-]+-22$/.test(url.searchParams.get("tag") ?? "");
+  return false;
+}
+
+/** 表示計測のピクセル。ASP の配信元で、プレースホルダが無いものだけ使う */
+function validPixel(raw: string | null | undefined): string | undefined {
+  if (!raw || PLACEHOLDER.test(raw)) return undefined;
+  try {
+    const url = new URL(raw);
+    return url.protocol === "https:" && /(?:^|\.)(?:a8\.net|moshimo\.com|valuecommerce\.com|accesstrade\.net|afi-b\.com|rakuten\.co\.jp)$/i.test(url.hostname) ? raw : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 /** A8 の提携リンクに飛び先（商品ページ）を付ける。提携先が許可している商品リンクの形式 */
 function partnerUrl(base: string, page: string | null): string {
   return page ? `${base}&a8ejpredirect=${encodeURIComponent(page)}` : base;
@@ -307,7 +359,7 @@ export function fallbackOfferForArticle(article: ArticleSummary, maxItems = 12):
   }
   const seen = new Set<string>();
   for (const topic of set.bookTopics ?? []) {
-    for (const book of rotate(products?.books?.[topic] ?? [], article.slug || topic)) {
+    for (const book of rotate(validBooks(products?.books?.[topic]), article.slug || topic)) {
       if (built.length >= maxItems) break;
       if (seen.has(book.rbId)) continue;
       seen.add(book.rbId);
@@ -348,6 +400,9 @@ export function partnerItem(key: string): { item: OfferItem; pixel?: string } | 
   const partner = offers.partners[key];
   const program = partner ? affiliates[partner.program] : undefined;
   if (!partner || partner.hidden || !program?.url) return undefined;
+  const url = partner.link ?? partnerUrl(program.url, partner.page);
+  // 未設定（YOUR_ID など）や計測IDの無いリンクは出さない
+  if (!isValidAffiliateUrl(url)) return undefined;
   return {
     item: {
       key,
@@ -361,11 +416,11 @@ export function partnerItem(key: string): { item: OfferItem; pixel?: string } | 
       caution: partner.caution,
       imageNote: partner.imageNote,
       image: partner.image,
-      url: partner.link ?? partnerUrl(program.url, partner.page),
+      url,
       shop: partner.shop,
       cta: partner.cta ?? "公式サイトで見る",
     },
-    pixel: partner.pixel ?? program.pixel,
+    pixel: validPixel(partner.pixel ?? program.pixel),
   };
 }
 
@@ -396,6 +451,9 @@ function partnerOffer(key: string): Built | undefined {
   const partner = offers.partners[key];
   const program = partner ? affiliates[partner.program] : undefined;
   if (!partner || partner.hidden || !program?.url) return undefined;
+  const url = partner.link ?? partnerUrl(program.url, partner.page);
+  // 未設定（YOUR_ID など）や計測IDの無いリンクは出さない
+  if (!isValidAffiliateUrl(url)) return undefined;
   return {
     item: {
       key,
@@ -412,12 +470,17 @@ function partnerOffer(key: string): Built | undefined {
       priceText: partner.priceText,
       priceFreshUntil: priceFreshUntil(partner.source ? products?.fetchedAt : partner.priceCheckedAt),
       image: partner.image,
-      url: partner.link ?? partnerUrl(program.url, partner.page),
+      url,
       shop: partner.shop,
       cta: partner.cta ?? "公式サイトで見る",
     },
-    pixel: partner.pixel ?? program.pixel,
+    pixel: validPixel(partner.pixel ?? program.pixel),
   };
+}
+
+/** 提携リンクの形が正しい本だけ */
+function validBooks(list: Book[] | undefined): Book[] {
+  return (list ?? []).filter((book) => isValidAffiliateUrl(book.url));
 }
 
 function bookOffer(book: Book): OfferItem {
@@ -449,7 +512,8 @@ function finishOffer(topic: Topic, built: Built[], extra: Partial<Offer> = {}): 
     if (pixel && item.activeUntil) timedPixels.set(pixel, item.activeUntil);
     else if (pixel) pixels.add(pixel);
   }
-  if (built.some(({ item }) => item.kind === "book") && products?.pixel) pixels.add(products.pixel);
+  const bookPixel = validPixel(products?.pixel);
+  if (built.some(({ item }) => item.kind === "book") && bookPixel) pixels.add(bookPixel);
   return {
     topic: topic.key,
     eyebrow: topic.eyebrow,
@@ -488,7 +552,7 @@ function buildArticleOffer(article: ArticleSummary, scored: TopicScore[], maxIte
       });
     }
     const require = regex(topic.require);
-    rotate(products?.books?.[topic.key] ?? [], article.slug || topic.key).forEach((book, index) => {
+    rotate(validBooks(products?.books?.[topic.key]), article.slug || topic.key).forEach((book, index) => {
       if (require && !require.test(book.title)) return;
       consider({ item: bookOffer(book) }, score - 1 - index * 0.01);
     });
@@ -510,7 +574,7 @@ function buildOffer(topic: Topic, fallback: string, maxItems: number): Offer | u
   }
   const seen = new Set<string>();
   for (const source of [topic.key, ...(topic.fill ?? []), fallback]) {
-    const books = products?.books?.[source] ?? [];
+    const books = validBooks(products?.books?.[source]);
     for (const book of source === topic.key ? rotate(books, topic.key) : books) {
       if (built.length >= maxItems) break;
       if (seen.has(book.rbId)) continue;

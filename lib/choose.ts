@@ -3,6 +3,7 @@ import path from "node:path";
 import type { ArticleSummary } from "@/lib/articles";
 import { isAffiliateUrl } from "@/lib/affiliate";
 import { CHOOSE_GUIDES, type ChooseGuide, type ChooseService } from "@/lib/choose-data";
+import { MIN_SCORE, relevanceScore } from "@/lib/offers";
 
 /**
  * 選び方ガイド（/choose/<slug>）。
@@ -83,10 +84,16 @@ export function getChooseGuide(slug: string): ChooseGuide | undefined {
   return CHOOSE_GUIDES.find((guide) => guide.slug === slug);
 }
 
-/** 記事の内容に合う選び方ガイド（見出し・タグだけに照合。本文のついでの言及では出さない） */
+/**
+ * 記事の内容に合う選び方ガイド（見出し・タグに当たり、さらに「あわせて読みたい」と同じ基準点に届くものだけ）。
+ * タグ1つ（「料金プラン」など）だけでは出さない。Claude の料金の記事に回線のガイドが出ていた（2026-11-03）
+ */
 export function chooseGuideForArticle(article: ArticleSummary): ChooseGuide | undefined {
   const text = [article.title, article.seoTitle ?? "", ...article.tags].join(" ");
   return CHOOSE_GUIDES.find(
-    (guide) => guide.articleGenres.includes(article.genreSlug) && new RegExp(guide.articleMatch, "i").test(text),
+    (guide) =>
+      guide.articleGenres.includes(article.genreSlug) &&
+      new RegExp(guide.articleMatch, "i").test(text) &&
+      relevanceScore(guide.articleMatch, article) >= MIN_SCORE,
   );
 }

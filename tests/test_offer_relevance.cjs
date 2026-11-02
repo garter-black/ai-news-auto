@@ -157,3 +157,18 @@ test("新しいA8案件はリンクと表示計測が同じ素材（a8mat）の�
     assert.ok(links[partner.program]?.url, key);
   }
 });
+
+test("あわせて読みたい（選び方ガイド）はタグ1つだけでは出さない。Claude の料金の記事に回線のガイドを出さない", () => {
+  const { chooseGuideForArticle } = load(path.join(root, "lib/choose.ts"));
+  const real = JSON.parse(fs.readFileSync(path.join(root, "content/articles/claude-ultra-plan-price-limits.json"), "utf8"));
+  const claude = article({ title: real.title, seoTitle: real.seoTitle, lede: real.lede ?? "", description: real.description ?? "", highlights: real.highlights ?? [], tags: real.tags, keywords: real.keywords ?? [], genreSlug: real.genreSlug });
+  assert.ok(claude.tags.includes("料金プラン"));
+  assert.equal(chooseGuideForArticle(claude), undefined);
+  // 代わりに出る「あわせて読みたい」は Claude の料金ガイド（回線ではない）
+  const next = readNextForArticle(claude);
+  assert.ok(next.every((link) => link.href !== "/choose/internet-for-ai"));
+  if (next.length) assert.match(next[0].href, /claude/);
+  // 見出しが回線の話題なら従来どおり出す
+  assert.equal(chooseGuideForArticle(article({ title: "楽天モバイルの新料金プラン、データ容量無制限に", tags: ["楽天モバイル"], genreSlug: "tech-gadget" }))?.slug, "internet-for-ai");
+  assert.equal(chooseGuideForArticle(article({ title: "転職市場でAI人材の求人が増加", genreSlug: "business" }))?.slug, "ai-career");
+});
