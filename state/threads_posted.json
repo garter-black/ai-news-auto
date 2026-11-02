@@ -2884,7 +2884,8 @@
       "permalink": "",
       "channels": {
         "twitter": "6ae8259e64604db314423a63",
-        "facebook": "6ae8259e64604db314423a8e"
+        "facebook": "6ae8259e64604db314423a8e",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzdg7kttbz2z"
       },
       "hook": "number",
       "score": 5,
@@ -2895,7 +2896,8 @@
       "question": false,
       "comment": "編集部：これは開発者にはうれしい更新。",
       "dueAt": "2026-11-02T12:00:00+00:00",
-      "postedAt": "2026-11-02T05:54:38+00:00"
+      "postedAt": "2026-11-02T05:54:38+00:00",
+      "blueskyAt": "2026-11-02T13:22:53+00:00"
     },
     "nvidia-tensorrt-edge-llm-edge-ai": {
       "id": "6ae825a0759fc887b6ce973a",
