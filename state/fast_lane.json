@@ -503,6 +503,19 @@
       "title": "Europe’s Industrial Leaders Reinvent Engineering and Manufacturing With NVIDIA",
       "url": "https://blogs.nvidia.com/blog/europe-industrial-leaders-engineering-manufacturing/"
     },
+    "d51d2d4302f1bbc6": {
+      "detectedAt": "2026-11-02T12:49:24+00:00",
+      "finishedAt": "2026-11-02T12:51:34+00:00",
+      "outcome": "retry",
+      "reason": "作れなかった（次の起動で再挑戦）",
+      "run": "41447990302",
+      "slug": "",
+      "source": "radar-reuters.com",
+      "sourcePublishedAt": "2026-11-02T12:49:24+00:00",
+      "startedAt": "2026-11-02T12:51:01+00:00",
+      "title": "Marvell agrees to buy optical components maker Lumentum in a $115B all-stock deal, as it seeks to rival Broadcom; Nvidia invested $2B in Marvell and Lumentum",
+      "url": "https://www.reuters.com/legal/transactional/marvell-buy-lumentum-115-billion-deal-ai-data-center-bet-2026-11-02/"
+    },
     "d8103b8af50d92a5": {
       "detectedAt": "2026-10-28T17:17:51+00:00",
       "finishedAt": "2026-10-28T17:19:52+00:00",
