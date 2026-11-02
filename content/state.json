@@ -60,9 +60,7 @@
     "zoohZ1BiHs0": 1
   },
   "failed_web": {},
-  "major_tries": {
-    "d51d2d4302f1bbc6": 2
-  },
+  "major_tries": {},
   "processed": {
     "--kyzoeUuBk": {
       "at": "2026-08-10T15:58:56.932533+00:00",
@@ -10540,6 +10538,12 @@
       "reason": "quality: easy_markdown が「## ひとことで言うと」から始まっていない",
       "skipped": true,
       "url": "https://www.mhlw.go.jp/stf/newpage_77005.html"
+    },
+    "d51d2d4302f1bbc6": {
+      "at": "2026-11-02T12:55:37.446420+00:00",
+      "reason": "major gave up x3: 本文が短い（0字）",
+      "skipped": true,
+      "url": "https://www.reuters.com/legal/transactional/marvell-buy-lumentum-115-billion-deal-ai-data-center-bet-2026-11-02/"
     },
     "d543a8c819225bfc": {
       "at": "2026-10-26T12:33:20.217094+00:00",
