@@ -67,5 +67,17 @@
     "prompt": "An empty storefront interior with a vacant counter, a stack of documents on a desk, and soft natural light filtering through a window, creating a subdued, business‑focused atmosphere.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T13:36:29+00:00"
+  },
+  "imageFocus": {
+    "x": 0.331,
+    "y": 0.363,
+    "box": [
+      0.0,
+      0.0,
+      0.662,
+      0.726
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/yen-depreciation-bankruptcy-october-2026-db819896.jpg"
   }
 }

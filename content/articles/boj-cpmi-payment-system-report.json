@@ -65,5 +65,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.boj.or.jp/common2/img/common/og_img.jpg",
     "at": "2026-11-02T13:41:51+00:00"
+  },
+  "imageFocus": {
+    "x": 0.428,
+    "y": 0.5,
+    "box": [
+      0.0,
+      0.0,
+      0.856,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/boj-cpmi-payment-system-report-62c5f359.jpg"
   }
 }

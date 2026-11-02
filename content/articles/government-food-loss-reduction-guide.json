@@ -59,5 +59,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.gov-online.go.jp/useful/article/201303/img/food_01.webp",
     "at": "2026-10-30T19:12:34+00:00"
+  },
+  "imageFocus": {
+    "x": 0.575,
+    "y": 0.444,
+    "box": [
+      0.15,
+      0.0,
+      1.0,
+      0.887
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/government-food-loss-reduction-guide-8a6046ff.jpg"
   }
 }

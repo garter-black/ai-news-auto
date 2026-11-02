@@ -59,5 +59,17 @@
     "prompt": "A close‑up of a hand holding an official certification certificate on a tidy office desk, with a laptop and paperwork softly blurred in the background under natural daylight.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T13:34:06+00:00"
+  },
+  "imageFocus": {
+    "x": 0.511,
+    "y": 0.351,
+    "box": [
+      0.022,
+      0.0,
+      1.0,
+      0.702
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/ipa-dx-certification-nov-2026-1103be04.jpg"
   }
 }

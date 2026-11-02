@@ -71,5 +71,17 @@
     "height": 591,
     "at": "2026-11-02T11:53:37+00:00",
     "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.506,
+    "box": [
+      0.075,
+      0.146,
+      0.925,
+      0.867
+    ],
+    "ar": 2.0305,
+    "src": "https://ai-tech-express.jp/img/google-agent-eval-engineering-lessons-1a5dbebc.jpg"
   }
 }

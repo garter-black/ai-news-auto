@@ -71,5 +71,17 @@
     "prompt": "A close‑up of a printed financial report and a laptop on a tidy office desk, with soft natural light from a window.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T12:02:28+00:00"
+  },
+  "imageFocus": {
+    "x": 0.405,
+    "y": 0.5,
+    "box": [
+      0.0,
+      0.0,
+      0.809,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/cyberagent-fy2026-results-date-0fe556e1.jpg"
   }
 }

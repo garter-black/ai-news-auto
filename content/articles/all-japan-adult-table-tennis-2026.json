@@ -63,5 +63,17 @@
     "width": 1024,
     "height": 576,
     "at": "2026-11-02T03:41:10+00:00"
+  },
+  "imageFocus": {
+    "x": 0.537,
+    "y": 0.5,
+    "box": [
+      0.075,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/all-japan-adult-table-tennis-2026-5f98320f.jpg"
   }
 }

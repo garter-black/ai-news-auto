@@ -70,5 +70,17 @@
     "prompt": "A close-up of a laptop screen showing lines of programming code, with a hand typing on the keyboard in a softly lit office.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T12:02:52+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.488,
+    "box": [
+      0.0,
+      0.0,
+      1.0,
+      0.976
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/chatgpt-codex-shared-usage-limits-d3af65e4.jpg"
   }
 }

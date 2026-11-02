@@ -73,5 +73,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/29/ML-21654-featured-image.png",
     "at": "2026-10-30T22:52:14+00:00"
+  },
+  "imageFocus": {
+    "x": 0.7,
+    "y": 0.5,
+    "box": [
+      0.4,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/amazon-bedrock-cost-management-playbook-56d6b0c4.jpg"
   }
 }

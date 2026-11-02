@@ -63,5 +63,17 @@
     "prompt": "A close-up of a hand holding a printed Japanese government bond certificate against a softly blurred office background, illuminated by gentle natural light.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T13:32:51+00:00"
+  },
+  "imageFocus": {
+    "x": 0.475,
+    "y": 0.506,
+    "box": [
+      0.0,
+      0.012,
+      0.95,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/mof-jgb-interest-rate-202610-f980c591.jpg"
   }
 }

@@ -71,5 +71,17 @@
     "prompt": "A close-up of a modern server rack illuminated by cool white lighting in a dimly lit data center, with a technician's hands typing on a keyboard in the foreground.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T12:02:49+00:00"
+  },
+  "imageFocus": {
+    "x": 0.42,
+    "y": 0.5,
+    "box": [
+      0.0,
+      0.0,
+      0.841,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/claude-ultra-plan-price-limits-1e7f969a.jpg"
   }
 }

@@ -68,5 +68,17 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T04:00:16+00:00"
+  },
+  "imageFocus": {
+    "x": 0.469,
+    "y": 0.508,
+    "box": [
+      0.0,
+      0.017,
+      0.938,
+      1.0
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/pikmin-4-switch-2-edition-demo-a371c72f.jpg"
   }
 }

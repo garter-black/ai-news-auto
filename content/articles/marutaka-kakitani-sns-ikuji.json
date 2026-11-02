@@ -85,5 +85,17 @@
     "prompt": "A woman seen from behind cradles an infant on a couch while a smartphone rests on the coffee table, with soft daylight streaming through a nearby window.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T12:05:35+00:00"
+  },
+  "imageFocus": {
+    "x": 0.444,
+    "y": 0.572,
+    "box": [
+      0.0,
+      0.143,
+      0.887,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/marutaka-kakitani-sns-ikuji-f095f54e.jpg"
   }
 }

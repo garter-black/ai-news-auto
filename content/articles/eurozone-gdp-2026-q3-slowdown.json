@@ -67,5 +67,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.nli-research.co.jp/files/topics/87234_ext_03_0.jpg",
     "at": "2026-11-02T14:52:41+00:00"
+  },
+  "imageFocus": {
+    "x": 0.73,
+    "y": 0.53,
+    "box": [
+      0.459,
+      0.06,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/eurozone-gdp-2026-q3-slowdown-dece67f0.jpg"
   }
 }

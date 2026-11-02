@@ -80,5 +80,17 @@
     "width": 755,
     "height": 469,
     "at": "2026-11-02T11:53:00+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.473,
+    "box": [
+      0.0,
+      0.03,
+      1.0,
+      0.915
+    ],
+    "ar": 1.6098,
+    "src": "https://ai-tech-express.jp/img/nissan-namie-ev-battery-circular-economy-6d88205f.jpg"
   }
 }

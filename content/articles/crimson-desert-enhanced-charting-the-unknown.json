@@ -72,5 +72,17 @@
     "width": 1200,
     "height": 682,
     "at": "2026-11-02T05:32:38+00:00"
+  },
+  "imageFocus": {
+    "x": 0.602,
+    "y": 0.654,
+    "box": [
+      0.219,
+      0.308,
+      0.984,
+      1.0
+    ],
+    "ar": 1.7595,
+    "src": "https://ai-tech-express.jp/img/crimson-desert-enhanced-charting-the-unknown-9fc9b621.jpg"
   }
 }

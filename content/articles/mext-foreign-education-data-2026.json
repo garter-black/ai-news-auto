@@ -55,5 +55,17 @@
     "prompt": "A bright, empty classroom with rows of desks and a chalkboard, natural daylight streaming through large windows, conveying an educational setting.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T13:33:49+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.604,
+    "box": [
+      0.0,
+      0.208,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/mext-foreign-education-data-2026-d00d32d1.jpg"
   }
 }

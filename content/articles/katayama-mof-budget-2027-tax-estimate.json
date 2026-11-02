@@ -65,5 +65,17 @@
     "prompt": "A close-up of a wooden conference table stacked with tax reports, spreadsheets and a calculator, illuminated by soft overhead lighting, with a blurred silhouette of a person reviewing the papers from behind.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T12:02:28+00:00"
+  },
+  "imageFocus": {
+    "x": 0.548,
+    "y": 0.468,
+    "box": [
+      0.097,
+      0.03,
+      1.0,
+      0.905
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/katayama-mof-budget-2027-tax-estimate-27d433e4.jpg"
   }
 }

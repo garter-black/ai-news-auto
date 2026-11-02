@@ -60,5 +60,17 @@
     "prompt": "A modern glass‑front office building representing a central bank, set against a clear sky in Tokyo with soft daylight, and a few people seen from behind entering the entrance.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T12:02:23+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.735,
+    "box": [
+      0.0,
+      0.47,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/boj-outlook-report-october-e51aa977.jpg"
   }
 }

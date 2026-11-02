@@ -66,5 +66,17 @@
     "prompt": "A close-up of a hand holding a smartphone displaying a novel page with a subtle wallpaper visible on the screen, lit by soft natural light.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T12:03:48+00:00"
+  },
+  "imageFocus": {
+    "x": 0.561,
+    "y": 0.535,
+    "box": [
+      0.225,
+      0.071,
+      0.897,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/docomo-d-valuepass-kusuriya-35b3df5a.jpg"
   }
 }

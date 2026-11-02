@@ -88,5 +88,17 @@
     "width": 1200,
     "height": 648,
     "at": "2026-11-02T03:45:28+00:00"
+  },
+  "imageFocus": {
+    "x": 0.509,
+    "y": 0.537,
+    "box": [
+      0.019,
+      0.075,
+      1.0,
+      1.0
+    ],
+    "ar": 1.8519,
+    "src": "https://ai-tech-express.jp/img/nvidia-nemotron-halloween-monsterhouse-6c7accef.jpg"
   }
 }

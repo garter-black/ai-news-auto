@@ -68,5 +68,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.nli-research.co.jp/files/topics/87238_ext_03_0.jpg",
     "at": "2026-11-02T16:04:37+00:00"
+  },
+  "imageFocus": {
+    "x": 0.514,
+    "y": 0.562,
+    "box": [
+      0.028,
+      0.125,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/nli-electronic-waste-recycling-challenges-65d7ca87.jpg"
   }
 }

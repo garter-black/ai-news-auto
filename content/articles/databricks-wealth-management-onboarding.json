@@ -70,5 +70,17 @@
     "height": 628,
     "at": "2026-11-02T11:54:36+00:00",
     "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.505,
+    "y": 0.536,
+    "box": [
+      0.022,
+      0.072,
+      0.988,
+      1.0
+    ],
+    "ar": 1.9108,
+    "src": "https://ai-tech-express.jp/img/databricks-wealth-management-onboarding-da591efe.jpg"
   }
 }

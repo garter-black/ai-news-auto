@@ -57,5 +57,17 @@
     "prompt": "A sleek prototype race car speeding around a curving section of a European race track, with blurred grandstands and a cloudy sky.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T11:55:44+00:00"
+  },
+  "imageFocus": {
+    "x": 0.444,
+    "y": 0.428,
+    "box": [
+      0.0,
+      0.089,
+      0.887,
+      0.768
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/toyota-wec-monza-2026-preview-aff3311f.jpg"
   }
 }

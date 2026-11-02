@@ -82,5 +82,17 @@
     "height": 673,
     "at": "2026-11-02T16:12:50+00:00",
     "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.492,
+    "y": 0.442,
+    "box": [
+      0.013,
+      0.017,
+      0.972,
+      0.866
+    ],
+    "ar": 1.7831,
+    "src": "https://ai-tech-express.jp/img/nvidia-workload-map-ai-frameworks-16241e6e.jpg"
   }
 }

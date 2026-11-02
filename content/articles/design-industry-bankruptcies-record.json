@@ -61,5 +61,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.tsr-net.co.jp/data/detail/__icsFiles/afieldfile/2026/10/30/1101_design0.jpg",
     "at": "2026-10-31T22:11:48+00:00"
+  },
+  "imageFocus": {
+    "x": 0.536,
+    "y": 0.503,
+    "box": [
+      0.072,
+      0.006,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/design-industry-bankruptcies-record-6d80de17.jpg"
   }
 }

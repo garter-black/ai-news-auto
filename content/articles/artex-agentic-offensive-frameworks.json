@@ -78,5 +78,17 @@
     "height": 590,
     "at": "2026-11-02T11:53:20+00:00",
     "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.474,
+    "y": 0.554,
+    "box": [
+      0.028,
+      0.146,
+      0.919,
+      0.962
+    ],
+    "ar": 2.0339,
+    "src": "https://ai-tech-express.jp/img/artex-agentic-offensive-frameworks-7b759614.jpg"
   }
 }

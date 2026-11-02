@@ -66,5 +66,17 @@
     "prompt": "A close-up of a hand holding a stack of printed stock certificates on a wooden desk, illuminated by soft natural light from a nearby window.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T13:33:44+00:00"
+  },
+  "imageFocus": {
+    "x": 0.403,
+    "y": 0.5,
+    "box": [
+      0.0,
+      0.0,
+      0.806,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/ntt-share-buyback-october-2026-32a91865.jpg"
   }
 }

@@ -68,5 +68,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.mof.go.jp/common/images/og_img.png",
     "at": "2026-11-02T14:12:21+00:00"
+  },
+  "imageFocus": {
+    "x": 0.438,
+    "y": 0.282,
+    "box": [
+      0.0,
+      0.0,
+      0.875,
+      0.565
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/katayama-mof-press-conference-oct2026-aa230cf8.jpg"
   }
 }

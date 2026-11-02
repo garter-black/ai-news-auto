@@ -70,5 +70,17 @@
     "height": 676,
     "at": "2026-11-02T11:54:57+00:00",
     "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.475,
+    "y": 0.517,
+    "box": [
+      0.016,
+      0.1,
+      0.934,
+      0.933
+    ],
+    "ar": 1.7751,
+    "src": "https://ai-tech-express.jp/img/piggparty-tougen-anki-collab-6d2be9aa.jpg"
   }
 }

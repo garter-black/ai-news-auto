@@ -71,5 +71,17 @@
     "width": 600,
     "height": 400,
     "at": "2026-11-02T11:53:13+00:00"
+  },
+  "imageFocus": {
+    "x": 0.512,
+    "y": 0.526,
+    "box": [
+      0.062,
+      0.052,
+      0.963,
+      1.0
+    ],
+    "ar": 1.5,
+    "src": "https://ai-tech-express.jp/img/civil-code-revision-promissory-note-abolition-a3125979.jpg"
   }
 }

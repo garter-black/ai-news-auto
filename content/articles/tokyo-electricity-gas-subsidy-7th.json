@@ -75,5 +75,17 @@
     "prompt": "A pair of hands holding a grant application form on a wooden desk, with an industrial LPG cylinder and a high‑voltage transformer visible in the background of a modest workshop, illuminated by soft natural daylight from a window.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T13:32:52+00:00"
+  },
+  "imageFocus": {
+    "x": 0.431,
+    "y": 0.5,
+    "box": [
+      0.0,
+      0.0,
+      0.863,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/tokyo-electricity-gas-subsidy-7th-9079f276.jpg"
   }
 }

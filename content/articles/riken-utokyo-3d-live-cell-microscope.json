@@ -59,5 +59,17 @@
     "prompt": "A close-up view of a modern laboratory microscope with its objective lens illuminated, set on a clean workbench under bright lab lighting.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T11:55:14+00:00"
+  },
+  "imageFocus": {
+    "x": 0.596,
+    "y": 0.497,
+    "box": [
+      0.191,
+      0.0,
+      1.0,
+      0.994
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/riken-utokyo-3d-live-cell-microscope-f45f749c.jpg"
   }
 }

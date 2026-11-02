@@ -69,5 +69,17 @@
     "height": 630,
     "at": "2026-11-02T11:54:03+00:00",
     "imageKind": "banner"
+  },
+  "imageFocus": {
+    "x": 0.515,
+    "y": 0.491,
+    "box": [
+      0.072,
+      0.024,
+      0.959,
+      0.958
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/toyota-hydrogen-initiatives-2026-47b5d22c.jpg"
   }
 }

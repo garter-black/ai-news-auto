@@ -76,5 +76,17 @@
     "prompt": "A hand rests on a computer mouse beside a laptop displaying a context menu on a tidy office desk, lit by natural daylight.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T12:03:15+00:00"
+  },
+  "imageFocus": {
+    "x": 0.428,
+    "y": 0.515,
+    "box": [
+      0.0,
+      0.107,
+      0.856,
+      0.923
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/windows11-context-menu-customize-kb5127936-3c568e2b.jpg"
   }
 }

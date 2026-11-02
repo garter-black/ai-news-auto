@@ -80,5 +80,17 @@
     "height": 591,
     "at": "2026-11-02T11:53:32+00:00",
     "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.466,
+    "y": 0.488,
+    "box": [
+      0.022,
+      0.07,
+      0.909,
+      0.905
+    ],
+    "ar": 2.0305,
+    "src": "https://ai-tech-express.jp/img/google-distributed-cloud-ai-innovations-2026-453fa15b.jpg"
   }
 }

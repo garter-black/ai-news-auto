@@ -70,5 +70,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://global.honda/content/dam/site/global-jp/news-new/cq_img/2026/11/2261103e/2261103e_og.jpg",
     "at": "2026-11-02T15:32:30+00:00"
+  },
+  "imageFocus": {
+    "x": 0.356,
+    "y": 0.535,
+    "box": [
+      0.0,
+      0.071,
+      0.713,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/honda-rn0-emtb-eicma-2026-79a596a9.jpg"
   }
 }

@@ -66,5 +66,17 @@
     "prompt": "A close-up of assorted craft-beer bottles on a wooden shelf, illuminated by soft natural light, with no visible labels.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T13:33:43+00:00"
+  },
+  "imageFocus": {
+    "x": 0.456,
+    "y": 0.453,
+    "box": [
+      0.0,
+      0.0,
+      0.912,
+      0.905
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/craft-beer-shipments-2026-tsr-c41c4b8c.jpg"
   }
 }

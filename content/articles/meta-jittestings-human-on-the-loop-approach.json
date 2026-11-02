@@ -68,5 +68,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://engineering.fb.com/wp-content/uploads/2026/10/Catching-JiTTests-Hero-3.png",
     "at": "2026-11-01T01:11:56+00:00"
+  },
+  "imageFocus": {
+    "x": 0.428,
+    "y": 0.569,
+    "box": [
+      0.0,
+      0.137,
+      0.856,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/meta-jittestings-human-on-the-loop-approach-589aa4c5.jpg"
   }
 }

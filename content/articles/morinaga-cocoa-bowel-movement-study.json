@@ -62,5 +62,17 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cocoa_Powder_and_Chocolate_on_Marble_Background.jpg",
     "query": "cocoa powder",
     "at": "2026-11-02T11:55:15+00:00"
+  },
+  "imageFocus": {
+    "x": 0.429,
+    "y": 0.562,
+    "box": [
+      0.0,
+      0.125,
+      0.859,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/morinaga-cocoa-bowel-movement-study-ca1318f8.jpg"
   }
 }

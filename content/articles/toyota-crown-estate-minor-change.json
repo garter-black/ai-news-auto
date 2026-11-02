@@ -73,5 +73,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://global.toyota/pages/news/images/2026/11/02/1330_crownestate/20261102_02_ogp.gif",
     "at": "2026-11-02T12:32:00+00:00"
+  },
+  "imageFocus": {
+    "x": 0.486,
+    "y": 0.369,
+    "box": [
+      0.0,
+      0.0,
+      0.972,
+      0.738
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/toyota-crown-estate-minor-change-876d615d.jpg"
   }
 }

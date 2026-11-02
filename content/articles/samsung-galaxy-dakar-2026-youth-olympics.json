@@ -69,5 +69,17 @@
     "width": 1000,
     "height": 667,
     "at": "2026-11-02T06:13:09+00:00"
+  },
+  "imageFocus": {
+    "x": 0.476,
+    "y": 0.587,
+    "box": [
+      0.0,
+      0.174,
+      0.953,
+      1.0
+    ],
+    "ar": 1.4993,
+    "src": "https://ai-tech-express.jp/img/samsung-galaxy-dakar-2026-youth-olympics-33e65167.jpg"
   }
 }

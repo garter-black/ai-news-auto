@@ -83,5 +83,17 @@
     "height": 675,
     "at": "2026-11-02T15:08:18+00:00",
     "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.487,
+    "y": 0.603,
+    "box": [
+      0.134,
+      0.3,
+      0.841,
+      0.906
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/openai-grid-protectors-program-8dd36c0e.jpg"
   }
 }

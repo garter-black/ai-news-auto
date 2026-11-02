@@ -65,5 +65,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.mof.go.jp/common/images/og_img.png",
     "at": "2026-11-02T13:22:21+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.381,
+    "box": [
+      0.0,
+      0.0,
+      1.0,
+      0.762
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/mof-tobacco-retail-price-approval-900c3292.jpg"
   }
 }

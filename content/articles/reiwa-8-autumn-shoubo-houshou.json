@@ -58,5 +58,17 @@
     "prompt": "A close-up of a red and blue ceremonial ribbon and medal arranged on a wooden table, illuminated by soft natural light, with no people or identifiable objects in view.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T13:33:43+00:00"
+  },
+  "imageFocus": {
+    "x": 0.403,
+    "y": 0.387,
+    "box": [
+      0.0,
+      0.0,
+      0.806,
+      0.774
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/reiwa-8-autumn-shoubo-houshou-9cb893e2.jpg"
   }
 }

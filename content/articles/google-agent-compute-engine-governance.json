@@ -78,5 +78,17 @@
     "height": 668,
     "at": "2026-11-02T11:54:00+00:00",
     "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.528,
+    "y": 0.503,
+    "box": [
+      0.056,
+      0.107,
+      1.0,
+      0.899
+    ],
+    "ar": 1.7964,
+    "src": "https://ai-tech-express.jp/img/google-agent-compute-engine-governance-c1c8ba5a.jpg"
   }
 }

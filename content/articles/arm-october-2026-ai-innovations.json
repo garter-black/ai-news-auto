@@ -79,5 +79,17 @@
     "width": 1200,
     "height": 670,
     "at": "2026-11-02T11:53:04+00:00"
+  },
+  "imageFocus": {
+    "x": 0.464,
+    "y": 0.55,
+    "box": [
+      0.0,
+      0.101,
+      0.928,
+      1.0
+    ],
+    "ar": 1.791,
+    "src": "https://ai-tech-express.jp/img/arm-october-2026-ai-innovations-ad3b4946.jpg"
   }
 }

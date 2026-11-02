@@ -78,5 +78,17 @@
     "width": 640,
     "height": 480,
     "at": "2026-11-02T11:53:39+00:00"
+  },
+  "imageFocus": {
+    "x": 0.487,
+    "y": 0.41,
+    "box": [
+      0.0,
+      0.0,
+      0.975,
+      0.821
+    ],
+    "ar": 1.3333,
+    "src": "https://ai-tech-express.jp/img/nissay-it-ai-driven-development-aws-1b5fccad.jpg"
   }
 }

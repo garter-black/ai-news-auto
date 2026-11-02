@@ -76,5 +76,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.docker.com/app/uploads/2025/03/image.png",
     "at": "2026-11-02T14:12:44+00:00"
+  },
+  "imageFocus": {
+    "x": 0.691,
+    "y": 0.5,
+    "box": [
+      0.381,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/docker-blueprint-alliance-agent-baseline-677a4308.jpg"
   }
 }

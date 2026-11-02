@@ -69,5 +69,17 @@
     "width": 1200,
     "height": 800,
     "at": "2026-11-02T03:43:54+00:00"
+  },
+  "imageFocus": {
+    "x": 0.42,
+    "y": 0.418,
+    "box": [
+      0.0,
+      0.0,
+      0.841,
+      0.836
+    ],
+    "ar": 1.5,
+    "src": "https://ai-tech-express.jp/img/figma-config-india-insights-ai-22341c81.jpg"
   }
 }

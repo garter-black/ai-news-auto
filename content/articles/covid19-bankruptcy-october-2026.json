@@ -68,5 +68,17 @@
     "prompt": "A shuttered storefront on a quiet city street, blinds drawn and windows covered, with an empty sidewalk under overcast lighting.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T13:33:02+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.325,
+    "box": [
+      0.0,
+      0.0,
+      1.0,
+      0.649
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/covid19-bankruptcy-october-2026-3d5b6805.jpg"
   }
 }

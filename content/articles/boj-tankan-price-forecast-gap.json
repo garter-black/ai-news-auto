@@ -66,5 +66,17 @@
     "prompt": "A calculator and a printed price chart on paper with a pen on a clean desk, next to a row of grocery price tags, soft daylight, no people",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T13:41:06+00:00"
+  },
+  "imageFocus": {
+    "x": 0.515,
+    "y": 0.337,
+    "box": [
+      0.031,
+      0.0,
+      1.0,
+      0.673
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/boj-tankan-price-forecast-gap-113e1969.jpg"
   }
 }

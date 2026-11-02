@@ -64,5 +64,17 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T06:33:15+00:00"
+  },
+  "imageFocus": {
+    "x": 0.511,
+    "y": 0.48,
+    "box": [
+      0.031,
+      0.0,
+      0.991,
+      0.961
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/playstation-blog-nov-2026-games-4a3dbe9a.jpg"
   }
 }

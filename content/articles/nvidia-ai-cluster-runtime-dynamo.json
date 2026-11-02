@@ -73,5 +73,17 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T03:39:30+00:00"
+  },
+  "imageFocus": {
+    "x": 0.444,
+    "y": 0.464,
+    "box": [
+      0.119,
+      0.0,
+      0.769,
+      0.928
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/nvidia-ai-cluster-runtime-dynamo-2c5d00e2.jpg"
   }
 }

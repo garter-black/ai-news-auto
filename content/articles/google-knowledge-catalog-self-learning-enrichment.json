@@ -72,5 +72,17 @@
     "height": 591,
     "at": "2026-11-02T11:53:41+00:00",
     "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.562,
+    "y": 0.674,
+    "box": [
+      0.125,
+      0.348,
+      1.0,
+      1.0
+    ],
+    "ar": 2.0305,
+    "src": "https://ai-tech-express.jp/img/google-knowledge-catalog-self-learning-enrichment-f8223d7d.jpg"
   }
 }

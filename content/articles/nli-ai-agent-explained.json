@@ -64,5 +64,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.nli-research.co.jp/files/topics/87239_ext_03_0.jpg",
     "at": "2026-11-02T14:32:19+00:00"
+  },
+  "imageFocus": {
+    "x": 0.412,
+    "y": 0.587,
+    "box": [
+      0.0,
+      0.173,
+      0.825,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/nli-ai-agent-explained-00319c2e.jpg"
   }
 }

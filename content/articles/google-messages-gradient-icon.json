@@ -77,5 +77,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://9to5google.com/wp-content/uploads/sites/4/2026/11/google-messages-gradient-icon_e18c7d.jpg?quality=82&strip=all&resize=1200,628",
     "at": "2026-11-02T13:48:08+00:00"
+  },
+  "imageFocus": {
+    "x": 0.548,
+    "y": 0.547,
+    "box": [
+      0.097,
+      0.095,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/google-messages-gradient-icon-bbe8d999.jpg"
   }
 }

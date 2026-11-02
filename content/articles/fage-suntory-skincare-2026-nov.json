@@ -66,5 +66,17 @@
     "prompt": "A close-up of a clear glass bottle of moisturizing lotion and a white pump bottle of foaming cleanser arranged on a white bathroom countertop, illuminated by soft natural light.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T11:54:31+00:00"
+  },
+  "imageFocus": {
+    "x": 0.469,
+    "y": 0.47,
+    "box": [
+      0.0,
+      0.0,
+      0.938,
+      0.94
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/fage-suntory-skincare-2026-nov-14c30d6f.jpg"
   }
 }

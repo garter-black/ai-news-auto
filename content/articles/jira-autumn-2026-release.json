@@ -71,5 +71,17 @@
     "height": 675,
     "at": "2026-11-02T11:54:30+00:00",
     "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.483,
+    "y": 0.475,
+    "box": [
+      0.022,
+      0.161,
+      0.944,
+      0.789
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/jira-autumn-2026-release-3be87323.jpg"
   }
 }

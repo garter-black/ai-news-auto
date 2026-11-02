@@ -70,5 +70,17 @@
     "height": 540,
     "at": "2026-11-02T11:55:01+00:00",
     "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.512,
+    "y": 0.589,
+    "box": [
+      0.047,
+      0.178,
+      0.978,
+      1.0
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/government-education-loan-guide-2026-f4fb2e52.jpg"
   }
 }

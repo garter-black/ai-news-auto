@@ -81,5 +81,17 @@
     "prompt": "A close-up of a hand holding a printed share certificate on a wooden desk, with a laptop displaying a stock chart in the background, illuminated by soft natural light.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T16:05:49+00:00"
+  },
+  "imageFocus": {
+    "x": 0.489,
+    "y": 0.453,
+    "box": [
+      0.0,
+      0.0,
+      0.978,
+      0.905
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/anthropic-s1a-amendment-ant-nasdaq-e8171ea0.jpg"
   }
 }

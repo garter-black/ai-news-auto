@@ -64,5 +64,17 @@
     "prompt": "A close-up of a hand holding a green-tinged bond certificate on a wooden desk, illuminated by soft natural light from a nearby window, with a blurred cityscape visible in the background.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T13:33:21+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.578,
+    "box": [
+      0.0,
+      0.155,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/jhfc-green-bond-gov-guarantee-1cc44bbf.jpg"
   }
 }

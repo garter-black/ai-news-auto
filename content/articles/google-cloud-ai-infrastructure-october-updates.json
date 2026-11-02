@@ -76,5 +76,17 @@
     "height": 591,
     "at": "2026-11-02T11:54:07+00:00",
     "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.529,
+    "y": 0.393,
+    "box": [
+      0.059,
+      0.0,
+      1.0,
+      0.785
+    ],
+    "ar": 2.0305,
+    "src": "https://ai-tech-express.jp/img/google-cloud-ai-infrastructure-october-updates-4586dd7a.jpg"
   }
 }

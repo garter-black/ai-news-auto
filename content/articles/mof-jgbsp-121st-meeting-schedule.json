@@ -67,5 +67,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.mof.go.jp/common/images/og_img.png",
     "at": "2026-11-02T12:16:42+00:00"
+  },
+  "imageFocus": {
+    "x": 0.414,
+    "y": 0.639,
+    "box": [
+      0.0,
+      0.333,
+      0.828,
+      0.946
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/mof-jgbsp-121st-meeting-schedule-3cb981fe.jpg"
   }
 }

@@ -79,5 +79,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/03_ThreatIntelligenceWebsiteBannerIdeas_BA.max-2600x2600.png",
     "at": "2026-11-02T16:04:58+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.5,
+    "box": [
+      0.219,
+      0.0,
+      0.781,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/google-warns-llmjacking-cloud-threats-ad795203.jpg"
   }
 }

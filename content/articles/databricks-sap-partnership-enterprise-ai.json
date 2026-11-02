@@ -67,5 +67,17 @@
     "prompt": "A modern data center aisle with rows of illuminated server racks under cool white lighting.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T12:03:05+00:00"
+  },
+  "imageFocus": {
+    "x": 0.645,
+    "y": 0.5,
+    "box": [
+      0.291,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/databricks-sap-partnership-enterprise-ai-f40686a5.jpg"
   }
 }

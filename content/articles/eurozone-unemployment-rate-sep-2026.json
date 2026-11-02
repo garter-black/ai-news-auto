@@ -68,5 +68,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.nli-research.co.jp/files/topics/87233_ext_03_0.jpg",
     "at": "2026-11-02T16:12:45+00:00"
+  },
+  "imageFocus": {
+    "x": 0.529,
+    "y": 0.532,
+    "box": [
+      0.062,
+      0.22,
+      0.997,
+      0.845
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/eurozone-unemployment-rate-sep-2026-ee98c398.jpg"
   }
 }

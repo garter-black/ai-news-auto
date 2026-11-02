@@ -80,5 +80,17 @@
     "height": 686,
     "at": "2026-11-02T11:53:56+00:00",
     "imageKind": "dense"
+  },
+  "imageFocus": {
+    "x": 0.461,
+    "y": 0.481,
+    "box": [
+      0.0,
+      0.0,
+      0.922,
+      0.962
+    ],
+    "ar": 1.7493,
+    "src": "https://ai-tech-express.jp/img/ntt-east-omakase-net-shukyaku-42f16003.jpg"
   }
 }

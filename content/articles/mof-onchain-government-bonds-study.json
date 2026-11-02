@@ -66,5 +66,17 @@
     "prompt": "A close-up of a stack of paper bond certificates beside a laptop on a conference table, illuminated by natural daylight from a window.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T12:02:24+00:00"
+  },
+  "imageFocus": {
+    "x": 0.533,
+    "y": 0.468,
+    "box": [
+      0.066,
+      0.0,
+      1.0,
+      0.935
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/mof-onchain-government-bonds-study-fadf101b.jpg"
   }
 }

@@ -66,5 +66,17 @@
     "prompt": "A hand arranging sealed envelopes with official stamps on a desk, with a softly blurred view of a government office interior behind them.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T12:02:15+00:00"
+  },
+  "imageFocus": {
+    "x": 0.506,
+    "y": 0.598,
+    "box": [
+      0.013,
+      0.196,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/mof-tax-stamp-revenue-sep-2026-6737ef71.jpg"
   }
 }

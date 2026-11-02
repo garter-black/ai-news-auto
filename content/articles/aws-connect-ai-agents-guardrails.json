@@ -75,5 +75,17 @@
     "height": 486,
     "at": "2026-11-02T11:54:03+00:00",
     "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.528,
+    "box": [
+      0.0,
+      0.056,
+      1.0,
+      1.0
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/aws-connect-ai-agents-guardrails-9d0794f3.jpg"
   }
 }

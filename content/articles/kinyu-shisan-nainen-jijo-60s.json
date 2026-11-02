@@ -72,5 +72,17 @@
     "prompt": "A close-up of an elderly woman's hands spreading out a stack of pension statements and a calculator on a wooden kitchen table, illuminated by soft natural light from a nearby window.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T12:03:20+00:00"
+  },
+  "imageFocus": {
+    "x": 0.479,
+    "y": 0.345,
+    "box": [
+      0.0,
+      0.0,
+      0.959,
+      0.69
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/kinyu-shisan-nainen-jijo-60s-00cee7d7.jpg"
   }
 }

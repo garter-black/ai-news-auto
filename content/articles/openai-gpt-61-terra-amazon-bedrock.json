@@ -68,5 +68,17 @@
     "prompt": "A sleek data center aisle lined with server racks under cool white lighting, with a close‑up of a hand on a keyboard and a computer monitor displaying abstract visual data.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T12:03:16+00:00"
+  },
+  "imageFocus": {
+    "x": 0.516,
+    "y": 0.5,
+    "box": [
+      0.134,
+      0.0,
+      0.897,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/openai-gpt-61-terra-amazon-bedrock-d9060bb8.jpg"
   }
 }

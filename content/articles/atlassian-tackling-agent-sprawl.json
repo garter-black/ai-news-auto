@@ -71,5 +71,17 @@
     "height": 675,
     "at": "2026-11-02T11:55:09+00:00",
     "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.528,
+    "y": 0.494,
+    "box": [
+      0.097,
+      0.139,
+      0.959,
+      0.85
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/atlassian-tackling-agent-sprawl-218ad228.jpg"
   }
 }

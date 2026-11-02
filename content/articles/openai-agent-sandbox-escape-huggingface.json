@@ -114,5 +114,17 @@
   "generatedAt": "2026-11-02T00:22:02.969007+00:00",
   "thumbnail": "https://i.ytimg.com/vi/ubpXEv4lF0k/maxresdefault.jpg",
   "model": "gemini-3.5-flash",
-  "affiliates": []
+  "affiliates": [],
+  "imageFocus": {
+    "x": 0.492,
+    "y": 0.586,
+    "box": [
+      0.037,
+      0.222,
+      0.947,
+      0.95
+    ],
+    "ar": 1.7778,
+    "src": "https://i.ytimg.com/vi/ubpXEv4lF0k/maxresdefault.jpg"
+  }
 }

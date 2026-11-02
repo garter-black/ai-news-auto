@@ -66,5 +66,17 @@
     "prompt": "A clear glass bottle of coffee placed beside a freshly baked croissant on a light wooden tabletop, illuminated by soft natural daylight from a nearby window.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T11:57:03+00:00"
+  },
+  "imageFocus": {
+    "x": 0.605,
+    "y": 0.461,
+    "box": [
+      0.209,
+      0.083,
+      1.0,
+      0.839
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/craft-boss-croissant-latte-5fe21d7d.jpg"
   }
 }

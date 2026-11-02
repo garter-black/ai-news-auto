@@ -92,5 +92,17 @@
       "sourceName": "Docker公式ブログ"
     }
   ],
-  "updatedAt": "2026-11-02T14:31:21.618728+00:00"
+  "updatedAt": "2026-11-02T14:31:21.618728+00:00",
+  "imageFocus": {
+    "x": 0.439,
+    "y": 0.535,
+    "box": [
+      0.034,
+      0.071,
+      0.844,
+      1.0
+    ],
+    "ar": 1.9081,
+    "src": "https://ai-tech-express.jp/img/docker-coding-agent-horror-stories-cve-b874a4db.jpg"
+  }
 }

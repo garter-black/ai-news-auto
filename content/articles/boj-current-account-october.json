@@ -59,5 +59,17 @@
     "prompt": "A well-lit interior of a bank vault with massive steel doors slightly ajar, revealing rows of safety deposit boxes and soft natural light filtering in.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-11-02T12:02:57+00:00"
+  },
+  "imageFocus": {
+    "x": 0.489,
+    "y": 0.529,
+    "box": [
+      0.219,
+      0.083,
+      0.759,
+      0.976
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/boj-current-account-october-e3e8f660.jpg"
   }
 }

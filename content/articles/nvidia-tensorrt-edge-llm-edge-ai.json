@@ -76,5 +76,17 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T04:00:31+00:00"
+  },
+  "imageFocus": {
+    "x": 0.627,
+    "y": 0.461,
+    "box": [
+      0.253,
+      0.0,
+      1.0,
+      0.922
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/nvidia-tensorrt-edge-llm-edge-ai-1fe76d8f.jpg"
   }
 }
