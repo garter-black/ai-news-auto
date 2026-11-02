@@ -3136,7 +3136,8 @@
       ],
       "via": "buffer",
       "channels": {
-        "twitter": "6ae901b28d258062778cdde2"
+        "twitter": "6ae901b28d258062778cdde2",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzeffwk54y2z"
       },
       "permalink": "",
       "dueAt": "2026-11-02T22:30:00+00:00",
@@ -3192,7 +3193,8 @@
           "updatedAt": "2026-11-02T21:33:28+00:00"
         }
       },
-      "id": "6ae901b13b6f22c15ecfd7db"
+      "id": "6ae901b13b6f22c15ecfd7db",
+      "blueskyAt": "2026-11-02T22:41:13+00:00"
     }
   },
   "extraPending": {}
