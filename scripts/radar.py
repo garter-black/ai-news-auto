@@ -58,7 +58,28 @@ def rules() -> dict:
         "path": re.compile(data["primary_path_re"]),
     }
     data["_entities"] = [(e["name"], re.compile(e["re"], flags), bool(e.get("ai_only"))) for e in data["entities"]]
+    data["primary_hosts"] = with_source_hosts(data["primary_hosts"], _source_list())
     return data
+
+
+def _source_list() -> list[dict]:
+    """速報の発信元（fast_lane_rules.json の sources＋sources_registry.json）。radar.js の withSourceHosts と同じ材料"""
+    out = list(json.loads(RULES_PATH.read_text("utf-8")).get("sources", []))
+    try:
+        out += json.loads(RULES_PATH.with_name("sources_registry.json").read_text("utf-8")).get("sources", [])
+    except (OSError, ValueError):
+        pass
+    return out
+
+
+def with_source_hosts(hosts: list[dict], sources: list[dict]) -> list[dict]:
+    """発信元のホストも公式扱いにする（一覧の食い違いで「対象外のURL」にしない）"""
+    out = list(hosts)
+    for s in sources:
+        host = urllib.parse.urlsplit(s.get("url", "")).netloc.lower().removeprefix("www.")
+        if host and not any(host == p["host"] or host.endswith("." + p["host"]) for p in out):
+            out.append({"host": host, "entity": "*", "name": s.get("name") or host})
+    return out
 
 
 def entities_of(text: str) -> list[str]:
