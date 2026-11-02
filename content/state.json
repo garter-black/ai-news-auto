@@ -3267,6 +3267,14 @@
       "skipped": true,
       "url": "https://blog.google/products-and-platforms/products/education/impact-studies-uk-italy/"
     },
+    "039ac2e3b6c59702": {
+      "at": "2026-11-02T21:33:15.821953+00:00",
+      "model": "claude:sonnet",
+      "score": 100,
+      "section": "ai",
+      "slug": "antigravity-google-cloud-developer-plugin",
+      "url": "https://cloud.google.com/blog/topics/developers-practitioners/google-cloud-developer-plugin-now-available-in-antigravity-marketplace/"
+    },
     "03f8a607b05da2e8cd73624ffc97819a0e4433ec": {
       "at": "2026-10-27T15:14:08.993393+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -3466,6 +3474,14 @@
       "section": "ai",
       "slug": "gemini-notebook-free-textbooks",
       "url": "https://blog.google/innovation-and-ai/products/gemini-notebook/new-access-textbooks/"
+    },
+    "0b06f688e627ed3d": {
+      "at": "2026-11-02T21:37:40.775338+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "score": 100,
+      "section": "public",
+      "slug": "digital-agency-updates-card-record-list",
+      "url": "https://www.digital.go.jp/policies/mynumber/mynumbercard-mdoc/private-usecase-list"
     },
     "0b089d0bbbca477d": {
       "at": "2026-10-28T23:13:03.555145+00:00",
@@ -12634,75 +12650,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-30T16:01:28.749931+00:00",
-      "attempt": 1,
-      "id": "6750c2461412185f",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（348字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 115.7,
-        "avg_sentence": 52.9,
-        "long_share": 0.229,
-        "max_paragraph": 181,
-        "paragraphs": 16,
-        "sentences": 35
-      },
-      "score": null,
-      "source": "openai-news",
-      "title": "Credit Saison achieves 954% ROI in a ChatGPT Enterprise pilot"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T16:01:57.168484+00:00",
-      "attempt": 2,
-      "id": "6750c2461412185f",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2118字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "title の長さが不適切（74字 / 18〜64字）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 92.4,
-        "avg_sentence": 55.4,
-        "long_share": 0.343,
-        "max_paragraph": 143,
-        "paragraphs": 21,
-        "sentences": 35
-      },
-      "score": null,
-      "source": "openai-news",
-      "title": "Credit Saison achieves 954% ROI in a ChatGPT Enterprise pilot"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T16:41:24.543551+00:00",
-      "attempt": 1,
-      "id": "f79033ac6daecade",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1416字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（360字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 85.5,
-        "avg_sentence": 50.5,
-        "long_share": 0.182,
-        "max_paragraph": 148,
-        "paragraphs": 13,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "about-amazon",
-      "title": "Q3 Earnings: Andy Jassy on faster delivery, lowering cost to serve, groceries, p"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-30T16:42:56.170394+00:00",
       "attempt": 2,
       "id": "f79033ac6daecade",
@@ -19097,6 +19044,71 @@
       "score": 100,
       "source": "jfa",
       "title": "ビーチサッカー日本代表 メンバー・スケジュール AFCビーチサッカーアジアカップタイ2026（11.9-30 タイ／パンガー） #jfa #daihyo"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T21:33:15.815839+00:00",
+      "attempt": 1,
+      "id": "039ac2e3b6c59702",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 77.0,
+        "avg_sentence": 35.4,
+        "long_share": 0.068,
+        "max_paragraph": 198,
+        "paragraphs": 34,
+        "sentences": 74
+      },
+      "score": 100,
+      "source": "google-cloud-blog",
+      "title": "Google Cloud Developer plugin now available in Antigravity Marketplace"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T21:37:36.668591+00:00",
+      "attempt": 1,
+      "id": "0b06f688e627ed3d",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "文が長い（1文の平均 60.2字・60字超の文が 41% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 193.9字・最長 398字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 193.9,
+        "avg_sentence": 60.2,
+        "long_share": 0.414,
+        "max_paragraph": 398,
+        "paragraphs": 9,
+        "sentences": 29
+      },
+      "score": 100,
+      "source": "digital-agency",
+      "title": "カード代替電磁的記録を利用するサービスを開始した事業者及び事例一覧を更新しました"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T21:37:40.770998+00:00",
+      "attempt": 0,
+      "id": "0b06f688e627ed3d",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 123.6字・最長 198字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 123.6,
+        "avg_sentence": 25.2,
+        "long_share": 0.0,
+        "max_paragraph": 198,
+        "paragraphs": 11,
+        "sentences": 54
+      },
+      "score": 100,
+      "source": "digital-agency",
+      "title": "カード代替電磁的記録を利用するサービスを開始した事業者及び事例一覧を更新しました"
     }
   ],
   "short_text_retry": {},

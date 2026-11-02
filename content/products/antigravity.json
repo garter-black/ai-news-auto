@@ -8,24 +8,16 @@
   "companyName": "Google",
   "category": "開発ツール",
   "overview": {
-    "text": "Google Antigravityは、自然言語の指示で複数のAIエージェントがコード作成からテストまでを自律処理する開発基盤です。Googleにより開発され、2026年8月にデスクトップアプリなどが公開されました。",
+    "text": "Antigravityは、AIにプログラムを書かせる開発ツールです。Googleが提供しており、2026年8月に発表されました。",
     "sources": [
-      "google-antigravity-autonomous-software-development",
-      "google-antigravity-2-desktop-ai-agents"
+      "google-antigravity-2-desktop-ai-agents",
+      "antigravity-google-cloud-developer-plugin"
     ]
   },
   "facts": [
     {
-      "label": "提供開始",
-      "value": "2026年8月時点で提供中",
-      "sources": [
-        "google-antigravity-2-desktop-ai-agents",
-        "google-deepmind-antigravity-remote-control"
-      ]
-    },
-    {
       "label": "日本での提供",
-      "value": "利用可能",
+      "value": "利用できる",
       "sources": [
         "google-antigravity-autonomous-software-development",
         "google-antigravity-2-desktop-ai-agents"
@@ -42,100 +34,75 @@
   ],
   "capabilities": [
     {
-      "text": "自然言語の指示から複数のAIエージェントを並列で稼働させることができます。",
+      "text": "自然言語の指示でAIエージェントがコード生成やテストを自律的に進めることができます。",
       "sources": [
         "google-antigravity-autonomous-software-development"
       ]
     },
     {
-      "text": "AIがテストの自動実行と静的解析を行い、プルリクエストを作成できます。",
-      "sources": [
-        "google-antigravity-autonomous-software-development"
-      ]
-    },
-    {
-      "text": "スマートフォンなどから稼働中のエージェントを遠隔監視・操作できます。",
+      "text": "スマートフォンやブラウザから稼働中のエージェントを遠隔監視・操作できます。",
       "sources": [
         "google-deepmind-antigravity-remote-control"
       ]
     },
     {
-      "text": "対話型インターフェースを用いて要件定義のインタビューを自動化できます。",
+      "text": "複数の異なるAIエージェントを並行して実行・管理することができます。",
       "sources": [
         "google-antigravity-2-desktop-ai-agents"
       ]
     },
     {
-      "text": "自然言語による指示だけで電子ペーパーなどの機能拡張を行えます。",
+      "text": "プラグインの導入により、課金操作の前にAIが同意を求めるようになります。",
       "sources": [
-        "google-gemini-flash-eink-dashboard-glanceboard"
+        "antigravity-google-cloud-developer-plugin"
       ]
     }
   ],
   "pricing": [],
   "japan": [
     {
-      "text": "Google Cloudアカウントなどのアクセス権があれば国内の開発環境から導入を試行できます。",
+      "text": "発表の時点では、日本からの利用可否については利用条件付きで利用可能とみられます。",
       "sources": [
         "google-antigravity-autonomous-software-development"
-      ]
-    },
-    {
-      "text": "Gemini APIなどのアクセス権があれば国内から利用を試すことができます。",
-      "sources": [
-        "google-gemini-4-argon-surf-clock-hardware"
       ]
     }
   ],
   "howto": [
     {
-      "text": "デスクトップアプリ、CLI、専用IDE、開発者向けSDKとして提供されています。",
+      "text": "デスクトップアプリのほか、CLIや専用IDE、開発者向けのSDKが用意されています。",
       "sources": [
         "google-antigravity-2-desktop-ai-agents"
-      ]
-    },
-    {
-      "text": "公式の案内リンクからツールの提供状況や利用登録を確認して進められます。",
-      "sources": [
-        "google-antigravity-autonomous-software-development"
       ]
     }
   ],
   "differences": [
     {
-      "text": "従来のコード補完とは異なり、自然言語の指示から複数エージェントが自律的に作業します。",
+      "text": "Antigravity 2.0では、複数エージェントの並行実行に対応するデスクトップアプリとして公開されました。",
       "sources": [
-        "google-antigravity-autonomous-software-development"
+        "google-antigravity-2-desktop-ai-agents"
       ]
     }
   ],
   "faq": [
     {
-      "q": "誰に向いているツールですか？",
-      "a": "ソフトウェア開発を行う開発者に向いています。",
+      "q": "誰に向いている？",
+      "a": "ソフトウェア開発の現場に向けたツールとなっています。",
       "sources": [
         "google-antigravity-autonomous-software-development"
       ]
     },
     {
-      "q": "遠隔操作はできますか？",
+      "q": "遠隔操作はできる？",
       "a": "スマートフォンやブラウザから稼働中のエージェントを遠隔監視・操作できます。",
       "sources": [
         "google-deepmind-antigravity-remote-control"
       ]
     },
     {
-      "q": "どのような形態で提供されていますか？",
-      "a": "デスクトップアプリ、CLI、専用IDE、SDKとして提供されています。",
+      "q": "プラグインで何を防げる？",
+      "a": "AIが勝手に課金APIを有効にしたりリソースを作ったりするのを防ぎます。",
       "sources": [
-        "google-antigravity-2-desktop-ai-agents"
-      ]
-    },
-    {
-      "q": "要件定義はどう行われますか？",
-      "a": "対話型インターフェースを用いて自動化することができます。",
-      "sources": [
-        "google-antigravity-2-desktop-ai-agents"
+        "antigravity-google-cloud-developer-plugin"
       ]
     }
   ],
@@ -143,7 +110,7 @@
     {
       "date": "2026-08-05",
       "slug": "google-antigravity-2-desktop-ai-agents",
-      "event": "Antigravity 2.0を公開"
+      "event": "Antigravity 2.0を発表"
     },
     {
       "date": "2026-09-12",
@@ -153,7 +120,12 @@
     {
       "date": "2026-10-30",
       "slug": "google-antigravity-autonomous-software-development",
-      "event": "自律エージェントの現場導入事例を公開"
+      "event": "自律エージェントの事例を公開"
+    },
+    {
+      "date": "2026-11-03",
+      "slug": "antigravity-google-cloud-developer-plugin",
+      "event": "クラウド開発用プラグインを発表"
     }
   ],
   "related": [
@@ -163,6 +135,7 @@
     "gemma-4"
   ],
   "articles": [
+    "antigravity-google-cloud-developer-plugin",
     "google-antigravity-autonomous-software-development",
     "google-gemini-4-argon-surf-clock-hardware",
     "gemini-4-argon-google-builders",
@@ -173,13 +146,14 @@
     "google-gemini-flash-eink-dashboard-glanceboard"
   ],
   "linkFrom": [
+    "antigravity-google-cloud-developer-plugin",
     "google-antigravity-autonomous-software-development",
     "google-deepmind-antigravity-remote-control",
     "google-antigravity-2-desktop-ai-agents"
   ],
-  "signature": "10f23a38c5f9e2ab",
-  "primarySignature": "b6a3cc22aefec3e6",
+  "signature": "363fe0345cb12200",
+  "primarySignature": "c9ef32c606c32a05",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:45:54+00:00",
-  "updatedAt": "2026-10-30T12:39:29+00:00"
+  "updatedAt": "2026-11-02T21:37:49+00:00"
 }

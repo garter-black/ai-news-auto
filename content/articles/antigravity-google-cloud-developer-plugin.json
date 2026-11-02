@@ -1,0 +1,129 @@
+{
+  "slug": "antigravity-google-cloud-developer-plugin",
+  "sourceType": "web",
+  "sourceUrl": "https://cloud.google.com/blog/topics/developers-practitioners/google-cloud-developer-plugin-now-available-in-antigravity-marketplace/",
+  "sourceName": "Google Cloud公式ブログ",
+  "title": "Google開発AI『Antigravity』にクラウド開発用プラグイン AIの勝手な課金操作を防ぐ",
+  "seoTitle": "Antigravityのgoogle-cloud-developerとは？使い方と注意点",
+  "threadsPost": "Antigravityを使っている開発者の人、これは確認を。\n\n要約すると、Googleが開発用AIにクラウド開発の安全装置を追加しました。\nAIが勝手に課金される機能を有効にするのを、止める役目です。\n\nAIにコードを任せるとき、勝手な操作が不安になったことはありますか？",
+  "threadsHook": "callout",
+  "threadsStyle": 3,
+  "writingVoice": "honest",
+  "lede": "Google Cloud公式ブログによると、開発者向けAIツール「Antigravity」のマーケットプレイスで、プラグイン「google-cloud-developer」の提供が始まりました。AIが古い書き方でコードを作ったり、許可なく課金される機能を有効にしたりするのを防ぎ、公式ドキュメントを参照させる仕組みです。コマンド1つで入れられ、APIキーの設定は不要とされています。",
+  "description": "Google Cloud公式ブログが、Antigravity向けプラグイン「google-cloud-developer」を発表。課金操作の事前確認や公式ドキュメント参照をAIに追加します。中身と入れ方、日本での注意点を解説します。",
+  "keywords": [
+    "Antigravity",
+    "google-cloud-developer",
+    "Antigravity Marketplace",
+    "Google Cloud",
+    "プラグイン",
+    "MCP",
+    "gcloud",
+    "AIエージェント",
+    "コーディングエージェント",
+    "Developer Knowledge MCP"
+  ],
+  "tags": [
+    "Google Antigravity",
+    "Google Cloud",
+    "AIエージェント",
+    "MCP",
+    "開発ツール"
+  ],
+  "highlights": [
+    "Antigravity Marketplaceでgoogle-cloud-developerプラグインの提供が始まった",
+    "課金APIの有効化やインフラ変更の前に、AIがユーザーの同意を求める",
+    "agy plugin install google-cloud-developer の1コマンドで導入できる"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "unknown",
+    "price": "不明",
+    "free": null,
+    "audience": "クラウド開発者",
+    "take": "Antigravityを使っているなら、まず入れて課金操作の確認が出るか試す価値があります。",
+    "judgedAt": "2026-11-02T21:33:14.562271+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "Google Cloudで開発するエンジニアは、AIの勝手な課金API有効化を防ぐ安全装置として使えます。",
+      "Antigravityを使っているなら、コマンド1つで入れて公式ドキュメント参照の効果を試せます。"
+    ]
+  },
+  "body": "## 概要\n\nGoogleが、AIにプログラムを書かせる開発ツール「Antigravity」向けに、新しい追加機能（プラグイン）を出しました。名前は「google-cloud-developer」です。\n\nAIは、古い書き方でコードを作ったり、許可なくお金のかかる機能をオンにしたりすることがあります。この追加機能は、それを防ぐ見張り役です。\n\nGoogleのクラウドで開発するエンジニアにとって、安心してAIに任せやすくなる発表です。\n\n## 何が発表された？\n\nGoogle Cloud公式ブログ（11月2日付）によると、Antigravity Marketplaceの「Build with Google」欄から、google-cloud-developerプラグインを入れられるようになりました。公式は「Starting today」、つまり公開当日から使えるとしています。新製品というより、既存のAntigravityに機能を足す拡張です。提供は始まっています。\n\nプラグインには、次のものがまとめて入っています。\n\n- 5つの基本スキル（AIに持たせる手順書）\n- Developer Knowledge MCPサーバー（公式ドキュメントにつなぐ窓口）\n- 必要なときだけ専門スキルを呼ぶ「ルーティングルール」\n\nMCPは、AIと外部のサービスをつなぐ共通の約束事です。プラグインに入っているMCPサーバーは、最初から認可済みです。APIキーの用意や設定ファイルの編集は不要とされています。\n\n## 前と何が違う？\n\n### 古い情報に頼らず、公式ドキュメントを見に行く\n\nこれまでのコーディングエージェント（自分で手順を進めるAI）は、学習済みの古い知識に頼りがちでした。公式ブログは、廃止された書き方や、存在しないコマンドのオプションを作り出す例を挙げています。\n\nプラグインを入れると、AIはGoogle Cloudの公式ドキュメントを、ストリーミング可能なHTTPで調べます。対象はGoogle Cloudのほか、Firebase、Android、Web、Geminiです。\n\n### 課金や変更の前に、ユーザーの同意を求める\n\n公式ブログは「ガイドのないエージェントは、許可なく課金対象のAPIを有効にしたり、リソースを作ったりしかねない」と指摘しています。プラグインを入れると、課金APIの有効化やインフラの変更の前に、AIが同意を求めます。権限は必要最小限に絞る「最小権限」の考え方でも動きます。\n\n### 危険なコマンドや認証方法を止める\n\n基本スキルのうち2つが、安全面を担当します。\n\n- **gcloud**：Google Cloudのコマンド操作で、文法の検証と安全確認をします。うっかり削除などの破壊的な操作も止めます。\n- **google-cloud-recipe-auth**：安全な認証方法にAIを誘導します。サービスアカウントのJSONキーをダウンロードする危険なやり方を止めます。\n\n残りの2つは、使い方を案内するスキルです。google-cloud-recipe-onboardingは、最初のプロジェクト設定や課金の確認を案内します。サービスを有効にする前に、プロジェクトの状態も点検します。retrieving-developer-knowledgeは、公式資料に基づく回答とコード例を出します。\n\n### 必要な専門スキルだけを、その場で取りに行く\n\n5つ目のfinding-google-skillsは、GitHubのgoogle/skillsリポジトリから、必要な専門スキルをその場で読み込みます。ルールファイルのgoogle-cloud-discovery.mdと組み合わせて動きます。\n\n数十個のスキルを最初から読み込むと、AIが一度に読める量（コンテキストウィンドウ）を圧迫します。それを避け、動作を速く、トークン（AIが文字を数える単位）を少なく保つ狙いです。\n\n### コマンド1つで入れられる\n\n導入は、マーケットプレイスの画面からでも、端末からでもできます。端末なら次のコマンドです。\n\n`agy plugin install google-cloud-developer`\n\nスキルの登録とMCPサーバーへの接続が、すぐに終わるとされています。\n\n### デモ：GKEとCloud Runの違いを聞く\n\n公式ブログは、「ドキュメントに基づいて、GKEとCloud Runの主な違いは何か。どちらをいつ使うべきか」という質問を例に挙げています。プラグインが有効だと、エージェントはDeveloper Knowledge MCPサーバーに問い合わせ、公式資料に基づく回答を返します。特別な書き方は要りません。\n\n## 数字で見るとどう変わった？\n\n元記事には、速度やコスト削減などの性能テストの数値は示されていません。「前の版と比べた数値」はないため、表も作りません。\n\n示されている数字は、基本スキルが5つであることと、導入コマンドが1つであることくらいです。\n\n## ライバルと比べてどう？\n\n元記事には、他社製品との比較はありません。ここからは編集部の見方です。\n\nAIコーディングツールで、外部のドキュメントや道具につなぐMCPは、他社も使っている共通の約束事です。今回の特徴は、Google自身がクラウドの安全ルール（課金前の同意、危険な認証の禁止）をセットで配る点にあります。他社の同等機能との優劣は、元記事だけでは判断できません。\n\nまた、安全ルールが実際にどこまで効くかは、元記事では確認できません。「勝手な課金をすべて防げる」と受け取るのは、期待しすぎです。\n\n## 料金は？\n\n元記事には、プラグインの価格の記載がありません。無料枠の有無も書かれていません。\n\n提供開始日は、公式ブログの日付で11月2日です。Antigravity本体の料金は、過去の記事の時点で未発表でした（サイソクの過去記事、10/30）。\n\n## 日本で使える？\n\nまだ分かりません。元記事に、提供地域や日本語対応の記載がないためです。\n\n当サイトで確認できたのは、Geminiアプリが日本で使えることだけです（当サイトの確認：11/3）。Antigravityのプラグイン提供地域とは別の話です。\n\n試すときの確認事項は次のとおりです。\n\n- Antigravityを使える環境かを確認する。\n- 元記事は、導入手順としてAntigravityのドキュメントを案内している。\n- 端末からは「agy plugin install google-cloud-developer」で入れられる。\n- 日本語対応の有無は、元記事には書かれていない。\n- 公式ブログによると、プラグインとスキルはGitHubでも見られる。\n\n## 自分にはどう関係する？\n\n### 会社員として\n\nGoogle Cloudで開発や運用をしているエンジニアに関係します。AIに作業を任せる際の心配は、課金APIの有効化とインフラ変更です。プラグインを入れると、その前に同意を求められます。社内でAIに任せる範囲を決めるときの材料になります。\n\nGoogle Cloudを使わない人への直接の影響は小さいです。\n\n### 副業・独立を考えている人\n\n個人で開発する人は、請求の事故がそのまま自分の負担になります。AIが勝手に課金APIを有効にするのを防げるのは、一人開発では助かる点です。ただし、元記事に費用削減額の数字はありません。効果は自分で試して確かめる必要があります。\n\n### お金・資産づくりの面で\n\nこの立場への直接の影響は小さいです。株や投資に関する情報は、元記事にありません。\n\n## これまでの流れ\n\n- **9月12日**：AI開発エージェントをスマホなどから遠隔操作する機能が発表された（[Antigravity Remote Control](/articles/google-deepmind-antigravity-remote-control)）\n- **10月26日**：新しい高性能モデル「Gemini 4 Argon」が、開発者向けに提供された（[Gemini 4 Argon](/articles/gemini-4-argon-google-builders)）\n- **10月30日**：自律エージェントによる開発の事例が公開された（[Antigravityの自律開発](/articles/google-antigravity-autonomous-software-development)）\n- **11月3日**：Google Cloud向けの安全プラグインが登場した（今回のニュース）\n\nAntigravityは、AIに仕事を任せる機能が増えてきました。今回は、任せたときの安全面を補う発表です。\n\n## まとめ\n\nAIに作業を任せるほど、課金や削除の事故を防ぐ仕組みが大事になります。今回のプラグインは、その対策をGoogle自身が配る形です。\n\n次に取るべき行動は2つです。Antigravityを使っているなら、検証用のプロジェクトで入れて、課金操作の前に確認が出るかを試してください。日本での提供状況と料金は、公式のドキュメントで確認してください。",
+  "easy": "## ひとことで言うと\n\nGoogleのAI開発ツール「Antigravity」に、Google Cloudで安全に開発するための追加機能が登場しました。AIが勝手にお金のかかる操作をしないよう、見張り役をつけるものです。\n\n## 何がすごいの？\n\nAIにコード作成を任せると、古い書き方を使ったり、許可のない操作をしたりすることがあります。今回の追加機能は、その失敗を減らす狙いです。\n\nたとえば新人に作業を任せるとき、「お金がかかることは必ず聞いてね」とルールを渡すようなものです。\n\n- Googleの最新の公式資料を、AIが調べながら答えます。\n- 課金される機能をオンにする前に、AIがあなたの同意を求めます。\n- 危ない操作を止める仕組みも入っています。\n\n導入はコマンド1つです。APIキー（＝接続用の合言葉）の設定は不要とされています。\n\n## 自分に関係ある？\n\nAntigravityを使い、Google Cloudで開発している人に関係します。そうでない人への直接の影響は小さいです。\n\n料金は元記事に書かれていません。日本で使えるかどうかも、元記事には書かれていません。\n\n## 使ってみるには\n\nAntigravityを使っている人は、マーケットプレイスの「Build with Google」から入れられます。コマンドなら「agy plugin install google-cloud-developer」です。\n\n日本での提供状況と料金は、元記事では確認できません。公式の案内を確認してください。",
+  "channel": "Google Cloud公式ブログ",
+  "channelId": "",
+  "channelSlug": "google-cloud-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Google Cloud Developer plugin now available in Antigravity Marketplace",
+  "publishedAt": "2026-11-02T18:00:00+00:00",
+  "generatedAt": "2026-11-02T21:33:14.562257+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/antigravity-google-cloud-developer-plugin-58fcf97c.jpg",
+  "model": "claude:sonnet",
+  "affiliates": [],
+  "faq": [
+    {
+      "q": "Antigravityのgoogle-cloud-developerとは？",
+      "a": "Google Cloudでの開発向けに、AIへ安全ルールと公式ドキュメント参照を足すプラグインです。基本スキル5つと、公式資料につなぐMCPサーバーが入っています。"
+    },
+    {
+      "q": "google-cloud-developerは何が前と違う？",
+      "a": "AIが古い書き方を使うのを防ぎ、課金API有効化やインフラ変更の前に同意を求めます。危険な認証方法や破壊的なコマンドも止めます。"
+    },
+    {
+      "q": "google-cloud-developerはどうやって入れる？",
+      "a": "Antigravity Marketplaceの画面から入れるか、端末で「agy plugin install google-cloud-developer」を実行します。APIキーの設定は不要とされています。"
+    }
+  ],
+  "todayActions": [
+    "Antigravityを使っているなら、検証用プロジェクトでプラグインを入れて試す",
+    "導入前に、Antigravityの公式ドキュメントでプラグインの入れ方を確認する",
+    "チームで、AIに任せる課金操作の範囲を話し合う"
+  ],
+  "relatedSlugs": [
+    "google-antigravity-autonomous-software-development",
+    "gemini-4-argon-google-builders",
+    "google-deepmind-antigravity-remote-control"
+  ],
+  "qualityScore": 100,
+  "factSources": [
+    {
+      "label": "過去記事",
+      "name": "サイソクの過去記事",
+      "url": "",
+      "checkedAt": "2026-10-29"
+    }
+  ],
+  "sourcePublishedAt": "2026-11-02T18:00:00+00:00",
+  "detectedAt": "2026-11-02T21:30:55+00:00",
+  "imageCredit": {
+    "kind": "official",
+    "org": "Google Cloud",
+    "provider": "Google Cloud公式ブログ",
+    "sourceUrl": "https://cloud.google.com/blog/topics/developers-practitioners/google-cloud-developer-plugin-now-available-in-antigravity-marketplace/",
+    "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/google-cloud-developer-plugin-now-availabl.max-2500x2500.jpg",
+    "width": 1200,
+    "height": 591,
+    "at": "2026-11-02T21:38:36+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.492,
+    "y": 0.515,
+    "box": [
+      0.106,
+      0.158,
+      0.878,
+      0.873
+    ],
+    "ar": 2.0305,
+    "src": "https://ai-tech-express.jp/img/antigravity-google-cloud-developer-plugin-58fcf97c.jpg"
+  }
+}
