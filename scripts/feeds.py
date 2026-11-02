@@ -106,7 +106,42 @@ FEEDS: list[dict] = [
     # 速報の監視元にも登録済み。通常記事はAI関連のみ拾い、従来の重複・事実確認・品質ゲートを通す。
     {"slug": "atlassian-blog", "name": "Atlassian公式ブログ", "url": "https://www.atlassian.com/blog/rss", "lang": "en", "priority": 3, "ai_only": True, "kind": "company"},
     {"slug": "docker-blog", "name": "Docker公式ブログ", "url": "https://www.docker.com/feed/", "lang": "en", "priority": 3, "ai_only": True, "kind": "company"},
+    # --- 2026-11-02 追加（候補不足の対策。robots.txt 許可・直近14日に更新ありを確認。数字は14日のAI関連件数） ---
+    {"slug": "nvidia-developer-blog", "name": "NVIDIA Developer Blog", "url": "https://developer.nvidia.com/blog/feed", "lang": "en", "priority": 3, "ai_only": True, "kind": "official", "primary_for": "nvidia"},  # 22
+    {"slug": "softbank-news-ai", "name": "ソフトバンクニュース", "url": "https://www.softbank.jp/sbnews/feed", "lang": "ja", "priority": 2, "ai_only": True, "kind": "company"},  # 8
+    {"slug": "docomo-news-release-ai", "name": "NTTドコモ 報道発表", "url": "https://www.docomo.ne.jp/info/rss/news_release.rdf", "lang": "ja", "priority": 2, "ai_only": True, "kind": "company"},  # 5
+    {"slug": "cyberagent-developers", "name": "CyberAgent Developers Blog", "url": "https://developers.cyberagent.co.jp/blog/feed/", "lang": "ja", "priority": 3, "ai_only": True, "kind": "company"},  # 3
+    {"slug": "moneyforward-news", "name": "マネーフォワード ニュース", "url": "https://corp.moneyforward.com/feed/", "lang": "ja", "priority": 3, "ai_only": True, "kind": "company"},  # 3
+    {"slug": "brainpad-news", "name": "ブレインパッド ニュース", "url": "https://www.brainpad.co.jp/news/feed/", "lang": "ja", "priority": 3, "ai_only": True, "kind": "company"},  # 5
+    {"slug": "redhat-blog", "name": "Red Hat公式ブログ", "url": "https://www.redhat.com/en/rss/blog", "lang": "en", "priority": 3, "ai_only": True, "kind": "company"},  # 8
+    {"slug": "vercel-changelog", "name": "Vercel Changelog", "url": "https://vercel.com/changelog/rss.xml", "lang": "en", "priority": 3, "ai_only": True, "kind": "company"},  # 18
 ]
+
+# 速報レーンの発信元一覧（sources_registry.json）の RSS も通常記事の候補に使う（一覧を1か所にまとめる）。
+#   genre 付き（決算など）は幅広い話題側で拾う。"feeds": false は通常記事に使わない（細かすぎる・重複など）
+REGISTRY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sources_registry.json")
+
+
+def _registry_feeds(have: list[dict]) -> list[dict]:
+    try:
+        with open(REGISTRY_PATH, encoding="utf-8") as fh:
+            sources = json.load(fh).get("sources", [])
+    except (OSError, ValueError):
+        return []
+    urls = {f["url"].rstrip("/") for f in have}
+    slugs = {f["slug"] for f in have}
+    out = []
+    for s in sources:
+        if s.get("type") != "rss" or s.get("genre") or s.get("feeds") is False:
+            continue
+        if s["url"].rstrip("/") in urls or s["slug"] in slugs:
+            continue
+        out.append({"slug": s["slug"], "name": s["name"], "url": s["url"], "lang": s.get("lang", "en"),
+                    "priority": 3, "ai_only": True, "kind": "company", "from_registry": True})
+    return out
+
+
+FEEDS.extend(_registry_feeds(FEEDS))
 FEEDS_BY_SLUG = {f["slug"]: f for f in FEEDS}
 
 # --------------------------------------------------------------------------- #
@@ -451,7 +486,7 @@ def collect(lookback_days: int = 3, state: dict | None = None, feeds: list[dict]
 
     report を渡すと {slug: {"fetched": n, "kept": n, "error": str}} を書き込む。
     """
-    state = state or {}
+    state = state if state is not None else {}
     done = set((state.get("processed_web") or {}).keys())
     since = datetime.now(timezone.utc) - timedelta(days=lookback_days)
     feeds = feeds or FEEDS
@@ -469,7 +504,25 @@ def collect(lookback_days: int = 3, state: dict | None = None, feeds: list[dict]
     seen_ids: set[str] = set()
     seen_titles: set[str] = set()
     per_source: dict[str, list[dict]] = {}
+    # 日付の無いフィード（Google Developers Blog 等）: 初めて見た時刻を発表時刻の代わりにする。
+    #   そのフィードを初めて読んだ回は全件を「既に見た」扱いにして、古い記事を一度に流さない
+    first_seen = state.setdefault("undated_first_seen", {}) if isinstance(state, dict) else {}
+    now_iso = datetime.now(timezone.utc).isoformat()
     for feed, items, error in results:
+        undated = [i for i in items if i["published_at"] is None]
+        if undated and not error:
+            known = first_seen.setdefault(feed["slug"], {})
+            baseline = not known
+            for item in undated:
+                if item["id"] not in known:
+                    known[item["id"]] = "baseline" if baseline else now_iso
+                if known[item["id"]] != "baseline":
+                    item["published_at"] = _parse_date(known[item["id"]])
+                    item["date_from_first_seen"] = True
+            # 古い記録は捨てる（今フィードに載っている分だけ残す）
+            ids_now = {i["id"] for i in undated}
+            for old in [k for k in known if k not in ids_now]:
+                known.pop(old, None)
         kept = 0
         counts = {"undated_or_old": 0, "processed": 0, "duplicate_id": 0, "blocked_host": 0,
                   "not_ai": 0, "include_exclude": 0, "duplicate_title": 0}
