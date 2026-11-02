@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "bosaicho-launch-2026-11-02",
+   "at": "2026-11-02T20:31:23.701005+00:00",
+   "title": "防災庁が令和8年11月2日に発足　高市総理が看板掛けと訓示を実施",
+   "head": "防災庁が令和8年11月2日に発足　高市総理が看板掛けと訓示を実施 | 防災庁発足式-令和8年11月2日",
+   "text": "防災庁が令和8年11月2日に発足　高市総理が看板掛けと訓示を実施 | 防災庁発足式-令和8年11月2日 | 防災庁 / 高市早苗 / 発足式 / 政府広報オンライン / 災害対策 / 防災・減災 / 行政",
+   "urls": [
+    "https://www.gov-online.go.jp/press_conferences/prime_minister/202611/video-327015.html"
+   ]
+  },
+  {
    "slug": "mlit-autumn-2026-decoration",
    "at": "2026-11-02T20:12:06.836180+00:00",
    "title": "国交省、令和8年秋の叙勲受章者292名を発表 11月26日に伝達式を開催",
@@ -1655,16 +1665,6 @@
    "text": "厚生労働省が令和8年9月の有効求人倍率を発表　前月比0.01ポイント上昇の1.19倍 | 一般職業紹介状況(令和8年9月分)について | 有効求人倍率 / 厚生労働省 / 一般職業紹介状況 / 求人倍率 / 正社員有効求人倍率 / ハローワーク / 雇用情勢 / 労働市場 / 社会・行政 / 雇用 / 労働市場",
    "urls": [
     "https://www.mhlw.go.jp/stf/newpage_76960.html"
-   ]
-  },
-  {
-   "slug": "uk-amazon-quick-user-group-2026-roundup",
-   "at": "2026-10-29T20:21:41.352606+00:00",
-   "title": "AWSの対話型AI『Amazon Quick』英国ユーザー会、1年間の軌跡と自動化の成果を公開",
-   "head": "AWSの対話型AI『Amazon Quick』英国ユーザー会、1年間の軌跡と自動化の成果を公開 | How the UK Amazon Quick User Group grew in 2026",
-   "text": "AWSの対話型AI『Amazon Quick』英国ユーザー会、1年間の軌跡と自動化の成果を公開 | How the UK Amazon Quick User Group grew in 2026 | Amazon Quick / AWS / エージェントAI / 業務自動化 / ノーコード / データ分析 / ユーザーグループ / 生成AI / 生成AI / AWS / データ分析 / 業務自動化",
-   "urls": [
-    "https://aws.amazon.com/blogs/machine-learning/how-the-uk-amazon-quick-user-group-grew-in-2026/"
    ]
   }
  ]
