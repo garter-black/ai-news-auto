@@ -227,7 +227,11 @@ def same_story(a: Story, b: Story, df: dict[str, int], window: timedelta = WINDO
     ents = a.ents & b.ents
     sim = title_sim(a, b)
     products = sorted(a.products & b.products)
-    rare = sorted(t for t in a.latin & b.latin if df.get(t, 0) <= RARE_DF and t not in radar.ALIASES and t not in radar.STOP)
+    # 発信元自身の名前（Databricks のブログの「Databricks」など）は話題の手がかりにしない
+    publisher = {w.lower() for x in (a, b) for k in ("channel", "sourceName", "channelSlug")
+                 for w in re.findall(r"[A-Za-z]{3,}", str(x.data.get(k) or ""))}
+    rare = sorted(t for t in a.latin & b.latin
+                  if df.get(t, 0) <= RARE_DF and t not in radar.ALIASES and t not in radar.STOP and t not in publisher)
     kw = dedupe.jaccard(a.kw, b.kw)
     if products and ents and (candidate or sim >= 0.15 or kw >= KW_OVERLAP):
         return f"製品名が一致（{'・'.join(products[:2])}）"

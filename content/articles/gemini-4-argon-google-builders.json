@@ -68,5 +68,7 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T03:58:40+00:00"
-  }
+  },
+  "duplicateOf": "google-gemini-4-argon-review-alignment-issues",
+  "duplicateReason": "製品名が一致（gemini4argon）"
 }

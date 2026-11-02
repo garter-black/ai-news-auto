@@ -57,6 +57,12 @@ class SameStoryTest(unittest.TestCase):
                 ch="openai", keywords=["Legora", "OpenAI", "ChatGPT"])
         self.assertIn("同じ発信元", same(a, b))
 
+    def test_publisher_name_is_not_a_topic(self):
+        a = art("a", "データ基盤『Databricks』がSAPと提携", "2026-11-01T21:00:00+00:00", ch="databricks-blog", channel="Databricks公式ブログ")
+        b = art("b", "富裕層向け資産管理のAI導入はなぜ止まる？『Databricks』が提唱", "2026-11-02T00:00:00+00:00", ch="databricks-blog",
+                channel="Databricks公式ブログ")
+        self.assertIsNone(same(a, b))
+
     def test_reupload_with_same_source_title(self):
         a = art("a", "ZendeskがChatGPT Enterpriseを全社導入", "2026-10-30T12:00:00+00:00", videoTitle="ChatGPT Enterprise at Zendesk: Putting Company Data to Work")
         b = art("b", "カスタマーサポート大手Zendeskが社内で600のAIアプリ", "2026-11-01T00:00:00+00:00",
