@@ -18,6 +18,9 @@ on:
       plan_only:
         description: "対象を表示するだけ（true）／動画を作ってゲートまで（false）"
         default: "true"
+      draft_test_url:
+        description: "（テスト）この動画 URL で Buffer に Threads の下書きを1本だけ作る（公開しない）。空なら何もしない"
+        default: ""
 
 permissions:
   contents: write  # state/sns_video.json と Claude API の使用量を main に残すため
@@ -74,6 +77,11 @@ jobs:
           SNS_VIDEO_AFTER_AB: ${{ vars.SNS_VIDEO_AFTER_AB || 'short' }}
           SNS_VIDEO_STORE: ${{ vars.SNS_VIDEO_STORE || 'kv' }}
         run: |
+          if [ -n "${{ github.event.inputs.draft_test_url }}" ]; then
+            # 下書きのテストだけ（saveToDraft。公開しない）。ほかは何もしない
+            python scripts/sns_video_followup.py --draft-test content/video_scripts/claude-ultra-plan-price-limits.short.report.json "${{ github.event.inputs.draft_test_url }}" --yes
+            exit $?
+          fi
           if [ "${{ github.event.inputs.plan_only }}" = "true" ]; then
             python scripts/sns_video_followup.py --plan
           else

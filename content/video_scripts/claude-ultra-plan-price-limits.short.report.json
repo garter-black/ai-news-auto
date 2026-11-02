@@ -1,0 +1,34 @@
+{
+ "slug": "claude-ultra-plan-price-limits",
+ "title": "Claudeの最上位プランUltra、月200ドルは必要？ Pro・Maxと比較",
+ "url": "https://ai-tech-express.jp/articles/claude-ultra-plan-price-limits",
+ "total": 34.572,
+ "voice": {
+  "engine": "voicevox",
+  "credit": "VOICEVOX:九州そら",
+  "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+  "speed": 1.38
+ },
+ "pages": [
+  {
+   "host": "support.claude.com",
+   "url": "https://support.claude.com/en/articles/17728952-what-is-the-ultra-plan"
+  },
+  {
+   "host": "claude.com",
+   "url": "https://claude.com/pricing"
+  }
+ ],
+ "script_v3": {
+  "hook": {
+   "text": "月200ドル、あなたに必要？",
+   "payoff": "月200ドル",
+   "speech": "Claudeの最上位、月200ドル。あなたに必要？",
+   "block": "2-42",
+   "target": "$200",
+   "ja": ""
+  },
+  "summary": "要約すると、ほとんどの人はProの月20ドルで足ります。Maxは100ドルでProの5倍、Ultraは200ドルで10倍。1ドルあたりの量は同じで、違いはUltraに5時間ごとの上限がないことと、毎月のAPIクレジットです。"
+ },
+ "_note": "Buffer の下書きテスト用（sns_video_followup.py --draft-test）。承認済み台本の短い版の report から必要な所だけ"
+}

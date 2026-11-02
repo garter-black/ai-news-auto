@@ -48,7 +48,7 @@ class FlagsTest(unittest.TestCase):
         self.assertTrue(fu.flags({"SNS_VIDEO_POST": "live"})["post"])
 
     def test_run_does_nothing_when_off(self):
-        rows = fu.run(now=NOW, env={}, plan_only=False, make_versions=lambda *a, **k: self.fail("作ってはいけない"))
+        rows = fu.run(now=NOW, env={}, plan_only=False, make_versions=lambda *a, **k: self.fail("作ってはいけない"), select=lambda *a: ["a", "b"])
         self.assertTrue(all(r["status"] == "planned" for r in rows))
 
 
@@ -134,6 +134,16 @@ class ComposeTest(unittest.TestCase):
         self.assertEqual(rows["full"]["reposts"], 3.0)
 
 
+try:  # 短い版の台本は shorts_v3（numpy・Pillow）を使う。無い環境では飛ばす
+    import numpy  # noqa: F401
+    from PIL import Image  # noqa: F401
+
+    HEAVY = True
+except ImportError:  # pragma: no cover
+    HEAVY = False
+
+
+@unittest.skipUnless(HEAVY, "numpy / Pillow が必要")
 class ShortScriptTest(unittest.TestCase):
     SCRIPT = {
         "hook": {"text": "月200ドル、必要？", "speech": "クロードの最上位、月200ドル。あなたに必要？"},

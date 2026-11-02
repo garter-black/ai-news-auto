@@ -126,13 +126,19 @@ def pick_variant(state: dict, now: datetime, ab_until: str, after_ab: str = "sho
 
 def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_article=None, eligible=None, score=None) -> list[str]:
     """Threads に投稿済み・窓の中・まだ動画を作っていない・v3 の対象の記事を、Threads の点数の高い順に"""
-    import shorts
-    import shorts_v3 as v3
-    import threads_post
+    # 重いモジュール（Pillow・numpy）は、既定の関数を使うときだけ読み込む（テストは軽い環境でも動く）
+    if load_article is None:
+        import shorts
 
-    load_article = load_article or shorts.load_article
-    eligible = eligible or (lambda a: bool(v3.page_urls(a)))
-    score = score or threads_post.score
+        load_article = shorts.load_article
+    if eligible is None:
+        import shorts_v3 as v3
+
+        eligible = lambda a: bool(v3.page_urls(a))  # noqa: E731
+    if score is None:
+        import threads_post
+
+        score = threads_post.score
     done = set((state.get("videos") or {}).keys())
     rows = []
     for slug, rec in (posted.get("posted") or {}).items():
@@ -230,14 +236,14 @@ def write_embed(slug: str, info: dict) -> None:
     path.write_text(json.dumps(article, ensure_ascii=False, indent=2) + "\n", "utf-8")
 
 
-def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = False, make_versions=None) -> list[dict]:
+def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = False, make_versions=None, select=None) -> list[dict]:
     f = flags(env)
     now = now or datetime.now(timezone.utc)
     state = load_json(STATE, {"videos": {}})
     state.setdefault("videos", {})
     posted = load_json(POSTED, {"posted": {}})
     left = max(0, min(f["per_run"], f["daily_max"] - used_today(state, now)))
-    picks = candidates(posted, state, now, f["window_h"])[:left] if left else []
+    picks = (select or candidates)(posted, state, now, f["window_h"])[:left] if left else []
     log(f"[video-followup] フラグ {json.dumps({k: f[k] for k in ('followup', 'upload', 'embed', 'post', 'daily_max', 'per_run')})}・この回 {left}本まで・対象 {picks}")
     if plan_only or not f["followup"]:
         if not f["followup"]:
@@ -387,7 +393,33 @@ def draft_test(report_path: Path, video_url: str, yes: bool = False, variant: st
     if not channel:
         raise RuntimeError("Buffer に Threads のチャンネルが無い")
     inp["channelId"] = channel["id"]
-    return {"input": inp, "sent": True, "draftId": threads_post.create_post(api_key, inp)}
+    draft_id = threads_post.create_post(api_key, inp)
+    return {"input": inp, "sent": True, "draftId": draft_id, "check": read_draft(api_key, channel["id"], draft_id)}
+
+
+def read_draft(api_key: str, channel_id: str, post_id: str) -> dict:
+    """作った下書きを Buffer から読み直す（本文・状態・付いている動画）。読めなくても例外は投げない"""
+    import threads_post
+
+    fields = "id text status channelId assets { thumbnail mimeType source }"
+    try:
+        orgs = threads_post.buffer_graphql(api_key, "query { account { organizations { id } } }")["account"]["organizations"]
+    except Exception as error:  # noqa: BLE001
+        return {"error": f"organizations: {error}"[:300]}
+    tries = []
+    for org in orgs:
+        for status in ("[draft]", ""):
+            flt = f"status: {status}, channelIds: {json.dumps([channel_id])}" if status else f"channelIds: {json.dumps([channel_id])}"
+            query = f"query {{ posts(first: 50, input: {{ organizationId: {json.dumps(org['id'])}, filter: {{ {flt} }} }}) {{ edges {{ node {{ {fields} }} }} }} }}"
+            try:
+                edges = threads_post.buffer_graphql(api_key, query)["posts"]["edges"]
+            except Exception as error:  # noqa: BLE001
+                tries.append(str(error)[:200])
+                continue
+            for edge in edges:
+                if edge["node"].get("id") == post_id:
+                    return {"found": True, "post": edge["node"], "filter": status or "なし"}
+    return {"found": False, "errors": tries}
 
 
 def main() -> None:
