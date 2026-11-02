@@ -4850,6 +4850,14 @@
       "slug": "cyberagent-fy2026-results-date",
       "url": "https://www.cyberagent.co.jp/news/detail/id=33973"
     },
+    "309f7e771384eb3a": {
+      "at": "2026-11-02T11:11:33.282689+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "arm-october-2026-ai-innovations",
+      "url": "https://newsroom.arm.com/blog/top-arm-based-innovations-in-october-2026"
+    },
     "30c26e066d3951dd": {
       "at": "2026-10-27T01:54:15.440638+00:00",
       "reason": "prefilter: 告知・お知らせ系",
@@ -11002,6 +11010,14 @@
       "skipped": true,
       "url": "https://www.mhlw.go.jp/stf/newpage_76741.html"
     },
+    "e458541b95d22ac0": {
+      "at": "2026-11-02T11:11:45.715176+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "mof-onchain-government-bonds-study",
+      "url": "https://www.mof.go.jp/about_mof/councils/study_on_chain/index.html"
+    },
     "e47f8d7709d9d6e7": {
       "at": "2026-10-27T03:05:10.758101+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（CAGR）",
@@ -11983,97 +11999,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T07:31:11.449386+00:00",
-      "attempt": 0,
-      "id": "4bf8b53fa4880823",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 134.6字・最長 197字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 134.6,
-        "avg_sentence": 36.7,
-        "long_share": 0.03,
-        "max_paragraph": 197,
-        "paragraphs": 9,
-        "sentences": 33
-      },
-      "score": 100,
-      "source": "jfa",
-      "title": "【ホットピ！～HotTopic～】フットサル日本代表、大分で強豪モロッコと対戦 #jfa #daihyo"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T07:51:02.074427+00:00",
-      "attempt": 1,
-      "id": "0d3e7ad71ee94605",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1727字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（370字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 142.2,
-        "avg_sentence": 55.7,
-        "long_share": 0.435,
-        "max_paragraph": 185,
-        "paragraphs": 9,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "digital-agency",
-      "title": "「地方公共団体情報システム共通機能標準仕様書」に関するFAQの資料を更新しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T07:51:07.536391+00:00",
-      "attempt": 2,
-      "id": "0d3e7ad71ee94605",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1550字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（238字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 123.7,
-        "avg_sentence": 58.6,
-        "long_share": 0.316,
-        "max_paragraph": 165,
-        "paragraphs": 9,
-        "sentences": 19
-      },
-      "score": null,
-      "source": "digital-agency",
-      "title": "「地方公共団体情報システム共通機能標準仕様書」に関するFAQの資料を更新しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T07:51:29.905060+00:00",
-      "attempt": 1,
-      "id": "20ce38e970e73a0f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1561字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（362字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 99.8,
-        "avg_sentence": 57.0,
-        "long_share": 0.476,
-        "max_paragraph": 175,
-        "paragraphs": 12,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "boj",
-      "title": "総裁記者会見（10月30日）動画の配信開始"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T07:51:37.313642+00:00",
@@ -18571,6 +18496,91 @@
       "score": 100,
       "source": "tokyo-metro",
       "title": "第7回 中小企業特別高圧電力・工業用LPガス価格高騰緊急対策事業 特別高圧電力・工業用LPガスを使用する中小企業者等を支援します！"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T11:11:27.116306+00:00",
+      "attempt": 1,
+      "id": "309f7e771384eb3a",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 54.6字・60字超の文が 43% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 78.0,
+        "avg_sentence": 54.6,
+        "long_share": 0.433,
+        "max_paragraph": 202,
+        "paragraphs": 21,
+        "sentences": 30
+      },
+      "score": 100,
+      "source": "arm-newsroom",
+      "title": "Top Arm-based innovations advancing on-device AI, cloud infrastructure, and phys"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T11:11:33.281595+00:00",
+      "attempt": 0,
+      "id": "309f7e771384eb3a",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 88.4,
+        "avg_sentence": 23.5,
+        "long_share": 0.0,
+        "max_paragraph": 219,
+        "paragraphs": 21,
+        "sentences": 79
+      },
+      "score": 100,
+      "source": "arm-newsroom",
+      "title": "Top Arm-based innovations advancing on-device AI, cloud infrastructure, and phys"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T11:11:42.682375+00:00",
+      "attempt": 1,
+      "id": "e458541b95d22ac0",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 55.6字・60字超の文が 39% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 125.0字・最長 170字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 125.0,
+        "avg_sentence": 55.6,
+        "long_share": 0.389,
+        "max_paragraph": 170,
+        "paragraphs": 8,
+        "sentences": 18
+      },
+      "score": 100,
+      "source": "mof",
+      "title": "国債のオンチェーン対応に関する研究会"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T11:11:45.714381+00:00",
+      "attempt": 0,
+      "id": "e458541b95d22ac0",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 88.8,
+        "avg_sentence": 30.4,
+        "long_share": 0.029,
+        "max_paragraph": 181,
+        "paragraphs": 12,
+        "sentences": 35
+      },
+      "score": 100,
+      "source": "mof",
+      "title": "国債のオンチェーン対応に関する研究会"
     }
   ],
   "short_text_retry": {},

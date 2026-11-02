@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "mof-onchain-government-bonds-study",
+   "at": "2026-11-02T11:11:41.645607+00:00",
+   "title": "財務省が「国債のオンチェーン対応に関する研究会」を開催、第2回会合までの議事要旨を公開",
+   "head": "財務省が「国債のオンチェーン対応に関する研究会」を開催、第2回会合までの議事要旨を公開 | 国債のオンチェーン対応に関する研究会",
+   "text": "財務省が「国債のオンチェーン対応に関する研究会」を開催、第2回会合までの議事要旨を公開 | 国債のオンチェーン対応に関する研究会 | 財務省 / 国債 / オンチェーン / ブロックチェーン / 研究会 / デジタル資産 / 金融政策 / ビジネス / 金融 / 行政 / 経済",
+   "urls": [
+    "https://www.mof.go.jp/about_mof/councils/study_on_chain/index.html"
+   ]
+  },
+  {
+   "slug": "arm-october-2026-ai-innovations",
+   "at": "2026-11-02T11:11:25.941304+00:00",
+   "title": "英Armの10月動向：433コアの自律走行ロボやスマホ向け新AIの全貌",
+   "head": "英Armの10月動向：433コアの自律走行ロボやスマホ向け新AIの全貌 | Top Arm-based innovations advancing on-device AI, cloud infrastructure, and physical AI in October 2026",
+   "text": "英Armの10月動向：433コアの自律走行ロボやスマホ向け新AIの全貌 | Top Arm-based innovations advancing on-device AI, cloud infrastructure, and physical AI in October 2026 | Arm / エッジAI / ロボティクス / 自動運転 / 生成AI / AIモデル / ハードウェア / プロセッサ / 生成AI / ロボティクス / ハードウェア / 半導体 / 開発ツール",
+   "urls": [
+    "https://newsroom.arm.com/blog/top-arm-based-innovations-in-october-2026"
+   ]
+  },
+  {
    "slug": "tokyo-electricity-gas-subsidy-7th",
    "at": "2026-11-02T10:51:39.962228+00:00",
    "title": "東京都、特別高圧電力・工業用LPガス支援金の第7回申請受付を開始　中小企業向けに最大750万円",
