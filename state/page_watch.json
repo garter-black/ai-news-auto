@@ -1,7 +1,7 @@
 {
  "pages": {
   "chatgpt-pricing": {
-   "hash": "2cf63d272fbcbaf4",
+   "hash": "892dd5fd92438858",
    "lines": [
     "About",
     "Features",
@@ -70,7 +70,7 @@
     "Learn more",
     "Individual",
     "Business & Enterprise",
-    "Best for trying out ChatGPT",
+    "Intelligence for everyday tasks",
     "/ month",
     "Get Free",
     "Unlimited text chats with GPT-6",
@@ -83,7 +83,7 @@
     "Limited ChatGPT Work access on desktop",
     "Have an existing plan? See billing help⁠",
     "Unlimited text chats subject to abuse guardrails. Learn more⁠",
-    "Best for longer conversations",
+    "Expanded access",
     "Get Go",
     "Everything in Free and:",
     "More messages with tools",
@@ -92,7 +92,7 @@
     "More voice chats",
     "Longer memory",
     "This plan may include ads. Learn more⁠",
-    "Best for advanced work and productivity",
+    "Do more with advanced intelligence",
     "Get Plus",
     "Everything in Go and:",
     "Advanced reasoning models with GPT-6",
@@ -105,7 +105,7 @@
     "Expanded access to ChatGPT Work on desktop, web, and mobile",
     "Early access to new features",
     "Limits apply⁠",
-    "Best for research and coding",
+    "Maximize your productivity",
     "From",
     "Get Pro",
     "Everything in Plus and:",
@@ -425,20 +425,20 @@
     "OpenAI © 2015–2026Your privacy choices",
     "English United States"
    ],
-   "ok": "2026-11-02",
+   "ok": "2026-11-03",
    "since": "2026-11-02T04:41:50+00:00"
   },
   "chatgpt-release-notes": {
    "last_date": "2026-10-30",
-   "ok": "2026-11-02"
+   "ok": "2026-11-03"
   },
   "claude-api-release-notes": {
    "last_date": "2026-10-30",
-   "ok": "2026-11-02"
+   "ok": "2026-11-03"
   },
   "claude-apps-release-notes": {
    "last_date": "2026-10-21",
-   "ok": "2026-11-02"
+   "ok": "2026-11-03"
   },
   "claude-model-deprecations": {
    "hash": "b3cc25c096e9a1e0",
@@ -565,7 +565,7 @@
     "| temperature, topp, topk | Removed in API version 2026-10-21 | Returns a 400 error. Earlier API versions return it when set to a non-default value on Claude 4.7 and later models and Claude Mythos Preview. | Omit and use prompting to guide model behavior. |",
     "For migration steps, see Migration guides."
    ],
-   "ok": "2026-11-02",
+   "ok": "2026-11-03",
    "since": "2026-11-02T04:41:50+00:00"
   },
   "claude-pricing": {
@@ -851,12 +851,12 @@
     "キャンセルしてもデータは削除されません。チャット、プロジェクト、ファイルはアカウントに残りますが、一部の機能はFree planでは利用できません。Pro、Max、Ultraは、期間終了後にFree planに移行します。詳しい手順については、Pro、Max、またはUltra planのキャンセル方法またはTeam planのキャンセルをご覧ください。",
     "はい、Claude EnterpriseとClaude APIの料金は、営業チームを通じて、ボリュームディスカウントやコミット済み支出に対する割引により、組織に合わせてカスタマイズできます。割引率は公開していないため、他の場所で目にする数値は当社の料金を反映していない場合があります。詳しくは営業にお問い合わせください。"
    ],
-   "ok": "2026-11-02",
+   "ok": "2026-11-03",
    "since": "2026-11-02T04:41:50+00:00"
   },
   "gemini-release-notes": {
    "last_date": "2026-10-13",
-   "ok": "2026-11-02"
+   "ok": "2026-11-03"
   },
   "gemini-subscriptions": {
    "hash": "1e9592c8cedadcd0",
@@ -1076,7 +1076,7 @@
     "The YouTube Premium Lite plan included in this bundle won’t activate if you already have an equivalent or YouTube Premium subscription. Learn more. Already have a YouTube membership? Learn more about managing memberships.",
     "Project Genie is available in more than 140 countries — see full list of countries. Only available with a Google AI Ultra plan."
    ],
-   "ok": "2026-11-02",
+   "ok": "2026-11-03",
    "since": "2026-11-02T04:41:50+00:00"
   },
   "github-copilot-plans": {
@@ -1190,12 +1190,12 @@
     "To compare models supported across plans, features, and IDEs, see Supported AI models in GitHub Copilot.",
     "[^1]: Copilot Chat skills in IDEs is available in Visual Studio Code and Visual Studio."
    ],
-   "ok": "2026-11-02",
+   "ok": "2026-11-03",
    "since": "2026-11-02T04:41:50+00:00"
   },
   "m365-copilot-release-notes": {
    "last_date": "2026-10-27",
-   "ok": "2026-11-02"
+   "ok": "2026-11-03"
   }
  },
  "pending": []

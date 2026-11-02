@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "nli-electronic-waste-recycling-challenges",
+   "at": "2026-11-02T16:02:26.614169+00:00",
+   "title": "ニッセイ基礎研究所が電子ごみの現状を解説、小型家電の回収率向上と長期使用が課題に",
+   "head": "ニッセイ基礎研究所が電子ごみの現状を解説、小型家電の回収率向上と長期使用が課題に | 増え続ける電子ごみと資源循環の行方－電子ごみの発生抑制と資源循環の課題",
+   "text": "ニッセイ基礎研究所が電子ごみの現状を解説、小型家電の回収率向上と長期使用が課題に | 増え続ける電子ごみと資源循環の行方－電子ごみの発生抑制と資源循環の課題 | 電子ごみ / 資源循環 / 小型家電回収 / 都市鉱山 / ニッセイ基礎研究所 / サステナビリティ / 環境経営 / リサイクル / ビジネス / 環境経営 / サステナビリティ / ESG / 統計",
+   "urls": [
+    "https://www.nli-research.co.jp/topics_detail1/id=87238?site=nli"
+   ]
+  },
+  {
+   "slug": "google-warns-llmjacking-cloud-threats",
+   "at": "2026-11-02T16:02:03.895188+00:00",
+   "title": "Googleが警告する「LLMJacking」とは？AIの不正利用で巨額の請求を受ける手口",
+   "head": "Googleが警告する「LLMJacking」とは？AIの不正利用で巨額の請求を受ける手口 | The Rise of LLMJacking: How Threat Actors Monetize Compromised Cloud and Model Resources",
+   "text": "Googleが警告する「LLMJacking」とは？AIの不正利用で巨額の請求を受ける手口 | The Rise of LLMJacking: How Threat Actors Monetize Compromised Cloud and Model Resources | LLMJacking / Google Threat Intelligence / LLM / APIキー / クラウドセキュリティ / Mandiant / 不正利用 / サイバー攻撃 / 生成AI / LLM / セキュリティ / クラウド / Google",
+   "urls": [
+    "https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models/"
+   ]
+  },
+  {
    "slug": "honda-rn0-emtb-eicma-2026",
    "at": "2026-11-02T15:31:56.562982+00:00",
    "title": "Hondaが初の高級電動アシストマウンテンバイク「RN0」を公開、独ROTWILDと共同開発",
@@ -1571,46 +1591,6 @@
    "text": "Googleの生成AI『Gemini』に新機能 文書やPDFをチャット内で作成・編集 | You can now generate, preview, and edit documents, PDFs, presentations, spreadsheets, and more directly in Gemini. | Gemini / Geminiアプリ / ファイル編集 / PDF編集 / 生成AI / スライド作成 / スプレッドシート / Googleドキュメント / Markdown / 新機能 / Gemini / 生成AI / Google / PDF / ドキュメント作成",
    "urls": [
     "https://blog.google/innovation-and-ai/products/gemini-app/edit-files-directly/"
-   ]
-  },
-  {
-   "slug": "gemini-notebook-free-textbooks",
-   "at": "2026-10-29T16:03:43.908387+00:00",
-   "title": "Googleの学習AI『Gemini Notebook』に無料の教科書が数百冊 出典つきで勉強できる",
-   "head": "Googleの学習AI『Gemini Notebook』に無料の教科書が数百冊 出典つきで勉強できる | Gemini Notebook makes hundreds of textbooks available to help students learn even more.",
-   "text": "Googleの学習AI『Gemini Notebook』に無料の教科書が数百冊 出典つきで勉強できる | Gemini Notebook makes hundreds of textbooks available to help students learn even more. | Gemini Notebook / 教科書 / 無料 / OpenStax / Open Textbook Library / S Chand Publishing / Expert Intelligence / AI学習 / 学習ガイド / フラッシュカード / Gemini Notebook / Google / 生成AI / 教育 / AI学習ツール",
-   "urls": [
-    "https://blog.google/innovation-and-ai/products/gemini-notebook/new-access-textbooks/"
-   ]
-  },
-  {
-   "slug": "hugging-face-any-speech-decision-apple",
-   "at": "2026-10-29T15:57:05.400398+00:00",
-   "title": "Hugging FaceがApple端末向けAI開発ツールを公開、音声認識と意思決定をアプリに実装",
-   "head": "Hugging FaceがApple端末向けAI開発ツールを公開、音声認識と意思決定をアプリに実装 | Introducing AnySpeechRecognizer and AnyDecisionModel: Open Models for Speech and Decisions on Apple Platforms",
-   "text": "Hugging FaceがApple端末向けAI開発ツールを公開、音声認識と意思決定をアプリに実装 | Introducing AnySpeechRecognizer and AnyDecisionModel: Open Models for Speech and Decisions on Apple Platforms | Hugging Face / Apple / 音声認識 / AI開発 / AnySpeechRecognizer / AnyDecisionModel / Core ML / Swift / 生成AI / AI / 開発ツール / Apple / 生成AI",
-   "urls": [
-    "https://huggingface.co/blog/anydecisionmodel"
-   ]
-  },
-  {
-   "slug": "ntt-west-zero-trust-service",
-   "at": "2026-10-29T15:53:51.871366+00:00",
-   "title": "NTT西日本とNTTスマートコネクトがゼロトラストの導入・運用支援サービスを開始、企業の負担軽減へ",
-   "head": "NTT西日本とNTTスマートコネクトがゼロトラストの導入・運用支援サービスを開始、企業の負担軽減へ | ゼロトラスト導入・運用支援サービスの提供開始",
-   "text": "NTT西日本とNTTスマートコネクトがゼロトラストの導入・運用支援サービスを開始、企業の負担軽減へ | ゼロトラスト導入・運用支援サービスの提供開始 | ゼロトラスト / NTT西日本 / NTTスマートコネクト / Zscaler / セキュリティ / マネージドサービス / 情報システム / 自治体 / ビジネス / セキュリティ / IT / クラウド",
-   "urls": [
-    "http://www.ntt-west.co.jp/news/2610/261029a.html"
-   ]
-  },
-  {
-   "slug": "hugging-face-project-protostar",
-   "at": "2026-10-29T15:36:51.855916+00:00",
-   "title": "Hugging Faceが科学研究のAI活用を支援する「Project ProtoStar」を発足 公開データの再利用を促進",
-   "head": "Hugging Faceが科学研究のAI活用を支援する「Project ProtoStar」を発足 公開データの再利用を促進 | Announcing Project ProtoStar: Making Publicly Funded Science AI-Ready",
-   "text": "Hugging Faceが科学研究のAI活用を支援する「Project ProtoStar」を発足 公開データの再利用を促進 | Announcing Project ProtoStar: Making Publicly Funded Science AI-Ready | Hugging Face / Project ProtoStar / AI / オープンサイエンス / 科学研究 / データ共有 / カーネギーメロン大学 / 気候変動 / 生成AI / オープンソース / データ分析 / 研究開発",
-   "urls": [
-    "https://huggingface.co/blog/announcing-project-protostar"
    ]
   }
  ]

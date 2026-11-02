@@ -66,7 +66,7 @@
   "videoTitle": "Anthropic, PBC - S-1/A-1",
   "publishedAt": "2026-11-02T15:09:24.629000+00:00",
   "generatedAt": "2026-11-02T15:12:09.814909+00:00",
-  "thumbnail": "",
+  "thumbnail": "https://ai-tech-express.jp/img/anthropic-s1a-amendment-ant-nasdaq-e8171ea0.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "relatedSlugs": [
@@ -74,5 +74,12 @@
   ],
   "qualityScore": 93,
   "detectedAt": "2026-11-02T15:09:24+00:00",
-  "fastLane": true
+  "fastLane": true,
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close-up of a hand holding a printed share certificate on a wooden desk, with a laptop displaying a stock chart in the background, illuminated by soft natural light.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T16:05:49+00:00"
+  }
 }

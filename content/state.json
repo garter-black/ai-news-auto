@@ -33,6 +33,7 @@
     "YcFnDg6dl0s": 2,
     "a75xDflRooI": 1,
     "dQMYDBGX0uk": 2,
+    "dS6cFdoyit8": 1,
     "dmbT2IHpOKU": 1,
     "eNuyyBJwOEw": 1,
     "f-3fGNfMfqU": 1,
@@ -55,6 +56,7 @@
     "xP1kjDOisVw": 1,
     "y6L37mXkTw0": 2,
     "y6g2J5NTlM8": 1,
+    "zPgns4ui61Y": 1,
     "zUybw-9ejZ4": 1,
     "z_sXLlLVUls": 1,
     "zoohZ1BiHs0": 1
@@ -6632,6 +6634,14 @@
       "skipped": true,
       "url": "https://www.mhlw.go.jp/stf/kouseiroudoushou/saiyou/index_00014.html"
     },
+    "63028db311b26f99": {
+      "at": "2026-11-02T16:02:18.527087+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "google-warns-llmjacking-cloud-threats",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models/"
+    },
     "6318bf62f2c5750d": {
       "at": "2026-10-28T17:02:42.932741+00:00",
       "breaking": true,
@@ -9325,6 +9335,14 @@
       "updated": "amazon-alexa-plus-launch",
       "url": "https://www.aboutamazon.jp/news/devices/amazon-launches-alexa-plus-in-japan?utm_source=rss"
     },
+    "af6a467fdfe036d7": {
+      "at": "2026-11-02T16:02:48.986730+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "nli-electronic-waste-recycling-challenges",
+      "url": "https://www.nli-research.co.jp/topics_detail1/id=87238?site=nli"
+    },
     "afb1d0948e79346c": {
       "at": "2026-10-30T06:13:36.048015+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -9902,6 +9920,12 @@
       "reason": "prefilter: 価値の薄いお知らせ（職員）",
       "skipped": true,
       "url": "https://www.nii.ac.jp/about/recruit/2026/1028.html"
+    },
+    "bf895ca3bdfe6537": {
+      "at": "2026-11-02T16:02:19.195181+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（会議）",
+      "skipped": true,
+      "url": "http://www.mlit.go.jp/report/press/kouku08_hh_000092.html"
     },
     "bfa11146d7e419ba": {
       "at": "2026-10-26T12:40:19.590301+00:00",
@@ -12194,118 +12218,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T08:51:13.509315+00:00",
-      "attempt": 0,
-      "id": "b0d3e2edc6f50b4d",
-      "kind": "broad",
-      "model": "",
-      "problems": [
-        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（62.9→62.9字）"
-      ],
-      "readability": {
-        "avg_paragraph": 174.7,
-        "avg_sentence": 62.9,
-        "long_share": 0.52,
-        "max_paragraph": 270,
-        "paragraphs": 9,
-        "sentences": 25
-      },
-      "score": 100,
-      "source": "fsa",
-      "title": "国際関係,欧州財務報告諮問グループ（EFRAG）による「非EU企業向け欧州サステナビリティ報告基準（ESRS-40a）公開草案」へのコメントレター発出について公"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T09:11:11.523605+00:00",
-      "attempt": 1,
-      "id": "882512038a7997cd",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 132.1字・最長 191字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 132.1,
-        "avg_sentence": 44.0,
-        "long_share": 0.2,
-        "max_paragraph": 191,
-        "paragraphs": 10,
-        "sentences": 30
-      },
-      "score": 100,
-      "source": "fsa",
-      "title": "その他,個人情報流出の被害に遭われた方・ご心配のある方向けの相談窓口について掲載しました。"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T09:11:15.102806+00:00",
-      "attempt": 0,
-      "id": "882512038a7997cd",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 137.9字・最長 204字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 137.9,
-        "avg_sentence": 40.6,
-        "long_share": 0.088,
-        "max_paragraph": 204,
-        "paragraphs": 10,
-        "sentences": 34
-      },
-      "score": 100,
-      "source": "fsa",
-      "title": "その他,個人情報流出の被害に遭われた方・ご心配のある方向けの相談窓口について掲載しました。"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T09:31:20.552346+00:00",
-      "attempt": 1,
-      "id": "53677684b3ba7949",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1459字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（330字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 120.0,
-        "avg_sentence": 56.8,
-        "long_share": 0.368,
-        "max_paragraph": 206,
-        "paragraphs": 9,
-        "sentences": 19
-      },
-      "score": null,
-      "source": "fsa",
-      "title": "その他,金融機関における貸付条件の変更等の状況についてを更新しました。"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T09:31:26.673134+00:00",
-      "attempt": 2,
-      "id": "53677684b3ba7949",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1639字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 128.9,
-        "avg_sentence": 52.7,
-        "long_share": 0.273,
-        "max_paragraph": 177,
-        "paragraphs": 9,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "fsa",
-      "title": "その他,金融機関における貸付条件の変更等の状況についてを更新しました。"
-    },
     {
       "accepted": true,
       "at": "2026-10-30T09:31:34.740458+00:00",
@@ -18739,6 +18651,116 @@
       "score": 95,
       "source": "honda-news",
       "title": "＜EICMA 2026＞ Honda初のハイエンド電動アシストマウンテンバイク「Honda RN0」を世界初公開 ～二輪車開発で培ったノウハウと最新e-MTB技"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T16:01:23.826138+00:00",
+      "attempt": 1,
+      "id": "63028db311b26f99",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "被害に遭った企業では、わずか1日で150万円以上の料金が発生したケースもありました。 → 元記事の「exceeding $100,000 USD in a single day（1日で10万米ドル超）」という記述から換算すると約1500万円以上であり、金額が「150万円以上」と大幅に少なく誤って記載されている。"
+      ],
+      "readability": {
+        "avg_paragraph": 123.0,
+        "avg_sentence": 61.5,
+        "long_share": 0.455,
+        "max_paragraph": 198,
+        "paragraphs": 11,
+        "sentences": 22
+      },
+      "score": 85,
+      "source": "google-cloud-blog",
+      "title": "The Rise of LLMJacking: How Threat Actors Monetize Compromised Cloud and Model R"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T16:02:04.716763+00:00",
+      "attempt": 2,
+      "id": "63028db311b26f99",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 61.4字・60字超の文が 46% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 214.9字・最長 293字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 214.9,
+        "avg_sentence": 61.4,
+        "long_share": 0.464,
+        "max_paragraph": 293,
+        "paragraphs": 8,
+        "sentences": 28
+      },
+      "score": 100,
+      "source": "google-cloud-blog",
+      "title": "The Rise of LLMJacking: How Threat Actors Monetize Compromised Cloud and Model R"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T16:02:18.525880+00:00",
+      "attempt": 0,
+      "id": "63028db311b26f99",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 141.0字・最長 239字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 141.0,
+        "avg_sentence": 34.6,
+        "long_share": 0.038,
+        "max_paragraph": 239,
+        "paragraphs": 13,
+        "sentences": 53
+      },
+      "score": 100,
+      "source": "google-cloud-blog",
+      "title": "The Rise of LLMJacking: How Threat Actors Monetize Compromised Cloud and Model R"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T16:02:27.623543+00:00",
+      "attempt": 1,
+      "id": "af6a467fdfe036d7",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 52.9字・60字超の文が 32% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 145.5字・最長 196字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 145.5,
+        "avg_sentence": 52.9,
+        "long_share": 0.318,
+        "max_paragraph": 196,
+        "paragraphs": 8,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "nli-research",
+      "title": "増え続ける電子ごみと資源循環の行方－電子ごみの発生抑制と資源循環の課題"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T16:02:48.985740+00:00",
+      "attempt": 0,
+      "id": "af6a467fdfe036d7",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 87.9,
+        "avg_sentence": 28.7,
+        "long_share": 0.0,
+        "max_paragraph": 137,
+        "paragraphs": 15,
+        "sentences": 46
+      },
+      "score": 100,
+      "source": "nli-research",
+      "title": "増え続ける電子ごみと資源循環の行方－電子ごみの発生抑制と資源循環の課題"
     }
   ],
   "short_text_retry": {},

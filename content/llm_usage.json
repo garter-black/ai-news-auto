@@ -55,10 +55,10 @@
   },
   "2026-11-02": {
     "cf-image:flux-1-schnell": 7,
-    "cf-image:flux-2-klein-4b": 19,
+    "cf-image:flux-2-klein-4b": 24,
     "claude:sonnet": 11,
     "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 2,
-    "cloudflare:@cf/openai/gpt-oss-120b": 56,
-    "gemini-3.5-flash-lite": 113
+    "cloudflare:@cf/openai/gpt-oss-120b": 59,
+    "gemini-3.5-flash-lite": 124
   }
 }
