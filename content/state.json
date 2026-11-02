@@ -8836,6 +8836,14 @@
       "skipped": true,
       "url": "https://developer.nvidia.com/blog/how-to-check-and-configure-nvidia-gpudirect-storage-for-your-platform/"
     },
+    "a2a7b71a0a19d94c": {
+      "at": "2026-11-02T13:41:34.571950+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "boj-cpmi-payment-system-report",
+      "url": "https://www.boj.or.jp/paym/intlact_pm/cpss/cpss261102a.htm"
+    },
     "a2ff4102256b5786": {
       "at": "2026-10-27T17:51:57.399683+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（ライブ配信）",
@@ -12076,73 +12084,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:12:17.270219+00:00",
-      "attempt": 2,
-      "id": "f7f7d6f123a4b8f0",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 177.2,
-        "avg_sentence": 59.1,
-        "long_share": 0.375,
-        "max_paragraph": 251,
-        "paragraphs": 8,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "ipa",
-      "title": "DX認定制度 ウェブフォーム申請の操作説明動画を公開しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:12:35.813285+00:00",
-      "attempt": 1,
-      "id": "5b96453abdd94254",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1598字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 152.7,
-        "avg_sentence": 52.8,
-        "long_share": 0.192,
-        "max_paragraph": 278,
-        "paragraphs": 9,
-        "sentences": 26
-      },
-      "score": null,
-      "source": "suntory",
-      "title": "「サントリー登美の丘ワイナリー」グループ生産研究拠点初となる「自然共生サイト」に認定"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T08:12:42.129491+00:00",
-      "attempt": 2,
-      "id": "5b96453abdd94254",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1514字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 137.4,
-        "avg_sentence": 59.7,
-        "long_share": 0.522,
-        "max_paragraph": 210,
-        "paragraphs": 10,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "suntory",
-      "title": "「サントリー登美の丘ワイナリー」グループ生産研究拠点初となる「自然共生サイト」に認定"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T08:12:52.916660+00:00",
@@ -18652,6 +18593,73 @@
       "score": 100,
       "source": "mof",
       "title": "製造たばこの小売定価の認可"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T13:41:24.910620+00:00",
+      "attempt": 1,
+      "id": "a2a7b71a0a19d94c",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "訳されていない英文が残っている（「The roles of central banks and central b…」）"
+      ],
+      "readability": {
+        "avg_paragraph": 174.1,
+        "avg_sentence": 65.3,
+        "long_share": 0.375,
+        "max_paragraph": 291,
+        "paragraphs": 9,
+        "sentences": 24
+      },
+      "score": null,
+      "source": "boj",
+      "title": "CPMIが報告書「進化する決済システムにおける中央銀行および中央銀行マネーの役割」を公表"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T13:41:30.940477+00:00",
+      "attempt": 2,
+      "id": "a2a7b71a0a19d94c",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 58.1字・60字超の文が 35% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 129.1字・最長 212字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 129.1,
+        "avg_sentence": 58.1,
+        "long_share": 0.35,
+        "max_paragraph": 212,
+        "paragraphs": 9,
+        "sentences": 20
+      },
+      "score": 100,
+      "source": "boj",
+      "title": "CPMIが報告書「進化する決済システムにおける中央銀行および中央銀行マネーの役割」を公表"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T13:41:34.570925+00:00",
+      "attempt": 0,
+      "id": "a2a7b71a0a19d94c",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 137.3字・最長 237字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 137.3,
+        "avg_sentence": 28.7,
+        "long_share": 0.0,
+        "max_paragraph": 237,
+        "paragraphs": 9,
+        "sentences": 43
+      },
+      "score": 100,
+      "source": "boj",
+      "title": "CPMIが報告書「進化する決済システムにおける中央銀行および中央銀行マネーの役割」を公表"
     }
   ],
   "short_text_retry": {},
