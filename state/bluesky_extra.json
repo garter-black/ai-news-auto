@@ -1,4 +1,19 @@
 {
+  "apple-ui-navigation-rl-agent": {
+    "at": "2026-11-02T14:53:12+00:00",
+    "title": "Appleの研究チームが新AI学習手法を発表、スマホ画面の自動操作で大幅に性能向上",
+    "uri": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzdlb2nhod2z"
+  },
+  "arm-october-2026-ai-innovations": {
+    "at": "2026-11-02T11:32:57+00:00",
+    "title": "英Armの10月動向：433コアの自律走行ロボやスマホ向け新AIの全貌",
+    "uri": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzda2yzizc23"
+  },
+  "artex-agentic-offensive-frameworks": {
+    "at": "2026-11-02T10:52:54+00:00",
+    "title": "Google、自律型攻撃フレームワーク「ARTEX」の悪用を確認　企業への侵入がマシンスピードに",
+    "uri": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzd5tf5abh2t"
+  },
   "aws-connect-ai-agents-guardrails": {
     "at": "2026-11-02T06:14:09+00:00",
     "title": "AWS、コールセンター用生成AIに安全機能『AI ガードレール』 トラブルを防ぎながら運用",
@@ -13,6 +28,16 @@
     "at": "2026-11-02T08:15:33+00:00",
     "title": "Google、AIエージェント専用の新型コンピュート『Agent Compute Engine』とガバナンス機能を発表",
     "uri": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzcuzzgpyy2k"
+  },
+  "google-distributed-cloud-ai-innovations-2026": {
+    "at": "2026-11-02T10:12:32+00:00",
+    "title": "Google、機密データ領域のAI基盤『GDC』を刷新 検索や新半導体を追加",
+    "uri": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzd3l6qcwt2c"
+  },
+  "google-knowledge-catalog-self-learning-enrichment": {
+    "at": "2026-11-02T12:17:05+00:00",
+    "title": "Googleのデータカタログ『Knowledge Catalog』に自己学習型AI機能 新機能の概要と仕組み",
+    "uri": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzdcjwbnb62z"
   },
   "nissay-it-ai-driven-development-aws": {
     "at": "2026-11-02T09:16:02+00:00",

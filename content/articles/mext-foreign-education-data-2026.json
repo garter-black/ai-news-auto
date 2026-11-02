@@ -43,23 +43,29 @@
   "videoTitle": "「諸外国の教育情報」令和8（2026）年版 を公表しました。",
   "publishedAt": "2026-10-30T09:00:00+00:00",
   "generatedAt": "2026-11-02T01:45:44.040327+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/mext-foreign-education-data-2026-e45c00e7.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/mext-foreign-education-data-2026-d00d32d1.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-30T09:00:00+00:00",
   "detectedAt": "2026-11-02T01:45:20+00:00",
   "imageCredit": {
-    "kind": "stock",
-    "title": "A public school, high school classroom in the United States 01",
-    "creator": "Harrison Keely",
-    "creatorUrl": "",
-    "license": "CC BY 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
-    "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:A_public_school,_high_school_classroom_in_the_United_States_01.jpg",
-    "query": "school classroom",
-    "original": "https://www.mext.go.jp/common/img/mext_ogp_img.png",
-    "at": "2026-11-02T01:46:28+00:00"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A bright, empty classroom with rows of desks and a chalkboard, natural daylight streaming through large windows, conveying an educational setting.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T13:33:49+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.604,
+    "box": [
+      0.0,
+      0.208,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/mext-foreign-education-data-2026-d00d32d1.jpg"
   }
 }

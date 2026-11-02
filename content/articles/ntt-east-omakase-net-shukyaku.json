@@ -63,7 +63,7 @@
   "videoTitle": "AI検索時代における地域の中小企業・店舗の集客力向上を支援する「おまかせネット集客サポート」を提供開始",
   "publishedAt": "2026-11-02T06:00:00+00:00",
   "generatedAt": "2026-11-02T06:51:22.293528+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/ntt-east-omakase-net-shukyaku-c07a9cd5.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/ntt-east-omakase-net-shukyaku-42f16003.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -71,10 +71,26 @@
   "detectedAt": "2026-11-02T06:50:47+00:00",
   "speedMinutes": 55,
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "From behind, a small business owner works at a clean desk with an open laptop and a tablet displaying charts, bathed in gentle daylight from a nearby window.",
-    "provider": "Cloudflare Workers AI",
-    "at": "2026-11-02T06:52:56+00:00"
+    "kind": "official",
+    "org": "NTT",
+    "provider": "NTT ニュースリリース",
+    "sourceUrl": "https://www.ntt-east.co.jp/release/detail/20261102_02.html",
+    "original": "https://www.ntt-east.co.jp/release/detail/images/img_20261102_02_01.png",
+    "width": 1200,
+    "height": 686,
+    "at": "2026-11-02T11:53:56+00:00",
+    "imageKind": "dense"
+  },
+  "imageFocus": {
+    "x": 0.461,
+    "y": 0.481,
+    "box": [
+      0.0,
+      0.0,
+      0.922,
+      0.962
+    ],
+    "ar": 1.7493,
+    "src": "https://ai-tech-express.jp/img/ntt-east-omakase-net-shukyaku-42f16003.jpg"
   }
 }

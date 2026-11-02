@@ -14,7 +14,7 @@ on:
         default: "九州そら"
 
 permissions:
-  contents: read
+  contents: write  # Claude API の使用量（state/claude_api_usage_video.json）を main に残すため
 
 concurrency:
   group: shorts-v3-${{ github.run_id }}
@@ -52,7 +52,14 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           CLAUDE_DAILY_MAX: ${{ vars.CLAUDE_DAILY_MAX || '40' }}
-          CLAUDE_MODEL: opus  # 台本はいちばん強いモデルで（2026-11-02 オーナー「質を優先」）
+          CLAUDE_MODEL: opus  # Claude CLI のときの台本のモデル（2026-11-02 オーナー「質を優先」）
+          # 動画の台本は目立つもの: Claude API（クレジット。台本 Opus・レビュー Sonnet）→ Claude CLI → 無料モデル（scripts/llm.py）
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          LLM_DEFAULT_VISIBILITY: high
+          LLM_DEFAULT_PURPOSE: video
+          CLAUDE_API_LEDGER: video
+          CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
+          CLAUDE_API_DAILY_CALLS_VIDEO: ${{ vars.CLAUDE_API_DAILY_CALLS_VIDEO }}
           V3_VOICEVOX_SPEAKER: ${{ github.event.inputs.speaker || '九州そら' }}
           SLUGS: ${{ github.event.inputs.slugs }}
         run: |
@@ -79,3 +86,22 @@ jobs:
             out/shorts_v3/*.png
             out/shorts_v3/*.json
           retention-days: 7
+      # Claude API の使用量（月の予算の管理）を main に足す。同時に動く回と衝突しないよう、最新の main に足し直して push
+      - name: Claude API の使用量を記録
+        if: always()
+        continue-on-error: true
+        run: |
+          f=state/claude_api_usage_video.json
+          if [ ! -f "$f" ] || [ -z "$(git status --porcelain "$f")" ]; then exit 0; fi
+          cp "$f" "$RUNNER_TEMP/api_usage_mine.json"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for i in 1 2 3; do
+            git fetch --depth 1 origin main && git reset --hard origin/main
+            python scripts/llm.py --merge-api-usage "$RUNNER_TEMP/api_usage_mine.json" "$f"
+            git add "$f"
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "chore(llm): Claude API の使用量を記録（動画）"
+            git push origin HEAD:main && exit 0
+            sleep 5
+          done

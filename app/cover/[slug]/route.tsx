@@ -198,7 +198,7 @@ async function reachablePhoto(url: string): Promise<string | null> {
 function coverCredit(article: FullArticle): string {
   const c = article.imageCredit;
   if (c?.kind === "ai") return "画像はイメージ（AI生成）";
-  if (c?.kind === "official") return officialCreditText(c) ?? "";
+  if (c?.kind === "official" || c?.kind === "figure") return officialCreditText(c) ?? "";
   if (c?.kind !== "stock") return "";
   const who = (c.creator || "").slice(0, 28);
   return c.license?.startsWith("CC BY") ? `写真はイメージ　Photo: ${who} / ${c.license}` : "写真はイメージ";

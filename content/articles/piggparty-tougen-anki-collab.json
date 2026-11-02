@@ -54,18 +54,33 @@
   "videoTitle": "アバターSNS「ピグパーティ」、TVアニメ『桃源暗鬼』とのコラボレーションを 11月2日より開催",
   "publishedAt": "2026-10-30T07:41:45+00:00",
   "generatedAt": "2026-11-02T01:21:00.118880+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/piggparty-tougen-anki-collab-597eeee0.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/piggparty-tougen-anki-collab-6d2be9aa.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-30T07:41:45+00:00",
   "detectedAt": "2026-11-02T01:20:40+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A person in a vibrant anime-inspired cosplay costume holds a game controller in a dimly lit event hall, with other attendees blurred in the background.",
-    "provider": "Cloudflare Workers AI",
-    "original": "https://www.cyberagent.co.jp/files/topics/33965_ext_09_0.jpg",
-    "at": "2026-11-02T01:21:49+00:00"
+    "kind": "official",
+    "org": "サイバーエージェント",
+    "provider": "サイバーエージェント ニュース",
+    "sourceUrl": "https://www.cyberagent.co.jp/news/detail/id=33965",
+    "original": "https://d1kdu080g8vme4.cloudfront.net/files/topics/33965_ext_03_0.jpg?version=1793346105&width=824&height=464&scale=2",
+    "width": 1200,
+    "height": 676,
+    "at": "2026-11-02T11:54:57+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.475,
+    "y": 0.517,
+    "box": [
+      0.016,
+      0.1,
+      0.934,
+      0.933
+    ],
+    "ar": 1.7751,
+    "src": "https://ai-tech-express.jp/img/piggparty-tougen-anki-collab-6d2be9aa.jpg"
   }
 }

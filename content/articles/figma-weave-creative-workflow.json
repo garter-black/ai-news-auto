@@ -81,5 +81,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://cdn.sanity.io/images/599r6htc/regionalized/6ff46e4235ab02c904cb2673573d5fefd08312aa-3264x1836.png?w=1200&q=70&fit=max&auto=format",
     "at": "2026-11-01T01:16:21+00:00"
+  },
+  "imageFocus": {
+    "x": 0.47,
+    "y": 0.5,
+    "box": [
+      0.0,
+      0.0,
+      0.941,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/figma-weave-creative-workflow-25b8da54.jpg"
   }
 }

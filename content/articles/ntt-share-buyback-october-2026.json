@@ -53,7 +53,7 @@
   "videoTitle": "自己株式の取得状況に関するお知らせ（会社法第165条第2項の規定による定款の定めに基づく自己株式の取得）",
   "publishedAt": "2026-11-02T06:30:00+00:00",
   "generatedAt": "2026-11-02T06:51:33.325985+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/ntt-share-buyback-october-2026-aca03034.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/ntt-share-buyback-october-2026-32a91865.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -63,9 +63,20 @@
   "imageCredit": {
     "kind": "ai",
     "model": "flux-2-klein-4b",
-    "prompt": "A close-up of a hand holding a printed financial chart on a white sheet, placed on a wooden desk illuminated by soft natural light from a nearby window.",
+    "prompt": "A close-up of a hand holding a stack of printed stock certificates on a wooden desk, illuminated by soft natural light from a nearby window.",
     "provider": "Cloudflare Workers AI",
-    "original": "https://group.ntt/common/img/ogp.jpg?20250701",
-    "at": "2026-11-02T06:52:16+00:00"
+    "at": "2026-11-02T13:33:44+00:00"
+  },
+  "imageFocus": {
+    "x": 0.403,
+    "y": 0.5,
+    "box": [
+      0.0,
+      0.0,
+      0.806,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/ntt-share-buyback-october-2026-32a91865.jpg"
   }
 }

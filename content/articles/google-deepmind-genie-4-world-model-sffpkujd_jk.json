@@ -89,5 +89,17 @@
   "model": "gemini-3.5-flash",
   "affiliates": [],
   "duplicateOf": "google-genie-4-world-model",
-  "duplicateReason": "製品名が一致（genie4）"
+  "duplicateReason": "製品名が一致（genie4）",
+  "imageFocus": {
+    "x": 0.423,
+    "y": 0.461,
+    "box": [
+      0.019,
+      0.0,
+      0.828,
+      0.922
+    ],
+    "ar": 1.7778,
+    "src": "https://i.ytimg.com/vi/sFfPkUJd_Jk/maxresdefault.jpg"
+  }
 }

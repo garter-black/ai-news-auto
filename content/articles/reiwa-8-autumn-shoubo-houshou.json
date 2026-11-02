@@ -45,7 +45,7 @@
   "videoTitle": "令和8年秋の褒章（消防関係）",
   "publishedAt": "2026-11-01T20:00:00+00:00",
   "generatedAt": "2026-11-01T20:21:04.609257+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/reiwa-8-autumn-shoubo-houshou-1da2cfaa.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/reiwa-8-autumn-shoubo-houshou-9cb893e2.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -55,9 +55,20 @@
   "imageCredit": {
     "kind": "ai",
     "model": "flux-2-klein-4b",
-    "prompt": "A line of firefighters in full gear stands behind a podium with a tray of medals and ribbons, the scene lit by soft natural light and the background softly blurred, showing only backs and hands.",
+    "prompt": "A close-up of a red and blue ceremonial ribbon and medal arranged on a wooden table, illuminated by soft natural light, with no people or identifiable objects in view.",
     "provider": "Cloudflare Workers AI",
-    "original": "https://www.soumu.go.jp/main_content/000372150.jpg",
-    "at": "2026-11-01T20:21:35+00:00"
+    "at": "2026-11-02T13:33:43+00:00"
+  },
+  "imageFocus": {
+    "x": 0.403,
+    "y": 0.387,
+    "box": [
+      0.0,
+      0.0,
+      0.806,
+      0.774
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/reiwa-8-autumn-shoubo-houshou-9cb893e2.jpg"
   }
 }

@@ -124,6 +124,8 @@ PRIORITY_TOPIC_RE = re.compile(
 )
 
 # 配信用に選ぶ話題（はてなブログの下書き scripts/crosspost_drafts.py など）。スポーツは入れない
+# 検索に出す記事の基準（scripts/indexnow.py の is_focus・lib/indexing.ts）もこの下のジャンル・正規表現とスポーツの正規表現を使う。
+# 変えたら `python3 scripts/indexnow.py --export-rules` で lib/index-rules.json を書き出す（サイト側が読む）
 PERSONA_GENRES = ("ai", "business", "investment", "real-estate")
 # 上のジャンル以外でも、お金・制度の話題（税・補助金・年金など）なら読者像に合う
 PERSONA_EXTRA_GENRES = ("public", "lifestyle", "tech-gadget")

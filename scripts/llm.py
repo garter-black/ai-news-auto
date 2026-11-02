@@ -4,18 +4,29 @@
   from llm import generate_json
   data, model = generate_json(system_text, prompt, schema, tier="bulk")
 
-- tier="quality": Claude（使えるとき）→ main.py と同じ Gemini Flash 系
-- tier="bulk"   : 無料枠の大きい軽量モデル（flash-lite → Gemma）→ quality → 外部無料API（キーがあれば）
-                  → 最後の予備として Claude（1日 CLAUDE_DAILY_MAX 回まで）→ Codex（ローカルのみ）
-- Claude は Claude Code CLI（`claude -p`）をサブスクリプションの枠で呼ぶ。使えるのは
+- tier="quality": main.py と同じ Gemini Flash 系（無料）
+- tier="bulk"   : 無料枠の大きい軽量モデル（flash-lite → Gemma）→ quality → 外部無料API（キーがあれば）→ Codex（ローカルのみ）
+- Claude は「目立つもの」だけに使う（2026-11-03 オーナー決定）。visibility="high" を付けた呼び出しだけが
+  Claude API（クレジット）→ Claude CLI（サブスクリプション）→ 上の無料モデル の順で試す。
+  それ以外（通常の記事・品質チェック・画像・まとめ など）は Claude を一切使わず無料モデルだけ。
+    data, model = generate_json(system, prompt, schema, tier="quality", visibility="high", purpose="breaking")
+  purpose: "breaking"（速報・大きなニュース）/ "sns"（SNS に出しそうな記事）/ "video"（動画の台本）/
+           "video_review"（台本の編集者レビュー。軽いモデル）。purpose ごとに1日の API 呼び出し回数の上限がある。
+- Claude API: ANTHROPIC_API_KEY があるときだけ。月の予算（既定 $95、クレジットの補充日〔既定 毎月4日〕で区切る）を
+  state/claude_api_usage*.json に記録し、1日の目安（残り予算÷残り日数）と purpose ごとの回数上限を守る。
+  「クレジット不足」などの課金エラーは次の補充日まで使わない印を付け、すぐ次の経路へ。API の失敗で処理は止めない。
+- Claude CLI は Claude Code CLI（`claude -p`）をサブスクリプションの枠で呼ぶ。使えるのは
   `claude` が PATH にあり、かつ CLAUDE_CODE_OAUTH_TOKEN（GitHub Actions。`claude setup-token` で発行）
   または LLM_USE_LOCAL_CLAUDE=1（手元の Mac）のときだけ。CLAUDE_MODEL でモデルを変更（既定 sonnet）。
+  1日 CLAUDE_DAILY_MAX 回まで（速報 purpose="breaking" は上限なし）。
 - Codex は `codex` が PATH にあり LLM_USE_LOCAL_CODEX=1 のときだけ（手元の ChatGPT ログイン用。CI では使わない）。
 - 429 / RESOURCE_EXHAUSTED のモデルはその実行中は使わない。404 は飛ばす。5xx は短く2回まで再試行。
 - モデルごとの1日の使用回数を content/llm_usage.json に記録（直近7日分）。
 
   python3 scripts/llm.py            # 使えるモデル一覧と今日の使用回数を表示
   python3 scripts/llm.py --ping     # bulk で小さな JSON を1回生成して動作確認
+  python3 scripts/llm.py --api-ping # Claude API（Haiku）に小さな依頼を1回だけ送って動作確認
+  python3 scripts/llm.py --merge-api-usage MINE DEST  # 別の実行の API 使用量を DEST に足す（同じ実行の分は大きい方）
 """
 
 from __future__ import annotations
@@ -31,7 +42,7 @@ import tempfile
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 try:
@@ -232,13 +243,12 @@ def models_for(tier: str) -> list[str]:
         have = available_models()
         override = [os.environ["GEMINI_MODEL"]] if os.environ.get("GEMINI_MODEL") else []
         quality = [m for m in dict.fromkeys(override + QUALITY_MODELS) if m in have]
-        claude = _claude_models()
+        # Claude（CLI）はここに入れない。visibility="high" の呼び出しだけが generate_json の中で先頭に足す
         if tier == "quality":
-            chosen = claude + quality
+            chosen = quality
         else:
             bulk = [m for m in BULK_MODELS if m in have]
-            # Claude は枠をオーナーと共有するので bulk では最後の予備（1日 CLAUDE_DAILY_MAX 回まで）
-            chosen = list(dict.fromkeys(bulk + quality)) + _groq_models() + _openrouter_models() + _cloudflare_models() + claude + _codex_models()
+            chosen = list(dict.fromkeys(bulk + quality)) + _groq_models() + _openrouter_models() + _cloudflare_models() + _codex_models()
         _tiers[tier] = chosen
         log(f"[llm] {tier}: {' → '.join(chosen) or '（なし）'}")
     return _tiers[tier]
@@ -517,6 +527,404 @@ def _call_codex(model: str, system_instruction: str, prompt: str, schema: dict) 
     return text
 
 
+# --------------------------------------------------------------------------- #
+# Claude API（Claude Platform のクレジット）。目立つもの（visibility="high"）だけに使う
+# --------------------------------------------------------------------------- #
+
+API_PREFIX = "anthropic-api:"
+API_STATE_DIR = ROOT / "state"
+JST = timezone(timedelta(hours=9))
+# 1M トークンあたりの米ドル: (入力, 出力, キャッシュ読み出し)。キャッシュ書き込みは入力の 1.25 倍（5分）
+API_PRICES = {
+    "claude-opus-5-5": (4.00, 20.00, 0.20),
+    "claude-sonnet-5-5": (2.00, 10.00, 0.20),
+    "claude-haiku-5-5": (0.10, 0.50, 0.01),
+}
+API_CACHE_WRITE_MULT = 1.25
+API_DEFAULT_MODEL = "claude-opus-5-5"     # 速報の記事・動画の台本
+API_DEFAULT_SNS_MODEL = "claude-sonnet-5-5"  # SNS に出しそうな記事（本数が多く、実際に出るのは半分ほどなので）
+API_DEFAULT_LIGHT_MODEL = "claude-sonnet-5-5"  # 台本の編集者レビューなど軽い段
+API_LIGHT_PURPOSES = {"video_review", "review"}
+# purpose → 1日の回数上限を数える区分
+API_CLASS_OF = {"breaking": "breaking", "sns": "sns", "video": "video", "video_review": "video"}
+# 1日（日本時間）の API 呼び出し回数の上限（作り直しも1回と数える）。環境変数 CLAUDE_API_DAILY_CALLS_<区分> で変更
+API_DAILY_CALLS = {"breaking": 10, "sns": 10, "video": 12}
+API_MONTHLY_BUDGET_DEFAULT = 95.0
+API_BREAKING_RESERVE = 0.25  # 1日の目安額のうち、速報のために残しておく割合（sns・video はここで止まる）
+API_REFILL_DAY_DEFAULT = 4   # クレジットが補充される日（毎月）
+API_TIMEOUT = 180
+_EXHAUSTED_PATTERNS = (
+    "credit balance", "billing", "insufficient credit", "usage limit", "spend limit", "regain access",
+    "out of credits", "payment",
+)
+
+_api_client = None
+_api_off: str | None = None   # この実行ではもう API を使わない理由
+_api_transient_failures = 0
+_local_run_key: str | None = None
+
+
+def _env_float(name: str, default: float) -> float:
+    try:
+        return float(os.environ.get(name) or default)
+    except ValueError:
+        return default
+
+
+def _env_int(name: str, default: int) -> int:
+    try:
+        return int(os.environ.get(name) or default)
+    except ValueError:
+        return default
+
+
+def api_model_for(purpose: str) -> str:
+    if purpose in API_LIGHT_PURPOSES:
+        return os.environ.get("CLAUDE_API_MODEL_LIGHT") or API_DEFAULT_LIGHT_MODEL
+    if purpose == "sns":
+        return os.environ.get("CLAUDE_API_MODEL_SNS") or API_DEFAULT_SNS_MODEL
+    return os.environ.get("CLAUDE_API_MODEL") or API_DEFAULT_MODEL
+
+
+def api_cost(model: str, usage) -> float:
+    """usage（input_tokens / output_tokens / cache_*）から米ドルを見積もる。知らないモデルは Opus の値で多めに数える"""
+    price_in, price_out, price_read = API_PRICES.get(model, API_PRICES[API_DEFAULT_MODEL])
+
+    def n(name: str) -> int:
+        value = usage.get(name) if isinstance(usage, dict) else getattr(usage, name, 0)
+        return int(value or 0)
+
+    return (
+        n("input_tokens") * price_in
+        + n("cache_creation_input_tokens") * price_in * API_CACHE_WRITE_MULT
+        + n("cache_read_input_tokens") * price_read
+        + n("output_tokens") * price_out
+    ) / 1_000_000
+
+
+def _now() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+def _refill_day() -> int:
+    return min(28, max(1, _env_int("CLAUDE_API_REFILL_DAY", API_REFILL_DAY_DEFAULT)))
+
+
+def _period_bounds(now: datetime | None = None) -> tuple[datetime, datetime]:
+    """いまのクレジットの期間（補充日 0:00 UTC 〜 次の補充日 0:00 UTC）"""
+    now = now or _now()
+    day = _refill_day()
+    start = now.replace(day=day, hour=0, minute=0, second=0, microsecond=0)
+    if now < start:
+        start = (start - timedelta(days=day + 3)).replace(day=day)
+    end = (start + timedelta(days=32)).replace(day=day)
+    return start, end
+
+
+def _jst_day(now: datetime | None = None) -> str:
+    return (now or _now()).astimezone(JST).strftime("%Y-%m-%d")
+
+
+def _ledger_path() -> Path:
+    name = re.sub(r"[^a-z0-9_-]", "", (os.environ.get("CLAUDE_API_LEDGER") or "").lower())
+    return API_STATE_DIR / (f"claude_api_usage_{name}.json" if name else "claude_api_usage.json")
+
+
+def _read_json(path: Path) -> dict:
+    try:
+        data = json.loads(path.read_text("utf-8"))
+        return data if isinstance(data, dict) else {}
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def _run_key() -> str:
+    run = os.environ.get("GITHUB_RUN_ID")
+    if run:
+        return f"gh-{run}-{os.environ.get('GITHUB_RUN_ATTEMPT', '1')}"
+    global _local_run_key
+    if not _local_run_key:
+        _local_run_key = f"local-{_now():%Y%m%d%H%M%S}-{os.getpid()}"
+    return _local_run_key
+
+
+def api_ledger_summary(now: datetime | None = None) -> dict:
+    """state/claude_api_usage*.json（記事の回・動画の回など書き手ごとのファイル）を合計した、今の期間の状況"""
+    now = now or _now()
+    start, end = _period_bounds(now)
+    first_day = start.astimezone(JST).strftime("%Y-%m-%d")
+    today = _jst_day(now)
+    spent = spent_today = 0.0
+    calls_today: dict[str, int] = {}
+    exhausted_until, reason = None, ""
+    for path in sorted(API_STATE_DIR.glob("claude_api_usage*.json")):
+        data = _read_json(path)
+        for day, runs in (data.get("runs") or {}).items():
+            if day < first_day or not isinstance(runs, dict):
+                continue
+            for entry in runs.values():
+                usd = float(entry.get("usd") or 0)
+                spent += usd
+                if day == today:
+                    spent_today += usd
+                    for cls, count in (entry.get("calls") or {}).items():
+                        calls_today[cls] = calls_today.get(cls, 0) + int(count or 0)
+        until = data.get("exhausted_until")
+        if until:
+            try:
+                when = datetime.fromisoformat(str(until).replace("Z", "+00:00"))
+            except ValueError:
+                continue
+            if when > now and (exhausted_until is None or when > exhausted_until):
+                exhausted_until, reason = when, str(data.get("exhausted_reason") or "")
+    budget = _env_float("CLAUDE_API_MONTHLY_BUDGET_USD", API_MONTHLY_BUDGET_DEFAULT)
+    days_left = max(1, (end.astimezone(JST).date() - now.astimezone(JST).date()).days)
+    daily = os.environ.get("CLAUDE_API_DAILY_BUDGET_USD")
+    daily_limit = _env_float("CLAUDE_API_DAILY_BUDGET_USD", 0) if daily else max(0.0, (budget - (spent - spent_today)) / days_left)
+    return {
+        "period_start": start.strftime("%Y-%m-%d"), "period_end": end.strftime("%Y-%m-%d"),
+        "budget": budget, "spent": round(spent, 4), "spent_today": round(spent_today, 4),
+        "daily_limit": round(daily_limit, 4), "calls_today": calls_today, "days_left": days_left,
+        "exhausted_until": exhausted_until.isoformat() if exhausted_until else None, "exhausted_reason": reason,
+    }
+
+
+def _daily_calls_cap(cls: str) -> int:
+    return max(0, _env_int(f"CLAUDE_API_DAILY_CALLS_{cls.upper()}", API_DAILY_CALLS.get(cls, 0)))
+
+
+def api_block_reason(purpose: str, now: datetime | None = None) -> str | None:
+    """この purpose で、いま Claude API を使えない理由（使えるなら None）"""
+    if os.environ.get("CLAUDE_API_DISABLE") == "1":
+        return "CLAUDE_API_DISABLE=1"
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        return "ANTHROPIC_API_KEY が未設定"
+    if _api_off:
+        return _api_off
+    cls = API_CLASS_OF.get(purpose)
+    if not cls:
+        return f"purpose={purpose!r} は API の対象外"
+    s = api_ledger_summary(now)
+    if s["exhausted_until"]:
+        return f"クレジット切れの印（{s['exhausted_until'][:16]} まで: {s['exhausted_reason'][:60]}）"
+    if s["spent"] >= s["budget"]:
+        return f"今月の予算 ${s['budget']:.0f} に到達（${s['spent']:.2f}）"
+    limit = s["daily_limit"] * (1 if cls == "breaking" else 1 - API_BREAKING_RESERVE)
+    if s["spent_today"] >= limit:
+        return f"今日の目安 ${limit:.2f} に到達（${s['spent_today']:.2f}）"
+    cap = _daily_calls_cap(cls)
+    if s["calls_today"].get(cls, 0) >= cap:
+        return f"{cls} の今日の上限 {cap} 回に到達"
+    return None
+
+
+def _save_ledger(data: dict) -> None:
+    path = _ledger_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n", "utf-8")
+
+
+def _prune_ledger(data: dict, now: datetime | None = None) -> dict:
+    """前の期間より古い日は合計だけ history に残して消す（ファイルを小さく保つ）"""
+    start, _ = _period_bounds(now)
+    prev_start, _ = _period_bounds(start - timedelta(days=1))
+    keep_from = prev_start.astimezone(JST).strftime("%Y-%m-%d")
+    history = data.setdefault("history", {})
+    runs = data.setdefault("runs", {})
+    for day in [d for d in runs if d < keep_from]:
+        month = day[:7]
+        history[month] = round(history.get(month, 0) + sum(float(e.get("usd") or 0) for e in runs[day].values()), 4)
+        del runs[day]
+    return data
+
+
+def record_api_usage(purpose: str, model: str, usage, now: datetime | None = None) -> float:
+    """1回の呼び出しの使用量を自分の実行の欄に足す。戻り値はその回の米ドル"""
+    usd = api_cost(model, usage)
+    data = _read_json(_ledger_path())
+    entry = data.setdefault("runs", {}).setdefault(_jst_day(now), {}).setdefault(_run_key(), {})
+    entry["usd"] = round(float(entry.get("usd") or 0) + usd, 6)
+    cls = API_CLASS_OF.get(purpose, purpose)
+    entry.setdefault("calls", {})[cls] = entry.get("calls", {}).get(cls, 0) + 1
+
+    def n(name: str) -> int:
+        value = usage.get(name) if isinstance(usage, dict) else getattr(usage, name, 0)
+        return int(value or 0)
+
+    for key, name in (("in", "input_tokens"), ("out", "output_tokens"), ("cache_read", "cache_read_input_tokens"), ("cache_write", "cache_creation_input_tokens")):
+        entry[key] = entry.get(key, 0) + n(name)
+    _save_ledger(_prune_ledger(data, now))
+    return usd
+
+
+def mark_api_exhausted(reason: str, now: datetime | None = None) -> str:
+    """クレジット切れ: 次の補充日まで使わない印を付ける（補充直後の24時間は、補充の遅れを考えて3時間だけ）"""
+    now = now or _now()
+    start, end = _period_bounds(now)
+    until = now + timedelta(hours=3) if now - start < timedelta(hours=24) else end
+    data = _read_json(_ledger_path())
+    data["exhausted_until"] = until.strftime("%Y-%m-%dT%H:%M:%SZ")
+    data["exhausted_reason"] = reason[:160]
+    _save_ledger(data)
+    return data["exhausted_until"]
+
+
+def merge_api_usage(mine: dict, dest: dict) -> dict:
+    """同じ実行（run）の欄は大きい方、ほかは足し合わせる。クレジット切れの印は遅い方"""
+    out = json.loads(json.dumps(dest)) if dest else {}
+    runs = out.setdefault("runs", {})
+    for day, entries in (mine.get("runs") or {}).items():
+        target = runs.setdefault(day, {})
+        for key, entry in entries.items():
+            if float(entry.get("usd") or 0) >= float((target.get(key) or {}).get("usd") or 0):
+                target[key] = entry
+    for month, usd in (mine.get("history") or {}).items():
+        out.setdefault("history", {})[month] = max(float(usd or 0), float(out.get("history", {}).get(month) or 0))
+    if str(mine.get("exhausted_until") or "") > str(out.get("exhausted_until") or ""):
+        out["exhausted_until"] = mine["exhausted_until"]
+        out["exhausted_reason"] = mine.get("exhausted_reason", "")
+    return out
+
+
+def _api_schema(schema: dict) -> dict:
+    """構造化出力（output_config.format）用: 標準の JSON Schema にし、object には additionalProperties: false、
+    対応していない制約（文字数・数値の範囲など）は外す"""
+    unsupported = {"minimum", "maximum", "exclusiveMinimum", "exclusiveMaximum", "multipleOf", "minLength",
+                   "maxLength", "pattern", "minItems", "maxItems", "uniqueItems", "example", "title"}
+
+    def walk(node):
+        if isinstance(node, list):
+            return [walk(v) for v in node]
+        if not isinstance(node, dict):
+            return node
+        out = {k: walk(v) for k, v in node.items() if k not in unsupported}
+        kind = out.get("type")
+        if kind == "object" or (isinstance(kind, list) and "object" in kind):
+            props = out.get("properties") or {}
+            out["properties"] = props
+            out["required"] = [k for k in out.get("required", []) if k in props]
+            out["additionalProperties"] = False
+        return out
+
+    return walk(_json_schema(schema))
+
+
+def _get_api_client():
+    global _api_client
+    if _api_client is None:
+        import anthropic  # noqa: PLC0415 - 使うときだけ読み込む（未インストールなら API を使わない）
+
+        _api_client = anthropic.Anthropic(
+            api_key=os.environ["ANTHROPIC_API_KEY"],
+            timeout=_env_float("CLAUDE_API_TIMEOUT", API_TIMEOUT),
+            max_retries=1,
+        )
+    return _api_client
+
+
+def _api_error_kind(error: Exception) -> str:
+    status = getattr(error, "status_code", None)
+    etype = str(getattr(error, "type", "") or "")
+    body = getattr(error, "body", None)
+    text = f"{error} {etype} {json.dumps(body, ensure_ascii=False) if isinstance(body, dict) else body or ''}".lower()
+    if status == 402 or etype == "billing_error" or "billing_error" in text or any(p in text for p in _EXHAUSTED_PATTERNS):
+        return "exhausted"
+    if status in (401, 403):
+        return "auth"
+    if status == 404:
+        return "missing"
+    if status == 400 or status == 413 or status == 422:
+        return "invalid"
+    return "transient"  # 429・5xx・529・通信・時間切れ（SDK が1回だけ自動で再試行したあと）
+
+
+def _api_request(model: str, system_instruction: str, prompt: str, schema: dict, max_tokens: int, use_schema: bool):
+    output_config: dict = {"effort": os.environ.get("CLAUDE_API_EFFORT") or "medium"}
+    body = prompt
+    if use_schema:
+        output_config["format"] = {"type": "json_schema", "schema": _api_schema(schema)}
+    else:
+        body = _plain_prompt("（system を参照）", prompt, schema)
+    # 長い system は毎回同じなのでキャッシュする（同じ実行の続く記事・作り直しで安くなる）。temperature は送らない（非対応）
+    kwargs = {
+        "model": model,
+        "max_tokens": max_tokens,
+        "system": [{"type": "text", "text": system_instruction, "cache_control": {"type": "ephemeral"}}],
+        "messages": [{"role": "user", "content": body}],
+        "output_config": output_config,
+    }
+    with _get_api_client().messages.stream(**kwargs) as stream:
+        return stream.get_final_message()
+
+
+def _try_anthropic_api(system_instruction: str, prompt: str, schema: dict, max_output_tokens: int, purpose: str) -> tuple[dict, str] | None:
+    """Claude API で1回作る。使えない・失敗したら None（呼び出し側が今までの経路へ進む）。例外は外に出さない"""
+    global _api_off, _api_transient_failures
+    why = api_block_reason(purpose)
+    if why:
+        log(f"   [llm] Claude API を使わない（{why}） -> 今までの経路へ")
+        return None
+    model = api_model_for(purpose)
+    name = f"{API_PREFIX}{model}"
+    # 考える分（adaptive thinking）も max_tokens に入るので余裕を持たせる（料金は実際に使った分だけ）
+    max_tokens = min(64000, max(16000, max_output_tokens + 16000))
+    use_schema = True
+    for _ in range(2):
+        try:
+            message = _api_request(model, system_instruction, prompt, schema, max_tokens, use_schema)
+        except ImportError:
+            _api_off = "anthropic パッケージが無い"
+            log(f"   [llm] Claude API: {_api_off} -> 今までの経路へ")
+            return None
+        except Exception as error:  # noqa: BLE001 - どんな失敗でも今までの経路へ
+            kind = _api_error_kind(error)
+            detail = f"{type(error).__name__}: {str(error)[:160]}"
+            if kind == "exhausted":
+                until = mark_api_exhausted(detail)
+                _api_off = "クレジット切れ"
+                log(f"   [llm] Claude API: クレジット切れ（{detail}）。{until} まで使わない -> 今までの経路へ")
+                return None
+            if kind == "auth":
+                _api_off = "認証できない（キーを確認）"
+            elif kind == "missing":
+                _api_off = f"モデル {model} が見つからない"
+            elif kind == "invalid" and use_schema:
+                log(f"   [llm] Claude API: 400（{detail}） -> 構造化出力なしで1回だけ再試行")
+                use_schema = False
+                continue
+            elif kind == "transient":
+                _api_transient_failures += 1
+                if _api_transient_failures >= 2:
+                    _api_off = "一時的なエラーが続いた"
+            log(f"   [llm] Claude API: 失敗（{detail}）{'。この実行ではもう使わない' if _api_off else ''} -> 今までの経路へ")
+            return None
+        _api_transient_failures = 0
+        usd = record_api_usage(purpose, model, message.usage)
+        _record_usage(name)
+        usage = message.usage
+        log(f"   [llm] Claude API {model}（{purpose}）: 入力 {getattr(usage, 'input_tokens', 0)}"
+            f"＋キャッシュ {getattr(usage, 'cache_read_input_tokens', 0) or 0} / 出力 {getattr(usage, 'output_tokens', 0)} → ${usd:.4f}")
+        if message.stop_reason in ("refusal", "max_tokens"):
+            log(f"   [llm] Claude API: stop_reason={message.stop_reason} -> 今までの経路へ")
+            return None
+        text = "".join(getattr(b, "text", "") for b in message.content if getattr(b, "type", "") == "text").strip()
+        try:
+            data = parse_json_lenient(text)
+        except (ValueError, json.JSONDecodeError) as error:
+            log(f"   [llm] Claude API: JSON を読めません（{str(error)[:80]}） -> 今までの経路へ")
+            return None
+        missing = missing_keys(data, schema)
+        if missing:
+            log(f"   [llm] Claude API: 必須キー不足（{', '.join(missing[:6])}） -> 今までの経路へ")
+            return None
+        return data, name
+    return None
+
+
+def api_available(purpose: str) -> bool:
+    return api_block_reason(purpose) is None
+
+
 def generate_json(
     system_instruction: str,
     prompt: str,
@@ -525,13 +933,29 @@ def generate_json(
     temperature: float = 0.6,
     max_output_tokens: int = 16384,
     tier: str = "quality",
+    visibility: str | None = None,
+    purpose: str | None = None,
 ) -> tuple[dict, str]:
-    """候補モデルを順に試し、必須キーがそろった JSON を返す。(データ, 使ったモデル名)"""
+    """候補モデルを順に試し、必須キーがそろった JSON を返す。(データ, 使ったモデル名)
+
+    visibility="high"（速報・SNS に出す記事・動画の台本）のときだけ Claude を使う:
+      Claude API（クレジット。purpose ごとの上限・月の予算の範囲）→ Claude CLI（サブスクリプション）→ tier の無料モデル。
+    それ以外は tier の無料モデルだけ（Claude は使わない）。
+    環境変数 LLM_DEFAULT_VISIBILITY / LLM_DEFAULT_PURPOSE で、引数を省いた呼び出しの既定を変えられる（動画のジョブ用）。
+    """
+    visibility = visibility or os.environ.get("LLM_DEFAULT_VISIBILITY") or None
+    purpose = purpose or os.environ.get("LLM_DEFAULT_PURPOSE") or ""
+    high = visibility == "high"
+    if high:
+        got = _try_anthropic_api(system_instruction, prompt, schema, max_output_tokens, purpose)
+        if got:
+            return got
+    candidates = (_claude_models() if high else []) + [m for m in models_for(tier) if not m.startswith("claude:")]
     last_error: Exception | None = None
-    for model in models_for(tier):
+    for model in candidates:
         if model in _exhausted:
             continue
-        if model.startswith("claude:") and tier != "quality" and claude_calls_today() >= _claude_daily_max():
+        if model.startswith("claude:") and purpose != "breaking" and claude_calls_today() >= _claude_daily_max():
             log(f"   [llm] {model}: 今日の上限 {_claude_daily_max()} 回に達したので使わない")
             continue
         use_schema = True
@@ -598,8 +1022,16 @@ def generate_json(
     raise RuntimeError(f"すべてのモデルで失敗しました: {last_error}")
 
 
-def all_exhausted(tier: str) -> bool:
+def all_exhausted(tier: str, visibility: str | None = None, purpose: str = "breaking") -> bool:
+    """tier の無料モデルがすべて尽きたか。visibility="high" なら Claude API・CLI が使えるうちは尽きていない扱い"""
+    if visibility == "high":
+        if api_available(purpose) or any(m not in _exhausted for m in _claude_models()):
+            return False
     return all(m in _exhausted for m in models_for(tier))
+
+
+# 他のスクリプトから llm.generate(...) とも呼べるように
+generate = generate_json
 
 
 def _load_env_local() -> None:
@@ -608,17 +1040,54 @@ def _load_env_local() -> None:
     if not path.exists():
         return
     for line in path.read_text("utf-8").splitlines():
-        match = re.match(r"^(GEMINI_API_KEY|GOOGLE_API_KEY|GROQ_API_KEY|OPENROUTER_API_KEY)=(.+)$", line.strip())
+        match = re.match(r"^(GEMINI_API_KEY|GOOGLE_API_KEY|GROQ_API_KEY|OPENROUTER_API_KEY|ANTHROPIC_API_KEY)=(.+)$", line.strip())
         if match and not os.environ.get(match.group(1)):
             os.environ[match.group(1)] = match.group(2).strip().strip("\"'")
 
 
+def _main_merge(argv: list[str]) -> None:
+    mine_path, dest_path = Path(argv[0]), Path(argv[1])
+    merged = merge_api_usage(_read_json(mine_path), _read_json(dest_path))
+    dest_path.parent.mkdir(parents=True, exist_ok=True)
+    dest_path.write_text(json.dumps(merged, ensure_ascii=False, indent=2, sort_keys=True) + "\n", "utf-8")
+    log(f"[llm] API の使用量を {dest_path} に足しました")
+
+
+def _api_ping() -> None:
+    """Haiku に小さな依頼を1回だけ送る（約20トークン。キーの値は表示しない）"""
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        log("[llm] ANTHROPIC_API_KEY が無いので API の確認はしません")
+        return
+    model = "claude-haiku-5-5"
+    try:
+        message = _get_api_client().messages.create(
+            model=model, max_tokens=64, output_config={"effort": "low"},
+            messages=[{"role": "user", "content": "「OK」とだけ答えて。"}],
+        )
+    except Exception as error:  # noqa: BLE001
+        log(f"[llm] API の確認に失敗: {type(error).__name__}（{_api_error_kind(error)}）: {str(error)[:160]}")
+        return
+    usd = record_api_usage("ping", model, message.usage)
+    text = "".join(getattr(b, "text", "") for b in message.content if getattr(b, "type", "") == "text").strip()
+    log(f"[llm] API の確認 OK: {model} → {text[:40]!r} / 入力 {message.usage.input_tokens} 出力 {message.usage.output_tokens} → ${usd:.6f}")
+
+
 if __name__ == "__main__":
+    if "--merge-api-usage" in sys.argv:
+        _main_merge(sys.argv[sys.argv.index("--merge-api-usage") + 1:])
+        sys.exit(0)
     _load_env_local()
+    if "--api-ping" in sys.argv:
+        _api_ping()
+        sys.exit(0)
     for tier_name in ("quality", "bulk"):
         models_for(tier_name)
     log(f"[llm] 今日の使用回数: {usage_today()}")
-    log(f"[llm] Claude: {'有効' if claude_enabled() else '無効'}（今日 {claude_calls_today()} 回 / bulk 上限 {_claude_daily_max()}）")
+    log(f"[llm] Claude CLI: {'有効' if claude_enabled() else '無効'}（visibility=high のみ。今日 {claude_calls_today()} 回 / 上限 {_claude_daily_max()}）")
+    s_api = api_ledger_summary()
+    log(f"[llm] Claude API: {'キーあり' if os.environ.get('ANTHROPIC_API_KEY') else 'キーなし'} / 期間 {s_api['period_start']}〜{s_api['period_end']}"
+        f" / 使用 ${s_api['spent']:.2f} / 予算 ${s_api['budget']:.0f} / 今日 ${s_api['spent_today']:.2f}（目安 ${s_api['daily_limit']:.2f}）"
+        f" / 今日の回数 {s_api['calls_today']}{' / クレジット切れ ' + s_api['exhausted_until'] if s_api['exhausted_until'] else ''}")
     if "--ping" in sys.argv:
         demo_schema = {"type": "OBJECT", "properties": {"answer": {"type": "STRING"}, "n": {"type": "INTEGER"}}, "required": ["answer", "n"]}
         result, used = generate_json("日本語で簡潔に答える。", "1+1は？ answer に一言の説明、n に数値。", demo_schema, tier=os.environ.get("LLM_PING_TIER", "bulk"), max_output_tokens=256)

@@ -165,7 +165,8 @@ def plan(key: str, entry: dict) -> dict | None:
     if not path.exists():
         return None
     article = json.loads(path.read_text("utf-8"))
-    text = tp.compose(article, [], breaking=bool(entry.get("breaking")))
+    # 問いかけは Threads に出したものと同じにする（記録が無ければ話題・主役から作る）
+    text = tp.compose(article, [], breaking=bool(entry.get("breaking")), fixed_question=str(entry.get("questionText") or ""))
     text = re.sub(r"\s*👇\s*$", "", text)
     link = tp.utm_link(f"{tp.site_url()}/articles/{key}", "bluesky", entry.get("format") or "classic")
     thumb = str(article.get("thumbnail") or "")

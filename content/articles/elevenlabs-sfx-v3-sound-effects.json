@@ -1,0 +1,76 @@
+{
+  "slug": "elevenlabs-sfx-v3-sound-effects",
+  "sourceType": "web",
+  "sourceUrl": "https://elevenlabs.io/blog/sfx-v3-for-developers",
+  "sourceName": "ElevenLabs公式ブログ",
+  "title": "ElevenLabsが音響効果モデル「SFX v3」公開 複数指示への追従性が向上",
+  "seoTitle": "ElevenLabs SFX v3とは？使い方と新機能の解説",
+  "threadsPost": "ElevenLabsが音響効果生成モデルの最新版「SFX v3」を発表しました。\n\n要約すると、複数の指示や人の声、音楽の処理が従来よりも自然になりました。\n同じエンドポイントでv2とのA/Bテストも手軽に試せます。\n\nあなたの制作作業に、音響効果AIを取り入れたことはありますか？",
+  "threadsHook": "question",
+  "threadsStyle": 3,
+  "writingVoice": "senpai",
+  "lede": "ElevenLabsは公式ブログにて、音響効果（SFX）を生成するAPIの最新モデル「SFX v3」を発表しました。複数の指示に従う能力が向上し、人の声や音楽の処理もより自然になっています。開発者向けにすでに提供が始まっています。",
+  "description": "ElevenLabsが音声・効果音生成APIの最新モデル「SFX v3」を公開。複数の指示への追従性向上やボーカル・音楽の処理改善について解説します。",
+  "keywords": [
+    "ElevenLabs",
+    "SFX v3",
+    "効果音生成",
+    "AI音声",
+    "API",
+    "音声合成"
+  ],
+  "tags": [
+    "生成AI",
+    "API",
+    "音声合成"
+  ],
+  "highlights": [
+    "複数の指示を順番通りに認識するマルチパート効果音の生成が得意です。",
+    "モデルIDを eleven_text_to_sound_v3 に変更するだけで導入できます。",
+    "高音域の音で音が割れにくく、より自然な音響効果を実現しています。"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "ok",
+    "price": "API従量課金",
+    "free": null,
+    "audience": "開発者・クリエイター",
+    "take": "APIエンドポイントのモデルIDを書き換えて、従来のv2と比較してみましょう。",
+    "judgedAt": "2026-11-02T16:31:23.810178+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "アプリ開発や映像制作で効果音を自作しているエンジニアやクリエイターに影響があります。",
+      "モデルIDを変更するだけで既存のAPIシステムからすぐに最新版を試すことができます。"
+    ]
+  },
+  "body": "## 概要\nElevenLabsは公式ブログを更新しました。音響効果を生成するAPIの最新モデル「SFX v3」を発表しています。複数の指示を順番通りにこなす能力が上がりました。人の声や音楽の処理も大きく向上しています。開発者は既存のエンドポイントからすぐに利用可能です。\n\n## 何が発表された？\nElevenLabsの公式ブログによると、サウンドエフェクトAPIの最新版となる「SFX v3」が公開されました。既存のv2モデルに続くアップデートとなります。音響効果の生成品質が全体的に高められました。\n\n利用にあたっては手順があります。POST /v1/sound-generation エンドポイントの model_id に「eleven_text_to_sound_v3」を指定するだけです。主な特徴は以下の通りです。\n\n- 複数の指示を順番通りに反映するマルチパート生成の強化\n- 人の声や音楽の処理の改善\n- ゴングやチャイムなどの高音域で音が割れにくい特性\n\n## 前と何が違う？\n\n### 順番のある指示を正確に再現できる\nSFX v3は特徴を持っています。複数の指示を出すときにその順番をしっかりと守るのが得意です。「砂利の上を歩く足音、その後に金属のドアが開く音」のように指示を出します。発生させたい出来事を時系列で並べると効果的です。\n\n### プロンプトの影響度を調整できる\n出力が求めている音から少しずれてしまうときがあります。デフォルトが0.3である「prompt_influence」の値を上げてください。これで調整が可能です。値を高くすると、指示により忠実になります。生成ごとのブレが少なくなります。\n\n### 音の長さやフォーマットの設定方法\n効果音の長さはプロンプトの内容からモデルが自動で判断します。しかし特定のタイミングが必要な場合もあります。そのときは「duration_seconds」で時間を指定可能です。また別のパラメータもあります。「output_format」パラメータを使って設定します。mp3_44100_128やpcm_48000などのコーデックとサンプルレートを設定可能です。\n\n## ループ再生についての注意点は？\nループ再生機能については別の仕様があります。現時点では「eleven_text_to_sound_v2」でのみ動作します。ループ処理が必要なリクエストを送る場合です。このときはv2モデルを使います。「loop: true」を指定して使い分ける必要があります。\n\n## 料金と提供形態は？\nElevenLabsの公式ブログが公開されています。しかし具体的な価格や無料枠の変更についての言及はありません。APIの従量課金システムを通じて提供されています。既存のユーザーはそのまま利用可能です。同じ仕組みのなかでモデルを切り替えて利用できます。\n\n## 日本で使える？\n日本から問題なく利用できます。ElevenLabsのアカウントを作成してください。API経由でエンドポイントにアクセスします。あるいはElevenCreative内の画面を使います。「Sound Effects」タブ、Flows、Studioといった画面です。これらからコードを書かずに試すことができます。\n\n## 自分にはどう関係する？\n\n### エンジニアなら\nAPIのモデルIDを書き換えるだけで導入できます。そのため既存のアプリケーションに組み込んでいる機能があります。効果音生成機能を簡単に最新版へアップデート可能です。\n\n### 企画・マーケティングなら\n映像作品やプロモーション用の効果音があります。これをよりイメージ通りに作れるようになります。そのため制作物のクオリティを高めやすくなります。\n\n## まとめ\nSFX v3は実用的なアップデートです。複数の指示や高い音の処理を改善しています。まずは開発環境やクリエイティブツールから試してください。v2モデルとの違いを比較してみましょう。",
+  "easy": "## ひとことで言うと\n音声や効果音を作るAIで有名なElevenLabsが、指示をより正しく聞いてくれる新しい音響効果モデル「SFX v3」を出しました。\n\n## 何がすごいの？\nこれまでは複雑な注文をするとAIが迷ってしまうことがありましたが、新しいモデルでは「足音がしたあとにドアが開く」といった順番の指示をきれいにこなせるようになりました。また、人の声や音楽、高い音の処理も自然になっています。\n\n## 自分に関係ある？\n自分でアプリを作っている開発者や、映像の背景音をこだわりたいクリエイターにとって、より思い通りの音を作りやすくなります。\n\n## 使ってみるには\nElevenLabsのAPIで、モデルの名前を指定する場所を新しいものに書き換えるだけで今日から使えます。",
+  "channel": "ElevenLabs公式ブログ",
+  "channelId": "",
+  "channelSlug": "elevenlabs-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Introducing SFX v3 for developers",
+  "publishedAt": "2026-11-02T12:00:00+00:00",
+  "generatedAt": "2026-11-02T16:31:23.810230+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/elevenlabs-sfx-v3-sound-effects-f70ed081.jpg",
+  "model": "gemini-3.5-flash-lite",
+  "affiliates": [],
+  "qualityScore": 100,
+  "sourcePublishedAt": "2026-11-02T12:00:00+00:00",
+  "detectedAt": "2026-11-02T16:30:54+00:00",
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close-up of a professional recording studio console with faders and a microphone under soft studio lighting.",
+    "provider": "Cloudflare Workers AI",
+    "original": "https://eleven-public-cdn.elevenlabs.io/payloadcms/5mo6tyh5yio-sfx-v1.webp",
+    "at": "2026-11-02T16:32:24+00:00"
+  }
+}

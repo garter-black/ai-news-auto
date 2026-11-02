@@ -909,7 +909,7 @@ def review_script(data: dict, article: dict, pages: list[Page], tier: str) -> di
 
     prompt = f"# 資料\n{script_material(article, pages)}\n\n# 台本\n{json.dumps(data, ensure_ascii=False)}\n\n判定を JSON で返してください。"
     try:
-        verdict, _ = llm.generate_json(review_system(), prompt, REVIEW_SCHEMA, temperature=0.2, max_output_tokens=2048, tier=tier)
+        verdict, _ = llm.generate_json(review_system(), prompt, REVIEW_SCHEMA, temperature=0.2, max_output_tokens=2048, tier=tier, visibility="high", purpose="video_review")
         return verdict
     except Exception as error:  # noqa: BLE001 - レビューが使えないときは、事実の検査に通った台本をそのまま使う
         log(f"   [v3] 台本のレビューに失敗: {type(error).__name__}")
@@ -926,7 +926,7 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
     best = None  # 事実の検査に通った最後の台本（レビューの書き直しが通らなかったときに使う）
     for attempt in range(1, 9):
         try:
-            data, model = llm.generate_json(script_system(), prompt + feedback, SCRIPT_SCHEMA, temperature=0.5, max_output_tokens=8192, tier=tier)
+            data, model = llm.generate_json(script_system(), prompt + feedback, SCRIPT_SCHEMA, temperature=0.5, max_output_tokens=8192, tier=tier, visibility="high", purpose="video")
         except RuntimeError:
             if tier == "bulk":
                 raise

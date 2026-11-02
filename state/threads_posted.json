@@ -2884,7 +2884,8 @@
       "permalink": "",
       "channels": {
         "twitter": "6ae8259e64604db314423a63",
-        "facebook": "6ae8259e64604db314423a8e"
+        "facebook": "6ae8259e64604db314423a8e",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzdg7kttbz2z"
       },
       "hook": "number",
       "score": 5,
@@ -2895,7 +2896,8 @@
       "question": false,
       "comment": "編集部：これは開発者にはうれしい更新。",
       "dueAt": "2026-11-02T12:00:00+00:00",
-      "postedAt": "2026-11-02T05:54:38+00:00"
+      "postedAt": "2026-11-02T05:54:38+00:00",
+      "blueskyAt": "2026-11-02T13:22:53+00:00"
     },
     "nvidia-tensorrt-edge-llm-edge-ai": {
       "id": "6ae825a0759fc887b6ce973a",
@@ -2903,7 +2905,8 @@
       "permalink": "",
       "channels": {
         "twitter": "6ae825a07817c41d1a46fa40",
-        "facebook": "6ae825a1c60bdbcc33d9c275"
+        "facebook": "6ae825a1c60bdbcc33d9c275",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzdizbytn72q"
       },
       "hook": "breaking",
       "score": 6,
@@ -2915,7 +2918,8 @@
       "questionText": "無料なら試してみますか？",
       "comment": "編集部：まず無料で触ってみられるのがいいですね。",
       "dueAt": "2026-11-02T13:45:00+00:00",
-      "postedAt": "2026-11-02T05:54:41+00:00"
+      "postedAt": "2026-11-02T05:54:41+00:00",
+      "blueskyAt": "2026-11-02T14:13:04+00:00"
     },
     "cyberagent-fy2026-results-date": {
       "id": "6ae83ac31a965d64fbf6417e",
@@ -2938,6 +2942,50 @@
       "comment": "編集部：家計や仕事のお金に関わる話なので、押さえておきたいところ。",
       "postedAt": "2026-11-02T07:25:12+00:00",
       "blueskyAt": "2026-11-02T07:25:14+00:00"
+    },
+    "openai-grid-protectors-program": {
+      "id": "6ae8a82004fa73faa22da052",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae8a82b31e164b233ebe0f5",
+        "facebook": "6ae8a82e31e164b233ebe237",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzdmcdu47y2d"
+      },
+      "dueAt": "2026-11-02T15:11:27+00:00",
+      "hook": "breaking",
+      "breaking": true,
+      "score": 3,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "ChatGPT",
+      "question": true,
+      "questionText": "AIの電気代が自分の電気料金に響くか、気になりますか？",
+      "postedAt": "2026-11-02T15:11:47+00:00",
+      "blueskyAt": "2026-11-02T15:11:49+00:00"
+    },
+    "honda-rn0-emtb-eicma-2026": {
+      "id": "6ae8adba2810e4a79d3552c2",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae8adc431e164b233ee251c",
+        "facebook": "6ae8adc92810e4a79d355972",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzdnn5qq3u2y"
+      },
+      "dueAt": "2026-11-02T15:35:18+00:00",
+      "hook": "breaking",
+      "breaking": true,
+      "score": -2,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "自動車・二輪",
+      "question": true,
+      "questionText": "趣味の道具にかけるお金、何を重視して選びますか？",
+      "postedAt": "2026-11-02T15:35:43+00:00",
+      "blueskyAt": "2026-11-02T15:35:45+00:00"
     }
   },
   "extraPending": {}

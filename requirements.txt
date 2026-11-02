@@ -2,3 +2,7 @@
 google-genai>=1.47.0,<2.0.0
 # 記事の写真の検査・切り抜き（scripts/images.py）
 pillow>=11.0.0
+# Claude API（速報・SNS に出す記事・動画の台本だけ。scripts/llm.py の anthropic-api。キーが無ければ使わない）
+anthropic==1.17.0
+# 写真の主役の位置（scripts/image_focus.py。SNS カードの切り抜き）
+opencv-python-headless>=4.10,<5

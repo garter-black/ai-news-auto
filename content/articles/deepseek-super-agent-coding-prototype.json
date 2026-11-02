@@ -83,5 +83,17 @@
     "query": "programming laptop",
     "original": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/ihTLLfWiDBA0/v1/1200x853.jpg",
     "at": "2026-11-02T03:43:22+00:00"
+  },
+  "imageFocus": {
+    "x": 0.402,
+    "y": 0.604,
+    "box": [
+      0.0,
+      0.208,
+      0.803,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/deepseek-super-agent-coding-prototype-e891c9ab.jpg"
   }
 }

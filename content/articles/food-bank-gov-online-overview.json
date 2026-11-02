@@ -60,5 +60,17 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.gov-online.go.jp/assets/yogokaisetsu_202607.webp",
     "at": "2026-10-30T19:32:10+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.607,
+    "box": [
+      0.0,
+      0.214,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/food-bank-gov-online-overview-5784cdbf.jpg"
   }
 }

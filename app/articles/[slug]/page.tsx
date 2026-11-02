@@ -29,7 +29,9 @@ import { buyingGuideForTopic, guideShortName } from "@/lib/buying-guides";
 import { chooseGuideForArticle } from "@/lib/choose";
 import type { ChooseGuide } from "@/lib/choose-data";
 import { STATUS_LABEL, freeLabel, japanLabel, verdictOf } from "@/lib/verdict";
-import { offerForArticle } from "@/lib/offers";
+import { offerPlanForArticle } from "@/lib/offers";
+import { readNextForArticle } from "@/lib/read-next";
+import ReadNextBox from "@/components/ReadNextBox";
 import { shopLinkForArticle } from "@/lib/amazon";
 import ShopLinks from "@/components/ShopLinks";
 import Morph from "@/components/Morph";
@@ -145,21 +147,30 @@ export default async function ArticlePage({ params }: Props) {
   const howto = guide ? undefined : howtoForArticle(article);
   const verdict = verdictOf(article);
   const workMoney = workMoneyOf(article.workMoney);
-  // 全AI記事に、文脈に合った「試すなら」枠を1つ出す。無い場合（AI以外など）は従来の関連ツール枠
-  // 右側と本文中で同じ商品を出さないよう、候補を多めに取って2つに分ける。
+  // 広告枠は記事との関連の点数が基準を超えた商品だけを、関連の高い順に出す（lib/offers.ts）。
+  // 右側（1〜3位）と本文中（4〜6位）で同じ商品は出さない。
   // 各枠は候補の中から、この端末でまだ見ていない商品を先に3つ出す（RankingBody）
-  const offerAll = offerForArticle(article, 12);
-  const pool = offerAll?.items ?? [];
-  const offer = offerAll && { ...offerAll, items: [...pool.slice(0, 3), ...pool.slice(6, 9)] };
-  const inlineItems = [...pool.slice(3, 6), ...pool.slice(9, 12)];
-  const inlineOffer =
-    offerAll && inlineItems.length >= 2 ? { ...offerAll, eyebrow: "あわせてチェック", items: inlineItems } : undefined;
+  const { offer: offerAll, rail: offer, inline: inlineOffer } = offerPlanForArticle(article);
   // 商品枠の話題に比較ガイドがあれば、商品枠のすぐ下に1行だけ案内する
   const buyingGuide = buyingGuideForTopic(offerAll?.topic);
   // 製品を扱う記事だけ、本文中の商品枠のそばに「Amazon / 楽天で見る」を1行（右側には出さない）
   const shopLink = shopLinkForArticle(article);
   // 回線・転職など、記事の話題に合う選び方ガイド（見出しとタグが合うときだけ）
   const chooseGuide = chooseGuideForArticle(article);
+  // 記事に合う自前のガイド・比較ページ（基準点以上のときだけ）。同じページに既に出ているガイドは選ばない
+  const shownGuides = [
+    howto && `/guides/${howto.slug}`,
+    !product && guide && `/guides/${guide.slug}`,
+    chooseGuide && `/choose/${chooseGuide.slug}`,
+    buyingGuide && `/compare/${buyingGuide.slug}`,
+  ].filter((href): href is string => Boolean(href));
+  // 広告枠は全記事に出す（合う話題が無ければジャンルの既定の広告）。ガイドは記事に合うものがあるときだけ、広告に添えて出す
+  const readNext = readNextForArticle(article, shownGuides).find((link) => link.kind !== "category" || !offer);
+  // 本文中は、選び方ガイドの囲みが無いときだけ（同じ見た目の囲みを並べない）
+  const readNextInline = !chooseGuide ? readNext : undefined;
+  // 右側に広告が無いときは右側の先頭にも出す。PC は右側、スマホは本文中（1画面に1つだけ）
+  const readNextRail = !offer ? readNext : undefined;
+  const readNextInlineClass = readNextRail && readNextInline ? "lg:hidden" : "";
   // 日本語の黙読はおよそ毎分600字
   const readMinutes = Math.max(1, Math.round(article.body.length / 600));
   // 「かんたんに読む」版（ある記事だけ、読み方を切り替えられる）
@@ -561,6 +572,7 @@ export default async function ArticlePage({ params }: Props) {
                   <RailRanking offer={inlineOffer} wide title={inlineOffer.headline} countImpression={false} />
                 </div>
               )}
+              {readNextInline && <ReadNextBox link={readNextInline} className={`my-10 ${readNextInlineClass}`} />}
             </div>
           )}
 
@@ -604,6 +616,7 @@ export default async function ArticlePage({ params }: Props) {
               {buyingGuide && <CompareLink slug={buyingGuide.slug} name={guideShortName(buyingGuide)} className="flex lg:hidden" />}
             </div>
           )}
+          {bodyTail && readNextInline && <ReadNextBox link={readNextInline} className={`my-10 ${readNextInlineClass}`} />}
           {bodyTail && shopLink && <ShopLinks link={shopLink} className="my-10" />}
           {bodyTail && <CtaBanner genreSlug={article.genreSlug} slot="inline" className="my-10" />}
 
@@ -677,6 +690,7 @@ export default async function ArticlePage({ params }: Props) {
               {buyingGuide && <CompareLink slug={buyingGuide.slug} name={guideShortName(buyingGuide)} className="flex lg:hidden" />}
             </div>
           )}
+          {!bodyTail && readNextInline && <ReadNextBox link={readNextInline} className={`mt-12 ${readNextInlineClass}`} />}
           {!bodyTail && shopLink && <ShopLinks link={shopLink} className="mt-12" />}
 
           {article.tags.length > 0 && (
@@ -747,7 +761,11 @@ export default async function ArticlePage({ params }: Props) {
               {buyingGuide && <CompareLink slug={buyingGuide.slug} name={guideShortName(buyingGuide)} className="hidden lg:flex" />}
             </div>
           ) : (
-            <Sidebar current={article} />
+            <>
+              {/* 合う広告が無い記事は、右側の先頭でガイドを案内する（スマホは本文中に出しているので重ねない） */}
+              {readNextRail && <ReadNextBox link={readNextRail} className={`mb-8 ${readNextInline ? "hidden lg:block" : ""}`} />}
+              <Sidebar current={article} />
+            </>
           )}
         </aside>
       </div>

@@ -64,18 +64,33 @@
   "videoTitle": "ソブリン AI の新時代を切り開く: Google Distributed Cloud の最新イノベーション",
   "publishedAt": "2026-11-02T01:00:00+00:00",
   "generatedAt": "2026-11-02T08:01:53.031963+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/google-distributed-cloud-ai-innovations-2026-a341bbd6.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/google-distributed-cloud-ai-innovations-2026-453fa15b.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-02T01:00:00+00:00",
   "detectedAt": "2026-11-02T08:00:48+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A wide-angle view of a modern data center aisle with rows of illuminated server racks, soft overhead lighting reflecting off the polished floor, and a technician's gloved hands adjusting a cable in the foreground.",
-    "provider": "Cloudflare Workers AI",
+    "kind": "official",
+    "org": "Google Cloud",
+    "provider": "Google Cloud 公式ブログ（日本）",
+    "sourceUrl": "https://cloud.google.com/blog/ja/topics/hybrid-cloud/new-innovations-in-google-distributed-cloud/",
     "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/41_-_Hybrid__Multicloud_qokHBFC.max-2600x2600.jpg",
-    "at": "2026-11-02T08:03:08+00:00"
+    "width": 1200,
+    "height": 591,
+    "at": "2026-11-02T11:53:32+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.466,
+    "y": 0.488,
+    "box": [
+      0.022,
+      0.07,
+      0.909,
+      0.905
+    ],
+    "ar": 2.0305,
+    "src": "https://ai-tech-express.jp/img/google-distributed-cloud-ai-innovations-2026-453fa15b.jpg"
   }
 }

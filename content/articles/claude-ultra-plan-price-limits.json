@@ -58,19 +58,30 @@
   "videoTitle": "What is the Ultra plan? | Claude Help Center",
   "publishedAt": "2026-11-02T04:53:24.629000+00:00",
   "generatedAt": "2026-11-02T04:55:44.280030+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/claude-ultra-plan-price-limits-4c2db074.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/claude-ultra-plan-price-limits-1e7f969a.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "qualityScore": 86,
   "detectedAt": "2026-11-02T04:53:24+00:00",
   "fastLane": true,
+  "late": true,
   "imageCredit": {
     "kind": "ai",
-    "model": "flux-1-schnell",
-    "prompt": "A close-up of hands typing on a laptop keyboard in a modern office, illuminated by soft natural light from a nearby window.",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close-up of a modern server rack illuminated by cool white lighting in a dimly lit data center, with a technician's hands typing on a keyboard in the foreground.",
     "provider": "Cloudflare Workers AI",
-    "original": "https://downloads.intercomcdn.com/i/o/lupk8zyo/792494/717b10d3ebd874823db64841659b/76f3062d78ebbb04863fb1de3ef9cca0.png",
-    "at": "2026-11-02T04:56:32+00:00"
+    "at": "2026-11-02T12:02:49+00:00"
   },
-  "late": true
+  "imageFocus": {
+    "x": 0.42,
+    "y": 0.5,
+    "box": [
+      0.0,
+      0.0,
+      0.841,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/claude-ultra-plan-price-limits-1e7f969a.jpg"
+  }
 }

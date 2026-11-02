@@ -39,6 +39,32 @@
       "title": "Windows 11の右クリックメニュー刷新、不要項目を非表示にする機能の提供開始",
       "url": "https://news.mynavi.jp/techplus/article/20261102-5224966/"
     },
+    "19244c7aa2063fd3": {
+      "detectedAt": "2026-11-02T15:06:20+00:00",
+      "finishedAt": "2026-11-02T15:08:11+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41468315940",
+      "slug": "openai-grid-protectors-program",
+      "source": "openai-news",
+      "sourcePublishedAt": "2026-11-02T15:00:00+00:00",
+      "startedAt": "2026-11-02T15:06:54+00:00",
+      "title": "Introducing the Grid Protectors Program",
+      "url": "https://openai.com/index/grid-protectors-program"
+    },
+    "1b0064df51b95a9e": {
+      "detectedAt": "2026-11-02T15:09:24+00:00",
+      "finishedAt": "2026-11-02T15:12:16+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41468969945",
+      "slug": "anthropic-s1a-amendment-ant-nasdaq",
+      "source": "radar-official",
+      "sourcePublishedAt": "2026-11-02T15:09:24+00:00",
+      "startedAt": "2026-11-02T15:10:58+00:00",
+      "title": "Anthropic, PBC - S-1/A-1",
+      "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026068676/anthropicpbc-sx1ax1.htm"
+    },
     "1fe4326766c89237": {
       "detectedAt": "2026-11-01T05:05:24+00:00",
       "finishedAt": "2026-11-01T05:08:11+00:00",
@@ -166,6 +192,19 @@
       "startedAt": "2026-10-28T01:07:59+00:00",
       "title": "",
       "url": "https://k-tai.watch.impress.co.jp/docs/news/2151356.html"
+    },
+    "3fa1bc8326d32871": {
+      "detectedAt": "2026-11-02T15:30:20+00:00",
+      "finishedAt": "2026-11-02T15:32:02+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41472245838",
+      "slug": "honda-rn0-emtb-eicma-2026",
+      "source": "honda-news",
+      "sourcePublishedAt": "2026-11-02T15:30:20+00:00",
+      "startedAt": "2026-11-02T15:30:49+00:00",
+      "title": "＜EICMA 2026＞ Honda初のハイエンド電動アシストマウンテンバイク「Honda RN0」を世界初公開 ～二輪車開発で培ったノウハウと最新e-MTB技術を融合し、 新たなライディング体験を提供～",
+      "url": "https://global.honda/jp/news/2026/2261103e.html"
     },
     "45a374d069fd87b2": {
       "detectedAt": "2026-10-28T00:36:33+00:00",
@@ -349,6 +388,19 @@
       "title": "What is the Ultra plan? | Claude Help Center",
       "url": "https://support.claude.com/en/articles/17728952-what-is-the-ultra-plan"
     },
+    "91d07db2a7132c51": {
+      "detectedAt": "2026-11-02T13:45:24+00:00",
+      "finishedAt": "2026-11-02T13:47:48+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41455867136",
+      "slug": "google-messages-gradient-icon",
+      "source": "radar-9to5google.com",
+      "sourcePublishedAt": "2026-11-02T13:45:24+00:00",
+      "startedAt": "2026-11-02T13:46:52+00:00",
+      "title": "Google Messages update rolling out new app icon with gradient design",
+      "url": "https://9to5google.com/2026/11/02/google-messages-gradient-icon-beta/"
+    },
     "96882ab7e78168fa": {
       "detectedAt": "2026-11-01T22:37:24+00:00",
       "finishedAt": "2026-11-01T22:40:16+00:00",
@@ -502,6 +554,19 @@
       "startedAt": "2026-10-29T00:27:21+00:00",
       "title": "Europe’s Industrial Leaders Reinvent Engineering and Manufacturing With NVIDIA",
       "url": "https://blogs.nvidia.com/blog/europe-industrial-leaders-engineering-manufacturing/"
+    },
+    "d51d2d4302f1bbc6": {
+      "detectedAt": "2026-11-02T12:49:24+00:00",
+      "finishedAt": "2026-11-02T12:55:37+00:00",
+      "outcome": "skipped",
+      "reason": "major gave up x3: 本文が短い（0字）",
+      "run": "41448516311",
+      "slug": "",
+      "source": "radar-reuters.com",
+      "sourcePublishedAt": "2026-11-02T12:49:24+00:00",
+      "startedAt": "2026-11-02T12:55:03+00:00",
+      "title": "Marvell agrees to buy optical components maker Lumentum in a $115B all-stock deal, as it seeks to rival Broadcom; Nvidia invested $2B in Marvell and Lumentum",
+      "url": "https://www.reuters.com/legal/transactional/marvell-buy-lumentum-115-billion-deal-ai-data-center-bet-2026-11-02/"
     },
     "d8103b8af50d92a5": {
       "detectedAt": "2026-10-28T17:17:51+00:00",

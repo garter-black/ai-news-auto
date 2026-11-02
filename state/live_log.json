@@ -36,6 +36,9 @@
     "anthropic-s1-sec-ipo-filing": {
       "liveAt": "2026-10-28T01:55:05+00:00"
     },
+    "anthropic-s1a-amendment-ant-nasdaq": {
+      "liveAt": "2026-11-02T15:16:25+00:00"
+    },
     "apple-14-inch-macbook-pro-m6": {
       "liveAt": "2026-10-27T16:28:54+00:00"
     },
@@ -47,6 +50,12 @@
     },
     "apple-imac-m6-2026-10": {
       "liveAt": "2026-10-27T16:57:11+00:00"
+    },
+    "apple-ui-navigation-rl-agent": {
+      "liveAt": "2026-11-02T14:55:30+00:00"
+    },
+    "arm-october-2026-ai-innovations": {
+      "liveAt": "2026-11-02T11:15:39+00:00"
     },
     "artex-agentic-offensive-frameworks": {
       "liveAt": "2026-11-02T07:18:40+00:00"
@@ -96,6 +105,9 @@
     "boj-cpi-core-indicators": {
       "liveAt": "2026-10-27T16:02:08+00:00"
     },
+    "boj-cpmi-payment-system-report": {
+      "liveAt": "2026-11-02T13:51:31+00:00"
+    },
     "boj-current-account-october": {
       "liveAt": "2026-11-02T04:35:55+00:00"
     },
@@ -107,6 +119,9 @@
     },
     "boj-outlook-report-october": {
       "liveAt": "2026-11-02T05:54:28+00:00"
+    },
+    "boj-tankan-price-forecast-gap": {
+      "liveAt": "2026-11-02T10:02:34+00:00"
     },
     "caa-consumer-safety-report-oct2026": {
       "liveAt": "2026-10-29T07:13:54+00:00"
@@ -149,6 +164,9 @@
     },
     "copilot-in-sharepoint-october-2026": {
       "liveAt": "2026-10-27T17:55:41+00:00"
+    },
+    "covid19-bankruptcy-october-2026": {
+      "liveAt": "2026-11-02T10:38:56+00:00"
     },
     "craft-beer-shipments-2026-tsr": {
       "liveAt": "2026-11-02T08:17:44+00:00"
@@ -195,6 +213,9 @@
     "discord-public-server-google-search": {
       "liveAt": "2026-10-28T02:42:19+00:00"
     },
+    "docker-blueprint-alliance-agent-baseline": {
+      "liveAt": "2026-11-02T14:55:34+00:00"
+    },
     "docker-coding-agent-horror-stories-cve": {
       "liveAt": "2026-11-01T08:14:23+00:00"
     },
@@ -209,6 +230,12 @@
     },
     "ecb-policy-rate-hold-2026-10": {
       "liveAt": "2026-10-30T10:26:30+00:00"
+    },
+    "eurozone-gdp-2026-q3-slowdown": {
+      "liveAt": "2026-11-02T14:55:32+00:00"
+    },
+    "eurozone-unemployment-rate-sep-2026": {
+      "liveAt": "2026-11-02T16:20:42+00:00"
     },
     "fage-suntory-skincare-2026-nov": {
       "liveAt": "2026-11-02T04:35:57+00:00"
@@ -297,11 +324,17 @@
     "google-knowledge-catalog-self-learning-enrichment": {
       "liveAt": "2026-11-02T06:49:33+00:00"
     },
+    "google-messages-gradient-icon": {
+      "liveAt": "2026-11-02T13:51:32+00:00"
+    },
     "google-pixel-11-pro-food-photography": {
       "liveAt": "2026-11-02T04:35:56+00:00"
     },
     "google-project-suncatcher-satellite-response": {
       "liveAt": "2026-10-30T17:20:37+00:00"
+    },
+    "google-warns-llmjacking-cloud-threats": {
+      "liveAt": "2026-11-02T16:08:49+00:00"
     },
     "government-education-loan-guide-2026": {
       "liveAt": "2026-11-01T18:20:31+00:00"
@@ -320,6 +353,9 @@
     },
     "hiroshima-u-lung-cancer-ai-ct": {
       "liveAt": "2026-10-27T19:19:09+00:00"
+    },
+    "honda-rn0-emtb-eicma-2026": {
+      "liveAt": "2026-11-02T15:35:15+00:00"
     },
     "household-savings-rate-discrepancy": {
       "liveAt": "2026-10-29T05:35:17+00:00"
@@ -362,6 +398,12 @@
     },
     "jpcert-weekly-report-20261028-vulnerabilities": {
       "liveAt": "2026-10-28T19:57:37+00:00"
+    },
+    "katayama-mof-budget-2027-tax-estimate": {
+      "liveAt": "2026-11-02T11:54:38+00:00"
+    },
+    "katayama-mof-press-conference-oct2026": {
+      "liveAt": "2026-11-02T14:55:31+00:00"
     },
     "kddi-ai-vulnerability-management-solution": {
       "liveAt": "2026-10-28T01:42:49+00:00"
@@ -450,8 +492,20 @@
     "mistral-large-4-preview": {
       "liveAt": "2026-10-29T14:40:23+00:00"
     },
+    "mof-jgb-interest-rate-202610": {
+      "liveAt": "2026-11-02T10:02:33+00:00"
+    },
+    "mof-jgbsp-121st-meeting-schedule": {
+      "liveAt": "2026-11-02T12:18:52+00:00"
+    },
+    "mof-onchain-government-bonds-study": {
+      "liveAt": "2026-11-02T11:15:39+00:00"
+    },
     "mof-tax-stamp-revenue-sep-2026": {
       "liveAt": "2026-11-02T09:17:51+00:00"
+    },
+    "mof-tobacco-retail-price-approval": {
+      "liveAt": "2026-11-02T13:45:24+00:00"
     },
     "morinaga-cocoa-bowel-movement-study": {
       "liveAt": "2026-11-02T02:37:43+00:00"
@@ -465,8 +519,17 @@
     "nemuri-antimicrobial-peptides-discovery": {
       "liveAt": "2026-10-30T01:08:05+00:00"
     },
+    "nissan-namie-ev-battery-circular-economy": {
+      "liveAt": "2026-11-02T10:13:56+00:00"
+    },
     "nissay-it-ai-driven-development-aws": {
       "liveAt": "2026-11-02T09:17:51+00:00"
+    },
+    "nli-ai-agent-explained": {
+      "liveAt": "2026-11-02T14:55:33+00:00"
+    },
+    "nli-electronic-waste-recycling-challenges": {
+      "liveAt": "2026-11-02T16:08:51+00:00"
     },
     "nli-employment-stats-sep-2026": {
       "liveAt": "2026-10-30T03:19:14+00:00"
@@ -534,6 +597,9 @@
     "nvidia-tensorrt-edge-llm-edge-ai": {
       "liveAt": "2026-11-02T03:34:05+00:00"
     },
+    "nvidia-workload-map-ai-frameworks": {
+      "liveAt": "2026-11-02T16:20:43+00:00"
+    },
     "ocean-acidification-foraminifera-alkalinity": {
       "liveAt": "2026-10-29T01:44:43+00:00"
     },
@@ -548,6 +614,9 @@
     },
     "openai-gpt-61-terra-amazon-bedrock": {
       "liveAt": "2026-11-02T05:54:27+00:00"
+    },
+    "openai-grid-protectors-program": {
+      "liveAt": "2026-11-02T15:11:15+00:00"
     },
     "openai-oracle-partnership-chatgpt": {
       "liveAt": "2026-10-27T16:57:11+00:00"
@@ -693,6 +762,9 @@
     "tokyo-elderly-living-survey-2025": {
       "liveAt": "2026-10-29T19:35:10+00:00"
     },
+    "tokyo-electricity-gas-subsidy-7th": {
+      "liveAt": "2026-11-02T11:15:39+00:00"
+    },
     "tokyo-email-leak-incident": {
       "liveAt": "2026-10-29T05:35:17+00:00"
     },
@@ -722,6 +794,12 @@
     },
     "toyota-2026-half-year-results": {
       "liveAt": "2026-10-29T05:35:17+00:00"
+    },
+    "toyota-crown-estate-minor-change": {
+      "liveAt": "2026-11-02T12:53:47+00:00"
+    },
+    "toyota-hydrogen-initiatives-2026": {
+      "liveAt": "2026-11-02T11:44:05+00:00"
     },
     "toyota-land-cruiser-fj-options": {
       "liveAt": "2026-11-02T05:01:32+00:00"

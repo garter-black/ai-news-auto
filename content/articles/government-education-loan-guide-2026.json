@@ -54,23 +54,33 @@
   "videoTitle": "お子さんの進学・在学資金を支援!国の教育ローンをご利用ください",
   "publishedAt": "2026-11-01T15:00:00+00:00",
   "generatedAt": "2026-11-01T18:15:49.320240+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/government-education-loan-guide-2026-95edbf80.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/government-education-loan-guide-2026-f4fb2e52.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-01T15:00:00+00:00",
   "detectedAt": "2026-11-01T18:15:24+00:00",
   "imageCredit": {
-    "kind": "stock",
-    "title": "A high school classroom in North Carolina 04",
-    "creator": "Harrison Keely",
-    "creatorUrl": "",
-    "license": "CC BY 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
-    "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:A_high_school_classroom_in_North_Carolina_04.jpg",
-    "query": "school classroom",
+    "kind": "official",
+    "org": "政府広報オンライン",
+    "provider": "政府広報オンライン",
+    "sourceUrl": "https://www.gov-online.go.jp/article/201512/entry-8156.html",
     "original": "https://www.gov-online.go.jp/assets/entry-8156/kyouiku_1_KV_0729.webp",
-    "at": "2026-11-01T18:17:59+00:00"
+    "width": 960,
+    "height": 540,
+    "at": "2026-11-02T11:55:01+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.512,
+    "y": 0.589,
+    "box": [
+      0.047,
+      0.178,
+      0.978,
+      1.0
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/government-education-loan-guide-2026-f4fb2e52.jpg"
   }
 }

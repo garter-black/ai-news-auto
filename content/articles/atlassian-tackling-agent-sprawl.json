@@ -55,18 +55,33 @@
   "videoTitle": "Tackling agent sprawl across the enterprise",
   "publishedAt": "2026-10-30T15:41:41+00:00",
   "generatedAt": "2026-11-01T07:31:02.374069+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/atlassian-tackling-agent-sprawl-222c251c.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/atlassian-tackling-agent-sprawl-218ad228.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-30T15:41:41+00:00",
   "detectedAt": "2026-11-01T07:30:44+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A close-up view of a computer monitor showing a detailed dashboard with graphs and control panels, set on a clean office desk with soft ambient lighting and a blurred modern workspace in the background.",
-    "provider": "Cloudflare Workers AI",
+    "kind": "official",
+    "org": "Atlassian",
+    "provider": "Atlassian公式ブログ",
+    "sourceUrl": "https://www.atlassian.com/blog/ai-at-work/tackling-ai-agent-sprawl",
     "original": "https://atlassianblog.wpengine.com/wp-content/uploads/2026/10/tackling-ai-agent-sprawl-blog-header_1920x1080px-scaled.webp",
-    "at": "2026-11-01T07:32:17+00:00"
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T11:55:09+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.528,
+    "y": 0.494,
+    "box": [
+      0.097,
+      0.139,
+      0.959,
+      0.85
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/atlassian-tackling-agent-sprawl-218ad228.jpg"
   }
 }

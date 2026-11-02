@@ -47,7 +47,7 @@
   "videoTitle": "経済・物価情勢の展望（10月、全文）",
   "publishedAt": "2026-11-02T05:00:00+00:00",
   "generatedAt": "2026-11-02T05:48:48.756378+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/boj-outlook-report-october-bfc70341.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/boj-outlook-report-october-e51aa977.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -57,8 +57,20 @@
   "imageCredit": {
     "kind": "ai",
     "model": "flux-2-klein-4b",
-    "prompt": "A modern conference room inside a central bank, with a glass table, a large screen showing a line graph of price trends, and soft natural light filtering through floor-to-ceiling windows.",
+    "prompt": "A modern glass‑front office building representing a central bank, set against a clear sky in Tokyo with soft daylight, and a few people seen from behind entering the entrance.",
     "provider": "Cloudflare Workers AI",
-    "at": "2026-11-02T05:51:29+00:00"
+    "at": "2026-11-02T12:02:23+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.735,
+    "box": [
+      0.0,
+      0.47,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/boj-outlook-report-october-e51aa977.jpg"
   }
 }

@@ -6,6 +6,14 @@ import sharp from "sharp";
 import { getAllArticles, getArticle, type FullArticle } from "@/lib/articles";
 import { companyOf } from "@/lib/companies";
 import { fetchPhoto } from "@/lib/cover";
+import { renderCardDesign, type CardDesign } from "@/lib/card-designs";
+
+/**
+ * どのカードを出すか。"tall" は今の縦長（見出し＋要点3つ）。
+ * 2026-11 の新案は lib/card-designs.tsx（"a" 16:9 写真＋見出し帯 / "b" 1:1 / "c" 16:9 見出し主役）。切り替えはこの1行だけ。
+ * 画像の URL（/card/<slug>）は1週間キャッシュされるので、変えると新しく出す記事から効く。
+ */
+const CARD_DESIGN: CardDesign | "tall" = "p1"; // 2026-11-03 オーナーが「写真だけ」（p1）を採用。それまでは A（16:9＋白い帯）
 
 /**
  * SNS 投稿に添える図解カード（1080×1350・縦4:5）。
@@ -128,7 +136,7 @@ const CACHE_HEADERS = {
 
 async function toJpeg(image: ArrayBuffer): Promise<Uint8Array<ArrayBuffer>> {
   const jpeg = await sharp(Buffer.from(image))
-    .flatten({ background: PANEL })
+    .flatten({ background: CARD_DESIGN === "tall" ? PANEL : "#ffffff" })
     .jpeg({ quality: JPEG_QUALITY, mozjpeg: true, chromaSubsampling: "4:2:0" })
     .toBuffer();
   return new Uint8Array(jpeg);
@@ -139,7 +147,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
   const article = getArticle(slug);
   if (!article) return new Response("Not found", { status: 404 });
   try {
-    const png = await (await renderCard(article)).arrayBuffer();
+    const png = await (CARD_DESIGN === "tall" ? await renderCard(article) : await renderCardDesign(article, CARD_DESIGN)).arrayBuffer();
     const jpeg = await toJpeg(png).catch(() => null);
     // Cloudflare Workers（sharp なし）では PNG のまま返す
     if (!jpeg) return new Response(png, { headers: { ...CACHE_HEADERS, "Content-Type": "image/png" } });

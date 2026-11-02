@@ -56,18 +56,32 @@
   "videoTitle": "中小企業に必要な法律知識（第3回）ー民法改正と手形廃止後の取引実務ー",
   "publishedAt": "2026-11-01T15:00:00+00:00",
   "generatedAt": "2026-11-02T08:26:53.516135+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/civil-code-revision-promissory-note-abolition-435cb5e4.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/civil-code-revision-promissory-note-abolition-a3125979.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-01T15:00:00+00:00",
   "detectedAt": "2026-11-02T08:26:12+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A close-up of a hand placing a promissory note on a wooden office desk beside legal books, illuminated by soft natural light, with the background out of focus.",
-    "provider": "Cloudflare Workers AI",
+    "kind": "official",
+    "org": "J-Net21（中小機構）",
+    "provider": "J-Net21（中小機構）",
+    "sourceUrl": "https://j-net21.smrj.go.jp/solution/law/know-how15-03.html",
     "original": "https://j-net21.smrj.go.jp/solution/law/bt5puv000000znwt-img/img-kengen.jpg",
-    "at": "2026-11-02T08:27:50+00:00"
+    "width": 600,
+    "height": 400,
+    "at": "2026-11-02T11:53:13+00:00"
+  },
+  "imageFocus": {
+    "x": 0.512,
+    "y": 0.526,
+    "box": [
+      0.062,
+      0.052,
+      0.963,
+      1.0
+    ],
+    "ar": 1.5,
+    "src": "https://ai-tech-express.jp/img/civil-code-revision-promissory-note-abolition-a3125979.jpg"
   }
 }

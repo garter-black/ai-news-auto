@@ -2,6 +2,266 @@
  "hours": 96,
  "items": [
   {
+   "slug": "mlit-autumn-2026-medals-of-honor",
+   "at": "2026-11-02T16:31:35.224811+00:00",
+   "title": "国土交通省、令和8年秋の褒章受章者を発表 伝達式は11月18日に開催へ",
+   "head": "国土交通省、令和8年秋の褒章受章者を発表 伝達式は11月18日に開催へ | 令和８年秋の褒章について",
+   "text": "国土交通省、令和8年秋の褒章受章者を発表 伝達式は11月18日に開催へ | 令和８年秋の褒章について | 国土交通省 / 褒章 / 令和8年秋 / 受章者 / 黄綬褒章 / 藍綬褒章 / 緑綬褒章 / 伝達式 / ビジネス・経済 / 社会・行政 / ニュース",
+   "urls": [
+    "http://www.mlit.go.jp/report/press/kanbo03_hh_000427.html"
+   ]
+  },
+  {
+   "slug": "elevenlabs-sfx-v3-sound-effects",
+   "at": "2026-11-02T16:31:23.810230+00:00",
+   "title": "ElevenLabsが音響効果モデル「SFX v3」公開 複数指示への追従性が向上",
+   "head": "ElevenLabsが音響効果モデル「SFX v3」公開 複数指示への追従性が向上 | Introducing SFX v3 for developers",
+   "text": "ElevenLabsが音響効果モデル「SFX v3」公開 複数指示への追従性が向上 | Introducing SFX v3 for developers | ElevenLabs / SFX v3 / 効果音生成 / AI音声 / API / 音声合成 / 生成AI / API / 音声合成",
+   "urls": [
+    "https://elevenlabs.io/blog/sfx-v3-for-developers"
+   ]
+  },
+  {
+   "slug": "eurozone-unemployment-rate-sep-2026",
+   "at": "2026-11-02T16:11:54.797233+00:00",
+   "title": "ニッセイ基礎研究所がユーロ圏失業率（2026年9月）を発表、失業率は6.5％で横ばいも若年層は上昇",
+   "head": "ニッセイ基礎研究所がユーロ圏失業率（2026年9月）を発表、失業率は6.5％で横ばいも若年層は上昇 | ユーロ圏失業率（2026年9月）－失業率は横ばい、若年失業率は上昇",
+   "text": "ニッセイ基礎研究所がユーロ圏失業率（2026年9月）を発表、失業率は6.5％で横ばいも若年層は上昇 | ユーロ圏失業率（2026年9月）－失業率は横ばい、若年失業率は上昇 | ユーロ圏 / 失業率 / ニッセイ基礎研究所 / 欧州経済 / 若年失業率 / 雇用統計 / EU / 経済指標 / ビジネス / 統計 / 経済",
+   "urls": [
+    "https://www.nli-research.co.jp/topics_detail1/id=87233?site=nli"
+   ]
+  },
+  {
+   "slug": "nvidia-workload-map-ai-frameworks",
+   "at": "2026-11-02T16:11:22.866709+00:00",
+   "title": "AI半導体のNVIDIAが公開、複雑なAIフレームワークを効率管理する『Workload Map』とは",
+   "head": "AI半導体のNVIDIAが公開、複雑なAIフレームワークを効率管理する『Workload Map』とは | Support New AI Frameworks Faster Using NVIDIA Workload Map",
+   "text": "AI半導体のNVIDIAが公開、複雑なAIフレームワークを効率管理する『Workload Map』とは | Support New AI Frameworks Faster Using NVIDIA Workload Map | NVIDIA / Workload Map / Kubernetes / AIフレームワーク / JobSet / DSX AI Factory / Run:ai / 分散処理 / 生成AI / 開発ツール / Kubernetes / NVIDIA",
+   "urls": [
+    "https://developer.nvidia.com/blog/support-new-ai-frameworks-faster-using-nvidia-workload-map/"
+   ]
+  },
+  {
+   "slug": "nli-electronic-waste-recycling-challenges",
+   "at": "2026-11-02T16:02:26.614169+00:00",
+   "title": "ニッセイ基礎研究所が電子ごみの現状を解説、小型家電の回収率向上と長期使用が課題に",
+   "head": "ニッセイ基礎研究所が電子ごみの現状を解説、小型家電の回収率向上と長期使用が課題に | 増え続ける電子ごみと資源循環の行方－電子ごみの発生抑制と資源循環の課題",
+   "text": "ニッセイ基礎研究所が電子ごみの現状を解説、小型家電の回収率向上と長期使用が課題に | 増え続ける電子ごみと資源循環の行方－電子ごみの発生抑制と資源循環の課題 | 電子ごみ / 資源循環 / 小型家電回収 / 都市鉱山 / ニッセイ基礎研究所 / サステナビリティ / 環境経営 / リサイクル / ビジネス / 環境経営 / サステナビリティ / ESG / 統計",
+   "urls": [
+    "https://www.nli-research.co.jp/topics_detail1/id=87238?site=nli"
+   ]
+  },
+  {
+   "slug": "google-warns-llmjacking-cloud-threats",
+   "at": "2026-11-02T16:02:03.895188+00:00",
+   "title": "Googleが警告する「LLMJacking」とは？AIの不正利用で巨額の請求を受ける手口",
+   "head": "Googleが警告する「LLMJacking」とは？AIの不正利用で巨額の請求を受ける手口 | The Rise of LLMJacking: How Threat Actors Monetize Compromised Cloud and Model Resources",
+   "text": "Googleが警告する「LLMJacking」とは？AIの不正利用で巨額の請求を受ける手口 | The Rise of LLMJacking: How Threat Actors Monetize Compromised Cloud and Model Resources | LLMJacking / Google Threat Intelligence / LLM / APIキー / クラウドセキュリティ / Mandiant / 不正利用 / サイバー攻撃 / 生成AI / LLM / セキュリティ / クラウド / Google",
+   "urls": [
+    "https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models/"
+   ]
+  },
+  {
+   "slug": "honda-rn0-emtb-eicma-2026",
+   "at": "2026-11-02T15:31:56.562982+00:00",
+   "title": "Hondaが初の高級電動アシストマウンテンバイク「RN0」を公開、独ROTWILDと共同開発",
+   "head": "Hondaが初の高級電動アシストマウンテンバイク「RN0」を公開、独ROTWILDと共同開発 | ＜EICMA 2026＞ Honda初のハイエンド電動アシストマウンテンバイク「Honda RN0」を世界初公開 ～二輪車開発で培ったノウハウと最新e-MTB技術を融合し、 新たなライディング体験を提供～",
+   "text": "Hondaが初の高級電動アシストマウンテンバイク「RN0」を公開、独ROTWILDと共同開発 | ＜EICMA 2026＞ Honda初のハイエンド電動アシストマウンテンバイク「Honda RN0」を世界初公開 ～二輪車開発で培ったノウハウと最新e-MTB技術を融合し、 新たなライディング体験を提供～ | Honda RN0 / ホンダ 電動アシストマウンテンバイク / e-MTB / EICMA 2026 / ROTWILD / SHIMANO ドライブユニット / 電動マウンテンバイク 価格 / ホンダ 自転車 / RN01 / マレットレイアウト / 自動車・二輪 / 電動化 / 新製品 / 提携 / 自転車",
+   "urls": [
+    "https://global.honda/jp/news/2026/2261103e.html"
+   ]
+  },
+  {
+   "slug": "anthropic-s1a-amendment-ant-nasdaq",
+   "at": "2026-11-02T15:12:09.814909+00:00",
+   "title": "ClaudeのAnthropicが上場申請書を修正 株は「ANT」で売買予定、創業者側が議決権50.1%",
+   "head": "ClaudeのAnthropicが上場申請書を修正 株は「ANT」で売買予定、創業者側が議決権50.1% | Anthropic, PBC - S-1/A-1",
+   "text": "ClaudeのAnthropicが上場申請書を修正 株は「ANT」で売買予定、創業者側が議決権50.1% | Anthropic, PBC - S-1/A-1 | Anthropic 上場 / Anthropic IPO / ANT ナスダック / S-1/A / Claude 運営会社 / Anthropic 株 / 公益法人 PBC / Long-Term Benefit Trust / AI企業 新規上場 / Anthropic 議決権 / Anthropic / Claude / IPO / 生成AI / SEC / 株式上場",
+   "urls": [
+    "https://www.sec.gov/Archives/edgar/data/2130357/000162828026068676/anthropicpbc-sx1ax1.htm"
+   ]
+  },
+  {
+   "slug": "openai-grid-protectors-program",
+   "at": "2026-11-02T15:08:03.915529+00:00",
+   "title": "ChatGPTのOpenAIが電力対策「Grid Protectors」 AI施設が電力逼迫時に使用量を減らす",
+   "head": "ChatGPTのOpenAIが電力対策「Grid Protectors」 AI施設が電力逼迫時に使用量を減らす | Introducing the Grid Protectors Program",
+   "text": "ChatGPTのOpenAIが電力対策「Grid Protectors」 AI施設が電力逼迫時に使用量を減らす | Introducing the Grid Protectors Program | Grid Protectors / OpenAI 電力 / データセンター 電力 / 需要調整 / Georgia Power / Effingham / AI 電気代 / 電力網 / データセンター 電気料金 / ChatGPT 電力消費 / OpenAI / データセンター / 電力 / 生成AI / エネルギー",
+   "urls": [
+    "https://openai.com/index/grid-protectors-program"
+   ]
+  },
+  {
+   "slug": "eurozone-gdp-2026-q3-slowdown",
+   "at": "2026-11-02T14:51:51.655171+00:00",
+   "title": "ユーロ圏GDP（2026年7-9月期）は前期比0.4%増、主要4か国で伸び率が低下",
+   "head": "ユーロ圏GDP（2026年7-9月期）は前期比0.4%増、主要4か国で伸び率が低下 | ユーロ圏ＧＤＰ（2026年7-9月期）－主要4か国はいずれも前期比伸び率が低下",
+   "text": "ユーロ圏GDP（2026年7-9月期）は前期比0.4%増、主要4か国で伸び率が低下 | ユーロ圏ＧＤＰ（2026年7-9月期）－主要4か国はいずれも前期比伸び率が低下 | ユーロ圏GDP / 欧州経済 / ニッセイ基礎研究所 / ドイツ経済 / フランス経済 / スペイン経済 / イタリア経済 / 景気動向 / ビジネス / 経済 / 統計 / 欧州",
+   "urls": [
+    "https://www.nli-research.co.jp/topics_detail1/id=87234?site=nli"
+   ]
+  },
+  {
+   "slug": "apple-ui-navigation-rl-agent",
+   "at": "2026-11-02T14:31:42.219366+00:00",
+   "title": "Appleの研究チームが新AI学習手法を発表、スマホ画面の自動操作で大幅に性能向上",
+   "head": "Appleの研究チームが新AI学習手法を発表、スマホ画面の自動操作で大幅に性能向上 | Online Dense Reinforcement Learning with Planning-Grounding Agent for UI Navigation on Live iOS Apps",
+   "text": "Appleの研究チームが新AI学習手法を発表、スマホ画面の自動操作で大幅に性能向上 | Online Dense Reinforcement Learning with Planning-Grounding Agent for UI Navigation on Live iOS Apps | Apple / UIナビゲーション / 強化学習 / iOSアプリ / AIエージェント / PPO / LLM / スマホ自動操作 / AI / 生成AI / iOS / 研究開発",
+   "urls": [
+    "https://machinelearning.apple.com/research/planning-grounding-ui-navigation"
+   ]
+  },
+  {
+   "slug": "nli-ai-agent-explained",
+   "at": "2026-11-02T14:31:28.421670+00:00",
+   "title": "ニッセイ基礎研究所が解説、次世代AI「AIエージェント」とは－従来の生成AIとの違い",
+   "head": "ニッセイ基礎研究所が解説、次世代AI「AIエージェント」とは－従来の生成AIとの違い | 次世代のAI「AIエージェント」とは－従来の生成AIとの違いを分かりやすく解説",
+   "text": "ニッセイ基礎研究所が解説、次世代AI「AIエージェント」とは－従来の生成AIとの違い | 次世代のAI「AIエージェント」とは－従来の生成AIとの違いを分かりやすく解説 | AIエージェント / 生成AI / ニッセイ基礎研究所 / ビジネス / 業務効率化 / AI / ビジネス / 経済 / 働き方",
+   "urls": [
+    "https://www.nli-research.co.jp/topics_detail1/id=87239?site=nli"
+   ]
+  },
+  {
+   "slug": "katayama-mof-press-conference-oct2026",
+   "at": "2026-11-02T14:11:44.017975+00:00",
+   "title": "片山財務相、外国人旅行者の免税リファンド方式への移行やガソリン補助の見直しを表明",
+   "head": "片山財務相、外国人旅行者の免税リファンド方式への移行やガソリン補助の見直しを表明 | 片山財務大臣兼内閣府特命担当大臣閣議後記者会見の概要(令和8年10月30日(金曜日))",
+   "text": "片山財務相、外国人旅行者の免税リファンド方式への移行やガソリン補助の見直しを表明 | 片山財務大臣兼内閣府特命担当大臣閣議後記者会見の概要(令和8年10月30日(金曜日)) | 財務省 / 片山財務相 / 免税制度 / リファンド方式 / ガソリン補助金 / 物価高対策 / 電気ガス補助金 / 閣議後記者会見 / ビジネス / 経済 / 税制 / 物価 / 行政",
+   "urls": [
+    "https://www.mof.go.jp/public_relations/conference/my20261030.html"
+   ]
+  },
+  {
+   "slug": "docker-blueprint-alliance-agent-baseline",
+   "at": "2026-11-02T14:11:16.863881+00:00",
+   "title": "Docker、AIエージェントの安全な活用を目指す「Blueprint Alliance」に参画",
+   "head": "Docker、AIエージェントの安全な活用を目指す「Blueprint Alliance」に参画 | The Ecosystem is the Answer: Docker, the Blueprint Alliance, and the Importance of Collaboration in the Agentic Era",
+   "text": "Docker、AIエージェントの安全な活用を目指す「Blueprint Alliance」に参画 | The Ecosystem is the Answer: Docker, the Blueprint Alliance, and the Importance of Collaboration in the Agentic Era | Docker / Blueprint Alliance / Agent Baseline / AIエージェント / セキュリティ / ガバナンス / Docker Sandboxes / Open Container Initiative / 生成AI / セキュリティ / コンテナ / 開発ツール",
+   "urls": [
+    "https://www.docker.com/blog/docker-blueprint-alliance-agent-baseline/"
+   ]
+  },
+  {
+   "slug": "google-messages-gradient-icon",
+   "at": "2026-11-02T13:47:41.718441+00:00",
+   "title": "Androidのメッセージアプリ「Google Messages」、アイコンがグラデーションに一新",
+   "head": "Androidのメッセージアプリ「Google Messages」、アイコンがグラデーションに一新 | Google Messages update rolling out new app icon with gradient design",
+   "text": "Androidのメッセージアプリ「Google Messages」、アイコンがグラデーションに一新 | Google Messages update rolling out new app icon with gradient design | Google Messages / アイコン / グラデーション / Android / ベータ版 / メッセージアプリ / Google Chat / Workspace / 新デザイン / アップデート / Google Messages / Android / アプリ更新 / デザイン / Google",
+   "urls": [
+    "https://9to5google.com/2026/11/02/google-messages-gradient-icon-beta/"
+   ]
+  },
+  {
+   "slug": "boj-cpmi-payment-system-report",
+   "at": "2026-11-02T13:41:30.101046+00:00",
+   "title": "日本銀行とBISの決済委員会が報告書を公表、進化する決済システムと中央銀行マネーの役割を整理",
+   "head": "日本銀行とBISの決済委員会が報告書を公表、進化する決済システムと中央銀行マネーの役割を整理 | CPMIが報告書「進化する決済システムにおける中央銀行および中央銀行マネーの役割」を公表",
+   "text": "日本銀行とBISの決済委員会が報告書を公表、進化する決済システムと中央銀行マネーの役割を整理 | CPMIが報告書「進化する決済システムにおける中央銀行および中央銀行マネーの役割」を公表 | 日本銀行 / BIS / 決済システム / 中央銀行マネー / CPMI / 金融政策 / 国際金融 / 金融 / ビジネス / 経済 / 統計",
+   "urls": [
+    "https://www.boj.or.jp/paym/intlact_pm/cpss/cpss261102a.htm"
+   ]
+  },
+  {
+   "slug": "mof-tobacco-retail-price-approval",
+   "at": "2026-11-02T13:21:36.870083+00:00",
+   "title": "財務省が製造たばこの小売定価の認可情報を公開、随時更新される変更手続きを整理",
+   "head": "財務省が製造たばこの小売定価の認可情報を公開、随時更新される変更手続きを整理 | 製造たばこの小売定価の認可",
+   "text": "財務省が製造たばこの小売定価の認可情報を公開、随時更新される変更手続きを整理 | 製造たばこの小売定価の認可 | 財務省 / たばこ / 小売定価 / 価格改定 / 認可 / たばこ税 / ビジネス / 経済 / ビジネス / 統計 / 小売",
+   "urls": [
+    "https://www.mof.go.jp/policy/tab_salt/topics/kouriteika.html"
+   ]
+  },
+  {
+   "slug": "toyota-crown-estate-minor-change",
+   "at": "2026-11-02T12:31:23.304103+00:00",
+   "title": "トヨタの新型SUV『クラウン（エステート）』が一部改良、プラグインハイブリッドモデルなどを発売",
+   "head": "トヨタの新型SUV『クラウン（エステート）』が一部改良、プラグインハイブリッドモデルなどを発売 | クラウン（エステート）を一部改良",
+   "text": "トヨタの新型SUV『クラウン（エステート）』が一部改良、プラグインハイブリッドモデルなどを発売 | クラウン（エステート）を一部改良 | トヨタ / クラウン / エステート / SUV / プラグインハイブリッド / 一部改良 / 新型車 / ビジネス / 自動車 / トヨタ",
+   "urls": [
+    "https://global.toyota/jp/newsroom/toyota/44936557.html"
+   ]
+  },
+  {
+   "slug": "mof-jgbsp-121st-meeting-schedule",
+   "at": "2026-11-02T12:12:17.365638+00:00",
+   "title": "財務省、国債市場特別参加者会合の第121回を開催へ 11月26日に最近の市場状況を議論",
+   "head": "財務省、国債市場特別参加者会合の第121回を開催へ 11月26日に最近の市場状況を議論 | 国債市場特別参加者会合（第121回）開催日程",
+   "text": "財務省、国債市場特別参加者会合の第121回を開催へ 11月26日に最近の市場状況を議論 | 国債市場特別参加者会合（第121回）開催日程 | 国債市場特別参加者会合 / 財務省 / 国債市場 / 金利 / 理財局 / 経済政策 / 市場見通し / 公表資料 / 金融 / ビジネス / 経済 / 統計",
+   "urls": [
+    "https://www.mof.go.jp/about_mof/councils/meeting_of_jgbsp/press_release/261102.html"
+   ]
+  },
+  {
+   "slug": "katayama-mof-budget-2027-tax-estimate",
+   "at": "2026-11-02T11:51:14.117922+00:00",
+   "title": "片山財務相、2027年度予算に向けて「税収見積りの精度と透明性を高める」と記者会見で表明",
+   "head": "片山財務相、2027年度予算に向けて「税収見積りの精度と透明性を高める」と記者会見で表明 | 片山財務大臣兼内閣府特命担当大臣繰上げ閣議後記者会見の概要(令和8年11月2日(月曜日))",
+   "text": "片山財務相、2027年度予算に向けて「税収見積りの精度と透明性を高める」と記者会見で表明 | 片山財務大臣兼内閣府特命担当大臣繰上げ閣議後記者会見の概要(令和8年11月2日(月曜日)) | 片山財務大臣 / 財務省 / 予算編成 / 税収見積り / 経済財政諮問会議 / 為替介入 / 米国中間選挙 / 2027年度予算 / ビジネス / 経済 / 財務省 / 政策",
+   "urls": [
+    "https://www.mof.go.jp/public_relations/conference/my20261102.html"
+   ]
+  },
+  {
+   "slug": "toyota-hydrogen-initiatives-2026",
+   "at": "2026-11-02T11:31:29.006219+00:00",
+   "title": "トヨタ、水素の可能性を広げる最新の取り組みを発表—物流から教育・イベントまで",
+   "head": "トヨタ、水素の可能性を広げる最新の取り組みを発表—物流から教育・イベントまで | [トヨタイムズ記事] 物流、スポーツ、教育、食... 広がる水素の可能性",
+   "text": "トヨタ、水素の可能性を広げる最新の取り組みを発表—物流から教育・イベントまで | [トヨタイムズ記事] 物流、スポーツ、教育、食... 広がる水素の可能性 | 水素 / トヨタ自動車 / 燃料電池車 / 商用車 / 物流 / 環境 / 次世代エネルギー / 愛知県 / 物流 / 環境 / ビジネス / 自動車",
+   "urls": [
+    "https://toyotatimes.jp/newscast/216.html?padid=ag478_from_newsroom"
+   ]
+  },
+  {
+   "slug": "mof-onchain-government-bonds-study",
+   "at": "2026-11-02T11:11:41.645607+00:00",
+   "title": "財務省が「国債のオンチェーン対応に関する研究会」を開催、第2回会合までの議事要旨を公開",
+   "head": "財務省が「国債のオンチェーン対応に関する研究会」を開催、第2回会合までの議事要旨を公開 | 国債のオンチェーン対応に関する研究会",
+   "text": "財務省が「国債のオンチェーン対応に関する研究会」を開催、第2回会合までの議事要旨を公開 | 国債のオンチェーン対応に関する研究会 | 財務省 / 国債 / オンチェーン / ブロックチェーン / 研究会 / デジタル資産 / 金融政策 / ビジネス / 金融 / 行政 / 経済",
+   "urls": [
+    "https://www.mof.go.jp/about_mof/councils/study_on_chain/index.html"
+   ]
+  },
+  {
+   "slug": "arm-october-2026-ai-innovations",
+   "at": "2026-11-02T11:11:25.941304+00:00",
+   "title": "英Armの10月動向：433コアの自律走行ロボやスマホ向け新AIの全貌",
+   "head": "英Armの10月動向：433コアの自律走行ロボやスマホ向け新AIの全貌 | Top Arm-based innovations advancing on-device AI, cloud infrastructure, and physical AI in October 2026",
+   "text": "英Armの10月動向：433コアの自律走行ロボやスマホ向け新AIの全貌 | Top Arm-based innovations advancing on-device AI, cloud infrastructure, and physical AI in October 2026 | Arm / エッジAI / ロボティクス / 自動運転 / 生成AI / AIモデル / ハードウェア / プロセッサ / 生成AI / ロボティクス / ハードウェア / 半導体 / 開発ツール",
+   "urls": [
+    "https://newsroom.arm.com/blog/top-arm-based-innovations-in-october-2026"
+   ]
+  },
+  {
+   "slug": "tokyo-electricity-gas-subsidy-7th",
+   "at": "2026-11-02T10:51:39.962228+00:00",
+   "title": "東京都、特別高圧電力・工業用LPガス支援金の第7回申請受付を開始　中小企業向けに最大750万円",
+   "head": "東京都、特別高圧電力・工業用LPガス支援金の第7回申請受付を開始　中小企業向けに最大750万円 | 第7回 中小企業特別高圧電力・工業用LPガス価格高騰緊急対策事業 特別高圧電力・工業用LPガスを使用する中小企業者等を支援します！",
+   "text": "東京都、特別高圧電力・工業用LPガス支援金の第7回申請受付を開始　中小企業向けに最大750万円 | 第7回 中小企業特別高圧電力・工業用LPガス価格高騰緊急対策事業 特別高圧電力・工業用LPガスを使用する中小企業者等を支援します！ | 東京都 / 中小企業 / 特別高圧電力 / 工業用LPガス / 価格高騰 / 支援金 / 補助金 / 申請受付 / 事業者支援 / エネルギー / 東京都 / 中小企業",
+   "urls": [
+    "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110210"
+   ]
+  },
+  {
+   "slug": "covid19-bankruptcy-october-2026",
+   "at": "2026-11-02T10:31:31.899613+00:00",
+   "title": "新型コロナ関連の倒産、10月は125件で一進一退続く 累計は1万4825件に",
+   "head": "新型コロナ関連の倒産、10月は125件で一進一退続く 累計は1万4825件に | 新型コロナ破たん、10月は125件発生",
+   "text": "新型コロナ関連の倒産、10月は125件で一進一退続く 累計は1万4825件に | 新型コロナ破たん、10月は125件発生 | 新型コロナ / 倒産 / 経営破たん / 東京商工リサーチ / 物価高 / 人手不足 / コロナ融資 / 中小企業 / 経済動向 / ビジネス / 経済 / 統計 / 景気",
+   "urls": [
+    "https://www.tsr-net.co.jp/data/detail/1203394_1527.html"
+   ]
+  },
+  {
+   "slug": "nissan-namie-ev-battery-circular-economy",
+   "at": "2026-11-02T10:11:18.863231+00:00",
+   "title": "日産自動車など6社、福島・浪江でEVと電池を地域で循環させる連携協定を締結",
+   "head": "日産自動車など6社、福島・浪江でEVと電池を地域で循環させる連携協定を締結 | 6社が「福島県及び浪江町での循環型社会の実現に向けた取組みに関する連携協定」を締結",
+   "text": "日産自動車など6社、福島・浪江でEVと電池を地域で循環させる連携協定を締結 | 6社が「福島県及び浪江町での循環型社会の実現に向けた取組みに関する連携協定」を締結 | 日産自動車 / 電気自動車 / EV / 車載電池 / 循環型社会 / 浪江町 / フォーアールエナジー / 福島日産自動車 / 中古EV / リパーパス / ビジネス / 自動車 / 環境 / 提携 / 地域活性化",
+   "urls": [
+    "http://global.nissannews.com/ja-JP/releases/261102-01-j"
+   ]
+  },
+  {
    "slug": "mof-jgb-interest-rate-202610",
    "at": "2026-11-02T09:51:25.914221+00:00",
    "title": "財務省が発表した令和8年10月の国債金利情報、10年国債は2.817%に",
@@ -607,10 +867,11 @@
    "slug": "docker-coding-agent-horror-stories-cve",
    "at": "2026-11-01T08:11:15.223591+00:00",
    "title": "AIのコード査読ボットが架空の脆弱性をでっち上げ？Docker公式ブログが明かす恐怖の事件",
-   "head": "AIのコード査読ボットが架空の脆弱性をでっち上げ？Docker公式ブログが明かす恐怖の事件 | Coding Agent Horror Stories: The CVE That Did Not Exist",
+   "head": "AIのコード査読ボットが架空の脆弱性をでっち上げ？Docker公式ブログが明かす恐怖の事件 | Coding Agent Horror Stories: The CVE That Did Not Exist | Docker Sandboxにおけるコード配置とワークフローの指針",
    "text": "AIのコード査読ボットが架空の脆弱性をでっち上げ？Docker公式ブログが明かす恐怖の事件 | Coding Agent Horror Stories: The CVE That Did Not Exist | Docker / AI / コードレビュー / 脆弱性 / セキュリティ / Ollama / Docker Sandbox / CIパイプライン / 生成AI / セキュリティ / 開発ツール / Docker",
    "urls": [
-    "https://www.docker.com/blog/coding-agent-horror-stories-the-cve-that-did-not-exist/"
+    "https://www.docker.com/blog/coding-agent-horror-stories-the-cve-that-did-not-exist/",
+    "https://www.docker.com/blog/docker-sandbox-code-checkout-workflows/"
    ]
   },
   {
@@ -1361,145 +1622,6 @@
    "urls": [
     "https://blogs.nvidia.com/blog/developers-simulation-frontier-ai-agents/"
    ]
-  },
-  {
-   "slug": "gemini-edit-files-directly",
-   "at": "2026-10-29T16:19:04.424322+00:00",
-   "title": "Googleの生成AI『Gemini』に新機能 文書やPDFをチャット内で作成・編集",
-   "head": "Googleの生成AI『Gemini』に新機能 文書やPDFをチャット内で作成・編集 | You can now generate, preview, and edit documents, PDFs, presentations, spreadsheets, and more directly in Gemini.",
-   "text": "Googleの生成AI『Gemini』に新機能 文書やPDFをチャット内で作成・編集 | You can now generate, preview, and edit documents, PDFs, presentations, spreadsheets, and more directly in Gemini. | Gemini / Geminiアプリ / ファイル編集 / PDF編集 / 生成AI / スライド作成 / スプレッドシート / Googleドキュメント / Markdown / 新機能 / Gemini / 生成AI / Google / PDF / ドキュメント作成",
-   "urls": [
-    "https://blog.google/innovation-and-ai/products/gemini-app/edit-files-directly/"
-   ]
-  },
-  {
-   "slug": "gemini-notebook-free-textbooks",
-   "at": "2026-10-29T16:03:43.908387+00:00",
-   "title": "Googleの学習AI『Gemini Notebook』に無料の教科書が数百冊 出典つきで勉強できる",
-   "head": "Googleの学習AI『Gemini Notebook』に無料の教科書が数百冊 出典つきで勉強できる | Gemini Notebook makes hundreds of textbooks available to help students learn even more.",
-   "text": "Googleの学習AI『Gemini Notebook』に無料の教科書が数百冊 出典つきで勉強できる | Gemini Notebook makes hundreds of textbooks available to help students learn even more. | Gemini Notebook / 教科書 / 無料 / OpenStax / Open Textbook Library / S Chand Publishing / Expert Intelligence / AI学習 / 学習ガイド / フラッシュカード / Gemini Notebook / Google / 生成AI / 教育 / AI学習ツール",
-   "urls": [
-    "https://blog.google/innovation-and-ai/products/gemini-notebook/new-access-textbooks/"
-   ]
-  },
-  {
-   "slug": "hugging-face-any-speech-decision-apple",
-   "at": "2026-10-29T15:57:05.400398+00:00",
-   "title": "Hugging FaceがApple端末向けAI開発ツールを公開、音声認識と意思決定をアプリに実装",
-   "head": "Hugging FaceがApple端末向けAI開発ツールを公開、音声認識と意思決定をアプリに実装 | Introducing AnySpeechRecognizer and AnyDecisionModel: Open Models for Speech and Decisions on Apple Platforms",
-   "text": "Hugging FaceがApple端末向けAI開発ツールを公開、音声認識と意思決定をアプリに実装 | Introducing AnySpeechRecognizer and AnyDecisionModel: Open Models for Speech and Decisions on Apple Platforms | Hugging Face / Apple / 音声認識 / AI開発 / AnySpeechRecognizer / AnyDecisionModel / Core ML / Swift / 生成AI / AI / 開発ツール / Apple / 生成AI",
-   "urls": [
-    "https://huggingface.co/blog/anydecisionmodel"
-   ]
-  },
-  {
-   "slug": "ntt-west-zero-trust-service",
-   "at": "2026-10-29T15:53:51.871366+00:00",
-   "title": "NTT西日本とNTTスマートコネクトがゼロトラストの導入・運用支援サービスを開始、企業の負担軽減へ",
-   "head": "NTT西日本とNTTスマートコネクトがゼロトラストの導入・運用支援サービスを開始、企業の負担軽減へ | ゼロトラスト導入・運用支援サービスの提供開始",
-   "text": "NTT西日本とNTTスマートコネクトがゼロトラストの導入・運用支援サービスを開始、企業の負担軽減へ | ゼロトラスト導入・運用支援サービスの提供開始 | ゼロトラスト / NTT西日本 / NTTスマートコネクト / Zscaler / セキュリティ / マネージドサービス / 情報システム / 自治体 / ビジネス / セキュリティ / IT / クラウド",
-   "urls": [
-    "http://www.ntt-west.co.jp/news/2610/261029a.html"
-   ]
-  },
-  {
-   "slug": "hugging-face-project-protostar",
-   "at": "2026-10-29T15:36:51.855916+00:00",
-   "title": "Hugging Faceが科学研究のAI活用を支援する「Project ProtoStar」を発足 公開データの再利用を促進",
-   "head": "Hugging Faceが科学研究のAI活用を支援する「Project ProtoStar」を発足 公開データの再利用を促進 | Announcing Project ProtoStar: Making Publicly Funded Science AI-Ready",
-   "text": "Hugging Faceが科学研究のAI活用を支援する「Project ProtoStar」を発足 公開データの再利用を促進 | Announcing Project ProtoStar: Making Publicly Funded Science AI-Ready | Hugging Face / Project ProtoStar / AI / オープンサイエンス / 科学研究 / データ共有 / カーネギーメロン大学 / 気候変動 / 生成AI / オープンソース / データ分析 / 研究開発",
-   "urls": [
-    "https://huggingface.co/blog/announcing-project-protostar"
-   ]
-  },
-  {
-   "slug": "cod-modern-warfare-4-kill-block",
-   "at": "2026-10-29T15:28:31.978705+00:00",
-   "title": "Call of Duty: Modern Warfare 4が発売 毎回マップが変わる新モードを徹底解説",
-   "head": "Call of Duty: Modern Warfare 4が発売 毎回マップが変わる新モードを徹底解説 | 『Call of Duty: Modern Warfare 4』: マストプレイのマルチプレイヤー「キル ブロック」",
-   "text": "Call of Duty: Modern Warfare 4が発売 毎回マップが変わる新モードを徹底解説 | 『Call of Duty: Modern Warfare 4』: マストプレイのマルチプレイヤー「キル ブロック」 | Call of Duty / Modern Warfare 4 / キル ブロック / マルチプレイヤー / ガンファイト / Xbox / ゲーム / 新作 / ゲーム / エンタメ",
-   "urls": [
-    "https://news.xbox.com/ja-jp/2026/10/29/call-of-duty-modern-warfare-4-kill-block-must-play-multiplayer/"
-   ]
-  },
-  {
-   "slug": "geforce-now-phantom-blade-zero-update",
-   "at": "2026-10-29T15:10:13.059111+00:00",
-   "title": "NVIDIAのクラウドゲーム『GeForce NOW』、新作アクション『Phantom Blade Zero』などが登場",
-   "head": "NVIDIAのクラウドゲーム『GeForce NOW』、新作アクション『Phantom Blade Zero』などが登場 | Slice Into GFN Thursday: ‘Phantom Blade Zero’ Launches on GeForce NOW",
-   "text": "NVIDIAのクラウドゲーム『GeForce NOW』、新作アクション『Phantom Blade Zero』などが登場 | Slice Into GFN Thursday: ‘Phantom Blade Zero’ Launches on GeForce NOW | GeForce NOW / Phantom Blade Zero / NVIDIA / クラウドゲーム / ワールドオブウォークラフト / サイバーパンク2077 / ウィッチャー3 / 新作ゲーム / クラウドゲーム / GeForce NOW / ゲーム / NVIDIA",
-   "urls": [
-    "https://blogs.nvidia.com/blog/geforce-now-thursday-phantom-blade-zero/"
-   ]
-  },
-  {
-   "slug": "samsung-galaxy-z-fold8-review",
-   "at": "2026-10-29T15:06:47.277456+00:00",
-   "title": "サムスンの折りたたみスマホ「Galaxy Z Fold8」に若手社員が買い替えた理由と使い心地",
-   "head": "サムスンの折りたたみスマホ「Galaxy Z Fold8」に若手社員が買い替えた理由と使い心地 | 「Samsung Galaxy Z Fold8」に買い替えた若手が語る、毎日持ち歩く折りたたみスマートフォンの使い心地",
-   "text": "サムスンの折りたたみスマホ「Galaxy Z Fold8」に若手社員が買い替えた理由と使い心地 | 「Samsung Galaxy Z Fold8」に買い替えた若手が語る、毎日持ち歩く折りたたみスマートフォンの使い心地 | Galaxy Z Fold8 / サムスン / 折りたたみスマホ / スマホ買い替え / Galaxy AI / ワケタラ / Samsung Week / Z世代 / スマートフォン / Android / サムスン / ガジェット",
-   "urls": [
-    "https://news.samsung.com/jp/galaxy-z-fold8-interview2610?utm_source=rss&utm_medium=direct"
-   ]
-  },
-  {
-   "slug": "mistral-large-4-preview",
-   "at": "2026-10-29T14:36:40.099122+00:00",
-   "title": "欧州Mistral AIが新AIモデル「Mistral Large 4」を公開 1兆パラメータ、重みは月末公開",
-   "head": "欧州Mistral AIが新AIモデル「Mistral Large 4」を公開 1兆パラメータ、重みは月末公開 | Introducing Mistral Large 4 | Mistral Large 4のモデルウェイトが一般公開",
-   "text": "欧州Mistral AIが新AIモデル「Mistral Large 4」を公開 1兆パラメータ、重みは月末公開 | Introducing Mistral Large 4 | Mistral Large 4 / Mistral AI / オープンウェイト / 生成AI / LLM / サイバーセキュリティ AI / Mistral Studio / 日本で使える / 1兆パラメータ / 欧州 AI / Mistral Large 4 / 生成AI / LLM / オープンウェイト / サイバーセキュリティ",
-   "urls": [
-    "https://mistral.ai/news/mistral-large-4/",
-    "https://huggingface.co/blog/mistral-large4"
-   ]
-  },
-  {
-   "slug": "legora-openai-legal-transformation-case-study",
-   "at": "2026-10-29T12:57:26.699835+00:00",
-   "title": "ChatGPTのOpenAIがAI法務プラットフォーム Legora 事例を公開 契約書レビュー1万件も数分で自動化",
-   "head": "ChatGPTのOpenAIがAI法務プラットフォーム Legora 事例を公開 契約書レビュー1万件も数分で自動化 | How Legora is transforming legal work with OpenAI",
-   "text": "ChatGPTのOpenAIがAI法務プラットフォーム Legora 事例を公開 契約書レビュー1万件も数分で自動化 | How Legora is transforming legal work with OpenAI | Legora / OpenAI / ChatGPT / 法務AI / 契約書レビュー / デューデリジェンス / リーガルテック / AI活用事例 / OpenAI / ChatGPT / Legora / リーガルテック / 事例紹介 / 契約書自動化",
-   "urls": []
-  },
-  {
-   "slug": "openai-legora-legal-ai-contract-review",
-   "at": "2026-10-29T12:50:45.921143+00:00",
-   "title": "ChatGPTのOpenAIが紹介する法律AI『Legora』 1万件の契約書を数分で一括点検",
-   "head": "ChatGPTのOpenAIが紹介する法律AI『Legora』 1万件の契約書を数分で一括点検 | Faster contract review. Broader legal analysis. | Legora’s Alex Fortescue-Webb",
-   "text": "ChatGPTのOpenAIが紹介する法律AI『Legora』 1万件の契約書を数分で一括点検 | Faster contract review. Broader legal analysis. | Legora’s Alex Fortescue-Webb | Legora / OpenAI / リーガルAI / 契約書レビュー / 法律AI / デューデリジェンス / リーガルエンジニア / ChatGPT / 契約書点検 / OpenAI / ChatGPT / 生成AI / Legora / リーガルテック / 法律",
-   "urls": []
-  },
-  {
-   "slug": "chatgpt-pro-business-api-credits-benefit",
-   "at": "2026-10-29T12:25:22.684875+00:00",
-   "title": "ChatGPT Pro・BusinessのAPIクレジットとは？対象と受け取り方",
-   "head": "ChatGPT Pro・BusinessのAPIクレジットとは？対象と受け取り方 | API credits, now in ChatGPT Pro and Business plans",
-   "text": "ChatGPT Pro・BusinessのAPIクレジットとは？対象と受け取り方 | API credits, now in ChatGPT Pro and Business plans | ChatGPT / OpenAI / APIクレジット / ChatGPT Pro / ChatGPT Business / GPT-6.1 Terra / Codex / 使い方 / 料金 / 開発ツール / OpenAI / ChatGPT / API / 生成AI / 開発ツール",
-   "urls": []
-  },
-  {
-   "slug": "google-gemini-4-carbon-announcement-zhnjo7s91ls",
-   "at": "2026-10-29T12:23:45.976044+00:00",
-   "title": "Googleの生成AI『Gemini』に最新モデル『Gemini 4 Carbon』登場 総合首位で料金も手頃に",
-   "head": "Googleの生成AI『Gemini』に最新モデル『Gemini 4 Carbon』登場 総合首位で料金も手頃に | Google \"Carbon\" just won everything...",
-   "text": "Googleの生成AI『Gemini』に最新モデル『Gemini 4 Carbon』登場 総合首位で料金も手頃に | Google \"Carbon\" just won everything... | Gemini 4 Carbon / Google / Gemini / AIモデル / ベンチマーク / 料金 / 使い方 / 日本 / セキュリティ / プログラミング / AIツール / 検証 / 生成AI / LLM / Google Gemini / Gemini 4 Carbon",
-   "urls": []
-  },
-  {
-   "slug": "google-gemini-live-plant-robot-sprout",
-   "at": "2026-10-29T12:02:38.754500+00:00",
-   "title": "GoogleのAI『Gemini Live』で植物が自律移動　日光を探して会話するロボット『Sprout』開発",
-   "head": "GoogleのAI『Gemini Live』で植物が自律移動　日光を探して会話するロボット『Sprout』開発 | 🪴 Building an autonomous plant rover with Gemini Live",
-   "text": "GoogleのAI『Gemini Live』で植物が自律移動　日光を探して会話するロボット『Sprout』開発 | 🪴 Building an autonomous plant rover with Gemini Live | Google Gemini / Gemini Live / Gemini Flash / Sprout / ロボティクス / 自律走行ロボット / Robotics ER 2.0 / AIロボット / 使い方 / 概要 / Google / 開発者向け / 生成AI / Google Gemini / ロボティクス / Gemini Live / ハードウェア",
-   "urls": []
-  },
-  {
-   "slug": "microsoft-azure-physical-ai-iot",
-   "at": "2026-10-29T12:01:51.265421+00:00",
-   "title": "マイクロソフトが示す「フィジカルAI」とは？Azure IoT連携で現場ロボットはどう賢くなるか",
-   "head": "マイクロソフトが示す「フィジカルAI」とは？Azure IoT連携で現場ロボットはどう賢くなるか | Make Machines Smarter with Physical AI",
-   "text": "マイクロソフトが示す「フィジカルAI」とは？Azure IoT連携で現場ロボットはどう賢くなるか | Make Machines Smarter with Physical AI | フィジカルAI / Azure IoT / Microsoft / Azure IoT Hub / Azure IoT Operations / Azure Device Registry / 産業用AI / OTセキュリティ / エッジAI / フィジカルAIの使い方 / Microsoft / Copilot / Microsoft Azure / フィジカルAI / Azure IoT / 産業用AI / ロボティクス",
-   "urls": []
   }
  ]
 }

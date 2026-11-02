@@ -6,7 +6,7 @@ const ts = require('typescript');
 const Module = require('node:module');
 
 const filename = path.join(__dirname, '../lib/indexing.ts');
-const compiled = ts.transpileModule(fs.readFileSync(filename, 'utf8'), {compilerOptions: {module: ts.ModuleKind.CommonJS}}).outputText;
+const compiled = ts.transpileModule(fs.readFileSync(filename, 'utf8'), {compilerOptions: {module: ts.ModuleKind.CommonJS, esModuleInterop: true}}).outputText;
 const loaded = new Module(filename, module);
 loaded.filename = filename;
 loaded.paths = module.paths;
@@ -18,13 +18,29 @@ const good = { sourceType: 'web', channelSlug: 'official', genreSlug: 'ai', titl
 test('検索に出す条件（分量・主題・日本向けの情報・重複）', () => {
   assert.equal(noindexReason(good), null);
   assert.equal(noindexReason({ ...good, bodyLength: 1499 }), 'thin');
-  assert.equal(noindexReason({ ...good, genreSlug: 'sports', title: '試合結果' }), 'off-focus');
+  assert.equal(noindexReason({ ...good, genreSlug: 'entertainment', title: '新作ゲームの体験版' }), 'off-focus');
   assert.equal(noindexReason({ ...good, genreSlug: 'public', title: '生成AIの指針' }), null);
   assert.equal(noindexReason({ ...good, genreSlug: 'business', tags: ['AI'] }), null);
   assert.equal(noindexReason({ ...good, hasJapanValue: false }), 'no-japan-value');
   assert.equal(noindexReason({ ...good, hasJapanValue: false, verdict: { japan: 'ok' } }), null);
   assert.equal(noindexReason({ ...good, duplicate: true }), 'duplicate');
   assert.equal(noindexReason({ ...good, sourceType: 'video' }), null);
+});
+
+test('主題は読者像（scripts/persona.py）に合わせる: お金・制度・日本のスポーツは対象、エンタメ・海外スポーツは外す', () => {
+  assert.equal(noindexReason({ ...good, genreSlug: 'business', title: '財務省が10月の国債金利を公表' }), null);
+  assert.equal(noindexReason({ ...good, genreSlug: 'investment', title: '楽天証券の口座数' }), null);
+  assert.equal(noindexReason({ ...good, genreSlug: 'real-estate', title: '路線価' }), null);
+  assert.equal(noindexReason({ ...good, genreSlug: 'public', title: '国の教育ローン、世帯年収の上限と金利' }), null);
+  assert.equal(noindexReason({ ...good, genreSlug: 'public', title: '道路の工事', seoTitle: '補助金の申請' }), null);
+  assert.equal(noindexReason({ ...good, genreSlug: 'public', title: '道路の工事' }), 'off-focus');
+  assert.equal(noindexReason({ ...good, genreSlug: 'lifestyle', title: '新作ラテが期間限定で発売' }), 'off-focus');
+  assert.equal(noindexReason({ ...good, genreSlug: 'science', title: '天文台の教授が褒章' }), 'off-focus');
+  assert.equal(noindexReason({ ...good, genreSlug: 'sports', title: 'なでしこジャパンがブラジルと対戦' }), null);
+  assert.equal(noindexReason({ ...good, genreSlug: 'sports', title: '大谷翔平のドジャースが勝利' }), null);
+  assert.equal(noindexReason({ ...good, genreSlug: 'sports', title: 'レイカーズが開幕戦に勝利' }), 'off-focus');
+  assert.equal(noindexReason({ ...good, genreSlug: 'sports', title: '世界陸上でボルトの記録に迫る' }), null);
+  assert.equal(noindexReason({ ...good, genreSlug: 'sports', title: 'ＮＢＡのウォリアーズ' }), 'off-focus');
 });
 
 test('手動指定・配信元・まとめ記事の扱いと、既存の配信基準を保つ', () => {

@@ -72,5 +72,17 @@
     "width": 1200,
     "height": 800,
     "at": "2026-11-02T03:39:38+00:00"
+  },
+  "imageFocus": {
+    "x": 0.415,
+    "y": 0.5,
+    "box": [
+      0.084,
+      0.0,
+      0.747,
+      1.0
+    ],
+    "ar": 1.5,
+    "src": "https://ai-tech-express.jp/img/sakana-ai-symposium-2026-sawara-819915b8.jpg"
   }
 }

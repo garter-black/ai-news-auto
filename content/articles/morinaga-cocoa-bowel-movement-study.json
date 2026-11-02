@@ -44,7 +44,7 @@
   "videoTitle": "松生クリニック 松生恒夫先生との共同研究 ココアによる排便頻度の改善および一部の腸内細菌の割合への影響について 第59回 日本栄養食糧学会 中国・四国支部大会で発表",
   "publishedAt": "2026-11-02T02:00:00+00:00",
   "generatedAt": "2026-11-02T02:31:14.850786+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/morinaga-cocoa-bowel-movement-study-bd466d28.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/morinaga-cocoa-bowel-movement-study-ca1318f8.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -53,14 +53,26 @@
   "speedMinutes": 35,
   "imageCredit": {
     "kind": "stock",
-    "title": "Hot chocolate (Unsplash)",
-    "creator": "Alisa Anton alisaanton",
+    "title": "Cocoa Powder and Chocolate on Marble Background",
+    "creator": "formulatehealth",
     "creatorUrl": "",
-    "license": "CC0",
-    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
     "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hot_chocolate_(Unsplash).jpg",
-    "query": "cocoa drink",
-    "at": "2026-11-02T02:32:02+00:00"
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cocoa_Powder_and_Chocolate_on_Marble_Background.jpg",
+    "query": "cocoa powder",
+    "at": "2026-11-02T11:55:15+00:00"
+  },
+  "imageFocus": {
+    "x": 0.429,
+    "y": 0.562,
+    "box": [
+      0.0,
+      0.125,
+      0.859,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/morinaga-cocoa-bowel-movement-study-ca1318f8.jpg"
   }
 }

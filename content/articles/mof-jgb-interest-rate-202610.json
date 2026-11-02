@@ -51,7 +51,7 @@
   "videoTitle": "国債金利情報(令和8年10月30日)",
   "publishedAt": "2026-11-02T00:30:00+00:00",
   "generatedAt": "2026-11-02T09:51:25.914221+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/mof-jgb-interest-rate-202610-321dc19e.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/mof-jgb-interest-rate-202610-f980c591.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -60,8 +60,20 @@
   "imageCredit": {
     "kind": "ai",
     "model": "flux-2-klein-4b",
-    "prompt": "A close-up of a printed bond certificate showing the 10‑year yield, placed on a desk beside a laptop displaying a line graph of interest rates, with soft office lighting.",
+    "prompt": "A close-up of a hand holding a printed Japanese government bond certificate against a softly blurred office background, illuminated by gentle natural light.",
     "provider": "Cloudflare Workers AI",
-    "at": "2026-11-02T09:52:04+00:00"
+    "at": "2026-11-02T13:32:51+00:00"
+  },
+  "imageFocus": {
+    "x": 0.475,
+    "y": 0.506,
+    "box": [
+      0.0,
+      0.012,
+      0.95,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/mof-jgb-interest-rate-202610-f980c591.jpg"
   }
 }

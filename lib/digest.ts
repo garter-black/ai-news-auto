@@ -106,6 +106,7 @@ function creditOf(article: ArticleSummary): string {
   if (c?.kind === "ai") return "画像はイメージ（AI生成）";
   if (c?.kind === "stock") return "写真はイメージ";
   if (c?.kind === "official") return `画像：${c.org || c.via || c.provider || "公式発表"}`;
+  if (c?.kind === "figure") return "図：サイソクニュース作成";
   return "";
 }
 

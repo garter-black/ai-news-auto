@@ -66,5 +66,17 @@
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-30T17:00:00+00:00",
   "detectedAt": "2026-10-30T17:16:45+00:00",
-  "speedMinutes": 21
+  "speedMinutes": 21,
+  "imageFocus": {
+    "x": 0.46,
+    "y": 0.32,
+    "box": [
+      0.0,
+      0.0,
+      0.919,
+      0.639
+    ],
+    "ar": 1.7778,
+    "src": "https://i.ytimg.com/vi_webp/epqzfAi16us/maxresdefault.webp"
+  }
 }

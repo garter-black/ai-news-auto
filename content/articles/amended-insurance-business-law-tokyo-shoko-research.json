@@ -63,5 +63,17 @@
     "width": 1200,
     "height": 941,
     "at": "2026-11-02T03:44:51+00:00"
+  },
+  "imageFocus": {
+    "x": 0.542,
+    "y": 0.502,
+    "box": [
+      0.084,
+      0.004,
+      1.0,
+      1.0
+    ],
+    "ar": 1.2752,
+    "src": "https://ai-tech-express.jp/img/amended-insurance-business-law-tokyo-shoko-research-54fcf007.jpg"
   }
 }

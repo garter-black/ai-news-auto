@@ -1147,7 +1147,182 @@ function DesignE2({ digest, photos }: Ctx, format: DigestFormat) {
   );
 }
 
-const DESIGNS = { A: DesignA, B: DesignB, B1: DesignB1, B2: DesignB2, C: DesignC, D1: DesignD1, D2: DesignD2, D3: DesignD3, D4: DesignD4, E1: designE(1), E2: DesignE2 } as const;
+/* ---------- F1〜F4（E2 の並びのまま、明るい地・色を絞る・番号の見せ方を変えた案。2026/11/02 オーナー指摘「暗い・色の使い方・数字をおしゃれに」） ---------- */
+type FStyle = {
+  bg: string; // 地
+  ink: string; // 見出し
+  sub: string; // 「朝のAIニュース」
+  photoBg: string; // 写真の余白
+  band?: { bg: string; ink: string; sub: string }; // ヘッダーを帯にするとき
+  rule?: string; // ヘッダー下の細い線
+  rank: "badge" | "dela" | "tab" | "ring";
+  accent: string;
+};
+
+const F_STYLES: Record<"F1" | "F2" | "F3" | "F4", FStyle> = {
+  // 白地＋紺の帯。番号は赤い丸に白い数字
+  F1: { bg: "#ffffff", ink: "#0b1a33", sub: "#5b6880", photoBg: "#eef1f5", band: { bg: "#0b1f45", ink: "#ffffff", sub: "#b4c0d8" }, rank: "badge", accent: "#d92d20" },
+  // 明るいグレー地。番号は「01」の太い数字（サイト名と同じ書体・紺）
+  F2: { bg: "#f3f5f8", ink: "#0b1a33", sub: "#5b6880", photoBg: "#e3e8ef", rule: "#0b1a33", rank: "dela", accent: "#1d4a8f" },
+  // 白地。番号は写真の左上の赤い角タグ（見出しの横に数字を置かない）
+  F3: { bg: "#ffffff", ink: "#0b1a33", sub: "#5b6880", photoBg: "#eef1f5", rule: "#d92d20", rank: "tab", accent: "#d92d20" },
+  // 淡い青の地。番号は紺の輪に紺の数字
+  F4: { bg: "#eaf0f8", ink: "#0b1a33", sub: "#465268", photoBg: "#dce4f0", rank: "ring", accent: "#1d4a8f" },
+};
+
+function FHeader({ digest, size, height, pad, st }: { digest: Digest; size: number; height: number; pad: number; st: FStyle }) {
+  const { m, d, w } = weekday(digest.date);
+  const ink = st.band?.ink ?? st.ink;
+  const sub = st.band?.sub ?? st.sub;
+  return (
+    <div style={{ display: "flex", height, alignItems: "center", justifyContent: "space-between", padding: `0 ${pad}px`, background: st.band?.bg ?? st.bg, ...(st.rule ? { borderBottom: `3px solid ${st.rule}` } : {}) }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: Math.round(size * 0.5) }}>
+        <div style={{ display: "flex", fontSize: size, fontWeight: 900, color: ink }}>{`${m}/${d}（${w}）`}</div>
+        <div style={{ display: "flex", fontSize: size, fontWeight: 700, color: sub }}>朝のAIニュース</div>
+      </div>
+      <div style={{ display: "flex", fontFamily: "Dela", fontSize: Math.round(size * 0.92), color: ink }}>サイソクニュース</div>
+    </div>
+  );
+}
+
+/** 見出しの横に置く番号。slot は確保する幅、line は見出し1行目の高さ（縦の中央合わせ） */
+function FRank({ n, slot, line, st }: { n: number; slot: number; line: number; st: FStyle }) {
+  if (st.rank === "badge" || st.rank === "ring") {
+    const d = Math.round(slot);
+    const ring = st.rank === "ring";
+    return (
+      <div style={{ display: "flex", width: d, height: d, marginTop: Math.round((line - d) / 2), borderRadius: d, alignItems: "center", justifyContent: "center", flexShrink: 0, background: ring ? "transparent" : st.accent, border: ring ? `${Math.max(3, Math.round(d * 0.07))}px solid ${st.accent}` : "none" }}>
+        <div style={{ display: "flex", fontFamily: ring ? "Dela" : "Noto", fontSize: Math.round(d * (ring ? 0.5 : 0.62)), fontWeight: 900, lineHeight: 1, color: ring ? st.accent : "#fff", marginTop: ring ? Math.round(d * 0.02) : -Math.round(d * 0.04) }}>{n}</div>
+      </div>
+    );
+  }
+  // dela:「01」＋下に短い線
+  const size = Math.round(slot * 0.56);
+  return (
+    <div style={{ display: "flex", flexDirection: "column", width: slot, alignItems: "flex-start", marginTop: Math.round((line - size * 1.1) / 2) - 2, flexShrink: 0 }}>
+      <div style={{ display: "flex", fontFamily: "Dela", fontSize: size, lineHeight: 1, color: st.accent, letterSpacing: "-0.02em" }}>{String(n).padStart(2, "0")}</div>
+      <div style={{ display: "flex", width: Math.round(size * 0.9), height: Math.max(3, Math.round(size * 0.09)), background: st.accent, marginTop: Math.round(size * 0.12) }} />
+    </div>
+  );
+}
+
+function FTab({ n, size, st }: { n: number; size: number; st: FStyle }) {
+  return (
+    <div style={{ position: "absolute", left: 0, top: 0, display: "flex", width: Math.round(size * 1.45), height: Math.round(size * 1.45), background: st.accent, alignItems: "center", justifyContent: "center" }}>
+      <div style={{ display: "flex", fontFamily: "Dela", fontSize: size, lineHeight: 1, color: "#fff", marginTop: Math.round(size * 0.06) }}>{n}</div>
+    </div>
+  );
+}
+
+function FPhoto({ photo, story, width, height, st, tab }: { photo: Photo; story: DigestStory; width: number; height: number; st: FStyle; tab?: ReactNode }) {
+  const pw = Math.min(width, Math.round((height * 16) / 9));
+  const ph = Math.round((pw * 9) / 16);
+  return (
+    <div style={{ display: "flex", width, height, justifyContent: "center", alignItems: "flex-start", background: st.bg }}>
+      <div style={{ position: "relative", display: "flex", width: pw, height: ph, background: photo ? st.photoBg : story.company.color, overflow: "hidden" }}>
+        {photo && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={photo} alt="" width={pw} height={ph} style={{ width: pw, height: ph, objectFit: "cover", objectPosition: "center top" }} />
+        )}
+        {tab}
+      </div>
+    </div>
+  );
+}
+
+function designF(key: keyof typeof F_STYLES) {
+  const st = F_STYLES[key];
+  const tab = st.rank === "tab";
+  return function DesignF({ digest, photos }: Ctx, format: DigestFormat) {
+    const { width, height } = SIZES[format];
+    const stories = digest.stories.slice(0, 3).map((s, i) => ({ ...s, headline: compactHeadline(s.headline, i === 0 ? 16 : 12) }));
+    const [top, ...rest] = stories;
+    const GAP = tab ? 10 : 6;
+    const LH = 1.22;
+    if (format === "wide") {
+      const HEAD = 64;
+      const bodyH = height - HEAD - (st.rule ? 3 : 0);
+      const bigW = 760;
+      const sideW = width - bigW - GAP;
+      const sideH = Math.floor((bodyH - GAP) / 2);
+      const PAD = 32;
+      const num = tab ? 0 : 64;
+      const ng = tab ? 0 : 16;
+      const topText = fitLines(top.headline, bigW - PAD * 2 - num - ng, 2, 66, 60, 16);
+      const topBlock = Math.round(topText.lines.length * topText.size * LH) + 14 + 24;
+      const sideNum = tab ? 0 : 38;
+      const sg = tab ? 0 : 10;
+      const sideFit = rest.map((s) => fitLines(s.headline, sideW - 36 - sideNum - sg, 2, 34, 30, 12));
+      const sideSize = Math.min(...sideFit.map((f) => f.size));
+      const sideLines = rest.map((s) => fitLines(s.headline, sideW - 36 - sideNum - sg, 2, sideSize, sideSize, 12).lines);
+      return (
+        <div style={{ display: "flex", flexDirection: "column", width, height, background: st.bg }}>
+          <FHeader digest={digest} size={30} height={HEAD} pad={28} st={st} />
+          <div style={{ display: "flex", gap: GAP, paddingTop: tab ? 10 : 0 }}>
+            <div style={{ display: "flex", flexDirection: "column", width: bigW, height: bodyH - (tab ? 10 : 0) }}>
+              <FPhoto photo={photos[0]} story={top} width={bigW} height={bodyH - (tab ? 10 : 0) - topBlock} st={st} tab={tab ? <FTab n={1} size={52} st={st} /> : undefined} />
+              <div style={{ display: "flex", alignItems: "flex-start", gap: ng, padding: `14px ${PAD}px 0` }}>
+                {!tab && <FRank n={1} slot={num} line={topText.size * LH} st={st} />}
+                <Lines lines={topText.lines} size={topText.size} color={st.ink} />
+              </div>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: GAP }}>
+              {rest.map((story, i) => {
+                const block = Math.round(sideLines[i].length * sideSize * LH) + 10 + 14;
+                const h = sideH - (tab ? 5 : 0);
+                return (
+                  <div key={story.slug} style={{ display: "flex", flexDirection: "column", width: sideW, height: h, background: st.bg }}>
+                    <FPhoto photo={photos[i + 1]} story={story} width={sideW} height={h - block} st={st} tab={tab ? <FTab n={i + 2} size={30} st={st} /> : undefined} />
+                    <div style={{ display: "flex", alignItems: "flex-start", gap: sg, padding: "8px 18px 0" }}>
+                      {!tab && <FRank n={i + 2} slot={sideNum} line={sideSize * LH} st={st} />}
+                      <Lines lines={sideLines[i]} size={sideSize} color={st.ink} />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      );
+    }
+    const HEAD = 108;
+    const SAFE = 48;
+    const num = tab ? 0 : 88;
+    const ng = tab ? 0 : 18;
+    const topPh = Math.round((width * 9) / 16);
+    const topText = fitLines(top.headline, width - SAFE * 2 - num - ng, 2, 92, 84, 16);
+    const topBlock = Math.round(topText.lines.length * topText.size * LH) + 22 + 28;
+    const rowH = Math.floor((height - HEAD - (st.rule ? 3 : 0) - topPh - topBlock - GAP * 2) / 2);
+    const thumbW = Math.round((rowH * 16) / 9);
+    const rowNum = tab ? 0 : 58;
+    const rg = tab ? 0 : 14;
+    const rowTextW = width - thumbW - 32 - SAFE - rowNum - rg;
+    const rowFits = rest.map((s) => fitLines(s.headline, rowTextW, 2, 56, 50, 12));
+    const rowSize = Math.min(...rowFits.map((f) => f.size));
+    const rowLines = rest.map((s) => fitLines(s.headline, rowTextW, 2, rowSize, rowSize, 12).lines);
+    return (
+      <div style={{ display: "flex", flexDirection: "column", width, height, background: st.bg }}>
+        <FHeader digest={digest} size={42} height={HEAD} pad={SAFE} st={st} />
+        <FPhoto photo={photos[0]} story={top} width={width} height={topPh} st={st} tab={tab ? <FTab n={1} size={68} st={st} /> : undefined} />
+        <div style={{ display: "flex", alignItems: "flex-start", gap: ng, padding: `22px ${SAFE}px 0`, height: topBlock }}>
+          {!tab && <FRank n={1} slot={num} line={topText.size * LH} st={st} />}
+          <Lines lines={topText.lines} size={topText.size} color={st.ink} />
+        </div>
+        {rest.map((story, i) => (
+          <div key={story.slug} style={{ display: "flex", height: rowH, marginTop: GAP, alignItems: "center", gap: 32 }}>
+            <FPhoto photo={photos[i + 1]} story={story} width={thumbW} height={rowH} st={st} tab={tab ? <FTab n={i + 2} size={40} st={st} /> : undefined} />
+            <div style={{ display: "flex", alignItems: "flex-start", gap: rg, width: rowTextW + rowNum + rg }}>
+              {!tab && <FRank n={i + 2} slot={rowNum} line={rowSize * LH} st={st} />}
+              <Lines lines={rowLines[i]} size={rowSize} color={st.ink} />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+}
+
+const DESIGNS = { A: DesignA, B: DesignB, B1: DesignB1, B2: DesignB2, C: DesignC, D1: DesignD1, D2: DesignD2, D3: DesignD3, D4: DesignD4, E1: designE(1), E2: DesignE2, F1: designF("F1"), F2: designF("F2"), F3: designF("F3"), F4: designF("F4") } as const;
 
 export async function renderDigestImage(
   digest: Digest,

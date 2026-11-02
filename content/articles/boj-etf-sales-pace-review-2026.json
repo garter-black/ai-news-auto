@@ -58,5 +58,17 @@
     "prompt": "A photorealistic editorial shot of a person's hands on a laptop keyboard, the screen displaying a generic stock chart, set in a modern office with a blurred city view through a window, illuminated by soft daylight.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-10-31T17:42:16+00:00"
+  },
+  "imageFocus": {
+    "x": 0.46,
+    "y": 0.584,
+    "box": [
+      0.0,
+      0.167,
+      0.919,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/boj-etf-sales-pace-review-2026-3f0fdad4.jpg"
   }
 }

@@ -55,18 +55,33 @@
   "videoTitle": "Jira’s autumn 2026 release: faster views, visible agents, and consistency by default",
   "publishedAt": "2026-10-30T20:21:52+00:00",
   "generatedAt": "2026-11-01T07:11:29.033415+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/jira-autumn-2026-release-e899c0a2.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/jira-autumn-2026-release-3be87323.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-30T20:21:52+00:00",
   "detectedAt": "2026-11-01T07:10:48+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A close-up of a modern office desk with a laptop showing a colorful task board, surrounded by sticky notes and a coffee mug, lit by soft natural light.",
-    "provider": "Cloudflare Workers AI",
+    "kind": "official",
+    "org": "Atlassian",
+    "provider": "Atlassian公式ブログ",
+    "sourceUrl": "https://www.atlassian.com/blog/development/jira-autumn-release",
     "original": "https://atlassianblog.wpengine.com/wp-content/uploads/2026/10/csd-31026-1920x1080-blog.webp",
-    "at": "2026-11-01T07:12:11+00:00"
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-02T11:54:30+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.483,
+    "y": 0.475,
+    "box": [
+      0.022,
+      0.161,
+      0.944,
+      0.789
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/jira-autumn-2026-release-3be87323.jpg"
   }
 }

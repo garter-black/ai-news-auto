@@ -55,18 +55,33 @@
   "videoTitle": "Introducing the Context Quality Score (CQS): a new framework for measuring and optimizing AI context",
   "publishedAt": "2026-10-29T15:55:00+00:00",
   "generatedAt": "2026-11-01T07:51:04.821553+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/atlassian-context-quality-score-cqs-8a2bb6c6.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/atlassian-context-quality-score-cqs-39986496.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-29T15:55:00+00:00",
   "detectedAt": "2026-11-01T07:50:45+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A photorealistic editorial shot of a modern server room with rows of blinking racks, illuminated by cool white lighting, viewed from a low angle.",
-    "provider": "Cloudflare Workers AI",
+    "kind": "official",
+    "org": "Atlassian",
+    "provider": "Atlassian公式ブログ",
+    "sourceUrl": "https://www.atlassian.com/blog/context/context-quality-score",
     "original": "https://atlassianblog.wpengine.com/wp-content/uploads/2026/10/image-3-1-scaled.png",
-    "at": "2026-11-01T07:51:50+00:00"
+    "width": 1200,
+    "height": 584,
+    "at": "2026-11-02T11:57:18+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.341,
+    "y": 0.49,
+    "box": [
+      0.0,
+      0.0,
+      0.681,
+      0.981
+    ],
+    "ar": 2.0548,
+    "src": "https://ai-tech-express.jp/img/atlassian-context-quality-score-cqs-39986496.jpg"
   }
 }

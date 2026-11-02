@@ -63,5 +63,17 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T03:39:46+00:00"
+  },
+  "imageFocus": {
+    "x": 0.473,
+    "y": 0.5,
+    "box": [
+      0.209,
+      0.0,
+      0.738,
+      1.0
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/nao-honma-shijuhosho-2026-170db314.jpg"
   }
 }

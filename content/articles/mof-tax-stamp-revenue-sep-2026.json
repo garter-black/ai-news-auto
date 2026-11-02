@@ -54,22 +54,29 @@
   "videoTitle": "令和8年度 9月末租税及び印紙収入、収入額調",
   "publishedAt": "2026-11-02T06:30:00+00:00",
   "generatedAt": "2026-11-02T08:51:16.115476+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/mof-tax-stamp-revenue-sep-2026-1cb250fd.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/mof-tax-stamp-revenue-sep-2026-6737ef71.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-02T06:30:00+00:00",
   "detectedAt": "2026-11-02T08:50:49+00:00",
   "imageCredit": {
-    "kind": "stock",
-    "title": "Edogawa-kita Tax Office 01",
-    "creator": "Higa4",
-    "creatorUrl": "",
-    "license": "CC0",
-    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Edogawa-kita_Tax_Office_01.jpg",
-    "query": "税務署",
-    "at": "2026-11-02T08:51:53+00:00"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A hand arranging sealed envelopes with official stamps on a desk, with a softly blurred view of a government office interior behind them.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T12:02:15+00:00"
+  },
+  "imageFocus": {
+    "x": 0.506,
+    "y": 0.598,
+    "box": [
+      0.013,
+      0.196,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/mof-tax-stamp-revenue-sep-2026-6737ef71.jpg"
   }
 }

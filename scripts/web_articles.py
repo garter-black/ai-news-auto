@@ -209,6 +209,18 @@ def is_breaking(item: dict) -> bool:
     return feeds.source_rank(item) == 0 and bool(BIG_EVENT_RE.search(title))
 
 
+def sns_likely(item: dict) -> bool:
+    """SNS（Threads・Bluesky）に出しそうな記事か。投稿は記事を作ったあとに scripts/threads_post.py が
+    score()（誰でも反応できる話題か）で選ぶので、同じ目安（BROAD に当たり NICHE に当たらない）を
+    元記事の見出しと発信元で先に見る。当たった記事だけ Claude で書く（1日の回数は llm.py の上限まで）"""
+    try:
+        import threads_post as tp  # noqa: PLC0415 - 投稿の選び方の目安を読むだけ
+    except Exception:  # noqa: BLE001
+        return False
+    text = f"{item.get('title', '')} {item.get('source_name', '')}"
+    return bool(tp.BROAD.search(text)) and not tp.NICHE.search(text)
+
+
 def rank_bucket(item: dict) -> int:
     """レーン内の並べ替え用。公式 → 官公庁・企業 → 他社の対応告知 → 配信"""
     return {0: 0, 1: 0, 2: 1, 3: 2}.get(feeds.source_rank(item), 3)
@@ -265,7 +277,7 @@ WEB_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を読�
   製品名・企業名・機能名を**先頭**に置き、何が分かる記事かを続ける。記号は「｜」「：」を最大1つまで。
   **新しい製品・機能・モデルの発表**なら、日本の人が実際に検索する形にする:「〇〇とは？日本で使える？料金も」「〇〇の使い方と料金｜日本での提供状況」など、
   名前の直後に「とは／使い方／料金／日本で使える」のどれかを入れる（発表直後は日本語の記事がまだ少なく、この形の検索で1位を取りやすい）。
-- threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（完結型・2〜4行・URLなし）。
+- threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（書き出し／要約すると、＋2文／問いかけ の3つのかたまり・URLなし）。
 - easy_markdown: 「かんたんに読む」版（本文の必要な内容を過不足なく、短く分かりやすく）。body_markdown の内容をやさしく言い直したもの。
   見出しは次の4つを「## 」でこの順に使う：## ひとことで言うと / ## 何がすごいの？ / ## 自分に関係ある？ / ## 使ってみるには
   必ず「## ひとことで言うと」から始める。専門用語は使わない（使うなら直後に（＝〜のこと））。身近な例えを1つ以上入れる。
@@ -343,7 +355,7 @@ BROAD_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を�
   悪い例:「OpenAIがGPT-6.1 Terraを発表 コスト半減でPC操作と視覚理解を高速化」（詳しい人にしか伝わらない）
   **感嘆符・煽り語（衝撃／ヤバい／ついに／必見／知らないと損）は使わない**。元記事のタイトルをそのまま使わない。
 - seo_title: 全角24〜30文字。固有名詞（商品名・制度名・組織名）を先頭に置く。記号は「｜」「：」を最大1つまで。
-- threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（完結型・2〜4行・URLなし）。
+- threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（書き出し／要約すると、＋2文／問いかけ の3つのかたまり・URLなし）。
 - easy_markdown: 「かんたんに読む」版（本文の必要な内容を過不足なく、短く分かりやすく）。必ず「## ひとことで言うと」から始め、
   ## ひとことで言うと / ## 何がすごいの？ / ## 自分に関係ある？ / ## 使ってみるには の4見出しをこの順に使う。
   「使ってみるには」は、使う・買う・申し込む方法か、それが無い話題なら読者が取れる行動（公式情報の確認など）を書く。
@@ -484,7 +496,7 @@ TREND_PROMPT_TEMPLATE = """日本でいま話題になっているキーワー�
   良い例:「ChatGPTのOpenAIが新AIモデル『GPT-6.1 Terra』 料金は半分、パソコン操作も得意に」
   悪い例:「OpenAIがGPT-6.1 Terraを発表 コスト半減でPC操作と視覚理解を高速化」（詳しい人にしか伝わらない）
 - seo_title: 全角24〜30文字。検索されるキーワードを先頭に置く。記号は「｜」「：」を最大1つまで。
-- threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（完結型・2〜4行・URLなし）。
+- threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（書き出し／要約すると、＋2文／問いかけ の3つのかたまり・URLなし）。
 - easy_markdown: 「かんたんに読む」版（本文の必要な内容を過不足なく、短く分かりやすく）。必ず「## ひとことで言うと」から始め、
   ## ひとことで言うと / ## 何がすごいの？ / ## 自分に関係ある？ / ## 使ってみるには の4見出しをこの順に使う。
   話題が「使う」ものでない場合、「使ってみるには」では読者が取れる行動（公式情報の確認など）を書く。
@@ -1431,11 +1443,13 @@ def main() -> int:
 
     def major_tier() -> str:
         """大きなニュースの段。速報レーンで quality が尽きていたら bulk で作る（出さないよりよい）"""
-        return "bulk" if fast_mode and llm.all_exhausted("quality") else "quality"
+        return "bulk" if fast_mode and llm.all_exhausted("quality", visibility="high") else "quality"
 
-    def generate(system: str, prompt: str, schema: dict, item_id: str, tier: str):
+    def generate(system: str, prompt: str, schema: dict, item_id: str, tier: str, purpose: str | None = None):
+        # purpose があるもの（速報・SNS に出しそうな記事）だけ Claude（API → CLI）を先に試す。ほかは無料モデルだけ
         try:
-            return llm.generate_json(system, prompt, schema, temperature=0.6, max_output_tokens=32768, tier=tier)
+            return llm.generate_json(system, prompt, schema, temperature=0.6, max_output_tokens=32768, tier=tier,
+                                     visibility="high" if purpose else None, purpose=purpose)
         except Exception as error:  # noqa: BLE001
             log(f"   [NG] {str(error)[:200]}")
             state["failed_web"][item_id] = state["failed_web"].get(item_id, 0) + 1
@@ -1456,14 +1470,14 @@ def main() -> int:
         return polished, info
 
     def gated(item: dict, kind: str, system: str, prompt: str, schema: dict, source_text: str, build, context: str = "",
-              tier: str | None = None, attempts: int = 2):
+              tier: str | None = None, attempts: int = 2, purpose: str | None = None):
         """生成 → 品質ゲート →（不合格なら問題点を添えて作り直し。通常は計2回、大きなニュースは計3回）。
         戻り値: ("ok", record, model, verdict) / ("skip", None, model, reason) / ("reject", ...) / ("fail", None, None, None)"""
         tier = tier or args.tier
         verdict: dict = {}
         model_name = None
         for attempt in range(1, attempts + 1):
-            data, model_name = generate(system, prompt, schema, item["id"], tier)
+            data, model_name = generate(system, prompt, schema, item["id"], tier, purpose)
             if data is None:
                 return "fail", None, None, None
             if not data.get("is_relevant", True):
@@ -1720,10 +1734,14 @@ def main() -> int:
         # 事実確認には発信元・公開日時も渡す（記事に書いた「〇〇によると」「10月26日に発表」を創作と誤判定させない）。
         # 大きなニュースは長さの基準を緩め、細かい指摘は外科的に直して公開する（quality.MAJOR）
         quality.MAJOR = bool(major)
+        # Claude を使うのは目立つ記事だけ: 大きなニュース（速報）と、SNS に出しそうな AI の記事
+        purpose = "breaking" if major else ("sns" if is_ai and sns_likely(item) else None)
+        if purpose:
+            log(f"   [llm] 目立つ記事（{purpose}）: Claude API → Claude CLI → 無料モデルの順")
         try:
             status, record, model_name, info = gated(
                 item, kind, system, prompt, schema, f"{source_header(item)}\n\n{text}", build, archive.check_block(related),
-                tier=major_tier() if major else None, attempts=MAJOR_ATTEMPTS if major else 2,
+                tier=major_tier() if major else None, attempts=MAJOR_ATTEMPTS if major else 2, purpose=purpose,
             )
         finally:
             quality.MAJOR = False
@@ -1774,7 +1792,7 @@ def main() -> int:
         for item in majors:
             if created["major"] >= args.max_major or time_up():
                 break
-            if llm.all_exhausted("quality") and not (fast_mode and not llm.all_exhausted("bulk")):
+            if llm.all_exhausted("quality", visibility="high") and not (fast_mode and not llm.all_exhausted("bulk")):
                 log("[major] quality のモデルが使えないため、大きなニュースは次回に回します（processed にしない）")
                 break
             if item.get("fast") and item["id"] in state["processed_web"]:

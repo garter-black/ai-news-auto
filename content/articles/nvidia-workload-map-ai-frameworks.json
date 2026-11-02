@@ -1,0 +1,98 @@
+{
+  "slug": "nvidia-workload-map-ai-frameworks",
+  "sourceType": "web",
+  "sourceUrl": "https://developer.nvidia.com/blog/support-new-ai-frameworks-faster-using-nvidia-workload-map/",
+  "sourceName": "NVIDIA Developer Blog",
+  "title": "AI半導体のNVIDIAが公開、複雑なAIフレームワークを効率管理する『Workload Map』とは",
+  "seoTitle": "NVIDIA Workload Mapとは？AIフレームワーク管理の仕組み",
+  "threadsPost": "複雑なAIフレームワークの管理、別々の対応に追われていませんか。\n\n要約すると、NVIDIAが公開した「Workload Map」は、分散AIワークロードの構造を共通で定義する仕組みです。\nJobSetやPyTorchJobなどの設定を一つにまとめ、専用のコードを書かずに各ツールで再利用できます。\n\nあなたの開発環境でも、フレームワークごとの管理に手間取っていませんか。",
+  "threadsHook": "question",
+  "threadsStyle": 3,
+  "writingVoice": "qa",
+  "lede": "NVIDIA Developer Blogの公式発表によると、同社は分散AIワークロードの定義を共通化し、フレームワークごとの管理を効率化する「NVIDIA Workload Map」を公開しました。専用の解析コードを減らし、様々なツールで共通の定義を再利用できるようになります。",
+  "description": "NVIDIAが公開した「NVIDIA Workload Map」について解説。分散AIワークロードの構造を共通定義し、Kubernetes環境での管理を効率化する仕組みと使い方を紹介します。",
+  "keywords": [
+    "NVIDIA",
+    "Workload Map",
+    "Kubernetes",
+    "AIフレームワーク",
+    "JobSet",
+    "DSX AI Factory",
+    "Run:ai",
+    "分散処理"
+  ],
+  "tags": [
+    "生成AI",
+    "開発ツール",
+    "Kubernetes",
+    "NVIDIA"
+  ],
+  "highlights": [
+    "NVIDIAが分散AIワークロードの共通定義を提供するWorkload Mapを発表しました。",
+    "JobSetやPyTorchJobなどの定義をあらかじめ備えたカタログが付属します。",
+    "CLIやRun:aiなどのツールで同じ定義を再利用し、構成やGPU要求量を簡単に把握できます。"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "ok",
+    "price": "オープンソース・無料",
+    "free": true,
+    "audience": "インフラエンジニア",
+    "take": "リポジトリからカタログを確認し、手元のKubernetes環境やCLIでの検証を始めてみましょう。",
+    "judgedAt": "2026-11-02T16:11:22.866655+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "Kubernetes環境でAIインフラを管理するインフラエンジニアやプラットフォーム担当者に直接関係します。",
+      "フレームワークごとの個別のアダプター開発やメンテナンスの負担を軽減できます。"
+    ]
+  },
+  "body": "## 概要\nNVIDIA Developer Blogによると、同社はAIフレームワークの管理を効率化する「NVIDIA Workload Map」を公開しました。\nバラバラになりがちな分散AIワークロードの設定を共通化する仕組みです。\n専用の解析コードを何度も書く必要をなくします。\nインフラを管理するエンジニアの負担を大きく減らします。\n\n## 何が発表された？\n今回の発表は、NVIDIA DSX AI Factoryプラットフォームの一部として提供されます。\nこれはオープンソースのオープンなコンポーネントです。\nKubernetes環境で動く様々なAIフレームワークの構造を共通で定義します。\nスケジューラーや管理プラットフォームから直接解釈できるようにします。\n\n提供されている主な要素や対応する仕組みには、次のようなものがあります。\n\n- JobSetやPyTorchJobなどの定義済みカタログ\n- ライブオブジェクトを構造化して解決するGoライブラリ\n- ワークロードの構造を可視化するCLI（kli）\n- KAI Schedulerによるギャングスケジューリングの連携\n- NVIDIA Run:aiでの統合管理\n\n## フレームワークごとのアダプターがなぜ必要だったのか？\nKubernetes上で動く実際のAIワークロードは単一のポッドではありません。\n役割を持つ複数のポッドやレプリカ数を含む小さなツリー構造になっています。\n\nダッシュボードやコスト管理ツールなどを作る開発者は大きな課題を抱えていました。\nカスタム資源（CRD）ごとに構造を解釈する専用のアダプターを個別に用意しなければなりませんでした。\nそのため新しいフレームワークに対応するたびに開発のロードマップに項目の追加が必要になりました。\nこれがサポートが遅れる原因になっていました。\n\n## 共通のワークロード定義はどう機能するのか？\nWorkload Mapは複数の要素で構成されています。\nKubernetesのカスタム資源（CRD）とそれを解釈するGoライブラリです。\n\n定義ファイルには重要な情報が記述されます。\nポッドのテンプレート、レプリカ数、ステータスフィールドの場所です。\nたとえばJobSetの設定ではjq式を使います。\n独自の条件から「Running」や「Completed」といった共通の語彙にマッピングします。\nこれによりフレームワーク特有の複雑なスキーマを共通のツリー構造に解決できます。\n\n## ツール間でどう再利用されるのか？\n作成した一つのワークロード定義は複数のワークフローでそのまま再利用できます。\n\nCLIを使ったワークロードの確認では定義を読み込みます。\nこれでツリー表示やリソースの合計を把握できます。\nまたKAI SchedulerやNVIDIA Run:aiなどのプラットフォーム側でも利用できます。\n追加の個別コードなしで同じ定義を直接利用して管理や可視化を行います。\n\n## 日本で使える？\n日本からでも今日から内容を確認して利用できます。\nGitHub上のオープンソースとして公開されているリポジトリや開発者向けSlackが使えます。\n\n今日から試すための主な手順は次のとおりです。\n\n- macOSやLinux環境でHomebrewを使い、リポジトリからCLI（kli）をインストールする\n- クラスターのコンテキストを設定し、対応するネームスペースでコマンドを実行する\n- カタログから既存のフレームワーク定義を自分の環境に適用する\n\n## 自分にはどう関係する？\n### エンジニアなら\nフレームワークごとに異なる設定の仕組みを個別に実装する手間が減ります。\n管理ツールの開発や運用を効率化できます。\n\n### 企画・マーケティングなら\n直接的な影響は大きくありませんが理解しておくと便利です。\n社内のAI基盤の構築や運用コストの削減につながる基盤技術として把握しておくと役立ちます。\n\n### 経営者・管理者なら\nAI開発を支えるインフラの運用効率が向上します。\n新しいフレームワークの導入にかかるリードタイムを短縮できる可能性があります。\n\n## まとめ\nNVIDIA Workload Mapは複雑なAIフレームワークの管理負担を減らす実用的なアプローチです。\nまずは提供されているカタログやリポジトリを確認してみましょう。\n手元の環境での検証を進めてみましょう。",
+  "easy": "## ひとことで言うと\nNVIDIA Workload Mapは、バラバラになりがちなAIの仕事の仕組みを、共通のルールでまとめて管理しやすくする仕組み（＝AIインフラの共通辞書）です。\n\n## 何がすごいの？\nKubernetes（クーベネティクス：コンテナを効率よく動かす仕組み）では、使うAIフレームワークごとに設定方法が違います。そのため、ツールごとに専用のプログラムが必要でした。\nNVIDIA Workload Mapを使うと、ひとつの定義を書き直すだけで、専用のツールやCLI（黒い画面で文字を打って操作する仕組み）から同じように状態を読み取れるようになります。\n\n## 自分に関係ある？\n会社でAIのインフラを管理するエンジニアなら、バラバラの設定に合わせたプログラムを作る手間を減らせます。企画や経営の立場では、AI開発の基盤を整える際の効率化につながります。\n\n## 使ってみるには\n公式のリポジトリから定義のカタログやCLIを手に入れて試すことができます。Homebrewを使って手元のパソコンにCLIをインストールし、動作を確認することが可能です。",
+  "channel": "NVIDIA Developer Blog",
+  "channelId": "",
+  "channelSlug": "nvidia-developer-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Support New AI Frameworks Faster Using NVIDIA Workload Map",
+  "publishedAt": "2026-11-02T16:00:00+00:00",
+  "generatedAt": "2026-11-02T16:11:22.866709+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/nvidia-workload-map-ai-frameworks-16241e6e.jpg",
+  "model": "gemini-3.5-flash-lite",
+  "affiliates": [],
+  "relatedSlugs": [
+    "nvidia-ai-cluster-runtime-dynamo"
+  ],
+  "qualityScore": 100,
+  "sourcePublishedAt": "2026-11-02T16:00:00+00:00",
+  "detectedAt": "2026-11-02T16:10:50+00:00",
+  "speedMinutes": 15,
+  "imageCredit": {
+    "kind": "official",
+    "org": "NVIDIA",
+    "provider": "NVIDIA Developer Blog",
+    "sourceUrl": "https://developer.nvidia.com/blog/support-new-ai-frameworks-faster-using-nvidia-workload-map/",
+    "original": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/AdobeStock_1f14ed65-d635-4fac-a472-570887464326-e1793050942456.webp",
+    "width": 1200,
+    "height": 673,
+    "at": "2026-11-02T16:12:50+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.492,
+    "y": 0.442,
+    "box": [
+      0.013,
+      0.017,
+      0.972,
+      0.866
+    ],
+    "ar": 1.7831,
+    "src": "https://ai-tech-express.jp/img/nvidia-workload-map-ai-frameworks-16241e6e.jpg"
+  }
+}

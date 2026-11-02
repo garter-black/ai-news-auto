@@ -62,7 +62,7 @@
   "videoTitle": "大規模金融系保守開発における AI 適用への挑戦 ── ニッセイ情報テクノロジーが AI-DLC v2 と内製ツールで進める、個人保険基幹系システムの AI 駆動開発",
   "publishedAt": "2026-11-02T08:08:43+00:00",
   "generatedAt": "2026-11-02T08:26:39.970216+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/nissay-it-ai-driven-development-aws-dedd1bc8.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/nissay-it-ai-driven-development-aws-1b5fccad.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -70,16 +70,25 @@
   "detectedAt": "2026-11-02T08:26:12+00:00",
   "speedMinutes": 22,
   "imageCredit": {
-    "kind": "stock",
-    "title": "Office Furniture",
-    "creator": "MonarchErgoIndia",
-    "creatorUrl": "",
-    "license": "CC0",
-    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Office_Furniture.jpg",
-    "query": "office",
-    "original": "https://d2908q01vomqb2.cloudfront.net/827bfc458708f0b442009c9c9836f7e4b65557fb/2020/06/03/Blog-Post_thumbnail.png",
-    "at": "2026-11-02T08:28:32+00:00"
+    "kind": "official",
+    "org": "AWS",
+    "provider": "AWS ブログ（日本）",
+    "sourceUrl": "https://aws.amazon.com/jp/blogs/news/ai-dlc-unicorn-gym-nissay-it-202611/",
+    "original": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/10/19/nit1014.jpeg",
+    "width": 640,
+    "height": 480,
+    "at": "2026-11-02T11:53:39+00:00"
+  },
+  "imageFocus": {
+    "x": 0.487,
+    "y": 0.41,
+    "box": [
+      0.0,
+      0.0,
+      0.975,
+      0.821
+    ],
+    "ar": 1.3333,
+    "src": "https://ai-tech-express.jp/img/nissay-it-ai-driven-development-aws-1b5fccad.jpg"
   }
 }

@@ -52,7 +52,7 @@
   "videoTitle": "第57回住宅金融支援機構債券（グリーンボンド）に対する政府保証の付与",
   "publishedAt": "2026-11-02T06:00:00+00:00",
   "generatedAt": "2026-11-02T09:13:48.278263+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/jhfc-green-bond-gov-guarantee-2c5c4769.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/jhfc-green-bond-gov-guarantee-1cc44bbf.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -61,9 +61,20 @@
   "imageCredit": {
     "kind": "ai",
     "model": "flux-2-klein-4b",
-    "prompt": "A close‑up of a hand holding a green‑tinted bond certificate on a wooden desk, with a softly blurred office background and natural daylight.",
+    "prompt": "A close-up of a hand holding a green-tinged bond certificate on a wooden desk, illuminated by soft natural light from a nearby window, with a blurred cityscape visible in the background.",
     "provider": "Cloudflare Workers AI",
-    "original": "https://www.mof.go.jp/common/images/og_img.png",
-    "at": "2026-11-02T09:15:34+00:00"
+    "at": "2026-11-02T13:33:21+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.578,
+    "box": [
+      0.0,
+      0.155,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/jhfc-green-bond-gov-guarantee-1cc44bbf.jpg"
   }
 }

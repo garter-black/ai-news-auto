@@ -104,5 +104,17 @@
       "note": "ローカルLLMや画像生成AIを手元で試すためのGPU搭載PCを、構成から選べるBTOショップ",
       "pixel": "https://www14.a8.net/0.gif?a8mat=4BELTP+BOXHGY+5U1O+5YJRM"
     }
-  ]
+  ],
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.5,
+    "box": [
+      0.0,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "ar": 1.7778,
+    "src": "https://i.ytimg.com/vi/L1b4AI_CPeA/maxresdefault.jpg"
+  }
 }

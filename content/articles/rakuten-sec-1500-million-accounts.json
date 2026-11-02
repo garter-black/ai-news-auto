@@ -62,7 +62,7 @@
   "videoTitle": "国内（証券単体）最多！楽天証券、証券総合口座数1,500万口座突破のお知らせ",
   "publishedAt": "2026-11-02T07:00:00+00:00",
   "generatedAt": "2026-11-02T07:11:45.108579+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/rakuten-sec-1500-million-accounts-948496a5.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/rakuten-sec-1500-million-accounts-53309c75.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -72,9 +72,20 @@
   "imageCredit": {
     "kind": "ai",
     "model": "flux-2-klein-4b",
-    "prompt": "A close-up view of a modern office desk with a laptop showing a rising stock chart, a notepad and a pen, illuminated by soft natural light.",
+    "prompt": "A photorealistic editorial shot of a modern office desk with a computer monitor displaying a colorful stock price chart, a pair of hands typing on a keyboard, and soft natural light streaming from a nearby window, with no logos or identifiable individuals.",
     "provider": "Cloudflare Workers AI",
-    "original": "https://corp.rakuten.co.jp/assets/img/common/og_image_logo.png",
-    "at": "2026-11-02T07:12:47+00:00"
+    "at": "2026-11-02T13:33:22+00:00"
+  },
+  "imageFocus": {
+    "x": 0.472,
+    "y": 0.521,
+    "box": [
+      0.0,
+      0.042,
+      0.944,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/rakuten-sec-1500-million-accounts-53309c75.jpg"
   }
 }

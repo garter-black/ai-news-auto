@@ -71,5 +71,17 @@
     "width": 1200,
     "height": 800,
     "at": "2026-11-02T04:12:28+00:00"
+  },
+  "imageFocus": {
+    "x": 0.531,
+    "y": 0.622,
+    "box": [
+      0.203,
+      0.244,
+      0.859,
+      1.0
+    ],
+    "ar": 1.5,
+    "src": "https://ai-tech-express.jp/img/google-pixel-11-pro-food-photography-32d323d1.jpg"
   }
 }

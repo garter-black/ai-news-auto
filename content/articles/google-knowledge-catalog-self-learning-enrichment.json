@@ -56,23 +56,33 @@
   "videoTitle": "Knowledge Catalog に新しい自己学習型コンテキスト エンリッチメントを導入",
   "publishedAt": "2026-11-02T03:00:00+00:00",
   "generatedAt": "2026-11-02T06:32:18.438887+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/google-knowledge-catalog-self-learning-enrichment-baab3e8d.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/google-knowledge-catalog-self-learning-enrichment-f8223d7d.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-02T03:00:00+00:00",
   "detectedAt": "2026-11-02T06:30:42+00:00",
   "imageCredit": {
-    "kind": "stock",
-    "title": "Datacenter Server Racks (22370909788)",
-    "creator": "Carl Lender from Sunrise, USA",
-    "creatorUrl": "",
-    "license": "CC BY 2.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-    "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Datacenter_Server_Racks_(22370909788).jpg",
-    "query": "data center server rack",
+    "kind": "official",
+    "org": "Google Cloud",
+    "provider": "Google Cloud 公式ブログ（日本）",
+    "sourceUrl": "https://cloud.google.com/blog/ja/products/data-analytics/knowledge-catalog-self-learning-context-enrichment-for-ai-agents/",
     "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/Data_Analytics_JooYPJr.max-2500x2500.jpg",
-    "at": "2026-11-02T06:33:09+00:00"
+    "width": 1200,
+    "height": 591,
+    "at": "2026-11-02T11:53:41+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.562,
+    "y": 0.674,
+    "box": [
+      0.125,
+      0.348,
+      1.0,
+      1.0
+    ],
+    "ar": 2.0305,
+    "src": "https://ai-tech-express.jp/img/google-knowledge-catalog-self-learning-enrichment-f8223d7d.jpg"
   }
 }

@@ -58,7 +58,7 @@
   "videoTitle": "Windows 11の右クリックメニュー刷新、不要項目を非表示にする機能の提供開始",
   "publishedAt": "2026-11-01T23:36:31+00:00",
   "generatedAt": "2026-11-01T23:39:18.370510+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/windows11-context-menu-customize-kb5127936-6dcd5afc.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/windows11-context-menu-customize-kb5127936-3c568e2b.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "relatedSlugs": [
@@ -71,16 +71,22 @@
   "fastLane": true,
   "speedMinutes": 6,
   "imageCredit": {
-    "kind": "stock",
-    "title": "ComputerMouseCloseup3",
-    "creator": "Raysonho @ Open Grid Scheduler / Grid Engine",
-    "creatorUrl": "",
-    "license": "CC0",
-    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:ComputerMouseCloseup3.jpg",
-    "query": "computer mouse",
-    "original": "https://news.mynavi.jp/techplus/article/20261102-5224966/ogp_images/ogp.jpg",
-    "at": "2026-11-01T23:39:46+00:00"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A hand rests on a computer mouse beside a laptop displaying a context menu on a tidy office desk, lit by natural daylight.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T12:03:15+00:00"
+  },
+  "imageFocus": {
+    "x": 0.428,
+    "y": 0.515,
+    "box": [
+      0.0,
+      0.107,
+      0.856,
+      0.923
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/windows11-context-menu-customize-kb5127936-3c568e2b.jpg"
   }
 }

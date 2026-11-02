@@ -55,23 +55,33 @@
   "videoTitle": "エージェント プラグインの開発から学んだ、評価エンジニアリングの 4 つの教訓",
   "publishedAt": "2026-11-02T03:00:00+00:00",
   "generatedAt": "2026-11-02T06:11:18.171622+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/google-agent-eval-engineering-lessons-2242ff62.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/google-agent-eval-engineering-lessons-1a5dbebc.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-02T03:00:00+00:00",
   "detectedAt": "2026-11-02T06:10:49+00:00",
   "imageCredit": {
-    "kind": "stock",
-    "title": "Computer Lab Baraboo",
-    "creator": "JackFromWisconsin",
-    "creatorUrl": "",
-    "license": "CC0",
-    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Computer_Lab_Baraboo.jpg",
-    "query": "computer lab",
+    "kind": "official",
+    "org": "Google Cloud",
+    "provider": "Google Cloud 公式ブログ（日本）",
+    "sourceUrl": "https://cloud.google.com/blog/ja/topics/developers-practitioners/four-eval-engineering-lessons/",
     "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/blog-post-banner_4eel_v2_2.png.max-2500x2500.jpg",
-    "at": "2026-11-02T06:13:42+00:00"
+    "width": 1200,
+    "height": 591,
+    "at": "2026-11-02T11:53:37+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.506,
+    "box": [
+      0.075,
+      0.146,
+      0.925,
+      0.867
+    ],
+    "ar": 2.0305,
+    "src": "https://ai-tech-express.jp/img/google-agent-eval-engineering-lessons-1a5dbebc.jpg"
   }
 }

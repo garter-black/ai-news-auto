@@ -71,5 +71,17 @@
     "width": 1200,
     "height": 630,
     "at": "2026-11-02T04:51:40+00:00"
+  },
+  "imageFocus": {
+    "x": 0.569,
+    "y": 0.5,
+    "box": [
+      0.138,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/toyota-land-cruiser-fj-options-59b52c2e.jpg"
   }
 }

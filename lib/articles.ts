@@ -37,11 +37,17 @@ export type ArticleUpdate = {
 
 /**
  * 記事の写真の出典（scripts/images.py）。
- * source=元記事の写真 / stock=フリー素材（CC0・PD・CC BY）/ ai=Workers AI で生成したイメージ
+ * source=元記事の写真 / stock=フリー素材（CC0・PD・CC BY）/ ai=Workers AI で生成したイメージ /
+ * figure=写真の無いデータのニュースに、サイソクニュースが作った数字の図（「6件」など）
  */
 export type ImageCredit = {
   /** official: 公式発表（自社サイト・プレスリリース配信）の写真を縮小して自前で配信。source: 元記事の写真への直リンク（旧方式） */
-  kind: "source" | "official" | "stock" | "ai";
+  kind: "source" | "official" | "stock" | "ai" | "figure";
+  /** official: 写真以外のとき video（自社の動画ファイルのコマ）/ youtube（公式 YouTube 動画の画像）/ generic（サイト共通の写真）/ kit（プレスキット）/ hero・banner（見出し画像）/ dense（図）/ logo */
+  imageKind?: string;
+  /** figure: 図に載せた数字と説明 */
+  number?: string;
+  label?: string;
   provider?: string;
   /** official: 写真を出した会社・団体の名前 */
   org?: string;
@@ -129,6 +135,8 @@ export type Article = {
   thumbnail: string;
   /** 写真の出典。stock・ai のときは記事ページに「写真はイメージです」とクレジットを出す */
   imageCredit?: ImageCredit;
+  /** 写真の主役の位置（scripts/image_focus.py。座標は 0〜1、ar は写真の幅/高さ）。SNS カードの切り抜き・見出しの位置に使う */
+  imageFocus?: { x: number; y: number; box: [number, number, number, number]; ar: number; src: string };
   model: string;
   /** 主要企業の公式発表の速報（scripts/web_articles.py が付け、デプロイ直後に SNS へ即時投稿する） */
   breaking?: boolean;

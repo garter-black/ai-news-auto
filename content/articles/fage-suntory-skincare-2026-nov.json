@@ -54,7 +54,7 @@
   "videoTitle": "エイジングスキンケアブランド「F.A.G.E.（エファージュ）」2アイテム新発売",
   "publishedAt": "2026-11-01T15:00:00+00:00",
   "generatedAt": "2026-11-02T04:31:47.232553+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/fage-suntory-skincare-2026-nov-051c9ab8.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/fage-suntory-skincare-2026-nov-14c30d6f.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -63,8 +63,20 @@
   "imageCredit": {
     "kind": "ai",
     "model": "flux-2-klein-4b",
-    "prompt": "A close‑up of a clear glass bottle of moisturizing lotion and a white pump‑type foam cleanser placed on a light‑colored bathroom countertop, illuminated by soft natural daylight.",
+    "prompt": "A close-up of a clear glass bottle of moisturizing lotion and a white pump bottle of foaming cleanser arranged on a white bathroom countertop, illuminated by soft natural light.",
     "provider": "Cloudflare Workers AI",
-    "at": "2026-11-02T04:33:07+00:00"
+    "at": "2026-11-02T11:54:31+00:00"
+  },
+  "imageFocus": {
+    "x": 0.469,
+    "y": 0.47,
+    "box": [
+      0.0,
+      0.0,
+      0.938,
+      0.94
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/fage-suntory-skincare-2026-nov-14c30d6f.jpg"
   }
 }

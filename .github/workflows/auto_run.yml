@@ -63,7 +63,7 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt imageio-ffmpeg  # imageio-ffmpeg: scripts/images.py が公式動画のコマを取る
 
       - name: Check secret
         run: |
@@ -113,6 +113,14 @@ jobs:
           FAST_LANE_GH_TOKEN: ${{ github.token }}
           # 任意: 読み取りサービス（r.jina.ai）の鍵。openai.com の記事は直接読めないため、あると取りこぼしが減る
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
+          # Claude は速報・SNS に出しそうな記事だけ（API のクレジット → CLI のサブスクリプション → 無料モデル）。
+          # API の月の予算・1日の回数上限・モデルは scripts/llm.py（GitHub の変数で上書きできる）
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
+          CLAUDE_API_MODEL: ${{ vars.CLAUDE_API_MODEL }}
+          CLAUDE_API_MODEL_SNS: ${{ vars.CLAUDE_API_MODEL_SNS }}
+          CLAUDE_API_DAILY_CALLS_BREAKING: ${{ vars.CLAUDE_API_DAILY_CALLS_BREAKING }}
+          CLAUDE_API_DAILY_CALLS_SNS: ${{ vars.CLAUDE_API_DAILY_CALLS_SNS }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           CLAUDE_DAILY_MAX: ${{ vars.CLAUDE_DAILY_MAX || '40' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -246,6 +254,9 @@ jobs:
           # 料金・プラン・リリースノートの見張りの基準（scripts/page_watch.py）。変わった回だけ残す（残さないと毎回「初回」になる）
           WATCH=0
           if [ -n "$(git status --porcelain state/page_watch.json)" ]; then WATCH=1; fi
+          # Claude API の使用量（月の予算の管理。scripts/llm.py）。記事が増えなかった回も残す（残さないと使った分を数え漏らす）
+          APIUSE=0
+          if [ -n "$(git status --porcelain state/claude_api_usage.json)" ]; then APIUSE=1; fi
           if [ -n "$(git status --porcelain content)" ]; then
             # 直近の記事の索引（見張り番のレーダーが「同じ話題の記事がもうあるか」を見る）。記事が変わった回だけ書き直す
             python scripts/radar.py coverage || echo "::warning::記事の索引（state/coverage.json）を更新できませんでした"
@@ -284,6 +295,8 @@ jobs:
             MSG="chore(fast): 速報レーンの処理結果を記録"
           elif [ "$WATCH" = "1" ]; then
             MSG="chore(watch): 料金・リリースノートの見張りの記録を更新"
+          elif [ "$APIUSE" = "1" ]; then
+            MSG="chore(llm): Claude API の使用量を記録"
           else
             echo "変更なし。コミットをスキップします。"
             exit 0
@@ -291,6 +304,7 @@ jobs:
           git add state/last_deploy state/deploy_pending
           if [ -f state/fast_lane.json ]; then git add state/fast_lane.json; fi
           if [ -f state/page_watch.json ]; then git add state/page_watch.json; fi
+          if [ -f state/claude_api_usage.json ]; then git add state/claude_api_usage.json; fi
           git commit -m "$MSG"
           # 実行中に main が進んでいても失敗しないよう rebase してから push（最大3回）
           for i in 1 2 3; do
@@ -345,6 +359,8 @@ jobs:
           BREAKING_PER_DAY: ${{ vars.BREAKING_PER_DAY }}
           # 朝のまとめ・問いかけ投稿（sns_extra.yml）の枠を空けるか。0 で止めて通常の投稿に戻す
           SNS_DIGEST: ${{ vars.SNS_DIGEST }}
+          # 以前の形の記事に、問いかけの1文だけを軽いモデルで書かせる（失敗したら記事の主役から作る問い）
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           # 投稿ごとの反応を取り込んで「勝ちパターン」を学び直してから、次の投稿を選ぶ
           # 反応の学習は1日1回（Buffer の数値も1日1回更新）

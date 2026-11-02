@@ -47,7 +47,7 @@
   "videoTitle": "生きた細胞内の成分を三次元動画で捉える顕微鏡を開発",
   "publishedAt": "2026-11-01T15:00:00+00:00",
   "generatedAt": "2026-11-02T01:41:30.760105+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/riken-utokyo-3d-live-cell-microscope-5ce189d0.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/riken-utokyo-3d-live-cell-microscope-f45f749c.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -56,8 +56,20 @@
   "imageCredit": {
     "kind": "ai",
     "model": "flux-2-klein-4b",
-    "prompt": "A modern laboratory bench with a high‑resolution infrared microscope, its objective lens facing a glass slide, while a pair of gloved hands gently adjust the focus under soft, diffused overhead lighting; shelves of scientific equipment blur in the background.",
+    "prompt": "A close-up view of a modern laboratory microscope with its objective lens illuminated, set on a clean workbench under bright lab lighting.",
     "provider": "Cloudflare Workers AI",
-    "at": "2026-11-02T01:42:18+00:00"
+    "at": "2026-11-02T11:55:14+00:00"
+  },
+  "imageFocus": {
+    "x": 0.596,
+    "y": 0.497,
+    "box": [
+      0.191,
+      0.0,
+      1.0,
+      0.994
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/riken-utokyo-3d-live-cell-microscope-f45f749c.jpg"
   }
 }
