@@ -68,6 +68,11 @@ import {
   splitBeforeHeading,
 } from "@/lib/markdown";
 import { siteConfig } from "@/site.config";
+import ArticleProse from "@/components/ArticleProse";
+import CalculatorBox from "@/components/calc/CalculatorBox";
+import { CALC_SLOT, insertFigures, markCalculatorSlot, renderChart, type ChartFigure } from "@/lib/charts";
+import { calculatorForArticle } from "@/lib/calculators";
+import { getFx, getPlanProduct, getPlanProducts } from "@/lib/plan-prices";
 import { authorJsonLd, publisherJsonLd } from "@/lib/publisher";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -192,8 +197,18 @@ export default async function ArticlePage({ params }: Props) {
     insertAfterPricingSection(article.body, pricingLink),
     affiliates.map((a) => a.url),
   );
+  // 記事の数字の図（記事 JSON の charts 欄。lib/charts.ts）を該当する章の下に差し込み、
+  // 記事に合う計算機（lib/calculators.ts）の置き場所の印を、合う章の終わりに入れる
+  const fx = getFx();
+  const figures = (article.charts ?? [])
+    .map((chart) => renderChart(chart, getPlanProduct, fx))
+    .filter((figure): figure is ChartFigure => figure !== null);
+  const calc = calculatorForArticle(article, getPlanProducts().map((p) => p.product));
+  const bodyHtml = markCalculatorSlot(insertFigures(html, figures), calc?.heading ?? null);
+  const calcInline = Boolean(calc && bodyHtml.includes(CALC_SLOT));
+  const calcBox = calc ? <CalculatorBox calc={calc} className="my-10" /> : null;
   // 第3章の前に広告、さらに後半の前に収益導線を挟む
-  const [bodyTop, afterAd] = splitBeforeHeading(html, 3);
+  const [bodyTop, afterAd] = splitBeforeHeading(bodyHtml, 3);
   const [bodyMid, bodyTail] = splitBeforeHeading(afterAd, 4);
   // 本文中の PR は1か所だけ（PC は右側の1〜3位＋本文中1つ、スマホは本文中1つ＋ページ下の1〜3位の最大2つ）。
   // 同じページに PR の囲みが3つ以上並ぶと広告だらけに見えるため（2026-11-03 監査）。優先順:
@@ -643,14 +658,14 @@ export default async function ArticlePage({ params }: Props) {
           )}
 
           {/* 本文（前半） */}
-          <article className="prose mt-10 max-w-[40em]" dangerouslySetInnerHTML={{ __html: bodyTop }} />
+          <ArticleProse className="prose mt-10 max-w-[40em]" html={bodyTop} slot={calcInline ? calcBox : undefined} />
           {bodyMid && inlineRead && <InlineRead item={{ article: inlineRead, reason: "同じ話題の記事" }} />}
 
           {/* ② 記事中盤の広告枠 */}
           {bodyMid && <AdSlot position="article-middle" className="my-10" />}
 
           {bodyMid && (
-            <article className="prose max-w-[40em]" dangerouslySetInnerHTML={{ __html: bodyMid }} />
+            <ArticleProse className="prose max-w-[40em]" html={bodyMid} slot={calcInline ? calcBox : undefined} />
           )}
 
           {/* 本文に馴染ませる収益導線。関連ツールは本文の途中（読者がまだ読んでいる位置）に置く。
@@ -670,10 +685,13 @@ export default async function ArticlePage({ params }: Props) {
           {bodyTail && inlineCta && <CtaBanner genreSlug={article.genreSlug} slot="inline" className="my-10" />}
 
           {bodyTail && (
-            <article className="prose max-w-[40em]" dangerouslySetInnerHTML={{ __html: bodyTail }} />
+            <ArticleProse className="prose max-w-[40em]" html={bodyTail} slot={calcInline ? calcBox : undefined} />
           )}
           </div>
           </div>
+
+          {/* 計算機は合う章の下に置く。合う章が無い記事は本文の終わり（かんたん版でも見える位置） */}
+          {calc && !calcInline && <CalculatorBox calc={calc} className="mt-12" />}
 
           {/* 今日やること（2〜3個）と、よくある質問（3〜5問）。合うジャンルの新しい記事だけ */}
           {todayActions.length >= 2 && <TodayActions actions={todayActions} />}

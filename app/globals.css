@@ -469,6 +469,102 @@ mark {
   font-weight: 700;
 }
 
+/* 記事の数字の図（lib/charts.ts）。棒はインライン SVG、文字は HTML（拡大・縮小で字が小さくならない） */
+.sc-chart {
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1.1rem 1.1rem 0.9rem;
+  background: var(--paper);
+}
+.sc-title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.sc-group {
+  margin-top: 0.85rem;
+  display: grid;
+  gap: 0.6rem;
+}
+.sc-group + .sc-group {
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+}
+.sc-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.sc-group-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.sc-delta {
+  flex-shrink: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.sc-row-text {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.3rem;
+}
+.sc-label {
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+.sc-value {
+  flex-shrink: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.sc-mark {
+  margin-left: 0.4em;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+.sc-hl .sc-label {
+  font-weight: 700;
+  color: var(--ink);
+}
+.sc-bar {
+  display: block;
+  overflow: visible;
+}
+.sc-track {
+  fill: var(--surface-2);
+}
+.sc-fill {
+  fill: color-mix(in srgb, var(--muted) 62%, var(--paper));
+}
+.sc-hl .sc-fill {
+  fill: var(--accent);
+}
+.sc-source {
+  margin-top: 0.9rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+.sc-source a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* 本文の太字は要点。蛍光ペンで引く */
 .prose :where(strong) {
   background-image: linear-gradient(var(--marker), var(--marker));

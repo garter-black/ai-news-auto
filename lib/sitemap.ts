@@ -106,6 +106,13 @@ export function sitemapEntries(): SitemapEntry[] {
     { url: `${base}/usable`, lastModified, changeFrequency: "daily" as const, priority: 0.9 },
     // 料金早見表・週まとめ・イベント（被リンクとブックマークを狙う定番ページ）
     { url: `${base}/ai-pricing`, lastModified: new Date(getPricing().updatedAt), changeFrequency: "weekly" as const, priority: 0.9 },
+    // 計算ツール（円換算・AIプランの費用・防衛特別所得税）
+    ...["/tools", "/tools/usd-jpy", "/tools/ai-plan-cost", "/tools/defense-tax"].map((path) => ({
+      url: `${base}${path}`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
     // 選び方ガイド（回線・転職など。公式情報で比べた常設ページ）
     ...getAllChooseGuides().map((guide) => ({
       url: `${base}/choose/${guide.slug}`,
