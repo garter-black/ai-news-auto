@@ -1,0 +1,125 @@
+{
+  "videos": {
+    "nvidia-tensorrt-edge-llm-edge-ai": {
+      "at": "2026-11-02T17:50:26+00:00",
+      "status": "dry_run",
+      "textAt": "2026-11-02T13:45:00+00:00",
+      "versions": {
+        "full": {
+          "ok": true,
+          "seconds": 60.544,
+          "reasons": [],
+          "post": {
+            "title": "NVIDIA、TensorRT Edge-LLMを公開 数コマンドでエッジAI…",
+            "url": "https://ai-tech-express.jp/articles/nvidia-tensorrt-edge-llm-edge-ai",
+            "total": 60.544,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "エッジAI開発、何コマンドで始まる？"
+              },
+              "summary": "要約すると、NVIDIAはDGX Spark 64GB向けに「TensorRT Edge-LLM」を公開しました。仮想環境を作ってpipで入れ、trtedge chatで対話できます。初回は約21GBを取得します。DSparkを有効にすると生成速度は毎秒73.4から126.9トークンに上がり、メモリ使用は27.9GBに収まります。"
+            }
+          }
+        },
+        "short": {
+          "ok": true,
+          "seconds": 35.298,
+          "reasons": [],
+          "post": {
+            "title": "NVIDIA、TensorRT Edge-LLMを公開 数コマンドでエッジAI…",
+            "url": "https://ai-tech-express.jp/articles/nvidia-tensorrt-edge-llm-edge-ai",
+            "total": 35.298,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "エッジAI開発、何コマンドで始まる？"
+              },
+              "summary": "要約すると、NVIDIAはDGX Spark 64GB向けに「TensorRT Edge-LLM」を公開しました。仮想環境を作ってpipで入れ、trtedge chatで対話できます。初回は約21GBを取得します。DSparkを有効にすると生成速度は毎秒73.4から126.9トークンに上がり、メモリ使用は27.9GBに収まります。"
+            }
+          }
+        }
+      },
+      "timings": {
+        "full": {
+          "script": 0.0,
+          "tts": 27.29,
+          "plan_audio": 3.82,
+          "render": 56.62,
+          "gate": 6.43,
+          "sheet": 2.67,
+          "total": 97.1
+        },
+        "short": {
+          "script": 0.0,
+          "tts": 15.38,
+          "plan_audio": 2.56,
+          "render": 29.73,
+          "gate": 4.16,
+          "sheet": 1.77,
+          "total": 53.7
+        }
+      }
+    },
+    "shopify-cto-codex-ai-prototyping": {
+      "at": "2026-11-02T17:50:26+00:00",
+      "status": "gate_failed",
+      "textAt": "2026-11-02T06:30:00+00:00",
+      "versions": {
+        "full": {
+          "ok": false,
+          "seconds": null,
+          "reasons": [
+            "公式ページか台本が無い"
+          ]
+        },
+        "short": {
+          "ok": false,
+          "seconds": null,
+          "reasons": [
+            "公式ページか台本が無い"
+          ]
+        }
+      },
+      "timings": {
+        "full": null,
+        "short": null
+      }
+    },
+    "chatgpt-codex-shared-usage-limits": {
+      "at": "2026-11-02T17:50:26+00:00",
+      "status": "gate_failed",
+      "textAt": "2026-11-02T09:30:00+00:00",
+      "versions": {
+        "full": {
+          "ok": false,
+          "seconds": null,
+          "reasons": [
+            "公式ページか台本が無い"
+          ]
+        },
+        "short": {
+          "ok": false,
+          "seconds": null,
+          "reasons": [
+            "公式ページか台本が無い"
+          ]
+        }
+      },
+      "timings": {
+        "full": null,
+        "short": null
+      }
+    }
+  }
+}
