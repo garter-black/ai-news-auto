@@ -24,6 +24,7 @@ import calc_facts  # noqa: E402
 import japan_availability  # noqa: E402
 import llm  # noqa: E402
 import persona  # noqa: E402
+import ui_claims  # noqa: E402
 
 TITLE_RANGE = (18, 64)
 PASS_SCORE = 70
@@ -185,6 +186,20 @@ def number_problems(record: dict, source_text: str, context: str = "") -> list[s
         if only_computed and not COMPUTED_MARK_RE.search(text):
             problems.append("計算済みの数字を使っているのに、計算した数字だと分かる書き方になっていない。「（サイソク編集部の計算）」と添える")
     return problems
+
+
+def ui_step_problems(record: dict, source_text: str, context: str = "") -> list[str]:
+    """画面の道順・メニュー名・ボタン名・操作手順が、元記事・確認済みの文脈・確かな事実の束に無いもの（API 不要）。
+    サイソクは自分で試していないので、資料に無い画面の手順は書かない（web_articles.fix_ui_steps が先に置き換える。残ったものを落とす）"""
+    groups = (record.get("_facts") or {}).get("groups") or []
+    allowed_text = "\n".join([source_text or "", context or ""] + [g.get("body") or "" for g in groups])
+    if not allowed_text.strip():
+        return []
+    bad = ui_claims.record_problems(record, ui_claims.Allowed(allowed_text))
+    if not bad:
+        return []
+    return [f"元記事・確認済みの資料に無い画面の手順・メニュー名・ボタン名がある（{'、'.join('「' + b[:24] + '」' for b in bad[:4])}）。"
+            "資料にある道順だけを書くか、「公式ヘルプの手順を確認してください」と書く"]
 
 
 # お金・税・制度の記事の章立て（web_articles.MONEY_OUTLINE）で必ず要る章。早見表は材料が無ければ省いてよい
@@ -412,6 +427,7 @@ def structural_problems(record: dict, kind: str, source_text: str = "", context:
             problems.append(f"古い立場の小見出し（「{m.group(0).lstrip('# ')}」）がある。立場は「" + "」「".join(persona.VIEWPOINTS) + "」の3つにする")
         problems += number_problems(record, source_text, context)
         problems += money_outline_problems(record)
+        problems += ui_step_problems(record, source_text, context)
     if source_text:
         copied = copied_sentences(body, source_text)
         if len(copied) >= 2:

@@ -11,6 +11,7 @@ import calc_facts as cf  # noqa: E402
 import facts_bundle as fb  # noqa: E402
 import quality  # noqa: E402
 import source_links as sl  # noqa: E402
+import ui_claims as ui  # noqa: E402
 import web_articles as w  # noqa: E402
 
 FX = {"rate": 157.9, "date": "2026-11-02", "source": "ECB参照レート"}
@@ -264,6 +265,52 @@ class ChartsTest(unittest.TestCase):
         plain = {"title": "新しい研究", "body": "## 概要\n数字なし"}
         w.attach_charts(plain)
         self.assertNotIn("charts", plain)
+
+
+CLAUDE_SRC = "Check your usage in Settings > Usage. Billing information: your billing address must match. Ultra is $200 per month."
+INVENTED = """## 日本で使える？
+使えます。日本のユーザーが試すための手順は以下の通りです。
+
+- 公式のClaudeウェブサイトにアクセスする。
+- アカウントにログインまたは新規登録を行う。
+- 設定画面の支払いページからUltraプランを選択して申し込む。
+- 本人確認が完了していることを確認し、利用を開始する。
+
+## 料金は？
+使用量は「設定」>「使用状況」で確かめられます。資料は「Add source」ボタンで足します。"""
+
+
+class UiStepsTest(unittest.TestCase):
+    def test_supported_and_invented(self):
+        allowed = ui.Allowed(CLAUDE_SRC)
+        self.assertEqual(ui.unsupported("使用量は「設定」>「使用状況」で確かめられます。", allowed), [])
+        self.assertEqual(ui.unsupported("設定 > 使用状況で確認できます。", allowed), [])
+        self.assertTrue(ui.unsupported("設定画面の支払いページから申し込む。", allowed, True))  # 道順が資料に無い
+        self.assertTrue(ui.unsupported("Settings › Billing を開く。", allowed))
+        self.assertTrue(ui.unsupported("「Add source」ボタンを押す。", allowed))
+        self.assertEqual(ui.unsupported("「作る→直す→質問する」が1か所で回せます。", allowed), [])  # 流れの説明は道順ではない
+        self.assertEqual(ui.unsupported("1,400万口座 → 1,500万口座に増えた。", allowed), [])
+        self.assertEqual(ui.unsupported("アプリごとのメニュー項目を出すかどうかも切り替えられます。", allowed), [])
+
+    def test_rewrite_invented_steps(self):
+        allowed = ui.Allowed(CLAUDE_SRC)
+        new, replaced = ui.rewrite(INVENTED, allowed, "https://support.claude.com/x", "Anthropic公式ヘルプ")
+        self.assertIn("- 公式ヘルプの手順を確認してください（[Anthropic公式ヘルプ](https://support.claude.com/x)）。", new)
+        self.assertNotIn("支払いページ", new)
+        self.assertNotIn("Add source", new)
+        self.assertIn("「設定」>「使用状況」", new)  # 元記事にある道順は残す
+        self.assertIn("- 公式のClaudeウェブサイトにアクセスする。", new)  # 場所を作っていない一般的な手順は残す
+        self.assertEqual(ui.record_problems({"body": new}, allowed), [])
+
+    def test_gate_and_build(self):
+        rec = {"sourceType": "web", "body": INVENTED, "faq": [{"q": "どう申し込む？", "a": "「Upgrade plan」ボタンを押します。"}]}
+        problems = quality.ui_step_problems(rec, CLAUDE_SRC)
+        self.assertTrue(problems and "画面の手順" in problems[0])
+        self.assertEqual(quality.ui_step_problems(rec, ""), [])
+        item = {"url": "https://support.claude.com/en/articles/1", "source_name": "Anthropic公式", "content": ""}
+        record = {"body": INVENTED, "easy": ""}
+        w.fix_ui_steps(record, item, {"text": CLAUDE_SRC}, None)
+        self.assertIn("公式ヘルプの手順を確認してください（[公式ヘルプ](https://support.claude.com/en/articles/1)）", record["body"])
 
 
 class SourcesTest(unittest.TestCase):
