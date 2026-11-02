@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "toyota-crown-estate-minor-change",
+   "at": "2026-11-02T12:31:23.304103+00:00",
+   "title": "トヨタの新型SUV『クラウン（エステート）』が一部改良、プラグインハイブリッドモデルなどを発売",
+   "head": "トヨタの新型SUV『クラウン（エステート）』が一部改良、プラグインハイブリッドモデルなどを発売 | クラウン（エステート）を一部改良",
+   "text": "トヨタの新型SUV『クラウン（エステート）』が一部改良、プラグインハイブリッドモデルなどを発売 | クラウン（エステート）を一部改良 | トヨタ / クラウン / エステート / SUV / プラグインハイブリッド / 一部改良 / 新型車 / ビジネス / 自動車 / トヨタ",
+   "urls": [
+    "https://global.toyota/jp/newsroom/toyota/44936557.html"
+   ]
+  },
+  {
    "slug": "mof-jgbsp-121st-meeting-schedule",
    "at": "2026-11-02T12:12:17.365638+00:00",
    "title": "財務省、国債市場特別参加者会合の第121回を開催へ 11月26日に最近の市場状況を議論",
@@ -1547,22 +1557,6 @@
    "title": "ChatGPTのOpenAIが紹介する法律AI『Legora』 1万件の契約書を数分で一括点検",
    "head": "ChatGPTのOpenAIが紹介する法律AI『Legora』 1万件の契約書を数分で一括点検 | Faster contract review. Broader legal analysis. | Legora’s Alex Fortescue-Webb",
    "text": "ChatGPTのOpenAIが紹介する法律AI『Legora』 1万件の契約書を数分で一括点検 | Faster contract review. Broader legal analysis. | Legora’s Alex Fortescue-Webb | Legora / OpenAI / リーガルAI / 契約書レビュー / 法律AI / デューデリジェンス / リーガルエンジニア / ChatGPT / 契約書点検 / OpenAI / ChatGPT / 生成AI / Legora / リーガルテック / 法律",
-   "urls": []
-  },
-  {
-   "slug": "chatgpt-pro-business-api-credits-benefit",
-   "at": "2026-10-29T12:25:22.684875+00:00",
-   "title": "ChatGPT Pro・BusinessのAPIクレジットとは？対象と受け取り方",
-   "head": "ChatGPT Pro・BusinessのAPIクレジットとは？対象と受け取り方 | API credits, now in ChatGPT Pro and Business plans",
-   "text": "ChatGPT Pro・BusinessのAPIクレジットとは？対象と受け取り方 | API credits, now in ChatGPT Pro and Business plans | ChatGPT / OpenAI / APIクレジット / ChatGPT Pro / ChatGPT Business / GPT-6.1 Terra / Codex / 使い方 / 料金 / 開発ツール / OpenAI / ChatGPT / API / 生成AI / 開発ツール",
-   "urls": []
-  },
-  {
-   "slug": "google-gemini-4-carbon-announcement-zhnjo7s91ls",
-   "at": "2026-10-29T12:23:45.976044+00:00",
-   "title": "Googleの生成AI『Gemini』に最新モデル『Gemini 4 Carbon』登場 総合首位で料金も手頃に",
-   "head": "Googleの生成AI『Gemini』に最新モデル『Gemini 4 Carbon』登場 総合首位で料金も手頃に | Google \"Carbon\" just won everything...",
-   "text": "Googleの生成AI『Gemini』に最新モデル『Gemini 4 Carbon』登場 総合首位で料金も手頃に | Google \"Carbon\" just won everything... | Gemini 4 Carbon / Google / Gemini / AIモデル / ベンチマーク / 料金 / 使い方 / 日本 / セキュリティ / プログラミング / AIツール / 検証 / 生成AI / LLM / Google Gemini / Gemini 4 Carbon",
    "urls": []
   }
  ]
