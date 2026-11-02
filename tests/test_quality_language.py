@@ -185,6 +185,86 @@ class FaqRequiredAndFill(unittest.TestCase):
                          ["2026年11月10日の発売日に店頭で確かめる。", "公式ページを開く", "社内で共有する"])
 
 
+# 2026-11-03 の試し書き（制度）: 東京都の支援金の第7回の受付は11月9日からなのに、記事は「受付を始めています」と書いた（事実確認は100点で通った）
+TOKYO_SOURCE = (
+    "この度、支援金の第7回について、申請受付を開始しますのでお知らせします。\n1 申請受付について\n申請受付期間\n"
+    "令和8年11月9日（月曜日）から令和9年5月31日（月曜日）まで\n申請方法\nオンライン申請（郵送による申請も可能）"
+)
+
+
+def tokyo_record(**extra) -> dict:
+    base = dict(
+        title="東京都、中小企業向けの特別高圧電力・工業用LPガス支援金の申請を受付開始　最大750万円を支給",
+        lede="東京都は、支援金の第7回申請受付を始めました。直接受電する施設には最大750万円が支給されます。",
+        body=("## 概要\n東京都は、支援金の第7回申請受付を始めています（東京都発表、11/2確認）。\n\n### 支援金の受付がスタート\n"
+              "申請の受付期間は、令和8年11月9日から令和9年5月31日までとなっています。\n\n前回（10月1日）の受付は終わっています。\n"),
+        threadsPost=POST_OK, publishedAt="2026-11-01T15:00:00+00:00", genreSlug="public",
+        verdict={"status": "available", "japan": "ok", "kind": "public", "price": "最大750万円", "free": None, "audience": "中小企業",
+                 "take": "要件を確かめる。", "when": "令和8年11月9日から令和9年5月31日まで"},
+    )
+    base.update(extra)
+    return record(**base)
+
+
+class FutureStart(unittest.TestCase):
+    def test_dates_are_normalised(self):
+        from datetime import date, datetime, timezone
+        import calc_facts
+        pub = datetime(2026, 11, 1, 15, tzinfo=timezone.utc)  # 日本時間 11月2日
+        found = [d for d, _, _ in calc_facts.dated_mentions("令和8年11月9日から。来月1日から。2月3日まで。", pub)]
+        self.assertEqual(found, [date(2026, 11, 9), date(2026, 12, 1), date(2027, 2, 3)])
+        starts = quality.future_starts(TOKYO_SOURCE, pub)
+        self.assertEqual([(r["label"], "受付" in r["kinds"]) for r in starts], [("11月9日", True)])
+        self.assertEqual(quality.future_starts("来月1日から受付を始めます。", pub)[0]["label"], "12月1日")
+        self.assertEqual(quality.future_starts("11月1日から受付を始めました。", pub), [])  # 記事の日付より前は対象外
+
+    def test_flags_already_started_claims_only(self):
+        rec = tokyo_record()
+        flagged = {x["sentence"] for x in quality.future_start_issues(rec, TOKYO_SOURCE)}
+        self.assertEqual(flagged, {
+            "東京都は、支援金の第7回申請受付を始めました。",
+            "東京都は、支援金の第7回申請受付を始めています（東京都発表、11/2確認）。",
+            "### 支援金の受付がスタート",
+        })
+        self.assertTrue(quality.future_start_problems(rec, TOKYO_SOURCE))
+        self.assertTrue(quality.structural_problems(rec, "broad", TOKYO_SOURCE))
+        # 開始日を添えた言い方・予定の言い方は問題にしない
+        ok = tokyo_record(lede="11月9日から受付が始まります。", body="## 概要\n第7回の受付は11月9日からスタートします。\n申請受付を始める予定です。\n")
+        self.assertEqual(quality.future_start_issues(ok, TOKYO_SOURCE), [])
+        # 元記事に先の開始日が無ければ何もしない
+        self.assertEqual(quality.future_start_issues(rec, "申請受付を開始しました。"), [])
+
+    def test_repair_rewrites_to_future_and_verdict_becomes_soon(self):
+        rec = tokyo_record()
+        fixes = {"fixes": [
+            {"id": 0, "text": "東京都は、11月9日から支援金の第7回申請受付が始まります（東京都発表、11/2確認）。"},
+            {"id": 1, "text": "### 11月9日から支援金の受付が始まります"},
+            {"id": 2, "text": "東京都は、支援金の第7回申請受付を11月9日から始めます。"},
+        ]}
+        def fake(system, prompt, schema, **kwargs):
+            # 直す文の順番は記事の欄の順（タイトル・リード…本文）なので、id は文の中身で合わせる
+            ids = {line.split(": ", 1)[1]: int(line.split("id ")[1].split(":")[0]) for line in prompt.splitlines() if line.startswith("- id ")}
+            by_text = {"始めています": fixes["fixes"][0]["text"], "スタート": fixes["fixes"][1]["text"], "始めました": fixes["fixes"][2]["text"]}
+            out = [{"id": i, "text": next(v for k, v in by_text.items() if k in sentence)} for sentence, i in ids.items()]
+            return {"fixes": out}, "lite"
+        with patch.object(quality.llm, "generate_json", side_effect=fake):
+            notes = quality.pre_gate_repair(rec, TOKYO_SOURCE, log=lambda *_: None)
+        self.assertEqual(quality.future_start_issues(rec, TOKYO_SOURCE), [])
+        self.assertIn("11月9日から支援金の第7回申請受付が始まります", rec["body"])
+        self.assertIn("### 11月9日から支援金の受付が始まります", rec["body"])
+        self.assertEqual(rec["verdict"]["status"], "soon")
+        self.assertTrue(any("soon" in n for n in notes))
+
+    def test_repair_rejects_fix_that_still_claims_started_or_adds_other_numbers(self):
+        rec = tokyo_record(body="## 概要\n東京都は、支援金の第7回申請受付を始めています。\n", lede="")
+        bad = {"fixes": [{"id": 0, "text": "東京都は、支援金の第7回申請受付を開始しました。"}]}
+        with patch.object(quality.llm, "generate_json", return_value=(bad, "m")):
+            self.assertEqual(quality.repair_language(rec, TOKYO_SOURCE)[1], 0)
+        bad = {"fixes": [{"id": 0, "text": "東京都は、12月20日から支援金の第7回申請受付が始まります。"}]}
+        with patch.object(quality.llm, "generate_json", return_value=(bad, "m")):
+            self.assertEqual(quality.repair_language(rec, TOKYO_SOURCE)[1], 0)
+
+
 class WriteTier(unittest.TestCase):
     def setUp(self):
         llm._tiers.clear()

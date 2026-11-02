@@ -544,6 +544,54 @@ def past(current: list[Qty], past_rows: list[dict], now: datetime | None = None)
 RELATIVE_DATE_RE = re.compile(r"(来月|今月|翌月|先月)\s?(\d{1,2})日|(来年|今年|翌年|昨年)\s?(\d{1,2})月(?:\s?(\d{1,2})日)?|(来年度|今年度)")
 
 
+ABS_DATE_RE = re.compile(r"(?:(令和|平成)\s?(\d{1,2}|元)年\s?|(20\d\d)年\s?)?(\d{1,2})月\s?(\d{1,2})日")
+
+
+def _shift_month(y: int, mo: int, shift: int) -> tuple[int, int]:
+    mo += shift
+    return y + (mo - 1) // 12, (mo - 1) % 12 + 1
+
+
+def dated_mentions(text: str, published: datetime | None) -> list[tuple["date", int, int]]:
+    """文章の中の「日付」を実際の日付にする（2026-11-03）。[(日付, 始まり, 終わり)]（位置は nfkc した文章の中）。
+    「令和8年11月9日」「2026年11月9日」「11月9日」（年が無ければ元記事の日付の年。半年以上前になるなら翌年）と、
+    「来月1日」「来年4月1日」などの言い方（relative_dates と同じ。元記事の日付から数える。今日から数えない）"""
+    from datetime import date  # noqa: PLC0415
+
+    if not isinstance(published, datetime):
+        return []
+    base = published.astimezone(JST_TZ).date()
+    t = nfkc(text)
+    out = []
+    for m in ABS_DATE_RE.finditer(t):
+        month, day = int(m.group(4)), int(m.group(5))
+        if m.group(1):
+            n = 1 if m.group(2) == "元" else int(m.group(2))
+            year = (2018 if m.group(1) == "令和" else 1988) + n
+        elif m.group(3):
+            year = int(m.group(3))
+        else:
+            year = base.year
+        try:
+            when = date(year, month, day)
+        except ValueError:
+            continue
+        if not (m.group(1) or m.group(3)) and (base - when).days > 183:
+            when = date(year + 1, month, day)
+        out.append((when, m.start(), m.end()))
+    for m in RELATIVE_DATE_RE.finditer(t):
+        try:
+            if m.group(1):
+                y, mo = _shift_month(base.year, base.month, {"来月": 1, "翌月": 1, "今月": 0, "先月": -1}[m.group(1)])
+                out.append((date(y, mo, int(m.group(2))), m.start(), m.end()))
+            elif m.group(3) and m.group(5):
+                y = base.year + {"来年": 1, "翌年": 1, "今年": 0, "昨年": -1}[m.group(3)]
+                out.append((date(y, int(m.group(4)), int(m.group(5))), m.start(), m.end()))
+        except ValueError:
+            continue
+    return sorted(out, key=lambda x: x[1])
+
+
 def relative_dates(text: str, published: datetime | None) -> list[Computed]:
     """「来月1日」「来年4月」などを、元記事の日付から実際の日付にする（LLM が今日の日付で読み違えないように）"""
     if not isinstance(published, datetime):

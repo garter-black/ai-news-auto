@@ -343,11 +343,12 @@ LANG_FIX_SCHEMA = {
 
 LANG_FIX_SYSTEM = """あなたはニュースサイトの校閲者です。指摘された文だけを、自然な日本語に直します。出力は指定の JSON だけ。"""
 
-LANG_FIX_PROMPT = """次の文には言葉の問題（中国語の混入・訳されずに残った英単語・用語の誤訳）があります。1文ずつ直してください。
+LANG_FIX_PROMPT = """次の文には問題（中国語の混入・訳されずに残った英単語・用語の誤訳・まだ始まっていないことを始まったように書いている）があります。1文ずつ直してください。
 
 # 直し方
 - 指摘された問題だけを直す。中国語の言葉・簡体字は日本語に、英単語は日本語に訳す（製品名・会社名・略語はそのまま）。
-- 事実・数字・日付・固有名詞・リンク・太字（**）は一字も変えない。文を足したり削ったりしない（1文は1文のまま）。
+- 事実・数字・日付・固有名詞・リンク・太字（**）は一字も変えない（これから始まることへの直しでは、問題に書かれた開始日だけは書き足してよい）。
+  文を足したり削ったりしない（1文は1文のまま）。
 - 用語は次の用語集どおりに訳す。
 
 {glossary}
@@ -392,6 +393,12 @@ def repair_language(record: dict, source_text: str = "") -> tuple[int, int, str]
     """言葉の問題がある文だけを、安いモデル（CHECK_TIER）で1回直す。record をその場で書き換える。
     (見つかった数, 直した数, 使ったモデル)。数字が変わった・問題が残った直しは使わない"""
     found = language_issues(record, source_text)
+    have = {(x["field"], x["sentence"]) for x in found}
+    for x in future_start_issues(record, source_text):
+        if (x["field"], x["sentence"]) in have:
+            next(y for y in found if (y["field"], y["sentence"]) == (x["field"], x["sentence"]))["issues"] += x["issues"]
+        else:
+            found.append(x)
     if not found:
         return 0, 0, ""
     found = found[:20]
@@ -405,9 +412,14 @@ def repair_language(record: dict, source_text: str = "") -> tuple[int, int, str]
         except (TypeError, ValueError, IndexError):
             continue
         new = str(row.get("text") or "").strip()
-        if not new or new == x["sentence"] or _numbers(new) != _numbers(x["sentence"]):
+        # 「これから始まる」への直しでは、元記事の開始日（11月9日）を書き足してよい
+        if not new or new == x["sentence"] or not (_numbers(x["sentence"]) <= _numbers(new) <= _numbers(x["sentence"]) | x.get("allow", set())):
             continue
         if sentence_language_issues(new, source_text):
+            continue
+        if x["sentence"].lstrip().startswith("#") and not new.startswith("#"):
+            new = re.match(r"\s*#+\s*", x["sentence"]).group(0) + new  # 見出しの印は残す
+        if x.get("check") and x["check"](new):
             continue
         if x["sentence"].count("**") != new.count("**") or x["sentence"].count("](") != new.count("]("):
             continue
@@ -591,11 +603,131 @@ def verdict_problems(record: dict) -> list[str]:
     return problems
 
 
+# --------------------------------------------------------------------------- #
+# まだ始まっていないことを「始まった」と書いていないか（2026-11-03。東京都の支援金の受付は11月9日からなのに
+# 「受付を始めています」と書いた試し書きがあり、事実確認も通った）。日付は calc_facts.dated_mentions で実際の日付にする
+# --------------------------------------------------------------------------- #
+
+# 始まる出来事の種類と、その言葉（元記事で日付の近くにあるもの）
+START_EVENTS = {
+    "受付": r"受付|受け付け|申請|募集|応募|申し込",
+    "提供": r"提供|配信|公開|利用|開始|スタート|始ま",
+    "発売": r"発売|販売|予約",
+}
+# 日付のすぐ後ろの「から」「より」「以降」「開始」（＝この日に始まる）
+START_TAIL_RE = re.compile(r"^(?:\s?[（(][^）)]{1,8}[）)])?(?:\s?(?:午前|午後)?\s?\d{1,2}(?:[:：]\d{2}|時(?:\d{1,2}分)?))?\s?(?:から|より|以降|に開始|開始|スタート)")
+# 記事の中の「もう始まった」の言い方（種類ごと）
+ALREADY_RES = {
+    "受付": re.compile(
+        r"(?:受付|申請|募集|申し込み)(?:の受付)?(?:を|が)?(?:開始しました|開始されました|開始しています|開始されています|始めました|始めています|"
+        r"始まりました|始まっています|スタートしました|スタートしています|スタート$)|受付中|受け付けています|受け付けを始め|申請できるようになりました"
+    ),
+    "提供": re.compile(
+        r"(?:提供|配信|公開)(?:を|が)?(?:開始しました|開始されました|開始しています|始めました|始めています|始まりました|始まっています|スタートしました)|"
+        r"提供されています|提供中|配信中|配信されています|利用できるようになりました|使えるようになりました"
+    ),
+    "発売": re.compile(r"発売中|販売中|発売されました|発売しました|発売されています|販売(?:を|が)?(?:開始しました|始まっています|されています)"),
+}
+# 未来・別の話だと分かる文（直さない）
+NOT_ALREADY_RE = re.compile(r"予定|始まります|開始します|開始されます|受け付けます|受付します|提供します|発売します|見込み|すでに|既に|従来|これまで|既存|前回|過去")
+
+
+def _published(record: dict):
+    from datetime import datetime  # noqa: PLC0415
+
+    for key in ("publishedAt", "sourcePublishedAt", "generatedAt"):
+        try:
+            return datetime.fromisoformat(str(record.get(key) or "").replace("Z", "+00:00"))
+        except ValueError:
+            continue
+    return None
+
+
+def future_starts(source_text: str, published) -> list[dict]:
+    """元記事で、記事の日付より後に始まる出来事（「11月9日から受付」など）。[{date, kinds, label}]"""
+    if not published:
+        return []
+    base = published.astimezone(calc_facts.JST_TZ).date()
+    text = calc_facts.nfkc(source_text or "")
+    out: dict = {}
+    for when, start, end in calc_facts.dated_mentions(text, published):
+        if when <= base or not START_TAIL_RE.match(text[end:end + 24]):
+            continue
+        window = text[max(0, start - 60):end + 40]
+        kinds = [k for k, pattern in START_EVENTS.items() if re.search(pattern, window)]
+        if not kinds:
+            continue
+        row = out.setdefault(when, {"date": when, "kinds": set(), "label": f"{when.month}月{when.day}日"})
+        row["kinds"] |= set(kinds)
+    return list(out.values())
+
+
+def _future_claim(sentence: str, starts: list[dict], published) -> tuple[dict, str] | None:
+    """1文が、まだ始まっていない出来事を「もう始まった」と書いているなら (出来事, 種類)"""
+    if not starts or NOT_ALREADY_RE.search(sentence):
+        return None
+    base = published.astimezone(calc_facts.JST_TZ).date()
+    # 記事の日付より前（または当日）の日付が書かれた文は、前の回など別の出来事の話
+    if any(d <= base for d, _, _ in calc_facts.dated_mentions(sentence, published)):
+        return None
+    plain = calc_facts.nfkc(sentence)
+    for row in starts:
+        # 「11月9日からスタート」のように開始日を添えて書いた文は、これからのことだと分かる
+        if re.search(re.escape(row["label"]) + r"(?:\s?[（(][^）)]{1,8}[）)])?\s?(?:から|より|以降)", plain):
+            continue
+        kind = next((k for k in sorted(row["kinds"]) if ALREADY_RES[k].search(sentence.strip())), None)
+        if kind:
+            return row, kind
+    return None
+
+
+def future_start_issues(record: dict, source_text: str = "") -> list[dict]:
+    """まだ始まっていない出来事を「始めています」「受付中」と書いた文。[{field, index, sentence, issues, allow, check}]"""
+    published = _published(record)
+    starts = future_starts(source_text, published)
+    out, seen = [], set()
+    for field, index, sentence in _language_units(record) if starts else []:
+        hit = _future_claim(sentence, starts, published)
+        if (field, sentence) in seen or not hit:
+            continue
+        row, kind = hit
+        seen.add((field, sentence))
+        out.append({
+            "field": field, "index": index, "sentence": sentence,
+            "issues": [f"{row['label']}から始まる{kind}を、もう始まったように書いている。"
+                       f"「{row['label']}から{kind}が始まります」のように、これからのことだと分かる言い方に直す"],
+            # 直した文に書き足してよい数字（開始日の年・月・日。令和の年も）と、直した文の確かめ方
+            "allow": set(re.findall(r"\d+", f"{row['date'].year} {row['label']} {row['date'].year - 2018}")),
+            "check": lambda text, starts=starts, published=published: _future_claim(text, starts, published) is not None,
+        })
+    return out
+
+
+def future_start_problems(record: dict, source_text: str = "") -> list[str]:
+    found = future_start_issues(record, source_text)
+    if not found:
+        return []
+    return [f"まだ始まっていないことを、もう始まったように書いている文が{len(found)}か所（「{found[0]['sentence'][:30]}」→{found[0]['issues'][0]}）"]
+
+
+def align_future_verdict(record: dict, source_text: str = "") -> list[str]:
+    """制度の判定カード: 受付が記事の日付より後に始まり、カードの「いつ」もその日付なら、「受付中」（available）を「これから始まる」（soon）に"""
+    verdict = record.get("verdict")
+    if not isinstance(verdict, dict) or verdict.get("kind") != "public" or verdict.get("status") != "available":
+        return []
+    when = calc_facts.nfkc(str(verdict.get("when") or ""))
+    for row in future_starts(source_text, _published(record)):
+        if "受付" in row["kinds"] and row["label"] in when:
+            verdict["status"] = "soon"
+            return [f"判定の提供状況 available → soon（受付は{row['label']}から）"]
+    return []
+
+
 def pre_gate_repair(record: dict, source_text: str = "", log=print) -> list[str]:
     """品質ゲートの前の安い手直し（record をその場で書き換える）。行ったことの説明を返す。
-    1. 判定カードを本文にそろえる  2. 紹介文の「要約すると、」（機械 → だめなら紹介文だけ書き直し）
-    3. 中国語・訳し残しの英単語・誤訳の文だけ直す。ここで直らなかったものは evaluate の形のチェックで不合格になる"""
-    notes = align_verdict(record)
+    1. 判定カードを本文にそろえる（制度の受付がまだ先なら「これから始まる」）  2. 紹介文の「要約すると、」（機械 → だめなら紹介文だけ書き直し）
+    3. 中国語・訳し残しの英単語・誤訳・まだ始まっていないことを始まったと書いた文だけ直す。ここで直らなかったものは evaluate の形のチェックで不合格になる"""
+    notes = align_verdict(record) + align_future_verdict(record, source_text)
     if summary_opener_problems(record):
         if fix_summary_opener(record):
             notes.append("紹介文の2つ目のかたまりに「要約すると、」を付けた")
@@ -836,6 +968,7 @@ def structural_problems(record: dict, kind: str, source_text: str = "", context:
         problems.append(f"work_money（「{persona.WORK_MONEY_HEADING}」欄）がありません")
     problems += persona.work_money_problems(record.get("workMoney"))
     problems += language_problems(record, source_text)
+    problems += future_start_problems(record, source_text)
     problems += raw_diff_problems(record)
     if kind != "update":
         problems += summary_opener_problems(record)
