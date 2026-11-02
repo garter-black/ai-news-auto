@@ -3195,6 +3195,28 @@
       },
       "id": "6ae901b13b6f22c15ecfd7db",
       "blueskyAt": "2026-11-02T22:41:13+00:00"
+    },
+    "affinity-for-ipad-canva-release": {
+      "id": "6ae912dc468bc367327d66ce",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae912e7c0a8cf2c65b7b49e",
+        "facebook": "6ae912eafced03f719fee34c",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzefqpu4hk2w"
+      },
+      "dueAt": "2026-11-02T22:46:51+00:00",
+      "hook": "breaking",
+      "breaking": true,
+      "score": 1,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "Apple",
+      "question": true,
+      "questionText": "iPadで、デザインや写真編集はしていますか？",
+      "postedAt": "2026-11-02T22:47:12+00:00",
+      "blueskyAt": "2026-11-02T22:47:15+00:00"
     }
   },
   "extraPending": {}
