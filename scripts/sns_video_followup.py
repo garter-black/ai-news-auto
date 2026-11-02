@@ -44,6 +44,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 from datetime import date, datetime, timedelta, timezone
@@ -163,7 +164,14 @@ def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_a
 
         score = threads_post.score
     # 作ったが置かなかった（dry_run）記事は、置くのを有効にしたあとはもう一度作る（窓の中なら）
-    done = {k for k, r in (state.get("videos") or {}).items() if not (retry_dry and r.get("status") == "dry_run")}
+    # 撮れない・台本が作れないで落ちた記事は、仕組みを直したあと1回だけやり直す（tries < 2）
+    def retry(r: dict) -> bool:
+        if retry_dry and r.get("status") == "dry_run":
+            return True
+        why = f"{r.get('reason', '')} {' '.join(v.get('reasons', [''])[0] for v in (r.get('versions') or {}).values() if v.get('reasons'))}"
+        return r.get("status") == "gate_failed" and int(r.get("tries", 1)) < 2 and bool(re.search(r"撮れる|台本|公式ページか台本が無い", why))
+
+    done = {k for k, r in (state.get("videos") or {}).items() if not retry(r)}
     rows = []
     for slug, rec in (posted.get("posted") or {}).items():
         at = published_at(rec)
@@ -290,7 +298,8 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
         make_versions = v3.make_versions
     results = []
     for slug in picks:
-        rec = {"at": now.isoformat(timespec="seconds"), "status": "started", "textAt": (published_at((posted.get("posted") or {}).get(slug) or {}) or now).isoformat(timespec="seconds")}
+        prev_tries = int((state["videos"].get(slug) or {}).get("tries", 0) or 0)
+        rec = {"at": now.isoformat(timespec="seconds"), "status": "started", "tries": prev_tries + 1, "textAt": (published_at((posted.get("posted") or {}).get(slug) or {}) or now).isoformat(timespec="seconds")}
         state["videos"][slug] = rec
         save_state(state)  # 途中で落ちても同じ記事を二度作らない
         reports = make_versions(slug, OUT)
