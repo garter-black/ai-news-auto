@@ -5143,6 +5143,12 @@
       "skipped": true,
       "url": "https://www.soumu.go.jp/menu_news/s-news/01gyosei01_02000379.html"
     },
+    "3c1945dc02193cc9": {
+      "at": "2026-11-02T04:31:23.929763+00:00",
+      "reason": "prefilter: タイトルが短すぎる（一覧リンク等）",
+      "skipped": true,
+      "url": "https://www.nli-research.co.jp/topics_detail1/id=87235?site=nli"
+    },
     "3c23d4960b1f8efe": {
       "at": "2026-10-28T16:04:52.004138+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -6004,6 +6010,12 @@
       "skipped": true,
       "url": "https://newsroom.kddi.com/news/detail/kddi_nr-1215_4788.html"
     },
+    "572edca20982cec1": {
+      "at": "2026-11-02T04:31:23.929798+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（を開催）",
+      "skipped": true,
+      "url": "https://group.ntt/jp/newsrelease/2026/11/02/261102a.html"
+    },
     "57626b3cad5444ca": {
       "at": "2026-10-26T23:21:40.235044+00:00",
       "reason": "dedupe: 固有名詞が一致（ai-bpo・ゴムマリ）: ゴムマリの専門業務AI-BPO、『苦情・VoC・クレームのデータベース化』を提供",
@@ -6422,6 +6434,13 @@
       "reason": "prefilter: 価値の薄いお知らせ（審議会）",
       "skipped": true,
       "url": "https://www.soumu.go.jp/main_sosiki/joho_tsusin/policyreports/joho_tsusin/kaisai/02ryutsu07_04000600.html"
+    },
+    "641f763280ab5ea8": {
+      "at": "2026-11-02T04:31:23.929715+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "quality: 訳されていない英文が残っている（「Deliberate Decisions: How Grounded Leade…」）",
+      "skipped": true,
+      "url": "https://www.databricks.com/blog/deliberate-decisions-and-enterprise-ai-value"
     },
     "64b723bef18a4cfc": {
       "at": "2026-10-27T02:41:12.429501+00:00",
@@ -9071,6 +9090,14 @@
       "slug": "nvidia-local-ai-gtc-berlin-spark-station",
       "url": "https://blogs.nvidia.co.jp/blog/local-ai-gtc-rtx-dgx-spark-station-sync/"
     },
+    "b5bd2734bcbd8d3c": {
+      "at": "2026-11-02T04:32:09.569410+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "nvidia-nemoclaw-agent-platform",
+      "url": "https://developer.nvidia.com/blog/build-specialized-agents-on-a-stack-you-control-with-nvidia-nemoclaw/"
+    },
     "b5f9ab760f168a02": {
       "at": "2026-10-29T00:02:16.684845+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9996,6 +10023,12 @@
       "reason": "quality: 本文が短い（1172字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://news.yahoo.co.jp/articles/96e3c45f22506b331d9bb22e054c25150ba49841"
+    },
+    "d312d7ed2455a4f9": {
+      "at": "2026-11-02T04:31:23.929817+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（寄贈）",
+      "skipped": true,
+      "url": "https://www.uniqlo.com/jp/ja/contents/corp/press-release/2026/11/26110213_hlw.html"
     },
     "d33ed333d0ff410b": {
       "at": "2026-10-28T22:13:18.674966+00:00",
@@ -11292,6 +11325,14 @@
       "skipped": true,
       "url": "https://www.ipa.go.jp/digital/dx-nintei/hojyo.html"
     },
+    "f84d356daf49fd2f": {
+      "at": "2026-11-02T04:31:52.304472+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "lifestyle",
+      "slug": "fage-suntory-skincare-2026-nov",
+      "url": "https://www.suntory.co.jp/news/article/2026/15164.html?rss=0000000029"
+    },
     "f872fdc76a2a6c67": {
       "at": "2026-10-28T20:51:43.132455+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11568,165 +11609,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:22:06.150562+00:00",
-      "attempt": 1,
-      "id": "cf750d0c8feca53f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 61.5字・60字超の文が 52% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 212.0字・最長 588字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 212.0,
-        "avg_sentence": 61.5,
-        "long_share": 0.516,
-        "max_paragraph": 588,
-        "paragraphs": 9,
-        "sentences": 31
-      },
-      "score": 100,
-      "source": "maff",
-      "title": "食文化の海外展開・インバウンド拡大に取り組む外食事業者及び地方公共団体の支援対象を決定しました"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T04:22:10.695663+00:00",
-      "attempt": 0,
-      "id": "cf750d0c8feca53f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 65.2,
-        "avg_sentence": 21.4,
-        "long_share": 0.0,
-        "max_paragraph": 97,
-        "paragraphs": 24,
-        "sentences": 73
-      },
-      "score": 100,
-      "source": "maff",
-      "title": "食文化の海外展開・インバウンド拡大に取り組む外食事業者及び地方公共団体の支援対象を決定しました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:41:37.472496+00:00",
-      "attempt": 1,
-      "id": "8380e89917a98439",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1415字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（303字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 131.6,
-        "avg_sentence": 53.8,
-        "long_share": 0.227,
-        "max_paragraph": 188,
-        "paragraphs": 9,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "boj",
-      "title": "（参考）経済・物価情勢の展望と基調的な物価上昇率に関連する各種指標"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:41:51.275238+00:00",
-      "attempt": 1,
-      "id": "0f79dbb44fd6885f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1563字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 137.8,
-        "avg_sentence": 56.4,
-        "long_share": 0.364,
-        "max_paragraph": 230,
-        "paragraphs": 9,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "softbank-news",
-      "title": "災害時に海上から通信を。通信事業者4社が共同で船上基地局の設置訓練 ー「つなぐ×かえる」プロジェクト"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:41:59.718537+00:00",
-      "attempt": 2,
-      "id": "0f79dbb44fd6885f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1600字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 132.4,
-        "avg_sentence": 52.0,
-        "long_share": 0.214,
-        "max_paragraph": 177,
-        "paragraphs": 11,
-        "sentences": 28
-      },
-      "score": null,
-      "source": "softbank-news",
-      "title": "災害時に海上から通信を。通信事業者4社が共同で船上基地局の設置訓練 ー「つなぐ×かえる」プロジェクト"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:42:05.390416+00:00",
-      "attempt": 1,
-      "id": "4fe412fe9cefe9d7",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1352字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 120.1,
-        "avg_sentence": 54.6,
-        "long_share": 0.318,
-        "max_paragraph": 200,
-        "paragraphs": 10,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "maff",
-      "title": "地域生物多様性増進法に基づく「自然共生サイト」の認定（令和8年度第2回）について"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T04:42:11.048811+00:00",
-      "attempt": 2,
-      "id": "4fe412fe9cefe9d7",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1486字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（358字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 133.0,
-        "avg_sentence": 57.8,
-        "long_share": 0.478,
-        "max_paragraph": 190,
-        "paragraphs": 10,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "maff",
-      "title": "地域生物多様性増進法に基づく「自然共生サイト」の認定（令和8年度第2回）について"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T04:42:19.057535+00:00",
@@ -18265,6 +18147,156 @@
       "score": 100,
       "source": "boj",
       "title": "日銀当座預金増減要因と金融調節（10月実績）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T04:31:19.106706+00:00",
+      "attempt": 1,
+      "id": "641f763280ab5ea8",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "訳されていない英文が残っている（「Deliberate Decisions: How Grounded Leade…」）"
+      ],
+      "readability": {
+        "avg_paragraph": 94.2,
+        "avg_sentence": 52.3,
+        "long_share": 0.259,
+        "max_paragraph": 155,
+        "paragraphs": 15,
+        "sentences": 27
+      },
+      "score": null,
+      "source": "databricks-blog",
+      "title": "Deliberate decisions and enterprise AI value"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T04:31:23.929690+00:00",
+      "attempt": 2,
+      "id": "641f763280ab5ea8",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "訳されていない英文が残っている（「Deliberate Decisions: How Grounded Leade…」）"
+      ],
+      "readability": {
+        "avg_paragraph": 136.2,
+        "avg_sentence": 45.4,
+        "long_share": 0.133,
+        "max_paragraph": 191,
+        "paragraphs": 5,
+        "sentences": 15
+      },
+      "score": null,
+      "source": "databricks-blog",
+      "title": "Deliberate decisions and enterprise AI value"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T04:31:40.935490+00:00",
+      "attempt": 1,
+      "id": "f84d356daf49fd2f",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "easy_markdown が「## ひとことで言うと」から始まっていない"
+      ],
+      "readability": {
+        "avg_paragraph": 146.6,
+        "avg_sentence": 51.3,
+        "long_share": 0.25,
+        "max_paragraph": 244,
+        "paragraphs": 7,
+        "sentences": 20
+      },
+      "score": null,
+      "source": "suntory",
+      "title": "エイジングスキンケアブランド「F.A.G.E.（エファージュ）」2アイテム新発売"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T04:31:48.013449+00:00",
+      "attempt": 2,
+      "id": "f84d356daf49fd2f",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 54.8字・60字超の文が 29% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 116.5,
+        "avg_sentence": 54.8,
+        "long_share": 0.294,
+        "max_paragraph": 194,
+        "paragraphs": 8,
+        "sentences": 17
+      },
+      "score": 100,
+      "source": "suntory",
+      "title": "エイジングスキンケアブランド「F.A.G.E.（エファージュ）」2アイテム新発売"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T04:31:52.304135+00:00",
+      "attempt": 0,
+      "id": "f84d356daf49fd2f",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 73.8,
+        "avg_sentence": 27.2,
+        "long_share": 0.0,
+        "max_paragraph": 130,
+        "paragraphs": 14,
+        "sentences": 38
+      },
+      "score": 100,
+      "source": "suntory",
+      "title": "エイジングスキンケアブランド「F.A.G.E.（エファージュ）」2アイテム新発売"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T04:32:05.142244+00:00",
+      "attempt": 1,
+      "id": "b5bd2734bcbd8d3c",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 61.8字・60字超の文が 44% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 81.4,
+        "avg_sentence": 61.8,
+        "long_share": 0.44,
+        "max_paragraph": 165,
+        "paragraphs": 19,
+        "sentences": 25
+      },
+      "score": 100,
+      "source": "nvidia-developer-blog",
+      "title": "Build Specialized Agents on a Stack You Control with NVIDIA NemoClaw"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T04:32:09.569038+00:00",
+      "attempt": 0,
+      "id": "b5bd2734bcbd8d3c",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 94.7,
+        "avg_sentence": 30.5,
+        "long_share": 0.017,
+        "max_paragraph": 176,
+        "paragraphs": 19,
+        "sentences": 59
+      },
+      "score": 100,
+      "source": "nvidia-developer-blog",
+      "title": "Build Specialized Agents on a Stack You Control with NVIDIA NemoClaw"
     }
   ],
   "short_text_retry": {},

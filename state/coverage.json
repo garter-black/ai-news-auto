@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "nvidia-nemoclaw-agent-platform",
+   "at": "2026-11-02T04:32:04.169933+00:00",
+   "title": "AI半導体のNVIDIAがオープンなAIエージェント構築基盤「NemoClaw」を発表",
+   "head": "AI半導体のNVIDIAがオープンなAIエージェント構築基盤「NemoClaw」を発表 | Build Specialized Agents on a Stack You Control with NVIDIA NemoClaw",
+   "text": "AI半導体のNVIDIAがオープンなAIエージェント構築基盤「NemoClaw」を発表 | Build Specialized Agents on a Stack You Control with NVIDIA NemoClaw | NVIDIA / NemoClaw / AIエージェント / Nemotron / OpenShell / LangChain / Hermes Agent / 生成AI / AI / 生成AI / 開発ツール / LLM",
+   "urls": [
+    "https://developer.nvidia.com/blog/build-specialized-agents-on-a-stack-you-control-with-nvidia-nemoclaw/"
+   ]
+  },
+  {
+   "slug": "fage-suntory-skincare-2026-nov",
+   "at": "2026-11-02T04:31:47.232553+00:00",
+   "title": "サントリーの60代向けスキンケア『F.A.G.E.』、さらりとした化粧水と泡洗顔料が11月2日新発売",
+   "head": "サントリーの60代向けスキンケア『F.A.G.E.』、さらりとした化粧水と泡洗顔料が11月2日新発売 | エイジングスキンケアブランド「F.A.G.E.（エファージュ）」2アイテム新発売",
+   "text": "サントリーの60代向けスキンケア『F.A.G.E.』、さらりとした化粧水と泡洗顔料が11月2日新発売 | エイジングスキンケアブランド「F.A.G.E.（エファージュ）」2アイテム新発売 | サントリーウエルネス / エファージュ / F.A.G.E. / エイジングケア / 化粧水 / 泡洗顔料 / 新作コスメ / 60代スキンケア / 日用品 / 消費 / ビューティー",
+   "urls": [
+    "https://www.suntory.co.jp/news/article/2026/15164.html?rss=0000000029"
+   ]
+  },
+  {
    "slug": "boj-current-account-october",
    "at": "2026-11-02T04:11:29.258565+00:00",
    "title": "日本銀行が10月の日銀当座預金増減要因を発表、金融調節の動向を示す",
@@ -1279,16 +1299,6 @@
    "text": "東京都の消費者モニター調査でメール誤送信　個人情報漏えいの経緯と再発防止策 | メールアドレスの漏えい事故について | 東京都 / 個人情報漏えい / メール誤送信 / 消費者モニター / デロイトトーマツ / 情報漏えい / 行政 / 再発防止 / 社会 / 行政 / 個人情報 / 消費者保護",
    "urls": [
     "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102713"
-   ]
-  },
-  {
-   "slug": "tokyo-waste-management-dx-tool",
-   "at": "2026-10-29T04:31:47.504875+00:00",
-   "title": "東京都、廃棄物データ管理のDXツールを導入　プラスチックリサイクル高度化へ11月から実験",
-   "head": "東京都、廃棄物データ管理のDXツールを導入　プラスチックリサイクル高度化へ11月から実験 | 都事業所のプラスチックリサイクル高度化に向けて廃棄物データ管理DXツールを導入します",
-   "text": "東京都、廃棄物データ管理のDXツールを導入　プラスチックリサイクル高度化へ11月から実験 | 都事業所のプラスチックリサイクル高度化に向けて廃棄物データ管理DXツールを導入します | 東京都 / プラスチックリサイクル / DX / 廃棄物管理 / ゼロエミッション / サーキュラーエコノミー / pool / 環境対策 / 社会 / 行政 / 環境",
-   "urls": [
-    "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102711"
    ]
   }
  ]
