@@ -640,8 +640,9 @@ def review_system() -> str:
 3. 料金のニュースなら料金の段階、製品のニュースなら使い方と比較があるか。並べて初めて分かる違い（例: 1ドルあたりの量が同じ・選ぶ理由は量ではなく制限の有無）を1つ言っているか。
 4. 必要な人・要らない人の目安が具体的か。最後に、どこで確かめられるかが分かるか。
 5. 資料（記事と公式ページの文字）に無い数字や事実を足していないか。
-すべて満たすときだけ ok=true。足りないときは ok=false にし、issues に直し方を具体的に書く（例:「beat3 は倍率をProの1週間分=1杯のように身近に言い換える」）。
-資料に無い数字を足すような直し方は書かない。"""
+すべて満たすときだけ ok=true。足りないときは ok=false にし、issues に直し方を具体的に4つまで書く（例:「beat3 は倍率をProの1週間分=1杯のように身近に言い換える」）。
+資料に無い数字を足すような直し方は書かない。target（証拠）は画面の文字をそのまま、英語は文の頭から文末かカンマまでの範囲なので、文の途中で切る直し方は書かない。
+細かい言い回しより、中身（問いへの答え・比較・目安）を優先する。"""
 
 
 def official_text(pages: list[Page], limit: int = 7000) -> str:
@@ -800,8 +801,8 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
             out.append(f"{name}.target「{item.get('target', '')}」が画面の文字にありません。一覧の文字をそのまま抜き出してください。")
             continue
         if tgt:
-            have = set(_digits(tgt.block.text))
-            miss = [d for d in _digits(kw) if d not in have]
+            have = {float(x) for x in _digits(tgt.block.text)}
+            miss = [d for d in _digits(kw) if float(d) not in have]
             if miss:
                 out.append(f"{name} の数字 {', '.join(miss)} が証拠の行 [{tgt.block.id}] にありません。数字が書かれた行を選んでください。")
     # 英語の証拠には日本語の字幕（target の訳）。訳に無い数字・記事に無い語を入れない
@@ -840,7 +841,7 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
             out.append("ladder は beat（beat の番号）と rows（2〜5行）をそろえるか、beat=0 に。")
         lines_off = [ln for ln in official_text(pages).split("\n")]
         for k, row in enumerate(rows, 1):
-            for field_name, lim in (("name", 10), ("price", 9), ("usage", 9)):
+            for field_name, lim in (("name", 17), ("price", 12), ("usage", 10)):
                 if len(row.get(field_name, "")) > lim:
                     out.append(f"ladder.rows[{k}].{field_name} が長すぎます（{lim - 1}字以内）。")
             tgt = find_target(pages, row.get("target", ""), row.get("block", ""), keyword=row.get("price", "")) if pages else None
@@ -904,6 +905,7 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
     feedback, last = "", ""
     tier = os.environ.get("V3_LLM_TIER", "quality")
     reviews = 0
+    best = None  # 事実の検査に通った最後の台本（レビューの書き直しが通らなかったときに使う）
     for attempt in range(1, 9):
         try:
             data, model = llm.generate_json(script_system(), prompt + feedback, SCRIPT_SCHEMA, temperature=0.5, max_output_tokens=8192, tier=tier)
@@ -924,6 +926,7 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
                     item = data["hook"] if m.group(1) == "hook" else data["beats"][int(m.group(2)) - 1]
                     item["ja"] = ""
         if not problems or (attempt >= 4 and len(style) == len(problems)):
+            best = (json.loads(json.dumps(data, ensure_ascii=False)), model, list(problems))
             # 自己レビュー: 問いに具体的な数字・比較で答えているか、当たり前・空の文が無いか（2回まで書き直す）
             if reviews < 2 and attempt < 8:
                 reviews += 1
@@ -942,6 +945,13 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
         last = "; ".join(problems)
         log(f"   [v3] 台本の書き直し（{attempt}）: {last[:300]}")
         feedback = "\n\n# 前回の台本の問題（すべて直す）\n" + "\n".join(f"- {p}" for p in problems) + "\n\n# 前回の台本\n" + json.dumps(data, ensure_ascii=False)
+    if best:  # レビューのあとの書き直しが検査に通らなかった → 検査に通った前の台本を使う
+        data, model, problems = best
+        log(f"   [v3] レビュー後の書き直しが通らないので、検査に通った前の台本を使う（{last[:200]}）")
+        if problems:
+            data["_notes"] = problems
+        data["_reviews"] = reviews
+        return data, model
     raise RuntimeError(f"台本を作れませんでした: {last[:400]}")
 
 
@@ -2137,10 +2147,12 @@ class Renderer:
         mults = [float(r["mult"]) for r in L.rows if re.fullmatch(r"\d+(?:\.\d+)?", str(r.get("mult", "")).strip())]
         max_mult = max(mults) if mults else 1.0
         rows = []
+        long = max(len(r.get("name", "")) for r in L.rows) > 8 or max(len(r.get("price", "")) for r in L.rows) > 8
+        fs = 34 if long else 46  # 長い名前・価格は小さめに（棒の場所を残す）
         for k, r in enumerate(L.rows):
             subj = r.get("name", "").lower() == (L.subject or "").lower()
-            name = render_text([(r["name"], "black", INK)], 46)
-            price = render_text(accent_segments(r["price"], "black", INK) if subj else [(r["price"], "black", INK)], 46)
+            name = render_text([(r["name"], "black", INK)], fs)
+            price = render_text(accent_segments(r["price"], "black", INK) if subj else [(r["price"], "black", INK)], fs)
             usage = render_text([(r.get("usage", ""), "bold", BLUE if subj else MUTED)], 30) if r.get("usage") else None
             m = str(r.get("mult", "")).strip()
             frac = float(m) / max_mult if re.fullmatch(r"\d+(?:\.\d+)?", m) else 0.0
@@ -2186,8 +2198,11 @@ class Renderer:
             return self.units_frame(info, L, t)
         card = Image.new("RGB", (PW, PH), (255, 255, 255))
         x0 = self.LAD_X
-        bar_x = x0 + 400
-        bar_max = PW - bar_x - 230
+        name_w = max(r["name"].shape[1] for r in info["rows"])
+        price_w = max(r["price"].shape[1] for r in info["rows"])
+        price_x = x0 + max(150, name_w + 36)
+        bar_x = price_x + price_w + 40
+        bar_max = max(160, PW - bar_x - 230)
         n = len(info["rows"])
         t_hi = L.t0 + 0.3 + L.reveal * n + 0.3
         hi = ease_out((t - t_hi) / 0.4)
@@ -2220,7 +2235,7 @@ class Renderer:
             length = row.pop("_len")
             dx = int((1 - a) * 90)  # 右から滑り込む
             blend(arr, row["name"], x0 + dx, mid - row["name"].shape[0] // 2 + 26, a)
-            blend(arr, row["price"], x0 + 150 + dx, mid - row["price"].shape[0] // 2 + 26, a)
+            blend(arr, row["price"], price_x + dx, mid - row["price"].shape[0] // 2 + 26, a)
             if row["usage"] is not None:
                 blend(arr, row["usage"], bar_x + max(length, 56) + 20, mid + 26 - row["usage"].shape[0] // 2, a)
         return push_in(arr, info, L, t, t_hi)
