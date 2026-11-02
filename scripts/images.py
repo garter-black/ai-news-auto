@@ -7,13 +7,10 @@
      ダウンロードして幅 1200px まで縮小（切り抜かない）し、自前の KV から配信する。記事には「画像：◯◯（公式発表より）」と出す。
      ほかの報道機関・通信社（ロイター・AP・Getty・日経・ITmedia など）の写真、他人の SNS の画像、関連記事のカード・メニュー・
      古い宣伝画像は使わない。ほかのニュースサイト・ブログ・不明な発信元の記事では元記事の画像を使わない
-  2. 数字の図: 大事な数字が1つ記事の芯になっている統計・調査・件数のニュースは、その数字（「6件」「2.817%」）と発表した団体の名前を
-     白地・ネイビー・赤1か所・Noto Sans JP Black で描いた図（render_figure）。数字は記事の文にあるものだけ
-  3. AI 生成: Cloudflare Workers AI（flux-2-klein-4b → flux-1-schnell）。前からの写真風のプロンプト。話題を問わない。
+  2. AI 生成: Cloudflare Workers AI（flux-2-klein-4b → flux-1-schnell）。前からの写真風のプロンプト。話題を問わない。
      文字・ロゴ・実在の人物なし。1日 IMAGE_AI_DAILY_MAX 枚まで
-  4. フリー素材: Wikimedia Commons と Openverse（CC0・パブリックドメイン・CC BY だけ）。AI が使えないとき。関係の確認は厳しめ
-  5. 公式のロゴ・文字の多い図・バナー
-  6. どれも無ければ（最後の手段）、話題の短い言葉を大きく描いた文字の図
+  3. フリー素材: Wikimedia Commons と Openverse（CC0・パブリックドメイン・CC BY だけ）。AI が使えないとき。関係の確認は厳しめ
+  4. 公式のロゴ・文字の多い図・バナー（どれも無ければ今までどおり写真なしのカバー）
 
 2・3 の画像は 1200×630 の JPEG（約100KB）、1 は縦横比そのままの幅 1200px までの JPEG にし、どれも幅 400 / 640（.sm）/ 800 / 1200 の
 WebP を添えて Workers KV（saisoku-images）へ置き、サイトの /img/<名前> で配信する（cloudflare/worker.ts。srcset は lib/thumb-url.ts）。
@@ -1114,125 +1111,6 @@ def logo_canvas(image):
 
 
 # --------------------------------------------------------------------------- #
-# 数字の図（統計・調査・件数・ランキング・決算の数字のニュース）
-# --------------------------------------------------------------------------- #
-# 写真の無いデータのニュースに、関係の無い素材写真や AI のイメージを付けない。白地・ネイビー・赤は数字の1か所だけ・
-# Noto Sans JP Black で「6件」「52カ月連続」のような大事な数字と、発表した団体の名前を大きく置いた図を作る。
-# SNS カード（1200×400 に切り抜く）でも欠けないよう、文字は真ん中の高さ 400px の帯に収める。
-
-FONT_DIR = ROOT / "assets" / "fonts"
-FIG_INK = (11, 26, 51)
-FIG_NAVY = (29, 74, 143)
-FIG_RED = (200, 34, 26)
-FIG_GRAY = (91, 100, 117)
-FIG_PAPER = (255, 255, 255)
-FIG_TINT = (243, 246, 251)
-
-
-def _font(weight: str, size: int):
-    from PIL import ImageFont  # noqa: PLC0415
-
-    name = "NotoSansJP-Black.otf" if weight == "black" else "NotoSansJP-Bold.otf"
-    return ImageFont.truetype(str(FONT_DIR / name), size)
-
-
-def _text_w(draw, text: str, font) -> int:
-    box = draw.textbbox((0, 0), text, font=font)
-    return box[2] - box[0]
-
-
-def render_figure(number: str, unit: str, label: str, org: str):
-    """数字の図（1200×630）。number が空なら label を主役にする（数字の無いニュースの、文字だけの図）"""
-    from PIL import ImageDraw  # noqa: PLC0415
-
-    image = Image.new("RGB", (OUT_W, OUT_H), FIG_PAPER)
-    draw = ImageDraw.Draw(image)
-    # 上下に薄い地と、ネイビーの細い線（カードでは切り落とされる位置）
-    draw.rectangle((0, 0, OUT_W, 90), fill=FIG_TINT)
-    draw.rectangle((0, OUT_H - 90, OUT_W, OUT_H), fill=FIG_TINT)
-    draw.rectangle((0, 0, OUT_W, 10), fill=FIG_NAVY)
-    band_top, band_h = (OUT_H - 400) // 2, 400
-    max_w = OUT_W - 160
-    top_text = f"{org}の発表" if org else ""
-    if number:
-        # 縦の配置: 数字 → 説明 → 発表元（SNS カードの左上の題字と重ならないよう、発表元は下に置く）
-        size = 150
-        while size > 80:
-            nf, uf = _font("black", size), _font("black", max(40, int(size * 0.46)))
-            width = _text_w(draw, number, nf) + 14 + _text_w(draw, unit, uf)
-            if width <= max_w:
-                break
-            size -= 10
-        lf_size = 46
-        while lf_size > 30 and label and _text_w(draw, label, _font("bold", lf_size)) > max_w:
-            lf_size -= 2
-        lf = _font("bold", lf_size)
-        of = _font("bold", 30)
-        n_box = draw.textbbox((0, 0), number, font=nf)
-        n_h = n_box[3] - n_box[1]
-        gap1, gap2 = 28, 18
-        total = n_h + (gap1 + lf_size + 6 if label else 0) + (gap2 + 38 if top_text else 0)
-        # SNS カードでは左上に題字が載るので、真ん中より少し下に置く
-        y = band_top + (band_h - total) // 2 + 16
-        nw, uw = _text_w(draw, number, nf), _text_w(draw, unit, uf)
-        x = (OUT_W - (nw + 14 + uw)) // 2
-        draw.text((x - n_box[0], y - n_box[1]), number, font=nf, fill=FIG_RED)
-        u_box = draw.textbbox((0, 0), unit, font=uf)
-        draw.text((x + nw + 14 - u_box[0], y + n_h - u_box[3]), unit, font=uf, fill=FIG_INK)
-        y += n_h + gap1
-        if label:
-            lw = _text_w(draw, label, lf)
-            draw.text(((OUT_W - lw) // 2, y), label, font=lf, fill=FIG_INK)
-            y += lf_size + 6 + gap2
-        if top_text:
-            tw = _text_w(draw, top_text, of)
-            draw.text(((OUT_W - tw) // 2, y), top_text, font=of, fill=FIG_NAVY)
-    else:
-        size = 110
-        while size > 50 and _text_w(draw, label, _font("black", size)) > max_w:
-            size -= 4
-        lf = _font("black", size)
-        of = _font("bold", 36)
-        l_box = draw.textbbox((0, 0), label, font=lf)
-        l_h = l_box[3] - l_box[1]
-        total = l_h + (36 + 40 if top_text else 0) + 14 + 8
-        y = band_top + (band_h - total) // 2
-        if top_text:
-            tw = _text_w(draw, top_text, of)
-            draw.text(((OUT_W - tw) // 2, y), top_text, font=of, fill=FIG_NAVY)
-            y += 36 + 40
-        lw = l_box[2] - l_box[0]
-        draw.text(((OUT_W - lw) // 2 - l_box[0], y - l_box[1]), label, font=lf, fill=FIG_INK)
-        y += l_h + 22
-        draw.rectangle(((OUT_W - 96) // 2, y, (OUT_W + 96) // 2, y + 8), fill=FIG_RED)
-    return image
-
-
-FIGURE_UNITS = r"(?:万|億|兆)?(?:円|ドル|ユーロ|件|社|人|名|口座|カ国|か国|ヵ国|倍|位|台|本|店|カ月連続|か月連続|ヶ月連続|カ月|か月|ヶ月|年連続|期連続|年ぶり|カ月ぶり|％|%|ポイント|bp|兆円|億円|万円|万人|万件|万台|GB|TB|団体|校|施設|店舗|か所|カ所|機関|自治体|銘柄|世帯)"
-
-
-def figure_spec(plan: dict, article: dict) -> dict | None:
-    """数字の図の中身（number, unit, label）。モデルの答えが記事の文に無い数字なら使わない（作り話の数字を出さない）"""
-    number = re.sub(r"[^\d.,]", "", str(plan.get("number") or ""))
-    if re.fullmatch(r"\d{4,}", number):
-        number = f"{int(number):,}"  # 1500 → 1,500（記事の表記に合わせる）
-    unit = str(plan.get("unit") or "").strip()[:8]
-    label = re.sub(r"\s+", " ", str(plan.get("label") or "")).strip()[:20]
-    text = " ".join(str(article.get(k) or "") for k in ("title", "description", "lede", "body"))
-    flat = text.replace(",", "").replace("，", "")
-    # 単位は決まったものだけ（「15時半」のような時刻・日付は数字の図にしない）
-    if unit and not re.fullmatch(FIGURE_UNITS, unit):
-        unit, number = "", ""
-    if number and unit and re.search(re.escape(number.replace(",", "")) + r"\s*" + re.escape(unit), flat):
-        return {"number": number, "unit": unit, "label": label}
-    # 題名の最初の「数字＋単位」（年・月・日は除く）
-    match = re.search(r"(\d[\d,.]*)\s*(" + FIGURE_UNITS + ")", article.get("title") or "")
-    if match and plan.get("data_news"):
-        return {"number": match.group(1), "unit": match.group(2), "label": label}
-    return None
-
-
-# --------------------------------------------------------------------------- #
 # 検索語（軽量モデル）
 # --------------------------------------------------------------------------- #
 
@@ -1242,11 +1120,6 @@ QUERY_SCHEMA = {
         "queries": {"type": "ARRAY", "items": {"type": "STRING"}},
         "query_ja": {"type": "STRING"},
         "scene": {"type": "STRING"},
-        "concrete": {"type": "BOOLEAN"},
-        "data_news": {"type": "BOOLEAN"},
-        "number": {"type": "STRING"},
-        "unit": {"type": "STRING"},
-        "label": {"type": "STRING"},
     },
     "required": ["queries", "scene"],
 }
@@ -1289,21 +1162,7 @@ Return:
 - "query_ja": one Japanese search phrase (1-2 words) of the same kind.
 - "scene": one English sentence describing a neutral, photorealistic editorial news photo for this article
   (subject, setting, light). No text, no signs, no logos, no brand names, no identifiable real people
-  (people only from behind, as hands, or out of focus).
-- "concrete": true only if the news is about a specific physical thing a photo can show directly and honestly
-  (a product you can hold, a food or drink, a vehicle, a building or facility, a place, a sports match, an animal, a natural event).
-  false for software, AI models, cloud services, apps, finance, statistics, policy, laws, earnings, personnel, partnerships, research results.
-- "data_news": true only if the core of the news is a number from statistics or research: a survey result, a count
-  (bankruptcies, cases, accounts, users), a ranking, an economic index, interest rates, tax revenue, or earnings results.
-  false for product or service launches, prices of products or plans, specifications (GB, cores), partnerships and events,
-  even when they mention numbers.
-- "number" and "unit": the single most important number of the article exactly as written in the title or summary, split into the
-  digits and the unit that follows (e.g. "6" + "件", "52" + "カ月連続", "1,500" + "万口座", "3.2" + "%"). Never a year, month or day.
-  Empty strings if there is none.
-- "label": a short Japanese caption for that number, 8-16 characters, that does NOT repeat the number itself
-  (e.g. "10月の「円安」倒産", "楽天証券の総合口座数").
-  If there is no number, a short phrase (4-14 characters) naming the specific subject of the news - a product or service name,
-  a law or system, an event (e.g. "GPT-6.1 Terra", "約束手形の廃止", "dバリューパス"). Never a generic word like "AIモデル" or "新サービス"."""
+  (people only from behind, as hands, or out of focus)."""
     data, model = llm.generate_json(QUERY_SYSTEM, prompt, QUERY_SCHEMA, tier=llm_tier(), temperature=0.3, max_output_tokens=2048)
     queries = []
     for q in data.get("queries") or []:
@@ -1315,11 +1174,6 @@ Return:
         "queries": queries[:3],
         "query_ja": str(data.get("query_ja") or "").strip()[:20],
         "scene": str(data.get("scene") or "").strip()[:400],
-        "concrete": bool(data.get("concrete")),
-        "data_news": bool(data.get("data_news")),
-        "number": str(data.get("number") or "").strip()[:16],
-        "unit": str(data.get("unit") or "").strip()[:10],
-        "label": str(data.get("label") or "").strip()[:24],
         "model": model,
     }
 
@@ -1864,8 +1718,11 @@ def trim_dark_band(image):
 
 
 def shows_face(image) -> bool:
-    """人の顔がはっきり写っているか（判定できないときは False）"""
-    text = cf_vision(image, "Is a human face clearly visible in this image (not just hands, a back view or a tiny blurred figure)? Answer yes or no.", max_tokens=5)
+    """人の顔（ぼけた背景の人も含む）か、文字・文字のような落書きが写っているか（判定できないときは False）"""
+    face = cf_vision(image, "Can you see any human face in this image, including people in the background (not just hands or a pure back view)? Answer yes or no.", max_tokens=5)
+    if (face or "").strip().lower().startswith("yes"):
+        return True
+    text = cf_vision(image, "Does this image contain visible letters, words or handwriting (on a sign, paper, screen or wall)? Small unreadable details on documents do not count. Answer yes or no.", max_tokens=5)
     return (text or "").strip().lower().startswith("yes")
 
 
@@ -2038,24 +1895,18 @@ def process(path: Path, article: dict, ctx: dict) -> str:
         if best:
             return use_official(path, article, ctx, best, official)
         return "error"
-    log(f"   [img] 検索語: {plan['queries']} / {plan.get('query_ja')} 具体物={plan['concrete']} データ={plan['data_news']} 数字={plan['number']}{plan['unit']}「{plan['label']}」 ({plan['model']})")
-    org = (wire_org(article) or official["wire"]) if official and official["wire"] else (org_name(article) if official else "")
-
-    # 2. 大事な数字が1つ記事の芯になっている統計・調査・件数のニュースは、数字の図
-    spec = figure_spec(plan, article)
-    if plan["data_news"] and spec and not ctx.get("retry_ai"):
-        return use_figure(path, article, ctx, spec, org)
+    log(f"   [img] 検索語: {plan['queries']} / {plan.get('query_ja')} ({plan['model']})")
 
     credit: dict = {}
     image = None
-    # 3. AI 生成（前からの写真風のプロンプト。話題を問わない。実在の人物は描かない。1日 IMAGE_AI_DAILY_MAX 枚まで）
+    # 2. AI 生成（前からの写真風のプロンプト。話題を問わない。実在の人物は描かない。1日 IMAGE_AI_DAILY_MAX 枚まで）
     if not ctx.get("retry_ai"):
         made = None
         for _ in range(2):
             made = generate_ai(plan, article, fast=ctx.get("fast", False))
-            # 顔のはっきり見える人物は描かない（実在の人物と誤解される・作り物の人物を載せない）。1回だけ作り直す
+            # 人の顔・文字の写った画像は使わない（実在の人物と誤解される・作り物の人物や崩れた文字を載せない）。1回だけ作り直す
             if made and shows_face(made[0]):
-                log("   [img] AI 画像に人の顔が写ったので作り直す")
+                log("   [img] AI 画像に人の顔か文字が写ったので作り直す")
                 made = None
                 continue
             break
@@ -2063,7 +1914,7 @@ def process(path: Path, article: dict, ctx: dict) -> str:
             image, model = made
             credit = {"kind": "ai", "model": model, "prompt": plan.get("scene", "")[:300], "provider": "Cloudflare Workers AI"}
             log(f"   [img] AI 生成: {model}")
-    # 4. フリー素材（AI が使えないとき。記事と関係がはっきりしたものだけ）
+    # 3. フリー素材（AI が使えないとき。記事と関係がはっきりしたものだけ）
     if image is None and not ctx.get("ai_only"):
         pick, image = find_stock(article, plan, ctx["used_stock"])
         if pick and image is not None:
@@ -2084,13 +1935,9 @@ def process(path: Path, article: dict, ctx: dict) -> str:
         log("   [img] 素材が見つからないので今の画像のまま")
         return "kept"
     if image is None:
-        # 5. 公式のロゴ・文字の多い図・バナー（AI も素材も無いとき）
+        # 4. 公式のロゴ・文字の多い図・バナー（AI も素材も無いとき）。それも無ければ今までどおり（写真なしのカバー）
         if best:
             return use_official(path, article, ctx, best, official)
-        # 6. 最後の手段: 文字の図（数字があれば数字、無ければ話題の短い言葉）
-        label = plan.get("label") or ""
-        if spec or label:
-            return use_figure(path, article, ctx, spec or {"number": "", "unit": "", "label": label}, org)
         return "none"
 
     try:
@@ -2149,39 +1996,6 @@ def use_official(path: Path, article: dict, ctx: dict, best: dict, official: dic
     if not ctx["dry_run"]:
         save(path, article)
     return "official"
-
-
-def use_figure(path: Path, article: dict, ctx: dict, spec: dict, org: str) -> str:
-    """数字の図（または文字だけの図）を作って記事に付ける"""
-    slug = article.get("slug") or path.stem
-    image = render_figure(spec.get("number", ""), spec.get("unit", ""), spec.get("label", ""), org)
-    try:
-        new_url, _ = store(slug, image, ctx["dry_run"])
-    except Exception as error:  # noqa: BLE001
-        log(f"   [img] 保存に失敗: {str(error)[:120]}")
-        return "error"
-    credit = {
-        "kind": "figure",
-        "provider": "サイソクニュース",
-        "number": f"{spec.get('number', '')}{spec.get('unit', '')}",
-        "label": spec.get("label", ""),
-        "sourceUrl": article.get("sourceUrl", ""),
-        "at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-    }
-    if org:
-        credit["org"] = org
-    previous = article.get("imageCredit") or {}
-    thumb = article.get("thumbnail", "") or ""
-    if previous.get("original"):
-        credit["original"] = previous["original"]
-    elif thumb and not is_ours(thumb) and not is_youtube(thumb):
-        credit["original"] = thumb
-    log(f"   [img] 数字の図: {credit['number'] or '（数字なし）'}「{credit['label']}」{('／' + org) if org else ''}")
-    article["thumbnail"] = new_url
-    article["imageCredit"] = credit
-    if not ctx["dry_run"]:
-        save(path, article)
-    return "figure"
 
 
 def load_env_local() -> None:

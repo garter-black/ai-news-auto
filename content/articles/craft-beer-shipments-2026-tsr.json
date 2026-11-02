@@ -54,19 +54,17 @@
   "videoTitle": "主な「地ビールメーカー」1-8月出荷量は2年連続で増加 ビールメーカーの６割弱が前年割れ、首位は「エチゴビール」",
   "publishedAt": "2026-11-02T05:30:00+00:00",
   "generatedAt": "2026-11-02T08:01:31.184649+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/craft-beer-shipments-2026-tsr-fe8c38d2.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/craft-beer-shipments-2026-tsr-c41c4b8c.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-02T05:30:00+00:00",
   "detectedAt": "2026-11-02T08:00:48+00:00",
   "imageCredit": {
-    "kind": "figure",
-    "provider": "サイソクニュース",
-    "number": "2年連続",
-    "label": "出荷量が前年比増",
-    "sourceUrl": "https://www.tsr-net.co.jp/data/detail/1203392_1527.html",
-    "at": "2026-11-02T11:53:31+00:00",
-    "org": "東京商工リサーチ"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close-up of assorted craft-beer bottles on a wooden shelf, illuminated by soft natural light, with no visible labels.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T13:33:43+00:00"
   }
 }

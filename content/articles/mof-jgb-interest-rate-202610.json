@@ -51,19 +51,17 @@
   "videoTitle": "国債金利情報(令和8年10月30日)",
   "publishedAt": "2026-11-02T00:30:00+00:00",
   "generatedAt": "2026-11-02T09:51:25.914221+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/mof-jgb-interest-rate-202610-d4731a1e.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/mof-jgb-interest-rate-202610-f980c591.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-02T00:30:00+00:00",
   "detectedAt": "2026-11-02T09:50:56+00:00",
   "imageCredit": {
-    "kind": "figure",
-    "provider": "サイソクニュース",
-    "number": "2.817%",
-    "label": "10年国債金利",
-    "sourceUrl": "https://www.mof.go.jp/jgbs/reference/interest_rate/jgbcm.csv",
-    "at": "2026-11-02T11:53:05+00:00",
-    "org": "財務省"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close-up of a hand holding a printed Japanese government bond certificate against a softly blurred office background, illuminated by gentle natural light.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T13:32:51+00:00"
   }
 }

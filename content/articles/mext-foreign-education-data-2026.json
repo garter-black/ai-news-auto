@@ -43,19 +43,17 @@
   "videoTitle": "「諸外国の教育情報」令和8（2026）年版 を公表しました。",
   "publishedAt": "2026-10-30T09:00:00+00:00",
   "generatedAt": "2026-11-02T01:45:44.040327+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/mext-foreign-education-data-2026-915d27d8.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/mext-foreign-education-data-2026-d00d32d1.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-30T09:00:00+00:00",
   "detectedAt": "2026-11-02T01:45:20+00:00",
   "imageCredit": {
-    "kind": "figure",
-    "provider": "サイソクニュース",
-    "number": "6カ国",
-    "label": "主要諸外国の教育統計",
-    "sourceUrl": "https://www.mext.go.jp/b_menu/toukei/data/syogaikoku/1415074_00025.htm",
-    "at": "2026-11-02T11:54:44+00:00",
-    "org": "文部科学省"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A bright, empty classroom with rows of desks and a chalkboard, natural daylight streaming through large windows, conveying an educational setting.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T13:33:49+00:00"
   }
 }

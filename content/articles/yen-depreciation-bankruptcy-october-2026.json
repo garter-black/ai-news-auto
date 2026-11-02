@@ -55,19 +55,17 @@
   "videoTitle": "2026年10月の「円安」倒産6件、52カ月連続発生 1-10月累計67件、前年（1-12月）件数を超える",
   "publishedAt": "2026-11-02T06:30:00+00:00",
   "generatedAt": "2026-11-02T07:41:33.846489+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/yen-depreciation-bankruptcy-october-2026-338eff25.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/yen-depreciation-bankruptcy-october-2026-db819896.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-02T06:30:00+00:00",
   "detectedAt": "2026-11-02T07:40:43+00:00",
   "imageCredit": {
-    "kind": "figure",
-    "provider": "サイソクニュース",
-    "number": "6件",
-    "label": "10月の円安倒産",
-    "sourceUrl": "https://www.tsr-net.co.jp/data/detail/1203393_1527.html",
-    "at": "2026-11-02T11:53:21+00:00",
-    "org": "東京商工リサーチ"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "An empty storefront interior with a vacant counter, a stack of documents on a desk, and soft natural light filtering through a window, creating a subdued, business‑focused atmosphere.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T13:36:29+00:00"
   }
 }

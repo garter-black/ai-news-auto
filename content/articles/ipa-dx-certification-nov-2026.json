@@ -47,19 +47,17 @@
   "videoTitle": "DX認定制度 認定事業者の公表（2026年11月1日認定適用）",
   "publishedAt": "2026-11-01T15:00:00+00:00",
   "generatedAt": "2026-11-02T02:51:37.888098+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/ipa-dx-certification-nov-2026-701b1aff.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/ipa-dx-certification-nov-2026-1103be04.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-01T15:00:00+00:00",
   "detectedAt": "2026-11-02T02:50:48+00:00",
   "imageCredit": {
-    "kind": "figure",
-    "provider": "サイソクニュース",
-    "number": "118件",
-    "label": "新規DX認定事業者",
-    "sourceUrl": "https://disclosure.dx-portal.ipa.go.jp/",
-    "at": "2026-11-02T11:53:48+00:00",
-    "org": "IPA（情報処理推進機構）"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close‑up of a hand holding an official certification certificate on a tidy office desk, with a laptop and paperwork softly blurred in the background under natural daylight.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T13:34:06+00:00"
   }
 }

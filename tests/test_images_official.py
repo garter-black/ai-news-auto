@@ -108,17 +108,7 @@ class PageCandidatesTest(unittest.TestCase):
         self.assertEqual(images.safe_url("https://a.jp/画像.png?x=1"), "https://a.jp/%E7%94%BB%E5%83%8F.png?x=1")
 
 
-class FigureTest(unittest.TestCase):
-    ARTICLE = {"title": "2026年10月の「円安」倒産は6件、52カ月連続で発生", "description": "10月は6件発生し52カ月連続。", "body": ""}
-
-    def test_number_must_appear_in_article(self):
-        spec = images.figure_spec({"number": "6", "unit": "件", "label": "10月の「円安」倒産", "data_news": True}, self.ARTICLE)
-        self.assertEqual(spec, {"number": "6", "unit": "件", "label": "10月の「円安」倒産"})
-        # 記事に無い数字（作り話）は使わず、題名の最初の「数字＋単位」にする
-        spec = images.figure_spec({"number": "9", "unit": "件", "label": "x", "data_news": True}, self.ARTICLE)
-        self.assertEqual((spec["number"], spec["unit"]), ("6", "件"))
-        self.assertIsNone(images.figure_spec({"number": "", "unit": "", "label": "x", "data_news": False}, self.ARTICLE))
-
+class AiImageTest(unittest.TestCase):
     @unittest.skipIf(images.Image is None, "Pillow が無い")
     def test_trim_dark_band(self):
         image = images.Image.new("RGB", (400, 210), (120, 140, 160))
@@ -126,11 +116,6 @@ class FigureTest(unittest.TestCase):
         self.assertEqual(images.trim_dark_band(image).size, (400, 200))
         dark = images.Image.new("RGB", (400, 210), (40, 40, 40))
         self.assertEqual(images.trim_dark_band(dark).size, (400, 210))
-
-    @unittest.skipIf(images.Image is None, "Pillow が無い")
-    def test_render_size(self):
-        self.assertEqual(images.render_figure("52", "カ月連続", "「円安」倒産", "東京商工リサーチ").size, (1200, 630))
-        self.assertEqual(images.render_figure("", "", "長期金利の見通し", "").size, (1200, 630))
 
 
 if __name__ == "__main__":

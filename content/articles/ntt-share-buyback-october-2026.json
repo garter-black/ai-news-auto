@@ -53,7 +53,7 @@
   "videoTitle": "自己株式の取得状況に関するお知らせ（会社法第165条第2項の規定による定款の定めに基づく自己株式の取得）",
   "publishedAt": "2026-11-02T06:30:00+00:00",
   "generatedAt": "2026-11-02T06:51:33.325985+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/ntt-share-buyback-october-2026-3b0b0ba7.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/ntt-share-buyback-october-2026-32a91865.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -61,12 +61,10 @@
   "detectedAt": "2026-11-02T06:50:47+00:00",
   "speedMinutes": 25,
   "imageCredit": {
-    "kind": "figure",
-    "provider": "サイソクニュース",
-    "number": "272億円",
-    "label": "10月の自社株買い",
-    "sourceUrl": "https://group.ntt/jp/newsrelease/2026/11/02/261102b.html",
-    "at": "2026-11-02T11:54:02+00:00",
-    "org": "NTT"
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close-up of a hand holding a stack of printed stock certificates on a wooden desk, illuminated by soft natural light from a nearby window.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-02T13:33:44+00:00"
   }
 }
