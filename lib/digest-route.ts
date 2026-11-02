@@ -1,11 +1,11 @@
-import { DIGEST_DESIGN, type DigestDesign } from "@/lib/digest-design";
+import { DIGEST_DESIGN, DIGEST_DESIGNS, type DigestDesign } from "@/lib/digest-design";
 import { getDigest } from "@/lib/digest";
 import { renderDigestImage, type DigestFormat } from "@/lib/digest-image";
 
 /**
  * /digest/<id>/share.png（1200×630）と /digest/<id>/card.png（1080×1350）の共通処理。
  * 号のデータが KV にしか無い（デプロイ前の）朝もあるので、静的化せずリクエスト時に描き、エッジ（cloudflare/worker.ts）に置く。
- * ?design=A|B|C で案を見比べられる（既定は lib/digest-design.ts の DIGEST_DESIGN）。
+ * ?design=A|B|B1|B2|C で案を見比べられる（既定は lib/digest-design.ts の DIGEST_DESIGN）。
  */
 type KvLike = { get(key: string, type: "arrayBuffer"): Promise<ArrayBuffer | null> };
 
@@ -25,7 +25,7 @@ export async function digestImageResponse(request: Request, id: string, format: 
   const digest = await getDigest(id);
   if (!digest) return new Response("Not found", { status: 404, headers: { "Cache-Control": "no-store" } });
   const asked = new URL(request.url).searchParams.get("design")?.toUpperCase();
-  const design: DigestDesign = asked === "A" || asked === "B" || asked === "C" ? asked : DIGEST_DESIGN;
+  const design: DigestDesign = DIGEST_DESIGNS.find((d) => d === asked) ?? DIGEST_DESIGN;
   try {
     const image = await renderDigestImage(digest, design, format, await ownImageReader());
     const png = await image.arrayBuffer();

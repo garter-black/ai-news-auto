@@ -57,21 +57,33 @@ function lineCount(text: string, size: number, width: number): number {
 /** texts がどれも maxLines 行に収まる、いちばん大きい文字サイズ（max〜min） */
 function fitSize(texts: string[], width: number, maxLines: number, max: number, min: number): number {
   for (let size = max; size > min; size -= 2) {
-    if (texts.every((t) => lineCount(t, size, width) <= maxLines)) return size;
+    // 行数に加えて、いちばん長い文節が1行に収まること（文節の中で折り返さない）
+    const fits = (t: string) => lineCount(t, size, width) <= maxLines && Math.max(...phrasesOf(t).map(emWidth)) * size <= width;
+    if (texts.every(fits)) return size;
   }
   return min;
 }
 
 /** 文節ごとに分け、単語の途中で改行されないようにする */
-function Phrases({ text, size, color = "#fff", weight = 900, lineHeight = 1.28 }: { text: string; size: number; color?: string; weight?: 700 | 900; lineHeight?: number }) {
+function Phrases({ text, size, color = "#fff", weight = 900, lineHeight = 1.28, shadow = true }: { text: string; size: number; color?: string; weight?: 700 | 900; lineHeight?: number; shadow?: boolean }) {
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", fontSize: size, fontWeight: weight, lineHeight, color, textShadow: SHADOW }}>
-      {parser.parse(text).map((phrase, index) => (
+    <div style={{ display: "flex", flexWrap: "wrap", fontSize: size, fontWeight: weight, lineHeight, color, ...(shadow ? { textShadow: SHADOW } : {}) }}>
+      {phrasesOf(text).map((phrase, index) => (
         <span key={index} style={{ display: "flex", flexShrink: 0 }}>
           {phrase}
         </span>
       ))}
     </div>
+  );
+}
+
+/**
+ * 文節に分ける。BudouX は「新AIモデル『Mistral Large 4』を」のような長い文節を作ることがあり、
+ * 1行に入らないと文節の中で折り返して次の文節が1行を占めてしまうので、長い文節は括弧の前後でさらに分ける（製品名の中では切らない）
+ */
+function phrasesOf(text: string): string[] {
+  return parser.parse(text).flatMap((phrase) =>
+    emWidth(phrase) <= 8 ? [phrase] : phrase.split(/(?=[『「（])|(?<=[』」）])(?![をがはにでとのへもや、。])/).filter(Boolean),
   );
 }
 
@@ -371,7 +383,177 @@ function DesignC({ digest, photos, background }: Ctx, format: DigestFormat) {
   );
 }
 
-const DESIGNS = { A: DesignA, B: DesignB, C: DesignC } as const;
+/*
+ * B1・B2（2026/11/02 オーナーの指摘を反映した B の改良案）
+ * - 写真は 16:9 の枠に丸ごと入れる（切り抜いて文字や人物を欠けさせない）。公式発表の写真は縦横比が違うので余白を付けて全体を出す
+ * - 文字は写真に重ねない（無地の地に置く）。色の箱・縦線・ピルは使わない。ラベルは文字だけ
+ * - トップ記事をいちばん大きく。番号は赤い数字（文字）だけ
+ */
+type Theme = { bg: string; ink: string; sub: string; red: string; photoBg: string };
+const NAVY_THEME: Theme = { bg: INK, ink: "#ffffff", sub: "rgba(255,255,255,0.72)", red: "#ff5a4f", photoBg: "#06101f" };
+const LIGHT_THEME: Theme = { bg: "#f3f5f8", ink: INK, sub: "#4a5870", red: "#c8221a", photoBg: "#e3e8ef" };
+
+/** 16:9 の枠に写真を丸ごと。YouTube・フリー素材・AI 生成はほぼ 16:9 なので枠いっぱい、公式発表の写真は全体が入るように縮める */
+function WholePhoto({ photo, story, width, theme }: { photo: Photo; story: DigestStory; width: number; theme: Theme }) {
+  const height = Math.round((width * 9) / 16);
+  const fit = story.article.imageCredit?.kind === "official" ? "contain" : "cover";
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <div style={{ position: "relative", display: "flex", width, height, borderRadius: 10, overflow: "hidden", background: photo ? theme.photoBg : story.company.color }}>
+        {photo && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={photo} alt="" width={width} height={height} style={{ position: "absolute", left: 0, top: 0, width, height, objectFit: fit }} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** 「11月2日（月）朝のAIニュース」＋サイト名（文字だけ） */
+function Masthead({ digest, size, theme }: { digest: Digest; size: number; theme: Theme }) {
+  const { m, d, w } = weekday(digest.date);
+  return (
+    <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", width: "100%" }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: Math.round(size * 0.4), color: theme.ink }}>
+        <div style={{ display: "flex", fontSize: size, fontWeight: 900 }}>{`${m}月${d}日（${w}）`}</div>
+        <div style={{ display: "flex", fontSize: size, fontWeight: 700, color: theme.sub }}>{`朝のAIニュース ${digest.stories.length}本`}</div>
+      </div>
+      <div style={{ display: "flex", fontFamily: "Dela", fontSize: Math.round(size * 0.92), color: theme.ink }}>サイソクニュース</div>
+    </div>
+  );
+}
+
+/** 番号（赤い数字）＋企業名＋見出し。写真の上には置かない */
+function Headline({ story, rank, size, width, theme, meta }: { story: DigestStory; rank: number; size: number; width: number; theme: Theme; meta: number }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: Math.round(meta * 0.3), width }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: Math.round(meta * 0.5) }}>
+        <div style={{ display: "flex", fontSize: Math.round(meta * 1.35), fontWeight: 900, color: theme.red, lineHeight: 1 }}>{rank}</div>
+        {story.company.slug !== "other" && <div style={{ display: "flex", fontSize: meta, fontWeight: 700, color: theme.sub, lineHeight: 1 }}>{story.company.name}</div>}
+      </div>
+      <Phrases text={story.headline} size={size} color={theme.ink} lineHeight={1.3} shadow={false} />
+      {story.credit && <div style={{ display: "flex", fontSize: Math.max(13, Math.round(meta * 0.62)), fontWeight: 700, color: theme.sub }}>{story.credit}</div>}
+    </div>
+  );
+}
+
+/** B1: 左にトップ記事（写真の下に見出し）、右に2本を［写真｜見出し］で縦に並べる。紺の地 */
+function DesignB1({ digest, photos }: Ctx, format: DigestFormat) {
+  const theme = NAVY_THEME;
+  const { width, height } = SIZES[format];
+  const [top, ...rest] = digest.stories.slice(0, 3);
+  if (format === "wide") {
+    const P = 36;
+    const leftW = 560;
+    const rightX = P + leftW + 40;
+    const rightW = width - P - rightX;
+    const thumbW = 232;
+    const rowText = rightW - thumbW - 20;
+    const topSize = fitSize([top.headline], leftW - 10, 2, 46, 32);
+    const rowSize = fitSize(rest.map((s) => s.headline), rowText - 8, 4, 28, 22);
+    return (
+      <div style={{ display: "flex", flexDirection: "column", width, height, background: theme.bg, padding: `${P - 6}px ${P}px ${P}px` }}>
+        <Masthead digest={digest} size={26} theme={theme} />
+        <div style={{ display: "flex", gap: 40, marginTop: 22 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16, width: leftW }}>
+            <WholePhoto photo={photos[0]} story={top} width={leftW} theme={theme} />
+            <Headline story={top} rank={1} size={topSize} width={leftW} theme={theme} meta={22} />
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-around", gap: 30, width: rightW, height: height - 2 * P - 58 }}>
+            {rest.map((story, i) => (
+              <div key={story.slug} style={{ display: "flex", gap: 20 }}>
+                <WholePhoto photo={photos[i + 1]} story={story} width={thumbW} theme={theme} />
+                <Headline story={story} rank={i + 2} size={rowSize} width={rowText} theme={theme} meta={18} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+  const P = 48;
+  const inner = width - P * 2;
+  const thumbW = 360;
+  const rowText = inner - thumbW - 28;
+  const topSize = fitSize([top.headline], inner - 10, 2, 58, 44);
+  const rowSize = fitSize(rest.map((s) => s.headline), rowText - 10, 4, 38, 30);
+  return (
+    <div style={{ display: "flex", flexDirection: "column", width, height, background: theme.bg, padding: `${P - 4}px ${P}px ${P}px` }}>
+      <Masthead digest={digest} size={34} theme={theme} />
+      <div style={{ display: "flex", flexDirection: "column", gap: 18, marginTop: 28 }}>
+        <WholePhoto photo={photos[0]} story={top} width={inner} theme={theme} />
+        <Headline story={top} rank={1} size={topSize} width={inner} theme={theme} meta={28} />
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 30, marginTop: 40 }}>
+        {rest.map((story, i) => (
+          <div key={story.slug} style={{ display: "flex", gap: 28 }}>
+            <WholePhoto photo={photos[i + 1]} story={story} width={thumbW} theme={theme} />
+            <Headline story={story} rank={i + 2} size={rowSize} width={rowText} theme={theme} meta={24} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** B2: 上にトップ記事［写真｜大きな見出し］、下に2本を［写真｜見出し］で横に並べる。サイトと同じ明るい地 */
+function DesignB2({ digest, photos }: Ctx, format: DigestFormat) {
+  const theme = LIGHT_THEME;
+  const { width, height } = SIZES[format];
+  const [top, ...rest] = digest.stories.slice(0, 3);
+  if (format === "wide") {
+    const P = 36;
+    const inner = width - P * 2;
+    const topW = 540;
+    const topText = inner - topW - 36;
+    const cellW = Math.floor((inner - 36) / 2);
+    const thumbW = 248;
+    const cellText = cellW - thumbW - 18;
+    const topSize = fitSize([top.headline], topText - 10, 3, 50, 36);
+    const cellSize = fitSize(rest.map((s) => s.headline), cellText - 8, 4, 26, 20);
+    return (
+      <div style={{ display: "flex", flexDirection: "column", width, height, background: theme.bg, padding: `${P - 6}px ${P}px ${P}px` }}>
+        <Masthead digest={digest} size={26} theme={theme} />
+        <div style={{ display: "flex", gap: 36, marginTop: 22, alignItems: "center" }}>
+          <WholePhoto photo={photos[0]} story={top} width={topW} theme={theme} />
+          <Headline story={top} rank={1} size={topSize} width={topText} theme={theme} meta={22} />
+        </div>
+        <div style={{ display: "flex", gap: 36, marginTop: 28 }}>
+          {rest.map((story, i) => (
+            <div key={story.slug} style={{ display: "flex", gap: 18, width: cellW }}>
+              <WholePhoto photo={photos[i + 1]} story={story} width={thumbW} theme={theme} />
+              <Headline story={story} rank={i + 2} size={cellSize} width={cellText} theme={theme} meta={17} />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  const P = 48;
+  const inner = width - P * 2;
+  const cellW = Math.floor((inner - 32) / 2);
+  const topSize = fitSize([top.headline], inner - 10, 2, 58, 44);
+  const cellSize = fitSize(rest.map((s) => s.headline), cellW - 70, 3, 32, 24);
+  return (
+    <div style={{ display: "flex", flexDirection: "column", width, height, background: theme.bg, padding: `${P - 4}px ${P}px ${P}px` }}>
+      <Masthead digest={digest} size={34} theme={theme} />
+      <div style={{ display: "flex", flexDirection: "column", gap: 18, marginTop: 28 }}>
+        <WholePhoto photo={photos[0]} story={top} width={inner} theme={theme} />
+        <Headline story={top} rank={1} size={topSize} width={inner} theme={theme} meta={28} />
+      </div>
+      <div style={{ display: "flex", gap: 32, marginTop: 28 }}>
+        {rest.map((story, i) => (
+          <div key={story.slug} style={{ display: "flex", flexDirection: "column", gap: 12, width: cellW }}>
+            <WholePhoto photo={photos[i + 1]} story={story} width={cellW} theme={theme} />
+            <Headline story={story} rank={i + 2} size={cellSize} width={cellW} theme={theme} meta={22} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const DESIGNS = { A: DesignA, B: DesignB, B1: DesignB1, B2: DesignB2, C: DesignC } as const;
 
 export async function renderDigestImage(
   digest: Digest,

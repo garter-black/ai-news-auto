@@ -140,9 +140,9 @@ def short_headline(article: dict, limit: int = ITEM_MAX) -> str:
 
 
 def design() -> str:
-    """lib/digest-design.ts の DIGEST_DESIGN（"A" / "B" / "C"）"""
+    """lib/digest-design.ts の DIGEST_DESIGN（"A" / "B" / "B1" / "B2" / "C"）"""
     try:
-        match = re.search(r'DIGEST_DESIGN[^=]*=\s*"([ABC])"', DESIGN_FILE.read_text("utf-8"))
+        match = re.search(r'DIGEST_DESIGN:[^=]*=\s*"(A|B1|B2|B|C)"', DESIGN_FILE.read_text("utf-8"))
         return match.group(1) if match else "A"
     except OSError:
         return "A"
