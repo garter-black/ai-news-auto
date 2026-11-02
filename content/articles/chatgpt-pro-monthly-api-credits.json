@@ -72,7 +72,7 @@
   "videoTitle": "ChatGPTが更新: Up to $500 in monthly API credits to build your own apps and agents. / $100 with Pro 100, $200 with Pro 200, or $500 with Pro 500.Plan: Pro, Feature: Monthly API credits, $100 with Pro 100",
   "publishedAt": "2026-11-02T18:41:16.150242+00:00",
   "generatedAt": "2026-11-02T18:43:50.424522+00:00",
-  "thumbnail": "",
+  "thumbnail": "https://ai-tech-express.jp/img/chatgpt-pro-monthly-api-credits-10f42f80.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "faq": [
@@ -99,5 +99,29 @@
     "日本の利用者への適用条件は、公式ヘルプで確認する"
   ],
   "qualityScore": 100,
-  "detectedAt": "2026-11-02T18:41:16+00:00"
+  "detectedAt": "2026-11-02T18:41:16+00:00",
+  "imageCredit": {
+    "kind": "stock",
+    "title": "Macro laptop coding (Unsplash)",
+    "creator": "Marc Mueller seven11nash",
+    "creatorUrl": "",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "provider": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Macro_laptop_coding_(Unsplash).jpg",
+    "query": "laptop code",
+    "at": "2026-11-02T18:52:52+00:00"
+  },
+  "imageFocus": {
+    "x": 0.516,
+    "y": 0.511,
+    "box": [
+      0.138,
+      0.028,
+      0.894,
+      0.995
+    ],
+    "ar": 1.5,
+    "src": "https://ai-tech-express.jp/img/chatgpt-pro-monthly-api-credits-10f42f80.jpg"
+  }
 }

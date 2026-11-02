@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "boj-ueda-press-conf-oct30",
+   "at": "2026-11-02T18:51:05.009375+00:00",
+   "title": "日本銀行の植田総裁、10月30日の記者会見を実施 金利や景気の動向について語る",
+   "head": "日本銀行の植田総裁、10月30日の記者会見を実施 金利や景気の動向について語る | 【記者会見】植田総裁（10月30日分）",
+   "text": "日本銀行の植田総裁、10月30日の記者会見を実施 金利や景気の動向について語る | 【記者会見】植田総裁（10月30日分） | 日本銀行 / 植田総裁 / 記者会見 / 金融政策 / 経済動向 / 金融 / 経済 / 景気 / 日本銀行",
+   "urls": [
+    "https://www.boj.or.jp/about/press/kaiken_2026/kk261102a.pdf"
+   ]
+  },
+  {
+   "slug": "nvidia-aicr-vera-rubin-kubernetes",
+   "at": "2026-11-02T18:50:51.270086+00:00",
+   "title": "NVIDIAの次世代AI基盤『Vera Rubin』、Kubernetes実行環境のレシピが公開に",
+   "head": "NVIDIAの次世代AI基盤『Vera Rubin』、Kubernetes実行環境のレシピが公開に | Making Kubernetes AI-Ready for NVIDIA Vera Rubin on Day One",
+   "text": "NVIDIAの次世代AI基盤『Vera Rubin』、Kubernetes実行環境のレシピが公開に | Making Kubernetes AI-Ready for NVIDIA Vera Rubin on Day One | NVIDIA / Vera Rubin / Kubernetes / AICR / AI工場 / 生成AI / AIインフラ / Kubernetes / NVIDIA",
+   "urls": [
+    "https://developer.nvidia.com/blog/making-kubernetes-ai-ready-for-nvidia-vera-rubin-on-day-one/"
+   ]
+  },
+  {
    "slug": "nenkin-no-hi-2026-mhlw",
    "at": "2026-11-02T18:44:24.693509+00:00",
    "title": "厚生労働省、「年金の日」・「ねんきん月間」を11月に実施　ねんきんネットの活用を呼びかけ",
@@ -1625,16 +1645,6 @@
    "text": "GitHub Copilot、組織ごとのプラグイン管理が一般提供へ。開発チームの標準ツールを自動導入 | Repository plugin defaults and enterprise plugin controls generally available | GitHub Copilot / プラグイン管理 / Enterprise / VS Code / Copilot CLI / 開発環境 / 一般提供 / GitHub / 生成AI / 開発ツール / GitHub / Copilot",
    "urls": [
     "https://github.blog/changelog/2026-10-28-repository-plugin-defaults-and-enterprise-plugin-controls-generally-available"
-   ]
-  },
-  {
-   "slug": "tokyo-naphtha-alternative-support",
-   "at": "2026-10-29T18:53:14.482566+00:00",
-   "title": "東京都がナフサ代替素材の開発を支援　石油に頼らない技術へ最大3億円",
-   "head": "東京都がナフサ代替素材の開発を支援　石油に頼らない技術へ最大3億円 | ナフサ代替素材等開発の支援対象事業者を決定",
-   "text": "東京都がナフサ代替素材の開発を支援　石油に頼らない技術へ最大3億円 | ナフサ代替素材等開発の支援対象事業者を決定 | 東京都 / ナフサ代替素材 / バイオマス / 廃プラスチック / 石油代替原料 / Green Earth Institute / 三菱ケミカル / 補助金 / 社会・行政 / 環境 / エネルギー / 東京都",
-   "urls": [
-    "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102913"
    ]
   }
  ]

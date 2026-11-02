@@ -4297,6 +4297,14 @@
       "slug": "sakana-ai-symposium-2026-sawara",
       "url": "https://sakana.ai/symposium-2026/"
     },
+    "1ea828d9cbeb2842": {
+      "at": "2026-11-02T18:50:56.738518+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "nvidia-aicr-vera-rubin-kubernetes",
+      "url": "https://developer.nvidia.com/blog/making-kubernetes-ai-ready-for-nvidia-vera-rubin-on-day-one/"
+    },
     "1eabbb64216942938ae7fb8532595e34945bc67b": {
       "at": "2026-10-28T19:11:59.737412+00:00",
       "kind": "trend",
@@ -6826,6 +6834,14 @@
       "skipped": true,
       "url": "https://news.yahoo.co.jp/articles/4e54d479bcde6ceddf494f6e91cce169eb2afce1"
     },
+    "672c1f7fb07a8d66": {
+      "at": "2026-11-02T18:51:05.949442+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "boj-ueda-press-conf-oct30",
+      "url": "https://www.boj.or.jp/about/press/kaiken_2026/kk261102a.pdf"
+    },
     "6750c2461412185f": {
       "at": "2026-10-30T16:01:57.168620+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -8638,6 +8654,12 @@
       "section": "ai",
       "slug": "oracle-ai-workspace-chatgpt",
       "url": "https://kn.itmedia.co.jp/kn/article/2611/02/2000002740/"
+    },
+    "9696f28afc6b91ae": {
+      "at": "2026-11-02T18:50:56.738735+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（公募）",
+      "skipped": true,
+      "url": "https://www.boj.or.jp/mopo/measures/select/s_release/srel261102a.htm"
     },
     "96c6180860078329": {
       "at": "2026-10-29T01:13:19.632805+00:00",
@@ -12398,98 +12420,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:51:54.439845+00:00",
-      "attempt": 1,
-      "id": "101256db11d36682",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1390字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（365字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 109.0,
-        "avg_sentence": 49.5,
-        "long_share": 0.136,
-        "max_paragraph": 213,
-        "paragraphs": 10,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "tokyo-metro",
-      "title": "土木の魅力を発信するイベント「東京 橋と土木展」開催"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:52:01.628371+00:00",
-      "attempt": 2,
-      "id": "101256db11d36682",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1748字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 150.3,
-        "avg_sentence": 56.4,
-        "long_share": 0.292,
-        "max_paragraph": 215,
-        "paragraphs": 9,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "tokyo-metro",
-      "title": "土木の魅力を発信するイベント「東京 橋と土木展」開催"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T11:11:15.644868+00:00",
-      "attempt": 1,
-      "id": "a4be21c02d238c64",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1221字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（334字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 87.1,
-        "avg_sentence": 41.5,
-        "long_share": 0.095,
-        "max_paragraph": 138,
-        "paragraphs": 10,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "「遺族年金受給者実態調査」にご協力ください"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T11:11:22.591661+00:00",
-      "attempt": 2,
-      "id": "a4be21c02d238c64",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 54.0字・60字超の文が 27% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 140.3字・最長 196字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 140.3,
-        "avg_sentence": 54.0,
-        "long_share": 0.269,
-        "max_paragraph": 196,
-        "paragraphs": 10,
-        "sentences": 26
-      },
-      "score": 100,
-      "source": "mhlw",
-      "title": "「遺族年金受給者実態調査」にご協力ください"
-    },
     {
       "accepted": true,
       "at": "2026-10-30T11:11:26.735035+00:00",
@@ -18909,6 +18839,90 @@
       "score": 100,
       "source": "mhlw",
       "title": "「年金の日」・「ねんきん月間」のお知らせ"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T18:50:42.867526+00:00",
+      "attempt": 1,
+      "id": "1ea828d9cbeb2842",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "easy_markdown が「## ひとことで言うと」から始まっていない"
+      ],
+      "readability": {
+        "avg_paragraph": 93.1,
+        "avg_sentence": 60.8,
+        "long_share": 0.5,
+        "max_paragraph": 159,
+        "paragraphs": 17,
+        "sentences": 26
+      },
+      "score": null,
+      "source": "nvidia-developer-blog",
+      "title": "Making Kubernetes AI-Ready for NVIDIA Vera Rubin on Day One"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T18:50:52.096419+00:00",
+      "attempt": 2,
+      "id": "1ea828d9cbeb2842",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 74.3字・60字超の文が 70% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 106.8,
+        "avg_sentence": 74.3,
+        "long_share": 0.696,
+        "max_paragraph": 204,
+        "paragraphs": 16,
+        "sentences": 23
+      },
+      "score": 100,
+      "source": "nvidia-developer-blog",
+      "title": "Making Kubernetes AI-Ready for NVIDIA Vera Rubin on Day One"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T18:50:56.737293+00:00",
+      "attempt": 0,
+      "id": "1ea828d9cbeb2842",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 99.9,
+        "avg_sentence": 40.5,
+        "long_share": 0.119,
+        "max_paragraph": 189,
+        "paragraphs": 17,
+        "sentences": 42
+      },
+      "score": 100,
+      "source": "nvidia-developer-blog",
+      "title": "Making Kubernetes AI-Ready for NVIDIA Vera Rubin on Day One"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T18:51:05.948692+00:00",
+      "attempt": 1,
+      "id": "672c1f7fb07a8d66",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 82.7,
+        "avg_sentence": 41.4,
+        "long_share": 0.045,
+        "max_paragraph": 157,
+        "paragraphs": 11,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "boj",
+      "title": "【記者会見】植田総裁（10月30日分）"
     }
   ],
   "short_text_retry": {},
