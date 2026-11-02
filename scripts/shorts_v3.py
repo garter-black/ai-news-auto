@@ -521,6 +521,9 @@ def script_system() -> str:
 - conclusion: 最後の一言。text は16字以内で hook の問いに答える（例: 上限に困る人なら検討の価値）。speech は20〜32字。
 - title: 40字以内・主役の名前を入れて事実をそのまま。summary: 説明欄の要約。「要約すると、」で始めて80〜120字。hashtags: 3〜4個（#付き）。
 
+# 画面の文字（text・payoff・keyword・sub・conclusion.text）
+- 製品名・社名は資料の表記のまま英字で書く（Claude・Gemini。カタカナにしない）。カタカナにするのは speech だけ。
+
 # 読み上げ（speech）
 - 英語の製品名・社名はカタカナ（Claude→クロード、OpenAI→オープンエーアイ、Pro→プロ）。記号は言葉に（$200→200ドル、%→パーセント）。
 - 数字はアラビア数字のまま（かなや漢数字にしない）。"""
