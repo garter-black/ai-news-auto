@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "anthropic-s1a-amendment-ant-nasdaq",
+   "at": "2026-11-02T15:12:09.814909+00:00",
+   "title": "ClaudeのAnthropicが上場申請書を修正 株は「ANT」で売買予定、創業者側が議決権50.1%",
+   "head": "ClaudeのAnthropicが上場申請書を修正 株は「ANT」で売買予定、創業者側が議決権50.1% | Anthropic, PBC - S-1/A-1",
+   "text": "ClaudeのAnthropicが上場申請書を修正 株は「ANT」で売買予定、創業者側が議決権50.1% | Anthropic, PBC - S-1/A-1 | Anthropic 上場 / Anthropic IPO / ANT ナスダック / S-1/A / Claude 運営会社 / Anthropic 株 / 公益法人 PBC / Long-Term Benefit Trust / AI企業 新規上場 / Anthropic 議決権 / Anthropic / Claude / IPO / 生成AI / SEC / 株式上場",
+   "urls": [
+    "https://www.sec.gov/Archives/edgar/data/2130357/000162828026068676/anthropicpbc-sx1ax1.htm"
+   ]
+  },
+  {
    "slug": "openai-grid-protectors-program",
    "at": "2026-11-02T15:08:03.915529+00:00",
    "title": "ChatGPTのOpenAIが電力対策「Grid Protectors」 AI施設が電力逼迫時に使用量を減らす",
@@ -1601,16 +1611,6 @@
    "text": "Call of Duty: Modern Warfare 4が発売 毎回マップが変わる新モードを徹底解説 | 『Call of Duty: Modern Warfare 4』: マストプレイのマルチプレイヤー「キル ブロック」 | Call of Duty / Modern Warfare 4 / キル ブロック / マルチプレイヤー / ガンファイト / Xbox / ゲーム / 新作 / ゲーム / エンタメ",
    "urls": [
     "https://news.xbox.com/ja-jp/2026/10/29/call-of-duty-modern-warfare-4-kill-block-must-play-multiplayer/"
-   ]
-  },
-  {
-   "slug": "geforce-now-phantom-blade-zero-update",
-   "at": "2026-10-29T15:10:13.059111+00:00",
-   "title": "NVIDIAのクラウドゲーム『GeForce NOW』、新作アクション『Phantom Blade Zero』などが登場",
-   "head": "NVIDIAのクラウドゲーム『GeForce NOW』、新作アクション『Phantom Blade Zero』などが登場 | Slice Into GFN Thursday: ‘Phantom Blade Zero’ Launches on GeForce NOW",
-   "text": "NVIDIAのクラウドゲーム『GeForce NOW』、新作アクション『Phantom Blade Zero』などが登場 | Slice Into GFN Thursday: ‘Phantom Blade Zero’ Launches on GeForce NOW | GeForce NOW / Phantom Blade Zero / NVIDIA / クラウドゲーム / ワールドオブウォークラフト / サイバーパンク2077 / ウィッチャー3 / 新作ゲーム / クラウドゲーム / GeForce NOW / ゲーム / NVIDIA",
-   "urls": [
-    "https://blogs.nvidia.com/blog/geforce-now-thursday-phantom-blade-zero/"
    ]
   }
  ]

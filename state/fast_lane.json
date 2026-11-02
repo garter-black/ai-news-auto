@@ -52,6 +52,19 @@
       "title": "Introducing the Grid Protectors Program",
       "url": "https://openai.com/index/grid-protectors-program"
     },
+    "1b0064df51b95a9e": {
+      "detectedAt": "2026-11-02T15:09:24+00:00",
+      "finishedAt": "2026-11-02T15:12:16+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41468969945",
+      "slug": "anthropic-s1a-amendment-ant-nasdaq",
+      "source": "radar-official",
+      "sourcePublishedAt": "2026-11-02T15:09:24+00:00",
+      "startedAt": "2026-11-02T15:10:58+00:00",
+      "title": "Anthropic, PBC - S-1/A-1",
+      "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026068676/anthropicpbc-sx1ax1.htm"
+    },
     "1fe4326766c89237": {
       "detectedAt": "2026-11-01T05:05:24+00:00",
       "finishedAt": "2026-11-01T05:08:11+00:00",

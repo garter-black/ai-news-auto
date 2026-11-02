@@ -4177,6 +4177,15 @@
       "skipped": true,
       "url": "https://www.fsa.go.jp/common/conference/minister/2026b/20261020-1.html"
     },
+    "1b0064df51b95a9e": {
+      "at": "2026-11-02T15:12:16.344887+00:00",
+      "major": true,
+      "model": "claude:sonnet",
+      "score": 93,
+      "section": "ai",
+      "slug": "anthropic-s1a-amendment-ant-nasdaq",
+      "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026068676/anthropicpbc-sx1ax1.htm"
+    },
     "1b0888fd1ea94f51": {
       "at": "2026-10-26T17:52:50.055161+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12176,28 +12185,6 @@
   },
   "quality_log": [
     {
-      "accepted": true,
-      "at": "2026-10-30T08:31:58.768626+00:00",
-      "attempt": 0,
-      "id": "0872902dfeb6a015",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 148.5字・最長 245字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 148.5,
-        "avg_sentence": 29.7,
-        "long_share": 0.018,
-        "max_paragraph": 245,
-        "paragraphs": 11,
-        "sentences": 55
-      },
-      "score": 100,
-      "source": "mhlw",
-      "title": "不正アクセスによる情報漏えい等の事案を踏まえたセキュリティ対策の徹底について（注意喚起）"
-    },
-    {
       "accepted": false,
       "at": "2026-10-30T08:51:09.178200+00:00",
       "attempt": 1,
@@ -18725,6 +18712,26 @@
       "score": 93,
       "source": "openai-news",
       "title": "Introducing the Grid Protectors Program"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T15:12:16.344144+00:00",
+      "attempt": 1,
+      "id": "1b0064df51b95a9e",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 71.2,
+        "avg_sentence": 33.2,
+        "long_share": 0.041,
+        "max_paragraph": 126,
+        "paragraphs": 34,
+        "sentences": 73
+      },
+      "score": 93,
+      "source": "radar-official",
+      "title": "Anthropic, PBC - S-1/A-1"
     }
   ],
   "short_text_retry": {},
