@@ -64,7 +64,7 @@ class EditionTest(unittest.TestCase):
             self.assertEqual(json.loads(path.read_text("utf-8"))["items"][0]["headline"], "NVIDIAが医療向けAI発表")
 
     def test_design_constant_is_read_from_site(self):
-        self.assertIn(dp.design(), ("A", "B", "C"))
+        self.assertEqual(dp.design(), "E2")
         with tempfile.TemporaryDirectory() as tmp:
             file = Path(tmp) / "d.ts"
             file.write_text('export const DIGEST_DESIGN: DigestDesign = "C";\n', "utf-8")
