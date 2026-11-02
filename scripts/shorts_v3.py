@@ -1703,7 +1703,9 @@ def accent_segments(text: str, face: str = "black", base=INK) -> list[tuple[str,
 
 
 def fit_line(text: str, face: str, sizes: range, width: int, color=INK, accent: bool = True, tracking: float = 0.0) -> np.ndarray:
-    for size in sizes:
+    # 決めた大きさで入らなければ、さらに小さく（24px まで）。それでも入らないときだけ止める（長い数字・単位で描画が止まらないように）
+    smallest = min(sizes) if len(sizes) else 40
+    for size in list(sizes) + list(range(smallest - 2, 23, -2)):
         spr = render_text(accent_segments(text, face, color) if accent else [(text, face, color)], size, tracking)
         if spr.shape[1] <= width:
             return spr

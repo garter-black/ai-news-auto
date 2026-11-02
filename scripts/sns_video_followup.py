@@ -169,7 +169,7 @@ def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_a
         if retry_dry and r.get("status") == "dry_run":
             return True
         why = f"{r.get('reason', '')} {' '.join(v.get('reasons', [''])[0] for v in (r.get('versions') or {}).values() if v.get('reasons'))}"
-        return r.get("status") == "gate_failed" and int(r.get("tries", 1)) < 2 and bool(re.search(r"撮れる|台本|公式ページか台本が無い", why))
+        return r.get("status") == "gate_failed" and int(r.get("tries", 1)) < 2 and bool(re.search(r"撮れる|台本|公式ページか台本が無い|文字が入りません", why))
 
     done = {k for k, r in (state.get("videos") or {}).items() if not retry(r)}
     rows = []
