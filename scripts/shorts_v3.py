@@ -85,7 +85,8 @@ ZOOM_BLOCK = 1.35  # 行に寄るときの最小ズーム（ページ幅いっ�
 # 時間
 LEAD = 0.15
 GAP = 0.26
-END_SEC = 1.3  # 締めのカード（1.5秒以下）
+END_HOLD = 0.8  # 締めの声のあと、最後の画面を残す時間（締めのカードは作らない）
+CREDIT_SEC = 1.4  # 最後の場面に小さく出すクレジットの長さ
 HOOK_TEXT_MAX = 1.7  # つかみの文字はこの時刻までに消す（ゲートは 2.0 秒）
 TARGET_MAX = 30.5
 TARGET_MIN = 20.5
@@ -503,12 +504,17 @@ def script_system() -> str:
   例の形:「Claudeの最上位、月200ドルの価値ある？」。payoff はその答えの手がかりになる数字のキーワード（8字以内・資料の表記どおり。例: 月200ドル）。
   speech は text を自然に読む1文（22字以内）。block / target は payoff の証拠になる画面の文字。
   できれば文字の大きい行（番号に「|大」が付いた行。料金表の大きな金額など）を選ぶ。最初の画面になるので見栄えが大事。
-- beats: ちょうど4つ。1つ目は「見る人にとっての意味」（誰の仕事・お金にどう関係するか）を一言で。2〜4つ目は証拠を1つずつ。
-  keyword: 画面に大きく出す言葉。2〜8字（例: Proの10倍、5時間制限なし）。文にしない。句読点を付けない。
+- beats: ちょうど4つ。「何が変わったか」で終わらせず、見る人が次に動けるところまで案内する。順番と役目は固定:
+  1. 何が変わった: 変化を1つにまとめる（例: 名前がUltraに・価格は据え置き）。
+  2. 得する人: 誰の仕事・お金に、なぜ効くか（記事の事実で。例: Proの上限によく当たる人→毎週10倍・5時間制限なし）。
+  3. 向かない人・注意: 記事にある条件・注意点（例: 月払いのみ／アプリ経由は価格が違うことがある／日本での提供は未確認／組織はTeam・Enterprise）。
+  4. 今すること: 具体的な次の一歩（例: 今の契約者は手続き不要・設定の使用状況で確認／新規は公式の料金ページでProやMaxと比べる）。
+     証拠はその手順や条件が書かれた公式ページの行（ヘルプのQ&Aの答え・料金ページの該当プラン）。
+  keyword: 画面に大きく出す言葉。2〜8字（例: 手続き不要、Proの10倍、月払いのみ）。文にしない。句読点を付けない。
   sub: 補足（14字以内。不要なら空）。
-  speech: 読み上げ。1〜2文・合計38字以内。keyword の数字・名前を必ず含める。
+  speech: 読み上げ。1〜2文・合計45字以内。keyword の数字・名前を必ず含める。
   block: 下の「画面の文字」一覧の番号（例: 1-23）。target: その行の文字から、この beat の証拠になる部分を**一文字も変えずに**抜き出す（2〜40字。英語なら英語のまま）。
-  証拠が無い beat（1つ目など）は、話に一番近い見出し・大きな文字の行（|大）を選ぶ。長い本文の段落は選ばない。
+  証拠の行は見出し・大きな文字（|大）・短い行を優先し、長い本文の段落は選ばない。
 - **画面の文字は証拠の場所を選ぶためだけに使う。** 画面にあっても記事（資料）に無い事実・数字は、keyword・sub・speech に書かない。
 - compare: 2つを倍率で比べられる事実が資料にあるときだけ。beat はそれを話す beat の番号（1〜4）、base は基準（例: Pro）、subject は比べる相手（例: Ultra）、
   ratio は資料の表記どおりの倍率（例: 10倍）。無ければ beat=0、他は空文字。
@@ -568,8 +574,8 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
             out.append(f"beat{i}.keyword は2〜8字で句読点なし（{kw}）。")
         if len(b.get("sub", "")) > 16:
             out.append(f"beat{i}.sub は14字以内。")
-        if len(b.get("speech", "")) > 48:
-            out.append(f"beat{i}.speech が長すぎます（38字以内）。")
+        if len(b.get("speech", "")) > 52:
+            out.append(f"beat{i}.speech が長すぎます（45字以内）。")
     joined = json.dumps(s, ensure_ascii=False)
     if "ざっくり" in joined:
         out.append("「ざっくり」は使わない。")
@@ -693,8 +699,8 @@ def narrate(script: dict, tts_kind: str, work: Path) -> Narration:
         for line, clip in zip(lines, clips):
             line.start, line.end = t, t + len(clip) / SR
             t = line.end + GAP
-        end_start = lines[-1].end + 0.32
-        total = end_start + END_SEC
+        total = lines[-1].end + END_HOLD
+        end_start = total  # 締めのカードは無い（最後の場面のまま終わる）
         if total < TARGET_MIN and speed > 1.06:
             speed -= 0.08  # 短すぎる（20秒未満）ときは少しゆっくり読む
             log(f"   [v3] {total:.1f}秒で短い → 速さ {speed:.2f} で読み直し")
@@ -883,7 +889,7 @@ def build_audio(narr: Narration, events: list[dict], work: Path, bgm_on: bool = 
     sfx = np.zeros(n, dtype=np.float32)
     whoosh, pop, click = sfx_whoosh(), sfx_pop(), sfx_click()
     for e in events:
-        if e["kind"] in ("move", "cut", "end"):
+        if e["kind"] in ("move", "cut"):
             _add(sfx, whoosh * (0.7 if e["kind"] == "move" else 1.0), e["t"] - 0.06)
         elif e["kind"] in ("pop", "chart"):
             _add(sfx, pop, e["t"])
@@ -1120,7 +1126,6 @@ class Plan:
     texts: list[TextItem]
     events: list[dict]
     focus: list[dict]
-    end_card: np.ndarray
     credits: list[str]
 
 
@@ -1175,7 +1180,10 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         prev_page = moves[-1].cam.page
         a_t = line.start - 0.16
         cut = tg.page != prev_page
-        block_cam = frame_rect(page, tg.page, tg.block.rect if tg.block.rect[2] - tg.block.rect[0] > 0.5 * page.width else tg.rect, 0.96, 1.6, zmin=1.0 if tg.block.rect[2] - tg.block.rect[0] > 0.5 * page.width else ZOOM_BLOCK)
+        wide_block = tg.block.rect[2] - tg.block.rect[0] > 0.5 * page.width
+        # 行へ: 段落の幅を基準に、上下は証拠の行に合わせる（小さすぎる字にならないよう 1.25 倍以上）
+        line_rect = (tg.block.rect[0], tg.rect[1], tg.block.rect[2], tg.rect[3]) if wide_block else tg.rect
+        block_cam = frame_rect(page, tg.page, line_rect, 0.96, 1.6, zmin=1.25 if wide_block else ZOOM_BLOCK)
         moves.append(Move(a_t, 0.45 if cut else 0.55, block_cam, cut=cut))
         ev(a_t, "cut" if cut else "move", f"beat{i}: 行へ")
         b_t = line.start + max(0.85, 0.42 * dur)
@@ -1201,7 +1209,6 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         moves.append(Move(c_t, 0.7, hook_close))
         ev(c_t, "move", "締め: 最初の数字へ")
         spots.append(Spot(c_t + 0.35, narr.end_start, t0.page, t0.rect))
-    ev(narr.end_start, "end", "締めのカード")
     camera = Camera(first, moves)
 
     # 文字
@@ -1226,7 +1233,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         else:
             texts.append(TextItem("keyword", beat["keyword"], kw, *place_in_zone(kw), t_in, t_out))
     concl_spr = wrapped(script["conclusion"]["text"], "black", range(92, 70, -2), zone_w, 2)
-    texts.append(TextItem("conclusion", script["conclusion"]["text"], concl_spr, *place_in_zone(concl_spr), concl.start - 0.1, narr.end_start))
+    texts.append(TextItem("conclusion", script["conclusion"]["text"], concl_spr, *place_in_zone(concl_spr), concl.start - 0.1, narr.total + 1))
     # 出典（どのページか）: 小さく1行・ページが変わったら切り替える
     spans: list[list] = []
     for m in [Move(0.0, 0, first)] + camera.moves:
@@ -1234,10 +1241,22 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
             if spans:
                 spans[-1][2] = m.t
             spans.append([m.cam.page, m.t, narr.end_start])
+    credit_t = narr.total - CREDIT_SEC
     for page_no, a, b in spans:
+        b = min(b, credit_t)
+        if b - a < 0.3:
+            continue
         label = _source_label(pages[page_no])
         spr = fit_line(label, "bold", range(28, 22, -2), zone_w, color=SUBTLE, accent=False)
         texts.append(TextItem("source", label, spr, TEXT_ZONE[0], SOURCE_Y, a, b, enter=a > 0))
+    # クレジット: 締めのカードの代わりに、最後の場面の出典の位置へ小さく1行（説明文にも必ず入れる）
+    voice = narr.voice
+    voice_text = f"音声 {voice['credit']}" if voice.get("credit") else "音声 試作の声（本番は VOICEVOX）"
+    hosts = "・".join(dict.fromkeys(p.host for p in pages))
+    credit = f"{voice_text}　画面 {hosts}（公式）"
+    spr = fit_line(credit, "bold", range(26, 20, -2), zone_w, color=SUBTLE, accent=False)
+    texts.append(TextItem("credit", credit, spr, TEXT_ZONE[0], SOURCE_Y, credit_t, narr.total + 1))
+    credits = [credit]
 
     # 注目の場所（画面上の枠）: 字幕がかぶらないかをゲートで見る
     focus = []
@@ -1248,9 +1267,8 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
             x1, y1 = cam.map(sp.rect[2], sp.rect[3])
             focus.append({"t0": round(sp.t0, 3), "t1": round(sp.t1, 3), "bbox": [round(PANEL[0] + x0, 1), round(PANEL[1] + y0, 1), round(PANEL[0] + x1, 1), round(PANEL[1] + y1, 1)]})
 
-    end_card, credits = make_end_card(narr, pages, texts)
     events.sort(key=lambda e: e["t"])
-    return Plan(article, script, narr, pages, targets, camera, spots, clicks, charts, texts, events, focus, end_card, credits)
+    return Plan(article, script, narr, pages, targets, camera, spots, clicks, charts, texts, events, focus, credits)
 
 
 def stage_bg() -> np.ndarray:
@@ -1260,34 +1278,6 @@ def stage_bg() -> np.ndarray:
     glow = np.clip(1 - d, 0, 1) ** 2 * 14
     base = np.array(STAGE, dtype=np.float32)[None, None, :] + glow[..., None] * np.array([0.6, 0.8, 1.2], dtype=np.float32)
     return np.clip(base, 0, 255).astype(np.uint8)
-
-
-def make_end_card(narr: Narration, pages: list[Page], texts: list[TextItem]) -> tuple[np.ndarray, list[str]]:
-    """締め（1.3秒）: サイソクニュース・URL・声と出典のクレジット。小さく・静かに"""
-    t0, t1 = narr.end_start, narr.total
-    rows = [
-        ("end_brand", BRAND, "black", 64, WHITE),
-        ("end_url", SITE, "bold", 40, (199, 210, 227)),
-    ]
-    voice = narr.voice
-    credits = [SITE]
-    voice_text = f"音声：{voice['credit']}" if voice.get("credit") else "音声：試作の声（本番は VOICEVOX）"
-    hosts = "・".join(dict.fromkeys(p.host for p in pages))
-    small = [voice_text, f"出典：{hosts}（公式ページ）"]
-    credits += small
-    for text in small:
-        rows.append(("end_credit", text, "bold", 28, SUBTLE))
-    sprites = [(role, text, fit_line(text, face, range(size, size - 10, -2), TEXT_ZONE[2] - TEXT_ZONE[0], color=color, accent=False)) for role, text, face, size, color in rows]
-    gaps = [26, 56, 14]
-    total_h = sum(s.shape[0] for _, _, s in sprites) + sum(gaps[: len(sprites) - 1])
-    y = (H - total_h) // 2 - 80
-    card = stage_bg()
-    for k, (role, text, spr) in enumerate(sprites):
-        x = (W - spr.shape[1]) // 2
-        blend(card, spr, x, y)
-        texts.append(TextItem(role, text, spr, x, y, t0, t1, enter=False))
-        y += spr.shape[0] + (gaps[k] if k < len(gaps) else 0)
-    return card, credits
 
 
 # --------------------------------------------------------------------------- #
@@ -1557,11 +1547,8 @@ class Renderer:
 
     def frame(self, i: int) -> np.ndarray:
         t = i / FPS
-        out_k = ease((t - self.end_start) / 0.3) if t >= self.end_start else 0.0
-        if out_k >= 1:
-            return self.plan.end_card
         frame = self.stage.copy()
-        panel = self.panel(min(t, self.end_start))
+        panel = self.panel(t)
         # 角を丸くして貼る（角の4か所だけ背景と混ぜる）
         r = RADIUS
         for (sy, sx, flip) in ((slice(0, r), slice(0, r), (False, False)), (slice(0, r), slice(PW - r, PW), (False, True)), (slice(PH - r, PH), slice(0, r), (True, False)), (slice(PH - r, PH), slice(PW - r, PW), (True, True))):
@@ -1573,8 +1560,6 @@ class Renderer:
             panel[sy, sx] = (panel[sy, sx] * a[..., None] + self.panel_stage[sy, sx] * (1 - a[..., None])).astype(np.uint8)
         frame[PANEL[1] : PANEL[3], PANEL[0] : PANEL[2]] = panel
         for item in self.plan.texts:
-            if item.role.startswith("end_"):
-                continue
             if not (item.t0 - 1e-6 <= t < item.t1 + 0.18):
                 continue
             age = t - item.t0 - item.delay
@@ -1585,8 +1570,6 @@ class Renderer:
             alpha = k_in * k_out
             dy = int((1 - k_in) * 26 - (1 - k_out) * 10)
             blend(frame, item.sprite, item.x, item.y + dy, alpha)
-        if out_k > 0:
-            frame = ((frame.astype(np.uint16) * int((1 - out_k) * 256) + self.plan.end_card.astype(np.uint16) * int(out_k * 256)) >> 8).astype(np.uint8)
         return frame
 
 
@@ -1643,10 +1626,10 @@ def text_records(plan: Plan) -> list[dict]:
     for item in plan.texts:
         bbox = item.bbox()
         box = list(TEXT_ZONE) if item.role in ("hook", "keyword", "sub", "conclusion") else [0, 0, W, H]
-        if item.role == "source":
+        if item.role in ("source", "credit"):
             box = [TEXT_ZONE[0], SOURCE_Y - 4, TEXT_ZONE[2], PANEL[1]]
-        size = {"hook": 70, "keyword": 88, "sub": 34, "conclusion": 70, "source": 22, "end_brand": 54, "end_url": 30, "end_credit": 22}.get(item.role, 22)
-        color = ACCENT if item.role == "keyword" else (SUBTLE if item.role in ("sub", "source", "end_credit") else WHITE)
+        size = {"hook": 70, "keyword": 88, "sub": 34, "conclusion": 70, "source": 22, "credit": 20}.get(item.role, 22)
+        color = ACCENT if item.role == "keyword" else (SUBTLE if item.role in ("sub", "source", "credit") else WHITE)
         out.append(
             {
                 "role": item.role,
@@ -1656,7 +1639,7 @@ def text_records(plan: Plan) -> list[dict]:
                 "size": int(item.sprite.shape[0] * 0.75),
                 "min_size": size * 3 // 4,
                 "contrast": round(min(gate.contrast(color, STAGE), gate.contrast(WHITE, STAGE)), 2),
-                "missing": gate.missing_glyphs(item.text, shorts.font("black" if item.role in ("hook", "keyword", "conclusion", "end_brand") else "bold", 40)),
+                "missing": gate.missing_glyphs(item.text, shorts.font("black" if item.role in ("hook", "keyword", "conclusion") else "bold", 40)),
                 "safe": True,
                 "t0": round(item.t0, 3),
                 "t1": round(item.t1, 3),
@@ -1707,6 +1690,7 @@ def make_meta(a: dict, script: dict, voice: dict, pages: list[Page]) -> dict:
     for p in pages:
         lines.append(f"画面：{p.host}（公式ページ） {p.url}")
     lines.append("BGM・効果音：サイソクニュース自作")
+    lines.append(SITE)
     lines += ["", " ".join(tags)]
     return {"title": title, "description": "\n".join(lines), "hashtags": tags, "url": url}
 
@@ -1717,7 +1701,7 @@ def contact_sheet(mp4: Path, plan: Plan, out: Path) -> None:
     for e in plan.events:
         if e["kind"] in ("move", "cut", "chart", "pop"):
             marks.append((e["t"] + (0.75 if e["kind"] in ("move", "cut") else 0.6), f"{e['t']:.1f}s {e['note'] or e['kind']}"))
-    marks.append((plan.narr.end_start + 0.6, f"{plan.narr.end_start:.1f}s 締め"))
+    marks.append((plan.narr.total - 0.4, f"{plan.narr.total - 0.4:.1f}s 最後（クレジット）"))
     marks = sorted({round(t, 2): (t, lab) for t, lab in marks}.values())[:14]
     tw, th = 216, 384
     cols = 7
@@ -1818,6 +1802,7 @@ def make_video(
                 "total": round(plan.narr.total, 3),
                 "end_start": round(plan.narr.end_start, 3),
                 "allowed_silences": [[0.0, LEAD + 0.05], [round(plan.narr.lines[-1].end, 3), round(plan.narr.total, 3)]],
+                "end_card": False,
                 "texts": text_records(plan),
                 "credits_shown": plan.credits,
                 "voice": plan.narr.voice,

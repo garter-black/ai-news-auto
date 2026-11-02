@@ -604,7 +604,10 @@ def check_content(report: dict, article: dict, profile: dict, result: GateResult
     need_image = report.get("image_credit")
     if need_image and not any(need_image in c for c in credits):
         result.reasons.append(f"画像のクレジットが画面に無い（{need_image}）")
-    if "ai-tech-express.jp" not in "".join(credits):
+    if report.get("version") == "v3":  # v3 は締めのカードが無い。URL は投稿の説明文に入れる
+        if "ai-tech-express.jp" not in (report.get("description") or ""):
+            result.reasons.append("説明文にサイトの URL が無い")
+    elif "ai-tech-express.jp" not in "".join(credits):
         result.reasons.append("締めにサイトの URL が無い")
 
 
@@ -622,7 +625,7 @@ V3_SEPARATION = (12.0, 18.0)  # 声と BGM の差（声が出ている間の RMS
 V3_TITLE_MAX = 2.0  # つかみ（題）の文字は 2 秒までに消す
 V3_TEXT_RATIO = 0.18  # 1フレームの中で文字が占める面積の上限
 V3_MAX_FONTS = 2
-V3_CAPTION_ROLES = ("hook", "keyword", "sub", "conclusion", "source")
+V3_CAPTION_ROLES = ("hook", "keyword", "sub", "conclusion", "source", "credit")
 # 飾りの線・帯・枠を描く呼び出し。v3 の描画ではマスク（_mask_*）・比較グラフの棒（data_bars）・カーソル（_cursor_sprite）以外で禁止
 LINT_CALLS = {"line", "rectangle", "rounded_rectangle", "polygon", "draw_rect", "hline", "vline", "drawbox"}
 LINT_ALLOWED = ("_mask_", "data_bars", "_cursor_sprite")
@@ -751,7 +754,7 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
     # 画面に描いた数字（キーワード・グラフ・締め）がすべて記事にあり、グラフの倍率は台本と同じ表記
     material_numbers = number_tokens(material_text(article or {})) | {"0"}
     for text in report.get("rendered_strings") or []:
-        if text.startswith(("音声：", "出典：", "公式ページ：")) or text in ("ai-tech-express.jp",):
+        if text.startswith(("音声", "出典：", "公式ページ：")) or text in ("ai-tech-express.jp",):
             continue
         if bad := numbers_ok(text, material_numbers):
             result.reasons.append(f"v3: 画面の数字 {', '.join(sorted(set(bad)))} が記事に無い（{text[:16]}）")
