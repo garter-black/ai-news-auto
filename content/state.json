@@ -3344,6 +3344,12 @@
       "skipped": true,
       "url": "https://www.mext.go.jp/b_menu/shingi/chousa/shougai/054/kaisai/mext_02480.html"
     },
+    "08479a0194d913a5": {
+      "at": "2026-11-02T01:45:31.559201+00:00",
+      "reason": "short text 551",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/web_magazine/"
+    },
     "0872902dfeb6a015": {
       "at": "2026-10-30T08:31:58.769136+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -4668,6 +4674,12 @@
       "reason": "quality: 本文が短い（2279字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000041.000098249.html"
+    },
+    "2ef5fe7a27eb2fbd": {
+      "at": "2026-11-02T01:45:31.559263+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（アワード）",
+      "skipped": true,
+      "url": "https://www.maff.go.jp/j/press/nousin/kouryu/261102.html"
     },
     "2f0f1fe3e901c32e": {
       "at": "2026-10-30T05:54:26.203360+00:00",
@@ -10334,6 +10346,14 @@
       "skipped": true,
       "url": "https://newsroom.kddi.com/news/detail/kddi_nr-1211_4785.html"
     },
+    "e1a0a06cf111f8c7": {
+      "at": "2026-11-02T01:45:47.966788+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "public",
+      "slug": "mext-foreign-education-data-2026",
+      "url": "https://www.mext.go.jp/b_menu/toukei/data/syogaikoku/1415074_00025.htm"
+    },
     "e1abbae2d2cfe893": {
       "at": "2026-10-29T18:12:32.091094+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11391,71 +11411,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T02:43:04.331655+00:00",
-      "attempt": 0,
-      "id": "2d80bd688a0dc98f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 65.3,
-        "avg_sentence": 30.9,
-        "long_share": 0.0,
-        "max_paragraph": 110,
-        "paragraphs": 27,
-        "sentences": 57
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "鉱工業生産26年9月－熊本地震や台風・豪雨の影響を受けながらも、7-9月期は小幅な増産を確保"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T03:01:38.879809+00:00",
-      "attempt": 1,
-      "id": "f9bcba43eff0987b",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2200字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（395字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 115.5,
-        "avg_sentence": 53.6,
-        "long_share": 0.429,
-        "max_paragraph": 201,
-        "paragraphs": 13,
-        "sentences": 28
-      },
-      "score": null,
-      "source": "aws-japan-blog",
-      "title": "AWS Weekly Roundup: Amazon Polly の Generative エンジン、Trainium 向け TorchNeuron など (2"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T03:01:57.220790+00:00",
-      "attempt": 2,
-      "id": "f9bcba43eff0987b",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（368字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 124.1,
-        "avg_sentence": 64.4,
-        "long_share": 0.519,
-        "max_paragraph": 193,
-        "paragraphs": 14,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "aws-japan-blog",
-      "title": "AWS Weekly Roundup: Amazon Polly の Generative エンジン、Trainium 向け TorchNeuron など (2"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T03:02:03.285283+00:00",
@@ -18128,6 +18083,70 @@
       "score": 100,
       "source": "riken",
       "title": "生きた細胞内の成分を三次元動画で捉える顕微鏡を開発"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T01:45:38.804079+00:00",
+      "attempt": 1,
+      "id": "e1a0a06cf111f8c7",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "easy_markdown が「## ひとことで言うと」から始まっていない"
+      ],
+      "readability": {
+        "avg_paragraph": 128.4,
+        "avg_sentence": 46.7,
+        "long_share": 0.136,
+        "max_paragraph": 192,
+        "paragraphs": 8,
+        "sentences": 22
+      },
+      "score": null,
+      "source": "mext",
+      "title": "「諸外国の教育情報」令和8（2026）年版 を公表しました。"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T01:45:44.799752+00:00",
+      "attempt": 2,
+      "id": "e1a0a06cf111f8c7",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 54.1字・60字超の文が 38% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 96.1,
+        "avg_sentence": 54.1,
+        "long_share": 0.375,
+        "max_paragraph": 154,
+        "paragraphs": 9,
+        "sentences": 16
+      },
+      "score": 100,
+      "source": "mext",
+      "title": "「諸外国の教育情報」令和8（2026）年版 を公表しました。"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T01:45:47.966310+00:00",
+      "attempt": 0,
+      "id": "e1a0a06cf111f8c7",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 94.7,
+        "avg_sentence": 25.6,
+        "long_share": 0.027,
+        "max_paragraph": 148,
+        "paragraphs": 10,
+        "sentences": 37
+      },
+      "score": 100,
+      "source": "mext",
+      "title": "「諸外国の教育情報」令和8（2026）年版 を公表しました。"
     }
   ],
   "short_text_retry": {}
