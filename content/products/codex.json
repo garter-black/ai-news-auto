@@ -6,33 +6,43 @@
   "companyName": "OpenAI",
   "category": "開発ツール",
   "overview": {
-    "text": "Codexは、プログラム作成や開発を支援するAIツールです。OpenAIによって提供されています。2021年8月に初期のAPIが発表されました。",
+    "text": "Codexは、プログラムの作成や開発を支援するAIツールです。OpenAIによって提供されています。2021年8月のAPI発表以降、コード生成や自動化の機能が継続的にアップデートされています。",
     "sources": [
-      "chatgpt-codex-shared-usage-limits",
-      "oracle-ai-workspace-chatgpt",
-      "shopify-cto-codex-ai-prototyping"
+      "shopify-cto-codex-ai-prototyping",
+      "openai-gpt6-astra-ultrafast-release"
     ]
   },
   "facts": [
     {
       "label": "提供開始",
-      "value": "2021年08月",
+      "value": "2021年8月（初期API）",
       "sources": [
         "shopify-cto-codex-ai-prototyping"
       ]
     },
     {
       "label": "日本での提供",
-      "value": "日本からも問題なく利用可能",
+      "value": "日本から利用可能",
       "sources": [
         "openai-codex-astra-merge-ceo-interview",
+        "shopify-cto-codex-ai-prototyping",
+        "openai-codex-sites-update-scheduled-tasks-personalization"
+      ]
+    },
+    {
+      "label": "使える場所",
+      "value": "ChatGPT、API、各種連携プラグイン",
+      "sources": [
+        "chatgpt-codex-shared-usage-limits",
+        "qodo-codex-plugin-code-review",
         "shopify-cto-codex-ai-prototyping"
       ]
     },
     {
       "label": "向いている人",
-      "value": "開発者、金融アナリスト、法務など",
+      "value": "開発者、金融アナリスト、法務担当者",
       "sources": [
+        "qodo-codex-plugin-code-review",
         "sullivan-cromwell-openai-codex-legal-tool",
         "openai-codex-benefit-street-partners-financial-tool"
       ]
@@ -40,26 +50,26 @@
   ],
   "capabilities": [
     {
-      "text": "大まかな指示から動くプロトタイプやWebサイトを数分から1日で作成できます。",
+      "text": "大まかな指示から動くプロトタイプやWebアプリケーションを短時間で構築できます。",
       "sources": [
         "shopify-cto-codex-ai-prototyping",
         "openai-codex-benefit-street-partners-financial-tool"
       ]
     },
     {
-      "text": "システム障害の発生時に原因を特定し、数分で自動修正パッチを適用できます。",
+      "text": "プラグイン等と連携し、書いた直後のコードのバグや他サービスへの影響を点検できます。",
       "sources": [
-        "openai-codex-production-monitoring-demo"
+        "qodo-codex-plugin-code-review"
       ]
     },
     {
-      "text": "契約書案と過去の判例、顧客のルールを突合し、変更履歴付きの修正案を作れます。",
+      "text": "スケジュールタスクのネイティブ統合や個人向け表示最適化機能を利用できます。",
       "sources": [
-        "sullivan-cromwell-openai-codex-legal-tool"
+        "openai-codex-sites-update-scheduled-tasks-personalization"
       ]
     },
     {
-      "text": "生成速度が大幅に向上し、コード生成において最大8倍の高速化を達成しています。",
+      "text": "Ultrafastモードにより、従来のStandard比で最大8倍の超高速推論でコードを生成できます。",
       "sources": [
         "openai-gpt6-astra-ultrafast-release"
       ]
@@ -67,13 +77,13 @@
   ],
   "pricing": [
     {
-      "text": "Plus、Pro、Businessの各プランに含まれており、利用枠が共通化されます。",
+      "text": "Plus、Pro、Businessの各有料プランに紐づいて提供されます。",
       "sources": [
         "chatgpt-codex-shared-usage-limits"
       ]
     },
     {
-      "text": "API経由での利用には従量課金が適用されます。",
+      "text": "API経由での利用には、モデルごとの従量課金が適用されます。",
       "sources": [
         "shopify-cto-codex-ai-prototyping",
         "openai-codex-benefit-street-partners-financial-tool"
@@ -85,41 +95,53 @@
       "text": "日本からも問題なく利用できます。",
       "sources": [
         "openai-codex-astra-merge-ceo-interview",
-        "shopify-cto-codex-ai-prototyping"
+        "shopify-cto-codex-ai-prototyping",
+        "openai-codex-sites-update-scheduled-tasks-personalization"
+      ]
+    },
+    {
+      "text": "発表の時点では、日本語対応に関する特別な地域制限などの案内はありません。",
+      "sources": [
+        "openai-codex-astra-merge-ceo-interview"
       ]
     }
   ],
   "howto": [
     {
-      "text": "OpenAIのアカウントを作成し、ChatGPTの有料プランに加入するかAPIを利用します。",
+      "text": "OpenAIの公式サイトでアカウントを作成し、有料プランに加入するかAPI利用手続きを行います。",
       "sources": [
         "openai-codex-astra-merge-ceo-interview",
         "shopify-cto-codex-ai-prototyping"
       ]
     },
     {
-      "text": "対話画面やAPIを通じて、自然言語でプログラミングや業務自動化の指示を入力します。",
+      "text": "Cursorなどの連携エディタやAPIキーを設定して呼び出せます。",
       "sources": [
-        "openai-codex-astra-merge-ceo-interview",
+        "shopify-cto-codex-ai-prototyping"
+      ]
+    },
+    {
+      "text": "チャット画面やSites機能で自然言語による指示を与えて使い始められます。",
+      "sources": [
         "openai-codex-sites-update-scheduled-tasks-personalization"
       ]
     }
   ],
   "differences": [
     {
-      "text": "12月からChatGPTと利用枠が共通になり、使った量はトークンで測定されるようになります。",
+      "text": "12月からはChatGPTのPlus・Pro・Businessの利用枠がCodexと共通になります。",
       "sources": [
         "chatgpt-codex-shared-usage-limits"
       ]
     },
     {
-      "text": "指示の足りない部分をAIが常識で自動補完するエージェントとしての動作が可能になりました。",
+      "text": "GPT-6 Astraとの統合や「Ultrafast」モードの追加により、生成速度が最大8倍に向上しています。",
       "sources": [
-        "openai-codex-astra-merge-ceo-interview"
+        "openai-gpt6-astra-ultrafast-release"
       ]
     },
     {
-      "text": "Sites機能において定時自動更新や個人向け表示の最適化機能が追加されました。",
+      "text": "Sites機能にスケジュールタスクや外部コネクタのパーソナライズ機能が追加されました。",
       "sources": [
         "openai-codex-sites-update-scheduled-tasks-personalization"
       ]
@@ -127,28 +149,38 @@
   ],
   "faq": [
     {
-      "q": "無料でも使えますか？",
-      "a": "有料プランやAPI利用を通じて提供されており、無料トライアルでの提供については案内がありません。",
+      "q": "ChatGPTの利用枠と共通化されますか？",
+      "a": "12月からPlus、Pro、Businessの利用枠がChatGPTとCodexで共通になります。",
       "sources": [
-        "chatgpt-codex-shared-usage-limits",
-        "openai-codex-astra-merge-ceo-interview"
+        "chatgpt-codex-shared-usage-limits"
       ]
     },
     {
-      "q": "いつから使えますか？",
-      "a": "すでに提供されており、APIやChatGPTなどを通じて今日から試すことができます。",
+      "q": "通常のチャットでも利用枠を消費しますか？",
+      "a": "Instantチャットは利用枠を消費しないと説明されています。",
       "sources": [
-        "openai-codex-astra-merge-ceo-interview",
-        "shopify-cto-codex-ai-prototyping"
+        "chatgpt-codex-shared-usage-limits"
       ]
     },
     {
-      "q": "どのような人が向いていますか？",
-      "a": "開発者だけでなく、非エンジニアのビジネス職や金融アナリスト、法務担当者に向いています。",
+      "q": "Ultrafastモードを使うとどれくらい速くなりますか？",
+      "a": "Codex環境における生成速度が従来のStandard比で最大8倍に高速化されます。",
       "sources": [
-        "openai-codex-astra-merge-ceo-interview",
-        "sullivan-cromwell-openai-codex-legal-tool",
-        "openai-codex-benefit-street-partners-financial-tool"
+        "openai-gpt6-astra-ultrafast-release"
+      ]
+    },
+    {
+      "q": "コードの点検機能は使えますか？",
+      "a": "Qodoなどのプラグインを利用して、書いた直後にコードの点検を受けることができます。",
+      "sources": [
+        "qodo-codex-plugin-code-review"
+      ]
+    },
+    {
+      "q": "Sites機能のデータを自動で更新できますか？",
+      "a": "Sitesの編集画面からスケジュールタスクを直接設定し、定時自動更新を行えます。",
+      "sources": [
+        "openai-codex-sites-update-scheduled-tasks-personalization"
       ]
     }
   ],
@@ -156,22 +188,37 @@
     {
       "date": "2026-09-30",
       "slug": "openai-gpt6-astra-ultrafast-release",
-      "event": "GPT-6 Astraに超高速推論Ultrafastを追加"
+      "event": "2026-09-30にUltrafastを追加"
     },
     {
       "date": "2026-10-16",
       "slug": "openai-codex-sites-update-scheduled-tasks-personalization",
-      "event": "Sitesに定時自動更新と個人向け最適化を追加"
+      "event": "2026-10-16にSites機能のアップデートを発表"
+    },
+    {
+      "date": "2026-10-24",
+      "slug": "openai-codex-benefit-street-partners-financial-tool",
+      "event": "2026-10-24に金融分析ツールの構築事例を公開"
+    },
+    {
+      "date": "2026-10-27",
+      "slug": "sullivan-cromwell-openai-codex-legal-tool",
+      "event": "2026-10-27に法務専用ツールの開発事例を公開"
     },
     {
       "date": "2026-10-28",
       "slug": "shopify-cto-codex-ai-prototyping",
-      "event": "OpenAIが初期のCodex APIを発表"
+      "event": "2021年08月に初期のCodex APIを発表"
+    },
+    {
+      "date": "2026-10-28",
+      "slug": "openai-codex-astra-merge-ceo-interview",
+      "event": "2026-10-28にMergeのCEOが活用術を明かす"
     },
     {
       "date": "2026-11-02",
       "slug": "chatgpt-codex-shared-usage-limits",
-      "event": "12月からChatGPTと利用枠を共通化と発表"
+      "event": "2026-11-02に12月からの利用枠共通化を発表"
     }
   ],
   "related": [
@@ -182,6 +229,7 @@
   ],
   "articles": [
     "chatgpt-codex-shared-usage-limits",
+    "qodo-codex-plugin-code-review",
     "oracle-ai-workspace-chatgpt",
     "chatgpt-pro-business-api-credits-benefit",
     "openai-servicenow-partnership-expansion",
@@ -212,6 +260,7 @@
   ],
   "linkFrom": [
     "chatgpt-codex-shared-usage-limits",
+    "qodo-codex-plugin-code-review",
     "openai-codex-astra-merge-ceo-interview",
     "shopify-cto-codex-ai-prototyping",
     "sullivan-cromwell-openai-codex-legal-tool",
@@ -220,9 +269,9 @@
     "openai-codex-production-monitoring-demo",
     "openai-meet-new-codex-cli-terminal-update"
   ],
-  "signature": "80fafe0e16736324",
-  "primarySignature": "c7156985513f6ea5",
+  "signature": "36569a6b10b17779",
+  "primarySignature": "caab4634a9d61f8a",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:42:14+00:00",
-  "updatedAt": "2026-11-02T05:32:32+00:00"
+  "updatedAt": "2026-11-02T19:35:11+00:00"
 }

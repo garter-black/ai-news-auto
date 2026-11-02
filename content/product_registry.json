@@ -258,6 +258,14 @@
       "category": "AIモデル"
     },
     {
+      "slug": "decisions-api",
+      "name": "Decisions API",
+      "aliases": [],
+      "company": "openai",
+      "companyName": "OpenAI",
+      "category": "アプリ・サービス"
+    },
+    {
       "slug": "deepseek-harness",
       "name": "DeepSeek Harness",
       "aliases": [],
@@ -1026,6 +1034,7 @@
     "Agent Plugins 1.0",
     "AICR",
     "AIインフラ",
+    "AIコードレビュー",
     "AIスロップ",
     "AIファクトリー",
     "AIモデル",
@@ -1134,7 +1143,7 @@
     "自律型AI",
     "音声AI"
   ],
-  "updatedAt": "2026-11-02T19:11:49+00:00",
+  "updatedAt": "2026-11-02T19:35:01+00:00",
   "failed": {
     "gpt-5-6-sol": {
       "at": "2026-10-27T11:05:30+00:00",

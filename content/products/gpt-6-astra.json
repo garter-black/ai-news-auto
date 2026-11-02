@@ -146,6 +146,7 @@
     "claude-opus-5-5"
   ],
   "articles": [
+    "qodo-codex-plugin-code-review",
     "amazon-bedrock-openai-prompt-caching",
     "gpt-6-1-terra-sol-astra-comparison",
     "nvidia-isaac-gpt6-astra-robotics-agile-one",
