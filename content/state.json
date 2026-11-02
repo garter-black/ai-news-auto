@@ -9177,6 +9177,14 @@
       "slug": "nvidia-local-ai-gtc-berlin-spark-station",
       "url": "https://blogs.nvidia.co.jp/blog/local-ai-gtc-rtx-dgx-spark-station-sync/"
     },
+    "b5b10fecc11783bb": {
+      "at": "2026-11-02T06:11:45.303392+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "tech-gadget",
+      "slug": "samsung-galaxy-dakar-2026-youth-olympics",
+      "url": "https://news.samsung.com/jp/young-olympians-at-dakar-202611?utm_source=rss&utm_medium=direct"
+    },
     "b5bd2734bcbd8d3c": {
       "at": "2026-11-02T04:32:09.569410+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9320,6 +9328,14 @@
       "section": "entertainment",
       "slug": "tomb-raider-thirty-years-lara-croft",
       "url": "https://news.xbox.com/ja-jp/2026/10/29/thirty-years-of-lara-croft/"
+    },
+    "b97e8fd8b0de3b75": {
+      "at": "2026-11-02T06:11:25.963155+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "google-agent-eval-engineering-lessons",
+      "url": "https://cloud.google.com/blog/ja/topics/developers-practitioners/four-eval-engineering-lessons/"
     },
     "b9a0620bf0bbf2a0": {
       "at": "2026-10-27T03:04:42.979253+00:00",
@@ -11726,118 +11742,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:21:42.790483+00:00",
-      "attempt": 2,
-      "id": "0c5e0ff6475dedc5",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1653字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 193.4,
-        "avg_sentence": 55.2,
-        "long_share": 0.429,
-        "max_paragraph": 280,
-        "paragraphs": 8,
-        "sentences": 28
-      },
-      "score": null,
-      "source": "maff",
-      "title": "野菜の生育状況及び価格見通し（令和8年11月）について"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:21:57.227821+00:00",
-      "attempt": 1,
-      "id": "3cb550be35eb2430",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（372字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 91.5,
-        "avg_sentence": 47.9,
-        "long_share": 0.19,
-        "max_paragraph": 143,
-        "paragraphs": 11,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "playstation-blog-jp",
-      "title": "2026年10月に発売・配信されたPS VR2タイトルはコレだ！（10月1日～30日）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:22:04.333313+00:00",
-      "attempt": 2,
-      "id": "3cb550be35eb2430",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1303字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（325字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 113.0,
-        "avg_sentence": 56.5,
-        "long_share": 0.375,
-        "max_paragraph": 143,
-        "paragraphs": 8,
-        "sentences": 16
-      },
-      "score": null,
-      "source": "playstation-blog-jp",
-      "title": "2026年10月に発売・配信されたPS VR2タイトルはコレだ！（10月1日～30日）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T05:22:13.390460+00:00",
-      "attempt": 1,
-      "id": "45d97802e5e10632",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 65.5字・60字超の文が 52% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 150.7字・最長 238字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 150.7,
-        "avg_sentence": 65.5,
-        "long_share": 0.522,
-        "max_paragraph": 238,
-        "paragraphs": 10,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "riken",
-      "title": "「未来」の観測が明らかにする光の量子ダイナミクス"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T05:22:17.203647+00:00",
-      "attempt": 0,
-      "id": "45d97802e5e10632",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 65.3字・60字超の文が 52% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 115.6,
-        "avg_sentence": 65.3,
-        "long_share": 0.522,
-        "max_paragraph": 206,
-        "paragraphs": 13,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "riken",
-      "title": "「未来」の観測が明らかにする光の量子ダイナミクス"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T05:36:31.813479+00:00",
@@ -18377,6 +18281,118 @@
       "score": 100,
       "source": "boj",
       "title": "経済・物価情勢の展望（10月、全文）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T06:11:21.303241+00:00",
+      "attempt": 1,
+      "id": "b97e8fd8b0de3b75",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 67.1字・60字超の文が 55% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 162.2字・最長 312字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 162.2,
+        "avg_sentence": 67.1,
+        "long_share": 0.552,
+        "max_paragraph": 312,
+        "paragraphs": 12,
+        "sentences": 29
+      },
+      "score": 100,
+      "source": "google-cloud-blog-ja",
+      "title": "エージェント プラグインの開発から学んだ、評価エンジニアリングの 4 つの教訓"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T06:11:25.962244+00:00",
+      "attempt": 0,
+      "id": "b97e8fd8b0de3b75",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 86.5字・最長 256字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 86.5,
+        "avg_sentence": 37.3,
+        "long_share": 0.052,
+        "max_paragraph": 256,
+        "paragraphs": 25,
+        "sentences": 58
+      },
+      "score": 100,
+      "source": "google-cloud-blog-ja",
+      "title": "エージェント プラグインの開発から学んだ、評価エンジニアリングの 4 つの教訓"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T06:11:31.732691+00:00",
+      "attempt": 1,
+      "id": "b5b10fecc11783bb",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "easy_markdown が「## ひとことで言うと」から始まっていない"
+      ],
+      "readability": {
+        "avg_paragraph": 118.3,
+        "avg_sentence": 59.1,
+        "long_share": 0.45,
+        "max_paragraph": 189,
+        "paragraphs": 10,
+        "sentences": 20
+      },
+      "score": null,
+      "source": "samsung-jp",
+      "title": "Samsung、ユース オリンピック競技大会（ダカール2026）で Samsung Galaxy技術と選手向けプログラムを提供"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T06:11:39.676957+00:00",
+      "attempt": 2,
+      "id": "b5b10fecc11783bb",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 67.7字・60字超の文が 67% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 152.4字・最長 209字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 152.4,
+        "avg_sentence": 67.7,
+        "long_share": 0.667,
+        "max_paragraph": 209,
+        "paragraphs": 8,
+        "sentences": 18
+      },
+      "score": 100,
+      "source": "samsung-jp",
+      "title": "Samsung、ユース オリンピック競技大会（ダカール2026）で Samsung Galaxy技術と選手向けプログラムを提供"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T06:11:45.302295+00:00",
+      "attempt": 0,
+      "id": "b5b10fecc11783bb",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 182.4字・最長 239字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 182.4,
+        "avg_sentence": 25.2,
+        "long_share": 0.0,
+        "max_paragraph": 239,
+        "paragraphs": 8,
+        "sentences": 58
+      },
+      "score": 100,
+      "source": "samsung-jp",
+      "title": "Samsung、ユース オリンピック競技大会（ダカール2026）で Samsung Galaxy技術と選手向けプログラムを提供"
     }
   ],
   "short_text_retry": {},

@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "samsung-galaxy-dakar-2026-youth-olympics",
+   "at": "2026-11-02T06:11:37.008576+00:00",
+   "title": "サムスン、ユース五輪ダカール大会でGalaxy技術と選手向けプログラムを提供",
+   "head": "サムスン、ユース五輪ダカール大会でGalaxy技術と選手向けプログラムを提供 | Samsung、ユース オリンピック競技大会（ダカール2026）で Samsung Galaxy技術と選手向けプログラムを提供",
+   "text": "サムスン、ユース五輪ダカール大会でGalaxy技術と選手向けプログラムを提供 | Samsung、ユース オリンピック競技大会（ダカール2026）で Samsung Galaxy技術と選手向けプログラムを提供 | サムスン / Galaxy / ユースオリンピック / ダカール2026 / オリンピック / ビクトリーセルフィー / スマートフォン / セネガル / スマートフォン / 通信 / 家電",
+   "urls": [
+    "https://news.samsung.com/jp/young-olympians-at-dakar-202611?utm_source=rss&utm_medium=direct"
+   ]
+  },
+  {
+   "slug": "google-agent-eval-engineering-lessons",
+   "at": "2026-11-02T06:11:18.171622+00:00",
+   "title": "Googleの評価エンジニアリング：エージェント開発で学ぶ4つの教訓",
+   "head": "Googleの評価エンジニアリング：エージェント開発で学ぶ4つの教訓 | エージェント プラグインの開発から学んだ、評価エンジニアリングの 4 つの教訓",
+   "text": "Googleの評価エンジニアリング：エージェント開発で学ぶ4つの教訓 | エージェント プラグインの開発から学んだ、評価エンジニアリングの 4 つの教訓 | Google Cloud / エージェント開発 / 評価エンジニアリング / LLM-as-a-Judge / AIテスト / テレメトリー / ゴールデンセット / プラグイン開発 / 生成AI / LLM / 開発ツール / Google Cloud",
+   "urls": [
+    "https://cloud.google.com/blog/ja/topics/developers-practitioners/four-eval-engineering-lessons/"
+   ]
+  },
+  {
    "slug": "boj-outlook-report-october",
    "at": "2026-11-02T05:48:48.756378+00:00",
    "title": "日本銀行が「経済・物価情勢の展望」を公表、今後の金融政策と物価の見通しは",
@@ -1329,16 +1349,6 @@
    "text": "NTTデータ経営研究所、AIで未来の兆しを先読みするコンサル支援「SPARK」を開始 | 「SPARK」始動 ─ AIで未来を先読みする、人間との学習ループ ～NTTデータ経営研究所、AIを活用したコンサルティングサービス「SPARK」を提供開始～ | NTTデータ経営研究所 / SPARK / AIコンサルティング / AI Foresight & Intelligence / 意思決定支援 / 経営戦略 / 生成AI / AIエージェント / AI / コンサルティング / 経営戦略 / 生成AI",
    "urls": [
     "https://www.nttdata-strategy.com/newsrelease/261029/"
-   ]
-  },
-  {
-   "slug": "kddi-london-datacenter-expansion",
-   "at": "2026-10-29T06:12:40.845298+00:00",
-   "title": "KDDIのデータセンター、ロンドンで受電容量を倍増へ。AI時代のインフラ強化に470億円投資",
-   "head": "KDDIのデータセンター、ロンドンで受電容量を倍増へ。AI時代のインフラ強化に470億円投資 | 世界No.1のコネクティビティを有するロンドン データセンターの受電容量を倍増",
-   "text": "KDDIのデータセンター、ロンドンで受電容量を倍増へ。AI時代のインフラ強化に470億円投資 | 世界No.1のコネクティビティを有するロンドン データセンターの受電容量を倍増 | KDDI / データセンター / ロンドン / AI / インフラ / Telehouse / GPU / ネットワーク / 通信 / ビジネス / AI / データセンター",
-   "urls": [
-    "https://newsroom.kddi.com/news/detail/kddi_nr-1222_4792.html"
    ]
   }
  ]
