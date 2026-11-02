@@ -85,6 +85,14 @@ class ComputeTest(unittest.TestCase):
         self.assertIn("1ドル=157.90円（2026-11-02", out[0].text)
         self.assertEqual(cf.yen([(200.0, "")], None), [])
 
+    def test_relative_dates_from_source_date(self):
+        pub = datetime(2026, 10, 30, 3, 0, tzinfo=timezone.utc)
+        out = "\n".join(self.texts("来月１日から、免税制度のリファンド方式への移行がスタートします。来年4月から引下げ。", published=pub))
+        self.assertIn("「来月1日」＝2026年11月1日", out)
+        self.assertIn("「来年4月」＝2027年4月", out)
+        dec = datetime(2026, 12, 10, tzinfo=timezone.utc)
+        self.assertIn("2027年1月1日", "\n".join(self.texts("来月1日から", published=dec)))
+
     def test_past_comparison(self):
         now = datetime(2026, 11, 2, tzinfo=timezone.utc)
         past = [{"slug": "old", "title": "楽天証券が1,400万口座", "at": now - timedelta(days=200), "text": "楽天証券の証券総合口座数が1,400万口座を突破"}]
@@ -212,6 +220,13 @@ class BundleTest(unittest.TestCase):
 
 
 class MoneyTemplateTest(unittest.TestCase):
+    def test_statement_date(self):
+        pub = datetime(2026, 11, 2, 9, 0, tzinfo=timezone.utc)
+        item = {"url": "https://www.mof.go.jp/public_relations/conference/my20261030.html", "published_at": pub}
+        self.assertEqual(fb.statement_date(item, "【冒頭発言】まず…").strftime("%Y-%m-%d"), "2026-10-30")
+        self.assertEqual(fb.statement_date({"url": "https://x.jp/a", "published_at": pub}, "2026年11月1日\n本文").strftime("%Y-%m-%d"), "2026-11-01")
+        self.assertIsNone(fb.statement_date({"url": "https://x.jp/a", "published_at": pub, "published_guessed": True}, "本文"))
+
     def test_money_topic(self):
         self.assertTrue(fb.is_money_topic("public", "防衛特別所得税、2027年1月から"))
         self.assertTrue(fb.is_money_topic("business", "片山財務相、外国人旅行者の免税リファンド方式への移行"))
@@ -228,6 +243,13 @@ class MoneyTemplateTest(unittest.TestCase):
             self.assertIn(heading, prompt)
         self.assertLess(prompt.index("## 何が変わる？"), prompt.index("## 自分の場合の確かめ方"))
         self.assertTrue(out[6].money)
+
+    def test_money_outline_gate(self):
+        rec = {"body": "## 概要\nx\n\n## ガソリン補助金はどう変わる？\ny", "_facts": {"money": True}}
+        self.assertTrue(quality.money_outline_problems(rec))
+        rec["body"] = "## 概要\nx\n## 何が変わる？\na\n## いつから？\nb\n## 誰が対象？\nc\n## 自分の場合の確かめ方\n1. d"
+        self.assertEqual(quality.money_outline_problems(rec), [])
+        self.assertEqual(quality.money_outline_problems({"body": "## 概要", "_facts": {"money": False}}), [])
 
     def test_source_note_allows_bundle(self):
         self.assertIn("確認済みの事実の束", w.WEB_SOURCE_NOTE)

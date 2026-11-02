@@ -127,6 +127,7 @@ class Bundle:
                 "- 割合・差・増減率・ペース・年換算・1つあたり・円への換算は自分で計算しない。使うときは下の結果を「約」も含めて表記どおりに写し、"
                 "「（サイソク編集部の計算）」と添える。この欄に無い計算結果は書かない。\n"
                 "- 比べている2つの数が本当に同じものか、文脈を見て合うものだけ使う（合わないものは使わない）。\n"
+                "- 「来月1日」のような言い方は、下の欄の日付（元記事の日付から数えたもの）で書く。\n"
                 + calc_facts.block(self.computed)
                 + "\n## 「この数字はどう読む？」の章\n"
                 "- 「## まとめ」の直前に「## この数字はどう読む？」の章を置き、計算済みの数字で「何と比べて大きいか小さいか」"
@@ -172,6 +173,7 @@ class Bundle:
             "computed": [c.text for c in self.computed],
             "computedValues": [v for c in self.computed for v in c.values],
             "ladder": bool(self.ladder),
+            "money": self.money,
         }
 
 
@@ -420,6 +422,40 @@ def footnote_group(item: dict, text: str) -> Group | None:
                  body + "\n- 注記は書き写さない。数字を比べる文の近くで、条件（何を数えたか・いつの数か・比べられない相手）を自分の言葉で1〜2文にして添える。", show=False)
 
 
+DATE_PATTERNS = [
+    (re.compile(r"(20\d{2})\s?年\s?(\d{1,2})\s?月\s?(\d{1,2})\s?日"), lambda m: (int(m[1]), int(m[2]), int(m[3]))),
+    (re.compile(r"令和\s?(\d{1,2})\s?年\s?(\d{1,2})\s?月\s?(\d{1,2})\s?日"), lambda m: (2018 + int(m[1]), int(m[2]), int(m[3]))),
+    (re.compile(r"(20\d{2})[/.-](\d{1,2})[/.-](\d{1,2})"), lambda m: (int(m[1]), int(m[2]), int(m[3]))),
+]
+URL_DATE_RE = re.compile(r"(?<!\d)(20\d{2})(?:/|-)?(\d{2})(?:/|-)?(\d{2})(?!\d)")
+
+
+def statement_date(item: dict, text: str, page: dict | None = None) -> datetime | None:
+    """「来月1日」を数える基準の日（発表・会見の日）。元記事の冒頭 → ページの題名 → URL の日付 → 確かな公開日時の順。
+    分からなければ None（そのときは日付を数えない。取り違えるより出さない）"""
+    published = item.get("published_at") if isinstance(item.get("published_at"), datetime) else None
+    limit = (published or datetime.now(timezone.utc)) + timedelta(days=1)
+    import unicodedata  # noqa: PLC0415
+
+    def ok(y, mo, d):
+        try:
+            when = datetime(y, mo, d, 12, tzinfo=JST)
+        except ValueError:
+            return None
+        return when if limit - timedelta(days=120) <= when <= limit else None
+
+    for scope in (unicodedata.normalize("NFKC", (text or "")[:300]), unicodedata.normalize("NFKC", str((page or {}).get("title") or ""))):
+        for pattern, parts in DATE_PATTERNS:
+            if (m := pattern.search(scope)) and (when := ok(*parts(m))):
+                return when
+    for url in (item.get("url") or "", str((page or {}).get("final_url") or "")):
+        if (m := URL_DATE_RE.search(url)) and (when := ok(int(m[1]), int(m[2]), int(m[3]))):
+            return when
+    if published and not item.get("published_guessed") and not item.get("date_from_first_seen"):
+        return published
+    return None
+
+
 def link_groups(links: list[dict]) -> list[Group]:
     out = []
     for i, got in enumerate(links, 1):
@@ -467,7 +503,8 @@ def build(item: dict, text: str, related: list[dict] | None = None, lane: str = 
         groups.append(g)
     need_fx = bool(ladder_rows) or bool(re.search(r"\$\s?\d|\d\s?(?:ドル|USD|dollars?)\b", text or "", re.I))
     fx = load_fx() if need_fx else None
-    computed = calc_facts.compute(text or "", fx=fx, ladder_rows=ladder_rows, past_rows=past, now=now)
+    computed = calc_facts.compute(text or "", fx=fx, ladder_rows=ladder_rows, past_rows=past, now=now,
+                                  published=statement_date(item, text, page))
     if g := fx_group(fx, any(c.kind == "yen" for c in computed)):
         groups.append(g)
     return Bundle(groups=groups, computed=computed, ladder=insert, money=money, fx=fx)

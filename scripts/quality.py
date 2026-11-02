@@ -187,6 +187,22 @@ def number_problems(record: dict, source_text: str, context: str = "") -> list[s
     return problems
 
 
+# お金・税・制度の記事の章立て（web_articles.MONEY_OUTLINE）で必ず要る章。早見表は材料が無ければ省いてよい
+MONEY_SECTIONS = [("何が変わる", r"何が変わ"), ("いつから", r"いつから"), ("誰が対象", r"対象"), ("自分の場合の確かめ方", r"確かめ方|確かめる|確認のしかた|確認方法")]
+
+
+def money_outline_problems(record: dict) -> list[str]:
+    """お金・税・制度の記事（束が money と判定したもの）が、決まった章立てで書かれているか（API 不要）"""
+    if not (record.get("_facts") or {}).get("money"):
+        return []
+    heads = [h for h in re.findall(r"(?m)^##\s+(.+)$", record.get("body") or "")]
+    missing = [name for name, pattern in MONEY_SECTIONS if not any(re.search(pattern, h) for h in heads)]
+    if not missing:
+        return []
+    return [f"お金・税・制度の記事の章立てになっていない（無い章: {'・'.join(missing)}）。"
+            "「## 何が変わる？」「## いつから？」「## 誰が対象？」「## 早見表」（材料があるとき）「## 自分の場合の確かめ方」の順に書く"]
+
+
 FACT_SCHEMA = {
     "type": "OBJECT",
     "properties": {
@@ -395,6 +411,7 @@ def structural_problems(record: dict, kind: str, source_text: str = "", context:
         if m := persona.OLD_VIEWPOINT_RE.search(body):
             problems.append(f"古い立場の小見出し（「{m.group(0).lstrip('# ')}」）がある。立場は「" + "」「".join(persona.VIEWPOINTS) + "」の3つにする")
         problems += number_problems(record, source_text, context)
+        problems += money_outline_problems(record)
     if source_text:
         copied = copied_sentences(body, source_text)
         if len(copied) >= 2:

@@ -26,7 +26,9 @@ import re
 import sys
 import unicodedata
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+
+JST_TZ = timezone(timedelta(hours=9))
 
 # --------------------------------------------------------------------------- #
 # 数字の取り出し
@@ -539,16 +541,56 @@ def past(current: list[Qty], past_rows: list[dict], now: datetime | None = None)
     return out
 
 
+RELATIVE_DATE_RE = re.compile(r"(来月|今月|翌月|先月)\s?(\d{1,2})日|(来年|今年|翌年|昨年)\s?(\d{1,2})月(?:\s?(\d{1,2})日)?|(来年度|今年度)")
+
+
+def relative_dates(text: str, published: datetime | None) -> list[Computed]:
+    """「来月1日」「来年4月」などを、元記事の日付から実際の日付にする（LLM が今日の日付で読み違えないように）"""
+    if not isinstance(published, datetime):
+        return []
+    base = published.astimezone(JST_TZ)
+    out, seen = [], set()
+    for m in RELATIVE_DATE_RE.finditer(nfkc(text)):
+        word = m.group(0)
+        if word in seen:
+            continue
+        seen.add(word)
+        y, mo = base.year, base.month
+        if m.group(1):
+            shift = {"来月": 1, "翌月": 1, "今月": 0, "先月": -1}[m.group(1)]
+            mo += shift
+            y += (mo - 1) // 12
+            mo = (mo - 1) % 12 + 1
+            day = int(m.group(2))
+            if not 1 <= day <= 31:
+                continue
+            when = f"{y}年{mo}月{day}日"
+        elif m.group(3):
+            y += {"来年": 1, "翌年": 1, "今年": 0, "昨年": -1}[m.group(3)]
+            month = int(m.group(4))
+            if not 1 <= month <= 12:
+                continue
+            when = f"{y}年{month}月" + (f"{int(m.group(5))}日" if m.group(5) else "")
+        else:
+            fy = base.year if base.month >= 4 else base.year - 1
+            fy += 1 if m.group(6) == "来年度" else 0
+            when = f"{fy}年度（{fy}年4月〜{fy + 1}年3月）"
+        out.append(Computed("date", f"元記事の「{word}」＝{when}（元記事の日付 {base:%Y年%m月%d日} から数えた日付。今日の日付から数えない）", []))
+        if len(out) >= 4:
+            break
+    return out
+
+
 TAIL_RE = re.compile(r"\n\s*(?:あわせて読みたい|関連記事|関連ニュース|人気記事|この記事に関する|おすすめ記事|Related (?:articles|posts|stories)|More from)")
 
 
 def compute(text: str, *, fx: dict | None = None, ladder_rows: list[dict] | None = None, past_rows: list[dict] | None = None,
-            now: datetime | None = None, limit: int = 10) -> list[Computed]:
+            now: datetime | None = None, published: datetime | None = None, limit: int = 10) -> list[Computed]:
     """元記事の文章（と料金の段・過去記事・為替）から、計算済みの数字の一覧を作る（同じ結果は1つにまとめる）"""
     # ページの後ろの「あわせて読みたい」「人気記事」などの囲み（別の記事の数字）は計算に使わない
     text = TAIL_RE.split(text or "", maxsplit=1)[0]
     qs = extract(text)
-    found: list[Computed] = []
+    found: list[Computed] = relative_dates(text, published)
     found += ladder(ladder_rows or [])
     found += pace(qs) + annual(qs) + changes(qs) + implied_previous(qs) + shares(qs) + progress(qs) + per_unit(qs)
     found += past(qs[:40], past_rows or [], now)
