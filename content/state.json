@@ -8615,6 +8615,14 @@
       "skipped": true,
       "url": "https://www.jfa.jp/news/00036958/"
     },
+    "9febbe0bcfade9e8": {
+      "at": "2026-11-02T08:15:10.233976+00:00",
+      "kind": "update",
+      "model": "claude:sonnet",
+      "score": 96,
+      "updated": "xreal-aura-android-xr-glasses",
+      "url": "https://k-tai.watch.impress.co.jp/docs/news/2153184.html"
+    },
     "9ffbd8f146ab9326": {
       "at": "2026-10-28T20:51:57.827603+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11866,29 +11874,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T06:34:07.390772+00:00",
-      "attempt": 2,
-      "id": "194aeeabb9a24578",
-      "kind": "ai",
-      "model": "gemini-3.1-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 58.0字・60字超の文が 41% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 161.6字・最長 270字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 161.6,
-        "avg_sentence": 58.0,
-        "long_share": 0.41,
-        "max_paragraph": 270,
-        "paragraphs": 14,
-        "sentences": 39
-      },
-      "score": 100,
-      "source": "ntt-news-ai",
-      "title": "NTTインテグレーション、IBM Spyreを活用したAI導入検証サービス「Spyreトライアルサービス」を提供開始 ～実機環境でのAI推論・RAG検証を通じ、"
-    },
     {
       "accepted": true,
       "at": "2026-10-30T06:34:13.172458+00:00",
@@ -18471,6 +18456,18 @@
       "score": 100,
       "source": "google-cloud-blog-ja",
       "title": "ソブリン AI の新時代を切り開く: Google Distributed Cloud の最新イノベーション"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T08:15:10.233069+00:00",
+      "attempt": 1,
+      "id": "9febbe0bcfade9e8",
+      "kind": "update",
+      "model": "claude:sonnet",
+      "problems": [],
+      "score": 96,
+      "source": "radar-k-tai.watch.impress.co.jp",
+      "title": "XREAL、Android XRとGemini搭載のスマートグラス「XREAL AURA」を11月27日に発売"
     }
   ],
   "short_text_retry": {},

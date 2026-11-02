@@ -375,6 +375,19 @@
       "title": "Buy Mac Studio, M5 Ultra Chip, 30-core CPU, 64-core GPU, 96GB memory, 1TB storage",
       "url": "https://www.apple.com/shop/buy-mac/mac-studio/m5-ultra-chip-30-core-cpu-64-core-gpu-96gb-memory-1tb-storage"
     },
+    "9febbe0bcfade9e8": {
+      "detectedAt": "2026-11-02T08:13:24+00:00",
+      "finishedAt": "2026-11-02T08:15:10+00:00",
+      "outcome": "updated",
+      "reason": "既存記事に続報を追加",
+      "run": "41411588123",
+      "slug": "xreal-aura-android-xr-glasses",
+      "source": "radar-k-tai.watch.impress.co.jp",
+      "sourcePublishedAt": "2026-11-02T08:08:44+00:00",
+      "startedAt": "2026-11-02T08:14:47+00:00",
+      "title": "XREAL、Android XRとGemini搭載のスマートグラス「XREAL AURA」を11月27日に発売",
+      "url": "https://k-tai.watch.impress.co.jp/docs/news/2153184.html"
+    },
     "ad10900db6cdd66b": {
       "detectedAt": "2026-10-28T20:10:51+00:00",
       "finishedAt": "2026-10-28T20:12:33+00:00",
