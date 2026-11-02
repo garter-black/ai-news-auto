@@ -227,6 +227,16 @@ class WriteTier(unittest.TestCase):
         self.assertEqual(model, "gemini-3.5-flash-lite")
         self.assertEqual(calls, ["gemini-3.5-flash-lite"])
 
+    def test_slow_model_cooldown(self):
+        import tempfile
+        from datetime import datetime, timedelta, timezone
+        with tempfile.TemporaryDirectory() as tmp, patch.object(llm, "SLOW_PATH", Path(tmp) / "slow.json"):
+            now = datetime(2026, 11, 3, 12, 0, tzinfo=timezone.utc)
+            llm.mark_slow("gemini-3.7-flash", now)
+            self.assertTrue(llm.recently_slow("gemini-3.7-flash", now + timedelta(minutes=30)))
+            self.assertFalse(llm.recently_slow("gemini-3.7-flash", now + timedelta(minutes=61)))
+            self.assertFalse(llm.recently_slow("gemini-3.8-flash", now))
+
 
 if __name__ == "__main__":
     unittest.main()

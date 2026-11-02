@@ -58,6 +58,9 @@ except Exception:  # noqa: BLE001 - tzdata が無い環境
 
 ROOT = Path(__file__).resolve().parent.parent
 USAGE_PATH = ROOT / "content" / "llm_usage.json"
+# 本文を書く段で時間切れになったモデルと時刻（混雑中の Flash を、次の実行でも数分待たないように。記事と一緒にコミットされる）
+SLOW_PATH = ROOT / "content" / "llm_slow.json"
+SLOW_COOLDOWN = timedelta(minutes=int(os.environ.get("LLM_SLOW_COOLDOWN_MIN", "60")))
 REQUEST_TIMEOUT_MS = 240_000
 # 本文を書く段（write）で Gemini を待つ上限。Flash 系は混雑すると数分かかる・504 になるので、待ちすぎずに次の強いモデルへ
 WRITE_TIMEOUT_MS = int(os.environ.get("LLM_WRITE_TIMEOUT_MS", "150000"))
@@ -135,6 +138,38 @@ def _record_usage(model: str) -> None:
 def usage_today() -> dict:
     """{model: 今日（太平洋時間）の呼び出し回数}"""
     return dict(_load_usage().get(_today(), {}))
+
+
+def _load_slow() -> dict:
+    try:
+        data = json.loads(SLOW_PATH.read_text("utf-8"))
+        return data if isinstance(data, dict) else {}
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def mark_slow(model: str, now: datetime | None = None) -> None:
+    """本文を書く段で時間切れになったモデルを記録する（SLOW_COOLDOWN のあいだ本文の段では使わない）"""
+    now = now or datetime.now(timezone.utc)
+    data = {m: t for m, t in _load_slow().items() if _slow_until(t, now)}
+    data[model] = now.isoformat(timespec="seconds")
+    try:
+        SLOW_PATH.parent.mkdir(parents=True, exist_ok=True)
+        SLOW_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n", "utf-8")
+    except OSError:
+        pass
+
+
+def _slow_until(stamp: str, now: datetime) -> bool:
+    try:
+        return datetime.fromisoformat(stamp) + SLOW_COOLDOWN > now
+    except (TypeError, ValueError):
+        return False
+
+
+def recently_slow(model: str, now: datetime | None = None) -> bool:
+    stamp = _load_slow().get(model)
+    return bool(stamp) and _slow_until(stamp, now or datetime.now(timezone.utc))
 
 
 def daily_limit(model: str) -> int:
@@ -996,6 +1031,11 @@ def generate_json(
     for model in candidates:
         if model in _exhausted:
             continue
+        if tier == "write" and recently_slow(model):
+            if (model, "slow") not in _limit_logged:
+                _limit_logged.add((model, "slow"))
+                log(f"   [llm] {model}: 直近{int(SLOW_COOLDOWN.total_seconds() // 60)}分以内に時間切れになったので、本文の段では飛ばす")
+            continue
         if over_daily_limit(model, tier, used):
             if (model, tier) not in _limit_logged:
                 _limit_logged.add((model, tier))
@@ -1068,6 +1108,7 @@ def generate_json(
                     # 時間切れのモデルはこの実行ではもう使わない（次の記事でまた数分待たない）。混雑（503）の再試行は1回まで
                     if slow:
                         _exhausted.add(model)
+                        mark_slow(model)
                     log(f"   [llm] {model}: {'時間切れ（この実行ではもう使わない）' if slow else '混雑'}（{text[:60]}） -> 次のモデルへ")
                     break
                 if kind == "transient" and attempt <= TRANSIENT_RETRIES:
