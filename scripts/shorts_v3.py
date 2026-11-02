@@ -1988,6 +1988,22 @@ def _highlight_select(img: np.ndarray, rect: tuple, k: float) -> None:
     img[ya:yb, xa:xb] = ((roi * np.array(SELECT, dtype=np.uint16)) >> 8).astype(np.uint8)
 
 
+def push_in(arr: np.ndarray, info: dict, L: "Ladder", t: float, t_hi: float) -> np.ndarray:
+    """グラフのカメラ: ずっとごくゆっくり寄り、主役の行を強調したあとは、その行へ寄っていく（止まった絵にしない）"""
+    if cv2 is None:
+        return arr
+    base = 0.03 * min(1.0, max(0.0, (t - L.t0) / max(L.t1 - L.t0, 0.5)))
+    after = ease((t - t_hi) / 1.4)
+    k = 1 + base + 0.16 * after
+    subj = next((r for r in info["rows"] if r.get("subj")), None)
+    cy = PH / 2 + ((subj["y"] + subj["h"] / 2 - 10 - PH / 2) * after if subj else 0)
+    cx = PW / 2 - PW * 0.08 * after
+    if k <= 1.001:
+        return arr
+    m = np.array([[k, 0, cx * (1 - k)], [0, k, cy * (1 - k)]], dtype=np.float32)
+    return cv2.warpAffine(arr, m, (PW, PH), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+
+
 def _highlight_row(img: np.ndarray, x: int, y: int, w: int, h: int, k: float) -> None:
     """料金の段階のグラフで、主役のプランの行の地を薄い青に（不透明度 k）"""
     roi = img[max(0, y) : y + h, max(0, x) : x + w].astype(np.float32)
@@ -2158,7 +2174,7 @@ class Renderer:
         for row, mid, a, lx in labels:
             blend(arr, row["name"], x0, mid + 30 - row["name"].shape[0] // 2, a)
             blend(arr, row["label"], lx, mid + 30 - row["label"].shape[0] // 2, a)
-        return arr
+        return push_in(arr, info, L, t, t_hi)
 
     def ladder_frame(self, idx: int, t: float) -> np.ndarray:
         info = self.ladder_cards[idx]
@@ -2204,12 +2220,7 @@ class Renderer:
             blend(arr, row["price"], x0 + 150 + dx, mid - row["price"].shape[0] // 2 + 26, a)
             if row["usage"] is not None:
                 blend(arr, row["usage"], bar_x + max(length, 56) + 20, mid + 26 - row["usage"].shape[0] // 2, a)
-        # カード全体がごくゆっくり寄る（止まった絵にしない）
-        k = 1 + 0.05 * min(1.0, max(0.0, (t - L.t0) / max(L.t1 - L.t0, 0.5)))
-        if cv2 is not None and k > 1.001:
-            m = np.array([[k, 0, PW / 2 * (1 - k)], [0, k, PH / 2 * (1 - k)]], dtype=np.float32)
-            arr = cv2.warpAffine(arr, m, (PW, PH), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
-        return arr
+        return push_in(arr, info, L, t, t_hi)
 
     def chart_frame(self, idx: int, t: float) -> tuple[np.ndarray, list]:
         info = self.chart_cards[idx]
@@ -2694,7 +2705,7 @@ def make_video(
                 "fonts": [FONT_FAMILY, LOGO_FAMILY],
                 "rendered_strings": sorted(set(RENDERED)),
                 "charts": [{"t0": round(c.t0, 3), "t1": round(c.t1, 3), "base": c.base, "subject": c.subject, "ratio": c.ratio} for c in plan.charts],
-                "ladders": [{"t0": round(L.t0, 3), "t1": round(L.t1, 3), "subject": L.subject, "rows": [{k: r.get(k, "") for k in ("name", "price", "usage", "mult")} for r in L.rows]} for L in plan.ladders],
+                "ladders": [{"t0": round(L.t0, 3), "t1": round(L.t1, 3), "mode": L.mode, "unit": L.unit, "subject": L.subject, "rows": [{k: r.get(k, "") for k in ("name", "price", "usage", "mult", "count") if k in r} for r in L.rows]} for L in plan.ladders],
                 "official_text": official_text(plan.pages),
                 "length_range": list(LENGTH_RANGE),
                 "panel": list(PANEL),
