@@ -1,0 +1,20 @@
+{
+  "id": "20261103",
+  "date": "2026-11-03",
+  "heading": "今朝のAIニュース3本",
+  "createdAt": "2026-11-02T21:33:28+00:00",
+  "items": [
+    {
+      "slug": "google-ai-news-october-2026",
+      "headline": "GoogleのAI「Gemini 4」など10月の新発表まとめ"
+    },
+    {
+      "slug": "openai-grid-protectors-program",
+      "headline": "ChatGPTのOpenAIが電力対策「Grid Protectors」"
+    },
+    {
+      "slug": "elevenlabs-sfx-v3-sound-effects",
+      "headline": "ElevenLabsが音響効果モデル「SFX v3」公開"
+    }
+  ]
+}

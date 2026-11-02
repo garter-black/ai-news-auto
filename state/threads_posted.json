@@ -3122,6 +3122,77 @@
       "questionText": "あなたの仕事で、いちばん気になった発表はどれですか？",
       "postedAt": "2026-11-02T21:01:07+00:00",
       "blueskyAt": "2026-11-02T21:01:08+00:00"
+    },
+    "digest-20261103": {
+      "style": "digest",
+      "format": "digest",
+      "hook": "digest",
+      "question": false,
+      "topic": "AI",
+      "items": [
+        "google-ai-news-october-2026",
+        "openai-grid-protectors-program",
+        "elevenlabs-sfx-v3-sound-effects"
+      ],
+      "via": "buffer",
+      "channels": {
+        "twitter": "6ae901b28d258062778cdde2"
+      },
+      "permalink": "",
+      "dueAt": "2026-11-02T22:30:00+00:00",
+      "postedAt": "2026-11-02T21:33:28+00:00",
+      "postPlan": {
+        "key": "digest-20261103",
+        "text": "今朝のAIニュース3本（2026/11/03）\n\n・GoogleのAI「Gemini 4」など10月の新発表まとめ\n・ChatGPTのOpenAIが電力対策「Grid Protectors」\n・ElevenLabsが音響効果モデル「SFX v3」公開",
+        "reply": "ほかの新着もサイトにまとめています👇",
+        "link": "https://ai-tech-express.jp/digest/20261103",
+        "x_text": "今朝のAIニュース3本（2026/11/03）\n\n・GoogleのAI「Gemini 4」など10月の新発表まとめ\n・ChatGPTのOpenAIが電力対策「Grid Protectors」\n・ElevenLabsが音響効果モデル「SFX v3」公開\n\nhttps://ai-tech-express.jp/digest/20261103?utm_source=x&utm_medium=social&utm_campaign=digest\n#AI",
+        "slot": [
+          7,
+          30
+        ],
+        "items": [
+          "google-ai-news-october-2026",
+          "openai-grid-protectors-program",
+          "elevenlabs-sfx-v3-sound-effects"
+        ],
+        "image": "https://ai-tech-express.jp/digest/20261103/card.png?v=F1-1",
+        "edition": {
+          "id": "20261103",
+          "date": "2026-11-03",
+          "heading": "今朝のAIニュース3本",
+          "createdAt": "2026-11-02T21:33:28+00:00",
+          "items": [
+            {
+              "slug": "google-ai-news-october-2026",
+              "headline": "GoogleのAI「Gemini 4」など10月の新発表まとめ"
+            },
+            {
+              "slug": "openai-grid-protectors-program",
+              "headline": "ChatGPTのOpenAIが電力対策「Grid Protectors」"
+            },
+            {
+              "slug": "elevenlabs-sfx-v3-sound-effects",
+              "headline": "ElevenLabsが音響効果モデル「SFX v3」公開"
+            }
+          ]
+        }
+      },
+      "expectedChannels": [
+        "threads",
+        "twitter"
+      ],
+      "delivery": {
+        "threads": {
+          "status": "accepted",
+          "updatedAt": "2026-11-02T21:33:28+00:00"
+        },
+        "twitter": {
+          "status": "accepted",
+          "updatedAt": "2026-11-02T21:33:28+00:00"
+        }
+      },
+      "id": "6ae901b13b6f22c15ecfd7db"
     }
   },
   "extraPending": {}
