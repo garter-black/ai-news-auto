@@ -103,54 +103,130 @@
       }
     },
     "chatgpt-codex-shared-usage-limits": {
-      "at": "2026-11-02T17:50:26+00:00",
-      "status": "gate_failed",
-      "textAt": "2026-11-02T09:30:00+00:00",
+      "at": "2026-11-02T20:21:59+00:00",
+      "status": "ready",
+      "tries": 1,
+      "textAt": "2026-11-02T09:30:34+00:00",
       "versions": {
         "full": {
-          "ok": false,
-          "seconds": null,
-          "reasons": [
-            "公式ページか台本が無い"
-          ]
+          "ok": true,
+          "seconds": 55.038,
+          "reasons": [],
+          "post": {
+            "title": "ChatGPT、12月から利用枠をCodexと共通化 Instantチャットは…",
+            "url": "https://ai-tech-express.jp/articles/chatgpt-codex-shared-usage-limits",
+            "total": 55.038,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "12月、ChatGPTの枠は足りる？"
+              },
+              "summary": "要約すると、OpenAIは12月からPlus・Pro・Businessの利用枠をChatGPTとCodexで共通にします。量はトークンで測り、高性能モデルや複雑な作業ほど多く減ります。Instantチャットは枠を使わず、減るかどうかは使う機能で決まります。枠の大きさの数字はまだ出ていません。残量はSettings → Usageで確認できます。"
+            }
+          }
         },
         "short": {
-          "ok": false,
-          "seconds": null,
-          "reasons": [
-            "公式ページか台本が無い"
-          ]
+          "ok": true,
+          "seconds": 35.553,
+          "reasons": [],
+          "post": {
+            "title": "ChatGPT、12月から利用枠をCodexと共通化 Instantチャットは…",
+            "url": "https://ai-tech-express.jp/articles/chatgpt-codex-shared-usage-limits",
+            "total": 35.553,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "12月、ChatGPTの枠は足りる？"
+              },
+              "summary": "要約すると、OpenAIは12月からPlus・Pro・Businessの利用枠をChatGPTとCodexで共通にします。量はトークンで測り、高性能モデルや複雑な作業ほど多く減ります。Instantチャットは枠を使わず、減るかどうかは使う機能で決まります。枠の大きさの数字はまだ出ていません。残量はSettings → Usageで確認できます。"
+            }
+          }
         }
       },
       "timings": {
-        "full": null,
-        "short": null
-      }
+        "full": {
+          "script": 0.0,
+          "tts": 23.59,
+          "plan_audio": 4.42,
+          "render": 44.31,
+          "gate": 5.27,
+          "sheet": 2.25,
+          "total": 80.0
+        },
+        "short": {
+          "script": 0.0,
+          "tts": 14.73,
+          "plan_audio": 2.89,
+          "render": 28.78,
+          "gate": 3.82,
+          "sheet": 1.62,
+          "total": 51.9
+        }
+      },
+      "ok": true,
+      "reason": "",
+      "pages": [
+        "ai-tech-express.jp",
+        "developers.openai.com"
+      ],
+      "urls": {
+        "full": "https://ai-tech-express.jp/video/chatgpt-codex-shared-usage-limits-bc6ae3c7c5.mp4",
+        "short": "https://ai-tech-express.jp/video/chatgpt-codex-shared-usage-limits-aa60e60546.mp4",
+        "poster": "https://ai-tech-express.jp/video/chatgpt-codex-shared-usage-limits-d3c87c2499.jpg"
+      },
+      "embedded": true
     },
     "openai-grid-protectors-program": {
-      "at": "2026-11-02T19:44:19+00:00",
+      "at": "2026-11-02T20:21:59+00:00",
       "status": "gate_failed",
+      "tries": 1,
       "textAt": "2026-11-02T15:11:47+00:00",
       "versions": {
         "full": {
           "ok": false,
           "seconds": null,
           "reasons": [
-            "公式ページか台本が無い"
+            "描画: RuntimeError: 文字が入りません: 最大1,000MW"
           ]
         },
         "short": {
           "ok": false,
           "seconds": null,
           "reasons": [
-            "公式ページか台本が無い"
+            "描画: RuntimeError: 文字が入りません: 最大1,000MW"
           ]
         }
       },
       "timings": {
-        "full": null,
-        "short": null
-      }
+        "full": {
+          "script": 0.0,
+          "tts": 21.44,
+          "gate": 0.0,
+          "total": 21.5
+        },
+        "short": {
+          "script": 0.0,
+          "tts": 15.37,
+          "gate": 0.0,
+          "total": 15.5
+        }
+      },
+      "ok": false,
+      "reason": "full: 描画: RuntimeError: 文字が入りません: 最大1,000MW / short: 描画: RuntimeError: 文字が入りません: 最大1,000MW",
+      "pages": [
+        "ai-tech-express.jp",
+        "developers.openai.com"
+      ]
     }
   }
 }
