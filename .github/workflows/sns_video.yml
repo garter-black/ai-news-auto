@@ -25,6 +25,9 @@ on:
       draft_test_url:
         description: "（テスト）この動画 URL で Buffer に Threads の下書きを1本だけ作る（公開しない）。空なら何もしない"
         default: ""
+      check_post:
+        description: "（確認）この Buffer の投稿 ID の状態を読むだけ。空なら何もしない"
+        default: ""
 
 permissions:
   contents: write  # state/sns_video.json と Claude API の使用量を main に残すため
@@ -82,6 +85,11 @@ jobs:
           SNS_VIDEO_AFTER_AB: ${{ vars.SNS_VIDEO_AFTER_AB || 'short' }}
           SNS_VIDEO_STORE: ${{ vars.SNS_VIDEO_STORE || 'kv' }}
         run: |
+          if [ -n "${{ github.event.inputs.check_post }}" ]; then
+            python scripts/sns_video_followup.py --check-post "${{ github.event.inputs.check_post }}"
+            python scripts/sns_video_followup.py --ab-report || true
+            exit 0
+          fi
           if [ -n "${{ github.event.inputs.draft_test_url }}" ]; then
             # 下書きのテストだけ（saveToDraft。公開しない）。ほかは何もしない
             python scripts/sns_video_followup.py --draft-test content/video_scripts/claude-ultra-plan-price-limits.short.report.json "${{ github.event.inputs.draft_test_url }}" --yes

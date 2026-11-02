@@ -506,18 +506,18 @@ def draft_test(report_path: Path, video_url: str, yes: bool = False, variant: st
     return {"input": inp, "sent": True, "draftId": draft_id, "check": read_draft(api_key, channel["id"], draft_id)}
 
 
-def read_draft(api_key: str, channel_id: str, post_id: str) -> dict:
-    """作った下書きを Buffer から読み直す（本文・状態・付いている動画）。読めなくても例外は投げない"""
+def read_draft(api_key: str, channel_id: str, post_id: str, statuses: tuple = ("[draft]", "")) -> dict:
+    """作った投稿・下書きを Buffer から読み直す（本文・状態・付いている動画・公開先のリンク）。読めなくても例外は投げない"""
     import threads_post
 
-    fields = "id text status channelId assets { thumbnail mimeType source }"
+    fields = "id text status channelId sentAt externalLink assets { thumbnail mimeType source }"
     try:
         orgs = threads_post.buffer_graphql(api_key, "query { account { organizations { id } } }")["account"]["organizations"]
     except Exception as error:  # noqa: BLE001
         return {"error": f"organizations: {error}"[:300]}
     tries = []
     for org in orgs:
-        for status in ("[draft]", ""):
+        for status in statuses:
             flt = f"status: {status}, channelIds: {json.dumps([channel_id])}" if status else f"channelIds: {json.dumps([channel_id])}"
             query = f"query {{ posts(first: 50, input: {{ organizationId: {json.dumps(org['id'])}, filter: {{ {flt} }} }}) {{ edges {{ node {{ {fields} }} }} }} }}"
             try:
@@ -537,12 +537,20 @@ def main() -> None:
     parser.add_argument("--ab-report", action="store_true", help="短い版と全部の版の比べ")
     parser.add_argument("--draft-test", nargs=2, metavar=("REPORT_JSON", "VIDEO_URL"), help="Buffer に Threads の動画の下書きを作るテスト（--yes が無ければ表示だけ）")
     parser.add_argument("--yes", action="store_true", help="--draft-test を本当に送る")
+    parser.add_argument("--check-post", metavar="BUFFER_ID", help="出した動画の投稿の状態を Buffer で読む（読むだけ）")
     args = parser.parse_args()
     import llm
 
     llm._load_env_local()
     if args.draft_test:
         print(json.dumps(draft_test(Path(args.draft_test[0]), args.draft_test[1], args.yes), ensure_ascii=False, indent=2))
+        return
+    if args.check_post:
+        import threads_post
+
+        api_key = os.environ.get("BUFFER_API_KEY", "")
+        channel = threads_post.buffer_threads_channel(api_key) or {}
+        print(json.dumps(read_draft(api_key, channel.get("id", ""), args.check_post, ("[sent]", "[error]", "[sending]", "")), ensure_ascii=False, indent=2))
         return
     if args.ab_report:
         print(json.dumps(ab_report(), ensure_ascii=False, indent=2))
