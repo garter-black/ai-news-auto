@@ -1,4 +1,4 @@
-import { isIndexable } from "@/lib/indexing";
+import { canonicalPathOf, isIndexable } from "@/lib/indexing";
 import type { Metadata } from "next";
 import Thumb from "@/components/Thumb";
 import ImageCredit from "@/components/ImageCredit";
@@ -87,7 +87,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: article.seoTitle || article.title,
     description: article.description,
     keywords: article.keywords,
-    alternates: { canonical: url },
+    // 同じ発表の重複記事は、代表の記事を正式なページにする（lib/indexing.ts）
+    alternates: {
+      canonical: canonicalPathOf({
+        slug: article.slug,
+        duplicateOf: article.duplicateOf && getArticleSummary(article.duplicateOf) ? article.duplicateOf : undefined,
+      }),
+    },
     // 薄くなりやすい記事はサイトでは読めるが、検索には出さない（lib/indexing.ts）
     ...(isIndexable({ ...article, duplicate: getArticleSummary(article.slug)?.duplicate }) ? {} : { robots: { index: false, follow: true } }),
     openGraph: {

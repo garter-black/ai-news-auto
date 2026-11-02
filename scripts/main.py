@@ -55,6 +55,10 @@ MODEL_CANDIDATES = [
 MODEL = MODEL_CANDIDATES[0]
 DEFAULT_MAX_ARTICLES = int(os.environ.get("MAX_ARTICLES_PER_RUN", "3"))
 DEFAULT_LOOKBACK_DAYS = int(os.environ.get("LOOKBACK_DAYS", "10"))
+# ニュース（AI・テック）のチャンネルは、投稿から48時間を超えた動画を記事にしない（古い発表を今日の記事に見せない）。
+# 投資・不動産などの解説チャンネル（時期に左右されにくい）は従来どおり LOOKBACK_DAYS まで。48時間を超えたものは late を付ける
+NEWS_GENRES = {"ai", "tech-gadget"}
+NEWS_MAX_AGE_HOURS = int(os.environ.get("NEWS_MAX_AGE_HOURS", "48"))
 MAX_ATTEMPTS_PER_VIDEO = 2  # これを超えて失敗した動画は諦める
 SHORTS_RE = re.compile(r"#shorts?\b|＃ショート", re.IGNORECASE)
 REQUEST_RETRIES = 3
@@ -187,6 +191,9 @@ def collect_candidates(
             except ValueError:
                 continue
             if published_at < threshold:
+                continue
+            age_h = (datetime.now(timezone.utc) - published_at).total_seconds() / 3600
+            if channel.genre.slug in NEWS_GENRES and age_h > NEWS_MAX_AGE_HOURS:
                 continue
             entry["published_at"] = published_at
             candidates.append(entry)
@@ -1020,6 +1027,10 @@ def main() -> int:
 
     client = build_client()
     created = 0
+    # 同じ発表の記事が直近5日にあれば作らない（scripts/story.py。サイトの重複判定と同じ基準。
+    # 1つの事例を何本にも分けた公式動画・同じ動画の再投稿・解説チャンネルの後追いを外す）
+    import story  # 遅延 import（--dry-run・--relink では使わない）
+    same_story = story.Recent(5)
 
     run_started = time.time()
     for index, entry in enumerate(targets, start=1):
@@ -1030,6 +1041,13 @@ def main() -> int:
             break
 
         video_id = entry["video_id"]
+        same = same_story.match(entry["title"], video_id=video_id, published=entry.get("published_at"),
+                                extra_titles=[entry["title"]], channel_slug=entry["channel"].slug)
+        if same:
+            log(f"\n[{index}/{len(targets)}] [skip] 同じ発表の記事あり: {entry['title'][:60]} → {same[0]}（{same[1]}）")
+            state["processed"][video_id] = {"skipped": True, "reason": f"dedupe: {same[1]}: {same[0]}"[:200],
+                                             "at": datetime.now(timezone.utc).isoformat()}
+            continue
         log(f"\n[{index}/{len(targets)}] 解析中: {entry['title']}")
         started = time.time()
 
@@ -1061,7 +1079,10 @@ def main() -> int:
             state["failed"][video_id] = state["failed"].get(video_id, 0) + 1
             continue
 
+        if (datetime.now(timezone.utc) - entry["published_at"]).total_seconds() > NEWS_MAX_AGE_HOURS * 3600:
+            record["late"] = True  # 投稿から48時間を超えた動画（解説チャンネル）。ニュース用サイトマップに載せない
         path = write_article(record)
+        same_story.add(record)
         import quality  # 遅延 import（読みやすさの数値をログに残すだけ。動画記事は作り直さない）
         log(f"   [read] {quality.readability(record.get('body') or '')}")
         state["processed"][video_id] = {

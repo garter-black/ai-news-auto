@@ -6,6 +6,8 @@ name: Missed news check
 # 出典の候補（公式の発表、無ければ信頼できる報道）が見つかったものは state/radar_requests.json に足し、
 # 見張り番の Worker のレーダーが数分以内に速報レーンへ回す（取りこぼしを自動で埋める）。
 # 判定のルールは scripts/fast_lane_rules.json の radar（Worker と同じ）。Claude・Gemini は使わない（正規表現と取得だけ）
+# 2026-11-02 から、他社・まとめの見出し（scripts/sources_registry.json の detect_feeds・radar_sources。AI・経済・国内・不動産・スポーツ）とも
+# 突き合わせ、「他社が出してサイソクに記事が無い話題」を同じ Issue に並べる（一覧だけ。記事は一次情報を探してから作る）
 on:
   schedule:
     - cron: "30 23 * * *"

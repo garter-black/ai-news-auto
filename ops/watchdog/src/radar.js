@@ -42,11 +42,28 @@ export function withSourceHosts(hosts, sources) {
   return out;
 }
 
+/** sources_registry.json の radar_sources（追加の報道・まとめ。見つけるためだけ）を足す。scripts/radar.py の with_radar_sources と同じ */
+export function withRadarSources(sources, extra) {
+  const have = new Set((sources || []).map((s) => s.slug));
+  return [...(sources || []), ...(extra || []).filter((s) => s?.slug && !have.has(s.slug) && !s.disabled)];
+}
+
+/** この回に読むか（every 分ごと。レーダーは4分ごとなので、8分なら2回に1回。発信元ごとに回をずらす） */
+export function radarDue(src, now) {
+  const slots = Math.max(1, Math.round(Number(src.every || 4) / 4));
+  if (slots <= 1) return true;
+  const tick = Math.floor(now.getTime() / 240000);
+  let h = 0;
+  for (const c of String(src.slug)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return tick % slots === h % slots;
+}
+
 export function compileRadar(rules) {
   const r = rules.radar;
   const re = (s) => new RegExp(s, "i");
   return {
     ...r,
+    sources: withRadarSources(r.sources, rules.registry?.radar_sources),
     primary_hosts: withSourceHosts(r.primary_hosts, rules.sources),
     entities: r.entities.map((e) => ({ name: e.name, re: re(e.re), aiOnly: Boolean(e.ai_only) })),
     signal: re(r.signal_re),
@@ -439,10 +456,11 @@ export async function radar(env, now, deps = {}) {
   let dirty = false;
   const since = Math.max(Date.parse(st.since), now.getTime() - RR.max_age_hours * 3600e3);
 
-  // 1. 読む
-  const results = await Promise.all(RR.sources.map((src) => readSource(src, fetchImpl).catch((e) => ({ error: String(e).slice(0, 80) }))));
+  // 1. 読む（追加の報道・まとめは every 分ごと。1回の取得数を抑える）
+  const sources = RR.sources.filter((src) => radarDue(src, now));
+  const results = await Promise.all(sources.map((src) => readSource(src, fetchImpl).catch((e) => ({ error: String(e).slice(0, 80) }))));
   const items = [];
-  for (const [k, src] of RR.sources.entries()) {
+  for (const [k, src] of sources.entries()) {
     const r = results[k];
     if (r.error) {
       log.errors[src.slug] = r.error;
@@ -518,7 +536,8 @@ export async function radar(env, now, deps = {}) {
   const preparedReq = prepare(records.filter((r) => !r.fast), RR);
 
   // 同じ回の同じ話題はまとめる（リンクを合わせて一次情報を探す）
-  cands.sort((a, b) => SOURCE_ORDER.indexOf(a.source) - SOURCE_ORDER.indexOf(b.source));
+  const order = (s) => (SOURCE_ORDER.includes(s) ? SOURCE_ORDER.indexOf(s) : SOURCE_ORDER.length - 1);
+  cands.sort((a, b) => order(a.source) - order(b.source));
   const groups = [];
   for (const c of cands) {
     const hit = covered(c.title, c.links, c.request ? preparedReq : prepared, RR);

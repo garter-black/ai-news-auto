@@ -247,6 +247,13 @@ BROAD_FEEDS: list[dict] = [
     # --- スポーツ（競技団体の公式） ---
     {"slug": "jfa", "name": "日本サッカー協会（JFA）", "url": "https://www.jfa.jp/feed.rss", "section": "sports", "kind": "company", "priority": 2},
     {"slug": "jtta", "name": "日本卓球協会", "url": "https://www.jtta.or.jp/feed/", "section": "sports", "kind": "company", "priority": 2},  # 約0.9件/日
+    # --- 2026-11-02 追加（お金・仕事・不動産の一次情報。robots.txt 許可・当日の更新・日付ありを確認） ---
+    {"slug": "mof", "name": "財務省", "url": "https://www.mof.go.jp/news.rss", "section": "business", "kind": "gov", "priority": 2,
+     "exclude_re": "入札|発行予定|発行額|落札|国庫短期証券|利付国債|応札"},  # 約7件/日（国債の入札結果を除く）
+    {"slug": "mlit-press", "name": "国土交通省 報道発表", "url": "https://www.mlit.go.jp/pressrelease.rdf", "section": "business", "kind": "gov", "priority": 2},  # 約7件/日（Shift_JIS）。不動産・住宅・交通の政策
+    {"slug": "jnet21", "name": "J-Net21（中小機構）", "url": "https://j-net21.smrj.go.jp/news/info.xml", "section": "business", "kind": "gov", "priority": 3},  # 約3件/日
+    {"slug": "sumitomo-rd", "name": "住友不動産", "url": "https://www.sumitomo-rd.co.jp/news/feed/", "section": "business", "kind": "company", "priority": 3},
+    {"slug": "nomura-re", "name": "野村不動産ホールディングス", "url": "https://www.nomura-re-hd.co.jp/news/chtml/rss.xml", "section": "business", "kind": "company", "priority": 3},
 ]
 for _feed in BROAD_FEEDS:
     _feed.setdefault("lang", "ja")
@@ -603,7 +610,8 @@ class _Extractor(HTMLParser):
         attrs = dict(attrs)
         if tag == "meta":
             key = (attrs.get("property") or attrs.get("name") or "").lower()
-            if key in {"og:image", "og:title", "og:description", "description", "twitter:image", "article:published_time"} and attrs.get("content"):
+            if key in {"og:image", "og:title", "og:description", "description", "twitter:image", "article:published_time",
+                       "og:published_time"} and attrs.get("content"):
                 self.meta.setdefault(key, attrs["content"].strip())
             return
         if tag in VOID_TAGS:
@@ -736,8 +744,22 @@ def _fetch_direct(url: str) -> dict:
         "title": parser.meta.get("og:title", ""),
         "description": parser.meta.get("og:description") or parser.meta.get("description", ""),
         "final_url": final_url,
-        "published": parser.meta.get("article:published_time", ""),
+        "published": parser.meta.get("article:published_time", "") or parser.meta.get("og:published_time", "") or _jsonld_published(data),
     }
+
+
+_JSONLD_DATE_RE = re.compile(rb'"datePublished"\s*:\s*"([^"]{8,40})"')
+
+
+def _jsonld_published(data: bytes) -> str:
+    """JSON-LD の datePublished（article:published_time が無いページ用）。最初のもの"""
+    m = _JSONLD_DATE_RE.search(data[:600_000])
+    return m.group(1).decode("utf-8", "ignore").strip() if m else ""
+
+
+def page_published(page: dict | None) -> datetime | None:
+    """記事ページに書かれた公開日時（article:published_time・JSON-LD datePublished・読み取りサービスの Published Time）"""
+    return _parse_date(str((page or {}).get("published") or ""))
 
 
 # --------------------------------------------------------------------------- #

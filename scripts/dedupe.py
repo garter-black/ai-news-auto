@@ -138,7 +138,10 @@ class Index:
 
 
 def _norm_url(url: str) -> str:
-    return re.sub(r"[?#].*$", "", url.strip().lower()).rstrip("/")
+    """クエリ・末尾の / を落とす。#entry-…（page_watch.py が付けるリリースノートの1項目）だけは残す"""
+    url = url.strip().lower()
+    frag = url.split("#", 1)[1] if "#entry-" in url else ""
+    return re.sub(r"[?#].*$", "", url).rstrip("/") + (f"#{frag}" if frag else "")
 
 
 def _article_time(data: dict) -> datetime | None:

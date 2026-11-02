@@ -82,6 +82,8 @@ def main() -> int:
             record = w.attach_related(record, data, related + [base_row])
             # 元記事へのリンクは必ず残す
             record["relatedSlugs"] = list(dict.fromkeys([args.base] + record.get("relatedSlugs", [])))
+            # 意図して角度を変えた解説（scripts/story.py が重複にしない。ニュース用サイトマップには載せない）
+            record["angleOf"] = args.base
             verdict = quality.evaluate(record, text, "ai", archive.check_block(related))
             print(f"[gate] {direction[:20]} 試行{attempt} accepted={verdict.get('ok')} score={verdict.get('score')} {verdict.get('problems', [])[:2]}")
             if verdict.get("soft"):

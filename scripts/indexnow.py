@@ -141,17 +141,22 @@ JAPAN_VALUE = re.compile(r"^#{2,3}.*(日本|無料|使い方|料金|始め方|�
 TITLE_NOISE = re.compile(r"[\s「」『』【】()（）・、。！？!?:：|｜\-—〜~\"'“”]")
 
 
+def _url_key(url: str) -> str:
+    return re.sub(r"[?#].*$", "", str(url or "").strip().lower()).rstrip("/")
+
+
 def duplicate_slugs(articles: list[dict]) -> set[str]:
-    """同じ題名・出典URLの重複のうち代表以外（本文の長い方、同じなら先に載った方が代表）。"""
+    """重複記事（lib/article-index.mjs の markDuplicates と同じ）。
+    1. duplicateOf（scripts/story.py が付ける）  2. 予備: 同じ題名・出典URLのうち代表以外（本文の長い方、同じなら先に載った方が代表）"""
     keep: set[str] = set()
-    out: set[str] = set()
-    items = [a for a in articles if a.get("type") != "roundup"]
+    out: set[str] = {a.get("slug", "") for a in articles if a.get("duplicateOf") and a.get("duplicateOf") != a.get("slug")}
+    items = [a for a in articles if a.get("type") != "roundup" and a.get("slug") not in out and not a.get("angleOf")]
     items.sort(key=lambda a: a.get("generatedAt", ""))
     items.sort(key=lambda a: -len(a.get("body", "")))
     for a in items:
         keys = ["t:" + TITLE_NOISE.sub("", a.get("title", "")).lower()]
         if a.get("sourceUrl"):
-            keys.append("u:" + a["sourceUrl"])
+            keys.append("u:" + _url_key(a["sourceUrl"]))
         if any(k in keep for k in keys):
             out.add(a.get("slug", ""))
         else:
@@ -174,8 +179,41 @@ def noindex_reason(article: dict, dups: set[str] | frozenset = frozenset()) -> s
         return "off-focus"
     if not article.get("verdict") and not JAPAN_VALUE.search(body):
         return "no-japan-value"
-    if article.get("slug") in dups:
+    if article.get("slug") in dups or (article.get("duplicateOf") and article.get("duplicateOf") != article.get("slug")):
         return "duplicate"
+    return None
+
+
+NEWS_WINDOW = timedelta(days=2)
+NEWS_MAX_SOURCE_AGE = timedelta(hours=48)
+
+
+def _parse(value) -> datetime | None:
+    try:
+        dt = datetime.fromisoformat(str(value or "").replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+
+
+def news_reason(article: dict, dups: set[str] | frozenset = frozenset(), now: datetime | None = None) -> str | None:
+    """ニュース用サイトマップに載せない理由（lib/indexing.ts の newsSitemapReason と同じ）"""
+    reason = noindex_reason(article, dups)
+    if reason:
+        return reason
+    if article.get("type") == "roundup":
+        return "roundup"
+    if article.get("angleOf"):
+        return "angle"
+    if article.get("late"):
+        return "late"
+    now = now or datetime.now(timezone.utc)
+    published = _parse(article.get("generatedAt") or article.get("publishedAt"))
+    if published is None or now - published >= NEWS_WINDOW:
+        return "old"
+    source = _parse(article.get("sourcePublishedAt") or article.get("publishedAt"))
+    if source and published - source > NEWS_MAX_SOURCE_AGE:
+        return "stale-source"
     return None
 
 

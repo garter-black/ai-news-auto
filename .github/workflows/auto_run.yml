@@ -201,6 +201,15 @@ jobs:
             timeout 500 python scripts/images.py --changed --recent 40 --max 15 --budget 420
           fi
 
+      # 同じ発表の重複記事に印（duplicateOf）を付ける（scripts/story.py。サイトは noindex・canonical を代表へ・サイトマップから外す）。
+      # 生成前にも同じ判定で外しているが、別の回・別のレーンで作られたものをここで拾う。直近7日に載せた記事だけ見直す（LLM なし）
+      - name: Mark duplicate stories
+        continue-on-error: true
+        run: |
+          if [ -n "$(git status --porcelain content/articles)" ]; then
+            python scripts/story.py mark --days 7 | tail -20
+          fi
+
       # 記事は毎回コミットするが、Vercel へのデプロイは1時間に1回にまとめる。
       # デプロイのたびに全ファイルの保存（Deployment Storage）と ISR キャッシュの作り直し
       # （Fast Origin Transfer）が発生するため、20分ごとに出すと無駄が大きい。
@@ -234,6 +243,9 @@ jobs:
           # 速報レーンの処理結果（Worker がこれを見て再起動をやめる）
           ACK=0
           if [ -n "$(git status --porcelain state/fast_lane.json)" ]; then ACK=1; fi
+          # 料金・プラン・リリースノートの見張りの基準（scripts/page_watch.py）。変わった回だけ残す（残さないと毎回「初回」になる）
+          WATCH=0
+          if [ -n "$(git status --porcelain state/page_watch.json)" ]; then WATCH=1; fi
           if [ -n "$(git status --porcelain content)" ]; then
             # 直近の記事の索引（見張り番のレーダーが「同じ話題の記事がもうあるか」を見る）。記事が変わった回だけ書き直す
             python scripts/radar.py coverage || echo "::warning::記事の索引（state/coverage.json）を更新できませんでした"
@@ -270,12 +282,15 @@ jobs:
             MSG="chore(deploy): 保留中の記事を公開 [deploy]"
           elif [ "$ACK" = "1" ]; then
             MSG="chore(fast): 速報レーンの処理結果を記録"
+          elif [ "$WATCH" = "1" ]; then
+            MSG="chore(watch): 料金・リリースノートの見張りの記録を更新"
           else
             echo "変更なし。コミットをスキップします。"
             exit 0
           fi
           git add state/last_deploy state/deploy_pending
           if [ -f state/fast_lane.json ]; then git add state/fast_lane.json; fi
+          if [ -f state/page_watch.json ]; then git add state/page_watch.json; fi
           git commit -m "$MSG"
           # 実行中に main が進んでいても失敗しないよう rebase してから push（最大3回）
           for i in 1 2 3; do

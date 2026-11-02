@@ -8,6 +8,8 @@
   python3 scripts/radar.py coverage                  # 直近の記事の索引 state/coverage.json を書く（Worker が「もう記事があるか」を見る）
   python3 scripts/radar.py missed --hours 30         # 見逃しチェック（前日〜今朝の大きなニュースで、記事が無いもの）
   python3 scripts/radar.py missed --issue --request  # Issue（ラベル missed-news）で知らせ、state/radar_requests.json に足す
+                                                     #   他社・まとめの見出し（sources_registry.json の detect_feeds）とも突き合わせ、
+                                                     #   他社だけが出した話題も Issue に並べる（--no-gaps で省く。依頼には回さない）
                                                      #   → Worker のレーダーが速報レーンに回す
   python3 scripts/radar.py request URL [--title T]   # 手動で速報レーンに回す（同じく state/radar_requests.json）
   echo '[{"title": "..."}]' | python3 scripts/radar.py classify     # Worker のテスト用（判定の突き合わせ）
@@ -59,16 +61,28 @@ def rules() -> dict:
     }
     data["_entities"] = [(e["name"], re.compile(e["re"], flags), bool(e.get("ai_only"))) for e in data["entities"]]
     data["primary_hosts"] = with_source_hosts(data["primary_hosts"], _source_list())
+    data["sources"] = with_radar_sources(data["sources"], _registry().get("radar_sources", []))
     return data
+
+
+def _registry() -> dict:
+    try:
+        return json.loads(RULES_PATH.with_name("sources_registry.json").read_text("utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def with_radar_sources(sources: list[dict], extra: list[dict]) -> list[dict]:
+    """sources_registry.json の radar_sources（追加の報道・まとめ）を足す。radar.js の withRadarSources と同じ。
+    公式扱い（primary_hosts）・報道の出典（outlets）には足さない（見つけるためだけ）"""
+    have = {s["slug"] for s in sources}
+    return list(sources) + [s for s in extra if s.get("slug") and s["slug"] not in have and not s.get("disabled")]
 
 
 def _source_list() -> list[dict]:
     """速報の発信元（fast_lane_rules.json の sources＋sources_registry.json）。radar.js の withSourceHosts と同じ材料"""
     out = list(json.loads(RULES_PATH.read_text("utf-8")).get("sources", []))
-    try:
-        out += json.loads(RULES_PATH.with_name("sources_registry.json").read_text("utf-8")).get("sources", [])
-    except (OSError, ValueError):
-        pass
+    out += _registry().get("sources", [])
     return out
 
 
@@ -491,6 +505,149 @@ def gather(hours: int, now: datetime) -> tuple[list[dict], list[str]]:
     return [i for i in items if i.get("published") and i["published"] >= since], errors
 
 
+# --------------------------------------------------------------------------- #
+# 他社との突き合わせ（毎朝の見逃しチェック。sources_registry.json の detect_feeds・radar_sources・radar.sources）
+# --------------------------------------------------------------------------- #
+
+GAP_SIM = 0.3
+GAP_MAX_PER_GENRE = 12
+OUTLET_SUFFIX_RE = re.compile(r"\s*[（(\[【]?(?:ITmedia [A-Za-z+ ]+|Impress Watch|GIGAZINE|ギズモード・ジャパン|Yahoo!ニュース|CNET Japan|AI Watch|ASCII\.jp)[）)\]】]?\s*$|\s+[-|｜]\s+[^-|｜]{2,30}$")
+
+
+def html_list_items(src: dict) -> list[dict]:
+    """RSS の無い一覧ページ（fastlane.js の parseHtmlList と同じ読み方）。日付が無いので先頭の8本だけ"""
+    page = fetch_text(src["url"])
+    base = urllib.parse.urlsplit(src["url"])
+    link_re = re.compile(src.get("link_re") or ".", re.I)
+    out, seen = [], set()
+    for m in re.finditer(r"""<a\b[^>]*?\bhref=["']([^"'#?]+)["'][^>]*>([\s\S]*?)</a>""", page[:1_500_000], re.I):
+        try:
+            u = urllib.parse.urlsplit(urllib.parse.urljoin(src["url"], html.unescape(m.group(1)).strip()))
+        except ValueError:
+            continue
+        if u.netloc != base.netloc or not link_re.search(u.path):
+            continue
+        h = re.search(r"<h[1-4]\b[^>]*>([\s\S]*?)</h[1-4]>", m.group(2), re.I)
+        if not h and src.get("title_from") != "text":
+            continue
+        title = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", h.group(1) if h else m.group(2)))).strip()[:200]
+        key = f"{u.scheme}://{u.netloc}{u.path.rstrip('/')}"
+        if len(title) < 8 or key in seen:
+            continue
+        seen.add(key)
+        out.append({"title": title, "url": key})
+    return out[:8]
+
+
+def detect_sources() -> list[dict]:
+    """突き合わせに使う他社・まとめ（ジャンル付き）。radar の見出し元は AI ジャンル"""
+    out = [{**s, "genre": s.get("genre", "ai")} for s in rules()["sources"] if s.get("type") in ("rss", None) and s["slug"] != "hn"]
+    have = {s["slug"] for s in out}
+    out += [s for s in _registry().get("detect_feeds", []) if s.get("slug") not in have and not s.get("disabled")]
+    return out
+
+
+def gather_detect(hours: int, now: datetime) -> tuple[list[dict], list[str]]:
+    from concurrent.futures import ThreadPoolExecutor  # noqa: PLC0415
+
+    since = now - timedelta(hours=hours)
+
+    def load(src):
+        try:
+            if src.get("type") == "html":
+                return src, [{"source": src["slug"], "title": i["title"], "url": i["url"], "links": [i["url"]], "published": now, "undated": True}
+                             for i in html_list_items(src)], ""
+            return src, feed_items(src), ""
+        except Exception as error:  # noqa: BLE001
+            return src, [], f"{src['slug']}: {str(error)[:60]}"
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        results = list(pool.map(load, detect_sources()))
+    items, errors = [], []
+    for src, got, error in results:
+        if error:
+            errors.append(error)
+        for i in got:
+            if i.get("published") and i["published"] >= since and "ai-tech-express.jp" not in i["url"]:
+                items.append({**i, "genre": src.get("genre", "ai"), "outlet": src.get("name", src["slug"]), "topics": bool(src.get("topics"))})
+    return items, errors
+
+
+def _clean_title(title: str) -> str:
+    return OUTLET_SUFFIX_RE.sub("", str(title or "")).strip()
+
+
+def _same_head(a: str, b: str) -> bool:
+    if dedupe.jaccard(dedupe.bigrams(a), dedupe.bigrams(b)) >= GAP_SIM:
+        return True
+    shared = features(a, strong=True) & features(b, strong=True)
+    return len(shared) >= 2
+
+
+def competitor_gaps(items: list[dict], records: list[dict]) -> list[dict]:
+    """他社が出してサイソクに記事が無い話題（同じ話題はまとめて、出した社の数で並べる）"""
+    prepared = prepare(records)
+    ours = [h for r in records for h in str(r.get("head") or r.get("title") or "").split(" | ") if h]
+    r_ = rules()["_re"]
+    clusters: list[dict] = []
+    for it in sorted(items, key=lambda i: i["published"]):
+        title = _clean_title(it["title"])
+        if not title:
+            continue
+        if it["genre"] == "ai" and not (r_["ai"].search(title) or entities_of(title)):
+            continue
+        hit = next((c for c in clusters if c["genre"] == it["genre"] and (set(it["links"]) & c["links"] or _same_head(title, c["title"]))), None)
+        if hit:
+            hit["outlets"].add(it["outlet"])
+            hit["links"] |= set(it["links"])
+            hit["topics"] = hit["topics"] or it["topics"]
+            hit["also"].append({"title": title, "outlet": it["outlet"], "url": it["url"]})
+            continue
+        clusters.append({"title": title, "url": it["url"], "genre": it["genre"], "outlets": {it["outlet"]}, "links": set(it["links"]),
+                         "topics": it["topics"], "published": it["published"], "also": [], "undated": it.get("undated", False)})
+    out = []
+    for c in clusters:
+        ai_big = c["genre"] == "ai" and classify(c["title"])["ok"]
+        if not (c["topics"] or len(c["outlets"]) >= 2 or ai_big):
+            continue
+        heads = [c["title"]] + [a["title"] for a in c["also"]]
+        if any(covered(h, list(c["links"]), prepared) for h in heads):
+            continue
+        if any(_same_head(h, o) for h in heads for o in ours):
+            continue
+        out.append(c)
+    out.sort(key=lambda c: (-len(c["outlets"]), not c["topics"], c["published"]))
+    kept, per = [], {}
+    for c in out:
+        if per.get(c["genre"], 0) >= GAP_MAX_PER_GENRE:
+            continue
+        per[c["genre"]] = per.get(c["genre"], 0) + 1
+        kept.append(c)
+    return kept
+
+
+GENRE_LABEL = {"ai": "AI・テック", "business": "ビジネス・経済", "investment": "投資・お金", "real-estate": "不動産", "public": "国内・政策",
+               "sports": "スポーツ", "tech-gadget": "ガジェット"}
+
+
+def gaps_markdown(gaps: list[dict], n_items: int) -> str:
+    lines = ["", f"### 他社が出して、サイソクに記事が無い話題（他社・まとめの見出し {n_items} 件と突き合わせ）", "",
+             "記事にするときは、必ず一次情報（公式の発表・官公庁・企業のリリース）を探して出典にする。他社の記事を書き直さない。", ""]
+    if not gaps:
+        return "\n".join(lines + ["- なし"]) + "\n"
+    by: dict[str, list[dict]] = {}
+    for g in gaps:
+        by.setdefault(g["genre"], []).append(g)
+    for genre, items in by.items():
+        lines.append(f"**{GENRE_LABEL.get(genre, genre)}**")
+        for g in items:
+            when = "日付なし" if g.get("undated") else g["published"].astimezone(JST).strftime("%m/%d %H:%M")
+            mark = "（主要ニュース）" if g["topics"] else ""
+            lines.append(f"- {g['title'][:110]}{mark} — {len(g['outlets'])}社: {'、'.join(sorted(g['outlets']))[:80]}（{when}） {g['url']}")
+        lines.append("")
+    return "\n".join(lines) + "\n"
+
+
 def judged_records() -> list[dict]:
     """速報レーンで扱って記事にしなかった話題（記事化の価値なし・重複と判定済み。state/fast_lane.json）。毎朝くり返し知らせない"""
     try:
@@ -626,16 +783,27 @@ def open_issue(title: str, body: str) -> str:
 def missed(args) -> int:
     now = datetime.now(timezone.utc)
     items, errors = gather(args.hours, now)
-    stories, stats = find_missed(items, load_records(args.hours + 72, now) + judged_records())
+    records = load_records(args.hours + 72, now)
+    stories, stats = find_missed(items, records + judged_records())
     report = markdown(stories, stats, errors, args.hours, now)
+    gaps: list[dict] = []
+    if not args.no_gaps:
+        try:
+            detected, derrors = gather_detect(args.hours, now)
+            gaps = competitor_gaps(detected, records)
+            report += gaps_markdown(gaps, len(detected))
+            if derrors:
+                report += "\n取得できなかった他社の見出し: " + " / ".join(e[:60] for e in derrors) + "\n"
+        except Exception as error:  # noqa: BLE001
+            report += f"\n他社との突き合わせに失敗: {str(error)[:120]}\n"
     print(report)
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:
         with open(summary, "a", encoding="utf-8") as fh:
             fh.write(report)
-    if not stories:
+    if not stories and not gaps:
         return 0
-    if args.request:
+    if args.request and stories:
         entries = [
             {"url": s["primary"]["url"], "title": s["title"][:200], "sourceName": s["primary"]["sourceName"],
              "secondary": s["primary"]["secondary"], "via": f"missed-check:{s['source']}", "found": s["url"]}
@@ -644,7 +812,7 @@ def missed(args) -> int:
         added = add_requests(entries, now)
         print(f"[missed] 速報レーンへの依頼を {added} 件 state/radar_requests.json に足しました（Worker のレーダーが数分以内に回します）")
     if args.issue:
-        title = f"【見逃しチェック】{now.astimezone(JST):%Y-%m-%d} 記事が無い大きなニュース {len(stories)} 件"
+        title = f"【見逃しチェック】{now.astimezone(JST):%Y-%m-%d} 記事が無い大きなニュース {len(stories)} 件・他社だけの話題 {len(gaps)} 件"
         tail = ("\n\n---\n出典の候補があるものは、自動で速報レーンに回しています（state/radar_requests.json）。"
                 "記事になったら、この Issue は閉じてください。判定のルール: scripts/fast_lane_rules.json の radar")
         try:
@@ -666,6 +834,7 @@ def main() -> int:
     p_missed.add_argument("--issue", action="store_true")
     p_missed.add_argument("--request", action="store_true")
     p_missed.add_argument("--max-requests", type=int, default=5)
+    p_missed.add_argument("--no-gaps", action="store_true", help="他社との突き合わせを省く")
     p_req = sub.add_parser("request")
     p_req.add_argument("url")
     p_req.add_argument("--title", default="")

@@ -170,3 +170,4 @@
 - 2026/11/1の検索入口・訪問数の基準とAPI特典記事の訂正: `docs/daily-growth-and-api-correction-20261101.md`。API特典は申請・対象・期限・別請求を維持し、旧SNS文面の再利用に注意。検索・訪問の計測は集計範囲を分ける。
 
 - 記事の写真の速さと著作権（2026/11/2）: 元記事の写真は**公式の発表（会社・団体の自社サイト、PR TIMES などのプレスリリース配信）だけ**使い、幅1200pxまで縮小してWebP（400/640/800/1200）と一緒に自前のKV（saisoku-images）から配信する。写真の下に「画像：◯◯（公式発表より）」を出す。ニュースサイト・ブログ・SNSの写真は保存も直リンクもせず、フリー素材・AI生成にする。仕組みは `scripts/images.py` の冒頭（`--cache-official`・`--variants`）と `lib/thumb-url.ts`。YouTube のサムネイルは従来どおり YouTube から読む。
+- 重複記事の統合（duplicateOf・noindex・canonical）、古い発表の作り直し停止とニュース用サイトマップの48時間ルール、料金・リリースノートの見張り、他社との突き合わせ: `docs/parity-fixes-20261102.md`。重複の判定は `scripts/story.py` だけで行い、サイトは JSON の duplicateOf を読む。

@@ -1,4 +1,4 @@
-import { isIndexable } from "@/lib/indexing";
+import { newsSitemapReason } from "@/lib/indexing";
 import { getAllArticles, lastModifiedOf } from "@/lib/articles";
 import { siteConfig } from "@/site.config";
 
@@ -10,14 +10,14 @@ const escapeXml = (value: string) =>
 /**
  * Google ニュース用サイトマップ。直近2日以内に公開した記事だけを載せる（Google の仕様）。
  * ビルドは記事が増えるたびに走るので、常に新しい記事が並ぶ。
- * 載せる基準と公開日は作成日時（generatedAt）のまま。続報は lastmod にだけ反映する。
+ * 載せる基準は lib/indexing.ts の newsSitemapReason（重複・角度違いの解説・まとめ・元の発表から48時間以上たった記事は載せない）。
+ * 公開日は最初に載せた時刻（generatedAt）のまま。続報は lastmod にだけ反映する。
  * news:name は Google ニュースの媒体名（サイト名＝WebSite 構造化データの name）と一致させる。
  */
 export function GET() {
   const now = Date.now();
   const recent = getAllArticles()
-    .filter(isIndexable)
-    .filter((a) => now - Date.parse(a.generatedAt || a.publishedAt) < 2 * 86_400_000)
+    .filter((a) => newsSitemapReason(a, now) === null)
     .slice(0, 1000);
 
   const items = recent

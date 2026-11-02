@@ -11,7 +11,9 @@
   python3 scripts/web_articles.py --max 2 --max-broad 6 --daily-cap 120     # 毎時実行の想定（AI 2本＋幅広い話題 6本）
 
 生成した記事は quality.py のゲート（形のチェック＋元記事との事実確認）を通ったものだけ書き出す。
-直近4日の記事と同じ話題の候補は dedupe.py で生成前に外す。
+直近5日の記事と同じ話題の候補は dedupe.py と story.py（サイトの重複判定と同じ基準）で生成前に外す。
+元の発表から48時間を超えた候補は通常の記事にしない（記事ページの公開日時でフィードの日付を直してから判定。
+大きなニュースで記事がまだ無いものだけ late として「速報ではない」形で作る）。
 直近14日の記事の続報は、新しいページを作らず既存記事に「## 続報」の章を足す（followup.py）。
   続報は --daily-cap に数えない（新しいページの本数の上限なので）。1回の実行で最大 --max-updates 本。
 新しい記事には、サイソクの過去記事（archive.py）から「これまでの流れ」の材料を渡す。
@@ -52,14 +54,24 @@ import feeds  # noqa: E402
 import followup  # noqa: E402
 import llm  # noqa: E402
 import main as m  # noqa: E402
+import page_watch  # noqa: E402
 import quality  # noqa: E402
+import story  # noqa: E402
 import trends  # noqa: E402
 from genres import AI, ALL_GENRES, BROAD_GENRES, GENRES, GENRES_BY_SLUG  # noqa: E402
 
 RUN_TIME_BUDGET_SEC = 25 * 60
 MAX_FAILURES = 2
 MIN_TEXT_CHARS = 600
-DEDUPE_DAYS = 4
+DEDUPE_DAYS = 5
+# 元の発表からこれ以上たったものは、通常のニュース記事にしない（scripts/story.py・lib/indexing.ts の48時間と同じ）。
+# 大きなニュースで、まだ記事が無いものだけは「速報ではない」と明記して作る（late。ニュース用サイトマップ・速報投稿に出さない）
+STALE_HOURS = 48
+LATE_NOTE = (
+    "\n\n# この発表の時期（必ず守る）\n"
+    "この発表は{date}（日本時間）に公開されたもので、今日の速報ではありません。本文の冒頭近くで「{date}に発表された」と日付を書き、"
+    "「本日」「たった今」「速報」など新しい発表のように見せる言い方をしないでください。題名にも【速報】などを付けないでください。"
+)
 QUALITY_LOG_KEEP = 300
 # 1本あたりの目安（生成＋事実確認）。残り時間がこれを切ったら新しい記事に手を付けない
 EST_SEC_PER_ARTICLE = 150
@@ -594,6 +606,37 @@ SECONDARY_SOURCE_NOTE = """## 今回の元記事は報道です（重要）
 - 報道の見立て・推測・未確認の情報は事実として書かない。元記事の文を書き写さず、自分の言葉で要約する。"""
 
 
+def source_age(item: dict, now: datetime | None = None) -> timedelta | None:
+    """元の発表からの経過時間（発表の時刻が分からないときは None）"""
+    published = item.get("published_at")
+    if not isinstance(published, datetime) or item.get("published_guessed") or item.get("date_from_first_seen"):
+        return None
+    return (now or datetime.now(timezone.utc)) - published
+
+
+def cap_with_page_date(item: dict, page: dict | None) -> bool:
+    """記事ページに書かれた公開日時で発表の時刻を直す（フィードに日付が無い・初めて見た時刻で代用した・
+    フィードの日付が更新日で新しく見える、のいずれか）。直したら True"""
+    found = feeds.page_published(page)
+    if not found or found > datetime.now(timezone.utc) + timedelta(hours=1):
+        return False
+    current = item.get("published_at")
+    guessed = item.get("published_guessed") or item.get("date_from_first_seen") or not isinstance(current, datetime)
+    # 日付だけ（00:00）のページは、フィードの時刻より1日以上古いときだけ使う
+    if guessed or found < current - timedelta(hours=24 if found.strftime("%H:%M:%S") == "00:00:00" else 6):
+        item["published_at"] = found
+        item["published_guessed"] = False
+        item["date_from_first_seen"] = False
+        item["published_from_page"] = True
+        return True
+    return False
+
+
+def is_stale(item: dict) -> bool:
+    age = source_age(item)
+    return bool(age and age > timedelta(hours=STALE_HOURS))
+
+
 def source_header(item: dict) -> str:
     """事実確認に渡す元記事の情報（発信元・公開日時・URL）。記事に書いた発信元名・日付を「創作」と誤判定させない"""
     published = item.get("published_at")
@@ -944,9 +987,14 @@ def build_fast_items(urls: list[str], meta_raw: str, state: dict, now: datetime)
             item["content"] = worker_text
         if meta.get("image") and not item.get("image"):
             item["image"] = str(meta["image"])
+        # レーダーの話題（まとめサイト・他社の見出しから見つけたもの）の publishedAt は見出しの時刻で、発表の時刻ではない。
+        # 発表の時刻としては使わず、公式ページに日付が無ければ「不明」にする（古い発表を今日の速報に見せない）
+        from_radar = bool(meta.get("via"))
+        if from_radar:
+            item["radar"] = True
         published = (
             item.get("published_at")
-            or fast_lane.parse_time(meta.get("publishedAt"))
+            or (None if from_radar else fast_lane.parse_time(meta.get("publishedAt")))
             or fast_lane.parse_time((page or {}).get("published"))
         )
         # 発表の時刻が分からなければ検知の時刻で代用する（速さのラベルは出さない）
@@ -1074,7 +1122,8 @@ def main() -> int:
     log(f"[info] 今日の生成済み {done_today} 本 / 上限 {args.daily_cap or 'なし'}")
 
     recent = dedupe.load_recent(DEDUPE_DAYS)
-    log(f"[info] 重複チェック: 直近{DEDUPE_DAYS}日の記事 {len(recent.entries)} 件")
+    story_recent = story.Recent(DEDUPE_DAYS)
+    log(f"[info] 重複チェック: 直近{DEDUPE_DAYS}日の記事 {len(recent.entries)} 件（同じ発表の判定 {len(story_recent.stories)} 件）")
     # 続報の対象（直近14日・まとめ記事を除く）と、同じ実行の中で採った候補
     followups = dedupe.load_recent(followup.FOLLOWUP_DAYS, skip_roundups=True)
     run_seen = dedupe.Index()  # label は候補の id
@@ -1203,6 +1252,19 @@ def main() -> int:
     majors = [i for n, i in enumerate(majors) if i["id"] not in {j["id"] for j in majors[:n]}]  # 同じ URL は AI 側を残す
     if fast_mode:
         majors = fast_items
+    elif args.max_major > 0 and args.section in ("ai", "all") and not args.only and not args.source:
+        # 料金・プラン・リリースノートのページの新しい項目（scripts/page_watch.py）。大きなニュースと同じ流れで先に作る
+        # （同じ発表の記事があれば続報か見送り。速報投稿はしない）
+        try:
+            watch_items = page_watch.candidates(state["processed_web"], dry_run=args.dry_run)
+        except Exception as error:  # noqa: BLE001
+            log(f"[watch] ページの見張りに失敗: {str(error)[:120]}")
+            watch_items = []
+        for it in watch_items:
+            major_ids.add(it["id"])
+        if watch_items:
+            log(f"[watch] 料金・プラン・リリースノートの新しい項目 {len(watch_items)} 件: {' / '.join(i['title'][:50] for i in watch_items)}")
+        majors = watch_items + majors
     if not ai_limit:
         ai_items = []
     if not broad_limit:
@@ -1475,6 +1537,12 @@ def main() -> int:
         if recent.has_url(cand["url"]):
             mark(state, cand, skipped=True, reason="dedupe: 同じ出典URL")
             return "drop", None
+        if is_stale(cand) and not cand.get("fast"):
+            if not major:
+                hours = int(source_age(cand).total_seconds() // 3600)
+                mark(state, cand, skipped=True, reason=f"stale: 発表から{hours}時間（{STALE_HOURS}時間を超えた発表は通常の記事にしない）")
+                return "drop", None
+            cand["late"] = True  # 大きなニュースで記事がまだ無いものだけ、速報ではない形で作る
         # 同じ実行で先に扱った同じ話題: 本家の記事ができていれば続報へ、本家が再試行待ちなら次回へ
         act = in_run_action(cand)
         if act and act[0] == "ok":
@@ -1500,6 +1568,18 @@ def main() -> int:
                     return "take", target
             if hit:
                 mark(state, cand, skipped=True, reason=f"dedupe: {hit[0]}"[:200])
+                return "drop", None
+        if not target:
+            # 同じ発表の記事（出典URL・会社＋製品名・珍しい固有名詞。scripts/story.py。サイトの重複判定と同じ基準）
+            same = story_recent.match(cand["title"], cand["url"], published=cand.get("published_at"))
+            if same:
+                if major:
+                    target = followup_for(same[0], same[1])
+                    if target and target[0] == "defer":
+                        return "next", None
+                    if target:
+                        return "take", target
+                mark(state, cand, skipped=True, reason=f"dedupe: 同じ発表の記事あり（{same[1]}）: {same[0]}"[:200])
                 return "drop", None
         return "take", target
 
@@ -1531,6 +1611,17 @@ def main() -> int:
             log(f"   [warn] 本文の取得に失敗（{str(error)[:80]}）。フィードの本文を使います")
             page = {"text": "", "image": None}
         text = max([page.get("text") or "", item.get("content") or ""], key=len)
+        if cap_with_page_date(item, page):
+            log(f"   [date] 記事ページの公開日時で発表の時刻を直しました: {item['published_at'].astimezone(JST):%m-%d %H:%M}")
+        if is_stale(item):
+            hours = int(source_age(item).total_seconds() // 3600)
+            if not major:
+                log(f"   [skip] 発表から{hours}時間たっている（{STALE_HOURS}時間を超えた発表は通常の記事にしない）")
+                mark(state, item, skipped=True, reason=f"stale: 発表から{hours}時間（記事ページの日付）")
+                run_status[item["id"]] = ("failed", feeds.source_rank(item))
+                return
+            item["late"] = True
+            log(f"   [late] 発表から{hours}時間。速報ではない形で作ります（速報投稿・ニュース用サイトマップに出さない）")
         if len(text) < MIN_TEXT_CHARS:
             log(f"   [skip] 本文が短い（{len(text)}字）")
             if major:
@@ -1561,6 +1652,8 @@ def main() -> int:
 
         related = arch.related(item["title"], text, item["url"], "ai" if is_ai else lane)
         context = archive.prompt_block(related)
+        if item.get("late"):
+            context += LATE_NOTE.format(date=f"{item['published_at'].astimezone(JST):%Y年%m月%d日}")
         secondary_note = f"\n\n{SECONDARY_SOURCE_NOTE.format(name=item['source_name'])}" if item.get("secondary") else ""
         if related:
             log(f"   [context] 過去記事 {len(related)} 本: {', '.join(r['slug'] for r in related)}")
@@ -1612,11 +1705,16 @@ def main() -> int:
         # 速報レーンの記事は Worker が主要企業の公式発表と判定したものなので、必ず速報にする（公開したらすぐ SNS へ）
         # 通常の収集から来たものは、発表から12時間以内のときだけ速報にする（古い発表に【速報】を付けない）
         fresh = item.get("published_at") and item["published_at"] > datetime.now(timezone.utc) - timedelta(hours=12)
-        if major and ((is_breaking(item) and fresh) or item.get("fast")):
+        # レーダーの話題は、公式ページの日付で発表から12時間以内と分かったときだけ速報（見出しの時刻では速報にしない）
+        radar_ok = not item.get("radar") or (fresh and not item.get("published_guessed"))
+        if major and ((is_breaking(item) and fresh) or (item.get("fast") and radar_ok)) and not item.get("late") and not item.get("watch"):
             record["breaking"] = True
+        if item.get("late"):
+            record["late"] = True
         stamp_times(record, item, run_detected_at)
         path = m.write_article(record)
         recent.add(record["title"], record["sourceUrl"], record.get("keywords"))
+        story_recent.add(record)
         touched.add(record["slug"])
         run_status[item["id"]] = ("article", record["slug"])
         mark(state, item, slug=record["slug"], model=model_name, section=lane, score=record.get("qualityScore"),
@@ -1723,6 +1821,7 @@ def main() -> int:
             stamp_times(record, q, run_detected_at)
             path = m.write_article(record)
             recent.add(record["title"], record["sourceUrl"], record.get("keywords"))
+            story_recent.add(record)
             touched.add(record["slug"])
             run_status[q["id"]] = ("article", record["slug"])
             mark(state, q, slug=record["slug"], model=model_name, kind="trend", score=record.get("qualityScore"))

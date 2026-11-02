@@ -111,6 +111,12 @@ export type Article = {
   updatedAt?: string;
   /** 公式発表の日時（web 記事で取れたときだけ） */
   sourcePublishedAt?: string;
+  /** 同じ発表の重複記事のとき、代表の記事の slug（scripts/story.py が付ける。noindex・canonical は代表へ） */
+  duplicateOf?: string;
+  /** 意図して別の角度から書いた解説のとき、元の記事の slug（重複にしないがニュース用サイトマップには載せない） */
+  angleOf?: string;
+  /** 発表から48時間以上たってから作った記事（速報ではない。ニュース用サイトマップに載せない） */
+  late?: boolean;
   /** 公開前の事実確認の点数（100点満点） */
   qualityScore?: number;
   /** 続報の履歴（古い順） */
@@ -172,7 +178,11 @@ export type ArticleSummary = Pick<
   | "sourceType"
   | "sourceUrl"
   | "sourceName"
+  | "sourcePublishedAt"
   | "indexable"
+  | "duplicateOf"
+  | "angleOf"
+  | "late"
   | "videoId"
   | "videoUrl"
   | "publishedAt"
