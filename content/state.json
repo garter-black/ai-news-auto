@@ -9912,6 +9912,14 @@
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/047747/"
     },
+    "c6d9238c83518589": {
+      "at": "2026-11-02T09:14:44.806759+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "jhfc-green-bond-gov-guarantee",
+      "url": "https://www.mof.go.jp/jgbs/topics/gov_guaranteed_bonds/hu2032.htm"
+    },
     "c71a5ea79ab30fcb": {
       "at": "2026-10-26T21:14:17.873389+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（会議）",
@@ -11904,41 +11912,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T06:51:02.213445+00:00",
-      "attempt": 1,
-      "id": "a505f7dd029a9adb",
-      "kind": "update",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "score": 100,
-      "source": "caa",
-      "title": "消費生活用製品の重大製品事故:リコール製品で火災等(スピーカー(充電式))(10月30日)"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T06:51:11.799988+00:00",
-      "attempt": 1,
-      "id": "b749fcda386da4a4",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "武器の付与時期 10月27日（火）7時59分 → 元記事の注釈では「10月27日（火）7時59分」とあるが、元記事の公開日が2026年10月30日であり、過去の日付を未来のイベントとして記載している矛盾がある。",
-        "武器配布の対象 2026年9月26日（土）8時00分以降にプレイしたプレイヤー → 元記事の注釈と日付が一致するが、イベント公開日（10月30日）より前の日付を基準としており、文脈上不自然な記載となっている。"
-      ],
-      "readability": {
-        "avg_paragraph": 163.4,
-        "avg_sentence": 59.4,
-        "long_share": 0.455,
-        "max_paragraph": 208,
-        "paragraphs": 8,
-        "sentences": 22
-      },
-      "score": 85,
-      "source": "playstation-blog-jp",
-      "title": "『HELLDIVERS 2』で“自由の日”を祝おう！ ゲーム内で記念ギフトを配布"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T06:51:20.843034+00:00",
@@ -18502,6 +18475,48 @@
       "score": 100,
       "source": "mof",
       "title": "令和8年度 9月末租税及び印紙収入、収入額調"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T09:13:12.550034+00:00",
+      "attempt": 1,
+      "id": "c6d9238c83518589",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "easy_markdown が「## ひとことで言うと」から始まっていない"
+      ],
+      "readability": {
+        "avg_paragraph": 95.6,
+        "avg_sentence": 42.1,
+        "long_share": 0.16,
+        "max_paragraph": 183,
+        "paragraphs": 11,
+        "sentences": 25
+      },
+      "score": null,
+      "source": "mof",
+      "title": "第57回住宅金融支援機構債券（グリーンボンド）に対する政府保証の付与"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T09:14:44.806116+00:00",
+      "attempt": 2,
+      "id": "c6d9238c83518589",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 103.8,
+        "avg_sentence": 40.6,
+        "long_share": 0.087,
+        "max_paragraph": 179,
+        "paragraphs": 9,
+        "sentences": 23
+      },
+      "score": 100,
+      "source": "mof",
+      "title": "第57回住宅金融支援機構債券（グリーンボンド）に対する政府保証の付与"
     }
   ],
   "short_text_retry": {},
