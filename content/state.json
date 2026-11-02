@@ -3597,6 +3597,14 @@
       "skipped": true,
       "url": "https://www.reuters.com/jp/markets/japan/N3QCKQ4EWVNG5BHSPZNYN5GUME-2026-10-28/"
     },
+    "0ef693dc699abbb7": {
+      "at": "2026-11-02T19:54:10.270566+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "public",
+      "slug": "reiwa-8-culture-merit-recipients",
+      "url": "https://www.mext.go.jp/b_menu/houdou/2026/1422024_00002.htm"
+    },
     "0f5fcb7257a2c170": {
       "at": "2026-10-30T02:21:48.744779+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（会議）",
@@ -4147,6 +4155,14 @@
       "section": "business",
       "slug": "ntt-west-zero-trust-service",
       "url": "http://www.ntt-west.co.jp/news/2610/261029a.html"
+    },
+    "195c284d0de53e7f": {
+      "at": "2026-11-02T19:52:48.818669+00:00",
+      "kind": "update",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "updated": "amazon-bedrock-managed-kb-agentic-retrieval-cdk",
+      "url": "https://aws.amazon.com/blogs/machine-learning/prepare-web-content-for-amazon-bedrock-knowledge-bases-with-crawl4ai/"
     },
     "1984c7e2b8451fba": {
       "at": "2026-10-29T00:01:30.843705+00:00",
@@ -5434,6 +5450,12 @@
       "section": "ai",
       "slug": "aws-moengage-agentcore-gateway",
       "url": "https://aws.amazon.com/blogs/machine-learning/how-moengage-turned-over-400-apis-into-agent-tools-with-agentcore-gateway/"
+    },
+    "3e4765c6fd3b0d54": {
+      "at": "2026-11-02T19:54:10.723553+00:00",
+      "reason": "dedupe: 固有名詞が一致（amazon・bedrock）: Prepare web content for Amazon Bedrock K",
+      "skipped": true,
+      "url": "https://aws.amazon.com/blogs/machine-learning/agentic-engineering-intelligence-with-amazon-nova-multimodal-embeddings-and-amazon-bedrock-agentcore/"
     },
     "3ea80bf60317bab8": {
       "at": "2026-10-28T23:13:03.555506+00:00",
@@ -7486,6 +7508,12 @@
       "skipped": true,
       "url": "https://www.kantei.go.jp/jp/105/discourse/20261026message.html"
     },
+    "7a5a1669ffe7a96b": {
+      "at": "2026-11-02T19:54:10.723609+00:00",
+      "reason": "dedupe: 固有名詞が一致（amazon・bedrock）: Prepare web content for Amazon Bedrock K",
+      "skipped": true,
+      "url": "https://aws.amazon.com/blogs/machine-learning/how-circle-k-accelerated-devops-incident-triage-to-under-15-minutes-with-amazon-bedrock/"
+    },
     "7a5ea96e2ae06ffb": {
       "at": "2026-10-27T03:04:42.978164+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（キャンペーン）",
@@ -7752,6 +7780,12 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000059.000130865.html"
     },
+    "80e2565f9f275b58": {
+      "at": "2026-11-02T19:54:10.723463+00:00",
+      "reason": "dedupe: 固有名詞が一致（amazon・knowledge）: Prepare web content for Amazon Bedrock K",
+      "skipped": true,
+      "url": "https://aws.amazon.com/blogs/machine-learning/build-efficient-agents-with-knowledge-distillation-on-amazon-sagemaker-ai/"
+    },
     "810f54c1a816500d": {
       "at": "2026-11-02T11:31:30.190022+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -7787,6 +7821,12 @@
       "reason": "quality: 本文が短い（1478字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://jtta.or.jp/news/38493"
+    },
+    "8195b479d6c25d72": {
+      "at": "2026-11-02T19:52:49.263885+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（審議会）",
+      "skipped": true,
+      "url": "https://www.fsa.go.jp/news/r8/singi/20261109.html"
     },
     "81b193a67be7f973": {
       "at": "2026-10-28T02:40:17.550553+00:00",
@@ -8594,6 +8634,12 @@
       "section": "ai",
       "slug": "microsoft-copilot-cowork-new-skills",
       "url": "https://blogs.windows.com/japan/2026/10/26/microsoft-copilot-blog-whats-new-in-cowork-expanded-plugins-and-role-based-skills-4566221/"
+    },
+    "9535a4f33bd7532d": {
+      "at": "2026-11-02T19:52:49.263931+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（表敬）",
+      "skipped": true,
+      "url": "https://www.kantei.go.jp/jp/105/actions/202611/02hyoukei.html"
     },
     "95364ce770790d21": {
       "at": "2026-10-26T11:33:38.547453+00:00",
@@ -9732,6 +9778,12 @@
       "section": "business",
       "slug": "soumu-kkj-2025-3rd-result",
       "url": "https://www.stat.go.jp/data/kkj/kekka/index.html"
+    },
+    "b6174c177c8fb78a": {
+      "at": "2026-11-02T19:52:49.263915+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（表敬）",
+      "skipped": true,
+      "url": "https://www.gov-online.go.jp/press_conferences/prime_minister/202611/video-327017.html"
     },
     "b6273c74809e5d80": {
       "at": "2026-10-29T18:35:20.173484+00:00",
@@ -11597,6 +11649,12 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000114.000048768.html"
     },
+    "e9321f8b1844d168": {
+      "at": "2026-11-02T19:52:49.263922+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（会議）",
+      "skipped": true,
+      "url": "https://www.digital.go.jp/councils/ai_digital/1f3aa34a-786d-4b56-99a4-469f8f933f1c"
+    },
     "e9ce710af4dea7e4": {
       "at": "2026-10-31T06:01:11.937389+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（役員）",
@@ -12459,51 +12517,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T11:42:34.849876+00:00",
-      "attempt": 2,
-      "id": "fefa1b6c88ebec6f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1702字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 116.7,
-        "avg_sentence": 46.7,
-        "long_share": 0.2,
-        "max_paragraph": 214,
-        "paragraphs": 10,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "第１回「令和８年度管理栄養士国家試験出題基準（ガイドライン）改定検討会」開催案内"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T11:42:43.858564+00:00",
-      "attempt": 1,
-      "id": "43bbd8684f7d32bd",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1513字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（296字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 128.9,
-        "avg_sentence": 51.5,
-        "long_share": 0.4,
-        "max_paragraph": 210,
-        "paragraphs": 8,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "新型コロナウイルス感染症に関する報道発表資料を更新しました"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T11:42:49.670032+00:00",
@@ -18950,6 +18963,38 @@
       "score": 100,
       "source": "tokyo-metro",
       "title": "令和8年度東京都税制調査会第3回総会の開催及び知事への報告の手交について"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T19:52:48.817883+00:00",
+      "attempt": 1,
+      "id": "195c284d0de53e7f",
+      "kind": "update",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "score": 100,
+      "source": "aws-ml-blog",
+      "title": "Prepare web content for Amazon Bedrock Knowledge Bases with Crawl4AI"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T19:54:10.269977+00:00",
+      "attempt": 1,
+      "id": "0ef693dc699abbb7",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 67.4,
+        "avg_sentence": 33.7,
+        "long_share": 0.0,
+        "max_paragraph": 112,
+        "paragraphs": 11,
+        "sentences": 22
+      },
+      "score": 100,
+      "source": "mext",
+      "title": "令和8年度 文化功労者及び文化勲章受章者について"
     }
   ],
   "short_text_retry": {},
