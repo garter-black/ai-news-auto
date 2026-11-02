@@ -2,7 +2,7 @@
   "videos": {
     "nvidia-tensorrt-edge-llm-edge-ai": {
       "at": "2026-11-02T19:51:12+00:00",
-      "status": "ready",
+      "status": "posted",
       "textAt": "2026-11-02T13:45:00+00:00",
       "versions": {
         "full": {
@@ -75,7 +75,12 @@
         "short": "https://ai-tech-express.jp/video/nvidia-tensorrt-edge-llm-edge-ai-f4f93411b4.mp4",
         "poster": "https://ai-tech-express.jp/video/nvidia-tensorrt-edge-llm-edge-ai-0184a13db1.jpg"
       },
-      "embedded": true
+      "embedded": true,
+      "variant": "full",
+      "body": "手元でAIを動かす、何が要る？\n公式ページの画面を見ながら、56秒で解説しました。\n\n要約すると、NVIDIAはエッジ向けAI開発ツール「TensorRT Edge-LLM」を公開しました。DGX Spark 64GB上で、trtedge CLIの数コマンドでモデル取得からエンジン作成まで進められます。DSpark有効時は生成速度が最大126.9トークン/秒になります。\n\n詳しくはこちら👇\nhttps://ai-tech-express.jp/articles/nvidia-tensorrt-edge-llm-edge-ai?utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=full\n音声：VOICEVOX:九州そら",
+      "link": "https://ai-tech-express.jp/articles/nvidia-tensorrt-edge-llm-edge-ai?utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=full",
+      "bufferId": "6ae911a7c0a8cf2c65b76754",
+      "postedAt": "2026-11-02T22:41:53+00:00"
     },
     "shopify-cto-codex-ai-prototyping": {
       "at": "2026-11-02T17:50:26+00:00",
