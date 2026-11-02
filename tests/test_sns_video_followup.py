@@ -167,7 +167,11 @@ class ShortScriptTest(unittest.TestCase):
         labels = [b["label"] for b in s["beats"]]
         self.assertEqual(labels[0], "答え")
         self.assertIn("ポイント", labels)
-        self.assertEqual(s["conclusion"]["text"], "必要な人・確かめ方は記事で")
+        end = s["conclusion"]
+        self.assertEqual(end["text"], "くわしくは記事で")
+        self.assertTrue(end["speech"].startswith("必要な人と確かめ方は、記事でくわしく解説しています。"))
+        self.assertIn("投稿のリンク", end["speech"])  # 温かく、リンクへ誘う（押しつけない）
+        self.assertIn("投稿のリンク", end["cta"])
         self.assertEqual(s["_variant"], "short")
         self.assertEqual(s["flows"], [])  # 使わない場面の絵は外す
         if "プランの比較" in labels:  # 短すぎるときはグラフの場面を足す。番号は付け替える

@@ -1099,11 +1099,28 @@ def short_script(script: dict) -> dict:
     who = next((x for x in skipped if re.search(r"必要|向いて|使い方|活用|こんな", x)), None)
     how = next((x for x in skipped if re.search(r"確かめ|試し|始め|今できる|次の一歩", x)), None)
     tail = [x for x in (who, how) if x] or skipped[-2:]
-    text = f"{'・'.join(tail)}は記事で" if tail and len("・".join(tail)) <= 12 else "詳しくは記事で"
-    speech = f"{'や'.join(tail)}は、記事で詳しく解説しています。" if tail and len("・".join(tail)) <= 12 else "詳しくは、記事で解説しています。"
-    out["conclusion"] = {"text": text, "speech": speech}
+    out["conclusion"] = short_ending(tail, (script.get("hook") or {}).get("text", ""))
     out["_variant"] = "short"
     return out
+
+
+# 短い版の締め（2026-11-03 オーナー「記事で詳しく解説しています、だけだと素っ気ない。温かく、リンクへ誘って」）。押しつけない言い方だけ
+SHORT_INVITES = [
+    "投稿のリンクから、ぜひチェックしてみてください。",
+    "気になったら、投稿のリンクからのぞいてみてください。",
+    "続きは、投稿のリンクからどうぞ。",
+]
+
+
+def short_ending(topics: list[str], seed: str = "") -> dict:
+    """短い版の締め: 声「◯◯は、記事でくわしく解説しています。投稿のリンクから、ぜひチェックしてみてください。」
+    画面「くわしくは記事で」＋「投稿のリンクからどうぞ ↗」＋ブランド。誘い文句は話題ごとに少し変える（同じ言い回しが続かないように）"""
+    import zlib
+
+    joined = "と".join(topics)
+    head = f"{joined}は、記事でくわしく解説しています。" if topics and len(joined) <= 14 else "くわしくは、記事で解説しています。"
+    invite = SHORT_INVITES[zlib.crc32(seed.encode("utf-8")) % len(SHORT_INVITES)]
+    return {"text": "くわしくは記事で", "speech": head + invite, "cta": "投稿のリンクからどうぞ ↗", "eyebrow": "続きは記事で"}
 
 
 def make_tts(kind: str, speed: float):
@@ -1618,7 +1635,7 @@ def big_lines(text: str) -> np.ndarray:
     for ph in v2._phrases(text):
         at += len(ph)
         bounds.add(at)
-    for rows_max, sizes in ((2, range(86, 62, -2)), (3, range(80, 60, -2)), (2, range(60, 48, -2))):
+    for rows_max, sizes in ((1, range(86, 58, -2)), (2, range(86, 62, -2)), (3, range(80, 60, -2)), (2, range(60, 48, -2))):
         for size in sizes:
             rows = v2.wrap_jp(text, shorts.font("black", size), COL_W - 8)
             cuts, at = set(), 0
@@ -2014,7 +2031,9 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     # 文字（左の列）: 小さな見出し → キーワード（マーカー）→ 補足。キーワードの中心は画面の注目の行と同じ高さ
     texts: list[TextItem] = []
     logo = render_text([(BRAND, "logo", INK)], 32)
-    texts.append(TextItem("logo", BRAND, logo, LOGO_XY[0], LOGO_XY[1], 0.0, narr.total + 1, anim="none"))
+    # 短い版は締めでブランドを案内の下に出すので、左上のロゴはそこで消す（同じロゴが2つ並ばないように）
+    logo_end = lines[-1].start - 0.1 if (script.get("conclusion") or {}).get("cta") else narr.total + 1
+    texts.append(TextItem("logo", BRAND, logo, LOGO_XY[0], LOGO_XY[1], 0.0, logo_end, anim="none"))
     hook_spr = big_lines(hook["text"])
     hook_end = lines[0].end if lines[0].end <= 2.0 else min(HOOK_TEXT_MAX, lines[0].end - 0.5)
     (_, _, hx, hy), = column_group([("hook", hook_spr, 0)], ANCHOR_Y)
@@ -2038,11 +2057,20 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         for role, spr, x, y in column_group(parts, ANCHOR_Y):
             text = {"eyebrow": label, "keyword": beat["keyword"], "sub": beat.get("sub", "")}[role]
             texts.append(TextItem(role, text, spr, x, y, t_in, t_out, anim="wipe" if role == "keyword" else "rise", delay={"eyebrow": 0.0, "keyword": 0.06, "sub": 0.22}[role], marker=role == "keyword"))
-    concl_brow = fit_line("要約すると", "bold", range(28, 20, -2), COL_W, color=BLUE, accent=False, tracking=0.08)
-    concl_spr = big_lines(script["conclusion"]["text"])
-    for role, spr, x, y in column_group([("eyebrow", concl_brow, 0), ("conclusion", concl_spr, 18)], ANCHOR_Y):
-        text = "要約すると" if role == "eyebrow" else script["conclusion"]["text"]
-        texts.append(TextItem(role, text, spr, x, y, concl.start - 0.1, narr.total + 1, anim="rise", delay=0.0 if role == "eyebrow" else 0.08))
+    concl_info = script["conclusion"]
+    brow_text = concl_info.get("eyebrow") or "要約すると"
+    concl_brow = fit_line(brow_text, "bold", range(28, 20, -2), COL_W, color=BLUE, accent=False, tracking=0.08)
+    concl_spr = big_lines(concl_info["text"])
+    parts = [("eyebrow", concl_brow, 0), ("conclusion", concl_spr, 18)]
+    labels = {"eyebrow": brow_text, "conclusion": concl_info["text"]}
+    if concl_info.get("cta"):  # 短い版: 投稿のリンクへの案内（マーカー付き）とブランド
+        parts.append(("cta", fit_line(concl_info["cta"], "black", range(44, 30, -2), COL_W, color=BLUE, accent=False), 28))
+        parts.append(("brand", render_text([(BRAND, "logo", INK)], 36), 30))
+        labels.update({"cta": concl_info["cta"], "brand": BRAND})
+    for role, spr, x, y in column_group(parts, ANCHOR_Y):
+        delay = {"eyebrow": 0.0, "conclusion": 0.08, "cta": 0.5, "brand": 0.75}[role]
+        texts.append(TextItem("sub" if role in ("cta", "brand") else role, labels[role], spr, x, y, concl.start - 0.1, narr.total + 1,
+                              anim="wipe" if role == "cta" else "rise", delay=delay, marker=role == "cta"))
     # 出典（どのページか）: 小さく1行・ページが変わったら切り替える
     spans: list[list] = []
     for m in [Move(0.0, 0, first)] + camera.moves:
