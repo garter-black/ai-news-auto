@@ -1,0 +1,196 @@
+{
+  "slug": "chatgpt-pro",
+  "name": "ChatGPT Pro",
+  "aliases": [],
+  "company": "openai",
+  "companyName": "OpenAI",
+  "category": "アプリ・サービス",
+  "overview": {
+    "text": "ChatGPT Proは、OpenAIが提供する有料のプランです。毎月のAPI利用枠や高度な機能が付帯するプランとして案内されています。",
+    "sources": [
+      "chatgpt-pro-monthly-api-credits",
+      "chatgpt-pro-business-api-credits-benefit"
+    ]
+  },
+  "facts": [
+    {
+      "label": "料金",
+      "value": "Pro 100/200/500など",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits",
+        "chatgpt-pro-business-api-credits-benefit"
+      ]
+    },
+    {
+      "label": "提供開始",
+      "value": "提供中",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits",
+        "chatgpt-pro-business-api-credits-benefit"
+      ]
+    },
+    {
+      "label": "日本での提供",
+      "value": "利用できる",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits"
+      ]
+    },
+    {
+      "label": "向いている人",
+      "value": "アプリ開発者や管理者",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits",
+        "chatgpt-pro-business-api-credits-benefit"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "text": "Pro 100プランでは毎月100ドルのAPIクレジットを利用できます。",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits",
+        "chatgpt-pro-business-api-credits-benefit"
+      ]
+    },
+    {
+      "text": "Pro 200プランでは毎月200ドルのAPIクレジットを利用できます。",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits",
+        "chatgpt-pro-business-api-credits-benefit"
+      ]
+    },
+    {
+      "text": "Pro 500プランでは毎月500ドルのAPIクレジットを利用できます。",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits",
+        "chatgpt-pro-business-api-credits-benefit"
+      ]
+    },
+    {
+      "text": "3つの利用枠から選んで、自作アプリやAIエージェントの開発に活かせます。",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits"
+      ]
+    }
+  ],
+  "pricing": [
+    {
+      "text": "プランはPro 100、Pro 200、Pro 500の3つの利用枠から選ぶ方式です。",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits"
+      ]
+    },
+    {
+      "text": "プランごとの毎月のAPIクレジットは、それぞれ100ドル、200ドル、500ドルです。",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits",
+        "chatgpt-pro-business-api-credits-benefit"
+      ]
+    }
+  ],
+  "japan": [
+    {
+      "text": "ChatGPTとOpenAIのAPIは日本で使えます。",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits"
+      ]
+    },
+    {
+      "text": "公式の料金ページは日本語でも公開されています。",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits"
+      ]
+    }
+  ],
+  "howto": [
+    {
+      "text": "対象となるアカウントにログインし、設定の請求画面から受け取り手続きを行います。",
+      "sources": [
+        "chatgpt-pro-business-api-credits-benefit"
+      ]
+    },
+    {
+      "text": "ChatGPTの契約とAPI組織で同じメールアドレスを使う必要があります。",
+      "sources": [
+        "chatgpt-pro-business-api-credits-benefit"
+      ]
+    }
+  ],
+  "differences": [
+    {
+      "text": "料金ページに各Proプランの毎月のAPIクレジットの金額が明記されました。",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits"
+      ]
+    },
+    {
+      "text": "Proの特徴説明に、自分のアプリやAIを作るための開発用枠の文言が加わりました。",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "PlusプランでもAPIクレジットの特典はもらえる？",
+      "a": "Plusはこの特典の対象外です。",
+      "sources": [
+        "chatgpt-pro-business-api-credits-benefit"
+      ]
+    },
+    {
+      "q": "APIクレジットを受け取るための条件は？",
+      "a": "対象の有料プランが7日以上有効であり、受け取り手続きが必要です。",
+      "sources": [
+        "chatgpt-pro-business-api-credits-benefit"
+      ]
+    },
+    {
+      "q": "未使用のAPIクレジットは翌月に繰り越せる？",
+      "a": "請求期間の終了時に失効し、翌期間には繰り越されません。",
+      "sources": [
+        "chatgpt-pro-business-api-credits-benefit"
+      ]
+    },
+    {
+      "q": "12月からCodexとの共通化はどう変わる？",
+      "a": "ChatGPTとCodexで利用枠が共通になり、トークンで測定されるようになります。",
+      "sources": [
+        "chatgpt-codex-shared-usage-limits"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2026-10-29",
+      "slug": "chatgpt-pro-business-api-credits-benefit",
+      "event": "ChatGPT Pro等のAPIクレジット特典を案内"
+    },
+    {
+      "date": "2026-11-03",
+      "slug": "chatgpt-pro-monthly-api-credits",
+      "event": "料金ページに毎月のAPI利用枠の金額を追加"
+    }
+  ],
+  "related": [
+    "codex",
+    "chatgpt-work",
+    "gpt-6-1-terra",
+    "chatgpt-enterprise"
+  ],
+  "articles": [
+    "chatgpt-pro-monthly-api-credits",
+    "chatgpt-codex-shared-usage-limits",
+    "chatgpt-pro-business-api-credits-benefit"
+  ],
+  "linkFrom": [
+    "chatgpt-pro-monthly-api-credits",
+    "chatgpt-pro-business-api-credits-benefit"
+  ],
+  "signature": "c6b547d878defb17",
+  "primarySignature": "c9fa5c5b8c80a9ae",
+  "model": "gemini-3.5-flash-lite",
+  "createdAt": "2026-11-02T18:44:39+00:00",
+  "updatedAt": "2026-11-02T18:44:39+00:00"
+}

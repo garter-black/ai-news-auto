@@ -4683,6 +4683,14 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000220.000068011.html"
     },
+    "29a9ccbde0255995": {
+      "at": "2026-11-02T18:44:29.372435+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "public",
+      "slug": "nenkin-no-hi-2026-mhlw",
+      "url": "https://www.mhlw.go.jp/stf/nenkinnohi2026_00001.html"
+    },
     "29aa2d1bb897616c": {
       "at": "2026-10-26T20:41:04.903353+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -8055,6 +8063,15 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000317.000139786.html"
     },
+    "8852e4123fc0ef20": {
+      "at": "2026-11-02T18:43:51.655161+00:00",
+      "major": true,
+      "model": "claude:sonnet",
+      "score": 100,
+      "section": "ai",
+      "slug": "chatgpt-pro-monthly-api-credits",
+      "url": "https://openai.com/chatgpt/pricing/#entry-2026-11-03-892dd5"
+    },
     "8857751ffdb64df0": {
       "at": "2026-10-29T01:12:55.998222+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11133,6 +11150,14 @@
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102824"
     },
+    "de3657a54534136e": {
+      "at": "2026-11-02T18:44:08.097727+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "ai",
+      "slug": "lumen-microsoft-enterprise-ai-networks",
+      "url": "https://news.microsoft.com/source/2026/11/02/lumen-and-microsoft-expand-collaboration-to-co-sell-enterprise-ai-ready-networks/"
+    },
     "df509a4d80d7bfe0": {
       "at": "2026-10-26T14:32:40.134976+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12373,145 +12398,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:51:13.725511+00:00",
-      "attempt": 1,
-      "id": "b8d7498382b4038f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1504字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（344字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 131.0,
-        "avg_sentence": 53.6,
-        "long_share": 0.409,
-        "max_paragraph": 167,
-        "paragraphs": 9,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "soumu",
-      "title": "令和7年度の字幕放送等の実績"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:51:20.008888+00:00",
-      "attempt": 2,
-      "id": "b8d7498382b4038f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1717字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（344字 / 基準 400字以上）",
-        "body_markdown に「## 自分に関係ある？」の章がない（構成どおりの見出しを使う）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 159.7,
-        "avg_sentence": 57.0,
-        "long_share": 0.393,
-        "max_paragraph": 232,
-        "paragraphs": 10,
-        "sentences": 28
-      },
-      "score": null,
-      "source": "soumu",
-      "title": "令和7年度の字幕放送等の実績"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:51:27.396015+00:00",
-      "attempt": 1,
-      "id": "5fafd66b334b35a1",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1792字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 130.0,
-        "avg_sentence": 48.8,
-        "long_share": 0.25,
-        "max_paragraph": 225,
-        "paragraphs": 9,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "tokyo-metro",
-      "title": "「身につけよう！疑う力」新たに11月を「特殊詐欺被害防止強化月間」に！"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:51:34.949656+00:00",
-      "attempt": 2,
-      "id": "5fafd66b334b35a1",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（396字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 117.1,
-        "avg_sentence": 49.7,
-        "long_share": 0.242,
-        "max_paragraph": 175,
-        "paragraphs": 14,
-        "sentences": 33
-      },
-      "score": null,
-      "source": "tokyo-metro",
-      "title": "「身につけよう！疑う力」新たに11月を「特殊詐欺被害防止強化月間」に！"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:51:40.990718+00:00",
-      "attempt": 1,
-      "id": "b34db828e28cd179",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1310字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（306字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 110.0,
-        "avg_sentence": 48.9,
-        "long_share": 0.167,
-        "max_paragraph": 186,
-        "paragraphs": 8,
-        "sentences": 18
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "介護給付費等実態統計月報（令和８（2026）年７月審査分）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T10:51:47.719123+00:00",
-      "attempt": 2,
-      "id": "b34db828e28cd179",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1637字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（371字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 123.6,
-        "avg_sentence": 51.5,
-        "long_share": 0.208,
-        "max_paragraph": 206,
-        "paragraphs": 10,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "mhlw",
-      "title": "介護給付費等実態統計月報（令和８（2026）年７月審査分）"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T10:51:54.439845+00:00",
@@ -18894,6 +18780,135 @@
       "score": 100,
       "source": "tokyo-metro",
       "title": "不動産取引に役立つ動画を公開！"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T18:43:51.654391+00:00",
+      "attempt": 1,
+      "id": "8852e4123fc0ef20",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 66.2,
+        "avg_sentence": 34.1,
+        "long_share": 0.076,
+        "max_paragraph": 116,
+        "paragraphs": 34,
+        "sentences": 66
+      },
+      "score": 100,
+      "source": "watch-chatgpt-pricing",
+      "title": "ChatGPTが更新: Up to $500 in monthly API credits to build your own apps and agents."
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T18:44:02.656961+00:00",
+      "attempt": 1,
+      "id": "de3657a54534136e",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 60.5字・60字超の文が 57% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 121.0字・最長 185字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 121.0,
+        "avg_sentence": 60.5,
+        "long_share": 0.567,
+        "max_paragraph": 185,
+        "paragraphs": 15,
+        "sentences": 30
+      },
+      "score": 100,
+      "source": "microsoft-source",
+      "title": "Lumen and Microsoft expand collaboration to co-sell enterprise AI-ready networks"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T18:44:08.097121+00:00",
+      "attempt": 0,
+      "id": "de3657a54534136e",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 101.5,
+        "avg_sentence": 36.2,
+        "long_share": 0.071,
+        "max_paragraph": 174,
+        "paragraphs": 20,
+        "sentences": 56
+      },
+      "score": 100,
+      "source": "microsoft-source",
+      "title": "Lumen and Microsoft expand collaboration to co-sell enterprise AI-ready networks"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T18:44:17.012688+00:00",
+      "attempt": 1,
+      "id": "29a9ccbde0255995",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "1月中旬から12月中旬頃までTver広告の配信も → 元記事では「11月中旬から12月中旬頃まで配信予定」となっており、月が「1月」に誤記されている。"
+      ],
+      "readability": {
+        "avg_paragraph": 110.0,
+        "avg_sentence": 50.4,
+        "long_share": 0.167,
+        "max_paragraph": 182,
+        "paragraphs": 11,
+        "sentences": 24
+      },
+      "score": 90,
+      "source": "mhlw",
+      "title": "「年金の日」・「ねんきん月間」のお知らせ"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T18:44:25.754410+00:00",
+      "attempt": 2,
+      "id": "29a9ccbde0255995",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 50.3字・60字超の文が 29% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 109.7,
+        "avg_sentence": 50.3,
+        "long_share": 0.292,
+        "max_paragraph": 156,
+        "paragraphs": 11,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "mhlw",
+      "title": "「年金の日」・「ねんきん月間」のお知らせ"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T18:44:29.371918+00:00",
+      "attempt": 0,
+      "id": "29a9ccbde0255995",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 46.5字・60字超の文が 19% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 109.9,
+        "avg_sentence": 46.5,
+        "long_share": 0.192,
+        "max_paragraph": 157,
+        "paragraphs": 11,
+        "sentences": 26
+      },
+      "score": 100,
+      "source": "mhlw",
+      "title": "「年金の日」・「ねんきん月間」のお知らせ"
     }
   ],
   "short_text_retry": {},

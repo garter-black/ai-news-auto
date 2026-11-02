@@ -2,6 +2,36 @@
  "hours": 96,
  "items": [
   {
+   "slug": "nenkin-no-hi-2026-mhlw",
+   "at": "2026-11-02T18:44:24.693509+00:00",
+   "title": "厚生労働省、「年金の日」・「ねんきん月間」を11月に実施　ねんきんネットの活用を呼びかけ",
+   "head": "厚生労働省、「年金の日」・「ねんきん月間」を11月に実施　ねんきんネットの活用を呼びかけ | 「年金の日」・「ねんきん月間」のお知らせ",
+   "text": "厚生労働省、「年金の日」・「ねんきん月間」を11月に実施　ねんきんネットの活用を呼びかけ | 「年金の日」・「ねんきん月間」のお知らせ | 年金の日 / ねんきん月間 / ねんきんネット / 厚生労働省 / 日本年金機構 / 年金記録 / 受給見込額 / 年金 / 社会・行政 / ライフプラン",
+   "urls": [
+    "https://www.mhlw.go.jp/stf/nenkinnohi2026_00001.html"
+   ]
+  },
+  {
+   "slug": "lumen-microsoft-enterprise-ai-networks",
+   "at": "2026-11-02T18:44:01.729580+00:00",
+   "title": "マイクロソフトとLumen、企業向けAIネットワークを共同展開へ。クラウドと通信基盤を一本化",
+   "head": "マイクロソフトとLumen、企業向けAIネットワークを共同展開へ。クラウドと通信基盤を一本化 | Lumen and Microsoft expand collaboration to co-sell enterprise AI-ready networks",
+   "text": "マイクロソフトとLumen、企業向けAIネットワークを共同展開へ。クラウドと通信基盤を一本化 | Lumen and Microsoft expand collaboration to co-sell enterprise AI-ready networks | Lumen / マイクロソフト / Azure / AIネットワーク / クラウド基盤 / 企業向けAI / ハイブリッドクラウド / 生成AI / クラウド / ネットワーク / Microsoft",
+   "urls": [
+    "https://news.microsoft.com/source/2026/11/02/lumen-and-microsoft-expand-collaboration-to-co-sell-enterprise-ai-ready-networks/"
+   ]
+  },
+  {
+   "slug": "chatgpt-pro-monthly-api-credits",
+   "at": "2026-11-02T18:43:50.424522+00:00",
+   "title": "ChatGPT Proに月最大500ドルのAPI利用枠 自作アプリやAI開発向け、金額表記が追加",
+   "head": "ChatGPT Proに月最大500ドルのAPI利用枠 自作アプリやAI開発向け、金額表記が追加 | ChatGPTが更新: Up to $500 in monthly API credits to build your own apps and agents. / $100 with Pro 100, $200 with Pro 200, or $500 with Pro 500.Plan: Pro, Feature: Monthly API credits, $100 with Pro 100",
+   "text": "ChatGPT Proに月最大500ドルのAPI利用枠 自作アプリやAI開発向け、金額表記が追加 | ChatGPTが更新: Up to $500 in monthly API credits to build your own apps and agents. / $100 with Pro 100, $200 with Pro 200, or $500 with Pro 500.Plan: Pro, Feature: Monthly API credits, $100 with Pro 100 | ChatGPT Pro / APIクレジット / Pro 100 / Pro 200 / Pro 500 / ChatGPT 料金 / OpenAI API / AIエージェント 開発 / ChatGPT 日本 / 月額 API 利用枠 / ChatGPT / OpenAI / 生成AI / 料金プラン / API / AIエージェント",
+   "urls": [
+    "https://openai.com/chatgpt/pricing/#entry-2026-11-03-892dd5"
+   ]
+  },
+  {
    "slug": "tokyo-real-estate-videos-2026",
    "at": "2026-11-02T18:26:16.911886+00:00",
    "title": "東京都、不動産取引の注意点や法改正がわかる動画8本を公開　トラブル防止へ",
@@ -1605,16 +1635,6 @@
    "text": "東京都がナフサ代替素材の開発を支援　石油に頼らない技術へ最大3億円 | ナフサ代替素材等開発の支援対象事業者を決定 | 東京都 / ナフサ代替素材 / バイオマス / 廃プラスチック / 石油代替原料 / Green Earth Institute / 三菱ケミカル / 補助金 / 社会・行政 / 環境 / エネルギー / 東京都",
    "urls": [
     "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102913"
-   ]
-  },
-  {
-   "slug": "aws-php-to-java-migration-engine-kiro",
-   "at": "2026-10-29T18:34:12.892356+00:00",
-   "title": "AWSがPHPをJavaに自動変換するAI移行エンジン『Kiro』公開",
-   "head": "AWSがPHPをJavaに自動変換するAI移行エンジン『Kiro』公開 | Build a repeatable PHP-to-Java migration engine with Kiro",
-   "text": "AWSがPHPをJavaに自動変換するAI移行エンジン『Kiro』公開 | Build a repeatable PHP-to-Java migration engine with Kiro | AWS / Kiro / PHP / Java / Spring Boot / マイグレーション / AI / Laravel / Symfony / 生成AI / 開発ツール / AWS / Java / PHP",
-   "urls": [
-    "https://aws.amazon.com/blogs/machine-learning/build-a-repeatable-php-to-java-migration-engine-with-kiro/"
    ]
   }
  ]

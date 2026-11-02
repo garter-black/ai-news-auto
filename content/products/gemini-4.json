@@ -1,0 +1,182 @@
+{
+  "slug": "gemini-4",
+  "name": "Gemini 4",
+  "aliases": [],
+  "company": "google",
+  "companyName": "Google",
+  "category": "AIモデル",
+  "overview": {
+    "text": "Gemini 4は、Googleが開発を進める次世代のAIモデルです。複雑な推論やエージェント機能に強く、Google DeepMindにより事前学習の開始が公表されました。",
+    "sources": [
+      "google-deepmind-gemini-4-agi-agent"
+    ]
+  },
+  "facts": [
+    {
+      "label": "料金",
+      "value": "入力100万トークン2ドルなど",
+      "sources": [
+        "gemini-4-carbon-cybersecurity-model"
+      ]
+    },
+    {
+      "label": "提供開始",
+      "value": "Argonは提供済み、Carbonは試験中",
+      "sources": [
+        "google-ai-news-october-2026"
+      ]
+    },
+    {
+      "label": "日本での提供",
+      "value": "記載なし",
+      "sources": [
+        "google-ai-news-october-2026",
+        "gemini-4-carbon-cybersecurity-model"
+      ]
+    },
+    {
+      "label": "使える場所",
+      "value": "Google AI StudioやAPIなど",
+      "sources": [
+        "google-ai-news-october-2026"
+      ]
+    },
+    {
+      "label": "向いている人",
+      "value": "開発者やサイバー防御担当者など",
+      "sources": [
+        "google-ai-news-october-2026",
+        "gemini-4-carbon-cybersecurity-model"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "text": "Gemini 4 Argonは、複雑なコード作成や財務分析、法務の作業に対応しています。",
+      "sources": [
+        "google-ai-news-october-2026"
+      ]
+    },
+    {
+      "text": "Gemini 4 Carbonは、ソフトの弱点発見の試験で88.2%を記録しています。",
+      "sources": [
+        "gemini-4-carbon-cybersecurity-model"
+      ]
+    },
+    {
+      "text": "ロボット向けのGemini 4 Argon for Roboticsも用意されています。",
+      "sources": [
+        "google-ai-news-october-2026"
+      ]
+    },
+    {
+      "text": "長時間の開発作業やサイバー攻撃への防御に対応しています。",
+      "sources": [
+        "google-ai-news-october-2026",
+        "gemini-4-carbon-cybersecurity-model"
+      ]
+    }
+  ],
+  "pricing": [
+    {
+      "text": "Gemini 4 Carbonの料金は、入力100万トークンあたり2ドルです。",
+      "sources": [
+        "gemini-4-carbon-cybersecurity-model"
+      ]
+    },
+    {
+      "text": "出力は100万トークンあたり10ドルとなっています。",
+      "sources": [
+        "gemini-4-carbon-cybersecurity-model"
+      ]
+    }
+  ],
+  "japan": [
+    {
+      "text": "発表の時点では、日本での提供について案内はありません。",
+      "sources": [
+        "google-ai-news-october-2026",
+        "gemini-4-carbon-cybersecurity-model"
+      ]
+    }
+  ],
+  "howto": [
+    {
+      "text": "Gemini 4 Argonは、Google AI Studioなどで使えます。",
+      "sources": [
+        "google-ai-news-october-2026"
+      ]
+    },
+    {
+      "text": "Gemini APIやGoogle Cloudでも提供されています。",
+      "sources": [
+        "google-ai-news-october-2026"
+      ]
+    }
+  ],
+  "differences": [
+    {
+      "text": "Argonは複雑な推論モデルとして提供済みです。",
+      "sources": [
+        "google-ai-news-october-2026"
+      ]
+    },
+    {
+      "text": "Carbonは長時間の開発やサイバー防御に優れた最上位モデルです。",
+      "sources": [
+        "gemini-4-carbon-cybersecurity-model"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Gemini 4にはどんなモデルがありますか？",
+      "a": "推論に強いArgonと、開発やサイバー防御に向くCarbonがあります。",
+      "sources": [
+        "google-ai-news-october-2026"
+      ]
+    },
+    {
+      "q": "Gemini 4 Carbonは誰が使えますか？",
+      "a": "発表の時点では、一部のサイバー防御担当者や信頼できるパートナーが対象です。",
+      "sources": [
+        "google-ai-news-october-2026",
+        "gemini-4-carbon-cybersecurity-model"
+      ]
+    },
+    {
+      "q": "開発はどのように進められていますか？",
+      "a": "Google DeepMind史上最も野心的な事前学習が進められています。",
+      "sources": [
+        "google-deepmind-gemini-4-agi-agent"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2026-09-02",
+      "slug": "google-deepmind-gemini-4-agi-agent",
+      "event": "Gemini 4の事前学習開始を公表"
+    }
+  ],
+  "related": [
+    "gemini-4-carbon",
+    "gemini-4-argon",
+    "genie-4",
+    "gemma-4"
+  ],
+  "articles": [
+    "google-ai-news-october-2026",
+    "gemini-4-carbon-cybersecurity-model",
+    "google-deepmind-gemini-4-agi-agent"
+  ],
+  "linkFrom": [
+    "google-ai-news-october-2026",
+    "google-deepmind-gemini-4-agi-agent"
+  ],
+  "signature": "5932f451da50c38c",
+  "primarySignature": "6dc05224191d2e31",
+  "model": "gemini-3.5-flash-lite",
+  "createdAt": "2026-11-02T18:45:04+00:00",
+  "updatedAt": "2026-11-02T18:45:04+00:00"
+}
