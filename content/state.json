@@ -4351,6 +4351,14 @@
       "skipped": true,
       "url": "https://www.maff.go.jp/j/press/kanbo/b_kankyo/261029.html"
     },
+    "1df2c9e92a95f846": {
+      "at": "2026-11-02T22:37:51.932804+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "score": 100,
+      "section": "ai",
+      "slug": "vercel-longcat-2-5-ai-gateway",
+      "url": "https://vercel.com/changelog/longcat-2-5-now-available-on-ai-gateway"
+    },
     "1e2a10b575f48780": {
       "at": "2026-10-27T03:06:51.678920+00:00",
       "reason": "prefilter: 扱わない話題（事件事故・ゴシップ・選挙・医療効果・噂）",
@@ -12681,51 +12689,6 @@
   },
   "quality_log": [
     {
-      "accepted": false,
-      "at": "2026-10-30T17:17:02.903020+00:00",
-      "attempt": 1,
-      "id": "c350724d4712c977",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2384字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 102.3,
-        "avg_sentence": 61.4,
-        "long_share": 0.44,
-        "max_paragraph": 150,
-        "paragraphs": 15,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "google-blog-all",
-      "title": "We’ve received our first response from the Project Suncatcher prototype satellit"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T17:17:17.854850+00:00",
-      "attempt": 2,
-      "id": "c350724d4712c977",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 74.0字・60字超の文が 66% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 85.9字・最長 275字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 85.9,
-        "avg_sentence": 74.0,
-        "long_share": 0.655,
-        "max_paragraph": 275,
-        "paragraphs": 25,
-        "sentences": 29
-      },
-      "score": 100,
-      "source": "google-blog-all",
-      "title": "We’ve received our first response from the Project Suncatcher prototype satellit"
-    },
-    {
       "accepted": true,
       "at": "2026-10-30T17:17:22.949077+00:00",
       "attempt": 0,
@@ -19131,6 +19094,48 @@
       "score": 100,
       "source": "tsr",
       "title": "リフォームテクノロジー取締役会長・栗原将氏 インタビュー ～ 「ぼったくり」なし・ネット完結、住設業界の慣習変えたDX ～"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T22:36:34.414146+00:00",
+      "attempt": 1,
+      "id": "1df2c9e92a95f846",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "段落が長い（平均 78.9字・最長 308字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 78.9,
+        "avg_sentence": 39.5,
+        "long_share": 0.139,
+        "max_paragraph": 308,
+        "paragraphs": 18,
+        "sentences": 36
+      },
+      "score": 100,
+      "source": "vercel-changelog",
+      "title": "LongCat 2.5 now available on AI Gateway"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T22:37:51.922801+00:00",
+      "attempt": 0,
+      "id": "1df2c9e92a95f846",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 68.6,
+        "avg_sentence": 25.6,
+        "long_share": 0.0,
+        "max_paragraph": 146,
+        "paragraphs": 22,
+        "sentences": 59
+      },
+      "score": 100,
+      "source": "vercel-changelog",
+      "title": "LongCat 2.5 now available on AI Gateway"
     }
   ],
   "short_text_retry": {},
