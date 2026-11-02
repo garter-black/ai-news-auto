@@ -20,6 +20,7 @@ import unicodedata
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import japan_availability  # noqa: E402
 import llm  # noqa: E402
 import persona  # noqa: E402
 
@@ -47,6 +48,86 @@ BOILERPLATE_RE = re.compile(
 ENGLISH_RUN_RE = re.compile(r"(?:\b[A-Za-z][A-Za-z'’\-]*\b[\s,;:]+){11,}\b[A-Za-z][A-Za-z'’\-]*\b")
 # 文章ソースなのに「動画」前提の言い回しが残っている
 VIDEO_LEFTOVER_RE = re.compile(r"動画(内|では|の中で|で示|で紹介|で語ら|の冒頭)|映像では|スライドでは|音声では")
+
+# サイソクが自分で試したように読める書き方（自社の検証データ ownTest が無い記事では不可）。
+# 「筆者」は元記事（他社）の書き手のことが多く、サイソクの体験に読めるので使わない（報道が元なら「〇〇の記者」と書く）
+FIRST_PERSON_TEST_RE = re.compile(
+    r"筆者|"
+    r"(?:私たち|私|我々|われわれ|編集部|サイソク(?:編集部)?)(?:が|で|の|も|は)[^。\n]{0,12}?"
+    r"(?:試し|テスト|検証し|使ってみ|触ってみ|触った|実機で|計測し|測定し)|"
+    r"実際に(?:試して|使って|触って)みた(?:ところ|結果|感想)|手元の(?:環境|PC|パソコン|端末|スマホ)で(?:試|確認|計測)"
+)
+# FAQ の答えが「分からない」だけのもの（質問として出さない）
+FAQ_UNANSWERED_RE = re.compile(r"^(?:元記事(?:では|には)|現時点では|発表では)?[^。]{0,20}(?:書かれていません|言及(?:は)?ありません|記載(?:は)?ありません|分かりません|不明です)")
+# 題名の約束（題名にこの言葉があれば、本文に答えが要る）
+PROMISE_JAPAN_RE = re.compile(r"日本で(?:も)?使え|日本での(?:使い方|提供|利用)|日本から使|日本(?:で|でも)(?:提供|発売|利用)")
+PROMISE_PRICE_RE = re.compile(r"料金|価格|値段|いくら|月額|年額|費用")
+PRICE_ANSWER_RE = re.compile(r"\d[\d,.]*\s*(?:円|ドル|万円|億円|ユーロ)|[$＄￥¥]\s?\d|無料|月\d|税込|税別")
+PROMISE_HOWTO_RE = re.compile(r"使い方|やり方|手順|設定方法|始め方|申し込み方|申請方法")
+HOWTO_ANSWER_RE = re.compile(r"(?m)^\s*(?:\d+[.)．]|[-*・])\s+\S|^#{2,3}\s.*(?:使い方|手順|方法|始め方|やり方|申し込|申請)")
+PROMISE_WHEN_RE = re.compile(r"いつから|開始日|発売日|いつ始まる")
+WHEN_ANSWER_RE = re.compile(r"\d{1,2}月\d{1,2}日|\d{4}年\d{1,2}月|\d{1,2}月(?:上旬|中旬|下旬|中|から)|未定|発表されていません")
+
+
+def promise_problems(record: dict) -> list[str]:
+    """題名・短い題名で約束したこと（日本で使える？／料金／使い方／いつから）に、本文が答えているか（API 不要）"""
+    title = f"{record.get('title') or ''} {record.get('seoTitle') or ''}"
+    body = record.get("body") or ""
+    problems = []
+    if PROMISE_JAPAN_RE.search(title):
+        heading = japan_availability.JAPAN_HEADING_RE.search(body)
+        first = ""
+        if heading:
+            first = body[heading.end():].strip().split("\n")[0].split("。")[0]
+        if heading and japan_availability.UNKNOWN_ANSWER_RE.search(first):
+            problems.append(
+                "題名で「日本で使えるか」を約束しているのに、本文の「日本で使える？」が「分からない」で始まっている。"
+                "「当サイトで確認済み」の欄に答えがあればそれで答え、無ければ題名から日本の話を外す"
+            )
+        elif "日本" not in body:
+            problems.append("題名で「日本で使えるか」を約束しているのに、本文に日本での提供・使い方の説明が無い。答えるか、題名から外す")
+    if PROMISE_PRICE_RE.search(title) and not PRICE_ANSWER_RE.search(body):
+        problems.append("題名で料金・価格を約束しているのに、本文に金額（円・ドル・無料など）が無い。元記事の金額を書くか、題名から料金の話を外す")
+    if PROMISE_HOWTO_RE.search(title) and not HOWTO_ANSWER_RE.search(body):
+        problems.append("題名で使い方・手順を約束しているのに、本文に手順（番号つきの手順や「使い方」の章）が無い。手順を書くか、題名から外す")
+    if PROMISE_WHEN_RE.search(title) and not WHEN_ANSWER_RE.search(body):
+        problems.append("題名で「いつから」を約束しているのに、本文に日付が無い。元記事の日付を書くか、題名から外す")
+    return problems
+
+
+def first_person_problems(record: dict) -> list[str]:
+    """サイソクが自分で試したように読める書き方。自社の検証データ（ownTest）がある記事だけ許す"""
+    if record.get("ownTest"):
+        return []
+    text = "\n".join(str(record.get(k) or "") for k in ("title", "lede", "body", "easy")) + "\n" + "\n".join(record.get("highlights") or [])
+    m = FIRST_PERSON_TEST_RE.search(text)
+    if not m:
+        return []
+    return [
+        f"サイソクが自分で試したように読める書き方がある（「{m.group(0)[:20]}」）。サイソクは試していない。"
+        "元記事の書き手が試した結果なら「〇〇（媒体名）の記者が試したところ」と誰が試したかを書く"
+    ]
+
+
+def faq_problems(record: dict) -> list[str]:
+    """よくある質問・今日やることの形と禁止表現（API 不要）"""
+    problems = []
+    faq = record.get("faq") or []
+    if faq and not 3 <= len(faq) <= 5:
+        problems.append(f"faq は3〜5問（{len(faq)}問）")
+    for row in faq:
+        if not str(row.get("q", "")).rstrip().endswith(("？", "?")):
+            problems.append(f"faq の質問が疑問文になっていない（「{str(row.get('q', ''))[:20]}」）")
+        if m := persona.ADVICE_RE.search(str(row.get("a", ""))):
+            problems.append(f"faq の答えに儲け話・投資助言の表現がある（「{m.group(0)}」）")
+    actions = record.get("todayActions") or []
+    if actions and not 2 <= len(actions) <= 3:
+        problems.append(f"今日やること（today_actions）は2〜3個（{len(actions)}個）")
+    for a in actions:
+        if m := persona.ADVICE_RE.search(a):
+            problems.append(f"今日やることに儲け話・投資助言の表現がある（「{m.group(0)}」）")
+    return problems
+
 
 FACT_SCHEMA = {
     "type": "OBJECT",
@@ -92,6 +173,8 @@ FACT_PROMPT = """# 元記事（一次情報。自動抽出なのでメニュー�
 - 広く知られた一般常識・定訳は創作として扱わない（例: SEC＝米証券取引委員会、IPO（上場）前の会社は株式を公開していない、Nasdaq は米国の株式市場）。
 - 次は必ず問題にする: 元記事に無い具体的な数値・日付・価格・機能・発言の創作、元記事との矛盾、
   予定や研究段階のものを提供開始済み・実用化済みのように書くこと、効能・効果の断定、特定個人への憶測。
+- 「よくある質問」の答えと「今日やること」も記事の一部として同じ基準で確かめる。答えに元記事・確認済みの文脈に無い数字・条件・提供状況があれば必ず問題にする。
+  今日やることで、元記事に無い画面の場所・ボタン名・手順を作っていれば問題にする（「公式の設定画面で確認する」のような一般的な行動はよい）。
 - 「仕事・お金にどう活かせる」の欄も記事の一部として同じ基準で確かめる。誰に関係するか・明日からできる行動の提案は
   一般的な助言として扱ってよいが、元記事に無い金額・節約額・短縮時間・収入の見込み（自分で計算した数字を含む）、
   提供前のものを今すぐ使えるように書くこと、特定の銘柄・ファンド・物件の売買のすすめ・相場の予想・儲かるといった断定は必ず問題にする。
@@ -244,6 +327,12 @@ def structural_problems(record: dict, kind: str, source_text: str = "") -> list[
     if record.get("sourceType") == "web" and kind != "update" and not record.get("workMoney"):
         problems.append(f"work_money（「{persona.WORK_MONEY_HEADING}」欄）がありません")
     problems += persona.work_money_problems(record.get("workMoney"))
+    if record.get("sourceType") == "web" and kind != "update":
+        problems += first_person_problems(record)
+        problems += promise_problems(record)
+        problems += faq_problems(record)
+        if m := persona.OLD_VIEWPOINT_RE.search(body):
+            problems.append(f"古い立場の小見出し（「{m.group(0).lstrip('# ')}」）がある。立場は「" + "」「".join(persona.VIEWPOINTS) + "」の3つにする")
     if source_text:
         copied = copied_sentences(body, source_text)
         if len(copied) >= 2:
@@ -261,6 +350,11 @@ def _article_for_check(record: dict) -> str:
     if work_money.get("points"):
         # 本文より前に置く（ARTICLE_CAP で切られても必ず事実確認に入るように）
         parts.append(f"{persona.WORK_MONEY_HEADING}: " + " / ".join(work_money["points"]))
+    if record.get("faq"):
+        # 本文より前に置く（ARTICLE_CAP で切られても事実確認に入るように）
+        parts.append("よくある質問:\n" + "\n".join(f"Q. {r.get('q', '')} A. {r.get('a', '')}" for r in record["faq"]))
+    if record.get("todayActions"):
+        parts.append("今日やること: " + " / ".join(record["todayActions"]))
     parts += [
         f"本文:\n{record.get('body', '')}",
         f"かんたん版:\n{record.get('easy', '')}",
