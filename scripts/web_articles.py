@@ -684,7 +684,8 @@ def clean_faq(raw: object) -> list[dict]:
 def clean_actions(raw: object) -> list[str]:
     out = []
     for value in raw if isinstance(raw, list) else []:
-        text = re.sub(r"\s+", " ", str(value or "")).strip().lstrip("・-*　 0123456789.)）").strip()
+        # 先頭の箇条書きの印（「・」「- 」「1. 」「2）」）だけ外す。「2026年11月10日に…」の年の数字は消さない
+        text = re.sub(r"^(?:[・\-*]\s*|\d{1,2}\s*[.)）]\s*)", "", re.sub(r"\s+", " ", str(value or "")).strip().lstrip("　 ")).strip()
         if text and text not in out:
             out.append(text[:90])
     return out[:3] if len(out) >= 2 else []

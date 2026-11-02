@@ -180,6 +180,10 @@ class FaqRequiredAndFill(unittest.TestCase):
             self.assertEqual(w.fill_faq_actions(record(faq=[{"q": "a？", "a": "b"}] * 3, todayActions=["a", "b"]), ""), [])
         call.assert_not_called()
 
+    def test_clean_actions_keeps_leading_year(self):
+        self.assertEqual(w.clean_actions(["2026年11月10日の発売日に店頭で確かめる。", "1. 公式ページを開く", "・社内で共有する"]),
+                         ["2026年11月10日の発売日に店頭で確かめる。", "公式ページを開く", "社内で共有する"])
+
 
 class WriteTier(unittest.TestCase):
     def setUp(self):
