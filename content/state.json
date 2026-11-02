@@ -3208,6 +3208,14 @@
       "skipped": true,
       "url": "https://cloud.google.com/blog/ja/topics/hybrid-cloud/managed-rag-search-inside-the-sovereign-perimeter-gemini-on-gdc-enterprise-search/"
     },
+    "0192594f98b7ad03": {
+      "at": "2026-11-02T08:51:17.003458+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "business",
+      "slug": "mof-tax-stamp-revenue-sep-2026",
+      "url": "https://www.mof.go.jp/tax_policy/reference/taxes_and_stamp_revenues/202609.pdf"
+    },
     "01b6483928a89cb1": {
       "at": "2026-11-02T02:31:06.744547+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（協賛）",
@@ -11898,26 +11906,6 @@
   "quality_log": [
     {
       "accepted": true,
-      "at": "2026-10-30T06:34:37.861884+00:00",
-      "attempt": 0,
-      "id": "590ab436e522a0ed",
-      "kind": "broad",
-      "model": "gemini-3.1-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 63.0,
-        "avg_sentence": 33.5,
-        "long_share": 0.0,
-        "max_paragraph": 133,
-        "paragraphs": 25,
-        "sentences": 47
-      },
-      "score": 100,
-      "source": "maff",
-      "title": "令和8年9月の米穀流通の動向（集荷、販売、民間在庫）"
-    },
-    {
-      "accepted": true,
       "at": "2026-10-30T06:51:02.213445+00:00",
       "attempt": 1,
       "id": "a505f7dd029a9adb",
@@ -18494,6 +18482,26 @@
       "score": 100,
       "source": "jnet21",
       "title": "中小企業に必要な法律知識（第3回）ー民法改正と手形廃止後の取引実務ー"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T08:51:17.002661+00:00",
+      "attempt": 1,
+      "id": "0192594f98b7ad03",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 83.3,
+        "avg_sentence": 44.8,
+        "long_share": 0.077,
+        "max_paragraph": 116,
+        "paragraphs": 7,
+        "sentences": 13
+      },
+      "score": 100,
+      "source": "mof",
+      "title": "令和8年度 9月末租税及び印紙収入、収入額調"
     }
   ],
   "short_text_retry": {},
