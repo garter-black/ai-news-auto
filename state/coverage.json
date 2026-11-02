@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "nao-honma-shijuhosho-2026",
+   "at": "2026-11-02T01:01:04.266552+00:00",
+   "title": "国立天文台の本間希樹教授が紫綬褒章を受章 ブラックホールの撮影などに貢献",
+   "head": "国立天文台の本間希樹教授が紫綬褒章を受章 ブラックホールの撮影などに貢献 | 国立天文台水沢VLBI観測所長 本間希樹教授が紫綬褒章を受章 - ニュース",
+   "text": "国立天文台の本間希樹教授が紫綬褒章を受章 ブラックホールの撮影などに貢献 | 国立天文台水沢VLBI観測所長 本間希樹教授が紫綬褒章を受章 - ニュース | 国立天文台 / 本間希樹 / 紫綬褒章 / ブラックホール / VERA / EHT / 天文学 / 電波望遠鏡 / 宇宙 / 天文 / 科学 / 物理",
+   "urls": [
+    "https://www.nao.ac.jp/news/topics/2026/20261102-honma.html"
+   ]
+  },
+  {
    "slug": "craft-boss-croissant-latte",
    "at": "2026-11-02T00:22:34.884983+00:00",
    "title": "サントリーの「クラフトボス クロワッサンラテ」新発売 11月10日より期間限定",
@@ -1250,26 +1260,6 @@
    "text": "総務省、副首都の指定要件を定める政令を閣議決定　人口1.2％・経済2.1％の基準へ | 藤井総務大臣閣議後記者会見の概要 | 総務省 / 副首都 / 藤井総務大臣 / 閣議決定 / パブリックコメント / 地域未来戦略 / 多極分散型経済圏 / 地方創生 / 社会・行政 / 地域活性化 / 政治",
    "urls": [
     "https://www.soumu.go.jp/menu_news/kaiken/01koho01_02001586.html"
-   ]
-  },
-  {
-   "slug": "carbon-electrode-degradation-water-network",
-   "at": "2026-10-29T00:52:11.806120+00:00",
-   "title": "炭素電極の劣化を防ぐ新手法 大阪大学など、水分子のつながりで解明",
-   "head": "炭素電極の劣化を防ぐ新手法 大阪大学など、水分子のつながりで解明 | 電極表面の“水のつながり”が炭素電極の劣化を左右することを解明～水の構造を整えて、安価な炭素電極を長持ちさせる新たな設計指針～",
-   "text": "炭素電極の劣化を防ぐ新手法 大阪大学など、水分子のつながりで解明 | 電極表面の“水のつながり”が炭素電極の劣化を左右することを解明～水の構造を整えて、安価な炭素電極を長持ちさせる新たな設計指針～ | 炭素電極 / 炭素腐食 / 水分子 / 水素結合ネットワーク / 電気化学デバイス / 大阪大学 / JST / 水電解 / 科学 / 材料 / エネルギー / 研究成果",
-   "urls": [
-    "https://www.jst.go.jp/pr/announce/20261028-3/index.html"
-   ]
-  },
-  {
-   "slug": "nvidia-fox-factory-agents-europe",
-   "at": "2026-10-29T00:28:40.037720+00:00",
-   "title": "AI半導体のNVIDIAが工場向けAIの設計図を公開 欧州の大手が設計から製造まで活用",
-   "head": "AI半導体のNVIDIAが工場向けAIの設計図を公開 欧州の大手が設計から製造まで活用 | Europe’s Industrial Leaders Reinvent Engineering and Manufacturing With NVIDIA",
-   "text": "AI半導体のNVIDIAが工場向けAIの設計図を公開 欧州の大手が設計から製造まで活用 | Europe’s Industrial Leaders Reinvent Engineering and Manufacturing With NVIDIA | NVIDIA FOX / 工場AI / AIエージェント / Omniverse / Cosmos / CUDA-X / cuDSS / Siemens / デジタルツイン / GTC Berlin / NVIDIA / AIエージェント / デジタルツイン / 製造業 / Omniverse / GTC 2026",
-   "urls": [
-    "https://blogs.nvidia.com/blog/europe-industrial-leaders-engineering-manufacturing/"
    ]
   }
  ]

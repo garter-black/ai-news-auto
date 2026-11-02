@@ -7819,6 +7819,14 @@
       "slug": "kddi-l4s-autonomous-driving-shiojiri",
       "url": "https://newsroom.kddi.com/news/detail/kddi_nr-1217_4791.html"
     },
+    "912bf1b189f54bd5": {
+      "at": "2026-11-02T01:01:08.156516+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "section": "science",
+      "slug": "nao-honma-shijuhosho-2026",
+      "url": "https://www.nao.ac.jp/news/topics/2026/20261102-honma.html"
+    },
     "9159549a940483f3": {
       "at": "2026-10-26T12:51:45.036697+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11359,52 +11367,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:41:57.298720+00:00",
-      "attempt": 1,
-      "id": "dcbc6f1f513caa07",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1768字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 152.2,
-        "avg_sentence": 56.4,
-        "long_share": 0.37,
-        "max_paragraph": 186,
-        "paragraphs": 10,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "nli-research",
-      "title": "働く人の「成長したい」に、企業は応えられているか～50代で目立つ研修・キャリア機会への希望と現状のギャップ"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T02:42:05.394403+00:00",
-      "attempt": 2,
-      "id": "dcbc6f1f513caa07",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1387字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "body_markdown に「## 自分に関係ある？」の章がない（構成どおりの見出しを使う）"
-      ],
-      "readability": {
-        "avg_paragraph": 130.2,
-        "avg_sentence": 65.1,
-        "long_share": 0.65,
-        "max_paragraph": 191,
-        "paragraphs": 10,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "nli-research",
-      "title": "働く人の「成長したい」に、企業は応えられているか～50代で目立つ研修・キャリア機会への希望と現状のギャップ"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T02:42:12.426706+00:00",
@@ -18103,6 +18065,51 @@
       "score": 100,
       "source": "suntory",
       "title": "～人気ベーカリー\"パンとエスプレッソと\"共同開発～ クロワッサンとカフェラテを同時に頬張る、あの幸せな味わいを再現！「クラフトボス クロワッサンラテ」新発売"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T01:01:04.956228+00:00",
+      "attempt": 1,
+      "id": "912bf1b189f54bd5",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "文が長い（1文の平均 65.2字・60字超の文が 43% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 171.2字・最長 241字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 171.2,
+        "avg_sentence": 65.2,
+        "long_share": 0.429,
+        "max_paragraph": 241,
+        "paragraphs": 8,
+        "sentences": 21
+      },
+      "score": 100,
+      "source": "naoj",
+      "title": "国立天文台水沢VLBI観測所長 本間希樹教授が紫綬褒章を受章 - ニュース"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T01:01:08.156092+00:00",
+      "attempt": 0,
+      "id": "912bf1b189f54bd5",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "段落が長い（平均 162.4字・最長 272字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 162.4,
+        "avg_sentence": 41.9,
+        "long_share": 0.065,
+        "max_paragraph": 272,
+        "paragraphs": 8,
+        "sentences": 31
+      },
+      "score": 100,
+      "source": "naoj",
+      "title": "国立天文台水沢VLBI観測所長 本間希樹教授が紫綬褒章を受章 - ニュース"
     }
   ],
   "short_text_retry": {}
