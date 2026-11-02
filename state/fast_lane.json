@@ -336,6 +336,19 @@
       "title": "Introducing a Voluntary Exit Offer",
       "url": "https://blogs.microsoft.com/blog/2026/10/26/introducing-a-voluntary-exit-offer/"
     },
+    "7c1aece6152955a3": {
+      "detectedAt": "2026-11-02T22:45:24+00:00",
+      "finishedAt": "2026-11-02T22:53:58+00:00",
+      "outcome": "retry",
+      "reason": "作れなかった（次の起動で再挑戦）",
+      "run": "41540059081",
+      "slug": "",
+      "source": "radar-gori.me",
+      "sourcePublishedAt": "2026-11-02T22:45:24+00:00",
+      "startedAt": "2026-11-02T22:46:57+00:00",
+      "title": "新型MacBook Proは「ほしい」、だけど「活かせない」のジレンマ。新モデルは買いま……",
+      "url": "https://gori.me/macbookpro/172017"
+    },
     "7d55bf793aaf58cc": {
       "detectedAt": "2026-10-28T16:13:51+00:00",
       "finishedAt": "2026-10-28T16:17:02+00:00",

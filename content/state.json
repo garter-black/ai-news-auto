@@ -63,7 +63,9 @@
     "zoohZ1BiHs0": 1
   },
   "failed_web": {},
-  "major_tries": {},
+  "major_tries": {
+    "7c1aece6152955a3": 1
+  },
   "processed": {
     "--kyzoeUuBk": {
       "at": "2026-08-10T15:58:56.932533+00:00",
@@ -12700,52 +12702,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-30T17:41:13.604823+00:00",
-      "attempt": 1,
-      "id": "44854634469c462e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2089字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 124.1,
-        "avg_sentence": 69.5,
-        "long_share": 0.64,
-        "max_paragraph": 210,
-        "paragraphs": 14,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "aws-ml-blog",
-      "title": "How Worldwide Express automated freight exceptions with Amazon Bedrock"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T17:41:39.494235+00:00",
-      "attempt": 2,
-      "id": "44854634469c462e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（2329字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（341字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 103.4,
-        "avg_sentence": 62.8,
-        "long_share": 0.536,
-        "max_paragraph": 179,
-        "paragraphs": 17,
-        "sentences": 28
-      },
-      "score": null,
-      "source": "aws-ml-blog",
-      "title": "How Worldwide Express automated freight exceptions with Amazon Bedrock"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-30T18:02:45.138606+00:00",
       "attempt": 1,
       "id": "b2263e9f84127c76",
@@ -19144,6 +19100,50 @@
       "score": 100,
       "source": "radar-news.mynavi.jp",
       "title": "「Affinity for iPad」公開 スケッチから写真編集・ページ制作まで1つのアプリで"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T22:49:34.597788+00:00",
+      "attempt": 1,
+      "id": "7c1aece6152955a3",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "「公式ヘルプの手順を確認してください（ゴリミーの案内）」→ 元記事に公式ヘルプの手順に関する記述はありません。"
+      ],
+      "readability": {
+        "avg_paragraph": 64.0,
+        "avg_sentence": 33.0,
+        "long_share": 0.015,
+        "max_paragraph": 94,
+        "paragraphs": 34,
+        "sentences": 66
+      },
+      "score": 95,
+      "source": "radar-gori.me",
+      "title": "新型MacBook Proは「ほしい」、だけど「活かせない」のジレンマ。新モデルは買いま……"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T22:53:58.466040+00:00",
+      "attempt": 2,
+      "id": "7c1aece6152955a3",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "事実確認を実行できなかった（すべてのモデルで失敗しました: None）"
+      ],
+      "readability": {
+        "avg_paragraph": 65.1,
+        "avg_sentence": 34.2,
+        "long_share": 0.013,
+        "max_paragraph": 139,
+        "paragraphs": 42,
+        "sentences": 80
+      },
+      "score": null,
+      "source": "radar-gori.me",
+      "title": "新型MacBook Proは「ほしい」、だけど「活かせない」のジレンマ。新モデルは買いま……"
     }
   ],
   "short_text_retry": {},
