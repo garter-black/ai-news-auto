@@ -1,6 +1,7 @@
 name: Bluesky post
 
 # Bluesky への投稿（scripts/bluesky_post.py）。Threads の通常の枠の約20分後・朝のまとめを出す。速報は breaking_post.yml からすぐ出す
+# --fill: Threads 側に出すものがないときは、直近12時間の良い記事を1本（1日24本まで・通常は40分以上あける・深夜1〜5時は出さない）
 on:
   schedule:
     - cron: "*/10 * * * *"
@@ -32,17 +33,18 @@ jobs:
           THREADS_MODE: ${{ vars.THREADS_MODE }}
           BLUESKY_HANDLE: ${{ vars.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
-        run: python scripts/bluesky_post.py ${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}
+        run: python scripts/bluesky_post.py --fill ${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}
       - name: Commit history
         run: |
           if [ -z "$(git status --porcelain state)" ]; then exit 0; fi
           cp state/threads_posted.json "$RUNNER_TEMP/mine.json"
+          cp state/bluesky_extra.json "$RUNNER_TEMP/mine_extra.json" 2>/dev/null || echo '{}' > "$RUNNER_TEMP/mine_extra.json"
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           for i in 1 2 3 4 5; do
             git fetch origin main && git reset --hard origin/main
-            python scripts/bluesky_post.py --merge "$RUNNER_TEMP/mine.json"
-            git add state/threads_posted.json
+            python scripts/bluesky_post.py --merge "$RUNNER_TEMP/mine.json" --merge-extra "$RUNNER_TEMP/mine_extra.json"
+            git add state/threads_posted.json state/bluesky_extra.json
             if git diff --cached --quiet; then exit 0; fi
             git commit -m "chore(bluesky): 投稿を記録"
             git push origin HEAD:main && exit 0
