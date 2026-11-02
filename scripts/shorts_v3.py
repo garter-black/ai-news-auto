@@ -95,8 +95,8 @@ ZOOM_BLOCK = 1.35  # 行に寄るときの最小ズーム（ページ幅いっ�
 
 # 時間
 LEAD = 0.15
-GAP = 0.26
-END_HOLD = 0.8  # 締めの声のあと、最後の画面を残す時間（締めのカードは作らない）
+GAP = 0.22
+END_HOLD = 0.7  # 締めの声のあと、最後の画面を残す時間（締めのカードは作らない）
 CREDIT_SEC = 1.4  # 最後の場面に小さく出すクレジットの長さ
 HOOK_TEXT_MAX = 1.7  # つかみの文字はこの時刻までに消す（ゲートは 2.0 秒）
 TARGET_MAX = 30.5
@@ -615,6 +615,18 @@ def item_block_text(pages: list, item: dict) -> str:
     return ""
 
 
+def clause_ok(target: str, block_text: str) -> bool:
+    """英語の target が「意味のまとまり」か: 文の頭から始まり、文末・カンマ・コロンなどの区切りで終わる"""
+    t, b = _norm(target), _norm(block_text)
+    at = b.find(t)
+    if at < 0:
+        return bool(re.search(r"[.?!:;,]\s*$", t))
+    before, after = b[:at].rstrip(), b[at + len(t) :]
+    starts = not before or before[-1] in ".?!:;"
+    ends = bool(re.search(r"[.?!:;,]$", t)) or not after.strip() or after.lstrip()[:1] in ".?!:;,"
+    return starts and ends
+
+
 def is_english(text: str) -> bool:
     """英語の文・句か（字幕を付けるか）: 英字の語が2つ以上で、かなと漢字が無い"""
     return len(re.findall(r"[A-Za-z]{2,}", text or "")) >= 2 and not re.search(r"[ぁ-んァ-ヴ一-龥]", text or "")
@@ -697,8 +709,8 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
             continue
         if len(ja) > 40:
             out.append(f"{name}.ja は36字以内（今は{len(ja)}字）。")
-        if not re.search(r"[.?!:。？！]\s*$", tgt_text.strip()) and _norm(tgt_text) != _norm(item_block_text(pages, item)):
-            out.append(f"{name}.target「{tgt_text[:40]}」は文の途中で切れています。文末（ピリオド）までの完結した文を選んでください。")
+        if name != "hook" and not clause_ok(tgt_text, item_block_text(pages, item)):
+            out.append(f"target の区切り: {name}.target「{tgt_text[:40]}」は文の途中で切れています。文の頭から、文末（ピリオド）か読点（カンマ）までのまとまりを選んでください。")
         extra = [d for d in _digits(ja) if d not in set(_digits(tgt_text))]
         if extra:
             out.append(f"{name}.ja に target に無い数字 {', '.join(extra)} があります。訳に言葉や数字を足さない。")
@@ -726,7 +738,7 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
     return out
 
 
-STYLE_PREFIXES = ("speech で数字", "speech に英単語")
+STYLE_PREFIXES = ("speech で数字", "speech に英単語", "target の区切り")
 
 
 def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
@@ -748,6 +760,12 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
         latin_names(data)
         problems = script_problems(data, article, pages)
         style = [p for p in problems if p.startswith(STYLE_PREFIXES)]
+        if attempt >= 4 and len(style) == len(problems):
+            # 英文の区切りが直らない beat は、訳の吹き出しを出さない（ja を空に）。途中で切れた文の訳は出さない
+            for p in problems:
+                if m := re.match(r"target の区切り: (beat(\d)|hook)\.", p):
+                    item = data["hook"] if m.group(1) == "hook" else data["beats"][int(m.group(2)) - 1]
+                    item["ja"] = ""
         if not problems or (attempt >= 4 and len(style) == len(problems)):
             if problems:  # 読み・長さだけは最後に妥協する（事実・証拠の問題は必ず直す。入らない文字は描画で止まる）
                 log(f"   [v3] 読み・長さの注意を残して採用: {problems}")
@@ -843,13 +861,16 @@ def narrate(script: dict, tts_kind: str, work: Path) -> Narration:
             t = line.end + GAP
         total = lines[-1].end + END_HOLD
         end_start = total  # 締めのカードは無い（最後の場面のまま終わる）
+        # 長さが外れたら、声の部分の長さから必要な速さを1回で計算して読み直す（何度も合成すると遅い）
+        voiced = sum(len(c) for c in clips) / SR
+        fixed = total - voiced
         if total < TARGET_MIN and speed > base_speed - 0.16:
-            speed -= 0.08  # 短すぎる（20秒未満）ときは少しゆっくり読む
+            speed = max(base_speed - 0.16, speed * voiced / max(TARGET_MIN + 0.6 - fixed, 1.0))
             log(f"   [v3] {total:.1f}秒で短い → 速さ {speed:.2f} で読み直し")
             continue
-        if total <= TARGET_MAX or speed >= base_speed + 0.24:
+        if total <= TARGET_MAX or speed >= base_speed + 0.3:
             break
-        speed += 0.08
+        speed = min(base_speed + 0.3, speed * voiced / max(TARGET_MAX - 0.6 - fixed, 1.0))
         log(f"   [v3] {total:.1f}秒で長い → 速さ {speed:.2f} で読み直し")
     samples = np.zeros(int(math.ceil(total * SR)) + 1, dtype=np.float32)
     for line, clip in zip(lines, clips):
