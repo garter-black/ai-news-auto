@@ -104,7 +104,7 @@
     },
     "chatgpt-codex-shared-usage-limits": {
       "at": "2026-11-02T20:21:59+00:00",
-      "status": "ready",
+      "status": "posted",
       "tries": 1,
       "textAt": "2026-11-02T09:30:34+00:00",
       "versions": {
@@ -184,7 +184,12 @@
         "short": "https://ai-tech-express.jp/video/chatgpt-codex-shared-usage-limits-aa60e60546.mp4",
         "poster": "https://ai-tech-express.jp/video/chatgpt-codex-shared-usage-limits-d3c87c2499.jpg"
       },
-      "embedded": true
+      "embedded": true,
+      "variant": "short",
+      "body": "12月、ChatGPTの枠は足りる？\n公式ページの画面を見ながら、36秒で解説しました。\n\n要約すると、OpenAIは12月からPlus・Pro・Businessの利用枠をChatGPTとCodexで共通にします。量はトークンで測り、高性能モデルや複雑な作業ほど多く減ります。Instantチャットは枠を使わず、減るかどうかは使う機能で決まります。枠の大きさの数字はまだ出ていません。残量はSettings → Usageで確認できます。\n\n詳しくはこちら👇\nhttps://ai-tech-express.jp/articles/chatgpt-codex-shared-usage-limits?utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=short\n音声：VOICEVOX:九州そら",
+      "link": "https://ai-tech-express.jp/articles/chatgpt-codex-shared-usage-limits?utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=short",
+      "bufferId": "6ae9082bd0e732df448fc8de",
+      "postedAt": "2026-11-02T22:01:26+00:00"
     },
     "openai-grid-protectors-program": {
       "at": "2026-11-02T20:45:03+00:00",
