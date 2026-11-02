@@ -40,7 +40,9 @@
   リリースノート、GitHub Copilot のプラン。dated は新しい日付の項目、diff は金額・プラン名・上限の行が2回続けて変わったとき。
   初回は基準だけ。候補は大きなニュースと同じ流れ（重複・続報判定・品質ゲート）で作り、速報投稿はしない。状態は `state/page_watch.json`。
 - `radar_sources`: レーダーが見る追加の報道・まとめ（GIGAZINE・AI Watch・Impress Watch・Yahoo!トピックス IT・CNET Japan・
-  TechCrunch AI・The Verge AI・9to5Google）。見つけるためだけで、公式扱い・出典にはしない（`every` 分ごとに読む）。
+  TechCrunch AI・The Verge AI・9to5Google）。見つけるためだけで、公式扱いにはしない（`every` 分ごとに読む）。
+  国内の競合（GIGAZINE・AI Watch・Impress Watch・Yahoo!・CNET Japan）は `radar_no_cite_hosts` で、一次情報が無いときの出典にもしない
+  （一次情報が見つからなければ見送り。既存の報道機関の一覧 outlets の扱いは変えていない）。
 - レーダーの語に、改名・統合・上限の引き上げ・値上げ・新プランを追加。会社に LINEヤフー・SB Intuitions・NTT・KDDI・楽天・富士通・NEC・
   PFN・Sakana AI・ELYZA を追加（決算・訴訟・人事は従来どおりレーダーの自動起動の対象外）。
 - 発信元（速報レーン）: claude.com/resources/articles（tier A）、SB Intuitions、NTTデータ、ストックマークを追加。PFN・Honda の一覧の読み方を直して再開。

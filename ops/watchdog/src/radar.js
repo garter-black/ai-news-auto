@@ -64,6 +64,7 @@ export function compileRadar(rules) {
   return {
     ...r,
     sources: withRadarSources(r.sources, rules.registry?.radar_sources),
+    noCite: rules.registry?.radar_no_cite_hosts || [],
     primary_hosts: withSourceHosts(r.primary_hosts, rules.sources),
     entities: r.entities.map((e) => ({ name: e.name, re: re(e.re), aiOnly: Boolean(e.ai_only) })),
     signal: re(r.signal_re),
@@ -256,6 +257,8 @@ export function officialOf(url, ents, RR) {
 export function outletOf(url, RR) {
   try {
     const host = new URL(url).host;
+    // 見つけるためだけの国内の競合（registry の radar_no_cite_hosts）は出典にしない
+    if ((RR.noCite || []).some((h) => hostMatch(host, h))) return null;
     return RR.outlets.find((o) => hostMatch(host, o.host)) || null;
   } catch {
     return null;

@@ -296,6 +296,9 @@ def outlet(url: str) -> dict | None:
         host = urllib.parse.urlsplit(url).netloc
     except ValueError:
         return None
+    # 見つけるためだけの国内の競合（registry の radar_no_cite_hosts）は出典にしない（radar.js の outletOf と同じ）
+    if any(_host_match(host, h) for h in _registry().get("radar_no_cite_hosts", [])):
+        return None
     for o in rules()["outlets"]:
         if _host_match(host, o["host"]):
             return o

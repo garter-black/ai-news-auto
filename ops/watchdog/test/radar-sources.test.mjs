@@ -8,7 +8,7 @@ import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
 import { mergeRegistry } from "../src/fastlane.js";
-import { classify, compileRadar, radarDue, withRadarSources } from "../src/radar.js";
+import { classify, compileRadar, outletOf, radarDue, withRadarSources } from "../src/radar.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const BASE = JSON.parse(readFileSync(join(ROOT, "scripts", "fast_lane_rules.json"), "utf-8"));
@@ -53,4 +53,11 @@ test("every 8分の見出し元は2回に1回だけ読む（1回の取得数を�
   const hits = [0, 1, 2, 3].map((k) => radarDue(src, new Date(base + k * 240000)));
   assert.equal(hits.filter(Boolean).length, 2);
   assert.equal(radarDue({ slug: "techmeme" }, new Date(base)), true);
+});
+
+test("国内の競合（radar_no_cite_hosts）は一次情報が無いときの出典にもしない", () => {
+  assert.equal(outletOf("https://ai.watch.impress.co.jp/docs/news/2153029.html", RR), null);
+  assert.equal(outletOf("https://gigazine.net/news/20261102-x/", RR), null);
+  assert.equal(outletOf("https://pc.watch.impress.co.jp/docs/news/1.html", RR)?.name, "PC Watch");
+  assert.equal(outletOf("https://techcrunch.com/2026/11/02/x/", RR)?.name, "TechCrunch");
 });

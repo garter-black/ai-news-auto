@@ -20,6 +20,8 @@
     { "id": "m365-copilot-release-notes", "name": "Microsoft 365 Copilot リリースノート", "product_name": "Microsoft 365 Copilot", "entity": "microsoft", "mode": "dated", "url": "https://learn.microsoft.com/en-us/microsoft-365/copilot/release-notes?tabs=all", "lang": "en", "significant_re": "(?<![A-Za-z])(?:GPT|Claude|Gemini)[- ]?\\d|new model|pricing|price|\\$\\s?\\d|license|plan|Japan|Japanese|generally available|now available|rolling out" },
     { "id": "github-copilot-plans", "name": "GitHub Copilot のプラン", "product_name": "GitHub Copilot", "entity": "microsoft", "mode": "diff", "url": "https://docs.github.com/api/article/body?pathname=/en/copilot/get-started/plans", "format": "md", "json_key": "body", "lang": "en" }
   ],
+  "_radar_no_cite_doc": "レーダーで一次情報が見つからないとき、出典（「〇〇の報道によると」）にしない報道のホスト。2026-11-02 に見出し元として足した国内の競合（記事の書き直しになるため。見つけるためだけに使う）",
+  "radar_no_cite_hosts": ["gigazine.net", "ai.watch.impress.co.jp", "www.watch.impress.co.jp", "news.yahoo.co.jp", "japan.cnet.com"],
   "_radar_doc": "レーダー（ops/watchdog/src/radar.js・scripts/radar.py）が見出しを見る追加の報道・まとめ（見つけるためだけ。記事は一次情報から書き、報道を書き直さない）。every は見に行く間隔（分。レーダーは4分ごと）。fast_lane_rules.json の radar.sources に足して使う。公式扱い（primary_hosts）には足さない",
   "radar_sources": [
     { "slug": "gigazine", "name": "GIGAZINE", "type": "rss", "url": "https://gigazine.net/news/rss_2.0/", "lang": "ja", "every": 8 },
