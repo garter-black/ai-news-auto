@@ -5255,6 +5255,14 @@
       "skipped": true,
       "url": "https://www.esri.cao.go.jp/jp/esri/esr/esr.html"
     },
+    "36932bac88d8fa5b": {
+      "at": "2026-11-02T22:13:14.850108+00:00",
+      "model": "claude:sonnet",
+      "score": 100,
+      "section": "ai",
+      "slug": "google-cloud-ai-october-2026-recap",
+      "url": "https://cloud.google.com/blog/products/ai-machine-learning/what-google-cloud-announced-in-ai-this-month/"
+    },
     "36ccb3101b7cb129": {
       "at": "2026-10-28T01:52:56.696303+00:00",
       "breaking": true,
@@ -10424,6 +10432,14 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000087.000073972.html"
     },
+    "c4c08db9ebb51f8c": {
+      "at": "2026-11-02T22:14:44.634249+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "score": 100,
+      "section": "business",
+      "slug": "reform-tech-holding-reorg",
+      "url": "https://www.tsr-net.co.jp/data/detail/1203383_1527.html"
+    },
     "c4cd16295e2f35e1": {
       "at": "2026-10-26T15:34:23.254387+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12664,51 +12680,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T17:01:08.547386+00:00",
-      "attempt": 1,
-      "id": "c7606af40dbb903f",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1476字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 90.3,
-        "avg_sentence": 53.4,
-        "long_share": 0.364,
-        "max_paragraph": 136,
-        "paragraphs": 13,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "openai-news",
-      "title": "Community safety report and new protections for teens"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T17:01:41.818137+00:00",
-      "attempt": 2,
-      "id": "c7606af40dbb903f",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "日本で使える？「今日から特別な設定をしなくても、自動的にシステム側で安全対策や制限が適用されます。」→ 元記事では「The safeguards detailed here will begin rolling out in the next few weeks」とされており、「今日から」即座に適用されるとは書かれてい"
-      ],
-      "readability": {
-        "avg_paragraph": 135.3,
-        "avg_sentence": 50.8,
-        "long_share": 0.225,
-        "max_paragraph": 244,
-        "paragraphs": 15,
-        "sentences": 40
-      },
-      "score": 65,
-      "source": "openai-news",
-      "title": "Community safety report and new protections for teens"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T17:17:02.903020+00:00",
@@ -19120,6 +19091,46 @@
       "score": 100,
       "source": "mhlw",
       "title": "戦没者慰霊事業のお知らせ（令和８年11月実施分）"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T22:13:14.840985+00:00",
+      "attempt": 1,
+      "id": "36932bac88d8fa5b",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 57.1,
+        "avg_sentence": 33.4,
+        "long_share": 0.103,
+        "max_paragraph": 129,
+        "paragraphs": 34,
+        "sentences": 58
+      },
+      "score": 100,
+      "source": "google-cloud-blog",
+      "title": "What Google Cloud announced in AI this month"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T22:14:44.632841+00:00",
+      "attempt": 1,
+      "id": "c4c08db9ebb51f8c",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 105.9,
+        "avg_sentence": 44.8,
+        "long_share": 0.192,
+        "max_paragraph": 213,
+        "paragraphs": 11,
+        "sentences": 26
+      },
+      "score": 100,
+      "source": "tsr",
+      "title": "リフォームテクノロジー取締役会長・栗原将氏 インタビュー ～ 「ぼったくり」なし・ネット完結、住設業界の慣習変えたDX ～"
     }
   ],
   "short_text_retry": {},
