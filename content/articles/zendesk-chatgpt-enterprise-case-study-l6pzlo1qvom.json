@@ -76,5 +76,7 @@
   "generatedAt": "2026-11-01T00:11:14.326141+00:00",
   "thumbnail": "https://i.ytimg.com/vi/L6pzlo1QvoM/maxresdefault.jpg",
   "model": "gemini-3.5-flash",
-  "affiliates": []
+  "affiliates": [],
+  "duplicateOf": "zendesk-chatgpt-enterprise-case-study",
+  "duplicateReason": "元の題名が同じ"
 }

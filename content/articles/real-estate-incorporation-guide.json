@@ -107,5 +107,7 @@
     "prompt": "A person in a business suit, viewed from behind, sits at a wooden office desk reviewing tax documents and a small scale model of an apartment building, with a calculator and soft natural light streaming through a nearby window.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-10-28T03:51:47+00:00"
-  }
+  },
+  "duplicateOf": "real-estate-corporation-strategy-for-investors",
+  "duplicateReason": "元の題名が同じ"
 }

@@ -74,5 +74,7 @@
   "generatedAt": "2026-10-28T22:29:24.869463+00:00",
   "thumbnail": "https://i.ytimg.com/vi/3yZb9rGt-rk/maxresdefault.jpg",
   "model": "gemini-3.5-flash",
-  "affiliates": []
+  "affiliates": [],
+  "duplicateOf": "gemini-4-carbon-cybersecurity-model",
+  "duplicateReason": "製品名が一致（gemini4carbon）"
 }

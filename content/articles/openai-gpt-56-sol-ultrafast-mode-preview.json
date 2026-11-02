@@ -92,5 +92,7 @@
     "prompt": "A close-up view of a modern data center aisle with rows of illuminated server racks, the camera angled slightly upward, showing blinking indicator lights under cool white lighting.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-10-28T03:53:23+00:00"
-  }
+  },
+  "duplicateOf": "model-ml-gpt-5-6-sol-finance-agent",
+  "duplicateReason": "製品名が一致（gpt5.6sol）"
 }

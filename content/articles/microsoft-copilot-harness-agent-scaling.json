@@ -95,5 +95,7 @@
   "generatedAt": "2026-10-29T18:06:41.884439+00:00",
   "thumbnail": "https://i.ytimg.com/vi/AMxLLFeUyRM/maxresdefault.jpg",
   "model": "gemini-3.6-flash",
-  "affiliates": []
+  "affiliates": [],
+  "duplicateOf": "microsoft-copilot-harness-foundry-agent-builder",
+  "duplicateReason": "元の題名が同じ"
 }

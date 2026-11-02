@@ -97,5 +97,7 @@
       "sourceName": "Hugging Face公式ブログ"
     }
   ],
-  "updatedAt": "2026-10-29T15:56:24.108805+00:00"
+  "updatedAt": "2026-10-29T15:56:24.108805+00:00",
+  "duplicateOf": "mistral-large-4-le-chonk-preview",
+  "duplicateReason": "製品名が一致（large4・mistrallarge4）"
 }

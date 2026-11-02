@@ -90,5 +90,7 @@
   "generatedAt": "2026-10-29T12:50:45.921143+00:00",
   "thumbnail": "https://i.ytimg.com/vi/z-WZMjNsg-k/maxresdefault.jpg",
   "model": "gemini-3.5-flash",
-  "affiliates": []
+  "affiliates": [],
+  "duplicateOf": "openai-legora-legal-ai-agent",
+  "duplicateReason": "同じ発信元が同時に出した同じ話題（legora）"
 }

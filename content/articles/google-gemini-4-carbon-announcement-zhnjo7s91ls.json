@@ -99,5 +99,7 @@
   "generatedAt": "2026-10-29T12:23:45.976044+00:00",
   "thumbnail": "https://i.ytimg.com/vi/zhnJo7s91ls/maxresdefault.jpg",
   "model": "gemini-3.6-flash",
-  "affiliates": []
+  "affiliates": [],
+  "duplicateOf": "gemini-4-carbon-cybersecurity-model",
+  "duplicateReason": "製品名が一致（gemini4carbon）"
 }
