@@ -63,7 +63,7 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt imageio-ffmpeg  # imageio-ffmpeg: scripts/images.py が公式動画のコマを取る
 
       - name: Check secret
         run: |

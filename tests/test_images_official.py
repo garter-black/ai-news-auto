@@ -72,5 +72,66 @@ class VariantsTest(unittest.TestCase):
         self.assertEqual(images.open_image(variants["w1200"]).size, (900, 500))
 
 
+class PageCandidatesTest(unittest.TestCase):
+    """元記事のページから、本文の画像だけを候補にする（関連記事のカード・メニュー・古い宣伝画像は外す）"""
+
+    HTML = """<html><head><meta property="og:image" content="/og.jpg"></head><body>
+    <header><img src="/logo-site.png"></header>
+    <main><article>
+      <figure><img src="/news/2026/11/02/main-photo.jpg" alt="調印式"></figure>
+      <p><img src="/news/2026/11/02/sub.jpg"></p>
+      <a href="/other-article.html"><img src="/thumbs/related.jpg"></a>
+      <img src="/service/2026/07/14/promo.png">
+      <iframe src="https://www.youtube.com/embed/abcdefghijk"></iframe>
+    </article>
+    <aside class="ranking"><img src="/rank1.jpg"></aside></main>
+    <footer><img src="/foot.jpg"></footer></body></html>"""
+
+    def test_body_images_only(self):
+        parser = images._PageCollector()
+        parser.feed(self.HTML)
+        final = "https://example.co.jp/news/release.html"
+        urls = [c["url"] for c in images.page_candidates(parser, final, "", {"publishedAt": "2026-11-02T00:00:00Z"})]
+        self.assertEqual(urls[0], "https://example.co.jp/og.jpg")
+        self.assertEqual(urls[1], "https://example.co.jp/news/2026/11/02/main-photo.jpg")
+        self.assertIn("https://example.co.jp/news/2026/11/02/sub.jpg", urls)
+        for bad in ("related.jpg", "promo.png", "rank1.jpg", "foot.jpg", "logo-site.png"):
+            self.assertFalse(any(u.endswith(bad) for u in urls), bad)
+        self.assertEqual(parser.youtube, ["abcdefghijk"])
+
+    def test_video_on_topic(self):
+        article = {"title": "NVIDIA、Kubernetes向けの実行基盤『Dynamo』を公開", "sourceName": "NVIDIA Developer Blog", "tags": ["Kubernetes"]}
+        self.assertTrue(images.video_on_topic("NVIDIA Dynamo in 5 Minutes", article))
+        self.assertFalse(images.video_on_topic("Pager Health Simplifies the Healthcare Journey with NVIDIA", article))
+
+    def test_safe_url_encodes_japanese(self):
+        self.assertEqual(images.safe_url("https://a.jp/画像.png?x=1"), "https://a.jp/%E7%94%BB%E5%83%8F.png?x=1")
+
+
+class FigureTest(unittest.TestCase):
+    ARTICLE = {"title": "2026年10月の「円安」倒産は6件、52カ月連続で発生", "description": "10月は6件発生し52カ月連続。", "body": ""}
+
+    def test_number_must_appear_in_article(self):
+        spec = images.figure_spec({"number": "6", "unit": "件", "label": "10月の「円安」倒産", "data_news": True}, self.ARTICLE)
+        self.assertEqual(spec, {"number": "6", "unit": "件", "label": "10月の「円安」倒産"})
+        # 記事に無い数字（作り話）は使わず、題名の最初の「数字＋単位」にする
+        spec = images.figure_spec({"number": "9", "unit": "件", "label": "x", "data_news": True}, self.ARTICLE)
+        self.assertEqual((spec["number"], spec["unit"]), ("6", "件"))
+        self.assertIsNone(images.figure_spec({"number": "", "unit": "", "label": "x", "data_news": False}, self.ARTICLE))
+
+    @unittest.skipIf(images.Image is None, "Pillow が無い")
+    def test_trim_dark_band(self):
+        image = images.Image.new("RGB", (400, 210), (120, 140, 160))
+        image.paste((5, 5, 5), (0, 200, 400, 210))
+        self.assertEqual(images.trim_dark_band(image).size, (400, 200))
+        dark = images.Image.new("RGB", (400, 210), (40, 40, 40))
+        self.assertEqual(images.trim_dark_band(dark).size, (400, 210))
+
+    @unittest.skipIf(images.Image is None, "Pillow が無い")
+    def test_render_size(self):
+        self.assertEqual(images.render_figure("52", "カ月連続", "「円安」倒産", "東京商工リサーチ").size, (1200, 630))
+        self.assertEqual(images.render_figure("", "", "長期金利の見通し", "").size, (1200, 630))
+
+
 if __name__ == "__main__":
     unittest.main()

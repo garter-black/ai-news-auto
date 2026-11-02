@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
-"""記事の写真を選ぶ（3段階）。写真の無い記事・ロゴだけの記事を、大手ニュースサイトのような写真入りにする。
+"""記事の写真を選ぶ。ニュースと関係のある本物の画像を優先し、関係の無い素材写真・AI のイメージは使わない（2026-11 見直し）。
 
-  1. 元記事の写真: og:image / twitter:image / 本文中のいちばん大きい画像。
-     **公式の発表（会社・団体の自社サイト、PR TIMES などのプレスリリース配信）の記事だけ**。ダウンロードして
-     幅 1200px まで縮小（切り抜かない）し、自前の KV から配信する。記事には「画像：◯◯（公式発表より）」と出す。
-     ほかのニュースサイト・ブログ・SNS・不明な発信元の写真は保存も直リンクもしない（2・3 にする）。
-     幅 800px 未満・極端な縦横比・ロゴ（無地の地に文字だけ）・サイト共通の既定画像・文字や図が主役の画像（Workers AI で判定）は使わない
-  2. フリー素材: Wikimedia Commons と Openverse（CC0・パブリックドメイン・CC BY だけ。商用可・改変可）。
-     検索語は記事から軽量モデル（scripts/llm.py の bulk）が作る具体的な英語の名詞句
-  3. AI 生成: Cloudflare Workers AI（flux-2-klein-4b → flux-1-schnell）。文字・ロゴ・実在の人物なし。1日 IMAGE_AI_DAILY_MAX 枚まで
+  1. 公式の発表の画像（会社・団体の自社サイト、PR TIMES などのプレスリリース配信の記事だけ）。og:image だけでなく、
+     本文の写真・図、その会社の公式 YouTube 動画のサムネイル、本文から張られたプレスキットまで見て、
+     写真（製品・人物・会場・調印式）> 公式動画 > プレスキットの写真 > 見出し画像・キービジュアル の順に選ぶ。
+     ダウンロードして幅 1200px まで縮小（切り抜かない）し、自前の KV から配信する。記事には「画像：◯◯（公式発表より）」と出す。
+     ほかの報道機関・通信社（ロイター・AP・Getty・日経・ITmedia など）の写真、他人の SNS の画像、関連記事のカード・メニュー・
+     古い宣伝画像は使わない。ほかのニュースサイト・ブログ・不明な発信元の記事では元記事の画像を使わない
+  2. 数字の図: 統計・調査・件数・ランキング・決算の数字のニュースは、大事な数字（「6件」「52カ月連続」）と発表した団体の名前を
+     白地・ネイビー・赤1か所・Noto Sans JP Black で描いた図（render_figure）。数字は記事の文にあるものだけ
+  3. フリー素材: Wikimedia Commons と Openverse（CC0・パブリックドメイン・CC BY だけ。商用可・改変可）。
+     写して意味のある具体的な物（製品・食べ物・乗り物・建物・場所・試合など）の記事だけ。関係の確認も厳しめ
+  4. 公式の文字の多い図・ロゴだけの画像（関係の無い場面の写真よりは良い）
+  5. AI 生成: Cloudflare Workers AI（flux-2-klein-4b → flux-1-schnell）。具体的な物の記事だけ。文字・ロゴ・実在の人物なし。
+     1日 IMAGE_AI_DAILY_MAX 枚まで
+  6. どれも無ければ、話題の短い言葉を大きく描いた文字の図
 
 2・3 の画像は 1200×630 の JPEG（約100KB）、1 は縦横比そのままの幅 1200px までの JPEG にし、どれも幅 400 / 640（.sm）/ 800 / 1200 の
 WebP を添えて Workers KV（saisoku-images）へ置き、サイトの /img/<名前> で配信する（cloudflare/worker.ts。srcset は lib/thumb-url.ts）。
@@ -20,6 +26,7 @@ YouTube のサムネイルはそのまま使う。
   python3 scripts/images.py --all --max 50       # 全記事（新しい順）を点検して直す（さかのぼり）
   python3 scripts/images.py --slug <slug> --dry-run
   python3 scripts/images.py --recheck-source        # 元記事の写真を採用した記事を今の基準で見直す
+  python3 scripts/images.py --repick-hours 72 --max 60  # 新しい記事の素材・AI の画像を今の基準で選び直す
   python3 scripts/images.py --retry-ai --max 30     # AI 生成にした記事でフリー素材を探し直す（Commons が落ちていた日の後に）
   python3 scripts/images.py --cache-official --max 100  # 外部の写真を直リンクしている記事を直す（公式は自前に保存、それ以外は 2・3）
   python3 scripts/images.py --variants --max 400        # 前からある自前の写真に幅ごとの WebP を足す
@@ -444,17 +451,74 @@ def wire_org(article: dict) -> str:
 
 
 # --------------------------------------------------------------------------- #
-# 1. 元記事の写真
+# 1. 元記事の写真（公式の発表だけ）
 # --------------------------------------------------------------------------- #
+# 2026-11 見直し: og:image だけで決めず、元記事の本文の写真・図、公式の YouTube 動画のサムネイル、本文から張られた
+# プレスキットまで見て、いちばん良いものを選ぶ。
+#   photo（製品・人物・会場・調印式などの写真）> youtube（その会社の公式チャンネルの動画）> kit（プレスキットの写真）
+#   > hero / banner（ブログの見出し画像・キービジュアル）> dense（文字の多い図・スライド・表）> logo（ロゴだけ）
+# ほかの報道機関・通信社（ロイター・AP・Getty・共同・時事・日経・ITmedia など）の写真や、他人の SNS 投稿の画像は使わない。
+
+# 写真の種類の順位（小さいほど良い）。数字の図（figure）と素材（stock）は process() で間に入る。
+# generic はサイト共通の共有画像のうち写真・キービジュアルのもの（本社ビルなど。その発表だけの写真ではない）
+OFFICIAL_RANK = {"photo": 0, "video": 1, "youtube": 1, "kit": 2, "hero": 3, "banner": 4, "dense": 5, "generic": 6, "logo": 7}
+MIN_PHOTO_WIDTH = 600  # 元記事の写真（実写）。755px の発表写真（日産の調印式など）を落とさない
+MIN_GRAPHIC_WIDTH = 700  # 見出し画像・キービジュアル
+MIN_DENSE_WIDTH = 800  # 文字の多い図（小さいと読めない）
+MIN_LOGO_WIDTH = 150
+
+# 通信社・報道機関・写真素材の配信元（公式の発表のページに載っていても使わない）
+AGENCY_IMAGE_HOSTS = {
+    "gettyimages.com", "gettyimages.co.jp", "reuters.com", "apnews.com", "ap.org", "afp.com", "afpbb.com", "jiji.com",
+    "kyodonews.jp", "kyodonews.net", "nikkei.com", "itmedia.co.jp", "shutterstock.com", "istockphoto.com", "alamy.com",
+    "aflo.com", "pixta.jp", "amanaimages.com", "sankei.com", "asahi.com", "yomiuri.co.jp", "mainichi.jp", "nhk.or.jp",
+    "twimg.com", "fbcdn.net", "cdninstagram.com", "tiktokcdn.com",
+}
+AGENCY_CREDIT = re.compile(r"(getty ?images|reuters|ロイター|\bAP\b|\bAFP\b|共同通信|時事通信|アフロ|AFLO|pixta|shutterstock|istock)", re.I)
+
+# 本文ではない場所（関連記事・おすすめ・ランキング・バナー・メニュー・共有ボタン）
+NOT_BODY = re.compile(
+    r"(related|recommend|ranking|pickup|pick-up|popular|sidebar|side-?nav|side-?bar|banner|bnr|breadcrumb|menu|share|sns|social|"
+    r"footer|global-?nav|gnav|carousel|other-?news|more-?news|news-?list|newslist|latest|archive|widget|ad-|ads-|advert|"
+    r"author-?(box|bio|card)|profile|subscribe|newsletter|cta|promo)",
+    re.I,
+)
+BODY_HINT = re.compile(r"(article|entry|post|content|body|release|press|detail|main|story|text|news-?detail|hero|featured|kv|mv)", re.I)
+VOID_TAGS = {"img", "br", "meta", "link", "input", "hr", "source", "area", "wbr", "col", "embed", "param", "track", "base"}
+YOUTUBE_ID = re.compile(r"(?:youtube(?:-nocookie)?\.com/(?:embed/|watch\?(?:[^\"'#]*&)?v=|live/)|youtu\.be/)([\w-]{11})")
+KIT_TEXT = re.compile(r"(プレスキット|報道用素材|報道関係者向け素材|画像素材|写真素材|画像ダウンロード|写真ダウンロード|素材ダウンロード|press ?kit|media ?kit|image gallery|photo gallery|media assets)", re.I)
 
 
-class _ImageCollector(HTMLParser):
+def safe_url(url: str) -> str:
+    """日本語などを含む URL を、そのまま送れる形（%XX）にする（楽天の発表の画像名は日本語）"""
+    return urllib.parse.quote(url, safe=":/?&=%#,;+~@!$'()*[]")
+
+
+def _host_label_set(host: str) -> set[str]:
+    skip = {"www", "com", "co", "jp", "net", "org", "or", "go", "ac", "ne", "lg", "global", "corp", "news", "blog", "blogs", "newsroom", "press", "jp-ja", "ja", "en"}
+    return {h for h in (host or "").lower().split(".") if len(h) >= 4 and h not in skip}
+
+
+class _PageCollector(HTMLParser):
+    """元記事のページから、画像（本文の中か・図か・説明文）・YouTube の動画・プレスキットへのリンクを集める"""
+
     def __init__(self):
         super().__init__(convert_charrefs=True)
         self.meta: dict[str, str] = {}
-        self.images: list[tuple[int, int, str]] = []  # (優先度, 宣言された幅, URL)
-        self.depth_main = 0
+        self.images: list[dict] = []
+        self.youtube: list[str] = []
+        self.videos: list[str] = []  # 会社が自分で置いている動画ファイル（mp4・webm）
+        self.links: list[tuple[str, str]] = []
+        self.stack: list[tuple[str, bool, bool]] = []  # (tag, 本文か, 本文ではない場所か)
         self.order = 0
+        self._link: list | None = None
+        self._a_href = ""  # 開いている <a> のリンク先（関連記事のカードの画像を見分ける）
+
+    def _state(self) -> tuple[bool, bool, bool]:
+        body = any(b for _, b, _ in self.stack)
+        bad = any(x for _, _, x in self.stack)
+        figure = any(t == "figure" for t, _, _ in self.stack)
+        return body, bad, figure
 
     def handle_starttag(self, tag, attrs):
         a = {k.lower(): (v or "") for k, v in attrs}
@@ -462,18 +526,59 @@ class _ImageCollector(HTMLParser):
             key = (a.get("property") or a.get("name") or "").lower()
             if key in {"og:image", "og:image:url", "og:image:secure_url", "twitter:image", "twitter:image:src"} and a.get("content"):
                 self.meta.setdefault(key, a["content"].strip())
+            if key in {"og:video", "og:video:url", "og:video:secure_url"} and re.search(r"\.(mp4|webm|mov)(\?|$)", a.get("content", ""), re.I):
+                self.videos.append(a["content"].strip())
             return
-        if tag == "link" and a.get("rel", "").lower() == "image_src" and a.get("href"):
-            self.meta.setdefault("image_src", a["href"].strip())
+        if tag == "link":
+            if a.get("rel", "").lower() == "image_src" and a.get("href"):
+                self.meta.setdefault("image_src", a["href"].strip())
             return
-        if tag in ("article", "main"):
-            self.depth_main += 1
+        cls = f"{a.get('class', '')} {a.get('id', '')} {a.get('role', '')}"
+        if tag not in VOID_TAGS:
+            in_body, _, _ = self._state()
+            body = tag in ("article", "main") or bool(BODY_HINT.search(cls) and not NOT_BODY.search(cls))
+            # <header> は本文（article）の中なら見出し画像があるので外さない
+            bad = tag in ("nav", "footer", "aside", "form") or (tag == "header" and not in_body) or bool(NOT_BODY.search(cls))
+            if tag in ("html", "body"):
+                body, bad = False, False  # WordPress などは <body> にページ全体の飾りのクラス（menu・sidebar など）が付く
+            self.stack.append((tag, body, bad))
+        if tag == "iframe":
+            match = YOUTUBE_ID.search(a.get("src") or a.get("data-src") or "")
+            if match:
+                self.youtube.append(match.group(1))
             return
+        if tag == "a":
+            href = a.get("href") or ""
+            match = YOUTUBE_ID.search(href)
+            _, bad, _ = self._state()
+            if match and not bad:
+                self.youtube.append(match.group(1))
+            self._link = [href, ""] if href and not bad else None
+            self._a_href = href
+            return
+        if tag == "lite-youtube" or a.get("data-youtube-id") or a.get("videoid"):
+            vid = a.get("videoid") or a.get("data-youtube-id") or ""
+            if re.fullmatch(r"[\w-]{11}", vid):
+                self.youtube.append(vid)
+        if tag in ("video", "source"):
+            _, bad, _ = self._state()
+            src = a.get("src") or a.get("data-src") or ""
+            if src and not bad and (tag == "video" or a.get("type", "").startswith("video/") or re.search(r"\.(mp4|webm|mov)(\?|$)", src, re.I)):
+                self.videos.append(src)
+                return
+            if tag == "video":
+                if a.get("poster") and not bad:
+                    # 動画の表紙の画像（公式の静止画）も候補にする
+                    self.order += 1
+                    body, _, figure = self._state()
+                    self.images.append({"url": a["poster"], "width": 0, "body": body, "bad": False, "figure": figure, "alt": "", "order": self.order, "hint": "", "link": ""})
+                return
         if tag not in ("img", "source"):
             return
-        cls = f"{a.get('class', '')} {a.get('id', '')} {a.get('alt', '')}"
-        if re.search(r"(logo|icon|avatar|profile|sns|share|banner|btn|button|arrow|badge|qr)", cls, re.I):
-            return
+        if re.search(r"(logo|icon|avatar|btn|button|arrow|badge|qr)", f"{cls} {a.get('alt', '')}", re.I):
+            kind_hint = "logo"
+        else:
+            kind_hint = ""
         url, width = "", 0
         srcset = a.get("srcset") or a.get("data-srcset") or ""
         if srcset:
@@ -486,6 +591,8 @@ class _ImageCollector(HTMLParser):
                 if w >= best:
                     best, url = w, bits[0]
             width = best
+        if url.startswith("data:"):
+            url, width = "", 0
         url = url or a.get("data-src") or a.get("data-original") or a.get("data-lazy-src") or a.get("src") or ""
         if not url or url.startswith("data:"):
             return
@@ -493,28 +600,35 @@ class _ImageCollector(HTMLParser):
             width = width or int(re.sub(r"\D", "", a.get("width", "")) or 0)
         except ValueError:
             width = 0
-        if 0 < width < MIN_SOURCE_WIDTH // 2:
+        if 0 < width < MIN_LOGO_WIDTH:
             return
+        body, bad, figure = self._state()
         self.order += 1
-        priority = 0 if self.depth_main else 1
-        self.images.append((priority, -width, self.order, url))
+        self.images.append({"url": url, "width": width, "body": body, "bad": bad, "figure": figure, "alt": a.get("alt", "")[:120], "order": self.order, "hint": kind_hint, "link": self._a_href})
+
+    def handle_data(self, data):
+        if self._link is not None and len(self._link[1]) < 120:
+            self._link[1] += data.strip()
 
     def handle_endtag(self, tag):
-        if tag in ("article", "main") and self.depth_main:
-            self.depth_main -= 1
+        if tag == "a":
+            self._a_href = ""
+        if tag == "a" and self._link is not None:
+            self.links.append((self._link[0], self._link[1]))
+            self._link = None
+        if tag in VOID_TAGS:
+            return
+        for i in range(len(self.stack) - 1, -1, -1):
+            if self.stack[i][0] == tag:
+                del self.stack[i:]
+                break
 
 
-def source_candidates(page_url: str, known: str) -> list[str]:
-    """元記事の画像候補（og:image → 本文中の大きい画像の順）"""
-    out: list[str] = []
-    if known:
-        out.append(known)
-    if not page_url:
-        return out
+def fetch_page(page_url: str) -> tuple[str, str]:
+    """(HTML, 最終URL)。ボット除けで弾かれるページは読み取りサービス（r.jina.ai）で描画後の HTML を取る（feeds.py と同じ）"""
     try:
         data, _, final = http_get(page_url, accept="text/html,application/xhtml+xml", timeout=20, limit=6 * 1024 * 1024)
     except Exception as error:  # noqa: BLE001
-        # ボット除けで弾かれるページは、読み取りサービス（r.jina.ai）で描画後の HTML を取る（feeds.py と同じ）
         try:
             req = urllib.request.Request(
                 "https://r.jina.ai/" + page_url,
@@ -524,91 +638,599 @@ def source_candidates(page_url: str, known: str) -> list[str]:
                 data = res.read(6 * 1024 * 1024)
             final = page_url
         except Exception as error2:  # noqa: BLE001
-            log(f"   [img] 元記事を開けない: {str(error)[:60]} / {str(error2)[:60]}")
-            return out
+            raise RuntimeError(f"元記事を開けない: {str(error)[:60]} / {str(error2)[:60]}") from error2
     head = data[:4000].decode("ascii", "ignore")
     match = re.search(r"charset=[\"']?([\w-]+)", head, re.I)
-    text = ""
     for enc in [match.group(1) if match else None, "utf-8", "cp932", "euc-jp"]:
         if not enc:
             continue
         try:
-            text = data.decode(enc)
-            break
+            return data.decode(enc), final
         except (LookupError, UnicodeDecodeError):
             continue
-    parser = _ImageCollector()
+    return data.decode("utf-8", "ignore"), final
+
+
+def parse_page(page_url: str) -> tuple[_PageCollector, str] | None:
     try:
-        parser.feed(text or data.decode("utf-8", "ignore"))
+        text, final = fetch_page(page_url)
+    except Exception as error:  # noqa: BLE001
+        log(f"   [img] {str(error)[:140]}")
+        return None
+    parser = _PageCollector()
+    try:
+        parser.feed(text)
     except Exception:  # noqa: BLE001
         pass
     # 出典の表示用（プレスリリース配信の記事は、発表した会社の名前を題名・構造化データから取る）
-    raw = text or ""
-    title = re.search(r"<title[^>]*>([^<]{1,300})</title>", raw, re.I)
-    author = re.search(r'"author"\s*:\s*\{[^{}]{0,200}?"name"\s*:\s*"([^"]{1,60})"', raw)
-    PAGE_META[page_url] = {
+    title = re.search(r"<title[^>]*>([^<]{1,300})</title>", text, re.I)
+    author = re.search(r'"author"\s*:\s*\{[^{}]{0,200}?"name"\s*:\s*"([^"]{1,60})"', text)
+    PAGE_META.setdefault(page_url, {
         "title": html.unescape(title.group(1)).strip() if title else "",
         "author": html.unescape(author.group(1)).strip() if author else "",
-    }
+    })
+    return parser, final
+
+
+def _links_elsewhere(item: dict, final: str) -> bool:
+    """ほかのページへのリンクに包まれた画像（関連記事・おすすめ・サービス紹介のカード）"""
+    href = (item.get("link") or "").strip()
+    if not href or href.startswith(("#", "javascript:")):
+        return False
+    if re.search(r"\.(jpe?g|png|webp|gif|avif)(\?|$)", href, re.I):
+        return False  # 拡大画像へのリンク
+    target = urllib.parse.urljoin(final, href).split("#")[0].rstrip("/")
+    return target != final.split("#")[0].rstrip("/")
+
+
+def _stale(url: str, article: dict | None) -> bool:
+    """URL の日付（/2026/07/14/ など）が記事より2か月以上前なら、その発表の画像ではない（サイトの宣伝・過去の記事）"""
+    match = re.search(r"/(20\d\d)/(\d{1,2})(?:/(\d{1,2}))?/", url)
+    if not match or not article:
+        return False
+    try:
+        when = datetime(int(match.group(1)), int(match.group(2)), int(match.group(3) or 1), tzinfo=timezone.utc)
+        made = datetime.fromisoformat(str(article.get("publishedAt") or article.get("generatedAt")).replace("Z", "+00:00"))
+    except Exception:  # noqa: BLE001
+        return False
+    return (made - when).days > 60
+
+
+def page_candidates(parser: _PageCollector, final: str, known: str = "", article: dict | None = None) -> list[dict]:
+    """元記事の画像候補を良さそうな順に: og:image → 本文の図（figure）→ 本文の画像 → 本文の外（関連記事などを除く）"""
+    out: list[dict] = []
+    if known:
+        out.append({"url": known, "where": "known"})
     for key in ("og:image", "og:image:secure_url", "og:image:url", "twitter:image", "twitter:image:src", "image_src"):
         if parser.meta.get(key):
-            out.append(parser.meta[key])
-    for _, _, _, url in sorted(parser.images)[:8]:
-        out.append(url)
+            out.append({"url": parser.meta[key], "where": "og"})
+    usable = [
+        i for i in parser.images
+        if not i["bad"] and not _links_elsewhere(i, final) and not _stale(urllib.parse.urljoin(final, i["url"]), article)
+    ]
+    body = [i for i in usable if i["body"]]
+    body.sort(key=lambda i: (not i["figure"], i["order"]))
+    others = [i for i in usable if not i["body"]]
+    for item in body[:10] + others[:3]:
+        out.append({"url": item["url"], "where": "figure" if item["figure"] else ("body" if item["body"] else "page"), "alt": item["alt"], "hint": item["hint"]})
     seen, result = set(), []
-    for url in out:
-        full = urllib.parse.urljoin(final, html.unescape(url.strip()))
-        if full not in seen and full.startswith("http"):
-            seen.add(full)
-            result.append(full)
+    for item in out:
+        full = urllib.parse.urljoin(final, html.unescape(item["url"].strip()))
+        # 同じ画像の大きさ違い（?w=… や -300x200）は1つにまとめる
+        base = re.sub(r"(\?.*$|-\d{2,4}x\d{2,4}(?=\.\w+$))", "", full)
+        if full.startswith("http") and base not in seen:
+            seen.add(base)
+            result.append({**item, "url": full})
     return result
 
 
-def pick_source_image(article: dict, repeats: Counter) -> tuple[str | None, object, str]:
-    """(使える元記事の画像URL, その画像, 使わなかった理由)"""
-    current = article.get("thumbnail", "") or ""
-    reasons = []
-    page = article.get("sourceUrl", "") if article.get("sourceType") == "web" else ""
-    # 一覧に同じ写真が並ばないよう、ほかの記事で使っていない画像を優先する（無ければ使用済みでも使う）
-    fallback = None
-    fallback_image = None
-    for index, url in enumerate(source_candidates(page, current)[:6]):
-        used = repeats.get(url, 0) - (1 if url == current else 0)
-        problem = url_problem(url, repeats.get(url, 0))
-        # 別の発表（元記事のページが違う）と同じ画像は、サイト共通・使い回しの画像なので使わない
-        others = PAGES_BY_IMAGE.get(url, set()) - {page, ""}
-        if not problem and page and others:
-            problem = "別の発表と同じ画像"
-        if problem:
-            reasons.append(problem)
-            continue
-        if used > 0 and fallback:
-            continue
-        try:
-            data, ctype, _ = http_get(url, accept="image/avif,image/webp,image/*,*/*;q=0.8", referer=page, timeout=20)
-            if ctype and not ctype.startswith("image/") and "octet-stream" not in ctype:
-                reasons.append("画像ではない")
+def youtube_official(video_id: str, article: dict) -> dict | None:
+    """その会社・団体の公式チャンネルの動画なら {"title", "author", "thumb"}（oEmbed のチャンネル名で確かめる）"""
+    try:
+        data = http_json("https://www.youtube.com/oembed?format=json&url=" + urllib.parse.quote(f"https://www.youtube.com/watch?v={video_id}"), ua=BROWSER_UA, timeout=15)
+    except Exception:  # noqa: BLE001
+        return None
+    author = str(data.get("author_name") or "")
+    norm = lambda s: re.sub(r"[\s\-_・.]", "", s.lower())  # noqa: E731
+    a = norm(author)
+    org = norm(org_name(article))
+    host = urllib.parse.urlparse(article.get("sourceUrl") or "").netloc
+    labels = {re.sub(r"news$", "", h) for h in _host_label_set(host)}
+    ok = bool(a) and ((org and len(org) >= 3 and (org in a or a in org)) or any(len(h) >= 4 and h in a for h in labels))
+    if not ok:
+        log(f"   [img] YouTube {video_id} は公式チャンネルと確かめられない（{author[:40]}）")
+        return None
+    return {"title": str(data.get("title") or ""), "author": author}
+
+
+def video_on_topic(video_title: str, article: dict) -> bool:
+    """動画の題名に、記事の題名・タグ・本文の冒頭と同じ固有の言葉（英単語・カタカナ語・漢字語）があるか。会社名だけの一致は数えない"""
+    text = " ".join(str(article.get(k) or "") for k in ("title", "description", "lede")) + " " + " ".join(article.get("tags") or []) + " " + str(article.get("body") or "")[:1500]
+    low = text.lower()
+    org = {w.lower() for w in re.findall(r"[A-Za-z]{3,}", org_name(article) + " " + (article.get("sourceName") or ""))}
+    common = {"with", "from", "your", "into", "how", "the", "and", "for", "new", "what", "video", "official", "minutes", "introducing", "using", "build", "cloud", "next"}
+    words = {w.lower() for w in re.findall(r"[A-Za-z][A-Za-z0-9.+-]{3,}", video_title)} - org - common
+    words |= set(re.findall(r"[ァ-ヴー]{3,}|[一-龥]{2,}", video_title))
+    return any(w in low if w.isascii() else w in text for w in words)
+
+
+def youtube_frames(video_id: str) -> list:
+    """公式動画の画像（YouTube が配る画像だけ。動画そのものはダウンロードしない＝利用規約を守る）。
+    maxresdefault と、動画の途中のコマ maxres1〜3（1280×720）。無ければ sddefault・sd1〜3（640×480 の上下の黒帯を切って 16:9）"""
+    out = []
+    for names in (("maxresdefault", "maxres1", "maxres2", "maxres3"), ("sddefault", "sd1", "sd2", "sd3")):
+        for name in names:
+            try:
+                data, _, _ = http_get(f"https://i.ytimg.com/vi/{video_id}/{name}.jpg", accept="image/*", timeout=10)
+                image = open_image(data)
+            except Exception:  # noqa: BLE001
                 continue
-            image = open_image(data)
-            problem = image_problem(image, MIN_SOURCE_WIDTH) or graphic_problem(image)
-        except Exception as error:  # noqa: BLE001
-            problem = f"読めない（{str(error)[:40]}）"
+            w, h = image.size
+            if name.startswith("sd") and (w, h) == (640, 480):
+                image = image.crop((0, 60, 640, 420))
+            if image.size[0] >= MIN_PHOTO_WIDTH:
+                out.append((name, image))
+        if out:
+            break
+    return out
+
+
+def _ffmpeg() -> str:
+    import shutil  # noqa: PLC0415
+
+    exe = shutil.which("ffmpeg")
+    if exe:
+        return exe
+    try:
+        import imageio_ffmpeg  # noqa: PLC0415
+
+        return imageio_ffmpeg.get_ffmpeg_exe()
+    except Exception:  # noqa: BLE001
+        return ""
+
+
+def video_frames(url: str, referer: str, deadline: float = 0.0) -> list:
+    """会社が自分で置いている動画ファイル（mp4・webm）から、途中のコマを3枚だけ取り出す（全体はダウンロードしない）。
+    ffmpeg が無い・遅い・読めないときは空"""
+    exe = _ffmpeg()
+    if not exe:
+        log("   [img] ffmpeg が無いので動画のコマは取らない")
+        return []
+    common = ["-hide_banner", "-loglevel", "error", "-user_agent", BROWSER_UA, "-headers", f"Referer: {referer}\r\n", "-rw_timeout", "5000000"]
+    deadline = deadline or time.time() + 14
+    duration = 0.0
+    try:
+        probe = subprocess.run([exe, "-hide_banner", "-user_agent", BROWSER_UA, "-rw_timeout", "5000000", "-i", url], capture_output=True, text=True, timeout=6)
+        match = re.search(r"Duration: (\d+):(\d+):([\d.]+)", probe.stderr)
+        if match:
+            duration = int(match.group(1)) * 3600 + int(match.group(2)) * 60 + float(match.group(3))
+    except Exception:  # noqa: BLE001
+        return []
+    times = [duration * f for f in (0.25, 0.5, 0.75)] if duration >= 3 else [1.0, 3.0]
+    out = []
+    for t in times:
+        left = deadline - time.time()
+        if left < 2:
+            break
+        try:
+            res = subprocess.run(
+                [exe, *common, "-ss", f"{t:.2f}", "-i", url, "-frames:v", "1", "-q:v", "2", "-f", "image2pipe", "-vcodec", "mjpeg", "-"],
+                capture_output=True, timeout=min(6, left),
+            )
+            if res.stdout:
+                out.append((f"{t:.1f}s", open_image(res.stdout)))
+        except Exception:  # noqa: BLE001
+            continue
+    return out
+
+
+def sharpness(image) -> float:
+    """くっきりしているか（場面の切り替わりのぼやけたコマ・暗いコマは低い）"""
+    from PIL import ImageFilter, ImageStat  # noqa: PLC0415
+
+    gray = image.convert("L").resize((320, 180))
+    mean = ImageStat.Stat(gray).mean[0]
+    if mean < 35 or mean > 235:
+        return 0.0
+    return ImageStat.Stat(gray.filter(ImageFilter.FIND_EDGES)).var[0]
+
+
+def best_frame(frames: list, budget: int) -> tuple[object, str, str] | None:
+    """コマの中からいちばん良いもの（くっきり・文字が少ない・人や製品や会場が写る写真）。(画像, 種類, 名前)"""
+    ranked = sorted(frames, key=lambda f: -sharpness(f[1]))[: max(1, budget)]
+    fallback = None
+    for name, image in ranked:
+        if sharpness(image) <= 0:
+            continue
+        kind = classify_official(image)
+        if kind == "photo":
+            return image, "photo", name
+        if kind in ("hero", "banner") and fallback is None:
+            fallback = (image, kind, name)
+    return fallback
+
+
+CLASSIFY_PROMPT = (
+    "This image comes from a company's or organization's own press release or blog post. "
+    "Classify it with exactly one word:\n"
+    "photo - a real photograph (people, products, buildings, vehicles, events, ceremonies, food, nature) or a realistic product render; "
+    "a small logo or a few words on it are fine\n"
+    "hero - an illustrated key visual, artwork or abstract graphic with at most a short title\n"
+    "dense - a slide, chart, graph, table, diagram, document, screenshot or infographic with lots of small text\n"
+    "logo - only a logo, wordmark or icon on a plain background\n"
+    "banner - an advertisement, flyer or campaign banner dominated by big headline text, prices or dates\n"
+    "Answer with one word: photo, hero, dense, logo or banner."
+)
+
+
+def classify_official(image) -> str:
+    """公式の画像の種類（photo / hero / dense / logo / banner）。画像判定ができないときは Pillow の目安で決める"""
+    stats = graphic_stats(image)
+    if stats["flat"] >= 0.88 or stats["bins"] <= 24:
+        return "logo"  # 無地の地にロゴ・文字だけ（判定にかけるまでもない）
+    text = (cf_vision(image, CLASSIFY_PROMPT, max_tokens=8) or "").lower()
+    for kind in ("photo", "hero", "dense", "logo", "banner"):
+        if kind in text:
+            return kind
+    doc = doc_stats(image)
+    if doc["white"] >= 0.6 or doc["flat"] >= 0.8:
+        return "dense"
+    return "photo"
+
+
+def size_ok(kind: str, w: int, h: int) -> str | None:
+    """種類ごとの大きさ・縦横比の条件（だめなら理由）。SNS カードは 3:1 に切り抜くので横長は 3.3 まで通す"""
+    ratio = w / max(h, 1)
+    if kind == "logo":
+        return None if w >= MIN_LOGO_WIDTH else f"小さい（{w}×{h}）"
+    if kind in ("photo", "youtube", "video", "kit", "generic"):
+        if w < MIN_PHOTO_WIDTH or h < 300:
+            return f"小さい（{w}×{h}）"
+        if not (1.0 <= ratio <= 3.3):
+            return f"縦横比が合わない（{w}×{h}）"
+        return None
+    if kind == "dense":
+        if w < MIN_DENSE_WIDTH:
+            return f"文字の多い図で小さい（{w}×{h}）"
+        return None if 1.0 <= ratio <= 2.6 else f"縦横比が合わない（{w}×{h}）"
+    if w < MIN_GRAPHIC_WIDTH or h < 300:
+        return f"小さい（{w}×{h}）"
+    return None if 1.2 <= ratio <= 3.3 else f"縦横比が合わない（{w}×{h}）"
+
+
+def agency_problem(url: str, alt: str = "") -> str | None:
+    host = urllib.parse.urlparse(url).netloc
+    if _host_in(host, AGENCY_IMAGE_HOSTS):
+        return "報道機関・通信社・SNS の画像"
+    if alt and AGENCY_CREDIT.search(alt):
+        return "通信社のクレジット入り"
+    return None
+
+
+def kit_pages(parser: _PageCollector, final: str) -> list[str]:
+    """本文から張られたプレスキット・報道用素材のページ（同じサイトのもの・1つだけ）"""
+    host = urllib.parse.urlparse(final).netloc.lower()
+    root = ".".join(host.split(".")[-3:]) if host.endswith(".jp") else ".".join(host.split(".")[-2:])
+    out = []
+    for href, text in parser.links:
+        if not KIT_TEXT.search(f"{text} {href}"):
+            continue
+        full = urllib.parse.urljoin(final, href)
+        target = urllib.parse.urlparse(full)
+        if target.scheme.startswith("http") and (target.netloc.lower() == host or target.netloc.lower().endswith("." + root)) and not re.search(r"\.(zip|pdf)$", target.path, re.I):
+            if full not in out:
+                out.append(full)
+    return out[:1]
+
+
+def related_to(image, article: dict) -> bool | None:
+    text = cf_vision(
+        image,
+        f"News article title (Japanese): {article.get('title', '')}\n"
+        "Does this image clearly show the product, service, person, place or event that this article is about? Answer yes or no.",
+        max_tokens=5,
+    )
+    low = (text or "").strip().lower()
+    return True if low.startswith("yes") else False if low.startswith("no") else None
+
+
+def pick_official(article: dict, repeats: Counter, fast: bool = False) -> dict:
+    """公式の発表の中から、いちばん良い画像を選ぶ。
+    {"best": {"kind", "url", "image", "rank", "where"} or None, "reasons": [使わなかった理由]}"""
+    current = article.get("thumbnail", "") or ""
+    page = article.get("sourceUrl", "") if article.get("sourceType") == "web" else ""
+    reasons: list[str] = []
+    found: list[dict] = []
+    parsed = parse_page(page) if page else None
+    if not parsed:
+        return {"best": None, "reasons": ["元記事を開けない" if page else "元記事なし"]}
+    parser, final = parsed
+    known = current if current and not is_ours(current) and not is_youtube(current) else ""
+    candidates = page_candidates(parser, final, known, article)
+    vision_budget = 4 if fast else 7
+    fetches = 0
+
+    def consider(item: dict, forced_kind: str = "") -> dict | None:
+        nonlocal vision_budget, fetches
+        url = item["url"]
+        framed = forced_kind in ("youtube", "video")  # 動画のコマ（画像と種類は呼び出し側で決めてある）
+        problem = url_problem(url, 0) if not framed else None
+        site_default = False
+        if problem and problem.startswith("サイト共通"):
+            site_default = True  # サイト共通の既定画像（多くはロゴ）。ロゴとしてだけ使える
+            problem = None
+        if problem and "ロゴ" in problem and not re.search(r"\.(svg|gif|ico)(\?|$)", url, re.I):
+            site_default = True
+            problem = None
+        problem = problem or agency_problem(url, item.get("alt", ""))
+        # 別の発表（元記事のページが違う）と同じ画像は、サイト共通・使い回しの画像。ロゴとしてだけ使える
+        others = PAGES_BY_IMAGE.get(url, set()) - {page, ""}
+        if not problem and others and not framed:
+            site_default = True
         if problem:
             reasons.append(problem)
-            continue
-        if used > 0:
-            # 2本までは同じ発表の写真を共有してよい。3本目からは素材・AI で変化を付ける
-            if used < 2:
-                fallback, fallback_image = url, image
+            return None
+        if fetches >= 12:
+            return None
+        fetches += 1
+        try:
+            if framed:
+                image = item["image"]
             else:
-                reasons.append(f"ほかの{used}本と同じ写真")
-            continue
-        repeats[url] += 0 if url == current else 1
-        return url, image, ""
-    if fallback:
-        repeats[fallback] += 0 if fallback == current else 1
-        return fallback, fallback_image, ""
-    return None, None, " / ".join(dict.fromkeys(reasons)) or "候補なし"
+                data, ctype, _ = http_get(safe_url(url), accept="image/avif,image/webp,image/*,*/*;q=0.8", referer=page, timeout=20)
+                if ctype and not ctype.startswith("image/") and "octet-stream" not in ctype:
+                    reasons.append("画像ではない")
+                    return None
+                image = open_image(data)
+        except Exception as error:  # noqa: BLE001
+            reasons.append(f"読めない（{str(error)[:40]}）")
+            return None
+        w, h = image.size
+        if framed:
+            kind = forced_kind
+        elif site_default or item.get("hint") == "logo" or w < MIN_PHOTO_WIDTH:
+            # 小さい画像・サイト共通の画像は、ロゴかどうかだけを Pillow で見る（判定の呼び出しを節約）。
+            # ロゴとして使うのは og:image（サイト共通の共有画像）か、名前・説明に logo とある画像だけ（SNS のアイコンは使わない）
+            stats = graphic_stats(image)
+            logo_like = item.get("where") in ("og", "known") or re.search(r"logo|ロゴ", f"{url} {item.get('alt', '')}", re.I)
+            social = re.search(r"(twitter|x-logo|facebook|youtube|instagram|line|tiktok|linkedin|note|share|sns|rss|mail)", f"{url} {item.get('alt', '')}", re.I)
+            kind = ""
+            if logo_like and not social:
+                if w >= MIN_PHOTO_WIDTH and not re.search(r"logo|ロゴ", f"{url} {item.get('alt', '')}", re.I):
+                    # 大きなサイト共通の画像は中身を確かめる（グラフや表をロゴとして載せない）。
+                    # 会社の建物などの写真なら「共通の写真」（ロゴより上、図より下）
+                    if vision_budget > 0:
+                        vision_budget -= 1
+                        seen = classify_official(image)
+                        kind = "logo" if seen == "logo" else "generic" if seen in ("photo", "hero") else ""
+                elif stats["flat"] >= 0.6 or stats["bins"] <= 60:
+                    kind = "logo"
+            if not kind:
+                reasons.append(f"小さい（{w}×{h}）" if w < MIN_PHOTO_WIDTH else "サイト共通の画像")
+                return None
+        else:
+            if vision_budget <= 0:
+                reasons.append("判定の回数切れ")
+                return None
+            vision_budget -= 1
+            kind = classify_official(image)
+            if forced_kind == "kit" and kind == "photo":
+                if related_to(image, article) is False:
+                    reasons.append("プレスキットの写真が記事と関係ない")
+                    return None
+                kind = "kit"
+        problem = size_ok(kind, w, h)
+        if problem:
+            reasons.append(f"{kind}: {problem}")
+            return None
+        hit = {"kind": kind, "url": url, "image": image, "rank": item.get("rank", OFFICIAL_RANK.get(kind, 9)), "where": item.get("where", ""), "order": len(found), "big": w >= 1000}
+        found.append(hit)
+        return hit
+
+    # 1. 元記事のページの写真・図（良い順に見て、写真が見つかったら止める）
+    for item in candidates[:10]:
+        hit = consider(item)
+        if hit and hit["kind"] == "photo" and hit["big"]:
+            break
+    # 2. 公式の動画のコマ。写真のようなコマ（人・製品・会場が写り、文字が少ない）は元記事の写真の次、文字の多いコマは見出し画像の後
+    #    2a. 会社が自分のページに置いた動画ファイル（mp4・webm）から ffmpeg で数コマ取り出す
+    if not any(f["rank"] < 1 for f in found) and not fast and parser.videos:
+        video_deadline = time.time() + 14  # 動画のコマ取りは1本の記事で14秒まで
+        for src in list(dict.fromkeys(urllib.parse.urljoin(final, v) for v in parser.videos))[:2]:
+            if agency_problem(src) or not src.startswith("http"):
+                continue
+            if time.time() > video_deadline - 4:
+                break
+            frames = video_frames(src, final, video_deadline)
+            picked = best_frame(frames, min(2, vision_budget))
+            vision_budget -= min(2, len(frames))
+            if not picked:
+                continue
+            image, seen, name = picked
+            log(f"   [img] 公式動画のコマ（{name}・{seen}）: {src[:90]}")
+            hit = consider({"url": src, "image": image, "where": f"video {name}", "rank": 1 if seen == "photo" else 3.5}, forced_kind="video")
+            if hit and hit["rank"] < 2:
+                break
+    #    2b. 公式 YouTube 動画の画像（YouTube が配る表紙と途中のコマだけ。動画はダウンロードしない）
+    if not any(f["rank"] < 1 for f in found):
+        for vid in list(dict.fromkeys(parser.youtube))[:2]:
+            info = youtube_official(vid, article)
+            if not info:
+                continue
+            # 同じ会社の動画でも、別の話題の動画（ページの下の「おすすめ動画」など）は使わない
+            if not video_on_topic(info["title"], article):
+                log(f"   [img] YouTube {vid} は記事の話題と違う動画（{info['title'][:40]}）")
+                continue
+            picked = best_frame(youtube_frames(vid), min(2 if not fast else 1, vision_budget))
+            vision_budget -= 2
+            if not picked:
+                continue
+            image, seen, name = picked
+            log(f"   [img] 公式 YouTube 動画の画像（{name}・{seen}）")
+            hit = consider({"url": f"https://www.youtube.com/watch?v={vid}", "image": image, "where": f"youtube {name}", "rank": 1 if seen == "photo" else 3.5}, forced_kind="youtube")
+            if hit and hit["rank"] < 2:
+                break
+    # 3. プレスキット・報道用素材のページ
+    if not fast and not any(f["rank"] < 2 for f in found):
+        for kit in kit_pages(parser, final):
+            sub = parse_page(kit)
+            if not sub:
+                continue
+            for item in page_candidates(*sub, article=article)[:5]:
+                if item["where"] == "og":
+                    continue
+                hit = consider(item, forced_kind="kit")
+                if hit and hit["kind"] == "kit":
+                    break
+    # 同じ種類なら大きい（幅 1000px 以上の）ものを先に
+    found.sort(key=lambda f: (f["rank"], not f.get("big"), f["order"]))
+    best = found[0] if found else None
+    if best and page:
+        PAGES_BY_IMAGE.setdefault(best["url"], set()).add(page)
+    return {"best": best, "reasons": list(dict.fromkeys(reasons)) or ["候補なし"]}
+
+
+def logo_canvas(image):
+    """ロゴだけの画像を、白（またはロゴの地の色）の 1200×630 の真ん中に置く（SNS カードの 3:1 の枠にも収まる大きさ）"""
+    w, h = image.size
+    # 細い枠線（デジタル庁の共有画像など）を切り落としてから、ロゴの部分だけを取り出す
+    m = max(2, round(min(w, h) * 0.03))
+    image = image.crop((m, m, w - m, h - m))
+    w, h = image.size
+    corner = image.getpixel((2, 2))
+    bg = Image.new("RGB", (w, h), corner)
+    bbox = ImageChops.difference(image, bg).convert("L").point(lambda v: 255 if v > 40 else 0).getbbox()
+    logo = image.crop(bbox) if bbox else image
+    lw, lh = logo.size
+    scale = min(560 / lw, 220 / lh, 3.0)
+    logo = logo.resize((max(1, round(lw * scale)), max(1, round(lh * scale))), Image.LANCZOS)
+    light = sum(corner) / 3 > 200
+    canvas = Image.new("RGB", (OUT_W, OUT_H), (255, 255, 255) if light else corner)
+    canvas.paste(logo, ((OUT_W - logo.size[0]) // 2, (OUT_H - logo.size[1]) // 2))
+    if light and bg.getpixel((0, 0)) != (255, 255, 255):
+        # ロゴの地が薄い色なら、その色ごと四角く置く（地の色の違いで白い枠が見えないように）
+        canvas = Image.new("RGB", (OUT_W, OUT_H), corner)
+        canvas.paste(logo, ((OUT_W - logo.size[0]) // 2, (OUT_H - logo.size[1]) // 2))
+    return canvas
+
+
+# --------------------------------------------------------------------------- #
+# 数字の図（統計・調査・件数・ランキング・決算の数字のニュース）
+# --------------------------------------------------------------------------- #
+# 写真の無いデータのニュースに、関係の無い素材写真や AI のイメージを付けない。白地・ネイビー・赤は数字の1か所だけ・
+# Noto Sans JP Black で「6件」「52カ月連続」のような大事な数字と、発表した団体の名前を大きく置いた図を作る。
+# SNS カード（1200×400 に切り抜く）でも欠けないよう、文字は真ん中の高さ 400px の帯に収める。
+
+FONT_DIR = ROOT / "assets" / "fonts"
+FIG_INK = (11, 26, 51)
+FIG_NAVY = (29, 74, 143)
+FIG_RED = (200, 34, 26)
+FIG_GRAY = (91, 100, 117)
+FIG_PAPER = (255, 255, 255)
+FIG_TINT = (243, 246, 251)
+
+
+def _font(weight: str, size: int):
+    from PIL import ImageFont  # noqa: PLC0415
+
+    name = "NotoSansJP-Black.otf" if weight == "black" else "NotoSansJP-Bold.otf"
+    return ImageFont.truetype(str(FONT_DIR / name), size)
+
+
+def _text_w(draw, text: str, font) -> int:
+    box = draw.textbbox((0, 0), text, font=font)
+    return box[2] - box[0]
+
+
+def render_figure(number: str, unit: str, label: str, org: str):
+    """数字の図（1200×630）。number が空なら label を主役にする（数字の無いニュースの、文字だけの図）"""
+    from PIL import ImageDraw  # noqa: PLC0415
+
+    image = Image.new("RGB", (OUT_W, OUT_H), FIG_PAPER)
+    draw = ImageDraw.Draw(image)
+    # 上下に薄い地と、ネイビーの細い線（カードでは切り落とされる位置）
+    draw.rectangle((0, 0, OUT_W, 90), fill=FIG_TINT)
+    draw.rectangle((0, OUT_H - 90, OUT_W, OUT_H), fill=FIG_TINT)
+    draw.rectangle((0, 0, OUT_W, 10), fill=FIG_NAVY)
+    band_top, band_h = (OUT_H - 400) // 2, 400
+    max_w = OUT_W - 160
+    top_text = f"{org}の発表" if org else ""
+    if number:
+        # 縦の配置: 数字 → 説明 → 発表元（SNS カードの左上の題字と重ならないよう、発表元は下に置く）
+        size = 150
+        while size > 80:
+            nf, uf = _font("black", size), _font("black", max(40, int(size * 0.46)))
+            width = _text_w(draw, number, nf) + 14 + _text_w(draw, unit, uf)
+            if width <= max_w:
+                break
+            size -= 10
+        lf_size = 46
+        while lf_size > 30 and label and _text_w(draw, label, _font("bold", lf_size)) > max_w:
+            lf_size -= 2
+        lf = _font("bold", lf_size)
+        of = _font("bold", 30)
+        n_box = draw.textbbox((0, 0), number, font=nf)
+        n_h = n_box[3] - n_box[1]
+        gap1, gap2 = 28, 18
+        total = n_h + (gap1 + lf_size + 6 if label else 0) + (gap2 + 38 if top_text else 0)
+        # SNS カードでは左上に題字が載るので、真ん中より少し下に置く
+        y = band_top + (band_h - total) // 2 + 16
+        nw, uw = _text_w(draw, number, nf), _text_w(draw, unit, uf)
+        x = (OUT_W - (nw + 14 + uw)) // 2
+        draw.text((x - n_box[0], y - n_box[1]), number, font=nf, fill=FIG_RED)
+        u_box = draw.textbbox((0, 0), unit, font=uf)
+        draw.text((x + nw + 14 - u_box[0], y + n_h - u_box[3]), unit, font=uf, fill=FIG_INK)
+        y += n_h + gap1
+        if label:
+            lw = _text_w(draw, label, lf)
+            draw.text(((OUT_W - lw) // 2, y), label, font=lf, fill=FIG_INK)
+            y += lf_size + 6 + gap2
+        if top_text:
+            tw = _text_w(draw, top_text, of)
+            draw.text(((OUT_W - tw) // 2, y), top_text, font=of, fill=FIG_NAVY)
+    else:
+        size = 110
+        while size > 50 and _text_w(draw, label, _font("black", size)) > max_w:
+            size -= 4
+        lf = _font("black", size)
+        of = _font("bold", 36)
+        l_box = draw.textbbox((0, 0), label, font=lf)
+        l_h = l_box[3] - l_box[1]
+        total = l_h + (36 + 40 if top_text else 0) + 14 + 8
+        y = band_top + (band_h - total) // 2
+        if top_text:
+            tw = _text_w(draw, top_text, of)
+            draw.text(((OUT_W - tw) // 2, y), top_text, font=of, fill=FIG_NAVY)
+            y += 36 + 40
+        lw = l_box[2] - l_box[0]
+        draw.text(((OUT_W - lw) // 2 - l_box[0], y - l_box[1]), label, font=lf, fill=FIG_INK)
+        y += l_h + 22
+        draw.rectangle(((OUT_W - 96) // 2, y, (OUT_W + 96) // 2, y + 8), fill=FIG_RED)
+    return image
+
+
+FIGURE_UNITS = r"(?:万|億|兆)?(?:円|ドル|ユーロ|件|社|人|名|口座|カ国|か国|ヵ国|倍|位|台|本|店|カ月連続|か月連続|ヶ月連続|カ月|か月|ヶ月|年連続|期連続|年ぶり|カ月ぶり|％|%|ポイント|bp|兆円|億円|万円|万人|万件|万台|GB|TB|団体|校|施設|店舗|か所|カ所|機関|自治体|銘柄|世帯)"
+
+
+def figure_spec(plan: dict, article: dict) -> dict | None:
+    """数字の図の中身（number, unit, label）。モデルの答えが記事の文に無い数字なら使わない（作り話の数字を出さない）"""
+    number = re.sub(r"[^\d.,]", "", str(plan.get("number") or ""))
+    if re.fullmatch(r"\d{4,}", number):
+        number = f"{int(number):,}"  # 1500 → 1,500（記事の表記に合わせる）
+    unit = str(plan.get("unit") or "").strip()[:8]
+    label = re.sub(r"\s+", " ", str(plan.get("label") or "")).strip()[:20]
+    text = " ".join(str(article.get(k) or "") for k in ("title", "description", "lede", "body"))
+    flat = text.replace(",", "").replace("，", "")
+    # 単位は決まったものだけ（「15時半」のような時刻・日付は数字の図にしない）
+    if unit and not re.fullmatch(FIGURE_UNITS, unit):
+        unit, number = "", ""
+    if number and unit and re.search(re.escape(number.replace(",", "")) + r"\s*" + re.escape(unit), flat):
+        return {"number": number, "unit": unit, "label": label}
+    # 題名の最初の「数字＋単位」（年・月・日は除く）
+    match = re.search(r"(\d[\d,.]*)\s*(" + FIGURE_UNITS + ")", article.get("title") or "")
+    if match and plan.get("data_news"):
+        return {"number": match.group(1), "unit": match.group(2), "label": label}
+    return None
 
 
 # --------------------------------------------------------------------------- #
@@ -621,6 +1243,11 @@ QUERY_SCHEMA = {
         "queries": {"type": "ARRAY", "items": {"type": "STRING"}},
         "query_ja": {"type": "STRING"},
         "scene": {"type": "STRING"},
+        "concrete": {"type": "BOOLEAN"},
+        "data_news": {"type": "BOOLEAN"},
+        "number": {"type": "STRING"},
+        "unit": {"type": "STRING"},
+        "label": {"type": "STRING"},
     },
     "required": ["queries", "scene"],
 }
@@ -663,7 +1290,21 @@ Return:
 - "query_ja": one Japanese search phrase (1-2 words) of the same kind.
 - "scene": one English sentence describing a neutral, photorealistic editorial news photo for this article
   (subject, setting, light). No text, no signs, no logos, no brand names, no identifiable real people
-  (people only from behind, as hands, or out of focus)."""
+  (people only from behind, as hands, or out of focus).
+- "concrete": true only if the news is about a specific physical thing a photo can show directly and honestly
+  (a product you can hold, a food or drink, a vehicle, a building or facility, a place, a sports match, an animal, a natural event).
+  false for software, AI models, cloud services, apps, finance, statistics, policy, laws, earnings, personnel, partnerships, research results.
+- "data_news": true only if the core of the news is a number from statistics or research: a survey result, a count
+  (bankruptcies, cases, accounts, users), a ranking, an economic index, interest rates, tax revenue, or earnings results.
+  false for product or service launches, prices of products or plans, specifications (GB, cores), partnerships and events,
+  even when they mention numbers.
+- "number" and "unit": the single most important number of the article exactly as written in the title or summary, split into the
+  digits and the unit that follows (e.g. "6" + "件", "52" + "カ月連続", "1,500" + "万口座", "3.2" + "%"). Never a year, month or day.
+  Empty strings if there is none.
+- "label": a short Japanese caption for that number, 8-16 characters, that does NOT repeat the number itself
+  (e.g. "10月の「円安」倒産", "楽天証券の総合口座数").
+  If there is no number, a short phrase (4-14 characters) naming the specific subject of the news - a product or service name,
+  a law or system, an event (e.g. "GPT-6.1 Terra", "約束手形の廃止", "dバリューパス"). Never a generic word like "AIモデル" or "新サービス"."""
     data, model = llm.generate_json(QUERY_SYSTEM, prompt, QUERY_SCHEMA, tier=llm_tier(), temperature=0.3, max_output_tokens=2048)
     queries = []
     for q in data.get("queries") or []:
@@ -675,6 +1316,11 @@ Return:
         "queries": queries[:3],
         "query_ja": str(data.get("query_ja") or "").strip()[:20],
         "scene": str(data.get("scene") or "").strip()[:400],
+        "concrete": bool(data.get("concrete")),
+        "data_news": bool(data.get("data_news")),
+        "number": str(data.get("number") or "").strip()[:16],
+        "unit": str(data.get("unit") or "").strip()[:10],
+        "label": str(data.get("label") or "").strip()[:24],
         "model": model,
     }
 
@@ -1045,7 +1691,8 @@ def vision_check(image, article: dict) -> str | None:
         image,
         f"News article title (Japanese): {article.get('title', '')}\n"
         "This photo will be the article thumbnail, labeled as an illustrative image. Answer in JSON only: "
-        '{"related": true/false (is the photo clearly related to the article topic?), '
+        '{"related": true/false (does the photo directly show the actual subject of the article - the same kind of product, food, vehicle, '
+        'building, place or event - so a reader sees the connection instantly? A generic scene that only loosely fits the topic is false), '
         '"brand_or_text": true/false (does it show a readable brand name, company logo, or prominent text/numbers?), '
         '"person_main": true/false (is an identifiable person face or any child a main subject?)}',
         max_tokens=80,
@@ -1201,6 +1848,22 @@ def _cf_ai(model: str, prompt: str, timeout: int) -> bytes:
     return raw
 
 
+def trim_dark_band(image):
+    """生成画像の下の端に出ることがある、真っ黒で平らな帯（数〜数十px）を切り落とす。暗い場面そのものは切らない"""
+    from PIL import ImageStat  # noqa: PLC0415
+
+    gray = image.convert("L")
+    w, h = gray.size
+    cut = 0
+    for y in range(h - 1, max(h - 48, 0), -1):
+        stat = ImageStat.Stat(gray.crop((0, y, w, y + 1)))
+        if stat.mean[0] < 30 and stat.stddev[0] < 8:
+            cut += 1
+        else:
+            break
+    return image.crop((0, 0, w, h - cut)) if cut >= 3 else image
+
+
 def generate_ai(plan: dict, article: dict, fast: bool = False) -> tuple[object, str] | None:
     if ai_used_today() >= AI_DAILY_MAX:
         log(f"   [img] AI 生成は今日の上限（{AI_DAILY_MAX}枚）に達した")
@@ -1213,7 +1876,7 @@ def generate_ai(plan: dict, article: dict, fast: bool = False) -> tuple[object, 
     for model in models:
         try:
             raw = _cf_ai(model, prompt, timeout=150 if "flux-2" in model else 60)
-            image = open_image(raw)
+            image = trim_dark_band(open_image(raw))
             llm._record_usage("cf-image:" + model.rsplit("/", 1)[-1])
             return image, model.rsplit("/", 1)[-1]
         except Exception as error:  # noqa: BLE001
@@ -1338,7 +2001,7 @@ def process(path: Path, article: dict, ctx: dict) -> str:
 
     previous = article.get("imageCredit") or {}
     # 自前の画像（まとめ記事・別の切り口の記事が元記事の画像を引き継いだ）なら出典も引き継ぐ
-    if is_ours(thumb) and not ctx.get("retry_ai"):
+    if is_ours(thumb) and not ctx.get("retry_ai") and not ctx.get("repick"):
         credit = ctx["credit_by_thumb"].get(thumb)
         if credit:
             article["imageCredit"] = credit
@@ -1346,57 +2009,42 @@ def process(path: Path, article: dict, ctx: dict) -> str:
                 save(path, article)
             return "inherit"
 
-    # 1. 元記事の写真。公式の発表（会社・団体の自社サイト、プレスリリース配信）だけ使い、縮小して自前の KV から配信する。
-    #    ほかのニュースサイト・ブログ・SNS の写真は保存も直リンクもしない（AI 画像の探し直しでは検査済みなので飛ばす）
+    # 1. 公式の発表の画像（会社・団体の自社サイト、プレスリリース配信）。元記事の本文の写真・図、公式の YouTube 動画、
+    #    プレスキットまで見て良い順に選び、縮小して自前の KV から配信する。ほかのニュースサイト・ブログ・SNS の画像は使わない
     official = official_source(article)
+    best = None
     if not ctx.get("retry_ai") and official is None:
         log("   [img] 公式の発表ではないので元記事の写真は使わない")
     elif not ctx.get("retry_ai"):
-        url, image, why = pick_source_image(article, ctx["repeats"])
-        if url and image is not None:
-            org = wire_org(article) if official["wire"] else org_name(article)
-            reuse = ctx["official_by_original"].get(url)
-            if reuse:
-                new_url, size = reuse["thumbnail"], (reuse["credit"].get("width"), reuse["credit"].get("height"))
-                log(f"   [img] 公式発表の写真（保存済みを使い回す）: {new_url}")
-            else:
-                log(f"   [img] 公式発表の写真を保存して使う: {url[:100]}")
-                try:
-                    new_url, size = store(slug, image, ctx["dry_run"], keep_aspect=True)
-                except Exception as error:  # noqa: BLE001
-                    log(f"   [img] 保存に失敗: {str(error)[:120]}")
-                    return "error"
-            credit = {
-                "kind": "official",
-                "org": org or official["wire"],
-                "provider": article.get("sourceName") or article.get("channel", ""),
-                "sourceUrl": article.get("sourceUrl", ""),
-                "original": url,
-                "width": size[0],
-                "height": size[1],
-                "at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            }
-            if official["wire"]:
-                credit["via"] = official["wire"]
-            article["thumbnail"] = new_url
-            article["imageCredit"] = credit
-            ctx["official_by_original"][url] = {"thumbnail": new_url, "credit": credit}
-            if not ctx["dry_run"]:
-                save(path, article)
-            return "official"
-        log(f"   [img] 元記事の写真は使わない: {why}")
+        result = pick_official(article, ctx["repeats"], fast=ctx.get("fast", False))
+        best = result["best"]
+        if best:
+            log(f"   [img] 公式の画像: {best['kind']}（{best['where']}）{best['url'][:90]}")
+        else:
+            log(f"   [img] 公式の画像は使わない: {' / '.join(result['reasons'])[:200]}")
+        if best and best["rank"] <= OFFICIAL_RANK["hero"]:
+            return use_official(path, article, ctx, best, official)
 
-    # 2. フリー素材 → 3. AI 生成
+    # ここから先は、公式の写真・見出し画像が無い記事
     try:
         plan = visual_plan(article)
     except Exception as error:  # noqa: BLE001
         log(f"   [img] 検索語を作れない: {str(error)[:100]}")
+        if best:
+            return use_official(path, article, ctx, best, official)
         return "error"
-    log(f"   [img] 検索語: {plan['queries']} / {plan.get('query_ja')} ({plan['model']})")
+    log(f"   [img] 検索語: {plan['queries']} / {plan.get('query_ja')} 具体物={plan['concrete']} データ={plan['data_news']} 数字={plan['number']}{plan['unit']}「{plan['label']}」 ({plan['model']})")
+    org = (wire_org(article) or official["wire"]) if official and official["wire"] else (org_name(article) if official else "")
 
+    # 2. 統計・調査・件数のニュースは、大事な数字の図（関係の無い素材写真・AI のイメージにしない）
+    spec = figure_spec(plan, article)
+    if plan["data_news"] and spec and not ctx.get("retry_ai"):
+        return use_figure(path, article, ctx, spec, org)
+
+    # 3. フリー素材（写して意味のある具体的な物の記事だけ。関係の確認も厳しめ）
     credit: dict = {}
     image = None
-    if not ctx.get("ai_only"):
+    if not ctx.get("ai_only") and plan["concrete"]:
         pick, image = find_stock(article, plan, ctx["used_stock"])
         if pick and image is not None:
             credit = {
@@ -1412,20 +2060,31 @@ def process(path: Path, article: dict, ctx: dict) -> str:
             }
             ctx["used_stock"].add(pick["sourceUrl"])
             log(f"   [img] 素材: {pick['title'][:60]}（{pick['creator'][:30]} / {pick['license']}）")
-    if image is None and _wiki_failures > 0 and not ctx.get("fast") and not ctx.get("ai_only") and age_hours(article) < ctx["defer_hours"]:
-        # Commons が落ちているだけなら AI の枠を使わず、次の回に探し直す（速報の回と、何時間も直らないときは AI）
-        log("   [img] Wikimedia Commons に繋がらないので次の回に回す")
-        return "deferred"
+    elif not plan["concrete"]:
+        log("   [img] 写して意味のある具体的な物が無い記事なので、素材写真・AI のイメージは使わない")
     if image is None and ctx.get("retry_ai"):
-        log("   [img] 素材が見つからないので AI 生成の画像のまま")
+        log("   [img] 素材が見つからないので今の画像のまま")
         return "kept"
-    if image is None:
+    # 4. 公式の文字の多い図・ロゴ（関係の無い場面の写真より良い）
+    if image is None and best:
+        return use_official(path, article, ctx, best, official)
+    if image is None and plan["concrete"]:
+        if _wiki_failures > 0 and not ctx.get("fast") and not ctx.get("ai_only") and age_hours(article) < ctx["defer_hours"]:
+            # Commons が落ちているだけなら AI の枠を使わず、次の回に探し直す（速報の回と、何時間も直らないときは AI）
+            log("   [img] Wikimedia Commons に繋がらないので次の回に回す")
+            return "deferred"
+        # 5. AI 生成（具体的な物の記事だけ。実在の人物は描かない）
         made = generate_ai(plan, article, fast=ctx.get("fast", False))
-        if not made:
-            return "none"
-        image, model = made
-        credit = {"kind": "ai", "model": model, "prompt": plan.get("scene", "")[:300], "provider": "Cloudflare Workers AI"}
-        log(f"   [img] AI 生成: {model}")
+        if made:
+            image, model = made
+            credit = {"kind": "ai", "model": model, "prompt": plan.get("scene", "")[:300], "provider": "Cloudflare Workers AI"}
+            log(f"   [img] AI 生成: {model}")
+    if image is None:
+        # 6. どれも無ければ文字の図（数字があれば数字、無ければ話題の短い言葉）
+        label = plan.get("label") or ""
+        if spec or label:
+            return use_figure(path, article, ctx, spec or {"number": "", "unit": "", "label": label}, org)
+        return "none"
 
     try:
         new_url, _ = store(slug, image, ctx["dry_run"])
@@ -1442,6 +2101,80 @@ def process(path: Path, article: dict, ctx: dict) -> str:
     if not ctx["dry_run"]:
         save(path, article)
     return credit["kind"]
+
+
+def use_official(path: Path, article: dict, ctx: dict, best: dict, official: dict) -> str:
+    """公式の画像（写真・動画のサムネイル・見出し画像・図・ロゴ）を保存して記事に付ける"""
+    slug = article.get("slug") or path.stem
+    url, image, kind = best["url"], best["image"], best["kind"]
+    org = wire_org(article) if official["wire"] else org_name(article)
+    reuse = ctx["official_by_original"].get(url)
+    if reuse:
+        new_url, size = reuse["thumbnail"], (reuse["credit"].get("width"), reuse["credit"].get("height"))
+        log(f"   [img] 公式の画像（保存済みを使い回す）: {new_url}")
+    else:
+        log(f"   [img] 公式の画像を保存して使う（{kind}）: {url[:100]}")
+        try:
+            if kind == "logo":
+                new_url, size = store(slug, logo_canvas(image), ctx["dry_run"])
+            else:
+                new_url, size = store(slug, image, ctx["dry_run"], keep_aspect=True)
+        except Exception as error:  # noqa: BLE001
+            log(f"   [img] 保存に失敗: {str(error)[:120]}")
+            return "error"
+    credit = {
+        "kind": "official",
+        "org": org or official["wire"],
+        "provider": article.get("sourceName") or article.get("channel", ""),
+        "sourceUrl": article.get("sourceUrl", ""),
+        "original": url,
+        "width": size[0],
+        "height": size[1],
+        "at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+    }
+    if kind != "photo":
+        credit["imageKind"] = kind  # youtube / kit / hero / banner / dense / logo
+    if official["wire"]:
+        credit["via"] = official["wire"]
+    article["thumbnail"] = new_url
+    article["imageCredit"] = credit
+    ctx["official_by_original"][url] = {"thumbnail": new_url, "credit": credit}
+    if not ctx["dry_run"]:
+        save(path, article)
+    return "official"
+
+
+def use_figure(path: Path, article: dict, ctx: dict, spec: dict, org: str) -> str:
+    """数字の図（または文字だけの図）を作って記事に付ける"""
+    slug = article.get("slug") or path.stem
+    image = render_figure(spec.get("number", ""), spec.get("unit", ""), spec.get("label", ""), org)
+    try:
+        new_url, _ = store(slug, image, ctx["dry_run"])
+    except Exception as error:  # noqa: BLE001
+        log(f"   [img] 保存に失敗: {str(error)[:120]}")
+        return "error"
+    credit = {
+        "kind": "figure",
+        "provider": "サイソクニュース",
+        "number": f"{spec.get('number', '')}{spec.get('unit', '')}",
+        "label": spec.get("label", ""),
+        "sourceUrl": article.get("sourceUrl", ""),
+        "at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+    }
+    if org:
+        credit["org"] = org
+    previous = article.get("imageCredit") or {}
+    thumb = article.get("thumbnail", "") or ""
+    if previous.get("original"):
+        credit["original"] = previous["original"]
+    elif thumb and not is_ours(thumb) and not is_youtube(thumb):
+        credit["original"] = thumb
+    log(f"   [img] 数字の図: {credit['number'] or '（数字なし）'}「{credit['label']}」{('／' + org) if org else ''}")
+    article["thumbnail"] = new_url
+    article["imageCredit"] = credit
+    if not ctx["dry_run"]:
+        save(path, article)
+    return "figure"
 
 
 def load_env_local() -> None:
@@ -1486,6 +2219,8 @@ def main() -> int:
     parser.add_argument("--fast", action="store_true", help="速報の回: AI は速いモデルだけ")
     parser.add_argument("--ai-only", action="store_true", help="素材を探さず AI 生成だけ（確認用）")
     parser.add_argument("--recheck-source", action="store_true", help="元記事の写真を採用した記事を今の基準で見直す")
+    parser.add_argument("--repick-hours", type=float, default=0, help="この時間以内の記事で、フリー素材・AI 生成・数字の図にした画像を今の基準で選び直す")
+    parser.add_argument("--report", help="記事ごとの結果（JSON Lines）をこのファイルに書く（確認用）")
     parser.add_argument("--retry-ai", action="store_true", help="AI 生成の画像の記事でフリー素材を探し直す（見つからなければそのまま）")
     parser.add_argument("--cache-official", action="store_true", help="外部の写真を直リンクしている記事を直す（公式発表の写真は自前に保存、それ以外はフリー素材・AI 生成に）")
     parser.add_argument("--variants", action="store_true", help="前からある自前の写真に幅ごとの WebP を足す")
@@ -1524,6 +2259,7 @@ def main() -> int:
         "ai_only": args.ai_only,
         "defer_hours": args.defer_hours,
         "retry_ai": args.retry_ai,
+        "repick": bool(args.slug or args.repick_hours),
     }
 
     if args.variants:
@@ -1534,6 +2270,15 @@ def main() -> int:
     ordered = sorted(articles.items(), key=newest_first, reverse=True)
     if args.slug:
         targets = [(p, a) for p, a in ordered if a.get("slug") in args.slug or p.stem in args.slug]
+        for _, a in targets:
+            a.pop("imageCredit", None)
+    elif args.repick_hours:
+        # 新しい記事の画像を今の基準（公式の写真・図 → 数字の図 → 関係のはっきりした素材だけ）で選び直す
+        targets = [
+            (p, a)
+            for p, a in ordered
+            if age_hours(a) <= args.repick_hours and (a.get("imageCredit") or {}).get("kind") in ("stock", "ai", "figure")
+        ]
         for _, a in targets:
             a.pop("imageCredit", None)
     elif args.recheck_source:
@@ -1578,11 +2323,17 @@ def main() -> int:
         if args.budget and time.time() - started > args.budget:
             log("[img] 時間切れ。残りは次の回に回す")
             break
+        began = time.time()
         try:
-            tally[process(path, article, ctx)] += 1
+            outcome = process(path, article, ctx)
         except Exception as error:  # noqa: BLE001 - 1本の失敗で全体を止めない
             log(f"   [img] 失敗: {str(error)[:160]}")
-            tally["error"] += 1
+            outcome = "error"
+        tally[outcome] += 1
+        if args.report:
+            with open(args.report, "a", encoding="utf-8") as fh:
+                row = {"slug": article.get("slug"), "outcome": outcome, "seconds": round(time.time() - began, 1), "thumbnail": article.get("thumbnail"), "imageCredit": article.get("imageCredit")}
+                fh.write(json.dumps(row, ensure_ascii=False) + "\n")
     log(f"[img] 結果: {dict(tally)}（AI 生成は今日 {ai_used_today()} / {AI_DAILY_MAX} 枚）")
     return 0
 

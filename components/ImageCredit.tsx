@@ -1,5 +1,5 @@
 import type { ImageCredit as Credit } from "@/lib/articles";
-import { officialCreditText } from "@/lib/image-credit";
+import { figureCreditText, officialCreditText } from "@/lib/image-credit";
 
 /**
  * 写真の下に出す注記。フリー素材は作者・出典・ライセンスへのリンク（CC BY の表示義務）、
@@ -11,6 +11,10 @@ export default function ImageCredit({ credit, className = "" }: { credit?: Credi
   const base = `text-note leading-relaxed text-ink-soft ${className}`;
   if (credit.kind === "official") {
     const text = officialCreditText(credit);
+    return text ? <p className={base}>{text}</p> : null;
+  }
+  if (credit.kind === "figure") {
+    const text = figureCreditText(credit);
     return text ? <p className={base}>{text}</p> : null;
   }
   if (credit.kind === "ai") {

@@ -234,12 +234,16 @@ function dateOf(article: FullArticle): string {
   return `${jst.getUTCFullYear()}.${jst.getUTCMonth() + 1}.${jst.getUTCDate()}`;
 }
 
-/** 写真を枠ぴったりに切り抜いた data URL（暗くしない）。sharp が無い Cloudflare Workers では元の URL をそのまま使う（CSS の cover で切り抜く） */
-async function photoBox(url: string, width: number, height: number): Promise<string | null> {
+/**
+ * 写真を枠ぴったりに切り抜いた data URL（暗くしない）。sharp が無い Cloudflare Workers では元の URL をそのまま使う（CSS の cover で切り抜く）。
+ * 数字の図・ロゴ（scripts/images.py が真ん中の帯に描く）は、目立つ部分ではなく真ん中で切り抜く
+ */
+async function photoBox(url: string, width: number, height: number, centre = false): Promise<string | null> {
   const photo = await fetchPhoto(url).catch(() => null);
   if (!photo) return /^https:\/\//.test(url) && !(await sharpWorks()) ? url : null;
   try {
-    const jpeg = await sharp(photo).resize(width, height, { fit: "cover", position: sharp.strategy.attention }).jpeg({ quality: 86 }).toBuffer();
+    const position = centre ? "centre" : sharp.strategy.attention;
+    const jpeg = await sharp(photo).resize(width, height, { fit: "cover", position }).jpeg({ quality: 86 }).toBuffer();
     return `data:image/jpeg;base64,${jpeg.toString("base64")}`;
   } catch {
     return null;
@@ -375,7 +379,9 @@ const PHOTO_BOX: Record<CardDesign, { width: number; height: number }> = {
 
 export async function renderCardDesign(article: FullArticle, design: CardDesign): Promise<ImageResponse> {
   const box = PHOTO_BOX[design];
-  const [photo, fontData] = await Promise.all([photoBox(article.thumbnail, box.width, box.height), loadFonts()]);
+  const credit = article.imageCredit;
+  const centre = credit?.kind === "figure" || credit?.imageKind === "logo";
+  const [photo, fontData] = await Promise.all([photoBox(article.thumbnail, box.width, box.height, centre), loadFonts()]);
   const { width, height } = CARD_SIZES[design];
   const body =
     design === "a" ? <DesignA article={article} photo={photo} /> : design === "b" ? <DesignB article={article} photo={photo} /> : <DesignC article={article} photo={photo} />;
