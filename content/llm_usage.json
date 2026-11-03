@@ -59,8 +59,8 @@
     "cf-image:flux-1-schnell": 7,
     "cf-image:flux-2-klein-4b": 33,
     "claude:sonnet": 32,
-    "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 7,
-    "cloudflare:@cf/openai/gpt-oss-120b": 464,
+    "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 8,
+    "cloudflare:@cf/openai/gpt-oss-120b": 483,
     "gemini-3.5-flash": 10,
     "gemini-3.5-flash-lite": 322
   }

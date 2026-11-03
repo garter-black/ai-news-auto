@@ -65,7 +65,7 @@
   "videoTitle": "アンダーパスの冠水事故防止に向けた「東京都防災アプリ」の機能追加",
   "publishedAt": "2026-11-01T15:00:00+00:00",
   "generatedAt": "2026-11-03T01:21:55.811202+00:00",
-  "thumbnail": "https://www.metro.tokyo.lg.jp/documents/45925314/275764568/20261102_15_05.png/126f2ec8-be7f-d636-2c6f-295903b2b12a?version=1.0&t=1793588315698&imagePreview=1",
+  "thumbnail": "https://ai-tech-express.jp/img/tokyo-disaster-prevention-app-underpass-warning-78517d20.jpg",
   "model": "gemini-3.5-flash",
   "affiliates": [],
   "faq": [
@@ -88,5 +88,30 @@
   ],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-01T15:00:00+00:00",
-  "detectedAt": "2026-11-03T01:20:54+00:00"
+  "detectedAt": "2026-11-03T01:20:54+00:00",
+  "imageCredit": {
+    "kind": "stock",
+    "title": "Suwa-dori underpass 2026-07-20",
+    "creator": "Asanagi",
+    "creatorUrl": "",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "provider": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Suwa-dori_underpass_2026-07-20.jpg",
+    "query": "tokyo underpass",
+    "original": "https://www.metro.tokyo.lg.jp/documents/45925314/275764568/20261102_15_05.png/126f2ec8-be7f-d636-2c6f-295903b2b12a?version=1.0&t=1793588315698&imagePreview=1",
+    "at": "2026-11-03T02:03:08+00:00"
+  },
+  "imageFocus": {
+    "x": 0.47,
+    "y": 0.544,
+    "box": [
+      0.0,
+      0.089,
+      0.941,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/tokyo-disaster-prevention-app-underpass-warning-78517d20.jpg"
+  }
 }
