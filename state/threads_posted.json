@@ -3369,6 +3369,25 @@
       "questionText": "あなたの会社では、自律型攻撃への備えは進んでいますか？",
       "dueAt": "2026-11-03T09:30:00+00:00",
       "postedAt": "2026-11-03T02:06:29+00:00"
+    },
+    "nvidia-recovery-automated-training-recovery": {
+      "id": "6ae96058da2711fd26adb7eb",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae96058a5f6b0f7438855a4",
+        "facebook": "6ae96059b1dfe2c544efbb29"
+      },
+      "hook": "breaking",
+      "score": 6,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "NVIDIA",
+      "question": true,
+      "questionText": "あなたの職場では、システム障害の一次対応を誰が担当していますか？",
+      "dueAt": "2026-11-03T12:00:00+00:00",
+      "postedAt": "2026-11-03T04:17:29+00:00"
     }
   },
   "extraPending": {}
