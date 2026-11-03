@@ -699,6 +699,9 @@
     "omron-ntt-docomo-business-ot-security": {
       "liveAt": "2026-10-27T20:17:22+00:00"
     },
+    "openai-bigger-bug-bounties": {
+      "liveAt": "2026-11-03T05:19:57+00:00"
+    },
     "openai-daybreak-check-point-vulnerability": {
       "liveAt": "2026-10-27T21:26:29+00:00"
     },
