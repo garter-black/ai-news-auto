@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "openai-physical-engineering-ai",
+   "at": "2026-11-03T19:12:14.922693+00:00",
+   "title": "OpenAI、物理製品の設計支援AIの成果を公開　ハード部門のトークン利用は23倍に",
+   "head": "OpenAI、物理製品の設計支援AIの成果を公開　ハード部門のトークン利用は23倍に | Accelerating engineering for the physical world",
+   "text": "OpenAI、物理製品の設計支援AIの成果を公開　ハード部門のトークン利用は23倍に | Accelerating engineering for the physical world | OpenAI 設計支援 / AI CAD / GPT-6 Astra / BenchCAD 2.0 / Mazda OpenAI / 製造業 生成AI / 機械設計 AI / 電気設計 AI / プリント基板 AI / Chip Ganassi Racing / 生成AI / OpenAI / 製造業 / CAD / ハードウェア",
+   "urls": [
+    "https://openai.com/index/accelerating-engineering-for-the-physical-world"
+   ]
+  },
+  {
    "slug": "google-ple-physical-engineering-benchmark",
    "at": "2026-11-03T18:53:50.990347+00:00",
    "title": "Google、物理エンジニアリング向けAI評価「PLE」公開　主要モデルは全て5割未満",

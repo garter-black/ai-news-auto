@@ -4875,6 +4875,14 @@
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102825"
     },
+    "26c6032e1d267765": {
+      "at": "2026-11-03T19:12:35.197251+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 93,
+      "section": "ai",
+      "slug": "openai-physical-engineering-ai",
+      "url": "https://openai.com/index/accelerating-engineering-for-the-physical-world"
+    },
     "26e17e72aa6eede7": {
       "at": "2026-10-27T03:05:10.758083+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（世界市場）",
@@ -13433,48 +13441,6 @@
   "quality_log": [
     {
       "accepted": true,
-      "at": "2026-11-02T04:31:52.304135+00:00",
-      "attempt": 0,
-      "id": "f84d356daf49fd2f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 73.8,
-        "avg_sentence": 27.2,
-        "long_share": 0.0,
-        "max_paragraph": 130,
-        "paragraphs": 14,
-        "sentences": 38
-      },
-      "score": 100,
-      "source": "suntory",
-      "title": "エイジングスキンケアブランド「F.A.G.E.（エファージュ）」2アイテム新発売"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T04:32:05.142244+00:00",
-      "attempt": 1,
-      "id": "b5bd2734bcbd8d3c",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 61.8字・60字超の文が 44% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 81.4,
-        "avg_sentence": 61.8,
-        "long_share": 0.44,
-        "max_paragraph": 165,
-        "paragraphs": 19,
-        "sentences": 25
-      },
-      "score": 100,
-      "source": "nvidia-developer-blog",
-      "title": "Build Specialized Agents on a Stack You Control with NVIDIA NemoClaw"
-    },
-    {
-      "accepted": true,
       "at": "2026-11-02T04:32:09.569038+00:00",
       "attempt": 0,
       "id": "b5bd2734bcbd8d3c",
@@ -19984,6 +19950,60 @@
       "warnings": [
         "見出しが43字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（PLE・CAD・BIM）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T19:12:19.092553+00:00",
+      "attempt": 1,
+      "id": "26c6032e1d267765",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "結論として、設計の初期段階は大きく速くなった → 元記事は「設計の初期段階が大きく速くなった」とは述べておらず、社内チームの反復が速くなったという説明にとどまる。",
+        "「2人が1週間未満で試作機を作成」（要点） → 元記事では2人が設計を1週間未満で行い、試作機は委託工場が1か月未満で製造した。設計と試作の主体が混同されている。",
+        "Astraは工場ごとの製造上の制限 → 元記事は「the manufacturer's production limits」で、特定の工場ごとの制限とは書いていない。",
+        "評価は社内のもので、第三者による再現は示されていません → 元記事にこの記述はない。内容は妥当だが編集部注と明記されていない。",
+        "判定: 提供状況=demo → 元記事は研究・試作・協業段階の紹介で、提供形態の分類は元記事に根拠がない。"
+      ],
+      "readability": {
+        "avg_paragraph": 79.5,
+        "avg_sentence": 41.4,
+        "long_share": 0.188,
+        "max_paragraph": 154,
+        "paragraphs": 25,
+        "sentences": 48
+      },
+      "score": 80,
+      "source": "openai-news",
+      "title": "Accelerating engineering for the physical world",
+      "warnings": [
+        "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（CAD・CGR）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T19:12:35.187242+00:00",
+      "attempt": 1,
+      "id": "26c6032e1d267765",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 79.8,
+        "avg_sentence": 41.6,
+        "long_share": 0.188,
+        "max_paragraph": 154,
+        "paragraphs": 25,
+        "sentences": 48
+      },
+      "score": 93,
+      "source": "openai-news",
+      "title": "Accelerating engineering for the physical world",
+      "warnings": [
+        "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（CAD・CGR）"
       ]
     }
   ],

@@ -15,9 +15,9 @@
   },
   "2026-11-03": {
     "articles": {
-      "anthropic-api:claude-haiku-5-5": 21,
+      "anthropic-api:claude-haiku-5-5": 22,
       "anthropic-api:claude-opus-5-5": 11,
-      "anthropic-api:claude-sonnet-5-5": 67,
+      "anthropic-api:claude-sonnet-5-5": 70,
       "cloudflare:@cf/openai/gpt-oss-120b": 17,
       "gemini-3.1-flash-lite": 2,
       "gemini-3.5-flash": 2,
@@ -31,8 +31,8 @@
     },
     "images": {
       "cf-image:flux-1-schnell": 3,
-      "cf-image:flux-2-klein-4b": 12,
-      "cloudflare:@cf/openai/gpt-oss-120b": 15
+      "cf-image:flux-2-klein-4b": 13,
+      "cloudflare:@cf/openai/gpt-oss-120b": 16
     },
     "local": {
       "gemini-3.5-flash-lite": 2
