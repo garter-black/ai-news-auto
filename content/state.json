@@ -6002,6 +6002,12 @@
       "skipped": true,
       "url": "https://www.mext.go.jp/b_menu/shingi/chukyo/chukyo3/118/gijiroku/mext_00020.html"
     },
+    "49f0dc7602b0b3b8": {
+      "at": "2026-11-03T00:11:21.136252+00:00",
+      "reason": "short text 521",
+      "skipped": true,
+      "url": "https://www.gov-online.go.jp/press_conferences/minister_of_state/202611/video-326951.html"
+    },
     "49fd991e6814bb57": {
       "at": "2026-10-28T23:13:03.555247+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（募集）",
@@ -6313,6 +6319,13 @@
       "reason": "quality: easy_markdown が短い（393字 / 基準 400字以上）",
       "skipped": true,
       "url": "https://www.tsr-net.co.jp/data/detail/1203386_1527.html"
+    },
+    "52056732d51a05e6": {
+      "at": "2026-11-03T00:17:50.324223+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: バタフライが後援する第45回全日本クラブ卓球選手権 → 元記事には「バタフライが後援する」とは記載されていない（バタフライは大会名や協賛の文脈だが後援の明記はない）。; チケット販売に関する案内は現時点で未掲載。 → 元記事にはチケット販売に関する情報は一切言及されていない。",
+      "skipped": true,
+      "url": "https://jtta.or.jp/news/36558"
     },
     "520d21ac3477311c": {
       "at": "2026-10-27T03:07:28.604529+00:00",
@@ -6803,6 +6816,12 @@
       "reason": "quality: title の長さが不適切（65字 / 18〜64字）",
       "skipped": true,
       "url": "https://www.sbintuitions.co.jp/blog/entry/2026/11/02/01"
+    },
+    "613a594f6efe3ff6": {
+      "at": "2026-11-03T00:11:20.049082+00:00",
+      "reason": "short text 272",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110212"
     },
     "61401816becf4736": {
       "at": "2026-10-30T05:54:26.203429+00:00",
@@ -9139,6 +9158,12 @@
       "skipped": true,
       "url": "https://www.mhlw.go.jp/stf/newpage_76975.html"
     },
+    "9dc7bf95c1c8ebb7": {
+      "at": "2026-11-03T00:11:21.136422+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（を開催）",
+      "skipped": true,
+      "url": "https://jp.security.ntt/news/release_20261102/"
+    },
     "9df0a9a02d32c124": {
       "at": "2026-10-27T03:04:42.978857+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（出演）",
@@ -11142,6 +11167,14 @@
       "skipped": true,
       "url": "https://aws.amazon.com/blogs/machine-learning/visualize-points-and-routes-with-geojson-in-amazon-quick-sight-layer-maps/"
     },
+    "d57ad97ed73f8c5d": {
+      "at": "2026-11-03T00:20:50.186473+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "score": 100,
+      "section": "public",
+      "slug": "disaster-agency-launch-2026",
+      "url": "https://www.kantei.go.jp/jp/105/actions/202611/02hossokushiki.html"
+    },
     "d5dfb55b012918e7": {
       "at": "2026-10-26T11:34:03.294314+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12782,73 +12815,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-30T19:31:39.186460+00:00",
-      "attempt": 0,
-      "id": "98816cf452e78c73",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 59.7字・60字超の文が 47% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 81.5,
-        "avg_sentence": 59.7,
-        "long_share": 0.467,
-        "max_paragraph": 164,
-        "paragraphs": 22,
-        "sentences": 30
-      },
-      "score": 100,
-      "source": "gov-online",
-      "title": "フードバンク 寄附された未利用食品を無償提供"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T22:01:04.054574+00:00",
-      "attempt": 1,
-      "id": "d2282bcce1625c64",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1461字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 94.0,
-        "avg_sentence": 55.5,
-        "long_share": 0.273,
-        "max_paragraph": 173,
-        "paragraphs": 13,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "openai-news",
-      "title": "Fair use benefits everyone"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T22:01:11.556730+00:00",
-      "attempt": 2,
-      "id": "d2282bcce1625c64",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1470字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（390字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 113.1,
-        "avg_sentence": 54.1,
-        "long_share": 0.304,
-        "max_paragraph": 191,
-        "paragraphs": 11,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "openai-news",
-      "title": "Fair use benefits everyone"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T22:01:18.151704+00:00",
@@ -19203,9 +19169,78 @@
       "score": 100,
       "source": "elevenlabs-blog",
       "title": "How are synthetic voices created for natural speech?"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T00:15:17.290304+00:00",
+      "attempt": 1,
+      "id": "52056732d51a05e6",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "競技ウエアの広告やチーム名の申請手続きも開始されています。 → 元記事には申請手続きが「開始された」とは明記されておらず、申請ページや情報が更新・公開された旨のみが記載されている。",
+        "ウエア広告の申請がオンライン化されたことで、クラブ側がスポンサー収入を得やすくなる期待があります。 → オンライン化されたという記述は元記事に存在しないため創作にあたる。",
+        "過去は曖昧だった → 元記事にこのような背景説明の記述はない。"
+      ],
+      "readability": {
+        "avg_paragraph": 163.0,
+        "avg_sentence": 44.5,
+        "long_share": 0.182,
+        "max_paragraph": 218,
+        "paragraphs": 3,
+        "sentences": 11
+      },
+      "score": 60,
+      "source": "jtta",
+      "title": "バタフライ 第45回全日本クラブ卓球選手権大会 大会情報更新（11/2）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T00:17:50.324169+00:00",
+      "attempt": 2,
+      "id": "52056732d51a05e6",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "バタフライが後援する第45回全日本クラブ卓球選手権 → 元記事には「バタフライが後援する」とは記載されていない（バタフライは大会名や協賛の文脈だが後援の明記はない）。",
+        "チケット販売に関する案内は現時点で未掲載。 → 元記事にはチケット販売に関する情報は一切言及されていない。"
+      ],
+      "readability": {
+        "avg_paragraph": 180.2,
+        "avg_sentence": 48.1,
+        "long_share": 0.067,
+        "max_paragraph": 245,
+        "paragraphs": 4,
+        "sentences": 15
+      },
+      "score": 65,
+      "source": "jtta",
+      "title": "バタフライ 第45回全日本クラブ卓球選手権大会 大会情報更新（11/2）"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T00:20:50.184818+00:00",
+      "attempt": 1,
+      "id": "d57ad97ed73f8c5d",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 91.0,
+        "avg_sentence": 38.5,
+        "long_share": 0.077,
+        "max_paragraph": 178,
+        "paragraphs": 11,
+        "sentences": 26
+      },
+      "score": 100,
+      "source": "kantei",
+      "title": "高市総理は防災庁発足式に出席しました"
     }
   ],
-  "short_text_retry": {},
+  "short_text_retry": {
+    "de4cf53f9db96311": "2026-11-03T00:11:19.346586+00:00"
+  },
   "undated_first_seen": {
     "google-developers-blog": {
       "04f99d5cae6e3a2b": "baseline",

@@ -62,7 +62,7 @@
   "videoTitle": "北陸電力 ほくリンク",
   "publishedAt": "2026-11-02T15:30:00+00:00",
   "generatedAt": "2026-11-02T17:33:34.776621+00:00",
-  "thumbnail": "https://newsatcl-pctr.c.yimg.jp/t/amd-img/20261102-01244839-fnnprimev-000-1-view.jpg?exp=10800",
+  "thumbnail": "https://ai-tech-express.jp/img/hokuriku-electric-hokulink-leak-ec40156a.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "trendKeyword": "北陸電力 ほくリンク",
@@ -87,15 +87,28 @@
   "sourcePublishedAt": "2026-11-02T15:30:00+00:00",
   "detectedAt": "2026-11-02T17:30:58+00:00",
   "imageFocus": {
-    "x": 0.481,
-    "y": 0.533,
+    "x": 0.477,
+    "y": 0.399,
     "box": [
-      0.0,
-      0.067,
-      0.963,
-      1.0
+      0.113,
+      0.042,
+      0.841,
+      0.756
     ],
-    "ar": 1.7778,
-    "src": "https://newsatcl-pctr.c.yimg.jp/t/amd-img/20261102-01244839-fnnprimev-000-1-view.jpg?exp=10800"
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/hokuriku-electric-hokulink-leak-ec40156a.jpg"
+  },
+  "imageCredit": {
+    "kind": "stock",
+    "title": "Summit Computer Room Installation (rubin-2018-05-02-192537)",
+    "creator": "Rubin Observatory/ NSF /AURA",
+    "creatorUrl": "",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "provider": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Summit_Computer_Room_Installation_(rubin-2018-05-02-192537).jpg",
+    "query": "email server room",
+    "original": "https://newsatcl-pctr.c.yimg.jp/t/amd-img/20261102-01244839-fnnprimev-000-1-view.jpg?exp=10800",
+    "at": "2026-11-03T00:26:44+00:00"
   }
 }
