@@ -1172,51 +1172,65 @@ class Renderer:
 
 
 _WORKER: Renderer | None = None
-
-
-def _render(i: int) -> bytes:
-    assert _WORKER is not None
-    return _WORKER.frame(i, _WORKER_FPS).tobytes()
-
-
 _WORKER_FPS = FPS
 
 
+def _x264(fps: int, total: float) -> list[str]:
+    return ["-c:v", "libx264", "-preset", "superfast", "-crf", "21",
+            "-maxrate", f"{min(8.0, max(2.0, 150.0 / max(total, 1))):.1f}M", "-bufsize", "16M",
+            "-profile:v", "high", "-pix_fmt", "yuv420p", "-r", str(fps), "-g", str(fps * 2), "-keyint_min", str(fps), "-sc_threshold", "0"]  # fmt: skip
+
+
+def _encode_chunk(args: tuple) -> str:
+    """1つのプロセスが、受け持ちのコマ（a〜b）を描いて、自分の ffmpeg で1つの区切りの動画にする（親を通さないので速い）"""
+    import shorts
+
+    a, b, path, fps, vf, total = args
+    assert _WORKER is not None
+    cmd = [shorts.ffmpeg_bin(), "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(fps), "-i", "-",
+           *vf, *_x264(fps, total), "-threads", "1", "-an", path]  # fmt: skip
+    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+    assert proc.stdin
+    try:
+        for i in range(a, b):
+            proc.stdin.write(_WORKER.frame(i, fps).tobytes())
+    finally:
+        proc.stdin.close()
+    if proc.wait() != 0:
+        raise RuntimeError("ffmpeg（区切り）が失敗しました")
+    return path
+
+
 def encode(renderer: Renderer, audio: Path, out: Path, fps: int = FPS, out_scale: float = 1.0, workers: int | None = None) -> None:
+    """コマを区切りごとに並列で描いて H.264 にし、つないで（再エンコードなし）音を付ける。faststart・AAC 48kHz ステレオ"""
     import shorts
 
     global _WORKER, _WORKER_FPS
     n = int(round(renderer.total * fps))
     vf = ["-vf", f"scale={int(W * out_scale) // 2 * 2}:{int(H * out_scale) // 2 * 2}:flags=area"] if out_scale != 1.0 else []
-    cmd = [
-        shorts.ffmpeg_bin(), "-y", "-loglevel", "error",
-        "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(fps), "-i", "-",
-        "-i", str(audio), "-map", "0:v", "-map", "1:a", *vf,
-        "-c:v", "libx264", "-preset", "superfast", "-crf", "21",
-        "-maxrate", f"{min(8.0, max(2.0, 150.0 / max(renderer.total, 1))):.1f}M", "-bufsize", "16M",
-        "-profile:v", "high", "-pix_fmt", "yuv420p", "-r", str(fps), "-g", str(fps * 2), "-keyint_min", str(fps), "-sc_threshold", "0",
-        "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-ac", "2",
-        "-t", f"{renderer.total:.3f}", "-movflags", "+faststart", str(out),
-    ]  # fmt: skip
-    workers = workers if workers is not None else max(1, min(6, (os.cpu_count() or 2)))
-    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-    assert proc.stdin
-    try:
-        if workers <= 1 or sys.platform == "win32":
-            for i in range(n):
-                proc.stdin.write(renderer.frame(i, fps).tobytes())
-        else:
-            import multiprocessing as mp
+    workers = workers if workers is not None else max(1, min(8, (os.cpu_count() or 2)))
+    with tempfile.TemporaryDirectory() as tmp:
+        k = max(1, min(workers, n // max(fps, 1) or 1))
+        bounds = [round(n * j / k) for j in range(k + 1)]
+        tasks = [(bounds[j], bounds[j + 1], str(Path(tmp) / f"seg{j:02d}.mp4"), fps, vf, renderer.total) for j in range(k) if bounds[j + 1] > bounds[j]]
+        _WORKER, _WORKER_FPS = renderer, fps
+        try:
+            if k <= 1 or sys.platform == "win32":
+                paths = [_encode_chunk(t) for t in tasks]
+            else:
+                import multiprocessing as mp
 
-            _WORKER, _WORKER_FPS = renderer, fps
-            with mp.get_context("fork").Pool(workers) as pool:
-                for data in pool.imap(_render, range(n), chunksize=6):
-                    proc.stdin.write(data)
+                with mp.get_context("fork").Pool(len(tasks)) as pool:
+                    paths = pool.map(_encode_chunk, tasks)
+        finally:
             _WORKER = None
-    finally:
-        proc.stdin.close()
-    if proc.wait() != 0:
-        raise RuntimeError("ffmpeg が失敗しました")
+        listing = Path(tmp) / "list.txt"
+        listing.write_text("".join(f"file '{p}'\n" for p in paths), "utf-8")
+        cmd = [shorts.ffmpeg_bin(), "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(listing), "-i", str(audio),
+               "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-ac", "2",
+               "-t", f"{renderer.total:.3f}", "-movflags", "+faststart", str(out)]  # fmt: skip
+        if subprocess.run(cmd).returncode != 0:
+            raise RuntimeError("ffmpeg（つなぐ）が失敗しました")
 
 
 # --------------------------------------------------------------------------- #
