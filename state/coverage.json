@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "meta-f3-lightning-ads-ml",
+   "at": "2026-11-03T17:13:13.767531+00:00",
+   "title": "Meta、広告AI向け特徴量基盤「F3 Lightning」を公開　本番反映が約3.6倍速く",
+   "head": "Meta、広告AI向け特徴量基盤「F3 Lightning」を公開　本番反映が約3.6倍速く | F3 Lightning: How Meta Accelerates Ads ML Features to Production at Scale",
+   "text": "Meta、広告AI向け特徴量基盤「F3 Lightning」を公開　本番反映が約3.6倍速く | F3 Lightning: How Meta Accelerates Ads ML Features to Production at Scale | F3 Lightning / Meta 広告AI / 特徴量 / Facebook Feature Framework / 機械学習 本番リリース / 広告ランキング / MLOps / 有向非巡回グラフ / Meta / 機械学習基盤 / 広告AI / MLOps",
+   "urls": [
+    "https://engineering.fb.com/2026/11/03/ml-applications/f3-lightning-how-meta-accelerates-ads-ml-features-to-production/"
+   ]
+  },
+  {
    "slug": "kimi-k3-bedrock-india-inference",
    "at": "2026-11-03T16:48:20.240483+00:00",
    "title": "AWS、Bedrockの「Kimi K3」でインド国内推論に対応　処理をムンバイとハイデラバードに限定",
@@ -954,16 +964,6 @@
    "head": "OpenAI、指数時間仮説を否定する論文を公開　3-SAT問題の高速解法を提示 | OpenAI Claims It Just Did The Impossible",
    "text": "OpenAI、指数時間仮説を否定する論文を公開　3-SAT問題の高速解法を提示 | OpenAI Claims It Just Did The Impossible | OpenAI / 指数時間仮説 / ETH / 3-SAT / NP困難 / アルゴリズム / 計算機科学 / 最適化問題 / AI研究 / 論文 / OpenAI / AI論文 / 計算機科学 / アルゴリズム",
    "urls": []
-  },
-  {
-   "slug": "google-project-suncatcher-satellite-response",
-   "at": "2026-10-30T17:17:17.218163+00:00",
-   "title": "Google、宇宙の試作衛星でAI応答に成功　「Gemma 4」で詩を生成",
-   "head": "Google、宇宙の試作衛星でAI応答に成功　「Gemma 4」で詩を生成 | We’ve received our first response from the Project Suncatcher prototype satellite.",
-   "text": "Google、宇宙の試作衛星でAI応答に成功　「Gemma 4」で詩を生成 | We’ve received our first response from the Project Suncatcher prototype satellite. | Google / Project Suncatcher / 宇宙AI / Gemma 4 / TPU / 衛星 / データセンター / 宇宙開発 / AI / Google / ハードウェア / 研究",
-   "urls": [
-    "https://blog.google/innovation-and-ai/models-and-research/google-research/project-suncatcher-satellite-response/"
-   ]
   }
  ]
 }

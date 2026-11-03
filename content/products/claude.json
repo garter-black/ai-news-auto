@@ -11,7 +11,7 @@
     "gemini",
     "claude-fable-5-1",
     "codex",
-    "antigravity"
+    "amazon-bedrock"
   ],
   "linkFrom": [
     "claude-ultra-plan-price-limits",

@@ -67,10 +67,10 @@
   "gate_retry": {
     "4676cabae1997d08": {
       "first": "2026-11-03T14:03:16.393263+00:00",
-      "next": "2026-11-03T17:03:16.393263+00:00",
-      "reason": "「読み書きを始めたばかりの子どもの支援」→ 元記事は「support early reading」のみで、「書き」は元記事に無い。; 「かんたん版」の「合わせて950万ドル超を出すと発表しました」→ 元記事は「providing over $9.5 million」で「今回の支援先に資金提供している」旨。大きな問題ではないが「11月3日に始めました」と併せて開始済みと断定している点は言い過ぎ気味。",
+      "next": "2026-11-03T20:12:40.645672+00:00",
+      "reason": "「それぞれ研修、モデル開発、学区支援、現場支援、標準づくりを担います」→ 元記事は各団体の役割を個別に説明しているだけで、この分類は要約の範囲だが、CUNYを「研修」と断定している点はやや言い過ぎ。; 「AIを教える側の先生が、まず基礎から学べる環境を整える取り組みです」→ 元記事はデジタル・計算リテラシーの育成としか書いておらず、AI教育の基礎という位置づけは補足による創作。; 「授業の合間や運",
       "title": "We’re providing funding for organizations building AI for teachers.",
-      "tries": 1,
+      "tries": 2,
       "url": "https://blog.google/products-and-platforms/products/education/google-org-funding-ai-education/"
     },
     "4f3b7c9dffa0995a": {
@@ -10063,6 +10063,12 @@
       "slug": "mhlw-designated-drugs-2026-10",
       "url": "https://www.mhlw.go.jp/stf/houdou/0000212707_00057.html"
     },
+    "adafdd4764cb9dbb": {
+      "at": "2026-11-03T17:11:26.224328+00:00",
+      "reason": "dedupe: 固有名詞＋見出しが類似（antigravity / 0.39）: google-antigravity-autonomous-software-d",
+      "skipped": true,
+      "url": "https://deepmind.google/blog/agentic-cheminformatics-with-google-antigravity/"
+    },
     "adf1996fc9707c2b": {
       "at": "2026-10-28T19:12:24.996973+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12050,6 +12056,14 @@
       "skipped": true,
       "url": "https://www.mhlw.go.jp/stf/newpage_76722.html"
     },
+    "e1491c4239ea20a0": {
+      "at": "2026-11-03T17:13:16.272485+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 95,
+      "section": "ai",
+      "slug": "meta-f3-lightning-ads-ml",
+      "url": "https://engineering.fb.com/2026/11/03/ml-applications/f3-lightning-how-meta-accelerates-ads-ml-features-to-production/"
+    },
     "e191ec74d66f83b7": {
       "at": "2026-10-27T20:14:54.135273+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -13315,96 +13329,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T01:21:01.020666+00:00",
-      "attempt": 1,
-      "id": "6f9832433932a9cb",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 59.1字・60字超の文が 46% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 162.5字・最長 211字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 162.5,
-        "avg_sentence": 59.1,
-        "long_share": 0.455,
-        "max_paragraph": 211,
-        "paragraphs": 8,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "cyberagent",
-      "title": "アバターSNS「ピグパーティ」、TVアニメ『桃源暗鬼』とのコラボレーションを 11月2日より開催"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T01:21:04.861143+00:00",
-      "attempt": 0,
-      "id": "6f9832433932a9cb",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 146.7字・最長 201字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 146.7,
-        "avg_sentence": 40.0,
-        "long_share": 0.091,
-        "max_paragraph": 201,
-        "paragraphs": 9,
-        "sentences": 33
-      },
-      "score": 100,
-      "source": "cyberagent",
-      "title": "アバターSNS「ピグパーティ」、TVアニメ『桃源暗鬼』とのコラボレーションを 11月2日より開催"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T01:41:04.342377+00:00",
-      "attempt": 1,
-      "id": "1e833fbe344a0242",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "「2027年12月に学習の準備を進めてスタートし」→元記事では「現在は学習の準備を進めており、この12月にSawara Small（仮称）の事前学習を始めます」となっており、学習開始は「12月」（2026年想定）であり「2027年12月」ではないため矛盾している。"
-      ],
-      "readability": {
-        "avg_paragraph": 108.1,
-        "avg_sentence": 60.1,
-        "long_share": 0.556,
-        "max_paragraph": 216,
-        "paragraphs": 15,
-        "sentences": 27
-      },
-      "score": 90,
-      "source": "sakana-ai",
-      "title": "【開催レポート】Sakana AIシンポジウム：Jürgen Schmidhuberが語るAIのこれまでとこれから、日本から挑む言語モデル・世界モデル・Phys"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T01:41:12.655970+00:00",
-      "attempt": 2,
-      "id": "1e833fbe344a0242",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 60.6字・60字超の文が 46% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 112.6字・最長 222字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 112.6,
-        "avg_sentence": 60.6,
-        "long_share": 0.462,
-        "max_paragraph": 222,
-        "paragraphs": 14,
-        "sentences": 26
-      },
-      "score": 100,
-      "source": "sakana-ai",
-      "title": "【開催レポート】Sakana AIシンポジウム：Jürgen Schmidhuberが語るAIのこれまでとこれから、日本から挑む言語モデル・世界モデル・Phys"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T01:41:16.530598+00:00",
@@ -19834,6 +19758,111 @@
       "warnings": [
         "見出しが51字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（JSON・CLI・ISO）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:11:54.305071+00:00",
+      "attempt": 1,
+      "id": "4676cabae1997d08",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "「教材づくりを支える」→ 元記事は1EdTech Globalを学習標準の公共基盤、Fab AIを授業計画と早期の読みを支えるモデルと説明しており、「教材づくり」という分担は元記事に無い。",
+        "「AI教育を学区に広げる」「現場に助言を届ける」という5団体の分担のまとめは、元記事の記述を超えた編集部の解釈で、事実と区別されていない。",
+        "「AIをどう使うかの前に、どのように安全に教えるかを整える役割です」→ Krause Centerの役割について元記事に無い解釈を追加している。",
+        "「今回はそこから一歩進み、教員と一緒に…資金面で支える」→ 元記事の「building with and for educators」の言い換えだが、「一歩進み」という位置づけは元記事に無い。"
+      ],
+      "readability": {
+        "avg_paragraph": 89.4,
+        "avg_sentence": 43.1,
+        "long_share": 0.103,
+        "max_paragraph": 154,
+        "paragraphs": 14,
+        "sentences": 29
+      },
+      "score": 80,
+      "source": "google-blog-all",
+      "title": "We’re providing funding for organizations building AI for teachers.",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（CITE）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T17:12:07.864434+00:00",
+      "attempt": 1,
+      "id": "4676cabae1997d08",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 82.2,
+        "avg_sentence": 42.6,
+        "long_share": 0.111,
+        "max_paragraph": 154,
+        "paragraphs": 14,
+        "sentences": 27
+      },
+      "score": 93,
+      "source": "google-blog-all",
+      "title": "We’re providing funding for organizations building AI for teachers.",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（CITE）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:12:40.645415+00:00",
+      "attempt": 2,
+      "id": "4676cabae1997d08",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "「それぞれ研修、モデル開発、学区支援、現場支援、標準づくりを担います」→ 元記事は各団体の役割を個別に説明しているだけで、この分類は要約の範囲だが、CUNYを「研修」と断定している点はやや言い過ぎ。",
+        "「AIを教える側の先生が、まず基礎から学べる環境を整える取り組みです」→ 元記事はデジタル・計算リテラシーの育成としか書いておらず、AI教育の基礎という位置づけは補足による創作。",
+        "「授業の合間や運営の判断の場面で、その場で助けを得られる仕組みを目指すものです」→ 元記事に授業の合間や運営判断といった具体的な利用場面の記述はない。",
+        "「AIの使い方を決めるのは、個々の先生だけでは難しい場面があります」→ 元記事に根拠のない説明で、一般論としても断定的。",
+        "「標準が整えば、異なる会社の教育ツールを組み合わせやすくなります」→ 元記事に無い効果の断定。",
+        "「教育向けのAIは、先生の負担を減らす方向に開発が向かっています」→ 元記事に「負担を減らす」との記述はなく、編集部の見方として根拠が弱い。"
+      ],
+      "readability": {
+        "avg_paragraph": 90.9,
+        "avg_sentence": 39.0,
+        "long_share": 0.143,
+        "max_paragraph": 173,
+        "paragraphs": 18,
+        "sentences": 42
+      },
+      "score": 72,
+      "source": "google-blog-all",
+      "title": "We’re providing funding for organizations building AI for teachers.",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（CITE）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T17:13:16.257539+00:00",
+      "attempt": 1,
+      "id": "e1491c4239ea20a0",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 114.7,
+        "avg_sentence": 35.0,
+        "long_share": 0.051,
+        "max_paragraph": 209,
+        "paragraphs": 18,
+        "sentences": 59
+      },
+      "score": 95,
+      "source": "meta-engineering",
+      "title": "F3 Lightning: How Meta Accelerates Ads ML Features to Production at Scale",
+      "warnings": [
+        "見出しが46字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（DAG）"
       ]
     }
   ],
