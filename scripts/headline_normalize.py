@@ -324,6 +324,15 @@ def title_problems(title: str) -> list[str]:
     return problems
 
 
+# 「Google、「Gemini」に新機能」の「、「」を「Googleが「Gemini」に新機能」にする。主語は見出しの頭の短い名前だけ
+# （「2026年、「…」」「東京で、「…」」のような、名前でない頭は変えない）
+_COMMA_BRACKET_RE = re.compile(r"^([^\s　、。「」『』（）]{1,24}?)(?<![年月日にでへはもとをがの])、(?=「)")
+
+
+def fix_comma_before_bracket(title: str) -> str:
+    return _COMMA_BRACKET_RE.sub(r"\1が", title, count=1)
+
+
 def normalize_title(title: str, record: dict | None = None) -> str:
     """見出し1本をそろえる。record は記事（ジャンル・元の題名を見る）"""
     record = record or {}
@@ -331,6 +340,7 @@ def normalize_title(title: str, record: dict | None = None) -> str:
         return title
     t = unify_companies(title)
     t = strip_known_descriptors(t)
+    t = fix_comma_before_bracket(t)
     t = unify_brackets(t, str(record.get("genreSlug") or ""))
     t = unify_separators(t)
     if not REIWA_RE.search(str(record.get("videoTitle") or "")):

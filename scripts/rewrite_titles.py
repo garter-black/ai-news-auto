@@ -69,6 +69,9 @@ SCHEMA = {
 }
 
 LATIN_RE = re.compile(r"[A-Za-z][A-Za-z0-9.+\-]*")
+# 名前ではなく一般の語（消えてもよい）
+GENERIC_WORDS = {"AI", "API", "Web", "DB", "GA", "PC", "IT", "OS", "LLM", "SNS", "CEO", "URL", "App", "GPU", "CPU", "SaaS",
+                 "UI", "PDF", "HTML", "MCP", "SDK", "CLI", "DX", "EV", "TV", "OSS", "Mac", "iPad", "iPhone"}
 
 
 def numbers(text: str) -> set[str]:
@@ -88,15 +91,16 @@ def must_keep(title: str) -> set[str]:
     """元の見出しの本見出し（全角空白の前）にある「」の名前と英字の名前。よく知られた会社の前の説明は除く"""
     base = hn.strip_known_descriptors(hn.normalize_title(title)).split("　")[0]
     names = set(re.findall(r"「([^」]{1,40})」", base))
-    names |= {w for w in LATIN_RE.findall(re.sub(r"「[^」]*」", " ", base)) if len(w) >= 2}
+    names |= {w for w in LATIN_RE.findall(re.sub(r"「[^」]*」", " ", base)) if len(w) >= 2 and w not in GENERIC_WORDS}
     return names
 
 
-def check_title(record: dict, new: str) -> list[str]:
-    """書き直した見出しの不合格の理由（空なら合格）"""
+def check_title(record: dict, new: str, reviewed: bool = False) -> list[str]:
+    """書き直した見出しの不合格の理由（空なら合格）。reviewed=True（人が案を確かめた）は「名前が消えた」を見ない
+    （「Claudeの開発元」「ABEMA運営の」のような、元の見出しの説明だった名前が消えるのは正しいため）"""
     new = hn.normalize_title(new, record)
     problems = list(hn.title_problems(new))
-    if not 16 <= len(new) <= 52:
+    if not 16 <= len(new) <= hn.TITLE_HARD_LEN:
         problems.append(f"長さ {len(new)}字")
     src = source_text(record)
     added = numbers(new) - numbers(src)
@@ -107,7 +111,7 @@ def check_title(record: dict, new: str) -> list[str]:
     if unknown:
         problems.append(f"元に無い名前 {unknown}")
     new_low = new.lower()
-    lost = [n for n in must_keep(record.get("title", "")) if n.lower() not in new_low]
+    lost = [] if reviewed else [n for n in must_keep(record.get("title", "")) if n.lower() not in new_low]
     if lost:
         problems.append(f"名前が消えた {lost}")
     return problems
@@ -241,7 +245,7 @@ def apply_record(a: dict, prop: dict) -> list[str]:
     """案を1本の記事に当てる（合格したものだけ）。変えた内容の説明を返す"""
     changes: list[str] = []
     new_title = hn.normalize_title(prop.get("title", ""), a)
-    if new_title and new_title != a.get("title") and not check_title(a, new_title):
+    if new_title and new_title != a.get("title") and not check_title(a, new_title, bool(prop.get("reviewed"))):
         a.setdefault("originalTitle", a.get("title", ""))
         changes.append(f"title: {a.get('title')} → {new_title}")
         a["title"] = new_title
@@ -274,7 +278,7 @@ def apply(path_in: Path, offset: int = 0, count: int = 0, dry_run: bool = False)
             continue
         old = a.get("title", "")
         changes = apply_record(a, prop)
-        bad = check_title(a, prop.get("title", "")) if prop.get("title") else []
+        bad = check_title(a, prop.get("title", ""), bool(prop.get("reviewed"))) if prop.get("title") else []
         if bad:
             kept += 1
             print(f"  [保留] {old}  ×  {prop.get('title')}（{'; '.join(bad)}）")

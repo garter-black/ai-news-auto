@@ -183,6 +183,13 @@ class StyleGateTest(unittest.TestCase):
                       "Apple、7〜9月期売上高が1145億ドルで過去最高"):
             self.assertEqual(h.punctuation_problems(title), [], title)
 
+    def test_comma_before_bracket_becomes_ga(self):
+        self.assertEqual(h.normalize_title("Google、「Gemini Live API」に新機能"), "Googleが「Gemini Live API」に新機能")
+        self.assertEqual(h.normalize_title("トヨタとWaymo、「自動運転タクシー」を日本で"), "トヨタとWaymoが「自動運転タクシー」を日本で")
+        # 名前でない頭・かっこが後ろにあるものは変えない
+        self.assertEqual(h.normalize_title("2026年、「AI元年」の終わり"), "2026年、「AI元年」の終わり")
+        self.assertEqual(h.normalize_title("OpenAI、新AIモデル「GPT-6.1 Terra」を公開"), "OpenAI、新AIモデル「GPT-6.1 Terra」を公開")
+
     def test_quality_gate_warns_on_style(self):
         warnings = quality.title_warnings({"title": "Google開発AI「Antigravity」に新プラグイン"})
         self.assertTrue(any("書き方" in w for w in warnings))
