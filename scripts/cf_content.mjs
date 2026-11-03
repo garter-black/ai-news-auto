@@ -5,6 +5,7 @@
  *   base.json         一覧用の索引（content/index.json）・設定・ガイド類 { files: {相対パス: 中身}, dirs: {相対パス: [名前]} }
  *   articles/<slug>.json  記事の本文入り JSON（そのままコピー）
  *   fonts/*           カバー画像用フォント
+ *   retired.json      取り下げた記事（content/retired.json）
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -36,6 +37,25 @@ for (const rel of ["content/index.json", "content/offers.json", "content/product
 dirs["assets/fonts"] = addDir("assets/fonts", (name) => /\.(otf|ttf)$/.test(name));
 for (const name of dirs["assets/fonts"]) fs.copyFileSync(path.join("assets/fonts", name), path.join(OUT, "fonts", name));
 fs.writeFileSync(path.join(OUT, "base.json"), JSON.stringify({ files, dirs }));
+// 取り下げた記事（cloudflare/worker.ts が 301・410 を返す。scripts/retire_articles.py）
+fs.writeFileSync(path.join(OUT, "retired.json"), fs.existsSync("content/retired.json") ? fs.readFileSync("content/retired.json", "utf8") : "{}");
+
+// 編集部の記事確認ページ（cloudflare/review.ts）の一覧: 新しい順に 400 本。速報・SNS に出した記事に印を付ける
+{
+  let posted = {};
+  try {
+    posted = JSON.parse(fs.readFileSync("state/threads_posted.json", "utf8")).posted ?? {};
+  } catch {}
+  const rows = [];
+  for (const name of fs.readdirSync("content/articles").filter((n) => n.endsWith(".json"))) {
+    try {
+      const a = JSON.parse(fs.readFileSync(path.join("content/articles", name), "utf8"));
+      rows.push({ slug: a.slug, title: a.title, genre: a.genre ?? "", generatedAt: a.generatedAt || a.publishedAt || "", breaking: Boolean(a.breaking) || undefined, sns: Boolean(posted[a.slug]) || undefined });
+    } catch {}
+  }
+  rows.sort((x, y) => String(y.generatedAt).localeCompare(String(x.generatedAt)));
+  fs.writeFileSync(path.join(OUT, "review.json"), JSON.stringify({ articles: rows.slice(0, 400) }));
+}
 
 let count = 0;
 for (const name of fs.readdirSync("content/articles").filter((n) => n.endsWith(".json"))) {

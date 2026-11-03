@@ -174,7 +174,22 @@ export type Article = {
   disaster?: boolean;
   /** 写真・イメージ画像を付けない（地震・津波の記事） */
   noPhoto?: boolean;
+  /**
+   * 編集部（人）が読んだ記録（/review で付け、scripts/review_sync.py が書き写す）。
+   * status "ok" のときだけ記事ページに「編集部が確認済み」を出す。"fix" は修正待ち（表示しない）
+   */
+  review?: { status: "ok" | "fix"; reviewedAt?: string; flaggedAt?: string; reviewedBy: string };
 };
+
+/** 編集部が読んで確認した日（日本時間の「2026年11月3日」）。確認していなければ null */
+export function reviewedDateLabel(article: Pick<Article, "review">): string | null {
+  const review = article.review;
+  if (review?.status !== "ok" || !review.reviewedAt) return null;
+  const ms = Date.parse(review.reviewedAt);
+  if (Number.isNaN(ms)) return null;
+  const d = new Date(ms + 9 * 3600_000);
+  return `${d.getUTCFullYear()}年${d.getUTCMonth() + 1}月${d.getUTCDate()}日`;
+}
 
 /** 本文から計算する、一覧で使う値（lib/article-index.mjs の derivedOf） */
 export type ArticleDerived = {

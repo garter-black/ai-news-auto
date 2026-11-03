@@ -1,0 +1,62 @@
+name: Review sync
+
+# 編集部の記事確認ページ（https://ai-tech-express.jp/review 、cloudflare/review.ts）で付けた「確認済み」「直してほしい」を、
+# 記事 JSON の review に書き写して公開する（scripts/review_sync.py）。記録そのものは Workers KV（REVIEW_KV）に残る。
+# 「直してほしい」は issue（ラベル review-fix）になる。SNS への投稿は一切しない（デプロイだけ）。
+on:
+  schedule:
+    - cron: "7,27,47 * * * *" # 20分ごと
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+
+concurrency:
+  group: review-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Copy review records into articles
+        id: sync
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          GH_TOKEN: ${{ github.token }}
+        run: python -u scripts/review_sync.py
+      - name: Commit and deploy
+        if: ${{ steps.sync.outputs.changed != '0' && steps.sync.outputs.changed != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add content/articles
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(review): 編集部の確認を記事に反映 (${{ steps.sync.outputs.changed }}本)"
+          for i in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              # GITHUB_TOKEN の push ではデプロイが動かないので呼ぶ（デプロイは SNS に投稿しない）
+              gh workflow run deploy_cloudflare.yml --ref main
+              exit 0
+            fi
+            if [ -n "$(git diff --name-only --diff-filter=U)" ]; then
+              # 記事が同時に書き換わった: 捨てて次の回にやり直す（記録は KV に残っている）
+              git rebase --abort || true
+              echo "::warning::記事の更新と重なったので次の回に反映します"
+              exit 0
+            fi
+            sleep 7
+          done
+          exit 1

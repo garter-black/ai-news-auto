@@ -90,6 +90,7 @@
 | `newsletter.yml` | 毎朝7時のメルマガ |
 | `readability.yml` | 文字の見やすさの自動チェック |
 | `ui_check.yml` | 画面の崩れの見張り（デプロイ後と毎朝7:17）。`scripts/ui_check.mjs` が本番の主要ページをスマホ/PC×ライト/ダークで開き、読めない画像・はみ出し・undefined や生の Markdown・コンソールのエラー・ロゴ用書体の漏れ・同じ区切りの重なり・PR表示のない広告・CLS>0.1 を探す。見つかれば issue（ラベル `ui-broken`）、スクショは成果物。手元では `node scripts/ui_check.mjs [--set full] [--paths /,/articles]`（`npm i --no-save playwright-core` が必要） |
+| `review_sync.yml` | 20分ごと。編集部の記事確認ページ（`/review`、`cloudflare/review.ts`。メールの6桁コードでログイン）で付けた「確認済み」「直してほしい」を記事 JSON の `review` に書き写して公開（`scripts/review_sync.py`）。記録は Workers KV `REVIEW_KV`。「直してほしい」は issue（ラベル `review-fix`）。確認は任意で、毎日の義務ではない（2026-11-03） |
 | `pricing_watch.yml` | 毎朝6:17、公式の料金ページを読み直して料金の段の表（`content/pricing/*.json`、円の目安つき）を更新。金額が変わったら記事の候補にする。読み方は `scripts/pricing.py`（Python）と `lib/pricing-ladder.ts`・`components/PriceTable.tsx`（サイト） |
 
 ## 6. 大事なルール（必ず守る）
@@ -98,6 +99,9 @@
 - **事実だけを書く**。推測で数字や機能を作らない。出典は公式発表を優先し、確認日を書く。
 - **地震・津波の記事はAIに文章を書かせない**（気象庁のデータを型に入れるだけ）。推測・被害の記述は禁止。
 - 誇張した見出し・「戻れなくなる」等の根拠のない言い切りは禁止。
+
+- **取り下げた記事**（2026-11-03 オーナー承認）: 他人の動画の要約・プレスリリースの言い換え・同じ発表の重複・独自の情報が少ない短い記事を `scripts/retire_articles.py --apply` で取り下げた。一覧は `content/retired.json`（重複は代表へ 301、ほかは 410）。他人の動画のチャンネル（`CREATOR_CHANNELS`）とプレスリリース配信は新規生成しない（`tests/test_retired_sources.py`）。
+- **公開の説明は実態どおりに**: 記事はAIが下書きし自動照合を経て公開。編集部（人）は速報や反響の大きい記事を中心に読み、読んだ記事にだけ「編集部が確認済み（日付）」。「全記事を人が確認」とは書かない。
 
 ### 見た目（オーナーの好み）
 - デザインは「報道ネイビー×速報レッド」（紺 `#1d4a8f` / 赤 `#c8221a` / 背景 `#f3f5f8` / 文字 `#0b1a33`）。

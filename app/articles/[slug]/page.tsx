@@ -56,6 +56,7 @@ import {
   isWeb,
   lastModifiedOf,
   PRERENDER_LIMIT,
+  reviewedDateLabel,
   sourceHref,
   sourceLabel,
   speedLabel,
@@ -198,6 +199,7 @@ export default async function ArticlePage({ params }: Props) {
   const readNextInlineClass = readNextRail && readNextInline ? "lg:hidden" : "";
   // 日本語の黙読はおよそ毎分600字
   const readMinutes = Math.max(1, Math.round(article.body.length / 600));
+  const reviewedLabel = reviewedDateLabel(article);
   // 「かんたんに読む」版（ある記事だけ、読み方を切り替えられる）
   const easy = article.easy?.trim() ?? "";
   const easyMinutes = Math.max(1, Math.round(easy.length / 500));
@@ -428,6 +430,12 @@ export default async function ArticlePage({ params }: Props) {
             <Link href="/editorial-policy" className="underline decoration-line-strong underline-offset-4 hover:text-accent">
               編集方針・AI利用と事実確認
             </Link>
+            {/* 編集部（人）が読んだ記事だけ（/review。記録は記事 JSON の review）。確認していない記事には何も出さない */}
+            {reviewedLabel && (
+              <span className="font-semibold text-ink">
+                <span aria-hidden>✓ </span>編集部が確認済み（{reviewedLabel}）
+              </span>
+            )}
           </p>
 
           {/* 3秒でわかる要点 */}

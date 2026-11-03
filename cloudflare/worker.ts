@@ -11,6 +11,7 @@ import { default as handler } from "../.open-next/worker.js";
 import { flushHeld, handlePush, type PushEnv } from "./push";
 import { handleAff, type AffEnv } from "./aff";
 import { serveVideo } from "./video";
+import { handleReview, type ReviewEnv } from "./review";
 // @ts-ignore ビルド時に生成される（scripts/cf_content.mjs。JS・CSS のファイル名の組のハッシュ）
 import codeInfo from "../.open-next/saisoku-code.json";
 
@@ -81,6 +82,51 @@ async function loadArticle(env: Env, slug: string): Promise<void> {
   vfs.files.set(`content/articles/${slug}.json`, await res.text());
   fullSlugs.push(slug);
   while (fullSlugs.length > FULL_LIMIT) vfs.files.delete(`content/articles/${fullSlugs.shift()}.json`);
+}
+
+/**
+ * 取り下げた記事（content/retired.json。scripts/retire_articles.py が書き、scripts/cf_content.mjs が /_content/retired.json に置く）。
+ * 重複の記事は代表の記事へ 301、それ以外は 410 Gone を返す（AdSense「有用性の低いコンテンツ」への対策。2026-11-03）
+ */
+type RetiredEntry = { reason: string; redirect?: string };
+let retiredLoading: Promise<Map<string, RetiredEntry>> | null = null;
+
+function loadRetired(env: Env): Promise<Map<string, RetiredEntry>> {
+  retiredLoading ??= (async () => {
+    const res = await asset(env, "/_content/retired.json");
+    if (!res.ok) return new Map<string, RetiredEntry>();
+    const data = (await res.json()) as { articles?: Record<string, RetiredEntry> };
+    return new Map(Object.entries(data.articles ?? {}));
+  })().catch((error) => {
+    retiredLoading = null;
+    console.error("[worker] retired list failed", String(error));
+    return new Map<string, RetiredEntry>();
+  });
+  return retiredLoading;
+}
+
+const RETIRED_PATH = /^\/(articles|cover|card)\/([^/]+?)(\.rsc)?\/?$/;
+
+const GONE_HTML = `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>この記事は取り下げました｜サイソクニュース</title><style>body{margin:0;background:#f3f5f8;color:#0b1a33;font:16px/1.8 system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif}main{max-width:640px;margin:0 auto;padding:48px 16px}h1{font-size:22px;margin:0 0 12px}a{color:#1d4a8f}ul{padding-left:1.2em}</style></head><body><main><p style="color:#c8221a;font-weight:700;margin:0">410 Gone</p><h1>この記事は取り下げました</h1><p>サイソクニュースでは、読者の役に立つ記事を残すため、内容の重なる記事や独自の情報が少ない記事を整理しました。</p><ul><li><a href="/">トップページ</a></li><li><a href="/articles">新着記事</a></li><li><a href="/editorial-policy">編集方針</a></li></ul></main></body></html>`;
+
+async function retiredResponse(request: Request, url: URL, env: Env): Promise<Response | null> {
+  const match = RETIRED_PATH.exec(url.pathname);
+  if (!match) return null;
+  let slug: string;
+  try {
+    slug = decodeURIComponent(match[2]);
+  } catch {
+    return null;
+  }
+  const entry = (await loadRetired(env)).get(slug);
+  if (!entry) return null;
+  if (entry.redirect && /^[A-Za-z0-9][A-Za-z0-9_-]*$/.test(entry.redirect)) {
+    const to = new URL(`/${match[1]}/${entry.redirect}${match[3] ?? ""}`, url);
+    to.search = url.search;
+    return new Response(null, { status: 301, headers: { Location: to.pathname + to.search, "Cache-Control": "public, max-age=3600" } });
+  }
+  const headers = { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=3600", "X-Robots-Tag": "noindex" };
+  return new Response(request.method === "HEAD" || match[1] !== "articles" ? null : GONE_HTML, { status: 410, headers });
 }
 
 /** wrangler.jsonc の triggers.crons と同じ文字列（UTC 22:00 = 日本時間 7:00） */
@@ -205,6 +251,12 @@ export default {
     if (url.pathname.startsWith("/api/push/")) return handlePush(request, url, env as unknown as PushEnv, ctx);
     // 提携リンクのクリックの自前集計（cloudflare/aff.ts）
     if (url.pathname.startsWith("/api/aff/")) return handleAff(request, url, env as unknown as AffEnv, ctx);
+    // 編集部の記事確認ページ（cloudflare/review.ts。ログインした編集部だけ。キャッシュしない）
+    if (url.pathname === "/review" || url.pathname.startsWith("/review/")) return handleReview(request, url, env as unknown as ReviewEnv);
+
+    // 取り下げた記事（301 か 410）。エッジキャッシュに古い版の HTML が残っていても先に返す
+    const retired = await retiredResponse(request, url, env);
+    if (retired) return retired;
 
     const cacheKey = edgeCacheKey(request, url, env);
     const edge = cacheKey ? (caches as unknown as { default: Cache }).default : null;

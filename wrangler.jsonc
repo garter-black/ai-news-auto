@@ -34,7 +34,10 @@
     // 速報のプッシュ通知の購読者・送信記録。cloudflare/push.ts（秘密鍵 VAPID_PRIVATE_KEY・PUSH_SEND_TOKEN は wrangler secret put で入れる）
     { "binding": "PUSH_KV", "id": "7eefb0fb8f5546e18c214ad9cd1dc1bd" },
     // 提携リンクの人によるクリックの日別記録。cloudflare/aff.ts（集計を読む鍵 AFF_STATS_TOKEN は wrangler secret put で入れる）
-    { "binding": "AFF_KV", "id": "5de7984f700648c58d0400adaf75a614" }
+    { "binding": "AFF_KV", "id": "5de7984f700648c58d0400adaf75a614" },
+    // 編集部の記事確認（ログイン・確認の記録）。cloudflare/review.ts。送信先 REVIEW_OWNER_EMAIL は wrangler secret put で入れる。
+    // 記録は scripts/review_sync.py（.github/workflows/review_sync.yml）が記事 JSON の review に書き写す
+    { "binding": "REVIEW_KV", "id": "55e38a39255d4999b85163fabba29006" }
   ],
   // 毎朝 7:00（日本時間）: 夜のあいだ保留した速報の通知を1本送る（cloudflare/worker.ts の PUSH_MORNING_CRON と同じ文字列）
   "triggers": { "crons": ["0 22 * * *"] },

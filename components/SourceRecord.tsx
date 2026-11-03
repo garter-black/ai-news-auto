@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatDateTime, type FullArticle } from "@/lib/articles";
+import { formatDateTime, reviewedDateLabel, type FullArticle } from "@/lib/articles";
 
 /**
  * 記事末の「出典と更新履歴」。どの公式発表をもとに、いつ載せ、いつ何を足したかを1か所で見せる。
@@ -97,6 +97,7 @@ export default function SourceRecord({
           <dd>
             公開前に、本文を出典と自動で照合しています
             {typeof article.qualityScore === "number" ? `（事実確認 ${article.qualityScore}点／100点、70点未満は非公開）` : ""}。
+            {reviewedDateLabel(article) && `${reviewedDateLabel(article)}に、編集部が記事を読んで確認しました。`}
             <Link href="/editorial-policy" className={`${link} ml-1`}>
               制作と確認の方法
             </Link>
