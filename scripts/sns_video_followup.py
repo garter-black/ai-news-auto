@@ -417,6 +417,13 @@ def attach_ready(state: dict, posted: dict, now: datetime, f: dict, editor) -> l
                 rec.update({"status": "article_only", "why": "投稿に使える版が無い"})
             else:
                 res = editor(prec["id"], versions[variant]["post"], variant, rec["urls"][variant], now)
+                if res.get("deferred"):
+                    # Buffer の上限・429。何も変えずに ready のまま残し、この回はもう Buffer を呼ばない（次の回で間に合えば差し替え）
+                    rec["deferred"] = res["deferred"]
+                    log(f"[video-followup] 差し替えを次の回に回します {slug}: {res['deferred'][:160]}")
+                    out.append({"slug": slug, **rec})
+                    break
+                rec.pop("deferred", None)
                 rec.update({"variant": variant, "bufferId": prec["id"], "postedAt": due.isoformat(timespec="seconds"), **res})
                 log(f"[video-followup] 差し替え {slug}（{variant}・予約 {due.astimezone(JST):%H:%M}）: {rec.get('status')} {rec.get('why', '')} {rec.get('error', '')}")
         out.append({"slug": slug, **rec})
@@ -454,18 +461,27 @@ def merged_text(text: str, report: dict, variant: str, limit: int = MAX_CHARS) -
 POST_FIELDS = "id status dueAt sentAt text externalLink assets { mimeType source } metadata { ... on ThreadsPostMetadata { topic threadCount thread { text assets { mimeType source } } } }"
 
 
-def read_post(api_key: str, post_id: str) -> dict | None:
+def _buffer_unavailable(error: BaseException) -> bool:
+    import buffer_budget
+
+    return isinstance(error, buffer_budget.BufferUnavailable)
+
+
+def read_post(api_key: str, post_id: str, raise_unavailable: bool = False) -> dict | None:
     import threads_post
 
     try:
         return threads_post.buffer_graphql(api_key, f"query($id: PostId!) {{ post(input: {{ id: $id }}) {{ {POST_FIELDS} }} }}", {"id": post_id}).get("post")
     except Exception as error:  # noqa: BLE001
+        if raise_unavailable and _buffer_unavailable(error):
+            raise
         log(f"[video-followup] 投稿を読めない {post_id}: {str(error)[:200]}")
         return None
 
 
-def edit_post(api_key: str, inp: dict, article: dict | None = None) -> None:
-    """Buffer の editPost。本文・画像を変えるときは、変える直前に SNS ルールの門番（sns_rules）を通す（予約の時刻だけ戻すときは通さない）"""
+def edit_post(api_key: str, inp: dict, article: dict | None = None) -> dict:
+    """Buffer の editPost。本文・画像を変えるときは、変える直前に SNS ルールの門番（sns_rules）を通す（予約の時刻だけ戻すときは通さない）。
+    差し替えたあとの投稿（状態・時刻・付いているもの）も同じ応答で受け取る（読み直しの1回を省く）"""
     import sns_rules
     import threads_post
 
@@ -473,13 +489,15 @@ def edit_post(api_key: str, inp: dict, article: dict | None = None) -> None:
         sns_rules.enforce_buffer("threads", inp, article, source="sns_video_followup.edit_post", history=False)
     data = threads_post.buffer_graphql(
         api_key,
-        """mutation($input: EditPostInput!) { editPost(input: $input) { __typename ... on PostActionSuccess { post { id } } ... on MutationError { message } } }""",
+        "mutation($input: EditPostInput!) { editPost(input: $input) { __typename "
+        f"... on PostActionSuccess {{ post {{ {POST_FIELDS} }} }} ... on MutationError {{ message }} }} }}",
         {"input": inp},
         gated=True,
     )
     res = data.get("editPost") or {}
     if res.get("message") or res.get("__typename") not in ("PostActionSuccess", None):
         raise RuntimeError(f"Buffer: {res.get('__typename')}: {res.get('message', '')}"[:300])
+    return res.get("post") or {}
 
 
 def _has_video(post: dict | None) -> bool:
@@ -502,7 +520,10 @@ def edit_scheduled(post_id: str, report: dict, variant: str, video_url: str, now
     差し替えたら読み直して、状態・時刻が変わっていないこと・動画が付いたことを確かめる。時刻が動いていたら元に戻す"""
     now = now or datetime.now(timezone.utc)
     key = api_key if api_key is not None else os.environ.get("BUFFER_API_KEY", "")
-    cur = read_post(key, post_id)
+    try:
+        cur = read_post(key, post_id, raise_unavailable=True)
+    except Exception as error:  # noqa: BLE001 - 上限・429 のときは Buffer をそれ以上呼ばず、次の回にもう一度だけ見る
+        return {"status": "ready", "deferred": str(error)[:300]}
     if not cur:
         # まだ何も送っていない（読めなかっただけ。Buffer の回数制限など）→ ready のまま次の回でもう一度（時刻に間に合う間だけ）
         return {"status": "ready", "attachError": "Buffer で予約の投稿を読めない（次の回でもう一度）"}
@@ -521,11 +542,16 @@ def edit_scheduled(post_id: str, report: dict, variant: str, video_url: str, now
         threads_meta["topic"] = meta["topic"]
     inp = {"id": post_id, "text": text, "assets": [], "metadata": {"threads": threads_meta}}
     error = ""
+    after: dict = {}
     try:
-        edit_post(key, inp, article_of(report))
+        after = edit_post(key, inp, article_of(report))
     except Exception as err:  # noqa: BLE001 - 断られたら写真のまま（再挑戦しない）
         error = str(err)[:300]
-    after = read_post(key, post_id) or {}
+        if _buffer_unavailable(err):
+            # 上限・429: 何も変わっていない。写真のままにして、次の回にもう一度だけ見る（ready のまま）
+            return {"status": "ready", "deferred": error}
+    if "status" not in after or "dueAt" not in after:
+        after = read_post(key, post_id) or {}  # 応答に状態が無いときだけ読み直す
     check = {"status": after.get("status"), "dueAt": after.get("dueAt"), "video": _has_video(after), "before": {"status": cur.get("status"), "dueAt": cur.get("dueAt")}}
     # 予約の時刻・状態が動いていたら元に戻す（差し替えが通ったかどうかに関係なく）
     if cur.get("status") == "scheduled" and after and (after.get("status") != "scheduled" or _parse(after.get("dueAt") or "") != due):
@@ -706,7 +732,7 @@ def read_draft(api_key: str, channel_id: str, post_id: str, statuses: tuple = ("
 
     fields = "id text status channelId sentAt externalLink assets { thumbnail mimeType source }"
     try:
-        orgs = threads_post.buffer_graphql(api_key, "query { account { organizations { id } } }")["account"]["organizations"]
+        orgs = [{"id": oid} for oid in threads_post.buffer_org_ids(api_key)]  # 保存した組織の ID（問い合わせを省く）
     except Exception as error:  # noqa: BLE001
         return {"error": f"organizations: {error}"[:300]}
     tries = []
@@ -766,7 +792,7 @@ def today_report(now: datetime | None = None, api_key: str | None = None) -> lis
     by_id = {r.get("id"): s for s, r in posted.items() if r.get("id")}
     video_post_ids = {r.get("bufferId"): s for s, r in videos.items() if r.get("status") == "posted" and r.get("bufferId")}
     nodes = []
-    for org in tp.buffer_graphql(key, "query { account { organizations { id } } }")["account"]["organizations"]:
+    for org in [{"id": oid} for oid in tp.buffer_org_ids(key)]:
         flt = f"channelIds: {json.dumps([channel.get('id', '')])}, startDate: {json.dumps(tp.utc_z(start))}, endDate: {json.dumps(tp.utc_z(end))}"
         query = f"query {{ posts(first: 100, input: {{ organizationId: {json.dumps(org['id'])}, filter: {{ {flt} }} }}) {{ edges {{ node {{ {POST_FIELDS} }} }} }} }}"
         nodes += [e["node"] for e in tp.buffer_graphql(key, query)["posts"]["edges"]]

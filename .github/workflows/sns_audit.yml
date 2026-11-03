@@ -27,6 +27,7 @@ jobs:
       - name: Read posts (nothing is posted or deleted)
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_LEDGER: audit
         run: python scripts/sns_audit.py --days "${{ inputs.days || '4' }}" --out out/sns_audit.json
       - uses: actions/upload-artifact@v7
         if: always()

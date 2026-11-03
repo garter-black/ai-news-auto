@@ -78,6 +78,9 @@ jobs:
           CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
           CLAUDE_API_DAILY_CALLS_VIDEO: ${{ vars.CLAUDE_API_DAILY_CALLS_VIDEO }}
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          # Buffer の呼び出しは「動画ができて、差し替える予約がある」ときだけ。回数の記録は state/buffer_calls/video.json
+          BUFFER_LEDGER: video
+          BUFFER_DAILY_CAP: ${{ vars.BUFFER_DAILY_CAP }}
           CF_KV_TOKEN: ${{ secrets.CF_DEPLOY_TOKEN }}  # images.py の kv_put と同じ（Workers KV Storage:Edit）
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # 手動実行は「作るだけ」。投稿・アップロードは定期実行で Variables が on/live のときだけ
@@ -132,7 +135,7 @@ jobs:
         if: ${{ always() && github.event.inputs.plan_only != 'true' }}
         continue-on-error: true
         run: |
-          files="state/sns_video.json state/claude_api_usage_video.json"
+          files="state/sns_video.json state/claude_api_usage_video.json state/buffer_calls/video.json"
           changed=""; for f in $files; do [ -f "$f" ] && [ -n "$(git status --porcelain "$f")" ] && changed="$changed $f"; done
           embeds=$(git status --porcelain content/articles | awk '{print $2}')
           [ -z "$changed$embeds" ] && exit 0
@@ -143,6 +146,7 @@ jobs:
           for i in 1 2 3; do
             git fetch --depth 1 origin main && git reset --hard origin/main
             [ -f "$RUNNER_TEMP/sns_video.json" ] && cp "$RUNNER_TEMP/sns_video.json" state/sns_video.json
+            [ -f "$RUNNER_TEMP/video.json" ] && mkdir -p state/buffer_calls && cp "$RUNNER_TEMP/video.json" state/buffer_calls/video.json
             [ -f "$RUNNER_TEMP/claude_api_usage_video.json" ] && python scripts/llm.py --merge-api-usage "$RUNNER_TEMP/claude_api_usage_video.json" state/claude_api_usage_video.json
             # 記事の video だけを最新の記事 JSON に書き戻す（ほかの項目は main のまま）
             for f in "$RUNNER_TEMP"/embeds/*.json; do [ -f "$f" ] || continue
@@ -157,6 +161,7 @@ jobs:
           PY
             done
             git add state/sns_video.json state/claude_api_usage_video.json content/articles 2>/dev/null
+            [ -f state/buffer_calls/video.json ] && git add state/buffer_calls/video.json
             if git diff --cached --quiet; then exit 0; fi
             git commit -m "chore(video): SNS 動画の記録を更新 [no-deploy]"
             git push origin HEAD:main && exit 0

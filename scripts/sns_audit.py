@@ -50,6 +50,9 @@ def post_fields(key: str) -> str:
 
 
 def buffer_posts(key: str, since: datetime) -> list[dict]:
+    import buffer_budget
+
+    buffer_budget.set_role("monitor")  # 読むだけ・手動実行だけ（予約の分の回数を残す）
     fields = post_fields(key)
     out = []
     for org in buffer_graphql(key, "query { account { organizations { id } } }")["account"]["organizations"]:

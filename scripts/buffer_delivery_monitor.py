@@ -17,7 +17,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from threads_post import buffer_graphql
+import buffer_budget
+from threads_post import buffer_account, buffer_graphql
 
 SERVICES = ('threads', 'twitter', 'facebook')
 LABELS = {'threads': 'Threads', 'twitter': 'X', 'facebook': 'Facebook'}
@@ -101,24 +102,29 @@ def check_image(url: str) -> str:
         return 'unavailable'
 
 
+# 送信済みは直近7日だけ数える。取得もその少し前から（全期間を毎回ページ送りしていたのをやめ、呼び出し回数を抑える）
+SENT_LOOKBACK = timedelta(days=8)
+
+
 def collect(key: str, now: datetime, image_checker=check_image, known_sent_id: str | None = None) -> dict:
     if not key:
         raise ValueError('credential unavailable')
-    orgs = buffer_graphql(key, 'query { account { organizations { id } } }')['account']['organizations']
+    # 組織とチャンネルの ID は保存したもの（state/buffer_channels.json）を使う（毎回2回の問い合わせを省く）
+    orgs = buffer_account(key, gql=buffer_graphql)
     if not orgs:
         raise ValueError('no organization')
     channels = {}
     posts = {}
     for org in orgs:
         oid = org['id']
-        items = buffer_graphql(key, f'query {{ channels(input: {{ organizationId: {json.dumps(oid)} }}) {{ id service }} }}')['channels']
+        items = org['channels']
         selected = [c for c in items if str(c.get('service', '')).lower() in SERVICES]
         channels.update({c['id']: str(c['service']).lower() for c in selected})
         ids = [c['id'] for c in selected]
         if not ids:
             continue
         # Sent is deliberately queried separately: mixed sent/non-sent filters have returned empty results.
-        for states, since in [(['sent'], None), (['scheduled', 'sending', 'needs_approval', 'draft', 'error'], None)]:
+        for states, since in [(['sent'], now - SENT_LOOKBACK), (['scheduled', 'sending', 'needs_approval', 'draft', 'error'], None)]:
             for node in query_posts(key, oid, ids, states, since):
                 if node.get('id') in posts:
                     raise ValueError('duplicate post id in listing')
@@ -202,6 +208,16 @@ def known_sent_anchor(now: datetime) -> str | None:
 
 def main() -> int:
     now = datetime.now(timezone.utc)
+    buffer_budget.set_role('monitor')  # 読むだけ。予約の分の回数を残す
+    try:
+        buffer_budget.check('monitor', now)
+    except buffer_budget.BufferUnavailable:
+        # 上限・429 の待ち時間中は確認を見送る（Buffer を呼ばない）。予約を優先するため
+        summary = '## Buffer 投稿状態\n\nBuffer の呼び出し上限・待ち時間のため、今回の確認は見送りました（予約を優先）。\n'
+        print(summary)
+        if os.environ.get('GITHUB_STEP_SUMMARY'):
+            Path(os.environ['GITHUB_STEP_SUMMARY']).write_text(summary, encoding='utf-8')
+        return 0
     try:
         report = collect(os.environ.get('BUFFER_API_KEY', '').strip(), now, known_sent_id=known_sent_anchor(now))
         summary = render(report, now)

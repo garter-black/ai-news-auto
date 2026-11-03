@@ -1,14 +1,10 @@
 name: Buffer delivery monitor (read only)
 on:
+  # 2026-11-03: Buffer API の24時間の上限に当たったため、30分ごと＋記事処理のたび（1日 約90回×約9回の呼び出し）から
+  # 4時間ごと（1日6回）に減らした。予約の呼び出しを優先する（scripts/buffer_budget.py）
   schedule:
-    - cron: '12,42 * * * *'
+    - cron: '12 */4 * * *'
   workflow_dispatch:
-  # GitHub scheduleの遅延・欠落に備え、既存の記事処理が完了した後も確認する。
-  # SNS投稿を行うworkflowは変更・起動しない。
-  workflow_run:
-    workflows: ['Auto Article Pipeline']
-    types: [completed]
-    branches: [main]
 permissions:
   contents: read
 concurrency:
@@ -16,13 +12,6 @@ concurrency:
   cancel-in-progress: false
 jobs:
   monitor:
-    # workflow_runでは同一repo/mainの通常処理だけ。外部PRや速報レーンは除外。
-    if: >-
-      ${{ github.event_name != 'workflow_run' ||
-          (github.event.workflow_run.head_repository.full_name == github.repository &&
-           github.event.workflow_run.head_branch == 'main' &&
-           contains(fromJSON('["schedule", "workflow_dispatch"]'), github.event.workflow_run.event) &&
-           startsWith(github.event.workflow_run.display_title, 'Auto Article Pipeline (')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
@@ -35,4 +24,8 @@ jobs:
       - name: Read Buffer delivery and check upcoming images
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          # 他の処理の呼び出し回数・429 の待ち時間（state/buffer_calls/）を読み、上限が近ければ確認を見送る（この記録は保存しない）
+          BUFFER_LEDGER: monitor
+          BUFFER_DAILY_CAP: ${{ vars.BUFFER_DAILY_CAP }}
+          BUFFER_MONITOR_CAP: ${{ vars.BUFFER_MONITOR_CAP }}
         run: python scripts/buffer_delivery_monitor.py

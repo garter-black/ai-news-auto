@@ -16,14 +16,17 @@ jobs:
       - name: Check Buffer connection
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_LEDGER: check
         run: python scripts/threads_post.py --check-buffer
       - name: Test new post format (creates and deletes a Buffer draft, nothing is published)
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_LEDGER: check
         run: python scripts/threads_post.py --test-draft
       - name: Learn from post metrics (read only, nothing is published)
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_LEDGER: check
         run: python scripts/threads_learn.py && cat state/threads_learning.json | head -60
       - name: Draft posts (not published)
         run: python scripts/threads_post.py --dry-run --hours 72 --max 2

@@ -23,7 +23,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from threads_post import ARTICLES_DIR, buffer_graphql, load_state, save_state  # noqa: E402
+from threads_post import ARTICLES_DIR, buffer_graphql, buffer_account, load_state, save_state  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 LEARNING_PATH = ROOT / "state" / "threads_learning.json"
@@ -46,14 +46,13 @@ COMPANIES = [
 
 def fetch_metrics(api_key: str) -> dict[str, dict]:
     """送信済みの Threads・X 投稿の反応（Buffer の投稿ID → 指標）"""
-    orgs = buffer_graphql(api_key, "query { account { organizations { id } } }")["account"]["organizations"]
+    import buffer_budget
+
+    buffer_budget.set_role("monitor")  # 反応の取得は読むだけ（予約の分の回数を残す）
     result: dict[str, dict] = {}
-    for org in orgs:
-        channels = buffer_graphql(
-            api_key,
-            f"query {{ channels(input: {{ organizationId: {json.dumps(org['id'])} }}) {{ id service }} }}",
-        )["channels"]
-        ids = [c["id"] for c in channels if str(c.get("service", "")).lower() in ("threads", "twitter")]
+    # 組織とチャンネルの ID は保存したもの（state/buffer_channels.json）を使う。毎回2回の問い合わせを省く
+    for org in buffer_account(api_key, gql=buffer_graphql):
+        ids = [c["id"] for c in org["channels"] if str(c.get("service", "")).lower() in ("threads", "twitter")]
         if not ids:
             continue
         cursor = None
@@ -157,12 +156,40 @@ def learning_sample(entry: dict) -> bool:
     return entry.get("style") not in ("digest", "poll") and not (entry.get("verification") or {}).get("excludeFromLearning")
 
 
+# Buffer の反応の数値は1日1回しか更新されないので、取りに行くのも1日1回（2026-11-03 に毎回の取得で上限に当たった）
+FETCH_EVERY_HOURS = 20
+
+
+def fetched_recently(now: datetime | None = None) -> str:
+    """前回 Buffer から反応を取れた時刻が FETCH_EVERY_HOURS 時間以内なら、その時刻（ISO）。でなければ空"""
+    now = now or datetime.now(timezone.utc)
+    try:
+        at = json.loads(LEARNING_PATH.read_text("utf-8")).get("metricsFetchedAt") or ""
+        if at and now - datetime.fromisoformat(at) < timedelta(hours=FETCH_EVERY_HOURS):
+            return at
+    except (OSError, ValueError, TypeError):
+        pass
+    return ""
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--offline", action="store_true")
+    parser.add_argument("--force", action="store_true", help="前回の取得から20時間たっていなくても Buffer から取る")
     args = parser.parse_args()
 
     state = load_state()
+    previous = ""
+    try:
+        previous = json.loads(LEARNING_PATH.read_text("utf-8")).get("metricsFetchedAt") or ""
+    except (OSError, ValueError):
+        pass
+    fetched_at = previous
+    recent = "" if args.force else fetched_recently()
+    if recent and not args.offline:
+        # 数値は前回から変わっていないので、学び直しも書き直しもしない（Buffer も呼ばない）
+        print(f"[learn] 反応は {recent} に取得済み（1日1回）。今回は Buffer を呼ばず、学習もそのまま")
+        return 0
     if not args.offline:
         key = os.environ.get("BUFFER_API_KEY", "").strip()
         if not key:
@@ -173,6 +200,8 @@ def main() -> int:
             except Exception as error:  # 学習の失敗で投稿を止めない
                 print(f"[learn] 反応の取得に失敗しました: {error}", file=sys.stderr)
                 fetched = {}
+            if fetched:
+                fetched_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
             updated = 0
             for entry in state["posted"].values():
                 info = fetched.get(entry.get("id", ""))
@@ -205,6 +234,7 @@ def main() -> int:
     ]
     learning = {
         "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        **({"metricsFetchedAt": fetched_at} if fetched_at else {}),
         "posts": len(rows),
         "axes": summarize(rows),
         # X の成績（形式の比較用。hook などの学習には使わない）

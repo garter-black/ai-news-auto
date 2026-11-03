@@ -36,6 +36,7 @@ jobs:
           THREADS_MODE: ${{ vars.THREADS_MODE }}
           THREADS_TOKEN_KEY: ${{ secrets.THREADS_TOKEN_KEY }}
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_LEDGER: recover
           SNS_PER_DAY: ${{ steps.ramp.outputs.sns_per_day }}
           BREAKING_PER_DAY: ${{ vars.BREAKING_PER_DAY }}
           SNS_DIGEST: ${{ vars.SNS_DIGEST }}

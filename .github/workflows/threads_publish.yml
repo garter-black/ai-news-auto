@@ -33,6 +33,7 @@ jobs:
           THREADS_TOKEN_KEY: ${{ secrets.THREADS_TOKEN_KEY }}
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           GH_TOKEN: ${{ github.token }}  # 門番が止めた投稿の issue を立てる
+          BUFFER_LEDGER: publish
         run: python scripts/threads_post.py --max "${{ github.event.inputs.max || '1' }}" --hours 48
       - name: Save posting history
         run: |

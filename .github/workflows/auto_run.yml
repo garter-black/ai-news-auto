@@ -375,11 +375,12 @@ jobs:
       # 変数 THREADS_MODE が live 以外なら、下書きをサマリーに出すだけで何も公開しない。
       # 新着が無い回も走らせ、未投稿分の再挑戦とトークンの期限延長を行う。
       # state/ だけの変更は vercel.json の ignoreCommand により再ビルドされない。
-      # Buffer の無料枠（1日250リクエスト）を守るため、SNS の予約は6時間ごとの回だけ行う
-      # （8時間先までの枠をまとめて予約するので、6時間ごとで足りる）
+      # Buffer API の上限（24時間の窓。2026-11-03 に当たって予約が止まった）を守るため、
+      # threads_post.py は空き枠を手元の履歴（state/threads_posted.json）だけで先に決め、予約するものがある回だけ Buffer を呼ぶ。
+      # チャンネルの ID は state/buffer_channels.json、呼び出し回数は state/buffer_calls/pipeline.json（scripts/buffer_budget.py）
       - name: Post to Threads
-        # 予約は次の8時間の空き枠だけを埋める（同じ枠は二重に取らない）。GitHub の定期実行は混むと数時間遅れて
-        # 朝の枠を取り逃すので、速報レーン以外の毎回（見張り番の web 回・20分ごとの回を含む）で空き枠を確かめる
+        # 予約は次の8時間の空き枠だけを埋める（同じ枠は二重に取らない。過ぎた枠は飛ばす）。GitHub の定期実行は混むと数時間遅れて
+        # 朝の枠を取り逃すので、速報レーン以外の毎回で空き枠を確かめる（空き枠が無ければ Buffer は0回）
         if: ${{ (inputs.fast_url || '') == '' }}
         continue-on-error: true
         env:
@@ -388,6 +389,10 @@ jobs:
           THREADS_TOKEN_KEY: ${{ secrets.THREADS_TOKEN_KEY }}
           # Buffer 経由で投稿する場合の API キー（設定されていればこちらを優先）
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          # Buffer の呼び出し回数の記録の名前（state/buffer_calls/pipeline.json。scripts/buffer_budget.py）
+          BUFFER_LEDGER: pipeline
+          BUFFER_DAILY_CAP: ${{ vars.BUFFER_DAILY_CAP }}
+          BUFFER_MONITOR_CAP: ${{ vars.BUFFER_MONITOR_CAP }}
           # 1日の投稿本数（Threads・X・Facebook 共通）。凍結を避けて週に1〜2本ずつ増やす
           SNS_PER_DAY: ${{ steps.ramp.outputs.sns_per_day }}
           # 速報の即時投稿の1日の上限（別枠・最大5）。速報待ちの記事を通常の予約に回さない判定に使う
@@ -403,10 +408,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}  # 門番が止めた投稿の issue を立てる
         run: |
           # 投稿ごとの反応を取り込んで「勝ちパターン」を学び直してから、次の投稿を選ぶ
-          # 反応の学習は1日1回（Buffer の数値も1日1回更新）
-          if [ "$(date -u +%H)" = "00" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            python scripts/threads_learn.py || echo "::warning::Threads の学習に失敗しました（投稿は続けます）"
-          fi
+          # 反応の取得は1日1回（Buffer の数値も1日1回更新）。前回の取得から20時間たっていなければ Buffer を呼ばずにすぐ終わる
+          python scripts/threads_learn.py || echo "::warning::Threads の学習に失敗しました（投稿は続けます）"
           python scripts/threads_post.py --max 2
           if [ -z "$(git status --porcelain state)" ]; then
             exit 0

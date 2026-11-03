@@ -35,6 +35,9 @@ MANUAL = [
 
 def fetch(api_key: str, since: datetime) -> list[dict]:
     """Buffer の Threads 投稿のうち since 以降に送ったもの（id・リンク・本文の冒頭・コメント数）"""
+    import buffer_budget
+
+    buffer_budget.set_role("monitor")  # 読むだけ（予約の分の回数を残す）
     out: list[dict] = []
     orgs = tp.buffer_graphql(api_key, "query { account { organizations { id } } }")["account"]["organizations"]
     for org in orgs:

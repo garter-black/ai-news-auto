@@ -32,6 +32,7 @@ jobs:
       - name: Post
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_LEDGER: post-now
           SLUG: ${{ github.event.inputs.slug }}
           TEXT: ${{ github.event.inputs.text }}
           DELETE: ${{ github.event.inputs.delete }}

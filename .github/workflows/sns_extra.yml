@@ -55,6 +55,7 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.test == 'true' && inputs.verify != true }}
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_LEDGER: extra
           KIND: ${{ inputs.kind }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -76,6 +77,7 @@ jobs:
         env:
           THREADS_MODE: ${{ vars.THREADS_MODE }}
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_LEDGER: extra
           SNS_DIGEST: ${{ vars.SNS_DIGEST }}
           # 朝のまとめの号ページ（/digest/<日付>）のデータを KV に置く・案Cの背景を Workers AI で作る（scripts/digest_page.py）
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -92,6 +94,7 @@ jobs:
         if: ${{ inputs.verify == true }}
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_LEDGER: extra
           KIND: ${{ inputs.kind }}
           TARGET_DATE: ${{ inputs.date }}
         run: |
@@ -102,6 +105,7 @@ jobs:
         if: ${{ inputs.verify != true && (github.event.schedule == '5 22 * * *' || (inputs.test != 'true' && inputs.kind == 'inbox')) }}
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_LEDGER: extra
         run: python scripts/threads_inbox.py | tail -40
       # main が進んでいても衝突しないよう、最新の state に記録だけを足して push する
       - name: Commit history
