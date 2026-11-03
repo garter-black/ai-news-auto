@@ -63,7 +63,9 @@
     "zoohZ1BiHs0": 1
   },
   "failed_web": {},
-  "major_tries": {},
+  "major_tries": {
+    "1ae1679f93e7f725": 1
+  },
   "processed": {
     "--kyzoeUuBk": {
       "at": "2026-08-10T15:58:56.932533+00:00",
@@ -13057,30 +13059,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-31T03:31:18.916678+00:00",
-      "attempt": 2,
-      "id": "fb3444ec170407ee",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（356字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない",
-        "title / seo_title に感嘆符がある"
-      ],
-      "readability": {
-        "avg_paragraph": 211.2,
-        "avg_sentence": 67.6,
-        "long_share": 0.6,
-        "max_paragraph": 284,
-        "paragraphs": 8,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "cyberagent",
-      "title": "「ちいかわクリスマスマーケット」限定オリジナルグッズ公開！"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-31T06:01:00.763097+00:00",
       "attempt": 1,
       "id": "633bbdcdf71bbe9b",
@@ -19460,6 +19438,28 @@
       "score": 100,
       "source": "tokyo-metro",
       "title": "11月は「ヤミ金融被害防止強化月間」です 金融トラブルにご注意ください"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T01:36:00.821171+00:00",
+      "attempt": 1,
+      "id": "1ae1679f93e7f725",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "事実確認を実行できなかった（すべてのモデルで失敗しました: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You ）"
+      ],
+      "readability": {
+        "avg_paragraph": 52.0,
+        "avg_sentence": 25.1,
+        "long_share": 0.0,
+        "max_paragraph": 123,
+        "paragraphs": 40,
+        "sentences": 83
+      },
+      "score": null,
+      "source": "radar-9to5google.com",
+      "title": "Google Home Speaker gets first discount since June launch"
     }
   ],
   "short_text_retry": {
