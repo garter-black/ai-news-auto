@@ -1090,6 +1090,7 @@ class Renderer:
         self.pictures = pictures  # 画像ごとの numpy（無ければブランドのカード1枚）
         self.iw, self.ih = IMG[2] - IMG[0], IMG[3] - IMG[1]
         self.round = _mask_round(self.iw, self.ih, RADIUS)[..., None]
+        self.corner = RADIUS + 2  # 角の丸めは四隅の正方形だけで計算する（速さ）
         shadow = _mask_shadow(self.iw, self.ih, RADIUS)
         base = np.zeros((H, W, 3), dtype=np.uint8)
         base[:] = STAGE
@@ -1145,13 +1146,19 @@ class Renderer:
         segs = self.tl.segments
         cur = next((k for k, s in enumerate(segs) if s[0] <= t < s[1]), len(segs) - 1)
         seg = segs[cur]
-        pic = self.picture_at(seg[2], t, self.run_of(cur)).astype(np.float32)
+        pic = self.picture_at(seg[2], t, self.run_of(cur))
         if cur > 0 and segs[cur - 1][2] != seg[2] and t - seg[0] < 0.45:  # 前の画像から重ねて替える
             prev = self.picture_at(segs[cur - 1][2], t, self.run_of(cur - 1)).astype(np.float32)
             k = ease((t - seg[0]) / 0.45)
-            pic = prev * (1 - k) + pic * k
-        region = out[IMG[1] : IMG[3], IMG[0] : IMG[2]].astype(np.float32)
-        out[IMG[1] : IMG[3], IMG[0] : IMG[2]] = (region * (1 - self.round) + pic * self.round).astype(np.uint8)
+            pic = (prev * (1 - k) + pic.astype(np.float32) * k).astype(np.uint8)
+        region = out[IMG[1] : IMG[3], IMG[0] : IMG[2]]
+        bg = region.copy()
+        region[:] = pic
+        c = self.corner
+        for ys in (slice(0, c), slice(self.ih - c, self.ih)):
+            for xs in (slice(0, c), slice(self.iw - c, self.iw)):
+                m = self.round[ys, xs]
+                region[ys, xs] = (bg[ys, xs] * (1 - m) + pic[ys, xs] * m).astype(np.uint8)
         for it in self.tl.items:
             if not (it.t0 - 1e-6 <= t < it.t1):
                 continue
@@ -1185,7 +1192,7 @@ def encode(renderer: Renderer, audio: Path, out: Path, fps: int = FPS, out_scale
         shorts.ffmpeg_bin(), "-y", "-loglevel", "error",
         "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(fps), "-i", "-",
         "-i", str(audio), "-map", "0:v", "-map", "1:a", *vf,
-        "-c:v", "libx264", "-preset", "veryfast", "-crf", "21",
+        "-c:v", "libx264", "-preset", "superfast", "-crf", "21",
         "-maxrate", f"{min(8.0, max(2.0, 150.0 / max(renderer.total, 1))):.1f}M", "-bufsize", "16M",
         "-profile:v", "high", "-pix_fmt", "yuv420p", "-r", str(fps), "-g", str(fps * 2), "-keyint_min", str(fps), "-sc_threshold", "0",
         "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-ac", "2",
@@ -1231,6 +1238,9 @@ def make_tts_factory(kind: str):
     return (lambda speed: v3.make_tts(kind, speed)), v3.V3_VOICE["speed"]
 
 
+_TTS_CACHE: dict = {}
+
+
 def narrate(lines: list[str], tts_kind, work: Path, rng: tuple) -> tuple[list[tuple[float, float]], object, float, dict]:
     """行ごとに合成して並べる。長さが外れたら速さを1回だけ計算し直して読み直す（基準 ±0.1 の範囲）"""
     import numpy as np
@@ -1247,10 +1257,17 @@ def narrate(lines: list[str], tts_kind, work: Path, rng: tuple) -> tuple[list[tu
         tts = factory(speed)
 
         def synth(i: int):
+            key = (str(tts_kind), round(speed, 3), lines[i])
+            if key in _TTS_CACHE:  # 2つの版で同じ文（場面の読み上げ）は1回だけ合成する
+                return _TTS_CACHE[key]
             raw, dst = work / f"n{attempt}_{i}.src.wav", work / f"n{attempt}_{i}.wav"
             tts.synth(v3.speech_for_tts(lines[i]), raw)
             v2._to_48k_trimmed(raw, dst)
-            return v2._read_wav(dst)
+            clip = v2._read_wav(dst)
+            if len(_TTS_CACHE) > 200:
+                _TTS_CACHE.clear()
+            _TTS_CACHE[key] = clip
+            return clip
 
         with ThreadPoolExecutor(max_workers=4) as pool:
             clips = list(pool.map(synth, range(len(lines))))
@@ -1485,6 +1502,7 @@ def make_simple(slug: str, level: str, variant: str, out_dir: Path, article: dic
                     "design_name": "公式の画像と字幕" if level == "L3" else "要点と声", "errors": [], "pages": [], "frame": [W, H],
                     "layout": "landscape", "safe": list(SAFE), "fonts": [FONT_FAMILY, LOGO_FAMILY], "length_range": list(plan.length_range)}  # fmt: skip
     tl = None
+    stages: dict = {}
     try:
         # 画像を手元に（取れない画像は外す。1枚も無ければブランドのカード）
         got = []
@@ -1501,13 +1519,17 @@ def make_simple(slug: str, level: str, variant: str, out_dir: Path, article: dic
             raise RuntimeError("計画の検査に落ちた: " + " / ".join(report["plan_problems"][:3]))
         with tempfile.TemporaryDirectory() as tmp:
             work = Path(tmp)
+            st = time.time()
             times, samples, total, voice = narrate(plan.lines(), tts, work, plan.length_range)
+            stages["tts"] = round(time.time() - st, 1)
+            st = time.time()
             credits = {"voice": voice.get("credit", ""), "image": got[0]["credit"] if got else ""}
             tl = build_timeline(plan, times, total, credits)
             audio, audio_info = build_audio(samples, total, work)
             size = (IMG[2] - IMG[0], IMG[3] - IMG[1])
             pics = [load_picture(g["path"], size, g.get("kind", "photo")) for g in got] or [card_for(plan, tl)]
             encode(Renderer(plan, tl, pics), audio, mp4, fps=fps, out_scale=out_scale, workers=workers)
+            stages["render"] = round(time.time() - st, 1)
         report["audio"] = audio_info
         report.update(report_fields(plan, tl, voice, article))
     except Exception as error:  # noqa: BLE001 - 失敗は report に残す（次の段へ）
@@ -1521,9 +1543,11 @@ def make_simple(slug: str, level: str, variant: str, out_dir: Path, article: dic
         report["gate"] = {"ok": False, "reasons": [f"描画: {e}" for e in report["errors"]], "warnings": [], "metrics": {},
                           "qa": {"geometry": False, "vision": False, "version": QA_VERSION, "how": "ladder"}}  # fmt: skip
     else:
+        st = time.time()
         report["gate"] = finish_gate(mp4, report, article, prof)
+        stages["gate"] = round(time.time() - st, 1)
     report["allVerbatim"] = all_verbatim(plan, article)
-    report["timings"] = {"total": round(time.time() - t_start, 1)}
+    report["timings"] = {**stages, "total": round(time.time() - t_start, 1)}
     report["sizeMB"] = round(mp4.stat().st_size / 1e6, 2) if mp4.exists() else 0
     return report, tl, plan
 
