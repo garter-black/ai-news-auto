@@ -1,6 +1,7 @@
 """読者像（scripts/persona.py）に沿った記事・SNS・ジャンル配分の決まりを確かめる。外部 API は呼ばない。"""
 import sys
 import unittest
+import unittest.mock
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -230,7 +231,9 @@ class OffPersonaCandidates(unittest.TestCase):
             "c": {"slug": "c", "at": now, "offPersona": True},
             "d": {"skipped": True, "at": now},
         }}
-        self.assertEqual(w.generated_today(state), 1)
+        # 上限は公開中の記事だけで数える（scripts/pacing.py）。ここでは読者像外を数えないことだけを見る
+        with unittest.mock.patch.object(w.pacing, "is_live", return_value=True):
+            self.assertEqual(w.generated_today(state), 1)
         self.assertEqual(w.off_persona_today(state), 2)
 
 

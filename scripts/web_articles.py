@@ -62,6 +62,7 @@ import japan_availability  # noqa: E402
 import llm  # noqa: E402
 import main as m  # noqa: E402
 import headline_normalize  # noqa: E402
+import pacing  # noqa: E402  1日の上限の数え方（公開中だけ）と時刻ごとの配分
 import page_watch  # noqa: E402
 import persona  # noqa: E402
 import quality  # noqa: E402
@@ -952,7 +953,8 @@ def compose_with_facts(item: dict, text: str, lane: str, related: list[dict], vo
         try:
             # 速報（速報レーン・大きなニュース）は待たせないよう、リンク先は1本だけ
             bundle = facts_bundle.build(item, text, related, lane, page, follow_links=page is not None, log=log,
-                                        max_links=1 if item.get("fast") or item.get("major") else 2)
+                                        max_links=1 if item.get("fast") or item.get("major")
+                                        else (GATE_RETRY_LINKS if item.get("gate_retry") else 2))
         except Exception as error:  # noqa: BLE001 - 束が作れなくても記事は今までどおり作る
             log(f"   [facts] 確かな事実の束を作れませんでした（{str(error)[:80]}）")
             bundle = facts_bundle.Bundle()
@@ -1242,17 +1244,9 @@ def off_persona_today(state: dict, now: datetime | None = None) -> int:
 
 
 def generated_today(state: dict) -> int:
-    """今日（JST）作った新しい記事の本数（1日の上限に数えるもの）。読者像から外れた一般の話題は数えない（別の上限）"""
-    today = datetime.now(JST).date()
-    count = 0
-    for value in (state.get("processed_web") or {}).values():
-        if isinstance(value, dict) and value.get("slug") and not value.get("offPersona"):
-            try:
-                if datetime.fromisoformat(value["at"]).astimezone(JST).date() == today:
-                    count += 1
-            except (KeyError, ValueError):
-                continue
-    return count
+    """1日の上限に数える本数: 今日（JST）作った記事のうち、いま公開中のもの（取り下げた記事は数えない。scripts/pacing.py）。
+    読者像から外れた一般の話題は数えない（別の上限）"""
+    return pacing.live_today(state)
 
 
 def mark(state: dict, item: dict, **extra) -> None:
@@ -1312,6 +1306,59 @@ def reopen_short_text(state: dict, now: datetime) -> None:
             if now - datetime.fromisoformat(first) > timedelta(hours=SHORT_RETRY_HOURS * 3):
                 retry.pop(key, None)
         except (TypeError, ValueError):
+            retry.pop(key, None)
+
+
+# 品質ゲートに2回落ちた有力な候補（公式・官公庁・企業の一次情報で、読者像の話題）は捨てずに、
+# 時間をおいて資料（元記事のリンク先）を増やし、前回の問題点を伝えて作り直す（2026-11-03）。回数に上限あり。品質ゲートは緩めない
+GATE_RETRY_MAX = int(os.environ.get("GATE_RETRY_MAX", "2"))
+GATE_RETRY_WAIT_HOURS = float(os.environ.get("GATE_RETRY_WAIT_HOURS", "3"))
+GATE_RETRY_LINKS = 4  # 再挑戦のときに追いかける元記事のリンクの数（通常は2）
+
+
+def strong_candidate(item: dict) -> bool:
+    """品質ゲートに落ちても再挑戦させる候補か: 一次情報（配信・他社の提供告知でない）で、読者像から外れた話題でない"""
+    if is_wire(item) or item.get("_off_persona") or item.get("radar"):
+        return False
+    return feeds.source_rank(item) <= 2 and feeds.feed_kind(item) != "derivative"
+
+
+def gate_retry_keep(state: dict, item: dict, reason: str, now: datetime | None = None) -> int | None:
+    """再挑戦に回すなら何回目かを返す。回数を使い切っていたら記録を消して None（見送りで確定）"""
+    now = now or datetime.now(timezone.utc)
+    retry = state.setdefault("gate_retry", {})
+    rec = retry.get(item["id"]) or {"tries": 0, "first": now.isoformat()}
+    if rec.get("tries", 0) >= GATE_RETRY_MAX:
+        retry.pop(item["id"], None)
+        return None
+    rec.update({
+        "tries": rec.get("tries", 0) + 1, "next": (now + timedelta(hours=GATE_RETRY_WAIT_HOURS)).isoformat(),
+        "reason": str(reason or "")[:300], "url": item.get("url", ""), "title": item.get("title", "")[:120],
+    })
+    retry[item["id"]] = rec
+    return rec["tries"]
+
+
+def gate_retry_due(state: dict, item_id: str, now: datetime | None = None) -> bool:
+    """再挑戦待ちの候補は、待ち時間が過ぎるまで候補に戻さない（記録が無ければ True）"""
+    rec = (state.get("gate_retry") or {}).get(item_id)
+    if not rec:
+        return True
+    try:
+        return (now or datetime.now(timezone.utc)) >= datetime.fromisoformat(rec["next"])
+    except (KeyError, TypeError, ValueError):
+        return True
+
+
+def prune_gate_retry(state: dict, now: datetime | None = None) -> None:
+    """古い再挑戦の記録（最初に落ちてから3日超。どのみち古い発表として作らない）を消す"""
+    now = now or datetime.now(timezone.utc)
+    retry = state.get("gate_retry") or {}
+    for key, rec in list(retry.items()):
+        try:
+            if now - datetime.fromisoformat(rec["first"]) > timedelta(days=3):
+                retry.pop(key, None)
+        except (KeyError, TypeError, ValueError):
             retry.pop(key, None)
 
 
@@ -1654,6 +1701,7 @@ def main() -> int:
     state.setdefault("major_tries", {})
     run_detected_at = datetime.now(timezone.utc)
     reopen_short_text(state, run_detected_at)
+    prune_gate_retry(state, run_detected_at)
 
     if fast_mode:
         # 速報レーン: 待たせないよう、生成・事実確認・続報の判定をすべて quality の段で行い、ほかのレーンは回さない
@@ -1663,17 +1711,23 @@ def main() -> int:
         args.trends = args.max = args.max_broad = 0
 
     done_today = generated_today(state)
-    remaining = (args.daily_cap - done_today) if args.daily_cap else 10**6
+    # 上限は公開中の記事だけで数え、夜中に使い切らないよう時刻ごとの配分も見る（scripts/pacing.py。速報・大きなニュースは外）
+    remaining, by_cap, by_pace = pacing.run_allowance(args.daily_cap, done_today)
     cap_reached = remaining <= 0
+    log(f"[pace] 今日の時間ごとの本数（作った/公開中）: {pacing.hour_line(state)}")
+    if args.daily_cap:
+        log(f"[pace] 上限 {args.daily_cap} / 公開中 {done_today} 本 / この時刻までの配分 {pacing.allowed_by(args.daily_cap)} 本"
+            f" → この回 {max(0, remaining)} 本まで")
+    why = "1日の上限" if by_cap <= 0 else "この時刻までの配分（夜中に使い切らず昼に回す）"
     if cap_reached and args.max_major <= 0 and not fast_mode:
-        log(f"[info] 今日はすでに {done_today} 本生成済み（上限 {args.daily_cap}）")
+        log(f"[info] 今日の公開中 {done_today} 本で{why}に達しています（上限 {args.daily_cap}）")
         return 0
     if cap_reached:
-        log(f"[info] 今日はすでに {done_today} 本生成済み（上限 {args.daily_cap}）。大きなニュースだけ確認します")
+        log(f"[info] 今日の公開中 {done_today} 本で{why}に達しています（上限 {args.daily_cap}）。大きなニュースだけ確認します")
     trend_limit = 0 if cap_reached else min(args.trends, remaining)
     ai_limit = 0 if cap_reached else (args.max if args.section in ("ai", "all") else 0)
     broad_limit = 0 if cap_reached else (args.max_broad if args.section in ("broad", "all") else 0)
-    log(f"[info] 今日の生成済み {done_today} 本 / 上限 {args.daily_cap or 'なし'}")
+    log(f"[info] 今日の生成済み（公開中） {done_today} 本 / 上限 {args.daily_cap or 'なし'}")
 
     recent = dedupe.load_recent(DEDUPE_DAYS)
     story_recent = story.Recent(DEDUPE_DAYS)
@@ -1768,6 +1822,8 @@ def main() -> int:
     def usable(items):
         kept = []
         for i in items:
+            if not gate_retry_due(state, i["id"]):
+                continue  # 品質ゲートに落ちて再挑戦待ち（待ち時間が過ぎたら戻る）
             if args.max_major > 0 and is_major(i, trend_index):
                 # 大きなニュースは失敗回数ではなく実行回数で区切る（MAJOR_MAX_RUNS 回まで再挑戦）
                 if state["major_tries"].get(i["id"], 0) < major_max_runs(i):
@@ -2240,7 +2296,14 @@ def main() -> int:
         if related:
             log(f"   [context] 過去記事 {len(related)} 本: {', '.join(r['slug'] for r in related)}")
         voice_key, voice_text = m.pick_voice()
+        retry_rec = (state.get("gate_retry") or {}).get(item["id"]) if not major else None
+        if retry_rec:
+            item["gate_retry"] = retry_rec.get("tries", 1)
+            log(f"   [retry] 品質ゲートの再挑戦（{item['gate_retry']}/{GATE_RETRY_MAX}）: 資料を増やし前回の問題点を伝えて作り直す"
+                f" / 前回: {str(retry_rec.get('reason', ''))[:120]}")
         genre, system, prompt, schema, kind, check_context, bundle = compose_with_facts(item, text, lane, related, voice_text, page)
+        if retry_rec and retry_rec.get("reason"):
+            prompt += quality.feedback_block([str(retry_rec["reason"])])
 
         def build(data, model, item=item, page=page, voice_key=voice_key, genre=genre, related=related, bundle=bundle):
             if str(data.get("genre", "")).strip() not in GENRES_BY_SLUG:
@@ -2272,6 +2335,13 @@ def main() -> int:
                 major_retry(item, f"{status}: {info or '生成に失敗'}")
                 return
             run_status[item["id"]] = ("failed", feeds.source_rank(item))
+            if status == "reject" and strong_candidate(item):
+                tries = gate_retry_keep(state, item, info or "")
+                if tries:
+                    log(f"   [retry] 有力な候補なので捨てずに、{GATE_RETRY_WAIT_HOURS:g}時間後に資料を増やして再挑戦（{tries}/{GATE_RETRY_MAX}）"
+                        f" 理由: {str(info or '')[:160]}")
+                    return
+                log(f"   [retry] 再挑戦 {GATE_RETRY_MAX} 回でも品質ゲートを通らなかったので見送りで確定: {str(info or '')[:160]}")
             if status in ("skip", "reject"):
                 mark(state, item, skipped=True, reason=f"{'quality: ' if status == 'reject' else ''}{info}"[:200], model=model_name)
             return
@@ -2298,6 +2368,7 @@ def main() -> int:
              **({"offPersona": True} if item.get("_off_persona") else {}),
              **({"major": True} if major else {}), **({"breaking": True} if record.get("breaking") else {}))
         state["major_tries"].pop(item["id"], None)
+        (state.get("gate_retry") or {}).pop(item["id"], None)
         if item.get("_off_persona") and not major:
             created_off[0] += 1  # 読者像から外れた一般の話題は、1日の上限・この実行の本数に数えない
         else:

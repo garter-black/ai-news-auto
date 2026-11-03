@@ -42,4 +42,4 @@ jobs:
             tests.test_sns_owner_rules_20261103 tests.test_retired_sources tests.test_images_official \
             tests.test_rivals tests.test_verdict_scope tests.test_persona tests.test_article_quickwins \
             tests.test_buffer_budget tests.test_quality_language tests.test_sns_hook_context tests.test_article_quality_short \
-            tests.test_git_safe_push tests.test_pipeline_health
+            tests.test_git_safe_push tests.test_pipeline_health tests.test_pacing tests.test_review_period

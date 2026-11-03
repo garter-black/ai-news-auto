@@ -256,6 +256,13 @@ BROAD_FEEDS: list[dict] = [
     {"slug": "jnet21", "name": "J-Net21（中小機構）", "url": "https://j-net21.smrj.go.jp/news/info.xml", "section": "business", "kind": "gov", "priority": 3},  # 約3件/日
     {"slug": "sumitomo-rd", "name": "住友不動産", "url": "https://www.sumitomo-rd.co.jp/news/feed/", "section": "business", "kind": "company", "priority": 3},
     {"slug": "nomura-re", "name": "野村不動産ホールディングス", "url": "https://www.nomura-re-hd.co.jp/news/chtml/rss.xml", "section": "business", "kind": "company", "priority": 3},
+    # --- 2026-11-03 追加（日本の昼に出る候補の補強。robots.txt 許可・日付あり・記事ページの本文が3,000字前後取れることを確認） ---
+    # キャッシュレス決済のキャンペーン・手数料・新機能は会社員の家計に直結する。人事・役員のお知らせは除く。
+    # 同じ日に確かめたが使えなかったもの: 経産省（Atom は 2026-06 で更新停止・ほかは 404/403）、国税庁・中小企業庁・年金機構・
+    #   特許庁・公取委・個人情報保護委・国民生活センター（RSS なし・404・403）、NEC・日立・富士通・メルカリ・freee・楽天モバイル・
+    #   三井住友・みずほ・マネックス・LINEヤフー（RSS なし or 403）、Spotify（robots.txt が禁止）
+    {"slug": "paypay", "name": "PayPay プレスリリース", "url": "https://about.paypay.ne.jp/feed/", "section": "business", "kind": "company", "priority": 2,
+     "exclude_re": "人事異動|役員|組織変更|代表取締役"},  # 約0.4件/日（10〜11時・20時ごろ）
 ]
 for _feed in BROAD_FEEDS:
     _feed.setdefault("lang", "ja")
