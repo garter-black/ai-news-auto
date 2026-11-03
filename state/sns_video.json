@@ -669,6 +669,111 @@
       "ok": false,
       "reason": "full: 台本を作れない: 台本を作れませんでした: 読み上げの合計が長すぎます（346字。300字前後まで）。; beat2.target「Manual recovery becomes unsustainable wh」に、キーワード「手作業から自動へ」の数字・言葉がありません。選択して見せる証拠の文には、その場面の大事な数 / short: 台本を作れない: 台本を作れませんでした: 読み上げの合計が長すぎます（346字。300字前後まで）。; beat2.target「Manual recovery becomes unsustainable wh」に、キーワード「手作業から自動へ」の数字・言葉がありません。選択して見せる証拠の文には、その場面の大事な数",
       "pages": []
+    },
+    "google-pixel-11-pro-food-photography": {
+      "at": "2026-11-03T13:25:58+00:00",
+      "status": "attached",
+      "tries": 1,
+      "textAt": "2026-11-03T14:40:00+00:00",
+      "textId": "6ae9e0adf08b305d7c07a1a3",
+      "breaking": false,
+      "scheduled": true,
+      "versions": {
+        "full": {
+          "ok": true,
+          "seconds": 55.196,
+          "reasons": [],
+          "post": {
+            "title": "Google Pixel 11 ProのAIで料理写真 ソフトバンクがプロの撮…",
+            "url": "https://ai-tech-express.jp/articles/google-pixel-11-pro-food-photography",
+            "total": 55.196,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "料理写真、プロに頼む必要ある？"
+              },
+              "summary": "要約すると、ソフトバンクニュースが料理撮影のプロ太田笙子さんによる「Google Pixel 11 Pro」の撮影・編集術を公開しました。マジックキャプチャーで動画から最適な静止画を選び、撮影後もイマジネーションやGemini、編集マジックで背景追加や写り込みの消去ができます。AI機能は端末の標準機能です。"
+            }
+          }
+        },
+        "short": {
+          "ok": true,
+          "seconds": 35.149,
+          "reasons": [],
+          "post": {
+            "title": "Google Pixel 11 ProのAIで料理写真 ソフトバンクがプロの撮…",
+            "url": "https://ai-tech-express.jp/articles/google-pixel-11-pro-food-photography",
+            "total": 35.149,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "料理写真、プロに頼む必要ある？"
+              },
+              "summary": "要約すると、ソフトバンクニュースが料理撮影のプロ太田笙子さんによる「Google Pixel 11 Pro」の撮影・編集術を公開しました。マジックキャプチャーで動画から最適な静止画を選び、撮影後もイマジネーションやGemini、編集マジックで背景追加や写り込みの消去ができます。AI機能は端末の標準機能です。"
+            }
+          }
+        }
+      },
+      "timings": {
+        "full": {
+          "script": 0.0,
+          "tts": 23.62,
+          "plan_audio": 4.4,
+          "render": 46.95,
+          "gate": 5.33,
+          "sheet": 2.32,
+          "total": 82.7
+        },
+        "short": {
+          "script": 0.0,
+          "tts": 14.62,
+          "plan_audio": 2.82,
+          "render": 28.54,
+          "gate": 3.48,
+          "sheet": 1.53,
+          "total": 51.0
+        }
+      },
+      "ok": true,
+      "reason": "",
+      "pages": [
+        "softbank.jp"
+      ],
+      "urls": {
+        "full": "https://ai-tech-express.jp/video/google-pixel-11-pro-food-photography-c695bd00aa.mp4",
+        "short": "https://ai-tech-express.jp/video/google-pixel-11-pro-food-photography-92ddc98a50.mp4",
+        "poster": "https://ai-tech-express.jp/video/google-pixel-11-pro-food-photography-f41c15b660.jpg"
+      },
+      "embedded": true,
+      "variant": "full",
+      "bufferId": "6ae9e0adf08b305d7c07a1a3",
+      "postedAt": "2026-11-03T14:40:00+00:00",
+      "body": "【速報】料理撮影してる人、これはチェックしてほしい。\n\n要約すると、ソフトバンクニュースが、Google Pixel 11 Proを使った料理撮影術を公開しました。\n撮影後に背景を追加したり、食べかけの料理を復元したりできる機能も紹介されています。\n\nスマホの写真、いちばん撮るのは料理と仕事の書類どっちですか？\n\n公式ページの画面を見ながら、55秒の動画で解説しています。\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/google-pixel-11-pro-food-photography?utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=full\n音声：VOICEVOX:九州そら",
+      "notes": {
+        "link": "video",
+        "line": true,
+        "credit": true
+      },
+      "check": {
+        "status": "scheduled",
+        "dueAt": "2026-11-03T14:40:00.000Z",
+        "video": true,
+        "before": {
+          "status": "scheduled",
+          "dueAt": "2026-11-03T14:40:00.000Z"
+        }
+      },
+      "link": "https://ai-tech-express.jp/articles/google-pixel-11-pro-food-photography?utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=full"
     }
   }
 }
