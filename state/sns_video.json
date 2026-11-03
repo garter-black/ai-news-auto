@@ -774,6 +774,78 @@
         }
       },
       "link": "https://ai-tech-express.jp/articles/google-pixel-11-pro-food-photography?utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=full"
+    },
+    "chatgpt-pro-monthly-api-credits": {
+      "at": "2026-11-03T14:10:56+00:00",
+      "status": "article_only",
+      "tries": 1,
+      "textAt": "2026-11-03T13:45:00+00:00",
+      "textId": "6ae9e0a01e1aeba3c6bb1c77",
+      "breaking": false,
+      "scheduled": false,
+      "versions": {
+        "full": {
+          "ok": true,
+          "seconds": 58.153,
+          "reasons": [],
+          "post": {
+            "title": "ChatGPT Pro、毎月のAPIクレジットを明記 最大500ドル分",
+            "url": "https://ai-tech-express.jp/articles/chatgpt-pro-monthly-api-credits",
+            "total": 58.153,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "ChatGPT ProのAPI枠はいくら？"
+              },
+              "summary": "要約すると、OpenAIがChatGPTの料金ページで、Proに付く毎月のAPIクレジットの金額を示しました。Pro 100は100ドル、Pro 200は200ドル、Pro 500は500ドルで、自作アプリやAIエージェントを作る人向けです。枠が新設かどうか、Pro本体の月額、使い切ったあとの扱いは確認できていません。"
+            }
+          }
+        },
+        "short": {
+          "ok": false,
+          "seconds": 32.931,
+          "reasons": [
+            "v3: 変化と記録した所で絵がほとんど変わっていない（19.5秒）"
+          ]
+        }
+      },
+      "timings": {
+        "full": {
+          "script": 0.0,
+          "tts": 25.4,
+          "plan_audio": 4.68,
+          "render": 51.45,
+          "gate": 5.46,
+          "sheet": 2.33,
+          "total": 89.4
+        },
+        "short": {
+          "script": 0.0,
+          "tts": 13.84,
+          "plan_audio": 2.64,
+          "render": 29.16,
+          "gate": 3.24,
+          "sheet": 1.35,
+          "total": 50.2
+        }
+      },
+      "ok": true,
+      "reason": "short: v3: 変化と記録した所で絵がほとんど変わっていない（19.5秒）",
+      "pages": [
+        "ai-tech-express.jp",
+        "developers.openai.com"
+      ],
+      "urls": {
+        "full": "https://ai-tech-express.jp/video/chatgpt-pro-monthly-api-credits-63e7a52aef.mp4",
+        "poster": "https://ai-tech-express.jp/video/chatgpt-pro-monthly-api-credits-98060d0fd5.jpg"
+      },
+      "embedded": true,
+      "why": "動画ができる前に投稿の時刻が来た（写真で出た）"
     }
   }
 }
