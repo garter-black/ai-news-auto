@@ -244,3 +244,27 @@ class BodyImagesTest(unittest.TestCase):
         self.assertEqual([f["original"] for f in figs], ["https://www.apple.com/chart.png", "https://www.apple.com/kit.jpg"])
         self.assertTrue(all(f["credit"] == "Apple" and f["sourceUrl"] == article["sourceUrl"] for f in figs))
         self.assertTrue(all(f["src"].startswith("https://ai-tech-express.jp/img/apple-q4-fig") for f in figs))
+
+
+class BodyImagesBackfillTest(unittest.TestCase):
+    """書き直した記事に本文の公式の画像を足す（見出し画像は変えない・見出し画像と同じ写真は置かない）"""
+
+    def test_adds_without_touching_thumbnail(self):
+        from collections import Counter  # noqa: PLC0415
+        from unittest import mock  # noqa: PLC0415
+
+        from PIL import Image  # noqa: PLC0415
+
+        big = Image.new("RGB", (1200, 675))
+        art = {"slug": "x", "newsType": "product", "sourceType": "web", "sourceUrl": "https://www.apple.com/jp/newsroom/x/",
+               "thumbnail": "https://ai-tech-express.jp/img/x.jpg", "imageCredit": {"original": "https://www.apple.com/a.jpg"}}
+        found = [{"kind": "photo", "url": "https://www.apple.com/a.jpg", "image": big}, {"kind": "photo", "url": "https://www.apple.com/b.jpg", "image": big}]
+        with mock.patch.object(images, "official_source", return_value={"wire": ""}), \
+                mock.patch.object(images, "pick_official", return_value={"best": None, "found": found}), \
+                mock.patch.object(images, "org_name", return_value="Apple"), \
+                mock.patch.object(images, "store", side_effect=lambda k, i, d, keep_aspect=False: (f"https://ai-tech-express.jp/img/{k}.jpg", i.size)), \
+                mock.patch.object(images, "save"):
+            self.assertEqual(images.add_body_images(Path("x.json"), art, {"repeats": Counter(), "dry_run": True}), "added")
+        self.assertEqual(art["thumbnail"], "https://ai-tech-express.jp/img/x.jpg")
+        self.assertEqual([f["original"] for f in art["bodyImages"]], ["https://www.apple.com/b.jpg"])
+        self.assertEqual(art["bodyImages"][0]["credit"], "Apple")

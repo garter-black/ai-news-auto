@@ -47,6 +47,30 @@ WRITE_MODEL = os.environ.get("REWRITE_MODEL", "claude-sonnet-5-5")
 # 品質ゲートに合格しなかった回数（2回落ちた記事は、順番の対象から外す。同じ記事に何度も費用を使わない）
 TRIES_PATH = ROOT / "state" / "types_rewrite.json"
 MAX_TRIES = 2
+# 1本あたりの費用の見込み（Sonnet で書く・確認・作り直しを含む。2026-11-03 の実績 約0.2ドル）。今日使ってよい額の計算に使う
+EST_COST = float(os.environ.get("REWRITE_EST_COST_USD", "0.25"))
+
+
+def budget_allowance(want: int) -> tuple[int, str]:
+    """月の予算（記事づくりと同じ配分。llm.api_ledger_summary）から、今日あと何本書き直してよいか。
+    1日に使ってよい額 =（予算 − 使った額）÷ 残りの日数。今日すでに使った額を引いた残りで書ける本数（本番の記事を先に守る）"""
+    s = llm.api_ledger_summary()
+    if llm.api_block_reason("core", summary=s):
+        return 0, f"Claude API を使えない（{llm.api_block_reason('core', summary=s)}）"
+    daily = max(0.0, float(s["budget"]) - float(s["spent"])) / max(1, int(s.get("days_left") or 1))
+    room = daily - float(s.get("spent_today") or 0)
+    n = max(0, min(want, int(room // EST_COST)))
+    return n, (f"今日使ってよい額 ${daily:.2f}・今日使った額 ${float(s.get('spent_today') or 0):.2f}・残り ${room:.2f} → {n} 本"
+               f"（予算 ${float(s['budget']):.0f}・使った額 ${float(s['spent']):.2f}・残り {s.get('days_left')} 日）")
+
+
+def run_cost() -> float:
+    """この回（このジョブの記録ファイルの、この実行の分）で使った額"""
+    try:
+        data = json.loads(llm._ledger_path().read_text("utf-8"))  # noqa: SLF001
+        return float(((data.get("runs") or {}).get(llm._jst_day(), {}).get(llm._run_key()) or {}).get("usd") or 0)  # noqa: SLF001
+    except (OSError, ValueError):
+        return 0.0
 
 
 def load_tries() -> dict:
@@ -314,7 +338,15 @@ def main() -> int:
         for score, a in ranked()[: args.rank]:
             print(f"{score:7.1f}  {a['slug'][:60]:60} {a['title'][:40]}")
         return 0
-    slugs = [s for s in args.slug.split(",") if s] or [a["slug"] for _, a in ranked()[: args.max]]
+    want = args.max
+    if args.apply and os.environ.get("ANTHROPIC_API_KEY"):
+        allowed, why = budget_allowance(args.max)
+        log(f"[budget] {why}")
+        if allowed <= 0:
+            log("[budget] 今日は予算に余裕が無いので、書き直さずに終わります（質を下げて無料モデルで書くことはしない）")
+            return 0
+        want = allowed
+    slugs = ([s for s in args.slug.split(",") if s] or [a["slug"] for _, a in ranked()[: want]])[:want]
     started = time.time()
     results = []
     done = 0
@@ -329,6 +361,10 @@ def main() -> int:
             new, rep = None, {"slug": slug, "why": f"失敗: {str(error)[:200]}"}
         if new is None:
             log(f"   [keep] 今の版のまま: {rep.get('why')}")
+            if "Sonnet が使えなかった" in str(rep.get("why")):
+                log("[budget] Sonnet が使えなくなったので、ここで止めます（残りは次の回）")
+                results.append(rep)
+                break
             if args.apply and "Sonnet が使えなかった" not in str(rep.get("why")):
                 tries = load_tries()
                 row = tries.setdefault(slug, {"failed": 0})
@@ -343,7 +379,7 @@ def main() -> int:
         results.append(rep)
         if args.report:
             Path(args.report).write_text(json.dumps(results, ensure_ascii=False, indent=2) + "\n", "utf-8")
-    log(f"\n[done] 書き直し {done} 本 / 今の版のまま {len(results) - done} 本")
+    log(f"\n[done] 書き直し {done} 本 / 今の版のまま {len(results) - done} 本 / この回の費用 ${run_cost():.2f}")
     return 0
 
 

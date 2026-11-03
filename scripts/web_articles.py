@@ -64,6 +64,7 @@ import llm  # noqa: E402
 import main as m  # noqa: E402
 import news_types  # noqa: E402  ニュースの種類ごとの記事の型
 import notice_gate  # noqa: E402
+import pricing_scope  # noqa: E402
 import source_links  # noqa: E402
 import headline_normalize  # noqa: E402
 import pacing  # noqa: E402  1日の上限の数え方（公開中だけ）と時刻ごとの配分
@@ -917,6 +918,8 @@ def compose_with_facts(item: dict, text: str, lane: str, related: list[dict], vo
     item["newsType"] = news_types.classify(item["title"], text, url=item.get("url", ""), genre="" if lane == "ai" else lane, bundle=bundle,
                                            item=item)
     log(f"   [type] {news_types.get(item['newsType']).label}（{item['newsType']}）")
+    if bundle.ladder and item["newsType"] not in pricing_scope.ALLOWED_TYPES:
+        bundle.ladder = None  # 料金が話題でない種類には、料金表を差し込まない（生成のプロンプトにも出さない）
     outline = news_types.prompt_block(item["newsType"], genre_slug=lane)
     context = archive.prompt_block(related) + japan_availability.prompt_block(item["title"], text) + bundle.prompt_block()
     if item.get("late"):
@@ -1080,6 +1083,9 @@ def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_
     if bundle is not None and not bundle.empty():
         strip_fact_ids(record)
         # 料金の段の表はプログラムが差し込む（LLM に表を書かせない）。束の中身は品質ゲートの数字・出典の照合に使う（書き出す前に外す）
+        # 料金表は、料金が話題か直接関係する記事だけ（scripts/pricing_scope.py。2026-11-03: 新薬開発の記事に Claude の料金表が出ていた）
+        if bundle.ladder and not pricing_scope.relevant(record):
+            bundle.ladder = None
         record["body"] = facts_bundle.insert_ladder(record["body"], bundle)
         record["_facts"] = bundle.meta()
         if bundle.ladder and bundle.ladder.get("product") and "markdown" in bundle.ladder:

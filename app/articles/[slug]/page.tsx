@@ -80,7 +80,7 @@ import { insertBodyImages } from "@/lib/body-images";
 import { calculatorForArticle } from "@/lib/calculators";
 import { getFx, getPlanProduct } from "@/lib/plan-prices";
 import PriceTable from "@/components/PriceTable";
-import { hasPriceBlock, markPriceSlot, pricingForArticle, PRICE_SLOT, withPriceSlot } from "@/lib/price-slot";
+import { hasPriceBlock, markPriceSlot, pricingForArticle, pricingRelevant, PRICE_SLOT, withPriceSlot } from "@/lib/price-slot";
 import { authorJsonLd, publisherJsonLd } from "@/lib/publisher";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -233,6 +233,7 @@ export default async function ArticlePage({ params }: Props) {
   const pricing = pricingForArticle(article);
   const fx = getFx();
   const chartFigures = (article.charts ?? [])
+    .filter((chart) => chart.kind !== "ladder" || pricingRelevant(article))
     .map((chart) => renderChart(chart, getPlanProduct, fx))
     .filter((figure): figure is ChartFigure => figure !== null);
   const ladderChart = Boolean(

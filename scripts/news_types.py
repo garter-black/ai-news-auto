@@ -343,7 +343,7 @@ RULES: list[tuple[str, int, int, re.Pattern]] = [
     ("policy", 4, 1, _re(r"制度|法改正|改正法|規制|法案|閣議|政府|省令|告示|補助金|助成金|支援金|給付|税制|減税|増税|控除|申請受付|大臣|知事|自治体|regulat|legislation|ガイドライン")),
     ("policy", 2, 0, _re(r"財務省|総務省|経済産業省|経産省|厚生労働省|厚労省|国土交通省|国交省|金融庁|デジタル庁|内閣府|文部科学省|環境省|東京都|日本銀行|日銀|ECB|ＥＣＢ|FRB|欧州委員会|総裁|認可")),
     ("policy", 4, 0, _re(r"利上げ|利下げ|政策金利|金融政策|政策理事会|金融政策決定会合")),
-    ("research", 4, 1, _re(r"調査|統計|アンケート|白書|レポート|報告書|指数|survey|report|study|研究(?:チーム|成果|結果)|論文|分析|倒産|失業率|実態|動向|ランキング|出荷量|販売実績|生産実績|販売・生産|短観|物価|鉱工業生産|雇用")),
+    ("research", 4, 1, _re(r"調査|統計|アンケート|白書|レポート|報告書|指数|survey|report|study|研究(?:チーム|成果|結果)|初期成果|共同研究|論文|分析|倒産|失業率|実態|動向|ランキング|出荷量|販売実績|生産実績|販売・生産|短観|物価|鉱工業生産|雇用")),
     ("event", 4, 0, _re(r"まとめ|今月の|this month|週刊|weekly|recap|roundup|カンファレンス|基調講演|keynote|発表会|イベントで|で発表された|新発表|開催レポート|announced in|what's new in|what’s new in")),
     ("sports", 4, 0, _re(r"試合|優勝|決勝|日本代表|代表戦|リーグ|W杯|ワールドカップ|五輪|オリンピック|選手権|レース|グランプリ|対戦|勝利|敗れ")),
     ("product", 3, 1, _re(r"発売|新製品|新型|一部改良|新規設定|新設定|オプション|新サービス|提供開始|販売開始|受注開始|新機能|新モデル|アップデート|公開|発表|登場|導入|開始|launch|introduc|unveil|now available|available (?:now|today|in)|release|rolls? out|announc|debut|preview|一般提供|GA\b|generally available|available\b|追加|対応|可能に|拡大|強化|刷新|搭載|新登場|adds?\b|new\b|now\b|you can now|update")),

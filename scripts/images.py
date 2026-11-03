@@ -2602,6 +2602,44 @@ def process(path: Path, article: dict, ctx: dict) -> str:
     return credit["kind"]
 
 
+def add_body_images(path: Path, article: dict, ctx: dict) -> str:
+    """見出し画像はそのままにして、本文に置く公式の写真・図（bodyImages）だけを足す（今ある記事を種類の型で書き直したとき）。
+    新しい記事と同じ決まり: 会社・団体の自社サイトの発表の、報道向けの写真・図だけ。見出し画像と同じものは置かない。出典を残す"""
+    if article.get("bodyImages") or not article.get("newsType"):
+        return "skip"
+    official = official_source(article)
+    if official is None:
+        return "not-official"
+    result = pick_official(article, ctx["repeats"], extra=BODY_MAX)
+    used = {(article.get("imageCredit") or {}).get("original") or "", article.get("thumbnail") or ""}
+    org = (wire_org(article) if official.get("wire") else org_name(article)) or official.get("wire") or article.get("sourceName", "")
+    result = {**result, "found": [f for f in result.get("found") or [] if f["url"] not in used]}
+    figs = body_images(article, result, ctx, org, "")
+    if not figs:
+        return "none"
+    article["bodyImages"] = figs
+    if not ctx["dry_run"]:
+        save(path, article)
+    log(f"   [img] 本文の公式の画像 {len(figs)}枚（{'・'.join(f['kind'] for f in figs)}）: {article.get('slug')}")
+    return "added"
+
+
+def backfill_body_images(articles: dict, ctx: dict, slugs: list[str], limit: int, budget: float, started: float) -> Counter:
+    """--body-images: 指定の記事か、書き直した記事（typesRewrittenAt あり）で本文の画像が無いもの"""
+    tally: Counter = Counter()
+    targets = [(p, a) for p, a in articles.items()
+               if (a.get("slug") in slugs if slugs else (a.get("typesRewrittenAt") and not a.get("bodyImages")))]
+    for path, article in targets[:limit]:
+        if budget and time.time() - started > budget:
+            break
+        try:
+            tally[add_body_images(path, article, ctx)] += 1
+        except Exception as error:  # noqa: BLE001 - 1本の失敗で止めない
+            log(f"   [img] 本文の画像を足せない: {article.get('slug')}（{str(error)[:100]}）")
+            tally["error"] += 1
+    return tally
+
+
 def use_official(path: Path, article: dict, ctx: dict, best: dict, official: dict, release: dict | None = None) -> str:
     """公式の画像（写真・動画のサムネイル・見出し画像・図・ロゴ）を保存して記事に付ける。
     release: 報道の記事から見つけた会社自身の発表（find_official_release）。出典はその発表のページにする"""
@@ -2735,6 +2773,8 @@ def main() -> int:
     parser.add_argument("--cache-official", action="store_true", help="外部の写真を直リンクしている記事を直す（公式発表の写真は自前に保存、それ以外はフリー素材・AI 生成に）")
     parser.add_argument("--variants", action="store_true", help="前からある自前の写真に幅ごとの WebP を足す")
     parser.add_argument("--focus-recent", type=int, default=40, help="新しい N 本のうち、写真の主役の位置（imageFocus）が無い・写真が変わった記事を解析する（0 で止める）")
+    parser.add_argument("--body-images", action="store_true",
+                        help="見出し画像は変えず、本文に置く公式の写真・図（bodyImages）だけを足す（種類の型で書いた記事。--slug か書き直した記事）")
     parser.add_argument("--dry-run", action="store_true", help="保存しない")
     parser.add_argument("--preview", help="出来上がった JPEG をこのフォルダにも書く（確認用）")
     parser.add_argument("--shard", help="並列実行の分担（例: 0/3）")
@@ -2777,6 +2817,11 @@ def main() -> int:
         "previous_credit": {a.get("slug") or p.stem: a["imageCredit"] for p, a in articles.items() if isinstance(a.get("imageCredit"), dict)},
         "previous_thumb": {a.get("slug") or p.stem: a.get("thumbnail") or "" for p, a in articles.items()},
     }
+
+    if args.body_images:
+        tally = backfill_body_images(articles, ctx, args.slug, args.max, args.budget, started)
+        log(f"[img] 本文の画像: {dict(tally)}")
+        return 0
 
     if args.variants:
         tally = backfill_variants(articles, args.dry_run, args.max, args.budget, started)

@@ -4,7 +4,8 @@ name: Rewrite existing articles by news type
 # よく読まれている順に、まだの記事だけ。本文を書く段は Sonnet、事実確認・手直しはいつもの配分（月の予算の中）。
 # 品質ゲートに合格しなかった記事は書き換えない。URL・題名・公開日時・続報・画像は変えない。SNS には何も出さない。
 on:
-  # 残りの記事を1日20本ずつ（日本時間 4:50。記事づくりの回が少ない時間）。対象が無くなったら何もしないで終わる
+  # 残りの記事を1日10本まで（日本時間 4:50。記事づくりの回が少ない時間）。月の予算（記事づくりと同じ配分）で今日使ってよい額の
+  # 中だけで書く。足りない日は書かずに終わる（無料モデルに落として質を下げない）。対象が無くなったら何もしないで終わる
   schedule:
     - cron: "50 19 * * *"
   workflow_dispatch:
@@ -12,7 +13,7 @@ on:
       max:
         description: "1回で書き直す記事の数"
         required: false
-        default: "20"
+        default: "10"
       slugs:
         description: "この記事だけ（カンマ区切り。空ならよく読まれている順）"
         required: false
@@ -51,15 +52,18 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
           AFF_STATS_TOKEN: ${{ secrets.AFF_STATS_TOKEN }}
-          # 1日の呼び出し回数の安全上限は本番の記事と分けて数えたいが、記録は合計で見るので、この回だけ上げる
-          # （使う額は月の予算の配分で止まる。1回20本で Sonnet 約2〜3ドル）
-          CLAUDE_API_DAILY_CALLS_CORE: "400"
-          CLAUDE_API_DAILY_CALLS_CHECK: "800"
-          CLAUDE_API_DAILY_CALLS_HELPER: "800"
-          MAX: ${{ inputs.max || '20' }}
+          MAX: ${{ inputs.max || '10' }}
           SLUGS: ${{ inputs.slugs }}
         run: |
           timeout 4800 python -u scripts/rewrite_types.py --apply --max "$MAX" --slug "$SLUGS" --budget-sec 4200 --report rewrite_report.json
+      # 書き直した記事に、本文に置く公式の写真・図を足す（新しい記事と同じ決まり。見出し画像は変えない。scripts/images.py --body-images）
+      - name: Body images
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          LLM_WORKFLOW: products
+        run: timeout 900 python -u scripts/images.py --body-images --max 40 --budget 780
       - uses: actions/upload-artifact@v7
         if: always()
         with:

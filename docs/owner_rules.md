@@ -42,7 +42,7 @@
 | I3 | 文字だけの図の画像を記事の写真にしない | 2026-11-03 | 写真の代わりにならない | `scripts/images.py`（`image_problem`・`graphic_problem`）・`tests/test_owner_rules_gaps.py::test_text_only_figure_is_rejected` | |
 | I4 | AI の画像には「AI生成」と出す | 2026-11-03 | 本物と間違えられないように | `components/ImageCredit.tsx`・毎日の見張り `scripts/owner_rules_audit.py` | ● |
 | I5 | 壊れた画像を出さない | 2026-11-02 | 壊れたアイコンは信用を落とす | `scripts/check_images.py`（`broken_images.yml` 1時間ごと）・`tests/test_check_images.py` | ● |
-| I6 | 公式の写真・図を本文に1〜2枚、出典（画像：会社名・公式発表へのリンク）つきで置く。会社・団体の自社サイトの発表にある報道向けの画像だけ（ロゴ・通信社の写真・ニュースサイトの画像は使わない） | 2026-11-03 | 他社は公式の図や写真を出典つきで入れていた | `scripts/images.py`（`body_images`）・`lib/body-images.ts`・`tests/test_body_images.cjs`・`tests/test_images_official.py` | |
+| I6 | 公式の写真・図を本文に1〜2枚、出典（画像：会社名・公式発表へのリンク）つきで置く。会社・団体の自社サイトの発表にある報道向けの画像だけ（ロゴ・通信社の写真・ニュースサイトの画像は使わない） | 2026-11-03 | 他社は公式の図や写真を出典つきで入れていた | `scripts/images.py`（`body_images`・書き直した記事は `add_body_images`）・`lib/body-images.ts`・`tests/test_body_images.cjs`・`tests/test_images_official.py` | |
 
 ## 記事
 
@@ -79,6 +79,7 @@
 | A29 | 記事の題名は1つだけ。見出し（h1）・ブラウザのタブ（`<title>`）・og:title・X のカード・OG 画像（/cover）・SNS カード（/card）・構造化データ・ニュース用サイトマップ・RSS・一覧は、記事の題名（`title`）から作る（検索向けの seoTitle「〜とは？日本で使える？」を題名に出さない。説明つきの社名「ChatGPTのOpenAIが」は門番で外す）。題名を直したら OG 画像の URL も変わる（古い画像を使わせない） | 2026-11-03 | 題名の書き直しのあとも、タブ・検索結果・SNS カードの題名が「〜とは？〜を解説」の古い型のままで、見出しと別ものだった | `lib/headline.ts`（`articleTitle`）・`lib/cover-path.ts`（`coverPath` の題名のハッシュ）・`app/articles/[slug]/page.tsx`・`app/cover/[slug]/route.tsx`・`app/card/[slug]/route.tsx`・`lib/card-designs.tsx`・`app/news-sitemap.xml/route.ts`・`app/feed.xml/route.ts`・`tests/test_title_source.cjs`・見張り `scripts/owner_rules_audit.py`（`title_tag_problems`）・`tests/test_owner_rules_audit.py::TitleTagTest` | ● |
 | A30 | ジャンル（タブ）と企業の札は記事の中身で決める。AI の話でない記事を「AI・テクノロジー」にしない（製品・アプリは「テクノロジー・ガジェット」）。決算は「投資・マネー」（A23）、国・自治体・公的機関（IPA など）の発表は「社会・行政」。企業の札は見出しの主語の会社（Qodo の発表に「OpenAI」を付けない。AWS・Apple・サムスン・Salesforce は「その他」にまとめない）。タグと見出しの会社名の形をそろえる（「マイクロソフト」と「Microsoft」、「アトラシアン」と「Atlassian」を混ぜない） | 2026-11-03 | Apple の決算が「テクノロジー・ガジェット」、kubell のストレージの記事が「AI・テクノロジー」、Qodo のプラグインに「OpenAI」の札、「その他のAI企業」にサムスンのテレビが入っていた | 生成 `scripts/labels.py`（`genre_fix`・`normalize_tags`）・`scripts/web_articles.py`（`build_web_record`）・`scripts/headline_normalize.py`（`COMPANY_FORMS`）・表示 `lib/companies.ts`（`companyOf`・`subjectOf`・`companySlug`）・見直し `scripts/label_check.py`（Haiku・`label_check.yml`）・`tests/test_labels.py`・`tests/test_company_labels.cjs`・見張り `scripts/owner_rules_audit.py`（`label_problems`）・`tests/test_owner_rules_audit.py::LabelTest` | ● |
 | A31 | 初心者でもわかるが、専門家が物足りないとも思わない線で書く（リードのあと、細部の前に「それが何か・誰のためか」を普通の言葉で1〜2文。専門用語は初出で短く言い換え、数字・版・仕組み・影響は削らない） | 2026-11-03 | 「初心者でもわかるが専門家が物足りないとも思わない、このギリギリのライン」 | `scripts/article_style.py`（`STYLE_PROMPT`・`unexplained_terms`）・`scripts/news_types.py`（`prompt_block`）・`tests/test_article_style.py::BeginnerExpertTest` | |
+| A32 | 料金表（毎日更新の料金の段の表・料金の段の図）は、料金が話題か直接関係する記事だけに出す（料金・プランの変更／題名かリードで料金に触れる新製品・新サービス）。研究・調査・決算・脆弱性・提携・書類などには出さない | 2026-11-03 | 新薬開発の記事に Claude の料金表が出ていた | `scripts/pricing_scope.py`（`relevant`）・生成 `scripts/web_articles.py`・`scripts/article_charts.py`（`ladder_for`）・表示 `lib/price-slot.ts`（`pricingRelevant`）・`tests/test_pricing_scope.py`・見張り `scripts/owner_rules_audit.py` | ● |
 
 ## サイト
 

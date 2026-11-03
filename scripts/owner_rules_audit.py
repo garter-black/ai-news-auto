@@ -57,7 +57,7 @@ OWNER_NAME_PAGES = ("/about", "/editorial-policy")
 AUDIT_RULES = (
     "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S13", "S14",
     "I2", "I4", "I5",
-    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23", "A24", "A25", "A26", "A28", "A29", "A30",
+    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23", "A24", "A25", "A26", "A28", "A29", "A30", "A32",
     "W3", "W5", "W6", "W10", "W11", "W12", "W13", "W17", "W18", "W19", "W20", "W21", "W22", "W23",
 )
 
@@ -180,7 +180,19 @@ def record_problems(record: dict, page_headings: bool = False) -> list[str]:
     out += low_value_problems(record)
     out += type_problems(record)
     out += genre_problems(record)
+    out += pricing_problems(record)
     return list(dict.fromkeys(out))
+
+
+def pricing_problems(record: dict) -> list[str]:
+    """[A32] 料金が話題でない記事（研究・決算・脆弱性・提携など）の料金表（scripts/pricing_scope.py と同じ規則）"""
+    try:
+        import pricing_scope  # noqa: PLC0415
+    except Exception:  # noqa: BLE001
+        return []
+    if record.get("type") == "roundup" or not pricing_scope.has_table(record) or pricing_scope.relevant(record):
+        return []
+    return [f"[A32] 料金が話題でない記事に料金表（{pricing_scope.news_type(record)}）"]
 
 
 def genre_problems(record: dict) -> list[str]:

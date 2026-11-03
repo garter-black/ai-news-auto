@@ -8,6 +8,34 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import rewrite_types as rt  # noqa: E402
 
 
+class BudgetTest(unittest.TestCase):
+    """記事づくりと同じ月の予算の中で、今日使ってよい額の分だけ書き直す（2026-11-03 コーディネーター: 予算は 11/4〜12/3 が 90 ドル）"""
+
+    def summary(self, spent, today, days):
+        return {"budget": 90.0, "spent": spent, "spent_today": today, "days_left": days}
+
+    def test_allowance_follows_the_daily_share(self):
+        from unittest.mock import patch  # noqa: PLC0415
+
+        with patch.object(rt.llm, "api_ledger_summary", return_value=self.summary(30.0, 0.5, 30)), \
+                patch.object(rt.llm, "api_block_reason", return_value=None):
+            n, why = rt.budget_allowance(10)
+        self.assertEqual(n, int((60 / 30 - 0.5) // rt.EST_COST))  # 1日 2ドル − 今日 0.5ドル = 1.5ドル → 6本
+        with patch.object(rt.llm, "api_ledger_summary", return_value=self.summary(30.0, 2.5, 30)), \
+                patch.object(rt.llm, "api_block_reason", return_value=None):
+            self.assertEqual(rt.budget_allowance(10)[0], 0)  # 今日の分を使い切っていれば書かない
+        with patch.object(rt.llm, "api_ledger_summary", return_value=self.summary(0.0, 0.0, 30)), \
+                patch.object(rt.llm, "api_block_reason", return_value="今月の予算に到達"):
+            self.assertEqual(rt.budget_allowance(10)[0], 0)
+
+    def test_workflow_caps_at_ten_and_keeps_shared_caps(self):
+        wf = (rt.ROOT / ".github" / "workflows" / "types_rewrite.yml").read_text("utf-8")
+        self.assertIn("inputs.max || '10'", wf)
+        self.assertNotIn("CLAUDE_API_DAILY_CALLS", wf)  # 本番と同じ1日の安全上限を使う
+        self.assertIn("scripts/deploy_tests.py", wf)
+        self.assertIn("--body-images", wf)
+
+
 class KeepTest(unittest.TestCase):
     def test_correction_note_is_kept_verbatim_at_top(self):
         old = "**編集部訂正（2026年10月31日）**：掲載時は日本での提供を確認できていませんでした。\n\n## 概要\nx"

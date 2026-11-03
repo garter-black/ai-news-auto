@@ -15,8 +15,28 @@ export type ArticlePricing = {
   compare: { tier: PlanTier | ApiTier; kind: "plan" | "api" } | null;
 };
 
+const PRICE_WORD = /料金|価格|値上げ|値下げ|月額|年額|プラン|サブスク|無料|\d[\d,.]*\s?(?:円|ドル)|\$\d|pricing|price|plan\b/i;
+
+/**
+ * 料金表を出してよい記事か（scripts/pricing_scope.py の relevant と同じ規則。2026-11-03 オーナー指摘・台帳 A32）。
+ * 料金・プランの変更の記事と、題名かリードで料金に触れる新製品・新サービスの記事だけ。種類（newsType）の無い古い記事は今までどおり
+ */
+export function pricingRelevant(article: { newsType?: string; title?: string; lede?: string }): boolean {
+  if (!article.newsType) return true;
+  if (article.newsType === "pricing") return true;
+  if (article.newsType !== "product") return false;
+  return PRICE_WORD.test(article.title ?? "") || PRICE_WORD.test(article.lede ?? "");
+}
+
 /** 記事に出す料金表（料金データがある製品だけ） */
-export function pricingForArticle(article: { pricingProduct?: string; pricingCompare?: string }): ArticlePricing | null {
+export function pricingForArticle(article: {
+  pricingProduct?: string;
+  pricingCompare?: string;
+  newsType?: string;
+  title?: string;
+  lede?: string;
+}): ArticlePricing | null {
+  if (!pricingRelevant(article)) return null;
   const product = article.pricingProduct as PricingProductId | undefined;
   if (!product || !getLadder(product)) return null;
   let compare: ArticlePricing["compare"] = null;

@@ -327,6 +327,10 @@ NOT_PLAN_TOPIC = re.compile(r"モデル|API|エンタープライズ|Enterprise|
 def ladder_for(article: dict) -> dict | None:
     # SEO 用の題名は「〜とは？料金」の型が多いので、本来の題名と「料金プラン」のタグだけで決める
     title = article.get("title") or ""
+    import pricing_scope  # noqa: PLC0415 - 料金が話題でない記事（研究・決算・脆弱性・提携など）には出さない
+
+    if not pricing_scope.relevant(article):
+        return None
     tags = article.get("tags") or []
     if not (PRICE_WORDS.search(title) or "料金プラン" in tags) or NOT_PLAN_TOPIC.search(title):
         return None
