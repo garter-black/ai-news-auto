@@ -100,8 +100,8 @@ def check_title(record: dict, new: str, reviewed: bool = False) -> list[str]:
     （「Claudeの開発元」「ABEMA運営の」のような、元の見出しの説明だった名前が消えるのは正しいため）"""
     new = hn.normalize_title(new, record)
     problems = list(hn.title_problems(new))
-    if not 16 <= len(new) <= hn.TITLE_HARD_LEN:
-        problems.append(f"長さ {len(new)}字")
+    if not 14 <= hn.em_width(new) <= hn.TITLE_HARD_LEN:
+        problems.append(f"長さ 全角換算{hn.em_width(new):g}字")
     src = source_text(record)
     added = numbers(new) - numbers(src)
     if added:

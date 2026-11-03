@@ -39,7 +39,7 @@ ROOT = Path(__file__).resolve().parent.parent
 ARTICLES = ROOT / "content" / "articles"
 
 TITLE_WARN_LEN = 40
-TITLE_HARD_LEN = 56  # これを超える見出しは書き方の不合格（title_problems）。目安は本見出し28〜40字＋短い補足
+TITLE_HARD_LEN = 50  # 全角換算でこれを超える見出しは書き方の不合格（title_problems）。目安は本見出し28〜40字＋短い補足
 
 # --------------------------------------------------------------------------- #
 # 1. かっこ
@@ -305,6 +305,11 @@ def punctuation_problems(title: str) -> list[str]:
     return [f"記号: {label}" for pattern, label in PUNCT_RULES if pattern.search(title)]
 
 
+def em_width(text: str) -> float:
+    """全角換算の長さ（半角の英数字・記号は0.5字）。英字の多い見出しを長すぎると誤判定しないため"""
+    return sum(0.5 if ord(ch) < 0x80 else 1 for ch in text)
+
+
 def title_problems(title: str) -> list[str]:
     """見出しの書き方の不合格の理由（空なら合格）。事実は見ない"""
     problems: list[str] = []
@@ -319,14 +324,15 @@ def title_problems(title: str) -> list[str]:
     problems += punctuation_problems(title)
     if INVERTED_RE.search(outside):
         problems.append("「〇〇が公開、…」の倒置")
-    if len(title) > TITLE_HARD_LEN:
-        problems.append(f"長すぎる（{len(title)}字。最大{TITLE_HARD_LEN}字）")
+    width = em_width(title)
+    if width > TITLE_HARD_LEN:
+        problems.append(f"長すぎる（全角換算{width:g}字。最大{TITLE_HARD_LEN}字）")
     return problems
 
 
 # 「Google、「Gemini」に新機能」の「、「」を「Googleが「Gemini」に新機能」にする。主語は見出しの頭の短い名前だけ
 # （「2026年、「…」」「東京で、「…」」のような、名前でない頭は変えない）
-_COMMA_BRACKET_RE = re.compile(r"^([^\s　、。「」『』（）]{1,24}?)(?<![年月日にでへはもとをがの])、(?=「)")
+_COMMA_BRACKET_RE = re.compile(r"^([^　、。「」『』（）]{1,24}?)(?<![年月日にでへはもとをがの])、(?=「)")
 
 
 def fix_comma_before_bracket(title: str) -> str:
