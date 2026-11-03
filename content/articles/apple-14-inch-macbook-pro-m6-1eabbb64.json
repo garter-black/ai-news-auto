@@ -55,7 +55,7 @@
   "videoTitle": "apple",
   "publishedAt": "2026-10-28T17:00:00+00:00",
   "generatedAt": "2026-10-28T19:11:50.581752+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/apple-14-inch-macbook-pro-m6-1eabbb64-69c73e9b.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/apple-14-inch-macbook-pro-m6-1eabbb64-f05715cd.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "trendKeyword": "apple",
@@ -86,17 +86,25 @@
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-28T17:00:00+00:00",
   "detectedAt": "2026-10-28T19:11:28+00:00",
+  "imageFocus": {
+    "x": 0.54,
+    "y": 0.509,
+    "box": [
+      0.081,
+      0.018,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/apple-14-inch-macbook-pro-m6-1eabbb64-f05715cd.jpg"
+  },
   "imageCredit": {
-    "kind": "stock",
-    "title": "Laptop on desk book stacks (Unsplash)",
-    "creator": "freddie marriage fredmarriage",
-    "creatorUrl": "",
-    "license": "CC0",
-    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Laptop_on_desk_book_stacks_(Unsplash).jpg",
-    "query": "laptop on desk",
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A clean minimalist office desk with a coffee mug, an open notebook, and a pen, illuminated by soft natural light from a nearby window.",
+    "provider": "Cloudflare Workers AI",
+    "noProduct": true,
     "original": "https://www.apple.com/newsroom/images/2026/10/apple-introduces-the-new-14-inch-macbook-pro-with-m6/tile/Apple-MacBook-Pro-14-in-with-M6-hero-261027-lp.jpg.og.jpg?202610281718",
-    "at": "2026-10-28T19:17:52+00:00"
+    "at": "2026-11-03T01:09:39+00:00"
   }
 }

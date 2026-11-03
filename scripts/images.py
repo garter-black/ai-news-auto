@@ -1837,7 +1837,12 @@ def ai_prompt(plan: dict, article: dict) -> str:
 def depicts_product(image, product: str) -> bool:
     """製品の発表の記事で、画像に製品（の種類の物）や見間違える物が写っているか。判定できないときは写っている側に倒す"""
     noun = product or "the kind of product announced (a device, vehicle, machine or gadget)"
-    text = cf_vision(image, f"Does this image show a {noun}, or any device, vehicle or machine that could be mistaken for one (even partly or in the background)? Answer yes or no.", max_tokens=5)
+    # 製品と同じ種類の物だけでなく、電子機器・乗り物・機械はどれも写さない（別の機器でも「この製品か」と見られる）
+    text = cf_vision(
+        image,
+        f"Does this image show a {noun}, or any electronic device, gadget, screen, vehicle or machine (even partly or in the background)? Answer yes or no.",
+        max_tokens=5,
+    )
     low = (text or "").strip().lower()
     if low.startswith("no"):
         return False
@@ -2417,6 +2422,22 @@ def main() -> int:
             log(f"   [img] 失敗: {str(error)[:160]}")
             outcome = "error"
         tally[outcome] += 1
+        slug = article.get("slug") or path.stem
+        before = ctx["previous_credit"].get(slug)
+        if not article.get("imageCredit") and before and article.get("thumbnail") == ctx["previous_thumb"].get(slug):
+            # 選び直せなかった（AI の上限・素材なし・失敗）ときは前の画像の出典を戻す（消したまま保存すると、AI の画像に注記が出なくなる）
+            article["imageCredit"] = before
+            if args.product_repick_days and before.get("kind") == "ai" and not before.get("noProduct") and product_launch(article):
+                # 製品の発表で、製品を描いたかもしれない前の AI 画像は残さない（写真なしのカバーにする）
+                log("   [img] 製品を描いたかもしれない前の AI 画像を外す（写真なしのカバー）")
+                article["thumbnail"] = ""
+                article.pop("imageCredit", None)
+                article.pop("imageFocus", None)
+                tally[outcome] -= 1
+                outcome = "removed-ai"
+                tally[outcome] += 1
+            if not args.dry_run:
+                save(path, article)
         # 写真の主役の位置（SNS カードの切り抜き・ロゴの角に使う。scripts/image_focus.py）
         if not args.dry_run and image_focus.ensure_focus(article):
             save(path, article)

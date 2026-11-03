@@ -55,21 +55,13 @@
   "videoTitle": "XREAL AURA: Wired XR glasses to watch, work, and play",
   "publishedAt": "2026-10-28T17:00:00+00:00",
   "generatedAt": "2026-10-28T17:28:17.091057+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/xreal-aura-android-xr-glasses-03bb4686.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/xreal-aura-android-xr-glasses-a30cb9e7.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-28T17:00:00+00:00",
   "detectedAt": "2026-10-28T17:27:01+00:00",
   "speedMinutes": 33,
-  "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A person seen from behind wearing sleek AR glasses while walking through a modern office corridor illuminated by soft natural light.",
-    "provider": "Cloudflare Workers AI",
-    "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/ManinOffice_V2.width-1300.png",
-    "at": "2026-10-28T17:39:39+00:00"
-  },
   "sources": [
     {
       "title": "XREAL AURA: Wired XR glasses to watch, work, and play",
@@ -112,5 +104,27 @@
       "sourceName": "ケータイ Watch"
     }
   ],
-  "updatedAt": "2026-11-02T08:15:10.233093+00:00"
+  "updatedAt": "2026-11-02T08:15:10.233093+00:00",
+  "imageCredit": {
+    "kind": "official",
+    "org": "Google",
+    "provider": "Google公式ブログ（Gemini）",
+    "sourceUrl": "https://blog.google/products-and-platforms/platforms/android/xreal-aura/",
+    "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/ManinOffice_V2.width-1300.png",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-03T01:05:53+00:00"
+  },
+  "imageFocus": {
+    "x": 0.461,
+    "y": 0.533,
+    "box": [
+      0.0,
+      0.067,
+      0.922,
+      1.0
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/xreal-aura-android-xr-glasses-a30cb9e7.jpg"
+  }
 }

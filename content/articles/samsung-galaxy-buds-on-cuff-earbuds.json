@@ -58,7 +58,7 @@
   "videoTitle": "Samsung unveils the $229 Galaxy Buds On, its first open-fit, C-shaped cuff earbuds to compete with Sony and Bose, designed with AI's help, shipping November 6",
   "publishedAt": "2026-10-28T12:25:01+00:00",
   "generatedAt": "2026-10-28T12:29:43.863129+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/samsung-galaxy-buds-on-cuff-earbuds-9b89b958.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/samsung-galaxy-buds-on-cuff-earbuds-19ab47d1.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "qualityScore": 92,
@@ -67,11 +67,24 @@
   "detectedAt": "2026-10-28T12:25:51+00:00",
   "fastLane": true,
   "speedMinutes": 8,
+  "imageFocus": {
+    "x": 0.497,
+    "y": 0.303,
+    "box": [
+      0.066,
+      0.0,
+      0.928,
+      0.607
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/samsung-galaxy-buds-on-cuff-earbuds-19ab47d1.jpg"
+  },
   "imageCredit": {
     "kind": "ai",
-    "model": "flux-1-schnell",
-    "prompt": "Close-up of a person's ear from the side with a sleek cuff-style earphone gently wrapped around the earlobe, soft natural lighting and a blurred background.",
+    "model": "flux-2-klein-4b",
+    "prompt": "A softly lit, empty exhibition hall with blurred stage lights and warm bokeh, polished floor, no exhibits, no products and no people in view.",
     "provider": "Cloudflare Workers AI",
-    "at": "2026-10-28T12:30:51+00:00"
+    "noProduct": true,
+    "at": "2026-11-03T01:10:16+00:00"
   }
 }
