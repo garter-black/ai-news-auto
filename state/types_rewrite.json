@@ -104,13 +104,28 @@
   "failed": 2,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },
- "nvidia-fox-factory-agents-europe": {
-  "at": "2026-11-03T16:00:00+00:00",
+ "microsoft-copilot-harness-foundry": {
+  "at": "2026-11-03T16:17:37+00:00",
   "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "mistral-large-4-preview": {
+  "at": "2026-11-03T16:21:16+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "nvidia-fox-factory-agents-europe": {
+  "at": "2026-11-03T16:22:53+00:00",
+  "failed": 2,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },
  "nvidia-nemotron-halloween-monsterhouse": {
   "at": "2026-11-03T15:38:56+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "nvidia-recovery-automated-training-recovery": {
+  "at": "2026-11-03T16:24:53+00:00",
   "failed": 1,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },
