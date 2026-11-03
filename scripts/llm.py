@@ -973,7 +973,11 @@ def api_summary_line(now: datetime | None = None) -> str:
 
 
 def _daily_calls_cap(tier: str) -> int:
-    return max(0, _env_int(f"CLAUDE_API_DAILY_CALLS_{tier.upper()}", API_DAILY_CALLS.get(tier, 0)))
+    """1日の回数の安全上限。既定値は月の予算 $95 のときの値で、予算に比例して広げる（Ultra の $190 なら2倍）。
+    環境変数 CLAUDE_API_DAILY_CALLS_<段> があればそちらを使う"""
+    scale = max(1.0, _monthly_budget() / API_MONTHLY_BUDGET_DEFAULT)
+    default = int(round(API_DAILY_CALLS.get(tier, 0) * scale))
+    return max(0, _env_int(f"CLAUDE_API_DAILY_CALLS_{tier.upper()}", default))
 
 
 def api_block_reason(purpose: str, now: datetime | None = None, summary: dict | None = None) -> str | None:

@@ -122,6 +122,63 @@
           "video_review": 2
         },
         "usd": 0.055538
+      },
+      "gh-41650062888-1": {
+        "by": {
+          "video_review|2": {
+            "n": 2,
+            "usd": 0.045819
+          }
+        },
+        "cache_read": 964,
+        "cache_write": 964,
+        "calls": {
+          "video_review": 2
+        },
+        "in": 15788,
+        "out": 1164,
+        "req": {
+          "video_review": 2
+        },
+        "usd": 0.045819
+      },
+      "gh-41650076684-1": {
+        "by": {
+          "video_review|2": {
+            "n": 1,
+            "usd": 0.022228
+          }
+        },
+        "cache_read": 0,
+        "cache_write": 964,
+        "calls": {
+          "video_review": 1
+        },
+        "in": 6669,
+        "out": 648,
+        "req": {
+          "video_review": 1
+        },
+        "usd": 0.022228
+      },
+      "gh-41651061209-1": {
+        "by": {
+          "video_review|2": {
+            "n": 1,
+            "usd": 0.035941
+          }
+        },
+        "cache_read": 964,
+        "cache_write": 0,
+        "calls": {
+          "video_review": 1
+        },
+        "in": 14804,
+        "out": 614,
+        "req": {
+          "video_review": 1
+        },
+        "usd": 0.035941
       }
     }
   }

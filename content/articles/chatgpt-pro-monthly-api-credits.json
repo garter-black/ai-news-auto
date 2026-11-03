@@ -142,5 +142,12 @@
       "自分に関係ある？": "アプリ自作における影響と確認点",
       "使ってみるには": "日本からの利用と料金の確認方法"
     }
+  },
+  "video": {
+    "src": "https://ai-tech-express.jp/video/chatgpt-pro-monthly-api-credits-63e7a52aef.mp4",
+    "poster": "https://ai-tech-express.jp/video/chatgpt-pro-monthly-api-credits-98060d0fd5.jpg",
+    "seconds": 58.2,
+    "title": "ChatGPT Pro、毎月のAPIクレジットを明記 最大500ドル分",
+    "credit": "VOICEVOX:九州そら"
   }
 }
