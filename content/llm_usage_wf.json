@@ -31,8 +31,8 @@
     },
     "images": {
       "cf-image:flux-1-schnell": 6,
-      "cf-image:flux-2-klein-4b": 17,
-      "cloudflare:@cf/openai/gpt-oss-120b": 25
+      "cf-image:flux-2-klein-4b": 20,
+      "cloudflare:@cf/openai/gpt-oss-120b": 29
     },
     "local": {
       "gemini-3.5-flash-lite": 2
