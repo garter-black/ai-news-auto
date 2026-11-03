@@ -2455,8 +2455,10 @@ def main() -> int:
         reason = last_problem[0]
         if llm.all_exhausted(args.tier):
             reason = "無料モデルも Claude API も使えない（無料枠切れ・API 停止） " + reason
+        if not reason:
+            candidates = 0  # 失敗が無く 0 本（見送り・本文が短いなど）は「止まっている」に数えない
         try:
-            health = pipeline_health.record(total_created() + updated_count[0], candidates, reason or "理由不明（ログを確認）")
+            health = pipeline_health.record(total_created() + updated_count[0], candidates, reason)
             if health.get("status") == "stalled":
                 log(f"[health] 止まっています: 0本の回が {health.get('consecutive_zero')} 回続いた / {health.get('reason')}")
         except Exception as error:  # noqa: BLE001 - 見張りの失敗で記事づくりは止めない
