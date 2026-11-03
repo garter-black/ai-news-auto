@@ -4,8 +4,8 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import CompanyMark from "@/components/CompanyMark";
 import Thumb from "@/components/Thumb";
-import { coverPath, formatDate, getArticleSummary, type ArticleSummary } from "@/lib/articles";
-import { getCompany, thumbSource } from "@/lib/companies";
+import { coverPath, formatDate, getAllArticles, getArticleSummary, type ArticleSummary } from "@/lib/articles";
+import { companyOf, getCompany, thumbSource } from "@/lib/companies";
 import {
   getAllProducts,
   getProduct,
@@ -78,7 +78,10 @@ export default async function ProductPage({ params }: Props) {
 
   const articles = productArticles(product);
   // 色・企業ページのある企業だけ印を出す（それ以外は企業名だけ）
-  const company = product.company === "other" ? undefined : getCompany(product.company);
+  // 企業ページ（/companies/<slug>）は AI の記事がある企業だけ開ける（app/companies/[company]/view.tsx）。無ければ名前だけ出す
+  const companyCandidate = product.company === "other" ? undefined : getCompany(product.company);
+  const company =
+    companyCandidate && getAllArticles().some((a) => a.genreSlug === "ai" && companyOf(a).slug === companyCandidate.slug) ? companyCandidate : undefined;
   const heading = productHeading(product);
   const url = `${siteConfig.url}/products/${product.slug}`;
 
