@@ -3121,7 +3121,18 @@
       "question": true,
       "questionText": "あなたの仕事で、いちばん気になった発表はどれですか？",
       "postedAt": "2026-11-02T21:01:07+00:00",
-      "blueskyAt": "2026-11-02T21:01:08+00:00"
+      "blueskyAt": "2026-11-02T21:01:08+00:00",
+      "metrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "views": 0,
+        "quotes": 0,
+        "reposts": 0
+      },
+      "metricsUpdatedAt": "2026-11-02T21:00:47.668Z",
+      "sentAt": "2026-11-02T21:00:46.136Z",
+      "externalLink": "https://www.threads.com/@saisoku637/post/DfQOSmaCUOg"
     },
     "digest-20261103": {
       "style": "digest",
@@ -3194,7 +3205,26 @@
         }
       },
       "id": "6ae901b13b6f22c15ecfd7db",
-      "blueskyAt": "2026-11-02T22:41:13+00:00"
+      "blueskyAt": "2026-11-02T22:41:13+00:00",
+      "metrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "views": 0,
+        "quotes": 0,
+        "reposts": 0
+      },
+      "metricsUpdatedAt": "2026-11-02T22:30:36.452Z",
+      "sentAt": "2026-11-02T22:30:46.829Z",
+      "externalLink": "https://www.threads.com/@saisoku637/post/DfQYkZTkfW7",
+      "xMetrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "reposts": 0,
+        "impressions": 0,
+        "clicks": 0
+      }
     },
     "affinity-for-ipad-canva-release": {
       "id": "6ae912dc468bc367327d66ce",
@@ -3216,7 +3246,45 @@
       "question": true,
       "questionText": "iPadで、デザインや写真編集はしていますか？",
       "postedAt": "2026-11-02T22:47:12+00:00",
-      "blueskyAt": "2026-11-02T22:47:15+00:00"
+      "blueskyAt": "2026-11-02T22:47:15+00:00",
+      "metrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "views": 0,
+        "quotes": 0,
+        "reposts": 0
+      },
+      "metricsUpdatedAt": "2026-11-02T22:47:05.682Z",
+      "sentAt": "2026-11-02T22:47:03.744Z",
+      "externalLink": "https://www.threads.com/@saisoku637/post/DfQadESEfXo",
+      "xMetrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "reposts": 0,
+        "impressions": 0,
+        "clicks": 0
+      }
+    },
+    "elevenlabs-synthetic-voice-creation": {
+      "id": "6ae92a50186a5afbce73dfa8",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae92a51e7e2bb1d6ed82603",
+        "facebook": "6ae92a5135b4915c2ef82bd2"
+      },
+      "hook": "empathy",
+      "score": 6,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "生成AI",
+      "question": true,
+      "questionText": "自分の声でAIナレーション、作ってみませんか？",
+      "dueAt": "2026-11-03T06:30:00+00:00",
+      "postedAt": "2026-11-03T00:26:57+00:00"
     }
   },
   "extraPending": {}
