@@ -742,9 +742,17 @@ def key_fact_ok(keyword: str, sub: str, text: str, ja: str = "") -> bool:
     if digits:
         have = {float(x) for x in re.findall(r"\d+(?:\.\d+)?", hay)}
         return all(float(d) in have for d in digits)
-    terms = [t for t in _TERM.findall(norm(f"{keyword} {sub}")) if t not in LATIN_OK and not re.fullmatch(r"\d+", t)]
+    kw = norm(keyword)
+    terms = [t for t in _TERM.findall(kw) if t not in LATIN_OK and not re.fullmatch(r"\d+", t)]
     terms = [t for t in terms if t not in ("ドル", "時間", "毎週", "毎月", "月額", "プラン")]
-    return not terms or any(_term_in(t, hay) for t in terms)
+    if any(_term_in(t, hay) for t in terms):
+        return True
+    # 言い換え（「山の登り下り用」↔「登坂から下りまで」）: キーワードの2文字のまとまり（漢字・カタカナ・英字を含む）が文にあればよい
+    windows = [kw[i : i + 2] for i in range(len(kw) - 1)]
+    windows = [w for w in windows if re.search(r"[一-龥々ァ-ヴA-Za-z]", w) and not re.search(r"[\s、。・]", w)]
+    if any(w in hay for w in windows):
+        return True
+    return not terms and not windows
 
 
 def check_calm(report: dict, total: float, result: GateResult) -> None:

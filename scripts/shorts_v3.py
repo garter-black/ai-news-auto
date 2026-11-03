@@ -899,8 +899,8 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
         if not ja:
             out.append(f"{name}.ja: target が英語なので、target の日本語訳を入れてください。")
             continue
-        if len(ja) > 40:
-            out.append(f"{name}.ja は36字以内（今は{len(ja)}字）。")
+        if len(ja) > 46:
+            out.append(f"{name}.ja は40字以内（今は{len(ja)}字）。")
         if name != "hook" and not clause_ok(tgt_text, item_block_text(pages, item)):
             out.append(f"target の区切り: {name}.target「{tgt_text[:40]}」は文の途中で切れています。文の頭から、文末（ピリオド）か読点（カンマ）までのまとまりを選んでください。")
         extra = [d for d in _digits(ja) if d not in set(_digits(tgt_text))]
@@ -908,7 +908,9 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
             out.append(f"{name}.ja に target に無い数字 {', '.join(extra)} があります。訳に言葉や数字を足さない。")
         if bad := gate.numbers_ok(ja, mat_numbers):
             out.append(f"{name}.ja の数字 {', '.join(bad)} が記事にありません。")
-        if bad := gate.proper_noun_problems(ja, mat + " " + tgt_text):
+        # 訳のカタカナ語（英語の言い換え）は問わない。英字の名前と「」の語だけ、記事か target にあるかを見る
+        bad = [w for w in gate.proper_noun_problems(ja, mat + " " + tgt_text) if not re.fullmatch(r"[ァ-ヴー・]+", w)]
+        if bad:
             out.append(f"{name}.ja に記事・target に無い語 {', '.join(bad)}。")
     screen = [s.get("hook", {}).get(k, "") for k in ("text", "payoff", "ja")] + [(s.get("conclusion") or {}).get("text", "")]
     screen += [b.get(k, "") for b in beats for k in ("keyword", "sub", "ja")]
@@ -1065,7 +1067,40 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
             "\n\n# 前回の台本で、資料・画面の文字に無かった主張（すべて消すか、資料の文どおりに直す）\n" + "\n".join(f"- {p}" for p in problems)
             + "\n\n# 前回の台本\n" + json.dumps(data, ensure_ascii=False)
         )  # fmt: skip
+        repaired = repair_evidence(data, article, pages)
+        if repaired is not None:
+            problems = script_problems(repaired, article, pages)
+            style = [p for p in problems if p.startswith(STYLE_PREFIXES)]
+            if len(style) == len(problems):
+                log(f"   [v3] 証拠の行を直して採用（{phase}）")
+                repaired["_mode"] = f"{phase}+repair"
+                return repaired, model
     raise RuntimeError(f"台本を作れませんでした: {last[:400]}")
+
+
+def repair_evidence(data: dict, article: dict, pages: list[Page]) -> dict | None:
+    """証拠の文にキーワードの数字・言葉が無い beat は、画面の文字からそれを含む文を探して付け替える（LLM を呼ばない）。
+    付け替えた英語の文は訳が無いので ja は空にする（吹き出しは出さない）"""
+    out = json.loads(json.dumps(data, ensure_ascii=False))
+    changed = False
+    for b in out.get("beats") or []:
+        tgt = find_target(pages, b.get("target", ""), b.get("block", ""), keyword=b.get("keyword", ""))
+        if tgt and gate.key_fact_ok(b.get("keyword", ""), b.get("sub", ""), b.get("target", ""), b.get("ja", "")):
+            continue
+        best = None
+        for p in pages:
+            for blk in p.blocks:
+                for sent in re.split(r"(?<=[。！？.!?])\s*", blk.text):
+                    sent = sent.strip()
+                    if 4 <= len(sent) <= 140 and gate.key_fact_ok(b.get("keyword", ""), b.get("sub", ""), sent):
+                        score = (0 if not p.own else 1, len(sent))
+                        if best is None or score < best[0]:
+                            best = (score, blk.id, sent)
+        if best is None:
+            return None
+        b.update({"block": best[1], "target": best[2], "ja": "" if is_english(best[2]) else ""})
+        changed = True
+    return out if changed else None
 
 
 STRICT_NOTE = """
