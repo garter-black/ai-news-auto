@@ -63,6 +63,16 @@
     "zoohZ1BiHs0": 1
   },
   "failed_web": {},
+  "gate_retry": {
+    "ce9b39562dd42cfe": {
+      "first": "2026-11-03T13:43:44.204259+00:00",
+      "next": "2026-11-03T16:43:44.204259+00:00",
+      "reason": "「ヒープ領域を最大8.4%削減」「ヒープ内のオブジェクト占有サイズは…最大8.4%削減されました」→ 元記事の8.4%は同一のキャプチャ済みオブジェクトをJOLのレイアウトモデルで試算した値で、実際のヒープが減ったわけではない。実測のように書いており言い過ぎ。; 「初期画面のヒープデータ：141.533 MiBから132.619 MiBへ減少」ほか→ これらは従来モデルとコンパクトモデルの試算の比",
+      "title": "Where Did the Saved Bytes Go? Compact Object Headers in IntelliJ IDEA",
+      "tries": 1,
+      "url": "https://blog.jetbrains.com/idea/2026/11/where-did-the-saved-bytes-go-compact-object-headers-in-intellij-idea/"
+    }
+  },
   "major_tries": {},
   "processed": {
     "--kyzoeUuBk": {
@@ -13168,48 +13178,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-11-01T07:11:30.014540+00:00",
-      "attempt": 1,
-      "id": "3d3dd604c2760eb5",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 55.0字・60字超の文が 40% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 101.4,
-        "avg_sentence": 55.0,
-        "long_share": 0.4,
-        "max_paragraph": 178,
-        "paragraphs": 19,
-        "sentences": 35
-      },
-      "score": 100,
-      "source": "atlassian-blog",
-      "title": "Jira’s autumn 2026 release: faster views, visible agents, and consistency by def"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-01T07:11:33.880038+00:00",
-      "attempt": 0,
-      "id": "3d3dd604c2760eb5",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 99.0,
-        "avg_sentence": 31.9,
-        "long_share": 0.017,
-        "max_paragraph": 181,
-        "paragraphs": 19,
-        "sentences": 59
-      },
-      "score": 100,
-      "source": "atlassian-blog",
-      "title": "Jira’s autumn 2026 release: faster views, visible agents, and consistency by def"
-    },
-    {
-      "accepted": false,
       "at": "2026-11-01T07:31:03.074250+00:00",
       "attempt": 1,
       "id": "142f0e7c0832faf1",
@@ -19620,6 +19588,66 @@
       "score": 93,
       "source": "jfa",
       "title": "AFCがAFCアジアカップサウジアラビア2027の開催日程を変更 #jfa #daihyo"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T13:42:49.119170+00:00",
+      "attempt": 1,
+      "id": "ce9b39562dd42cfe",
+      "kind": "ai",
+      "model": "gemini-3.5-flash",
+      "problems": [
+        "タイトル「ヒープ占有率を最大8%削減」→ 元記事の最大値は8.4%で、リード・本文でも「最大8.4%」と書いており表記が一貫せず、見出しの「メモリ8%削減と処理速度の改善効果」も実際はRSSに有意な削減がなく、速度改善も限定的なので誇大。",
+        "「Petclinicプロジェクトで割り当てメモリ量が671.2 MiBから612.3 MiBへ」→ 元記事の表は「71.2」と読める断片的な値（先頭が「75671.2」で操作数75と結合）で、671.2 MiBが操作数とヘッダー無しの値の結合であり、記事の数字は元記事の値(671.2)とは異なる可能性がある。",
+        "「まだ分からないこと」の「Java 27以外の旧バージョンJVMへのバックポート提供範囲は確定していません」「サードパーティ製プロファイラーとの互換性問題」→ 元記事に無い話題で、読者に根拠なき懸念を与える。",
+        "「Java 27では…デフォルトで有効になる予定です」→ 元記事は「HotSpot enables ... by default」と断定しており、「64ビット環境」限定の記述も元記事は「テストした構成」であって一般化している。",
+        "「Java開発者が今すぐ試せる」「IntelliJ IDEA 2026.3 EAPのプロファイラー機能が使えます」→ 元記事はEAPでメモリダンプのコンパクトヘッダー推計に対応と述べるが、Memory Allocationsビューがコンパクトヘッダーを扱うのは別機能で、プロファイラーでの推計と混同している。",
+        "「GCの発生回数と停止時間にも改善」「スクリプト操作中のGC経過時間は92.0ミリ秒から72.0ミリ秒へ21.7%短縮」→ GC経過時間は停止時間そのものではなく、Petclinic/モノレポの値は範囲が重なり有意とは言えないのに改善と断定している。"
+      ],
+      "readability": {
+        "avg_paragraph": 143.6,
+        "avg_sentence": 69.3,
+        "long_share": 0.655,
+        "max_paragraph": 230,
+        "paragraphs": 14,
+        "sentences": 29
+      },
+      "score": 50,
+      "source": "jetbrains-blog",
+      "title": "Where Did the Saved Bytes Go? Compact Object Headers in IntelliJ IDEA",
+      "warnings": [
+        "見出しが57字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T13:43:44.204175+00:00",
+      "attempt": 2,
+      "id": "ce9b39562dd42cfe",
+      "kind": "ai",
+      "model": "gemini-3.5-flash",
+      "problems": [
+        "「ヒープ領域を最大8.4%削減」「ヒープ内のオブジェクト占有サイズは…最大8.4%削減されました」→ 元記事の8.4%は同一のキャプチャ済みオブジェクトをJOLのレイアウトモデルで試算した値で、実際のヒープが減ったわけではない。実測のように書いており言い過ぎ。",
+        "「初期画面のヒープデータ：141.533 MiBから132.619 MiBへ減少」ほか→ これらは従来モデルとコンパクトモデルの試算の比較なのに、ヘッダー有効化による実際の減少のように書いている。",
+        "「Javaアプリケーションのヒープメモリ利用効率が向上し、実行時のメモリ割り当て量を最大13.0%削減できます」→ 13.0%はIntelliJ IDEAのモノレポでのスクリプト操作の結果にすぎず、Javaアプリ一般に当てはまるように断定している。",
+        "「ヒープ内部のデータ密度の向上と割り当て負荷の軽減は確実に機能します」→ 元記事にない断定。効果はオブジェクトの構成次第で、元記事も一律には小さくならないと述べている。",
+        "「Javaプロセスの最大ヒープサイズ設定（-Xmx）を安易に削減することは推奨されません」→ 元記事にない推奨。元記事は、より小さい-Xmxで安定して動くかを調べる項目を挙げているが、結果は引用範囲に出ていない。",
+        "「GC…モノレポのインデックス作成時におけるGCイベント数は560.0回から530.7回へ（−5.2%）」→ 数値は元記事と合っているが、「操作完了までの累積時間やレイテンシの短縮幅は数パーセント」は、モノレポの累積時間が−0.1%で、p95の結果が途切れているため、記事の断定は元記事で裏付けられない。"
+      ],
+      "readability": {
+        "avg_paragraph": 146.7,
+        "avg_sentence": 79.5,
+        "long_share": 0.792,
+        "max_paragraph": 220,
+        "paragraphs": 13,
+        "sentences": 24
+      },
+      "score": 62,
+      "source": "jetbrains-blog",
+      "title": "Where Did the Saved Bytes Go? Compact Object Headers in IntelliJ IDEA",
+      "warnings": [
+        "見出しが44字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
     }
   ],
   "short_text_retry": {
