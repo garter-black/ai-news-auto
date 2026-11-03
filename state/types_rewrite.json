@@ -9,8 +9,18 @@
   "failed": 1,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },
+ "anthropic-s1-sec-ipo-filing": {
+  "at": "2026-11-03T15:58:15+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
  "artex-agentic-offensive-frameworks": {
   "at": "2026-11-03T15:29:38+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "aws-kiro-crew-1000-prs-stability": {
+  "at": "2026-11-03T16:00:25+00:00",
   "failed": 1,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },
@@ -34,8 +44,18 @@
   "failed": 1,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },
+ "discord-public-server-google-search": {
+  "at": "2026-11-03T16:02:14+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
  "figma-config-india-insights-ai": {
   "at": "2026-11-03T15:27:55+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "geforce-now-phantom-blade-zero-update": {
+  "at": "2026-11-03T16:06:06+00:00",
   "failed": 1,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },
@@ -44,13 +64,23 @@
   "failed": 1,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },
+ "gemini-edit-files-directly": {
+  "at": "2026-11-03T16:07:59+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
  "github-copilot-app-projects-computer-use": {
-  "at": "2026-11-03T16:00:00+00:00",
-  "failed": 2,
+  "at": "2026-11-03T16:09:57+00:00",
+  "failed": 3,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },
  "github-copilot-fusion-release": {
   "at": "2026-11-03T15:30:59+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "google-cloud-ai-october-2026-recap": {
+  "at": "2026-11-03T16:11:13+00:00",
   "failed": 1,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },
