@@ -72,7 +72,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore(content): 章の見出しを記事ごとの言葉に・水増しの文を締める（既存記事の続き）"
           for i in 1 2 3 4 5; do
-            if git pull --rebase origin main && git push origin HEAD:main; then
+            # 無料枠の使用回数の記録（content/llm_usage*.json）はこのジョブではコミットしない（ほかのジョブとぶつかるため）
+            if git pull --rebase --autostash origin main && git push origin HEAD:main; then
               gh workflow run deploy_cloudflare.yml --ref main
               exit 0
             fi
