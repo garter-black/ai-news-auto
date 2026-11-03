@@ -15,7 +15,7 @@
     Sonnet 5.5: "sns"（SNS に出しそうな記事）/ "core"（読者像の中心の話題の記事）/ "video_review"（台本のレビュー）
     Haiku 5.5 : "rest"（ほかの記事）/ "helper"（事実確認の指摘の手直し・FAQ の書き足し・SNS の問いかけ）
   予算は CLAUDE_API_MONTHLY_BUDGET_USD（既定 $95。期間はクレジットの補充日 4日〜翌月3日）。毎回、今日の目安額
-  （残り予算÷残り日数）の残りを見込み回数で配り（api_plan）、足りなければ その他→無料、中心→Haiku、SNS→Haiku の順に下げ、
+  （残り予算÷残り日数）の残りを見込み回数で配り（api_plan）、足りなければ 中心→Haiku、SNS→Haiku、最後に その他→無料 の順に下げ、
   余れば SNS→Opus、中心→Opus、その他→Sonnet の順に上げる（割合で混ぜる）。使用額は state/claude_api_usage*.json に
   段ごとに記録し、実行ログに1行の要約を出す。クレジット切れは次の補充日まで使わず、API の失敗で処理は止めない。
   API が使えない・失敗したときは、速報・SNS・動画だけ Claude CLI、それ以外は無料モデル。purpose なしは無料モデルだけ。
@@ -635,9 +635,9 @@ API_TIERS = {
 # Claude CLI（サブスクリプション）も使ってよい段（2026-11-03 オーナー決定: 速報・SNS・動画だけ）
 API_CLI_PURPOSES = {"breaking", "sns", "video", "video_review"}
 # 予算の配り方（優先順）。下の段ほど後回し＝予算が足りないと先に削られる:
-#   削る順 = その他 Haiku→無料 → 中心 Sonnet→Haiku → SNS Sonnet→Haiku（速報・動画は削らない）
+#   削る順 = 中心 Sonnet→Haiku → SNS Sonnet→Haiku → 最後に その他 Haiku→無料（月 $3 ほどなので最後まで残す。速報・動画は削らない）
 #   余るとき = さらに SNS→Opus → 中心→Opus → その他→Sonnet と上げる（CLAUDE_API_UPGRADES=0 で上げない）
-API_STEPS = [("sns", 1, 2), ("core", 1, 2), ("rest", 0, 1)]
+API_STEPS = [("rest", 0, 1), ("sns", 1, 2), ("core", 1, 2)]
 API_UPGRADE_STEPS = [("sns", 2, 3), ("core", 2, 3), ("rest", 1, 2)]
 # 1日の呼び出し回数の見込み（実績が2日分たまるまでの仮の値。作り直しも1回と数える）
 API_DEMAND_DEFAULT = {"breaking": 7, "video": 5, "video_review": 5, "helper": 40, "sns": 13, "core": 27, "rest": 21}
@@ -832,7 +832,7 @@ def api_plan(now: datetime | None = None, summary: dict | None = None) -> dict:
 
     今日の目安額（残り予算÷残り日数）の残りを、今日の残り時間ぶんの見込み回数で配る:
     まず守る段（速報・動画・補助）と、下げられる段の下限（SNS・中心=Haiku、その他=無料）を確保し、
-    残りを API_STEPS の順（SNS→Sonnet、中心→Sonnet、その他→Haiku）、さらに余れば API_UPGRADE_STEPS の順に配る。
+    残りを API_STEPS の順（その他→Haiku、SNS→Sonnet、中心→Sonnet）、さらに余れば API_UPGRADE_STEPS の順に配る。
     1つの段で足りなくなったら、そこで割合（例: 中心の4割だけ Sonnet）にして止める。
     戻り値の levels は段ごとの小数（例: 1.4 = 4割を1つ上のモデルで）"""
     now = now or _now()

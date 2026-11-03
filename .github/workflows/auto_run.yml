@@ -163,6 +163,10 @@ jobs:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           CLAUDE_DAILY_MAX: ${{ vars.CLAUDE_DAILY_MAX || '40' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Claude API の Haiku（その他の段）→ 無料モデル。使用量は記事と同じ state/claude_api_usage.json（同じジョブの中なので衝突しない）
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
+          LLM_DEFAULT_PURPOSE: rest
         run: |
           # 比較ガイドは作り直し中のため、新規作成は止めて価格の確認だけ続ける
           python scripts/buying_guides.py --refresh --max-age 7

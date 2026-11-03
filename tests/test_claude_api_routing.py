@@ -186,29 +186,29 @@ class AdaptiveBudgetTests(Base):
         with patch.dict(os.environ, {"CLAUDE_API_DAILY_BUDGET_USD": str(daily), **env}):
             return llm.api_plan()
 
-    def test_95_dollars_sns_partly_sonnet_core_haiku_rest_free(self):
-        # 守る段 $2.22 + SNS・中心の Haiku $0.20 = $2.42。残り $0.75 で SNS の約6割を Sonnet に
+    def test_95_dollars_rest_haiku_sns_partly_sonnet_core_haiku(self):
+        # 守る段 $2.22 + SNS・中心の Haiku $0.20 = $2.42、その他 Haiku $0.105。残り $0.64 で SNS の約半分を Sonnet に
         got = levels(self.plan(95 / 30))
-        self.assertAlmostEqual(got["sns"], 1 + (95 / 30 - 2.42) / 1.235, places=3)
-        self.assertEqual((got["core"], got["rest"]), (1.0, 0.0))
+        self.assertEqual((got["rest"], got["core"]), (1.0, 1.0))
+        self.assertAlmostEqual(got["sns"], 1 + (95 / 30 - 2.42 - 0.105) / 1.235, places=3)
 
     def test_190_dollars_full_baseline(self):
         got = levels(self.plan(190 / 30))
         self.assertEqual((got["core"], got["rest"]), (2.0, 1.0))
         self.assertGreaterEqual(got["sns"], 2.0)
 
-    def test_degrade_order_rest_then_core_then_sns(self):
+    def test_degrade_order_core_then_sns_then_rest_last(self):
         full = 2.42 + 1.235 + 2.565 + 0.105  # SNS・中心 Sonnet、その他 Haiku までの1日の額
         self.assertEqual(levels(self.plan(full, CLAUDE_API_UPGRADES="0")), {"sns": 2.0, "core": 2.0, "rest": 1.0})
-        got = levels(self.plan(full - 0.05))           # 少し足りない → その他から削る
-        self.assertEqual((got["sns"], got["core"]), (2.0, 2.0))
-        self.assertTrue(0 < got["rest"] < 1)
-        got = levels(self.plan(2.42 + 1.235 + 1.0))    # もっと足りない → その他は無料、中心の一部だけ Sonnet
-        self.assertEqual((got["sns"], got["rest"]), (2.0, 0.0))
+        got = levels(self.plan(full - 1.0))            # 足りない → まず中心の一部を Haiku に
+        self.assertEqual((got["sns"], got["rest"]), (2.0, 1.0))
         self.assertTrue(1 < got["core"] < 2)
-        got = levels(self.plan(2.42 + 0.5))            # さらに → 中心は Haiku、SNS の一部だけ Sonnet
-        self.assertEqual((got["core"], got["rest"]), (1.0, 0.0))
+        got = levels(self.plan(2.42 + 0.105 + 0.5))    # もっと足りない → 中心は Haiku、SNS の一部だけ Sonnet（その他は Haiku のまま）
+        self.assertEqual((got["core"], got["rest"]), (1.0, 1.0))
         self.assertTrue(1 < got["sns"] < 2)
+        got = levels(self.plan(2.42 + 0.05))           # 最後に その他 を無料へ
+        self.assertEqual((got["sns"], got["core"]), (1.0, 1.0))
+        self.assertTrue(0 < got["rest"] < 1)
         self.assertEqual(levels(self.plan(1.0)), {"sns": 1.0, "core": 1.0, "rest": 0.0})  # 足りなくても SNS・中心は Haiku
 
     def test_breaking_and_video_never_degrade(self):
@@ -217,7 +217,7 @@ class AdaptiveBudgetTests(Base):
             self.assertEqual(llm.api_choose("video", record=False)[0], "claude-opus-5-5")
             self.assertEqual(llm.api_choose("video_review", record=False)[0], "claude-sonnet-5-5")
             self.assertEqual(llm.api_choose("sns", record=False)[0], "claude-haiku-5-5")
-            self.assertIsNone(llm.api_choose("rest", record=False)[0])
+            self.assertIsNone(llm.api_choose("rest", record=False)[0])  # 予算がほぼ無い日は その他 だけ無料
 
     def test_underspend_upgrades_next_tiers(self):
         self.assertEqual(levels(self.plan(20)), {"sns": 3.0, "core": 3.0, "rest": 2.0})

@@ -50,6 +50,11 @@ jobs:
           CLAUDE_DAILY_MAX: ${{ vars.CLAUDE_DAILY_MAX || '40' }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          # Claude API の Haiku（その他の段。予算の配分で上下）→ 無料モデル。使用量はこのジョブ専用のファイルに記録（scripts/llm.py）
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
+          LLM_DEFAULT_PURPOSE: rest
+          CLAUDE_API_LEDGER: weekly
         run: |
           ARGS=""
           if [ -n "${{ github.event.inputs.week }}" ]; then ARGS="$ARGS --week ${{ github.event.inputs.week }}"; fi
@@ -62,14 +67,17 @@ jobs:
           echo "changed=0" >> "$GITHUB_OUTPUT"
           # 使用回数の記録は auto_run と取り合いになるので、ここではコミットしない
           git checkout -- content/llm_usage.json 2>/dev/null || true
-          if [ -z "$(git status --porcelain content/weekly.json)" ]; then
+          git add state/claude_api_usage_weekly.json 2>/dev/null || true
+          if [ -z "$(git status --porcelain content/weekly.json)" ] && git diff --cached --quiet; then
             echo "変更なし"
             exit 0
           fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          MSG="chore(llm): Claude API の使用量を記録（週のまとめ）"
+          if [ -n "$(git status --porcelain content/weekly.json)" ]; then MSG="chore(weekly): 今週のAIニュースまとめを追加"; fi
           git add content/weekly.json
-          git commit -m "chore(weekly): 今週のAIニュースまとめを追加"
+          git commit -m "$MSG"
           for i in 1 2 3; do
             if git pull --rebase --autostash origin main && git push; then
               echo "changed=1" >> "$GITHUB_OUTPUT"
