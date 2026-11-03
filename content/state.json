@@ -63,7 +63,9 @@
     "zoohZ1BiHs0": 1
   },
   "failed_web": {},
-  "major_tries": {},
+  "major_tries": {
+    "7034baa092128424": 1
+  },
   "processed": {
     "--kyzoeUuBk": {
       "at": "2026-08-10T15:58:56.932533+00:00",
@@ -13063,31 +13065,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-31T06:59:32.755922+00:00",
-      "attempt": 1,
-      "id": "3f1629502128b181",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1172字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（299字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 100.1,
-        "avg_sentence": 47.7,
-        "long_share": 0.143,
-        "max_paragraph": 142,
-        "paragraphs": 10,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "boj",
-      "title": "「指数連動型上場投資信託受益権等の処分の指針」の一部改正について"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-31T06:59:38.639257+00:00",
       "attempt": 2,
       "id": "3f1629502128b181",
@@ -19471,6 +19448,28 @@
       "score": null,
       "source": "radar-9to5google.com",
       "title": "Google Home Speaker gets first discount since June launch"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T02:50:12.482404+00:00",
+      "attempt": 1,
+      "id": "7034baa092128424",
+      "kind": "broad",
+      "model": "claude:sonnet",
+      "problems": [
+        "事実確認を実行できなかった（すべてのモデルで失敗しました: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You ）"
+      ],
+      "readability": {
+        "avg_paragraph": 71.2,
+        "avg_sentence": 36.3,
+        "long_share": 0.036,
+        "max_paragraph": 123,
+        "paragraphs": 28,
+        "sentences": 55
+      },
+      "score": null,
+      "source": "apple-newsroom-jp-all",
+      "title": "Apple、第4四半期の業績を発表"
     }
   ],
   "short_text_retry": {

@@ -310,6 +310,19 @@
       "title": "ChatGPT’s expanding world of work",
       "url": "https://openai.com/index/chatgpt-expanding-world-of-work"
     },
+    "7034baa092128424": {
+      "detectedAt": "2026-11-03T02:44:20+00:00",
+      "finishedAt": "2026-11-03T02:50:12+00:00",
+      "outcome": "retry",
+      "reason": "作れなかった（次の起動で再挑戦）",
+      "run": "41567958168",
+      "slug": "",
+      "source": "apple-newsroom-jp-all",
+      "sourcePublishedAt": "2026-11-02T00:00:00+00:00",
+      "startedAt": "2026-11-03T02:47:53+00:00",
+      "title": "Apple、第4四半期の業績を発表",
+      "url": "https://www.apple.com/jp/newsroom/2026/11/apple-reports-fourth-quarter-results/"
+    },
     "73c7084640d94745": {
       "detectedAt": "2026-10-28T03:53:51+00:00",
       "finishedAt": "2026-10-28T04:02:46+00:00",
