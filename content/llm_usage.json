@@ -55,10 +55,10 @@
   "2026-11-03": {
     "anthropic-api:claude-haiku-5-5": 11,
     "anthropic-api:claude-opus-5-5": 9,
-    "anthropic-api:claude-sonnet-5-5": 21,
+    "anthropic-api:claude-sonnet-5-5": 24,
     "cf-image:flux-1-schnell": 3,
-    "cf-image:flux-2-klein-4b": 8,
-    "cloudflare:@cf/openai/gpt-oss-120b": 11,
+    "cf-image:flux-2-klein-4b": 9,
+    "cloudflare:@cf/openai/gpt-oss-120b": 12,
     "gemini-3.5-flash": 2,
     "gemini-3.5-flash-lite": 63,
     "gemini-flash-lite-latest": 1,

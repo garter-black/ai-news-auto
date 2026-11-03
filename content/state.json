@@ -3453,6 +3453,12 @@
       "skipped": true,
       "url": "https://www.mext.go.jp/b_menu/shingi/chousa/shougai/054/kaisai/mext_02480.html"
     },
+    "0808ae00df5a5347": {
+      "at": "2026-11-03T14:51:42.069943+00:00",
+      "reason": "stale: 発表から118時間（記事ページの日付）",
+      "skipped": true,
+      "url": "https://www.redhat.com/en/blog/future-proofing-enterprise-ai-impact-post-quantum-cryptography-red-hat-ai-enterprise"
+    },
     "08479a0194d913a5": {
       "at": "2026-11-02T01:45:31.559201+00:00",
       "reason": "short text 551",
@@ -7028,6 +7034,12 @@
       "skipped": true,
       "url": "https://www.soumu.go.jp/menu_news/s-news/01gyosei14_02000129.html"
     },
+    "6153609d9795b2fb": {
+      "at": "2026-11-03T14:51:42.070809+00:00",
+      "reason": "prefilter: お知らせ・統計の書き写しになる発表（記事にしない）",
+      "skipped": true,
+      "url": "https://www.tokyu-fudosan-hd.co.jp/news/companies/pdf/22c61838166d4cc77672f706c2650ddb86d87491.pdf"
+    },
     "6159e6840e0fe956": {
       "at": "2026-10-30T10:31:29.600502+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -8052,6 +8064,14 @@
       "section": "ai",
       "slug": "ntt-data-strategy-spark-ai-consulting",
       "url": "https://www.nttdata-strategy.com/newsrelease/261029/"
+    },
+    "7cfa5e33983c373c": {
+      "at": "2026-11-03T14:52:32.758445+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 88,
+      "section": "entertainment",
+      "slug": "aja-anime-industry-report-2026",
+      "url": "https://aja.gr.jp/info/2795"
     },
     "7d398bbabacb0711": {
       "at": "2026-10-27T01:53:44.181605+00:00",
@@ -13251,53 +13271,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-01T20:21:05.404387+00:00",
-      "attempt": 1,
-      "id": "a44fc1f7f488bd51",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 79.4,
-        "avg_sentence": 35.3,
-        "long_share": 0.056,
-        "max_paragraph": 107,
-        "paragraphs": 8,
-        "sentences": 18
-      },
-      "score": 100,
-      "source": "soumu",
-      "title": "令和8年秋の褒章（消防関係）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-01T22:39:54.606433+00:00",
-      "attempt": 1,
-      "id": "96882ab7e78168fa",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [
-        "「経費や承認など、いくつものシステムをまたぐ作業」→ 元記事に「経費」の例は無く、具体例の追加。",
-        "「AIが勝手に権限を超える、という心配に配慮した設計です」→ 元記事に無い設計意図の推測。",
-        "「目的に合う機能や情報をAIが選び」→ 元記事は「業務目標に応じて必要な機能や情報を選び」とあるだけで、選ぶ主体がAIとは明記されていない。",
-        "「経理や総務、情報システムの担当者は特に注目です」→ 元記事に対象者の記載が無い。",
-        "「駅の改札で使えるプリペイドカード」の比喩→ クレジットは製品の開発や運営に使うAIツール向けで、例えが実態とずれる。",
-        "「小規模企業は…検討する価値があります」→ 条件や提供地域が不明なまま推奨しており言い過ぎ。"
-      ],
-      "readability": {
-        "avg_paragraph": 59.4,
-        "avg_sentence": 35.8,
-        "long_share": 0.052,
-        "max_paragraph": 122,
-        "paragraphs": 35,
-        "sentences": 58
-      },
-      "score": 82,
-      "source": "radar-itmedia.co.jp",
-      "title": "オラクルの機能がChatGPTで利用可能に 複数システムをまたぐ業務をAIで自動化"
-    },
     {
       "accepted": true,
       "at": "2026-11-01T22:40:16.868805+00:00",
@@ -19744,6 +19717,40 @@
       "warnings": [
         "見出しが49字（目安40字以内）。一覧・カードでは前半だけを出す"
       ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T14:52:01.559000+00:00",
+      "attempt": 1,
+      "id": "7cfa5e33983c373c",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "aja",
+      "title": "「アニメ産業レポート2026」刊行のお知らせ・2025年のアニメ産業市場規模 速報値 発表"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T14:52:32.743432+00:00",
+      "attempt": 2,
+      "id": "7cfa5e33983c373c",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 70.3,
+        "avg_sentence": 35.2,
+        "long_share": 0.094,
+        "max_paragraph": 140,
+        "paragraphs": 16,
+        "sentences": 32
+      },
+      "score": 88,
+      "source": "aja",
+      "title": "「アニメ産業レポート2026」刊行のお知らせ・2025年のアニメ産業市場規模 速報値 発表"
     }
   ],
   "short_text_retry": {
