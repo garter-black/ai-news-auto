@@ -1064,7 +1064,7 @@
       "postedAt": "2026-11-04T12:15:00+09:00"
     },
     "kimi-k3-bedrock-india-inference": {
-      "at": "2026-11-03T21:01:46+00:00",
+      "at": "2026-11-03T21:05:13+00:00",
       "status": "attached",
       "tries": 1,
       "textAt": "2026-11-03T21:00:46+00:00",
@@ -1140,17 +1140,17 @@
       "timings": {
         "full": {
           "tts": 0.0,
-          "render": 20.4,
-          "gate": 2.2,
-          "total": 23.2,
-          "ladder_total": 144.4
+          "render": 21.2,
+          "gate": 2.3,
+          "total": 23.7,
+          "ladder_total": 153.5
         },
         "short": {
           "tts": 0.0,
-          "render": 8.3,
+          "render": 8.5,
           "gate": 1.0,
-          "total": 9.4,
-          "ladder_total": 144.4
+          "total": 9.6,
+          "ladder_total": 153.5
         }
       },
       "level": "L4",
@@ -1163,7 +1163,7 @@
               "full: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
               "short: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
             ],
-            "seconds": 20.7,
+            "seconds": 28.2,
             "variants": {
               "full": false,
               "short": false
@@ -1176,7 +1176,7 @@
               "full: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
               "short: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
             ],
-            "seconds": 18.3,
+            "seconds": 18.9,
             "variants": {
               "full": false,
               "short": false
@@ -1189,7 +1189,7 @@
               "full: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））",
               "short: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
             ],
-            "seconds": 72.0,
+            "seconds": 72.3,
             "variants": {
               "full": false,
               "short": false
@@ -1199,7 +1199,7 @@
             "level": "L4",
             "ok": true,
             "reasons": [],
-            "seconds": 33.4,
+            "seconds": 34.1,
             "variants": {
               "full": true,
               "short": true
@@ -1214,7 +1214,7 @@
               "full: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
               "short: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
             ],
-            "seconds": 20.7,
+            "seconds": 28.2,
             "variants": {
               "full": false,
               "short": false
@@ -1227,7 +1227,7 @@
               "full: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
               "short: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
             ],
-            "seconds": 18.3,
+            "seconds": 18.9,
             "variants": {
               "full": false,
               "short": false
@@ -1240,7 +1240,7 @@
               "full: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））",
               "short: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
             ],
-            "seconds": 72.0,
+            "seconds": 72.3,
             "variants": {
               "full": false,
               "short": false
@@ -1250,7 +1250,7 @@
             "level": "L4",
             "ok": true,
             "reasons": [],
-            "seconds": 33.4,
+            "seconds": 34.1,
             "variants": {
               "full": true,
               "short": true
@@ -1268,8 +1268,8 @@
       },
       "embedded": true,
       "variant": "short",
-      "bufferId": "6aea4c50a8918d96047f56e6",
-      "postedAt": "2026-11-03T21:04:46+00:00"
+      "bufferId": "6aea4d279da2f6a2e96e839f",
+      "postedAt": "2026-11-03T21:08:13+00:00"
     }
   },
   "queued": {
@@ -1303,14 +1303,14 @@
     "kimi-k3-bedrock-india-inference": {
       "status": "created",
       "channels": {
-        "threads": "6aea4c50a8918d96047f56e6",
-        "twitter": "6aea4c5246499f925e7c3280",
-        "facebook": "6aea4c551ee1ad0996cd39a0"
+        "threads": "6aea4d279da2f6a2e96e839f",
+        "twitter": "6aea4d28402e0fe50f12ce4a",
+        "facebook": "6aea4d2aca28ab6c317618fc"
       },
-      "id": "6aea4c50a8918d96047f56e6",
-      "dueAt": "2026-11-03T21:04:46+00:00",
+      "id": "6aea4d279da2f6a2e96e839f",
+      "dueAt": "2026-11-03T21:08:13+00:00",
       "variant": "short",
-      "delayedMin": 3
+      "delayedMin": 7
     }
   },
   "converted": {
