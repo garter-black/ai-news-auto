@@ -5,6 +5,7 @@ import { smallThumb } from "@/lib/thumb-url";
 import type { ArticleSummary } from "@/lib/articles";
 import { thumbSource } from "@/lib/companies";
 import { displayHeadline } from "@/lib/headline";
+import { Phrases } from "@/lib/highlight";
 import { coverPath } from "@/lib/cover-path";
 
 type GenreChip = { slug: string; label: string; count: number };
@@ -86,7 +87,7 @@ function NewsItem({ article, priority }: { article: ArticleSummary; priority: bo
           <RelTime iso={postedAt} className="index-num font-semibold text-muted" />
         </span>
         <span className="line-clamp-3 text-[14.5px] font-bold leading-[1.6] text-ink decoration-1 underline-offset-4 group-hover:underline sm:text-[15px]">
-          {displayHeadline(article.title)}
+          <Phrases text={displayHeadline(article.title)} inline />
         </span>
       </span>
     </Link>

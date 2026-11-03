@@ -293,6 +293,27 @@ body {
   line-break: strict;
 }
 
+/* 見出しの補足（全角の空白のあと）。意図した改行として別の行に、少し小さく出す（lib/highlight.tsx） */
+.headline-sub {
+  display: block;
+  margin-top: 0.3em;
+  font-size: 0.8em;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+/* BudouX を使えないところ（クライアントの部品・素の文字の一覧）の見出し。対応ブラウザは文節で、それ以外は語の途中で折らない */
+.jp-wrap {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  line-break: strict;
+}
+@supports (word-break: auto-phrase) {
+  .jp-wrap {
+    word-break: auto-phrase;
+  }
+}
+
 /* --------------------------------------------------------------------- */
 /* 蛍光ペン                                                               */
 /* 静止状態は「引かれた状態」。対応ブラウザでは画面に入った瞬間に引かれる     */

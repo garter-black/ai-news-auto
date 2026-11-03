@@ -297,17 +297,9 @@ PROMPT_TEMPLATE = """以下のYouTube動画を「映像」と「音声」の両�
 
 # 各フィールドの要件
 {field_notes}
-- title: 32〜48文字。報道記事の見出しとして成立する体裁にする。
-  **その分野に詳しくない人にも届く見出しにする（最重要）**: 固有名詞だけで終わらせず、「何の・どんな種類のものか」と「何が新しい／何が変わるか」を必ず入れる。
-  - 会社・製品は一言で正体を添える:「ChatGPTのOpenAIが」「Googleの生成AI『Gemini』に」「AI半導体のNVIDIAが」
-  - 種類を言う:「新しいAIモデル」「新機能」「新サービス」「新登場」「値下げ」「日本でも提供開始」
-  - 変化を言う:「料金は半分に」「パソコン操作もAIにお任せ」「何が変わった？」
-  - 専門用語（API・トークン・ベンチマーク・推論など）は見出しに使わないか、使うなら日常語を添える。
-  - 根拠に具体的な用途があれば、旅行の候補探し・書類の編集・会議の整理のように読者が想像できる行動を優先する。デモや一部地域限定なら、誰でも今すぐ使えると誤解させない。用途を根拠なしに作らない。会社の事業と発表物を混同せず、AIモデルを半導体と呼ばない。
-  良い例:「ChatGPTのOpenAIが新AIモデル『GPT-6.1 Terra』 料金は半分、パソコン操作も得意に」
-  悪い例:「OpenAIがGPT-6.1 Terraを発表 コスト半減でPC操作と視覚理解を高速化」（詳しい人にしか伝わらない）
+- title: <<TITLE_STYLE>>
   主要SEOキーワードを前方に置き、**感嘆符・煽り語（衝撃／ヤバい／ついに／必見）は使わない**。
-  良い例:「Google DeepMind、複数ロボットが言語で連携する『Gemini Robotics 2』を公開」
+  良い例:「Google DeepMind、複数ロボットが言語で連携する「Gemini Robotics 2」を公開」
   悪い例:「Gemini Robotics 2発表！ロボット連携の衝撃」
 - seo_title: 検索結果に表示する短い題名。**全角24〜30文字**（英数字は半角0.5文字換算で数える）。
   読者が検索に打ち込む語（製品名・企業名・機能名）を**先頭**に置き、何が分かる記事かを続ける。
@@ -321,6 +313,7 @@ PROMPT_TEMPLATE = """以下のYouTube動画を「映像」と「音声」の両�
   専門用語は使わない（どうしても使うなら直後に（＝〜のこと）と言い換える）。身近な例えを1つ以上入れる。
   body_markdown に無い事実・数字・価格は書かない。「使ってみるには」は verdict と矛盾させない。です・ます調で、やさしく親しみのある語り口にする。
 - lede: 記事冒頭のリード文。150〜200字の1〜2段落。5W1Hを圧縮し、結論を先に置く。
+  報道記事のリードの文体（です・ます調で落ち着いた書き方）。よく知られた会社に「ChatGPTのOpenAI」のような説明を付けない。幼い言い方・話し言葉は使わない。
   ここだけ読んでも発表の要点が分かる密度にする。
 - description: 100〜130文字のメタディスクリプション。検索結果に出る想定で、結論を含める。
 - mentioned_tools: 記事中で言及した製品・サービス・企業・ブランドの**正式名称**の配列（5〜12個）。
@@ -354,6 +347,7 @@ PROMPT_TEMPLATE = """以下のYouTube動画を「映像」と「音声」の両�
 
 body_markdown 内では h1 (`#`) を使わないでください（タイトルは別途表示されます）。
 """
+PROMPT_TEMPLATE = PROMPT_TEMPLATE.replace("<<TITLE_STYLE>>", headline_normalize.TITLE_STYLE_PROMPT)  # 見出しの書き方（scripts/headline_normalize.py）
 
 ARTICLE_SCHEMA = {
     "type": "OBJECT",
@@ -870,6 +864,13 @@ def write_article(record: dict) -> Path:
     # 見出しの書き方をそろえる（かっこ・区切り・会社名・西暦。LLM を使わない後処理。scripts/headline_normalize.py）
     for change in headline_normalize.apply(record):
         log(f"   [headline] {change}")
+    # 書き方の不合格（説明の押し付け・幼い言い方・倒置）が残った見出しだけ、見出しを1本書き直す（scripts/rewrite_titles.py）
+    if headline_normalize.title_problems(str(record.get("title") or "")):
+        import rewrite_titles  # noqa: PLC0415 - 必要なときだけ読む
+
+        note = rewrite_titles.fix_one(record)
+        if note:
+            log(f"   [headline] {note}")
     ARTICLES_DIR.mkdir(parents=True, exist_ok=True)
     path = ARTICLES_DIR / f"{record['slug']}.json"
     path.write_text(

@@ -18,6 +18,12 @@ main.write_article（記事を書き出す1か所）から呼ぶ。過去7日分
    見出しの令和を残す。どちらの場合も、本文で最初に出てくる「令和N年」の後ろに「（YYYY年）」を足す（見出しには足さない）。
 5. 長さ: ここでは短くしない。40字を超えると品質ゲート（quality.title_warnings）が警告し、
    サイトの一覧・カードは前半だけを出す（lib/headline.ts。記事ページの見出しと検索用の題名は全文）。
+6. 書き方の型（2026-11-03 オーナー指摘「見出しが不自然で幼い。恥ずかしい」）:
+   ITmedia NEWS・日経クロステック・Impress Watch のような落ち着いた報道の見出しにする（TITLE_STYLE_PROMPT。
+   記事を書くプロンプト・過去の見出しの書き直し scripts/rewrite_titles.py が同じ文を使う）。
+   - よく知られた会社に説明を付けた「ChatGPTのOpenAIが」「AI半導体のNVIDIAが」は、説明を機械で外す（strip_known_descriptors）。
+   - それでも残る型（「Google開発AI」「AI秘書」「勝手な」「人手なしで」「〜が1本に」「Xが公開、…とは」など）は
+     title_problems が返す。main.write_article は見出しだけを書き直し（rewrite_titles.fix_one）、品質ゲートは警告に出す。
 """
 from __future__ import annotations
 
@@ -33,6 +39,7 @@ ROOT = Path(__file__).resolve().parent.parent
 ARTICLES = ROOT / "content" / "articles"
 
 TITLE_WARN_LEN = 40
+TITLE_HARD_LEN = 56  # これを超える見出しは書き方の不合格（title_problems）。目安は本見出し28〜40字＋短い補足
 
 # --------------------------------------------------------------------------- #
 # 1. かっこ
@@ -204,12 +211,124 @@ def add_seireki_in_body(body: str) -> str:
 # まとめ
 # --------------------------------------------------------------------------- #
 
+# --------------------------------------------------------------------------- #
+# 6. 書き方の型（報道の見出し。説明の押し付け・幼い言い方をしない）
+# --------------------------------------------------------------------------- #
+
+# 記事を書くプロンプト（main.py・web_articles.py）と見出しの書き直し（rewrite_titles.py）が使う、見出しの書き方。
+# テンプレートに埋め込むので { } は使わない
+TITLE_STYLE_PROMPT = """報道記事の見出し。ITmedia NEWS・日経クロステック・Impress Watch のような、落ち着いた自然な日本語にする（最重要）。
+  - 長さ: 本見出しは全角28〜40字が目安（最大48字）。補足が要るときだけ、全角の空白1つのあとに短く続ける。
+  - 形: 主語（会社・団体）＋何をしたか（発表・公開・提供開始・値下げ・買収・提携など）＋要点（数字・対象・影響）。
+    「OpenAI、新AIモデル「GPT-6.1 Terra」を公開」「NVIDIAがAI学習の自動復旧ツールを公開」のように、主語のすぐ後ろに「、」か「が」を置く。
+  - よく知られた会社（OpenAI・Google・Microsoft・NVIDIA・Apple・Anthropic・Amazon・AWS・Meta・サムスン・ソニー・トヨタ・ホンダ・ソフトバンク など）には説明を付けない。
+    「ChatGPTのOpenAI」「ClaudeのAnthropic」「AI半導体のNVIDIA」「Google開発AI」「MicrosoftのAI秘書」のような言い方は禁止。
+  - あまり知られていない会社だけ、短い説明を自然に添えてよい（例「米新興のCresta」「セキュリティ企業のSnyk」「豪Atlassian」「オランダ通信大手KPN」）。
+  - 製品名・サービス名は「」で囲む。種類が分からない製品だけ短く添える（例「AIコーディングツール「Antigravity」」）。
+  - 子どもっぽい言い方・話し言葉は使わない。例: 勝手な／お任せ／〜が1本に／人手なしで／〜しちゃう／すごい／ラクに／AI秘書／AI助手。
+    報道の言葉に言い換える（無断の・意図しない／自動で／1つのアプリに統合／自動で再開／AIアシスタント）。
+  - 記号: かっこ（「」）のすぐ前後に「、」を置かない（悪い例「…「セキュアSAMBA」、Mac用アプリ…」「OpenAI、「Codex」…」）。
+    製品名を主語にして読点で区切るより、会社名を主語にする。区切りは全角の空白1つだけ（空白を重ねない）。末尾に「、」「。」を付けない。
+    日本語の中の記号は全角（，: ( ) ? ! の半角を混ぜない）。
+  - 「Xが公開、…「Y」とは」のような倒置や、「〜とは」で終わる見出しにしない（解説記事で必要なときだけ「〜とは」を使う）。
+  - 専門用語は、ニュースを読む社会人に通じる範囲で使ってよい（API・AIエージェント・生成AI など）。分かりにくい語は短く言い換える。
+  - 事実は元の情報のとおり（社名・製品名・数字・日付を変えない・足さない）。誇張・煽り語（衝撃／ついに／ヤバい／必見／知らないと損）と感嘆符は使わない。元記事の題名の直訳にしない。
+  良い例:「OpenAI、新AIモデル「GPT-6.1 Terra」を公開　料金は従来の半分に」
+  良い例:「NVIDIA、AI学習の自動復旧ツールを公開　障害で止まった学習を自動で再開」
+  良い例:「Canva、iPad版「Affinity」を公開　描画・写真編集・レイアウトを1つのアプリに」
+  良い例:「kubell、法人向けストレージ「セキュアSAMBA」にMac用アプリ　Finderから直接編集」
+  悪い例:「ChatGPTのOpenAIが新AIモデル…」（よく知られた会社への説明の押し付け）
+  悪い例:「…止まったAI開発を人手なしで再開」「…AIの勝手な課金操作を防ぐ」（幼い言い方）"""
+
+# 説明を付けない会社（見出しで「〇〇の」を前に置かない）。長い名前を先に並べる
+WELL_KNOWN_COMPANIES = sorted({
+    "OpenAI", "Google", "Microsoft", "NVIDIA", "Apple", "Anthropic", "Amazon", "AWS", "Meta", "Samsung", "サムスン",
+    "サムスン電子", "Sony", "ソニー", "ソニーグループ", "Toyota", "トヨタ", "トヨタ自動車", "Honda", "ホンダ", "本田技研工業",
+    "日産", "日産自動車", "パナソニック", "任天堂", "ソフトバンク", "ソフトバンクグループ", "楽天", "楽天グループ", "NTT",
+    "NTTドコモ", "KDDI", "Intel", "AMD", "Qualcomm", "IBM", "Oracle", "Salesforce", "Adobe", "Netflix", "Tesla", "テスラ",
+    "xAI", "DeepSeek", "YouTube", "LINEヤフー", "Uber", "Spotify", "Arm", "TSMC", "Dell", "Canva",
+}, key=len, reverse=True)
+_COMPANY_ALT = "|".join(re.escape(c) for c in WELL_KNOWN_COMPANIES)
+# 「ChatGPTのOpenAIが」「AI半導体のNVIDIA、」。説明は見出しの頭か区切り（空白・読点）の直後から
+DESCRIPTOR_RE = re.compile(
+    rf"(^|[　、 ])([^\s　、。「」『』（）()]{{1,14}}?)の({_COMPANY_ALT})(?![A-Za-z0-9ァ-ヴー])(?=[がはもとの、　]|$)"
+)
+# 「Google開発AI」「Microsoft製AI」
+MAKER_AI_RE = re.compile(rf"({_COMPANY_ALT})(?:開発|製)の?AI")
+# 幼い言い方・話し言葉・煽り（かっこの外だけで見る。製品名「交換できるくん」などは対象外）
+CHILDISH_WORDS = (
+    "勝手な", "勝手に", "お任せ", "おまかせ", "が1本に", "が一本に", "人手なしで", "ちゃう", "じゃう", "すごい", "スゴい",
+    "ラクに", "らくらく", "楽ちん", "AI秘書", "AI助手", "ヤバ", "衝撃", "ついに", "必見", "知らないと損", "！", "!",
+)
+# 「NVIDIAが公開、…」の倒置
+INVERTED_RE = re.compile(r"^[^　、]{1,24}が(?:公開|発表|開始)、")
+
+
+def _outside_text(title: str) -> str:
+    """「」『』の中身を除いた見出し（製品名の中の言葉で引っかけない）"""
+    return re.sub(r"「[^」]*」|『[^』]*』", "「」", title)
+
+
+# 説明ではなく関係を表す言葉（「競合のGoogle」「傘下のAWS」は意味が変わるので外さない）
+RELATION_RE = re.compile(r"(競合|傘下|親会社|子会社|同業|ライバル|提携先|顧客|取引先|株主|相手|大株主|元|前|旧|同じく)$")
+
+
+def _descriptor_matches(text: str) -> list[re.Match]:
+    return [m for m in DESCRIPTOR_RE.finditer(text) if not RELATION_RE.search(m.group(2))]
+
+
+def strip_known_descriptors(title: str) -> str:
+    """よく知られた会社の前の説明（「ChatGPTの」「AI半導体の」）を外す。「ChatGPTのOpenAIが」→「OpenAIが」"""
+    for m in reversed(_descriptor_matches(title)):
+        title = title[: m.start()] + m.group(1) + m.group(3) + title[m.end():]
+    return title
+
+
+# 見出しの記号の不自然な並び（2026-11-03 オーナー指摘「」、」は大人の文として不自然）。(正規表現, 説明)
+PUNCT_RULES: list[tuple[re.Pattern, str]] = [
+    (re.compile(r"[」』）]、"), "かっこの直後に「、」"),
+    (re.compile(r"、[「『（]"), "かっこの直前に「、」"),
+    (re.compile(r"[「『（]、|、[」』）]"), "かっこの内側に「、」"),
+    (re.compile(r"[ 　]{2,}"), "空白が重なっている"),
+    (re.compile(r"[、，,。．]$"), "末尾に句読点"),
+    (re.compile(r"^[、。　 ]"), "先頭に句読点・空白"),
+    (re.compile(r"(?<=[^\x00-\x7f]),|,(?=[^\x00-\x7f\d])"), "半角の「,」"),
+    (re.compile(r"(?<=[^\x00-\x7f]):|:(?=[^\x00-\x7f])"), "半角の「:」"),
+    (re.compile(r"(?<=[^\x00-\x7f])[?!]|(?<=[^\x00-\x7f])\(|\)(?=[^\x00-\x7f])"), "半角の記号（? ! ( )）"),
+    (re.compile(r"、、|。。|、。|。、"), "句読点が重なっている"),
+]
+
+
+def punctuation_problems(title: str) -> list[str]:
+    return [f"記号: {label}" for pattern, label in PUNCT_RULES if pattern.search(title)]
+
+
+def title_problems(title: str) -> list[str]:
+    """見出しの書き方の不合格の理由（空なら合格）。事実は見ない"""
+    problems: list[str] = []
+    if m := next(iter(_descriptor_matches(title)), None):
+        problems.append(f"よく知られた会社に説明を付けている（「{m.group(2)}の{m.group(3)}」）")
+    if m := MAKER_AI_RE.search(title):
+        problems.append(f"不自然な説明（「{m.group(0)}」）")
+    outside = _outside_text(title)
+    words = [w for w in CHILDISH_WORDS if w in outside]
+    if words:
+        problems.append(f"幼い・話し言葉の言い方（{'・'.join(words)}）")
+    problems += punctuation_problems(title)
+    if INVERTED_RE.search(outside):
+        problems.append("「〇〇が公開、…」の倒置")
+    if len(title) > TITLE_HARD_LEN:
+        problems.append(f"長すぎる（{len(title)}字。最大{TITLE_HARD_LEN}字）")
+    return problems
+
+
 def normalize_title(title: str, record: dict | None = None) -> str:
     """見出し1本をそろえる。record は記事（ジャンル・元の題名を見る）"""
     record = record or {}
     if not title:
         return title
     t = unify_companies(title)
+    t = strip_known_descriptors(t)
     t = unify_brackets(t, str(record.get("genreSlug") or ""))
     t = unify_separators(t)
     if not REIWA_RE.search(str(record.get("videoTitle") or "")):
@@ -226,6 +345,14 @@ def apply(record: dict) -> list[str]:
         if after != before:
             record[field] = after
             changes.append(f"{field}: {before} → {after}")
+    # リード・説明の頭の「ChatGPTのOpenAIが」も外す（見出しと同じ。本文は変えない）
+    for field in ("lede", "description"):
+        text = record.get(field)
+        if isinstance(text, str):
+            after = strip_known_descriptors(text)
+            if after != text:
+                record[field] = after
+                changes.append(f"{field}: よく知られた会社の説明を外した")
     for field in ("body", "easy"):
         text = record.get(field)
         if isinstance(text, str) and REIWA_RE.search(text):
@@ -239,9 +366,10 @@ def apply(record: dict) -> list[str]:
 def title_warnings(record: dict) -> list[str]:
     """品質ゲートの警告（不合格にはしない）。そろえたあとの長さで見る"""
     title = normalize_title(str(record.get("title") or ""), record)
+    warnings = [f"見出しの書き方: {p}" for p in title_problems(title) if not p.startswith("長すぎる")]
     if len(title) > TITLE_WARN_LEN:
-        return [f"見出しが{len(title)}字（目安{TITLE_WARN_LEN}字以内）。一覧・カードでは前半だけを出す"]
-    return []
+        warnings.append(f"見出しが{len(title)}字（目安{TITLE_WARN_LEN}字以内）。一覧・カードでは前半だけを出す")
+    return warnings
 
 
 def main() -> int:

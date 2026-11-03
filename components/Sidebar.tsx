@@ -10,6 +10,7 @@ import {
   type Article,
 } from "@/lib/articles";
 import { displayHeadline } from "@/lib/headline";
+import { Phrases } from "@/lib/highlight";
 
 type Props = {
   current?: Article;
@@ -45,7 +46,7 @@ export default function Sidebar({ current, affiliates = [], showAds = true }: Pr
                     {formatDate(article.publishedAt)}
                   </span>
                   <span className="mt-1 block text-note font-medium leading-snug text-ink-soft group-hover:text-accent">
-                    {displayHeadline(article.title)}
+                    <Phrases text={displayHeadline(article.title)} inline />
                   </span>
                 </Link>
               </li>

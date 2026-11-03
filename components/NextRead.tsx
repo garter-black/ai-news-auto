@@ -6,6 +6,7 @@ import { coverPath, type NextRead as NextReadItem } from "@/lib/articles";
 import { thumbSource } from "@/lib/companies";
 import { listUsability } from "@/lib/verdict";
 import { displayHeadline } from "@/lib/headline";
+import { Phrases } from "@/lib/highlight";
 
 /**
  * 記事を読み終えた位置に置く「次に読むならこれ」。
@@ -29,7 +30,7 @@ export default function NextRead({ items }: { items: NextReadItem[] }) {
         <span className="flex flex-col gap-2 p-5">
           <Meta item={first} />
           <span className="text-[17px] font-bold leading-[1.55] text-ink text-balance group-hover:underline">
-            {displayHeadline(first.article.title)}
+            <Phrases text={displayHeadline(first.article.title)} inline />
           </span>
           {first.article.highlights[0] && (
             <span className="line-clamp-3 text-desc leading-[1.75] text-ink-soft">{first.article.highlights[0]}</span>
@@ -52,7 +53,7 @@ export default function NextRead({ items }: { items: NextReadItem[] }) {
                 <span className="flex min-w-0 flex-col gap-1">
                   <Meta item={item} />
                   <span className="line-clamp-3 text-note font-bold leading-snug text-ink group-hover:underline">
-                    {displayHeadline(item.article.title)}
+                    <Phrases text={displayHeadline(item.article.title)} inline />
                   </span>
                 </span>
               </Link>

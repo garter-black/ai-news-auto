@@ -27,8 +27,8 @@ class BracketTest(unittest.TestCase):
 class SeparatorTest(unittest.TestCase):
     def test_space_after_japanese_becomes_fullwidth(self):
         self.assertEqual(
-            h.normalize_title("AI半導体のNVIDIAがツール公開 止まったAI開発を再開"),
-            "AI半導体のNVIDIAがツール公開　止まったAI開発を再開",
+            h.normalize_title("NVIDIAがツール公開 AI学習を自動で再開"),
+            "NVIDIAがツール公開　AI学習を自動で再開",
         )
 
     def test_spaces_between_latin_words_stay(self):
@@ -103,6 +103,126 @@ class WarningTest(unittest.TestCase):
         long_title = "カスタマーサポート大手のZendeskがChatGPT Enterpriseを全社導入 社内で600のAIアプリを自作"
         self.assertTrue(quality.title_warnings({"title": long_title}))
         self.assertEqual(quality.title_warnings({"title": "OpenAIがZendesk事例を公開"}), [])
+
+
+class StyleGateTest(unittest.TestCase):
+    """2026-11-03 オーナー指摘「見出しが不自然で幼い。恥ずかしい」の例（直す前 → 受け入れられる直した後）"""
+
+    # (直す前, 受け入れられる直した後)
+    EXAMPLES = [
+        ("ChatGPTのOpenAIが電力対策「Grid Protectors」　AI施設が電力逼迫時に使用量を減らす",
+         "OpenAI、電力対策「Grid Protectors」を開始　AI施設が電力逼迫時に使用量を削減"),
+        ("ClaudeのAnthropicが上場申請書を修正　株は「ANT」で売買予定、創業者側が議決権50.1%",
+         "Anthropic、上場申請書を修正　創業者側が議決権50.1%を保持、ティッカーは「ANT」"),
+        ("AI半導体のNVIDIAが公開、複雑なAIフレームワークを効率管理する「Workload Map」とは",
+         "NVIDIAがAI基盤の管理ツール「Workload Map」を公開　複雑なフレームワークを一元管理"),
+        ("MicrosoftのAI秘書「Copilot Cowork」、9人が1日1,211件の更新　AIに書かせる開発の6つの教訓",
+         "Microsoftが「Copilot Cowork」の開発手法を公開　9人で1日1,211件を更新"),
+        ("Google開発AI「Antigravity」にクラウド開発用プラグイン　AIの勝手な課金操作を防ぐ",
+         "Google、AIコーディングツール「Antigravity」にクラウド開発用プラグイン　意図しない課金を防止"),
+        ("タスク管理のアトラシアン、マーケティング業務管理部門で3年連続「リーダー」に選出",
+         "豪Atlassian、Gartnerのマーケティング業務管理部門で3年連続「リーダー」に"),
+        ("Canvaがデザインアプリ「Affinity」iPad版を公開　描く・写真編集・ページ制作が1本に",
+         "Canva、iPad版「Affinity」を公開　描画・写真編集・レイアウトを1つのアプリに"),
+        ("AI半導体のNVIDIAが学習の自動復旧ツール公開　止まったAI開発を人手なしで再開",
+         "NVIDIA、AI学習の自動復旧ツールを公開　障害で止まった学習を自動で再開"),
+        ("法人向けオンライン保存「セキュアSAMBA」、Mac用アプリ提供開始　Finderで直接編集",
+         "kubell、法人向けストレージ「セキュアSAMBA」にMac用アプリ　Finderから直接編集"),
+    ]
+    # 機械で外せない（書き直しが要る）もの
+    NEEDS_REWRITE = [0, 2, 3, 4, 6, 7, 8]
+
+    def test_after_examples_pass(self):
+        for _, after in self.EXAMPLES:
+            normalized = h.normalize_title(after)
+            self.assertEqual(normalized, after)
+            self.assertEqual(h.title_problems(after), [], after)
+
+    def test_before_examples_are_fixed_or_rejected(self):
+        for i, (before, _) in enumerate(self.EXAMPLES):
+            normalized = h.normalize_title(before)
+            if i == 5:  # 知られていない会社の説明は機械では判定しない（書き直しのプロンプトで直す）
+                continue
+            self.assertTrue(normalized != before or h.title_problems(normalized), before)
+        rejected = [i for i, (before, _) in enumerate(self.EXAMPLES) if h.title_problems(h.normalize_title(before))]
+        for i in (2, 3, 4, 6, 7, 8):
+            self.assertIn(i, rejected, self.EXAMPLES[i][0])
+
+    def test_known_company_descriptor_is_stripped(self):
+        self.assertEqual(h.normalize_title("ChatGPTのOpenAIがZendesk事例公開　社内で600アプリ自作"), "OpenAIがZendesk事例公開　社内で600アプリ自作")
+        self.assertEqual(h.normalize_title("ClaudeのAnthropicが新薬開発に参入"), "Anthropicが新薬開発に参入")
+        self.assertEqual(h.normalize_title("半導体大手のNVIDIA、AI開発ツールを公開"), "NVIDIA、AI開発ツールを公開")
+        self.assertEqual(h.strip_known_descriptors("AI半導体大手のNVIDIAは開発者ブログで"), "NVIDIAは開発者ブログで")
+
+    def test_relations_and_company_first_are_kept(self):
+        for title in ("競合のGoogleが新モデル", "OpenAIの新AIモデル「GPT-6.1 Terra」", "Googleの「Gemini 4」に新機能",
+                      "Amazon傘下のAWSが新機能", "米新興のCresta、音声AIで資金調達"):
+            self.assertEqual(h.normalize_title(title), title)
+            self.assertEqual(h.title_problems(title), [], title)
+
+    def test_childish_words_outside_brackets(self):
+        self.assertTrue(h.title_problems("AIに家事をお任せ　新サービス"))
+        self.assertTrue(h.title_problems("止まったAI開発を人手なしで再開"))
+        # 製品名の中の言葉は見ない
+        self.assertEqual(h.title_problems("リフォームテクノロジー、持株会社化で「交換できるくん」を分社化"), [])
+
+    def test_punctuation_gate(self):
+        bad = {
+            "法人向け保存「セキュアSAMBA」、Mac用アプリを提供開始": "かっこの直後",
+            "OpenAI、「Codex」の利用枠を本体と共通化へ": "かっこの直前",
+            "OpenAIが新モデルを公開　　料金は半分": "空白が重なっている",
+            "OpenAIが新モデルを公開、": "末尾に句読点",
+            "トヨタ(7203)が新型車を発表": "半角の記号",
+            "GPT-6の新機能:画像生成に対応": "半角の「:」",
+            "新モデルを公開,料金は半分に": "半角の「,」",
+        }
+        for title, label in bad.items():
+            problems = h.title_problems(title)
+            self.assertTrue(any(label in p for p in problems), (title, problems))
+        for title in ("ChatGPT Proに月最大500ドルのAPI利用枠", "楽天証券の総合口座が1,500万を突破", "Gemini 4: 新機能",
+                      "Apple、7〜9月期売上高が1145億ドルで過去最高"):
+            self.assertEqual(h.punctuation_problems(title), [], title)
+
+    def test_quality_gate_warns_on_style(self):
+        warnings = quality.title_warnings({"title": "Google開発AI「Antigravity」に新プラグイン"})
+        self.assertTrue(any("書き方" in w for w in warnings))
+
+
+class PromptStyleTest(unittest.TestCase):
+    """記事を書くプロンプト・書き直し・SNS の要約が、説明の押し付けを勧めていない"""
+
+    FILES = ["scripts/main.py", "scripts/web_articles.py", "scripts/rewrite_titles.py", "scripts/threads_hooks.py"]
+
+    def test_no_descriptor_recommendation(self):
+        for name in self.FILES:
+            text = (ROOT / name).read_text("utf-8")
+            self.assertNotIn("正体を添える", text, name)
+            self.assertNotIn("正体を一言で", text, name)
+            self.assertNotIn("良い例:「ChatGPTのOpenAI", text, name)
+            self.assertNotIn("お任せ」", text.replace("お任せ／", ""), name)
+
+    def test_templates_use_shared_style(self):
+        for name, count in (("scripts/main.py", 1), ("scripts/web_articles.py", 3)):
+            text = (ROOT / name).read_text("utf-8")
+            self.assertEqual(text.count("- title: <<TITLE_STYLE>>"), count, name)
+            self.assertEqual(text.count('.replace("<<TITLE_STYLE>>", headline_normalize.TITLE_STYLE_PROMPT)'), count, name)
+        self.assertNotIn("{", h.TITLE_STYLE_PROMPT)  # .format() のテンプレートに入るので { } を使わない
+        for _, after in StyleGateTest.EXAMPLES[:1]:
+            self.assertEqual(h.title_problems(after), [])
+
+
+class LiveCorpusTest(unittest.TestCase):
+    """公開中の記事の見出しに、よく知られた会社への説明（機械で外せる型）が残っていない"""
+
+    def test_no_known_company_descriptor(self):
+        import json
+        bad = []
+        for path in sorted((ROOT / "content" / "articles").glob("*.json")):
+            record = json.loads(path.read_text("utf-8"))
+            title = str(record.get("title") or "")
+            if h.strip_known_descriptors(title) != title:
+                bad.append(f"{path.stem}: {title}")
+        self.assertEqual(bad, [])
 
 
 if __name__ == "__main__":

@@ -14,7 +14,7 @@ const compiled = ts.transpileModule(fs.readFileSync(sourcePath, "utf8"), {
 const loaded = new Module(sourcePath, module);
 loaded.filename = sourcePath;
 loaded._compile(compiled, sourcePath);
-const { displayHeadline, headOf } = loaded.exports;
+const { displayHeadline, headOf, splitHeadline } = loaded.exports;
 
 test("40字を超える見出しは一覧で前半だけ。40字以内・区切りが無いものは全文", () => {
   const long = "MicrosoftのAI秘書「Copilot Cowork」、9人が1日1,211件の更新　AIに書かせる開発の6つの教訓";
@@ -25,4 +25,14 @@ test("40字を超える見出しは一覧で前半だけ。40字以内・区切�
   // 英字どうしの間の空白では切らない・前半が短すぎるときは切らない
   assert.equal(headOf("新AI「Gemini 4 Argon」を発表"), null);
   assert.equal(headOf("短い前半　とても長い後半の文章がここに続きます"), null);
+});
+
+test("全角の空白のあとは補足として別の行に出す（かっこの中の空白・短すぎる前半では分けない）", () => {
+  assert.deepEqual(splitHeadline("NVIDIA、AI学習の自動復旧ツールを公開　障害で止まった学習を自動で再開"), {
+    main: "NVIDIA、AI学習の自動復旧ツールを公開",
+    sub: "障害で止まった学習を自動で再開",
+  });
+  assert.deepEqual(splitHeadline("新AI「Gemini　4」を発表した会社の話"), { main: "新AI「Gemini　4」を発表した会社の話", sub: null });
+  assert.deepEqual(splitHeadline("短い前半　後半の文章"), { main: "短い前半　後半の文章", sub: null });
+  assert.deepEqual(splitHeadline("区切りの無い見出しはそのまま"), { main: "区切りの無い見出しはそのまま", sub: null });
 });

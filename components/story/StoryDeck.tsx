@@ -205,7 +205,7 @@ export default function Deck({ bundle, next, onNext, onClose }: { bundle: Bundle
                   <Link href={`/articles/${s.slug}`}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={s.image.replace("maxresdefault", "hqdefault")} alt="" />
-                    <span className="g-t">{s.title}</span>
+                    <span className="g-t jp-wrap">{s.title}</span>
                     {s.usableLabel && <span className={`g-v ${s.usable}`}>{s.usableLabel}</span>}
                   </Link>
                 </li>
@@ -229,7 +229,7 @@ function Summary({ kept, next, onNext, onClose }: { kept: StoryItem[]; next?: Bu
               <Link href={`/articles/${s.slug}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={s.image.replace("maxresdefault", "hqdefault")} alt="" />
-                <span>{s.title}</span>
+                <span className="jp-wrap">{s.title}</span>
               </Link>
             </li>
           ))}
@@ -260,7 +260,7 @@ function Card({ it, mode }: { it: StoryItem; mode: Mode }) {
             {it.company}
             <time suppressHydrationWarning>{ago(it.at)}</time>
           </p>
-          <h2 className="c-title">{it.title}</h2>
+          <h2 className="c-title jp-wrap">{it.title}</h2>
         </div>
       </div>
       <div className="c-info">
