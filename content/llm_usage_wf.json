@@ -5,8 +5,11 @@
       "anthropic-api:claude-sonnet-5-5": 3
     },
     "images": {
-      "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 1,
-      "cloudflare:@cf/openai/gpt-oss-120b": 41
+      "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 2,
+      "cloudflare:@cf/openai/gpt-oss-120b": 58
+    },
+    "products": {
+      "gemma-4-31b-it": 1
     }
   }
 }
