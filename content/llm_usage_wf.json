@@ -4,7 +4,8 @@
       "anthropic-api:claude-opus-5-5": 1
     },
     "images": {
-      "cloudflare:@cf/openai/gpt-oss-120b": 18
+      "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 1,
+      "cloudflare:@cf/openai/gpt-oss-120b": 31
     }
   }
 }
