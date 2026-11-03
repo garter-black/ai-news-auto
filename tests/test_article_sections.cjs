@@ -102,3 +102,11 @@ test("[A24] 行の頭の立場の名前（「- 会社員として：〜」）は
   assert.ok(!/会社員として|副業・独立/.test(markdown), markdown);
   assert.deepEqual(hidden, ["活用点"]);
 });
+
+test("[A36] 記事へのリンクの文字が slug のままなら、リンク先の題名にする（2026-11-04 の点検）", () => {
+  const { titleSlugLinks } = loaded.exports;
+  const md = "- 11月2日：ARTEXの悪用を確認（[artex-agentic-offensive-frameworks](/articles/artex-agentic-offensive-frameworks)）\n- [題名のある記事](/articles/a-b-c)";
+  const out = titleSlugLinks(md, (s) => (s === "artex-agentic-offensive-frameworks" ? "Google、[ARTEX]の悪用を確認" : undefined));
+  assert.equal(out, "- 11月2日：ARTEXの悪用を確認（[Google、ARTEXの悪用を確認](/articles/artex-agentic-offensive-frameworks)）\n- [題名のある記事](/articles/a-b-c)");
+  assert.equal(titleSlugLinks("[x-y-z](/articles/x-y-z)", () => undefined), "[関連記事](/articles/x-y-z)");
+});

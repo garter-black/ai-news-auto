@@ -179,6 +179,27 @@ SUMMARY_OPENER_RE = re.compile(r"^要約すると\s*[、,:：]?\s*")
 OPENER_DUP = 0.5
 
 
+# 記事へのリンクの文字が URL の名前（slug）のまま（lib/article-sections.ts の titleSlugLinks と同じ。台帳 A36）
+SLUG_LINK_RE = re.compile(r"\[([a-z0-9]+(?:-[a-z0-9]+)+)\]\(/articles/([a-z0-9-]+)\)")
+
+
+def slug_link_titles(text: str) -> str:
+    """リンクの文字が slug のままなら、リンク先の記事の題名（無ければ「関連記事」）にする"""
+
+    def title(m: re.Match) -> str:
+        if m.group(1) != m.group(2):
+            return m.group(0)
+        name = ""
+        try:
+            name = str(json.loads((ARTICLES_DIR / f"{m.group(2)}.json").read_text("utf-8")).get("title") or "")
+        except (OSError, ValueError):
+            pass
+        name = re.sub(r"[\[\]]", "", name).strip()
+        return f"[{name or '関連記事'}](/articles/{m.group(2)})"
+
+    return SLUG_LINK_RE.sub(title, text or "")
+
+
 def first_prose_index(lines: list[str]) -> int:
     """最初の地の文の行の番号（見出しは飛ばす。表・箇条書き・画像が先に来たら -1）"""
     for i, line in enumerate(lines):
@@ -233,6 +254,14 @@ def autofix(record: dict) -> list[str]:
         if fixed != vals:
             record[key] = fixed
             changes.append("要点: 「元記事」を言い換えた")
+    # 記事へのリンクの文字が slug のまま（台帳 A36）
+    for key in ("body", "easy"):
+        text = record.get(key)
+        if isinstance(text, str) and SLUG_LINK_RE.search(text):
+            fixed_links = slug_link_titles(text)
+            if fixed_links != text:
+                record[key] = fixed_links
+                changes.append(f"{key}: リンクの文字が URL の名前のままだったので、記事の題名にした")
     # 本文・かんたん版の頭の「要約すると、」の段落（2026-11-04 の点検。新しい記事5本中4本でリードの言い直しになっていた。台帳 A19）。
     # 書き出しの「要約すると、」を外し、残った最初の文がリードとほぼ同じなら文ごと外す
     for key in ("body", "easy"):
@@ -399,6 +428,9 @@ def coded_problems(record: dict) -> list[tuple[str, str]]:
     if len(MAYBE_RE.findall(body_nq)) >= 3:
         add("A3", "「可能性があります」が多い（3か所以上）。根拠のある事実だけを書く")
     # 13. リードのくり返し（本文の最初の文・要点）
+    for key, text in (("本文", body), ("かんたん版", easy)):
+        if any(m.group(1) == m.group(2) for m in SLUG_LINK_RE.finditer(text)):
+            add("A36", f"{key}に、リンクの文字が URL の名前（slug）のままの記事へのリンク。記事の題名にする")
     for key, text in (("本文", body), ("かんたん版", easy)):
         lines = text.split("\n")
         i = first_prose_index(lines)

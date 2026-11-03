@@ -72,7 +72,7 @@ import {
   splitBeforeHeading,
 } from "@/lib/markdown";
 import { siteConfig } from "@/site.config";
-import { cleanSections, cleanTake, dropOverviewSections, dropSummarySections, retitleHtml, stripSummaryOpener, tocOf } from "@/lib/article-sections";
+import { cleanSections, cleanTake, dropOverviewSections, dropSummarySections, retitleHtml, stripSummaryOpener, titleSlugLinks, tocOf } from "@/lib/article-sections";
 import ArticleProse from "@/components/ArticleProse";
 import CalculatorBox from "@/components/calc/CalculatorBox";
 import { CALC_SLOT, insertFigures, markCalculatorSlot, renderChart, type ChartFigure } from "@/lib/charts";
@@ -230,7 +230,8 @@ export default async function ArticlePage({ params }: Props) {
   const easyMinutes = Math.max(1, Math.round(easy.length / 500));
   const easyHtml = easy ? retitleHtml(await renderMarkdown(easy, affiliates.map((a) => a.url)), "easy", article.sectionTitles, "easy") : "";
   // 古い記事の「## 概要」の章は、リードと「この記事のポイント」のくり返しなので出さない（台帳 A19。新しい記事は門で作らせない）
-  const bodyOpened = stripSummaryOpener(article.body, article.lede ?? "");
+  // リンクの文字が slug のままの記事へのリンクは、リンク先の題名にする（台帳 A36）
+  const bodyOpened = stripSummaryOpener(titleSlugLinks(article.body, (s) => getArticleSummary(s)?.title), article.lede ?? "");
   const body = cleanSections(
     article.lede && article.highlights.length > 0 ? dropOverviewSections(bodyOpened) : bodyOpened,
     article.sectionTitles?.body,

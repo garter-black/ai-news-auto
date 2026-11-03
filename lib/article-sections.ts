@@ -638,3 +638,14 @@ export function stripSummaryOpener(markdown: string, lede: string): string {
   else lines.splice(i, 1);
   return lines.join("\n").replace(/^\n+/, "").replace(/\n{3,}/g, "\n\n");
 }
+
+// 記事へのリンクの文字が URL の名前（slug）のまま（「（[artex-agentic-offensive-frameworks](/articles/…)）」。2026-11-04 の点検で2本・61か所）。
+// 読者には意味の無い英字なので、リンク先の記事の題名にする（台帳 A36）。scripts/article_style.py の slug_link_titles と同じ
+const SLUG_LINK_RE = /\[([a-z0-9]+(?:-[a-z0-9]+)+)\]\(\/articles\/([a-z0-9-]+)\)/g;
+export function titleSlugLinks(markdown: string, titleOf: (slug: string) => string | undefined): string {
+  return (markdown ?? "").replace(SLUG_LINK_RE, (all, text: string, slug: string) => {
+    if (text !== slug) return all;
+    const title = (titleOf(slug) ?? "").replace(/[[\]]/g, "").trim();
+    return `[${title || "関連記事"}](/articles/${slug})`;
+  });
+}

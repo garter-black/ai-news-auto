@@ -185,6 +185,22 @@ class SummaryOpenerTest(unittest.TestCase):
         self.assertNotIn("合うところでは、最初に「要約すると、」", persona.PLAIN_STYLE)
 
 
+class SlugLinkTest(unittest.TestCase):
+    """2026-11-04 の点検: 「これまでの流れ」に、リンクの文字が slug のままの記事へのリンクが出ていた（台帳 A36）"""
+
+    def test_slug_text_becomes_title_and_gate_catches_it(self):
+        slug = next(p.stem for p in st.ARTICLES_DIR.glob("*.json"))
+        text = f"- 11月2日：確認（[{slug}](/articles/{slug})）"
+        fixed = st.slug_link_titles(text)
+        self.assertNotIn(f"[{slug}]", fixed)
+        self.assertIn(f"](/articles/{slug})", fixed)
+        self.assertEqual(st.slug_link_titles("[no-such-article-x](/articles/no-such-article-x)"), "[関連記事](/articles/no-such-article-x)")
+        rec = {"title": "t", "lede": "x", "body": text, "easy": ""}
+        self.assertTrue(any(code == "A36" for code, _ in st.coded_problems(rec)))
+        st.autofix(rec)
+        self.assertFalse(any(code == "A36" for code, _ in st.coded_problems(rec)))
+
+
 class RepairTest(unittest.TestCase):
     """報告で「直す」とされた項目は、作り直す前に、その文だけ安いモデルで直す（quality.repair_language）"""
 
