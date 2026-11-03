@@ -109,6 +109,12 @@ class GateTest(unittest.TestCase):
         self.assertTrue(w.prefilter({"title": "製造たばこの小売定価の認可", "source_slug": "mof"}))
         self.assertIsNone(w.prefilter({"title": "OpenAIが新しいAIモデルを公開", "source_slug": "openai-news"}))
 
+    def test_short_hollow_lede(self):
+        # 2026-11-03 書き直しの見直しで見つけた形:「GoogleはGemini 4 Carbonを発表しました。」だけの1文目
+        self.assertTrue(any("〇〇を発表しました" in p for p in st.problems({"lede": "GoogleはGemini 4 Carbonを発表しました。料金は2ドルです。"})))
+        self.assertFalse(any("〇〇を発表しました" in p for p in st.problems(
+            {"lede": "Googleは、脆弱性の発見と修正が得意な新しいAIモデル「Gemini 4 Carbon」を、一部の防御担当者向けに公開しました。"})))
+
     def test_minor_change_is_not_new_model(self):
         self.assertTrue(any("新型" in p for p in st.problems({"title": "トヨタの新型SUV、一部改良", "body": "一部改良です。"})))
 

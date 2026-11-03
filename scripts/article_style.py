@@ -352,7 +352,8 @@ def coded_problems(record: dict) -> list[tuple[str, str]]:
         add("A19", "本文の最初の文がリードのくり返し。本文はリードに無い新しい事実から始める")
     if lede_sents and re.search(r"(?:業績|決算|結果|注意喚起|お知らせ|概要|内容|方針|計画|報告書|レポート|資料|調査)(?:について|に関する[^。]{0,10})?を"
                                 r"(?:発表|公表|公開)しました。?$", lede_sents[0]) \
-            and not re.search(r"\d[\d,.]*\s?(?:%|％|円|ドル|億|万|倍|人|件|社|台)", lede_sents[0]):
+            and not re.search(r"\d[\d,.]*\s?(?:%|％|円|ドル|億|万|倍|人|件|社|台)", lede_sents[0]) \
+            or (lede_sents and len(lede_sents[0]) < 36 and re.search(r"(?:発表|公開|公表)しました。?$", lede_sents[0])):
         add("A19", "リードの1文目が「〇〇を発表しました」で終わり、何が新しいか（中身・数字）を言っていない。1文目で新しい事実を言い切る")
     for h in record.get("highlights") or []:
         if any(similarity(h, s) >= 0.9 for s in lede_sents):
