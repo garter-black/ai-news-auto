@@ -12120,6 +12120,16 @@
       "slug": "mosquito-mating-gene-discovery",
       "url": "https://www.jst.go.jp/pr/announce/20261028/index.html"
     },
+    "e6bc890b8e0378b5": {
+      "at": "2026-11-03T08:40:23.765520+00:00",
+      "breaking": true,
+      "major": true,
+      "model": "anthropic-api:claude-opus-5-5",
+      "score": 96,
+      "section": "ai",
+      "slug": "secure-samba-mac-drive-app",
+      "url": "https://news.mynavi.jp/techplus/article/20261103-5248905/"
+    },
     "e6d56825e06fc5a3": {
       "at": "2026-11-02T13:21:41.531788+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13139,51 +13149,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-01T01:41:12.114210+00:00",
-      "attempt": 1,
-      "id": "843669dfabc08285",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 65.5字・60字超の文が 54% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 131.1字・最長 244字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 131.1,
-        "avg_sentence": 65.5,
-        "long_share": 0.542,
-        "max_paragraph": 244,
-        "paragraphs": 12,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "figma-blog",
-      "title": "Making something human: 4 things we took away from Config India"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-01T01:41:15.292978+00:00",
-      "attempt": 0,
-      "id": "843669dfabc08285",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 139.2字・最長 251字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 139.2,
-        "avg_sentence": 41.8,
-        "long_share": 0.15,
-        "max_paragraph": 251,
-        "paragraphs": 12,
-        "sentences": 40
-      },
-      "score": 100,
-      "source": "figma-blog",
-      "title": "Making something human: 4 things we took away from Config India"
-    },
     {
       "accepted": false,
       "at": "2026-11-01T05:07:51.767061+00:00",
@@ -19590,6 +19555,56 @@
       "title": "Transformers Model Integration Contracts",
       "warnings": [
         "見出しが44字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T08:40:05.305850+00:00",
+      "attempt": 1,
+      "id": "e6bc890b8e0378b5",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "（編集部注）「BoxやDropbox、Google ドライブ、OneDriveといった海外の大手サービスは、以前からMac用のアプリを出しています。…他社に追いついた形です」→ 元記事にも確認済みの文脈にもない固有名詞を挙げた他社比較で、「追いついた形」という評価も根拠がない。一般的な背景説明の範囲を超えている。",
+        "「小さな事業でWindowsとMacを使い分けているなら、無料プランで共有の流れを試す選択肢があります」→ 元記事は無料プランを含む全契約者が対象としているだけで、新規に無料プランで試せるとは書かれておらず、読者への示唆が根拠を超えている。",
+        "「Mac対応の遅れが乗り換えの障害だった会社にとって、その障害が一つ減った」→ 編集部の見方と断っているが、乗り換えの障害だったという前提は元記事にない。"
+      ],
+      "readability": {
+        "avg_paragraph": 55.3,
+        "avg_sentence": 37.6,
+        "long_share": 0.132,
+        "max_paragraph": 109,
+        "paragraphs": 36,
+        "sentences": 53
+      },
+      "score": 80,
+      "source": "radar-news.mynavi.jp",
+      "title": "オンラインストレージ「セキュアSAMBA」がMacのFinderから直接利用できるMac向けドライブアプリの提供を開始 &#8211; Windowsとの混在環",
+      "warnings": [
+        "見出しが46字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T08:40:23.760365+00:00",
+      "attempt": 1,
+      "id": "e6bc890b8e0378b5",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 52.5,
+        "avg_sentence": 36.8,
+        "long_share": 0.14,
+        "max_paragraph": 104,
+        "paragraphs": 35,
+        "sentences": 50
+      },
+      "score": 96,
+      "source": "radar-news.mynavi.jp",
+      "title": "オンラインストレージ「セキュアSAMBA」がMacのFinderから直接利用できるMac向けドライブアプリの提供を開始 &#8211; Windowsとの混在環",
+      "warnings": [
+        "見出しが46字（目安40字以内）。一覧・カードでは前半だけを出す"
       ]
     }
   ],
