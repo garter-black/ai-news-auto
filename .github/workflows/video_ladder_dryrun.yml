@@ -1,0 +1,110 @@
+name: SNS video ladder dry run (manual)
+
+# SNS 動画の段の下がり方（scripts/video_ladder.py。L1 今の型 → L2 作り直し → L3 公式の画像＋字幕 → L4 要点と声）を、
+# 直近の SNS 向けの記事で本番の声（VOICEVOX 九州そら）で書き出し、段ごとの合格率を出すだけの手動実行（スケジュールなし）。
+# 投稿しない・KV にも Buffer にも置かない・記事 JSON に video を書かない。動画・見比べ画像・report は Artifacts（3日）。
+# 既定は L3,L4 だけ・画像のレビュー（Claude API）なし（L1/L2 の台本は Claude API の予算を使うので、入れるときは数本だけにする）。
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "直近の SNS 向けの記事を何本（slugs を書いたときは使わない）"
+        default: "20"
+      slugs:
+        description: "slug をスペース区切り（空なら直近の count 本）"
+        default: ""
+      levels:
+        description: "試す段（例: L3,L4 / L1,L2,L3,L4）"
+        default: "L3,L4"
+      vision:
+        description: "画像のレビューに Claude API を使う（api）・使わない（off: L4 は決まりで判定、L3 は不合格）"
+        default: "off"
+
+permissions:
+  contents: write  # 画像のレビューに Claude API を使ったときの使用量（state/claude_api_usage_video.json）を main に残すため
+
+concurrency:
+  group: video-ladder-dryrun-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  dryrun:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: VOICEVOX を裏で起動（以降の準備と並行）
+        run: nohup sh -c 'docker run -d --rm --name voicevox -p 50021:50021 voicevox/voicevox_engine:cpu-latest' > /tmp/voicevox.log 2>&1 &
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: 準備（Python・日本語フォント・L1 用のブラウザ）
+        run: |
+          npm i -g @anthropic-ai/claude-code > /tmp/claude-install.log 2>&1 &
+          pip install -r requirements.txt numpy pillow budoux opencv-python-headless playwright imageio-ffmpeg
+          mkdir -p ~/.local/share/fonts && cp assets/fonts/NotoSansJP-*.otf ~/.local/share/fonts/ && fc-cache -f > /dev/null
+          google-chrome --version
+          wait
+      - name: 段を順に試す（投稿しない）
+        env:
+          LLM_WORKFLOW: video
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ github.event.inputs.levels != 'L3,L4' && secrets.CLAUDE_CODE_OAUTH_TOKEN || '' }}
+          CLAUDE_DAILY_MAX: ${{ vars.CLAUDE_DAILY_MAX || '40' }}
+          CLAUDE_MODEL: opus
+          ANTHROPIC_API_KEY: ${{ (github.event.inputs.vision == 'api' || github.event.inputs.levels != 'L3,L4') && secrets.ANTHROPIC_API_KEY || '' }}
+          LLM_DEFAULT_VISIBILITY: high
+          LLM_DEFAULT_PURPOSE: video
+          CLAUDE_API_LEDGER: video
+          CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
+          CLAUDE_API_DAILY_CALLS_VIDEO: ${{ vars.CLAUDE_API_DAILY_CALLS_VIDEO }}
+          COUNT: ${{ github.event.inputs.count }}
+          SLUGS: ${{ github.event.inputs.slugs }}
+          LEVELS: ${{ github.event.inputs.levels }}
+          VISION: ${{ github.event.inputs.vision }}
+        run: |
+          for i in $(seq 1 60); do curl -sf localhost:50021/version > /dev/null && break; sleep 3; done
+          curl -sf localhost:50021/version && echo " VOICEVOX OK"
+          args="--levels $LEVELS --tts voicevox --profile production --out out/video_ladder"
+          [ "$VISION" = "api" ] || args="$args --no-vision"
+          status=0
+          if [ -n "$SLUGS" ]; then
+            python scripts/video_ladder.py $SLUGS $args || status=$?
+          else
+            python scripts/video_ladder.py --dry-run "$COUNT" $args || status=$?
+          fi
+          echo "--- L1（今の型）の最近の結果（state/sns_video.json）"
+          python scripts/video_ladder.py --history 20
+          exit $status
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: video-ladder-dryrun-${{ github.run_number }}
+          path: |
+            out/video_ladder/*.mp4
+            out/video_ladder/*.png
+            out/video_ladder/*.json
+          retention-days: 3
+      - name: Claude API の使用量を記録
+        if: always()
+        continue-on-error: true
+        run: |
+          f=state/claude_api_usage_video.json
+          u=state/llm_usage_video.json
+          if [ -z "$(git status --porcelain "$f" "$u" 2>/dev/null)" ]; then exit 0; fi
+          cp "$f" "$RUNNER_TEMP/api_usage_mine.json" 2>/dev/null || echo '{}' > "$RUNNER_TEMP/api_usage_mine.json"
+          cp "$u" "$RUNNER_TEMP/llm_usage_mine.json" 2>/dev/null || echo '{}' > "$RUNNER_TEMP/llm_usage_mine.json"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for i in 1 2 3; do
+            git fetch --depth 1 origin main && git reset --hard origin/main
+            python scripts/llm.py --merge-api-usage "$RUNNER_TEMP/api_usage_mine.json" "$f"
+            python scripts/llm.py --merge-usage-counts "$RUNNER_TEMP/llm_usage_mine.json" "$u"
+            git add "$f" "$u"
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "chore(llm): Claude API の使用量を記録（動画の段の確かめ）"
+            git push origin HEAD:main && exit 0
+            sleep 5
+          done
