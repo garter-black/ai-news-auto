@@ -93,13 +93,38 @@ def views_of(rows: list[dict], page: str, source: str, campaign: str | None = No
     )
 
 
-def threads_posts(data: dict, posted: dict, videos: dict) -> list[dict]:
-    """Threads の投稿ごとの結果。その日に出した投稿と、その日に Threads から訪問があった投稿（前の日の投稿も）"""
+# 自前計測が本番で動き始めた時刻（2026-11-03 10:02 日本時間のデプロイ）。これより前に出た投稿の最初の数時間は数えていない
+INFLOW_START = datetime(2026, 11, 3, 10, 2, tzinfo=JST)
+
+
+def sent_time(rec: dict, now: datetime | None = None) -> tuple[datetime | None, bool]:
+    """投稿が実際に出た時刻と、もう出たかどうか。
+
+    postedAt は「Buffer に予約した時刻」で、予約投稿では実際に出る時刻（dueAt）より何時間も前になる。
+    sentAt（Buffer の送信時刻）→ delivery.threads.sentAt → dueAt（予約の時刻）→ postedAt（すぐ出した投稿）の順に使う。
+    dueAt がまだ来ていない投稿は「予約中」（False）
+    """
+    now = now or datetime.now(JST)
+    delivery = ((rec.get("delivery") or {}).get("threads") or {}).get("sentAt")
+    for value in (rec.get("sentAt"), delivery):
+        when = jst(value or "")
+        if when:
+            return when, True
+    due = jst(rec.get("dueAt") or "")
+    if due:
+        return due, due <= now
+    when = jst(rec.get("postedAt") or "")
+    return when, bool(when and when <= now)
+
+
+def threads_posts(data: dict, posted: dict, videos: dict, now: datetime | None = None) -> list[dict]:
+    """Threads の投稿ごとの結果。その日に出した投稿と、その日に Threads から訪問があった投稿（前の日の投稿も）。
+    その日の予約でまだ出ていない投稿は pending=True（訪問0 には数えない）"""
     date, rows = data["date"], data.get("rows") or []
     visited = {r["page"] for r in rows if r["source"] == "threads"}
     out = []
     for slug, rec in posted.items():
-        when = jst(rec.get("postedAt") or rec.get("sentAt") or "")
+        when, sent = sent_time(rec, now)
         if not when or not (when.date().isoformat() == date or slug in visited):
             continue
         if when.date().isoformat() > date:
@@ -111,6 +136,7 @@ def threads_posts(data: dict, posted: dict, videos: dict) -> list[dict]:
             "slug": slug, "at": when, "kind": rec.get("format") or rec.get("style") or "",
             "visits": total, "utm": total - views_of(rows, slug, "threads", ""),
             "impressions": metrics.get("views") or 0,
+            "pending": not sent, "before_start": when < INFLOW_START,
         })
     for slug, rec in videos.items():
         when = jst(rec.get("postedAt") or "")
@@ -121,7 +147,8 @@ def threads_posts(data: dict, posted: dict, videos: dict) -> list[dict]:
         if when.date().isoformat() == date or hits:
             if when.date().isoformat() > date:
                 continue
-            out.append({"slug": slug, "at": when, "kind": f"動画・{'短い版' if variant == 'short' else '全部の版'}", "visits": hits, "utm": hits, "impressions": 0})
+            out.append({"slug": slug, "at": when, "kind": f"動画・{'短い版' if variant == 'short' else '全部の版'}", "visits": hits, "utm": hits,
+                        "impressions": 0, "pending": False, "before_start": when < INFLOW_START})
     return sorted(out, key=lambda p: p["at"])
 
 
@@ -158,14 +185,21 @@ def show(data: dict, posted: dict, videos: dict, top: int = 3) -> None:
     posts = threads_posts(data, posted, videos)
     if posts:
         print("  Threads の投稿ごと（この日の投稿と、この日に訪問があった投稿）:")
-        zero = [p for p in posts if not p["visits"]]
+        zero = [p for p in posts if not p["visits"] and not p["pending"]]
+        pending = [p for p in posts if p["pending"] and not p["visits"]]
         for p in [p for p in posts if p["visits"]]:
             rate = f" / 表示 {p['impressions']} → {p['visits'] / p['impressions']:.1%}" if p["impressions"] else ""
             other = p["visits"] - p["utm"]
             note = f"（うち投稿のリンク {p['utm']}・参照元だけ {other}）" if other else ""
-            print(f"    {p['at']:%m/%d %H:%M} {p['kind'] or '-'}「{title_of(p['slug'])}」 訪問 {p['visits']}{note}{rate}")
+            early = "（計測を始める前に出た投稿。数えたのは計測開始後の分だけ）" if p["before_start"] else ""
+            print(f"    {p['at']:%m/%d %H:%M} {p['kind'] or '-'}「{title_of(p['slug'])}」 訪問 {p['visits']}{note}{rate}{early}")
         if zero:
-            print(f"    訪問0: {len(zero)}本（" + "、".join(f"{p['at']:%H:%M} {p['kind'] or '-'}" for p in zero) + "）")
+            mark = lambda p: "※" if p["before_start"] else ""  # noqa: E731
+            print(f"    訪問0: {len(zero)}本（" + "、".join(f"{mark(p)}{p['at']:%H:%M} {p['kind'] or '-'}{'（リンクなし）' if p['kind'] == 'poll' else ''}" for p in zero) + "）")
+            if any(p["before_start"] for p in zero):
+                print(f"      ※ 計測を始めた {INFLOW_START:%m/%d %H:%M} より前に出た投稿。出てすぐの数時間は数えていないので、0 とは限りません")
+        if pending:
+            print(f"    まだ出ていない予約: {len(pending)}本（" + "、".join(f"{p['at']:%H:%M} {p['kind'] or '-'}" for p in pending) + "。時刻は予約の時刻）")
 
     video: dict[str, dict[str, int]] = {}
     for r in rows:

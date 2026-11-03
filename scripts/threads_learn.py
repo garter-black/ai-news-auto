@@ -64,7 +64,7 @@ def fetch_metrics(api_key: str) -> dict[str, dict]:
                     organizationId: {json.dumps(org['id'])},
                     filter: {{ status: [sent], channelIds: {json.dumps(ids)} }}
                 }}) {{
-                    edges {{ node {{ id sentAt externalLink metricsUpdatedAt metrics {{ type value }} }} }}
+                    edges {{ node {{ id sentAt externalLink metricsUpdatedAt metrics {{ type value }} metadata {{ ... on ThreadsPostMetadata {{ threadCount }} }} }} }}
                     pageInfo {{ endCursor hasNextPage }}
                 }} }}""",
             )["posts"]
@@ -77,10 +77,63 @@ def fetch_metrics(api_key: str) -> dict[str, dict]:
                     "sentAt": node.get("sentAt"),
                     "externalLink": node.get("externalLink"),
                 }
+                thread_count = (node.get("metadata") or {}).get("threadCount")
+                if thread_count:
+                    # 自分で付けた返信（スレッドの2件目以降）の数。Buffer のコメント数にはこれも入っている
+                    result[node["id"]]["ownReplies"] = max(0, int(thread_count) - 1)
             if not data["pageInfo"]["hasNextPage"]:
                 break
             cursor = data["pageInfo"]["endCursor"]
     return result
+
+
+# 2026-11-03 02:02（日本時間）より前の Threads の投稿は、記事のリンクを自分への返信（2/2）に置いていた
+LINK_REPLY_UNTIL = datetime(2026, 11, 2, 17, 2, tzinfo=timezone.utc)
+# 朝のまとめは 2026-11-03 15:53 まで返信にリンクを置いていた
+DIGEST_REPLY_UNTIL = datetime(2026, 11, 3, 6, 53, tzinfo=timezone.utc)
+# Buffer の反応の数値は1日1回の更新。送信からこれより短い時刻の数値は、まだ数え終わっていない（ほぼ0）
+MATURE_HOURS = 12
+
+
+def _utc(value: object) -> datetime | None:
+    try:
+        return datetime.fromisoformat(str(value).replace("Z", "+00:00")).astimezone(timezone.utc)
+    except (TypeError, ValueError):
+        return None
+
+
+def metrics_mature(entry: dict) -> bool:
+    """反応の数値が、送信から MATURE_HOURS 時間以上たってから取ったものか。
+    送信直後に取った数値（閲覧0など）を学習に入れると、出たばかりの投稿の型が「伸びない」と誤って判断される。
+    時刻の記録が無い古い投稿はそのまま使う"""
+    sent, updated = _utc(entry.get("sentAt")), _utc(entry.get("metricsUpdatedAt"))
+    if not sent or not updated:
+        return True
+    return updated - sent >= timedelta(hours=MATURE_HOURS)
+
+
+def own_replies(entry: dict) -> int:
+    """自分で付けた返信の数（Buffer のコメント数から引く）。threadCount が取れていればそれ、
+    無ければ投稿の形と時刻から（リンクの返信を付けていた時期の投稿は1）"""
+    if "ownReplies" in entry:
+        return int(entry.get("ownReplies") or 0)
+    if entry.get("style") == "poll":
+        return 0
+    if entry.get("format") == "hook_thread":
+        return 1
+    sent = _utc(entry.get("sentAt") or entry.get("dueAt") or entry.get("postedAt"))
+    if not sent:
+        return 0
+    until = DIGEST_REPLY_UNTIL if entry.get("style") == "digest" else LINK_REPLY_UNTIL
+    return 1 if sent < until else 0
+
+
+def reader_metrics(entry: dict) -> dict:
+    """読者の反応だけにした数値（コメント数から自分の返信を引く）"""
+    metrics = dict(entry.get("metrics") or {})
+    if "comments" in metrics:
+        metrics["comments"] = max(0.0, float(metrics.get("comments") or 0) - own_replies(entry))
+    return metrics
 
 
 def views_of(metrics: dict) -> float:
@@ -217,10 +270,11 @@ def main() -> int:
 
     rows = []
     for slug, entry in state["posted"].items():
-        metrics = entry.get("metrics")
-        # 朝のまとめ・問いかけ・時刻を変えた動作検証投稿は型の学習には入れない
-        if not metrics or not learning_sample(entry):
+        # 朝のまとめ・問いかけ・時刻を変えた動作検証投稿は型の学習には入れない。
+        # 送信直後に取った（まだ数え終わっていない）数値も入れない。コメントは読者の分だけ（自分のリンクの返信を引く）
+        if not entry.get("metrics") or not learning_sample(entry) or not metrics_mature(entry):
             continue
+        metrics = reader_metrics(entry)
         rows.append({
             "slug": slug,
             "views": views_of(metrics),

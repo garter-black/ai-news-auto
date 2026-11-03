@@ -92,5 +92,42 @@ class LearningIsolationTest(unittest.TestCase):
         self.assertNotIn("hook_thread", result["axes"]["postFormat"])
 
 
+class LearningMetricsHygieneTest(unittest.TestCase):
+    """送信直後の数値（まだ0）と、自分で付けたリンクの返信（コメント1）を学習に入れない"""
+
+    def run_learning(self, state):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "learning.json"
+            with patch.object(sys, "argv", ["threads_learn.py", "--offline"]), \
+                 patch.object(threads_learn, "load_state", return_value=state), \
+                 patch.object(threads_learn, "LEARNING_PATH", output), \
+                 patch.object(threads_learn, "fetch_metrics", side_effect=AssertionError("network forbidden")):
+                self.assertEqual(threads_learn.main(), 0)
+            return json.loads(output.read_text())
+
+    def test_fresh_zero_metrics_are_skipped(self):
+        state = {"posted": {
+            "matured": {"style": "standalone", "format": "classic", "hook": "callout", "sentAt": "2026-11-01T00:45:30Z",
+                        "metricsUpdatedAt": "2026-11-02T11:07:09Z", "metrics": {"views": 594, "comments": 2}},
+            "fresh": {"style": "standalone", "format": "classic", "hook": "breaking", "sentAt": "2026-11-02T15:35:40Z",
+                      "metricsUpdatedAt": "2026-11-02T15:35:32Z", "metrics": {"views": 0, "comments": 0}},
+        }}
+        result = self.run_learning(state)
+        self.assertEqual(result["posts"], 1)
+        self.assertNotIn("breaking", result["axes"]["hook"])
+
+    def test_own_link_reply_is_not_a_reader_comment(self):
+        self.assertEqual(threads_learn.own_replies({"format": "classic", "sentAt": "2026-11-01T00:45:30Z"}), 1)
+        self.assertEqual(threads_learn.own_replies({"format": "classic", "sentAt": "2026-11-03T06:30:00Z"}), 0)
+        self.assertEqual(threads_learn.own_replies({"format": "hook_thread", "sentAt": "2026-11-03T06:30:00Z"}), 1)
+        self.assertEqual(threads_learn.own_replies({"style": "digest", "sentAt": "2026-11-02T22:30:00Z"}), 1)
+        self.assertEqual(threads_learn.own_replies({"style": "poll", "sentAt": "2026-10-30T06:43:00Z"}), 0)
+        self.assertEqual(threads_learn.own_replies({"ownReplies": 0, "format": "hook_thread"}), 0)
+        self.assertEqual(threads_learn.reader_metrics({"format": "classic", "sentAt": "2026-11-01T00:45:30Z",
+                                                       "metrics": {"comments": 2, "views": 5}})["comments"], 1)
+        self.assertEqual(threads_learn.reader_metrics({"format": "classic", "sentAt": "2026-11-01T00:45:30Z",
+                                                       "metrics": {"comments": 0}})["comments"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()
