@@ -1,22 +1,25 @@
 import Link from "next/link";
-import HeaderNav from "@/components/HeaderNav";
+import GenreTabs from "@/components/HeaderNav";
 import LiveLine from "@/components/LiveLine";
 import ThemeToggle from "@/components/ThemeToggle";
 import { getAllArticles } from "@/lib/articles";
+import { genreNav, UTILITY_NAV } from "@/lib/nav";
 import { siteConfig } from "@/site.config";
 
-// 上のメニューは5つまでに絞る（企業別はトップの企業チップから、まとめは記事一覧から辿れる）
-const NAV: { href: string; label: string }[] = [
-  { href: "/", label: "AI速報" },
-  { href: "/usable", label: "使えるAI" },
-  { href: "/news", label: "ニュース" },
-  { href: "/products", label: "AIサービス図鑑" },
-  { href: "/articles", label: "記事一覧" },
-];
+/** 虫めがねの線画（検索の入口） */
+function SearchIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+      <circle cx="10.5" cy="10.5" r="6.5" />
+      <path d="m15.5 15.5 5 5" />
+    </svg>
+  );
+}
 
 /**
- * 濃紺の帯（ロゴ・メニュー）と、その下の速報の1行。
- * 帯だけ画面上に残し、速報の1行はスクロールで流す（スマホで本文を押し下げすぎないため）。
+ * 濃紺の帯（ロゴ・検索・定番ページ）と、その下のジャンルのタブ、速報の1行。
+ * 帯だけ画面上に残し、タブと速報の1行はスクロールで流す（スマホで本文を押し下げすぎないため）。
+ * 検索窓はただのフォーム（/search?q=…）なので、JS を読まなくても動く。
  */
 export default function Header() {
   // いちばん新しいAIの記事（AI速報サイトの看板の1行）
@@ -32,20 +35,41 @@ export default function Header() {
             <span className="hidden text-meta font-bold text-mast-muted sm:inline md:hidden xl:inline">{siteConfig.tagline}</span>
           </Link>
 
-          <HeaderNav items={NAV} />
+          <nav aria-label="定番ページ" className="ml-auto hidden items-center gap-5 lg:flex">
+            {UTILITY_NAV.map((item) => (
+              <Link key={item.href} href={item.href} className="whitespace-nowrap text-meta font-bold text-mast-muted transition-colors hover:text-mast-ink">
+                {item.label}
+              </Link>
+            ))}
+          </nav>
 
-          <div className="ml-auto flex shrink-0 items-center gap-1.5 md:ml-0">
-            {/* スマホではメニューを畳んでいるので、AI以外の話題への入口だけ出す */}
+          <div className="ml-auto flex shrink-0 items-center gap-1.5 lg:ml-0">
+            <form action="/search" method="get" role="search" className="hidden md:block">
+              <label className="flex h-9 w-56 items-center gap-2 rounded-md border border-white/25 bg-white/10 px-2.5 text-mast-muted focus-within:border-white focus-within:text-mast-ink">
+                <SearchIcon className="size-4 shrink-0" />
+                <span className="sr-only">記事を検索</span>
+                <input
+                  type="search"
+                  name="q"
+                  placeholder="記事を検索（例：NISA）"
+                  enterKeyHint="search"
+                  className="min-w-0 flex-1 bg-transparent text-note text-mast-ink outline-none placeholder:text-mast-muted"
+                />
+              </label>
+            </form>
             <Link
-              href="/news"
-              className="rounded-sm border border-white/30 px-2.5 py-1 text-meta font-bold text-mast-ink transition-colors hover:border-white md:hidden"
+              href="/search"
+              aria-label="記事を検索"
+              className="grid size-10 place-items-center rounded-md text-mast-ink transition-colors hover:bg-white/10 md:hidden"
             >
-              ニュース
+              <SearchIcon className="size-[22px]" />
             </Link>
             <ThemeToggle />
           </div>
         </div>
       </header>
+
+      <GenreTabs items={genreNav()} utility={UTILITY_NAV} />
 
       {latest && (
         <LiveLine

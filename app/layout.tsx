@@ -79,6 +79,12 @@ export default function RootLayout({
     description: siteConfig.description,
     inLanguage: "ja",
     publisher: publisherJsonLd,
+    // サイト内検索（/search?q=…）の入口
+    potentialAction: {
+      "@type": "SearchAction",
+      target: { "@type": "EntryPoint", urlTemplate: `${siteConfig.url}/search?q={search_term_string}` },
+      "query-input": "required name=search_term_string",
+    },
   };
 
   const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;

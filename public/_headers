@@ -3,3 +3,7 @@
 # 指定しないと max-age=0 になり、ページを開くたびに CSS・JS・フォントを1本ずつ問い合わせ直す
 /_next/static/*
   Cache-Control: public,max-age=31536000,immutable
+
+# サイト内検索の索引（scripts/build_index.mjs）。URL に索引の版（?v=）が付くので、1時間はブラウザに置かせる
+/search-index/*
+  Cache-Control: public,max-age=3600

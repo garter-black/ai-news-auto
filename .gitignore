@@ -24,3 +24,6 @@ content/index.json
 .open-next
 .wrangler
 .dev.vars
+
+# サイト内検索の索引（scripts/build_index.mjs が作る）
+public/search-index/

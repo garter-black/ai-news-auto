@@ -5,11 +5,12 @@ import ArticleCard from "@/components/ArticleCard";
 import { GenreChips } from "@/components/NewsHub";
 import Pagination from "@/components/Pagination";
 import {
-  getAllGenres,
   getArticlesByGenre,
   getChannelsByGenre,
 } from "@/lib/articles";
 import { listingRobots } from "@/lib/indexing";
+// ジャンル名はヘッダーのタブと同じ関数（lib/nav.ts）で出す
+import { genreLabel } from "@/lib/nav";
 import { pageHref, pageSuffix, paginate } from "@/lib/paginate";
 import { broadGenresWithArticles, broadSection } from "@/lib/sections";
 
@@ -18,10 +19,6 @@ const GENRE_COPY: Record<string, string> = {
   // 投資・マネーと不動産の説明は lib/sections.ts の BROAD_SECTIONS（/news・トップと同じ文）
 };
 
-/** ジャンル名。記事の genre を優先し、無ければ幅広い話題の静的な名前 */
-function genreLabel(genre: string): string {
-  return getAllGenres().find((g) => g.slug === genre)?.label ?? broadSection(genre)?.label ?? genre;
-}
 
 /** ジャンルの説明文 */
 function genreCopy(genre: string): string | undefined {

@@ -106,6 +106,11 @@ function edgeCacheKey(request: Request, url: URL, env: Env): Request | null {
   if (request.method !== "GET" || request.headers.has("rsc") || url.searchParams.has("_rsc")) return null;
   if (url.pathname.startsWith("/_next/") || url.pathname.startsWith("/api/")) return null;
   const key = new URL(url);
+  // 表示に関係しない計測用のパラメータ（シェアボタンの utm_*・SNS のクリック ID）はキーから外し、
+  // 同じページを別物として描き直さない。/search の q もページは同じ（検索はブラウザ側で行う）
+  for (const name of [...key.searchParams.keys()]) {
+    if (/^utm_/.test(name) || name === "fbclid" || name === "gclid" || (name === "q" && key.pathname === "/search")) key.searchParams.delete(name);
+  }
   key.searchParams.set("__c", (codeInfo as { hash?: string }).hash || deployVersion(env));
   return new Request(key.toString(), { method: "GET" });
 }

@@ -5,6 +5,7 @@ import DifyDecisionLink from "@/components/DifyDecisionLink";
 import { getAllArticles, getAllChannels, getAllTags } from "@/lib/articles";
 import { companyCounts } from "@/lib/companies";
 import { hasActiveAffiliate } from "@/lib/monetization";
+import { genreNav } from "@/lib/nav";
 import { siteConfig } from "@/site.config";
 
 const LEGAL_LINKS = [
@@ -16,10 +17,15 @@ const LEGAL_LINKS = [
   { href: "/contact", label: "お問い合わせ" },
 ];
 
-// 何度も見に来てもらう定番ページ（ヘッダーのメニューは5つに絞っているので足元に置く）
+// 何度も見に来てもらう定番ページ（ヘッダーはジャンルのタブが中心なので、ここにもまとめて置く）
 const REFERENCE_LINKS = [
+  { href: "/search", label: "記事を検索" },
+  { href: "/news", label: "ジャンル別のニュース" },
+  { href: "/usable", label: "今日から使えるAI" },
   { href: "/guides", label: "AIの使い方ガイド" },
   { href: "/ai-pricing", label: "AIの料金・日本対応 早見表" },
+  { href: "/tools", label: "計算ツール（円換算・税金）" },
+  { href: "/products", label: "AIサービス図鑑" },
   { href: "/choose/internet-for-ai", label: "AIのための通信回線の選び方" },
   { href: "/choose/dify-hosting", label: "Difyの無料利用・VPSの選び方" },
   { href: "/choose/ai-career", label: "AI転職・学び直しの選び方" },
@@ -29,9 +35,9 @@ const REFERENCE_LINKS = [
 
 export default function Footer() {
   const ai = getAllArticles().filter((a) => a.genreSlug === "ai");
-  const liveChannels = new Set(ai.map((a) => a.channelSlug));
-  // 発信元が増えても足元が伸びないよう、記事の多い順に上限を設ける
-  const channels = getAllChannels().filter((c) => liveChannels.has(c.slug)).slice(0, 30);
+  // 発信元はジャンルを問わず記事の多い順（AIだけに絞らない）。足元が伸びないよう上限を設ける
+  const channels = getAllChannels().slice(0, 24);
+  const genres = genreNav();
   const companies = companyCounts(ai).slice(0, 8);
   const tags = getAllTags(true).slice(0, 16);
 
@@ -87,6 +93,17 @@ export default function Footer() {
           </div>
 
           <div>
+            <p className="eyebrow">GENRES</p>
+            <ul className="mb-8 mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5">
+              {genres.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-note font-semibold text-ink-soft hover:text-accent">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
             <p className="eyebrow">REFERENCE</p>
             <ul className="mb-8 mt-4 space-y-2.5">
               {REFERENCE_LINKS.map((link) => (

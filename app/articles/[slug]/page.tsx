@@ -32,6 +32,7 @@ import { STATUS_LABEL, freeLabel, japanLabel, verdictKind, verdictOf } from "@/l
 import { guideLinksForArticle, insertAfterPricingSection } from "@/lib/guide-links";
 import ArticleFaq from "@/components/ArticleFaq";
 import TodayActions from "@/components/TodayActions";
+import ShareButtons from "@/components/ShareButtons";
 import { offerPlanForArticle } from "@/lib/offers";
 import { getCta } from "@/lib/monetization";
 import { inlineReadForArticle, readNextForArticle } from "@/lib/read-next";
@@ -446,6 +447,8 @@ export default async function ArticlePage({ params }: Props) {
               </ol>
             </section>
           )}
+          {/* シェア（要点を読んだ直後。小さく1行） */}
+          <ShareButtons url={`${siteConfig.url}/articles/${article.slug}`} title={article.title} className="mt-4" />
           {/* 同じ製品の料金・使い方ガイド（あるときだけ。要点のすぐ下に固定） */}
           {guideLinks.length > 0 && (
             <nav aria-label="この製品のガイド" className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-note">
@@ -738,6 +741,12 @@ export default async function ArticlePage({ params }: Props) {
           {/* 今日やること（2〜3個）と、よくある質問（3〜5問）。合うジャンルの新しい記事だけ */}
           {todayActions.length >= 2 && <TodayActions actions={todayActions} />}
           {articleFaq.length >= 3 && <ArticleFaq items={articleFaq} />}
+
+          {/* 読み終えたところでもう一度シェア */}
+          <div className="mt-12 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-y border-line py-4">
+            <p className="text-note font-bold text-ink">この記事をシェアする</p>
+            <ShareButtons url={`${siteConfig.url}/articles/${article.slug}`} title={article.title} />
+          </div>
 
           {/* 出典（公式）・日時・確認方法・更新履歴 */}
           {!isRoundup && (

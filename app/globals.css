@@ -331,6 +331,12 @@ mark {
   --accent: #ffffff;
 }
 
+/* ジャンルのタブ（ヘッダーの帯の下。スクロールで流れる） */
+.genre-tabs {
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
 /* 速報の1行（ヘッダーの下。スクロールで流れる） */
 .live-line {
   background: var(--surface);
