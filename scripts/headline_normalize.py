@@ -113,6 +113,8 @@ def unify_separators(title: str) -> str:
     t = title.strip()
     # 末尾の句点は取る
     t = re.sub(r"[。．]+$", "", t)
+    # 全角のコンマ「，」は読点に（数字の桁区切りの「1，000」は除く）
+    t = re.sub(r"(?<![0-9０-９])，|，(?![0-9０-９])", "、", t)
     # ダッシュ・縦棒の区切り（両側に空白があるもの、全角の縦棒）。「GPT-5」「Wi-Fi」の中のハイフンは変えない
     t = re.sub(r"\s+[-–—―]+\s+", "　", t)
     t = re.sub(r"\s*[｜|]\s*", "　", t)
@@ -322,6 +324,8 @@ def title_problems(title: str) -> list[str]:
     if words:
         problems.append(f"幼い・話し言葉の言い方（{'・'.join(words)}）")
     problems += punctuation_problems(title)
+    if title.count("　") >= 2:
+        problems.append("区切りの全角空白が2つ以上（補足は1つだけ）")
     if INVERTED_RE.search(outside):
         problems.append("「〇〇が公開、…」の倒置")
     width = em_width(title)
@@ -345,10 +349,10 @@ def normalize_title(title: str, record: dict | None = None) -> str:
     if not title:
         return title
     t = unify_companies(title)
-    t = strip_known_descriptors(t)
-    t = fix_comma_before_bracket(t)
     t = unify_brackets(t, str(record.get("genreSlug") or ""))
     t = unify_separators(t)
+    t = strip_known_descriptors(t)
+    t = fix_comma_before_bracket(t)
     if not REIWA_RE.search(str(record.get("videoTitle") or "")):
         t = reiwa_to_seireki(t)
     return t

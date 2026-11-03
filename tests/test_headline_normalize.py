@@ -190,6 +190,11 @@ class StyleGateTest(unittest.TestCase):
         self.assertEqual(h.normalize_title("2026年、「AI元年」の終わり"), "2026年、「AI元年」の終わり")
         self.assertEqual(h.normalize_title("OpenAI、新AIモデル「GPT-6.1 Terra」を公開"), "OpenAI、新AIモデル「GPT-6.1 Terra」を公開")
 
+    def test_fullwidth_comma_and_double_subtitle(self):
+        self.assertEqual(h.normalize_title("Sakana AI，自社製の言語モデルを発表"), "Sakana AI、自社製の言語モデルを発表")
+        self.assertEqual(h.normalize_title("AWS，「Amazon Bedrock」の運用手法を公開"), "AWSが「Amazon Bedrock」の運用手法を公開")
+        self.assertTrue(any("全角空白が2つ" in p for p in h.title_problems("A社が新製品を発表　価格は1万円　発売は12月")))
+
     def test_quality_gate_warns_on_style(self):
         warnings = quality.title_warnings({"title": "Google開発AI「Antigravity」に新プラグイン"})
         self.assertTrue(any("書き方" in w for w in warnings))
