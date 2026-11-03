@@ -103,6 +103,8 @@ test('[W3] 企業ページ（/companies/…）へのリンクは、ページが�
 test('[W3] 製品のまとめページへ移ったガイドには、転送を経由せず直接リンクする（/guides/gpt-6-astra → /products/gpt-6-astra）', () => {
   assert.match(read('lib/guide-links.ts'), /guideHref\(product\.slug\)/);
   assert.match(read('lib/guides.ts'), /export function guideHref/);
+  // Cloudflare の仮想 fs でも同じ答えになるよう、一覧と同じ supersedesGuide で決める（ファイルの有無を見ない）
+  assert.match(read('lib/guides.ts'), /supersedesGuide\(slug\)/);
 });
 
 test('[W3] 折り返す絞り込みの札の件数に、後から読む等幅の書体（index-num）を使わない（読み込みの前後で折り返しが変わり CLS 0.3）', () => {

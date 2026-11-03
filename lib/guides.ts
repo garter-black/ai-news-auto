@@ -1,6 +1,7 @@
 import fs from "@/lib/content-fs";
 import path from "node:path";
 import { getAllArticles, type ArticleSummary } from "@/lib/articles";
+import { supersedesGuide } from "@/lib/products";
 
 /**
  * 製品ガイド（content/guides/*.json）。
@@ -45,24 +46,11 @@ export function getAllGuides(): Guide[] {
 /**
  * 製品ガイドへのリンク先。製品のまとめページ（/products）へ移ったガイドは、next.config.ts が 308 で転送するので、
  * リンクは転送先へ直接張る（転送を経由させない。2026-11-04 の点検で /guides/gpt-6-astra への内部リンクが 9 本の記事にあった。台帳 W3）。
- * 規則は next.config.ts の guideRedirects と同じ（content/product_sources.json に公式の料金があり、content/products にある製品）
+ * 規則は next.config.ts の guideRedirects・/guides の一覧と同じ（lib/products.ts の supersedesGuide）
  */
-let movedCache: Set<string> | null = null;
 export function guideHref(slug: string): string {
-  if (movedCache === null) {
-    movedCache = new Set();
-    try {
-      const linked = (JSON.parse(fs.readFileSync(path.join(process.cwd(), "content", "product_sources.json"), "utf8")) as {
-        items?: Record<string, { pricing?: unknown }>;
-      }).items ?? {};
-      for (const [key, value] of Object.entries(linked)) {
-        if (value?.pricing && fs.existsSync(path.join(process.cwd(), "content", "products", `${key}.json`))) movedCache.add(key);
-      }
-    } catch {
-      // 読めなければ従来どおり /guides へ（転送で着く）
-    }
-  }
-  return movedCache.has(slug) ? `/products/${slug}` : `/guides/${slug}`;
+  // Cloudflare では content/ を仮想の fs で読むので、ファイルの有無ではなく、一覧（/guides）・サイトマップと同じ supersedesGuide で決める
+  return supersedesGuide(slug) ? `/products/${slug}` : `/guides/${slug}`;
 }
 
 export function getGuide(slug: string): Guide | undefined {
