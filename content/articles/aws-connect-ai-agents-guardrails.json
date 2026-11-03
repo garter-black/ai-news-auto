@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/jp/blogs/news/implementing-responsible-ai-in-contact-centers-with-connect-ai-agents-guardrails/",
   "sourceName": "AWS ブログ（日本）",
-  "title": "AWS、コールセンター用生成AIに安全機能「AI ガードレール」　トラブルを防ぎながら運用",
-  "seoTitle": "Amazon Connect AI ガードレールとは？機能と設定方法",
+  "title": "AWSがAmazon Connect Customerに「AI ガードレール」を追加",
+  "seoTitle": "Amazon ConnectのAIガードレール　機能と仕組みを解説",
   "threadsPost": "コールセンターで生成AIを安全に使うための新機能が登場しました。\nAmazon Connect Customerに、個人情報の保護や有害な返答を防ぐ「AI ガードレール」が標準で組み込まれました。\n性能を落とさずリアルタイムで不正な入力をブロックできます。",
   "threadsHook": "contrarian",
   "threadsStyle": 2,
@@ -88,5 +88,6 @@
     "ar": 1.7778,
     "src": "https://ai-tech-express.jp/img/aws-connect-ai-agents-guardrails-9d0794f3.jpg"
   },
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "originalTitle": "AWS、コールセンター用生成AIに安全機能「AI ガードレール」　トラブルを防ぎながら運用"
 }

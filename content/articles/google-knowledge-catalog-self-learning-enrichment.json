@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://cloud.google.com/blog/ja/products/data-analytics/knowledge-catalog-self-learning-context-enrichment-for-ai-agents/",
   "sourceName": "Google Cloud 公式ブログ（日本）",
-  "title": "Googleのデータカタログ「Knowledge Catalog」に自己学習型AI機能　新機能の概要と仕組み",
+  "title": "Googleが「Knowledge Catalog」に自己学習機能　定義の更新を自動化",
   "seoTitle": "Knowledge Catalogの自己学習機能とは？仕組みと特徴",
   "threadsPost": "【速報】Googleが、AIエージェントのコンテキスト精度を高める「Knowledge Catalog」の自己学習型エンリッチメント（プレビュー版）を発表しました。手動メンテを減らし、AIの精度やトークン効率を改善します。",
   "threadsHook": "breaking",
@@ -85,5 +85,6 @@
     "ar": 2.0305,
     "src": "https://ai-tech-express.jp/img/google-knowledge-catalog-self-learning-enrichment-f8223d7d.jpg"
   },
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "originalTitle": "Googleのデータカタログ「Knowledge Catalog」に自己学習型AI機能　新機能の概要と仕組み"
 }

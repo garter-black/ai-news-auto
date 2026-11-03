@@ -1,6 +1,6 @@
 {
   "slug": "nvidia-gtc-berlin-2026-keynote-highlights",
-  "title": "NVIDIA、GTC Berlin 2026で次世代AI基盤やAI端末「RTX Spark」を発表",
+  "title": "NVIDIA、GTC Berlinで「Vera Rubin NVL72」とAI端末「RTX Spark」を発表",
   "seoTitle": "NVIDIA GTC Berlin 2026発表まとめ｜Vera RubinとRTX Spark",
   "threadsPost": "ロボットが働く未来、思っているより近くに来ているかもしれません。\n\nNVIDIAがGTC Berlin 2026で、次世代AIファクトリー基盤「Vera Rubin NVL72」やAI端末「RTX Spark」、2027年登場予定の人型ロボットを発表しました。欧州企業との連携も一気に加速しています。\n\nAI開発者やハード関係者は要チェックです👇",
   "threadsHook": "future",
@@ -114,5 +114,7 @@
       "note": "ローカルLLMや画像生成AIを手元で試すためのGPU搭載PCを、構成から選べるBTOショップ",
       "pixel": "https://www14.a8.net/0.gif?a8mat=4BELTP+BOXHGY+5U1O+5YJRM"
     }
-  ]
+  ],
+  "originalTitle": "NVIDIA、GTC Berlin 2026で次世代AI基盤やAI端末「RTX Spark」を発表",
+  "titleStyle": "2026-11-03"
 }

@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/accelerate-agentic-ai-with-nvidia-nemotron-models-on-amazon-eks-and-sagemaker-hyperpod-eks/",
   "sourceName": "AWS Machine Learning Blog",
-  "title": "AWS、NVIDIAの最新マルチモーダルAI「Nemotron 3.5 Super VL」をサポート",
-  "seoTitle": "Nemotron 3.5 Super VLとは？AWSでの利用方法と特徴",
+  "title": "AWS、NVIDIAの「Nemotron 3.5 Super VL」をAmazon EKSなどで利用可能に",
+  "seoTitle": "Nemotron 3.5 Super VLとは？AWSでの使い方と特徴",
   "threadsPost": "【速報】AWSがNVIDIAの新しいマルチモーダルAIモデル「Nemotron 3.5 Super VL」のサポートを発表しました。テキストから画像、動画まで処理できる120Bのオープンモデルで、Amazon EKSなどで動かせます。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -73,5 +73,6 @@
     "original": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/28/ML-21105-featured-image.png",
     "at": "2026-10-29T17:51:29+00:00"
   },
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "originalTitle": "AWS、NVIDIAの最新マルチモーダルAI「Nemotron 3.5 Super VL」をサポート"
 }

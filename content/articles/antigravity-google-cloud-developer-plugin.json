@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://cloud.google.com/blog/topics/developers-practitioners/google-cloud-developer-plugin-now-available-in-antigravity-marketplace/",
   "sourceName": "Google Cloud公式ブログ",
-  "title": "Google開発AI「Antigravity」にクラウド開発用プラグイン　AIの勝手な課金操作を防ぐ",
+  "title": "Googleが「Antigravity」用プラグインを公開　意図しない課金操作を防ぐ",
   "seoTitle": "Antigravityのgoogle-cloud-developerとは？使い方と注意点",
   "threadsPost": "Antigravityを使っている開発者の人、これは確認を。\n\n要約すると、Googleが開発用AIにクラウド開発の安全装置を追加しました。\nAIが勝手に課金される機能を有効にするのを、止める役目です。\n\nAIにコードを任せるとき、勝手な操作が不安になったことはありますか？",
   "threadsHook": "callout",
@@ -124,5 +124,7 @@
     ],
     "ar": 2.0305,
     "src": "https://ai-tech-express.jp/img/antigravity-google-cloud-developer-plugin-58fcf97c.jpg"
-  }
+  },
+  "originalTitle": "Google開発AI「Antigravity」にクラウド開発用プラグイン　AIの勝手な課金操作を防ぐ",
+  "titleStyle": "2026-11-03"
 }

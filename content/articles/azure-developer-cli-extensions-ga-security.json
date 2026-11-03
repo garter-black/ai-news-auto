@@ -1,6 +1,6 @@
 {
   "slug": "azure-developer-cli-extensions-ga-security",
-  "title": "Microsoft、Azure Developer CLI拡張機能をGA提供開始　AIエージェント統制とセキュリティ対策も強化",
+  "title": "Microsoft、Azure Developer CLIの拡張機能を一般提供　AIエージェント向け指針も公開",
   "lede": "日本マイクロソフトの親会社である米Microsoftは、開発者向けコマンドラインツール「Azure Developer CLI（azd）」の拡張機能フレームワークを一般提供（GA）したと発表しました。同時に、接続文字列やシークレットを一切使用せずにCI/CDパイプラインからAzure Cosmos DBへ接続する安全な構成パターンの提示や、自律型AIエージェントの運用を見据えたセキュリティ統合管理の新指針を公開しました。クラウドネイティブ開発の効率化と、生成AI時代のガバナンス強化を両立させる狙いです。",
   "description": "MicrosoftはAzure Developer CLI（azd）の拡張機能フレームワークをGA。シークレット不要のCosmos DB接続パターンや、自律型AIエージェントの安全な運用に向けたセキュリティ指針も発表しました。",
   "keywords": [
@@ -68,7 +68,7 @@
   "thumbnail": "https://i.ytimg.com/vi/hSTPTKpBQqo/maxresdefault.jpg",
   "model": "gemini-3.5-flash",
   "affiliates": [],
-  "seoTitle": "Azure Developer CLI拡張機能がGA　AIエージェント統制を強化",
+  "seoTitle": "Azure Developer CLI拡張機能が一般提供　AIエージェント指針も",
   "verdict": {
     "status": "available",
     "japan": "ok",
@@ -79,5 +79,6 @@
     "judgedAt": "2026-10-22T02:15:01.797946+00:00"
   },
   "easy": "## ひとことで言うと\n\nMicrosoftが、開発者向けの道具「Azure Developer CLI」に機能を追加できる仕組みを、正式に公開しました。あわせて、パスワードを置かずにデータベースへつなぐ方法や、AIの助手を安全に管理するための指針も発表しました。開発を楽にしつつ、安全も守るための一連の発表です。\n\n## 何がすごいの？\n\nAzure Developer CLIは、MicrosoftのクラウドであるAzureにアプリを載せるときに使う、文字で命令する道具です。今回、会社ごとのやり方を「拡張機能」としてまとめ、チーム全員に配れるようになりました。\n\nほかの主なポイントは次の通りです。\n\n- 手元のパソコンで重い準備ソフトを動かさなくても、アプリをクラウドに載せられます\n- パスワードを保存せず、その場限りの合い言葉を使ってデータベースにつなぐ方法を示しました\n- AIの助手に必要以上の権限を持たせず、何をしているか見える形にする指針を出しました\n\nたとえるなら、合鍵を玄関マットの下に置いておくのをやめて、その都度だけ使える番号式の鍵に変えるようなものです。鍵を盗まれる心配が減ります。\n\n機密のファイルに自動で目印を付ける機能は、1日最大50万ファイルまで扱えるようになりました。\n\n## 自分に関係ある？\n\n関係するのは、Azureを使ってアプリを作る開発者や、会社のセキュリティを管理する人です。パスワードの流出といった事故を防ぎやすくなります。\n\nふつうの人が直接使うものではありません。\n\n## 使ってみるには\n\nAzure Developer CLIの拡張機能の仕組みは、すでに正式公開されていて、日本からも今すぐ使えます。道具自体は無料のオープンソース（＝中身が公開されたソフト）です。ただし、クラウドで使った分の料金はかかります。\n\n一部のセキュリティ機能は、Microsoftの上位の有料ライセンスが必要です。",
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "originalTitle": "Microsoft、Azure Developer CLI拡張機能をGA提供開始　AIエージェント統制とセキュリティ対策も強化"
 }

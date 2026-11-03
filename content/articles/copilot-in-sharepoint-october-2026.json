@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://blogs.windows.com/japan/2026/10/27/whats-new-in-copilot-in-sharepoint-october-2026/",
   "sourceName": "Windows ブログ（日本）",
-  "title": "MicrosoftのSharePoint用AI「Copilot」に新機能　サイトを離れずPDF操作やHTML作成が可能に",
+  "title": "Microsoftが「Copilot in SharePoint」に新機能　PDF操作に対応",
   "seoTitle": "Copilot in SharePointの新機能まとめ　PDF操作やHTML作成が可能に",
   "threadsPost": "これまで面倒だったPDFの分割や画像の墨消し、HTMLの修正が、すべてSharePointの中で完結できるようになりました。Microsoft 365 Copilotのライセンスをお持ちなら、今日からすぐに試せます。",
   "threadsHook": "before_after",
@@ -68,5 +68,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://winblogs.thesourcemediaassets.com/sites/31/2026/10/5c8702dcef8c16904f6143185a48f934.png",
     "at": "2026-10-28T04:33:36+00:00"
-  }
+  },
+  "originalTitle": "MicrosoftのSharePoint用AI「Copilot」に新機能　サイトを離れずPDF操作やHTML作成が可能に",
+  "titleStyle": "2026-11-03"
 }

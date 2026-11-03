@@ -1,6 +1,6 @@
 {
   "slug": "deepmind-sierra-native-voice-ai-tau-bench",
-  "title": "Google DeepMindとSierraが解説、AIの音声対話がより自然で高速になる新評価技術",
+  "title": "Google DeepMindとSierra、音声AIの新評価指標「tau-Voice」を解説",
   "lede": "Google DeepMindとSierra AIの専門家が、リアルタイム音声AIの最新動向と技術的課題について対談しました。DeepMindは応答速度を重視した軽量モデルと、複雑なツール呼び出しに対応するエンタープライズ向けモデルの2つを展開しています。音声認識と応答生成を単一モデルで処理するネイティブ方式により、レイテンシ削減と多言語でのスムーズな会話を実現します。",
   "description": "Google DeepMindとSierra AIが対談を実施。ネイティブ音声AIの応答速度向上や多言語コードスワイチング、新評価指標tau-Voiceでの動的なベンチマーク評価手法について解説します。",
   "keywords": [
@@ -74,7 +74,7 @@
       "pixel": "https://www13.a8.net/0.gif?a8mat=4BELTP+BKRG8I+5J4W+5YZ76"
     }
   ],
-  "seoTitle": "ネイティブ音声AIの進化と評価方法　DeepMind×Sierra対談",
+  "seoTitle": "ネイティブ音声AIと評価指標tau-Voice　DeepMind×Sierra",
   "verdict": {
     "status": "demo",
     "japan": "unknown",

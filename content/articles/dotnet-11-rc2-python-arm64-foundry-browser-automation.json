@@ -1,6 +1,6 @@
 {
   "slug": "dotnet-11-rc2-python-arm64-foundry-browser-automation",
-  "title": "Microsoftが.NET 11 RC2を公開 PythonのArm64標準化とFoundry自動化も一般提供",
+  "title": "Microsoftが「.NET 11 RC2」を公開　Python 3.15はArm64ネイティブが標準に",
   "seoTitle": ".NET 11 RC2登場｜PythonのArm64標準対応とFoundry自動化がGA",
   "threadsPost": "開発者やエンジニアの方には見逃せないアップデートです。\nMicrosoftが.NET 11 RC2を本番利用ライセンス付きで公開しました。\nさらにPython 3.15のWindows on Arm標準化や、FoundryでのAIエージェント用ブラウザ自動化も一般提供が始まっています。\nこれ地味に効くと思います。記事で👇",
   "threadsHook": "callout",
@@ -78,5 +78,7 @@
   "generatedAt": "2026-10-26T10:30:19.993659+00:00",
   "thumbnail": "https://i.ytimg.com/vi/H0b71nYoSdI/maxresdefault.jpg",
   "model": "gemini-3.5-flash",
-  "affiliates": []
+  "affiliates": [],
+  "originalTitle": "Microsoftが.NET 11 RC2を公開 PythonのArm64標準化とFoundry自動化も一般提供",
+  "titleStyle": "2026-11-03"
 }

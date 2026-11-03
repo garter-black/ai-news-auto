@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://cloud.google.com/blog/ja/topics/ai-infrastructure/introducing-agent-compute-engine-and-expanded-agent-governance/",
   "sourceName": "Google Cloud 公式ブログ（日本）",
-  "title": "Google、AIエージェント専用の新型コンピュート「Agent Compute Engine」とガバナンス機能を発表",
-  "seoTitle": "Agent Compute Engineとは？特徴と提供状況を解説",
+  "title": "Googleが「Agent Compute Engine」を発表　エージェント専用の実行基盤",
+  "seoTitle": "Google Agent Compute Engineとは？料金や特徴を解説",
   "threadsPost": "GoogleがAIエージェント専用の新型コンピュート『Agent Compute Engine』を発表しました。起動待ちをなくすマイクロVMや、クラウド全体をまたぐガバナンス機能で、自律型エージェントの安全な大規模運用を支えます。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -91,5 +91,6 @@
     "ar": 1.7964,
     "src": "https://ai-tech-express.jp/img/google-agent-compute-engine-governance-c1c8ba5a.jpg"
   },
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "originalTitle": "Google、AIエージェント専用の新型コンピュート「Agent Compute Engine」とガバナンス機能を発表"
 }

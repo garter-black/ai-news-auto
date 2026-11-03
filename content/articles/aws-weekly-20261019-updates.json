@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/jp/blogs/news/aws-weekly-20261019/",
   "sourceName": "AWS ブログ（日本）",
-  "title": "AWS週刊アップデート：Bedrockの構造化出力対応やNeuronネイティブPyTorch解説",
-  "seoTitle": "AWS週刊アップデート：BedrockとTrainiumの最新情報",
+  "title": "AWS、Bedrockの構造化出力を一般提供　Trainium向けPyTorch「TorchNeuron」もベータ公開",
+  "seoTitle": "週刊AWS：Bedrock構造化出力とTorchNeuronの最新情報",
   "threadsPost": "number\n処理速度、最大5倍。\nAmazon BedrockのClaudeモデルがStructured Outputsに対応し、JSON Schemaに準拠したレスポンスを直接受け取れるようになりました。\n✅ 独自のパース処理やリトライが不要に\n✅ Bedrockの全Claudeモデルで利用可能\n開発効率が上がる今回のアップデート、要チェックです。\n記事で👇",
   "threadsHook": "number",
   "writingVoice": "senpai",
@@ -66,5 +66,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/01/31/weeklyaws_20260131_08-1059x630.png",
     "at": "2026-10-28T06:40:43+00:00"
-  }
+  },
+  "titleStyle": "2026-11-03",
+  "originalTitle": "AWS週刊アップデート：Bedrockの構造化出力対応やNeuronネイティブPyTorch解説"
 }

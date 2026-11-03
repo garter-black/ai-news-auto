@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://cloud.google.com/blog/products/ai-machine-learning/what-google-cloud-announced-in-ai-this-month/",
   "sourceName": "Google Cloud公式ブログ",
-  "title": "Google Cloudの10月AI発表まとめ　新AI「Gemini 4 Argon」やOpenAIモデルも企業向けに",
-  "seoTitle": "Google Cloud 10月のAI発表　Gemini 4 Argonも",
+  "title": "Google Cloud、10月のAI発表をまとめ　「Gemini 4 Argon」やOpenAIモデルを提供",
+  "seoTitle": "Google Cloud 10月のAI発表まとめ：Gemini 4 Argonも",
   "threadsPost": "【速報】Google Cloudが、10月のAI発表をまとめて公開しました。\n\n要約すると、企業向けのクラウドで新AI「Gemini 4 Argon」が使えるようになりました。\nClaudeやOpenAIのモデルも、同じ場所から選べます。\n\nあなたの会社では、業務でどのAIを使っていますか？",
   "threadsHook": "breaking",
   "threadsStyle": 3,
@@ -134,5 +134,6 @@
     "ar": 1.2097,
     "src": "https://ai-tech-express.jp/img/google-cloud-ai-october-2026-recap-b8afd9e0.jpg"
   },
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "originalTitle": "Google Cloudの10月AI発表まとめ　新AI「Gemini 4 Argon」やOpenAIモデルも企業向けに"
 }
