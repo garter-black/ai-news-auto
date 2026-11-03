@@ -3275,6 +3275,12 @@
       "slug": "antigravity-google-cloud-developer-plugin",
       "url": "https://cloud.google.com/blog/topics/developers-practitioners/google-cloud-developer-plugin-now-available-in-antigravity-marketplace/"
     },
+    "03e1600bde6a7d3a": {
+      "at": "2026-11-03T00:51:13.945381+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（職員）",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/menu_kyotsuu/important/kinkyu02_000682.html"
+    },
     "03f8a607b05da2e8cd73624ffc97819a0e4433ec": {
       "at": "2026-10-27T15:14:08.993393+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -3850,6 +3856,14 @@
       "slug": "ntt-4k-ai-video-surveillance-2026",
       "url": "https://group.ntt/jp/newsrelease/2026/10/27/261027b.html"
     },
+    "136a46008993a284": {
+      "at": "2026-11-03T00:55:29.237875+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "score": 100,
+      "section": "public",
+      "slug": "japan-6g-fund-preliminary-survey",
+      "url": "https://www.soumu.go.jp/menu_news/s-news/01tsushin03_02000476.html"
+    },
     "1390907f79cb41b7": {
       "at": "2026-10-26T17:14:17.179994+00:00",
       "reason": "prefilter: 告知・お知らせ系",
@@ -4163,6 +4177,12 @@
       "section": "ai",
       "slug": "openai-grid-protectors-program",
       "url": "https://openai.com/index/grid-protectors-program"
+    },
+    "193aa782f2114c53": {
+      "at": "2026-11-03T00:51:42.153218+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（募集）",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/menu_news/s-news/01kiban03_02001028.html"
     },
     "194831daebd18d98": {
       "at": "2026-11-02T13:21:29.437945+00:00",
@@ -4526,6 +4546,12 @@
       "reason": "quality: 本文が短い（2238字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://github.blog/changelog/2026-10-28-build-shared-workflows-for-your-team-with-copilot-automations"
+    },
+    "2328f6efa009ad61": {
+      "at": "2026-11-03T00:51:42.153124+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（募集）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110206"
     },
     "233c7482da85b268": {
       "at": "2026-11-02T23:52:55.867154+00:00",
@@ -6499,6 +6525,12 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000038.000185093.html"
     },
+    "57842350d2d67a33": {
+      "at": "2026-11-03T00:51:13.723143+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（を開催）",
+      "skipped": true,
+      "url": "https://www.jfa.jp/news/00036968/"
+    },
     "5854ffdfb8165007": {
       "at": "2026-10-26T19:41:09.355610+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -7288,6 +7320,12 @@
       "skipped": true,
       "url": "https://www.mext.go.jp/b_menu/shingi/chukyo/chukyo3/128/siryo/1412213_00003.htm"
     },
+    "6cb1b6c288e89f55": {
+      "at": "2026-11-03T00:51:10.726264+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（ビデオメッセージ）",
+      "skipped": true,
+      "url": "https://www.gov-online.go.jp/press_conferences/prime_minister/202611/video-327011.html"
+    },
     "6cf6502bdfb52e40": {
       "at": "2026-10-29T17:28:16.642695+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -7449,6 +7487,12 @@
       "reason": "prefilter: 価値の薄いお知らせ（キャンペーン）",
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102802"
+    },
+    "713bd1f5da5a0523": {
+      "at": "2026-11-03T00:51:10.726284+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（ビデオメッセージ）",
+      "skipped": true,
+      "url": "https://www.kantei.go.jp/jp/105/discourse/20261101message3.html"
     },
     "71a07098bdbfcb83": {
       "at": "2026-10-29T18:34:23.669967+00:00",
@@ -8354,6 +8398,12 @@
       "skipped": true,
       "url": "https://kyodonewsprwire.jp/release/202610268694"
     },
+    "88d3d31c0137f2df": {
+      "at": "2026-11-03T00:51:13.722996+00:00",
+      "reason": "short text 412",
+      "skipped": true,
+      "url": "https://www.gov-online.go.jp/press_conferences/chief_cabinet_secretary/202611/video-326988.html"
+    },
     "895e59b8d3c78f44": {
       "at": "2026-10-27T20:12:44.316704+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -8563,6 +8613,13 @@
       "slug": "shiharai-kikin-reorganization-medical-dx",
       "url": "https://www.nli-research.co.jp/topics_detail1/id=87173?site=nli"
     },
+    "8e292e711633c8da": {
+      "at": "2026-11-03T00:51:42.152950+00:00",
+      "model": "gemini-3.5-flash",
+      "reason": "本資料は総務省のワーキンググループ開催案内および議題・資料一覧であり、具体的な制度変更や読者の手続き等の実質的な詳細情報が含まれていないため。",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/main_sosiki/kenkyu/ICT_services/02kiban18_02000512.html"
+    },
     "8e5047be2ea6e246": {
       "at": "2026-11-02T04:55:51.992946+00:00",
       "major": true,
@@ -8598,6 +8655,12 @@
       "reason": "quality: 本文が短い（2243字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://openai.com/index/openai-cut-incident-investigation"
+    },
+    "8f91bcf39583d7b7": {
+      "at": "2026-11-03T00:51:11.818376+00:00",
+      "reason": "short text 548",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110208"
     },
     "8fd688b05729e308": {
       "at": "2026-10-28T19:53:31.954500+00:00",
@@ -9791,6 +9854,12 @@
       "updated": "amazon-alexa-plus-launch",
       "url": "https://www.aboutamazon.jp/news/devices/amazon-launches-alexa-plus-in-japan?utm_source=rss"
     },
+    "af2b36f30d4a96ba": {
+      "at": "2026-11-03T00:51:13.945403+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（審議会）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/newpage_76912.html"
+    },
     "af6a467fdfe036d7": {
       "at": "2026-11-02T16:02:48.986730+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -10030,6 +10099,12 @@
       "section": "business",
       "slug": "soumu-kkj-2025-3rd-result",
       "url": "https://www.stat.go.jp/data/kkj/kekka/index.html"
+    },
+    "b6090d5b84bfbbd1": {
+      "at": "2026-11-03T00:51:13.945480+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（セミナー）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110207"
     },
     "b6174c177c8fb78a": {
       "at": "2026-11-02T19:52:49.263915+00:00",
@@ -10313,6 +10388,12 @@
       "reason": "short text 394",
       "skipped": true,
       "url": "https://www.gov-online.go.jp/press_conferences/chief_cabinet_secretary/202610/video-326725.html"
+    },
+    "bc29786f51d36f33": {
+      "at": "2026-11-03T00:51:42.153142+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（人事）",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/menu_news/s-news/01kanbo01_02001189.html"
     },
     "bc8cfff4cc188327": {
       "at": "2026-10-27T19:52:54.945406+00:00",
@@ -12678,6 +12759,12 @@
       "skipped": true,
       "url": "https://www.cyberagent.co.jp/news/detail/id=33962"
     },
+    "fb646e5cb17f12fb": {
+      "at": "2026-11-03T00:51:42.153196+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（募集）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110205"
+    },
     "fb892a54b7c0b030": {
       "at": "2026-10-27T00:51:23.899366+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（出演）",
@@ -12854,74 +12941,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T22:51:14.462882+00:00",
-      "attempt": 2,
-      "id": "feb912e225e8e3aa",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 76.4字・60字超の文が 67% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 147.4字・最長 228字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 147.4,
-        "avg_sentence": 76.4,
-        "long_share": 0.667,
-        "max_paragraph": 228,
-        "paragraphs": 14,
-        "sentences": 27
-      },
-      "score": 100,
-      "source": "aws-ml-blog",
-      "title": "Managing Amazon Bedrock costs end to end: A playbook for FinOps and platform tea"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T22:51:18.417320+00:00",
-      "attempt": 0,
-      "id": "feb912e225e8e3aa",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 58.8字・60字超の文が 44% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 151.2字・最長 232字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 151.2,
-        "avg_sentence": 58.8,
-        "long_share": 0.444,
-        "max_paragraph": 232,
-        "paragraphs": 14,
-        "sentences": 36
-      },
-      "score": 100,
-      "source": "aws-ml-blog",
-      "title": "Managing Amazon Bedrock costs end to end: A playbook for FinOps and platform tea"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T23:11:28.295209+00:00",
-      "attempt": 1,
-      "id": "e498ae4e987b20aa7bd0f622fb7eee33ad6bcdb3",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1508字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 172.4,
-        "avg_sentence": 65.7,
-        "long_share": 0.381,
-        "max_paragraph": 237,
-        "paragraphs": 8,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "trends",
-      "title": "linux 脆弱 性 9.8"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T23:11:36.078753+00:00",
@@ -19270,10 +19289,75 @@
       "score": 95,
       "source": "gov-online",
       "title": "防災庁発足! みんなでつくる、災害に強い社会"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T00:53:02.187007+00:00",
+      "attempt": 1,
+      "id": "136a46008993a284",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "元記事・確認済みの資料に無い画面の手順・メニュー名・ボタン名がある（「プレスリリースページ」）。資料にある道順だけを書くか、「公式ヘルプの手順を確認してください」と書く"
+      ],
+      "readability": {
+        "avg_paragraph": 89.0,
+        "avg_sentence": 40.0,
+        "long_share": 0.05,
+        "max_paragraph": 183,
+        "paragraphs": 9,
+        "sentences": 20
+      },
+      "score": null,
+      "source": "soumu",
+      "title": "革新的情報通信技術（Beyond 5G（6G））基金事業 社会実装・海外展開志向型戦略的プログラム【事業戦略支援型】 に係る予備調査（第6回）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T00:55:25.985837+00:00",
+      "attempt": 2,
+      "id": "136a46008993a284",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "段落が長い（平均 84.2字・最長 270字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 84.2,
+        "avg_sentence": 30.1,
+        "long_share": 0.0,
+        "max_paragraph": 270,
+        "paragraphs": 10,
+        "sentences": 28
+      },
+      "score": 100,
+      "source": "soumu",
+      "title": "革新的情報通信技術（Beyond 5G（6G））基金事業 社会実装・海外展開志向型戦略的プログラム【事業戦略支援型】 に係る予備調査（第6回）"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T00:55:29.234904+00:00",
+      "attempt": 0,
+      "id": "136a46008993a284",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 64.8,
+        "avg_sentence": 30.1,
+        "long_share": 0.0,
+        "max_paragraph": 106,
+        "paragraphs": 13,
+        "sentences": 28
+      },
+      "score": 100,
+      "source": "soumu",
+      "title": "革新的情報通信技術（Beyond 5G（6G））基金事業 社会実装・海外展開志向型戦略的プログラム【事業戦略支援型】 に係る予備調査（第6回）"
     }
   ],
   "short_text_retry": {
-    "de4cf53f9db96311": "2026-11-03T00:11:19.346586+00:00"
+    "de4cf53f9db96311": "2026-11-03T00:11:19.346586+00:00",
+    "ff138f709a7e7c37": "2026-11-03T00:51:13.945206+00:00"
   },
   "undated_first_seen": {
     "google-developers-blog": {
