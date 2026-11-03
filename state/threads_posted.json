@@ -3277,7 +3277,8 @@
       "permalink": "",
       "channels": {
         "twitter": "6ae92a51e7e2bb1d6ed82603",
-        "facebook": "6ae92a5135b4915c2ef82bd2"
+        "facebook": "6ae92a5135b4915c2ef82bd2",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzfax4zpvv2d"
       },
       "hook": "empathy",
       "score": 6,
@@ -3288,7 +3289,8 @@
       "question": true,
       "questionText": "自分の声でAIナレーション、作ってみませんか？",
       "dueAt": "2026-11-03T06:30:00+00:00",
-      "postedAt": "2026-11-03T00:26:57+00:00"
+      "postedAt": "2026-11-03T00:26:57+00:00",
+      "blueskyAt": "2026-11-03T06:54:01+00:00"
     },
     "poll-20261103": {
       "style": "poll",
