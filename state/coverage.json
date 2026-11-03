@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "openai-security-sprint-bug-bounty",
+   "at": "2026-11-03T05:32:30.731355+00:00",
+   "title": "ChatGPTのOpenAI、AIで自社の弱点探し強化　バグ報奨金4倍超、防御側に10億ドル",
+   "head": "ChatGPTのOpenAI、AIで自社の弱点探し強化　バグ報奨金4倍超、防御側に10億ドル | Preparing our next security sprint to harden OpenAI",
+   "text": "ChatGPTのOpenAI、AIで自社の弱点探し強化　バグ報奨金4倍超、防御側に10億ドル | Preparing our next security sprint to harden OpenAI | OpenAI セキュリティ / OpenAI バグバウンティ / バグ報奨金 / セキュリティスプリント / Codex 脆弱性 / Cathedral OpenAI / Daybreak OpenAI / AI サイバー防御 / 脆弱性診断 AI / 10億ドル 補助 / OpenAI / サイバーセキュリティ / 生成AI / Codex / バグバウンティ",
+   "urls": [
+    "https://openai.com/index/preparing-our-next-security-sprint-to-harden-openai"
+   ]
+  },
+  {
    "slug": "openai-bigger-bug-bounties",
    "at": "2026-11-03T05:15:31.394200+00:00",
    "title": "OpenAIがセキュリティのバグ報奨金を増額　ChatGPTの重大な穴は最大3万ドルに",
@@ -1746,16 +1756,6 @@
    "text": "量子科学技術研究開発機構など、肝臓の酵素活性を体外から捉える超偏極MRI技術を開発 | 「沈黙の臓器」肝臓の酵素活性低下の可視化に成功 ～肝疾患に関わる酵素の働きを体外から捉える“超偏極MRI技術”を開発～ | QST / 超偏極MRI / 肝臓 / パラオキソナーゼ / PON / MASLD / MASH / 脂肪肝 / メバロノラクトン / 科学 / 医療 / 量子技術 / 生体イメージング",
    "urls": [
     "https://www.qst.go.jp/site/press/20261030.html"
-   ]
-  },
-  {
-   "slug": "riken-quantum-state-smoothing",
-   "at": "2026-10-30T05:22:11.098570+00:00",
-   "title": "理研と東大、「未来」の観測記録で光の量子状態を正確に推定することに成功",
-   "head": "理研と東大、「未来」の観測記録で光の量子状態を正確に推定することに成功 | 「未来」の観測が明らかにする光の量子ダイナミクス",
-   "text": "理研と東大、「未来」の観測記録で光の量子状態を正確に推定することに成功 | 「未来」の観測が明らかにする光の量子ダイナミクス | 理化学研究所 / 東京大学 / 量子状態スムージング / 光量子制御 / 量子コンピュータ / スクイーズド状態 / 量子揺らぎ / npj Quantum Information / 科学 / 物理 / 量子コンピュータ",
-   "urls": [
-    "https://www.riken.jp/press/2026/20261030_2/index.html"
    ]
   }
  ]

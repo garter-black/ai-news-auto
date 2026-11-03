@@ -1,0 +1,181 @@
+{
+  "slug": "daybreak",
+  "name": "Daybreak",
+  "aliases": [],
+  "company": "openai",
+  "companyName": "OpenAI",
+  "category": "AIモデル",
+  "overview": {
+    "text": "Daybreakは、OpenAIが開発したサイバーセキュリティ向けの最先端AIモデルです。セキュリティ企業であるソフォスやCheck Pointなどが導入し、脅威の調査や対応時間を大幅に短縮しています。",
+    "sources": [
+      "openai-security-sprint-bug-bounty",
+      "openai-daybreak-check-point-vulnerability",
+      "sophos-openai-daybreak-security-agent"
+    ]
+  },
+  "facts": [
+    {
+      "label": "料金",
+      "value": "具体的な価格の言及なし",
+      "sources": [
+        "openai-security-sprint-bug-bounty",
+        "openai-daybreak-check-point-vulnerability",
+        "sophos-openai-daybreak-security-agent"
+      ]
+    },
+    {
+      "label": "提供開始",
+      "value": "2026年10月9日までに展開",
+      "sources": [
+        "sophos-openai-daybreak-security-agent"
+      ]
+    },
+    {
+      "label": "日本での提供",
+      "value": "ソフォスのMDRサービス等で利用可能",
+      "sources": [
+        "sophos-openai-daybreak-security-agent"
+      ]
+    },
+    {
+      "label": "使える場所",
+      "value": "パートナー企業のセキュリティ製品など",
+      "sources": [
+        "openai-daybreak-check-point-vulnerability",
+        "sophos-openai-daybreak-security-agent"
+      ]
+    },
+    {
+      "label": "向いている人",
+      "value": "セキュリティ管理者やエンジニア",
+      "sources": [
+        "openai-daybreak-check-point-vulnerability",
+        "sophos-openai-daybreak-security-agent"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "text": "脆弱性の調査時間を数時間から数分に短縮します。",
+      "sources": [
+        "openai-daybreak-check-point-vulnerability"
+      ]
+    },
+    {
+      "text": "ソフォスのMDRサービスで脅威対応時間を96%削減しました。",
+      "sources": [
+        "sophos-openai-daybreak-security-agent"
+      ]
+    },
+    {
+      "text": "AIが攻撃の道筋を推論し、コードや設定の不備を分析します。",
+      "sources": [
+        "openai-daybreak-check-point-vulnerability"
+      ]
+    },
+    {
+      "text": "セキュリティ業務に特化してセーフティガードレールを緩和します。",
+      "sources": [
+        "sophos-openai-daybreak-security-agent"
+      ]
+    }
+  ],
+  "pricing": [],
+  "japan": [
+    {
+      "text": "発表の時点では、日本国内での直接的な利用手順について元記事に記載はありません。",
+      "sources": [
+        "openai-daybreak-check-point-vulnerability"
+      ]
+    },
+    {
+      "text": "ソフォス日本法人や国内の正規代理店を通じてMDRサービスを契約することで恩恵を受けられます。",
+      "sources": [
+        "sophos-openai-daybreak-security-agent"
+      ]
+    }
+  ],
+  "howto": [
+    {
+      "text": "ソフォスのMDRサービスを導入することで利用できます。",
+      "sources": [
+        "sophos-openai-daybreak-security-agent"
+      ]
+    },
+    {
+      "text": "OpenAIの法人向け窓口やエンタープライズパートナー経由で参加を問い合わせる必要があります。",
+      "sources": [
+        "sophos-openai-daybreak-security-agent"
+      ]
+    }
+  ],
+  "differences": [],
+  "faq": [
+    {
+      "q": "無料で使える？",
+      "a": "料金についての具体的な言及はありません。",
+      "sources": [
+        "openai-security-sprint-bug-bounty",
+        "openai-daybreak-check-point-vulnerability",
+        "sophos-openai-daybreak-security-agent"
+      ]
+    },
+    {
+      "q": "誰が使える？",
+      "a": "ソフォスやCheck Pointなどのパートナー企業を通じて提供されています。",
+      "sources": [
+        "openai-daybreak-check-point-vulnerability",
+        "sophos-openai-daybreak-security-agent"
+      ]
+    },
+    {
+      "q": "個人でも利用できる？",
+      "a": "一般の個人が直接使うものではなく、企業のセキュリティ管理者やエンジニア向けです。",
+      "sources": [
+        "openai-security-sprint-bug-bounty",
+        "openai-daybreak-check-point-vulnerability",
+        "sophos-openai-daybreak-security-agent"
+      ]
+    },
+    {
+      "q": "どのような効果がある？",
+      "a": "脆弱性調査や脅威への対応時間を大幅に短縮できます。",
+      "sources": [
+        "openai-daybreak-check-point-vulnerability",
+        "sophos-openai-daybreak-security-agent"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2026-10-09",
+      "slug": "sophos-openai-daybreak-security-agent",
+      "event": "ソフォスがDaybreakを採用"
+    },
+    {
+      "date": "2026-10-27",
+      "slug": "openai-daybreak-check-point-vulnerability",
+      "event": "Check Pointの導入を発表"
+    }
+  ],
+  "related": [
+    "codex",
+    "gpt-6-astra",
+    "gpt-6",
+    "gpt-6-1-terra"
+  ],
+  "articles": [
+    "openai-security-sprint-bug-bounty",
+    "openai-daybreak-check-point-vulnerability",
+    "sophos-openai-daybreak-security-agent"
+  ],
+  "linkFrom": [
+    "openai-daybreak-check-point-vulnerability",
+    "sophos-openai-daybreak-security-agent"
+  ],
+  "signature": "889f86b8234a147e",
+  "primarySignature": "ad95c291e319b817",
+  "model": "gemini-3.5-flash-lite",
+  "createdAt": "2026-11-03T05:32:40+00:00",
+  "updatedAt": "2026-11-03T05:32:40+00:00"
+}

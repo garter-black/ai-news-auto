@@ -229,6 +229,7 @@
   ],
   "articles": [
     "openai-bigger-bug-bounties",
+    "openai-security-sprint-bug-bounty",
     "chatgpt-codex-shared-usage-limits",
     "qodo-codex-plugin-code-review",
     "oracle-ai-workspace-chatgpt",

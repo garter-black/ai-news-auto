@@ -4708,6 +4708,14 @@
       "skipped": true,
       "url": "https://kyodonewsprwire.jp/release/202610218364"
     },
+    "262cfa35f4308cc0": {
+      "at": "2026-11-03T05:32:33.798246+00:00",
+      "model": "anthropic-api:claude-opus-5-5",
+      "score": 88,
+      "section": "ai",
+      "slug": "openai-security-sprint-bug-bounty",
+      "url": "https://openai.com/index/preparing-our-next-security-sprint-to-harden-openai"
+    },
     "2686400c07137c31": {
       "at": "2026-10-27T03:05:10.758220+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（人事）",
@@ -13098,28 +13106,6 @@
   },
   "quality_log": [
     {
-      "accepted": false,
-      "at": "2026-10-31T17:41:15.264757+00:00",
-      "attempt": 1,
-      "id": "81545d2d115d854d",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 49.7字・60字超の文が 20% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 66.3,
-        "avg_sentence": 49.7,
-        "long_share": 0.2,
-        "max_paragraph": 99,
-        "paragraphs": 15,
-        "sentences": 20
-      },
-      "score": 100,
-      "source": "boj",
-      "title": "（参考）ETFの売却ペースの見直しに関する決定（2026年10月）"
-    },
-    {
       "accepted": true,
       "at": "2026-10-31T17:41:27.560326+00:00",
       "attempt": 0,
@@ -19511,6 +19497,29 @@
       "title": "Rewarding defenders with bigger bug bounties",
       "warnings": [
         "見出しが43字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T05:32:33.792353+00:00",
+      "attempt": 1,
+      "id": "262cfa35f4308cc0",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 61.3,
+        "avg_sentence": 33.5,
+        "long_share": 0.027,
+        "max_paragraph": 112,
+        "paragraphs": 41,
+        "sentences": 75
+      },
+      "score": 88,
+      "source": "openai-news",
+      "title": "Preparing our next security sprint to harden OpenAI",
+      "warnings": [
+        "見出しが46字（目安40字以内）。一覧・カードでは前半だけを出す"
       ]
     }
   ],
