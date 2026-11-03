@@ -158,6 +158,23 @@ class GeometryGateTest(unittest.TestCase):
         p = gate.geometry_problems(report_with(geo(keyword="2,000件以上", speech="2,000件以上です。")))
         self.assertTrue(any("選んだ文" in x for x in p), p)
 
+    def test_c_sub_must_be_in_evidence(self):
+        p = gate.geometry_problems(report_with(geo(sub="平均69秒で検知")))
+        self.assertTrue(any("補足" in x for x in p), p)
+        self.assertEqual(gate.geometry_problems(report_with(geo(sub="1,000件以上"))), [])
+
+    def test_align_subs_clears_unsupported_sub(self):
+        script = {"beats": [{"keyword": "1,000件以上", "sub": "対応はSlurm", "target": "これまで1,000件以上の撮影を手がけ、", "ja": ""},
+                            {"keyword": "1,000件以上", "sub": "撮影を手がけ", "target": "これまで1,000件以上の撮影を手がけ、", "ja": ""}]}
+        self.assertEqual(v3.align_subs(script), ["beat1"])
+        self.assertEqual(script["beats"][0]["sub"], "")
+        self.assertEqual(script["beats"][1]["sub"], "撮影を手がけ")
+
+    def test_occlusion_js_checks_ancestor_opacity(self):
+        """透明な固定の目次（opacity 0 の祖先）は当たり判定には出るが写っていない → 見えない文字として除く（Pixel の『撮影後でも…』）"""
+        self.assertIn("shown(n.parentElement) < 0.5", v3.OCCLUDE_JS)
+        self.assertIn("window.__v3refs = refs", v3.TEXT_JS)
+
     def test_english_keyword_reads_in_katakana(self):
         self.assertTrue(gate.narration_ok("Recovery", "リカバリーが自動で直します。"))
         self.assertFalse(gate.narration_ok("夜間の停止", "朝に確認するだけです。"))

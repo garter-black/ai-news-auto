@@ -225,7 +225,10 @@ OCCLUDE_JS = r"""async (maxY) => {
     const p = m[1].split(',').map(parseFloat);
     return p.length < 4 || p[3] > 0.5;
   };
+  // 祖先の不透明度の積・visibility（透明な固定の目次などは当たり判定には出るが、画面には写っていない）
+  const shown = (el) => { let o = 1; for (let e = el; e && e.nodeType === 1; e = e.parentElement) { const cs = getComputedStyle(e); if (cs.visibility === 'hidden' || cs.display === 'none') return 0; o *= parseFloat(cs.opacity); } return o; };
   const range = document.createRange();
+  const faint = refs.map((n) => !n.parentElement || shown(n.parentElement) < 0.5);
   const picks = refs.map((n) => { const t = n.nodeValue || ''; const idx = []; for (let i = 0; i < t.length; i++) if (t[i].trim()) idx.push(i); return idx.length ? [...new Set([idx[0], idx[idx.length >> 1], idx[idx.length - 1]])] : []; });
   const votes = refs.map(() => [0, 0]); const seen = refs.map(() => new Set());
   const H = Math.min(maxY, document.documentElement.scrollHeight); const vh = innerHeight;
@@ -248,7 +251,7 @@ OCCLUDE_JS = r"""async (maxY) => {
     });
   }
   window.scrollTo(0, 0);
-  return votes.map(([a, b]) => a >= b);
+  return votes.map(([a, b], k) => !faint[k] && a >= b);
 }"""
 
 
@@ -939,6 +942,18 @@ def snap_target(item: dict, pages: list) -> bool:
     return True
 
 
+def align_subs(script: dict) -> list[str]:
+    """左の補足（sub）は、選んだ証拠の文（英語なら訳）に数字・言葉があるときだけ出す。無ければ空にする（補足は無くてもよい）。
+    2026-11-04 AI の目視の確認「左の補足『対応はSlurm』『平均69秒で検知』が選択した文に無い」"""
+    done = []
+    for i, b in enumerate(script.get("beats") or [], 1):
+        sub = str(b.get("sub") or "").strip()
+        if sub and not gate.key_fact_ok(sub, "", str(b.get("target", "")), str(b.get("ja", "") or "")):
+            b["sub"] = ""
+            done.append(f"beat{i}")
+    return done
+
+
 def snap_targets(script: dict, pages: list) -> list[str]:
     """台本の hook と beats の日本語の証拠を意味のまとまりに広げる。直した場所の一覧"""
     done = []
@@ -1421,7 +1436,10 @@ def write_script(article: dict, pages: list[Page], note: str = "") -> tuple[dict
         data["beats"] = [b for b in data.get("beats") or [] if isinstance(b, dict)][:BEATS_MAX]
         latin_names(data)
         snap_targets(data, pages)  # 日本語の証拠は意味のまとまりまで広げる（選択の青が語の途中で切れないように）
-        return self_correct(data, article, pages)
+        data, probs = self_correct(data, article, pages)
+        if align_subs(data):  # 証拠に無い補足は出さない（検査し直す）
+            probs = script_problems(data, article, pages)
+        return data, probs
 
     # ① ふつうの書き直し（途中で編集長のレビュー1回）
     for attempt in range(1, SCRIPT_MAIN_ATTEMPTS + 1):
@@ -2439,6 +2457,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     beats = script["beats"]
     items = [hook] + beats
     snap_targets(script, pages)  # 古い台本・型の台本も、選択は意味のまとまりで（2026-11-04）
+    align_subs(script)  # 証拠に無い補足は出さない
     kws = [hook.get("payoff") or ""] + [b.get("keyword", "") for b in beats]
     targets = [find_target(pages, it.get("target", ""), it.get("block", ""), keyword=k) for it, k in zip(items, kws)]
     if not targets[0]:
@@ -2487,7 +2506,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         first = frame_rect(p0, t0.page, hero.rect, 0.96, 1.4)
     # 数字に寄るときは大きく、見出し（数字なし）は全体が入る程度に寄る（見出しの途中で切らない）
     # 2026-11-04: 数字だけに寄って行の頭や文の続きを切らない。証拠の文（行の頭から）がまるごと入る所まで寄る
-    hook_close = frame_box(p0, t0.page, zoom_box(t0), ZOOM_MAX)
+    hook_close = frame_box(p0, t0.page, line_box(t0), ZOOM_MAX)
     moves.append(Move(0.18, 0.8, hook_close))
     ev(0.18, "move", "つかみ: 数字へ寄る")
     # つかみの訳は、同じ英文を beat でも訳すなら出さない（同じ訳が2回続かないように）
@@ -2549,7 +2568,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
             if rt is not None:
                 tg, page = rt, pages[rt.page]
                 span, sel = rt.span, list(rt.rows or [rt.match])
-                block_cam = frame_box(page, rt.page, zoom_box(rt), 1.9)
+                block_cam = frame_box(page, rt.page, line_box(rt), 1.9)
                 cut = rt.page != moves[-1].cam.page
         move_dur = MOVE if nxt - line.start >= 4.0 else 0.6  # 短い場面は少し速く（選択を見せる時間を残す）
         if not add_move(a_t, block_cam, f"beat{i}: 行へ", i, cut=cut, dur=move_dur):
@@ -2636,7 +2655,8 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         zoom_t = max(sel_t + sweep + 0.6, arrive + HOLD)
         if nxt - zoom_t >= 0.9 + HOLD:
             # 寄る: 最初の行の頭〜証拠の文の終わりがまるごと入る所まで。行へ着いたときより1割以上寄れないなら動かさない
-            cam_z = frame_box(page, tg.page, zoom_box(tg), ZOOM_MAX) if found[i] else block_cam
+            # 2026-11-04（AI の目視の確認）: 行の終わりを切っても「続きが見えない」になる → 寄りも行の全体（短い行・表の欄のときだけ寄れる）
+            cam_z = frame_box(page, tg.page, line_box(tg), ZOOM_MAX) if found[i] else block_cam
             if cam_z.s >= block_cam.s * 1.1 and add_move(zoom_t, cam_z, f"beat{i}: 証拠に寄る", i):
                 clicks.append(Click(zoom_t + 0.6, tg.page, *click_point(tg)))
                 ev(zoom_t + 0.6, "click")

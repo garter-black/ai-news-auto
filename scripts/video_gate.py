@@ -881,6 +881,8 @@ def geometry_problems(report: dict) -> list[str]:
         if 1 <= b <= n_beats:
             if not key_fact_ok(kw, sub, str(g.get("target", "")), str(g.get("ja", ""))):
                 out.append(f"QA(c): {name}の選んだ文（訳）に、左のキーワード「{kw}」の数字・言葉が無い")
+            if sub.strip() and not key_fact_ok(sub, "", str(g.get("target", "")), str(g.get("ja", ""))):
+                out.append(f"QA(c): {name}の選んだ文（訳）に、左の補足「{sub}」の数字・言葉が無い")
             if not narration_ok(kw, str(g.get("speech", ""))):
                 out.append(f"QA(c): {name}の読み上げに、左のキーワード「{kw}」の数字・言葉が無い")
         elif re.findall(r"\d+(?:\.\d+)?", norm(kw)) and not key_fact_ok(kw, "", str(g.get("target", "")), str(g.get("ja", ""))):
