@@ -43,6 +43,9 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
+      # 動画（shorts_v3）を作れる記事かを確かめるため（記事の投稿は動画つきだけ。sns_rules ルール8）
+      - name: 準備（動画の判定に使う numpy・Pillow）
+        run: pip install -q numpy pillow
       - name: Post breaking news
         env:
           THREADS_MODE: ${{ vars.THREADS_MODE }}

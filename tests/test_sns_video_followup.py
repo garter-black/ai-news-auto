@@ -76,11 +76,12 @@ class SelectTest(unittest.TestCase):
         state = {"videos": {
             "a": {"status": "gate_failed", "reason": "full: 撮れるページが無い（openai.com: HTTP 403）"},
             "b": {"status": "gate_failed", "versions": {"full": {"reasons": ["公式ページか台本が無い"]}}},
-            "c": {"status": "gate_failed", "tries": 2, "reason": "full: 台本を作れない"},
+            "c": {"status": "gate_failed", "tries": 3, "reason": "full: 台本を作れない"},  # 3回まで（MAX_TRIES）
+            "e": {"status": "gate_failed", "tries": 2, "reason": "full: 台本を作れない"},
             "d": {"status": "gate_failed", "reason": "full: v3: 長さ"},
         }}  # fmt: skip
         kw = {"load_article": lambda s: {"slug": s}, "eligible": lambda a: True, "score": lambda a: 1}
-        self.assertEqual(sorted(fu.candidates(posted(a=1, b=1, c=1, d=1), state, NOW, 12, **kw)), ["a", "b"])
+        self.assertEqual(sorted(fu.candidates(posted(a=1, b=1, c=1, d=1, e=1), state, NOW, 12, **kw)), ["a", "b", "e"])
 
     def test_skip_done(self):
         self.assertEqual(self.pick(posted(a=1, b=2), {"videos": {"b": {"status": "gate_failed"}}}), ["a"])

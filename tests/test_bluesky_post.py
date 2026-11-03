@@ -33,6 +33,12 @@ def mirror(minutes_ago, **extra):
 
 
 class ChooseTest(unittest.TestCase):
+    def setUp(self):
+        # 記事の投稿は動画つきだけ（ルール8）。選び方の試験では、どの記事にも動画がある前提にする
+        p = patch.object(bp, 'video_of', lambda slug, videos=None: {'url': f'https://ai-tech-express.jp/video/{slug}.mp4', 'variant': 'short'})
+        p.start()
+        self.addCleanup(p.stop)
+
     def test_only_one_normal_post_per_run(self):
         state = {'posted': {'a': mirror(30), 'b': mirror(25)}}
         picked = bp.choose(state, {}, NOW, fill=True, articles=[])

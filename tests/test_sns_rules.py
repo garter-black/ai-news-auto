@@ -34,10 +34,13 @@ def with_link(text, source):
 
 
 CARD = [{"type": "image", "url": "https://ai-tech-express.jp/card/acme-tool"}]
+VIDEO = [{"type": "video", "url": "https://ai-tech-express.jp/video/acme-tool-0123456789.mp4", "width": 1920, "height": 1080}]
+# 記事の投稿は動画つきだけ（ルール8。2026-11-03）。ふつうの投稿の見本は動画つき
+MEDIA = VIDEO
 
 
 class CheckPostTest(unittest.TestCase):
-    def check(self, platform, text, media=CARD, article=ART, measurer=size(1200, 675), **kw):
+    def check(self, platform, text, media=MEDIA, article=ART, measurer=size(1200, 675), **kw):
         return r.check_post(platform, text, media, article, measurer=measurer, **kw)
 
     def test_good_posts_pass_on_every_platform(self):
@@ -88,8 +91,8 @@ class CheckPostTest(unittest.TestCase):
         self.assertFalse(any("英語" in v for v in self.check("threads", names)))
 
     def test_media_aspect_and_text_band(self):
-        self.assertTrue(any("16:9 でない" in v for v in self.check("threads", with_link(GOOD, "threads"), measurer=size(1080, 1350))))
-        self.assertEqual(self.check("threads", with_link(GOOD, "threads"), measurer=size(1200, 630)), [])
+        self.assertTrue(any("16:9 でない" in v for v in self.check("threads", with_link(GOOD, "threads"), media=CARD + VIDEO, measurer=size(1080, 1350))))
+        self.assertEqual(self.check("threads", with_link(GOOD, "threads"), media=CARD + VIDEO, measurer=size(1200, 630)), [])
         cover = [{"type": "image", "url": "https://ai-tech-express.jp/cover/acme-tool"}]
         self.assertTrue(any("文字の帯" in v for v in self.check("threads", with_link(GOOD, "threads"), media=cover)))
         video = [{"type": "video", "url": "https://ai-tech-express.jp/video/a.mp4", "width": 1080, "height": 1920}]

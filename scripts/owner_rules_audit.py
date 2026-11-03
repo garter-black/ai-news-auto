@@ -54,7 +54,7 @@ OWNER_NAME_PAGES = ("/about", "/editorial-policy")
 
 # この点検が確かめる台帳の番号（docs/owner_rules.md の「点検」列と一致させる。tests/test_owner_rules_ledger.py）
 AUDIT_RULES = (
-    "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11",
+    "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S13", "S14",
     "I2", "I4", "I5",
     "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23", "A24", "A25", "A26", "A28",
     "W3", "W5", "W6", "W10", "W11", "W12", "W13", "W17", "W18", "W19", "W20", "W21", "W22", "W23",
@@ -659,10 +659,38 @@ def sns_problems(posts: list[dict], judge) -> list[str]:
     return out
 
 
+# S13: 記事の投稿は動画つきだけ（2026-11-03 オーナー指示「SNS の投稿は動画のはず」）。この日時より後に出た投稿だけ見る
+VIDEO_RULE_SINCE = datetime(2026, 11, 3, 15, 0, tzinfo=timezone.utc)  # 11/4 0:00 JST
+
+
+def video_record_problems(posted: dict, videos: dict, queued: dict, now: datetime, days: float = 2.0) -> list[str]:
+    """Buffer を呼ばずに、投稿の記録（state/threads_posted.json）と動画の記録（state/sns_video.json）で、
+    朝のまとめ以外の記事の投稿が動画なしで出ていないかを見る（Threads・X・Facebook。Bluesky は公開フィードで見る）"""
+    out = []
+    for slug, rec in (posted.get("posted") or {}).items():
+        if rec.get("style") in ("digest", "poll") or rec.get("format") in ("digest", "poll") or slug.startswith(("digest-", "poll-")):
+            continue
+        when_raw = rec.get("sentAt") or rec.get("dueAt") or rec.get("postedAt") or ""
+        try:
+            when = datetime.fromisoformat(str(when_raw).replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if when < max(VIDEO_RULE_SINCE, now - timedelta(days=days)) or when > now:
+            continue  # まだ出ていない（予約中・動画待ち）か、決まりの前・古い投稿
+        if rec.get("status") in ("awaiting_video", "skipped_no_video") or not rec.get("id"):
+            continue  # 出していない
+        v = videos.get(slug) or {}
+        q = queued.get(slug) or {}
+        if rec.get("image") == "video" or q.get("status") == "created" or v.get("status") in ("attached", "posted"):
+            continue
+        out.append(f"[S13] 動画なしで出た記事の投稿（{slug}・{when.astimezone(JST):%m/%d %H:%M}・画像 {rec.get('image') or '不明'}・動画 {v.get('status') or 'なし'}）")
+    return out
+
+
 # sns_rules のルールの番号 → 台帳の番号
 SNS_RULE_MAP = {
     "ルール1": "[S4]", "ルール2": "[S7]", "ルール3": "[S9]", "ルール4": "[S11]", "ルール5": "[S8]",
-    "ルール6": "[S1]", "ルール7": "[S4]", "長さ": "[S11]",
+    "ルール6": "[S1]", "ルール7": "[S4]", "ルール8": "[S13]", "ルール9": "[S14]", "長さ": "[S11]",
 }
 
 
@@ -840,6 +868,15 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
         found["SNS（Bluesky の直近の投稿 %d 本）" % len([p for p in posts if not p.get("reply")])] = v
     except Exception as error:  # noqa: BLE001
         found["SNS"] = [f"[S11] SNS の投稿を読めなかった（{type(error).__name__}）"]
+    # SNS（Threads・X・Facebook の動画の有無。手元の記録だけ・Buffer の回数を使わない）
+    try:
+        root = Path(__file__).resolve().parent.parent / "state"
+        posted = json.loads((root / "threads_posted.json").read_text("utf-8"))
+        vstate = json.loads((root / "sns_video.json").read_text("utf-8"))
+        v = video_record_problems(posted, vstate.get("videos") or {}, vstate.get("queued") or {}, datetime.now(timezone.utc), days=max(sns_days, 1.0))
+        found["SNS（Threads・X・Facebook の動画）"] = v
+    except Exception as error:  # noqa: BLE001
+        found["SNS（動画）"] = [f"[S13] 投稿と動画の記録を読めなかった（{type(error).__name__}）"]
     return {k: v for k, v in found.items() if v}
 
 

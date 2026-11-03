@@ -253,8 +253,26 @@ def easy_words(sentence: str) -> str:
     return out
 
 
+# 「〜を発表」「〜に参入」のように「しました」を付けてよい名詞（2026-11-03「実行が可能しました」の事故のあと、知っている名詞だけにした）。
+# な形容詞・ふつうの名詞（可能・必要・最新など。sns_rules.NA_NOUNS）は「です」。どちらか分からない名詞は直さない（その文は使わない）
+SURU_NOUNS = (
+    "発表", "公開", "開始", "提供", "発売", "導入", "参入", "買収", "採用", "追加", "開発", "搭載", "対応", "更新", "終了", "拡大", "強化",
+    "投入", "発行", "設立", "締結", "合意", "決定", "承認", "発見", "確認", "改定", "値上げ", "値下げ", "撤退", "統合", "刷新", "延期",
+    "中止", "予告", "計画", "表明", "支援", "連携", "提携", "出資", "調達", "達成", "記録", "突破", "獲得", "受賞", "選出", "就任", "退任",
+    "推奨", "警告", "改善", "修正", "廃止", "変更", "移行", "拡張", "開催", "開設", "稼働", "販売", "出荷", "配信", "配布", "公表", "報告",
+    "発生", "増加", "減少", "上昇", "下落", "実施", "展開", "推進", "検討", "解説", "紹介", "披露", "公開予定", "リリース", "アップデート",
+    "スタート", "ローンチ", "オープン", "サポート", "対策", "協力", "参加", "契約", "申請", "要求", "要請", "発令", "決議", "可決", "成立",
+)
+
+
 def polite_sentence(sentence: str) -> str:
-    """文の終わりを「です・ます」にし、硬い言葉をやさしく言い換える。直せなければ空"""
+    """文の終わりを「です・ます」にし、硬い言葉をやさしく言い換える。直せなければ空。
+    直した文が壊れた日本語（sns_rules.grammar_problems。「可能しました」など）なら使わない（空）"""
+    out = _polite_sentence(sentence)
+    return "" if out and sns_rules.grammar_problems(out) else out
+
+
+def _polite_sentence(sentence: str) -> str:
     s = easy_words(str(sentence or "").strip())
     if not s:
         return ""
@@ -298,7 +316,12 @@ def polite_sentence(sentence: str) -> str:
     if body[-1] in _GODAN_I and len(body) >= 2:
         return body[:-1] + _GODAN_I[body[-1]] + "ます。"
     if _SURU_NOUN_END.search(body):
-        return body + "しました。"  # 「〜を発表」「〜に参入」
+        noun = re.search(r"[一-龥ァ-ヶー]{2,}$", body).group(0)
+        if noun.endswith(sns_rules.NA_NOUNS):
+            return body + "です。"  # 「〜が可能」→「〜が可能です」（「可能しました」にしない）
+        if noun.endswith(SURU_NOUNS):
+            return body + "しました。"  # 「〜を発表」「〜に参入」
+        return ""  # 「しました」が付く名詞か分からない → 直さない（壊れた文を作らない）
     if _NOUN_END.search(body):
         return body + "です。"  # 「〜は500ドル」「52カ月連続」
     return ""
@@ -415,7 +438,54 @@ def recent_openers(limit: int = 3) -> list[str]:
     return (list(reversed(_RUN_OPENERS)) + [p["opener"] for p in history if p.get("opener")])[:limit]
 
 
-def first_line_hook(article: dict, recent: list[str], breaking: bool, title: str) -> str:
+CALLOUT_LLM_MAX = 34  # 【速報】（4字）を足しても sns_rules.CALLOUT_MAX（40字）に入る長さ
+WEAK_CALLOUT = re.compile(r"押さえておきたい話|気になる人|テック好き|ニュースを追っている人|これは見てほしい")
+
+
+def llm_callout(article: dict, title: str, last: list[str]) -> str:
+    """（2026-11-03 オーナー指摘「呼びかけが弱い」）1行目の呼びかけを LLM に書かせる。だれに（職種・立場・状況を具体的に）＋
+    なぜ今か（記事にある具体的な得・損・変化）を1行で。門番（呼びかけ・文法・無理な説明・使わない書き出し）を通らなければ空"""
+    if not (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("GEMINI_API_KEY")) or os.environ.get("SNS_LLM_CALLOUT", "1").strip() == "0":
+        return ""
+    prompt = (
+        "次のニュースを SNS に出すときの1行目（読者への呼びかけ）を1つだけ書く。\n"
+        f"読者: {persona.PERSONA['who']}\n"
+        f"- 全角{CALLOUT_LLM_MAX}字以内の1行。最初に、関係する読者を具体的に名指しする（職種・立場・状況。例「GPUで学習を回す担当者へ。」"
+        "「議事録を毎回手で書いている人、」「iPhoneで仕事のメールを読む人に、」）。続けて、なぜ今その人に関係するかを記事の事実から短く言う。\n"
+        "- 名指しは「〜な人、」「〜している人へ。」「〜の皆さん、」「〜担当者へ。」のどれかの形にする。\n"
+        "- 「AIの裏側の技術が気になる人」「テック好きの皆さん」「押さえておきたい話です」のような、だれにでも当てはまる弱い言い方はしない。\n"
+        "- 落ち着いた大人の自然な日本語。煽り（衝撃・ついに・必見・知らないと損・！）、【速報】、「朗報」、よく知られた会社への説明（×「AI半導体のNVIDIA」）は使わない。\n"
+        "- 記事に無い事実・数字は書かない。見出しをそのまま繰り返さない。\n\n"
+        f"見出し: {title}\n要約: {article.get('description', '')}\n要点: {' / '.join(str(h) for h in article.get('highlights') or [])}"
+    )
+    schema = {"type": "OBJECT", "properties": {"callout": {"type": "STRING"}}, "required": ["callout"]}
+    try:
+        import llm  # noqa: PLC0415
+
+        data, _ = llm.generate_json("あなたはニュースサイトのSNS担当の編集者です。自然で正しい日本語だけを書きます。", prompt, schema,
+                                    tier="bulk", max_output_tokens=256, purpose="sns")
+        line = EMOJI_RE.sub("", str(data.get("callout") or "")).strip().strip("「」\"").splitlines()[0].strip()
+    except Exception as error:  # noqa: BLE001
+        log(f"  [callout] LLM で呼びかけを作れませんでした: {str(error)[:120]}")
+        return ""
+    digits = re.findall(r"\d[\d,.]*", line)
+    source = " ".join([title, str(article.get("description") or ""), " ".join(str(h) for h in article.get("highlights") or []), str(article.get("body") or "")])
+    import headline_normalize  # noqa: PLC0415
+
+    bad = (
+        len(line) > CALLOUT_LLM_MAX or not sns_rules.callout_ok(line) or line.startswith(("【速報】", persona.SUMMARY_OPENER))
+        or WEAK_CALLOUT.search(line) or "朗報" in line or any(w in line for w in headline_normalize.CHILDISH_WORDS)
+        or sns_rules.grammar_problems(line) or sns_rules.descriptor_problems(line) or persona.STIFF_RE.search(line) or persona.ADVICE_RE.search(line)
+        or any(p.search(line) for p, _ in sns_rules.BANNED_OPENERS) or repeats_title(line, title)
+        or any(d.rstrip(".,") not in source for d in digits) or threads_hooks.callout_id(line) in last
+    )
+    if bad:
+        log(f"  [callout] LLM の呼びかけがチェックを通りません: {line[:50]}")
+        return ""
+    return line
+
+
+def first_line_hook(article: dict, recent: list[str], breaking: bool, title: str, use_llm: bool = False) -> str:
     """1行目の書き出し（2026-11-03 オーナー承認その2）: 関係する読者を名指しする呼びかけ。
 
     生成時の紹介文の1行目が呼びかけになっていて、直前の投稿と同じ言い回しでなければそれを使う。
@@ -434,8 +504,13 @@ def first_line_hook(article: dict, recent: list[str], breaking: bool, title: str
         and not any(p.search(line) for p, _ in sns_rules.BANNED_OPENERS)
         and threads_hooks.callout_id(line) not in last
     )
+    if usable and WEAK_CALLOUT.search(line):
+        usable = False  # だれにでも当てはまる弱い呼びかけは使わない（2026-11-03 オーナー指摘）
+    written = llm_callout(article, title, last) if use_llm and not usable else ""
     if usable:
         key, hook = threads_hooks.callout_id(line), line
+    elif written:
+        key, hook = threads_hooks.callout_id(written), written
     else:
         key, hook = threads_hooks.callout(article, last)
     hook = threads_hooks.with_breaking(hook, article)
@@ -467,7 +542,7 @@ def compose(
         return compose_legacy(article, recent, breaking)
     recent, recent_questions = recent or [], recent_questions or []
     title = str(article.get("title") or article.get("seoTitle") or "").strip()
-    hook = first_line_hook(article, recent, breaking, title)
+    hook = first_line_hook(article, recent, breaking, title, use_llm=use_llm)
     blocks = post_blocks_of(article.get("threadsPost", "")) if int(article.get("threadsStyle") or 1) >= 3 else []
     # 問いかけ: 決まった問い（Bluesky が Threads と同じ問いを使う）→ 生成時の問い → LLM に問いだけ書かせる → 話題・主役から作る
     question = fixed_question if question_ok(fixed_question, title) else ""
@@ -492,14 +567,25 @@ def compose(
             and not any(repeats_title(line, title) for line in lines)
         ):
             # 硬い言い切り（「〜する。」）が混ざっていれば です・ます に直す。直せなければ組み立て直す（ルール7）
-            fixable = sns_rules.impolite_sentences(candidate) or sns_rules.HARD_WORDS.search(candidate)
-            summary = polite_summary(candidate, article) if fixable else candidate
+            fixable = sns_rules.impolite_sentences(candidate) or sns_rules.HARD_WORDS.search(candidate) or sns_rules.grammar_problems(candidate)
+            if fixable:
+                # 機械で直すより、使えるなら LLM でやさしい正しい文に書き直す（文法・数字のチェックつき）。だめなら機械で直す（壊れた文は捨てる）
+                budget0 = POST_MAX_CHARS - len(hook) - len(question) - 4
+                summary = (llm_summary(article, title, candidate, budget0) if use_llm else "") or polite_summary(candidate, article)
+            else:
+                summary = candidate
+            if summary and (sns_rules.grammar_problems(summary) or sns_rules.descriptor_problems(summary)):
+                summary = ""  # 壊れた日本語・無理な説明が残る要約は使わない（組み立て直す）
     budget = POST_MAX_CHARS - len(hook) - len(question) - 4
     if not summary or len(summary) > budget:
         rebuilt = summary_block(article, title, hook, min(budget, POST_TARGET_CHARS - len(hook) - len(question) - 4 + 20))
         # 記事の文を組み立て直した要約は、使えるなら軽いモデルでやさしい言葉に書き直す（数字は記事のまま）
         rewritten = llm_summary(article, title, rebuilt, budget) if use_llm else ""
         summary = rewritten or rebuilt
+    if sns_rules.descriptor_problems(summary):
+        import headline_normalize  # noqa: PLC0415
+
+        summary = "\n".join(headline_normalize.strip_known_descriptors(x) for x in summary.splitlines())
     text = "\n\n".join(b for b in (hook, summary, question) if b)
     article["_question"] = question
     return ensure_question(text, article, recent_questions)
@@ -519,7 +605,7 @@ def question_ok(question: str, title: str = "", limit: int = voice.QUESTION_LIMI
 def llm_summary(article: dict, title: str, draft: str, budget: int) -> str:
     """記事の文から組み立てた要約を、やさしい です・ます の短い2文に書き直す（主語・専門用語の言い換えつき）。失敗したら空。
     GEMINI_API_KEY があるときだけ。SNS_LLM_SUMMARY=0 で止める。数字は記事にあるものだけ（無い数字が出たら使わない）"""
-    if not os.environ.get("GEMINI_API_KEY") or os.environ.get("SNS_LLM_SUMMARY", "1").strip() == "0":
+    if not (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("GEMINI_API_KEY")) or os.environ.get("SNS_LLM_SUMMARY", "1").strip() == "0":
         return ""
     source = " ".join([title, str(article.get("description") or ""), " ".join(str(h) for h in article.get("highlights") or []), str(article.get("threadsPost") or "")])
     prompt = (
@@ -528,6 +614,7 @@ def llm_summary(article: dict, title: str, draft: str, budget: int) -> str:
         "- やさしい「です・ます」の短い文（1文は全角40字くらいまで）。硬い言い切り（〜する。〜である。）は使わない。\n"
         "- 1文目に、だれが（官庁・会社の名前）何をしたかを書く。2文目は読者に関係する一番具体的な事実。\n"
         "- 専門用語は使わないか、ふつうの言葉で言い換える。数字・日付・名前は元の文のとおり。新しい事実や推測は書かない。\n"
+        "- 文法の正しい自然な日本語にする（×「実行が可能しました」→○「実行できるようにしました」）。よく知られた会社に説明を付けない（×「AI半導体のNVIDIAが」→○「NVIDIAが」）。\n"
         "- 「要約すると、」は付けない。文ごとに改行する。\n\n"
         f"見出し: {title}\n元の要約: {draft.removeprefix(persona.SUMMARY_OPENER + '、')}\n要点: {' / '.join(str(h) for h in article.get('highlights') or [])}"
     )
@@ -535,7 +622,7 @@ def llm_summary(article: dict, title: str, draft: str, budget: int) -> str:
     try:
         import llm  # noqa: PLC0415
 
-        data, _ = llm.generate_json("あなたはニュースサイトのSNS担当の編集者です。", prompt, schema, tier="bulk", max_output_tokens=512)
+        data, _ = llm.generate_json("あなたはニュースサイトのSNS担当の編集者です。自然で正しい日本語だけを書きます。", prompt, schema, tier="bulk", max_output_tokens=512, purpose="sns")
         text = EMOJI_RE.sub("", str(data.get("summary") or "")).strip().removeprefix(f"{persona.SUMMARY_OPENER}、")
     except Exception as error:  # noqa: BLE001
         log(f"  [summary] LLM で書き直せませんでした: {str(error)[:120]}")
@@ -548,6 +635,7 @@ def llm_summary(article: dict, title: str, draft: str, budget: int) -> str:
         or any(len(x) > sns_rules.SUMMARY_SENTENCE_MAX for x in lines)
         or persona.STIFF_RE.search(candidate) or persona.ADVICE_RE.search(candidate) or any(repeats_title(x, title) for x in lines)
         or any(d.rstrip(".,") not in source for d in digits)
+        or sns_rules.grammar_problems(candidate) or sns_rules.descriptor_problems(candidate)
     ):
         log(f"  [summary] LLM の要約がチェックを通りません: {candidate[:80]}")
         return ""
@@ -855,6 +943,29 @@ def everyday_score(article: dict) -> int:
     return (3 if EVERYDAY_RE.search(text) else 0) + (2 if EVERYDAY_STRONG_RE.search(text) else 0) - (4 if REMOTE_RE.search(text) else 0)
 
 
+_VIDEO_CHECK: dict = {}
+
+
+def video_possible(article: dict) -> bool:
+    """動画（shorts_v3）を作れる記事か（撮ってよい公式ページがある）。記事の投稿は動画つきだけなので、作れない記事は SNS の候補にしない。
+    動画の仕組みを読み込めない環境（軽いテスト）では判定しない（True）"""
+    if "mod" not in _VIDEO_CHECK:
+        try:
+            import shorts_v3  # noqa: PLC0415
+
+            _VIDEO_CHECK["mod"] = shorts_v3
+        except Exception as error:  # noqa: BLE001
+            log(f"[warn] 動画の仕組みを読み込めないため、動画を作れるかは確かめません: {type(error).__name__}")
+            _VIDEO_CHECK["mod"] = None
+    mod = _VIDEO_CHECK["mod"]
+    if mod is None:
+        return True
+    try:
+        return bool(mod.page_urls(article))
+    except Exception:  # noqa: BLE001
+        return True
+
+
 def candidates(state: dict, hours: int, genres: set[str] | None = None) -> list[dict]:
     """直近 hours 時間に生成された未投稿の記事（既定は AI。genres で AI 以外のテスト枠用も）を、Threads で反応が取れそうな順に並べる。"""
     genres = genres or {"ai"}
@@ -870,6 +981,8 @@ def candidates(state: dict, hours: int, genres: set[str] | None = None) -> list[
         # 速報として出す記事は scripts/breaking_post.py に任せる（二重投稿を防ぐ）
         if reserved_for_breaking(article, state):
             continue
+        if not video_possible(article):
+            continue  # 動画を作れない記事は SNS に出さない（ルール8: 記事の投稿は動画つきだけ）
         articles.append(article)
 
     # まとめ記事に統合済みの個別記事は、まとめ側を出せば十分なので重ねて流さない
@@ -1461,8 +1574,10 @@ def publish_extra_channels(
     offsets: tuple[int, int] = (12, 27),
     fmt: str = "classic",
     fb_text: str | None = None,
-) -> dict[str, str]:
+    build_only: bool = False,
+) -> dict:
     """X と Facebook にも同じ記事を出す。時刻は Threads から少しずらす（3つ同時に流れないように）
+    build_only=True なら Buffer を呼ばず、送る入力（SNS ごと）を返す（動画ができてから sns_video_followup が送る）
 
     due_at が None ならいますぐ出す（shareNow。通らなければ数分後の予約に切り替える）
     fmt=hook_thread なら X は「書き出し＋画像」→「詳細＋リンク」のスレッド。Facebook は形式を問わず完結型（fb_text）＋リンク
@@ -1511,6 +1626,9 @@ def publish_extra_channels(
             post_input["dueAt"] = (due_at + timedelta(minutes=offset)).isoformat(timespec="seconds").replace("+00:00", "Z")
         else:
             post_input["mode"] = "shareNow"
+        if build_only:
+            results[service] = {**post_input, "_offsetMin": offset}
+            continue
         try:
             try:
                 results[service] = create_post(api_key, post_input, service=service, article=article, source="threads_post.publish_extra_channels")
@@ -1570,8 +1688,9 @@ def publish_via_buffer(
     due_at: datetime | None = None,
     draft: bool = False,
     fmt: str = "classic",
+    build_only: bool = False,
 ) -> dict:
-    """Buffer に予約投稿する。
+    """Buffer に予約投稿する。build_only=True なら Buffer を呼ばず {"input": 送る入力} を返す（動画を待つ予約に使う）
 
     画像を1枚添える。
     classic: 本文（問いかけの後に記事のリンク。with_link）＋カード画像。返信は作らない（2026-11-03 オーナー決定）
@@ -1619,15 +1738,36 @@ def publish_via_buffer(
         post_input["dueAt"] = due_at.isoformat(timespec="seconds").replace("+00:00", "Z")
     else:
         post_input["mode"] = "shareNow"
+    if build_only:
+        return {"input": post_input}
     return {"id": create_post(api_key, post_input, service="threads", article=article, source="threads_post.publish_via_buffer"), "via": "buffer", "permalink": ""}
+
+
+def queue_for_video(api_key: str, channels: dict[str, dict], threads_text: str, text: str, link: str, article: dict,
+                    due_at: datetime | None, fmt: str = "classic", fb_text: str | None = None, offsets: tuple[int, int] = (12, 27)) -> dict:
+    """（2026-11-03 オーナー指示「SNS の投稿は動画のはず」）記事の投稿は動画つきだけ。ここでは Buffer を呼ばず、
+    Threads・X・Facebook に送る入力を作って文面だけ門番で確かめ（動画の決まりは後で）、「動画待ち」として記録する。
+    動画ができたら sns_video_followup.publish_queued が写真を動画に替えて、枠の時刻（過ぎていれば順番を保って直後）に送る。
+    動画が作れなければ issue を立てて出さない（写真のカードでは出さない）"""
+    threads_input = publish_via_buffer(api_key, channels["threads"]["id"], threads_text, link, article, due_at, fmt=fmt, build_only=True)["input"]
+    extra = {k: v for k, v in channels.items() if k in ("twitter", "facebook")}
+    inputs = {"threads": threads_input, **publish_extra_channels(api_key, extra, text, link, article, due_at, fmt=fmt, fb_text=fb_text, offsets=offsets, build_only=True)}
+    for service, post_input in inputs.items():
+        clean = {k: v for k, v in post_input.items() if not k.startswith("_")}
+        sns_rules.enforce_buffer(service, clean, article, source="threads_post.queue_for_video", pending_video=True)
+    return {
+        "id": "", "via": "buffer", "permalink": "", "status": "awaiting_video",
+        "pending": {"inputs": inputs, "slot": (due_at or datetime.now(timezone.utc)).isoformat(timespec="seconds"), "fmt": fmt},
+    }
 
 
 def share_now(
     api_key: str, article: dict, text: str, fmt: str = "classic", fb_text: str | None = None, threads_text: str | None = None
 ) -> dict:
-    """いますぐ Threads・X・Facebook に出す（速報用）。
+    """いますぐ Threads・X・Facebook に出す（速報用）。戻り値は投稿履歴にそのまま入れられる形。
 
-    Buffer の shareNow を使い、通らなければ1分後の予約に切り替える。戻り値は投稿履歴にそのまま入れられる形
+    2026-11-03〜: 動画つきだけ（sns_rules ルール8）。ここでは「動画待ち」として記録し、動画ができしだい
+    sns_video_followup.publish_queued が shareNow で出す（写真のカードでは出さない）
     """
     link = f"{site_url()}/articles/{article['slug']}"
     channels = buffer_channels(api_key)
@@ -1635,19 +1775,9 @@ def share_now(
         raise RuntimeError("Buffer に Threads のチャンネルが見つかりません")
     now = datetime.now(timezone.utc)
     due: datetime | None = None
-    try:
-        result = publish_via_buffer(api_key, channels["threads"]["id"], threads_text or text, link, article, fmt=fmt)
-    except sns_rules.SnsRuleViolation:
-        raise
-    except RuntimeError as error:
-        log(f"  [threads] いますぐの投稿が通らないため、1分後の予約にします: {error}")
-        due = now + timedelta(minutes=1)
-        result = publish_via_buffer(api_key, channels["threads"]["id"], threads_text or text, link, article, due_at=due, fmt=fmt)
-    extra = {k: v for k, v in channels.items() if k in ("twitter", "facebook")}
-    result["channels"] = publish_extra_channels(
-        api_key, extra, text, link, article, due_at=due, offsets=(1, 2), fmt=fmt, fb_text=fb_text
-    )
-    result["dueAt"] = (due or now).isoformat(timespec="seconds")
+    # 速報も動画つきだけ（ルール8）。動画ができしだい sns_video_followup がすぐ出す（写真では出さない）
+    result = queue_for_video(api_key, channels, threads_text or text, text, link, article, None, fmt=fmt, fb_text=fb_text, offsets=(1, 2))
+    result["dueAt"] = now.isoformat(timespec="seconds")
     return result
 
 
@@ -1937,11 +2067,9 @@ def main() -> int:
             continue
         try:
             if buffer_channel:
-                result = publish_via_buffer(buffer_key, buffer_channel["id"], threads_text, link, article, due_at, fmt=fmt)
-                if extra_channels:
-                    result["channels"] = publish_extra_channels(
-                        buffer_key, extra_channels, text, link, article, due_at, fmt=fmt, fb_text=classic_text
-                    )
+                # 記事の投稿は動画つきだけ（ルール8）。ここでは予約せず「動画待ち」にする（動画ができたら sns_video_followup が予約する）
+                result = queue_for_video(buffer_key, {"threads": buffer_channel, **extra_channels}, threads_text, text, link, article, due_at,
+                                         fmt=fmt, fb_text=classic_text)
             else:
                 result = publish(token, threads_text, link, article)
         except sns_rules.SnsRuleViolation as error:
@@ -1976,7 +2104,7 @@ def main() -> int:
             "postedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         }
         save_state(state)
-        log(f"  [posted] {result['permalink'] or result['id']}")
+        log(f"  [posted] {result['permalink'] or result['id'] or '動画待ち（動画ができたら予約）'}")
 
     write_summary(summary)
     return 0

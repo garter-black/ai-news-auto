@@ -18,6 +18,11 @@
      問いかけは、記事を読まなくても答えられる「読者自身の好み・経験」を聞く（「この機能、使ってみたい？」は×）。
   7. （2026-11-03 オーナー指示）要約の文は、やさしい「です・ます」の短い文。記事の硬い文（「〜する。」「〜である。」
      「〜した。」の言い切りや、「〜を発表。」で終わる文）をそのまま使わない。だれが（主語）を書く。
+  8. （2026-11-03 オーナー指示「SNS の投稿は動画のはず」・繰り返しの違反）記事の投稿は**必ず動画つき**。写真・カードだけの投稿は出さない。
+     例外は朝のまとめ（kind="digest"。号のシェア画像 share.png）だけ。動画が間に合わなければ投稿を遅らせ（枠の順番は保つ）、
+     作れなければ issue を立てて出さない（scripts/sns_video_followup.py の publish_queued）。下書き（saveToDraft）だけは公開されないので通す。
+  9. （2026-11-03 オーナー指摘「可能しました」）壊れた日本語を出さない（な形容詞＋しました・です／ますの重なりなど。GRAMMAR_BREAKS）。
+     よく知られた会社に無理な説明を付けない（「AI半導体のNVIDIAが」。headline_normalize と同じ判定）。
 
 違反したら: 投稿しない・ログに出す・GitHub の issue（ラベル sns-rule-violation）を立てるか、開いているものにコメントを足す。
 新しく Buffer / Bluesky / Threads の投稿 API を呼ぶ所を作るときは、必ずこの enforce を直前に呼ぶ（tests/test_sns_rules.py が確かめる）。
@@ -94,6 +99,50 @@ ARTICLE_BOUND_QUESTION = re.compile(
     r"いちばん気になった|どの発表|発表(?:の中|で)|新機能|新モデル|新サービス|使ってみ(?:たい|ます)|試してみ(?:たい|ます)|試したい|試しますか|導入されたら|"
     r"どう思い|気になり|注目して|知っていました|もう試し|の件"
 )
+
+
+# ルール9: 機械で文の終わりを直したときに出る、壊れた日本語（2026-11-03「数コマンドでAIモデルの実行が可能しました」）
+# な形容詞・「する」が付かない名詞のあとに直接「し（ます・ました・た）」は付かない（「可能にしました」「必要です」が正しい）
+NA_NOUNS = (
+    "可能", "不可能", "必要", "不要", "重要", "簡単", "便利", "不便", "困難", "容易", "有効", "無効", "無料", "有料", "十分", "不十分",
+    "明らか", "確実", "安全", "危険", "自由", "大切", "好調", "不調", "不可欠", "主流", "最適", "最大", "最小", "最新", "最高", "最低",
+    "同様", "同じ", "対象外", "急務", "必須", "高速", "安価", "高価", "豊富", "強力", "手軽", "快適", "正確",
+    "活発", "盛ん", "深刻", "顕著", "好評", "不明", "未定", "限定的", "一般的", "本格的", "具体的", "画期的", "現実的", "効果的",
+)
+GRAMMAR_BREAKS = [
+    (re.compile(rf"(?:{'|'.join(sorted(NA_NOUNS, key=len, reverse=True))})し(?:ました|ます|た|ている|ています)"), "な形容詞・名詞に直接「しました」"),
+    (re.compile(r"(?:です|ます|ました|でした|ません)(?:です|ました|でした)"), "です・ますが重なっている"),
+    (re.compile(r"ます(?:です|ました)|ましたます|でしたます"), "です・ますが重なっている"),
+    (re.compile(r"(?<![かくしい])ったです|(?<!な)んだです|(?:した|できた|なった|始めた)です"), "過去形＋「です」"),
+    (re.compile(r"ないません|ませんません|しますします|しましたしました"), "語尾が重なっている"),
+    (re.compile(r"[をがにへ](?:です|ます|ました)[。]"), "助詞のあとに直接「です・ます」"),
+]
+
+
+def grammar_problems(text: str) -> list[str]:
+    """壊れた日本語の言い回し（ルール9）。見つかった所の一覧"""
+    out = []
+    for pattern, label in GRAMMAR_BREAKS:
+        if m := pattern.search(str(text or "")):
+            out.append(f"[ルール9] 壊れた日本語（{label}:「{m.group(0)}」）")
+    return out
+
+
+def descriptor_problems(text: str) -> list[str]:
+    """よく知られた会社への無理な説明（「AI半導体のNVIDIAが」）。headline_normalize の判定を使う（読めなければ見ない）"""
+    try:
+        import headline_normalize as hn  # noqa: PLC0415
+    except Exception:  # noqa: BLE001
+        return []
+    out = []
+    for line in str(text or "").splitlines():
+        for m in hn._descriptor_matches(line.removeprefix(SUMMARY)):
+            out.append(f"[ルール9] よく知られた会社に無理な説明（「{(m.group(2) + 'の' + m.group(3))[:24]}」）。会社名だけにする")
+    return out
+
+
+def has_video(media: list[dict] | None) -> bool:
+    return any(str(m.get("type") or "") == "video" and m.get("url") for m in media or [])
 
 
 # ルール7: 要約の文の終わりは「です・ます」（です／ます／でした／ました／ません／でしょう＋ね・よ）
@@ -529,8 +578,14 @@ def check_post(
     history: bool = False,
     state: dict | None = None,
     measurer=None,
+    draft: bool = False,
+    pending_video: bool = False,
 ) -> list[str]:
     """投稿1件のルール違反の一覧（空なら OK）。
+
+    draft: 下書き（公開しない）。動画の決まり（ルール8）は見ない
+    pending_video: 動画を付ける前の文面の下見（threads_post が予約の前に文面だけ確かめる）。動画の決まりは見ない。
+      実際に Buffer / Bluesky に送るときは必ず pending_video=False で通す（動画が無ければ止まる）
 
     platform: threads / x（twitter）/ facebook / bluesky
     text: 本文。reply_text: X の返信（リンクを置く所）。links: 本文の外のリンク（Bluesky の facet・リンクカード）
@@ -569,6 +624,12 @@ def check_post(
         if m := pattern.search(f"{text}\n{reply_text}"):
             out.append(f"[ルール3] {label}（「{m.group(0)[:20]}」）")
     out += check_language(f"{content}\n{strip_links(reply_text)}")
+    out += grammar_problems(f"{content}\n{strip_links(reply_text)}")
+    if kind != "digest":
+        out += descriptor_problems(content)
+    # ルール8: 記事の投稿は動画つきだけ（朝のまとめだけ画像）。写真・カードだけの投稿は出さない
+    if kind != "digest" and not draft and not pending_video and not has_video(media):
+        out.append("[ルール8] 動画が付いていない（記事の投稿は必ず動画つき。写真・カードだけでは出さない。動画が間に合わなければ遅らせる）")
     out += check_media(platform, media or [], article, kind, measurer)
     out += check_length(platform, text, reply_text)
     out += check_sports(article, content)
@@ -639,10 +700,12 @@ def enforce(
     draft: bool = False,
     state: dict | None = None,
     measurer=None,
+    pending_video: bool = False,
 ) -> None:
-    """投稿 API を呼ぶ直前に呼ぶ。違反があれば記録して SnsRuleViolation を投げる（呼び出し側は投稿しない）"""
+    """投稿 API を呼ぶ直前に呼ぶ。違反があれば記録して SnsRuleViolation を投げる（呼び出し側は投稿しない）。
+    pending_video=True は予約の前の文面の下見だけ（API は呼ばない所）。送る直前は必ず False（動画が無ければ止まる）"""
     violations = check_post(platform, text, media, article, kind=kind, reply_text=reply_text, links=links,
-                            history=history and not draft, state=state, measurer=measurer)
+                            history=history and not draft, state=state, measurer=measurer, draft=draft, pending_video=pending_video)
     if violations:
         report(violations, norm_platform(platform), source, text, article, draft=draft)
         raise SnsRuleViolation(violations, norm_platform(platform), source)
@@ -679,14 +742,15 @@ def buffer_parts(service: str, post_input: dict) -> tuple[str, str, list[dict], 
     return text, "\n".join(replies), media, links
 
 
-def enforce_buffer(service: str, post_input: dict, article: dict | None, *, source: str, kind: str = "article", history: bool = True, measurer=None) -> None:
+def enforce_buffer(service: str, post_input: dict, article: dict | None, *, source: str, kind: str = "article", history: bool = True, measurer=None,
+                   pending_video: bool = False) -> None:
     """Buffer の createPost / editPost の直前に呼ぶ（threads_post.create_post・sns_video_followup.edit_post が呼ぶ）。
     すでにある投稿の中身を変える editPost は history=False（同じ投稿なので「もう投稿済み」とは数えない）"""
     text, reply, media, _links = buffer_parts(service, post_input)
     platform = norm_platform(service)
     # X 以外は返信を作らない（リンクは本文）。返信やリンクカードにだけリンクがある形は、本文のリンク無しとして止める
     enforce(platform, text, media, article, source=source, kind=kind, reply_text=reply if platform == "x" else "",
-            history=history, draft=bool(post_input.get("saveToDraft")), measurer=measurer)
+            history=history, draft=bool(post_input.get("saveToDraft")), measurer=measurer, pending_video=pending_video)
 
 
 # ---- 点検（scripts/sns_audit.py が実際の投稿に使う。記事は本文のリンクから探す） ----

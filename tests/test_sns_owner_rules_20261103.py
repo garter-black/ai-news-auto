@@ -189,11 +189,11 @@ class GeneratedPostsPassGate(unittest.TestCase):
                 text = tp.compose(article, [])
             for platform in ("threads", "facebook"):
                 body = tp.with_link(text, article, platform, "classic")
-                out = sns_rules.check_post(platform, body, [], article)
+                out = sns_rules.check_post(platform, body, [], article, pending_video=True)
                 self.assertEqual(out, [], f"{slug} {platform}\n{body}")
             x = tp.compose_x(article, text)
             reply = f"{tp.link_reply_text(article)}\n{tp.utm_link(f'{tp.site_url()}/articles/{slug}', 'x', 'classic')}"
-            self.assertEqual(sns_rules.check_post("x", x, [], article, reply_text=reply), [], f"{slug} x\n{x}")
+            self.assertEqual(sns_rules.check_post("x", x, [], article, reply_text=reply, pending_video=True), [], f"{slug} x\n{x}")
 
 
 class PoliteSummaryTest(unittest.TestCase):
@@ -251,7 +251,7 @@ class PoliteSummaryTest(unittest.TestCase):
         self.assertEqual(sns_rules.impolite_sentences(summary), [], summary)
         self.assertIsNone(sns_rules.HARD_WORDS.search(summary), summary)
         self.assertIn("厚生労働省", summary)
-        self.assertEqual(sns_rules.check_post("threads", tp.with_link(text, article, "threads", "classic"), [], article), [])
+        self.assertEqual(sns_rules.check_post("threads", tp.with_link(text, article, "threads", "classic"), [], article, pending_video=True), [])
 
     def test_live_article_summary_keeps_its_subject(self):
         # 今の記事（題名が書き直されていても）でも、要約の1文目は記事の主役（題名の頭の「厚労省」など）で始まり、門を通る
@@ -264,7 +264,7 @@ class PoliteSummaryTest(unittest.TestCase):
         self.assertTrue(subject, article.get("title"))
         self.assertIn(subject, summary.splitlines()[0])
         self.assertEqual(sns_rules.impolite_sentences(summary), [], summary)
-        self.assertEqual(sns_rules.check_post("threads", tp.with_link(text, article, "threads", "classic"), [], article), [])
+        self.assertEqual(sns_rules.check_post("threads", tp.with_link(text, article, "threads", "classic"), [], article, pending_video=True), [])
 
 if __name__ == "__main__":
     unittest.main()

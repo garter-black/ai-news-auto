@@ -1,7 +1,9 @@
 name: SNS video follow-up (flagged, default off)
 
-# SNS（Threads）に出す記事の解説動画（v3）を作り、Buffer に予約中の投稿の写真を動画に差し替える（1記事1投稿。2026-11-03 オーナー決定）。
-# 間に合わなければ写真のまま出て、動画は記事ページだけ（同じ記事の2本目の投稿は出さない）。記事ページにもサイト用を載せる。
+# SNS（Threads・X・Facebook）に出す記事の解説動画（v3）を作り、動画つきで Buffer に予約する（1記事1投稿。2026-11-03 オーナー決定）。
+# 2026-11-03 オーナー指示「SNS の投稿は動画のはず」: 記事の投稿は動画つきだけ（sns_rules ルール8）。threads_post / breaking_post は
+# 「動画待ち」として記録するだけで、ここ（sns_video_followup.publish_queued）が動画ができた順・枠の順に送る。間に合わなければ遅らせ、
+# 作れなければ issue（ラベル sns-video-missing）を立てて出さない。写真のカードでは出さない。記事ページにもサイト用を載せる。
 # 2026-11-03 オーナー決定「SNS に投稿した記事は全部」「同じ台本からサイト用（全部）と SNS 用（短い版）」「1週間、投稿ごとに短い版と全部の版を交互（A/B）」。
 # **既定では何もしない。** Actions の Variables で順に有効にする（docs/sns-video-v3-20261102.md「自動化の計画」）:
 #   SNS_VIDEO_FOLLOWUP=on  … 定期実行で動画を作る（ゲートまで。投稿しない）
@@ -18,7 +20,7 @@ on:
     - cron: "45 * * * *"  # 毎時45分（文面の投稿 15/35/55 分のあと）。SNS_VIDEO_FOLLOWUP=on のときだけ動く
   # GitHub の定期実行は混むと何時間も動かないことがあるので、記事の自動処理（文面の投稿もここ）が終わるたびにも動く
   workflow_run:
-    workflows: ["Auto Article Pipeline"]
+    workflows: ["Auto Article Pipeline", "Breaking post"]  # 速報も動画ができしだい出す
     types: [completed]
   workflow_dispatch:
     inputs:
@@ -90,7 +92,7 @@ jobs:
           SNS_VIDEO_UPLOAD: ${{ vars.SNS_VIDEO_UPLOAD || 'off' }}
           SNS_VIDEO_POST: ${{ github.event_name != 'workflow_dispatch' && vars.SNS_VIDEO_POST || 'off' }}
           SNS_VIDEO_EMBED: ${{ vars.SNS_VIDEO_EMBED || 'off' }}
-          SNS_VIDEO_DAILY_MAX: ${{ vars.SNS_VIDEO_DAILY_MAX || '12' }}
+          SNS_VIDEO_DAILY_MAX: ${{ vars.SNS_VIDEO_DAILY_MAX || '30' }}  # 記事の投稿はすべて動画が要る（通常枠9＋速報）
           SNS_VIDEO_PER_RUN: ${{ vars.SNS_VIDEO_PER_RUN || '3' }}
           SNS_VIDEO_AB_UNTIL: ${{ vars.SNS_VIDEO_AB_UNTIL }}
           SNS_VIDEO_AFTER_AB: ${{ vars.SNS_VIDEO_AFTER_AB || 'short' }}
@@ -139,9 +141,11 @@ jobs:
         continue-on-error: true
         run: |
           files="state/sns_video.json state/claude_api_usage_video.json state/buffer_calls/video.json"
+          python scripts/sns_video_followup.py --sync-posted || true
+          [ -n "$(git status --porcelain state/threads_posted.json)" ] && changed_posted=1 || changed_posted=""
           changed=""; for f in $files; do [ -f "$f" ] && [ -n "$(git status --porcelain "$f")" ] && changed="$changed $f"; done
           embeds=$(git status --porcelain content/articles | awk '{print $2}')
-          [ -z "$changed$embeds" ] && exit 0
+          [ -z "$changed$embeds$changed_posted" ] && exit 0
           for f in $changed; do cp "$f" "$RUNNER_TEMP/$(basename "$f")"; done
           mkdir -p "$RUNNER_TEMP/embeds"; for f in $embeds; do cp "$f" "$RUNNER_TEMP/embeds/"; done
           git config user.name  "github-actions[bot]"
@@ -151,6 +155,9 @@ jobs:
             [ -f "$RUNNER_TEMP/sns_video.json" ] && cp "$RUNNER_TEMP/sns_video.json" state/sns_video.json
             [ -f "$RUNNER_TEMP/video.json" ] && mkdir -p state/buffer_calls && cp "$RUNNER_TEMP/video.json" state/buffer_calls/video.json
             [ -f "$RUNNER_TEMP/claude_api_usage_video.json" ] && python scripts/llm.py --merge-api-usage "$RUNNER_TEMP/claude_api_usage_video.json" state/claude_api_usage_video.json
+            # 動画つきで送った・出さなかった記録を、最新の投稿履歴（threads_posted.json）に写す（何度写しても同じ）
+            python scripts/sns_video_followup.py --sync-posted || true
+            git add state/threads_posted.json 2>/dev/null
             # 記事の video だけを最新の記事 JSON に書き戻す（ほかの項目は main のまま）
             for f in "$RUNNER_TEMP"/embeds/*.json; do [ -f "$f" ] || continue
               python - "$f" "content/articles/$(basename "$f")" <<'PY'
