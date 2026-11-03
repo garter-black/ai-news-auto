@@ -490,7 +490,8 @@ def edit_scheduled(post_id: str, report: dict, variant: str, video_url: str, now
     key = api_key if api_key is not None else os.environ.get("BUFFER_API_KEY", "")
     cur = read_post(key, post_id)
     if not cur:
-        return {"status": "attach_failed", "error": "Buffer で予約の投稿を読めない（写真のまま）"}
+        # まだ何も送っていない（読めなかっただけ。Buffer の回数制限など）→ ready のまま次の回でもう一度（時刻に間に合う間だけ）
+        return {"status": "ready", "attachError": "Buffer で予約の投稿を読めない（次の回でもう一度）"}
     ok_status = ("scheduled", "draft") if allow_draft else ("scheduled",)
     if cur.get("status") not in ok_status:
         return {"status": "article_only", "why": f"Buffer の状態が {cur.get('status')}（もう出た・出ている途中など）"}

@@ -317,8 +317,16 @@ class MergeTest(unittest.TestCase):
         out = fu.attach_ready(state, posted, NOW, self.F, lambda *a: self.fail("差し替えてはいけない"))
         self.assertEqual({r["slug"]: r["status"] for r in out}, {"late": "article_only", "brk": "article_only", "gone": "article_only"})
         # 2本目の投稿（post_one）は速報の後追いのフラグが無ければ呼ばない
-        rows = fu.run(now=NOW, env={"SNS_VIDEO_FOLLOWUP": "on", "SNS_VIDEO_POST": "live"}, make_versions=lambda *a: self.fail("作らない"), select=lambda *a: [], poster=lambda *a: self.fail("2本目を出してはいけない"), editor=lambda *a: self.fail("差し替えない"))
-        self.assertIsInstance(rows, list)
+        with tempfile.TemporaryDirectory() as d:
+            old = (fu.STATE, fu.POSTED)
+            fu.STATE, fu.POSTED = Path(d) / "v.json", Path(d) / "p.json"
+            fu.STATE.write_text(json.dumps({"videos": {"brk": dict(self.ready(), breaking=True, textAt=(NOW - timedelta(hours=1)).isoformat())}}))
+            fu.POSTED.write_text(json.dumps({"posted": {"brk": self.posted_rec(-60, breaking=True)}}))
+            try:
+                rows = fu.run(now=NOW, env={"SNS_VIDEO_FOLLOWUP": "on", "SNS_VIDEO_POST": "live"}, make_versions=lambda *a: self.fail("作らない"), select=lambda *a: [], poster=lambda *a: self.fail("2本目を出してはいけない"), editor=lambda *a: self.fail("差し替えない"))
+            finally:
+                fu.STATE, fu.POSTED = old
+        self.assertEqual([r["status"] for r in rows], ["article_only"])
 
     def test_not_live_does_not_edit(self):
         state = {"videos": {"a": self.ready()}}
@@ -368,3 +376,14 @@ class MergeTest(unittest.TestCase):
                 self.assertEqual(fu.edit_scheduled("p", REPORT, "short", "u", NOW, api_key="k")["status"], want)
             finally:
                 threads_post.buffer_graphql = orig
+
+    def test_edit_scheduled_read_failure_stays_ready(self):
+        import threads_post
+        orig = threads_post.buffer_graphql
+        def boom(*a, **k):
+            raise RuntimeError("Buffer API 429")
+        threads_post.buffer_graphql = boom
+        try:
+            self.assertEqual(fu.edit_scheduled("p", REPORT, "short", "u", NOW, api_key="k")["status"], "ready")
+        finally:
+            threads_post.buffer_graphql = orig
