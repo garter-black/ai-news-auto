@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "crowdstrike-ai-kill-switch-falcon-guardian",
+   "at": "2026-11-03T20:35:26.666420+00:00",
+   "title": "CrowdStrike、AI緊急停止機能を「Falcon Guardian」に追加　Claude Coworkとも連携",
+   "head": "CrowdStrike、AI緊急停止機能を「Falcon Guardian」に追加　Claude Coworkとも連携 | CrowdStrike launches an AI kill switch in Falcon Guardian to stop rogue internal agents, and announces a Falcon Guardian integration with Claude Cowork",
+   "text": "CrowdStrike、AI緊急停止機能を「Falcon Guardian」に追加　Claude Coworkとも連携 | CrowdStrike launches an AI kill switch in Falcon Guardian to stop rogue internal agents, and announces a Falcon Guardian integration with Claude Cowork | CrowdStrike / AIキルスイッチ / Falcon Guardian / AIエージェント セキュリティ / 暴走するAI / Claude Cowork / Fiddler AI / Dreadnode / AIゲートウェイ / エージェント 緊急停止 / CrowdStrike / AIエージェント / セキュリティ / Claude Cowork / 生成AI",
+   "urls": [
+    "https://www.cnbc.com/2026/11/03/crowdstrike-ai-kill-switch-rogue-agents.html"
+   ]
+  },
+  {
    "slug": "cisco-openai-cyber-defense",
    "at": "2026-11-03T20:22:34.198191+00:00",
    "title": "Cisco、OpenAIのAIを防御に活用　ネットワーク情報と組み合わせ",

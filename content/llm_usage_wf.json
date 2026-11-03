@@ -27,12 +27,12 @@
     "breaking": {
       "anthropic-api:claude-haiku-5-5": 3,
       "anthropic-api:claude-opus-5-5": 4,
-      "anthropic-api:claude-sonnet-5-5": 5
+      "anthropic-api:claude-sonnet-5-5": 7
     },
     "images": {
-      "cf-image:flux-1-schnell": 3,
+      "cf-image:flux-1-schnell": 6,
       "cf-image:flux-2-klein-4b": 13,
-      "cloudflare:@cf/openai/gpt-oss-120b": 16
+      "cloudflare:@cf/openai/gpt-oss-120b": 20
     },
     "local": {
       "gemini-3.5-flash-lite": 2

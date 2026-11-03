@@ -5495,6 +5495,15 @@
       "skipped": true,
       "url": "https://www.nli-research.co.jp/topics_detail1/id=87226?site=nli"
     },
+    "35cf51a18907f6ab": {
+      "at": "2026-11-03T20:35:29.627574+00:00",
+      "major": true,
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 90,
+      "section": "ai",
+      "slug": "crowdstrike-ai-kill-switch-falcon-guardian",
+      "url": "https://www.cnbc.com/2026/11/03/crowdstrike-ai-kill-switch-rogue-agents.html"
+    },
     "3616f4f33295716d": {
       "at": "2026-10-29T18:35:20.173681+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（セミナー）",
@@ -13495,28 +13504,6 @@
   },
   "quality_log": [
     {
-      "accepted": true,
-      "at": "2026-11-02T05:48:42.542096+00:00",
-      "attempt": 0,
-      "id": "1ff21a1fea64f84e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 120.5字・最長 190字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 120.5,
-        "avg_sentence": 28.2,
-        "long_share": 0.0,
-        "max_paragraph": 190,
-        "paragraphs": 11,
-        "sentences": 47
-      },
-      "score": 100,
-      "source": "aws-japan-blog",
-      "title": "週刊生成AI with AWS – 2026/10/26 週"
-    },
-    {
       "accepted": false,
       "at": "2026-11-02T05:48:49.868513+00:00",
       "attempt": 1,
@@ -20068,6 +20055,30 @@
       "score": 90,
       "source": "openai-news",
       "title": "How Cisco defends at machine speed with OpenAI"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T20:35:29.608412+00:00",
+      "attempt": 1,
+      "id": "35cf51a18907f6ab",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 86.3,
+        "avg_sentence": 38.4,
+        "long_share": 0.056,
+        "max_paragraph": 154,
+        "paragraphs": 16,
+        "sentences": 36
+      },
+      "score": 90,
+      "source": "radar-cnbc.com",
+      "title": "CrowdStrike launches an AI kill switch in Falcon Guardian to stop rogue internal",
+      "warnings": [
+        "見出しが59字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（CNBC）"
+      ]
     }
   ],
   "short_text_retry": {
