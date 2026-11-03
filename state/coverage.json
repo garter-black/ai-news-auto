@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "github-copilot-jetbrains-air",
+   "at": "2026-11-03T16:30:05.789903+00:00",
+   "title": "GitHubがJetBrainsの「Air」にCopilotを提供　クラウド実行もCopilotの契約で",
+   "head": "GitHubがJetBrainsの「Air」にCopilotを提供　クラウド実行もCopilotの契約で | GitHub Copilot is now available in JetBrains Air",
+   "text": "GitHubがJetBrainsの「Air」にCopilotを提供　クラウド実行もCopilotの契約で | GitHub Copilot is now available in JetBrains Air | JetBrains Air / GitHub Copilot / JetBrains Copilot / Air Teams / Agent Client Protocol / ACP / AIエージェント / クラウドエージェント / コーディングエージェント / Copilot 使い方 / GitHub Copilot / JetBrains / AIエージェント / 開発ツール / 生成AI",
+   "urls": [
+    "https://github.blog/changelog/2026-11-03-github-copilot-is-now-available-in-jetbrains-air"
+   ]
+  },
+  {
    "slug": "nvidia-ai-semiconductor-fab-cases",
    "at": "2026-11-03T16:14:34.878501+00:00",
    "title": "NVIDIA、半導体工場のAI活用事例を紹介　プラズマ予測は数日から数ミリ秒に",

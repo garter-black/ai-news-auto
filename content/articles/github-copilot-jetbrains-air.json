@@ -1,0 +1,152 @@
+{
+  "slug": "github-copilot-jetbrains-air",
+  "sourceType": "web",
+  "sourceUrl": "https://github.blog/changelog/2026-11-03-github-copilot-is-now-available-in-jetbrains-air",
+  "sourceName": "GitHub Changelog（Copilot）",
+  "title": "GitHubがJetBrainsの「Air」にCopilotを提供　クラウド実行もCopilotの契約で",
+  "seoTitle": "JetBrains AirのGitHub Copilotとは？使い方と注意点",
+  "threadsPost": "JetBrainsの開発ツールを使っている人に、押さえておきたい話です。\n\n要約すると、JetBrainsの「Air」でGitHub Copilotを選べるようになりました。\nクラウドでの実行も、手持ちのCopilotの契約で動きます。\n\nふだんのコード作業、IDEとブラウザのどちらで進めることが多いですか？",
+  "threadsHook": "caution",
+  "threadsStyle": 3,
+  "writingVoice": "honest",
+  "lede": "JetBrainsのAIエージェント環境「Air」で、GitHub Copilotを作業の担い手として選べるようになりました。GitHub Changelogが11月4日に公開した発表によると、手持ちのCopilotの契約をそのまま使えます。クラウドでの実行も、JetBrains AIのクレジットではなくCopilotのプランから消費されます。",
+  "description": "JetBrains AirでGitHub Copilotが使えるようになりました。手元のIDEでもクラウドでも、既存のCopilot契約で動きます。クラウド実行の条件、隔離環境の仕組み、管理面の制約を整理します。",
+  "keywords": [
+    "JetBrains Air",
+    "GitHub Copilot",
+    "JetBrains Copilot",
+    "Air Teams",
+    "Agent Client Protocol",
+    "ACP",
+    "AIエージェント",
+    "クラウドエージェント",
+    "コーディングエージェント",
+    "Copilot 使い方"
+  ],
+  "tags": [
+    "GitHub Copilot",
+    "JetBrains",
+    "AIエージェント",
+    "開発ツール",
+    "生成AI"
+  ],
+  "highlights": [
+    "Agent Client Protocol（ACP）で接続し、JetBrainsのIDE上でもクラウドでも作業を任せられます",
+    "クラウド実行は毎回新しい仮想マシン上のDockerコンテナで動き、作業間で状態を持ち越しません",
+    "Air上ではCopilotの利用上限を設定できず、Airの分析機能にもCopilotの利用量は出ません"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "ok",
+    "price": "Copilot契約内",
+    "free": null,
+    "audience": "JetBrains利用者",
+    "take": "Copilot契約があり、JetBrainsのIDEを使っているなら、まず手元のIDEで試すとよいでしょう。",
+    "judgedAt": "2026-11-03T16:30:05.789917+00:00",
+    "japanSource": {
+      "name": "GitHub Copilot",
+      "url": "https://docs.github.com/ja/copilot/get-started/plans",
+      "checkedAt": "2026-11-03"
+    }
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "JetBrainsのIDEで開発し、Copilotを契約している人は、追加の契約なしでAirから作業を任せられます。",
+      "クラウド実行を使う法人は、Air上で利用上限を設定できないため、Copilot側で費用の管理方法を決めておく必要があります。"
+    ]
+  },
+  "body": "要約すると、JetBrainsのIDEで開発する人が、Copilotの契約のまま、AIに作業を任せる場所を1つ増やせるようになった発表です。\n\nAirは、AIエージェント（自分で手順を進めるAI）にコードの作業を任せ、途中で指示を出し、結果を確かめるための環境です。GitHubの更新情報（GitHub Changelog）によると、Copilotとの接続にはAgent Client Protocol（ACP、エージェントと開発ツールをつなぐ共通の取り決め）を使っています。\n\n（編集部注）JetBrainsは、IntelliJ IDEAなどの統合開発環境（IDE、プログラムを書くためのソフト）を手がける会社です。\n\n## 既存のCopilot契約で動き、JetBrains AIのクレジットは使わない\n\n今回の連携でできることは、大きく3つです。\n\n1つ目は、Airのエージェントの選択欄でGitHub Copilotを選べることです。選ぶと、すでに契約しているCopilotでコードの作業を進められます。\n\n2つ目は、複数の作業を並行して進められることです。複数のエージェントの作業を同時に追いかけられます。プロジェクトの文脈やIDEの機能も使え、変更内容はコードの横で確認できます。\n\n3つ目は、クラウドでの実行です。Air Teamsを通じて、Copilotを隔離されたクラウド環境で動かせます。操作はIDEからでもブラウザからでもできます。消費されるのはCopilotのプランで、JetBrains AIのクレジットではありません。\n\nなお、JetBrainsのIDEには従来からGitHub Copilotのプラグインがあります。GitHubは、Airでの利用をこのプラグインと併用し、合う使い方を選ぶよう案内しています。両者の比較とよくある質問は、GitHubの「GitHub Copilot in JetBrains Air」のページにまとめられています。\n\n料金について、Air経由の利用だけに別料金がかかるという案内は、今回の発表にありません。Copilot自体は日本でも使え、日本語の公式ドキュメントもあります。料金はドル建てです（当サイトの確認：11/3）。\n\n## クラウド実行は法人の「Air Teams」組織が条件\n\n手元のIDEで使う場合の始め方は簡単です。JetBrainsのIDEにAirを入れ、GitHub Copilotを選び、Copilotのアカウントを接続します。\n\nクラウドで動かすには、次の3つがそろっている必要があります。\n\n- Air Teamsが有効な法人組織に属するJetBrainsアカウント\n- GitHub Copilotの契約\n- Airの管理者によるCopilotの有効化\n\n始め方は2通りあります。ブラウザで使う場合は、Airを開き、Settings > VCS ProvidersでGitHubを接続してから作業を作ります。リポジトリと、リモートのブランチ（共有サーバー上の作業の枝）を選び、GitHub Copilotを指定してプロンプト（AIへの指示文）を送ります。IDEで使う場合は、Airのプラグインの実行環境の選択欄で「Cloud」を選びます。\n\nクラウドでの作業は、毎回新しく用意された仮想マシン上のDockerコンテナ（隔離された実行環境）で動きます。通信はすべて中継サーバー（プロキシ）を通り、作業間で状態は引き継がれません。Copilotはビルドやテスト、パッケージの導入まで行えますが、手元の環境には手を加えません。\n\n一方で、運用面の制約がいくつか示されています。\n\n- CopilotをAirに接続しても、Copilot側の権限は要求されない\n- 契約やクレジットの確認は、クラウド環境の起動時にしか行われない場合がある。足りなければ作業は失敗し、画面にエラーが出る\n- 作業ごとに、個人のCopilotプランと組織のプランのどちらを使うかは選べない\n- Airの統制・分析機能に、Copilotの利用量は表示されない\n- Airの管理者はポリシーでCopilotを無効にできるが、Air上でCopilotの利用上限は設定できない\n\nCopilotの費用管理はAirの外で行うことになります。参考までに、営業担当経由でGitHub EnterpriseにCopilotを含める新しい契約形態では、クラウドでのCopilot利用に予算の残りが必要とされています（GitHub Changelog「GitHub Enterprise now includes access to GitHub Copilot」、11/4確認）。\n\n編集部の見方では、個人と組織のプランを選べず、利用量もAirの画面に出ない点は、経理や管理者が気にするところです。法人でクラウド実行を広げる前に、Copilot側の予算とアラートの設定を確かめておくのが現実的です。\n\n## まだ分からないこと\n\n- JetBrains AirとAir Teamsの日本での提供状況と、日本語対応はまだ発表されていません\n- Air Teamsそのものの料金はまだ発表されていません\n- クラウド実行1回あたりに、Copilotのプランからどれだけ消費されるかはまだ発表されていません\n\n### Microsoft Copilot（Microsoft 365）のプランと料金（公式の料金と円の目安）\n\n| プラン | 料金（公式） | 円の目安 | 主な上限・違い |\n| --- | --- | --- | --- |\n| Microsoft 365 Personal | 2,130円/月（月払い） / 21,300円/年（年払い） |  | 1 ユーザー用、無料版よりも高い使用上限での、高度な Copilot、Copilot での AI イメージ作成を無料プランよりも高い使用量で使用可能 |\n| Microsoft 365 Family | 2,740円/月（月払い） / 27,400円/年（年払い） |  | 1 - 6 ユーザー (AI はサブスクリプション所有者のみが使用可能) |\n| Microsoft 365 Premium | 3,200円/月（月払い） / 32,000円/年（年払い） |  | 非常に高い利用上限での高度な Copilot |\n| Microsoft 365 Copilot Business | 2,698円/人・月から（年払い・税別・通常3,148円） / 3,778円/人・月（月払い・税別） | 約4,160円（税込みの目安） | 利用中の Microsoft 365 プランにアドオン |\n| Microsoft 365 Copilot（大企業向け） | 4,497円/人・月（年払い・税別） / 4,722円/人・月（月払い・税別） | 約5,190円（税込みの目安） |  |\n\n出典：Microsoft Copilot（Microsoft 365）の公式ページ（https://www.microsoft.com/ja-jp/microsoft-365/buy/compare-all-microsoft-365-products、https://www.microsoft.com/ja-jp/microsoft-365/copilot/business、https://www.microsoft.com/ja-jp/microsoft-365/copilot/enterprise）／確認日：2026-11-03\n円は1ドル=157.90円（2026-11-02、ECB参照レート（ユーロ経由で計算））で計算した目安です。ドルのプランは消費税10%を足しています。実際の請求額は為替とカード会社の手数料で変わります。\n",
+  "easy": "## ひとことで言うと\n\nJetBrainsの開発ツールに組み込む「Air」で、GitHub CopilotにAIの作業を任せられるようになりました。料金は、すでに払っているCopilotの契約から使われます。\n\n## 手元でも、クラウドでも動く\n\nAirは、AIに書いてほしいコードの作業を頼み、進み方を見守り、結果を確かめるための環境です。今回、その頼み先としてCopilotを選べるようになりました。\n\n作業は、自分のパソコンのJetBrainsの開発ツール（IDE、プログラムを書くためのソフト）の中でも、クラウド（遠くのサーバー）の上でも動かせます。複数の作業を同時に進め、変更点をコードの横で確かめることもできます。\n\nクラウドで動かすときは、毎回まっさらな作業場所が用意されます。手元のパソコンの環境は変わりません。\n\nただし、クラウドで動かすには条件があります。会社の組織として「Air Teams」を使っていること、Copilotの契約があること、Airの管理者がCopilotを有効にしていることの3つです。\n\n管理する側の注意点もあります。Airの画面では、Copilotにいくらまで使ってよいかという上限を決められません。Airの利用状況の画面にも、Copilotの利用量は表示されません。",
+  "channel": "GitHub Changelog（Copilot）",
+  "channelId": "",
+  "channelSlug": "github-changelog-copilot",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "GitHub Copilot is now available in JetBrains Air",
+  "publishedAt": "2026-11-03T15:11:46+00:00",
+  "generatedAt": "2026-11-03T16:30:05.789903+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/github-copilot-jetbrains-air-772c38bb.jpg",
+  "model": "anthropic-api:claude-opus-5-5",
+  "affiliates": [],
+  "newsType": "product",
+  "pricingProduct": "copilot",
+  "faq": [
+    {
+      "q": "JetBrains AirでGitHub Copilotを使うと追加料金はかかる？",
+      "a": "発表では、手持ちのCopilotの契約で動くとされています。クラウド実行もJetBrains AIのクレジットではなく、Copilotのプランから消費されます。"
+    },
+    {
+      "q": "JetBrains AirのCopilotクラウド実行に必要な条件は？",
+      "a": "Air Teamsが有効な法人組織のJetBrainsアカウント、GitHub Copilotの契約、Airの管理者によるCopilotの有効化の3つが必要です。"
+    },
+    {
+      "q": "Airのクラウド実行は手元の環境に影響する？",
+      "a": "影響しません。毎回新しい仮想マシン上のDockerコンテナで動き、通信はプロキシを通ります。作業間で状態も引き継がれません。"
+    },
+    {
+      "q": "Air上でCopilotの利用上限は設定できる？",
+      "a": "できません。管理者はポリシーでCopilotを無効にできますが、利用上限は設定できず、Airの分析機能にもCopilotの利用量は表示されません。"
+    }
+  ],
+  "todayActions": [
+    "JetBrainsのIDEにAirを入れ、Copilotのアカウントを接続して手元で試す",
+    "自社がAir Teamsの法人組織を使っているか、管理者に確認する",
+    "Copilotの予算やアラートの設定を、GitHub側の管理画面で見直す"
+  ],
+  "qualityScore": 93,
+  "factSources": [
+    {
+      "label": "料金",
+      "name": "Microsoft公式の料金ページ",
+      "url": "https://www.microsoft.com/ja-jp/microsoft-365/buy/compare-all-microsoft-365-products",
+      "checkedAt": "2026-11-03"
+    },
+    {
+      "label": "日本での提供",
+      "name": "GitHub Copilotの公式ページ",
+      "url": "https://docs.github.com/ja/copilot/get-started/plans",
+      "checkedAt": "2026-11-03"
+    }
+  ],
+  "sourcePublishedAt": "2026-11-03T15:11:46+00:00",
+  "detectedAt": "2026-11-03T16:28:19+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/github-copilot-jetbrains-air-fig1-86b4fb5e.jpg",
+      "width": 1200,
+      "height": 600,
+      "kind": "dense",
+      "credit": "GitHub",
+      "sourceUrl": "https://github.blog/changelog/2026-11-03-github-copilot-is-now-available-in-jetbrains-air",
+      "original": "https://github.com/user-attachments/assets/6e90fb87-b9d3-451c-bccc-63357929db71"
+    }
+  ],
+  "imageCredit": {
+    "kind": "official",
+    "org": "GitHub",
+    "provider": "GitHub Changelog（Copilot）",
+    "sourceUrl": "https://github.blog/changelog/2026-11-03-github-copilot-is-now-available-in-jetbrains-air",
+    "original": "https://github.blog/wp-content/uploads/2026/11/689797142-96dbb0c9-dccb-41f6-8990-acf5c575db04.png",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-03T16:32:25+00:00",
+    "imageKind": "banner"
+  },
+  "imageFocus": {
+    "x": 0.475,
+    "y": 0.578,
+    "box": [
+      0.069,
+      0.156,
+      0.881,
+      1.0
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/github-copilot-jetbrains-air-772c38bb.jpg"
+  }
+}

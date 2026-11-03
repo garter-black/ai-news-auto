@@ -3233,6 +3233,12 @@
     }
   },
   "processed_web": {
+    "003d54f4d366367a": {
+      "at": "2026-11-03T16:28:57.179727+00:00",
+      "reason": "dedupe: 固有名詞が一致（harness・model）: deepseek-harness-creator-mode",
+      "skipped": true,
+      "url": "https://huggingface.co/blog/ibm-research/cuga-harness"
+    },
     "00b5fd966277fe4f": {
       "at": "2026-11-02T02:11:11.121113+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9422,6 +9428,14 @@
       "slug": "kddi-ai-vulnerability-management-solution",
       "url": "https://newsroom.kddi.com/news/detail/kddi_nr-1212_4787.html"
     },
+    "9c22661ce9de81e3": {
+      "at": "2026-11-03T16:30:33.372116+00:00",
+      "model": "anthropic-api:claude-opus-5-5",
+      "score": 93,
+      "section": "ai",
+      "slug": "github-copilot-jetbrains-air",
+      "url": "https://github.blog/changelog/2026-11-03-github-copilot-is-now-available-in-jetbrains-air"
+    },
     "9c7a77eecf318472": {
       "at": "2026-11-02T02:31:18.217044+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13291,49 +13305,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T00:02:46.010023+00:00",
-      "attempt": 1,
-      "id": "baed61a4dbe0301752e0f27f675ecbde0ae5cb53",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 58.2字・60字超の文が 43% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 135.8字・最長 209字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 135.8,
-        "avg_sentence": 58.2,
-        "long_share": 0.429,
-        "max_paragraph": 209,
-        "paragraphs": 6,
-        "sentences": 14
-      },
-      "score": 100,
-      "source": "trends",
-      "title": "金融資産"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T00:02:48.731637+00:00",
-      "attempt": 0,
-      "id": "baed61a4dbe0301752e0f27f675ecbde0ae5cb53",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 83.0,
-        "avg_sentence": 41.5,
-        "long_share": 0.1,
-        "max_paragraph": 147,
-        "paragraphs": 10,
-        "sentences": 20
-      },
-      "score": 100,
-      "source": "trends",
-      "title": "金融資産"
-    },
     {
       "accepted": false,
       "at": "2026-11-02T00:22:35.754844+00:00",
@@ -19781,6 +19752,60 @@
       "title": "AI Is Changing How Semiconductor Fabs Work — and Engineers Are Moving Faster Bec",
       "warnings": [
         "初めて出たところで言い換えていない略語（COMSOL・ACE）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T16:30:08.666171+00:00",
+      "attempt": 1,
+      "id": "9c22661ce9de81e3",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "文が長い（1文の平均 45.3字・60字超の文が 21% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 101.4,
+        "avg_sentence": 45.3,
+        "long_share": 0.211,
+        "max_paragraph": 187,
+        "paragraphs": 17,
+        "sentences": 38
+      },
+      "score": 93,
+      "source": "github-changelog-copilot",
+      "title": "GitHub Copilot is now available in JetBrains Air",
+      "warnings": [
+        "見出しが52字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（IDE・ACP・IDEA）",
+        "英語の画面名（「Settings >」）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T16:30:33.356147+00:00",
+      "attempt": 0,
+      "id": "9c22661ce9de81e3",
+      "kind": "ai",
+      "model": "",
+      "problems": [
+        "読みやすさ基準外のまま受理: 元に無い数字が増えた（20, 21, 3066, 45, 45.3）"
+      ],
+      "readability": {
+        "avg_paragraph": 101.4,
+        "avg_sentence": 45.3,
+        "long_share": 0.211,
+        "max_paragraph": 187,
+        "paragraphs": 17,
+        "sentences": 38
+      },
+      "score": 93,
+      "source": "github-changelog-copilot",
+      "title": "GitHub Copilot is now available in JetBrains Air",
+      "warnings": [
+        "見出しが52字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（IDE・ACP・IDEA）",
+        "英語の画面名（「Settings >」）"
       ]
     }
   ],
