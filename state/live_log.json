@@ -186,6 +186,9 @@
     "claude-finds-critical-vulnerabilities": {
       "liveAt": "2026-10-30T02:12:15+00:00"
     },
+    "claude-text-watermark-api": {
+      "liveAt": "2026-11-03T22:24:53+00:00"
+    },
     "claude-ultra-plan-price-limits": {
       "liveAt": "2026-11-02T05:01:33+00:00"
     },
