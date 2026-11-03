@@ -83,29 +83,13 @@
       "tries": 1,
       "url": "https://huggingface.co/blog/cwe-bench"
     },
-    "4676cabae1997d08": {
-      "first": "2026-11-03T14:03:16.393263+00:00",
-      "next": "2026-11-03T20:12:40.645672+00:00",
-      "reason": "「それぞれ研修、モデル開発、学区支援、現場支援、標準づくりを担います」→ 元記事は各団体の役割を個別に説明しているだけで、この分類は要約の範囲だが、CUNYを「研修」と断定している点はやや言い過ぎ。; 「AIを教える側の先生が、まず基礎から学べる環境を整える取り組みです」→ 元記事はデジタル・計算リテラシーの育成としか書いておらず、AI教育の基礎という位置づけは補足による創作。; 「授業の合間や運",
-      "title": "We’re providing funding for organizations building AI for teachers.",
-      "tries": 2,
-      "url": "https://blog.google/products-and-platforms/products/education/google-org-funding-ai-education/"
-    },
-    "4f3b7c9dffa0995a": {
-      "first": "2026-11-03T14:37:59.464761+00:00",
-      "next": "2026-11-03T20:57:11.222183+00:00",
-      "reason": "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルのまま」「日本の売上は1%減」）",
-      "title": "映画『ストリートファイター／ザ・ムービー』が、全米週間興行収入ランキング1位を獲得！～ 映画化を通じ、IPのグローバルな認知拡大と価値向上に寄与 ～",
-      "tries": 2,
-      "url": "https://www.capcom.co.jp/ir/news/html/261102.html"
-    },
-    "63cd61900c41a18d": {
-      "first": "2026-11-03T14:36:42.320928+00:00",
-      "next": "2026-11-03T20:56:16.925080+00:00",
+    "3d509e27bae229a3": {
+      "first": "2026-11-03T23:40:53.183061+00:00",
+      "next": "2026-11-04T02:40:53.183061+00:00",
       "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
-      "title": "LIFULL Investmentが利用するクラウドサービスにおける不正アクセスに関するお知らせ",
-      "tries": 2,
-      "url": "https://lifull.com/news/50881/"
+      "title": "OpenAI appoints Jill Hazelbaker as Chief Corporate Affairs Officer",
+      "tries": 1,
+      "url": "https://openai.com/index/jill-hazelbaker-chief-corporate-affairs-officer"
     },
     "7f05432d1620715c": {
       "first": "2026-11-03T17:45:37.679713+00:00",
@@ -125,10 +109,10 @@
     },
     "a55665cf48953af7": {
       "first": "2026-11-03T17:37:41.235291+00:00",
-      "next": "2026-11-03T20:37:41.235291+00:00",
-      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "next": "2026-11-04T02:53:58.231212+00:00",
+      "reason": "タイトル・リード「Hugging Faceは…公開」→ 元記事はHugging Face上のブログだが発信元はAi2（allenai）で、公開主体の取り違え。; 「最大64,000トークンの入力」「入力長は最大64,000トークン」→ 元記事の64,000は訓練時に見た長さの上限（事前学習モデル）と、テスト時の代入数（最大64,000 assignments）であり、ベンチマークの入力長の仕様では",
       "title": "StateBench: Testing how language models track state changes over long documents",
-      "tries": 1,
+      "tries": 2,
       "url": "https://huggingface.co/blog/allenai/statebench"
     },
     "bc4177032a04e266": {
@@ -149,10 +133,10 @@
     },
     "de5d8c3372c230d4": {
       "first": "2026-11-03T17:33:22.187893+00:00",
-      "next": "2026-11-03T20:33:22.187893+00:00",
-      "reason": "「かんたん版」判定の「価格=API従量課金」→ 元記事に価格体系の記述はなく、Jev自体の料金も未発表のため根拠のない記載。; 「Jev自体の日本での提供や料金はまだ発表されていません」→ 元記事は日本での提供・料金に触れておらず、「発表されていない」と断定すると言い過ぎ（「元記事では言及なし」が正確）。; 「提供状況=available」→ 元記事にJevの提供状況の記載はなく、日本で使える根拠",
+      "next": "2026-11-04T02:48:22.391453+00:00",
+      "reason": "「難しいタスク7問のうち7問で正解が得られなくなるか、誤った答えになりました」→ 元記事は難しい25問のうち7問が失敗（6問は未回答、1問は誤答）で、「7問のうち7問」は事実と異なる。; 「未出題の34問すべてを正解しました」「未出題の34問すべてを正しく分類しました」→ 元記事は34問すべてで難易度ラベルと一致（分類が一致）したという意味で、「正解」ではない。要点でも「50問中48問の正解率」と",
       "title": "Cost per task: Using cheap classifiers to route across Gemini models and thinking levels",
-      "tries": 1,
+      "tries": 2,
       "url": "https://developers.googleblog.com/cost-per-task-using-cheap-classifiers-to-route-across-gemini-models-and-thinking-levels/"
     },
     "f5a0d7153ecc99c8": {
@@ -6146,6 +6130,13 @@
       "skipped": true,
       "url": "https://blog.ja.playstation.com/2026/10/28/20261028-wwm-post-launch-update-o/"
     },
+    "4676cabae1997d08": {
+      "at": "2026-11-03T23:52:42.241179+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://blog.google/products-and-platforms/products/education/google-org-funding-ai-education/"
+    },
     "469734839162d61b": {
       "at": "2026-10-28T17:54:19.157507+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -6524,6 +6515,13 @@
       "reason": "行政機関の危険業務従事者叙勲（消防関係）の人数変更に関する報道発表であり、国民の暮らしやお金に直接影響する新しい製品、サービス、制度、給付、研究成果のいずれにも該当しないため対象外としました。",
       "skipped": true,
       "url": "https://www.soumu.go.jp/menu_news/s-news/01shoubo01_02001301.html"
+    },
+    "4f3b7c9dffa0995a": {
+      "at": "2026-11-03T23:44:13.013560+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "reason": "quality: 公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルのまま」「日本の売上は1%減」）",
+      "skipped": true,
+      "url": "https://www.capcom.co.jp/ir/news/html/261102.html"
     },
     "4fc3e6cfad62dfa3": {
       "at": "2026-10-28T23:11:57.424302+00:00",
@@ -7283,6 +7281,13 @@
       "reason": "prefilter: 告知・お知らせ系",
       "skipped": true,
       "url": "https://blog.jetbrains.com/ai/2026/11/livestream-scaling-agentic-development-with-air-governance/"
+    },
+    "63cd61900c41a18d": {
+      "at": "2026-11-03T23:43:22.653007+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://lifull.com/news/50881/"
     },
     "63ed6ece3476ff3d": {
       "at": "2026-10-27T03:04:42.977885+00:00",
@@ -8386,6 +8391,12 @@
       "reason": "dedupe: 固有名詞が一致（amazon・knowledge）: Prepare web content for Amazon Bedrock K",
       "skipped": true,
       "url": "https://aws.amazon.com/blogs/machine-learning/build-efficient-agents-with-knowledge-distillation-on-amazon-sagemaker-ai/"
+    },
+    "8104b48aec000a07": {
+      "at": "2026-11-03T23:44:13.559310+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（部会）",
+      "skipped": true,
+      "url": "https://www.mext.go.jp/b_menu/shingi/gijyutu/gijyutu2/071/shiryo/1420983_00008.html"
     },
     "810f54c1a816500d": {
       "at": "2026-11-02T11:31:30.190022+00:00",
@@ -13527,236 +13538,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T06:31:29.626224+00:00",
-      "attempt": 1,
-      "id": "15bc77d1d5c407dd",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "タイトル: JetBrainsの開発ツール「MPS」が複数バージョンを更新、重大な脆弱性に対正当化 → 「対正当化」という表現は誤字であり不自然である。"
-      ],
-      "readability": {
-        "avg_paragraph": 187.0,
-        "avg_sentence": 66.0,
-        "long_share": 0.529,
-        "max_paragraph": 249,
-        "paragraphs": 6,
-        "sentences": 17
-      },
-      "score": 90,
-      "source": "jetbrains-blog",
-      "title": "New Bug-Fix Releases for MPS Versions 2026.2 RC2, 2026.1.2, 2025.3.3, 2025.2.5, "
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T06:31:35.448828+00:00",
-      "attempt": 2,
-      "id": "15bc77d1d5c407dd",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 85.1,
-        "avg_sentence": 68.9,
-        "long_share": 0.571,
-        "max_paragraph": 159,
-        "paragraphs": 17,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "jetbrains-blog",
-      "title": "New Bug-Fix Releases for MPS Versions 2026.2 RC2, 2026.1.2, 2025.3.3, 2025.2.5, "
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T06:31:39.763296+00:00",
-      "attempt": 1,
-      "id": "e8900429157eddb0",
-      "kind": "update",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "score": 100,
-      "source": "ntt-news",
-      "title": "ドコモ、Android XR搭載の次世代XRグラス「XREAL AURA」を発売"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T06:31:48.665403+00:00",
-      "attempt": 1,
-      "id": "f68217fc0ef9c362",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "title / seo_title に感嘆符がある"
-      ],
-      "readability": {
-        "avg_paragraph": 116.6,
-        "avg_sentence": 50.5,
-        "long_share": 0.2,
-        "max_paragraph": 211,
-        "paragraphs": 13,
-        "sentences": 30
-      },
-      "score": null,
-      "source": "playstation-blog-jp",
-      "title": "11月発売のPS5®/PS4®注目ソフトはこれだ！【今月のおすすめ新作ガイド】"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T06:31:57.241182+00:00",
-      "attempt": 2,
-      "id": "f68217fc0ef9c362",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 48.1字・60字超の文が 22% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 108.2,
-        "avg_sentence": 48.1,
-        "long_share": 0.222,
-        "max_paragraph": 182,
-        "paragraphs": 12,
-        "sentences": 27
-      },
-      "score": 100,
-      "source": "playstation-blog-jp",
-      "title": "11月発売のPS5®/PS4®注目ソフトはこれだ！【今月のおすすめ新作ガイド】"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T06:32:01.293696+00:00",
-      "attempt": 0,
-      "id": "f68217fc0ef9c362",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 113.2,
-        "avg_sentence": 29.5,
-        "long_share": 0.0,
-        "max_paragraph": 189,
-        "paragraphs": 12,
-        "sentences": 46
-      },
-      "score": 100,
-      "source": "playstation-blog-jp",
-      "title": "11月発売のPS5®/PS4®注目ソフトはこれだ！【今月のおすすめ新作ガイド】"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T06:32:11.896866+00:00",
-      "attempt": 1,
-      "id": "ae5fe6dae047dbd8",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "title の長さが不適切（66字 / 18〜64字）"
-      ],
-      "readability": {
-        "avg_paragraph": 105.8,
-        "avg_sentence": 56.4,
-        "long_share": 0.433,
-        "max_paragraph": 252,
-        "paragraphs": 16,
-        "sentences": 30
-      },
-      "score": null,
-      "source": "google-cloud-blog-ja",
-      "title": "Knowledge Catalog に新しい自己学習型コンテキスト エンリッチメントを導入"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T06:32:19.195099+00:00",
-      "attempt": 2,
-      "id": "ae5fe6dae047dbd8",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 63.1字・60字超の文が 52% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 112.6,
-        "avg_sentence": 63.1,
-        "long_share": 0.52,
-        "max_paragraph": 216,
-        "paragraphs": 14,
-        "sentences": 25
-      },
-      "score": 100,
-      "source": "google-cloud-blog-ja",
-      "title": "Knowledge Catalog に新しい自己学習型コンテキスト エンリッチメントを導入"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T06:32:24.129188+00:00",
-      "attempt": 0,
-      "id": "ae5fe6dae047dbd8",
-      "kind": "ai",
-      "model": "",
-      "problems": [
-        "読みやすさ基準外のまま受理: 書き直し後の確認に不合格: ライバルと比べてどう？の「Google Cloud版の強みは別ティースにあります」→「別ティース」という言葉が誤字であり、意味が不明瞭。"
-      ],
-      "readability": {
-        "avg_paragraph": 112.6,
-        "avg_sentence": 63.1,
-        "long_share": 0.52,
-        "max_paragraph": 216,
-        "paragraphs": 14,
-        "sentences": 25
-      },
-      "score": 100,
-      "source": "google-cloud-blog-ja",
-      "title": "Knowledge Catalog に新しい自己学習型コンテキスト エンリッチメントを導入"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T06:51:16.519351+00:00",
-      "attempt": 1,
-      "id": "b26279cb5133a651",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 94.8,
-        "avg_sentence": 49.3,
-        "long_share": 0.24,
-        "max_paragraph": 225,
-        "paragraphs": 13,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "ntt-news-ai",
-      "title": "AI検索時代における地域の中小企業・店舗の集客力向上を支援する「おまかせネット集客サポート」を提供開始"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T06:51:23.258526+00:00",
-      "attempt": 2,
-      "id": "b26279cb5133a651",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 47.3字・60字超の文が 14% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 76.4,
-        "avg_sentence": 47.3,
-        "long_share": 0.143,
-        "max_paragraph": 120,
-        "paragraphs": 13,
-        "sentences": 21
-      },
-      "score": 100,
-      "source": "ntt-news-ai",
-      "title": "AI検索時代における地域の中小企業・店舗の集客力向上を支援する「おまかせネット集客サポート」を提供開始"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T06:51:26.343786+00:00",
@@ -20149,6 +19930,201 @@
         "見出しが44字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（PA）"
       ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T23:36:43.942743+00:00",
+      "attempt": 1,
+      "id": "3d509e27bae229a3",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "openai-news",
+      "title": "OpenAI appoints Jill Hazelbaker as Chief Corporate Affairs Officer"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T23:40:53.182897+00:00",
+      "attempt": 2,
+      "id": "3d509e27bae229a3",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "openai-news",
+      "title": "OpenAI appoints Jill Hazelbaker as Chief Corporate Affairs Officer"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T23:41:54.214042+00:00",
+      "attempt": 1,
+      "id": "63cd61900c41a18d",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "lifull",
+      "title": "LIFULL Investmentが利用するクラウドサービスにおける不正アクセスに関するお知らせ"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T23:43:22.652914+00:00",
+      "attempt": 2,
+      "id": "63cd61900c41a18d",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "lifull",
+      "title": "LIFULL Investmentが利用するクラウドサービスにおける不正アクセスに関するお知らせ"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T23:43:50.317299+00:00",
+      "attempt": 1,
+      "id": "4f3b7c9dffa0995a",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "capcom-ir",
+      "title": "映画『ストリートファイター／ザ・ムービー』が、全米週間興行収入ランキング1位を獲得！～ 映画化を通じ、IPのグローバルな認知拡大と価値向上に寄与 ～"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T23:44:13.013482+00:00",
+      "attempt": 2,
+      "id": "4f3b7c9dffa0995a",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "capcom-ir",
+      "title": "映画『ストリートファイター／ザ・ムービー』が、全米週間興行収入ランキング1位を獲得！～ 映画化を通じ、IPのグローバルな認知拡大と価値向上に寄与 ～"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T23:45:08.217468+00:00",
+      "attempt": 1,
+      "id": "de5d8c3372c230d4",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "かんたん版に幼い言い方（「すごい」）。落ち着いた大人の言葉にする",
+        "元記事・確認済みの事実の束・計算済みの数字のどれにも無い数字がある（「‐Lite(単体) | 88%」）。元記事か束の数字に直すか、その文を削る。割合・差・換算などを自分で計算しない（計算済みの数字の欄にあるものだけ使う）"
+      ],
+      "readability": {
+        "avg_paragraph": 115.6,
+        "avg_sentence": 49.5,
+        "long_share": 0.238,
+        "max_paragraph": 154,
+        "paragraphs": 9,
+        "sentences": 21
+      },
+      "score": null,
+      "source": "google-developers-blog",
+      "title": "Cost per task: Using cheap classifiers to route across Gemini models and thinkin",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（HIGH・LOW）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T23:48:22.391193+00:00",
+      "attempt": 2,
+      "id": "de5d8c3372c230d4",
+      "kind": "ai",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "problems": [
+        "「難しいタスク7問のうち7問で正解が得られなくなるか、誤った答えになりました」→ 元記事は難しい25問のうち7問が失敗（6問は未回答、1問は誤答）で、「7問のうち7問」は事実と異なる。",
+        "「未出題の34問すべてを正解しました」「未出題の34問すべてを正しく分類しました」→ 元記事は34問すべてで難易度ラベルと一致（分類が一致）したという意味で、「正解」ではない。要点でも「50問中48問の正解率」と書いているが、これはルーティングの一致率。",
+        "「考えるトークンは減らず」の要点と「かんたん版」の「コストと待ち時間を減らせます」→ 元記事ではコスト差は小さく、主な利点は待ち時間短縮とされているのに、コスト削減を強く断定している。",
+        "「難しいものだけをGemini 3.8 Flashに送りました」→ 元記事ではFlash-Liteへ先に送り、複雑と判定されたものを低思考のFlash（3.8 LOW）にエスカレーションしており、「低思考」の条件が抜けている。",
+        "「Flash-Liteという考えないモデル」→ 元記事は「デフォルトでは考えない（doesn't think at all by default）」であり、やや単純化している。",
+        "「米国のTypeSafeという会社」→ 元記事に米国企業との記載はなく、創作。"
+      ],
+      "readability": {
+        "avg_paragraph": 157.1,
+        "avg_sentence": 46.0,
+        "long_share": 0.22,
+        "max_paragraph": 212,
+        "paragraphs": 12,
+        "sentences": 41
+      },
+      "score": 50,
+      "source": "google-developers-blog",
+      "title": "Cost per task: Using cheap classifiers to route across Gemini models and thinkin",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（LOW）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T23:50:20.461894+00:00",
+      "attempt": 1,
+      "id": "4676cabae1997d08",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "google-blog-all",
+      "title": "We’re providing funding for organizations building AI for teachers."
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T23:52:42.240929+00:00",
+      "attempt": 2,
+      "id": "4676cabae1997d08",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "google-blog-all",
+      "title": "We’re providing funding for organizations building AI for teachers."
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T23:53:58.231144+00:00",
+      "attempt": 1,
+      "id": "a55665cf48953af7",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "タイトル・リード「Hugging Faceは…公開」→ 元記事はHugging Face上のブログだが発信元はAi2（allenai）で、公開主体の取り違え。",
+        "「最大64,000トークンの入力」「入力長は最大64,000トークン」→ 元記事の64,000は訓練時に見た長さの上限（事前学習モデル）と、テスト時の代入数（最大64,000 assignments）であり、ベンチマークの入力長の仕様ではない。",
+        "「Apache 2.0」ライセンス → 元記事にライセンスの記載がなく創作。",
+        "「公式GitHubリポジトリ（https://github.com/huggingface/statebench）」→ 元記事にこのURLはなく、Code等のリンク先も不明で創作。",
+        "「地域制限はなく…API キーも不要（当サイトの確認：11/3）」「データセットと評価コードはすべて無料」→ 元記事・確認済みの文脈に無い提供条件・確認の創作。",
+        "「トランスフォーマーは自己注意機構の計算コストが指数的に増大するため」→ 元記事に無い理由づけで、しかも誤り（元記事は理論的限界を理由にしている）。"
+      ],
+      "readability": {
+        "avg_paragraph": 120.1,
+        "avg_sentence": 40.0,
+        "long_share": 0.286,
+        "max_paragraph": 270,
+        "paragraphs": 7,
+        "sentences": 21
+      },
+      "score": 18,
+      "source": "hugging-face-blog",
+      "title": "StateBench: Testing how language models track state changes over long documents"
     }
   ],
   "short_text_retry": {
