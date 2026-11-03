@@ -749,10 +749,41 @@ def bare_phrase(text: str) -> bool:
     return bool(re.fullmatch(r"[一-龥々]{1,3}", t))
 
 
+def point_ok(text: str, speech: str) -> bool:
+    """画面の左の言葉（キーワード・補足）が、その場面の読み上げと同じ話か: 数字はすべて読み上げにある（1万＝10000 も同じ）。
+    数字が無ければ、言葉（2文字のまとまり）が読み上げにある（key_fact_ok と同じ見方）"""
+    want = []
+    for m in re.finditer(r"(\d+(?:\.\d+)?)(万|億|兆)?(\d+)?", norm(text)):
+        want.append(float(_expand_kanji_number(m)) if m.group(2) else float(m.group(1)))
+    if want:
+        have = set()
+        for x in number_tokens(speech):
+            try:
+                have.add(float(x))
+            except ValueError:
+                pass
+        return all(w in have for w in want)
+    return key_fact_ok(text, "", speech)
+
+
 def label_problems(script_v3: dict) -> list[str]:
-    """左の列の見出し（label）とキーワード（keyword）: 場面ごとに違い、名詞1つだけではない（2026-11-04）"""
+    """左の列の見出し（label）とキーワード（keyword）: 場面ごとに違い、名詞1つだけではない（2026-11-04）。
+    さらに、左の言葉は**その場面の読み上げと同じ話**（キーワード・補足の数字や言葉が読み上げにある）で、キーワードは選択する証拠の文
+    （英語なら訳）にもある（2026-11-04 オーナー: 読み上げが別の話なのに左に「1,000件以上」が出ていた）"""
     out = []
-    beats = [b for b in (script_v3 or {}).get("beats") or [] if isinstance(b, dict)]
+    sv = script_v3 or {}
+    beats = [b for b in sv.get("beats") or [] if isinstance(b, dict)]
+    hook = sv.get("hook") or {}
+    if hook.get("payoff") and not point_ok(hook["payoff"], f"{hook.get('text', '')} {hook.get('speech', '')}"):
+        out.append(f"hook の数字「{hook['payoff']}」がつかみの読み上げ・文字に無い（つかみで言う数字を出す）")
+    for i, b in enumerate(beats, 1):
+        kw, sub, speech = b.get("keyword", ""), b.get("sub", ""), b.get("speech", "")
+        if kw and not point_ok(kw, speech):
+            out.append(f"beat{i} のキーワード「{kw}」がその場面の読み上げに無い（左の言葉は読み上げと同じ話に）")
+        if sub and re.search(r"\d", norm(sub)) and not point_ok(sub, speech):
+            out.append(f"beat{i} の補足「{sub}」の数字がその場面の読み上げに無い")
+        if kw and b.get("target") and not (key_fact_ok(kw, sub, b.get("target", ""), b.get("ja", "")) or point_ok(kw, f"{b.get('target', '')} {b.get('ja', '')}")):
+            out.append(f"beat{i} のキーワード「{kw}」が選択する証拠の文（訳）に無い")
     for field_name, name in (("label", "見出し"), ("keyword", "キーワード")):
         seen: dict[str, int] = {}
         for i, b in enumerate(beats, 1):

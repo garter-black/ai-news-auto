@@ -207,9 +207,25 @@ class LabelTest(unittest.TestCase):
         self.assertIn("beat2 の見出し「答え」が beat1 と同じ", joined)
         self.assertIn("beat2 のキーワード「クラスター」が beat1 と同じ", joined)
         self.assertIn("キーワード「Recovery」が名詞1つだけ", joined)
-        good = {"beats": [{"label": "何ができる？", "keyword": "学習を自動で再開"}, {"label": "どれくらい速い？", "keyword": "検知まで平均69秒"},
-                          {"label": "前と何が違う？", "keyword": "人手から自動へ"}]}  # fmt: skip
+        good = {"beats": [{"label": "何ができる？", "keyword": "学習を自動で再開", "speech": "止まった学習を自動で見つけて再開する仕組みです。"},
+                          {"label": "どれくらい速い？", "keyword": "検知まで平均69秒", "speech": "異常の検知までは平均69秒でした。"},
+                          {"label": "前と何が違う？", "keyword": "人手から自動へ", "speech": "これまで人手で直していた作業を、自動で回します。"}]}  # fmt: skip
         self.assertEqual(self.gate.label_problems(good), [])
+
+    def test_left_text_matches_narration(self):
+        """左の言葉は、その場面の読み上げ・証拠の文と同じ話（別の場面の数字を出さない）"""
+        s = {"hook": {"text": "料理写真、プに頼む？", "payoff": "1,000件以上", "speech": "料理の写真、プロに頼む必要ある？"},
+             "beats": [{"label": "何ができる？", "keyword": "1,000件以上", "sub": "", "speech": "料理の写真を、プロに頼まずにきれいに撮れます。",
+                        "target": "1,000件以上の作例", "ja": ""},
+                       {"label": "どれくらい？", "keyword": "作例は1万件", "sub": "2026年から", "speech": "作例は1万件あります。",
+                        "target": "作例は10,000件", "ja": ""}]}  # fmt: skip
+        joined = " ".join(self.gate.label_problems(s))
+        self.assertIn("hook の数字「1,000件以上」がつかみの読み上げ", joined)
+        self.assertIn("beat1 のキーワード「1,000件以上」がその場面の読み上げに無い", joined)
+        self.assertNotIn("beat2 のキーワード", joined)  # 1万＝10000 は同じ数字
+        self.assertIn("beat2 の補足「2026年から」の数字がその場面の読み上げに無い", joined)
+        s["beats"][1]["target"] = "作例は100件"
+        self.assertIn("beat2 のキーワード「作例は1万件」が選択する証拠の文", " ".join(self.gate.label_problems(s)))
 
 
 @unittest.skipUnless(READY, "ffmpeg / numpy / Pillow / budoux が必要")

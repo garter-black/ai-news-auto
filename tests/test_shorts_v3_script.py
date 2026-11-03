@@ -82,7 +82,7 @@ def beat(label, keyword, sub, speech, block, target, ja):
 
 
 GOOD = {
-    "hook": {"text": "AI学習が止まったら誰が直す？", "payoff": "69秒", "speech": "エーアイ学習が止まったら、誰が直しますか？", "block": "1-3",
+    "hook": {"text": "止まった学習、69秒で気づける？", "payoff": "69秒", "speech": "止まった学習、69秒で気づけますか？", "block": "1-3",
              "target": "Fixture Recovery detects anomalies in 69 seconds on average.", "ja": "Fixture Recoveryは平均69秒で異常を検知します。"},
     "beats": [
         beat("答え", "自動で復旧", "人の代わりに", "答えは、ツールが自動で復旧することです。異常を見つけて、保存した地点から再開させます。",
@@ -234,7 +234,9 @@ class ScriptSelfCorrectTest(unittest.TestCase):
         self.assertTrue(gate.key_fact_ok(b["keyword"], b["sub"], b["target"], b["ja"]))
 
     def test_keyword_candidates_only_article_words(self):
-        b = dict(good()["beats"][0], keyword="手作業から自動へ", ja="数千台のGPUで、存在しない魔法語の対応は追いつきません。")
+        # 2026-11-04: 候補はその場面の読み上げにある言葉だけ（左の言葉と読み上げを同じ話に）
+        b = dict(good()["beats"][0], keyword="手作業から自動へ", ja="数千台のGPUで、存在しない魔法語の対応は追いつきません。",
+                 speech="数千台のGPUで学習の復旧を回すと、魔法語では追いつきません。")
         cands = v3.keyword_candidates(b, ARTICLE)
         self.assertTrue(cands)
         mat = gate.material_text(ARTICLE).lower()
@@ -244,7 +246,7 @@ class ScriptSelfCorrectTest(unittest.TestCase):
         self.assertIn("数千台のGPU", cands)  # 語の続き（中の語はどれも記事にある）
         self.assertNotRegex(cands[0], r"^[A-Za-z0-9 .\-+]+$")  # 英字だけの語（社名・製品名）は後ろ
         # ほかの場面のキーワードと同じ言葉は後ろへ
-        b2 = dict(b, keyword="人の代わりに", speech="", ja="数千台のGPUでは、復旧が追いつきません。")
+        b2 = dict(b, keyword="人の代わりに", ja="数千台のGPUでは、復旧が追いつきません。")
         self.assertEqual(v3.keyword_candidates(b2, ARTICLE)[0], "数千台のGPU")
         # 2026-11-04: ほかの場面と同じ言葉・名詞1つだけ（復旧）は候補にしない（「答え クラスター」が4回続いた失敗）
         self.assertEqual(v3.keyword_candidates(b2, ARTICLE, ["数千台のGPU"]), [])

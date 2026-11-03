@@ -655,6 +655,7 @@ hook の問いに、**具体的な数字と比較で答える**。忙しい会�
 # 構成
 - hook（最初の2秒）: text は画面に大きく出す1行（12〜20字）。見る人が「自分ごと」になる問いかけ。
   payoff はその答えの手がかりになる数字のキーワード（8字以内・資料の表記どおり。例: 月200ドル）。speech は text を自然に読む1文（20字以内）。
+  payoff は text か speech に入っている数字・言葉にする（読み上げと別の話の数字を左に出さない）。
   block / target は payoff の証拠になる画面の文字。できれば文字の大きい行（番号に「|大」）を選ぶ。
 - beats: {BEATS_MIN}〜{BEATS_MAX}個。**1つめは必ず「これは何？」**、2つめ以降は話題に合わせて次の役目から選んで、この順に並べる:
   0. これは何？（必ず beat 1。label 例: 何ができる？・どんなもの？）: 初めて聞く人向けに、主役が**何か**と、**なぜ大事か・誰向けか**を1〜2文・35〜65字で。
@@ -676,7 +677,8 @@ hook の問いに、**具体的な数字と比較で答える**。忙しい会�
   label: 左上に小さく出す見出し（2〜9字）。**その場面の中身が分かる日本語の言葉**にし、場面ごとに必ず違う言葉にする（同じ見出しを2回使わない）。
   問いの形でもよい（何ができる？・前と何が違う？・どれくらい速い？・誰に効く？・どう試す？）。英語の製品名だけ・名詞1つだけ（実績・注意・Recovery）にしない。
   keyword: 画面に大きく出す言葉。2〜10字（短いほどよい）。文にしない。句読点を付けない。**意味の分かる短い言い回し**にする（例: 学習を自動で再開・検知まで平均69秒・人手から自動へ）。
-  名詞1つだけ（クラスター）・英語の製品名だけ（Recovery）にしない。場面ごとに違う言葉にする（同じ keyword を2回使わない）。sub: 補足（14字以内。不要なら空）。
+  名詞1つだけ（クラスター）・英語の製品名だけ（Recovery）にしない。場面ごとに違う言葉にする（同じ keyword を2回使わない）。
+  **keyword と sub はその場面の speech と同じ話**にする（keyword・sub の数字と言葉は、その場面の speech にも入れる。別の場面の数字を出さない）。sub: 補足（14字以内。不要なら空）。
   speech: 読み上げ。短い文で1〜3文・60字以内。keyword の数字・名前を必ず含める。
   block: 下の「画面の文字」一覧の番号（例: 1-23）。target: その行の文字から、この beat の証拠になる部分を**一文字も変えずに**抜き出す（日本語は2〜40字。英語は100字まで）。
   英語の target は文として完結する範囲（文の頭から、文末のピリオドかカンマまで）を選ぶ。文の途中で切らない。
@@ -1100,7 +1102,7 @@ def keyword_candidates(beat: dict, article: dict, others: list[str] | None = Non
             continue
         overlap = any(t[k : k + 2] in old for k in range(len(t) - 1)) or t.lower() in old.lower()
         dup = any(t.lower() in o.lower() or o.lower() in t.lower() for o in others or [] if o)
-        if gate.bare_phrase(t) or any(gate.norm(t).lower() == gate.norm(o).lower() for o in others or [] if o):
+        if gate.bare_phrase(t) or any(gate.norm(t).lower() == gate.norm(o).lower() for o in others or [] if o) or not gate.point_ok(t, speech):
             continue  # 名詞1つだけ（クラスター）・英語の製品名だけ（Recovery）・ほかの場面と同じ言葉は、画面の大きな言葉にしない（2026-11-04）
         latin = bool(re.fullmatch(r"[A-Za-z0-9 .\-+]+", t))  # 英字だけ（製品名・社名）は画面の大きな言葉として弱いので後ろへ
         out.append(((0 if overlap else 1, 1 if dup else 0, 0 if any(gate._term_in(x, speech) for x in terms) else 1, 1 if latin else 0, abs(len(t) - 6), -len(t)), t))
