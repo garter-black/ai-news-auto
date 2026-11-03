@@ -473,7 +473,8 @@ def repair_language(record: dict, source_text: str = "") -> tuple[int, int, str]
     found = found[:20]
     items = "\n".join(f"- id {i}: {x['sentence']}\n  問題: {' / '.join(x['issues'])}" for i, x in enumerate(found))
     prompt = LANG_FIX_PROMPT.format(glossary=glossary.prompt_block(), items=items)
-    data, model = llm.generate_json(LANG_FIX_SYSTEM, prompt, LANG_FIX_SCHEMA, temperature=0.1, max_output_tokens=4096, tier=CHECK_TIER)
+    data, model = llm.generate_json(LANG_FIX_SYSTEM, prompt, LANG_FIX_SCHEMA, temperature=0.1, max_output_tokens=4096, tier=CHECK_TIER,
+                                    purpose="helper")
     fixed = 0
     for row in data.get("fixes") or []:
         try:
@@ -545,7 +546,7 @@ def repair_summary_opener(record: dict) -> str:
         "事実・数字は記事のとおり。記事に無いことを足さない。"
     )
     data, model = llm.generate_json("あなたはニュースサイトのSNS担当の編集者です。出力は指定の JSON だけ。", prompt, POST_FIX_SCHEMA,
-                                    temperature=0.3, max_output_tokens=1024, tier=CHECK_TIER)
+                                    temperature=0.3, max_output_tokens=1024, tier=CHECK_TIER, purpose="helper")
     new = re.sub(r"\n{3,}", "\n\n", str(data.get("threads_post") or "").strip())
     old = record.get("threadsPost")
     record["threadsPost"] = new
@@ -1094,7 +1095,7 @@ def fact_check(record: dict, source_text: str, context: str = "", require_useful
     if require_usefulness:
         prompt += WEB_USEFULNESS_PROMPT
     data, model = llm.generate_json(FACT_SYSTEM, prompt, WEB_FACT_SCHEMA if require_usefulness else FACT_SCHEMA,
-                                    temperature=0.1, max_output_tokens=4096, tier=CHECK_TIER)
+                                    temperature=0.1, max_output_tokens=4096, tier=CHECK_TIER, purpose="check")
     try:
         score = int(data.get("score", 0))
     except (TypeError, ValueError):
@@ -1206,7 +1207,8 @@ def polish(record: dict, source_text: str, kind: str, context: str = "", check_f
     length = _plain_len(body)
     problems = readability_problems(body)
     prompt = POLISH_PROMPT.format(problems="\n".join(f"- {p}" for p in problems), length=length, body=body)
-    data, model = llm.generate_json(POLISH_SYSTEM, prompt, POLISH_SCHEMA, temperature=0.3, max_output_tokens=16384, tier=CHECK_TIER)
+    data, model = llm.generate_json(POLISH_SYSTEM, prompt, POLISH_SCHEMA, temperature=0.3, max_output_tokens=16384, tier=CHECK_TIER,
+                                    purpose="helper")
     new_body = re.sub(r"^(#{1,6}) +(?:#{1,6} +)+", r"\1 ", str(data.get("body_markdown") or "").strip(), flags=re.M)
     # 見出しは数と階層を保つ。言い回しの手直し（誇張語を外す等）は許すが、決まった章名は変えさせない
     heads_old, heads_new = _HEADING_RE.findall(body), _HEADING_RE.findall(new_body)

@@ -627,7 +627,8 @@ API_TIERS = {
     "breaking": (3, 3, 3, True, "速報"),
     "video": (3, 3, 3, True, "動画"),
     "video_review": (2, 2, 2, True, "動画レビュー"),
-    "helper": (1, 1, 1, True, "補助"),        # 事実確認の指摘の手直し・FAQ の書き足し・SNS の問いかけ など小さな段
+    "check": (1, 1, 2, True, "確認"),         # 品質ゲートの事実確認・続報の判定（Haiku。余れば Sonnet）
+    "helper": (1, 1, 1, True, "補助"),        # 指摘の手直し・言葉の手直し・読みやすさの書き直し・FAQ の書き足し・SNS の問いかけ など
     "sns": (2, 1, 3, False, "SNS"),          # SNS に出しそうな記事
     "core": (2, 1, 3, False, "中心"),         # 読者像の中心の話題（AI・仕事とお金・ビジネス・投資・税金・補助金・起業）
     "rest": (1, 0, 2, False, "その他"),       # ほかの記事（スポーツ・暮らし・エンタメ・科学など）
@@ -638,15 +639,15 @@ API_CLI_PURPOSES = {"breaking", "sns", "video", "video_review"}
 #   削る順 = 中心 Sonnet→Haiku → SNS Sonnet→Haiku → 最後に その他 Haiku→無料（月 $3 ほどなので最後まで残す。速報・動画は削らない）
 #   余るとき = さらに SNS→Opus → 中心→Opus → その他→Sonnet と上げる（CLAUDE_API_UPGRADES=0 で上げない）
 API_STEPS = [("rest", 0, 1), ("sns", 1, 2), ("core", 1, 2)]
-API_UPGRADE_STEPS = [("sns", 2, 3), ("core", 2, 3), ("rest", 1, 2)]
+API_UPGRADE_STEPS = [("check", 1, 2), ("sns", 2, 3), ("core", 2, 3), ("rest", 1, 2)]
 # 1日の呼び出し回数の見込み（実績が2日分たまるまでの仮の値。作り直しも1回と数える）
-API_DEMAND_DEFAULT = {"breaking": 7, "video": 5, "video_review": 5, "helper": 40, "sns": 13, "core": 27, "rest": 21}
+API_DEMAND_DEFAULT = {"breaking": 7, "video": 5, "video_review": 5, "check": 90, "helper": 80, "sns": 13, "core": 27, "rest": 21}
 # 1回あたりの料金の見込み（Sonnet で書いたとき。実績が3回分たまったらその平均を使う）。ほかのモデルは料金の比で換算
 # 2026-11-03 の実績: 速報 Opus 平均 $0.25/回・SNS Sonnet $0.09/回・動画 Opus $0.11/回（入力 約1.5万・出力 約0.5〜0.9万トークン）
-API_COST_MID_DEFAULT = {"breaking": 0.125, "video": 0.055, "video_review": 0.02, "helper": 0.04, "sns": 0.09, "core": 0.09, "rest": 0.09}
+API_COST_MID_DEFAULT = {"breaking": 0.125, "video": 0.055, "video_review": 0.02, "check": 0.045, "helper": 0.04, "sns": 0.09, "core": 0.09, "rest": 0.09}
 API_LEVEL_COST_RATIO = {1: 0.05, 2: 1.0, 3: 2.0}
 # 1日の回数の安全上限（暴走よけ。環境変数 CLAUDE_API_DAILY_CALLS_<段> で変更）
-API_DAILY_CALLS = {"breaking": 20, "video": 20, "video_review": 20, "helper": 150, "sns": 30, "core": 60, "rest": 80}
+API_DAILY_CALLS = {"breaking": 20, "video": 20, "video_review": 20, "check": 300, "helper": 300, "sns": 30, "core": 60, "rest": 80}
 API_MONTHLY_BUDGET_DEFAULT = 95.0  # CLAUDE_API_MONTHLY_BUDGET_USD（Ultra なら 190 くらい）
 API_PROTECTED_MARGIN = 4.0          # 守る段だけが予算を超えて使ってよい額（クレジット $100 との差の中）
 API_REFILL_DAY_DEFAULT = 4           # クレジットが補充される日（毎月）。期間は 4日〜翌月3日
@@ -865,7 +866,7 @@ def api_summary_line(now: datetime | None = None) -> str:
     s = plan["summary"]
     spent = " / ".join(f"{API_TIERS[t][4]} ${s['tier_today'].get(t, 0):.2f}" for t in API_TIERS if s["tier_today"].get(t))
     mix = []
-    for tier in ("sns", "core", "rest"):
+    for tier in ("sns", "core", "rest", "check"):
         v = plan["levels"][tier]
         k = int(v)
         r = v - k
@@ -1032,7 +1033,15 @@ def _api_schema(schema: dict) -> dict:
             return [walk(v) for v in node]
         if not isinstance(node, dict):
             return node
-        out = {k: walk(v) for k, v in node.items() if k not in unsupported}
+        out = {}
+        for key, value in node.items():
+            if key in unsupported:
+                continue
+            if key in ("properties", "$defs", "definitions") and isinstance(value, dict):
+                # ここは「項目名 → 形」の表。項目名（title・pattern など）は消さない（2026-11-03 title が消えた不具合）
+                out[key] = {name: walk(sub) for name, sub in value.items()}
+            else:
+                out[key] = walk(value)
         kind = out.get("type")
         if kind == "object" or (isinstance(kind, list) and "object" in kind):
             props = out.get("properties") or {}
@@ -1105,9 +1114,11 @@ def _try_anthropic_api(system_instruction: str, prompt: str, schema: dict, max_o
     # 考える分（adaptive thinking）も max_tokens に入るので余裕を持たせる（料金は実際に使った分だけ）
     max_tokens = min(64000, max(16000, max_output_tokens + 16000))
     use_schema = True
-    for _ in range(2):
+    body = prompt
+    repaired = False
+    for _ in range(3):
         try:
-            message = _api_request(model, system_instruction, prompt, schema, max_tokens, use_schema)
+            message = _api_request(model, system_instruction, body, schema, max_tokens, use_schema)
         except ImportError:
             _api_off = "anthropic パッケージが無い"
             log(f"   [llm] Claude API: {_api_off} -> 今までの経路へ")
@@ -1150,6 +1161,13 @@ def _try_anthropic_api(system_instruction: str, prompt: str, schema: dict, max_o
             log(f"   [llm] Claude API: JSON を読めません（{str(error)[:80]}） -> 今までの経路へ")
             return None
         missing = missing_keys(data, schema)
+        if missing and not repaired:
+            # 1回だけ、足りないキーを伝えて出し直してもらう
+            repaired = True
+            log(f"   [llm] Claude API: 必須キー不足（{', '.join(missing[:6])}） -> 足りないキーを伝えて1回だけ出し直す")
+            body = (prompt + "\n\n# 前回の出力の問題\n必須キーが足りませんでした: " + ", ".join(missing)
+                    + "\nすべての必須キー（" + ", ".join(schema.get("required", [])) + "）を含む JSON オブジェクトを、最初から全部出力してください。")
+            continue
         if missing:
             log(f"   [llm] Claude API: 必須キー不足（{', '.join(missing[:6])}） -> 今までの経路へ")
             return None
@@ -1287,7 +1305,10 @@ def generate_json(
 
 
 def all_exhausted(tier: str, visibility: str | None = None, purpose: str = "breaking") -> bool:
-    """tier の無料モデルがすべて尽きたか。visibility="high" なら Claude API・CLI が使えるうちは尽きていない扱い"""
+    """もう何も作れないか。Claude API が使えるうちは尽きていない扱い（記事も事実確認も API で書ける）。
+    visibility="high" なら Claude CLI が使えるうちも尽きていない扱い。どちらも無ければ tier の無料モデルがすべて尽きたか"""
+    if api_block_reason("check") is None:
+        return False
     if visibility == "high":
         if api_available(purpose) or (purpose in API_CLI_PURPOSES and any(m not in _exhausted for m in _claude_models())):
             return False

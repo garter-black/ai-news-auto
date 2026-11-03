@@ -82,7 +82,7 @@ class RoutingTests(Base):
             got = {t: llm.api_choose(t, record=False)[0] for t in llm.API_TIERS}
         self.assertEqual(got, {
             "breaking": "claude-opus-5-5", "video": "claude-opus-5-5", "video_review": "claude-sonnet-5-5",
-            "helper": "claude-haiku-5-5", "sns": "claude-sonnet-5-5", "core": "claude-sonnet-5-5", "rest": "claude-haiku-5-5",
+            "check": "claude-haiku-5-5", "helper": "claude-haiku-5-5", "sns": "claude-sonnet-5-5", "core": "claude-sonnet-5-5", "rest": "claude-haiku-5-5",
         })
         with patch.dict(os.environ, {"CLAUDE_API_UPGRADES": "0", "CLAUDE_API_DAILY_BUDGET_USD": "50", "CLAUDE_API_MODEL_LOW": "claude-x"}):
             self.assertEqual(llm.api_choose("rest", record=False)[0], "claude-x")
@@ -135,7 +135,7 @@ class RoutingTests(Base):
                  patch.object(llm, "models_for", return_value=["gemini-test"]), \
                  patch.object(llm, "_call_gemini", return_value='{"answer": "free"}'):
                 self.assertEqual(llm.generate_json("s", "p", SCHEMA, purpose="video")[1], "gemini-test")
-        self.assertEqual(llm.api_ledger_summary()["calls_today"]["video"], 4)  # 返事があった分の料金は数える
+        self.assertEqual(llm.api_ledger_summary()["calls_today"]["video"], 5)  # 返事があった分の料金は数える（キー不足は1回出し直し）
 
     def test_invalid_schema_retries_once_without_structured_output(self):
         with patch.object(llm, "_api_request", side_effect=[ApiError("bad schema", 400), fake_message()]) as api:
@@ -154,10 +154,12 @@ class RoutingTests(Base):
 
     def test_all_exhausted_counts_claude_only_for_high(self):
         llm._exhausted.update({"gemini-test"})
-        with patch.object(llm, "models_for", return_value=["gemini-test"]), patch.object(llm, "_claude_models", return_value=[]):
-            self.assertTrue(llm.all_exhausted("quality"))
-            self.assertFalse(llm.all_exhausted("quality", visibility="high"))
+        with patch.object(llm, "models_for", return_value=["gemini-test"]), patch.object(llm, "_claude_models", return_value=["claude:sonnet"]):
+            self.assertFalse(llm.all_exhausted("quality"))  # API が使えるうちは尽きていない
             os.environ.pop("ANTHROPIC_API_KEY")
+            self.assertTrue(llm.all_exhausted("quality"))
+            self.assertFalse(llm.all_exhausted("quality", visibility="high"))  # 速報は CLI がある
+            llm._exhausted.add("claude:sonnet")
             self.assertTrue(llm.all_exhausted("quality", visibility="high"))
 
     def test_quality_tier_no_longer_contains_cli(self):
@@ -181,6 +183,12 @@ class AdaptiveBudgetTests(Base):
                                                       "sns": 0.10, "core": 0.10, "rest": 0.10})
         costs.start()
         self.addCleanup(costs.stop)
+        demand = patch.dict(llm.API_DEMAND_DEFAULT, {"check": 0, "helper": 40})  # 確認の段はこのテストでは数えない
+        demand.start()
+        self.addCleanup(demand.stop)
+        steps = patch.object(llm, "API_UPGRADE_STEPS", [st for st in llm.API_UPGRADE_STEPS if st[0] != "check"])
+        steps.start()
+        self.addCleanup(steps.stop)
 
     def plan(self, daily, **env):
         with patch.dict(os.environ, {"CLAUDE_API_DAILY_BUDGET_USD": str(daily), **env}):
@@ -395,6 +403,49 @@ class SnsSelectionTests(unittest.TestCase):
         self.assertTrue(w.sns_likely({"title": "Gemini の新機能", "source_name": "Google Japan Blog"}))
         self.assertFalse(w.sns_likely({"title": "Azure SQL のアップデート", "source_name": "Microsoft"}))
         self.assertFalse(w.sns_likely({"title": "新しいワークフロー機能", "source_name": "Notion"}))
+
+
+class UrgentFixTests(Base):
+    def test_property_names_like_title_are_kept(self):
+        schema = {"type": "OBJECT", "properties": {"title": {"type": "STRING", "title": "x"}, "pattern": {"type": "STRING"},
+                                                     "example": {"type": "OBJECT", "properties": {"title": {"type": "STRING"}}, "required": ["title"]}},
+                  "required": ["title", "pattern", "example"]}
+        out = llm._api_schema(schema)
+        self.assertEqual(set(out["properties"]), {"title", "pattern", "example"})
+        self.assertEqual(out["required"], ["title", "pattern", "example"])
+        self.assertEqual(out["properties"]["title"], {"type": "string"})  # 値の中の注釈 title は外す
+        self.assertEqual(out["properties"]["example"]["required"], ["title"])
+
+    def test_all_article_and_check_schemas_survive_conversion(self):
+        import followup
+        import quality
+        import web_articles as w
+
+        for schema in (w.WEB_SCHEMA, w.TREND_SCHEMA, w.FILL_SCHEMA, quality.FACT_SCHEMA, quality.WEB_FACT_SCHEMA,
+                       quality.POLISH_SCHEMA, quality.SURGICAL_SCHEMA, followup.CHECK_SCHEMA, followup.UPDATE_SCHEMA):
+            out = llm._api_schema(schema)
+            self.assertEqual(set(out["properties"]), set(schema["properties"]))
+            self.assertEqual(set(out["required"]), set(schema["required"]))
+
+    def test_missing_keys_get_one_repair_retry(self):
+        with patch.object(llm, "_api_request", side_effect=[fake_message(text='{"x": 1}'), fake_message()]) as api:
+            data, model = llm._try_anthropic_api("s", "PROMPT", SCHEMA, 4096, "breaking")
+        self.assertEqual(data, {"answer": "api"})
+        self.assertIn("必須キーが足りませんでした: answer", api.call_args_list[1].args[2])
+
+    def test_gate_and_helpers_use_api_when_free_models_are_exhausted(self):
+        with patch.object(llm, "_api_request", return_value=fake_message()) as api, \
+             patch.object(llm, "models_for", return_value=["gemini-test"]), \
+             patch.object(llm, "_call_gemini", side_effect=RuntimeError("429 RESOURCE_EXHAUSTED")):
+            self.assertEqual(llm.generate_json("s", "p", SCHEMA, tier="quality", purpose="check")[1], "anthropic-api:claude-haiku-5-5")
+        self.assertEqual(api.call_count, 1)
+
+    def test_not_exhausted_while_api_is_available(self):
+        llm._exhausted.update({"gemini-test"})
+        with patch.object(llm, "models_for", return_value=["gemini-test"]):
+            self.assertFalse(llm.all_exhausted("bulk"))
+            with patch.dict(os.environ, {"CLAUDE_API_DISABLE": "1"}):
+                self.assertTrue(llm.all_exhausted("bulk"))
 
 
 if __name__ == "__main__":

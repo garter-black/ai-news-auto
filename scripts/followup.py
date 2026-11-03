@@ -167,7 +167,8 @@ def check_same_topic(article: dict, item: dict, text: str) -> dict:
         new_title=item["title"],
         new_text=text[:4000],
     )
-    data, model = llm.generate_json(CHECK_SYSTEM, prompt, CHECK_SCHEMA, temperature=0.1, max_output_tokens=1024, tier=CHECK_TIER)
+    data, model = llm.generate_json(CHECK_SYSTEM, prompt, CHECK_SCHEMA, temperature=0.1, max_output_tokens=1024, tier=CHECK_TIER,
+                                    purpose="check")
     return {
         "same_topic": bool(data.get("same_topic")),
         "adds_new_facts": bool(data.get("adds_new_facts")),
@@ -189,7 +190,7 @@ def generate_update(article: dict, item: dict, text: str, summary: str, tier: st
         summary=summary or "（なし）",
         new_text=text[:SOURCE_CAP],
     )
-    return llm.generate_json(UPDATE_SYSTEM, prompt, UPDATE_SCHEMA, temperature=0.4, max_output_tokens=4096, tier=tier)
+    return llm.generate_json(UPDATE_SYSTEM, prompt, UPDATE_SCHEMA, temperature=0.4, max_output_tokens=4096, tier=tier, purpose="core")
 
 
 def update_problems(data: dict, source_text: str) -> list[str]:
