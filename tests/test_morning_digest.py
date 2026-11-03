@@ -47,9 +47,9 @@ class WindowAndTextTests(unittest.TestCase):
     def test_catchup_windows_and_weekdays(self):
         for hour, minute, expected in [(6,29,False),(6,30,True),(10,39,True),(17,59,True),(18,0,False)]:
             self.assertEqual(md.in_window('digest', self.at(hour, minute)), expected)
-        for hour, expected in [(10,False),(11,True),(15,True),(19,True),(20,False)]:
-            self.assertEqual(md.in_window('poll', self.at(hour)), expected)
-        self.assertFalse(md.in_window('poll', self.at(12, day=31)))
+        # 問いかけ投稿は 2026-11-03 に停止。どの曜日・時刻でも出さない
+        for hour in (10, 11, 15, 19, 20):
+            self.assertFalse(md.in_window('poll', self.at(hour)))
 
     def test_late_digest_has_no_morning_claim_and_stays_same_daily_match(self):
         items = [{'title': 'Googleの新機能'}, {'title': 'Anthropicの更新'}]

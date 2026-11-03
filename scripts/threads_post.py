@@ -721,7 +721,7 @@ DIGEST_SLOT_JST = (7, 30)
 DIGEST_ON = os.environ.get("SNS_DIGEST", "1").strip() != "0"
 # 週2回（火・金の昼）の問いかけ投稿（morning_digest.py --kind poll。Buffer の API は Threads のアンケートに未対応のため）
 POLL_SLOT_JST = (12, 15)
-POLL_WEEKDAYS_JST = (1, 4)  # 月=0 → 火・金
+POLL_WEEKDAYS_JST: tuple[int, ...] = ()  # 問いかけ投稿は 2026-11-03 停止（12:15 の枠は通常の投稿に戻す）
 # 自動処理は約6時間ごとに動くので、次の処理までの枠をまとめて予約する（処理の遅れも見込んで少し長めに）
 LOOKAHEAD_HOURS = 8
 

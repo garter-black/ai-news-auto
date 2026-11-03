@@ -8,7 +8,7 @@ name: SNS extra posts
 on:
   schedule:
     - cron: "5 22 * * *"      # 毎日 7:05 JST → 7:30 に予約
-    - cron: "45 2 * * 2,5"    # 火・金 11:45 JST → 12:15 に予約
+    # 問いかけ投稿（火・金 11:45）は 2026-11-03 にオーナー判断で停止（AIらしさが強く狙いが不明）
   workflow_dispatch:
     inputs:
       kind:
