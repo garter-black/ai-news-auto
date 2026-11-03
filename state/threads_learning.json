@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-03T09:41:48+00:00",
+  "updatedAt": "2026-11-03T10:07:44+00:00",
   "posts": 82,
   "axes": {
     "hook": {
@@ -155,11 +155,11 @@
         "score": 83.59
       },
       "その他": {
-        "n": 18,
-        "avgViews": 45.7,
-        "avgEngagement": 2.78,
+        "n": 19,
+        "avgViews": 44.7,
+        "avgEngagement": 2.84,
         "avgComments": 0.89,
-        "score": 76.19
+        "score": 75.82
       },
       "NVIDIA": {
         "n": 13,
@@ -169,11 +169,11 @@
         "score": 61.31
       },
       "OpenAI": {
-        "n": 23,
-        "avgViews": 7.0,
-        "avgEngagement": 2.7,
-        "avgComments": 0.83,
-        "score": 40.77
+        "n": 22,
+        "avgViews": 6.1,
+        "avgEngagement": 2.64,
+        "avgComments": 0.82,
+        "score": 39.68
       }
     },
     "ending": {
