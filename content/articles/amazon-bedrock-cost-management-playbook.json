@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/managing-amazon-bedrock-costs-end-to-end-a-playbook-for-finops-and-platform-teams/",
   "sourceName": "AWS Machine Learning Blog",
-  "title": "AWS，「Amazon Bedrock」の生成AI利用費をチーム別に管理する5段階の運用手法を公開",
+  "title": "AWSが「Amazon Bedrock」の生成AI利用費をチーム別に管理する5段階の運用手法を公開",
   "seoTitle": "Amazon Bedrockのコスト管理手法とは？運用プレイブック",
   "threadsPost": "生成AIの利用費、どのチームがいくら使ったか把握できていますか？\nAWSの生成AI基盤「Amazon Bedrock」のコストを、チームやアプリ単位で正確に割り当てて管理する5つの運用ステップが公開されました。\n予算超過を防ぎ、無駄なコストを削るための仕組みを詳しく解説します。",
   "threadsHook": "question",
