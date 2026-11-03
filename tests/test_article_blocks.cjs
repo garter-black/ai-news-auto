@@ -63,3 +63,8 @@ test("答えになっていない見出し（「〜は不明」）は普通の�
   assert.equal(isNonanswerTitle("比べられる数字は示されていない"), true);
   assert.equal(isNonanswerTitle("まだ分からないこと"), false);
 });
+
+test("トップの一番上の記事は公式の発表から（報道をもとにした記事を主役にしない。台帳 W17）", () => {
+  const home = fs.readFileSync(path.join(__dirname, "../app/page.tsx"), "utf8");
+  assert.match(home, /!isNewsOutletChannel\(a\.channelSlug\)/);
+});

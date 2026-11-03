@@ -111,7 +111,7 @@ export default function AiPricingPage() {
         <p className="t-lead mt-3">
           ChatGPT・Claude・GeminiなどのAIを使うと、月にいくらかかるか。使い方を選ぶだけで、円でわかります。日本で使えるかも一緒に見られます。
         </p>
-        <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-meta text-muted">
+        <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-note text-muted">
           <span>
             公式ページで確認 <span className="font-bold tabular-nums text-ink">{day(checkedAt)}</span>
           </span>
@@ -128,13 +128,13 @@ export default function AiPricingPage() {
 
       <section aria-labelledby="method-heading" className="mt-16 max-w-[720px]">
         <H2 id="method-heading">この表の数字は信用できる？</H2>
-        <ul className="grid gap-2.5 text-[14px] leading-[1.85] text-ink-soft">
+        <ul className="grid gap-2.5 text-note leading-[1.85] text-ink-soft">
           <li>・金額は、各社の公式の料金ページに書かれたものだけを載せています。毎朝、公式ページを読み直して更新します。</li>
           <li>・公式の料金ページで金額を確かめられない製品は載せていません。</li>
           <li>・日本で使えるかは、各社の対応国の一覧などを編集部が確かめた表（出典と確認日つき）で決めています。</li>
           <li>・円の目安は、サイト全体で同じ為替（{fxLabel(fx)}）で計算しています。実際の請求額は為替とカード会社の手数料で変わります。</li>
         </ul>
-        <h3 className="mt-6 text-[15px] font-bold text-ink">出典（公式の料金ページ）</h3>
+        <h3 className="mt-6 t-h3 text-ink">出典（公式の料金ページ）</h3>
         <ul className="mt-2 grid gap-1.5 text-note leading-[1.7] text-ink-soft">
           {sources.map((s) => (
             <li key={s.url}>

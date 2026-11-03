@@ -1,6 +1,7 @@
 import Link from "next/link";
 import CompanyMark from "@/components/CompanyMark";
 import HomeHero from "@/components/HomeHero";
+import { isNewsOutletChannel } from "@/lib/news-outlets";
 import HomeAssets from "@/components/HomeAssets";
 import CompanyChips from "@/components/CompanyChips";
 import NewsHub from "@/components/NewsHub";
@@ -46,7 +47,11 @@ export default function HomePage() {
   const ai = getAllArticles().filter((a) => a.genreSlug === "ai");
   if (ai.length === 0) return <EmptyState />;
 
-  const lead = ai[0];
+  // 一番上の大きな記事は公式の発表から（報道をもとにした小さな話を主役にしない。2026-11-03 の点検・台帳 W17）。
+  // 直近12時間の新しい順で最初の公式の記事。無ければいちばん新しい記事
+  const newest = Date.parse(ai[0].publishedAt);
+  const lead =
+    ai.slice(0, 8).find((a) => !isNewsOutletChannel(a.channelSlug) && newest - Date.parse(a.publishedAt) <= 12 * 3_600_000) ?? ai[0];
   const timeline = ai.filter((a) => a.slug !== lead.slug).slice(0, TIMELINE_SIZE);
   const roundups = ai.filter((a) => a.type === "roundup" && a.slug !== lead.slug).slice(0, 5);
 

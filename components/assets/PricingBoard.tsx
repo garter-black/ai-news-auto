@@ -211,7 +211,7 @@ export default function PricingBoard({ rows, fx }: { rows: PriceRow[]; fx: { rat
               （月 {yen(planYen(cheapestPlan, rate))}〜）を選ぶ方法もあります。
             </p>
           )}
-          <p className="mt-3 text-meta text-muted">
+          <p className="mt-3 text-note text-muted">
             {usageLabel}・1ドル＝{rate === fx.rate ? `${fx.rate.toFixed(2)}円（${fx.date.replace(/-/g, "/")}・${fx.source}）` : `${rate}円（入力した値）`}で計算
           </p>
         </div>
@@ -320,7 +320,7 @@ export default function PricingBoard({ rows, fx }: { rows: PriceRow[]; fx: { rat
                       <ProductName row={row} />
                       {row.legacy && <span className="rounded-sm border border-line-strong px-1.5 text-badge text-muted">以前のモデル</span>}
                     </p>
-                    <p className="mt-0.5 text-meta text-muted">
+                    <p className="mt-0.5 text-note text-muted">
                       {sort !== "company" && <>{row.companyName} · </>}
                       <SourceLink row={row} />
                     </p>
@@ -392,7 +392,7 @@ export default function PricingBoard({ rows, fx }: { rows: PriceRow[]; fx: { rat
                 <JapanCue japan={row.japan} status={row.status} />
                 <FreeCue free={row.free} kind="plan" />
               </div>
-              <p className="mt-3 text-meta text-muted">
+              <p className="mt-3 text-note text-muted">
                 <SourceLink row={row} />
               </p>
             </li>
