@@ -6,7 +6,7 @@
     },
     "images": {
       "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 4,
-      "cloudflare:@cf/openai/gpt-oss-120b": 161
+      "cloudflare:@cf/openai/gpt-oss-120b": 169
     },
     "products": {
       "gemini-3.5-flash-lite": 1,

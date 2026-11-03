@@ -60,7 +60,7 @@
     "cf-image:flux-2-klein-4b": 33,
     "claude:sonnet": 35,
     "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 17,
-    "cloudflare:@cf/openai/gpt-oss-120b": 718,
+    "cloudflare:@cf/openai/gpt-oss-120b": 726,
     "gemini-3.5-flash": 11,
     "gemini-3.5-flash-lite": 325,
     "gemma-4-31b-it": 1
