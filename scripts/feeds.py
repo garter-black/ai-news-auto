@@ -149,7 +149,8 @@ FEEDS_BY_SLUG = {f["slug"]: f for f in FEEDS}
 # --------------------------------------------------------------------------- #
 # 幅広い話題のフィード（web_articles.py --section broad）
 # --------------------------------------------------------------------------- #
-# section … genres.py の BROAD_GENRES の slug。"auto" は classify_section() でタイトル/概要から振り分ける。
+# section … genres.py の WEB_GENRES の slug（幅広い話題＋投資・マネー／不動産）。"auto" は classify_section() でタイトル/概要から振り分ける。
+#   どのセクションでも、投資・不動産・エンタメのビジネスの話題は genre_focus.route_section がそのレーンへ付け替える（2026-11-03）
 # kind    … wire（配信サービス・量が多い）/ gov（官公庁・公的機関）/ company（企業）/ science（研究機関）
 # 2026-10-26 に urllib（UA 付き）で取得・解析できたものだけを載せる。量は直近の配信間隔からの概算（件/日）。
 #   PR TIMES: 新着200件 ≒ 約4時間分 → 約1000件/日（毎時取得で取りこぼしほぼ無し）。本文は記事ページから取得できる
@@ -254,8 +255,9 @@ BROAD_FEEDS: list[dict] = [
      "exclude_re": "入札|発行予定|発行額|落札|国庫短期証券|利付国債|応札"},  # 約7件/日（国債の入札結果を除く）
     {"slug": "mlit-press", "name": "国土交通省 報道発表", "url": "https://www.mlit.go.jp/pressrelease.rdf", "section": "business", "kind": "gov", "priority": 2},  # 約7件/日（Shift_JIS）。不動産・住宅・交通の政策
     {"slug": "jnet21", "name": "J-Net21（中小機構）", "url": "https://j-net21.smrj.go.jp/news/info.xml", "section": "business", "kind": "gov", "priority": 3},  # 約3件/日
-    {"slug": "sumitomo-rd", "name": "住友不動産", "url": "https://www.sumitomo-rd.co.jp/news/feed/", "section": "business", "kind": "company", "priority": 3},
-    {"slug": "nomura-re", "name": "野村不動産ホールディングス", "url": "https://www.nomura-re-hd.co.jp/news/chtml/rss.xml", "section": "business", "kind": "company", "priority": 3},
+    # 不動産の会社は 2026-11-03 から不動産のレーンへ（scripts/genre_focus.py。店舗の開業・イベントは足切り）
+    {"slug": "sumitomo-rd", "name": "住友不動産", "url": "https://www.sumitomo-rd.co.jp/news/feed/", "section": "real-estate", "kind": "company", "priority": 3},
+    {"slug": "nomura-re", "name": "野村不動産ホールディングス", "url": "https://www.nomura-re-hd.co.jp/news/chtml/rss.xml", "section": "real-estate", "kind": "company", "priority": 2},
     # --- 2026-11-03 追加（日本の昼に出る候補の補強。robots.txt 許可・日付あり・記事ページの本文が3,000字前後取れることを確認） ---
     # キャッシュレス決済のキャンペーン・手数料・新機能は会社員の家計に直結する。人事・役員のお知らせは除く。
     # 同じ日に確かめたが使えなかったもの: 経産省（Atom は 2026-06 で更新停止・ほかは 404/403）、国税庁・中小企業庁・年金機構・
@@ -263,6 +265,25 @@ BROAD_FEEDS: list[dict] = [
     #   三井住友・みずほ・マネックス・LINEヤフー（RSS なし or 403）、Spotify（robots.txt が禁止）
     {"slug": "paypay", "name": "PayPay プレスリリース", "url": "https://about.paypay.ne.jp/feed/", "section": "business", "kind": "company", "priority": 2,
      "exclude_re": "人事異動|役員|組織変更|代表取締役"},  # 約0.4件/日（10〜11時・20時ごろ）
+    # --- 2026-11-03 追加（投資・マネー／不動産／エンタメを質の良い記事で埋める。オーナー決定。扱う中身は scripts/genre_focus.py） ---
+    # robots.txt 許可・XML が読める・直近14日に更新あり・記事ページの本文が取れる（PDF だけの発表は読み取りサービスで読む）ことを確かめた。
+    # 混ざったフィード（金融庁・日本銀行・財務省・国交省・ニッセイ基礎研究所・企業）の投資・不動産の話題は genre_focus.route_section がレーンを付け替える。
+    # 同じ日に確かめたが使えなかったもの: 日本証券業協会（429）、投資信託協会・住宅金融支援機構・スクウェア・エニックス・バンダイナムコ（RSS の URL が HTML）、
+    #   楽天証券・SBI 証券・マネックス(403)・野村HD・大和・三菱UFJ・三井住友・みずほ(403)・三井不動産・三菱地所・積水ハウス・大和ハウス(403)・
+    #   任天堂IR・ソニー(403)・コナミ・東宝・東映アニメ・U-NEXT・KADOKAWA（RSS なし）、REINS（robots.txt が禁止）、
+    #   Netflix 日本（日付なし・作品の告知が中心）、JPX のマーケットニュース（上場・売買停止などのお知らせばかり）
+    # 投資・マネー
+    {"slug": "jpx-news", "name": "日本取引所グループ（JPX）", "url": "https://www.jpx.co.jp/rss/jpx-news.xml", "section": "investment", "kind": "gov", "priority": 2},  # 約0.8件/日（売買状況などの月次の統計は足切り）
+    {"slug": "jp-bank", "name": "ゆうちょ銀行", "url": "https://www.jp-bank.japanpost.jp/rss/news.xml", "section": "investment", "kind": "company", "priority": 3},  # 約0.2件/日
+    {"slug": "resona", "name": "りそなホールディングス", "url": "https://www.resona-gr.co.jp/holdings/news/newsrelease_c/rss.xml", "section": "investment", "kind": "company", "priority": 3},  # 約0.2件/日
+    {"slug": "gpif", "name": "年金積立金管理運用独立行政法人（GPIF）", "url": "https://www.gpif.go.jp/rss.xml", "section": "investment", "kind": "gov", "priority": 2,
+     "include_re": "運用状況|運用実績|収益|ポートフォリオ|業務概況"},  # 四半期の運用状況だけ（動画・催しの案内は外す）
+    # 不動産
+    {"slug": "tokyu-fudosan", "name": "東急不動産ホールディングス", "url": "https://www.tokyu-fudosan-hd.co.jp/news/companies/rss", "section": "real-estate", "kind": "company", "priority": 3},  # 約0.8件/日（グループ各社）
+    {"slug": "lifull", "name": "LIFULL", "url": "https://lifull.com/news/feed/", "section": "real-estate", "kind": "company", "priority": 3},  # 約0.3件/日（不動産テック・住まいのデータ）
+    # エンタメ（ビジネスの目線: 決算・販売本数・産業の数字）
+    {"slug": "capcom-ir", "name": "カプコン IRニュース", "url": "https://www.capcom.co.jp/ir/news/feed", "section": "entertainment", "kind": "company", "priority": 2},  # 約0.4件/日
+    {"slug": "aja", "name": "日本動画協会", "url": "https://aja.gr.jp/feed", "section": "entertainment", "kind": "company", "priority": 3},  # 月数件（アニメ産業レポートなど）
 ]
 for _feed in BROAD_FEEDS:
     _feed.setdefault("lang", "ja")
@@ -906,6 +927,9 @@ def fetch_article_text(url: str) -> dict:
 
 def _fetch_direct(url: str) -> dict:
     data, final_url = fetch(url, accept="text/html,application/xhtml+xml;q=0.9,*/*;q=0.8")
+    if data[:5] == b"%PDF-":
+        # PDF の中身をそのまま文字として読むと、壊れた文字列が「本文」になる（2026-11-03）。読み取りサービスに任せる
+        raise ValueError("PDF の資料は直接読まない（読み取りサービスで読む）")
     parser = _Extractor()
     try:
         parser.feed(_decode(data))

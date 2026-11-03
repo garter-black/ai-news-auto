@@ -29,6 +29,7 @@ import persona  # noqa: E402
 import section_gate  # noqa: E402
 import article_style  # noqa: E402  文体の決まりと公開前の門（1か所）
 import ui_claims  # noqa: E402
+import genre_focus  # noqa: E402  投資助言・売買のすすめ・取引のやり方の門（2026-11-03・台帳 A22）
 
 TITLE_RANGE = (18, 64)
 PASS_SCORE = 70
@@ -1049,6 +1050,8 @@ def structural_problems(record: dict, kind: str, source_text: str = "", context:
     if record.get("sourceType") == "web" and kind != "update" and not record.get("workMoney"):
         problems.append(f"work_money（「{persona.WORK_MONEY_HEADING}」欄）がありません")
     problems += persona.work_money_problems(record.get("workMoney"))
+    # 個別の投資助言・売買のすすめ・取引のやり方の説明と、投資・マネーの免責文の抜け（scripts/genre_focus.py。台帳 A22）
+    problems += genre_focus.advice_problems(record)
     problems += language_problems(record, source_text)
     # 文体の門（報告「記事の文章レベル比較_2026-11-03」の自動ゲート17項目・台帳 A1〜A6・A18〜A21。scripts/article_style.py が1か所で持つ）:
     # 決まった型の見出し・見出しの多すぎ・中身のない章・指示文の漏れ・割った文・一問一答・幼い言い方・宣伝の言葉・つなぎ・くり返し・英語の画面名

@@ -56,7 +56,7 @@ OWNER_NAME_PAGES = ("/about", "/editorial-policy")
 AUDIT_RULES = (
     "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11",
     "I2", "I4", "I5",
-    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19",
+    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23",
     "W3", "W5", "W6", "W10", "W11", "W12", "W13",
 )
 
@@ -170,7 +170,21 @@ def record_problems(record: dict, page_headings: bool = False) -> list[str]:
     out += image_record_problems(record)
     out += low_value_problems(record)
     out += type_problems(record)
+    out += genre_problems(record)
     return list(dict.fromkeys(out))
+
+
+def genre_problems(record: dict) -> list[str]:
+    """A22: 投資助言・売買のすすめ・取引のやり方を書かない／投資・マネーの記事に短い免責文。
+    A23: エンタメはビジネス・テックの目線だけ（作品の告知・ゴシップの記事を作らない）。判定は scripts/genre_focus.py（生成の門と同じ）"""
+    try:
+        import genre_focus  # noqa: PLC0415
+    except Exception:  # noqa: BLE001
+        return []
+    out = [f"[A22] {p}" for p in genre_focus.advice_problems(record)]
+    if record.get("genreSlug") == "entertainment" and not genre_focus.entertainment_focus(record.get("title") or "", record.get("tags")):
+        out.append("[A23] エンタメの記事がビジネス・テックの目線ではない（作品の告知・ゴシップ。料金・決算・販売本数・AI・規約の話ではない）")
+    return out
 
 
 # ニュースの種類の型（scripts/news_types.py）に切り替えた時刻。これより後に作った Web 記事を A18・A19 で見る

@@ -12,6 +12,7 @@ import rules from "./index-rules.json";
  *  2. 本文が THIN_BODY 文字以上（薄い要約を出さない）
  *  3. 読者像（scripts/persona.py）の話題: AI・テック（ジャンル ai / tech-gadget、または題名・タグにAI関連語）／
  *     ビジネス・投資・不動産のジャンル／制度・暮らし・テックのジャンルでお金・税・補助金・起業の話題（persona.is_persona_topic）／
+ *     エンタメのビジネス・テックの目線（scripts/genre_focus.py: 料金・決算・販売本数・市場規模・AI・規約。告知・ゴシップは外す）／
  *     日本のスポーツ（persona.sports_scope。海外のリーグ・選手だけの話題は外す。世界的な大会は海外選手も可）
  *  4. 日本の読者向けの価値がある（「日本で使える？」判定 verdict、または
  *     「日本・無料・料金・使い方・始め方・使える」の見出し）
@@ -35,6 +36,10 @@ const PERSONA_GENRES = new Set<string>(rules.personaGenres);
 const PERSONA_EXTRA_GENRES = new Set<string>(rules.personaExtraGenres);
 const PRIORITY_TOPIC = new RegExp(rules.priorityTopic.source, rules.priorityTopic.flags);
 const SPORTS_GENRES = new Set<string>(rules.sportsGenres);
+/** エンタメはビジネス・テックの目線（料金・決算・販売本数・市場規模・AI・規約）だけ（scripts/genre_focus.py の entertainment_focus） */
+const ENTERTAINMENT_GENRES = new Set<string>(rules.entertainmentGenres);
+const ENTERTAINMENT_BUSINESS = new RegExp(rules.entertainmentBusiness.source, rules.entertainmentBusiness.flags);
+const ENTERTAINMENT_EXCLUDE = new RegExp(rules.entertainmentExclude.source, rules.entertainmentExclude.flags);
 const GLOBAL_EVENT = new RegExp(rules.globalEvent.source, rules.globalEvent.flags);
 const JAPAN_SPORTS = new RegExp(rules.japanSports.source, rules.japanSports.flags);
 const FOREIGN_SPORTS = new RegExp(rules.foreignSports.source, rules.foreignSports.flags);
@@ -54,11 +59,19 @@ function isJapanSports(text: string): boolean {
   return !FOREIGN_SPORTS.test(t);
 }
 
+/** genre_focus.entertainment_focus と同じ（ゴシップ・告知だけの題名は外し、ビジネス・テックの目印があれば主題） */
+function isEntertainmentFocus(article: ArticleSummary): boolean {
+  const title = (article.title ?? "").normalize("NFKC");
+  if (ENTERTAINMENT_EXCLUDE.test(title)) return false;
+  return ENTERTAINMENT_BUSINESS.test(`${title} ${(article.tags ?? []).join(" ")}`);
+}
+
 /** 読者像の話題か（scripts/indexnow.py の is_focus と同じ） */
 export function isFocus(article: ArticleSummary): boolean {
   const text = `${article.title ?? ""} ${(article.tags ?? []).join(" ")}`;
   if (FOCUS_GENRES.has(article.genreSlug) || AI_TOPIC.test(text)) return true;
   if (isPersonaTopic(article)) return true;
+  if (ENTERTAINMENT_GENRES.has(article.genreSlug)) return isEntertainmentFocus(article);
   if (SPORTS_GENRES.has(article.genreSlug)) return isJapanSports(text);
   return false;
 }

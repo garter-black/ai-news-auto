@@ -14,8 +14,10 @@ export const siteConfig = {
   formerName: "サイソクAIニュース",
   // 「催促」と読み違えられないよう、題名では「最速」を併記する（app/layout.tsx）
   tagline: "仕事とお金の“旬”を、どこよりも速く。",
+  // 実際に扱っている中身に合わせる（2026-11-03 オーナー決定・台帳 W14）。ジャンルの名前は、定期的に記事があるものだけ
+  // ページ側で足す（lib/coverage.ts）。ここには、いつでも本当のこと（軸と約束）だけを書く
   description:
-    "AI・ビジネス・お金・投資・不動産の新しい動きを、公式発表から最短数分で。「自分にどう関係する？何をすればいい？」まで3行で。",
+    "AI・テクノロジーを軸に、仕事とお金に関わるニュースを公式発表から最短数分で。「自分にどう関係する？何をすればいい？」まで3行で。",
   url:
     process.env.NEXT_PUBLIC_SITE_URL ??
     (process.env.VERCEL_PROJECT_PRODUCTION_URL

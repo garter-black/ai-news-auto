@@ -3,6 +3,7 @@ import { withPageShare } from "@/lib/page-share";
 import LegalPage from "@/components/LegalPage";
 import { getAllArticles, getAllGenres } from "@/lib/articles";
 import { siteConfig } from "@/site.config";
+import { alsoCoveredSentence } from "@/lib/coverage";
 
 export const metadata: Metadata = withPageShare("about", "/about", {
   title: "運営者情報・編集方針",
@@ -19,7 +20,7 @@ export default function AboutPage() {
     <LegalPage
       eyebrow="ABOUT"
       title="運営者情報・編集方針"
-      lead={`${siteConfig.siteName}（略称：${siteConfig.nickname}）は、公式発表をもとに、AI・ビジネス・お金・投資・不動産などの新しい動きと「自分にどう関係するか・何をすればいいか」を日本語で伝えるニュースメディアです。制作にはAIを使い、情報源と確認方法を開示しています。`}
+      lead={`${siteConfig.siteName}（略称：${siteConfig.nickname}）は、AI・テクノロジーを軸に、仕事とお金に関わるニュースと「自分にどう関係するか・何をすればいいか」を、公式発表をもとに日本語で伝えるニュースメディアです。制作にはAIを使い、情報源と確認方法を開示しています。`}
       updatedAt="2026年11月3日"
     >
       <h2>運営者情報</h2>
@@ -77,7 +78,7 @@ export default function AboutPage() {
         {siteConfig.siteName}は、忙しく働きながら、仕事の成果や副収入・独立・資産づくりも考えている人のためのニュースサイトです。
       </p>
       <p>
-        AI・テックの新発表、ビジネス・お金・投資、不動産、起業・副業、税金や補助金などの制度について、公式発表などの一次情報をもとに、要点を3行で整理し、「仕事・お金にどう活かせるか」「明日から何ができるか」まで書きます。海外AI企業の英語の発表は、日本から使えるか・料金はいくらか・無料で試せるかも判定しています。日本のスポーツの大きなニュースも扱います。
+        中心は、AI・テクノロジーの新しい発表と、それが仕事とお金にどう関わるかです。公式発表などの一次情報をもとに、要点を3行で整理し、「仕事・お金にどう活かせるか」「明日から何ができるか」まで書きます。海外AI企業の英語の発表は、日本から使えるか・料金はいくらか・無料で試せるかも判定しています。{alsoCoveredSentence()}
       </p>
       <p>
         根拠のない儲け話や、あおる見出しは書きません。特定の銘柄や物件の売買をすすめる投資助言は行わず、一般的な情報と判断材料の提示にとどめます。

@@ -72,7 +72,8 @@ import rivals  # noqa: E402
 import story  # noqa: E402
 import trends  # noqa: E402
 import ui_claims  # noqa: E402
-from genres import AI, ALL_GENRES, BROAD_GENRES, GENRES, GENRES_BY_SLUG  # noqa: E402
+from genres import AI, ALL_GENRES, BROAD_GENRES, GENRES, GENRES_BY_SLUG, WEB_GENRES  # noqa: E402
+import genre_focus  # noqa: E402  投資・マネー／不動産／エンタメの扱う中身と1日の最低本数（2026-11-03）
 
 RUN_TIME_BUDGET_SEC = 25 * 60
 MAX_FAILURES = 2
@@ -90,7 +91,8 @@ QUALITY_LOG_KEEP = 300
 # 1本あたりの目安（生成＋事実確認）。残り時間がこれを切ったら新しい記事に手を付けない
 EST_SEC_PER_ARTICLE = 150
 JST = timezone(timedelta(hours=9))
-BROAD_SLUGS = [g.slug for g in BROAD_GENRES]
+# 幅広い話題に投資・マネー／不動産を足したレーン（genres.WEB_GENRES。2026-11-03 オーナー決定）
+BROAD_SLUGS = [g.slug for g in WEB_GENRES]
 AI_SLUGS = {f["slug"] for f in feeds.FEEDS}
 
 # 幅広い話題: 価値の薄いお知らせ（タイトルで判定）。人事・採用・小さな販促・ただの開店・会議の案内など
@@ -430,6 +432,9 @@ def broad_prefilter(item: dict) -> str | None:
         return f"価値の薄いお知らせ（{m_low.group(0)}）"
     if not item.get("section"):
         return "セクションを判定できない"
+    # 投資・マネー／不動産／エンタメで扱わない候補（書き写し・告知・ゴシップ。scripts/genre_focus.py）
+    if focus_reason := genre_focus.candidate_problem(item["section"], title, item.get("summary", "")):
+        return focus_reason
     if item.get("section") == "sports":
         # スポーツは日本のスポーツだけ（世界的な大会は例外。scripts/persona.py の SPORTS_SCOPE_RULE）
         feed = feeds.FEEDS_BY_SLUG.get(item.get("source_slug", ""), {})
@@ -1353,6 +1358,8 @@ def tag_sections(items: list[dict]) -> list[dict]:
         feed = feeds.FEEDS_BY_SLUG.get(item["source_slug"], {})
         section = feed.get("section")
         item["section"] = (feeds.classify_section(item) or feed.get("fallback")) if section == "auto" else section
+        # 官公庁・企業の混ざったフィードから、投資・マネー／不動産の話題をそれぞれのレーンへ（scripts/genre_focus.py）
+        item["section"] = genre_focus.route_section(item, item["section"])
         item["kind"] = feed.get("kind", "")
     return items
 
@@ -1373,7 +1380,9 @@ def build_lanes(ai_items: list[dict], broad_items: list[dict], section_filter: s
 def lane_order(lanes: dict[str, list[dict]], now: datetime | None = None) -> list[str]:
     """ai を先頭に、読者像（scripts/persona.py）で優先するレーン（ビジネス・お金／制度）を次に、
     残りは時刻で開始位置をずらして毎回同じセクションが先にならないようにする。スポーツは最後（1日の上限つき）"""
-    first = [s for s in persona.PRIORITY_LANES if s in lanes]
+    # 今日まだ最低本数に届いていない 投資・マネー／不動産／エンタメ を先に（候補があるときだけ。scripts/genre_focus.py）
+    boost = genre_focus.boost_lanes(lanes, now=now)
+    first = boost + [s for s in persona.PRIORITY_LANES if s in lanes and s not in boost]
     rest = [s for s in BROAD_SLUGS if s in lanes and s not in first and s != "sports"]
     if rest:
         shift = (now or datetime.now(JST)).hour % len(rest)

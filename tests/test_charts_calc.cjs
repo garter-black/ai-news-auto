@@ -28,7 +28,7 @@ const charts = load("lib/charts.ts");
 const { calculatorForArticle, CALCULATORS } = load("lib/calculators.ts");
 const fx = { rate: 157.9, date: "2026-11-02", source: "ECB", fallback: true };
 
-test("ドル建てサブスクの円換算は終了とともに式を消した（2026-11-03・台帳 W12）", () => {
+test("ドル建てサブスクの円換算は終了とともに式を消した（2026-11-03・台帳 W14）", () => {
   assert.equal(calc.usdToYen, undefined);
 });
 
@@ -116,7 +116,7 @@ test("記事に合う計算機は1つだけ", () => {
   const plan = calculatorForArticle({ ...base, title: "Claude Ultra", charts: [{ kind: "ladder", product: "claude", highlight: "ultra" }], verdict: { price: "月200ドル" } }, ["claude"]);
   assert.equal(plan, null);
   assert.equal(calculatorForArticle({ ...base, title: "Claude Ultra", charts: [{ kind: "ladder", product: "claude", highlight: "ultra" }] }), null);
-  // ドル建てサブスクの円換算（usd-jpy）は 2026-11-03 に終了（オーナー「このページもいらない」・台帳 W12）。ドルの料金の記事にも置かない
+  // ドル建てサブスクの円換算（usd-jpy）は 2026-11-03 に終了（オーナー「このページもいらない」・台帳 W14）。ドルの料金の記事にも置かない
   assert.equal(calculatorForArticle({ ...base, verdict: { price: "月20ドル" } }, []), null);
   assert.deepEqual(Object.keys(CALCULATORS).sort(), ["defense-tax"]);
 });

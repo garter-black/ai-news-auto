@@ -23,6 +23,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import persona  # noqa: E402  読者像（検索に出す話題の基準）
+import genre_focus  # noqa: E402  エンタメはビジネス・テックの目線だけ（2026-11-03）
 
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
@@ -146,6 +147,8 @@ THIN_BODY = 1500
 # いつでも主題として扱うジャンル（AI・テック）。お金・不動産・起業・制度は persona.is_persona_topic、スポーツは persona.sports_scope
 FOCUS_GENRES = {"ai", "tech-gadget"}
 SPORTS_GENRES = {"sports"}
+# エンタメはビジネス・テックの目線（料金・決算・販売本数・市場規模・AI・規約）のものだけ主題に入れる（2026-11-03 オーナー決定。scripts/genre_focus.py）
+ENTERTAINMENT_GENRES = {"entertainment"}
 AI_TOPIC = re.compile(
     r"(?<![A-Za-z])AI(?![a-z])|人工知能|生成|LLM|GPT|Gemini|Claude|Copilot|機械学習|エージェント|ロボット|半導体|NVIDIA",
     re.I,
@@ -181,13 +184,16 @@ def is_focus(article: dict) -> bool:
     """読者像（scripts/persona.py）の話題か。lib/indexing.ts の isFocus と同じ。
     1. AI・テック（ジャンル ai / tech-gadget、または題名・タグにAI関連語）
     2. 読者像の話題（persona.is_persona_topic: ビジネス・投資・不動産のジャンル、制度・暮らし・テックのジャンルでお金・税・補助金・起業の話題）
-    3. 日本のスポーツ（persona.sports_scope。海外のリーグ・選手だけの話題は外す。世界的な大会は海外選手も可）
-    それ以外（エンタメ・ゲーム、お金に関係しない新商品や研究成果など）は主題外。"""
+    3. エンタメのビジネス・テックの目線（genre_focus.entertainment_focus: 料金・決算・販売本数・市場規模・AI・規約。告知・ゴシップは外す）
+    4. 日本のスポーツ（persona.sports_scope。海外のリーグ・選手だけの話題は外す。世界的な大会は海外選手も可）
+    それ以外（作品の告知だけのエンタメ・ゲーム、お金に関係しない新商品や研究成果など）は主題外。"""
     text = article.get("title", "") + " " + " ".join(article.get("tags") or [])
     if article.get("genreSlug") in FOCUS_GENRES or AI_TOPIC.search(text):
         return True
     if persona.is_persona_topic(article):
         return True
+    if article.get("genreSlug") in ENTERTAINMENT_GENRES:
+        return genre_focus.entertainment_focus(article.get("title", ""), article.get("tags"))
     if article.get("genreSlug") in SPORTS_GENRES:
         # 発信元が海外かは記事に残らない。海外のフィードは生成時に sports_scope(japanese_source=False) で落としているので、ここでは目印だけで見る
         return persona.sports_scope(text)[0]
@@ -250,6 +256,8 @@ def candidate_off_focus(lane: str, title: str, summary: str = "") -> bool:
     text = f"{title} {summary[:300]}"
     if AI_TOPIC.search(text):
         return False
+    if lane in ENTERTAINMENT_GENRES:
+        return genre_focus.candidate_problem(lane, title, summary) is not None
     if lane in persona.PERSONA_EXTRA_GENRES and persona.PRIORITY_TOPIC_RE.search(text):
         return False
     return True
@@ -266,7 +274,7 @@ def _js_regex(pattern: re.Pattern) -> dict:
 
 def index_rules() -> dict:
     return {
-        "_note": "scripts/indexnow.py --export-rules で生成。手で直さない（正本は scripts/indexnow.py と scripts/persona.py）",
+        "_note": "scripts/indexnow.py --export-rules で生成。手で直さない（正本は scripts/indexnow.py・scripts/persona.py・scripts/genre_focus.py）",
         "thinBody": THIN_BODY,
         "creatorChannels": sorted(CREATOR_CHANNELS),
         "focusGenres": sorted(FOCUS_GENRES),
@@ -274,6 +282,9 @@ def index_rules() -> dict:
         "personaGenres": list(persona.PERSONA_GENRES),
         "personaExtraGenres": list(persona.PERSONA_EXTRA_GENRES),
         "priorityTopic": _js_regex(persona.PRIORITY_TOPIC_RE),
+        "entertainmentGenres": sorted(ENTERTAINMENT_GENRES),
+        "entertainmentBusiness": _js_regex(genre_focus.ENTERTAINMENT_BUSINESS_RE),
+        "entertainmentExclude": _js_regex(genre_focus.ENTERTAINMENT_EXCLUDE_RE),
         "sportsGenres": sorted(SPORTS_GENRES),
         "globalEvent": _js_regex(persona.GLOBAL_EVENT_RE),
         "japanSports": _js_regex(persona.JAPAN_SPORTS_RE),

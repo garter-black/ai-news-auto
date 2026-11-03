@@ -5,6 +5,7 @@ import { getAllArticles, type ArticleSummary } from "@/lib/articles";
  * トップの下段と /news にまとめて出す。投資・マネーと不動産は読者像の中心（AGENTS.md「0. 読者」）なので
  * 2026-11-03 に足した（それまではトップに「過去に扱っていた分野」と出ており、運営者情報の説明と食い違っていた）。
  * label は記事に名前が無いときの予備。表示は記事の genre を優先する。
+ * 投資・マネー／不動産／エンタメの説明は、記事を作る側の決まり（scripts/genre_focus.py・genres.py。2026-11-03 オーナー決定）と同じ中身にする。
  */
 export const BROAD_SECTIONS: { slug: string; label: string; description: string }[] = [
   {
@@ -17,13 +18,13 @@ export const BROAD_SECTIONS: { slug: string; label: string; description: string 
     slug: "investment",
     label: "投資・マネー",
     description:
-      "証券・銀行・日本銀行・金融庁などの公式発表をもとに、NISA・金利・為替・家計にかかわる新しい動きを、自分のお金にどう関係するかまで整理します。特定の銘柄の売買はすすめません。",
+      "金融庁・日本銀行・証券取引所・証券会社・銀行の公式発表と大手企業の決算をもとに、NISA・iDeCo・税・手数料・金利の変更や市場を動かすニュースを、数字と時期を中心に整理します。特定の銘柄の売買はすすめず、取引のやり方も解説しません。",
   },
   {
     slug: "real-estate",
     label: "不動産",
     description:
-      "国や自治体、不動産会社・住宅メーカーの公式発表をもとに、地価・住宅ローン・家賃・再開発など住まいと資産にかかわる動きを、数字と時期を中心にまとめます。特定の物件の売買はすすめません。",
+      "国土交通省などの公的な資料・政策、地価公示・路線価、住宅ローン金利の改定、住宅の税制、不動産テック・AI 活用、大手デベロッパーや REIT のニュースを、数字と時期を中心にまとめます。特定の物件の売買はすすめません。",
   },
   {
     slug: "tech-gadget",
@@ -41,7 +42,7 @@ export const BROAD_SECTIONS: { slug: string; label: string; description: string 
     slug: "entertainment",
     label: "エンタメ・カルチャー",
     description:
-      "映画・音楽・ゲーム・アニメ・イベントの公式発表から、公開日・発売日・参加方法など、楽しむために必要な情報を整理して届けます。",
+      "配信サービスの料金・プラン、ゲーム業界の決算と新作、エンタメでのAI活用、アニメ・音楽の産業の数字、大きなプラットフォームの規約変更など、エンタメをビジネスとテクノロジーの目線で伝えます。",
   },
   {
     slug: "sports",

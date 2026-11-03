@@ -6,7 +6,7 @@ const test = require("node:test");
 const ts = require("typescript");
 
 // 図鑑（/products）の「中身があるか」の判定と文の掃除（lib/product-substance.ts）、ヘッダーの定番ページ（lib/nav.ts）。
-// 2026-11-03 オーナーの指摘「内容がすごく薄い」「このページもいらない」（台帳 W12・W13）
+// 2026-11-03 オーナーの指摘「内容がすごく薄い」「このページもいらない」（台帳 W14・W13）
 const root = path.resolve(__dirname, "..");
 function load(rel) {
   const file = path.join(root, rel);

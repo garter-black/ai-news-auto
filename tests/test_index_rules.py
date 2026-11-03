@@ -44,6 +44,13 @@ SAMPLES = [
     {"genreSlug": "sports", "title": "W杯で海外の選手が活躍"},
     {"genreSlug": "sports", "title": "全日本社会人選手権が閉幕"},
     {"genreSlug": "entertainment", "title": "新作ゲーム"},
+    # エンタメはビジネス・テックの目線だけ（scripts/genre_focus.py。2026-11-03）
+    {"genreSlug": "entertainment", "title": "カプコン、中間決算は増収増益　販売本数は前年比1.3倍"},
+    {"genreSlug": "entertainment", "title": "Ｎｅｔｆｌｉｘ、広告つきプランの月額を890円に"},
+    {"genreSlug": "entertainment", "title": "映画の予告編を公開　キャストも発表"},
+    {"genreSlug": "entertainment", "title": "人気アニメのコラボグッズを発売、価格は1500円"},
+    {"genreSlug": "investment", "title": "金融庁、NISAの手続きを簡素化"},
+    {"genreSlug": "real-estate", "title": "公示地価が上昇"},
 ]
 
 
