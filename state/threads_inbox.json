@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T01:20:04+00:00",
+  "generatedAt": "2026-11-03T03:20:56+00:00",
   "method": "buffer-metrics",
   "manual": [
     "Chrome で各 url（@saisoku637 の投稿）を開き、ログイン済みのアカウントで返信欄を読む",
@@ -14,13 +14,13 @@
       "url": "https://www.threads.com/@saisoku637/post/DfLeaGllCaM",
       "sentAt": "2026-11-01T00:45:30.001Z",
       "comments": 1,
-      "newComments": 1,
-      "views": 517,
+      "newComments": 0,
+      "views": 594,
       "commenter": null,
       "text": null,
-      "metricsUpdatedAt": "2026-11-01T12:06:08.126Z"
+      "metricsUpdatedAt": "2026-11-02T11:07:09.964Z"
     }
   ],
-  "checkedPosts": 65,
+  "checkedPosts": 74,
   "note": "コメント数は Buffer の集計（数時間おくれることがある）。本文と相手は url を Chrome で開いて確認する"
 }
