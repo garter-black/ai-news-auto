@@ -62,6 +62,7 @@ import japan_availability  # noqa: E402
 import llm  # noqa: E402
 import main as m  # noqa: E402
 import news_types  # noqa: E402  ニュースの種類ごとの記事の型
+import notice_gate  # noqa: E402
 import source_links  # noqa: E402
 import headline_normalize  # noqa: E402
 import pacing  # noqa: E402  1日の上限の数え方（公開中だけ）と時刻ごとの配分
@@ -430,6 +431,9 @@ def broad_prefilter(item: dict) -> str | None:
         return "タイトルが短すぎる（一覧リンク等）"
     if m_low := LOW_VALUE_RE.search(title):
         return f"価値の薄いお知らせ（{m_low.group(0)}）"
+    # お知らせ・告知・統計の転載（台帳 A26）。公開前の門で落ちるものは、書く前に見送る（LLM の費用を使わない）
+    if notice_reason(item):
+        return f"お知らせ・統計の転載（{notice_reason(item)}）"
     if not item.get("section"):
         return "セクションを判定できない"
     # 投資・マネー／不動産／エンタメで扱わない候補（書き写し・告知・ゴシップ。scripts/genre_focus.py）
@@ -938,7 +942,15 @@ def prefilter(item: dict) -> str | None:
     title = item["title"]
     if EVENT_RE.search(title) and not NOTABLE_RE.search(title):
         return "告知・お知らせ系"
+    # お知らせ・告知・統計の転載（台帳 A26。scripts/notice_gate.py）は、書く前に見送る
+    if notice_reason(item):
+        return f"お知らせ・統計の転載（{notice_reason(item)}）"
     return None
+
+
+def notice_reason(item: dict) -> str | None:
+    """候補（フィードの項目）が、お知らせ・告知・統計の転載か（scripts/notice_gate.py。題名と出典だけで判断）"""
+    return notice_gate.notice_reason({"title": item.get("title") or "", "channelSlug": item.get("source_slug") or ""})
 
 
 SECONDARY_SOURCE_NOTE = """## 今回の元記事は報道です（重要）

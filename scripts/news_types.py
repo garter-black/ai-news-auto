@@ -433,7 +433,7 @@ def get(key: str | None) -> NewsType:
 JAPAN_HEADING_EXAMPLES = {
     "earnings": "日本の売上は1%減",
     "security": "日本の利用者は更新が必要",
-    "deal": "日本の利用者への影響はまだ無い",
+    "deal": "日本の利用者への影響と提供の予定",
     "filing": "日本からは買えない新株",
     "research": "日本の企業の6割が使い方に悩む",
     "people": "日本法人の体制は変わらない",

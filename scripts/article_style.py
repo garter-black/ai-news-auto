@@ -298,6 +298,18 @@ def coded_problems(record: dict) -> list[tuple[str, str]]:
             add("A17", f"呼びかけの「〜しましょう」が残っている（「{calls[0][-20:]}」）。「〜するとよいでしょう」など落ち着いた言い方で書く")
     except (ImportError, AttributeError):
         pass
+    # 読者像の3つの立場の小見出しと、見出しの言葉だけ変えた「中身なし」の見出し（「〜は不明」「〜は示されていない」。台帳 A24。
+    # 判定は表示の段と同じ scripts/section_gate.py の式）
+    try:
+        import section_gate  # noqa: PLC0415
+
+        for key, text in (("本文", body), ("かんたん版", easy)):
+            if any(section_gate.PERSONA_SUBHEAD_RE.match(ln.strip()) for ln in text.split("\n")):
+                add("A24", f"{key}に読者像の立場の小見出し（会社員として／副業・独立を考えている人／お金・資産づくりの面で）。小見出しを作らず、事実がある影響だけ地の文で書く")
+        if bad_t := [h for h in heads if section_gate.is_nonanswer_title(h)]:
+            add("A24", f"答えになっていない見出し（「{bad_t[0]}」）。未定のことは「## まだ分からないこと」に1行で書き、章は作らない")
+    except (ImportError, AttributeError):
+        pass
     # 6. 割った文
     if m := SPLIT_RE.search(body_nq):
         add("A4", f"1つの文を2つに割っている（「{m.group(0)[:40]}」）。1文にまとめる")

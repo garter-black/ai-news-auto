@@ -86,6 +86,29 @@ class GateTest(unittest.TestCase):
         rec = {"body": "初代以来最も変革的な「iPhone Duo」が出ました。" + "事実の文です。" * 30}
         self.assertTrue(any("宣伝の言葉" in p for p in st.problems(rec)))
 
+    def test_persona_subheads_and_nonanswer_titles(self):
+        # 台帳 A24（2026-11-03）: 3つの立場の小見出しと、「〜は不明」「〜は示されていない」の見出しは出さない
+        body = "事実の文です。" * 40 + "\n\n### 会社員として\n経理の仕事が速くなります。\n\n## 価格は不明\n価格は発表されていません。"
+        text = " ".join(st.problems({"body": body}))
+        self.assertIn("立場の小見出し", text)
+        self.assertIn("答えになっていない見出し", text)
+        ok = "事実の文です。" * 40 + "\n\n## まだ分からないこと\n- 価格はまだ発表されていません。"
+        self.assertEqual(st.problems({"body": ok}), [])
+
+    def test_persona_instructions_removed_at_source(self):
+        import persona  # noqa: PLC0415
+
+        self.assertNotIn("### 会社員として", persona.relate_outline())
+        self.assertIn("小見出し", persona.relate_outline())
+        self.assertNotIn("立場ごとの見方は、本当に関係するときだけ書く", persona.PLAIN_STYLE)
+
+    def test_notice_candidates_are_dropped_before_writing(self):
+        import web_articles as w  # noqa: PLC0415
+
+        self.assertTrue(w.prefilter({"title": "令和8年秋の褒章について", "source_slug": "mlit"}))
+        self.assertTrue(w.prefilter({"title": "製造たばこの小売定価の認可", "source_slug": "mof"}))
+        self.assertIsNone(w.prefilter({"title": "OpenAIが新しいAIモデルを公開", "source_slug": "openai-news"}))
+
     def test_minor_change_is_not_new_model(self):
         self.assertTrue(any("新型" in p for p in st.problems({"title": "トヨタの新型SUV、一部改良", "body": "一部改良です。"})))
 

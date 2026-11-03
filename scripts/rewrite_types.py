@@ -196,6 +196,9 @@ def rewrite(slug: str, attempts: int = 2) -> tuple[dict | None, dict]:
     for attempt in range(1, attempts + 1):
         with _write_with(WRITE_MODEL):
             data, model = llm.generate_json(system, prompt, schema, temperature=0.6, max_output_tokens=32768, tier="write", purpose="core")
+        if not str(model or "").startswith("anthropic-api:claude-sonnet"):
+            # 書き直しは Sonnet だけで行う（無料モデルに落ちたら、今の版のまま次の回に回す）
+            return None, {**report, "why": f"Sonnet が使えなかった（{model}）。次の回に回す"}
         if not data.get("is_relevant", True):
             return None, {**report, "why": f"記事にする価値なしと判定（{str(data.get('skip_reason'))[:80]}）"}
         record = w.attach_related(w.build_web_record(item, data, page, model, voice_key, bundle), data, related)

@@ -48,6 +48,11 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
           AFF_STATS_TOKEN: ${{ secrets.AFF_STATS_TOKEN }}
+          # 1日の呼び出し回数の安全上限は本番の記事と分けて数えたいが、記録は合計で見るので、この回だけ上げる
+          # （使う額は月の予算の配分で止まる。1回20本で Sonnet 約2〜3ドル）
+          CLAUDE_API_DAILY_CALLS_CORE: "400"
+          CLAUDE_API_DAILY_CALLS_CHECK: "800"
+          CLAUDE_API_DAILY_CALLS_HELPER: "800"
           MAX: ${{ inputs.max || '20' }}
           SLUGS: ${{ inputs.slugs }}
         run: |
