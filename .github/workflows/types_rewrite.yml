@@ -62,6 +62,8 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # 画像の保存先（Workers KV）に書ける鍵（auto_run.yml の Article images と同じ）
+          CF_KV_TOKEN: ${{ secrets.CF_DEPLOY_TOKEN }}
           LLM_WORKFLOW: products
         run: timeout 900 python -u scripts/images.py --body-images --max 40 --budget 780
       - uses: actions/upload-artifact@v7
