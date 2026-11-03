@@ -6,17 +6,19 @@
   "companyName": "OpenAI",
   "category": "AIモデル",
   "overview": {
-    "text": "GPT-6.1 Terraは、OpenAIが開発したAIモデルです。速度、能力、コストのバランスに優れ、日常的な業務に向いています。2026年10月26日に発表されました。",
+    "text": "GPT-6.1 Terraは、OpenAIが開発した新しいAIモデルです。2026年10月26日に発表されました。パソコンの操作や画像の読み取り能力が高く、日常的な業務に向いています。",
     "sources": [
-      "openai-gpt-6-1-terra-announcement"
+      "openai-gpt-6-1-terra-announcement",
+      "openai-gpt-61-terra-amazon-bedrock"
     ]
   },
   "facts": [
     {
       "label": "料金",
-      "value": "入力100万トークン1ドル",
+      "value": "入力$1/1M〜（従来より50%以上安価）",
       "sources": [
-        "openai-gpt-6-1-terra-announcement"
+        "openai-gpt-6-1-terra-announcement",
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     },
     {
@@ -28,124 +30,123 @@
     },
     {
       "label": "日本での提供",
-      "value": "日本国内からも利用可能",
+      "value": "日本から利用可能",
       "sources": [
-        "openai-gpt-61-terra-amazon-bedrock",
-        "openai-gpt-6-1-terra-announcement"
-      ]
-    },
-    {
-      "label": "使える場所",
-      "value": "ChatGPTやAPI、Bedrock等",
-      "sources": [
-        "openai-gpt-61-terra-amazon-bedrock",
-        "openai-gpt-6-1-terra-announcement"
+        "openai-gpt-6-1-terra-announcement",
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     },
     {
       "label": "向いている人",
-      "value": "開発者や実務担当者",
+      "value": "開発者、企業管理者、実務担当者",
       "sources": [
-        "openai-gpt-6-1-terra-announcement"
+        "openai-gpt-6-1-terra-announcement",
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "パソコンの画面を見てキーボードやマウスを操作できます。",
+      "text": "人間の代わりにパソコンの画面を見てキーボードやマウスを操作できます。",
       "sources": [
         "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
-      "text": "複雑な図面や画像を読み解く視覚推論能力を備えています。",
+      "text": "最大で100万入力トークンのコンテキストに対応し、テキストや画像データを処理できます。",
       "sources": [
-        "openai-gpt-6-1-terra-announcement"
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     },
     {
-      "text": "前世代と比べて処理速度が3倍以上に高速化されています。",
+      "text": "タスクの完了スピードが従来モデルと比べて3倍以上速くなっています。",
       "sources": [
-        "openai-gpt-6-1-terra-announcement"
+        "openai-gpt-6-1-terra-announcement",
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     },
     {
-      "text": "誤答するエラー率が大幅に低減されています。",
+      "text": "事実に基づいた自然な文章作成や、詳細な視覚推論が可能です。",
       "sources": [
-        "openai-gpt-6-1-terra-announcement"
+        "openai-gpt-6-1-terra-announcement",
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "標準API価格は、入力100万トークンあたり1.00ドルです。",
+      "text": "標準API価格は入力トークン100万あたり1.00ドル、出力トークン100万あたり5.00ドルです。",
       "sources": [
         "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
-      "text": "出力トークンは100万トークンあたり5.00ドルです。",
+      "text": "キャッシュ済み入力トークンは100万トークンあたり0.05ドルです。",
       "sources": [
         "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
-      "text": "有料プランを利用中の場合は、追加料金なしで利用できます。",
+      "text": "入出力トークンの価格は従来モデルと比べて50%以上低く設定されています。",
       "sources": [
-        "openai-gpt-6-1-terra-announcement"
+        "openai-gpt-6-1-terra-announcement",
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     }
   ],
   "japan": [
     {
-      "text": "日本国内からも利用可能です。",
+      "text": "日本国内からのアクセス制限はなく、利用可能です。",
       "sources": [
-        "openai-gpt-61-terra-amazon-bedrock",
-        "openai-gpt-6-1-terra-announcement"
+        "openai-gpt-6-1-terra-announcement",
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     },
     {
-      "text": "Amazon Bedrockが提供されているリージョンを通じて利用できます。",
+      "text": "日本語での入出力にも対応しています。",
       "sources": [
+        "openai-gpt-6-1-terra-announcement",
         "openai-gpt-61-terra-amazon-bedrock"
       ]
     }
   ],
   "howto": [
     {
-      "text": "ChatGPTの会話画面上部のモデル選択メニューから選択できます。",
+      "text": "ChatGPTのWEBブラウザ版またはアプリ版にログインし、モデル選択メニューから切り替えて使用します。",
       "sources": [
         "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
-      "text": "開発者はOpenAI APIでモデル名に指定して呼び出せます。",
+      "text": "APIで利用する場合は、モデル名にgpt-6.1-terraを指定してリクエストを送信します。",
       "sources": [
         "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
-      "text": "GitHub Copilotのモデル選択画面から選べます。",
+      "text": "Amazon BedrockのAPIやコンソール、ChatGPT Work、Codex経由で利用できます。",
       "sources": [
-        "openai-gpt-6-1-terra-announcement"
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     }
   ],
   "differences": [
     {
-      "text": "標準API価格が従来の半額に設定されています。",
+      "text": "従来モデルと比べて入出力トークンの価格が50%以上低くなっています。",
       "sources": [
-        "openai-gpt-6-1-terra-announcement"
+        "openai-gpt-6-1-terra-announcement",
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     },
     {
-      "text": "前世代モデルと比べて処理速度が3倍以上速くなっています。",
+      "text": "タスクの完了スピードが3倍以上速くなっています。",
       "sources": [
-        "openai-gpt-6-1-terra-announcement"
+        "openai-gpt-6-1-terra-announcement",
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     },
     {
-      "text": "同じプラン枠内でこれまでより多くのタスクをこなせます。",
+      "text": "低推論時のハルシネーションエラー率が従来の53.6%から16.7%へ低減されました。",
       "sources": [
         "openai-gpt-6-1-terra-announcement"
       ]
@@ -154,30 +155,31 @@
   "faq": [
     {
       "q": "いつから使える？",
-      "a": "発表当日から一般提供が始まっており、すぐ使えます。",
-      "sources": [
-        "openai-gpt-6-1-terra-announcement"
-      ]
-    },
-    {
-      "q": "無料プランでも使える？",
-      "a": "無料版のユーザーへの提供については言及がありません。",
+      "a": "2026年10月26日の発表直後からChatGPTやAPIで利用可能です。",
       "sources": [
         "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
       "q": "誰に向いている？",
-      "a": "日常的な事務作業やパソコン操作を大量にこなしたい方に向いています。",
+      "a": "アプリにAIを組み込む開発者や、ルーチン業務を自動化したい企業担当者に向いています。",
       "sources": [
-        "openai-gpt-6-1-terra-announcement"
+        "openai-gpt-6-1-terra-announcement",
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     },
     {
-      "q": "安全性やエラー率はどうなっている？",
-      "a": "内部テストにおいて、誤答するエラー率が大幅に低下しています。",
+      "q": "APIクレジット特典の対象は？",
+      "a": "条件を満たす有料のChatGPT ProまたはBusiness契約者が対象です。Plusは対象外です。",
       "sources": [
-        "openai-gpt-6-1-terra-announcement"
+        "chatgpt-pro-business-api-credits-benefit"
+      ]
+    },
+    {
+      "q": "一度にどれくらいのデータを読み込める？",
+      "a": "最大で100万入力トークンのコンテキストに対応しています。",
+      "sources": [
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     }
   ],
@@ -208,9 +210,9 @@
     "openai-gpt-61-terra-amazon-bedrock",
     "openai-gpt-6-1-terra-announcement"
   ],
-  "signature": "6cfd1c0b359fa1c3",
-  "primarySignature": "fdd8fd52e9595132",
+  "signature": "8594ccb2420be3c3",
+  "primarySignature": "8cdc94875e0a0871",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:32:48+00:00",
-  "updatedAt": "2026-11-02T05:50:35+00:00"
+  "updatedAt": "2026-11-03T10:21:31+00:00"
 }

@@ -8,23 +8,30 @@
   "companyName": "Microsoft",
   "category": "開発ツール",
   "overview": {
-    "text": "TypeScript 7は、コンパイラをGo言語へ完全に移植し、最大12倍の高速化を達成した開発ツールです。Microsoftが開発を主導し、2026年7月に発表されました。",
+    "text": "TypeScript 7は、コンパイラをGo言語へ完全に移植し最大12倍の高速化を達成した開発ツールです。Microsoftが開発を主導し、2026年7月に発表されました。",
     "sources": [
-      "typescript-7-and-microsoft-oss-evolution-matome",
-      "microsoft-typescript-7-native-compiler-speedup"
+      "microsoft-typescript-7-native-compiler-speedup",
+      "typescript-7-and-microsoft-oss-evolution-matome"
     ]
   },
   "facts": [
     {
+      "label": "料金",
+      "value": "オープンソース",
+      "sources": [
+        "microsoft-typescript-7-native-compiler-speedup"
+      ]
+    },
+    {
       "label": "提供開始",
-      "value": "2026年7月24日",
+      "value": "2026年7月",
       "sources": [
         "microsoft-typescript-7-native-compiler-speedup"
       ]
     },
     {
       "label": "日本での提供",
-      "value": "利用できる",
+      "value": "日本からも利用できます",
       "sources": [
         "microsoft-typescript-7-native-compiler-speedup"
       ]
@@ -39,31 +46,30 @@
   ],
   "capabilities": [
     {
-      "text": "Go言語へのコンパイラ完全移植により、最大12倍の高速化を達成しました。",
+      "text": "コンパイラをGo言語へ完全に移植し、従来のTypeScript 6と比較して最大12倍の高速化を達成しています。",
       "sources": [
-        "typescript-7-and-microsoft-oss-evolution-matome",
-        "microsoft-typescript-7-native-compiler-speedup"
+        "microsoft-typescript-7-native-compiler-speedup",
+        "typescript-7-and-microsoft-oss-evolution-matome"
       ]
     },
     {
-      "text": "マルチコアCPUの演算リソースを活かす共有メモリ並行処理を導入しました。",
+      "text": "共有メモリを活用した並行処理により、マルチコアCPUの性能を限界まで引き出して処理を行います。",
       "sources": [
-        "typescript-7-and-microsoft-oss-evolution-matome",
-        "microsoft-typescript-7-native-compiler-speedup"
+        "microsoft-typescript-7-native-compiler-speedup",
+        "typescript-7-and-microsoft-oss-evolution-matome"
       ]
     },
     {
-      "text": "LSPにネイティブ準拠した新しい言語サーバーにより、再描画が2秒未満で完了します。",
+      "text": "LSPにネイティブ準拠した新しい言語サーバーにより、エラー描画や参照検索が劇的に高速化されています。",
       "sources": [
-        "typescript-7-and-microsoft-oss-evolution-matome",
-        "microsoft-typescript-7-native-compiler-speedup"
+        "typescript-7-and-microsoft-oss-evolution-matome"
       ]
     },
     {
-      "text": "従来のTypeScript 6との間で99.99%の互換性を保持しています。",
+      "text": "従来のコードベースに対して99.99%の互換性を保持しています。",
       "sources": [
-        "typescript-7-and-microsoft-oss-evolution-matome",
-        "microsoft-typescript-7-native-compiler-speedup"
+        "microsoft-typescript-7-native-compiler-speedup",
+        "typescript-7-and-microsoft-oss-evolution-matome"
       ]
     }
   ],
@@ -77,72 +83,80 @@
   ],
   "japan": [
     {
-      "text": "日本からの利用に対応しています。",
+      "text": "発表の時点では、日本での提供について案内はありません。",
       "sources": [
-        "microsoft-typescript-7-native-compiler-speedup"
+        "typescript-7-and-microsoft-oss-evolution-matome"
       ]
     }
   ],
-  "howto": [],
-  "differences": [
+  "howto": [
     {
-      "text": "JavaScript製コンパイラから、Go言語によるネイティブコードへ完全移植されました。",
+      "text": "既存の設定ファイルをそのまま使用してコンパイラを置き換えることで利用できます。",
       "sources": [
-        "typescript-7-and-microsoft-oss-evolution-matome",
-        "microsoft-typescript-7-native-compiler-speedup"
+        "typescript-7-and-microsoft-oss-evolution-matome"
       ]
     },
     {
-      "text": "シングルスレッド動作から、マルチコアCPUの並行処理に対応しました。",
+      "text": "コマンドラインからスレッド数を手動でチューニングすることが可能です。",
       "sources": [
-        "typescript-7-and-microsoft-oss-evolution-matome",
-        "microsoft-typescript-7-native-compiler-speedup"
+        "typescript-7-and-microsoft-oss-evolution-matome"
+      ]
+    }
+  ],
+  "differences": [
+    {
+      "text": "コンパイラおよび関連ツールのコアエンジンがGo言語によるネイティブコードへ完全移植されました。",
+      "sources": [
+        "microsoft-typescript-7-native-compiler-speedup",
+        "typescript-7-and-microsoft-oss-evolution-matome"
+      ]
+    },
+    {
+      "text": "マルチコアCPUを活用した並行処理が可能になり、処理速度が最大12倍に向上しました。",
+      "sources": [
+        "microsoft-typescript-7-native-compiler-speedup",
+        "typescript-7-and-microsoft-oss-evolution-matome"
       ]
     }
   ],
   "faq": [
     {
-      "q": "いつから使える？",
-      "a": "2026年7月24日に一般提供が発表されました。",
+      "q": "TypeScript 7では何が変わりますか？",
+      "a": "コンパイラがGo言語へ移植され、マルチコア並行処理によって処理速度が最大12倍に高速化されます。",
+      "sources": [
+        "microsoft-typescript-7-native-compiler-speedup",
+        "typescript-7-and-microsoft-oss-evolution-matome"
+      ]
+    },
+    {
+      "q": "既存のコードはそのまま使えますか？",
+      "a": "従来のTypeScript 6との互換性を99.99%保持しているため、既存のコードをそのまま使用できます。",
+      "sources": [
+        "microsoft-typescript-7-native-compiler-speedup",
+        "typescript-7-and-microsoft-oss-evolution-matome"
+      ]
+    },
+    {
+      "q": "処理速度はどれくらい速くなりますか？",
+      "a": "標準設定で約7.5倍、チェッカー数を増やした場合は最大12倍に高速化します。",
       "sources": [
         "microsoft-typescript-7-native-compiler-speedup"
       ]
     },
     {
-      "q": "従来のコードはそのまま使える？",
-      "a": "TypeScript 6と99.99%の互換性があり、コンパイラを置き換えるだけで利用できます。",
-      "sources": [
-        "typescript-7-and-microsoft-oss-evolution-matome",
-        "microsoft-typescript-7-native-compiler-speedup"
-      ]
-    },
-    {
-      "q": "高速化の仕組みは何？",
-      "a": "Go言語へのネイティブ移植と、共有メモリを活用したマルチスレッド並行処理によるものです。",
-      "sources": [
-        "typescript-7-and-microsoft-oss-evolution-matome",
-        "microsoft-typescript-7-native-compiler-speedup"
-      ]
-    },
-    {
-      "q": "誰が開発している？",
+      "q": "誰が開発していますか？",
       "a": "Microsoftが開発を主導しています。",
       "sources": [
-        "typescript-7-and-microsoft-oss-evolution-matome",
-        "microsoft-typescript-7-native-compiler-speedup"
+        "microsoft-typescript-7-native-compiler-speedup",
+        "typescript-7-and-microsoft-oss-evolution-matome"
       ]
     }
   ],
   "timeline": [
     {
-      "date": "2026-07-25",
+      "date": "2026-07-28",
       "slug": "microsoft-typescript-7-native-compiler-speedup",
-      "event": "TypeScript 7.0を正式発表"
-    },
-    {
-      "date": "2026-09-19",
-      "slug": "typescript-7-and-microsoft-oss-evolution-matome",
-      "event": "TypeScript 7の全貌を解説"
+      "event": "MicrosoftがTypeScript 7を発表"
     }
   ],
   "related": [
@@ -159,9 +173,9 @@
     "typescript-7-and-microsoft-oss-evolution-matome",
     "microsoft-typescript-7-native-compiler-speedup"
   ],
-  "signature": "8bad1820009b15a0",
-  "primarySignature": "8bad1820009b15a0",
+  "signature": "de4a5e2b4fd0720f",
+  "primarySignature": "de4a5e2b4fd0720f",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:45:20+00:00",
-  "updatedAt": "2026-10-27T10:51:11+00:00"
+  "updatedAt": "2026-11-03T10:21:47+00:00"
 }

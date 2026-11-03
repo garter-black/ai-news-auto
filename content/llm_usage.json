@@ -59,7 +59,7 @@
     "cf-image:flux-1-schnell": 3,
     "cf-image:flux-2-klein-4b": 7,
     "cloudflare:@cf/openai/gpt-oss-120b": 9,
-    "gemini-3.5-flash-lite": 15,
+    "gemini-3.5-flash-lite": 20,
     "gemini-flash-lite-latest": 1
   }
 }
