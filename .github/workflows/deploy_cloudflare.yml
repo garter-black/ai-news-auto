@@ -59,6 +59,12 @@ jobs:
 
       - name: Build
         run: npm run cf:build
+        env:
+          # AdSense の広告枠（components/AdSlot.tsx）。審査に通ったあと、管理画面で作った広告ユニットの ID を
+          # GitHub の Variables に入れると、検索対象の記事だけに枠が出る。未設定（空）のあいだは枠を出さない
+          NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_TOP: ${{ vars.ADSENSE_SLOT_ARTICLE_TOP }}
+          NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_MIDDLE: ${{ vars.ADSENSE_SLOT_ARTICLE_MIDDLE }}
+          NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR: ${{ vars.ADSENSE_SLOT_SIDEBAR }}
 
       - name: Deploy
         env:

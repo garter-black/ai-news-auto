@@ -1,11 +1,12 @@
 /**
  * 広告枠。
  *
- * 本番の AdSense を有効にするには Vercel の環境変数に次を設定するだけです:
- *   NEXT_PUBLIC_ADSENSE_CLIENT = ca-pub-XXXXXXXXXXXXXXXX
- *   NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_TOP    = 1234567890
- *   NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_MIDDLE = 1234567890
- *   NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR        = 1234567890
+ * 本番の AdSense の枠を出すには、GitHub の Variables に広告ユニットの ID を入れて再デプロイする
+ * （.github/workflows/deploy_cloudflare.yml が NEXT_PUBLIC_ADSENSE_SLOT_* に渡す。発行者 ID は scripts/cf_build.sh）:
+ *   gh variable set ADSENSE_SLOT_ARTICLE_TOP    --body 1234567890
+ *   gh variable set ADSENSE_SLOT_ARTICLE_MIDDLE --body 1234567890
+ *   gh variable set ADSENSE_SLOT_SIDEBAR        --body 1234567890
+ * 検索に出さない記事（lib/indexing.ts）には枠を出さない（app/articles/[slug]/page.tsx の showAds）。
  *
  * 未設定の間、本番では何も表示しない（空の広告枠は読者の邪魔になり、AdSense審査でも
  * 「中身のない枠」と見なされうるため）。開発中だけ位置確認用のダミー枠を出す。
