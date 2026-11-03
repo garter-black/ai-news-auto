@@ -245,6 +245,8 @@ class PoliteSummaryTest(unittest.TestCase):
         # （本番の記事の題名が「厚労省、…」に変わって、この試験がルールと関係なく落ちた。2026-11-03）
         path = Path(__file__).resolve().parent / "fixtures" / "sns" / "nenkin-no-hi-2026-mhlw.json"
         article = json.loads(path.read_text("utf-8"))
+        # 見本の記事（2026-11-03 にお知らせの転載として取り下げ・台帳 A26）。記事のファイルが無くても文面の門だけを確かめる
+        article["_virtual"] = True
         text, summary = self._summary_of(article)
         self.assertEqual(sns_rules.impolite_sentences(summary), [], summary)
         self.assertIsNone(sns_rules.HARD_WORDS.search(summary), summary)
