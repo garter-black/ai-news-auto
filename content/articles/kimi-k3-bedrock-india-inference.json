@@ -124,5 +124,12 @@
     ],
     "ar": 2.0,
     "src": "https://ai-tech-express.jp/img/kimi-k3-bedrock-india-inference-d46518e6.jpg"
+  },
+  "video": {
+    "src": "https://ai-tech-express.jp/video/kimi-k3-bedrock-india-inference-81dfdafa54.mp4",
+    "poster": "https://ai-tech-express.jp/video/kimi-k3-bedrock-india-inference-9a43d03e75.jpg",
+    "seconds": 51.3,
+    "title": "AWS、Bedrockの「Kimi K3」でインド国内推論に対応 処理をムンバ…",
+    "credit": "VOICEVOX:九州そら"
   }
 }

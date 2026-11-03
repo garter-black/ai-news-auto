@@ -1062,6 +1062,214 @@
       "variant": "full",
       "bufferId": "6aea40275a7c19a37cd1e45f",
       "postedAt": "2026-11-04T12:15:00+09:00"
+    },
+    "kimi-k3-bedrock-india-inference": {
+      "at": "2026-11-03T21:01:46+00:00",
+      "status": "attached",
+      "tries": 1,
+      "textAt": "2026-11-03T21:00:46+00:00",
+      "textId": "",
+      "breaking": true,
+      "scheduled": false,
+      "versions": {
+        "full": {
+          "ok": true,
+          "seconds": 51.284,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1,
+            "how": "ladder",
+            "vision_how": "deterministic-L4（レビューなし: RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+          },
+          "template": "ladder-L4",
+          "level": "L4",
+          "post": {
+            "title": "AWS、Bedrockの「Kimi K3」でインド国内推論に対応 処理をムンバ…",
+            "url": "https://ai-tech-express.jp/articles/kimi-k3-bedrock-india-inference",
+            "total": 51.284,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "level": "L4",
+            "script_v3": {
+              "hook": {
+                "text": "AWS、Bedrockの「Kimi K3」でインド国内推論に対応"
+              },
+              "summary": "要約すると、AWSのBedrockで「Kimi K3」をインド国内だけで動かせるようになりました。"
+            }
+          }
+        },
+        "short": {
+          "ok": true,
+          "seconds": 20.359,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1,
+            "how": "ladder",
+            "vision_how": "deterministic-L4（レビューなし: RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+          },
+          "template": "ladder-L4",
+          "level": "L4",
+          "post": {
+            "title": "AWS、Bedrockの「Kimi K3」でインド国内推論に対応 処理をムンバ…",
+            "url": "https://ai-tech-express.jp/articles/kimi-k3-bedrock-india-inference",
+            "total": 20.359,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "level": "L4",
+            "script_v3": {
+              "hook": {
+                "text": "AWS、Bedrockの「Kimi K3」でインド国内推論に対応"
+              },
+              "summary": "要約すると、AWSのBedrockで「Kimi K3」をインド国内だけで動かせるようになりました。"
+            }
+          }
+        }
+      },
+      "timings": {
+        "full": {
+          "tts": 0.0,
+          "render": 20.4,
+          "gate": 2.2,
+          "total": 23.2,
+          "ladder_total": 144.4
+        },
+        "short": {
+          "tts": 0.0,
+          "render": 8.3,
+          "gate": 1.0,
+          "total": 9.4,
+          "ladder_total": 144.4
+        }
+      },
+      "level": "L4",
+      "ladder": {
+        "full": [
+          {
+            "level": "L1",
+            "ok": false,
+            "reasons": [
+              "full: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
+            ],
+            "seconds": 20.7,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L2",
+            "ok": false,
+            "reasons": [
+              "full: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
+            ],
+            "seconds": 18.3,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L3",
+            "ok": false,
+            "reasons": [
+              "full: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））",
+              "short: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+            ],
+            "seconds": 72.0,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L4",
+            "ok": true,
+            "reasons": [],
+            "seconds": 33.4,
+            "variants": {
+              "full": true,
+              "short": true
+            }
+          }
+        ],
+        "short": [
+          {
+            "level": "L1",
+            "ok": false,
+            "reasons": [
+              "full: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
+            ],
+            "seconds": 20.7,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L2",
+            "ok": false,
+            "reasons": [
+              "full: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
+            ],
+            "seconds": 18.3,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L3",
+            "ok": false,
+            "reasons": [
+              "full: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））",
+              "short: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+            ],
+            "seconds": 72.0,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L4",
+            "ok": true,
+            "reasons": [],
+            "seconds": 33.4,
+            "variants": {
+              "full": true,
+              "short": true
+            }
+          }
+        ]
+      },
+      "ok": true,
+      "reason": "",
+      "pages": [],
+      "urls": {
+        "full": "https://ai-tech-express.jp/video/kimi-k3-bedrock-india-inference-81dfdafa54.mp4",
+        "short": "https://ai-tech-express.jp/video/kimi-k3-bedrock-india-inference-a34a365773.mp4",
+        "poster": "https://ai-tech-express.jp/video/kimi-k3-bedrock-india-inference-9a43d03e75.jpg"
+      },
+      "embedded": true,
+      "variant": "short",
+      "bufferId": "6aea4c50a8918d96047f56e6",
+      "postedAt": "2026-11-03T21:04:46+00:00"
     }
   },
   "queued": {
@@ -1091,6 +1299,18 @@
       "dueAt": "2026-11-04T12:15:00+09:00",
       "variant": "full",
       "delayedMin": 0
+    },
+    "kimi-k3-bedrock-india-inference": {
+      "status": "created",
+      "channels": {
+        "threads": "6aea4c50a8918d96047f56e6",
+        "twitter": "6aea4c5246499f925e7c3280",
+        "facebook": "6aea4c551ee1ad0996cd39a0"
+      },
+      "id": "6aea4c50a8918d96047f56e6",
+      "dueAt": "2026-11-03T21:04:46+00:00",
+      "variant": "short",
+      "delayedMin": 3
     }
   },
   "converted": {
