@@ -33,7 +33,8 @@ export const siteConfig = {
     name: "サイソク編集部",
     representative: "小室勇世",
     location: "東京都",
-    email: "koyuiw7@gmail.com",
+    // 独自ドメインの窓口（Cloudflare Email Routing でオーナーの受信箱へ転送。2026-11-03 から）
+    email: "contact@ai-tech-express.jp",
     established: "2026年7月",
   },
 

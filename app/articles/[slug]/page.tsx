@@ -301,7 +301,7 @@ export default async function ArticlePage({ params }: Props) {
       publishingPrinciples: `${siteConfig.url}/editorial-policy`,
       correctionsPolicy: `${siteConfig.url}/corrections`,
       // AIを使った制作であることの開示（schema.org の backstory: 記事がどう作られたか）
-      backstory: `生成AIで下書きを作成し、元の発表と照合してから公開しています。制作方法と事実確認の手順: ${siteConfig.url}/editorial-policy`,
+      backstory: `${reviewedLabel ? `生成AIで下書きを作成し、元の発表と自動で照合してから公開しました。${reviewedLabel}に編集部が記事を読んで確認しています。` : "生成AIで下書きを作成し、元の発表と自動で照合してから公開しています。"}制作方法と事実確認の手順: ${siteConfig.url}/editorial-policy`,
       publisher: publisherJsonLd,
       isAccessibleForFree: true,
       articleSection: company.name,

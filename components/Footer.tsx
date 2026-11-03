@@ -181,7 +181,7 @@ export default function Footer() {
       <div className="border-t border-line">
         <div className="mx-auto max-w-[1240px] px-5 py-6 sm:px-8">
           <p className="text-note leading-[1.9] text-muted">
-            本サイトの記事は、公式発表・公開されている動画・報道をもとに生成AIを使って作成し、元の発表と照らし合わせる自動の事実確認を通したものです（出典は各記事に記載。詳しくは<Link href="/editorial-policy" className="underline underline-offset-2 hover:text-ink">編集方針</Link>）。誤りが含まれる可能性があるため、重要な判断の際は必ず出典および各社の公式発表をご確認ください。
+            本サイトの記事は、公式発表・公開されている動画・報道をもとに生成AIが下書きし、元の発表と照らし合わせる自動の事実確認を通したものです。編集部（人）が読んだ記事には「編集部が確認済み」と表示しています（出典は各記事に記載。詳しくは<Link href="/editorial-policy" className="underline underline-offset-2 hover:text-ink">編集方針</Link>）。誤りが含まれる可能性があるため、重要な判断の際は必ず出典および各社の公式発表をご確認ください。
             {hasActiveAffiliate() &&
               "当サイトは広告およびアフィリエイトプログラムによる収益を得ています。"}
           </p>
