@@ -1,97 +1,885 @@
 {
   "_about": "製品の記事の「同じクラスの製品と比べると？」（scripts/rivals.py）で使う分類・項目・ライバルの候補。rivals の url は各メーカーの公式ページだけ（販売店・比較サイトは入れない）。値はここに書かない（毎回公式ページから読み取る）",
   "fields": {
-    "weight": {"label": "重さ", "units": ["kg", "g"], "labels": "重量|重さ|車重|weight", "compare": true, "words": ["軽い", "重い"],
-               "deny": "ドライブユニット|ユニット|モーター|バッテリー|充電器|motor|battery|charger", "allow": "車体|車両|本体|参考重量|総重量|車重",
-               "hint": "製品全体の重さ（参考重量・車両重量・本体重量）。モーター・バッテリーなど部品だけの重さは入れない。サイズ違いで複数あれば「23.3〜23.7kg（S〜L）」のように範囲で書き、測ったサイズがあれば（）で添える"},
-    "motor": {"label": "モーター", "units": [], "labels": "ドライブユニット|モーター|motor|drive ?unit",
-              "hint": "モーター（ドライブユニット）のメーカーと型名だけ。トルク・出力の数字は入れない"},
-    "torque": {"label": "最大トルク", "units": ["Nm"], "labels": "トルク|torque", "compare": true, "words": ["小さい", "大きい"],
-               "hint": "モーターの最大トルク（Nm）"},
-    "power": {"label": "最大出力", "units": ["kW", "W", "PS", "馬力"], "labels": "最大出力|出力|power", "compare": true, "words": ["小さい", "大きい"],
-              "exclude": "定格|rated|nominal|continuous",
-              "hint": "最大（ピーク）出力。定格出力は別のものなので入れない（定格しか無ければこの項目は出さない）"},
-    "battery": {"label": "バッテリー", "units": ["kWh", "Wh", "mAh", "Ah"], "labels": "バッテリー|battery|電池", "compare": true, "words": ["小さい", "大きい"],
-                "hint": "バッテリー容量。ページの書き方のまま（Wh・Ah・mAh など。換算しない）。別売りの増設バッテリーは入れない"},
-    "fork": {"label": "前サスペンション", "units": ["mm"], "labels": "フォーク|フロントサスペンション|前サス|fork",
-             "hint": "前サスペンション（フォーク）のトラベル量（mm）。型名があれば添えてよい"},
-    "wheels": {"label": "ホイール", "units": ["インチ", "inch", "\"", "″", "×"], "labels": "ホイール|タイヤサイズ|wheel",
-               "hint": "前後の車輪の大きさ（インチ）。前後で違えば「前29インチ・後27.5インチ」"},
-    "display": {"label": "画面", "units": ["インチ", "型", "inch", "\"", "″"], "labels": "ディスプレイ|画面|display|screen",
-                "hint": "画面の大きさ（インチ・型）。解像度は入れない"},
-    "chip": {"label": "チップ", "units": [], "labels": "チップ|プロセッサ|CPU|SoC|chip|processor",
-             "hint": "搭載するチップ（CPU・SoC）の名前"},
-    "memory": {"label": "メモリ", "units": ["GB", "TB"], "labels": "メモリ|RAM|memory", "hint": "標準のメモリ容量（最小構成）"},
-    "storage": {"label": "ストレージ", "units": ["GB", "TB"], "labels": "ストレージ|SSD|容量|storage", "hint": "標準のストレージ容量（最小構成）"},
-    "battery_life": {"label": "電池持ち（公式値）", "units": ["時間", "hours", "hrs"], "labels": "駆動時間|再生時間|バッテリー駆動|battery life",
-                     "compare": true, "words": ["短い", "長い"], "hint": "公式の最大駆動時間・再生時間（条件があれば添える）"},
-    "camera": {"label": "カメラ", "units": ["MP", "万画素", "画素", "メガピクセル"], "labels": "カメラ|画素|camera",
-               "hint": "メインカメラの画素数"},
-    "range_km": {"label": "航続距離（公式値）", "units": ["km"], "labels": "航続距離|一充電走行距離|range", "compare": true, "words": ["短い", "長い"],
-                 "hint": "公式の航続距離・一充電走行距離（測り方の条件・モードがあれば添える）"},
-    "displacement": {"label": "排気量", "units": ["cc", "cm3", "cm³", "L"], "labels": "排気量|displacement", "hint": "エンジンの総排気量"},
-    "fuel": {"label": "燃費（公式値）", "units": ["km/L"], "labels": "燃費|燃料消費率|WLTC", "hint": "公式の燃費（WLTCモードなど測り方を添える）"},
-    "size": {"label": "大きさ", "units": ["mm"], "labels": "全長|寸法|サイズ|dimensions", "hint": "全長×全幅×全高（mm）"}
+    "weight": {
+      "label": "重さ",
+      "units": [
+        "kg",
+        "g"
+      ],
+      "labels": "重量|重さ|車重|weight",
+      "compare": true,
+      "words": [
+        "軽い",
+        "重い"
+      ],
+      "deny": "ドライブユニット|ユニット|モーター|バッテリー|充電器|motor|battery|charger",
+      "allow": "車体|車両|本体|参考重量|総重量|車重",
+      "hint": "製品全体の重さ（参考重量・車両重量・本体重量）。モーター・バッテリーなど部品だけの重さは入れない。サイズ違いで複数あれば「23.3〜23.7kg（S〜L）」のように範囲で書き、測ったサイズがあれば（）で添える。イヤホンは片耳（本体）の重さだけで、ケース込みの重さと混ぜない。付属品込み・別の部品の重さを範囲にまとめない"
+    },
+    "motor": {
+      "label": "モーター",
+      "units": [],
+      "labels": "ドライブユニット|モーター|motor|drive ?unit",
+      "hint": "モーター（ドライブユニット）のメーカーと型名だけ。トルク・出力の数字は入れない"
+    },
+    "torque": {
+      "label": "最大トルク",
+      "units": [
+        "Nm"
+      ],
+      "labels": "トルク|torque",
+      "compare": true,
+      "words": [
+        "小さい",
+        "大きい"
+      ],
+      "hint": "モーターの最大トルク（Nm）"
+    },
+    "power": {
+      "label": "最大出力",
+      "units": [
+        "kW",
+        "W",
+        "PS",
+        "馬力"
+      ],
+      "labels": "最大出力|出力|power",
+      "compare": true,
+      "words": [
+        "小さい",
+        "大きい"
+      ],
+      "exclude": "定格|rated|nominal|continuous",
+      "hint": "最大（ピーク）出力。定格出力は別のものなので入れない（定格しか無ければこの項目は出さない）"
+    },
+    "battery": {
+      "label": "バッテリー",
+      "units": [
+        "kWh",
+        "Wh",
+        "mAh",
+        "Ah"
+      ],
+      "labels": "バッテリー|battery|電池",
+      "compare": true,
+      "words": [
+        "小さい",
+        "大きい"
+      ],
+      "hint": "バッテリー容量。ページの書き方のまま（Wh・Ah・mAh など。換算しない）。別売りの増設バッテリーは入れない"
+    },
+    "fork": {
+      "label": "前サスペンション",
+      "units": [
+        "mm"
+      ],
+      "labels": "フォーク|フロントサスペンション|前サス|fork",
+      "hint": "前サスペンション（フォーク）のトラベル量（mm）。型名があれば添えてよい"
+    },
+    "wheels": {
+      "label": "ホイール",
+      "units": [
+        "インチ",
+        "inch",
+        "\"",
+        "″",
+        "×"
+      ],
+      "labels": "ホイール|タイヤサイズ|wheel",
+      "hint": "前後の車輪の大きさ（インチ）。前後で違えば「前29インチ・後27.5インチ」"
+    },
+    "display": {
+      "label": "画面",
+      "units": [
+        "インチ",
+        "型",
+        "inch",
+        "\"",
+        "″"
+      ],
+      "labels": "ディスプレイ|画面|display|screen",
+      "hint": "画面の大きさ（インチ・型）。解像度は入れない"
+    },
+    "chip": {
+      "label": "チップ",
+      "units": [],
+      "labels": "チップ|プロセッサ|CPU|SoC|chip|processor",
+      "hint": "搭載するチップ（CPU・SoC）の名前"
+    },
+    "memory": {
+      "label": "メモリ",
+      "units": [
+        "GB",
+        "TB"
+      ],
+      "labels": "メモリ|RAM|memory",
+      "hint": "標準のメモリ容量（最小構成）"
+    },
+    "storage": {
+      "label": "ストレージ",
+      "units": [
+        "GB",
+        "TB"
+      ],
+      "labels": "ストレージ|SSD|容量|storage",
+      "hint": "標準のストレージ容量（最小構成）"
+    },
+    "battery_life": {
+      "label": "電池持ち（公式値）",
+      "units": [
+        "時間",
+        "hours",
+        "hrs"
+      ],
+      "labels": "駆動時間|再生時間|バッテリー駆動|battery life",
+      "compare": true,
+      "words": [
+        "短い",
+        "長い"
+      ],
+      "hint": "公式の最大駆動時間・再生時間（条件があれば添える）"
+    },
+    "camera": {
+      "label": "カメラ",
+      "units": [
+        "MP",
+        "万画素",
+        "画素",
+        "メガピクセル"
+      ],
+      "labels": "カメラ|画素|camera",
+      "hint": "メインカメラの画素数"
+    },
+    "range_km": {
+      "label": "航続距離（公式値）",
+      "units": [
+        "km"
+      ],
+      "labels": "航続距離|一充電走行距離|range",
+      "compare": true,
+      "words": [
+        "短い",
+        "長い"
+      ],
+      "hint": "公式の航続距離・一充電走行距離（測り方の条件・モードがあれば添える）"
+    },
+    "displacement": {
+      "label": "排気量",
+      "units": [
+        "cc",
+        "cm3",
+        "cm³",
+        "L"
+      ],
+      "labels": "排気量|displacement",
+      "hint": "エンジンの総排気量"
+    },
+    "fuel": {
+      "label": "燃費（公式値）",
+      "units": [
+        "km/L"
+      ],
+      "labels": "燃費|燃料消費率|WLTC",
+      "hint": "公式の燃費（WLTCモードなど測り方を添える）"
+    },
+    "size": {
+      "label": "大きさ",
+      "units": [
+        "mm"
+      ],
+      "labels": "全長|寸法|サイズ|dimensions",
+      "hint": "全長×全幅×全高（mm）"
+    }
   },
   "categories": {
     "emtb": {
       "label": "ハイエンドの電動アシストマウンテンバイク（e-MTB）",
       "match": "e-?MTB|電動アシスト(?:付き)?マウンテンバイク|electric mountain bike",
-      "fields": ["weight", "motor", "torque", "power", "battery", "fork", "wheels"],
-      "chart": ["weight", "torque"],
+      "fields": [
+        "weight",
+        "motor",
+        "torque",
+        "power",
+        "battery",
+        "fork",
+        "wheels"
+      ],
+      "chart": [
+        "weight",
+        "torque"
+      ],
       "rivals": [
-        {"name": "Specialized Turbo Levo 4 Comp", "maker": "Specialized", "sourceName": "スペシャライズド公式", "url": "https://www.specialized.com/jp/ja/turbo-levo-4-comp/p/4218708"},
-        {"name": "Trek Rail+", "maker": "Trek", "url": "https://www.trekbikes.com/jp/ja_JP/rail/"},
-        {"name": "Yamaha YPJ-MT Pro", "maker": "Yamaha", "sourceName": "ヤマハ発動機公式", "url": "https://www.yamaha-motor.co.jp/pas/ypj/ypj-mt-pro/spec.html"}
+        {
+          "name": "Specialized Turbo Levo 4 Comp",
+          "maker": "Specialized",
+          "sourceName": "スペシャライズド公式",
+          "url": "https://www.specialized.com/jp/ja/turbo-levo-4-comp/p/4218708",
+          "tier": "high"
+        },
+        {
+          "name": "Trek Rail+",
+          "maker": "Trek",
+          "url": "https://www.trekbikes.com/jp/ja_JP/rail/",
+          "tier": "high"
+        },
+        {
+          "name": "Yamaha YPJ-MT Pro",
+          "maker": "Yamaha",
+          "sourceName": "ヤマハ発動機公式",
+          "url": "https://www.yamaha-motor.co.jp/pas/ypj/ypj-mt-pro/spec.html",
+          "tier": "high"
+        }
       ]
     },
-    "ebike": {"label": "電動アシスト自転車", "match": "電動アシスト自転車|e-?bike", "fields": ["weight", "motor", "torque", "battery", "range_km"], "chart": ["weight", "battery"], "rivals": []},
-    "smartphone": {"label": "スマートフォン", "match": "スマホ|スマートフォン|iPhone|Pixel|Galaxy|Xperia|AQUOS", "fields": ["weight", "display", "chip", "battery", "camera", "storage"], "chart": ["weight", "battery"], "rivals": []},
-    "laptop": {"label": "ノートパソコン", "match": "ノートPC|ノートパソコン|MacBook|ラップトップ|Surface Laptop", "fields": ["weight", "display", "chip", "memory", "storage", "battery_life"], "chart": ["weight", "battery_life"], "rivals": []},
-    "desktop": {"label": "デスクトップパソコン", "match": "iMac|デスクトップ|一体型PC|Mac mini|Mac Studio", "fields": ["display", "chip", "memory", "storage", "weight"], "chart": ["weight"], "rivals": []},
-    "tablet": {"label": "タブレット", "match": "iPad|タブレット|Galaxy Tab", "fields": ["weight", "display", "chip", "storage", "battery_life"], "chart": ["weight", "battery_life"], "rivals": []},
-    "earbuds": {"label": "ワイヤレスイヤホン・ヘッドホン", "match": "イヤホン|イヤフォン|ヘッドホン|ヘッドフォン|earbuds|Buds|AirPods", "fields": ["weight", "battery_life"], "chart": ["battery_life", "weight"], "rivals": []},
-    "smartwatch": {"label": "スマートウォッチ", "match": "スマートウォッチ|Apple Watch|Galaxy Watch|Pixel Watch", "fields": ["weight", "display", "battery_life"], "chart": ["battery_life", "weight"], "rivals": []},
-    "camera": {"label": "カメラ", "match": "ミラーレス|一眼|デジタルカメラ|アクションカメラ|カメラ", "fields": ["weight", "camera", "display"], "chart": ["weight"], "rivals": []},
-    "game_console": {"label": "ゲーム機", "match": "ゲーム機|携帯ゲーム機|Switch 2|PS5 Pro|Xbox", "fields": ["weight", "display", "storage", "battery_life"], "chart": ["weight", "battery_life"], "rivals": []},
-    "ai_device": {"label": "AIデバイス（グラス・ピン・アシスタント端末）", "match": "AIデバイス|AIグラス|スマートグラス|AIピン|AI端末", "fields": ["weight", "battery_life", "camera"], "chart": ["weight", "battery_life"], "rivals": []},
-    "car": {"label": "乗用車", "match": "新型車|SUV|セダン|ミニバン|ハッチバック|EV|PHEV|ハイブリッド車|一部改良|フルモデルチェンジ", "fields": ["size", "displacement", "power", "fuel", "range_km"], "chart": ["power"], "rivals": []},
-    "motorcycle": {"label": "オートバイ", "match": "オートバイ|二輪車|スクーター|ネイキッド|スーパースポーツ", "fields": ["weight", "displacement", "power", "fuel"], "chart": ["weight", "power"], "rivals": []}
+    "ebike": {
+      "label": "電動アシスト自転車",
+      "match": "電動アシスト自転車|e-?bike",
+      "fields": [
+        "weight",
+        "motor",
+        "torque",
+        "battery",
+        "range_km"
+      ],
+      "chart": [
+        "weight",
+        "battery"
+      ],
+      "rivals": [
+        {
+          "name": "ヤマハ PAS With",
+          "maker": "Yamaha",
+          "tier": "entry",
+          "sourceName": "ヤマハ発動機公式",
+          "url": "https://www.yamaha-motor.co.jp/pas/lineup/with/"
+        },
+        {
+          "name": "ヤマハ PAS CITY-X",
+          "maker": "Yamaha",
+          "tier": "entry",
+          "sourceName": "ヤマハ発動機公式",
+          "url": "https://www.yamaha-motor.co.jp/pas/lineup/city-x/"
+        },
+        {
+          "name": "ヤマハ CROSSCORE RC",
+          "maker": "Yamaha",
+          "tier": "mid",
+          "sourceName": "ヤマハ発動機公式",
+          "url": "https://www.yamaha-motor.co.jp/pas/ypj/crosscore-rc/spec.html"
+        },
+        {
+          "name": "ヤマハ CROSSCORE RV",
+          "maker": "Yamaha",
+          "tier": "mid",
+          "sourceName": "ヤマハ発動機公式",
+          "url": "https://www.yamaha-motor.co.jp/pas/ypj/crosscore-rv/spec.html"
+        },
+        {
+          "name": "ヤマハ WABASH RT",
+          "maker": "Yamaha",
+          "tier": "mid",
+          "sourceName": "ヤマハ発動機公式",
+          "url": "https://www.yamaha-motor.co.jp/pas/ypj/wabash-rt/spec.html"
+        }
+      ]
+    },
+    "foldable": {
+      "label": "折りたたみスマートフォン",
+      "match": "折りたたみ|フォルダブル|Fold\\d|Flip\\d|Pro Fold|razr",
+      "fields": [
+        "weight",
+        "display",
+        "chip",
+        "battery",
+        "camera",
+        "storage"
+      ],
+      "chart": [
+        "weight",
+        "battery"
+      ],
+      "rivals": [
+        {
+          "name": "Galaxy Z Fold8",
+          "maker": "Samsung",
+          "tier": "high",
+          "sourceName": "Samsung Newsroom（日本）",
+          "url": "https://news.samsung.com/jp/galaxy-z-series-onsale-samsung"
+        },
+        {
+          "name": "Google Pixel 11 Pro Fold",
+          "maker": "Google",
+          "tier": "high",
+          "sourceName": "Googleストア公式",
+          "url": "https://store.google.com/jp/product/pixel_11_pro_fold_specs?hl=ja"
+        },
+        {
+          "name": "Galaxy Z Flip8",
+          "maker": "Samsung",
+          "tier": "mid",
+          "sourceName": "Samsung Newsroom（日本）",
+          "url": "https://news.samsung.com/jp/galaxy-z-series-onsale-samsung"
+        }
+      ]
+    },
+    "smartphone": {
+      "label": "スマートフォン",
+      "match": "スマホ|スマートフォン|iPhone|Pixel(?! ?Buds| ?Watch| ?Tablet)|Galaxy S\\d|Xperia|AQUOS",
+      "fields": [
+        "weight",
+        "display",
+        "chip",
+        "battery",
+        "battery_life",
+        "camera",
+        "storage"
+      ],
+      "chart": [
+        "weight",
+        "battery_life"
+      ],
+      "rivals": [
+        {
+          "name": "iPhone 18 Pro",
+          "maker": "Apple",
+          "tier": "high",
+          "sourceName": "Apple公式",
+          "url": "https://www.apple.com/jp/iphone-18-pro/specs/"
+        },
+        {
+          "name": "Google Pixel 11 Pro",
+          "maker": "Google",
+          "tier": "high",
+          "sourceName": "Googleストア公式",
+          "url": "https://store.google.com/jp/product/pixel_11_pro_specs?hl=ja"
+        },
+        {
+          "name": "Galaxy S26 Ultra",
+          "maker": "Samsung",
+          "tier": "high",
+          "sourceName": "Samsung公式",
+          "url": "https://www.samsung.com/jp/smartphones/galaxy-s26-ultra/"
+        },
+        {
+          "name": "iPhone 17",
+          "maker": "Apple",
+          "tier": "mid",
+          "sourceName": "Apple公式",
+          "url": "https://www.apple.com/jp/iphone-17/specs/"
+        },
+        {
+          "name": "iPhone Air",
+          "maker": "Apple",
+          "tier": "mid",
+          "sourceName": "Apple公式",
+          "url": "https://www.apple.com/jp/iphone-air/specs/"
+        },
+        {
+          "name": "Google Pixel 11",
+          "maker": "Google",
+          "tier": "mid",
+          "sourceName": "Googleストア公式",
+          "url": "https://store.google.com/jp/product/pixel_11_specs?hl=ja"
+        },
+        {
+          "name": "Galaxy S26",
+          "maker": "Samsung",
+          "tier": "mid",
+          "sourceName": "Samsung公式",
+          "url": "https://www.samsung.com/jp/smartphones/galaxy-s26/"
+        },
+        {
+          "name": "iPhone 17e",
+          "maker": "Apple",
+          "tier": "entry",
+          "sourceName": "Apple公式",
+          "url": "https://www.apple.com/jp/iphone-17e/specs/"
+        },
+        {
+          "name": "Google Pixel 10a",
+          "maker": "Google",
+          "tier": "entry",
+          "sourceName": "Googleストア公式",
+          "url": "https://store.google.com/jp/product/pixel_10a_specs?hl=ja"
+        }
+      ]
+    },
+    "laptop": {
+      "label": "ノートパソコン",
+      "match": "ノートPC|ノートパソコン|MacBook|ラップトップ|Surface Laptop",
+      "fields": [
+        "weight",
+        "display",
+        "chip",
+        "memory",
+        "storage",
+        "battery_life"
+      ],
+      "chart": [
+        "weight",
+        "battery_life"
+      ],
+      "rivals": [
+        {
+          "name": "MacBook Pro",
+          "maker": "Apple",
+          "tier": "high",
+          "sourceName": "Apple公式",
+          "url": "https://www.apple.com/jp/macbook-pro/specs/"
+        },
+        {
+          "name": "Surface Laptop（第8世代）",
+          "maker": "Microsoft",
+          "tier": "high",
+          "sourceName": "Microsoft公式",
+          "url": "https://www.microsoft.com/ja-jp/surface/devices/surface-laptop"
+        },
+        {
+          "name": "HP OmniBook Ultra 14",
+          "maker": "HP",
+          "tier": "high",
+          "sourceName": "日本HP公式",
+          "url": "https://jp.ext.hp.com/notebooks/personal/omnibook_ultra_14_kd/"
+        },
+        {
+          "name": "MacBook Air",
+          "maker": "Apple",
+          "tier": "mid",
+          "sourceName": "Apple公式",
+          "url": "https://www.apple.com/jp/macbook-air/specs/"
+        },
+        {
+          "name": "HP OmniBook X 14",
+          "maker": "HP",
+          "tier": "mid",
+          "sourceName": "日本HP公式",
+          "url": "https://jp.ext.hp.com/notebooks/personal/omnibook_x_14_ka/"
+        },
+        {
+          "name": "Surface Pro（第12世代）",
+          "maker": "Microsoft",
+          "tier": "mid",
+          "sourceName": "Microsoft公式",
+          "url": "https://www.microsoft.com/ja-jp/surface/devices/surface-pro"
+        }
+      ]
+    },
+    "desktop": {
+      "label": "デスクトップパソコン",
+      "match": "iMac|デスクトップ|一体型PC|Mac mini|Mac Studio",
+      "fields": [
+        "display",
+        "chip",
+        "memory",
+        "storage",
+        "weight"
+      ],
+      "chart": [
+        "weight"
+      ],
+      "rivals": []
+    },
+    "tablet": {
+      "label": "タブレット",
+      "match": "iPad|タブレット|Galaxy Tab",
+      "fields": [
+        "weight",
+        "display",
+        "chip",
+        "storage",
+        "battery_life"
+      ],
+      "chart": [
+        "weight",
+        "battery_life"
+      ],
+      "rivals": [
+        {
+          "name": "iPad Pro",
+          "maker": "Apple",
+          "tier": "high",
+          "sourceName": "Apple公式",
+          "url": "https://www.apple.com/jp/ipad-pro/specs/"
+        },
+        {
+          "name": "Galaxy Tab S12",
+          "maker": "Samsung",
+          "tier": "high",
+          "sourceName": "Samsung Newsroom（日本）",
+          "url": "https://news.samsung.com/jp/galaxy-tab-s12-onsale"
+        },
+        {
+          "name": "Surface Pro（第12世代）",
+          "maker": "Microsoft",
+          "tier": "high",
+          "sourceName": "Microsoft公式",
+          "url": "https://www.microsoft.com/ja-jp/surface/devices/surface-pro"
+        },
+        {
+          "name": "iPad Air",
+          "maker": "Apple",
+          "tier": "mid",
+          "sourceName": "Apple公式",
+          "url": "https://www.apple.com/jp/ipad-air/specs/"
+        },
+        {
+          "name": "iPad mini",
+          "maker": "Apple",
+          "tier": "mid",
+          "sourceName": "Apple公式",
+          "url": "https://www.apple.com/jp/ipad-mini/specs/"
+        },
+        {
+          "name": "iPad（A16）",
+          "maker": "Apple",
+          "tier": "entry",
+          "sourceName": "Apple公式",
+          "url": "https://www.apple.com/jp/ipad-11/specs/"
+        }
+      ]
+    },
+    "earbuds": {
+      "label": "ワイヤレスイヤホン・ヘッドホン",
+      "match": "イヤホン|イヤフォン|ヘッドホン|ヘッドフォン|earbuds|Buds|AirPods",
+      "fields": [
+        "weight",
+        "battery_life"
+      ],
+      "chart": [
+        "battery_life",
+        "weight"
+      ],
+      "rivals": [
+        {
+          "name": "AirPods Pro 3",
+          "maker": "Apple",
+          "tier": "high",
+          "sourceName": "Apple公式",
+          "url": "https://www.apple.com/jp/airpods-pro/specs/"
+        },
+        {
+          "name": "ソニー WF-1000XM6",
+          "maker": "Sony",
+          "tier": "high",
+          "sourceName": "ソニー公式",
+          "url": "https://www.sony.jp/headphone/products/WF-1000XM6/spec.html"
+        },
+        {
+          "name": "Google Pixel Buds Pro 2",
+          "maker": "Google",
+          "tier": "high",
+          "sourceName": "Googleストア公式",
+          "url": "https://store.google.com/jp/product/pixel_buds_pro_2_specs?hl=ja"
+        },
+        {
+          "name": "AirPods 5",
+          "maker": "Apple",
+          "tier": "mid",
+          "sourceName": "Apple公式",
+          "url": "https://www.apple.com/jp/airpods-4/specs/"
+        },
+        {
+          "name": "ソニー WF-1000XM5",
+          "maker": "Sony",
+          "tier": "mid",
+          "sourceName": "ソニー公式",
+          "url": "https://www.sony.jp/headphone/products/WF-1000XM5/spec.html"
+        }
+      ]
+    },
+    "smartwatch": {
+      "label": "スマートウォッチ",
+      "match": "スマートウォッチ|Apple Watch|Galaxy Watch|Pixel Watch",
+      "fields": [
+        "weight",
+        "display",
+        "battery_life"
+      ],
+      "chart": [
+        "battery_life",
+        "weight"
+      ],
+      "rivals": []
+    },
+    "camera": {
+      "label": "カメラ",
+      "match": "ミラーレス|一眼|デジタルカメラ|アクションカメラ|カメラ",
+      "fields": [
+        "weight",
+        "camera",
+        "display"
+      ],
+      "chart": [
+        "weight"
+      ],
+      "rivals": []
+    },
+    "game_console": {
+      "label": "ゲーム機",
+      "match": "ゲーム機|携帯ゲーム機|Switch 2本体|PS5 Pro|Xbox Series|ROG Xbox Ally",
+      "fields": [
+        "weight",
+        "display",
+        "storage",
+        "battery_life"
+      ],
+      "chart": [
+        "weight",
+        "battery_life"
+      ],
+      "rivals": [
+        {
+          "name": "Nintendo Switch 2",
+          "maker": "Nintendo",
+          "tier": "any",
+          "sourceName": "任天堂公式",
+          "url": "https://www.nintendo.com/jp/hardware/switch2/specs/index.html"
+        },
+        {
+          "name": "Xbox Series X",
+          "maker": "Microsoft",
+          "tier": "any",
+          "sourceName": "Xbox公式",
+          "url": "https://www.xbox.com/ja-JP/consoles/xbox-series-x"
+        }
+      ]
+    },
+    "xr_glasses": {
+      "label": "スマートグラス・XRヘッドセット",
+      "match": "スマートグラス|ARグラス|XRグラス|AIグラス|Vision Pro|XREAL|Android XR|Ray-Ban|ヘッドセット",
+      "fields": [
+        "weight",
+        "display",
+        "chip",
+        "battery_life",
+        "storage"
+      ],
+      "chart": [
+        "weight"
+      ],
+      "rivals": [
+        {
+          "name": "XREAL AURA",
+          "maker": "XREAL",
+          "tier": "high",
+          "sourceName": "XREAL公式（日本）",
+          "url": "https://www.xreal.com/jp/aura"
+        },
+        {
+          "name": "Apple Vision Pro",
+          "maker": "Apple",
+          "tier": "high",
+          "sourceName": "Apple公式",
+          "url": "https://www.apple.com/jp/apple-vision-pro/specs/"
+        },
+        {
+          "name": "XREAL One Pro",
+          "maker": "XREAL",
+          "tier": "mid",
+          "sourceName": "XREAL公式（日本）",
+          "url": "https://www.xreal.com/jp/one-pro"
+        },
+        {
+          "name": "XREAL 1S",
+          "maker": "XREAL",
+          "tier": "entry",
+          "sourceName": "XREAL公式（日本）",
+          "url": "https://www.xreal.com/jp/1s"
+        }
+      ]
+    },
+    "ai_device": {
+      "label": "AIデバイス（グラス・ピン・アシスタント端末）",
+      "match": "AIデバイス|AIピン|AI端末",
+      "fields": [
+        "weight",
+        "battery_life",
+        "camera"
+      ],
+      "chart": [
+        "weight",
+        "battery_life"
+      ],
+      "rivals": []
+    },
+    "car": {
+      "label": "乗用車",
+      "match": "新型車|SUV|セダン|ミニバン|ハッチバック|EV|PHEV|ハイブリッド車|一部改良|フルモデルチェンジ",
+      "fields": [
+        "size",
+        "displacement",
+        "power",
+        "fuel",
+        "range_km"
+      ],
+      "chart": [
+        "power"
+      ],
+      "rivals": []
+    },
+    "motorcycle": {
+      "label": "オートバイ",
+      "match": "オートバイ|二輪車|スクーター|ネイキッド|スーパースポーツ",
+      "fields": [
+        "weight",
+        "displacement",
+        "power",
+        "fuel"
+      ],
+      "chart": [
+        "weight",
+        "power"
+      ],
+      "rivals": []
+    }
   },
   "makers": {
-    "Specialized": ["specialized.com"],
-    "Trek": ["trekbikes.com"],
-    "Yamaha": ["yamaha-motor.co.jp", "yamaha-motor.com", "yamaha.com", "yamaha-motor.eu"],
-    "Honda": ["honda.co.jp", "global.honda", "honda.com"],
-    "Giant": ["giant-bicycles.com", "giant.co.jp"],
-    "Apple": ["apple.com"],
-    "Google": ["store.google.com", "google.com"],
-    "Samsung": ["samsung.com"],
-    "Sony": ["sony.jp", "sony.co.jp", "sony.com"],
-    "Microsoft": ["microsoft.com"],
-    "Toyota": ["toyota.jp", "toyota.co.jp", "global.toyota"],
-    "Nissan": ["nissan.co.jp", "nissan-global.com"],
-    "Mazda": ["mazda.co.jp", "mazda.com"],
-    "Subaru": ["subaru.jp", "subaru.co.jp"],
-    "Mitsubishi Motors": ["mitsubishi-motors.co.jp", "mitsubishi-motors.com"],
-    "Lexus": ["lexus.jp"],
-    "Nintendo": ["nintendo.com", "nintendo.co.jp"],
-    "Bose": ["bose.co.jp", "bose.com"],
-    "Shokz": ["shokz.com", "jp.shokz.com"],
-    "Huawei": ["consumer.huawei.com", "huawei.com"],
-    "Dell": ["dell.com"],
-    "HP": ["hp.com", "jp.ext.hp.com"],
-    "Lenovo": ["lenovo.com"],
-    "ASUS": ["asus.com"],
-    "Panasonic": ["panasonic.jp", "panasonic.com"],
-    "Canon": ["canon.jp", "global.canon"],
-    "Nikon": ["nikon-image.com", "nikon.com"],
-    "Fujifilm": ["fujifilm.com", "fujifilm-x.com"],
-    "Kawasaki": ["kawasaki-motors.com"],
-    "Suzuki": ["suzuki.co.jp", "globalsuzuki.com"],
-    "Xiaomi": ["mi.com", "xiaomi.com"],
-    "Google Pixel": ["store.google.com"],
-    "OPPO": ["oppo.com"],
-    "Meta": ["meta.com"]
-  }
+    "Specialized": [
+      "specialized.com"
+    ],
+    "Trek": [
+      "trekbikes.com"
+    ],
+    "Yamaha": [
+      "yamaha-motor.co.jp",
+      "yamaha-motor.com",
+      "yamaha.com",
+      "yamaha-motor.eu"
+    ],
+    "Honda": [
+      "honda.co.jp",
+      "global.honda",
+      "honda.com"
+    ],
+    "Giant": [
+      "giant-bicycles.com",
+      "giant.co.jp"
+    ],
+    "Apple": [
+      "apple.com"
+    ],
+    "Google": [
+      "store.google.com",
+      "google.com",
+      "blog.google"
+    ],
+    "Samsung": [
+      "samsung.com",
+      "news.samsung.com"
+    ],
+    "Sony": [
+      "sony.jp",
+      "sony.co.jp",
+      "sony.com"
+    ],
+    "Microsoft": [
+      "microsoft.com",
+      "xbox.com"
+    ],
+    "Toyota": [
+      "toyota.jp",
+      "toyota.co.jp",
+      "global.toyota"
+    ],
+    "Nissan": [
+      "nissan.co.jp",
+      "nissan-global.com"
+    ],
+    "Mazda": [
+      "mazda.co.jp",
+      "mazda.com"
+    ],
+    "Subaru": [
+      "subaru.jp",
+      "subaru.co.jp"
+    ],
+    "Mitsubishi Motors": [
+      "mitsubishi-motors.co.jp",
+      "mitsubishi-motors.com"
+    ],
+    "Lexus": [
+      "lexus.jp"
+    ],
+    "Nintendo": [
+      "nintendo.com",
+      "nintendo.co.jp"
+    ],
+    "Bose": [
+      "bose.co.jp",
+      "bose.com"
+    ],
+    "Shokz": [
+      "shokz.com",
+      "jp.shokz.com"
+    ],
+    "Huawei": [
+      "consumer.huawei.com",
+      "huawei.com"
+    ],
+    "Dell": [
+      "dell.com"
+    ],
+    "HP": [
+      "hp.com",
+      "jp.ext.hp.com"
+    ],
+    "Lenovo": [
+      "lenovo.com"
+    ],
+    "ASUS": [
+      "asus.com"
+    ],
+    "Panasonic": [
+      "panasonic.jp",
+      "panasonic.com"
+    ],
+    "Canon": [
+      "canon.jp",
+      "global.canon"
+    ],
+    "Nikon": [
+      "nikon-image.com",
+      "nikon.com"
+    ],
+    "Fujifilm": [
+      "fujifilm.com",
+      "fujifilm-x.com"
+    ],
+    "Kawasaki": [
+      "kawasaki-motors.com"
+    ],
+    "Suzuki": [
+      "suzuki.co.jp",
+      "globalsuzuki.com"
+    ],
+    "Xiaomi": [
+      "mi.com",
+      "xiaomi.com"
+    ],
+    "Google Pixel": [
+      "store.google.com"
+    ],
+    "OPPO": [
+      "oppo.com"
+    ],
+    "Meta": [
+      "meta.com"
+    ],
+    "XREAL": [
+      "xreal.com"
+    ],
+    "Sony Interactive": [
+      "playstation.com",
+      "sie.com"
+    ],
+    "Motorola": [
+      "motorola.com",
+      "motorola.co.jp"
+    ],
+    "VITURE": [
+      "viture.com"
+    ]
+  },
+  "_tiers": "rivals の tier: high（上位・高価格帯）/ mid（中くらい）/ entry（入門・低価格帯）/ any（分けない）。主役と同じ tier の候補が2つ以上あれば、その tier だけと比べる"
 }

@@ -153,6 +153,10 @@ class CheckValue(unittest.TestCase):
         raw = {"fields": [{"key": "weight", "value": "21kg", "quote": "車両重量 21kg"}]}
         self.assertEqual(rivals.verify(raw, page, [("weight", self.defs["weight"])], "u", "d", log_fn=lambda m: None), {})
 
+    def test_mixed_range_is_rejected(self):
+        page = "重さ 4.7g（イヤホン単体） 65.0g（ケース込み）"
+        self.assertIn("範囲が広すぎる", rivals.check_value("weight", self.defs["weight"], "4.7〜65.0g", page, page))
+
     def test_w_does_not_match_wh(self):
         self.assertFalse(rivals._has_unit("840Wh", ["kW", "W"]))
         self.assertTrue(rivals._has_unit("810W", ["kW", "W"]))
@@ -178,7 +182,7 @@ class Numeric(unittest.TestCase):
     units = ["kg", "g"]
 
     def test_parse(self):
-        self.assertEqual(rivals.numeric("約24kg", self.units), {"lo": 24.0, "hi": 24.0, "unit": "kg", "approx": True, "range": False})
+        self.assertEqual(rivals.numeric("約24kg", self.units), {"lo": 24.0, "hi": 24.0, "unit": "kg", "approx": True, "range": False, "factor": 1, "shown": "kg"})
         n = rivals.numeric("23.3〜23.7kg（S〜L）", self.units)
         self.assertEqual((n["lo"], n["hi"], n["range"]), (23.3, 23.7, True))
         self.assertEqual(rivals.numeric("25.70 kg (S4)", self.units)["lo"], 25.7)
@@ -303,6 +307,94 @@ class Build(unittest.TestCase):
         self.assertIn("$7,999（米国）", note)
         self.assertIn("1ドル=157.90円（2026-11-02）で約126万円の目安です（サイソク編集部の計算）", note)
         self.assertEqual(computed[0].values, [1263042.0])
+
+
+class SelfAndTier(unittest.TestCase):
+    def test_self_specs_from_official_page_when_source_is_thin(self):
+        art = copy.deepcopy(ARTICLE)
+        art["body"] = "## 概要\n\n使い方の記事です。\n\n## まとめ\n\nまとめ。\n"
+        art["sourceUrl"] = "https://www.carrier.example/tips"
+        art["sourceName"] = "販売店の記事"
+        cat = catalog()
+        cat["makers"]["Test"] = ["test-maker.example"]
+
+        def fetch2(url):
+            if url == art["sourceUrl"]:
+                return {"text": "テスト自転車 RX1 の楽しみ方を紹介します。" * 20, "title": "", "final_url": url}
+            if url == "https://www.test-maker.example/rx1/spec":
+                return {"text": (FIX / "self_release.txt").read_text("utf-8"), "title": "テスト自転車 RX1", "final_url": url}
+            return fetcher(url)
+
+        def ask2(system, prompt, schema):
+            if system == rivals.CLASSIFY_SYSTEM:
+                return {**ask(system, prompt, schema), "official_url": "https://www.test-maker.example/rx1/spec"}
+            if "# ページ（https://www.test-maker.example/rx1/spec）" in prompt:
+                return ask(system, prompt.replace("https://www.test-maker.example/rx1/spec", "https://www.test-maker.example/news"), schema)
+            if "# ページ（https://www.carrier.example" in prompt:
+                return {"product_name_on_page": "", "fields": []}
+            return ask(system, prompt, schema)
+
+        data, why = rivals.build(art, catalog=cat, ask=ask2, fetcher=fetch2, fx=FX, log_fn=lambda m: None)
+        self.assertEqual(why, "ok")
+        me = data["products"][0]
+        self.assertEqual(me["specs"]["torque"]["url"], "https://www.test-maker.example/rx1/spec")
+        section = rivals.section_markdown(data, cat)
+        self.assertIn("(https://www.test-maker.example/rx1/spec)", section)
+
+    def test_same_tier_only_when_enough(self):
+        cat = rivals.load_catalog()
+        info = {"product_name": "Galaxy S26 Ultra", "maker_en": "Samsung", "tier": "high", "rivals": []}
+        names = [c["name"] for c in rivals.candidates(info, cat, "smartphone", log_fn=lambda m: None)]
+        self.assertEqual(names, ["iPhone 18 Pro", "Google Pixel 11 Pro"])
+        info = {"product_name": "Galaxy A57", "maker_en": "Samsung", "tier": "entry", "rivals": []}
+        names = [c["name"] for c in rivals.candidates(info, cat, "smartphone", log_fn=lambda m: None)]
+        self.assertEqual(names, ["iPhone 17e", "Google Pixel 10a"])
+        # iPad mini（中くらい）を、上位の大きなタブレットと比べない
+        info = {"product_name": "iPad mini", "maker_en": "Apple", "tier": "mid", "rivals": []}
+        self.assertEqual(rivals.candidates(info, cat, "tablet", log_fn=lambda m: None), [])
+
+    def test_catalog_tier_wins_and_listing_pages_are_dropped(self):
+        cat = rivals.load_catalog()
+        info = {"product_name": "iPad mini (A20 Pro)", "maker_en": "Apple", "tier": "high", "rivals": [
+            {"name": "Pixel 9 Pro Fold", "maker_en": "Google", "official_url": "https://store.google.com/jp/category/phones?hl=ja"}]}
+        self.assertEqual(rivals.candidates(info, cat, "tablet", log_fn=lambda m: None), [])
+
+    def test_joined_clauses_read_naturally(self):
+        me = {"name": "A", "specs": {"weight": {"display": "201g"}}}
+        rs = [{"name": "B", "specs": {"weight": {"display": "239g"}}}, {"name": "C", "specs": {"weight": {"display": "226g"}}}]
+        field = rivals.load_catalog()["fields"]["weight"]
+        text = rivals.compare_sentence(field, me, rs, "weight", [])
+        self.assertEqual(text, "重さ（201g）はBより38g軽く、Cより25g軽いです。")
+
+    def test_catalog_urls_are_official_domains(self):
+        cat = rivals.load_catalog()
+        for key, c in cat["categories"].items():
+            for r in c.get("rivals") or []:
+                self.assertTrue(rivals.official_url_ok(r["url"], r["maker"], cat), f"{key}: {r['name']} {r['url']}")
+                self.assertIn(r.get("tier"), ("high", "mid", "entry", "any"), r["name"])
+
+
+class GramsAndNames(unittest.TestCase):
+    def test_gram_difference_is_shown_in_grams_and_names_with_numbers_pass_gate(self):
+        cat = rivals.load_catalog()
+        mk = lambda name, w, url: {"name": name, "maker": name, "self": name == "Phone 11 Pro", "url": url, "sourceName": "公式",
+                                    "checkedAt": "2026-11-03",
+                                    "specs": {"weight": {"display": w, "quote": f"重さ {w}", "url": url, "checkedAt": "2026-11-03"}}}
+        data = {"category": "smartphone", "checkedAt": "2026-11-03", "products": [
+            mk("Phone 11 Pro", "211g", "https://a.example/1"), mk("Other 18 Pro", "190g", "https://b.example/2"),
+            mk("Third 8", "214g", "https://c.example/3")]}
+        data["takeaway"], computed = rivals.takeaway(data, cat)
+        self.assertIn("Other 18 Proより21g重い", data["takeaway"][0])
+        self.assertIn("Third 8とほぼ同じ", data["takeaway"][0])
+        data["priceNote"] = rivals.price_note(data, FX, computed)
+        data["computed"] = [{"text": c.text, "values": c.values} for c in computed]
+        art = rivals.apply({"body": "## 数字で見ると？\n\n表\n\n## まとめ\n", "charts": []}, data, cat)
+        self.assertEqual(quality.rival_problems(art), [])
+
+    def test_self_spec_url_needs_exact_name(self):
+        cat = rivals.load_catalog()
+        urls = rivals.self_spec_urls({"maker_en": "Google"}, "Google Pixel 11 Pro", cat)
+        self.assertEqual(urls, ["https://store.google.com/jp/product/pixel_11_pro_specs?hl=ja"])
 
 
 class Charts(unittest.TestCase):

@@ -166,6 +166,7 @@ def rival_problems(record: dict) -> list[str]:
     if sum(1 for p in products if not p.get("self")) < 2:
         problems.append("製品の比較表のライバルが2つ未満")
     for p in products:
+        allowed += _plain_numbers(p.get("name") or "")  # 製品名の数字（iPhone 18 Pro・第8世代）
         if not p.get("url"):
             problems.append(f"製品の比較表の「{p.get('name')}」に出典 URL が無い")
         elif not p.get("self") and p["url"] not in m.group(0):

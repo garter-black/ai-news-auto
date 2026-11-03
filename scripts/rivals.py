@@ -180,6 +180,10 @@ def region_of(url: str) -> str:
     return ""
 
 
+# 製品ひとつのページでない（一覧・カテゴリ・まとめ）。複数の製品の数字を取り違えるので、LLM が挙げた候補では使わない
+LISTING_URL_RE = re.compile(r"/(?:category|categories|collections?|lineup|shop|search|compare|products?)/?$|/category/|/collections/", re.I)
+
+
 def same_product(a: str, b: str) -> bool:
     return squash(a) == squash(b) or (len(squash(a)) > 4 and (squash(a) in squash(b) or squash(b) in squash(a)))
 
@@ -300,6 +304,8 @@ CLASSIFY_PROMPT = """# 記事
 - category: 次のどれか（合うものが無ければ "other"）: {categories}
 - product_name: 主役の製品の正式な名前（記事に出てくる書き方。例「Honda RN0」）
 - maker_en: 主役のメーカー名（英語。例 "Honda"）
+- tier: 主役の製品のクラス。high（上位・高価格帯）/ mid（中くらい）/ entry（入門・低価格帯）のどれか
+- official_url: 主役の製品のメーカー公式の仕様ページ（日本の公式ページがあればそれ。確かでなければ空）
 - rivals: 同じ分類・同じクラス（同じくらいの価格帯・性能帯）で、今メーカーが売っている有名な製品を最大4つ。主役と同じメーカーの製品は入れない。
   name はモデル名まで（例 "Specialized Turbo Levo 4"）。official_url はメーカー公式の製品ページ（日本の公式ページがあればそれ）。
   販売店・比較サイト・ニュースの URL は入れない。確かでない URL は空にする。もう売っていない製品・発表前の製品は入れない。"""
@@ -311,6 +317,8 @@ CLASSIFY_SCHEMA = {
         "category": {"type": "STRING"},
         "product_name": {"type": "STRING"},
         "maker_en": {"type": "STRING"},
+        "tier": {"type": "STRING"},
+        "official_url": {"type": "STRING"},
         "rivals": {
             "type": "ARRAY",
             "items": {
@@ -444,6 +452,8 @@ def check_value(key: str, d: dict, value: str, quote: str, page_text: str) -> st
         return "単位が項目に合わない"
     if units and not numbers(value):
         return "数字が無い"
+    if units and (n := numeric(value, units)) and n["range"] and n["lo"] > 0 and n["hi"] / n["lo"] > 2:
+        return "範囲が広すぎる（別のもの同士を混ぜている）"
     if d.get("exclude") and re.search(d["exclude"], quote, re.I):
         return "別の数字（定格など）"
     if d.get("deny") and re.search(d["deny"], quote, re.I) and not re.search(d.get("allow") or r"$^", quote, re.I):
@@ -556,7 +566,19 @@ def table_specs(article: dict, fields: list[tuple[str, dict]]) -> dict:
     return out
 
 
-def self_product(article: dict, info: dict, fields: list[tuple[str, dict]], *, fetcher, ask, checked: str, log_fn=log) -> dict:
+def self_spec_urls(info: dict, name: str, catalog: dict | None) -> list[str]:
+    """主役の製品のメーカー公式の仕様ページの候補（分類表にある同じ製品 → LLM が挙げた公式のドメインの URL）"""
+    out = []
+    for cat in (catalog or {}).get("categories", {}).values():
+        out += [r["url"] for r in cat.get("rivals") or [] if squash(r["name"]) == squash(name)]  # 完全に同じ名前だけ（Pro と Pro Fold を取り違えない）
+    url = str(info.get("official_url") or "").strip()
+    if url and catalog and official_url_ok(url, str(info.get("maker_en") or ""), catalog):
+        out.append(url)
+    return list(dict.fromkeys(out))
+
+
+def self_product(article: dict, info: dict, fields: list[tuple[str, dict]], *, fetcher, ask, checked: str, log_fn=log,
+                 catalog: dict | None = None) -> dict:
     name = (info.get("product_name") or "").strip()
     if not name or squash(name) not in squash(f"{article.get('title', '')}\n{article.get('body', '')}"):
         m = re.search(r"「([^」]{2,40})」", article.get("title") or "")
@@ -575,6 +597,27 @@ def self_product(article: dict, info: dict, fields: list[tuple[str, dict]], *, f
             log_fn(f"   [rivals] 元の発表の読み取りに失敗（{str(error)[:80]}）。記事の表を使います")
     for key, spec in table_specs(article, fields).items():
         specs.setdefault(key, spec)
+    # 元の発表に仕様が少ない（使い方の記事・販売店の発表など）ときは、メーカー公式の仕様ページで足す
+    if len([k for k in specs if k != "price"]) < MIN_FIELDS:
+        for extra in self_spec_urls(info, name, catalog):
+            if extra == url:
+                continue
+            try:
+                page = fetcher(extra)
+                if not name_on_page(name, info.get("maker_en") or "", page["text"] + " " + page.get("title", "")):
+                    raise Skip("ページに製品の名前が無い")
+                raw = ask(EXTRACT_SYSTEM, EXTRACT_PROMPT.format(name=name, fields=fields_prompt(fields), url=extra,
+                                                                text=page_excerpt(page["text"], fields)), EXTRACT_SCHEMA)
+                got = verify(raw or {}, page["text"], fields, page.get("final_url") or extra, checked, log_fn)
+            except Exception as error:  # noqa: BLE001
+                log_fn(f"   [rivals] 主役の公式の仕様ページを読めませんでした（{str(error)[:60]}）")
+                continue
+            if not got:
+                continue
+            for key, spec in got.items():
+                specs.setdefault(key, spec)
+            log_fn(f"   [rivals] 主役の仕様を公式ページで足しました: {', '.join(got)}（{extra[:80]}）")
+            break
     return {"name": name, "maker": info.get("maker_en") or "", "self": True, "url": url,
             "sourceName": article.get("sourceName") or source_links.site_name(url), "checkedAt": checked, "specs": specs}
 
@@ -589,9 +632,19 @@ def candidates(info: dict, catalog: dict, category: str, log_fn=log) -> list[dic
     out = []
     own = info.get("product_name") or ""
     own_maker = info.get("maker_en") or ""
+    curated = [r for r in catalog["categories"][category].get("rivals") or []
+               if not same_product(r["name"], own) and not (own_maker and squash(r["maker"]) == squash(own_maker))]
+    # 同じクラス（tier）の候補が2つ以上あれば、そのクラスだけと比べる（上位機と入門機を並べない）
+    tier = str(info.get("tier") or "").strip().lower()
+    # 主役が分類表にある製品（iPad mini など）なら、LLM の答えより分類表のクラスを使う
     for r in catalog["categories"][category].get("rivals") or []:
-        if same_product(r["name"], own) or (own_maker and squash(r["maker"]) == squash(own_maker)):
-            continue
+        if same_product(r["name"], own) and r.get("tier"):
+            tier = r["tier"]
+            break
+    same_tier = [r for r in curated if r.get("tier") in (tier, "any")]
+    if tier in ("high", "mid", "entry"):
+        curated = same_tier  # クラスが分かれば、違うクラスとは比べない（足りなければ表を作らない）
+    for r in curated:
         out.append({**r, "curated": True})
         seen.append(squash(r["name"]))
     for r in info.get("rivals") or []:
@@ -602,6 +655,13 @@ def candidates(info: dict, catalog: dict, category: str, log_fn=log) -> list[dic
             continue
         if not official_url_ok(url, maker, catalog):
             log_fn(f"   [rivals] 候補「{name}」: 公式のページでない・URL が無いので使わない（{url[:60]}）")
+            continue
+        if LISTING_URL_RE.search(urllib.parse.urlsplit(url).path):
+            log_fn(f"   [rivals] 候補「{name}」: 一覧のページなので使わない（{url[:60]}）")
+            continue
+        if region_of(url) != "日本":
+            # LLM が挙げた候補は日本の公式ページがあるものだけ（海外だけの製品・古い型を避ける。人が確かめた分類表の候補は別）
+            log_fn(f"   [rivals] 候補「{name}」: 日本の公式ページでないので使わない（{url[:60]}）")
             continue
         out.append({"name": name, "maker": maker, "url": url, "curated": False})
         seen.append(squash(name))
@@ -625,7 +685,8 @@ def rival_product(cand: dict, fields: list[tuple[str, dict]], *, fetcher, ask, c
     host = source_links.host(final)
     region = region_of(final)
     return {"name": cand["name"], "maker": cand["maker"], "self": False, "url": final,
-            "sourceName": (cand.get("sourceName") or f"{cand['maker']}公式") + (f"（{region}）" if region else ""), "host": host,
+            "sourceName": (lambda n: n + (f"（{region}）" if region and region not in n else ""))(cand.get("sourceName") or f"{cand['maker']}公式"),
+            "host": host,
             "checkedAt": checked, "specs": specs}
 
 
@@ -652,7 +713,12 @@ def numeric(display: str, units: list[str]) -> dict | None:
     hi = float(m.group(4).replace(",", "")) * norm[1] if m.group(4) else lo
     if m.group(1) and m.group(1) != "約":
         return None  # 「最大」は比べない
-    return {"lo": min(lo, hi), "hi": max(lo, hi), "unit": norm[0], "approx": m.group(1) == "約", "range": hi != lo}
+    return {"lo": min(lo, hi), "hi": max(lo, hi), "unit": norm[0], "approx": m.group(1) == "約", "range": hi != lo,
+            "factor": norm[1], "shown": unit_raw if unit_raw not in ("型",) else "インチ"}
+
+
+SHOWN_UNIT = {"kg": "kg", "g": "g", "kw": "kW", "w": "W", "kwh": "kWh", "wh": "Wh", "mah": "mAh", "ah": "Ah", "nm": "Nm",
+              "mm": "mm", "hours": "時間", "hrs": "時間", "inch": "インチ"}
 
 
 def _fmt(value: float, unit: str) -> str:
@@ -685,10 +751,12 @@ def compare_sentence(field: dict, me: dict, rivals: list[dict], key: str, comput
                 word = big if b["hi"] < v else small
                 clauses.append(f"{r['name']}（{r['specs'][key]['display']}）より{word}")
                 continue
-            c = calc_facts.spec_difference(me["name"], v, r["name"], b["lo"], a["unit"])
+            # 差は主役の表の単位で（g の製品なら g、kg なら kg）
+            f, shown = a["factor"], SHOWN_UNIT.get(a["shown"], a["shown"])
+            c = calc_facts.spec_difference(me["name"], v / f, r["name"], b["lo"] / f, shown)
             computed.append(c)
             word = big if b["lo"] < v else small
-            clauses.append(f"{r['name']}より{'約' if a['approx'] else ''}{_fmt(c.values[0], a['unit'])}{word}")
+            clauses.append(f"{r['name']}より{'約' if a['approx'] else ''}{c.values[0]:g}{shown}{word}")
         else:
             same.append(r["name"])
     label = f"{field['label']}（{mine['display']}）"
@@ -698,7 +766,9 @@ def compare_sentence(field: dict, me: dict, rivals: list[dict], key: str, comput
     parts += clauses
     if not parts:
         return None
-    return f"{label}は" + "で、".join(parts) + "です。"
+    # 「〜より7g軽く、〜より10g軽いです」「〜とほぼ同じで、〜より5Nm小さいです」
+    joined = [p[:-1] + "く" if p.endswith("い") else p + "で" for p in parts[:-1]] + [parts[-1]]
+    return f"{label}は" + "、".join(joined) + "です。"
 
 
 def takeaway(data: dict, catalog: dict) -> tuple[list[str], list]:
@@ -773,7 +843,11 @@ def section_markdown(data: dict, catalog: dict) -> str:
         lines += ["要約すると、" + "".join(data["takeaway"]), ""]
     if data.get("priceNote"):
         lines += [data["priceNote"], ""]
-    src = "／".join(f"{_cell(p['name'])}＝[{_cell(p['sourceName'])}]({p['url']})" for p in products if p.get("url"))
+    def links(p: dict) -> str:
+        urls = list(dict.fromkeys([p["url"]] + [s["url"] for s in p["specs"].values() if s.get("url")]))
+        names = [p["sourceName"]] + [source_links.site_name(u) + "公式" for u in urls[1:]]
+        return "・".join(f"[{_cell(n)}]({u})" for n, u in zip(names, urls))
+    src = "／".join(f"{_cell(p['name'])}＝{links(p)}" for p in products if p.get("url"))
     lines.append(f"- 出典：{src}（{md(data['checkedAt'])}確認）")
     if any(p["specs"].get("weight") for p in products):
         lines.append("- 重さは、各社が測ったサイズ・装備が違います（各社の公式ページの書き方のまま）。")
@@ -858,31 +932,44 @@ def build(article: dict, *, catalog: dict | None = None, ask=default_ask, fetche
         return None, f"主役の製品「{info.get('product_name')}」が題名に無い（まとめ記事など）"
     fields = field_defs(catalog, category)
     log_fn(f"   [rivals] 製品「{info.get('product_name')}」分類 {category}")
-    me = self_product(article, info, fields, fetcher=fetcher, ask=ask, checked=checked, log_fn=log_fn)
+    me = self_product(article, info, fields, fetcher=fetcher, ask=ask, checked=checked, log_fn=log_fn, catalog=catalog)
     if len([k for k in me["specs"] if k != "price"]) < 1:
         return None, "主役の製品の仕様が読み取れない"
-    rivals = []
-    skipped = []
-    for cand in candidates(info, catalog, category, log_fn):
-        if len(rivals) >= MAX_RIVALS:
-            break
-        if time.time() - started > budget:
-            log_fn("   [rivals] 時間の上限のため、残りの候補は見ません")
-            break
-        if any(squash(cand["maker"]) == squash(r["maker"]) for r in rivals):
-            continue  # 同じメーカーの2台目は入れない（いろいろな会社と比べる）
+    rivals: list[dict] = []
+    skipped: list[dict] = []
+    later: list[dict] = []
+
+    def try_one(cand: dict) -> None:
         try:
             r = rival_product(cand, fields, fetcher=fetcher, ask=ask, checked=checked, log_fn=log_fn)
-        except Skip as why:
+        except Exception as error:  # noqa: BLE001 - Skip（取れない・確認画面など）もそれ以外も、そのライバルを飛ばすだけ
+            why = str(error)[:80]
             log_fn(f"   [rivals] 「{cand['name']}」は飛ばす（{why}）")
-            skipped.append({"name": cand["name"], "url": cand["url"], "reason": str(why)})
-            continue
-        except Exception as error:  # noqa: BLE001
-            log_fn(f"   [rivals] 「{cand['name']}」は飛ばす（{str(error)[:80]}）")
-            skipped.append({"name": cand["name"], "url": cand["url"], "reason": str(error)[:80]})
-            continue
+            skipped.append({"name": cand["name"], "url": cand["url"], "reason": why})
+            return
         log_fn(f"   [rivals] 「{r['name']}」: {', '.join(r['specs'])}（{r['url'][:80]}）")
         rivals.append(r)
+
+    def out_of_time() -> bool:
+        if time.time() - started > budget:
+            log_fn("   [rivals] 時間の上限のため、残りの候補は見ません")
+            return True
+        return False
+
+    # 1周目: いろいろな会社と比べる（同じメーカーの2台目は後回し）
+    for cand in candidates(info, catalog, category, log_fn):
+        if len(rivals) >= MAX_RIVALS or out_of_time():
+            break
+        if any(squash(cand["maker"]) == squash(r["maker"]) for r in rivals):
+            later.append(cand)
+            continue
+        try_one(cand)
+    # 2周目: まだ足りなければ、後回しにした同じメーカーの候補（例: 電動アシスト自転車で公式ページが読めるのが1社だけ）
+    for cand in later:
+        if len(rivals) >= MIN_RIVALS or out_of_time():
+            break
+        if cand.get("curated"):  # 同じメーカーの2台目は、人が確かめた分類表の候補だけ
+            try_one(cand)
     if len(rivals) < MIN_RIVALS:
         return None, f"公式ページを読めたライバルが{len(rivals)}つだけ"
     data = {"version": 1, "category": category, "categoryLabel": catalog["categories"][category]["label"],
