@@ -40,6 +40,25 @@ LABELS = {
     "newsletter": "メルマガ", "line": "LINE", "direct": "直接・不明", "other": "その他のサイト",
 }
 SNS = ("threads", "x", "facebook", "bluesky")
+# 書き出しの型（state/threads_posted.json の opener → hook の順）。opener は 2026-11-03〜の1行目の呼びかけの言い回し
+HOOK_LABELS = {
+    "check": "呼びかけ・要チェック", "good": "呼びかけ・朗報", "see": "呼びかけ・見てほしい", "know": "呼びかけ・知っておいて",
+    "keep": "呼びかけ・押さえたい", "careful": "呼びかけ・確認を", "gen": "呼びかけ", "callout": "呼びかけ", "breaking": "速報",
+    "digest": "まとめ", "poll": "問いかけ",
+}
+SLOT_TEST_LABELS = {"non_ai": "AI以外の枠", "ai": "AIの枠", "non_ai_fallback": "AI以外の枠（記事が無くAI）"}
+
+
+def hook_label(rec: dict) -> str:
+    key = rec.get("opener") or rec.get("hook") or ""
+    if key in HOOK_LABELS:
+        return HOOK_LABELS[key]
+    try:
+        import threads_hooks  # noqa: PLC0415
+
+        return next((h["name"] for h in threads_hooks.HOOKS if h["key"] == key), key)
+    except Exception:  # noqa: BLE001
+        return key
 
 
 def site() -> str:
@@ -137,6 +156,7 @@ def threads_posts(data: dict, posted: dict, videos: dict, now: datetime | None =
             "visits": total, "utm": total - views_of(rows, slug, "threads", ""),
             "impressions": metrics.get("views") or 0,
             "pending": not sent, "before_start": when < INFLOW_START,
+            "hook": hook_label(rec), "test": rec.get("slotTest") or "",
         })
     for slug, rec in videos.items():
         when = jst(rec.get("postedAt") or "")
@@ -148,7 +168,7 @@ def threads_posts(data: dict, posted: dict, videos: dict, now: datetime | None =
             if when.date().isoformat() > date:
                 continue
             out.append({"slug": slug, "at": when, "kind": f"動画・{'短い版' if variant == 'short' else '全部の版'}", "visits": hits, "utm": hits,
-                        "impressions": 0, "pending": False, "before_start": when < INFLOW_START})
+                        "impressions": 0, "pending": False, "before_start": when < INFLOW_START, "hook": "", "test": ""})
     return sorted(out, key=lambda p: p["at"])
 
 
@@ -192,12 +212,23 @@ def show(data: dict, posted: dict, videos: dict, top: int = 3) -> None:
             other = p["visits"] - p["utm"]
             note = f"（うち投稿のリンク {p['utm']}・参照元だけ {other}）" if other else ""
             early = "（計測を始める前に出た投稿。数えたのは計測開始後の分だけ）" if p["before_start"] else ""
-            print(f"    {p['at']:%m/%d %H:%M} {p['kind'] or '-'}「{title_of(p['slug'])}」 訪問 {p['visits']}{note}{rate}{early}")
+            tag = f"/{p['hook']}" if p.get("hook") else ""
+            print(f"    {p['at']:%m/%d %H:%M} {p['kind'] or '-'}{tag}「{title_of(p['slug'])}」 訪問 {p['visits']}{note}{rate}{early}")
         if zero:
             mark = lambda p: "※" if p["before_start"] else ""  # noqa: E731
-            print(f"    訪問0: {len(zero)}本（" + "、".join(f"{mark(p)}{p['at']:%H:%M} {p['kind'] or '-'}{'（リンクなし）' if p['kind'] == 'poll' else ''}" for p in zero) + "）")
+            print(f"    訪問0: {len(zero)}本（" + "、".join(
+                f"{mark(p)}{p['at']:%H:%M} {p['kind'] or '-'}{'/' + p['hook'] if p.get('hook') and p['kind'] not in ('poll', 'digest') else ''}"
+                f"{'（リンクなし）' if p['kind'] == 'poll' else ''}" for p in zero) + "）")
             if any(p["before_start"] for p in zero):
                 print(f"      ※ 計測を始めた {INFLOW_START:%m/%d %H:%M} より前に出た投稿。出てすぐの数時間は数えていないので、0 とは限りません")
+        tested = [p for p in posts if p.get("test") and not p["pending"]]
+        if tested:
+            groups: dict[str, list[dict]] = {}
+            for p in tested:
+                groups.setdefault(p["test"], []).append(p)
+            print("    通常枠のテスト（AI / AI以外。1本あたりの訪問）: " + " / ".join(
+                f"{SLOT_TEST_LABELS.get(k, k)} {len(v)}本・訪問{sum(x['visits'] for x in v)}（1本あたり {sum(x['visits'] for x in v) / len(v):.1f}）"
+                for k, v in sorted(groups.items())))
         if pending:
             print(f"    まだ出ていない予約: {len(pending)}本（" + "、".join(f"{p['at']:%H:%M} {p['kind'] or '-'}" for p in pending) + "。時刻は予約の時刻）")
 

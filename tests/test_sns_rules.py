@@ -18,7 +18,7 @@ import sns_rules as r  # noqa: E402
 ART = {"slug": "acme-tool", "title": "Acme が新しいAIツールを公開", "genreSlug": "ai", "_virtual": True}
 LINK = "https://ai-tech-express.jp/articles/acme-tool"
 GOOD = (
-    "会議のメモ、まだ手で取っていますか。\n\n"
+    "会議のメモを取っている人、これは要チェックです。\n\n"
     "要約すると、Acmeが会議の内容を自動でまとめるAIを公開しました。\n"
     "月額は1人1,000円で、日本語にも対応しています。\n\n"
     "あなたの職場では、会議の議事録を誰が書いていますか？"
@@ -66,7 +66,7 @@ class CheckPostTest(unittest.TestCase):
 
     def test_banned_and_generic_phrases(self):
         for phrase in ("ざっくり言うと、新しいAIです。", "気軽にコメントください。"):
-            text = with_link(GOOD.replace("会議のメモ、まだ手で取っていますか。", phrase), "threads")
+            text = with_link(GOOD.replace("会議のメモを取っている人、これは要チェックです。", phrase), "threads")
             self.assertTrue(any("ルール3" in v or "ルール4" in v for v in self.check("threads", text)), phrase)
         generic = with_link(GOOD.replace("あなたの職場では、会議の議事録を誰が書いていますか？", "どう思いますか？"), "threads")
         self.assertTrue(any("決まり文句" in v for v in self.check("threads", generic)))
@@ -223,6 +223,60 @@ class CallSiteTest(unittest.TestCase):
 
         with self.assertRaises(r.SnsRuleViolation):
             tp.buffer_graphql("k", "mutation($input: CreatePostInput!) { createPost(input: $input) { __typename } }", {})
+
+
+class CalloutRuleTest(unittest.TestCase):
+    """ルール6（2026-11-03 オーナー承認その2）: 1行目は読者への呼びかけ・【速報】は本当の速報だけ・使わない書き出し・答えやすい問い"""
+
+    def check(self, platform, text, article=ART, **kw):
+        return r.check_post(platform, text, CARD, article, measurer=size(1200, 675), **kw)
+
+    def rule6(self, out):
+        return [v for v in out if "ルール6" in v]
+
+    def test_first_line_must_call_out_reader(self):
+        for bad in ("会議のメモ、まだ手で取っていますか。", "結論：個人なら無料で使えます。", "1日で1,211件。"):
+            text = with_link(GOOD.replace("会議のメモを取っている人、これは要チェックです。", bad), "threads")
+            self.assertTrue(any("呼びかけ" in v for v in self.rule6(self.check("threads", text))), bad)
+        for ok in ("マウンテンバイク好きの人、これは要チェックです。", "コードを書く開発者の皆さん、朗報です。",
+                   "電気代が気になる人に、知っておいてほしい話です。", "株や業績をチェックしている人へ。"):
+            text = with_link(GOOD.replace("会議のメモを取っている人、これは要チェックです。", ok), "threads")
+            self.assertEqual(self.rule6(self.check("threads", text)), [], ok)
+
+    def test_banned_openers(self):
+        for bad in ("先に言うと、まだ一般には使えません。", "先に言うと、日本は対象外です。", "【速報】発表から12分で掲載"):
+            text = with_link(GOOD.replace("会議のメモを取っている人、これは要チェックです。", bad), "threads")
+            out = self.rule6(self.check("threads", text, article={**ART, "breaking": True}))
+            self.assertTrue(any("先に言うと" in v or "発表からN分" in v for v in out), bad)
+
+    def test_breaking_label_only_for_fast_news(self):
+        text = with_link("【速報】" + GOOD, "threads")
+        self.assertTrue(any("速報ではない記事" in v for v in self.check("threads", text)))
+        self.assertEqual(self.rule6(self.check("threads", text, article={**ART, "breaking": True})), [])
+        self.assertEqual(self.rule6(self.check("threads", text, article={**ART, "speedMinutes": 14})), [])
+        self.assertTrue(any("速報ではない記事" in v for v in self.check("threads", text, article={**ART, "breaking": True, "type": "roundup"})))
+
+    def test_question_answerable_without_article(self):
+        for bad in ("あなたの仕事で、いちばん気になった発表はどれですか？", "この機能、仕事で使ってみたいですか？", "無料なら試してみますか？"):
+            text = with_link(GOOD.replace("あなたの職場では、会議の議事録を誰が書いていますか？", bad), "threads")
+            self.assertTrue(any("記事を読まないと答えられない" in v for v in self.check("threads", text)), bad)
+        for ok in ("趣味の道具にかけるお金、何を重視して選びますか？", "夏と冬、電気代が高いと感じるのはどっちですか？"):
+            self.assertFalse(r.question_needs_article(ok), ok)
+
+    def test_x_body_and_other_platforms_follow_rule6(self):
+        reply = f"詳しくはこちら👇\n{LINK}?utm_source=x&utm_medium=social&utm_campaign=classic"
+        bad = GOOD.replace("会議のメモを取っている人、これは要チェックです。", "会議のメモ、まだ手で取っていますか。")
+        self.assertTrue(self.rule6(self.check("x", bad + "\n\n#AI", reply_text=reply)))
+        # X は字数で書き出しを落とした形（要約から始まる）も通す
+        self.assertEqual(self.rule6(self.check("x", GOOD.split("\n\n", 1)[1] + "\n\n#AI", reply_text=reply)), [])
+        self.assertTrue(self.rule6(self.check("facebook", with_link(bad, "facebook"))))
+        bsky = f"{bad}\nai-tech-express.jp/articles/acme-tool"
+        self.assertTrue(self.rule6(self.check("bluesky", bsky, links=[f"{LINK}?utm_source=bluesky&utm_medium=social&utm_campaign=fill"])))
+
+    def test_digest_and_disaster_are_exempt(self):
+        quake = {**ART, "disaster": True}
+        text = with_link("【地震】千葉県北東部で最大震度5弱", "threads")
+        self.assertEqual(self.rule6(self.check("threads", text, article=quake)), [])
 
 
 if __name__ == "__main__":

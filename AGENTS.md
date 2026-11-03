@@ -114,6 +114,7 @@
 - テストでブラウザを動かすときは、a8.net・楽天・Amazon・AdSense への通信を止める（`docs/automation.md`）。止めないと広告の数字が水増しされる。
 - 訪問者数は **Cloudflare Web Analytics（ロボット除外）** を見る。Facebook からの大量アクセスはロボット（リンクプレビュー）なので人として数えない。
 - 広告の「人によるクリック」は `python3 scripts/aff_stats.py --yesterday`。
+- **SNS 投稿の書き方（2026-11-03 オーナー承認その2。門番 `scripts/sns_rules.py` のルール6）**: 1行目は関係する読者を名指しする呼びかけ（「〇〇な人、これは要チェックです」「〇〇の皆さん、朗報です」など。言い回しは直前と変える。組み立ては `scripts/threads_hooks.py` の `callout`）。【速報】は本当の速報の記事だけ（画像の「速報」と同じ: `breaking` か公式発表から60分以内）。「先に言うと、〜できない／対象外」「発表からN分で掲載」は使わない。問いかけは記事を読まなくても答えられる読者自身の好み・経験。通常枠の 12:15・21:00 は 11/4〜11/10 の1週間、AI 以外の記事（車・身近な製品・お金・暮らしの制度）を出すテスト（履歴の `slotTest`。止めるなら変数 `SNS_NON_AI_SLOTS=off`）。学習（`scripts/threads_learn.py`）の目当ては投稿1本あたりの訪問（自前計測。無い投稿は表示×割合）。
 - **SNS・検索から記事に来た人の実数**は `python3 scripts/inflow_report.py --yesterday`（`--date YYYY-MM-DD` も可。毎晩・毎朝の報告で aff_stats と並べて出す）。流入元別・流入元ごとの人気記事・Threads の投稿ごと（`state/threads_posted.json` と突き合わせ）・動画の短い版/全部の版を出す。JS が動いた実ブラウザの「入口の1表示」だけを数え、ロボット・リンクプレビュー・HeadlessChrome・Lighthouse・PageSpeed は数えない。仕組みは `components/InflowBeacon.tsx` → `cloudflare/inflow.ts`（AFF_KV の `i:<日付>:…`）。
 - **自社アクセスを数えない（必ず守る）**: 本番のページを自分で開く・確かめるときは、URL に **`?_internal=1`** を付けるか（例 `https://ai-tech-express.jp/articles/<slug>?_internal=1`）、リクエストにヘッダー **`X-Saisoku-Internal: 1`** を付ける。curl・WebFetch・Python のスクリプト・Playwright（`extraHTTPHeaders`）・Lighthouse / PageSpeed の実行（`--extra-headers='{"X-Saisoku-Internal":"1"}'` か URL に `?_internal=1`）すべて。`?_internal=1` で一度開いたブラウザは、以後そのブラウザでは数えない（`?_internal=0` で戻る。オーナー自身のスマホ・PCもこれで除外できる）。提携リンクのクリック計測（aff_stats）も同じしるしで除外する。
 

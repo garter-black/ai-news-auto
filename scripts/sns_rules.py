@@ -11,6 +11,11 @@
   3. 決まった型の投稿・中身のない投稿はしない（記事のない問いかけ、「気軽にコメントください」、「番号でコメント」など）。
   4. 自然な日本語。「ざっくり」・硬い言い回しを使わない。英語の文を残さない。スポーツは日本のスポーツだけ（五輪・世界陸上・W杯・WBC は例外）。
   5. 1つの記事につき投稿は1つ（動画は記事の投稿に添える。別の投稿にしない）。
+  6. （2026-11-03 オーナー承認その2）書き出しの1行目は、関係する読者を名指しする呼びかけ
+     （「〇〇な人、これは要チェックです」「〇〇の皆さん、朗報です」など）。【速報】は本当の速報の記事だけ
+     （画像の「速報」と同じ決まり: article.breaking か、公式発表から60分以内に載せた記事）。
+     「先に言うと、〜できない／対象外」「発表からN分で掲載」の書き出しは使わない。
+     問いかけは、記事を読まなくても答えられる「読者自身の好み・経験」を聞く（「この機能、使ってみたい？」は×）。
 
 違反したら: 投稿しない・ログに出す・GitHub の issue（ラベル sns-rule-violation）を立てるか、開いているものにコメントを足す。
 新しく Buffer / Bluesky / Threads の投稿 API を呼ぶ所を作るときは、必ずこの enforce を直前に呼ぶ（tests/test_sns_rules.py が確かめる）。
@@ -71,6 +76,45 @@ BANNED = [
     (re.compile(r"ざっくり"), "「ざっくり」"),
     (re.compile(r"(?m)^(?:今は一部の人だけが使えます。|日本からもう使えます。)?主に[^。\n]{1,24}向け。$"), "判定の定型文（「主に◯◯向け。」）"),
 ]
+# ルール6: 書き出しの呼びかけ。読者を名指しする言葉（〜な人・〜の皆さん・〜担当の人・〜ユーザー）＋読点などで呼びかける
+CALLOUT_RE = re.compile(
+    r"^(?:【速報】)?[^。！？!?\n]{2,30}?(?:人|皆さん|みなさん|方|担当者|ユーザー)(?:[、,]|へ|に(?:は|、)?|は[、,]?|も[、,]?)"
+)
+CALLOUT_MAX = 40
+# ルール6: 使わない書き出し（答えを先に言って、読まなくてよいと思わせる／自分たちの速さの話）
+BANNED_OPENERS = [
+    (re.compile(r"先に言うと、[^。\n]*?(?:でき(?:ない|ません)|使え(?:ない|ません)|対象外|まだ|ありません|小さめ)"), "「先に言うと、〜できない／対象外」の書き出し"),
+    (re.compile(r"(?:公式)?発表から\d+分で(?:掲載|お届け)"), "「発表からN分で掲載」の書き出し"),
+]
+# ルール6: 記事を読まないと答えられない問い（記事の中身を指す・使ってみたいか聞く）
+ARTICLE_BOUND_QUESTION = re.compile(
+    r"この(?:ニュース|発表|機能|サービス|製品|モデル|記事|件|話|変更|アプリ|ツール|仕組み|取り組み)|今回の|その(?:機能|発表|サービス)|"
+    r"いちばん気になった|どの発表|発表(?:の中|で)|新機能|新モデル|新サービス|使ってみ(?:たい|ます)|試してみ(?:たい|ます)|試したい|試しますか|導入されたら|"
+    r"どう思い|気になり|注目して|知っていました|もう試し|の件"
+)
+
+
+def is_fast_news(article: dict | None) -> bool:
+    """【速報】を付けてよい記事か（画像の赤い「速報」と同じ決まり。lib/cover-path.ts の isFastNews）。
+    まとめ記事は付けない。主要企業の公式発表の速報（article.breaking）か、公式発表から60分以内に載せた記事（speedMinutes）だけ"""
+    article = article or {}
+    if article.get("type") == "roundup":
+        return False
+    minutes = article.get("speedMinutes")
+    return bool(article.get("breaking")) or (isinstance(minutes, (int, float)) and not isinstance(minutes, bool))
+
+
+def question_needs_article(question: str) -> bool:
+    """記事を読まないと答えられない問いか（ルール6）"""
+    return bool(ARTICLE_BOUND_QUESTION.search(str(question or "")))
+
+
+def callout_ok(line: str) -> bool:
+    """1行目が読者を名指しする呼びかけか（ルール6）"""
+    line = str(line or "").strip()
+    return bool(line) and len(line) <= CALLOUT_MAX and bool(CALLOUT_RE.match(line))
+
+
 # 中身のない問い（どの記事にも付く問い）
 GENERIC_QUESTION = re.compile(
     r"^(?:みなさん|皆さん|あなた)?(?:は)?(?:どう(?:思い|感じ)ますか|いかがですか|どうですか|気になりますか|知っていましたか|使ってみたいですか|"
@@ -319,6 +363,26 @@ def check_structure(platform: str, content: str) -> list[str]:
     return out
 
 
+def check_opener(platform: str, text: str, content: str, article: dict | None) -> list[str]:
+    """ルール6: 書き出しの呼びかけ・【速報】の付け方・使わない書き出し・記事を読まないと答えられない問い"""
+    out = []
+    for pattern, label in BANNED_OPENERS:
+        if m := pattern.search(str(text or "")):
+            out.append(f"[ルール6] {label}（「{m.group(0)[:24]}」）")
+    blocks = blocks_of(content)
+    first = blocks[0].splitlines()[0].strip() if blocks else ""
+    # X は文字数で書き出しを落とすことがある（要約から始まる形）。書き出しがあるときだけ確かめる
+    if first and not (platform == "x" and first.startswith(SUMMARY)):
+        if not callout_ok(first):
+            out.append(f"[ルール6] 1行目が読者への呼びかけ（「〇〇な人、これは要チェックです」など）になっていない（「{first[:24]}」）")
+        if first.startswith("【速報】") and not is_fast_news(article):
+            out.append("[ルール6] 速報ではない記事に【速報】を付けている")
+    question = blocks[-1] if blocks else ""
+    if question.endswith(QUESTION_END) and question_needs_article(question):
+        out.append(f"[ルール6] 問いかけが記事を読まないと答えられない（「{question[:30]}」）。読者自身の好み・経験を聞く")
+    return out
+
+
 def check_language(text: str) -> list[str]:
     out = []
     plain = URL_RE.sub("", HASHTAG_RE.sub("", str(text or "")))
@@ -472,6 +536,7 @@ def check_post(
     content = strip_links(text)
     if kind not in ("digest", "disaster"):
         out += check_structure(platform, content)
+        out += check_opener(platform, text, content, article)
     for pattern, label in BANNED:
         if m := pattern.search(f"{text}\n{reply_text}"):
             out.append(f"[ルール3] {label}（「{m.group(0)[:20]}」）")

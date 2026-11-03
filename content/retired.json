@@ -241,6 +241,7 @@
   "biztex-executive-ai-1day-training": {
    "channel": "prtimes",
    "reason": "wire",
+   "redirect": "chatgpt-work-realpage-ai-training",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000137.000027337.html",
    "title": "BizteX、経営者向けAI 1DAY講習を開始 Claude Codeで自社アプリを作る"
@@ -888,6 +889,7 @@
   "gemini-4-argon-google-builders": {
    "channel": "google-gemini-blog",
    "reason": "duplicate",
+   "redirect": "google-ai-news-october-2026",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "sourceUrl": "https://blog.google/products-and-platforms/products/gemini/gemini-4-argon-builders/",
    "title": "Googleの高性能AI「Gemini 4 Argon」が登場 開発者向けに提供開始"
@@ -1877,6 +1879,7 @@
   "muon-optimizer-llm-training-adamw-deepseek": {
    "channel": "bycloud",
    "reason": "creator-video",
+   "redirect": "scaling-laws-pretraining-rl-reasoning",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "LLM学習効率を倍増させる新オプティマイザMuonの全貌と技術的インパクト",
    "videoUrl": "https://www.youtube.com/watch?v=VAQHsKS9fxY"
@@ -2570,6 +2573,7 @@
   "sam-altman-ai-advice-human-centric": {
    "channel": "matthew-berman",
    "reason": "creator-video",
+   "redirect": "openai-updated-model-spec-2026",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "OpenAIサム・アルトマンCEOが示す「人生の助言をAIに求めてはならない理由」",
    "videoUrl": "https://www.youtube.com/watch?v=f8uIINtoJCM"

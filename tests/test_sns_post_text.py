@@ -6,10 +6,11 @@
 import sys
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 import persona  # noqa: E402
+import sns_rules  # noqa: E402
 import threads_hooks  # noqa: E402
 import threads_post as tp  # noqa: E402
 import threads_voice as voice  # noqa: E402
@@ -33,15 +34,16 @@ NEW = {
     "title": "楽天証券の口座数が1,500万を突破、国内最多",
     "threadsStyle": 3,
     "threadsHook": "number",
-    "threadsPost": "7カ月で100万口座。伸びが速いです。\n\n要約すると、楽天証券の口座が1,500万を超えました。\n国内の証券会社1社では、いちばん多い数です。\n\n証券口座、どこを使っていますか？NISAは始めましたか？",
+    "threadsPost": "証券口座を持っている人、これは要チェックです。\n\n要約すると、楽天証券の口座が1,500万を超えました。\n国内の証券会社1社では、いちばん多い数です。\n\n証券口座、どこを使っていますか？NISAは始めましたか？",
     "highlights": ["楽天証券の総合口座数が1,500万口座を突破しました。", "2026年4月の1,400万口座から約7カ月で100万口座増えました。"],
     "description": "楽天証券の口座数が1,500万を突破しました。",
     "generatedAt": "2026-11-02T00:00:00+00:00",
 }
 
 
-def no_weak():
-    return patch.object(tp, "weak_hook_keys", return_value=[])
+def no_weak(last_openers=None):
+    """弱い型の学習と、直前の投稿の言い回し（投稿履歴）に左右されないようにする"""
+    return patch.multiple(tp, weak_hook_keys=MagicMock(return_value=[]), recent_openers=MagicMock(return_value=list(last_openers or [])))
 
 
 class PostShapeTest(unittest.TestCase):
@@ -114,21 +116,25 @@ class PostShapeTest(unittest.TestCase):
         repeated = f"書き出し\n\n要約すると、{OLD['title']}。\n\nどうですか？"
         self.assertIn("見出し", " ".join(tp.post_problems(repeated, OLD)))
 
-    def test_breaking_starts_with_breaking_label(self):
-        article = dict(OLD, breaking=True)
-        with no_weak(), patch.object(tp, "speed_line", return_value="【速報】発表から12分で掲載"):
-            text = tp.compose(article, [], breaking=True)
-        self.assertTrue(text.startswith("【速報】発表から12分で掲載\n\n要約すると、"))
-        self.assert_shape(text, article)
-        with no_weak(), patch.object(tp, "speed_line", return_value=""):
-            text = tp.compose(dict(article), [], breaking=True)
-        self.assertTrue(text.startswith("【速報】"))
-        self.assertEqual(text.count("【速報】"), 1)
+    def test_breaking_starts_with_breaking_label_and_callout(self):
+        """2026-11-03 オーナー承認その2: 本当の速報だけ【速報】＋読者への呼びかけ。「発表からN分で掲載」は使わない"""
+        for article in (dict(OLD, breaking=True), dict(OLD, speedMinutes=12)):
+            with no_weak():
+                text = tp.compose(article, [], breaking=True)
+            first = text.splitlines()[0]
+            self.assertTrue(first.startswith("【速報】"), first)
+            self.assertTrue(sns_rules.callout_ok(first), first)
+            self.assertNotIn("発表から", text)
+            self.assertEqual(text.count("【速報】"), 1)
+            self.assert_shape(text, article)
 
     def test_not_breaking_drops_breaking_label(self):
-        with no_weak():
-            text = tp.compose(dict(OLD, breaking=True), [])
-        self.assertNotIn("【速報】", text)
+        # 紹介文に【速報】があっても、速報の記事（breaking・speedMinutes）でなければ付けない。いますぐ出す回（breaking=True）でも同じ
+        for flag in (False, True):
+            with no_weak():
+                text = tp.compose(dict(OLD), [], breaking=flag)
+            self.assertNotIn("【速報】", text)
+            self.assertTrue(sns_rules.callout_ok(text.splitlines()[0]), text)
 
     def test_disaster_keeps_legacy_post_without_question(self):
         quake = {"slug": "q", "title": "震度5強", "disaster": True, "breaking": True, "threadsStyle": 2,
@@ -156,14 +162,15 @@ class PostShapeTest(unittest.TestCase):
         article = {"slug": "s", "seoTitle": "会計アプリ｜料金", "title": "会計アプリが値下げ", "threadsStyle": 2, "threadsPost": "",
                    "verdict": {"status": "available", "japan": "ok", "price": "月980円", "free": True},
                    "highlights": ["会計アプリの料金が月980円になりました。", "日本でもすぐ使えます。"]}
+        first = dict(article)
         with no_weak():
-            keys = {k for k, _ in tp.openers(article)}
-            first = dict(article)
             tp.compose(first, [])
-            second = dict(article)
-            tp.compose(second, [first["_hook"]])
-        self.assertGreater(len(keys), 1)
-        self.assertNotEqual(first["_hook"], second["_hook"])
+        second = dict(article)
+        with no_weak([first["_opener"]]):
+            tp.compose(second, [])
+        # 1行目はいつも呼びかけ。直前の投稿と同じ言い回しは続けない
+        self.assertEqual((first["_hook"], second["_hook"]), ("callout", "callout"))
+        self.assertNotEqual(first["_opener"], second["_opener"])
 
 
 class OtherChannelsTest(unittest.TestCase):
@@ -178,11 +185,12 @@ class OtherChannelsTest(unittest.TestCase):
             if breaking:
                 self.assertTrue(x.startswith("【速報】"))
 
-    def test_x_drops_hook_before_question(self):
-        long_hook = "あ" * 30
-        text = f"{long_hook}\n\n要約すると、{'い' * 45}。\n{'う' * 45}。\n\nどれを使っていますか？"
+    def test_x_keeps_callout_and_drops_second_sentence_first(self):
+        hook = "会議のメモを取っている人、これは要チェックです。"
+        text = f"{hook}\n\n要約すると、{'い' * 50}。\n{'う' * 50}。\n\nどれを使っていますか？"
         x = tp.compose_x({"title": "t", "tags": []}, text)
-        self.assertNotIn(long_hook, x)
+        self.assertTrue(x.startswith(hook), x)
+        self.assertNotIn("う" * 50, x)
         self.assertIn("どれを使っていますか？", x)
         self.assertLessEqual(tp.x_weight(x), tp.X_LIMIT)
 
@@ -220,6 +228,7 @@ class ReaderQuestionTest(unittest.TestCase):
             self.assertIsNone(persona.ADVICE_RE.search(q), q)
             self.assertIsNone(persona.STIFF_RE.search(q), q)
             self.assertIsNone(tp.BAIT_RE.search(q), q)
+            self.assertFalse(sns_rules.question_needs_article(q), q)
 
 
 class GroundedQuestionTest(unittest.TestCase):
@@ -228,7 +237,8 @@ class GroundedQuestionTest(unittest.TestCase):
                    "seoTitle": "Google Distributed Cloudとは？新機能", "tags": ["セキュリティ"], "genreSlug": "ai",
                    "verdict": {"status": "available", "free": True}}
         q = voice.reader_question(article, "Google", [])
-        self.assertIn("Google Distributed Cloud", q)
+        # 記事を読まなくても答えられる問い（製品名で「使ってみたい？」とは聞かない）。タグだけで話題を決めない
+        self.assertFalse(sns_rules.question_needs_article(q), q)
         self.assertNotIn("パスワード", q)
         self.assertLessEqual(len(q), 40)
 
@@ -236,7 +246,8 @@ class GroundedQuestionTest(unittest.TestCase):
         article = {"slug": "px", "title": "ソフトバンクが「Google Pixel 11 Pro」の料理撮影術を公開",
                    "seoTitle": "Google Pixel 11 Proの料理撮影術｜AI編集の使い方", "verdict": {"free": True}}
         q = voice.reader_question(article, "Google", [])
-        self.assertTrue(q.startswith("Google Pixel 11 Pro、"), q)
+        self.assertIn("スマホ", q)
+        self.assertFalse(sns_rules.question_needs_article(q), q)
         self.assertNotIn("無料", q)
 
     def test_negative_subject_question_is_not_cheerful(self):

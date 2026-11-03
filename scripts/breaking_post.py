@@ -148,7 +148,7 @@ def main() -> int:
             x_preview, detail = tp.compose_x(article, text), tp.link_reply_text(article)
         image = tp.post_image(article, fmt)
         if fmt == "classic" and not article.get("disaster"):
-            # 本文は「【速報】の書き出し／要約すると、2文／問いかけ」で完結（2026-11-02）。編集部の一言は足さない
+            # 本文は「（本当の速報だけ【速報】）読者への呼びかけ／要約すると、2文／問いかけ」で完結（2026-11-03）。編集部の一言は足さない
             comment = ""
             for problem in tp.post_problems(text, article):
                 log(f"  [check] {article['slug']}: {problem}")
@@ -182,6 +182,8 @@ def main() -> int:
         state["posted"][article["slug"]] = {
             **result,
             "hook": "breaking",
+            **({"opener": article["_opener"]} if article.get("_opener") else {}),
+            "genre": article.get("genreSlug") or "",
             "breaking": True,
             "score": tp.score(article),
             "style": "standalone",

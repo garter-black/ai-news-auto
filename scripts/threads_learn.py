@@ -8,6 +8,11 @@ Threads の「勝ちパターン」を学ぶ。
 
 Buffer の数値は1日1回更新なので、1日1回動かせば十分。
 
+2026-11-03 オーナー承認その2: 学ぶ目当てを「表示（閲覧）」から「投稿1本あたりの、サイトに来た人数」に変えた。
+訪問は自前の計測（cloudflare/inflow.ts → /api/aff/inflow。鍵 AFF_STATS_TOKEN）から、Threads から記事に来た数を投稿ごとに数える。
+計測を始める前（2026-11-03 10:02 より前）に出た投稿や、訪問を取れないときは、表示 × （訪問 ÷ 表示 の全体の割合）で置き換える。
+訪問の取り直しは3時間ごと（Buffer は呼ばない）。
+
 使い方:
     python3 scripts/threads_learn.py           # 取得して学習
     python3 scripts/threads_learn.py --offline # 取得せず、手元の数値だけで学習し直す
@@ -93,6 +98,14 @@ LINK_REPLY_UNTIL = datetime(2026, 11, 2, 17, 2, tzinfo=timezone.utc)
 DIGEST_REPLY_UNTIL = datetime(2026, 11, 3, 6, 53, tzinfo=timezone.utc)
 # Buffer の反応の数値は1日1回の更新。送信からこれより短い時刻の数値は、まだ数え終わっていない（ほぼ0）
 MATURE_HOURS = 12
+# 自前の訪問の計測を始めた時刻（scripts/inflow_report.py と同じ）。これより前に出た投稿は、訪問を全部は数えていない
+INFLOW_START = datetime(2026, 11, 3, 1, 2, tzinfo=timezone.utc)
+# 出てからこの時間たった投稿の訪問を使う（Threads の投稿は出てから半日〜1日クリックが続く）
+VISITS_MATURE_HOURS = 20
+# 訪問の数え直しの間隔（Buffer は呼ばない。自前の計測を読むだけ）
+VISITS_EVERY_HOURS = 3
+# 表示 → 訪問の置き換えの割合（訪問と表示の両方がそろった投稿が少ないうちの既定。10/28〜11/02 の実績で約2%）
+DEFAULT_VISIT_RATE = 0.02
 
 
 def _utc(value: object) -> datetime | None:
@@ -136,6 +149,56 @@ def reader_metrics(entry: dict) -> dict:
     return metrics
 
 
+def fetch_visits(now: datetime | None = None, days: int = 14) -> dict[str, int]:
+    """記事ごとの、Threads から来た訪問の数（自前の計測。計測開始の日から今日まで。鍵が無ければ空）"""
+    import inflow_report  # noqa: PLC0415
+
+    token = inflow_report.load_token()
+    if not token:
+        return {}
+    now = now or datetime.now(timezone.utc)
+    today = now.astimezone(JST).date()
+    start = max(INFLOW_START.astimezone(JST).date(), today - timedelta(days=days))
+    visits: dict[str, int] = {}
+    day = start
+    while day <= today:
+        data = inflow_report.fetch(token, day.isoformat())
+        for row in data.get("rows") or []:
+            if row.get("source") == "threads" and row.get("page"):
+                visits[row["page"]] = visits.get(row["page"], 0) + int(row.get("views") or 0)
+        day += timedelta(days=1)
+    return visits
+
+
+def inflow_token_present() -> bool:
+    import inflow_report  # noqa: PLC0415
+
+    return bool(inflow_report.load_token())
+
+
+def visits_measurable(entry: dict, now: datetime | None = None) -> bool:
+    """この投稿の訪問を、学習の目当てとして使えるか（計測開始後に出て、出てから VISITS_MATURE_HOURS 時間たった）"""
+    now = now or datetime.now(timezone.utc)
+    sent = _utc(entry.get("sentAt") or entry.get("dueAt") or entry.get("postedAt"))
+    return bool(sent and sent >= INFLOW_START and now - sent >= timedelta(hours=VISITS_MATURE_HOURS))
+
+
+def too_fresh(entry: dict, now: datetime | None = None) -> bool:
+    """出てから VISITS_MATURE_HOURS 時間たっていない、計測開始後の投稿（訪問も表示もまだ数え終わっていない）"""
+    now = now or datetime.now(timezone.utc)
+    sent = _utc(entry.get("sentAt") or entry.get("dueAt") or entry.get("postedAt"))
+    return bool(sent and sent >= INFLOW_START and now - sent < timedelta(hours=VISITS_MATURE_HOURS))
+
+
+def visit_rate(rows: list[dict]) -> float:
+    """表示 → 訪問の割合（訪問と表示の両方がそろった投稿から。少なければ既定）"""
+    both = [r for r in rows if r.get("visits") is not None and r["views"] > 0]
+    views = sum(r["views"] for r in both)
+    if len(both) < 3 or views <= 0:
+        return DEFAULT_VISIT_RATE
+    return max(0.001, sum(r["visits"] for r in both) / views)
+
+
 def views_of(metrics: dict) -> float:
     for key in ("impressions", "views", "reach"):
         if key in metrics:
@@ -172,6 +235,11 @@ def features(slug: str, entry: dict) -> dict:
         "postFormatKind": f"{entry.get('format') or 'A/B前'}/{'速報' if entry.get('breaking') else '通常'}",
         # 本文の最後の問いかけ（2026-10-29〜。記録のない投稿は別枠）
         "question": "問いかけあり" if entry.get("question") else "なし" if "question" in entry else "記録前",
+        # 1行目の呼びかけの言い回し（2026-11-03〜。threads_hooks.CALLOUTS の id）
+        "opener": entry.get("opener") or "記録前",
+        # AI の記事か、AI 以外の記事か（通常枠の AI 以外のテスト。slotTest があればその枠の種類）
+        "genre": "AI" if (entry.get("genre") or article.get("genreSlug") or "ai") == "ai" else "AI以外",
+        "slotTest": entry.get("slotTest") or "なし",
     }
 
 
@@ -181,8 +249,12 @@ def summarize(rows: list[dict]) -> dict:
         return {}
     overall_views = sum(r["views"] for r in rows) / len(rows)
     overall_eng = sum(r["engagement"] for r in rows) / len(rows)
+    # 目当て: 投稿1本あたりの訪問（無い投稿は 表示 × 割合 で置き換えた値。r["value"]）
+    for r in rows:
+        r.setdefault("value", r["views"] * DEFAULT_VISIT_RATE)
+    overall_value = sum(r["value"] for r in rows) / len(rows)
     out: dict[str, dict] = {}
-    for axis in ("hook", "slot", "company", "ending", "format", "postFormat", "postFormatKind", "question"):
+    for axis in ("hook", "slot", "company", "ending", "format", "postFormat", "postFormatKind", "question", "opener", "genre", "slotTest"):
         groups: dict[str, list[dict]] = {}
         for row in rows:
             groups.setdefault(row["features"][axis], []).append(row)
@@ -191,14 +263,18 @@ def summarize(rows: list[dict]) -> dict:
             n = len(items)
             views = sum(i["views"] for i in items)
             eng = sum(i["engagement"] for i in items)
+            value = sum(i["value"] for i in items)
             table[key] = {
                 "n": n,
                 "avgViews": round(views / n, 1),
                 "avgEngagement": round(eng / n, 2),
                 "avgComments": round(sum(i.get("comments", 0) for i in items) / n, 2),
-                # 本数が少ない型ほど全体平均に寄せる（たまたまの1本で決めつけない）
-                "score": round(((views + PRIOR * overall_views) / (n + PRIOR))
-                               + 10 * ((eng + PRIOR * overall_eng) / (n + PRIOR)), 2),
+                # 1本あたりの訪問（計測前の投稿は表示から置き換えた値）と、実際に訪問を数えた本数
+                "avgVisits": round(value / n, 2),
+                "nVisits": sum(1 for i in items if i.get("visits") is not None),
+                # 目当ては訪問。本数が少ない型ほど全体平均に寄せる（たまたまの1本で決めつけない）。反応は同点のときの差くらい
+                "score": round(100 * ((value + PRIOR * overall_value) / (n + PRIOR))
+                               + ((eng + PRIOR * overall_eng) / (n + PRIOR)), 2),
             }
         out[axis] = dict(sorted(table.items(), key=lambda kv: -kv[1]["score"]))
     return out
@@ -239,11 +315,34 @@ def main() -> int:
         pass
     fetched_at = previous
     recent = "" if args.force else fetched_recently()
-    if recent and not args.offline:
+    visits_at = ""
+    try:
+        visits_at = json.loads(LEARNING_PATH.read_text("utf-8")).get("visitsFetchedAt") or ""
+    except (OSError, ValueError):
+        pass
+    now = datetime.now(timezone.utc)
+    visits_due = args.force or not visits_at or now - datetime.fromisoformat(visits_at) >= timedelta(hours=VISITS_EVERY_HOURS)
+    if recent and not args.offline and not visits_due:
         # 数値は前回から変わっていないので、学び直しも書き直しもしない（Buffer も呼ばない）
-        print(f"[learn] 反応は {recent} に取得済み（1日1回）。今回は Buffer を呼ばず、学習もそのまま")
+        print(f"[learn] 反応は {recent} に取得済み（1日1回）・訪問も {visits_at} に取得済み。今回は学習もそのまま")
         return 0
-    if not args.offline:
+    if not args.offline and visits_due:
+        try:
+            visits = fetch_visits(now)
+        except Exception as error:  # noqa: BLE001  訪問を取れなくても、表示で学ぶ
+            print(f"[learn] 訪問の数を取れませんでした: {type(error).__name__}: {str(error)[:120]}", file=sys.stderr)
+            visits = None
+        if visits is not None and (visits or inflow_token_present()):
+            visits_at = now.isoformat(timespec="seconds")
+            changed = 0
+            for slug, entry in state["posted"].items():
+                if visits_measurable(entry, now) and entry.get("visits") != visits.get(slug, 0):
+                    entry["visits"] = visits.get(slug, 0)
+                    changed += 1
+            print(f"[learn] 訪問の数を取り込みました（{len(visits)}記事・投稿の記録を{changed}件更新）")
+            if changed:
+                save_state(state)
+    if not args.offline and not recent:
         key = os.environ.get("BUFFER_API_KEY", "").strip()
         if not key:
             print("[learn] BUFFER_API_KEY が無いので、手元の数値だけで学習します")
@@ -269,7 +368,20 @@ def main() -> int:
             save_state(state)
 
     rows = []
+    fresh_skipped = 0
     for slug, entry in state["posted"].items():
+        if too_fresh(entry, now):
+            fresh_skipped += 1  # 出たばかり（訪問も表示もまだ数え終わっていない）
+            continue
+        if entry.get("visits") is not None and visits_measurable(entry, now) and learning_sample(entry):
+            # 訪問を数えた投稿は、Buffer の数値がまだでも学習に入れる（目当ては訪問）
+            metrics = reader_metrics(entry) if entry.get("metrics") and metrics_mature(entry) else {}
+            rows.append({
+                "slug": slug, "views": views_of(metrics), "engagement": engagement_of(metrics),
+                "comments": float(metrics.get("comments", 0) or 0), "visits": int(entry["visits"]),
+                "features": features(slug, entry),
+            })
+            continue
         # 朝のまとめ・問いかけ・時刻を変えた動作検証投稿は型の学習には入れない。
         # 送信直後に取った（まだ数え終わっていない）数値も入れない。コメントは読者の分だけ（自分のリンクの返信を引く）
         if not entry.get("metrics") or not learning_sample(entry) or not metrics_mature(entry):
@@ -282,6 +394,9 @@ def main() -> int:
             "comments": float(metrics.get("comments", 0) or 0),
             "features": features(slug, entry),
         })
+    rate = visit_rate(rows)
+    for r in rows:
+        r["value"] = float(r["visits"]) if r.get("visits") is not None else r["views"] * rate
     x_rows = [
         {"slug": slug, "views": views_of(e["xMetrics"]), "engagement": engagement_of(e["xMetrics"]), "features": features(slug, e)}
         for slug, e in state["posted"].items() if e.get("xMetrics") and learning_sample(e)
@@ -289,21 +404,28 @@ def main() -> int:
     learning = {
         "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         **({"metricsFetchedAt": fetched_at} if fetched_at else {}),
+        **({"visitsFetchedAt": visits_at} if visits_at else {}),
+        # 目当て（2026-11-03〜）: 投稿1本あたりの訪問。visitRate は 表示 → 訪問 の置き換えの割合
+        "target": "visits",
+        "visitRate": round(rate, 4),
+        "postsWithVisits": sum(1 for r in rows if r.get("visits") is not None),
+        "freshSkipped": fresh_skipped,
         "posts": len(rows),
         "axes": summarize(rows),
         # X の成績（形式の比較用。hook などの学習には使わない）
         "xPosts": len(x_rows),
         "xAxes": {k: v for k, v in summarize(x_rows).items() if k in ("postFormat", "postFormatKind")},
         "top": sorted(
-            ({"slug": r["slug"], "views": r["views"], "engagement": r["engagement"], **r["features"]} for r in rows),
-            key=lambda r: -(r["views"] + 10 * r["engagement"]),
+            ({"slug": r["slug"], "visits": r.get("visits"), "value": round(r["value"], 2), "views": r["views"], "engagement": r["engagement"], **r["features"]} for r in rows),
+            key=lambda r: -(r["value"] * 100 + r["engagement"]),
         )[:10],
     }
     LEARNING_PATH.write_text(json.dumps(learning, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     hooks = learning["axes"].get("hook", {})
     print(f"[learn] 学習に使えた投稿: {len(rows)}本")
+    print(f"[learn] 目当ては訪問。訪問を数えた投稿 {learning['postsWithVisits']}本・表示→訪問の割合 {rate:.1%}（ほかの投稿はこれで置き換え）")
     for key, value in list(hooks.items())[:5]:
-        print(f"  {key}: {value['n']}本 平均閲覧{value['avgViews']} 平均反応{value['avgEngagement']}")
+        print(f"  {key}: {value['n']}本 1本あたりの訪問{value['avgVisits']} 平均閲覧{value['avgViews']} 平均反応{value['avgEngagement']}")
     # 形式の A/B の比較（平均閲覧）
     for label, axes in (("Threads", learning["axes"]), ("X", learning["xAxes"])):
         for key, value in (axes.get("postFormatKind") or {}).items():

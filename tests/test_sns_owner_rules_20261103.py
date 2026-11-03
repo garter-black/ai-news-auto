@@ -1,0 +1,200 @@
+"""2026-11-03 オーナー承認その2 の4つ（ネット接続・投稿なし）。
+
+  1. 1行目は読者への呼びかけ（言い回しは続けない）。【速報】は本当の速報だけ
+  2. 通常枠の 12:15・21:00 は AI 以外の記事（1週間のテスト。slotTest で記録）
+  3. 問いかけは記事を読まなくても答えられる好み・経験
+  4. 学習の目当ては投稿1本あたりの訪問（無ければ表示 × 割合）
+
+  python3 -m unittest tests.test_sns_owner_rules_20261103
+"""
+import contextlib
+import io
+import json
+import sys
+import tempfile
+import unittest
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from unittest.mock import MagicMock, patch
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+import inflow_report  # noqa: E402
+import sns_rules  # noqa: E402
+import threads_hooks  # noqa: E402
+import threads_learn  # noqa: E402
+import threads_post as tp  # noqa: E402
+
+JST = timezone(timedelta(hours=9))
+
+
+class CalloutTest(unittest.TestCase):
+    def test_audience_from_article(self):
+        cases = {
+            "Hondaが初の高級電動アシストマウンテンバイク「RN0」を公開": "自転車好き",
+            "トヨタのランドクルーザー「FJ」、外装オプションを新規設定": "車好き",
+            "Canvaがデザインアプリ「Affinity」iPad版を公開": "iPad",
+            "楽天証券の総合口座が1,500万を突破": "証券口座",
+            "GoogleのGTIGがARTEXの悪用を確認": "セキュリティ担当",
+        }
+        for title, word in cases.items():
+            person, group = threads_hooks.audience_of({"title": title, "genreSlug": "business"})
+            self.assertIn(word, person + group, title)
+
+    def test_callout_varies_and_passes_gate(self):
+        article = {"slug": "a", "title": "ChatGPTに新機能", "genreSlug": "ai", "verdict": {"status": "available", "free": True}}
+        seen = []
+        last: list[str] = []
+        for _ in range(6):
+            key, line = threads_hooks.callout(article, last)
+            self.assertTrue(sns_rules.callout_ok(line), line)
+            self.assertNotIn(key, last)
+            seen.append(key)
+            last = [key]
+        self.assertGreater(len(set(seen)), 1)
+
+    def test_good_news_word_only_for_positive_news(self):
+        bad = {"slug": "b", "title": "攻撃ツールARTEXの悪用を確認", "verdict": {"status": "available", "free": True}}
+        for prev in ([], ["check"], ["see"], ["know"], ["keep"], ["careful"]):
+            self.assertNotIn("朗報", threads_hooks.callout(bad, prev)[1])
+        neutral = {"slug": "c", "title": "Acmeが研究成果を公開", "verdict": {"status": "demo"}}
+        for prev in ([], ["check"], ["see"], ["know"], ["keep"]):
+            self.assertNotIn("朗報", threads_hooks.callout(neutral, prev)[1])
+            self.assertNotIn("確認を", threads_hooks.callout(neutral, prev)[1])
+
+    def test_breaking_prefix_follows_cover_rule(self):
+        line = "車好きの人、これは要チェックです。"
+        self.assertEqual(threads_hooks.with_breaking(line, {"breaking": True}), "【速報】" + line)
+        self.assertEqual(threads_hooks.with_breaking(line, {"speedMinutes": 20}), "【速報】" + line)
+        self.assertEqual(threads_hooks.with_breaking("【速報】" + line, {}), line)
+        self.assertEqual(threads_hooks.with_breaking("【速報】" + line, {"breaking": True, "type": "roundup"}), line)
+
+    def test_prompt_asks_for_callout_and_answerable_question(self):
+        block = threads_hooks.prompt_block([])
+        self.assertIn("必ず呼びかけ型", block)
+        self.assertIn("記事を読まなくても答えられる", block)
+        self.assertNotIn("先に言うと、日本からはまだ使えません。", block)
+
+
+class NonAiSlotTest(unittest.TestCase):
+    def test_two_slots_during_test_week(self):
+        def at(day, hour, minute):
+            return datetime(2026, 11, day, hour, minute, tzinfo=JST).astimezone(timezone.utc)
+        self.assertTrue(tp.non_ai_slot(at(4, 12, 15)))
+        self.assertTrue(tp.non_ai_slot(at(10, 21, 0)))
+        self.assertFalse(tp.non_ai_slot(at(4, 18, 30)))
+        self.assertFalse(tp.non_ai_slot(at(11, 12, 15)))  # テスト期間（1週間）の後
+        self.assertFalse(tp.non_ai_slot(None))
+        with patch.dict("os.environ", {"SNS_NON_AI_SLOTS": "off"}):
+            self.assertFalse(tp.non_ai_slot(at(4, 12, 15)))
+        self.assertEqual(len(tp.NON_AI_SLOTS_JST), 2)
+
+    def test_everyday_topics_first(self):
+        car = {"title": "トヨタのランドクルーザー「FJ」を発売", "genreSlug": "business"}
+        remote = {"title": "財務省が研究会の議事要旨を公開", "genreSlug": "business"}
+        self.assertGreater(tp.everyday_score(car), tp.everyday_score(remote))
+
+
+class LearningVisitsTest(unittest.TestCase):
+    def run_learning(self, state, visits, now):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "learning.json"
+            with patch.object(sys, "argv", ["threads_learn.py"]), \
+                 patch.object(threads_learn, "load_state", return_value=state), \
+                 patch.object(threads_learn, "save_state"), \
+                 patch.object(threads_learn, "LEARNING_PATH", output), \
+                 patch.object(threads_learn, "fetch_visits", return_value=visits), \
+                 patch.object(threads_learn, "inflow_token_present", return_value=True), \
+                 patch.object(threads_learn, "fetch_metrics", side_effect=AssertionError("Buffer を呼ばない")), \
+                 patch.object(threads_learn, "datetime", wraps=datetime) as fake, \
+                 patch.dict("os.environ", {"BUFFER_API_KEY": ""}):
+                fake.now.return_value = now
+                self.assertEqual(threads_learn.main(), 0)
+            return json.loads(output.read_text())
+
+    def test_visits_are_the_target_with_impression_fallback(self):
+        now = datetime(2026, 11, 5, 12, 0, tzinfo=timezone.utc)
+        common = {"style": "standalone", "format": "classic"}
+        state = {"posted": {
+            # 計測開始後に出た投稿: 訪問が目当て（表示は少なくても訪問が多い型が勝つ）
+            "a": {**common, "hook": "callout", "opener": "check", "sentAt": "2026-11-04T00:00:00Z",
+                  "metricsUpdatedAt": "2026-11-05T00:00:00Z", "metrics": {"views": 50}},
+            "b": {**common, "hook": "callout", "opener": "see", "sentAt": "2026-11-04T03:00:00Z",
+                  "metricsUpdatedAt": "2026-11-05T00:00:00Z", "metrics": {"views": 900}},
+            # 計測前の投稿: 表示 × 割合 で置き換える
+            "old": {**common, "hook": "number", "sentAt": "2026-11-01T00:00:00Z",
+                    "metricsUpdatedAt": "2026-11-02T11:00:00Z", "metrics": {"views": 1000}},
+            # 出たばかり: 入れない
+            "fresh": {**common, "hook": "free", "sentAt": "2026-11-05T10:00:00Z", "metrics": {"views": 0}},
+        }}
+        result = self.run_learning(state, {"a": 30, "b": 1}, now)
+        self.assertEqual(result["target"], "visits")
+        self.assertEqual(result["postsWithVisits"], 2)
+        self.assertEqual(result["freshSkipped"], 1)
+        self.assertEqual(state["posted"]["a"]["visits"], 30)
+        self.assertNotIn("visits", state["posted"]["old"])
+        opener = result["axes"]["opener"]
+        self.assertGreater(opener["check"]["score"], opener["see"]["score"])
+        self.assertEqual(opener["check"]["avgVisits"], 30)
+        # 置き換えの割合 = 訪問 / 表示（そろった投稿が3本未満なら既定の2%）
+        self.assertEqual(result["visitRate"], threads_learn.DEFAULT_VISIT_RATE)
+        self.assertEqual(result["axes"]["hook"]["number"]["avgVisits"], 20.0)
+        self.assertNotIn("free", result["axes"]["hook"])
+        self.assertIn("genre", result["axes"])
+
+    def test_weak_hooks_use_visits(self):
+        hooks = {k: {"n": 5, "avgViews": 100, "avgEngagement": 1, "avgVisits": 2} for k in ("check", "breaking", "question")}
+        hooks["question"].update(avgViews=500, avgVisits=0.1, avgEngagement=0.1)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "state" / "threads_learning.json"
+            path.parent.mkdir()
+            path.write_text(json.dumps({"axes": {"hook": hooks}}), "utf-8")
+            with patch.object(threads_hooks, "ROOT", Path(directory)):
+                self.assertEqual(threads_hooks.weak_hooks(), ["question"])
+
+
+class InflowReportTestGroups(unittest.TestCase):
+    def test_hook_and_slot_test_are_shown(self):
+        data = {"date": "2026-11-04", "views": 5, "visitors": 5, "bySource": [{"source": "threads", "views": 5, "visitors": 5}],
+                "rows": [{"page": "car", "source": "threads", "campaign": "classic", "content": "", "views": 4, "visitors": 4},
+                         {"page": "ai1", "source": "threads", "campaign": "classic", "content": "", "views": 1, "visitors": 1}]}
+        posted = {
+            "car": {"sentAt": "2026-11-04T03:15:00Z", "format": "classic", "hook": "callout", "opener": "check", "slotTest": "non_ai"},
+            "ai1": {"sentAt": "2026-11-04T09:30:00Z", "format": "classic", "hook": "callout", "opener": "good", "slotTest": "ai"},
+            "ai2": {"sentAt": "2026-11-04T06:30:00Z", "format": "classic", "hook": "callout", "opener": "see", "slotTest": "ai"},
+        }
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            inflow_report.show(data, posted, {})
+        text = out.getvalue()
+        self.assertIn("classic/呼びかけ・要チェック", text)
+        self.assertIn("AI以外の枠 1本・訪問4（1本あたり 4.0）", text)
+        self.assertIn("AIの枠 2本・訪問1（1本あたり 0.5）", text)
+
+
+class GeneratedPostsPassGate(unittest.TestCase):
+    """実際の記事（content/articles）から新しい経路で作った本文が、どの SNS でも門番を通る"""
+
+    def test_real_articles(self):
+        root = Path(__file__).resolve().parents[1] / "content" / "articles"
+        slugs = sorted(p.stem for p in root.glob("*.json"))[:0]
+        for slug in ("honda-rn0-emtb-eicma-2026", "affinity-for-ipad-canva-release", "toyota-land-cruiser-fj-options"):
+            path = root / f"{slug}.json"
+            if path.exists():
+                slugs.append(slug)
+        if not slugs:
+            self.skipTest("記事のファイルが無い")
+        for slug in slugs:
+            article = json.loads((root / f"{slug}.json").read_text("utf-8"))
+            with patch.object(tp, "recent_openers", MagicMock(return_value=[])):
+                text = tp.compose(article, [])
+            for platform in ("threads", "facebook"):
+                body = tp.with_link(text, article, platform, "classic")
+                out = sns_rules.check_post(platform, body, [], article)
+                self.assertEqual(out, [], f"{slug} {platform}\n{body}")
+            x = tp.compose_x(article, text)
+            reply = f"{tp.link_reply_text(article)}\n{tp.utm_link(f'{tp.site_url()}/articles/{slug}', 'x', 'classic')}"
+            self.assertEqual(sns_rules.check_post("x", x, [], article, reply_text=reply), [], f"{slug} x\n{x}")
+
+
+if __name__ == "__main__":
+    unittest.main()

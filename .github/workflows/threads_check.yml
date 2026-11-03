@@ -27,6 +27,7 @@ jobs:
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_LEDGER: check
+          AFF_STATS_TOKEN: ${{ secrets.AFF_STATS_TOKEN }}
         run: python scripts/threads_learn.py && cat state/threads_learning.json | head -60
       - name: Draft posts (not published)
         run: python scripts/threads_post.py --dry-run --hours 72 --max 2

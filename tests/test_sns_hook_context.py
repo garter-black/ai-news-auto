@@ -24,16 +24,11 @@ class HookContextTest(unittest.TestCase):
         self.assertLessEqual(tp.x_weight(result), tp.X_LIMIT)
         return result
 
-    def test_speed_header_preserves_number_with_dependent_sentence(self):
+    def test_speed_header_is_never_used(self):
+        """2026-11-03 オーナー承認その2: 「発表からN分で掲載／お届け」の書き出しは使わない（sns_rules のルール6）"""
         result = self.breaking(self.article)
-        self.assertIn("62件。 AcmeのAI", result)
-        self.assertIn("公式発表から16分", result)
-
-    def test_speed_header_preserves_service_name(self):
-        self.article["threadsPost"] = "【速報】Acmeの文書アプリに新機能。\nPDFを画面内で作成して編集できます。\n全ユーザーが対象です。"
-        result = self.breaking(self.article)
-        self.assertIn("Acmeの文書アプリ", result)
-        self.assertIn("PDFを画面内", result)
+        self.assertNotIn("発表から", result)
+        self.assertIn(self.article["title"], result)
         self.assertEqual(result.count("【速報】"), 1)
 
     def test_long_context_falls_back_to_complete_title(self):

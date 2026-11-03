@@ -65,7 +65,7 @@ HOOKS: list[dict] = [
         "name": "結論先出し型",
         "how": "読者がいちばん知りたい答えを先に言う",
         "when": "「使えるの？」「無料？」「日本で使える？」への答えがはっきりしている",
-        "examples": ["結論：無料プランの人も今日から使えます。", "先に言うと、日本からはまだ使えません。"],
+        "examples": ["結論：無料プランの人も今日から使えます。", "結論：個人なら無料アカウントで使えます。"],
     },
     {
         "key": "callout",
@@ -135,14 +135,17 @@ POST_STYLE = 3
 
 # 全プロンプト共通の threads_post のルール（prompt_block の先頭に入る）
 POST_RULES = """## Threads 紹介文（threads_post）のルール
-投稿には見出し入りの写真が付くので、本文で見出しを繰り返さない。記事へのリンクは返信に付けるので、本文には書かない。
+投稿には記事の写真が付くので、本文で見出しを繰り返さない。記事へのリンクは投稿するときに足すので、本文には書かない。
 全体で全角120〜150字。次の3つのかたまりを、この順に、空行（改行2つ）で区切って書く。
-1. 書き出し（1行・全角30字以内）: 下の「書き出しの型」から1つ選んで書く。見出しをそのまま書かない。
+1. 書き出し（1行・全角30字以内）: この記事に関係する読者を具体的に名指しして呼びかける（呼びかけ型。2026-11-03 オーナー決定）。
+   例:「マウンテンバイク好きの人、これは要チェックです。」「コードを書く開発者の皆さん、朗報です。」「電気代が気になる人に、知っておいてほしい話です。」
+   【速報】は書かない（付けるかは投稿するときに決める）。「先に言うと、〜できません／対象外」「発表から◯分で掲載」のような書き出しは書かない。見出しをそのまま書かない。
 2. 要約（2行）: 「要約すると、」で始め、事実を短い文2つで書く。1文に言いたいことは1つ、1文は全角40字以内が目安。文ごとに改行する。
    誰が（会社・製品の正体を一言で。例「ChatGPTのOpenAIが」）・何をしたか・何が変わるか が分かるようにする。
-3. 問いかけ（1文・全角40字以内・「？」で終える）: 読者自身の仕事・お金・副業・使っている道具について、一言で答えられる問い。
-   例:「あなたの会社や取引先では、円安の影響は出ていますか？」「証券口座、どこを使っていますか？NISAは始めましたか？」
-   問いの形は記事ごとに変える（どれを使っているか／試したことがあるか／AとBならどちらで使うか／自分の仕事に影響がありそうか）。
+3. 問いかけ（1文・全角40字以内・「？」で終える）: 記事を読まなくても答えられる、読者自身の好み・経験を聞く問い。
+   例:「趣味の道具にかけるお金、何を重視して選びますか？」「夏と冬、電気代が高いと感じるのはどっちですか？」「証券口座、いくつ持っていますか？」
+   問いの形は記事ごとに変える（ふだん何を使っているか／AとBならどちらか／何を重視するか／やったことがあるか）。
+   「この機能、使ってみたいですか？」「いちばん気になった発表はどれですか？」のように、記事の中身を知らないと答えられない問いにしない。
    記事の話題から外れた問いにしない。問いの中で新しい事実や数字を言わない。
 書き方の例（形だけの参考。中身はそのまま使わない）:
 円安倒産、まだ止まっていません。
@@ -176,12 +179,14 @@ def weak_hooks() -> list[str]:
     total = sum(v.get("n", 0) for v in hooks.values())
     if total < 10:
         return []
-    views = sum(v.get("avgViews", 0) * v.get("n", 0) for v in hooks.values()) / total
+    # 目当ては1本あたりの訪問（threads_learn の avgVisits。古い学習結果なら閲覧）
+    metric = "avgVisits" if all("avgVisits" in v for v in hooks.values()) else "avgViews"
+    views = sum(v.get(metric, 0) * v.get("n", 0) for v in hooks.values()) / total
     eng = sum(v.get("avgEngagement", 0) * v.get("n", 0) for v in hooks.values()) / total
     return [
         key for key, v in hooks.items()
         if key in HOOK_KEYS and v.get("n", 0) >= WEAK_MIN_POSTS
-        and v.get("avgViews", 0) < views * WEAK_RATIO and v.get("avgEngagement", 0) < eng * WEAK_RATIO
+        and v.get(metric, 0) < views * WEAK_RATIO and v.get("avgEngagement", 0) < eng * WEAK_RATIO
     ]
 
 
@@ -211,8 +216,10 @@ def prompt_block(recent: list[str] | None = None) -> str:
         persona.SNS_BLOCK,
         "",
         "## Threads 紹介文（threads_post）の書き出し",
-        "threads_post の1行目は、次の型から、この記事にいちばん合うものを1つ選んで書く。選んだ型の key を threads_hook に入れる。",
-        "各型の「使ってよい条件」を満たさない型は選ばない。例はあくまで雰囲気の参考で、そのまま使わない。",
+        "threads_post の1行目は、必ず呼びかけ型（callout）で書く。threads_hook には callout を入れる。",
+        "記事に関係する読者を具体的に名指しする（〇〇好きの人／〇〇を使っている人／〇〇担当の人／〇〇の皆さん など）。",
+        "言い回しは記事ごとに変える（「これは要チェックです」「朗報です」（良い知らせのときだけ）「これは見てほしいです」「知っておいてほしい話です」「押さえておきたい話です」）。",
+        "以下の型の一覧は、伝える中身の参考（数字・ビフォーアフター・注意点など）。1行目の形は呼びかけにする。",
     ]
     if recent:
         names = "、".join(h["name"] for h in HOOKS if h["key"] in recent)
@@ -248,7 +255,10 @@ def learned_summary() -> str:
         return ""  # データが少ないうちは決めつけない
     names = {h["key"]: h["name"] for h in HOOKS}
     best = list(hooks.items())[:3]
-    text = "、".join(f"{names.get(k, k)}（平均閲覧{v['avgViews']}）" for k, v in best)
+    text = "、".join(
+        f"{names.get(k, k)}（1本あたりの訪問{v['avgVisits']}）" if "avgVisits" in v else f"{names.get(k, k)}（平均閲覧{v['avgViews']}）"
+        for k, v in best
+    )
     untested = [h["name"] for h in HOOKS if h["key"] not in hooks]
     note = f"これまでの投稿では {text} の反応が良い。記事に合うならこれらを優先する。"
     if untested:
@@ -259,3 +269,128 @@ def learned_summary() -> str:
 def clean_hook(value: object) -> str:
     key = str(value or "").strip()
     return key if key in HOOK_KEYS else ""
+
+
+# ---- 1行目の呼びかけ（2026-11-03 オーナー承認その2: 1行目は関係する読者を名指しする） ----
+import re  # noqa: E402
+
+import sns_rules  # noqa: E402
+
+# 記事の言葉 → 呼びかける読者（〜の人, 〜の皆さん）。上から順に、見出し → 判定の読者 → タグ・説明文 の順で探す
+AUDIENCES: list[tuple[str, tuple[str, str]]] = [
+    (r"マウンテンバイク|e-?MTB|自転車|ロードバイク", ("自転車好きの人", "自転車好きの皆さん")),
+    (r"バイク|二輪|オートバイ", ("バイク好きの人", "バイク好きの皆さん")),
+    (r"ランドクルーザー|クラウン|SUV|新型車|自動車|クルマ|車種|ミニバン|軽自動車|電気自動車|(?<![A-Za-z])EV(?![A-Za-z])", ("車好きの人", "車好きの皆さん")),
+    (r"セキュリティ|脆弱性|サイバー攻撃|不正アクセス|ランサム|悪用", ("会社のセキュリティ担当の人", "セキュリティ担当の皆さん")),
+    (r"確定申告|インボイス|ふるさと納税|控除", ("確定申告をする人", "確定申告をする皆さん")),
+    (r"年金", ("年金が気になる人", "年金が気になる皆さん")),
+    (r"補助金|助成金|支援金|給付金", ("事業をしている人", "事業をしている皆さん")),
+    (r"NISA|iDeCo|証券|口座数", ("証券口座を持っている人", "投資をしている皆さん")),
+    (r"決算|株価|上場|IPO|業績", ("株や業績をチェックしている人", "株や業績を追っている皆さん")),
+    (r"住宅ローン|不動産|マンション|家賃|賃貸|地価|リフォーム", ("住まいのお金が気になる人", "家を探している皆さん")),
+    (r"副業|フリーランス|個人事業|起業|独立|開業", ("副業や独立を考えている人", "個人で働く皆さん")),
+    (r"電気代|電力|ガス代|電気料金|ガソリン|光熱費", ("光熱費が気になる人", "家計を見ている皆さん")),
+    (r"免税|旅行|観光|ホテル|航空", ("旅行が好きな人", "旅行好きの皆さん")),
+    (r"税|社会保険|保険料|物価|値上げ", ("家計を管理している人", "家計を管理している皆さん")),
+    (r"iPhone", ("iPhoneを使っている人", "iPhoneユーザーの皆さん")),
+    (r"iPad", ("iPadを使っている人", "iPadユーザーの皆さん")),
+    (r"(?<![A-Za-z])Mac(?![a-z])|macOS", ("Macを使っている人", "Macユーザーの皆さん")),
+    (r"Android|Pixel|Galaxy", ("Androidスマホを使っている人", "Androidユーザーの皆さん")),
+    (r"Windows", ("Windowsを使っている人", "Windowsユーザーの皆さん")),
+    (r"イヤホン|ヘッドホン|スマートウォッチ|テレビ|家電|カメラ", ("新しいガジェットが好きな人", "ガジェット好きの皆さん")),
+    (r"ゲーム|PS5|Switch|Xbox|Steam|GeForce NOW", ("ゲーム好きの人", "ゲーム好きの皆さん")),
+    (r"動画編集|映像制作|YouTube|動画生成", ("動画を作る人", "動画を作る皆さん")),
+    (r"デザイン|Figma|Canva|Affinity|Photoshop|イラスト", ("デザインをする人", "デザインをする皆さん")),
+    (r"音声|ナレーション|ElevenLabs|音楽|作曲", ("音声や音楽を作る人", "音声や音楽を作る皆さん")),
+    (r"ChatGPT|OpenAI", ("ChatGPTを使っている人", "ChatGPTユーザーの皆さん")),
+    (r"Gemini|NotebookLM", ("Geminiを使っている人", "Geminiユーザーの皆さん")),
+    (r"Claude|Anthropic", ("Claudeを使っている人", "Claudeユーザーの皆さん")),
+    (r"Copilot", ("Copilotを使っている人", "Copilotユーザーの皆さん")),
+    (r"GitHub|コード|プログラミング|開発者|エンジニア|SDK|ターミナル|Codex|(?<![A-Za-z])API(?![A-Za-z])", ("コードを書く人", "開発者の皆さん")),
+    (r"データベース|AWS|Azure|Google Cloud|インフラ|サーバー", ("会社のIT担当の人", "IT担当の皆さん")),
+    (r"営業|顧客対応|コールセンター|カスタマーサポート|接客", ("営業や顧客対応をしている人", "営業・接客の皆さん")),
+    (r"マーケティング|広告|集客", ("集客を担当している人", "マーケティング担当の皆さん")),
+    (r"経営|CEO|社長|経営者", ("経営をしている人", "経営者の皆さん")),
+    (r"研修|教育|学生|大学|学校", ("学び直しを考えている人", "学ぶ皆さん")),
+    (r"半導体|NVIDIA|GPU|データセンター", ("AIの裏側の技術が気になる人", "テック好きの皆さん")),
+    (r"研究|論文", ("新しい技術を追っている人", "テック好きの皆さん")),
+]
+# 判定（verdict.audience）→ 読者
+VERDICT_AUDIENCES = {
+    "開発者": ("コードを書く人", "開発者の皆さん"), "エンジニア": ("コードを書く人", "開発者の皆さん"),
+    "企業のIT部門": ("会社のIT担当の人", "IT担当の皆さん"), "デザイナー": ("デザインをする人", "デザインをする皆さん"),
+    "クリエイター": ("ものづくりをする人", "クリエイターの皆さん"), "営業職": ("営業や顧客対応をしている人", "営業・接客の皆さん"),
+    "経営層": ("経営をしている人", "経営者の皆さん"), "マーケター": ("集客を担当している人", "マーケティング担当の皆さん"),
+    "個人事業主": ("個人で仕事をしている人", "個人事業主の皆さん"), "研究者": ("新しい技術を追っている人", "研究者の皆さん"),
+}
+GENRE_AUDIENCES = {
+    "ai": ("AIを仕事で使っている人", "AIを使っている皆さん"),
+    "business": ("仕事のニュースを追っている人", "働く皆さん"),
+    "public": ("暮らしの制度が気になる人", "働く皆さん"),
+    "investment": ("資産づくりを考えている人", "資産づくりを考えている皆さん"),
+    "real-estate": ("住まいのお金が気になる人", "家を探している皆さん"),
+    "tech-gadget": ("新しいガジェットが好きな人", "ガジェット好きの皆さん"),
+    "sports": ("スポーツ好きの人", "スポーツ好きの皆さん"),
+}
+DEFAULT_AUDIENCE = ("仕事とお金のニュースを追っている人", "働く皆さん")
+# 呼びかけの言い回し（id, 形, 皆さんの形を使うか）。同じ言い回しは続けない
+CALLOUTS: list[tuple[str, str, bool]] = [
+    ("check", "{who}、これは要チェックです。", False),
+    ("good", "{who}、朗報です。", True),
+    ("see", "{who}、これは見てほしいです。", False),
+    ("know", "{who}に、知っておいてほしい話です。", False),
+    ("keep", "{who}は、押さえておきたい話です。", False),
+    ("careful", "{who}は、ここだけ確認を。", False),
+]
+CALLOUT_TAILS = [
+    ("check", re.compile(r"要チェック")), ("good", re.compile(r"朗報")), ("see", re.compile(r"見てほしい|見てください")),
+    ("know", re.compile(r"知っておいてほしい|知っておきたい")), ("keep", re.compile(r"押さえておきたい")), ("careful", re.compile(r"確認を|注意")),
+]
+NEGATIVE_RE = re.compile(r"悪用|攻撃|脆弱性|詐欺|不正|流出|漏えい|漏洩|障害|不具合|事故|倒産|破たん|被害|訴訟|停止|リコール|値上げ|廃止|終了|縮小")
+
+
+def audience_of(article: dict) -> tuple[str, str]:
+    """記事に関係する読者（呼びかけ用。〜の人, 〜の皆さん）"""
+    title = f"{article.get('title', '')} {article.get('seoTitle', '')}"
+    for pattern, who in AUDIENCES:
+        if re.search(pattern, title):
+            return who
+    verdict = str((article.get("verdict") or {}).get("audience") or "")
+    if verdict in VERDICT_AUDIENCES:
+        return VERDICT_AUDIENCES[verdict]
+    rest = f"{' '.join(str(t) for t in article.get('tags') or [])} {article.get('description', '')}"
+    for pattern, who in AUDIENCES:
+        if re.search(pattern, rest):
+            return who
+    return GENRE_AUDIENCES.get(str(article.get("genreSlug") or ""), DEFAULT_AUDIENCE)
+
+
+def callout_id(line: str) -> str:
+    """呼びかけの言い回しの id（同じ言い回しを続けないため）。分からなければ gen"""
+    for key, pattern in CALLOUT_TAILS:
+        if pattern.search(str(line or "")):
+            return key
+    return "gen"
+
+
+def callout(article: dict, recent: list[str] | None = None) -> tuple[str, str]:
+    """1行目の呼びかけ（id, 文）。良い知らせだけ「朗報」、悪い知らせ・注意点は「ここだけ確認を」。直前の言い回しは避ける"""
+    person, group = audience_of(article)
+    verdict = article.get("verdict") or {}
+    negative = bool(NEGATIVE_RE.search(f"{article.get('title', '')} {article.get('seoTitle', '')}"))
+    positive = not negative and (verdict.get("status") == "available" or verdict.get("free") is True)
+    caution = negative or verdict.get("status") == "limited" or verdict.get("japan") == "no"
+    options = [
+        c for c in CALLOUTS
+        if (c[0] != "good" or positive) and (c[0] != "careful" or caution)
+    ]
+    last = [r for r in (recent or []) if r][:1]
+    fresh = [c for c in options if c[0] not in last] or options
+    key, form, use_group = fresh[sum(ord(ch) for ch in str(article.get("slug") or "")) % len(fresh)]
+    return key, form.format(who=group if use_group else person)
+
+
+def with_breaking(line: str, article: dict) -> str:
+    """本当の速報（sns_rules.is_fast_news）の記事だけ、1行目の頭に【速報】を付ける。ほかの記事からは外す"""
+    body = re.sub(r"^【速報】\s*", "", str(line or "")).strip()
+    return f"【速報】{body}" if sns_rules.is_fast_news(article) else body

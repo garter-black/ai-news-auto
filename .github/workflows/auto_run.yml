@@ -391,6 +391,10 @@ jobs:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           # Buffer の呼び出し回数の記録の名前（state/buffer_calls/pipeline.json。scripts/buffer_budget.py）
           BUFFER_LEDGER: pipeline
+          # 学習の目当て（投稿ごとの訪問）を自前の計測から読む鍵（scripts/threads_learn.py。読むだけ）
+          AFF_STATS_TOKEN: ${{ secrets.AFF_STATS_TOKEN }}
+          # 通常枠の AI 以外の記事のテスト（12:15・21:00。11/4〜11/10）。off で止める
+          SNS_NON_AI_SLOTS: ${{ vars.SNS_NON_AI_SLOTS }}
           BUFFER_DAILY_CAP: ${{ vars.BUFFER_DAILY_CAP }}
           BUFFER_MONITOR_CAP: ${{ vars.BUFFER_MONITOR_CAP }}
           # 1日の投稿本数（Threads・X・Facebook 共通）。凍結を避けて週に1〜2本ずつ増やす

@@ -274,34 +274,51 @@ def summary_block(article: dict, title: str, hook: str, budget: int) -> str:
 HOOK_EXAMPLES = {e for hook in threads_hooks.HOOKS for e in hook["examples"]}
 
 
+# この実行の中で使った呼びかけの言い回し（同じ実行で何本も作るとき、直前と同じ言い回しを続けない）
+_RUN_OPENERS: list[str] = []
+
+
+def recent_openers(limit: int = 3) -> list[str]:
+    """直近の投稿で使った呼びかけの言い回しの id（新しい順）。この実行で作った分 → 投稿履歴"""
+    try:
+        posted = json.loads(STATE_PATH.read_text("utf-8")).get("posted") or {}
+    except (OSError, ValueError):
+        posted = {}
+    history = sorted(posted.values(), key=lambda p: p.get("sentAt") or p.get("dueAt") or p.get("postedAt") or "", reverse=True)
+    return (list(reversed(_RUN_OPENERS)) + [p["opener"] for p in history if p.get("opener")])[:limit]
+
+
 def first_line_hook(article: dict, recent: list[str], breaking: bool, title: str) -> str:
-    """1行目の短い書き出し。生成時の紹介文の1行目が短ければそれ、なければ判定から型を選ぶ（直近の型は避ける）"""
-    if breaking and not article.get("disaster") and speed_line(article):
-        article["_hook"] = "breaking"
-        return speed_line(article)
-    weak = set(weak_hook_keys())
+    """1行目の書き出し（2026-11-03 オーナー承認その2）: 関係する読者を名指しする呼びかけ。
+
+    生成時の紹介文の1行目が呼びかけになっていて、直前の投稿と同じ言い回しでなければそれを使う。
+    ダメなら記事から読者を決めて組み立てる（threads_hooks.callout）。【速報】は本当の速報の記事だけ（sns_rules.is_fast_news）。
+    breaking（いますぐ出す速報か）は【速報】の判定には使わない（画像の「速報」と同じ決まりにそろえる）
+    """
+    last = recent_openers(1)
     blocks = post_blocks_of(article.get("threadsPost", ""))
     old = clean_lines(blocks[0] if int(article.get("threadsStyle") or 1) >= 3 and blocks else article.get("threadsPost", ""))
     line = re.sub(r"^【速報】\s*", "", old[0]) if old else ""
     if len(line) > OLD_HOOK_MAX and len(split_sentences(line)) > 1:
-        line = split_sentences(line)[0]  # 改行の無い以前の紹介文は、最初の文を書き出しの候補にする
+        line = split_sentences(line)[0]
     usable = (
-        line and len(line) <= OLD_HOOK_MAX and article.get("threadsHook") not in weak
-        and not line.startswith(persona.SUMMARY_OPENER) and not repeats_title(line, title)
-        and line not in HOOK_EXAMPLES  # 型の例をそのまま写した書き出し（記事と合わないことがある）は使わない
-        and not persona.STIFF_RE.search(line) and not persona.ADVICE_RE.search(line)
+        sns_rules.callout_ok(line) and not line.startswith(persona.SUMMARY_OPENER) and not repeats_title(line, title)
+        and line not in HOOK_EXAMPLES and not persona.STIFF_RE.search(line) and not persona.ADVICE_RE.search(line)
+        and not any(p.search(line) for p, _ in sns_rules.BANNED_OPENERS)
+        and threads_hooks.callout_id(line) not in last
     )
     if usable:
-        article["_hook"] = article.get("threadsHook") or ""
-        hook = line
+        key, hook = threads_hooks.callout_id(line), line
     else:
-        hook_key, hook = opening_line(article, recent, allow_breaking=False)
-        article["_hook"] = hook_key
-    if breaking:
-        article["_hook"] = "breaking"
-        if not hook.startswith("【速報】"):
-            head = re.split(r"[、，,\s　]", title)[0] if title else ""
-            hook = f"【速報】{head}" if 4 <= len(head) <= 24 and not repeats_title(head, title) else f"【速報】{hook}"
+        key, hook = threads_hooks.callout(article, last)
+    hook = threads_hooks.with_breaking(hook, article)
+    if not sns_rules.callout_ok(hook):
+        # 生成の1行目が【速報】を付けると長すぎる場合など
+        key, hook = threads_hooks.callout(article, last)
+        hook = threads_hooks.with_breaking(hook, article)
+    article["_hook"] = "callout"
+    article["_opener"] = key
+    _RUN_OPENERS.append(key)
     return hook
 
 
@@ -363,6 +380,7 @@ def question_ok(question: str, title: str = "", limit: int = voice.QUESTION_LIMI
         q and q.endswith(QUESTION_END) and len(q) <= limit and "\n" not in q and q.count("？") + q.count("?") <= 2
         and not BAIT_RE.search(q) and not persona.ADVICE_RE.search(q) and not persona.STIFF_RE.search(q)
         and not re.search(r"https?://|#\S", q) and not repeats_title(q, title)
+        and not sns_rules.question_needs_article(q)
     )
 
 
@@ -376,10 +394,10 @@ def llm_question(article: dict, title: str) -> str:
     prompt = (
         "次のニュースを読んだ人への問いかけを、1文だけ書く。\n"
         f"読者: {persona.PERSONA['who']}\n"
-        "- 読者自身の仕事・お金・副業・使っている道具について、一言で答えられる短い問いにする。全角35字以内（40字を超えると使えない）。「？」で終える。\n"
-        "- このニュースの製品・会社・話題に直接つながる問いにする（関係の薄い一般論にしない）。新しい事実や数字は書かない。\n"
+        "- 記事を読まなくても答えられる、読者自身の好み・経験を聞く短い問いにする（ふだん何を使っているか／AとBならどちらか／何を重視するか／やったことがあるか）。全角35字以内（40字を超えると使えない）。「？」で終える。\n"
+        "- 「この機能、使ってみたいですか？」「いちばん気になった発表は？」のように、記事の中身を知らないと答えられない問いにしない。話題（製品の分野・お金・暮らし）にはつなげる。新しい事実や数字は書かない。\n"
         "- 「コメントしてね」などの反応のお願い、アンケートのふり、売買のすすめ、硬い言い回し、「ざっくり」は使わない。\n"
-        "例:「あなたの会社や取引先では、円安の影響は出ていますか？」「Pixel 11 Proのカメラ、料理や仕事の写真で使ってみたいですか？」\n\n"
+        "例:「趣味の道具にかけるお金、何を重視して選びますか？」「スマホの写真、いちばん撮るのは仕事と家族のどっちですか？」\n\n"
         f"見出し: {title}\n要約: {article.get('description', '')}\n要点: {' / '.join(str(h) for h in article.get('highlights') or [])}"
     )
     schema = {"type": "OBJECT", "properties": {"question": {"type": "STRING"}}, "required": ["question"]}
@@ -420,12 +438,8 @@ def compose_legacy(article: dict, recent: list[str] | None = None, breaking: boo
     if not breaking and not article.get("breaking") and lines[0].startswith("【速報】"):
         # 速報扱いでない記事に【速報】とは書かない（煽りに見えるため）
         lines[0] = lines[0].removeprefix("【速報】").strip() or lines[0]
-    if breaking and speed_line(article) and not article.get("disaster"):
-        # 地震・津波（disaster）の投稿では速さを誇らない（記事ページのラベルには出す）
-        # 速さが確かな速報は1行目を「【速報】発表から12分で掲載」にする（数字は記事の speedMinutes。見出しには入れない）
-        lines[0] = lines[0].removeprefix("【速報】").strip()
-        lines = [speed_line(article)] + [line for line in lines if line]
-    elif breaking and not lines[0].startswith("【速報】"):
+    # 「【速報】発表から12分で掲載」の1行目は使わない（2026-11-03 オーナー承認その2。sns_rules のルール6）
+    if breaking and not lines[0].startswith("【速報】"):
         lines[0] = f"【速報】{lines[0]}"
     return "\n".join(lines)[:MAX_CHARS]
 
@@ -632,14 +646,54 @@ def hook_bonus() -> dict[str, float]:
     return bonus
 
 
-def candidates(state: dict, hours: int) -> list[dict]:
-    """直近 hours 時間に生成された未投稿のAI記事を、Threads で反応が取れそうな順に並べる。"""
+# ---- 通常枠の AI 以外の記事のテスト（2026-11-03 オーナー承認その2。1週間） ----
+# 1日9枠のうち2枠（昼 12:15・夜 21:00）は、AI 以外の記事（車・身近な製品・お金・暮らしの制度）を出す。
+# 投稿履歴に slotTest（non_ai / ai / non_ai_fallback）を残し、scripts/inflow_report.py が訪問数を比べる
+NON_AI_SLOTS_JST = ((12, 15), (21, 0))
+NON_AI_TEST_FROM = datetime(2026, 11, 3, 15, 0, tzinfo=timezone.utc)   # 11/4 0:00 日本時間
+NON_AI_TEST_UNTIL = datetime(2026, 11, 10, 15, 0, tzinfo=timezone.utc)  # 11/11 0:00 日本時間（この前まで）
+NON_AI_GENRES = {"business", "tech-gadget", "public", "investment", "real-estate", "lifestyle"}
+# 読者の暮らし・お金に近い話題（AI 以外の枠で先に出す）と、身近でない話題（後に回す）
+EVERYDAY_RE = re.compile(
+    r"車|クルマ|バイク|自転車|iPhone|iPad|スマホ|Android|Pixel|Galaxy|家電|テレビ|イヤホン|カメラ|ゲーム|"
+    r"税|年金|補助|給付|支援金|NISA|iDeCo|証券|口座|住宅|家賃|不動産|電気代|電気料金|ガス|ガソリン|旅行|免税|値上げ|値下げ|物価|"
+    r"賃上げ|最低賃金|ボーナス|副業|起業|ローン|保険|ポイント|キャンペーン|料金|発売|新製品"
+)
+# 買う・払う・もらうに直結する話（発売・料金・補助・税など）はさらに先に
+EVERYDAY_STRONG_RE = re.compile(r"発売|新型|値下げ|値上げ|料金|補助|給付|支援金|税|年金|NISA|iDeCo|ローン|キャンペーン|ポイント")
+REMOTE_RE = re.compile(r"議事要旨|研究会|認可情報|褒章|叙勲|マッチングイベント|人事|会見を開催|失業率|短観")
+
+
+def non_ai_test_on(now: datetime | None = None) -> bool:
+    if os.environ.get("SNS_NON_AI_SLOTS", "").strip().lower() in ("0", "off", "false"):
+        return False
+    now = now or datetime.now(timezone.utc)
+    return NON_AI_TEST_FROM <= now < NON_AI_TEST_UNTIL
+
+
+def non_ai_slot(slot: datetime | None, now: datetime | None = None) -> bool:
+    """この予約枠は AI 以外の記事のテスト枠か（テスト期間中の 12:15・21:00）"""
+    if slot is None or not non_ai_test_on(slot):
+        return False
+    local = slot.astimezone(JST)
+    return (local.hour, local.minute) in NON_AI_SLOTS_JST
+
+
+def everyday_score(article: dict) -> int:
+    """AI 以外の枠での並び順。暮らし・お金に近い話題を先に、身近でない発表（議事要旨・褒章など）を後に"""
+    text = f"{article.get('title', '')} {article.get('seoTitle', '')} {' '.join(article.get('tags') or [])}"
+    return (3 if EVERYDAY_RE.search(text) else 0) + (2 if EVERYDAY_STRONG_RE.search(text) else 0) - (4 if REMOTE_RE.search(text) else 0)
+
+
+def candidates(state: dict, hours: int, genres: set[str] | None = None) -> list[dict]:
+    """直近 hours 時間に生成された未投稿の記事（既定は AI。genres で AI 以外のテスト枠用も）を、Threads で反応が取れそうな順に並べる。"""
+    genres = genres or {"ai"}
     since = datetime.now(timezone.utc) - timedelta(hours=hours)
     posted = state["posted"]
     articles = []
     for path in ARTICLES_DIR.glob("*.json"):
         article = json.loads(path.read_text("utf-8"))
-        if article.get("genreSlug") != "ai" or article["slug"] in posted or article["slug"] in (state.get("ruleBlocked") or {}):
+        if article.get("genreSlug") not in genres or article["slug"] in posted or article["slug"] in (state.get("ruleBlocked") or {}):
             continue
         if datetime.fromisoformat(article["generatedAt"]) < since:
             continue
@@ -652,7 +706,11 @@ def candidates(state: dict, hours: int) -> list[dict]:
     roundups = {a["slug"] for a in articles if a.get("type") == "roundup"} | set(posted)
     articles = [a for a in articles if a.get("roundupSlug") not in roundups]
     articles = [a for a in articles if score(a) >= MIN_SCORE]
-    articles.sort(key=lambda a: (score(a), a["generatedAt"]), reverse=True)
+    if genres == {"ai"}:
+        articles.sort(key=lambda a: (score(a), a["generatedAt"]), reverse=True)
+    else:
+        articles = [a for a in articles if a.get("genreSlug") != "sports" and not a.get("disaster")]
+        articles.sort(key=lambda a: (everyday_score(a), a["generatedAt"]), reverse=True)
     return articles
 
 
@@ -986,7 +1044,8 @@ def compose_x(article: dict, root_text: str) -> str:
         if hook.startswith("【速報】"):
             options = [[hook, summary, question], [hook, first, question], [first, question]]
         else:
-            options = [[hook, summary, question], [summary, question], [hook, first, question], [first, question]]
+            # 1行目の呼びかけ（ルール6）を残す形を先に試す
+            options = [[hook, summary, question], [hook, first, question], [summary, question], [first, question]]
         for option in options:
             candidate = "\n\n".join(option)
             if x_weight(candidate) + x_weight(tags) + 2 <= X_LIMIT:
@@ -1120,7 +1179,7 @@ def compose_hook(article: dict, recent: list[str] | None = None, breaking: bool 
     replaced_opening = False
     keep_context_pair = False
     if breaking:
-        speed = speed_line(article) if not article.get("disaster") else ""
+        speed = ""  # 「発表からN分」の書き出しは使わない（sns_rules のルール6）
         article["_hook"] = "breaking"
         if speed:
             first = speed.replace("発表から", "公式発表から").replace("分で掲載", "分でお届け")
@@ -1610,15 +1669,31 @@ def main() -> int:
     if not fresh and backlog:
         log("[fallback] 新着に Threads 向きの記事が無いため、直近2週間の記事から選びました")
 
+    # AI 以外の記事のテスト枠用（新着 → 直近3日）。暮らし・お金に近い話題から
+    other_fresh = candidates(state, args.hours, NON_AI_GENRES)
+    other_seen = {a["slug"] for a in other_fresh}
+    other_pool = other_fresh + [a for a in candidates(state, 3 * 24, NON_AI_GENRES) if a["slug"] not in other_seen]
+
     # 枠ごとに1本ずつ選ぶ。直前に使った書き出しの型と同じ型は避ける（同じ型が続くと読み飛ばされるため）
     plan: list[tuple[dict, datetime | None]] = []
+    slot_test: dict[str, str] = {}
     for slot in slots:
-        if not pool:
-            break
-        pick = next((a for a in pool if a.get("threadsHook") not in recent_hooks), pool[0])
-        pool.remove(pick)
+        test = ""
+        if non_ai_slot(slot) and other_pool:
+            pick, test = other_pool.pop(0), "non_ai"
+        else:
+            if not pool:
+                break
+            pick = next((a for a in pool if a.get("threadsHook") not in recent_hooks), pool[0])
+            pool.remove(pick)
+            if non_ai_slot(slot):
+                test = "non_ai_fallback"  # AI 以外の記事が無かった
+            elif non_ai_test_on(slot):
+                test = "ai"
         if pick.get("threadsHook"):
             recent_hooks = [pick["threadsHook"], *recent_hooks][:3]
+        if test:
+            slot_test[pick["slug"]] = test
         plan.append((pick, slot))
     if not plan:
         log("[done] 投稿できる記事がありません")
@@ -1642,7 +1717,8 @@ def main() -> int:
             return 0
     for article, slot in plan:
         if slot:
-            log(f"[slot] {slot.astimezone(JST):%m/%d %H:%M} に予約: {article['slug']}")
+            test = slot_test.get(article["slug"], "")
+            log(f"[slot] {slot.astimezone(JST):%m/%d %H:%M} に予約: {article['slug']}" + (f"（テスト枠: {test}）" if test else ""))
 
     summary = [f"### Threads {'投稿' if live else '下書き（未投稿）'}", ""]
     # 直近の投稿で使った書き出しの型（同じ型を続けないため）
@@ -1714,6 +1790,9 @@ def main() -> int:
         state["posted"][article["slug"]] = {
             **result,
             "hook": hook,
+            **({"opener": article["_opener"]} if article.get("_opener") else {}),
+            **({"slotTest": slot_test[article["slug"]]} if article["slug"] in slot_test else {}),
+            "genre": article.get("genreSlug") or "",
             "score": score(article),
             "style": "standalone",
             "image": "card" if fmt == "classic" else "photo" if post_image(article, fmt) != f"{site_url()}/cover/{article['slug']}" else "cover",

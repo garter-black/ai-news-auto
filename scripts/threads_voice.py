@@ -116,20 +116,34 @@ READER_QUESTIONS: list[tuple[str, list[str]]] = [
     (r"不動産|マンション|地価|路線価|家賃|賃貸|空き家", ["今の住まい、持ち家ですか？賃貸ですか？", "家を買うなら、新築と中古のどちらを選びますか？"]),
     (r"株価|株式|決算|上場|IPO|M&A|買収", ["株や経済のニュース、ふだんどこで追っていますか？"]),
     (r"(?<![A-Za-z])EV(?![A-Za-z])|電気自動車", ["次に車を買うなら、EVも候補に入りますか？"]),
+    (r"マウンテンバイク|e-?MTB|自転車|ロードバイク", ["趣味の道具にかけるお金、何を重視して選びますか？", "休みの日、体を動かすなら何をしますか？"]),
+    (r"バイク|二輪|オートバイ", ["バイクに乗るなら、街乗りとツーリングのどっち派ですか？"]),
+    (r"ランドクルーザー|クラウン|SUV|新型車|自動車|クルマ|車種|ミニバン|軽自動車", ["車を選ぶとき、見た目と燃費ならどっちを優先しますか？", "次に車を買うなら、新車と中古のどちらにしますか？"]),
+    (r"電気代|電力|電気料金|光熱費", ["夏と冬、電気代が高いと感じるのはどっちですか？", "電気代の節約、何かしていますか？"]),
+    (r"ガソリン", ["車の燃料代、月にどのくらいかかっていますか？"]),
+    (r"免税|旅行|観光|ホテル|航空", ["次の旅行、国内と海外ならどっちに行きたいですか？"]),
+    (r"iPhone|iPad|Android|Pixel|Galaxy|スマホ", ["スマホやタブレット、いちばん使うのは仕事と私用のどっちですか？", "スマホは何年ごとに買い替えていますか？"]),
+    (r"Windows|(?<![A-Za-z])Mac(?![a-z])|パソコン|PC", ["仕事のパソコン、WindowsとMacのどっちを使っていますか？"]),
+    (r"イヤホン|ヘッドホン|スマートウォッチ|テレビ|家電|カメラ", ["家電やガジェット、買う前に何を重視して選びますか？"]),
+    (r"ゲーム|PS5|Switch|Xbox|Steam|GeForce NOW", ["ゲームはスマホ派ですか？据え置き機派ですか？"]),
+    (r"デザイン|Figma|Canva|Affinity|Photoshop|イラスト", ["資料や画像づくり、ふだん何のアプリを使っていますか？"]),
+    (r"動画編集|映像|YouTube|動画生成", ["動画を作るとき、スマホとパソコンのどっちで編集しますか？"]),
+    (r"音声|ナレーション|ElevenLabs|音楽", ["仕事中、音楽やラジオを聞く派ですか？"]),
     (r"集客|口コミ|店舗|マーケティング|広告", ["お店や仕事の集客、いまはどこに力を入れていますか？", "お店の口コミ、どのサイトをいちばん気にしていますか？"]),
     (r"セキュリティ|脆弱性|攻撃|不正アクセス|ランサム", ["あなたの会社では、セキュリティの見直しはいつしましたか？", "仕事のパスワード管理、何を使っていますか？"]),
 ]
-TOOL_QUESTIONS = ["{topic}、仕事では何に使っていますか？", "{topic}は無料版と有料版、どちらを使っていますか？", "{topic}とほかのAI、仕事ではどれをいちばん使っていますか？"]
+TOOL_QUESTIONS = ["{topic}、仕事では何に使っていますか？", "{topic}は無料版と有料版、どちらを使っていますか？", "仕事でいちばん使っているAI、どれですか？"]
 # 話題の規則に当たらない記事は、記事そのものの主役（製品・サービス名）で問う（判定から作った一般的な問いは、記事とずれて見えるので使わない）
+# 2026-11-03 オーナー承認その2: 記事を読まなくても答えられる「読者自身の好み・経験」を聞く（「{name}、使ってみたい？」は使わない）
 SUBJECT_QUESTIONS = [
-    "{name}、仕事で使ってみたいですか？",
-    "{name}、あなたの仕事ならどこで使えそうですか？",
-    "{name}、仕事と副業ならどちらで役立ちそうですか？",
+    "仕事の道具を選ぶとき、何をいちばん重視しますか？",
+    "新しいアプリやサービス、試すのは早いほうですか？",
+    "仕事で使うツール、無料版と有料版のどちらが多いですか？",
 ]
 # 攻撃・悪用・事故などの話題で「使ってみたい？」とは聞かない
 NEGATIVE_RE = re.compile(r"悪用|攻撃|脆弱性|詐欺|不正|流出|漏えい|漏洩|障害|不具合|事故|倒産|破たん|被害|訴訟|停止|リコール")
-NEGATIVE_QUESTIONS = ["{name}の件、あなたの会社でも話題になっていますか？"]
-GENERIC_QUESTIONS = ["このニュース、あなたの仕事に関係しそうですか？"]
+NEGATIVE_QUESTIONS = ["仕事のパスワード管理、何を使っていますか？", "会社のトラブル対応、いちばん困るのはどんなときですか？"]
+GENERIC_QUESTIONS = ["ふだんニュースは、スマホとパソコンのどっちで読みますか？"]
 QUESTION_LIMIT = 40
 
 
@@ -170,11 +184,10 @@ def reader_question(article: dict, topic: str, recent: list[str]) -> str:
         options += [q.format(topic=topic) for q in TOOL_QUESTIONS]
     if not options:
         templates = NEGATIVE_QUESTIONS if NEGATIVE_RE.search(text) else SUBJECT_QUESTIONS
-        for name in subjects_of(article):
-            options = [q.format(name=name) for q in templates if len(q.format(name=name)) <= QUESTION_LIMIT]
-            if options:
-                break
-    options = [q for q in dict.fromkeys(options) if not persona.ADVICE_RE.search(q)] or GENERIC_QUESTIONS
+        options = [q for q in templates if len(q) <= QUESTION_LIMIT]
+    import sns_rules  # noqa: PLC0415
+
+    options = [q for q in dict.fromkeys(options) if not persona.ADVICE_RE.search(q) and not sns_rules.question_needs_article(q)] or GENERIC_QUESTIONS
     # 話題にいちばん合う規則の問いから、記事ごとに順番を変えて選ぶ（同じ問いが続かないように）
     head = options[: first_rule or len(options)] or options[:1]
     start = sum(ord(c) for c in article.get("slug", "")[::-1]) % len(head)
