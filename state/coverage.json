@@ -2,13 +2,34 @@
  "hours": 96,
  "items": [
   {
+   "slug": "elevenlabs-synthetic-voice-creation",
+   "at": "2026-11-02T23:56:09.209242+00:00",
+   "title": "ElevenLabsが提供するAI音声合成の仕組みと音声クローン作成方法",
+   "head": "ElevenLabsが提供するAI音声合成の仕組みと音声クローン作成方法 | How are synthetic voices created for natural speech?",
+   "text": "ElevenLabsが提供するAI音声合成の仕組みと音声クローン作成方法 | How are synthetic voices created for natural speech? | AI音声合成 / 音声クローン / ElevenLabs / テキスト音声変換 / Voice Design / Instant Cloning / Professional Cloning / 音声合成技術 / プロソディ / コンテキスト認識 / 生成AI / 音声合成 / テキスト音声変換 / AI音声 / ElevenLabs",
+   "urls": [
+    "https://elevenlabs.io/blog/synthetic-voices"
+   ]
+  },
+  {
+   "slug": "saros-boss-development",
+   "at": "2026-11-02T23:53:54.122482+00:00",
+   "title": "『SAROS』のボス制作裏話と新モード情報 ― PS5アクションシューティングがさらに深まる",
+   "head": "『SAROS』のボス制作裏話と新モード情報 ― PS5アクションシューティングがさらに深まる | 『SAROS』で立ちはだかる、カルコサを支配する君臨者たちの制作秘話",
+   "text": "『SAROS』のボス制作裏話と新モード情報 ― PS5アクションシューティングがさらに深まる | 『SAROS』で立ちはだかる、カルコサを支配する君臨者たちの制作秘話 | SAROS / PlayStation 5 / ボス戦 / Housemarque / Nixxes / アクションシューティング / オーバーロード・ラッシュ / エクリプス・レイヤー / ゲーム開発 / 価格 / ゲーム / アクション / PS5",
+   "urls": [
+    "https://blog.ja.playstation.com/2026/11/03/20261103-saros-boss-deep-dive-feature-o/"
+   ]
+  },
+  {
    "slug": "nvidia-recovery-automated-training-recovery",
    "at": "2026-11-02T23:38:15.807310+00:00",
    "title": "AI半導体のNVIDIAが学習の自動復旧ツール公開 止まったAI開発を人手なしで再開",
-   "head": "AI半導体のNVIDIAが学習の自動復旧ツール公開 止まったAI開発を人手なしで再開 | Keep Distributed Training Running with Automated Workload Recovery",
+   "head": "AI半導体のNVIDIAが学習の自動復旧ツール公開 止まったAI開発を人手なしで再開 | Keep Distributed Training Running with Automated Workload Recovery | 連携するオープンソース診断ツールの詳細が判明",
    "text": "AI半導体のNVIDIAが学習の自動復旧ツール公開 止まったAI開発を人手なしで再開 | Keep Distributed Training Running with Automated Workload Recovery | NVIDIA Recovery / 分散学習 / 自動復旧 / Slurm / NVIDIA DSX OS / GPUクラスター / チェックポイント / オープンソース / AI学習 障害 / goodput / NVIDIA / NVIDIA Recovery / 分散学習 / GPUクラスター / オープンソース / AIインフラ",
    "urls": [
-    "https://developer.nvidia.com/blog/keep-distributed-training-running-with-automated-workload-recovery/"
+    "https://developer.nvidia.com/blog/keep-distributed-training-running-with-automated-workload-recovery/",
+    "https://developer.nvidia.com/blog/diagnose-distributed-ai-workload-failures-with-nvidia-attribution/"
    ]
   },
   {

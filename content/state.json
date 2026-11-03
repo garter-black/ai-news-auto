@@ -4521,6 +4521,12 @@
       "skipped": true,
       "url": "https://github.blog/changelog/2026-10-28-build-shared-workflows-for-your-team-with-copilot-automations"
     },
+    "233c7482da85b268": {
+      "at": "2026-11-02T23:52:55.867154+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（を開催）",
+      "skipped": true,
+      "url": "https://www.ntt.com/about-us/press-releases/news/article/2026/1102.html"
+    },
     "2364ce3338d569ec": {
       "at": "2026-10-29T15:25:58.960508+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -4883,6 +4889,12 @@
       "section": "business",
       "slug": "nli-ai-agent-explained",
       "url": "https://www.nli-research.co.jp/topics_detail1/id=87239?site=nli"
+    },
+    "2b9dfd0c1b663bb6": {
+      "at": "2026-11-02T23:51:22.049562+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（会議）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/newpage_77059.html"
     },
     "2beb40c18b92349f": {
       "at": "2026-11-02T12:31:13.235453+00:00",
@@ -5412,6 +5424,12 @@
       "skipped": true,
       "url": "https://www.value-press.com/pressrelease/383169"
     },
+    "3aaecb9913a0e575": {
+      "at": "2026-11-02T23:52:55.867046+00:00",
+      "reason": "short text 494",
+      "skipped": true,
+      "url": "https://www.gov-online.go.jp/press_conferences/minister_of_state/202611/video-326949.html"
+    },
     "3accf3bc15497543": {
       "at": "2026-10-30T08:31:28.764872+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -5712,6 +5730,14 @@
       "reason": "prefilter: 価値の薄いお知らせ（調達）",
       "skipped": true,
       "url": "https://www.soumu.go.jp/menu_news/s-news/01cyber01_02000001_00308.html"
+    },
+    "4338b997783eb31c": {
+      "at": "2026-11-02T23:56:14.012379+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "score": 100,
+      "section": "ai",
+      "slug": "elevenlabs-synthetic-voice-creation",
+      "url": "https://elevenlabs.io/blog/synthetic-voices"
     },
     "436c8feca450cd5e": {
       "at": "2026-10-26T18:16:43.711146+00:00",
@@ -9342,6 +9368,13 @@
       "slug": "mhlw-izoku-nenkin-chosa-2026",
       "url": "https://www.mhlw.go.jp/toukei/list/95-1.html"
     },
+    "a4db2069246db89d": {
+      "at": "2026-11-02T23:52:54.356971+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "本稿は調布飛行場の将来像をまとめた報告書の公表であり、読者が直接利用できる制度・サービス・給付等の具体的な手続きや金銭的メリットは示されていないため、読者の実務・資産形成に直接関わる情報とは言えません。",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110213"
+    },
     "a4fb9d3db92d6da7": {
       "at": "2026-10-26T21:00:58.053431+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（ビデオメッセージ）",
@@ -9522,6 +9555,14 @@
       "reason": "stale: 発表から142時間（記事ページの日付）",
       "skipped": true,
       "url": "https://www.redhat.com/en/blog/sovereignty-ai-era-choice-control-and-autonomy"
+    },
+    "aa3a748ce9da0c45": {
+      "at": "2026-11-02T23:51:22.049213+00:00",
+      "kind": "update",
+      "model": "gemini-3.5-flash-lite",
+      "score": 100,
+      "updated": "nvidia-recovery-automated-training-recovery",
+      "url": "https://developer.nvidia.com/blog/diagnose-distributed-ai-workload-failures-with-nvidia-attribution/"
     },
     "aa3e2a58cca92e6f": {
       "at": "2026-10-28T23:11:26.688694+00:00",
@@ -12329,6 +12370,14 @@
       "slug": "boj-current-account-october",
       "url": "http://www.boj.or.jp/statistics/boj/fm/juqf/juqf10.xlsx"
     },
+    "f630cc700b2dd358": {
+      "at": "2026-11-02T23:53:58.605426+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "score": 100,
+      "section": "entertainment",
+      "slug": "saros-boss-development",
+      "url": "https://blog.ja.playstation.com/2026/11/03/20261103-saros-boss-deep-dive-feature-o/"
+    },
     "f68217fc0ef9c362": {
       "at": "2026-11-02T06:32:01.294516+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12733,120 +12782,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T19:11:14.845089+00:00",
-      "attempt": 1,
-      "id": "7bc8b4ac5fbcf892",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1582字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 128.5,
-        "avg_sentence": 48.8,
-        "long_share": 0.172,
-        "max_paragraph": 217,
-        "paragraphs": 11,
-        "sentences": 29
-      },
-      "score": null,
-      "source": "gov-online",
-      "title": "すぐできるコツがいっぱい!環境にもお財布にも優しい「食品ロス」の減らし方"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T19:11:22.913831+00:00",
-      "attempt": 2,
-      "id": "7bc8b4ac5fbcf892",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 60.3字・60字超の文が 42% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 196.1字・最長 437字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 196.1,
-        "avg_sentence": 60.3,
-        "long_share": 0.423,
-        "max_paragraph": 437,
-        "paragraphs": 8,
-        "sentences": 26
-      },
-      "score": 100,
-      "source": "gov-online",
-      "title": "すぐできるコツがいっぱい!環境にもお財布にも優しい「食品ロス」の減らし方"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T19:11:29.060820+00:00",
-      "attempt": 0,
-      "id": "7bc8b4ac5fbcf892",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 109.4,
-        "avg_sentence": 23.2,
-        "long_share": 0.0,
-        "max_paragraph": 171,
-        "paragraphs": 14,
-        "sentences": 66
-      },
-      "score": 100,
-      "source": "gov-online",
-      "title": "すぐできるコツがいっぱい!環境にもお財布にも優しい「食品ロス」の減らし方"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T19:31:26.634627+00:00",
-      "attempt": 1,
-      "id": "98816cf452e78c73",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1319字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（323字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 118.9,
-        "avg_sentence": 49.5,
-        "long_share": 0.208,
-        "max_paragraph": 170,
-        "paragraphs": 10,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "gov-online",
-      "title": "フードバンク 寄附された未利用食品を無償提供"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T19:31:35.476201+00:00",
-      "attempt": 2,
-      "id": "98816cf452e78c73",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 66.2字・60字超の文が 56% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 162.5字・最長 255字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 162.5,
-        "avg_sentence": 66.2,
-        "long_share": 0.556,
-        "max_paragraph": 255,
-        "paragraphs": 11,
-        "sentences": 27
-      },
-      "score": 100,
-      "source": "gov-online",
-      "title": "フードバンク 寄附された未利用食品を無償提供"
-    },
     {
       "accepted": true,
       "at": "2026-10-30T19:31:39.186460+00:00",
@@ -19172,6 +19107,102 @@
       "score": 100,
       "source": "nvidia-developer-blog",
       "title": "Keep Distributed Training Running with Automated Workload Recovery"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T23:51:22.047913+00:00",
+      "attempt": 1,
+      "id": "aa3a748ce9da0c45",
+      "kind": "update",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "score": 100,
+      "source": "nvidia-developer-blog",
+      "title": "Diagnose Distributed AI Workload Failures with NVIDIA Attribution"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T23:53:55.268387+00:00",
+      "attempt": 1,
+      "id": "f630cc700b2dd358",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "段落が長い（平均 124.2字・最長 209字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 124.2,
+        "avg_sentence": 38.8,
+        "long_share": 0.125,
+        "max_paragraph": 209,
+        "paragraphs": 5,
+        "sentences": 16
+      },
+      "score": 100,
+      "source": "playstation-blog-jp",
+      "title": "『SAROS』で立ちはだかる、カルコサを支配する君臨者たちの制作秘話"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T23:53:58.599820+00:00",
+      "attempt": 0,
+      "id": "f630cc700b2dd358",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 57.5,
+        "avg_sentence": 33.3,
+        "long_share": 0.053,
+        "max_paragraph": 126,
+        "paragraphs": 11,
+        "sentences": 19
+      },
+      "score": 100,
+      "source": "playstation-blog-jp",
+      "title": "『SAROS』で立ちはだかる、カルコサを支配する君臨者たちの制作秘話"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-02T23:56:10.462509+00:00",
+      "attempt": 1,
+      "id": "4338b997783eb31c",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "段落が長い（平均 76.1字・最長 258字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 76.1,
+        "avg_sentence": 38.0,
+        "long_share": 0.0,
+        "max_paragraph": 258,
+        "paragraphs": 12,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "elevenlabs-blog",
+      "title": "How are synthetic voices created for natural speech?"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-02T23:56:14.005123+00:00",
+      "attempt": 0,
+      "id": "4338b997783eb31c",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 65.2,
+        "avg_sentence": 38.0,
+        "long_share": 0.0,
+        "max_paragraph": 133,
+        "paragraphs": 14,
+        "sentences": 24
+      },
+      "score": 100,
+      "source": "elevenlabs-blog",
+      "title": "How are synthetic voices created for natural speech?"
     }
   ],
   "short_text_retry": {},

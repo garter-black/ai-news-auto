@@ -1,0 +1,124 @@
+{
+  "slug": "elevenlabs-synthetic-voice-creation",
+  "sourceType": "web",
+  "sourceUrl": "https://elevenlabs.io/blog/synthetic-voices",
+  "sourceName": "ElevenLabs公式ブログ",
+  "title": "ElevenLabsが提供するAI音声合成の仕組みと音声クローン作成方法",
+  "seoTitle": "ElevenLabs AI音声合成とは？使い方と料金",
+  "threadsPost": "音声合成の作業、まだ手作業ですか？\n\n要約すると、ElevenLabsは録音だけで音声をクローンできます。\nInstantは2分未満、Professionalは30分～3時間で高精度です。\n\n自分の声でAIナレーション、作ってみませんか？",
+  "threadsHook": "empathy",
+  "threadsStyle": 3,
+  "writingVoice": "honest",
+  "lede": "ElevenLabsが公式ブログで、音声合成と音声クローンの作り方を公開しました。録音数分で自分の声を再現できるInstant Cloningや、30分以上の音声で高忠実度を実現するProfessional Cloning、文字だけで声を設計できるVoice Designなど、実用的な機能がまとめられています。（ElevenLabs公式ブログ、2026-11-02確認）",
+  "description": "ElevenLabsは録音数分で音声クローン、長時間録音で高精度、テキストだけで声設計が可能なAI音声合成を提供しています。日本でも利用可。",
+  "keywords": [
+    "AI音声合成",
+    "音声クローン",
+    "ElevenLabs",
+    "テキスト音声変換",
+    "Voice Design",
+    "Instant Cloning",
+    "Professional Cloning",
+    "音声合成技術",
+    "プロソディ",
+    "コンテキスト認識"
+  ],
+  "tags": [
+    "生成AI",
+    "音声合成",
+    "テキスト音声変換",
+    "AI音声",
+    "ElevenLabs"
+  ],
+  "highlights": [
+    "Instant Voice Cloningは2分未満の録音で声を再現できます。",
+    "Professional Cloningは30分～3時間の音声で高忠実度クローンを作成。",
+    "最新のNeural/Generative TTSはプロソディと文脈認識で自然な音声を生成。"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "ok",
+    "price": "不明",
+    "free": null,
+    "audience": "クリエイター",
+    "take": "ElevenLabsの公式サイトでアカウント作成し、Voice DesignやInstant Cloningを試してみましょう",
+    "judgedAt": "2026-11-02T23:56:09.209256+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "クリエイターは録音時間を削減でき、音声制作コストが下がります。",
+      "企業はAI音声エージェントで顧客対応を自動化し、運用コストを削減できます。"
+    ]
+  },
+  "body": "## 概要\n\nAIが作る音声は、人が話すように自然です。\nElevenLabsは録音だけで似た声を作る技術を提供しています。\n合成音声はポッドキャストやゲーム、広告で活用できます。\n\n## 何が発表された？\n\nElevenLabsは、音声合成と音声クローンの作成方法を公式ブログで発表しました。\nユーザーは自分の声を録音し、AIが音声パターンを解析して合成音声を生成します。\n\n録音は2分未満でもInstant Cloningが可能で、短時間で試せます。\n30分以上の録音でProfessional Cloningは感情やイントネーションまで再現します。\nVoice Designでは録音なしで、年齢・性別・アクセントなどをテキストで指定し声を作れます。\n\n合成音声はオーディオブック、ゲーム台詞、広告、カスタマーサービスなど多様に利用できます。\n\n- オーディオブックのナレーション\n- ゲームや動画のキャラクターボイス\n- カスタマーサポートのAIエージェント\n\n## 前と何が違う？\n\n### Instant Cloningは2分未満で開始\n\n従来は多数時間の録音が必要でしたが、Instant Cloningは2分未満で声をクローンできます。\n短いサンプルでも音声のアクセントやトーンを再現します。\n\n### Professional Cloningは長時間で高忠実度\n\nProfessional Cloningは30分から3時間の録音で、細かな感情や抑揚を再現します。\n高品質な声は動画や広告で本物と区別しにくくなります。\n\n### Voice Designは録音不要で生成\n\nVoice Designはテキストで声の特徴を指示し、AIが新しい音声を生成します。\nキャラクターやブランド用の声を、実在人物なしで作れます。\n\n### Neural/Generative TTSは文脈とプロソディを再現\n\n従来の標準TTSは単語単位で音声をつなげ、ロボット的でした。\nNeuralとGenerative TTSは文全体を理解し、自然なリズムと感情を付けます。\n\n## 数字で見るとどう変わった？\n\n**InstantとProfessionalの音声サンプル時間が大幅に短縮されました。**\n\n| 比較項目 | 従来（Standard TTS） | 現在（Neural/Generative TTS） | 変化 |\n|---|---|---|---|\n| 音声の自然さ | ロボット的 | 人間的 | 大幅向上 |\n| 感情表現 | なし | 多様 | 追加 |\n| 文脈認識 | なし | あり | 新機能 |\n\n## ライバルと比べてどう？\n\n- OpenAIは音声合成を提供していますが、録音からのクローンは限定的です。\n- GoogleのWaveNetは高品質ですが、Voice Designのようなテキストだけの声生成は未実装です。\n- ElevenLabsはInstantとProfessionalの二段階クローンとVoice Designを一つのプラットフォームで提供し、検出ツールも併備しています。\n\n## 料金は？\n\n- 元記事内では価格の言及なし。\n\n## 日本で使える？\n\nElevenLabsは日本からも利用可能です。\n\n- https://elevenlabs.io にアクセスし、アカウントを作成する。\n- 公式ヘルプの手順を確認してください（[ElevenLabs公式ブログ](https://elevenlabs.io/docs/eleven-creative/voices/voice-design)）。\n- UIは英語ですが、テキスト入力は日本語でも対応しています。\n\n## 自分にはどう関係する？\n\n### 会社員として\n\n社内の研修動画や社内向けポッドキャストを、少ないコストで自動音声化できます。\n\n### 副業・独立を考えている人\n\nフリーランスのナレーションや音声広告を、録音時間を減らしてすぐに提供できます。\n\n### お金・資産づくりの面で\n\n音声コンテンツの制作コストが下がり、投資先としてAI音声プラットフォームを検討しやすくなります。\n\n## まとめ\n\nElevenLabsは音声合成のハードルを下げ、即時クローンやテキスト設計で多様な活用を可能にしました。\nまずは公式サイトでアカウントを作り、無料トライアルで自分の声を試してみましょう。",
+  "easy": "## ひとことで言うと\nAIが録音やテキストだけで自然な声を作ります。\n\n## 何がすごいの？\n2分未満の録音で声をクローンでき、30分以上の録音で感情まで再現できます。テキストだけで全く新しい声も作れます。\n\n## 自分に関係ある？\n動画編集やナレーションを外注せずに自分で作れます。副業の音声コンテンツ制作が手軽に。\n\n## 使ってみるには\nElevenLabs公式サイトで無料アカウントを作り、ダッシュボードのVoicesからInstant CloningやVoice Designを選択して試すだけです。",
+  "channel": "ElevenLabs公式ブログ",
+  "channelId": "",
+  "channelSlug": "elevenlabs-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "How are synthetic voices created for natural speech?",
+  "publishedAt": "2026-11-02T12:00:00+00:00",
+  "generatedAt": "2026-11-02T23:56:09.209242+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/elevenlabs-synthetic-voice-creation-08d8c4df.jpg",
+  "model": "cloudflare:@cf/openai/gpt-oss-120b",
+  "affiliates": [],
+  "faq": [
+    {
+      "q": "何が発表された？",
+      "a": "ElevenLabsは音声合成と音声クローン作成方法、Instant/Professional Cloning、Voice Designを公式ブログで発表しました。"
+    },
+    {
+      "q": "前と何が違う？",
+      "a": "Instant Cloningは2分未満の録音で、Professionalは30分～3時間で高忠実度、Voice Designは録音不要でテキストだけで声を作れます。"
+    },
+    {
+      "q": "日本で使える？",
+      "a": "ElevenLabsは日本からウェブでアクセスでき、アカウント作成後すぐにVoice DesignやCloningを利用可能です。"
+    },
+    {
+      "q": "料金は？",
+      "a": "公式ブログでは料金の記載がなく、価格情報は未公開です。"
+    },
+    {
+      "q": "どうやって始める？",
+      "a": "公式サイトにサインアップし、ダッシュボードのVoicesメニューから新しい音声を追加し、指示に従って録音またはテキストで設定します。"
+    }
+  ],
+  "todayActions": [
+    "ElevenLabs公式サイトで無料アカウントを作成する。",
+    "Voice Designでテキスト入力し、好きな声を試す。",
+    "Instant Cloning用に2分未満の自分の話し声を録音し、クローンを作成する。"
+  ],
+  "qualityScore": 100,
+  "sourcePublishedAt": "2026-11-02T12:00:00+00:00",
+  "detectedAt": "2026-11-02T23:50:53+00:00",
+  "imageCredit": {
+    "kind": "official",
+    "org": "ElevenLabs",
+    "provider": "ElevenLabs公式ブログ",
+    "sourceUrl": "https://elevenlabs.io/blog/synthetic-voices",
+    "original": "https://elevenlabs.io/_next/image?url=https%3A%2F%2Feleven-public-cdn.elevenlabs.io%2Fpayloadcms%2Fqaanndwkld-how-synthetic-voices-are-created.webp&w=3840&q=80",
+    "width": 1200,
+    "height": 916,
+    "at": "2026-11-02T23:57:06+00:00",
+    "imageKind": "dense"
+  },
+  "imageFocus": {
+    "x": 0.458,
+    "y": 0.537,
+    "box": [
+      0.0,
+      0.074,
+      0.916,
+      1.0
+    ],
+    "ar": 1.31,
+    "src": "https://ai-tech-express.jp/img/elevenlabs-synthetic-voice-creation-08d8c4df.jpg"
+  }
+}
