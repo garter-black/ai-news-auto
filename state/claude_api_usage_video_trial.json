@@ -1,0 +1,32 @@
+{
+  "history": {},
+  "runs": {
+    "2026-11-04": {
+      "gh-41702641330-1": {
+        "by": {
+          "video_review|2": {
+            "n": 1,
+            "usd": 0.026915
+          },
+          "video|2": {
+            "n": 5,
+            "usd": 0.222122
+          }
+        },
+        "cache_read": 26816,
+        "cache_write": 7925,
+        "calls": {
+          "video": 5,
+          "video_review": 1
+        },
+        "in": 52185,
+        "out": 11949,
+        "req": {
+          "video": 5,
+          "video_review": 1
+        },
+        "usd": 0.249036
+      }
+    }
+  }
+}
