@@ -1,0 +1,20 @@
+{
+  "id": "20261104",
+  "date": "2026-11-04",
+  "heading": "今朝のAIニュース3本",
+  "createdAt": "2026-11-03T21:33:50+00:00",
+  "items": [
+    {
+      "slug": "kimi-k3-bedrock-india-inference",
+      "headline": "AWS、Bedrockの「Kimi K3」でインド国内推論に対応"
+    },
+    {
+      "slug": "github-copilot-jetbrains-air",
+      "headline": "GitHubがJetBrainsの「Air」にCopilotを提供"
+    },
+    {
+      "slug": "google-guided-learning-classroom-search",
+      "headline": "Googleが「Guided Learning」をClassroomで世界提供"
+    }
+  ]
+}

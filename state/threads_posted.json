@@ -3635,6 +3635,77 @@
       },
       "videoVariant": "short",
       "blueskyFailed": "Bluesky の動画の処理に失敗しました: {'did': '', 'error': 'unconfirmed_email', 'jobId': '', 'state': ''}"
+    },
+    "digest-20261104": {
+      "style": "digest",
+      "format": "digest",
+      "hook": "digest",
+      "question": false,
+      "topic": "AI",
+      "items": [
+        "kimi-k3-bedrock-india-inference",
+        "github-copilot-jetbrains-air",
+        "google-guided-learning-classroom-search"
+      ],
+      "via": "buffer",
+      "channels": {
+        "twitter": "6aea5347ca28ab6c31781a62"
+      },
+      "permalink": "",
+      "dueAt": "2026-11-03T22:30:00+00:00",
+      "postedAt": "2026-11-03T21:33:50+00:00",
+      "postPlan": {
+        "key": "digest-20261104",
+        "text": "今朝のAIニュース3本（2026/11/04）\n\n・AWS、Bedrockの「Kimi K3」でインド国内推論に対応\n・GitHubがJetBrainsの「Air」にCopilotを提供\n・Googleが「Guided Learning」をClassroomで世界提供",
+        "reply": "昨夜からの新着はこちらから👇",
+        "link": "https://ai-tech-express.jp/digest/20261104",
+        "x_text": "今朝のAIニュース3本（2026/11/04）\n\n・AWS、Bedrockの「Kimi K3」でインド国内推論に対応\n・GitHubがJetBrainsの「Air」にCopilotを提供\n・Googleが「Guided Learning」をClassroomで世界提供\n\n#AI",
+        "slot": [
+          7,
+          30
+        ],
+        "items": [
+          "kimi-k3-bedrock-india-inference",
+          "github-copilot-jetbrains-air",
+          "google-guided-learning-classroom-search"
+        ],
+        "image": "https://ai-tech-express.jp/digest/20261104/share.png?v=F1-2",
+        "edition": {
+          "id": "20261104",
+          "date": "2026-11-04",
+          "heading": "今朝のAIニュース3本",
+          "createdAt": "2026-11-03T21:33:50+00:00",
+          "items": [
+            {
+              "slug": "kimi-k3-bedrock-india-inference",
+              "headline": "AWS、Bedrockの「Kimi K3」でインド国内推論に対応"
+            },
+            {
+              "slug": "github-copilot-jetbrains-air",
+              "headline": "GitHubがJetBrainsの「Air」にCopilotを提供"
+            },
+            {
+              "slug": "google-guided-learning-classroom-search",
+              "headline": "Googleが「Guided Learning」をClassroomで世界提供"
+            }
+          ]
+        }
+      },
+      "expectedChannels": [
+        "threads",
+        "twitter"
+      ],
+      "delivery": {
+        "threads": {
+          "status": "accepted",
+          "updatedAt": "2026-11-03T21:33:50+00:00"
+        },
+        "twitter": {
+          "status": "accepted",
+          "updatedAt": "2026-11-03T21:33:50+00:00"
+        }
+      },
+      "id": "6aea5346402e0fe50f14b70e"
     }
   },
   "extraPending": {}
