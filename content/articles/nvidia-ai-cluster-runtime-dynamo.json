@@ -3,13 +3,13 @@
   "sourceType": "web",
   "sourceUrl": "https://developer.nvidia.com/blog/build-a-validated-kubernetes-runtime-for-nvidia-dynamo/",
   "sourceName": "NVIDIA Developer Blog",
-  "title": "AI半導体のNVIDIAが公開、大規模AI向けのKubernetes実行基盤「AICR」とは",
+  "title": "NVIDIAが公開、大規模AI向けのKubernetes実行基盤「AICR」とは",
   "seoTitle": "NVIDIA AICRとは？Kubernetes実行基盤の機能と使い方",
   "threadsPost": "NVIDIAがAI開発の基盤を整える新しい仕組み「AICR」を公開しました。\nDynamoを使った大規模なAIモデルの運用を、Kubernetes上でより確実に進められるようになります。\nAIシステムの構築に携わるエンジニアの方はチェックしてみてください。",
   "threadsHook": "callout",
   "threadsStyle": 2,
   "writingVoice": "honest",
-  "lede": "NVIDIAの開発者向け公式ブログによると、AI半導体のNVIDIAが大規模AIの分散推論フレームワーク「NVIDIA Dynamo」をKubernetes上で動かすための実行基盤「AI Cluster Runtime（AICR）」を発表しました。インフラ環境をレシピとして再現性高く構築できる仕組みです。",
+  "lede": "NVIDIAの開発者向け公式ブログによると、NVIDIAが大規模AIの分散推論フレームワーク「NVIDIA Dynamo」をKubernetes上で動かすための実行基盤「AI Cluster Runtime（AICR）」を発表しました。インフラ環境をレシピとして再現性高く構築できる仕組みです。",
   "description": "NVIDIAが公開した大規模AI向けのKubernetes実行基盤「AICR」の仕組みと、Dynamoでの運用を支える2つのルーティング方式について専門記者が解説します。",
   "keywords": [
     "NVIDIA",
@@ -85,5 +85,6 @@
     ],
     "ar": 1.7778,
     "src": "https://ai-tech-express.jp/img/nvidia-ai-cluster-runtime-dynamo-2c5d00e2.jpg"
-  }
+  },
+  "originalTitle": "AI半導体のNVIDIAが公開、大規模AI向けのKubernetes実行基盤「AICR」とは"
 }

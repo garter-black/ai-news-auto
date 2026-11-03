@@ -1,6 +1,6 @@
 {
   "slug": "nvidia-physical-ai-fullstack-japan",
-  "title": "AI半導体のNVIDIAが物理AI開発基盤を発表、日本の製造業と連携へ",
+  "title": "NVIDIAが物理AI開発基盤を発表、日本の製造業と連携へ",
   "lede": "米NVIDIAは、ロボットや産業機械が現実世界を認識して動作する「物理AI（Physical AI）」の本格的な普及に向け、開発から実行までを網羅するフルスタックのプラットフォームを提示しました。同社CEOのジェンセン・フアン氏は、15年に及ぶ開発期間を経て物理AIが実用段階に達したと言及。日本の強みであるメカトロニクス技術とNVIDIAのAI技術を融合させ、産業自動化の新たな時代を切り拓く方針を明らかにしました。",
   "description": "米NVIDIAが物理AI（Physical AI）開発を支えるフルスタックプラットフォームを発表。Cosmos、Omniverse、Isaac、Newton、Jetsonを統合し、日本のメカトロニクス産業との連携を通じて産業自動化を加速します。",
   "keywords": [

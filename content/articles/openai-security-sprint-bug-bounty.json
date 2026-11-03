@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://openai.com/index/preparing-our-next-security-sprint-to-harden-openai",
   "sourceName": "OpenAI公式ブログ",
-  "title": "ChatGPTのOpenAI、AIで自社の弱点探し強化　バグ報奨金4倍超、防御側に10億ドル",
+  "title": "OpenAI、AIで自社の弱点探し強化　バグ報奨金4倍超、防御側に10億ドル",
   "seoTitle": "OpenAIのバグ報奨金4倍超とは？セキュリティ強化策を解説",
   "threadsPost": "守る側への支援、6カ月で10億ドル。\n\n要約すると、ChatGPTのOpenAIが、自社AIで弱点を探す次の取り組みを準備中です。\n重大な弱点を見つけた人への報奨金も、4倍超に引き上げます。\n\nあなたの会社では、AIをセキュリティ対策に使っていますか？",
   "threadsHook": "money",
@@ -133,5 +133,6 @@
     ],
     "ar": 1.7778,
     "src": "https://ai-tech-express.jp/img/openai-security-sprint-bug-bounty-81224adf.jpg"
-  }
+  },
+  "originalTitle": "ChatGPTのOpenAI、AIで自社の弱点探し強化　バグ報奨金4倍超、防御側に10億ドル"
 }

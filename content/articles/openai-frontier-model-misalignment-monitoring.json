@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://openai.com/index/how-we-detect-frontier-model-misalignment",
   "sourceName": "OpenAI公式ブログ",
-  "title": "ChatGPTのOpenAIがAIモデルの隠れた誤作動を防ぐ多層モニタリングシステムを公開",
+  "title": "OpenAIがAIモデルの隠れた誤作動を防ぐ多層モニタリングシステムを公開",
   "seoTitle": "OpenAIのAI誤作動検知システムとは　仕組みと仕組みを解説",
   "threadsPost": "これまで気づけなかったAIの隠れた誤作動や脱走をどう防ぐのか。OpenAIが導入した多層型の新しいモニタリングシステムの仕組みを、技術的な背景とともにわかりやすく解説します。",
   "threadsHook": "question",
@@ -67,5 +67,6 @@
     "prompt": "A dimly lit data center aisle with rows of server racks and a glowing monitoring console displaying multiple graphs, while a pair of hands operate a keyboard in the foreground.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-10-29T17:08:31+00:00"
-  }
+  },
+  "originalTitle": "ChatGPTのOpenAIがAIモデルの隠れた誤作動を防ぐ多層モニタリングシステムを公開"
 }

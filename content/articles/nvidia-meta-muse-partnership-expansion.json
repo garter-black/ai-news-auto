@@ -3,13 +3,13 @@
   "sourceType": "web",
   "sourceUrl": "https://nvidianews.nvidia.com/news/nvidia-and-meta-to-expand-collaboration-on-muse-and-muse-family-of-models-amid-robust-growth",
   "sourceName": "NVIDIA公式",
-  "title": "AI半導体のNVIDIAがMetaと提携拡大、AIエージェント「Muse」を支える基盤に30億ドル出資",
+  "title": "NVIDIAがMetaと提携拡大、AIエージェント「Muse」を支える基盤に30億ドル出資",
   "seoTitle": "NVIDIAとMetaのMuse提携とは？30億ドル出資の中身",
   "threadsPost": "NVIDIAがMetaの株式発行に30億ドルを出資し、Muse向けの基盤で協業を広げます。利用者向けの新機能の発表ではありません。Muse自体は日本でも提供中です。",
   "threadsHook": "number",
   "threadsStyle": 2,
   "writingVoice": "senpai",
-  "lede": "AI半導体大手のNVIDIAは、Metaの個人向けAIエージェント「Muse」とMuseモデル群で協業を広げると公式に発表しました。あわせてNVIDIAはMetaの株式発行に30億ドルを出資します。MetaはVera RubinやVera CPUなどの導入も拡大する方針です。新機能の公開ではなく、AIを動かす土台の強化が中心の発表です。",
+  "lede": "NVIDIAは、Metaの個人向けAIエージェント「Muse」とMuseモデル群で協業を広げると公式に発表しました。あわせてNVIDIAはMetaの株式発行に30億ドルを出資します。MetaはVera RubinやVera CPUなどの導入も拡大する方針です。新機能の公開ではなく、AIを動かす土台の強化が中心の発表です。",
   "description": "NVIDIAがMetaのAIエージェント「Muse」で協業を拡大し、Metaの株式発行に30億ドルを出資すると発表。Vera Rubinなどの導入拡大や日本への影響を解説します。",
   "keywords": [
     "NVIDIA Meta 提携",
@@ -77,5 +77,6 @@
     "original": "https://iprsoftwaremedia.com/219/files/202610/e94f1653d286c13260a76fb1b9084960/6ae01b2d3d6332b69004e23d_meta_and_nvidia/meta_and_nvidia_1b0c7d28-ee2e-401f-84ac-795e5ac88591-prv.png?v=1b0c7d28-ee2e-401f-84ac-795e5ac88591",
     "at": "2026-10-28T04:31:34+00:00"
   },
-  "updatedAt": "2026-10-31T06:00:34+00:00"
+  "updatedAt": "2026-10-31T06:00:34+00:00",
+  "originalTitle": "AI半導体のNVIDIAがMetaと提携拡大、AIエージェント「Muse」を支える基盤に30億ドル出資"
 }

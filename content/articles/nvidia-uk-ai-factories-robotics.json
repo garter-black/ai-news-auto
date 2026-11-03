@@ -1,6 +1,6 @@
 {
   "slug": "nvidia-uk-ai-factories-robotics",
-  "title": "AI半導体のNVIDIAが英国AI構想を発表　創薬からロボットまで変える次世代基盤",
+  "title": "NVIDIAが英国AI構想を発表　創薬からロボットまで変える次世代基盤",
   "seoTitle": "NVIDIA英国AIファクトリー構想とは？創薬やロボット基盤の全貌",
   "threadsPost": "発表動画でいちばん驚いたのは、最後の30秒でした。AI半導体のNVIDIAが英国でのAIファクトリー構想を公開。創薬やロボット、自動運転を動かす超大型計算基盤の建設が各地で進んでいます。産業革命の地からAIの産業化が加速しそうです。",
   "threadsHook": "surprise",
@@ -127,5 +127,6 @@
     ],
     "ar": 1.7778,
     "src": "https://i.ytimg.com/vi/XWYMvOFMacA/maxresdefault.jpg"
-  }
+  },
+  "originalTitle": "AI半導体のNVIDIAが英国AI構想を発表　創薬からロボットまで変える次世代基盤"
 }

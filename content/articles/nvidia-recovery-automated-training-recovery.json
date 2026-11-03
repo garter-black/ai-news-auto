@@ -3,13 +3,13 @@
   "sourceType": "web",
   "sourceUrl": "https://developer.nvidia.com/blog/keep-distributed-training-running-with-automated-workload-recovery/",
   "sourceName": "NVIDIA Developer Blog",
-  "title": "AI半導体のNVIDIAが学習の自動復旧ツール公開　止まったAI開発を人手なしで再開",
+  "title": "NVIDIAが学習の自動復旧ツール公開　止まったAI開発を人手なしで再開",
   "seoTitle": "NVIDIA Recoveryとは？AI学習の自動復旧ツール",
   "threadsPost": "【速報】AI半導体のNVIDIAが、AI学習の自動復旧ツールを公開。\n\n要約すると、止まったAI学習を、人手なしで検知して再開させる仕組みです。\n最初は「見るだけ」モードで始め、安全を確かめてから自動化できます。\n\nあなたの職場では、システム障害の一次対応を誰が担当していますか？",
   "threadsHook": "breaking",
   "threadsStyle": 3,
   "writingVoice": "qa",
-  "lede": "AI半導体大手のNVIDIAは開発者ブログで、AI学習の中断を自動で検知し復旧するオープンソースの「NVIDIA Recovery」を紹介しました。ログやGPUの状態から異常を見つけ、問題のあるマシンを外して再開まで進めます。Slurmに対応し、最初は見るだけのモードで試せます。",
+  "lede": "NVIDIAは開発者ブログで、AI学習の中断を自動で検知し復旧するオープンソースの「NVIDIA Recovery」を紹介しました。ログやGPUの状態から異常を見つけ、問題のあるマシンを外して再開まで進めます。Slurmに対応し、最初は見るだけのモードで試せます。",
   "description": "NVIDIAが公開したAI学習の自動復旧ツール「NVIDIA Recovery」と、連携する原因診断ツール「NVIDIA Attribution」の仕組みや対応環境を解説します。",
   "keywords": [
     "NVIDIA Recovery",
@@ -144,5 +144,6 @@
       "sourceName": "NVIDIA Developer Blog"
     }
   ],
-  "updatedAt": "2026-11-02T23:51:22.047941+00:00"
+  "updatedAt": "2026-11-02T23:51:22.047941+00:00",
+  "originalTitle": "AI半導体のNVIDIAが学習の自動復旧ツール公開　止まったAI開発を人手なしで再開"
 }

@@ -1,6 +1,6 @@
 {
   "slug": "openai-codex-astra-merge-ceo-interview",
-  "title": "ChatGPTのOpenAIが誇る開発支援AI「Astra」　MergeのCEOが明かす非エンジニアのAI活用術",
+  "title": "OpenAIが誇る開発支援AI「Astra」　MergeのCEOが明かす非エンジニアのAI活用術",
   "seoTitle": "Codex Astraとは？使い方と非エンジニアの活用事例",
   "threadsPost": "コードを書かない人にも、これは見てほしい活用例です。\n\nChatGPTのOpenAIが提供するAIプログラミング機能「Codex」と「Astra」。\nMergeのCEOが、非エンジニアの社員でも自前で業務ツールを作れるようになったと語りました。\n\nAIが気を利かせて細かい補足まで自動でやってくれます。",
   "threadsHook": "callout",
@@ -69,5 +69,6 @@
   "generatedAt": "2026-10-28T12:40:26.692265+00:00",
   "thumbnail": "https://i.ytimg.com/vi/kP26OlW5PBk/maxresdefault.jpg",
   "model": "gemini-3.5-flash",
-  "affiliates": []
+  "affiliates": [],
+  "originalTitle": "ChatGPTのOpenAIが誇る開発支援AI「Astra」　MergeのCEOが明かす非エンジニアのAI活用術"
 }

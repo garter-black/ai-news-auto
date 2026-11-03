@@ -3,14 +3,14 @@
   "sourceType": "web",
   "sourceUrl": "https://openai.com/index/updated-model-spec",
   "sourceName": "OpenAI公式ブログ",
-  "title": "ChatGPTのOpenAIがAIの行動指針「モデルスペック」を全面改定　行動理念を5つの価値観に整理",
+  "title": "OpenAIがAIの行動指針「モデルスペック」を全面改定　行動理念を5つの価値観に整理",
   "seoTitle": "OpenAIモデルスペック改定とは？新しい5つの価値観と背景",
   "threadsPost": "OpenAIが、AIの行動指針である「モデルスペック」を公開から大きく更新しました。人間の意図への忠実さや危害の最小化など、5つのコアな価値観にガイドラインを再整理し、詳細なスタイル指定を廃止して柔軟な対応を重視する方針へ舵を切っています。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
   "writingVoice": "senpai",
   "lede": "ChatGPTのOpenAI公式ブログによると、AIがどのように振る舞うべきかを定めた公開のガイドライン「モデルスペック」が全面改定されました。人間の意図への忠実さや危害の最小化など、5つの価値観を軸にルールが再整理されています。",
-  "description": "ChatGPTのOpenAIがAIの行動指針「モデルスペック」を更新。人間の意図への忠実さや危害の最小化など5つの価値観に基づく新ガイドラインの狙いや変更点を解説します。",
+  "description": "OpenAIがAIの行動指針「モデルスペック」を更新。人間の意図への忠実さや危害の最小化など5つの価値観に基づく新ガイドラインの狙いや変更点を解説します。",
   "keywords": [
     "OpenAI",
     "モデルスペック",
@@ -67,5 +67,6 @@
     "prompt": "A close-up of a robotic arm hovering over a server rack in a dimly lit data center, with soft overhead lighting highlighting the metal surfaces.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-10-29T18:19:32+00:00"
-  }
+  },
+  "originalTitle": "ChatGPTのOpenAIがAIの行動指針「モデルスペック」を全面改定　行動理念を5つの価値観に整理"
 }

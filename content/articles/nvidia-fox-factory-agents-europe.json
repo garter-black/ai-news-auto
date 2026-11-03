@@ -3,13 +3,13 @@
   "sourceType": "web",
   "sourceUrl": "https://blogs.nvidia.com/blog/europe-industrial-leaders-engineering-manufacturing/",
   "sourceName": "NVIDIA公式ブログ",
-  "title": "AI半導体のNVIDIAが工場向けAIの設計図を公開　欧州の大手が設計から製造まで活用",
+  "title": "NVIDIAが工場向けAIの設計図を公開　欧州の大手が設計から製造まで活用",
   "seoTitle": "NVIDIA FOXとは？工場AIの仕組みと日本で使えるか",
   "threadsPost": "NVIDIAが、工場を見守るAIの「設計図」FOXを公開しました。\nGitHubで早期アクセス中。検査や原因調べをAIが分担します。\nSiemensは検査の調整時間が40%減、想定コスト削減は20%と説明。\n開発者向けで、日本からも公開ページは見られます。",
   "threadsHook": "future",
   "threadsStyle": 2,
   "writingVoice": "friendly",
-  "lede": "AI半導体のNVIDIAは公式ブログで、工場を常時見守るAIエージェントの設計図「FOX」をGitHubで早期アクセス公開したと発表しました。Siemensは検査の調整時間を40%減らしたとしています。設計計算を速める部品cuDSSも一般提供になり、欧州各社の活用例が示されました。",
+  "lede": "NVIDIAは公式ブログで、工場を常時見守るAIエージェントの設計図「FOX」をGitHubで早期アクセス公開したと発表しました。Siemensは検査の調整時間を40%減らしたとしています。設計計算を速める部品cuDSSも一般提供になり、欧州各社の活用例が示されました。",
   "description": "NVIDIAが工場運営AIの設計図FOXを早期アクセスで公開。Siemensは検査の調整時間40%減、想定コスト削減20%。cuDSSも一般提供。日本からの使い方と注意点を解説します。",
   "keywords": [
     "NVIDIA FOX",
@@ -80,5 +80,6 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T03:49:53+00:00"
-  }
+  },
+  "originalTitle": "AI半導体のNVIDIAが工場向けAIの設計図を公開　欧州の大手が設計から製造まで活用"
 }

@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://openai.com/index/building-scientific-understanding-with-academic-communities",
   "sourceName": "OpenAI公式ブログ",
-  "title": "ChatGPTのOpenAIが数学・CS・物理の難問をAIで証明、外部の専門家グループと検証へ",
+  "title": "OpenAIが数学・CS・物理の難問をAIで証明、外部の専門家グループと検証へ",
   "seoTitle": "OpenAIが数学・CS・物理の難問をAIで証明　新研究の仕組みと影響",
   "threadsPost": "OpenAIのAIが、数学・計算機科学・物理学の長年の難問を新たに証明または反証しました。今回はAIの出力を生データと捉え、外部の著名な専門家グループが検証する新しい試みが導入されています。",
   "threadsHook": "breaking",
@@ -69,5 +69,6 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://images.ctfassets.net/kftzwdyauwt9/5HKwJOTURosg0IoKJA21s8/88eefd210a578266fca1a9d9454daadc/from-ai-results-to-scientific-understanding-social.png?w=1600&h=900&fit=fill",
     "at": "2026-10-28T04:33:15+00:00"
-  }
+  },
+  "originalTitle": "ChatGPTのOpenAIが数学・CS・物理の難問をAIで証明、外部の専門家グループと検証へ"
 }
