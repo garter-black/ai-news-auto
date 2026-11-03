@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "kimi-k3-bedrock-india-inference",
+   "at": "2026-11-03T16:48:20.240483+00:00",
+   "title": "AWS、Bedrockの「Kimi K3」でインド国内推論に対応　処理をムンバイとハイデラバードに限定",
+   "head": "AWS、Bedrockの「Kimi K3」でインド国内推論に対応　処理をムンバイとハイデラバードに限定 | Introducing India-based inference for Kimi K3 on Amazon Bedrock",
+   "text": "AWS、Bedrockの「Kimi K3」でインド国内推論に対応　処理をムンバイとハイデラバードに限定 | Introducing India-based inference for Kimi K3 on Amazon Bedrock | Kimi K3 / Amazon Bedrock / Kimi K3 使い方 / インド 推論 / データレジデンシー / クロスリージョン推論 / Moonshot AI / OpenAI互換API / プロンプトキャッシュ / ヒンディー語 OCR / 生成AI / LLM / Amazon Bedrock / Kimi K3 / AWS",
+   "urls": [
+    "https://aws.amazon.com/blogs/machine-learning/introducing-india-based-inference-for-kimi-k3-on-amazon-bedrock/"
+   ]
+  },
+  {
    "slug": "github-copilot-jetbrains-air",
    "at": "2026-11-03T16:30:05.789903+00:00",
    "title": "GitHubがJetBrainsの「Air」にCopilotを提供　クラウド実行もCopilotの契約で",

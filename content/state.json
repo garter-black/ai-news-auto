@@ -3304,6 +3304,16 @@
       "slug": "hiroshima-u-ai-home-visit-nursing",
       "url": "https://www.hiroshima-u.ac.jp/news/100962"
     },
+    "020b7910e3b471cc": {
+      "at": "2026-11-03T16:48:43.254562+00:00",
+      "breaking": true,
+      "major": true,
+      "model": "anthropic-api:claude-opus-5-5",
+      "score": 93,
+      "section": "ai",
+      "slug": "kimi-k3-bedrock-india-inference",
+      "url": "https://aws.amazon.com/blogs/machine-learning/introducing-india-based-inference-for-kimi-k3-on-amazon-bedrock/"
+    },
     "0226f1e7606a0fdb": {
       "at": "2026-10-30T08:11:42.065765+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13307,96 +13317,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-11-02T00:22:35.754844+00:00",
-      "attempt": 1,
-      "id": "e8f2f6f028b691d7",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 51.6字・60字超の文が 18% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 141.9字・最長 169字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 141.9,
-        "avg_sentence": 51.6,
-        "long_share": 0.182,
-        "max_paragraph": 169,
-        "paragraphs": 8,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "suntory",
-      "title": "～人気ベーカリー\"パンとエスプレッソと\"共同開発～ クロワッサンとカフェラテを同時に頬張る、あの幸せな味わいを再現！「クラフトボス クロワッサンラテ」新発売"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T00:22:39.236911+00:00",
-      "attempt": 0,
-      "id": "e8f2f6f028b691d7",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 144.8字・最長 175字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 144.8,
-        "avg_sentence": 36.2,
-        "long_share": 0.062,
-        "max_paragraph": 175,
-        "paragraphs": 8,
-        "sentences": 32
-      },
-      "score": 100,
-      "source": "suntory",
-      "title": "～人気ベーカリー\"パンとエスプレッソと\"共同開発～ クロワッサンとカフェラテを同時に頬張る、あの幸せな味わいを再現！「クラフトボス クロワッサンラテ」新発売"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T01:01:04.956228+00:00",
-      "attempt": 1,
-      "id": "912bf1b189f54bd5",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 65.2字・60字超の文が 43% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 171.2字・最長 241字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 171.2,
-        "avg_sentence": 65.2,
-        "long_share": 0.429,
-        "max_paragraph": 241,
-        "paragraphs": 8,
-        "sentences": 21
-      },
-      "score": 100,
-      "source": "naoj",
-      "title": "国立天文台水沢VLBI観測所長 本間希樹教授が紫綬褒章を受章 - ニュース"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T01:01:08.156092+00:00",
-      "attempt": 0,
-      "id": "912bf1b189f54bd5",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 162.4字・最長 272字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 162.4,
-        "avg_sentence": 41.9,
-        "long_share": 0.065,
-        "max_paragraph": 272,
-        "paragraphs": 8,
-        "sentences": 31
-      },
-      "score": 100,
-      "source": "naoj",
-      "title": "国立天文台水沢VLBI観測所長 本間希樹教授が紫綬褒章を受章 - ニュース"
-    },
-    {
-      "accepted": false,
       "at": "2026-11-02T01:21:01.020666+00:00",
       "attempt": 1,
       "id": "6f9832433932a9cb",
@@ -19806,6 +19726,114 @@
         "見出しが52字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（IDE・ACP・IDEA）",
         "英語の画面名（「Settings >」）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T16:46:05.202080+00:00",
+      "attempt": 1,
+      "id": "020b7910e3b471cc",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "題名で料金・価格を約束しているのに、本文に金額（円・ドル・無料など）が無い。元記事の金額を書くか、題名から料金の話を外す"
+      ],
+      "readability": {
+        "avg_paragraph": 151.8,
+        "avg_sentence": 44.4,
+        "long_share": 0.244,
+        "max_paragraph": 253,
+        "paragraphs": 12,
+        "sentences": 41
+      },
+      "score": null,
+      "source": "aws-ml-blog",
+      "title": "Introducing India-based inference for Kimi K3 on Amazon Bedrock",
+      "warnings": [
+        "見出しが61字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（LLM・JSON・YYYY）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T16:47:03.120897+00:00",
+      "attempt": 2,
+      "id": "020b7910e3b471cc",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "表の「費用 … Globalより高い可能性」→ 元記事はGlobalが最も安いとだけ述べており、Indiaが高いという推測は元記事にない。",
+        "「Indiaの料金の差額は、料金ページで確認する形です。」→ 元記事は料金ページを参照するよう案内しているだけで、Indiaの料金差の有無には触れていない。",
+        "「Bedrockの構造化出力は10月に一般提供されていました」→ 確認済みの文脈は10/26記事で、リンク先 /articles/aws-weekly-20261019-updates と日付が食い違う。10月の一般提供自体は文脈と整合するが、出典が不確か。",
+        "「かんたん版」の「データセンターだけで動かせる」→ 元記事はリージョン（ムンバイ・ハイデラバード）への限定と述べており、データセンターという表現は言い過ぎ。",
+        "「日本など他の国に処理を限るプロファイルの予定は、まだ発表されていません」→ 元記事に言及がなく、元記事では確認できない記述。ただし「発表されていない」型の記述なので軽微。"
+      ],
+      "readability": {
+        "avg_paragraph": 138.7,
+        "avg_sentence": 40.1,
+        "long_share": 0.178,
+        "max_paragraph": 246,
+        "paragraphs": 13,
+        "sentences": 45
+      },
+      "score": 72,
+      "source": "aws-ml-blog",
+      "title": "Introducing India-based inference for Kimi K3 on Amazon Bedrock",
+      "warnings": [
+        "見出しが59字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（LLM・JSON・CLI）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T16:48:22.949051+00:00",
+      "attempt": 3,
+      "id": "020b7910e3b471cc",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "文が長い（1文の平均 46.6字・60字超の文が 27% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 107.8,
+        "avg_sentence": 46.6,
+        "long_share": 0.273,
+        "max_paragraph": 197,
+        "paragraphs": 19,
+        "sentences": 44
+      },
+      "score": 93,
+      "source": "aws-ml-blog",
+      "title": "Introducing India-based inference for Kimi K3 on Amazon Bedrock",
+      "warnings": [
+        "見出しが51字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（JSON・CLI・ISO）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T16:48:43.249979+00:00",
+      "attempt": 0,
+      "id": "020b7910e3b471cc",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "文が長い（1文の平均 45.8字・60字超の文が 25% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 87.7,
+        "avg_sentence": 45.8,
+        "long_share": 0.25,
+        "max_paragraph": 197,
+        "paragraphs": 23,
+        "sentences": 44
+      },
+      "score": 93,
+      "source": "aws-ml-blog",
+      "title": "Introducing India-based inference for Kimi K3 on Amazon Bedrock",
+      "warnings": [
+        "見出しが51字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（JSON・CLI・ISO）"
       ]
     }
   ],

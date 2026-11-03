@@ -1,5 +1,18 @@
 {
   "items": {
+    "020b7910e3b471cc": {
+      "detectedAt": "2026-11-03T16:44:20+00:00",
+      "finishedAt": "2026-11-03T16:48:43+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41677264314",
+      "slug": "kimi-k3-bedrock-india-inference",
+      "source": "aws-ml-blog",
+      "sourcePublishedAt": "2026-11-03T16:32:54+00:00",
+      "startedAt": "2026-11-03T16:45:00+00:00",
+      "title": "Introducing India-based inference for Kimi K3 on Amazon Bedrock",
+      "url": "https://aws.amazon.com/blogs/machine-learning/introducing-india-based-inference-for-kimi-k3-on-amazon-bedrock/"
+    },
     "0b04c8892989c151": {
       "detectedAt": "2026-10-29T16:00:51+00:00",
       "finishedAt": "2026-10-29T16:03:49+00:00",

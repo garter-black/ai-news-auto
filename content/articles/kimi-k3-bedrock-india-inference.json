@@ -1,0 +1,128 @@
+{
+  "slug": "kimi-k3-bedrock-india-inference",
+  "sourceType": "web",
+  "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/introducing-india-based-inference-for-kimi-k3-on-amazon-bedrock/",
+  "sourceName": "AWS Machine Learning Blog",
+  "title": "AWS、Bedrockの「Kimi K3」でインド国内推論に対応　処理をムンバイとハイデラバードに限定",
+  "seoTitle": "Kimi K3とは？Amazon Bedrockのインド推論と使い方",
+  "threadsPost": "インドで生成AIを動かす開発者は要チェックです。\n\n要約すると、AWSのBedrockで「Kimi K3」をインド国内だけで動かせるようになりました。\n処理はムンバイとハイデラバードの2リージョンに限られます。\n\n仕事で使うAI、データの置き場所は気にしていますか？",
+  "threadsHook": "callout",
+  "threadsStyle": 3,
+  "writingVoice": "honest",
+  "lede": "Amazon BedrockのAIモデル「Kimi K3」で、推論処理をインド国内に限って実行できるプロファイルが加わりました。処理先はムンバイとハイデラバードの2リージョンで、データを国外に出せない業務でも使えます。AWS Machine Learning Blogが11月4日に発表し、ヒンディー語の文書を読み取るサンプルコードも公開しています。",
+  "description": "Amazon Bedrockの「Kimi K3」で、推論をインドのムンバイとハイデラバードに限る「in」プロファイルが利用可能に。OpenAI互換APIでの使い方、flex層の50%割引、導入例を解説します。",
+  "keywords": [
+    "Kimi K3",
+    "Amazon Bedrock",
+    "Kimi K3 使い方",
+    "インド 推論",
+    "データレジデンシー",
+    "クロスリージョン推論",
+    "Moonshot AI",
+    "OpenAI互換API",
+    "プロンプトキャッシュ",
+    "ヒンディー語 OCR",
+    "Bedrock flex"
+  ],
+  "tags": [
+    "生成AI",
+    "LLM",
+    "Amazon Bedrock",
+    "Kimi K3",
+    "AWS"
+  ],
+  "highlights": [
+    "Ultrahumanはプロンプトキャッシュで言語モデルの費用を80%削減し、複数回の会話を85%速くしたと説明",
+    "Chat Completions・Responsesなど4つのAPIに対応し、既存のopenaiライブラリから呼び出せる",
+    "急ぎでない処理はflex層で標準料金から50%割引。サンプルではヒンディー語の電気料金請求書をJSON化"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "unknown",
+    "price": "API従量課金",
+    "free": null,
+    "audience": "AWS開発者",
+    "take": "インドでデータを扱う案件があれば、モデルカードで対応リージョンと権限設定を確認するとよいでしょう。",
+    "judgedAt": "2026-11-03T16:48:20.240493+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "インドの顧客データを扱う開発者は、データを国内にとどめたままKimi K3を業務に組み込めます。",
+      "急ぎでない一括処理はflex層を選ぶと、標準料金から50%割引で動かせます。"
+    ]
+  },
+  "body": "要約すると、AIモデル「Kimi K3」をAmazon Bedrock経由で使うとき、処理をインド国内だけに限れるようになりました。\n\nAmazon Bedrockは、さまざまな会社のAIモデルをAPI（アプリから呼び出す仕組み）でまとめて使えるAWSのサービスです。Kimi K3はMoonshot AIが提供するモデルで、文字と画像をまとめて扱えるマルチモーダル型です。重みを公開したオープンウェイトのモデルでもあります。\n\nMoonshot AIは、公開時点でコーディングとエージェント（自分で手順を進めるAI）の能力が最先端の水準に達したと報告しています。\n\nKimi K3にはこれまで、世界中で処理する「Global」と、米国内で処理する選択肢がありました。今回はそこにインド国内の推論が加わりました。データの処理場所に厳しい決まりがある業務を、インドで動かしやすくするのが狙いです。\n\n## 処理先をムンバイとハイデラバードに絞る「in」プロファイル\n\nKimi K3は「クロスリージョン推論プロファイル」という仕組みで提供されます。利用者はAWSの多くのリージョン（AWSの拠点の地域）から呼び出せます。Bedrockは受け取った要求を、複数ある処理先リージョンのどれかで処理します。\n\nどこで処理してよいかは、呼び出すプロファイルIDで決まります。\n\n- Global（global.moonshotai.kimi-k3）：多くの用途に推奨。費用が最も安く、使える範囲も最も広い\n- インド（in.moonshotai.kimi-k3）：推論処理をムンバイとハイデラバードのリージョン内にとどめる必要があるとき\n\nAWSの公式ブログによると、リージョン間の通信は暗号化され、AWSのネットワーク内にとどまります。公開インターネットは通りません。複数リージョンにまたがるVPC（クラウド上の仮想的な社内ネットワーク）を自前で組む必要もありません。\n\n対応リージョンの最新情報は、Kimi K3のモデルカードで確認する形です。\n\n導入例としてUltrahumanが紹介されています。同社アプリのAIアシスタント「Jade」は、利用者自身のRingと血糖値のデータを使って質問に答えます。会話数は1日1万4,000件を超えるといいます。\n\n同社のAditya Patawari氏（エンジニアリング担当VP）は、健康データをAWS内にとどめ、ムンバイを予備のリージョンにしていると説明しました。プロンプトキャッシュ（繰り返し使う指示文を再利用する仕組み）で言語モデルの費用を80%削減し、複数回のやり取りを85%速くしたそうです。\n\n## 使い方はOpenAI互換API、権限はインド2リージョン分を許可\n\nKimi K3は、Bedrock Runtimeの窓口で次の4つのAPIから呼び出せます。\n\n- Chat Completions：OpenAI互換のメッセージ形式\n- Responses：OpenAI互換で、構造化された出力項目を返す\n- Converse：Bedrockの対応モデル共通の形式\n- InvokeModel：モデルごとのJSON形式\n\nAWSはこのモデルではOpenAI互換のAPIを推奨しています。サンプルではopenaiのPythonライブラリを使い、接続先をムンバイ（ap-south-1）のBedrock Runtimeに向けています。ストリーミング、ツール呼び出し、構造化出力にも対応します。\n\n認証にはAPIキーも発行できますが、AWSは短期間だけ有効な認証情報を推奨しています。専用のトークン生成ライブラリを使うと、AWS CLIの認証情報から短期のトークンを作れます。\n\nIAM（AWSの権限管理）では、bedrock:InvokeModelとbedrock:InvokeModelWithResponseStreamなどを許可します。対象にはムンバイ（ap-south-1）とハイデラバード（ap-south-2）の両方を含めます。組織でリージョンを制限している場合は、呼び出し元のリージョンを許可したうえで、インドの2つの処理先への転送も許可する必要があります。\n\n編集部の見方では、OpenAI互換APIで呼べるため、OpenAI向けのコードを持つ開発者は接続先とモデルIDの変更から試しやすい構成です。\n\n## ヒンディー語の請求書を読むサンプル、flex層は50%引き\n\nサンプルは、ヒンディー語の架空の電気料金請求書を読み取るものです。別のOCR（画像から文字を読み取る処理）や翻訳サービスは使いません。\n\n「請求額と期限は？」とヒンディー語と英語を混ぜて聞くと、次のように答えました。\n\n- 合計：₹2,217.20\n- 期限：20/10/2026\n- 延滞時：₹2,261.54\n\nGitHubで公開されたパイプラインは、次の処理を一続きで行います。\n\n- 元の文字のまま書き起こす\n- 日付をISO 8601形式（YYYY-MM-DD）にそろえ、デーヴァナーガリー数字（२८८）を288に直してJSONで出力する\n- 英語で短く要約する\n- ヒンディー語と英語を混ぜた追加の質問に答える\n\n本人確認（KYC）書類の例や、モデルが項目を自分で選ぶモードも含まれます。\n\n細かい文字を読むときは画像の詳細度を「high」にすると精度が上がる一方、入力トークン（AIが文字を数える単位）が増えます。AWSは、重要な判断に使う前に出力を検証し、人の確認を挟むよう勧めています。\n\n費用面では、急ぎでない処理にflex層を選ぶと標準料金から50%割引になります。応答の速さを優先する「priority」は、割高な代わりに処理の順番が早くなります。プロンプトキャッシュは既定で自動的に働き、明示モードでは再利用する範囲を指定してヒット率を高められます。\n\n固定の指示文は入力の先頭に置くのがコツです。\n\nBedrockの利用費を管理する手法は、サイソクでも以前に取り上げました（[Bedrockのコスト管理5段階](/articles/amazon-bedrock-cost-management-playbook)）。インド向けの導入を検討するなら、GitHubのサンプルコードとKimi K3のモデルカードで、対応リージョンと料金ページを確かめるとよいでしょう。",
+  "easy": "## ひとことで言うと\n\nAWSのAIサービス「Amazon Bedrock」で、AIモデル「Kimi K3」をインド国内だけで動かせるようになりました。処理はムンバイとハイデラバードの2つのリージョン（AWSの拠点の地域）に限られます。\n\n## データを国外に出せない業務向け\n\n金融や行政など、データの処理場所に厳しい決まりがある業務を想定した仕組みです。呼び出すときのID（in.moonshotai.kimi-k3）を指定するだけで、処理先がインド国内に絞られます。\n\n世界中で処理する「Global」も引き続き選べます。AWSは、多くの用途ではGlobalが最も安く、使える範囲も広いとしています。\n\nKimi K3は画像も読めます。AWSのサンプルでは、ヒンディー語の電気料金の請求書を読み取りました。合計額の₹2,217.20や支払期限を、ヒンディー語と英語を混ぜた質問に答える形で取り出しています。\n\n導入企業のUltrahumanは、繰り返し使う指示文を再利用する仕組みで、AIの費用を80%減らしたと説明しています。",
+  "channel": "AWS Machine Learning Blog",
+  "channelId": "",
+  "channelSlug": "aws-ml-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Introducing India-based inference for Kimi K3 on Amazon Bedrock",
+  "publishedAt": "2026-11-03T16:32:54+00:00",
+  "generatedAt": "2026-11-03T16:48:20.240483+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/kimi-k3-bedrock-india-inference-d46518e6.jpg",
+  "model": "anthropic-api:claude-opus-5-5",
+  "affiliates": [],
+  "newsType": "product",
+  "faq": [
+    {
+      "q": "Kimi K3のインド国内推論では、どこで処理される？",
+      "a": "プロファイルID「in.moonshotai.kimi-k3」を使うと、推論処理はムンバイとハイデラバードのリージョン内にとどまります。"
+    },
+    {
+      "q": "Kimi K3はAmazon BedrockでどのAPIから使える？",
+      "a": "Chat Completions、Responses、Converse、InvokeModelの4つです。AWSはOpenAI互換のChat CompletionsとResponsesを推奨しています。"
+    },
+    {
+      "q": "Bedrockの「Kimi K3」を安く使う方法は？",
+      "a": "急ぎでない処理はflex層を選ぶと標準料金から50%割引になります。プロンプトキャッシュも使え、固定の指示文を先頭に置くと効果が出やすくなります。"
+    },
+    {
+      "q": "GlobalとインドのKimi K3プロファイルはどう選ぶ？",
+      "a": "AWSは多くの用途でGlobalを推奨しており、費用が最も安く使える範囲も広いとしています。処理をインド国内にとどめる必要がある場合はインドを選びます。"
+    }
+  ],
+  "todayActions": [
+    "Kimi K3のモデルカードで、自社が使うリージョンから呼び出せるか確認する",
+    "GitHubのサンプルコードを入手し、請求書の読み取り手順を確かめる",
+    "IAMやSCPでインドの2リージョンへの転送が許可されているか管理者と確認する"
+  ],
+  "relatedSlugs": [
+    "amazon-bedrock-cost-management-playbook"
+  ],
+  "qualityScore": 93,
+  "breaking": true,
+  "sourcePublishedAt": "2026-11-03T16:32:54+00:00",
+  "detectedAt": "2026-11-03T16:44:20+00:00",
+  "fastLane": true,
+  "speedMinutes": 19,
+  "imageCredit": {
+    "kind": "official",
+    "org": "AWS",
+    "provider": "AWS Machine Learning Blog",
+    "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/introducing-india-based-inference-for-kimi-k3-on-amazon-bedrock/",
+    "original": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/02/ML-22220-featured-image.png",
+    "width": 1152,
+    "height": 576,
+    "at": "2026-11-03T16:48:49+00:00",
+    "imageKind": "banner"
+  },
+  "imageFocus": {
+    "x": 0.498,
+    "y": 0.497,
+    "box": [
+      0.028,
+      0.062,
+      0.969,
+      0.931
+    ],
+    "ar": 2.0,
+    "src": "https://ai-tech-express.jp/img/kimi-k3-bedrock-india-inference-d46518e6.jpg"
+  }
+}

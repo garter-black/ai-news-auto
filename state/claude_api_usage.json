@@ -611,6 +611,37 @@
           "sns": 1
         },
         "usd": 0.278729
+      },
+      "gh-41677264314-1": {
+        "by": {
+          "breaking|3": {
+            "n": 3,
+            "usd": 0.650553
+          },
+          "check|2": {
+            "n": 3,
+            "usd": 0.072916
+          },
+          "helper|1": {
+            "n": 2,
+            "usd": 0.003205
+          }
+        },
+        "cache_read": 17218,
+        "cache_write": 8609,
+        "calls": {
+          "breaking": 3,
+          "check": 3,
+          "helper": 2
+        },
+        "in": 90029,
+        "out": 25899,
+        "req": {
+          "breaking": 3,
+          "check": 3,
+          "helper": 2
+        },
+        "usd": 0.726674
       }
     }
   }
