@@ -155,11 +155,12 @@
   ],
   "related": [
     "chatgpt-work",
+    "codex",
     "chatgpt-voice",
-    "chatgpt-pro",
-    "chatgpt-work-for-sales"
+    "chatgpt-pro"
   ],
   "articles": [
+    "heimstaden-openai-real-estate-ai",
     "zendesk-chatgpt-enterprise-case-study",
     "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom",
     "uber-openai-chatgpt-work-enterprise-deployment",

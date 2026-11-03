@@ -6,68 +6,77 @@
   "companyName": "OpenAI",
   "category": "開発ツール",
   "overview": {
-    "text": "Codexは、OpenAIが提供するAIプログラミングツールです。プログラム作成の支援をはじめ、自律的なエージェントとしての動作や開発プロセスの効率化に活用されています。",
+    "text": "Codexは、OpenAIが提供するAIプログラミングツールです。2021年8月に初期のAPIが発表されて以降、プログラムづくりを手伝うAIとして企業や開発者に活用されています。",
     "sources": [
-      "chatgpt-codex-shared-usage-limits",
-      "openai-codex-astra-merge-ceo-interview"
+      "heimstaden-openai-real-estate-ai",
+      "shopify-cto-codex-ai-prototyping",
+      "gamma-ceo-openai-innovation-velocity"
     ]
   },
   "facts": [
     {
       "label": "提供開始",
-      "value": "2021年8月発表",
+      "value": "2021年8月に初期APIを発表",
       "sources": [
         "shopify-cto-codex-ai-prototyping"
       ]
     },
     {
       "label": "日本での提供",
-      "value": "日本から利用可能",
+      "value": "日本からも利用できます",
       "sources": [
         "openai-codex-astra-merge-ceo-interview"
       ]
     },
     {
-      "label": "向いている人",
-      "value": "開発者およびビジネス職",
+      "label": "使える場所",
+      "value": "APIやChatGPTと共通の枠",
       "sources": [
-        "openai-codex-astra-merge-ceo-interview",
-        "shopify-cto-codex-ai-prototyping"
+        "chatgpt-codex-shared-usage-limits"
+      ]
+    },
+    {
+      "label": "向いている人",
+      "value": "開発者や非エンジニアの分析担当",
+      "sources": [
+        "heimstaden-openai-real-estate-ai",
+        "openai-codex-astra-merge-ceo-interview"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "大まかな指示を渡すだけで、AIが自律的にコードを書き、試作品の作成や初期テストを完了させます。",
+      "text": "プログラムコードの生成や、非エンジニアによるデータ分析処理の自動化を支えます。",
       "sources": [
-        "shopify-cto-codex-ai-prototyping"
+        "heimstaden-openai-real-estate-ai"
       ]
     },
     {
-      "text": "指示の足りない部分や行間を、一般的な常識に基づいて自動で補完します。",
+      "text": "指示の足りない部分を常識で補いながら、試作品の構築や金融データ等の自動集計を行います。",
       "sources": [
-        "openai-codex-astra-merge-ceo-interview"
+        "openai-codex-astra-merge-ceo-interview",
+        "openai-codex-benefit-street-partners-financial-tool"
       ]
     },
     {
-      "text": "複数のシステム構造の選択肢やトレードオフを数分で整理して提示します。",
+      "text": "契約書分析ツールなど、専門的な業務アプリケーションの内製開発を加速させます。",
       "sources": [
-        "shopify-cto-codex-ai-prototyping"
-      ]
-    },
-    {
-      "text": "自然言語の指示のみで、スケジュールタスクの自動更新やプラグイン連携を含んだSites機能を作成できます。",
-      "sources": [
-        "openai-codex-sites-update-scheduled-tasks-personalization"
+        "sullivan-cromwell-openai-codex-legal-tool"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "OpenAIのAPI利用料金や、ChatGPTの有料プランなどを通じて提供されています。",
+      "text": "利用料金はChatGPTなどの通常サービス体系や、APIの従量課金に準拠します。",
       "sources": [
-        "chatgpt-codex-shared-usage-limits",
+        "openai-codex-astra-merge-ceo-interview",
         "shopify-cto-codex-ai-prototyping"
+      ]
+    },
+    {
+      "text": "12月からは、Plus、Pro、Businessの各プランでChatGPTと利用枠が共通になります。",
+      "sources": [
+        "chatgpt-codex-shared-usage-limits"
       ]
     }
   ],
@@ -79,7 +88,7 @@
       ]
     },
     {
-      "text": "アカウントを作成し、有料プラン加入やAPI手続きで利用できます。",
+      "text": "OpenAIのアカウントを作成し、開発者用プラットフォームや対象プランにアクセスすることで試せます。",
       "sources": [
         "openai-codex-astra-merge-ceo-interview"
       ]
@@ -87,69 +96,64 @@
   ],
   "howto": [
     {
-      "text": "OpenAIのAPIアカウントまたはChatGPTの有料プランを用意します。",
+      "text": "OpenAIのAPIや、ChatGPTの有料プランなどを通じて利用できます。",
       "sources": [
         "shopify-cto-codex-ai-prototyping"
       ]
     },
     {
-      "text": "API経由でCodex対応モデルを指定して呼び出すか、連携エディタにAPIキーを設定します。",
+      "text": "12月以降は、SettingsのUsage画面で消費量や残量を確認できます。",
       "sources": [
-        "shopify-cto-codex-ai-prototyping"
+        "chatgpt-codex-shared-usage-limits"
       ]
     }
   ],
   "differences": [
     {
-      "text": "12月からPlus、Pro、Businessの各プランで、利用枠がChatGPTとCodexで共通になります。",
+      "text": "人間が細かい指示を与えなくても、AIが常識に基づいて不足部分を自動で補うようになりました。",
       "sources": [
-        "chatgpt-codex-shared-usage-limits"
+        "openai-codex-astra-merge-ceo-interview"
       ]
     },
     {
-      "text": "Sites機能において、スケジュールタスクのネイティブ統合と閲覧者別の表示最適が追加されました。",
+      "text": "12月からは、ChatGPTの有料プランにおいて利用枠がChatGPTと共通になります。",
       "sources": [
-        "openai-codex-sites-update-scheduled-tasks-personalization"
+        "chatgpt-codex-shared-usage-limits"
       ]
     }
   ],
   "faq": [
     {
-      "q": "誰に向いている？",
-      "a": "開発者だけでなく、プログラミング専門外のビジネス職や企画担当者にも向いています。",
+      "q": "どのような人が使っていますか？",
+      "a": "開発者だけでなく、非エンジニアの分析担当者や金融アナリストなども活用しています。",
       "sources": [
-        "openai-codex-astra-merge-ceo-interview",
-        "shopify-cto-codex-ai-prototyping"
+        "heimstaden-openai-real-estate-ai",
+        "openai-codex-benefit-street-partners-financial-tool"
       ]
     },
     {
-      "q": "利用枠の確認方法は？",
-      "a": "ChatGPTとCodexを合わせた残りの量は、SettingsのUsageで確認できます。",
+      "q": "利用枠の残量はどこで見られますか？",
+      "a": "SettingsのUsage画面で残量や回復時刻を確認できます。",
       "sources": [
         "chatgpt-codex-shared-usage-limits"
       ]
     },
     {
-      "q": "通常のチャットでも利用枠は消費される？",
-      "a": "通常のInstantチャットは枠を使いません。",
+      "q": "プラグインはありますか？",
+      "a": "Qodoなどの外部ツール向けプラグインが公開されています。",
       "sources": [
-        "chatgpt-codex-shared-usage-limits"
+        "qodo-codex-plugin-code-review"
       ]
     },
     {
-      "q": "上限に達したときはどうなる？",
-      "a": "回復を待つか、プランを上げるか、クレジットを買うかを選べます。",
+      "q": "セキュリティの対象製品に入っていますか？",
+      "a": "ChatGPTやAPI Platformとともにコア製品として位置づけられています。",
       "sources": [
-        "chatgpt-codex-shared-usage-limits"
+        "openai-bigger-bug-bounties"
       ]
     }
   ],
   "timeline": [
-    {
-      "date": "2026-10-16",
-      "slug": "openai-codex-sites-update-scheduled-tasks-personalization",
-      "event": "Sitesに定時自動更新と閲覧者別最適化を追加"
-    },
     {
       "date": "2026-10-28",
       "slug": "shopify-cto-codex-ai-prototyping",
@@ -158,7 +162,17 @@
     {
       "date": "2026-11-02",
       "slug": "chatgpt-codex-shared-usage-limits",
-      "event": "ChatGPTの利用枠をCodexと共通化する方針を発表"
+      "event": "ChatGPTと利用枠を共通化する計画を発表"
+    },
+    {
+      "date": "2026-11-02",
+      "slug": "qodo-codex-plugin-code-review",
+      "event": "QodoがCodex向けプラグインを公開"
+    },
+    {
+      "date": "2026-11-03",
+      "slug": "heimstaden-openai-real-estate-ai",
+      "event": "Heimstadenの環境リスク評価に活用"
     }
   ],
   "related": [
@@ -168,6 +182,7 @@
     "gpt-5-6"
   ],
   "articles": [
+    "heimstaden-openai-real-estate-ai",
     "openai-bigger-bug-bounties",
     "openai-security-sprint-bug-bounty",
     "chatgpt-codex-shared-usage-limits",
@@ -199,6 +214,7 @@
     "openai-chatgpt-voice-desktop-gpt-live"
   ],
   "linkFrom": [
+    "heimstaden-openai-real-estate-ai",
     "chatgpt-codex-shared-usage-limits",
     "qodo-codex-plugin-code-review",
     "openai-codex-astra-merge-ceo-interview",
@@ -211,9 +227,9 @@
     "openai-meet-new-codex-cli-terminal-update",
     "gamma-ceo-openai-innovation-velocity"
   ],
-  "signature": "f2bacf59c5eab50e",
-  "primarySignature": "025db0af75c4d3b6",
+  "signature": "7ed27b0742b6ea87",
+  "primarySignature": "b104a45a95e3e897",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:42:14+00:00",
-  "updatedAt": "2026-11-03T11:41:25+00:00"
+  "updatedAt": "2026-11-03T13:23:32+00:00"
 }

@@ -147,5 +147,7 @@
       "使ってみるには": "まずはGeminiアプリでArgonを確認"
     }
   },
-  "sectionsPolishedAt": "2026-11-03T12:16:44+00:00"
+  "sectionsPolishedAt": "2026-11-03T12:16:44+00:00",
+  "duplicateOf": "google-gemini-4-argon-surf-clock-hardware",
+  "duplicateReason": "製品名が一致（gemini4argon）"
 }

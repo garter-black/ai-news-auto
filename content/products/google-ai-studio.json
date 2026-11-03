@@ -6,9 +6,12 @@
   "companyName": "Google",
   "category": "開発ツール",
   "overview": {
-    "text": "Google AI Studioは、Googleが提供する開発者向けのAIプラットフォームです。APIキーを発行してGeminiや画像生成モデルを利用したアプリケーション開発が行えます。",
+    "text": "Google AI Studioは、Googleが提供する開発プラットフォームです。GeminiなどのAIモデルを利用したアプリケーション開発をサポートします。",
     "sources": [
-      "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
+      "building-digital-synth-with-google-gemini",
+      "operating-real-hardware-with-gemini-ai",
+      "gemini-remote-robotics-low-latency-control",
+      "google-gemini-journal-receipts-iot"
     ]
   },
   "facts": [
@@ -16,12 +19,13 @@
       "label": "料金",
       "value": "無料利用枠あり、従量課金",
       "sources": [
-        "google-gemini-live-sprout-plant-robot"
+        "google-gemini-live-sprout-plant-robot",
+        "google-gemini-journal-receipts-iot"
       ]
     },
     {
       "label": "日本での提供",
-      "value": "日本から利用可能",
+      "value": "日本からも利用可能",
       "sources": [
         "google-gemini-live-sprout-plant-robot",
         "building-digital-synth-with-google-gemini"
@@ -29,29 +33,37 @@
     },
     {
       "label": "向いている人",
-      "value": "開発者、エンジニア",
+      "value": "開発者・エンジニア",
       "sources": [
-        "google-gemini-live-sprout-plant-robot"
+        "google-gemini-live-sprout-plant-robot",
+        "building-digital-synth-with-google-gemini",
+        "google-gemini-journal-receipts-iot"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "Gemini APIやGemini Liveなどの機能を利用したテキストや音声の対話機能を構築できます。",
+      "text": "Gemini APIキーを発行し、Gemini Flashなどの機能を有効化できます。",
       "sources": [
         "google-gemini-live-sprout-plant-robot"
       ]
     },
     {
-      "text": "Geminiのコード生成能力を活用し、ハードウェアセンサーと連動するWebアプリケーションを構築できます。",
+      "text": "Geminiのコード生成能力を活用し、ハードウェア連携アプリを構築できます。",
       "sources": [
         "building-digital-synth-with-google-gemini"
       ]
     },
     {
-      "text": "Gemini Robotics 2の身体性推理モデルを利用したロボット制御の仕組みを開発できます。",
+      "text": "ロボットアーム制御のための3Dビジュアライザーのフロントエンドコード等を生成できます。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
+        "operating-real-hardware-with-gemini-ai"
+      ]
+    },
+    {
+      "text": "SDKを通じて複雑なハードウェアとソフトウェアの統合開発を高速化できます。",
+      "sources": [
+        "google-gemini-journal-receipts-iot"
       ]
     }
   ],
@@ -71,14 +83,13 @@
   ],
   "japan": [
     {
-      "text": "発表の時点では、日本からの利用に対応しています。",
+      "text": "使われているAI機能は日本からも利用可能です。",
       "sources": [
-        "google-gemini-live-sprout-plant-robot",
-        "building-digital-synth-with-google-gemini"
+        "google-gemini-live-sprout-plant-robot"
       ]
     },
     {
-      "text": "日本語でのテキスト入力や音声対話にも標準で対応しています。",
+      "text": "Google AI Studioにアクセスし、Googleアカウントでログインして利用できます。",
       "sources": [
         "google-gemini-live-sprout-plant-robot"
       ]
@@ -86,13 +97,13 @@
   ],
   "howto": [
     {
-      "text": "Google AI Studioのサイトにアクセスし、Googleアカウントでログインします。",
+      "text": "Google AI Studioのサイト（ai.google.dev）にアクセスします。",
       "sources": [
         "google-gemini-live-sprout-plant-robot"
       ]
     },
     {
-      "text": "APIキーを発行し、必要なモデルや機能を選択して利用を開始します。",
+      "text": "Googleアカウントでログインし、APIキーを発行して利用を始めます。",
       "sources": [
         "google-gemini-live-sprout-plant-robot"
       ]
@@ -102,23 +113,33 @@
   "faq": [
     {
       "q": "無料で使える？",
-      "a": "一定の無料利用枠が用意されています。枠を超えた分は従量課金となります。",
+      "a": "一定の無料利用枠が用意されています。無料枠を超えた分はトークン数に応じた従量課金となります。",
       "sources": [
         "google-gemini-live-sprout-plant-robot"
       ]
     },
     {
-      "q": "対応している言語は？",
-      "a": "日本語でのテキスト入力や音声対話にも標準で対応しています。",
+      "q": "対応している開発者は？",
+      "a": "開発者やエンジニアに向いています。AIを使ったアプリケーション開発に活用できます。",
+      "sources": [
+        "google-gemini-live-sprout-plant-robot",
+        "building-digital-synth-with-google-gemini",
+        "google-gemini-journal-receipts-iot"
+      ]
+    },
+    {
+      "q": "どのように使い始める？",
+      "a": "サイトにアクセスし、アカウントでログインしてAPIキーを発行して始められます。",
       "sources": [
         "google-gemini-live-sprout-plant-robot"
       ]
     },
     {
-      "q": "誰に向いている？",
-      "a": "AIを活用したアプリケーションやシステムを開発する開発者やエンジニアに向いています。",
+      "q": "どのようなモデルが使える？",
+      "a": "Gemini FlashやGemini 1.5 Proなどのモデルを利用できます。",
       "sources": [
-        "google-gemini-live-sprout-plant-robot"
+        "google-gemini-live-sprout-plant-robot",
+        "operating-real-hardware-with-gemini-ai"
       ]
     }
   ],
@@ -137,9 +158,9 @@
     "google-gemini-journal-receipts-iot"
   ],
   "linkFrom": [],
-  "signature": "4daff4585ed461d0",
-  "primarySignature": "004e8decda591039",
+  "signature": "1366a191539cdbfe",
+  "primarySignature": "e1d35a6f7182bfba",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:46:46+00:00",
-  "updatedAt": "2026-10-30T11:32:17+00:00"
+  "updatedAt": "2026-11-03T13:23:40+00:00"
 }

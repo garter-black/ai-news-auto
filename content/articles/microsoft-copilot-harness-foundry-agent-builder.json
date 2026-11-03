@@ -79,5 +79,7 @@
   "model": "gemini-3.6-flash",
   "affiliates": [],
   "originalTitle": "Microsoft、AI開発基盤で「Copilot harness」を発表　コンテナ不要で動くエージェント構築が可能に",
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "duplicateOf": "microsoft-copilot-harness-foundry",
+  "duplicateReason": "珍しい固有名詞が一致（copilotharness / 0.40）"
 }

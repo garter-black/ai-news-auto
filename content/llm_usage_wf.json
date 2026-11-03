@@ -14,6 +14,10 @@
     }
   },
   "2026-11-03": {
+    "articles": {
+      "anthropic-api:claude-opus-5-5": 1,
+      "anthropic-api:claude-sonnet-5-5": 4
+    },
     "breaking": {
       "anthropic-api:claude-haiku-5-5": 1,
       "anthropic-api:claude-opus-5-5": 1,
@@ -21,14 +25,15 @@
     },
     "images": {
       "cf-image:flux-1-schnell": 3,
-      "cf-image:flux-2-klein-4b": 7,
-      "cloudflare:@cf/openai/gpt-oss-120b": 9
+      "cf-image:flux-2-klein-4b": 8,
+      "cloudflare:@cf/openai/gpt-oss-120b": 10
     },
     "local": {
       "gemini-3.5-flash-lite": 2
     },
     "products": {
-      "gemini-3.5-flash-lite": 54,
+      "anthropic-api:claude-haiku-5-5": 2,
+      "gemini-3.5-flash-lite": 57,
       "gemini-flash-lite-latest": 1
     }
   }

@@ -98,5 +98,7 @@
     "src": "https://i.ytimg.com/vi/FVYDyA1LcGI/maxresdefault.jpg"
   },
   "titleStyle": "2026-11-03",
-  "originalTitle": "MicrosoftのAI開発「Microsoft Foundry」チャットからコードを開いてエージェントを直接カスタム"
+  "originalTitle": "MicrosoftのAI開発「Microsoft Foundry」チャットからコードを開いてエージェントを直接カスタム",
+  "duplicateOf": "microsoft-copilot-harness-foundry",
+  "duplicateReason": "珍しい固有名詞が一致（microsoftfoundry / 0.23）"
 }
