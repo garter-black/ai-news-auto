@@ -1,8 +1,8 @@
 {
-  "candidates": 6,
-  "consecutive_zero": 0,
-  "last_zero_at": "2026-11-03T19:55:16+00:00",
-  "reason": "",
+  "candidates": 1,
+  "consecutive_zero": 1,
+  "last_zero_at": "2026-11-03T21:43:08+00:00",
+  "reason": "品質ゲート不合格: 「表ではClaude Mythos 5、Claude Opus 4.7、Claude Sonnet 4.6に「*」が付いています」→ 表の注記「*」は抽出上 Mythos 5、Opus 4.7、Sonnet 4.6の「✅*」に付くが、Sonnet 4.6は「✅*†」とあり、Bedrock注記の対象を3モデルすべてと断定",
   "recovered_at": "2026-11-03T20:23:12+00:00",
   "status": "ok"
 }
