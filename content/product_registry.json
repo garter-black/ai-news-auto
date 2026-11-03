@@ -1125,6 +1125,7 @@
     "DX",
     "ElevenLabs",
     "Enterprise",
+    "EU AI法",
     "Firebase",
     "GA",
     "Glanceboard",
@@ -1211,7 +1212,7 @@
     "自律型AI",
     "音声AI"
   ],
-  "updatedAt": "2026-11-03T21:43:10+00:00",
+  "updatedAt": "2026-11-03T21:57:26+00:00",
   "failed": {
     "gpt-5-6-sol": {
       "at": "2026-10-27T11:05:30+00:00",
