@@ -1054,27 +1054,41 @@ def shorten_speech(data: dict, limit: int = SPEECH_TOTAL_MAX, floor: int = 200, 
 GENERIC_TERMS = {"ドル", "時間", "毎週", "毎月", "月額", "プラン", "場合", "以上", "以下", "可能", "必要", "利用", "提供", "公開", "発表", "対応"}
 
 
+RUN_RE = re.compile(r"[A-Za-z0-9ァ-ヴー一-龥々]+")
+
+
+def _phrases(text: str) -> list[str]:
+    """語の続き（かなを含まないひと続き）と、「の」でつながった2つ（学習の復旧）"""
+    runs = list(RUN_RE.finditer(text))
+    out = [m.group(0) for m in runs]
+    out += [f"{x.group(0)}の{y.group(0)}" for x, y in zip(runs, runs[1:]) if text[x.end() : y.start()] == "の"]
+    return out
+
+
 def keyword_candidates(beat: dict, article: dict, others: list[str] | None = None) -> list[str]:
     """証拠の文（英語なら訳）にある言葉のうち、記事にも書かれているもの（キーワードの付け替え候補。言葉は作らない）。
-    元のキーワードと文字が重なる語 → ほかの場面のキーワードと重ならない語 → 読み上げにある語 → 長い語 の順"""
+    候補は語（GPU・故障）と、語の続き（GPU故障・学習の復旧。中の語がどれも記事にあるときだけ）。
+    元のキーワードと文字が重なる → ほかの場面のキーワードと重ならない → 読み上げにある → 英字だけでない → 6字に近い（短すぎず長すぎず）の順"""
     tgt, ja = beat.get("target", ""), (beat.get("ja") or "").strip()
-    src = ja if is_english(tgt) and ja else tgt
+    src = gate.norm(ja if is_english(tgt) and ja else tgt)
     mat = gate.norm(gate.material_text(article)).lower()
     old = beat.get("keyword", "")
     speech = beat.get("speech", "")
+    found = [t.strip(".-+") for t in gate._TERM.findall(src)] + _phrases(src)
     seen, out = set(), []
-    for t in gate._TERM.findall(gate.norm(src)):
-        t = t.strip(".-+")
-        if t in seen or t in gate.LATIN_OK or t in GENERIC_TERMS or not (2 <= len(t) <= 10):
+    for t in found:
+        if t in seen or t in gate.LATIN_OK or t in GENERIC_TERMS or not (2 <= len(t) <= 10) or re.fullmatch(r"[\d.]+", t):
             continue
         seen.add(t)
-        if t.lower() not in mat:
+        terms = [x.strip(".-+") for x in gate._TERM.findall(t)]
+        if not terms or not all(x.lower() in mat for x in terms):
             continue
         if not gate.key_fact_ok(t, beat.get("sub", ""), tgt, ja):
             continue
         overlap = any(t[k : k + 2] in old for k in range(len(t) - 1)) or t.lower() in old.lower()
-        dup = any(t.lower() in o.lower() for o in others or [])
-        out.append(((0 if overlap else 1, 1 if dup else 0, 0 if gate._term_in(t, speech) else 1, -len(t)), t))
+        dup = any(t.lower() in o.lower() or o.lower() in t.lower() for o in others or [] if o)
+        latin = bool(re.fullmatch(r"[A-Za-z0-9 .\-+]+", t))  # 英字だけ（製品名・社名）は画面の大きな言葉として弱いので後ろへ
+        out.append(((0 if overlap else 1, 1 if dup else 0, 0 if any(gate._term_in(x, speech) for x in terms) else 1, 1 if latin else 0, abs(len(t) - 6), -len(t)), t))
     return [t for _, t in sorted(out)]
 
 

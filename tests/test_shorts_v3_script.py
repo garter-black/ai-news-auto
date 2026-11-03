@@ -240,6 +240,12 @@ class ScriptSelfCorrectTest(unittest.TestCase):
         for c in cands:
             self.assertIn(c.lower(), mat)
         self.assertNotIn("魔法語", cands)
+        self.assertIn("数千台のGPU", cands)  # 語の続き（中の語はどれも記事にある）
+        self.assertNotRegex(cands[0], r"^[A-Za-z0-9 .\-+]+$")  # 英字だけの語（社名・製品名）は後ろ
+        # ほかの場面のキーワードと同じ言葉は後ろへ
+        b2 = dict(b, keyword="人の代わりに", speech="", ja="数千台のGPUでは、復旧が追いつきません。")
+        self.assertEqual(v3.keyword_candidates(b2, ARTICLE)[0], "数千台のGPU")
+        self.assertEqual(v3.keyword_candidates(b2, ARTICLE, ["数千台のGPU"])[0], "復旧")
 
     # ---- LLM の書き直し（偽物） -------------------------------------------- #
     def test_deterministic_fix_avoids_second_llm_call(self):
