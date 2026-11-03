@@ -45,4 +45,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add state
           git commit -m "chore(threads): 臨時投稿を記録"
-          for i in 1 2 3; do git pull --rebase --autostash origin main && git push && exit 0; sleep 5; done
+          python3 scripts/git_safe_push.py

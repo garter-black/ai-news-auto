@@ -89,12 +89,10 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add content/articles
           git commit -m "fix(images): 読めない画像・外部の直リンクを直す（自動の見張り）"
-          for i in 1 2 3 4 5; do
-            git pull --rebase --autostash origin main && git push && break
-            echo "push に失敗しました。リトライ $i/5"
-            sleep 5
-            if [ "$i" = 5 ]; then echo "::error::push に失敗しました"; exit 1; fi
-          done
+          # 記事づくりの回（auto_run）が走っている間は待ってから push（同じ記事を同時に直さない）。ぶつかっても項目ごとにマージする
+          if ! python3 scripts/git_safe_push.py --wait-idle auto_run.yml --wait-max 900; then
+            echo "::error::push に失敗しました"; exit 1
+          fi
           # GITHUB_TOKEN の push ではデプロイが起動しないので明示的に呼ぶ
           gh workflow run deploy_cloudflare.yml --ref main
 

@@ -20,6 +20,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 HEALTH_PATH = ROOT / "state" / "pipeline_health.json"
+ARTICLES_DIR = ROOT / "content" / "articles"
 STALL_RUNS = 2  # この回数続けて 0 本なら「止まっている」
 LABEL = "pipeline-stalled"
 
@@ -44,6 +45,7 @@ def record(created: int, candidates: int, reason: str = "", now: datetime | None
     data = dict(old)
     if created > 0:
         data.update(status="ok", consecutive_zero=0, reason="")
+        data.pop("recovered_by", None)
         if old.get("status") != "ok" or old.get("consecutive_zero"):
             data["recovered_at"] = now.isoformat(timespec="seconds")
     elif candidates > 0:
@@ -62,12 +64,56 @@ def record(created: int, candidates: int, reason: str = "", now: datetime | None
     return data
 
 
+def _parse_time(value) -> datetime | None:
+    try:
+        moment = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return None
+    return moment if moment.tzinfo else moment.replace(tzinfo=timezone.utc)
+
+
+def newest_article_after(since: str, articles_dir: Path | None = None) -> tuple[str, str] | None:
+    """since より後に作られた記事（generatedAt）があれば、いちばん新しいものの (slug, 時刻) を返す。
+    速報レーン・動画の記事・手で直した回など、通常の回の record() を通らない記事も「記事ができた」に数えるため"""
+    start = _parse_time(since)
+    if not start:
+        return None
+    newest: tuple[datetime, str] | None = None
+    for path in (articles_dir or ARTICLES_DIR).glob("*.json"):
+        try:
+            data = json.loads(path.read_text("utf-8"))
+        except Exception:  # noqa: BLE001
+            continue
+        if not isinstance(data, dict) or data.get("duplicateOf"):
+            continue
+        made = _parse_time(data.get("generatedAt"))
+        if made and made > start and (newest is None or made > newest[0]):
+            newest = (made, str(data.get("slug") or path.stem))
+    return (newest[1], newest[0].isoformat(timespec="seconds")) if newest else None
+
+
+def recover_from_articles(articles_dir: Path | None = None) -> dict:
+    """止まっている印のあとに記事ができていれば、直ったことにする（issue は alert() が閉じる）"""
+    data = load()
+    if data.get("status") != "stalled":
+        return data
+    found = newest_article_after(data.get("last_zero_at") or data.get("stalled_since") or "", articles_dir)
+    if not found:
+        return data
+    slug, made = found
+    data.update(status="ok", consecutive_zero=0, reason="", recovered_at=made, recovered_by=slug)
+    data.pop("stalled_since", None)
+    save(data)
+    print(f"[health] 止まった印のあとに記事ができていました（{slug} {made}）。直ったことにします")
+    return data
+
+
 def _gh(*args: str) -> str:
     return subprocess.run(["gh", *args], check=True, capture_output=True, text=True).stdout.strip()
 
 
 def alert() -> int:
-    data = load()
+    data = recover_from_articles()
     if data.get("status") == "stalled" and not data.get("issue"):
         body = (
             f"候補があるのに、通常の記事づくりの回が {data.get('consecutive_zero')} 回続けて 0 本でした。\n\n"

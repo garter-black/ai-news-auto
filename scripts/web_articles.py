@@ -2498,6 +2498,12 @@ def main() -> int:
                 log(f"[health] 止まっています: 0本の回が {health.get('consecutive_zero')} 回続いた / {health.get('reason')}")
         except Exception as error:  # noqa: BLE001 - 見張りの失敗で記事づくりは止めない
             log(f"[health] 記録に失敗: {str(error)[:100]}")
+    elif total_created() + updated_count[0] > 0:
+        # 速報レーン・記事を指定した回でも、記事ができたら「止まっている」の印は外す（0本の回は数えない）
+        try:
+            pipeline_health.record(total_created() + updated_count[0], 0)
+        except Exception as error:  # noqa: BLE001
+            log(f"[health] 記録に失敗: {str(error)[:100]}")
 
     log(
         f"\n[done] 新規記事 {total_created()} 本（大きなニュース {created['major']} / AI {created['ai']} / 幅広い話題 {created['broad']}"

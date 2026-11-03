@@ -45,18 +45,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore(review): 編集部の確認を記事に反映 (${{ steps.sync.outputs.changed }}本)"
-          for i in 1 2 3 4 5; do
-            if git pull --rebase origin main && git push origin HEAD:main; then
-              # GITHUB_TOKEN の push ではデプロイが動かないので呼ぶ（デプロイは SNS に投稿しない）
-              gh workflow run deploy_cloudflare.yml --ref main
-              exit 0
-            fi
-            if [ -n "$(git diff --name-only --diff-filter=U)" ]; then
-              # 記事が同時に書き換わった: 捨てて次の回にやり直す（記録は KV に残っている）
-              git rebase --abort || true
-              echo "::warning::記事の更新と重なったので次の回に反映します"
-              exit 0
-            fi
-            sleep 7
-          done
-          exit 1
+          # 記事づくりの回（auto_run）が走っている間は待ってから push。記事が同時に書き換わっていても項目ごとにマージする
+          if python3 scripts/git_safe_push.py --wait-idle auto_run.yml --wait-max 900; then
+            # GITHUB_TOKEN の push ではデプロイが動かないので呼ぶ（デプロイは SNS に投稿しない）
+            gh workflow run deploy_cloudflare.yml --ref main
+            exit 0
+          fi
+          # 載せられなかった: 次の回にやり直す（記録は KV に残っている）
+          echo "::warning::記事の更新と重なったので次の回に反映します"
+          exit 0

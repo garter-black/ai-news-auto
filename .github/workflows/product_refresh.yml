@@ -58,15 +58,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore(products): 商品候補と確認済み価格を更新"
-          for i in 1 2 3; do
-            git pull --rebase origin main && git push origin HEAD:main && {
-              echo "changed=true" >> "$GITHUB_OUTPUT"
-              exit 0
-            }
-            # 商品ファイル自体の競合を勝手に上書きしない。
-            if [ -n "$(git diff --name-only --diff-filter=U)" ]; then exit 1; fi
-            sleep 5
-          done
+          # 商品ファイル自体の競合（同じ項目を別の値に）を勝手に上書きしない（--strict）。別の項目の変更はマージする
+          if python3 scripts/git_safe_push.py --strict; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           exit 1
       - name: Deploy validated catalog
         if: ${{ !cancelled() && steps.commit.outputs.changed == 'true' }}

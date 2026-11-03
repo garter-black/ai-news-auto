@@ -69,12 +69,10 @@ jobs:
           fi
           git add content state/last_deploy state/deploy_pending
           git commit -m "$MSG"
-          for i in 1 2 3; do
-            if git pull --rebase --autostash origin main && git push; then
-              # Cloudflare へデプロイ（保留の回は次の auto_run がまとめて出す）
-              case "$MSG" in *"[no-deploy]"*) ;; *) GH_TOKEN=${{ github.token }} gh workflow run deploy_cloudflare.yml --ref main || true ;; esac
-              exit 0
-            fi
-            sleep 5
-          done
+          # ぶつかっても記事を落とさずに載せ直して push する（scripts/git_safe_push.py）
+          if python3 scripts/git_safe_push.py; then
+            # Cloudflare へデプロイ（保留の回は次の auto_run がまとめて出す）
+            case "$MSG" in *"[no-deploy]"*) ;; *) GH_TOKEN=${{ github.token }} gh workflow run deploy_cloudflare.yml --ref main || true ;; esac
+            exit 0
+          fi
           exit 1

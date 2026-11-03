@@ -66,12 +66,8 @@ jobs:
           else
             git commit -m "chore(pricing): 料金の確認日と為替を更新 [no-deploy]"
           fi
-          for i in 1 2 3 4; do
-            git pull --rebase origin main && git push origin HEAD:main && exit 0
-            if [ -n "$(git diff --name-only --diff-filter=U)" ]; then exit 1; fi
-            sleep 7
-          done
-          exit 1
+          # 同じ項目を別の処理が違う値に変えていたら上書きしない（--strict。未解決のファイルは残さない）
+          python3 scripts/git_safe_push.py --strict
       - name: Fail when a page could not be read for days
         if: ${{ steps.watch.outputs.code != '0' }}
         run: |
