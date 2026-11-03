@@ -9553,6 +9553,14 @@
       "skipped": true,
       "url": "https://www.mhlw.go.jp/stf/newpage_76737.html"
     },
+    "a5f075079c632990": {
+      "at": "2026-11-03T00:59:41.540545+00:00",
+      "model": "gemini-3.5-flash",
+      "score": 100,
+      "section": "public",
+      "slug": "soumu-missile-evacuation-drills-2026",
+      "url": "https://www.soumu.go.jp/menu_news/s-news/01shoubo01_02001285.html"
+    },
     "a5f74e121560fc9a": {
       "at": "2026-10-27T00:02:14.132460+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12941,50 +12949,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T23:11:36.078753+00:00",
-      "attempt": 2,
-      "id": "e498ae4e987b20aa7bd0f622fb7eee33ad6bcdb3",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1527字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 173.5,
-        "avg_sentence": 69.4,
-        "long_share": 0.5,
-        "max_paragraph": 208,
-        "paragraphs": 8,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "trends",
-      "title": "linux 脆弱 性 9.8"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T23:11:46.894766+00:00",
-      "attempt": 1,
-      "id": "48d8034c8d85b180e8c17924961b6ac947a90f08",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1422字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）"
-      ],
-      "readability": {
-        "avg_paragraph": 116.4,
-        "avg_sentence": 58.2,
-        "long_share": 0.5,
-        "max_paragraph": 173,
-        "paragraphs": 8,
-        "sentences": 16
-      },
-      "score": null,
-      "source": "trends",
-      "title": "paypay 自治体 キャンペーン 2026"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T23:11:55.503789+00:00",
@@ -19353,6 +19317,48 @@
       "score": 100,
       "source": "soumu",
       "title": "革新的情報通信技術（Beyond 5G（6G））基金事業 社会実装・海外展開志向型戦略的プログラム【事業戦略支援型】 に係る予備調査（第6回）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T00:59:37.235400+00:00",
+      "attempt": 1,
+      "id": "a5f075079c632990",
+      "kind": "broad",
+      "model": "gemini-3.5-flash",
+      "problems": [
+        "文が長い（1文の平均 48.2字・60字超の文が 14% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 112.5,
+        "avg_sentence": 48.2,
+        "long_share": 0.143,
+        "max_paragraph": 210,
+        "paragraphs": 12,
+        "sentences": 28
+      },
+      "score": 100,
+      "source": "soumu",
+      "title": "弾道ミサイルを想定した住民避難訓練の実施"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T00:59:41.538097+00:00",
+      "attempt": 0,
+      "id": "a5f075079c632990",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 63.2,
+        "avg_sentence": 33.1,
+        "long_share": 0.048,
+        "max_paragraph": 99,
+        "paragraphs": 22,
+        "sentences": 42
+      },
+      "score": 100,
+      "source": "soumu",
+      "title": "弾道ミサイルを想定した住民避難訓練の実施"
     }
   ],
   "short_text_retry": {
