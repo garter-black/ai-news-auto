@@ -6,169 +6,107 @@
   "companyName": "Google",
   "category": "ロボット",
   "overview": {
-    "text": "Gemini Robotics 2は、Google DeepMindが開発したロボット制御用のAIモデル群です。物理世界でロボットを完全自律動作させるシステムとして、2026年7月30日に発表されました。視覚認識と運動制御を統合し、全身の協調動作や複数ロボットの連携を実現します。",
+    "text": "Gemini Robotics 2は、物理世界で自律的に動作する身体性AIの統合システムです。Google DeepMindが開発し、2026年7月30日から8月7日にかけて発表されました。",
     "sources": [
-      "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
-      "gemini-robotics-2-comprehensive-summary-matome"
+      "gemini-robotics-2-comprehensive-summary-matome",
+      "google-deepmind-gemini-robotics-2-apollo",
+      "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
     ]
   },
   "facts": [
     {
       "label": "料金",
-      "value": "API従量課金（一部無料枠あり）",
+      "value": "未発表",
       "sources": [
+        "google-deepmind-gemini-robotics-2-apollo",
         "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
       "label": "提供開始",
-      "value": "ERモデルはGoogle AI Studioで公開中",
+      "value": "研究・デモ段階",
       "sources": [
+        "google-deepmind-gemini-robotics-2-apollo",
         "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
       "label": "日本での提供",
-      "value": "ERモデルはGoogle AI Studioから利用可能",
+      "value": "日本では未提供",
       "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
-      ]
-    },
-    {
-      "label": "使える場所",
-      "value": "Google AI Studio、Vertex AI",
-      "sources": [
+        "google-deepmind-gemini-robotics-2-apollo",
         "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
       "label": "向いている人",
-      "value": "ロボット開発者や研究者",
+      "value": "ロボット開発者",
       "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
         "google-deepmind-gemini-robotics-2-apollo"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "20自由度を超える多指ハンドを制御し、薄いゴミ袋の紐結びや電球の取り外しといった精密な操作を行えます。",
+      "text": "22関節の多指ハンドを駆使し、ゴミ袋結びやジッパー袋の開閉といった繊細な柔軟体操作を実現します。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
-      ]
-    },
-    {
-      "text": "全身制御により、膝を曲げて重心のバランスを保ちながら、床に置かれた物を自律回収できます。",
-      "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
         "gemini-robotics-2-comprehensive-summary-matome"
       ]
     },
     {
-      "text": "複数のロボットが自然言語の音声指示を受け、自律的に役割を分担して連携作業を遂行できます。",
+      "text": "全身協調制御により、二足歩行ロボットの動的なバランス保持と複雑な作業を両立します。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
-        "google-deepmind-gemini-robotics-2-apollo"
+        "gemini-robotics-2-comprehensive-summary-matome"
       ]
     },
     {
-      "text": "障害物による妨害や対象物の位置のずれに対し、視覚フィードバックを用いてリアルタイムに動作を補正します。",
+      "text": "分散型ニューラルネットワークを搭載した複数ロボットが、自然言語の対話を通じて自律的に役割を分担します。",
       "sources": [
+        "gemini-robotics-2-comprehensive-summary-matome"
+      ]
+    },
+    {
+      "text": "人間の自然言語による音声指示を正確に解釈し、ロボット同士が連携して作業を遂行します。",
+      "sources": [
+        "google-deepmind-gemini-robotics-2-apollo",
         "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     }
   ],
-  "pricing": [
-    {
-      "text": "Embodied Reasoningモデルは従量課金制の標準API料金で提供されます。一部の無料枠も用意されています。",
-      "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
-      ]
-    },
-    {
-      "text": "ロボットの関節等を制御するActionモデルの料金は明らかにされていません。",
-      "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
-      ]
-    }
-  ],
+  "pricing": [],
   "japan": [
     {
-      "text": "Embodied ReasoningモデルはGoogle AI Studio経由で日本からも利用できます。日本語による指示や空間問合せにも対応しています。",
+      "text": "発表の時点では、日本での提供について案内はありません。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
-      ]
-    },
-    {
-      "text": "実機に適用するActionモデルは「Trusted Tester Program」への事前申請が必要です。",
-      "sources": [
+        "google-deepmind-gemini-robotics-2-apollo",
         "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     }
   ],
-  "howto": [
-    {
-      "text": "Googleアカウントを用意し、Google AI Studioのコンソールにログインします。",
-      "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
-      ]
-    },
-    {
-      "text": "APIキーを発行し、モデルエンドポイントを指定して画像やプロンプトを送信します。",
-      "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
-      ]
-    }
-  ],
-  "differences": [
-    {
-      "text": "従来のGemini Robotics 1.5と比べて、時系列動画の進行状況を正確に認識できます。",
-      "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
-      ]
-    },
-    {
-      "text": "前世代モデルが主に上半身の制御だったのに対し、脚部を含めた全身の協調制御に対応しました。",
-      "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
-      ]
-    }
-  ],
+  "howto": [],
+  "differences": [],
   "faq": [
     {
-      "q": "無料で試せますか？",
-      "a": "Google AI Studioのモデルには一部無料枠が用意されています。",
+      "q": "いつから使える？",
+      "a": "発表の時点では研究・デモ段階であり、一般への提供時期は未発表です。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
-      ]
-    },
-    {
-      "q": "音声指示で操作できますか？",
-      "a": "自然言語の音声指示を解釈し、自律的に作業を構築して実行できます。",
-      "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
         "google-deepmind-gemini-robotics-2-apollo"
       ]
     },
     {
-      "q": "人間が遠隔操作していますか？",
-      "a": "遠隔操作は行われず、ロボット自身が状況を認識して完全自律で動作します。",
-      "sources": [
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
-      ]
-    },
-    {
-      "q": "どのようなロボットに対応していますか？",
-      "a": "人型ロボットのApolloや多関節ハンド、作業用アームなど多様な機種に対応します。",
+      "q": "対応するロボットは？",
+      "a": "人型のApolloやApollo 2などで動作します。",
       "sources": [
         "gemini-robotics-2-comprehensive-summary-matome",
-        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
+        "google-deepmind-gemini-robotics-2-apollo"
       ]
     },
     {
-      "q": "どのような安全機能がありますか？",
-      "a": "指示が曖昧な際に確認質問を行う機能や、オープンソース評価基盤ASIMOV Agenticを備えます。",
+      "q": "複数のロボットで連携できる？",
+      "a": "自然言語を介して複数のロボットが自律的に役割を分担し、協調動作を行います。",
       "sources": [
+        "gemini-robotics-2-comprehensive-summary-matome",
+        "google-deepmind-gemini-robotics-2-apollo",
         "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     }
@@ -177,12 +115,17 @@
     {
       "date": "2026-07-30",
       "slug": "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
-      "event": "Gemini Robotics 2を発表"
+      "event": "複数ロボットが自律連携するGemini Robotics 2を公開"
+    },
+    {
+      "date": "2026-08-07",
+      "slug": "gemini-robotics-2-comprehensive-summary-matome",
+      "event": "Googleのロボット用AI「Gemini Robotics 2」が実現する高度な動作"
     },
     {
       "date": "2026-08-07",
       "slug": "google-deepmind-gemini-robotics-2-apollo",
-      "event": "Apollo 2による最新デモを公開"
+      "event": "複数ロボットが言語で連携するGemini Robotics 2の最新デモを公開"
     }
   ],
   "related": [
@@ -201,9 +144,9 @@
     "gemini-robotics-2-comprehensive-summary-matome",
     "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
   ],
-  "signature": "2050f6a22b72934b",
-  "primarySignature": "2050f6a22b72934b",
-  "model": "gemini-3.5-flash",
+  "signature": "d4225a5465783d28",
+  "primarySignature": "d4225a5465783d28",
+  "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:41:38+00:00",
-  "updatedAt": "2026-10-27T10:49:43+00:00"
+  "updatedAt": "2026-11-03T09:41:43+00:00"
 }

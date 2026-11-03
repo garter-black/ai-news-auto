@@ -6,87 +6,80 @@
   "companyName": "OpenAI",
   "category": "AIモデル",
   "overview": {
-    "text": "GPT-6は、OpenAIが開発した新型の大規模言語モデルです。2026年9月から10月にかけて発表され、ChatGPTやAPIで提供されています。",
+    "text": "GPT-6は、OpenAIが開発した次世代の大規模言語モデルおよびAIエージェントの総称です。PC画面の自律操作や高度な論理推論機能を備え、2026年9月から10月にかけて順次発表されました。",
     "sources": [
-      "openai-announces-gpt6-with-intelligent-ui"
+      "openai-announces-gpt-6-astra",
+      "openai-announces-gpt6-with-intelligent-ui",
+      "openai-gpt-6-1-terra-announcement"
     ]
   },
   "facts": [
     {
-      "label": "料金",
-      "value": "入力$1/1M〜（一部モデル）",
-      "sources": [
-        "openai-gpt-6-1-terra-announcement"
-      ]
-    },
-    {
       "label": "提供開始",
       "value": "2026年9月〜10月",
       "sources": [
-        "openai-announces-gpt6-with-intelligent-ui"
+        "openai-announces-gpt-6-astra",
+        "openai-announces-gpt6-with-intelligent-ui",
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
       "label": "日本での提供",
       "value": "利用できる",
       "sources": [
-        "openai-gpt-6-1-terra-announcement",
-        "openai-announces-gpt6-with-intelligent-ui"
-      ]
-    },
-    {
-      "label": "使える場所",
-      "value": "ChatGPT、API",
-      "sources": [
-        "openai-gpt-6-1-terra-announcement",
-        "openai-announces-gpt6-with-intelligent-ui"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
       "label": "向いている人",
-      "value": "開発者、実務担当者、一般ユーザー",
+      "value": "開発者・実務担当者・一般ユーザー",
       "sources": [
-        "openai-gpt-6-1-terra-announcement",
-        "openai-announces-gpt6-with-intelligent-ui"
+        "openai-announces-gpt6-with-intelligent-ui",
+        "openai-gpt-6-1-terra-announcement"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "回答画面をインタラクティブなミニアプリに変える「Intelligent UI」を生成できます。",
+      "text": "パソコンの画面を見てキーボードやマウスを操作する機能を持っています。",
+      "sources": [
+        "openai-gpt-6-1-terra-announcement"
+      ]
+    },
+    {
+      "text": "回答画面をインタラクティブなミニアプリに変換するIntelligent UIを導入しています。",
       "sources": [
         "openai-announces-gpt6-with-intelligent-ui"
       ]
     },
     {
-      "text": "パソコン画面を見てキーボードやマウスを操作する「Computer Use」機能に対応しています。",
-      "sources": [
-        "openai-gpt-6-1-terra-announcement"
-      ]
-    },
-    {
-      "text": "音声対話からカレンダーの空き時間検索やメール送信などの自律タスクを実行できます。",
+      "text": "音声指示だけで決済機能付きのWebサイトなどを構築できます。",
       "sources": [
         "openai-chatgpt-voice-update-gpt6-astra"
       ]
     },
     {
-      "text": "15万行の大規模コード移行や、自然言語からのプレゼン用スライド自動生成が可能です。",
+      "text": "15万行の大規模コード移行やバグ特定を自律的に実行できます。",
       "sources": [
-        "openai-chatgpt-admin-console-insights-outcomes",
-        "openai-gpt-6-astra-first-impressions-n-dqdvmwoas"
+        "openai-gpt-6-astra-comprehensive-guide-matome"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "API価格は前世代比で50%削減され、標準モデルなどが提供されています。",
+      "text": "標準API価格は、入力トークンが100万トークンあたり1.00ドルです。",
       "sources": [
         "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
-      "text": "有料プラン向けに即日提供され、無料プラン向けにも順次ロールアウトされます。",
+      "text": "出力トークンは100万トークンあたり5.00ドルで利用できます。",
+      "sources": [
+        "openai-gpt-6-1-terra-announcement"
+      ]
+    },
+    {
+      "text": "無料プランのユーザーにも順次展開されます。",
       "sources": [
         "openai-announces-gpt6-with-intelligent-ui"
       ]
@@ -94,31 +87,35 @@
   ],
   "japan": [
     {
-      "text": "発表の時点では、グローバルで順次一般提供が開始されており日本でも利用できます。",
+      "text": "日本からのアクセス制限はなく、日本語での入出力に対応しています。",
       "sources": [
-        "openai-announces-gpt6-with-intelligent-ui",
-        "openai-chatgpt-voice-update-gpt6-astra"
+        "openai-gpt-6-1-terra-announcement"
       ]
     }
   ],
   "howto": [
     {
-      "text": "ChatGPTの有料プランや無料プラン、およびAPIを通じて利用できます。",
-      "sources": [
-        "openai-gpt-6-1-terra-announcement",
-        "openai-announces-gpt6-with-intelligent-ui"
-      ]
-    }
-  ],
-  "differences": [
-    {
-      "text": "前世代と比較してAPI価格が50%値下げされ、処理速度が3倍以上に向上しました。",
+      "text": "ChatGPTのWEBブラウザ版やアプリ版のモデル選択メニューから切り替えて使用します。",
       "sources": [
         "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
-      "text": "テキスト中心のチャットから、インタラクティブなUIをその場で生成する仕組みに変わりました。",
+      "text": "API経由では、モデル識別子を指定してリクエストを送信します。",
+      "sources": [
+        "openai-gpt-6-1-terra-announcement"
+      ]
+    }
+  ],
+  "differences": [
+    {
+      "text": "標準API価格を前世代比で50%削減しています。",
+      "sources": [
+        "openai-gpt-6-1-terra-announcement"
+      ]
+    },
+    {
+      "text": "従来のテキスト中心のチャット形式から、動的なUIを生成する機能へと進化しました。",
       "sources": [
         "openai-announces-gpt6-with-intelligent-ui"
       ]
@@ -127,34 +124,28 @@
   "faq": [
     {
       "q": "無料で使える？",
-      "a": "無料プラン向けにも順次ロールアウトされるため利用可能です。",
+      "a": "無料プランのユーザー向けにも順次ロールアウトされます。",
       "sources": [
         "openai-announces-gpt6-with-intelligent-ui"
       ]
     },
     {
-      "q": "いつから使える？",
-      "a": "有料プラン向けには2026年10月7日から即日提供が開始されています。",
+      "q": "APIで利用できる？",
+      "a": "モデル識別子を指定してAPI経由で利用可能です。",
       "sources": [
-        "openai-announces-gpt6-with-intelligent-ui"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
-      "q": "どのような機能がある？",
-      "a": "動的なUI生成やパソコンの自動操作、音声による外部ツール連携などが可能です。",
+      "q": "どんな機能がある？",
+      "a": "パソコン画面の自律操作や、インタラクティブなUIの生成機能などが使えます。",
       "sources": [
-        "openai-gpt-6-1-terra-announcement",
         "openai-announces-gpt6-with-intelligent-ui",
-        "openai-chatgpt-voice-update-gpt6-astra"
+        "openai-gpt-6-1-terra-announcement"
       ]
     }
   ],
   "timeline": [
-    {
-      "date": "2026-09-17",
-      "slug": "openai-chatgpt-admin-console-insights-outcomes",
-      "event": "管理者向け機能とGPT-6スライド生成を発表"
-    },
     {
       "date": "2026-09-24",
       "slug": "openai-chatgpt-voice-update-gpt6-astra",
@@ -187,9 +178,9 @@
     "openai-announces-gpt6-with-intelligent-ui",
     "openai-chatgpt-admin-console-insights-outcomes"
   ],
-  "signature": "991bb99b92475936",
+  "signature": "88e3d0d7481c6be2",
   "primarySignature": "8f7f6bd8825b938e",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:45:46+00:00",
-  "updatedAt": "2026-10-27T11:03:59+00:00"
+  "updatedAt": "2026-11-03T09:41:36+00:00"
 }
