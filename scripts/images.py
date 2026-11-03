@@ -2252,6 +2252,43 @@ def use_official(path: Path, article: dict, ctx: dict, best: dict, official: dic
     return "official"
 
 
+def settle_hotlink(path: Path, article: dict, ctx: dict) -> str | None:
+    """選び終えても外部サイトの画像を直リンクしたまま（AI の上限・素材なし・失敗など）の記事を残さない。
+
+    読者のブラウザに他サイトの画像を直接読ませると、参照元チェック・削除・URL 変更で壊れた画像アイコンになる。
+    公式発表の画像は自前の KV（/img/）に保存して配信し、それ以外（ほかのニュースサイトの画像など）や
+    保存できない画像は外して写真なし（独自カバー /cover/<slug>）にする。imageCredit は付けないので、次の回にまた選び直す。
+    戻り値: "cached-official" / "unhotlinked" / None（直リンクではない）
+    """
+    thumb = article.get("thumbnail") or ""
+    if not thumb or is_ours(thumb) or is_youtube(thumb) or not re.match(r"^https?://", thumb):
+        return None
+    slug = article.get("slug") or path.stem
+    official = official_source(article)
+    if official is not None and not url_problem(thumb, ctx["repeats"].get(thumb, 0)):
+        try:
+            data, ctype, _ = http_get(thumb, referer=article.get("sourceUrl") or "", timeout=20)
+            if ctype and not ctype.lower().startswith("image/"):
+                raise ValueError(f"画像ではない（{ctype[:40]}）")
+            image = open_image(data)
+            problem = image_problem(image, MIN_SOURCE_WIDTH)
+            if problem:
+                raise ValueError(problem)
+            best = {"url": thumb, "image": image, "kind": "photo"}
+            if use_official(path, article, ctx, best, official) == "official":
+                log(f"   [img] 直リンクだった公式の画像を自前に保存: {article['thumbnail']}")
+                return "cached-official"
+        except Exception as error:  # noqa: BLE001
+            log(f"   [img] 直リンクの画像を保存できない: {str(error)[:120]}")
+    log(f"   [img] 外部の画像の直リンクを外す（写真なしのカバーにする）: {thumb[:100]}")
+    article["thumbnail"] = ""
+    article.pop("imageCredit", None)
+    article.pop("imageFocus", None)
+    if not ctx["dry_run"]:
+        save(path, article)
+    return "unhotlinked"
+
+
 def load_env_local() -> None:
     """手元実行用: .env.local の鍵を読む（git worktree の中なら親のリポジトリのものも探す）"""
     for base in [ROOT, *ROOT.parents]:
@@ -2423,6 +2460,14 @@ def main() -> int:
             outcome = "error"
         tally[outcome] += 1
         slug = article.get("slug") or path.stem
+        # 外部サイトの画像の直リンクを残さない（公式は自前に保存、それ以外は外す）
+        try:
+            settled = settle_hotlink(path, article, ctx)
+        except Exception as error:  # noqa: BLE001
+            log(f"   [img] 直リンクの後始末に失敗: {str(error)[:160]}")
+            settled = None
+        if settled:
+            tally[settled] += 1
         before = ctx["previous_credit"].get(slug)
         if not article.get("imageCredit") and before and article.get("thumbnail") == ctx["previous_thumb"].get(slug):
             # 選び直せなかった（AI の上限・素材なし・失敗）ときは前の画像の出典を戻す（消したまま保存すると、AI の画像に注記が出なくなる）

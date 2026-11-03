@@ -56,7 +56,7 @@
   "videoTitle": "11月は「ヤミ金融被害防止強化月間」です 金融トラブルにご注意ください",
   "publishedAt": "2026-11-01T15:00:00+00:00",
   "generatedAt": "2026-11-03T01:27:33.210272+00:00",
-  "thumbnail": "https://www.metro.tokyo.lg.jp/documents/45925314/275764568/20261102_06_01.png/19431e16-91e0-410d-a5a5-3c7397e69c96?version=1.0&t=1793582507992&imagePreview=1",
+  "thumbnail": "",
   "model": "cloudflare:@cf/openai/gpt-oss-120b",
   "affiliates": [],
   "faq": [
@@ -88,17 +88,5 @@
   ],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-01T15:00:00+00:00",
-  "detectedAt": "2026-11-03T01:24:16+00:00",
-  "imageFocus": {
-    "x": 0.501,
-    "y": 0.5,
-    "box": [
-      0.047,
-      0.0,
-      0.956,
-      1.0
-    ],
-    "ar": 1.6807,
-    "src": "https://www.metro.tokyo.lg.jp/documents/45925314/275764568/20261102_06_01.png/19431e16-91e0-410d-a5a5-3c7397e69c96?version=1.0&t=1793582507992&imagePreview=1"
-  }
+  "detectedAt": "2026-11-03T01:24:16+00:00"
 }

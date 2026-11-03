@@ -171,14 +171,16 @@ export default function StoryRail({ bundles: built }: { bundles: RailBundle[] })
       {scrollState.overflow && <button type="button" className="sr-arrow sr-arrow-prev" aria-label="ストーリーを左に移動" aria-controls={railId} aria-disabled={!scrollState.previous} onClick={() => moveRail(-1)}><span aria-hidden>‹</span></button>}
       <div id={railId} ref={rail} className="sr" role="list" aria-label="ストーリー">
         {bundles.map((b, i) => (
-          <button key={b.key} type="button" role="listitem" className={`sr-ring ${seen[b.key] ? "seen" : ""}`} onPointerDown={prefetchDeck} onFocus={prefetchDeck} onClick={() => setOpen(i)}>
+          <button key={b.key} type="button" role="listitem" className={`sr-ring ${seen[b.key] ? "seen" : ""}`} aria-label={`${b.label}（${b.items.length}本）`} onPointerDown={prefetchDeck} onFocus={prefetchDeck} onClick={() => setOpen(i)}>
             <span className="sr-img">
-              {/* LCP（下の大きな写真）と取り合わないよう低優先度。画面外の丸は近づいてから読む */}
+              {/* LCP（下の大きな写真）と取り合わないよう低優先度。画面外の丸は近づいてから読む。
+                  読めなければ1本目の記事の独自カバーに替える（app/layout.tsx の画像の受け皿） */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={covers[i]} alt="" width={76} height={76} decoding="async" fetchPriority="low" loading={i < 5 ? undefined : "lazy"} />
+              <img src={covers[i]} alt="" width={76} height={76} decoding="async" fetchPriority="low" loading={i < 6 ? undefined : "lazy"} data-fallback={b.items[0] ? `/cover/${b.items[0].slug}` : undefined} />
+              {/* 件数は丸の右下の小さな札（スマホは文字の行を減らして横に5個近く並べる） */}
+              <span className="sr-n" data-allow-small="" aria-hidden>{b.items.length}</span>
             </span>
-            <span className="sr-label">{b.label}</span>
-            <span className="sr-n">{b.items.length}本</span>
+            <span className="sr-label" title={b.label}>{b.label}</span>
             <span className="sr-preview" title={b.items[0]?.title}>{Array.from(b.items[0]?.title ?? "").slice(0, 26).join("")}{(b.items[0]?.title.length ?? 0) > 26 ? "…" : ""}</span>
           </button>
         ))}
@@ -219,32 +221,34 @@ export default function StoryRail({ bundles: built }: { bundles: RailBundle[] })
 
 const CSS = `
 .sr-wrap{position:relative}
-.sr{display:flex;gap:12px;overflow-x:auto;padding:14px 20px 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+/* スマホは Instagram のストーリーのように小さな丸を詰めて並べる（375px で約4.6個見え、横にまだあると分かる） */
+.sr{display:flex;gap:10px;overflow-x:auto;padding:12px 16px 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-padding-inline:16px}
 .sr::-webkit-scrollbar{display:none}
-.sr-arrow{position:absolute;z-index:2;top:36px;display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--line-strong,#cbd5e1);border-radius:50%;background:var(--paper,#fff);color:var(--ink,#0b1a33);box-shadow:0 2px 10px rgba(11,26,51,.16);font-size:32px;line-height:1}
+/* 左右の矢印は PC だけ（スマホは指で横に送る） */
+.sr-arrow{display:none;position:absolute;z-index:2;top:42px;place-items:center;width:38px;height:38px;border:1px solid var(--line-strong,#cbd5e1);border-radius:50%;background:var(--paper,#fff);color:var(--ink,#0b1a33);box-shadow:0 2px 10px rgba(11,26,51,.16);font-size:32px;line-height:1}
 .sr-arrow span{display:block;transform:translateY(-2px)}
 .sr-arrow-prev{left:2px}.sr-arrow-next{right:2px}
 .sr-arrow[aria-disabled=true]{opacity:.38;cursor:default}
 .sr-arrow:focus-visible{outline:2px solid #1d4a8f;outline-offset:2px}
-/* ラベルは 13px（docs/typography.md）。6 字の「今すぐ使える」が切れない幅にする */
-.sr-ring{flex:none;display:flex;flex-direction:column;align-items:center;gap:5px;width:108px}
-.sr-img{width:64px;height:64px;border-radius:50%;padding:2.5px;background:conic-gradient(from 210deg,#2fd27f,#0a6fa0,#2fd27f);transition:transform .15s}
+/* ラベルは 13px（docs/typography.md）の1行。入りきらない分は「…」 */
+.sr-ring{flex:none;display:flex;flex-direction:column;align-items:center;gap:5px;width:68px}
+.sr-img{position:relative;width:64px;height:64px;border-radius:50%;padding:2.5px;background:conic-gradient(from 210deg,#2fd27f,#0a6fa0,#2fd27f);transition:transform .15s}
 .sr-ring.seen .sr-img{background:var(--line-strong,#cfcfc7)}
-.sr-img img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:2.5px solid var(--paper,#fff);background:var(--surface-2,#eee)}
-.sr-label{width:100%;font-size:13px;font-weight:700;line-height:1.3;text-align:center;color:var(--ink,#111);overflow-wrap:anywhere}
-.sr-n{font-family:var(--font-martian),monospace;font-size:13px;color:var(--muted,#52524d);margin-top:-4px}
-.sr-preview{width:100%;font-size:13px;line-height:1.4;text-align:center;color:var(--muted,#52524d);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere}
+.sr-img img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover;border:2.5px solid var(--paper,#fff);background:var(--surface-2,#eee)}
+.sr-n{position:absolute;right:-3px;bottom:-1px;min-width:22px;height:20px;padding:0 5px;border-radius:999px;border:2px solid var(--paper,#fff);background:var(--ink,#0b1a33);color:var(--paper,#fff);font-family:var(--font-martian),monospace;font-size:12px;font-weight:600;line-height:16px;text-align:center}
+.sr-label{width:100%;font-size:13px;font-weight:700;line-height:1.3;text-align:center;color:var(--ink,#111);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-preview{display:none}
 .sr-ring:hover .sr-img{transform:scale(1.04)}
 .sr-ring:focus-visible{outline:2px solid var(--ink,#111);outline-offset:4px;border-radius:12px}
-@media (min-width:640px){.sr{padding:18px 32px 12px}}
-/* PC は丸を少し大きくし、1列（最大12個）に均等に並べて横幅を使い切る */
+@media (min-width:640px){.sr{gap:14px;padding:16px 32px 10px}.sr-ring{width:76px}}
+/* PC は丸を少し大きくし、1本目の題名も添えて1列に均等に並べる。矢印はここから出す */
 @media (min-width:1024px){
   .sr{gap:8px}
-  .sr-arrow{top:42px}
+  .sr-arrow{display:grid}
   .sr-ring{flex:0 0 120px;min-width:120px;max-width:120px;gap:7px}
   .sr-img{width:76px;height:76px;padding:3px}
   .sr-label{font-size:14px}
-  .sr-n{font-size:13px}
+  .sr-preview{width:100%;font-size:13px;line-height:1.4;text-align:center;color:var(--muted,#52524d);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere}
 }
 
 .dk{position:fixed;inset:0;z-index:90;background:#0b0d10;color:#f4f5f7;font-family:var(--font-sans);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;overscroll-behavior:contain;touch-action:pan-y}

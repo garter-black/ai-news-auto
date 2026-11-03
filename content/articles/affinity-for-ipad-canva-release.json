@@ -71,7 +71,7 @@
   "videoTitle": "「Affinity for iPad」公開 スケッチから写真編集・ページ制作まで1つのアプリで",
   "publishedAt": "2026-11-02T22:32:17+00:00",
   "generatedAt": "2026-11-02T22:43:29.788820+00:00",
-  "thumbnail": "https://news.mynavi.jp/article/20261103-5246117/index_images/index.jpg",
+  "thumbnail": "",
   "model": "claude:sonnet",
   "affiliates": [],
   "pricingProduct": "gemini-api",
@@ -121,17 +121,5 @@
   "sourcePublishedAt": "2026-11-02T22:32:17+00:00",
   "detectedAt": "2026-11-02T22:33:24+00:00",
   "fastLane": true,
-  "speedMinutes": 15,
-  "imageFocus": {
-    "x": 0.469,
-    "y": 0.467,
-    "box": [
-      0.0,
-      0.089,
-      0.938,
-      0.845
-    ],
-    "ar": 1.4993,
-    "src": "https://news.mynavi.jp/article/20261103-5246117/index_images/index.jpg"
-  }
+  "speedMinutes": 15
 }

@@ -16,11 +16,15 @@ export function smallThumb(url: string, youtube: "hqdefault" | "mqdefault" = "hq
  * サイトの写真（/img/<名前>.jpg。scripts/images.py が Workers KV に置く）を枠の幅で選ばせる候補（srcset）。
  * 幅 400 / 640 / 800 / 1200 の WebP を KV に用意してある（無い古い写真は worker が元の JPEG を返す）。
  * スマホは 400〜800px（10〜30KB）で足り、PC の大きな枠だけ 1200px を読む（LCP 対策）
+ *
+ * 候補は src と同じホスト（https://ai-tech-express.jp/img/…）のまま出す。
+ * 以前は "/img/…" の相対パスにしていたため、本番の worker 以外（手元の next dev・プレビュー・翻訳プロキシなど）で開くと
+ * srcset だけが存在しない /img/ を指し、src は正しいのに壊れた画像アイコンになっていた（2026-11-03）
  */
 export function ownSrcSet(url: string): string | null {
   const own = OWN_IMAGE.exec(url);
   if (!own) return null;
-  const path = own[1].replace(/^https:\/\/[^/]+/, "");
+  const path = own[1];
   return `${path}.w400.webp 400w, ${path}.sm.webp 640w, ${path}.w800.webp 800w, ${path}.w1200.webp 1200w`;
 }
 

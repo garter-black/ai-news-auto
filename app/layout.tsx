@@ -101,13 +101,16 @@ export default function RootLayout({
         {adsenseClient && (
           <meta name="google-adsense-account" content={adsenseClient} />
         )}
+        {/* 壊れた画像アイコンを読者に見せない受け皿（React が動き出す前の失敗も拾う）。
+            data-fallback があればそこ（記事の独自カバー /cover/<slug>）へ、無ければ透明な画像に替えて枠の地色を見せる。
+            記事のサムネイル部品（components/Thumb.tsx、data-thumb）は自前の段階的な受け皿を持つので触らない */}
         {/* 描画前にテーマを確定させ、リロード時の白フラッシュを防ぐ。
             本文の Noto Sans JP（Google Fonts）は、内蔵の日本語書体が使えない端末（Windows など）だけ読み込む。
             Apple はヒラギノ、Android は内蔵の Noto Sans CJK（同じ字形）で足りる。
             スクリプトから足したスタイルシートは描画を止めないので、@font-face 120 個分の CSS（約 33KB）が全端末の初回表示から外れる */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var u=navigator.userAgent;if(!/Android|iPhone|iPad|Macintosh|Mac OS X/.test(u)){var h=document.head,c=document.createElement("link");c.rel="preconnect";c.href="https://fonts.gstatic.com";c.crossOrigin="";h.appendChild(c);var l=document.createElement("link");l.rel="stylesheet";l.href="${NOTO_CSS}";h.appendChild(l)}}catch(e){}try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}`,
+            __html: `try{var u=navigator.userAgent;if(!/Android|iPhone|iPad|Macintosh|Mac OS X/.test(u)){var h=document.head,c=document.createElement("link");c.rel="preconnect";c.href="https://fonts.gstatic.com";c.crossOrigin="";h.appendChild(c);var l=document.createElement("link");l.rel="stylesheet";l.href="${NOTO_CSS}";h.appendChild(l)}}catch(e){}try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}try{var B="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";document.addEventListener("error",function(e){var i=e.target;if(!i||i.tagName!=="IMG"||i.hasAttribute("data-thumb"))return;var f=i.getAttribute("data-fallback");i.removeAttribute("srcset");if(f&&!i.hasAttribute("data-fell")){i.setAttribute("data-fell","");i.src=f}else if(i.src!==B){i.src=B}},true)}catch(e){}`,
           }}
         />
       </head>

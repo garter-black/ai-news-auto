@@ -142,6 +142,7 @@ function TimelineRow({ article }: { article: ArticleSummary }) {
             // 一覧の小さな枠には軽い画像（480px）を使う。最高画質（1280px）は記事ページだけ
             src={smallThumb(article.thumbnail)}
             source={thumbSource(article)}
+            cover={`/cover/${article.slug}`}
             alt=""
             fill
             sizes="184px"

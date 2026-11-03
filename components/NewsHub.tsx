@@ -71,6 +71,7 @@ function NewsItem({ article, priority }: { article: ArticleSummary; priority: bo
         <Thumb
           src={smallThumb(article.thumbnail)}
           source={thumbSource(article)}
+          cover={`/cover/${article.slug}`}
           alt=""
           fill
           priority={priority}

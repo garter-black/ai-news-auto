@@ -36,6 +36,7 @@ export default function HomeHero({ lead }: { lead: ArticleSummary }) {
             <Thumb
               src={lead.thumbnail}
               source={thumbSource(lead)}
+              cover={`/cover/${lead.slug}`}
               alt=""
               fill
               // トップの LCP。他の画像より先に最優先で読む

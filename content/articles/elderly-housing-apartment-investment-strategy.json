@@ -80,12 +80,36 @@
   "videoTitle": "利回り30％超をたたき出す！「高齢者向きアパート」投資攻略法！",
   "publishedAt": "2026-09-14T10:20:22+00:00",
   "generatedAt": "2026-09-14T11:07:35.753136+00:00",
-  "thumbnail": "https://i.ytimg.com/vi/alGjfEes5ZA/hqdefault.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/elderly-housing-apartment-investment-strategy-0044244b.jpg",
   "model": "gemini-3.5-flash",
   "affiliates": [],
   "roundupSlug": "apartment-management-self-and-incorporation-strategy-matome",
   "roundupTitle": "一棟アパート経営の勝率を高める3大戦略、4本の講義から見えた高齢者賃貸・自主管理・法人化の全貌",
   "originalTitle": "築古アパートで利回り30%超を達成する高齢者向け賃貸の極意と融資戦略",
   "titleRewritten": true,
-  "seoTitle": "築古アパートを高齢者向け賃貸として再生"
+  "seoTitle": "築古アパートを高齢者向け賃貸として再生",
+  "imageCredit": {
+    "kind": "stock",
+    "title": "Russell and Ann Chase Rental Property, Madison",
+    "creator": "James Steakley",
+    "creatorUrl": "",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "provider": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Russell_and_Ann_Chase_Rental_Property,_Madison.jpg",
+    "query": "rental property",
+    "at": "2026-11-03T05:50:10+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.506,
+    "box": [
+      0.0,
+      0.013,
+      1.0,
+      1.0
+    ],
+    "ar": 1.3921,
+    "src": "https://ai-tech-express.jp/img/elderly-housing-apartment-investment-strategy-0044244b.jpg"
+  }
 }

@@ -225,7 +225,7 @@ function RailRoundup({ article }: { article: ArticleSummary }) {
     <li>
       <Link href={`/articles/${article.slug}`} className="group grid grid-cols-[88px_minmax(0,1fr)] gap-3">
         <span className="relative aspect-video overflow-hidden rounded-lg bg-surface-2">
-          <Thumb src={smallThumb(article.thumbnail, "mqdefault")} source={thumbSource(article)} alt="" fill sizes="88px" className="object-cover" />
+          <Thumb src={smallThumb(article.thumbnail, "mqdefault")} source={thumbSource(article)} cover={`/cover/${article.slug}`} alt="" fill sizes="88px" className="object-cover" />
           <span className="index-num absolute bottom-1 left-1 rounded bg-ink/85 px-1.5 py-[1px] text-badge font-semibold text-paper">
             {article.sourceCount}本
           </span>
