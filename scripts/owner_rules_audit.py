@@ -57,7 +57,7 @@ AUDIT_RULES = (
     "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11",
     "I2", "I4", "I5",
     "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19",
-    "W3", "W5", "W6", "W10", "W11", "W12", "W13",
+    "W3", "W5", "W6", "W10", "W11", "W12", "W13", "W19", "W20",
 )
 
 # ---- 記事の言葉 ----------------------------------------------------------------
@@ -288,9 +288,30 @@ def article_page_problems(html: str, record: dict) -> list[str]:
     if OWNER_NAME in html:  # 見えない構造化データ（JSON-LD）も含めて見る
         out.append("[W6] オーナーの名前が記事のページに出ている（/about・/editorial-policy だけ）")
     out += slot_problems(html)
+    out += related_problems(html, record)
+    if "WEB SERVICE" in visible:
+        out.append("[W20] 広告に写真の代わりの「WEB SERVICE」の板が出ている（頭文字の札にする）")
     if m := NO_DATA.search(visible):
         out.append(f"[W11] 「記載なし」がページに出ている（「{_snippet(visible, m)}」）")
     return list(dict.fromkeys(out))
+
+
+# W19: 関連記事・「次に読むならこれ」の欄（記事ページの id で切り出す）と、地震・津波の速報の記事（lib/related.ts の isDisasterArticle と同じ見分け方）
+RELATED_BLOCK = re.compile(r'(?:aria-labelledby="related-heading"|id="next-read-heading")(.*?)</section>', re.S)
+QUAKE_LINK = re.compile(r'href="/articles/((?:quake|tsunami)-[^"#?]+)"')
+
+
+def _is_disaster(record: dict) -> bool:
+    slug = str(record.get("slug") or "")
+    return bool(re.match(r"(?:quake|tsunami)-", slug)) or record.get("channelSlug") == "jma" or str(record.get("title") or "").startswith(("【地震】", "【津波】"))
+
+
+def related_problems(html: str, record: dict) -> list[str]:
+    """W19: 地震・津波の記事とそれ以外の記事を、関連記事・次に読む記事で混ぜない（年金の記事に【地震】が出ていた。2026-11-03）"""
+    links = {m for block in RELATED_BLOCK.findall(html) for m in QUAKE_LINK.findall(block)}
+    if _is_disaster(record):
+        return []
+    return [f"[W19] 関連記事に地震・津波の記事が混ざっている（/articles/{slug}）" for slug in sorted(links)]
 
 
 def slot_problems(html: str) -> list[str]:

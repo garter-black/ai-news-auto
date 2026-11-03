@@ -3,6 +3,7 @@ import path from "node:path";
 import type { ArticleSummary } from "@/lib/articles";
 import { CHOOSE_GUIDES } from "@/lib/choose-data";
 import { MIN_SCORE as OFFER_MIN_SCORE, isB2BArticle, isRoundupArticle, matchesHostingTopic, relevanceScore } from "@/lib/offers";
+import { isDisasterArticle } from "@/lib/related";
 
 /**
  * 記事に合う広告（lib/offers.ts）が無いときに出す「あわせて読みたい」。
@@ -177,6 +178,8 @@ export function inlineReadForArticle<T extends ArticleSummary>(
   let best: { item: T; score: number; time: number } | undefined;
   for (const item of candidates) {
     if (skip.has(item.slug) || item.genreSlug !== article.genreSlug) continue;
+    // 地震・津波の速報とそれ以外の記事は混ぜない（年金の記事の関連に【地震】が出ていた。2026-11-03）
+    if (isDisasterArticle(item) !== isDisasterArticle(article)) continue;
     const time = Date.parse(item.publishedAt);
     if (!Number.isFinite(time) || time < since || time > now) continue;
     let score = relevanceScore(pattern, item);

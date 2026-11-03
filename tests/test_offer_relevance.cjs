@@ -53,7 +53,8 @@ test("関係のない記事（スポーツ・芸能）も広告枠は出す（�
 });
 
 test("全ジャンルの記事に広告を1つ以上出し、右側と本文中で重ならない", () => {
-  const expected = { ai: "fallback-ai", science: "fallback-ai", business: "fallback-work", "tech-gadget": "fallback-gadget", investment: "fallback-money", "real-estate": "fallback-money", public: "fallback-ai", sports: "fallback-life", entertainment: "fallback-life", lifestyle: "fallback-life", other: "fallback-ai" };
+  // テクノロジー・ガジェットでも、見出しに製品・端末・回線の語が無い記事（表彰・認定制度など）は仕事のAI・スキルの組（2026-11-03 の点検）
+  const expected = { ai: "fallback-ai", science: "fallback-ai", business: "fallback-work", "tech-gadget": "fallback-b2b", investment: "fallback-money", "real-estate": "fallback-money", public: "fallback-ai", sports: "fallback-life", entertainment: "fallback-life", lifestyle: "fallback-life", other: "fallback-ai" };
   for (const [genreSlug, topic] of Object.entries(expected)) {
     const plan = offerPlanForArticle(article({ title: "褒章の受章者が決定", genreSlug }));
     assert.equal(plan.offer.topic, topic, genreSlug);
@@ -94,7 +95,9 @@ test("在宅勤務の記事には回線を出す", () => {
 
 test("社名の一部（サイバーエージェント）でセキュリティやAIエージェントの広告を出さない", () => {
   const item = article({ title: "ABEMA運営のサイバーエージェント、通期決算を発表へ", genreSlug: "business" });
-  assert.equal(offerForArticle(item, 12), undefined);
+  // 決算の記事はお金の話題（証券口座など）に当たる。社名の「エージェント」でAIエージェント・セキュリティの話題にはしない
+  assert.ok(!keys(offerForArticle(item, 12)).some((key) => /agent|norton|virusbuster|eset|surfshark/.test(key)));
+  assert.notEqual(offerForArticle(item, 12)?.topic, "agent");
   assert.ok(!keys(offerPlanForArticle(item).offer).some((key) => ["norton", "virusbuster", "eset", "surfshark"].includes(key)));
 });
 
@@ -229,8 +232,13 @@ test("法人・企業向けの記事（ネットワーク・ゼロトラスト�
 });
 
 test("枠の見出しは、その枠に並ぶ商品の話題から作る（Geminiの見出しの下にVPNを出さない）", () => {
-  const check = (offer, label) => {
+  const check = (offer, label, rail) => {
     if (!offer) return;
+    // 本文中の枠が右側と同じ見出しになるときは、別の見出し（「ほかの〜も比べる」）にする（2026-11-03 の点検）
+    if (offer.eyebrow === "あわせて比べたい候補") {
+      assert.ok(rail && /^ほかの(?:サービスと本|サービス|本)も比べる$/.test(offer.headline), label);
+      return;
+    }
     const topics = new Set(offer.items.map((item) => item.topic));
     if (topics.size === 1) {
       const key = [...topics][0];
@@ -258,7 +266,8 @@ test("枠の見出しは、その枠に並ぶ商品の話題から作る（Gemin
     const p = offerPlanForArticle(real);
     assert.ok(p.rail && p.rail.items.length >= 1, real.slug);
     check(p.rail, `${real.slug} rail`);
-    check(p.inline, `${real.slug} inline`);
+    check(p.inline, `${real.slug} inline`, p.rail);
+    if (p.inline) assert.notEqual(p.inline.headline, p.rail.headline, `${real.slug}: 右側と本文中の見出しが同じ`);
     const rail = new Set(keys(p.rail));
     assert.ok(keys(p.inline).every((key) => !rail.has(key)), real.slug);
     if (p.inline) assert.ok(p.inline.items.length >= 2, real.slug);
@@ -312,4 +321,55 @@ test("まとめ記事は脇の話題の1語でセキュリティソフトを出�
   const canvaPlan = offerPlanForArticle(canva);
   assert.ok(canvaPlan.rail.items.length >= 1, "広告枠は必ず出す");
   for (const key of [...keys(canvaPlan.rail), ...keys(canvaPlan.inline)]) assert.ok(!/xserver|conoha|sakura|lolipop/.test(key), key);
+});
+
+// 2026-11-03 の点検（out/サイト全体の質の点検_2026-11-03b.md の7番）: 記事の中身に合わない広告
+const realArticle = (slug) => JSON.parse(fs.readFileSync(path.join(root, "content/articles", `${slug}.json`), "utf8"));
+const GADGET_KEYS = /earphone|ringconn|wifi|wimax|hikari/;
+
+test("決算の記事にイヤホン・回線・睡眠リングを出さない（Appleの7〜9月期決算 → 証券口座・お金の本）", () => {
+  const apple = article({
+    title: "Apple、7〜9月期の売上高が12％増の1145億ドル　同期として過去最高",
+    genreSlug: "tech-gadget",
+    tags: ["Apple", "決算", "スマートフォン", "業績", "ビジネス"],
+    keywords: ["Apple", "決算", "配当", "株主還元"],
+    channelSlug: "apple-newsroom-jp-all",
+  });
+  const plan = offerPlanForArticle(apple);
+  const all = [...keys(plan.rail), ...keys(plan.inline)];
+  assert.ok(!all.some((key) => GADGET_KEYS.test(key)), all.join(","));
+  assert.equal(plan.offer.topic, "money-biz");
+  assert.notEqual(plan.inline?.headline, plan.rail.headline);
+});
+
+test("製品ではないガジェットのジャンルの記事（認定制度の公表）にはイヤホン・回線を出さない。製品の記事は従来どおり", () => {
+  const ipa = offerPlanForArticle(article({ title: "IPA、DX認定制度で2026年11月1日適用の118件を公表", genreSlug: "tech-gadget", tags: ["ビジネス", "セキュリティ", "アプリ", "通信"] }));
+  assert.ok(![...keys(ipa.rail), ...keys(ipa.inline)].some((key) => GADGET_KEYS.test(key)));
+  assert.equal(ipa.offer.topic, "fallback-b2b");
+  // 「JPCERT」の中の「PC」や「Netflix」の中の「ETF」のような、語の一部では当てない
+  const jpcert = offerPlanForArticle(article({ title: "JPCERT/CC、ライブラリの不具合で注意喚起", genreSlug: "tech-gadget" }));
+  assert.equal(jpcert.offer.topic, "fallback-b2b");
+  const netflix = offerPlanForArticle(article({ title: "Apple、折りたたみ型「iPhone Duo」向け最適化アプリを発表　NetflixやWordが対応", genreSlug: "tech-gadget" }));
+  assert.notEqual(netflix.offer.topic, "money-biz");
+  const gadget = offerPlanForArticle(article({ title: "新しいスマートフォンを発売、価格は9万円から", genreSlug: "tech-gadget" }));
+  assert.notEqual(gadget.offer.topic, "fallback-b2b");
+});
+
+test("年金・つなぎ売りの記事はお金・制度の広告（実データ）", () => {
+  for (const slug of ["nenkin-no-hi-2026-mhlw", "gyakuhibu-cross-trade-complete-guide-matome"]) {
+    if (!fs.existsSync(path.join(root, "content/articles", `${slug}.json`))) continue; // 取り下げ後は飛ばす
+    const plan = offerPlanForArticle(realArticle(slug));
+    const all = [...keys(plan.rail), ...keys(plan.inline)];
+    assert.ok(all.length >= 1, slug);
+    assert.ok(!all.some((key) => GADGET_KEYS.test(key) || /abema|coconala/.test(key)), `${slug}: ${all.join(",")}`);
+  }
+});
+
+test("写真の無いサービスは「WEB SERVICE」の板ではなく頭文字の札、「紹介」の札は速報の赤にしない", () => {
+  const parts = fs.readFileSync(path.join(root, "components/rail/parts.tsx"), "utf8");
+  assert.ok(!/["']WEB SERVICE["']/.test(parts), "WEB SERVICE の板が残っている");
+  assert.match(parts, /initialOf\(item\.name\)/);
+  const body = fs.readFileSync(path.join(root, "components/rail/RankingBody.tsx"), "utf8");
+  const first = body.slice(body.indexOf("function First"), body.indexOf("function First") + 1200);
+  assert.ok(!/bg-live|text-live/.test(first), "1位の札に速報の赤（live）を使っている");
 });

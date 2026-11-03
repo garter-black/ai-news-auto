@@ -136,9 +136,10 @@ function First({ item, wide, badge, onClick, now }: { item: OfferItem; wide: boo
       className={`group block ${wide ? "p-5 sm:p-6" : "border-b border-line p-4"}`}
     >
       <span className="flex items-center gap-2">
-        <span className="font-display text-[34px] leading-none text-live">1</span>
-        <span className="rounded-sm bg-live px-2.5 py-1 text-badge font-bold text-live-ink">{badge}</span>
-        {item.label && <span className="text-meta font-bold text-live">{item.label}</span>}
+        {/* 赤は速報だけの色（2026-11-03 の点検: 「紹介」の札が速報と同じ赤だった）。広告の札は紺と黒にする */}
+        <span className="font-display text-[34px] leading-none text-accent">1</span>
+        <span className="rounded-sm bg-ink px-2.5 py-1 text-badge font-bold text-paper">{badge}</span>
+        {item.label && <span className="text-meta font-bold text-accent">{item.label}</span>}
       </span>
 
       <span className={wide ? "mt-3 grid gap-5 sm:grid-cols-[200px_minmax(0,1fr)]" : "block"}>
@@ -194,7 +195,7 @@ function Row({ item, rank, onClick, now }: { item: OfferItem; rank: number; onCl
         className="group grid grid-cols-[22px_72px_minmax(0,1fr)] items-center gap-3 px-4 py-3.5 hover:bg-surface"
       >
         <span className="font-display text-[22px] leading-none text-ink">{rank}</span>
-        <ProductImage item={item} className="size-[72px] rounded-lg border border-line" pad="p-1.5" />
+        <ProductImage item={item} className="size-[72px] rounded-lg border border-line" pad="p-1.5" compact />
         <span className="min-w-0">
           {item.label && <span className="block text-meta font-bold text-live">{item.label}</span>}
           <span className="line-clamp-2 text-meta font-bold leading-snug text-ink group-hover:underline">{item.name}</span>

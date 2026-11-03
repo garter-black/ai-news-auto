@@ -5,6 +5,8 @@ import path from "node:path";
 import type { Verdict } from "@/lib/verdict";
 import type { WorkMoney } from "@/lib/work-money";
 import { buildIndex, derivedOf, INDEX_VERSION, isArticleLike, withDefaults } from "@/lib/article-index.mjs";
+import { companyOf } from "@/lib/companies";
+import { nextReads, relatedArticles } from "@/lib/related";
 
 export type TimetableItem = {
   time: string;
@@ -402,29 +404,12 @@ export function isRecentlyUpdated(article: ArticleSummary, hours = 48): boolean 
   return age >= 0 && age < hours * 3_600_000;
 }
 
+/**
+ * 記事末の関連記事。企業・製品・話題の語が重なる記事だけ（同じジャンルというだけでは選ばない。地震の記事を混ぜない）。
+ * 選び方は lib/related.ts（台帳 W19）。基準に届く記事が無ければ空（ページは欄ごと出さない）
+ */
 export function getRelatedArticles(article: ArticleSummary, limit = 4): ArticleSummary[] {
-  // 記事を作るときに文脈として使った過去記事を先に出す
-  const picked = (article.relatedSlugs ?? [])
-    .filter((slug) => slug !== article.slug)
-    .map((slug) => getArticleSummary(slug))
-    .filter((a): a is ArticleSummary => Boolean(a))
-    .slice(0, limit);
-  const used = new Set([article.slug, ...picked.map((a) => a.slug)]);
-  const tags = new Set(article.tags);
-  const rest = getAllArticles()
-    .filter((a) => !used.has(a.slug))
-    .map((a) => ({
-      article: a,
-      score:
-        a.tags.filter((t) => tags.has(t)).length +
-        (a.channelSlug === article.channelSlug ? 1 : 0) +
-        // 別ジャンルの記事が関連記事に混ざらないよう強めに重み付けする
-        (a.genreSlug === article.genreSlug ? 5 : 0),
-    }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit - picked.length)
-    .map((x) => x.article);
-  return [...picked, ...rest];
+  return relatedArticles(article, getAllArticles(), (a) => companyOf(a).slug, limit);
 }
 
 /* ------------------------------------------------------------------ */
@@ -594,36 +579,11 @@ export function formatDate(iso: string): string {
 export { COVER_VERSION, coverPath } from "@/lib/cover-path";
 
 export type NextRead = { article: ArticleSummary; reason: string };
-const COMPANY_TAGS = ["OpenAI", "Microsoft", "Google", "NVIDIA", "Meta", "Anthropic", "Hugging Face", "DeepSeek", "ChatGPT", "Gemini", "Claude"];
 
 /**
- * 「次に読むならこれ」。記事を読み終えた人に、もう1本だけ読んでもらうための候補。
- * 1. 同じ話題のまとめ記事（全体像） 2. 同じ企業の新しい発表 3. タグが重なる発表 の順に選ぶ。
+ * 「次に読むならこれ」。1. 同じ話題のまとめ記事（全体像） 2. 同じ話題の記事 3. 同じ企業の発表 の順（lib/related.ts）。
+ * 「同じ話題の記事」の札は、企業・製品・話題の語が本当に重なる記事だけに付ける（「社会・行政」のような分野のタグだけでは付けない）
  */
 export function getNextReads(article: ArticleSummary, companySlugOf: (a: ArticleSummary) => string, limit = 3): NextRead[] {
-  const all = getAllArticles().filter((a) => a.slug !== article.slug && a.genreSlug === article.genreSlug);
-  const picked: NextRead[] = [];
-  const used = new Set<string>();
-  const add = (candidate: ArticleSummary | undefined, reason: string) => {
-    if (!candidate || used.has(candidate.slug) || picked.length >= limit) return;
-    used.add(candidate.slug);
-    picked.push({ article: candidate, reason });
-  };
-
-  if (article.roundupSlug) add(all.find((a) => a.slug === article.roundupSlug), "この話題の全体像");
-
-  const company = companySlugOf(article);
-  const sameCompany = all.filter((a) => companySlugOf(a) === company && company !== "other");
-
-  // 「生成AI」のような全記事共通タグだけでは同じ話題と言えない。
-  const genericTags = new Set(["AI", "AIツール", "AIニュース", "生成AI", "人工知能", "テクノロジー", "AIエージェント", "LLM", ...COMPANY_TAGS]);
-  const tags = new Set(article.tags.filter((tag) => !genericTags.has(tag)));
-  const keywords = new Set(article.keywords.filter((word) => word.length >= 3 && !genericTags.has(word) && !/^(使い方|料金|無料|日本語|とは|開発|アップデート)$/i.test(word)).map((word) => word.toLowerCase()));
-  const byTags = all
-    .map((a) => ({ a, n: a.tags.filter((t) => tags.has(t)).length + 2 * a.keywords.filter((word) => keywords.has(word.toLowerCase())).length }))
-    .filter((x) => x.n > 0)
-    .sort((x, y) => y.n - x.n || Date.parse(y.a.publishedAt) - Date.parse(x.a.publishedAt));
-  for (const { a } of byTags) add(a, "同じ話題の記事");
-  for (const a of sameCompany) add(a, "同じ企業の発表");
-  return picked;
+  return nextReads(article, getAllArticles(), companySlugOf, limit);
 }
