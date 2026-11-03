@@ -12,6 +12,7 @@
     "8K08Ywgduno": 1,
     "AIH_9dOpAmU": 1,
     "DDjr6gXqtN8": 2,
+    "Er0AYcDuZeA": 1,
     "EuN8WCWQf7g": 1,
     "FL6mI_Br-mc": 1,
     "G_DxnqhIfgk": 1,
@@ -2095,6 +2096,11 @@
     "bbNTY8O0GTY": {
       "at": "2026-09-18T15:20:28.687178+00:00",
       "slug": "openai-chatgpt-semantic-layer-data-agent"
+    },
+    "bbz496RR8Xc": {
+      "at": "2026-11-03T23:12:55.067847+00:00",
+      "reason": "28秒のショート動画（切り抜き）であり、Physical AIの概念的な定義を簡短に述べるのみで、具体的な技術仕様や製品発表などの実質的な情報が含まれていないため。",
+      "skipped": true
     },
     "bdEHBv5tfEY": {
       "at": "2026-08-04T11:17:36.508742+00:00",
