@@ -119,6 +119,9 @@ type OffersFile = {
     /** 見出しがお金の話題のときに使う組（例: ビジネスの日銀・物価の記事は証券・お金の本） */
     byGenreIfMoney?: Record<string, string>;
     moneyMatch?: string;
+    /** 見出しが製品・端末・回線の話題か。テクノロジー・ガジェットの記事でも、当たらなければ byGenreIfNotGadget の組を使う */
+    gadgetMatch?: string;
+    byGenreIfNotGadget?: Record<string, string>;
     /** 既定の広告のサーバー・VPS（b2b.hostingPartners）は、記事にこの語（開発・API など）があるときだけ出す（デザインアプリの記事に VPS を出さない） */
     hostingNeeds?: string;
     default: string;
@@ -493,7 +496,14 @@ export function fallbackOfferForArticle(article: ArticleSummary, maxItems = 12):
   // 法人・企業向けの記事は、個人向けの副業・家の回線ではなく AIツール・スキル・仕事の効率化（offers.json の b2b）
   const b2bSet = isB2BArticle(article, text) ? offers.b2b?.fallbackSet : undefined;
   const moneyTitle = regex(config.moneyMatch)?.test(text.title) ?? false;
-  const genreKey = (moneyTitle ? config.byGenreIfMoney?.[article.genreSlug] : config.byGenreIfNotMoney?.[article.genreSlug]) ?? config.byGenre[article.genreSlug] ?? config.default;
+  // ガジェットのジャンルでも、製品・端末・回線の記事でなければイヤホンや回線は出さない（IPA の認定制度の記事にイヤホンが出ていた。2026-11-03）
+  const gadgetTitle = regex(config.gadgetMatch)?.test(text.title) ?? true;
+  const notGadget = gadgetTitle ? undefined : config.byGenreIfNotGadget?.[article.genreSlug];
+  const genreKey =
+    (moneyTitle ? config.byGenreIfMoney?.[article.genreSlug] : config.byGenreIfNotMoney?.[article.genreSlug]) ??
+    notGadget ??
+    config.byGenre[article.genreSlug] ??
+    config.default;
   const key = b2bSet && config.sets[b2bSet] ? b2bSet : genreKey;
   const set = config.sets[key] ?? config.sets[config.default];
   if (!set) return undefined;
@@ -590,8 +600,22 @@ export function offerPlanForArticle(article: ArticleSummary): OfferPlan {
   const inlineItems = [...inlineShown, ...spare(inlineShown, [...railItems, ...inlineShown])];
   const offer = boxOffer(full, pool, base);
   const rail = boxOffer(full, railItems, base);
-  const inline = inlineItems.length >= 2 ? boxOffer(full, inlineItems, base) : undefined;
+  const inlineBox = inlineItems.length >= 2 ? boxOffer(full, inlineItems, base) : undefined;
+  // 右側と本文中が同じ見出し（「毎日使う道具とネット環境を見直す」が2回）にならないよう、本文中は別の見出しにする（2026-11-03 の点検）
+  const inline = inlineBox && inlineBox.headline === rail.headline ? { ...inlineBox, ...secondHeading(inlineBox) } : inlineBox;
   return { offer: { ...offer, ...headingFor(railItems, base) }, rail, inline };
+}
+
+/** 2つ目の枠の見出し。並ぶ商品の種類（サービス・本）で言い分ける */
+function secondHeading(offer: Offer): Pick<Offer, "eyebrow" | "headline" | "lead"> {
+  const hasBook = offer.items.some((item) => item.kind === "book");
+  const hasPartner = offer.items.some((item) => item.kind === "partner");
+  const kinds = hasBook && hasPartner ? "サービスと本" : hasBook ? "本" : "サービス";
+  return {
+    eyebrow: "あわせて比べたい候補",
+    headline: `ほかの${kinds}も比べる`,
+    lead: `右の枠とは別の${kinds}です。料金や条件はリンク先で確認してください。`,
+  };
 }
 
 /** offerForArticle と同じ条件で話題を採点する（GeForce NOW の記事などは対象外） */

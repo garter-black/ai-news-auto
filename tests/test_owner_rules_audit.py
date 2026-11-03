@@ -215,3 +215,20 @@ class SourcePageTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RelatedAndAdBoxTest(unittest.TestCase):
+    """W19・W20（2026-11-03）: 関連記事に地震の記事を混ぜない。広告に「WEB SERVICE」の板を出さない"""
+
+    def test_quake_link_in_related_is_reported(self):
+        page = '<section aria-labelledby="related-heading"><a href="/articles/quake-20261029000759">【地震】</a></section>'
+        self.assertIn("W19", ids(audit.related_problems(page, {"slug": "nenkin-no-hi-2026-mhlw", "title": "年金の日"})))
+        nxt = '<section><h2 id="next-read-heading">次に読む</h2><a href="/articles/quake-1">x</a></section>'
+        self.assertIn("W19", ids(audit.related_problems(nxt, {"slug": "a", "title": "b"})))
+        # 地震の記事どうしは問題にしない。関連の欄の外（本文など）のリンクも数えない
+        self.assertEqual(audit.related_problems(page, {"slug": "quake-2", "title": "【地震】x", "channelSlug": "jma"}), [])
+        self.assertEqual(audit.related_problems('<p><a href="/articles/quake-1">x</a></p>', {"slug": "a", "title": "b"}), [])
+
+    def test_web_service_board_is_reported(self):
+        html = '<main><a rel="sponsored nofollow">x</a><span>WEB SERVICE</span></main>'
+        self.assertIn("W20", ids(audit.article_page_problems(html, {"slug": "a", "title": "b"})))

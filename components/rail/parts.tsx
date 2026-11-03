@@ -68,30 +68,44 @@ export function ProductImage({
   className = "",
   pad = "p-4",
   eager = false,
+  compact = false,
 }: {
   item: OfferItem;
   className?: string;
   pad?: string;
   /** 最初から画面に見える位置（右上の1位など）は遅延読み込みしない */
   eager?: boolean;
+  /** 小さな枠（72px の2〜3位など）。写真が無いときは頭文字の札だけを出す */
+  compact?: boolean;
 }) {
   return (
     <span className={`relative grid place-items-center overflow-hidden bg-white ${className}`}>
       {item.image ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={item.image} alt="" loading={eager ? "eager" : "lazy"} className={`absolute inset-0 h-full w-full object-contain ${pad}`} />
+      ) : compact ? (
+        <span aria-hidden="true" className="grid size-full place-items-center bg-[#f3f5f8]">
+          <span className="grid size-10 place-items-center rounded-lg bg-[#1d4a8f] text-[18px] font-black text-white">{initialOf(item.name)}</span>
+        </span>
       ) : (
-        // 写真の無いサービス（ConoHa AI Canvas など）は、名前と一言を文字で見せる
-        <span className="flex size-full flex-col items-center justify-center gap-2 bg-[linear-gradient(135deg,#eef6fb,#ffffff_55%,#f3f0fb)] px-4 text-center">
-          <span className="text-badge font-bold tracking-[0.2em] text-[#1d4a8f]">{item.badge ?? "WEB SERVICE"}</span>
-          <span className="text-[17px] font-bold leading-tight text-[#111111] text-balance">{item.name}</span>
-          {item.label && (
-            <span className="rounded-sm bg-[#111111] px-2.5 py-1 text-badge font-bold text-white">{item.label}</span>
-          )}
+        // 写真の無いサービスは、頭文字の札（サイトの紺）と名前で見せる。「WEB SERVICE」のような意味のない英語の板は出さない
+        // （2026-11-03 の点検: 文字だけの板が壊れた画像のように見えた）
+        <span className="flex size-full flex-col items-center justify-center gap-2.5 bg-[#f3f5f8] px-4 text-center">
+          <span aria-hidden="true" className="grid size-12 place-items-center rounded-xl bg-[#1d4a8f] text-[22px] font-black text-white">
+            {initialOf(item.name)}
+          </span>
+          <span className="text-[16px] font-bold leading-tight text-[#0b1a33] text-balance">{item.name}</span>
+          {item.label && <span className="text-badge font-bold text-[#1d4a8f]">{item.label}</span>}
         </span>
       )}
     </span>
   );
+}
+
+/** 写真の無いサービスの頭文字（「6週間チャレンジ オフィス英会話」→「6」、「松井証券」→「松」） */
+export function initialOf(name: string): string {
+  const first = Array.from((name ?? "").trim())[0] ?? "";
+  return first.toUpperCase();
 }
 
 export function PrNote({ checkedAt, hasBook }: { checkedAt: string; hasBook: boolean }) {
