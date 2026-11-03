@@ -1,6 +1,31 @@
 {
+ "ai-for-science-expansion-institutions": {
+  "at": "2026-11-03T15:33:46+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
  "amazon-bedrock-cost-management-playbook": {
   "at": "2026-11-03T16:00:00+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "artex-agentic-offensive-frameworks": {
+  "at": "2026-11-03T15:29:38+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "chatgpt-codex-shared-usage-limits": {
+  "at": "2026-11-03T15:35:03+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "chatgpt-pro-monthly-api-credits": {
+  "at": "2026-11-03T15:43:35+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "claude-finds-critical-vulnerabilities": {
+  "at": "2026-11-03T15:37:18+00:00",
   "failed": 1,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },
@@ -9,9 +34,34 @@
   "failed": 1,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },
+ "figma-config-india-insights-ai": {
+  "at": "2026-11-03T15:27:55+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "gemini-4-carbon-cybersecurity-model": {
+  "at": "2026-11-03T15:50:14+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
  "github-copilot-app-projects-computer-use": {
   "at": "2026-11-03T16:00:00+00:00",
   "failed": 2,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "github-copilot-fusion-release": {
+  "at": "2026-11-03T15:30:59+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "google-genie-4-world-model": {
+  "at": "2026-11-03T15:41:39+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "google-pixel-11-pro-food-photography": {
+  "at": "2026-11-03T15:45:47+00:00",
+  "failed": 1,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },
  "hugging-face-any-speech-decision-apple": {
@@ -29,6 +79,11 @@
   "failed": 1,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },
+ "nvidia-nemotron-halloween-monsterhouse": {
+  "at": "2026-11-03T15:38:56+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
  "openai-gpt-61-terra-amazon-bedrock": {
   "at": "2026-11-03T16:00:00+00:00",
   "failed": 2,
@@ -36,6 +91,11 @@
  },
  "rakuten-mobile-ipad-sale-nov6": {
   "at": "2026-11-03T16:00:00+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "reddit-for-you-following-feed": {
+  "at": "2026-11-03T15:35:45+00:00",
   "failed": 1,
   "why": "品質ゲートに合格しなかった（今の版のまま）"
  },

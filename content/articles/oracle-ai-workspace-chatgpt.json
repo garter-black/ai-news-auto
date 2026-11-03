@@ -8,9 +8,9 @@
   "threadsPost": "結論：オラクルの業務システムを、ChatGPTから動かせるようになります。\nオラクルがOpenAIとの協業を拡大。承認済みの業務手順なら、複数システムをまたぐ作業もAIに任せやすくなります。\n小規模企業向けには、年間1万2000ドル分のクラウド利用枠つきのバンドルも。\n日本での提供は、現時点では分かっていません。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
-  "writingVoice": "friendly",
-  "lede": "ITmediaの報道によると、オラクルは2026年10月28日、OpenAIとの協業拡大を発表しました。ChatGPTやCodexをOracleの業務アプリやデータ基盤とつなぎ、複数システムにまたがる業務、アプリ開発、セキュリティ対策をAIで支援します。小規模企業向けには、年間1万2000ドル分のクラウド利用枠を含むバンドルも用意されます。",
-  "description": "ITmediaの報道によると、オラクルがOpenAIとの協業を拡大。ChatGPTから業務システムを操作できる「Oracle AI Workspace」など4分野の新製品群と、年1万2000ドル分の利用枠つき小規模企業向けバンドルを解説します。",
+  "writingVoice": "explainer",
+  "lede": "OracleのERPやデータベースを、ChatGPTやCodexから操作できる新製品群が2026年10月28日に発表されました。小規模企業向けの「Oracle AI SMB Bundle」には、年間1万2000ドル分のクラウドクレジットが含まれます。ITmediaのキーマンズネットが伝えました。",
+  "description": "OracleがOpenAIとの協業拡大で「Oracle AI Workspace」など4分野の新製品を発表。ChatGPTから業務システムを操作でき、小規模企業には年1万2000ドル分のクラウド利用枠を用意します。",
   "keywords": [
     "Oracle AI Workspace",
     "オラクル ChatGPT",
@@ -32,22 +32,22 @@
     "ERP"
   ],
   "highlights": [
-    "オラクルが2026年10月28日、OpenAIとの協業拡大を発表した",
-    "ChatGPTのプラグイン経由でFusion ApplicationsやNetSuiteなどを操作できる",
-    "小規模企業向けにクラウドクレジット年1万2000ドル分のバンドルを用意"
+    "接続先はFusion Applications、NetSuite、AI Database、OCIなど。管理規則や承認手続き、アクセス制御は維持されます",
+    "AI Security Meshは、OCIや他社クラウド、オンプレミスの脆弱性の発見と修正を支援するマネージドサービスです",
+    "SMB BundleにはChatGPT Business、Codex、NetSuite QuickStartなどが含まれ、規約と制限が適用されます"
   ],
   "timetable": [],
   "verdict": {
     "status": "limited",
     "japan": "unknown",
-    "price": "条件あり",
+    "price": "小規模向け無償枠",
     "free": null,
     "audience": "企業の情シス",
-    "take": "Oracle製品を使う企業は、自社の契約での提供時期と条件をオラクルに確認するとよいでしょう。",
-    "judgedAt": "2026-11-01T22:39:49.871965+00:00"
+    "take": "自社でOracle製品を使っているなら、日本での提供時期と対象条件をOracleに問い合わせるとよいでしょう。",
+    "judgedAt": "2026-11-03T15:25:31.025385+00:00"
   },
-  "body": "## 概要\n\nオラクルの業務ソフトを、ChatGPTから動かせるようになります。承認など、いくつものシステムをまたぐ作業をAIに頼みやすくなる、という発表です。\n\nアプリを作る機能や、システムの弱点を探す機能も加わります。小さな会社には、年間1万2000ドル分のクラウド利用枠つきのセットも用意されます。\n\nオラクルのソフトを使っている会社の担当者と、小さな会社の経営者に関係の深い話です。\n\n## 何が発表された？\n\nITmediaの報道によると、オラクルは2026年10月28日、OpenAIとの協業拡大を発表しました。OpenAIのモデルやChatGPT、Codex（コード作成AI）を、Oracleのアプリ、データ、クラウド基盤と連携させます。\n\n狙いは、複数のシステムにまたがる業務の実行、アプリ開発、セキュリティ対策、起業支援です。新製品群として展開されるとのことです。\n\n位置づけは新製品群の発表です。元記事から、一般提供の開始日や提供地域は確認できませんでした。\n\n新製品は次の4つです。\n\n- Oracle AI Workspace（業務システムとAIを一つの画面にまとめる）\n- Oracle AI Security Mesh（脆弱性の発見と修正を支援）\n- Oracle App Composer（Codexでアプリを作る）\n- Oracle AI SMB Bundle（小規模企業向けセット）\n\n## 前と何が違う？\n\n### ChatGPTから業務システムを動かせる\n\n「Oracle AI Workspace」は、AIモデルと業務システムを一つの操作環境にまとめます。ChatGPTのプラグインを通じて、従業員は情報を取り出したり、承認済みの業務手順を実行したりできます。\n\n接続先は、Oracle Fusion Applications、Oracle NetSuite、Oracle AI Database、Oracle Cloud Infrastructure（OCI）などです。業務目標に応じて必要な機能や情報を選び、作業を助けます。\n\n企業の管理規則、承認手続き、アクセス制御は維持されます。\n\n### セキュリティ診断をまるごと任せられる\n\n「Oracle AI Security Mesh」は、マネージドサービス（運営を事業者に任せる形）です。OpenAIのサイバーセキュリティ向けモデルと、オラクルのテストツールなどを組み合わせます。\n\nOCIのほか、他社クラウドやオンプレミス（自社設備）の弱点も対象です。顧客はテストしてよい対象と範囲を指定します。\n\nテスト中のシステム停止や業務中断のリスクを減らす保護策は、オラクルが管理します。顧客はAIを使った防御・攻撃システムを自前で作ったり運用したりする必要がありません。\n\n### コードが書けなくてもアプリを作れる\n\n「Oracle App Composer」では、コーディングの専門知識がなくてもCodexでアプリを作成、保守できます。OCIへの導入と運用はオラクルが担います。\n\n承認済みのデータや業務手順に接続し、OCI Kubernetes EngineやOracle Autonomous AI Databaseなどを使えます。IDや権限、ネットワーク、監査などの制御も適用されます。\n\nオラクルの新技術「APEXlang」に対応しています。保守が難しい不透明なコードを生成せず、素早く開発できるとのことです。\n\n### 小規模企業向けのセットが用意された\n\n「Oracle AI SMB Bundle」は、無償で利用を始められるセットです。クラウドクレジットが年間1万2000ドル分つきます。\n\n中身は次のとおりです。\n\n- ChatGPT Business\n- Oracle AI Workspace\n- Codex\n- Oracle App Composer\n- OCI\n- NetSuite QuickStart（請求業務やキャッシュフローなど中核業務の基盤）\n\n## 数字で見るとどう変わった？\n\n前の版と比べられる数値は、ITmediaの記事では示されていません。性能指標も提示がありません。\n\n確認できる数字は、小規模企業向けクラウドクレジットの年間1万2000ドル分だけです。\n\n## ライバルと比べてどう？\n\n元記事には競合との比較がないため、表にはしません。\n\n（編集部注）一般に、企業の業務システムと生成AIをつなぐ動きは各社で進んでいます。今回の特徴は、業務アプリの提供元であるオラクルが、ChatGPTやCodexまで一体で組み込む点です。\n\nただし、他社との優劣を判断できる性能や価格の材料は、元記事にはありません。\n\n## 料金は？\n\nITmediaの報道で確認できる料金情報は次のとおりです。\n\n- Oracle AI SMB Bundleは無償で利用を開始できる\n- オラクルのクラウドクレジットが年間1万2000ドル分つく\n- 利用には規約、条件、制限が適用される\n\nそのほかの製品の価格や、提供開始時期は、元記事では確認できませんでした。\n\n## 日本で使える？\n\nまだ分かりません。元記事に、日本での提供や日本語対応の記載はありません。\n\n試す前に、次の点を確認してください。\n\n- 自社のOracle契約でAI Workspaceなどが使えるか、オラクルの担当者に聞く\n- 提供開始時期と提供地域を、オラクルの公式プレスリリースで確認する\n- 小規模企業向けバンドルは、対象となる企業の条件や制限を確認する\n- ChatGPTのアカウントや契約形態は、元記事に記載がなく不明\n\n## 自分にはどう関係する？\n\n### エンジニアなら\n\nCodexでアプリを作り、OCI上の運用はオラクルが担う形です。開発よりも、権限、監査、データ接続の設計が仕事の中心になりそうです。\n\nAPEXlangへの対応で、読みにくいコードが量産されにくくなる点も、保守担当には関心事でしょう。\n\n### 企画・マーケティングなら\n\n直接の恩恵は、業務データをChatGPTから確認できることでしょう。ただし、見られる範囲は会社の権限設定に従います。\n\n実際にどこまで使えるかは、元記事からは分かりません。\n\n### 経営者・管理者なら\n\n小規模企業は、年間1万2000ドル分のクレジットつきセットが用意されています。ただし規約や制限は確認が必要です。\n\nセキュリティ面では、テスト範囲の指定と保護策の分担を、契約前に整理しておくと安心です。\n\n## これまでの流れ\n\n- **10月28日**：OpenAIとOracleが提携拡大を発表し、業務アプリやデータをChatGPTに統合する方針を示した（[ChatGPTのOpenAIがOracleと提携](/articles/openai-oracle-partnership-chatgpt)）\n- **11月2日**：ITmediaが、AI Workspaceなど4分野の新製品群と小規模企業向けバンドルの詳細を報じた（今回のニュース）\n\n## まとめ\n\nChatGPTと業務システムが直接つながり、複数システムをまたぐ作業をAIに頼みやすくなります。編集部の見方では、権限や承認を維持する設計が実務での使いやすさを左右します。\n\nOracle製品を使っている会社は、提供時期と日本での対応を、オラクルに確認しましょう。小さな会社は、バンドルの条件と制限を読み、使えるか見極めてください。",
-  "easy": "## ひとことで言うと\n\nオラクルの業務ソフトを、ChatGPTから動かせるようになる、という発表です。ITmediaの報道によるものです。\n\n会社の事務作業を手伝う「AIアシスタント」に頼みやすくなるイメージです。\n\n## 何がすごいの？\n\nこれまでは、作業のたびにシステムごとの画面を開く必要がありました。今回は、ChatGPTの画面から情報を調べたり、決まった手順を実行したりできるようになります。\n\n会社のルールや承認の流れ、見られる人の制限は、そのまま守られるそうです。\n\nほかにも、次の新製品が発表されました。\n\n- コードが書けなくてもアプリを作れる「Oracle App Composer」\n- システムの弱点を見つけて直す手助けをする「Oracle AI Security Mesh」\n- 小さな会社向けの「Oracle AI SMB Bundle」\n\n小さな会社向けには、年に1万2000ドル分のクラウド利用枠がつきます。\n\n## 自分に関係ある？\n\nオラクルの業務システムを使っている会社の人に関係があります。\n\n使っていなければ、今すぐ関係はありません。\n\n## 使ってみるには\n\n提供の時期や日本で使えるかどうかは、報道では分かりません。小さな会社向けのバンドルには、規約や条件、制限があります。\n\nまずはオラクルの担当者や公式情報で確認しましょう。",
+  "body": "OracleとOpenAIの協業拡大では、AIエージェント（自分で手順を進めるAI）がOracleの業務アプリやデータベースに直接アクセスして仕事を進める環境が目指されています。ITmediaのキーマンズネットによると、発表は2026年10月28日です。サイソクは、提携拡大の第一報を[OpenAI、Oracleとの提携を拡大](/articles/openai-oracle-partnership-chatgpt)で報じています。\n\n新製品群は、業務処理、セキュリティ、アプリ開発、小規模企業の起業支援の4分野に分かれます。\n\n## ChatGPTから業務システムを操作できる「Oracle AI Workspace」\n\n「Oracle AI Workspace」は、AIモデルと業務システムを1つの操作環境にまとめる製品です。ChatGPTのプラグインを通じて、従業員は情報の取得や、承認済みの業務手順の実行ができます。\n\n接続できる対象は次のとおりです。\n\n- Oracle Fusion Applications\n- Oracle NetSuite\n- Oracle AI Database\n- Oracle Cloud Infrastructure（OCI）\n\nほかにも接続対象はあります。利用者は業務の目標に応じて、必要な機能や情報を選んで作業を支援してもらいます。\n\nここで重要なのは、企業の管理規則や承認手続き、アクセス制御が維持される点です。AIが社内ルールを素通りして動くわけではない、という設計です。\n\n## 脆弱性の発見と修正を支える「Oracle AI Security Mesh」\n\nセキュリティ分野では、マネージドサービス（運用を事業者が担うサービス）の「Oracle AI Security Mesh」が提供されます。OpenAIのフロンティアサイバーセキュリティモデルに、Oracleのテストツールや独立検証、テスト基盤、Oracleが管理する運用上の保護策を組み合わせます。\n\n対象は、OCIや他社クラウド、オンプレミス（自社設備）環境のアプリケーションや基盤です。そこに潜む脆弱性の発見と修正を支援します。\n\n顧客はテストを許可する対象と範囲を指定します。Oracleは、テスト中のシステム停止や業務中断のリスクを減らす保護策を管理します。顧客は、エージェントを使った防御・攻撃システムを自分で構築・運用する必要がありません。\n\n**コードを書けない担当者でも作れる「Oracle App Composer」**\n\nアプリ開発向けには「Oracle App Composer」が発表されました。コーディングの専門知識がなくても、Codexでアプリケーションを作成し、保守できます。OCIへの導入と運用はOracleが担います。\n\n承認済みのデータや業務手順に接続し、「OCI Kubernetes Engine」「Oracle Autonomous AI Database」などを利用できます。IDや権限、ネットワーク、監査、アプリケーションのライフサイクルに関する制御も適用されます。\n\nOracleの新技術「APEXlang」に対応している点も特徴です。保守が難しい不透明なコードを生成せずに、素早く開発できるとされています。\n\n## 小規模企業向け無償開始の料金は年1万2000ドル分\n\n小規模企業には「Oracle AI SMB Bundle」が用意されました。無償で利用を始められ、Oracleのクラウドクレジットが年間1万2000ドル分付きます。これは約189万円にあたります（サイソク編集部の計算。1ドル=157.90円、ECB参照レートによる目安）。\n\n含まれるものは次のとおりです。\n\n- ChatGPT Business\n- Oracle AI Workspace\n- Codex\n- Oracle App Composer\n- OCI\n- NetSuite QuickStart（請求業務やキャッシュフローなど中核業務の管理基盤）\n\n利用には規約、条件、制限が適用されます。\n\nChatGPT Businessは、単体ではスタンダードシートが年払いで1人月$20、月払いで$25です（OpenAI公式の料金ページ、11/3確認）。バンドルの中身は、この単体価格と別に整理して比べる必要があります。\n\n**ChatGPTのプランと料金（公式の料金と円の目安）**\n\n| プラン | 料金（公式） | 円の目安 | 主な上限・違い |\n| --- | --- | --- | --- |\n| 無料版 | 0円/月 |  |  |\n| Go | 1,400円/月（月払い） |  | This plan may include ads.（広告が表示される場合あり） |\n| Plus | 3,000円/月（月払い） / $20/月（月払い） |  |  |\n| Pro 100 | 16,800円/月から（月払い） / $100/月（月払い） |  | Ultrafast: Not included、月額 ￥16,800 分の API クレジット（日本向けページ） |\n| Pro 200 | $200/月（月払い） | 約34,740円（税込みの目安） | Ultrafast: Not included、月額 ￥30,000 分の API クレジット（日本向けページ） |\n| Pro 500 | $500/月（月払い） | 約86,840円（税込みの目安） | Ultrafast: Included、月額 ￥84,000 分の API クレジット（日本向けページ） |\n| Business（スタンダードシート） | $20/人・月（年払い） / $25/人・月（月払い） | 約4,340円（税込みの目安） | ChatGPT, ChatGPT Work, and Codex |\n| Business（プレミアムシート） | $100/人・月（年払い） / $125/人・月（月払い） | 約21,710円（税込みの目安） | ChatGPT, ChatGPT Work, and Codex with higher usage limits |\n\n出典：ChatGPTの公式ページ（https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus、https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers、https://help.openai.com/en/articles/8792828-what-is-chatgpt-business、https://chatgpt.com/ja-JP/pricing/）／確認日：2026-11-03\n円は1ドル=157.90円（2026-11-02、ECB参照レート（ユーロ経由で計算））で計算した目安です。ドルのプランは消費税10%を足しています。実際の請求額は為替とカード会社の手数料で変わります。\n\n## まだ分からないこと\n\n- 各製品の提供開始日はまだ発表されていません。\n- 日本での提供と日本語対応はまだ発表されていません。\n- SMB Bundleの対象となる企業規模や、規約・制限の詳細はまだ発表されていません。",
+  "easy": "## ひとことで言うと\n\nOracleがOpenAIとの協業を広げ、ChatGPTから会社の業務システムを操作できる製品群を発表しました。小規模企業向けには、年1万2000ドル分のクラウド利用枠が付く無償開始のセットがあります。\n\n## 4つの分野で新製品\n\n1つ目は「Oracle AI Workspace」です。ChatGPTから、会社のシステムの情報を調べたり、承認済みの作業を実行したりできます。管理のルールや権限は、そのまま守られます。\n\n2つ目は「Oracle AI Security Mesh」です。システムの弱点（脆弱性）を見つけて直す作業を、Oracleが管理しながら支援します。\n\n3つ目は「Oracle App Composer」です。プログラムの専門知識がなくても、Codexでアプリを作り、保守できます。\n\n4つ目は小規模企業向けの「Oracle AI SMB Bundle」です。年1万2000ドル分のクラウドクレジットが付き、ChatGPT BusinessやCodexなども含まれます。利用には規約と制限があります。",
   "channel": "ITmedia",
   "channelId": "",
   "channelSlug": "radar-itmedia.co.jp",
@@ -60,7 +60,7 @@
   "publishedAt": "2026-11-01T22:00:00+00:00",
   "generatedAt": "2026-11-01T22:39:49.872018+00:00",
   "thumbnail": "https://ai-tech-express.jp/img/oracle-ai-workspace-chatgpt-be82f33c.jpg",
-  "model": "claude:sonnet",
+  "model": "anthropic-api:claude-sonnet-5-5",
   "affiliates": [],
   "relatedSlugs": [
     "openai-oracle-partnership-chatgpt"
@@ -91,5 +91,67 @@
     "src": "https://ai-tech-express.jp/img/oracle-ai-workspace-chatgpt-be82f33c.jpg"
   },
   "originalTitle": "オラクルの業務システムがChatGPTから操作可能に　小規模企業向け無償枠も",
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "faq": [
+    {
+      "q": "Oracle AI Workspaceでは何ができる？",
+      "a": "ChatGPTのプラグインを通じて、Oracleのアプリやデータの情報取得と、承認済みの業務手順の実行ができます。管理規則や承認手続き、アクセス制御は維持されます。"
+    },
+    {
+      "q": "Oracle AI SMB Bundleは無料で使える？",
+      "a": "無償で利用を開始できます。Oracleのクラウドクレジットが年間1万2000ドル分付きます。利用には規約、条件、制限が適用されます。"
+    },
+    {
+      "q": "Oracle App Composerは何を作れる？",
+      "a": "コーディングの専門知識がなくても、Codexでアプリケーションを作成・保守できます。OCIへの導入と運用はOracleが担います。"
+    },
+    {
+      "q": "Oracle AI Security Meshは何を支援する？",
+      "a": "OCIや他社クラウド、オンプレミス環境のアプリや基盤に潜む脆弱性の発見と修正を支援します。顧客はテストを許可する対象と範囲を指定します。"
+    }
+  ],
+  "todayActions": [
+    "自社でOracle製品を使っているか確認し、使っていれば担当者に今回の発表を共有する",
+    "SMB Bundleの対象条件と規約を、Oracleの公式発表で確かめる",
+    "日本での提供時期について、Oracleの窓口に問い合わせる"
+  ],
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "Oracle製品を使う企業の情シスは、ChatGPT経由で承認済みの業務手順を実行できる点を確認できます。",
+      "小規模企業は、年1万2000ドル分のクラウドクレジットを含むSMB Bundleの条件を確かめるとよいでしょう。",
+      "コードを書けない担当者でも、Codexで社内アプリを作る選択肢が示されました。"
+    ]
+  },
+  "newsType": "product",
+  "factSources": [
+    {
+      "label": "料金",
+      "name": "OpenAI公式の料金ページ",
+      "url": "https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus",
+      "checkedAt": "2026-11-03"
+    },
+    {
+      "label": "為替",
+      "name": "ECB参照レート（ユーロ経由で計算）",
+      "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml",
+      "checkedAt": "2026-11-02"
+    },
+    {
+      "label": "計算",
+      "name": "サイソク編集部の計算（元記事と上の資料の数字から）",
+      "url": "",
+      "checkedAt": ""
+    }
+  ],
+  "charts": [
+    {
+      "kind": "ladder",
+      "product": "chatgpt",
+      "afterHeading": "小規模企業向け無償開始の料金は年1万2000ドル分"
+    }
+  ],
+  "pricingProduct": "chatgpt",
+  "sectionsPolishedAt": "2026-11-03T15:25:33+00:00",
+  "typesRewrittenAt": "2026-11-03T15:25:33+00:00"
 }
