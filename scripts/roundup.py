@@ -24,6 +24,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import headline_normalize  # noqa: E402
+import article_style  # noqa: E402
+import news_types  # noqa: E402
 import section_gate  # noqa: E402
 from cluster import build_clusters  # noqa: E402
 import threads_hooks  # noqa: E402
@@ -56,7 +58,7 @@ SYSTEM_INSTRUCTION = """あなたは日経クロステック / 東洋経済オ�
 - 数値・固有名詞・日付は提供記事から正確に転記する。
 - 記事間で矛盾する記述があれば、隠さず「〜という記述と〜という記述がある」と併記する。
 - 報道記事の敬体（です・ます）で統一。感嘆符と煽り表現は使わない。
-- 「いかがでしたか」「注目が集まっています」等の空疎な表現は禁止。"""
+- 「いかがでしたか」「注目が集まっています」等の空疎な表現は禁止。""" + "\n\n" + article_style.STYLE_PROMPT
 
 PROMPT = """以下は「{topic}」について書かれた {count} 本の記事です。
 これらを統合し、この話題の決定版となるまとめ記事を作成してください。
@@ -64,36 +66,19 @@ PROMPT = """以下は「{topic}」について書かれた {count} 本の記事�
 # 元記事
 {sources}
 
-# 必須の構成（body_markdown に Markdown で記述）
-
-## {topic} とは何か
-この話題の全体像を400〜500字で。個別の発表ではなく、まとまりとして何なのかを説明する。
-
-## 発表された機能・内容の全体像
-**複数の記事に散らばっている要素を1つの表に統合する。**
-各項目について「どの発表で明らかになったか」が分かるようにする。
-これがこの記事の核心なので、最も厚く書くこと。
-
-## いつ、何が発表された？
-いつ何が公開され、何が積み上がってきたかを日付順に整理する。
-個別記事を読んでも分からない「順序と積み上がり」を示す。
-
-## 横断して見えてくること
-{count}本を並べて初めて分かることを書く。以下の観点で必ず1つ以上指摘する。
-- 発表の力点がどこに置かれているか（何を繰り返し訴えているか）
-- 記事間で矛盾・食い違いがある点
-- 語られていない論点（意図的に触れられていない領域）
-この章がこの記事の独自価値そのものです。**必ず具体的に書いてください。**
-
-## 個別のポイント
-主要な発表を1つずつ `###` で簡潔にまとめ、詳細は元記事に譲る形にする。
-各項目の末尾に「詳細: [記事タイトル](/articles/スラッグ)」の形式で内部リンクを置く。
-
-## 結局どう捉えるべきか
-読者が持ち帰るべき結論と、次に確認すべきことを3〜5行で。
+# 記事の組み立て（body_markdown に Markdown で記述。決まった章立ては使わない）
+**この記事の種類: イベント・発表のまとめ**。中身の順番の目安（見出しの名前ではない）:
+1. リードの続きとして、この話題の全体像を2〜3段落（個別の発表の言い直しではなく、まとまりとして何が起きたか）
+2. 複数の記事に散らばった要素を1つの表に統合する（各項目が「どの発表で明らかになったか」が分かる列を付ける）。この記事の核心なので最も厚く書く
+3. いつ何が公開され、何が積み上がってきたかを日付順の表か箇条書きで
+4. 記事を並べて初めて分かること（発表の力点・記事間の食い違い・語られていない論点）を具体的に。材料が無い観点は書かない
+5. 主要な発表を1つずつ2〜3文で。各項目の末尾に「詳細: [記事タイトル](/articles/スラッグ)」の内部リンク
+6. 次に起きること（日付つき）か、読者が確かめること
+見出しは記事の中身の言葉にし（例「料金はどれも据え置き、変わったのは上限だけ」）、本文1,000字につき1つまで。
+「〇〇とは何か」「いつ、何が発表された？」「結局どう捉えるべきか」のような決まった見出しは使わない。
 
 # 品質基準
-- 本文は5000〜8000字。
+- 本文は3000〜6000字（材料の量で決める。水増ししない）。
 - 表を最低2つ含める（統合機能一覧と時系列）。
 - 内部リンクは提供されたスラッグを正確に使う。存在しないスラッグを作らない。
 - 読者に見える文・表に、作業用の言葉を書かない: 「記事1」「記事2」のような番号、「スラッグ」、「提供された記事」。
@@ -107,17 +92,15 @@ PROMPT = """以下は「{topic}」について書かれた {count} 本の記事�
   「OpenAI、」のような読点区切りの社名始まりより、製品名始まりを優先。記号は「｜」「：」を最大1つまで。
   良い例:「GPT-6 Astra×Figma連携｜2時間でUI試作を自動化」「ChatGPT Plugin Extensionsとは：MCPでUI拡張」
 - threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（書き出し／要約すると、＋2文／問いかけ の3つのかたまり・URLなし）。
-- easy_markdown: 「かんたんに読む」版の本文（全角700〜1300字）。AIに詳しくない人向けに、body_markdown の内容をやさしく言い直したもの。
-  見出しは次の4つを「## 」でこの順に使う：## ひとことで言うと / ## 何が新しいのか / ## 影響を受ける人 / ## 利用を始めるには
-  専門用語は使わない（どうしても使うなら直後に（＝〜のこと）と言い換える）。例えは、社会人に通じるものを必要なときだけ使う（子ども向けの例えにしない）。
-  body_markdown に無い事実・数字・価格は書かない。「利用を始めるには」は verdict と矛盾させない。です・ます調で、専門外の社会人に向けた落ち着いた語り口にする（子ども向けの言い方・「すごい」「〜なんです」は使わない）。
-- lede: 180〜240字のリード文。
+<<EASY_RULE>>
+- lede: 180〜240字のリード文。1文目で何が起きたか（一番大きな発表と全体の数）を言い切る。
 - description: 100〜130文字のメタディスクリプション。
 - keywords: 検索されうる日本語キーワード 8〜12個。
 - tags: 3〜6個。
-- highlights: 要点ちょうど3つ。各40〜60文字。
+- highlights: 要点ちょうど3つ。各40〜60文字。リードの文をくり返さない。
 - slug_en: URL用の英小文字スラッグ。3〜6単語、40文字以内。
 """
+PROMPT = PROMPT.replace("<<EASY_RULE>>", news_types.EASY_RULE)  # かんたん版の書き方（scripts/news_types.py）
 
 SCHEMA = {
     "type": "OBJECT",
@@ -214,7 +197,7 @@ def build_sources_block(articles: list[dict]) -> str:
     return "\n".join(blocks)
 
 
-def generate(client, topic: str, articles: list[dict]) -> dict:
+def generate(client, topic: str, articles: list[dict], feedback: list[str] | None = None) -> dict:
     from google.genai import types
 
     prompt = PROMPT.format(
@@ -222,6 +205,8 @@ def generate(client, topic: str, articles: list[dict]) -> dict:
         count=len(articles),
         sources=build_sources_block(articles),
     ) + "\n\n" + threads_hooks.prompt_block()
+    if feedback:
+        prompt += "\n\n# 前回の原稿で見つかった問題（必ず直すこと）\n" + "\n".join(f"- {p}" for p in feedback[:10])
     config = types.GenerateContentConfig(
         system_instruction=SYSTEM_INSTRUCTION,
         response_mime_type="application/json",
@@ -318,6 +303,7 @@ def build_record(topic: str, data: dict, members: list[dict]) -> dict:
     return {
         "slug": slug,
         "type": "roundup",
+        "newsType": "event",  # ニュースの種類（scripts/news_types.py）。まとめは「イベント・発表のまとめ」
         "roundupKey": topic,
         "membersHash": members_hash([m["slug"] for m in members]),
         "sources": [
@@ -411,6 +397,22 @@ def main() -> int:
         if problems := internal_label_problems(record):
             log(f"   [NG] {problems[0]}")
             continue
+        # 文体の門（scripts/article_style.py。すべての生成の段で同じ決まり）。落ちたら問題点を添えて1回だけ作り直す
+        section_gate.apply(record)
+        article_style.autofix(record)
+        if style := article_style.problems(record):
+            log(f"   [style] 不合格: {' | '.join(style[:3])[:300]} → 作り直します")
+            try:
+                data = generate(client, cluster.key, members, feedback=style)
+                record = clean_record_labels(build_record(cluster.key, data, members))
+                section_gate.apply(record)
+                article_style.autofix(record)
+                style = article_style.problems(record) + internal_label_problems(record)
+            except Exception as error:  # noqa: BLE001
+                style = [f"作り直しに失敗（{str(error)[:80]}）"]
+            if style:
+                log(f"   [NG] 文体の門に2回落ちたので書き出さない: {' | '.join(style[:3])[:300]}")
+                continue
         # 既存があればスラッグを引き継いでURLを変えない
         if old:
             record["slug"] = old["slug"]

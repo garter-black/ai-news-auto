@@ -806,8 +806,8 @@ def _fetch_via_reader(url: str) -> dict:
     if "Markdown Content:" in body:
         body = body.split("Markdown Content:", 1)[1]
     text, links = _clean_markdown(body, url)
-    return {"text": text[:TEXT_CAP], "image": None, "title": title, "description": "", "final_url": url, "published": published,
-            "links": links}
+    return {"text": text[:TEXT_CAP], "full_text": text[:400_000] if len(text) > TEXT_CAP else "", "image": None, "title": title,
+            "description": "", "final_url": url, "published": published, "links": links}
 
 
 def _fetch_via_api(url: str) -> dict:
@@ -860,7 +860,8 @@ def _fetch_via_api(url: str) -> dict:
         if getattr(source, "type", "") != "text":
             raise RuntimeError(f"web fetch: 文字でない中身（{getattr(source, 'type', '?')}）")
         text, links = _clean_markdown(str(getattr(source, "data", "") or ""), url)
-        return {"text": text[:TEXT_CAP], "image": None, "title": str(getattr(document, "title", "") or ""), "description": "",
+        return {"text": text[:TEXT_CAP], "full_text": text[:400_000] if len(text) > TEXT_CAP else "", "image": None,
+                "title": str(getattr(document, "title", "") or ""), "description": "",
                 "final_url": getattr(result, "url", "") or url, "published": "", "links": links}
     raise RuntimeError("web fetch: 取得結果が無い")
 
@@ -918,6 +919,8 @@ def _fetch_direct(url: str) -> dict:
         image = urllib.parse.urljoin(final_url, html.unescape(image))
     return {
         "text": text[:TEXT_CAP],
+        # 長い資料（上場の届出書・決算の資料など）の後半。ニュースの種類によっては必要な部分だけ抜き出して使う（facts_bundle.continuation_group）
+        "full_text": text[:400_000] if len(text) > TEXT_CAP else "",
         "image": image,
         "title": parser.meta.get("og:title", ""),
         "description": parser.meta.get("og:description") or parser.meta.get("description", ""),

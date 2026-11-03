@@ -39,7 +39,31 @@ OFFICIAL_GROUPS = [
     {"apple.com"},
     {"meta.com", "fb.com", "facebook.com"},
     {"rakuten.co.jp", "rakuten-sec.co.jp"},
+    {"global.toyota", "toyota.jp", "toyota.co.jp", "toyota-global.com"},
+    {"global.honda", "honda.co.jp", "honda.com"},
+    {"nissan-global.com", "nissan.co.jp"},
+    {"samsung.com", "news.samsung.com"},
+    {"sony.com", "sony.co.jp", "sony.jp"},
 ]
+# ニュースの種類ごとに、深く読むべきリンクの手がかり（scripts/news_types.py。2026-11-03 オーナー決定「元の資料を要約ページの先まで読む」）
+TYPE_HINT_RE = {
+    "earnings": re.compile(r"financial|statement|results|earnings|investor|/ir/|10-q|10-k|8-k|data ?sheet|supplement|presentation|業績|決算|財務|短信|説明資料|連結", re.I),
+    "filing": re.compile(r"prospectus|s-1|f-1|amend|risk|financial|目論見|届出|財務", re.I),
+    "security": re.compile(r"advisor|cve-|nvd|jvn|security|patch|release ?notes|changelog|bulletin|修正|脆弱性|アップデート|更新", re.I),
+    "product": re.compile(r"spec|仕様|諸元|価格|price|grade|グレード|lineup|ラインアップ|製品|product|詳細|オプション|装備|商品サイト|商品情報|特設サイト|ブランドサイト", re.I),
+    "policy": re.compile(r"概要|資料|q&a|ＱＡ|要綱|要領|手引|申請|対象|リーフレット|パンフレット|公募|募集", re.I),
+    "research": re.compile(r"report|survey|調査|結果|報告書|概要|data|statistics|統計", re.I),
+    "pricing": re.compile(r"pric|plans?\b|料金|価格|プラン|limits?|上限", re.I),
+    "deal": re.compile(r"press|release|investor|発表|お知らせ|合意|契約", re.I),
+}
+# 種類によっては、公式の発表元のほかに公的な一次資料も追う（脆弱性の公的データベース・米国の開示書類）
+TYPE_PUBLIC_RE = {
+    "security": re.compile(r"(?:^|\.)(?:nvd\.nist\.gov|jvn\.jp|cve\.org|cve\.mitre\.org|jpcert\.or\.jp|cisa\.gov)$"),
+    "filing": re.compile(r"(?:^|\.)sec\.gov$"),
+}
+# 深く読む種類は、抜き出しを長めにとる（1本あたりの字数）
+TYPE_EXCERPT_CAP = {"earnings": 3000, "filing": 3000, "security": 2000, "product": 2000, "policy": 2000, "research": 2000,
+                    "pricing": 1800, "deal": 1500}
 # 公的な一次資料（お金・税・制度の記事で追いかける）
 PUBLIC_RE = re.compile(r"(?:^|\.)(?:go\.jp|lg\.jp|boj\.or\.jp|e-gov\.go\.jp|jpx\.co\.jp|fsa\.go\.jp)$")
 # 出典の表示名（ドメイン → 名前）。無ければ元記事の発信元の名前
@@ -54,7 +78,7 @@ SITE_NAMES = {
 }
 SKIP_RE = re.compile(
     r"log-?in|sign-?in|sign-?up|register|account|privacy|cookie|careers?|jobs?|recruit|contact|newsletter|subscribe|"
-    r"twitter\.com|x\.com|facebook\.com/(?!.*news)|linkedin|instagram|youtube|tiktok|/tag/|/tags/|/category/|/author/|/search|"
+    r"twitter\.com|x\.com|facebook\.com/(?!.*news)|linkedin|instagram|youtube|tiktok|(?<!/releases)/tag/|/tags/|/category/|/author/|/search|"
     r"/feed|rss|\.(?:jpg|jpeg|png|gif|webp|svg|zip|mp4|mp3|xlsx?|csv|docx?)(?:$|\?)|お問い合わせ|ログイン|採用|プライバシー|個人情報",
     re.I,
 )
@@ -110,24 +134,36 @@ def _norm(url: str) -> str:
     return f"{parts.netloc.lower().removeprefix('www.')}{parts.path.rstrip('/')}"
 
 
-def score_link(link: dict, source_url: str, title_words: set[str], money: bool) -> int:
+def score_link(link: dict, source_url: str, title_words: set[str], money: bool, news_type: str = "") -> int:
     url, text = link.get("url") or "", link.get("text") or ""
     if not url.startswith("http") or _norm(url) == _norm(source_url) or SKIP_RE.search(url) or SKIP_RE.search(text):
         return -1
     path = urllib.parse.urlsplit(url).path
     if re.fullmatch(r"/?(?:index\.\w+)?", path) or LINK_TEXT_SKIP_RE.match(text.strip()) and not DOC_RE.search(url):
         return -1
-    # 一覧ページ（/news/press/ のような浅いフォルダ）は追わない
-    if path.endswith("/") and len([p for p in path.split("/") if p]) <= 2 and not PRICE_RE.search(path):
+    # 一覧ページ（/news/press/ のような浅いフォルダ）は追わない。ただし製品の発表で「商品サイト」と張られた製品のページ（toyota.jp/crownestate/）は追う
+    product_site = news_type == "product" and bool(re.search(r"商品サイト|製品サイト|特設サイト|ブランドサイト|商品情報|製品情報", text))
+    if path.endswith("/") and len([p for p in path.split("/") if p]) <= 2 and not PRICE_RE.search(path) and not product_site:
         return -1
     domain_ok = base_domain(host(url)) in official_domains(source_url)
-    public = money and is_public(url)
-    if not (domain_ok or public):
-        return -1
+    public = (money and is_public(url)) or bool(news_type in TYPE_PUBLIC_RE and TYPE_PUBLIC_RE[news_type].search(host(url)))
     both = f"{text} {urllib.parse.unquote(url)}"
     overlap = len(title_words & _words(both))
+    type_hint = bool(news_type in TYPE_HINT_RE and TYPE_HINT_RE[news_type].search(both))
+    if news_type == "security":
+        cve = bool(re.search(r"CVE-\d{4}-\d+", both, re.I))
+        # 注意喚起（JPCERT など）から、製品の開発元の修正版・告知（GitHub のリリースなど）へ。製品名か CVE 番号が合うときだけ
+        h = host(url)
+        vendor = h == "github.com" or any(w in h for w in title_words if len(w) >= 4)
+        if not (domain_ok or public) and (overlap or cve) and vendor:
+            public = True
+        # 「security」というフォルダ名だけが合う、関係ない同じサイトのページ（ランサムウェアの FAQ など）は追わない
+        if type_hint and not (overlap or cve):
+            type_hint = False
+    if not (domain_ok or public):
+        return -1
     pdf = bool(re.search(r"\.pdf(?:$|\?)", url, re.I))
-    strong = bool(PRICE_RE.search(both) or HELP_RE.search(both) or pdf)
+    strong = bool(PRICE_RE.search(both) or HELP_RE.search(both) or pdf or type_hint)
     # 説明文つきのカード（「人気記事」「関連サービス」の囲み）と、元記事と同じフォルダの別の記事は追わない（料金・ヘルプ・PDF は別）
     if len(text) > 70 and not (pdf or public):
         return -1
@@ -135,7 +171,7 @@ def score_link(link: dict, source_url: str, title_words: set[str], money: bool) 
     if host(url) == host(source_url) and path.rsplit("/", 1)[0] == src_parts.path.rsplit("/", 1)[0] and not strong:
         return -1
     # 中身の手がかり（題名の言葉・料金・ヘルプ・PDF・制度の資料）が1つも無いリンク（関連サービスの宣伝・別の記事）は追わない
-    if not (overlap or PRICE_RE.search(both) or HELP_RE.search(both) or pdf or (money and MONEY_DOC_RE.search(text))):
+    if not (overlap or PRICE_RE.search(both) or HELP_RE.search(both) or pdf or type_hint or (money and MONEY_DOC_RE.search(text))):
         return -1
     score = 0
     score += 5 if PRICE_RE.search(both) else 0
@@ -143,18 +179,20 @@ def score_link(link: dict, source_url: str, title_words: set[str], money: bool) 
     score += 3 if DOC_RE.search(both) else 0
     score += 2 * min(3, overlap)
     score += 2 if link.get("main") else 0
+    score += 4 if type_hint else 0
     if money:
         score += 4 if public else 0
         score += 3 if MONEY_DOC_RE.search(text) else 0
     return score
 
 
-def pick(links: list[dict], source_url: str, title: str, money: bool = False, limit: int = MAX_FETCHES) -> list[dict]:
+def pick(links: list[dict], source_url: str, title: str, money: bool = False, limit: int = MAX_FETCHES,
+         news_type: str = "") -> list[dict]:
     """追いかけるリンク（点数の高い順・最大 limit 本）"""
     words = _words(title)
     scored = []
     for i, link in enumerate(links or []):
-        s = score_link(link, source_url, words, money)
+        s = score_link(link, source_url, words, money, news_type)
         if s >= MIN_SCORE:
             scored.append((s, -i, link))
     scored.sort(key=lambda x: (x[0], x[1]), reverse=True)
@@ -172,6 +210,7 @@ def excerpt(text: str, title: str, keywords: set[str] | None = None, cap: int = 
         s = 2 * len(words & _words(ln))
         s += 2 if re.search(r"\d", ln) else 0
         s += 2 if PRICE_RE.search(ln) or MONEY_DOC_RE.search(ln) else 0
+        s += 6 if re.search(r"in millions|in thousands|百万円|百万ドル|単位[:：]", ln, re.I) else 0  # 表の単位の断り書きは必ず残す
         if len(ln) <= 40 and s >= 2 and i + 1 < len(lines):  # 見出しらしい短い行は次の行にも点を分ける
             scores.append((s, i))
             scores.append((s - 1, i + 1))
@@ -217,11 +256,13 @@ def _fetch_page(url: str, timeout: int) -> dict:
 
 def follow(page: dict | None, source_url: str, title: str, source_name: str = "", money: bool = False,
            keywords: set[str] | None = None, fetcher=None, now: datetime | None = None, log=None,
-           max_fetches: int = MAX_FETCHES) -> list[dict]:
+           max_fetches: int = MAX_FETCHES, news_type: str = "") -> list[dict]:
     """元記事のリンクを最大2本取りに行き、抜き出しを返す。
     戻り値: [{"url", "name", "title", "excerpt", "checkedAt", "public"}]。失敗しても例外にしない（取れたものだけ）"""
     links = (page or {}).get("links") or []
-    targets = pick(links, (page or {}).get("final_url") or source_url, title, money, limit=min(max_fetches, MAX_FETCHES))
+    # 深く読む種類（決算・脆弱性・製品・制度…）は3本まで追う（scripts/news_types.py）
+    cap_fetches = MAX_FETCHES + (1 if news_type in TYPE_EXCERPT_CAP else 0)
+    targets = pick(links, (page or {}).get("final_url") or source_url, title, money, limit=min(max_fetches, cap_fetches), news_type=news_type)
     fetcher = fetcher or _fetch_page
     started = time.time()
     today = (now or datetime.now(JST)).astimezone(JST).strftime("%Y-%m-%d")
@@ -235,7 +276,7 @@ def follow(page: dict | None, source_url: str, title: str, source_name: str = ""
             if log:
                 log(f"   [links] 取得に失敗: {link['url'][:80]}（{str(error)[:60]}）")
             continue
-        text = excerpt(got.get("text") or "", f"{title} {link.get('text', '')}", keywords)
+        text = excerpt(got.get("text") or "", f"{title} {link.get('text', '')}", keywords, cap=TYPE_EXCERPT_CAP.get(news_type, EXCERPT_CAP))
         if len(text) < 80:
             continue
         out.append({

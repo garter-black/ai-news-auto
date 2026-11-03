@@ -150,7 +150,8 @@ class BundleTest(unittest.TestCase):
         self.assertIn("SBI証券は単独口座数非開示", block)
         self.assertNotIn("手数料等およびリスク", block)
         self.assertIn("1カ月あたり約14.3万口座", block)
-        self.assertIn("この数字はどう読む？", block)
+        self.assertIn("計算済みの数字の使い方", block)
+        self.assertNotIn("## この数字はどう読む？", block)  # 決まった章は作らせない（2026-11-03）
         self.assertFalse(bundle.money)
         self.assertIn("SBI証券", bundle.check_block())
 
@@ -240,9 +241,13 @@ class MoneyTemplateTest(unittest.TestCase):
         with patch.object(fb, "load_fx", return_value=None):
             out = w.compose_with_facts(item, "年末調整の手続きが変わります。対象は給与所得者です。", "public", [], "ふつう")
         prompt = out[2]
-        for heading in ("## 何が変わる？", "## いつから？", "## 誰が対象？", "## 早見表", "## 自分の場合の確かめ方"):
-            self.assertIn(heading, prompt)
-        self.assertLess(prompt.index("## 何が変わる？"), prompt.index("## 自分の場合の確かめ方"))
+        # 2026-11-03 オーナー決定: 決まった章立てをやめ、ニュースの種類ごとの型で書く（scripts/news_types.py）。
+        # お金・税・制度の記事は「規制・制度・行政」の型。早見表・自分の場合の確かめ方は、中身の順番の目安として残す（見出しの名前は決めない）
+        self.assertEqual(item["newsType"], "policy")
+        for word in ("規制・制度・行政", "対象者", "開始日・期限・締め切り", "手続きと窓口", "早見表", "自分の場合の確かめ方"):
+            self.assertIn(word, prompt)
+        for heading in ("## 何が変わる？", "## いつから？", "## 誰が対象？", "## 自分に関係ある？"):
+            self.assertNotIn(heading, prompt)
         self.assertTrue(out[6].money)
 
     def test_money_outline_gate(self):
@@ -251,6 +256,8 @@ class MoneyTemplateTest(unittest.TestCase):
         rec["body"] = "## 概要\nx\n## 何が変わる？\na\n## いつから？\nb\n## 誰が対象？\nc\n## 自分の場合の確かめ方\n1. d"
         self.assertEqual(quality.money_outline_problems(rec), [])
         self.assertEqual(quality.money_outline_problems({"body": "## 概要", "_facts": {"money": False}}), [])
+        # ニュースの種類の型で書いた記事（newsType あり）は、決まった章立てを求めない
+        self.assertEqual(quality.money_outline_problems({"body": "## 補助は12月まで", "_facts": {"money": True}, "newsType": "policy"}), [])
 
     def test_source_note_allows_bundle(self):
         self.assertIn("確認済みの事実の束", w.WEB_SOURCE_NOTE)

@@ -33,6 +33,8 @@ import threads_hooks  # noqa: E402
 import persona  # noqa: E402
 import headline_normalize  # noqa: E402
 import section_gate  # noqa: E402
+import news_types  # noqa: E402
+import article_style  # noqa: E402
 
 # --------------------------------------------------------------------------- #
 # 設定
@@ -250,7 +252,8 @@ YouTube上の一次情報（公式発表・専門家の解説）を取材し、�
 - **文を短くするのは「分ける」ためで、説明を削るためではない。** 短い文で書くと、文と段落の数は長い文で書くときの1.5〜2倍になるのが普通。
   本文・かんたん版とも、読者に必要な事実、条件、意味を過不足なく短い文で伝える。文字数のために水増ししない。
 - **1段落は1〜3文。** 段落の間には空行を入れる。
-- **`##` の章名は構成で指定された名前をそのまま使う**（表示のときに記事ごとの見出しへ言い換える）。`###` の小見出しは、その記事でしか使えない中身の言葉にする（例「iPhoneは17%増、日本は1%減」）。決まり文句の質問・「詳細」「ポイント」だけの空っぽの見出しにしない。
+- **決まった章立ては使わない。** 本文の組み立ては、プロンプトの「記事の型」（ニュースの種類ごと。scripts/news_types.py）に従う。
+  見出しはその記事でしか使えない中身の言葉にし（例「iPhoneは17%増、日本は1%減」）、本文1,000字に1つまで。短い記事は見出しなしでよい。
 - **材料が無い章は見出しごと書かない。**「動画内では言及なし」「元記事には書かれていません」で章や表の欄を埋めない。分からないことは「〇〇はまだ発表されていません」と1回だけ書く。
 - 中身の無いつなぎ（「〜にとっても重要です」「〜と言えます」「〜に関係があります」「判断材料になります」「チェックしておきたい情報です」）は書かない。
 - **数字が3つ以上並ぶときは、文中に詰めず箇条書きにする。**
@@ -275,7 +278,7 @@ YouTube上の一次情報（公式発表・専門家の解説）を取材し、�
   発言を引用するときは「」で括る。原語が英語なら日本語訳を併記する。
 - 読者が次にできることを、具体的な事実（日付・窓口・手順）で書く。「読者が次に取るべき行動」という言葉そのものは本文に出さない。
 
-""" + persona.SYSTEM_BLOCK
+""" + persona.SYSTEM_BLOCK + "\n\n" + article_style.STYLE_PROMPT
 
 PROMPT_TEMPLATE = """以下のYouTube動画を「映像」と「音声」の両方から徹底的に解析し、日本語のSEO記事を作成してください。
 
@@ -288,14 +291,11 @@ PROMPT_TEMPLATE = """以下のYouTube動画を「映像」と「音声」の両�
 {video_summary}
 
 # 品質基準（商業メディアの水準）
-- 本文は **4000〜6000字**。薄い記事は不可。
-- 各 `###` セクションは **400字以上**、必ず動画内の具体的な固有名詞・数値・画面描写を含める。
-- `##` の章名は構成で指定された名前をそのまま使う（表示のときに記事ごとの見出しへ言い換える）。`###` の小見出しは、その記事でしか使えない中身の言葉にする（例「iPhoneは17%増、日本は1%減」）。決まり文句の質問にしない。
-- 材料が無い章は見出しごと書かない。「元記事には書かれていません」「言及なし」で章や表の欄を埋めない。
+- 長さは動画の情報量で決める（下の「記事の型」の目安）。文字数のために水増ししない。
+- 見出しを付けた章には、動画内の具体的な固有名詞・数値・画面描写を含める。
 - 表は「表の使い方」に従う（比べるときと早見表だけ）。
 
-# 出力する記事の構成（body_markdown に Markdown で記述）
-以下の見出し構成（`##` 見出し）を使います。材料が無い章は見出しごと省いてください（空の章・「言及なし」の章は作らない）。
+# 記事の型（body_markdown に Markdown で記述。決まった章立ては使わない）
 
 {outline}
 
@@ -312,11 +312,8 @@ PROMPT_TEMPLATE = """以下のYouTube動画を「映像」と「音声」の両�
   名前の直後に「とは／使い方／料金／日本で使える」のどれかを入れる（発表直後は日本語の記事がまだ少なく、この形の検索で1位を取りやすい）。
   良い例:「GPT-6 Astra×Figma連携｜2時間でUI試作を自動化」「ChatGPT Plugin Extensionsとは：MCPでUI拡張」
 - threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（書き出し／要約すると、＋2文／問いかけ の3つのかたまり・URLなし）。
-- easy_markdown: 「かんたんに読む」版の本文（全角700〜1300字）。AIに詳しくない人向けに、body_markdown の内容をやさしく言い直したもの。
-  見出しは次の4つを「## 」でこの順に使う：## ひとことで言うと / ## 何が新しいのか / ## 影響を受ける人 / ## 利用を始めるには
-  専門用語は使わない（どうしても使うなら直後に（＝〜のこと）と言い換える）。例えは、社会人に通じるものを必要なときだけ使う（子ども向けの例えにしない）。
-  body_markdown に無い事実・数字・価格は書かない。「利用を始めるには」は verdict と矛盾させない。です・ます調で、専門外の社会人に向けた落ち着いた語り口にする（子ども向けの言い方・「すごい」「〜なんです」は使わない）。
-- lede: 記事冒頭のリード文。150〜200字の1〜2段落。5W1Hを圧縮し、結論を先に置く。
+<<EASY_RULE>>
+- lede: 記事冒頭のリード文。150〜200字の1〜2段落。1文目で今回なにが新しいか（誰が・何を・いつ）を言い切り、2文目に一番大事な数字か条件を置く。
   報道記事のリードの文体（です・ます調で落ち着いた書き方）。よく知られた会社に「ChatGPTのOpenAI」のような説明を付けない。幼い言い方・話し言葉は使わない。
   ここだけ読んでも発表の要点が分かる密度にする。
 - description: 100〜130文字のメタディスクリプション。検索結果に出る想定で、結論を含める。
@@ -327,7 +324,7 @@ PROMPT_TEMPLATE = """以下のYouTube動画を「映像」と「音声」の両�
 - slug_en: URL用の英小文字スラッグ。半角英数とハイフンのみ、3〜6単語、40文字以内。
 - keywords: 検索されうる日本語キーワード 8〜12個（製品名、機能名、「使い方」「料金」「日本語」等の複合語を含める）。
 - tags: 記事分類用のタグ 3〜6個。製品名・技術カテゴリなど短い語。
-- highlights: 「3秒でわかる要点」ちょうど3つ。各40〜60文字で、数値や固有名詞を含む具体的な内容。
+- highlights: 記事のポイントちょうど3つ。各40〜60文字で、数値や固有名詞を含む具体的な内容。リードの文をくり返さない（リードに無い事実を入れる）。
 - timetable: 動画のタイムテーブル。5〜15項目。time は "M:SS" または "H:MM:SS" 形式の実際のタイムスタンプ、
   label は その時点で何が語られ・実演されたかを30〜50文字で。必ず時刻の昇順。
 - verdict: 読者が「自分は今これを使えるか」を一目で判断するための判定。本文の「料金・提供プラン」「日本から使う方法」と矛盾させないこと。
@@ -352,6 +349,7 @@ PROMPT_TEMPLATE = """以下のYouTube動画を「映像」と「音声」の両�
 body_markdown 内では h1 (`#`) を使わないでください（タイトルは別途表示されます）。
 """
 PROMPT_TEMPLATE = PROMPT_TEMPLATE.replace("<<TITLE_STYLE>>", headline_normalize.TITLE_STYLE_PROMPT)  # 見出しの書き方（scripts/headline_normalize.py）
+PROMPT_TEMPLATE = PROMPT_TEMPLATE.replace("<<EASY_RULE>>", news_types.EASY_RULE)  # かんたん版の書き方（scripts/news_types.py）
 
 ARTICLE_SCHEMA = {
     "type": "OBJECT",
@@ -479,7 +477,7 @@ def clean_verdict(raw: object) -> dict | None:
 VOICES: list[tuple[str, str]] = [
     ("explainer", "丁寧な解説記者。です・ます調で、背景から順に落ち着いて説明する。"),
     ("senpai", "詳しい先輩が同僚に説明するような、落ち着いたです・ます調。難しい言葉はすぐ言い換える。幼い言い方・一問一答にはしない。"),
-    ("honest", "編集部の本音レビュー。です・ます調で事実を解説したあと、「編集部としてはここが気になる」「ここは期待しすぎない方がいい」など率直な見立てを、事実と分けて添える。"),
+    ("honest", "落ち着いた解説記者。です・ます調で事実を解説したあと、確認済みの事実か計算済みの数字に基づく見方を1〜2文だけ「編集部の見方」として事実と分けて添える（根拠の無い感想は書かない）。"),
 ]
 
 
@@ -512,14 +510,16 @@ def generate_article(client, entry: dict) -> dict:
     channel: Channel = entry["channel"]
     genre = channel.genre
     video_url = f"https://www.youtube.com/watch?v={entry['video_id']}"
+    # ニュースの種類（決算・製品・脆弱性…）で記事の型を決める（scripts/news_types.py。決まった章立ては使わない）
+    entry["_news_type"] = entry.get("_news_type") or news_types.classify(entry["title"], entry.get("summary") or "", genre=genre.slug)
     prompt = PROMPT_TEMPLATE.format(
         channel_name=channel.name,
         video_title=entry["title"],
         published_date=entry["published_at"].strftime("%Y-%m-%d"),
         video_url=video_url,
         video_summary=entry["summary"] or "（概要欄なし）",
-        outline=genre.outline,
-        field_notes=genre.field_notes,
+        outline=news_types.prompt_block(entry["_news_type"], genre_slug=genre.slug, source_kind="video"),
+        field_notes=news_types.clean_field_notes(genre.field_notes),
         topic_guard=(
             f"  **このジャンルの対象範囲**: {genre.topic_guard}"
             if genre.topic_guard
@@ -531,6 +531,8 @@ def generate_article(client, entry: dict) -> dict:
     )
     # 「仕事・お金にどう活かせる？」欄（scripts/persona.py）と Threads の書き出しの型（直近で使った型は避ける）
     prompt += "\n\n" + persona.WORK_MONEY_FIELD + "\n\n" + threads_hooks.prompt_block()
+    if entry.get("_feedback"):
+        prompt += entry["_feedback"]  # 文体の門で落ちたときの作り直し（問題点を添える）
     voice_key, voice_text = pick_voice()
     entry["_voice"] = voice_key
     system_instruction = f"{SYSTEM_INSTRUCTION_BASE}\n\n{genre.persona}\n\n## 今回の語り口\n{voice_text}"
@@ -850,6 +852,8 @@ def build_record(entry: dict, data: dict) -> dict:
         "model": MODEL,
         "affiliates": [],
     }
+    if entry.get("_news_type"):
+        record["newsType"] = entry["_news_type"]  # ニュースの種類（scripts/news_types.py）。判定カードの有無・点検に使う
 
     # 記事が言及したツールとアフィリエイト定義を突き合わせ、本文にもリンクを1回だけ挿入する
     affiliates = match_affiliates(record, data.get("mentioned_tools") or [])
@@ -859,6 +863,13 @@ def build_record(entry: dict, data: dict) -> dict:
         log(f"   [aff] {len(affiliates)}件: {', '.join(a['name'] for a in affiliates)}")
 
     return record
+
+
+def style_gate(record: dict) -> list[str]:
+    """動画の記事の文体の門（直せるものは直してから、残った問題の一覧）"""
+    section_gate.apply(record)
+    article_style.autofix(record)
+    return article_style.problems(record)
 
 
 def write_article(record: dict) -> Path:
@@ -876,6 +887,9 @@ def write_article(record: dict) -> Path:
     # 中身のない章・事実を含まないつなぎの文を消す（scripts/section_gate.py。表示の段 lib/article-sections.ts と同じ規則）
     for change in section_gate.apply(record):
         log(f"   [sections] {change}")
+    # 文体の決まりのうちプログラムで直せるもの（「元記事」の言い換え・種類に合わない判定カード。scripts/article_style.py）
+    for change in article_style.autofix(record):
+        log(f"   [style] {change}")
     ARTICLES_DIR.mkdir(parents=True, exist_ok=True)
     path = ARTICLES_DIR / f"{record['slug']}.json"
     path.write_text(
@@ -1105,6 +1119,26 @@ def main() -> int:
             log(f"   [NG] レスポンスの形式が不正: {error}")
             state["failed"][video_id] = state["failed"].get(video_id, 0) + 1
             continue
+
+        # 文体の門（scripts/article_style.py。決まった型の見出し・幼い言い方・中身のない章など）。落ちたら問題点を添えて1回だけ作り直す
+        style = style_gate(record)
+        if style:
+            log(f"   [style] 不合格: {' | '.join(style[:3])[:300]} → 作り直します")
+            import quality  # noqa: PLC0415
+
+            entry["_feedback"] = quality.feedback_block(style)
+            try:
+                data = generate_article(client, entry)
+                record = build_record(entry, data) if data.get("is_relevant", True) else None
+            except Exception as error:  # noqa: BLE001
+                log(f"   [NG] 作り直しに失敗: {str(error)[:160]}")
+                record = None
+            style = style_gate(record) if record else ["作り直しができなかった"]
+            if style:
+                log(f"   [skip] 文体の門に2回落ちたので公開しない: {' | '.join(style[:3])[:300]}")
+                state["processed"][video_id] = {"skipped": True, "reason": f"style-gate: {style[0]}"[:200],
+                                                 "at": datetime.now(timezone.utc).isoformat()}
+                continue
 
         import indexnow  # 遅延 import。検索に出せない記事は公開しない（公開前の門。2026-11-03 オーナー承認）
         blocked = None if os.environ.get("PUBLISH_GATE", "1") == "0" else indexnow.publish_block_reason(record)

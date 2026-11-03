@@ -1357,9 +1357,10 @@ def find_official_release(article: dict, max_pages: int = 6) -> dict | None:
     return None
 
 
-def pick_official(article: dict, repeats: Counter, fast: bool = False) -> dict:
+def pick_official(article: dict, repeats: Counter, fast: bool = False, extra: int = 0) -> dict:
     """公式の発表の中から、いちばん良い画像を選ぶ。
-    {"best": {"kind", "url", "image", "rank", "where"} or None, "reasons": [使わなかった理由]}"""
+    extra > 0 なら、本文に置く公式の写真・図（body_images）のために、元記事のページの候補をあと少し見る。
+    {"best": {"kind", "url", "image", "rank", "where"} or None, "found": [見つけた画像], "reasons": [使わなかった理由]}"""
     current = article.get("thumbnail", "") or ""
     page = article.get("sourceUrl", "") if article.get("sourceType") == "web" else ""
     reasons: list[str] = []
@@ -1513,12 +1514,52 @@ def pick_official(article: dict, repeats: Counter, fast: bool = False) -> dict:
                 hit = consider(item, forced_kind="kit")
                 if hit and hit["kind"] == "kit":
                     break
+    # 本文に置く公式の写真・図の候補（ニュースの種類の型で書いた新しい記事だけ。scripts/news_types.py・body_images）
+    if extra > 0:
+        looked = {f["url"] for f in found}
+        for item in candidates[:10]:
+            if sum(1 for f in found if f["kind"] in BODY_KINDS) >= 1 + extra:
+                break
+            if item["url"] in looked or item.get("where") == "og":
+                continue
+            looked.add(item["url"])
+            consider(item)
     # 同じ種類なら大きい（幅 1000px 以上の）ものを先に
     found.sort(key=lambda f: (f["rank"], not f.get("big"), f["order"]))
     best = found[0] if found else None
     if best and page:
         PAGES_BY_IMAGE.setdefault(best["url"], set()).add(page)
-    return {"best": best, "reasons": list(dict.fromkeys(reasons)) or ["候補なし"]}
+    return {"best": best, "found": found, "reasons": list(dict.fromkeys(reasons)) or ["候補なし"]}
+
+
+# 本文に置く公式の写真・図（2026-11-03 オーナー決定「公式の図や写真を、出典つきで本文に1〜2枚」）。
+# 会社・団体の自社サイトの発表（official_source）にある報道向けの写真・図だけ。ロゴ・サイト共通の画像・通信社の写真は使わない。
+# 出典（会社名と発表のページ）を必ず添える（components の lib/body-images.ts が「画像：〇〇」と出す）
+BODY_KINDS = {"photo", "kit", "dense", "hero"}
+BODY_MAX = 2
+
+
+def body_images(article: dict, result: dict, ctx: dict, org: str, thumb_url: str = "") -> list[dict]:
+    """見つけた公式の画像から、本文に置く1〜2枚を保存して返す（見出し画像に使ったものは除く）"""
+    slug = article.get("slug") or ""
+    page = article.get("sourceUrl") or ""
+    out: list[dict] = []
+    for hit in result.get("found") or []:
+        if hit["url"] == thumb_url or hit["kind"] not in BODY_KINDS or hit.get("image") is None:
+            continue
+        w, h = hit["image"].size
+        if w < MIN_GRAPHIC_WIDTH or any(o["original"] == hit["url"] for o in out):
+            continue
+        try:
+            url, size = store(f"{slug[:100]}-fig{len(out) + 1}", hit["image"], ctx.get("dry_run", False), keep_aspect=True)
+        except Exception as error:  # noqa: BLE001 - 保存できなければ本文の画像を付けないだけ
+            log(f"   [img] 本文の画像を保存できない: {str(error)[:100]}")
+            continue
+        out.append({"src": url, "width": size[0], "height": size[1], "kind": hit["kind"], "credit": org,
+                    "sourceUrl": page, "original": hit["url"]})
+        if len(out) >= BODY_MAX:
+            break
+    return out
 
 
 def logo_canvas(image):
@@ -2434,8 +2475,18 @@ def process(path: Path, article: dict, ctx: dict) -> str:
     if not ctx.get("retry_ai") and official is None:
         log("   [img] 公式の発表ではないので元記事の写真は使わない")
     elif not ctx.get("retry_ai"):
-        result = pick_official(release["article"] if release else article, ctx["repeats"], fast=ctx.get("fast", False))
+        # ニュースの種類の型で書いた新しい記事（newsType あり）は、本文に置く公式の写真・図も探す
+        want_body = bool(article.get("newsType")) and not article.get("bodyImages")
+        result = pick_official(release["article"] if release else article, ctx["repeats"], fast=ctx.get("fast", False),
+                               extra=BODY_MAX if want_body else 0)
         best = result["best"]
+        if want_body:
+            thumb_rank = OFFICIAL_RANK["banner" if announce else "hero"]
+            used = best["url"] if best and best["rank"] <= thumb_rank else ""
+            org = (wire_org(article) if official.get("wire") else org_name(article)) or official.get("wire") or article.get("sourceName", "")
+            if figs := body_images(article, result, ctx, org, used):
+                article["bodyImages"] = figs
+                log(f"   [img] 本文の公式の画像 {len(figs)}枚（{'・'.join(f['kind'] for f in figs)}）")
         if best:
             log(f"   [img] 公式の画像: {best['kind']}（{best['where']}）{best['url'][:90]}")
         else:

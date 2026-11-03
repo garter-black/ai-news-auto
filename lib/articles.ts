@@ -1,4 +1,5 @@
 import type { ArticleChart } from "@/lib/charts";
+import type { BodyImage } from "@/lib/body-images";
 import fs, { hasVirtualFs } from "@/lib/content-fs";
 import path from "node:path";
 import type { Verdict } from "@/lib/verdict";
@@ -109,6 +110,10 @@ export type Article = {
   sectionTitles?: { body?: Record<string, string>; easy?: Record<string, string> };
   /** 数字の図（前と今・推移・料金の段。scripts/article_charts.py が記事の表から作る。lib/charts.ts） */
   charts?: ArticleChart[];
+  /** 本文に置く公式の写真・図（1〜2枚・出典つき。scripts/images.py の body_images。lib/body-images.ts） */
+  bodyImages?: BodyImage[];
+  /** ニュースの種類（earnings / security / product …。scripts/news_types.py。2026-11-03 以降の記事だけ） */
+  newsType?: string;
   affiliates: AffiliateLink[];
   body: string;
   /** 「かんたんに読む」版（専門用語なしの短い解説）。無い記事は切り替えを出さない */

@@ -680,6 +680,25 @@ mark {
   border-radius: 6px;
 }
 
+/* 本文に置く公式の写真・図（lib/body-images.ts）。出典の行は注記の大きさ（14px） */
+.body-figure {
+  margin: 1.75rem 0;
+}
+.body-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+.body-figure figcaption {
+  margin-top: 0.4rem;
+  color: var(--muted);
+  font-size: var(--text-note);
+  line-height: 1.6;
+}
+
 /* 「今すぐ使えるものだけ」スイッチ（components/UsableFilter.tsx） */
 .usable-filter[data-only-usable="1"] li.tl-row:not([data-usable="go"]) {
   display: none;

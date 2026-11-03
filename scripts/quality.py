@@ -27,6 +27,7 @@ import japan_availability  # noqa: E402
 import llm  # noqa: E402
 import persona  # noqa: E402
 import section_gate  # noqa: E402
+import article_style  # noqa: E402  文体の決まりと公開前の門（1か所）
 import ui_claims  # noqa: E402
 
 TITLE_RANGE = (18, 64)
@@ -246,7 +247,7 @@ def number_problems(record: dict, source_text: str, context: str = "") -> list[s
     plain = [q for q in found if calc_facts.supported(q, allowed) and not calc_facts.supported(q, source_vals)]
     if plain:
         for g in groups:
-            if g.get("label") == "元記事の注記":
+            if g.get("label") in ("元記事の注記", "元の資料の続き"):
                 continue
             vals = calc_facts.values(g["body"])
             if any(calc_facts.supported(q, vals) for q in plain) and not any(m and m in text for m in g.get("marks") or []):
@@ -414,10 +415,12 @@ LANG_FIX_SCHEMA = {
 
 LANG_FIX_SYSTEM = """あなたはニュースサイトの校閲者です。指摘された文だけを、自然な日本語に直します。出力は指定の JSON だけ。"""
 
-LANG_FIX_PROMPT = """次の文には問題（中国語の混入・訳されずに残った英単語・用語の誤訳・まだ始まっていないことを始まったように書いている）があります。1文ずつ直してください。
+LANG_FIX_PROMPT = """次の文には問題（中国語の混入・訳されずに残った英単語・用語の誤訳・まだ始まっていないことを始まったように書いている・
+文体の決まりに合わない言い方）があります。問題は各文の下に書いてあります。1文ずつ直してください。
 
 # 直し方
 - 指摘された問題だけを直す。中国語の言葉・簡体字は日本語に、英単語は日本語に訳す（製品名・会社名・略語はそのまま）。
+- 文体の直し（幼い言い方・宣伝の言葉・つなぎ・一問一答・リードの1文目）は、ITmedia・日経クロステック水準の落ち着いた大人の日本語にする。
 - 事実・数字・日付・固有名詞・リンク・太字（**）は一字も変えない（これから始まることへの直しでは、問題に書かれた開始日だけは書き足してよい）。
   文を足したり削ったりしない（1文は1文のまま）。
 - 用語は次の用語集どおりに訳す。
@@ -464,6 +467,13 @@ def repair_language(record: dict, source_text: str = "") -> tuple[int, int, str]
     """言葉の問題がある文だけを、安いモデル（CHECK_TIER）で1回直す。record をその場で書き換える。
     (見つかった数, 直した数, 使ったモデル)。数字が変わった・問題が残った直しは使わない"""
     found = language_issues(record, source_text)
+    # 文体の決まりの「直す」項目（scripts/article_style.py）も同じ1回の手直しに入れる
+    for x in article_style.repair_items(record):
+        same = next((y for y in found if (y["field"], y["sentence"]) == (x["field"], x["sentence"])), None)
+        if same:
+            same["issues"] += x["issues"]
+        else:
+            found.append(x)
     have = {(x["field"], x["sentence"]) for x in found}
     for x in future_start_issues(record, source_text):
         if (x["field"], x["sentence"]) in have:
@@ -828,8 +838,8 @@ MONEY_SECTIONS = [("何が変わる", r"何が変わ"), ("いつから", r"い�
 
 def money_outline_problems(record: dict) -> list[str]:
     """お金・税・制度の記事（束が money と判定したもの）が、決まった章立てで書かれているか（API 不要）"""
-    if not (record.get("_facts") or {}).get("money"):
-        return []
+    if not (record.get("_facts") or {}).get("money") or record.get("newsType"):
+        return []  # ニュースの種類の型で書いた記事（newsType あり）は、種類ごとの型（scripts/news_types.py の policy）で見る
     heads = [h for h in re.findall(r"(?m)^##\s+(.+)$", record.get("body") or "")]
     missing = [name for name, pattern in MONEY_SECTIONS if not any(re.search(pattern, h) for h in heads)]
     if not missing:
@@ -1035,15 +1045,15 @@ def structural_problems(record: dict, kind: str, source_text: str = "", context:
     if m := ENGLISH_RUN_RE.search(re.sub(r"`[^`]*`|\[[^\]]*\]\([^)]*\)", " ", text)):
         problems.append(f"訳されていない英文が残っている（「{m.group(0)[:40]}…」）")
     if record.get("sourceType") == "web" and (m := VIDEO_LEFTOVER_RE.search(text)):
-        problems.append(f"文章が元なのに動画前提の表現がある（「{m.group(0)}」）。「元記事」と書く")
+        problems.append(f"文章が元なのに動画前提の表現がある（「{m.group(0)}」）。「〇〇の発表」と書く")
     if record.get("sourceType") == "web" and kind != "update" and not record.get("workMoney"):
         problems.append(f"work_money（「{persona.WORK_MONEY_HEADING}」欄）がありません")
     problems += persona.work_money_problems(record.get("workMoney"))
     problems += language_problems(record, source_text)
-    # 文体の門（報告「記事の文章レベル比較_2026-11-03」の自動ゲートのうち本文・かんたん版の分）:
-    # 中の人の注記・つなぎの文のくり返し・材料の無い章・割った文・幼い言い方・一問一答
+    # 文体の門（報告「記事の文章レベル比較_2026-11-03」の自動ゲート17項目・台帳 A1〜A6・A18〜A21。scripts/article_style.py が1か所で持つ）:
+    # 決まった型の見出し・見出しの多すぎ・中身のない章・指示文の漏れ・割った文・一問一答・幼い言い方・宣伝の言葉・つなぎ・くり返し・英語の画面名
     if kind != "update":
-        problems += section_gate.style_problems(record)
+        problems += article_style.problems(record)
     problems += future_start_problems(record, source_text)
     problems += raw_diff_problems(record)
     if kind != "update":
@@ -1144,12 +1154,14 @@ def evaluate(record: dict, source_text: str, kind: str, context: str = "", check
     soft=True は「形と事実は合格、読みやすさだけが基準外」。polish() で文を分け、だめでも受理してよい。
     形・事実の不合格のときの problems には読みやすさを混ぜない（作り直しで本文が縮み、長さで落ちるのを防ぐ）"""
     fix_video_leftover(record)
+    # 文体の決まりのうちプログラムで直せるもの（「元記事」の言い換え・種類に合わない判定カード。scripts/article_style.py）
+    article_style.autofix(record)
     # 中身のない章・事実を含まないつなぎの文・中の人の注記は、プログラムで先に消す（scripts/section_gate.py。表示の段と同じ規則）
     section_gate.apply(record)
     read = readability(record.get("body") or "")
     read_problems = readability_problems("", read)
     base = {"structural": [], "fact": None, "readability": read, "readability_problems": read_problems,
-            "warnings": title_warnings(record) + section_gate.style_warnings(record)}
+            "warnings": title_warnings(record) + section_gate.style_warnings(record) + article_style.warnings(record)}
     structural = structural_problems(record, kind, source_text, context)
     if record.get("sourceType") == "web" and not (source_text or "").strip():
         structural.append("一次資料が空のため記事の内容を確認できません")

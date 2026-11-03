@@ -155,7 +155,18 @@ def values(text: str) -> list[float]:
     for word, mult in WORD_MULT_RE.findall(text or ""):
         base = 1.0 if word.lower() in ("a", "an") else float(WORD_NUMBERS.get(word.lower(), 1))
         found.append(base * EN_MULT[mult.lower()])
+    # 決算の表は「百万ドル単位」「in millions」で書かれる（6,540 → 65億4,000万ドル）。単位の断り書きがある資料だけ、
+    # 表の数字を単位どおりに直した値も「使ってよい数字」に入れる（2026-11-03: 決算の記事が製品別・地域別の数字を書けるように）
+    plain = [q.value for q in extract(text) if q.value >= 1]
+    if UNIT_MILLIONS_RE.search(text or ""):
+        found += [v * 1e6 for v in plain]
+    if UNIT_THOUSANDS_RE.search(text or ""):
+        found += [v * 1e3 for v in plain]
     return found
+
+
+UNIT_MILLIONS_RE = re.compile(r"in millions|\(millions|millions of (?:dollars|U\.S\.)|百万(?:円|ドル|ユーロ)|単位[:：]\s*百万", re.I)
+UNIT_THOUSANDS_RE = re.compile(r"in thousands|\(thousands|千(?:円|ドル)|単位[:：]\s*千", re.I)
 
 
 # 品質ゲートで確かめる数字（お金・割合・倍・大きな件数）。日付・時間・小さな数は確かめない

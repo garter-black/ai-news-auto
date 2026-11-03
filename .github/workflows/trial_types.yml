@@ -1,0 +1,52 @@
+# ニュースの種類ごとの型（scripts/news_types.py）の試し書き（公開しない・記事のファイルを書き換えない・SNS に出さない）。
+# 比べたい記事のスラッグを渡すと、本番と同じ部品（資料の取り直し・リンク先・型・品質ゲート・文体の門）で書き直し、
+# 前の記事と並べた JSON を成果物（artifact）に残す。trial/ で始まるブランチに push したときと、手動のときだけ動く。
+name: Trial news types (dry run)
+
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: "スペース区切りのスラッグ"
+        required: true
+      model:
+        description: "書くモデル（空なら本番の配分どおり）"
+        default: "claude-sonnet-5-5"
+  push:
+    branches: ["trial/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  trial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Trial (dry run)
+        env:
+          LLM_WORKFLOW: trial
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
+          JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
+          SLUGS: ${{ inputs.slugs || 'claude-ultra-plan-price-limits chatgpt-codex-shared-usage-limits apple-reports-q4-2026-results anthropic-s1a-amendment-ant-nasdaq brotli-vulnerability-cve-2026-111497 toyota-crown-estate-minor-change toyota-land-cruiser-fj-options honda-rn0-emtb-eicma-2026 digital-genai-survey-result' }}
+          MODEL: ${{ inputs.model || 'claude-sonnet-5-5' }}
+          # 試し書きは本番の1日の安全上限（その日の本番の回数）に数えない。費用は記事1本あたり約 0.1〜0.3 ドル
+          CLAUDE_API_DAILY_CALLS_CORE: "999"
+          CLAUDE_API_DAILY_CALLS_CHECK: "999"
+          CLAUDE_API_DAILY_CALLS_HELPER: "999"
+        run: |
+          args=()
+          for s in $SLUGS; do args+=(--slug "$s"); done
+          python scripts/trial_types.py "${args[@]}" --purpose core --force-model "$MODEL" --attempts 2 --out trial.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: trial-news-types
+          path: trial.json

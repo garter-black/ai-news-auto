@@ -61,6 +61,8 @@ import indexnow  # noqa: E402  検索に出せない記事は公開しない（�
 import japan_availability  # noqa: E402
 import llm  # noqa: E402
 import main as m  # noqa: E402
+import news_types  # noqa: E402  ニュースの種類ごとの記事の型
+import source_links  # noqa: E402
 import headline_normalize  # noqa: E402
 import pacing  # noqa: E402  1日の上限の数え方（公開中だけ）と時刻ごとの配分
 import page_watch  # noqa: E402
@@ -250,7 +252,7 @@ def rank_bucket(item: dict) -> int:
 
 WEB_SOURCE_NOTE = """## 今回の取材対象（重要）
 今回は動画ではなく、公式ブログ・ニュースルーム・プレスリリースなどの「文章」が一次資料です。
-上の規則や章立てにある「動画」「映像」「音声」「スライド」は、すべて「元記事」と読み替えてください。
+上の規則にある「動画」「映像」「音声」「スライド」は、すべて「元の資料（発表の文章）」と読み替えてください。本文には「元記事」という言葉を書かない（「〇〇の発表によると」と書く）。
 - 元記事の文をそのまま訳したり書き写したりしない。内容を理解したうえで、自分の言葉で要約・解説する。
   引用は短いフレーズ（1文の一部、30字程度まで）にとどめ、「」で括る。
 - 本文中で必ず一度は出典（発信元の名前）に触れる（例：「〇〇の公式ブログによると」）。
@@ -281,13 +283,11 @@ WEB_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を読�
 
 # 品質基準（商業メディアの水準）
 - 本文は元記事の情報量と読者の疑問に合わせた長さにする。文字数のために水増ししない。必要な条件や背景があれば省かない。
-- 各 `###` セクションには、元記事にある具体的な固有名詞・数値を含める。
-- `##` の章名は構成で指定された名前をそのまま使う（表示のときに記事ごとの見出しへ言い換える）。`###` の小見出しは、その記事でしか使えない中身の言葉にする（例「iPhoneは17%増、日本は1%減」）。決まり文句の質問にしない。
-- 材料が無い章は見出しごと書かない。「元記事には書かれていません」「言及なし」で章や表の欄を埋めない。
+- 見出しを付けた章には、資料にある具体的な固有名詞・数値を含める。
+- 本文の組み立ては下の「記事の型」に従う（決まった章立ては使わない。材料のあることだけを書く）。
 - 表は「表の使い方」に従う（比べるときと早見表だけ）。
 
-# 出力する記事の構成（body_markdown に Markdown で記述）
-次の見出し構成（`##` 見出し）を基本にする。「動画」は「元記事」と読み替え、元記事に材料がない章は見出しごと省く。重要な不明点は「まだ発表されていません」と1回だけ書く。
+# 記事の型（body_markdown に Markdown で記述）
 
 {outline}
 
@@ -301,18 +301,15 @@ WEB_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を読�
   **新しい製品・機能・モデルの発表**なら、日本の人が実際に検索する形にする:「〇〇とは？日本で使える？料金も」「〇〇の使い方と料金｜日本での提供状況」など、
   名前の直後に「とは／使い方／料金／日本で使える」のどれかを入れる（発表直後は日本語の記事がまだ少なく、この形の検索で1位を取りやすい）。
 - threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（書き出し／要約すると、＋2文／問いかけ の3つのかたまり・URLなし）。
-- easy_markdown: 「かんたんに読む」版（本文の必要な内容を過不足なく、短く分かりやすく）。body_markdown の内容をやさしく言い直したもの。
-  見出しは次の4つを「## 」でこの順に使う：## ひとことで言うと / ## 何が新しいのか / ## 影響を受ける人 / ## 利用を始めるには
-  必ず「## ひとことで言うと」から始める。専門用語は使わない（使うなら直後に（＝〜のこと））。例えは、社会人に通じるものを必要なときだけ使う（子ども向けの例えにしない）。
-  body_markdown に無い事実・数字・価格は書かない。「利用を始めるには」は verdict と矛盾させない。です・ます調。
-- lede: 記事冒頭のリード文。150〜200字。結論を先に置き、発信元の名前を含める。
+<<EASY_RULE>>
+- lede: 記事冒頭のリード文。150〜200字。1文目で今回なにが新しいか（誰が・何を・いつ）を言い切り、2文目に一番大事な数字か条件を置く。発信元の名前を含める。
   報道記事のリードの文体（です・ます調で落ち着いた書き方）。よく知られた会社に「ChatGPTのOpenAI」のような説明を付けない。幼い言い方・話し言葉は使わない。
 - description: 100〜130文字のメタディスクリプション。結論を含める。
 - mentioned_tools: 記事中で言及した製品・サービス・企業の**正式名称**（3〜12個）。本文で触れたものだけ。
 - slug_en: URL用の英小文字スラッグ。半角英数とハイフンのみ、3〜6単語、40文字以内。
 - keywords: 検索されうる日本語キーワード 8〜12個。
 - tags: 記事分類用のタグ 3〜6個。
-- highlights: 「3秒でわかる要点」ちょうど3つ。各40〜60文字で、元記事にある数値や固有名詞を含める。
+- highlights: 記事のポイントちょうど3つ。各40〜60文字で、資料にある数値や固有名詞を含める。リードの文をくり返さない（リードに無い事実を入れる）。
 - timetable: 文章が元なので **必ず空配列 []** にする。
 - verdict: 読者が「自分は今これを使えるか」を判断するための判定。本文の「料金・提供プラン」「日本から使う方法」と矛盾させない。
   元記事に根拠がない項目は推測せず unknown / 不明 / null にする。
@@ -334,12 +331,13 @@ WEB_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を読�
 body_markdown 内では h1 (`#`) を使わないでください（タイトルは別途表示されます）。
 """
 WEB_PROMPT_TEMPLATE = WEB_PROMPT_TEMPLATE.replace("<<TITLE_STYLE>>", headline_normalize.TITLE_STYLE_PROMPT)  # 見出しの書き方（scripts/headline_normalize.py）
+WEB_PROMPT_TEMPLATE = WEB_PROMPT_TEMPLATE.replace("<<EASY_RULE>>", news_types.EASY_RULE)  # かんたん版の書き方（scripts/news_types.py）
 
 
 BROAD_SOURCE_NOTE = """## 幅広い話題の編集ルール（必ず守る）
 - 資料はプレスリリース・官公庁・企業・研究機関の公式発表。発表者の宣伝文句（「業界初」「最高」等）は事実として断定せず、
   「〇〇によると」「〇〇は…としています」と発信元に帰属させる。
-- 読者目線の3点を必ず書く: 概要（ひとことで言うと何か） / 自分に関係あるか / 使える・買える・申し込めるか。
+- 読者に関係する条件（使える・買える・申し込めるか、対象者、期限）は、資料にあるときだけ本文に書く（無い項目の章は作らない）。
 - 事件・事故の死傷者、特定個人のゴシップ、選挙・政党の話、病気が治る・効くといった医療効果、出典不明の噂は書かない。
   元記事がそれらを主題にしているなら is_relevant を false にする。"""
 
@@ -358,13 +356,11 @@ BROAD_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を�
 
 # 品質基準
 - 本文は元記事の情報量と読者の疑問に合わせた長さにする。文字数のために水増ししない。必要な条件や背景があれば省かない。
-- 各 `###` セクションには、元記事にある具体的な固有名詞・数値・日付を含める。
-- `##` の章名は構成で指定された名前をそのまま使う（表示のときに記事ごとの見出しへ言い換える）。`###` の小見出しは、その記事でしか使えない中身の言葉にする（例「iPhoneは17%増、日本は1%減」）。決まり文句の質問にしない。
-- 材料が無い章は見出しごと書かない。「元記事には書かれていません」「言及なし」で章や表の欄を埋めない。
+- 見出しを付けた章には、資料にある具体的な固有名詞・数値・日付を含める。
+- 本文の組み立ては下の「記事の型」に従う（決まった章立ては使わない。材料のあることだけを書く）。
 - 表は「表の使い方」に従う（比べるときと早見表だけ）。
 
-# 出力する記事の構成（body_markdown に Markdown で記述）
-次の `##` 見出し構成を基本にする。元記事に材料がない章は省く。重要な不明点は確認できていないと明記する。
+# 記事の型（body_markdown に Markdown で記述）
 
 {outline}
 
@@ -374,16 +370,13 @@ BROAD_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を�
   **感嘆符・煽り語（衝撃／ヤバい／ついに／必見／知らないと損）は使わない**。元記事のタイトルをそのまま使わない。
 - seo_title: 全角24〜30文字。固有名詞（商品名・制度名・組織名）を先頭に置く。記号は「｜」「：」を最大1つまで。
 - threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（書き出し／要約すると、＋2文／問いかけ の3つのかたまり・URLなし）。
-- easy_markdown: 「かんたんに読む」版（本文の必要な内容を過不足なく、短く分かりやすく）。必ず「## ひとことで言うと」から始め、
-  ## ひとことで言うと / ## 何が新しいのか / ## 影響を受ける人 / ## 利用を始めるには の4見出しをこの順に使う。
-  「利用を始めるには」は、使う・買う・申し込む方法か、それが無い話題なら読者が取れる行動（公式情報の確認など）を書く。
-  専門用語は使わない（使うなら直後に（＝〜のこと））。例えは、社会人に通じるものを必要なときだけ使う（子ども向けの例えにしない）。body_markdown に無い事実は書かない。です・ます調。
-- lede: 150〜200字。結論を先に置き、発信元の名前を含める。報道記事のリードの文体で、よく知られた会社に説明を付けず、幼い言い方・話し言葉は使わない。
+<<EASY_RULE>>
+- lede: 150〜200字。1文目で今回なにが新しいか（誰が・何を・いつ）を言い切り、2文目に一番大事な数字か条件を置く。発信元の名前を含める。報道記事のリードの文体で、よく知られた会社に説明を付けず、幼い言い方・話し言葉は使わない。
 - description: 100〜130文字のメタディスクリプション。結論を含める。
 - mentioned_tools: 記事中で言及した商品・サービス・企業・制度の正式名称（0〜12個）。本文で触れたものだけ。
 - slug_en: URL用の英小文字スラッグ。半角英数とハイフンのみ、3〜6単語、40文字以内。
 - keywords: 検索されうる日本語キーワード 8〜12個。tags: 3〜6個。
-- highlights: 「3秒でわかる要点」ちょうど3つ。各40〜60文字で、元記事にある数値や固有名詞を含める。
+- highlights: 記事のポイントちょうど3つ。各40〜60文字で、資料にある数値や固有名詞を含める。リードの文をくり返さない（リードに無い事実を入れる）。
 - timetable: **必ず空配列 []**。
 - verdict: 読者が使う・買う・申し込む・参加できるものの場合だけ埋める（基準: status available/limited/soon/demo、
   japan ok/partial/no/unknown、price 14字以内、free true/false/null、audience 2〜8字、take 25〜55字）。
@@ -397,44 +390,7 @@ BROAD_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を�
 body_markdown 内では h1 (`#`) を使わないでください（タイトルは別途表示されます）。
 """
 BROAD_PROMPT_TEMPLATE = BROAD_PROMPT_TEMPLATE.replace("<<TITLE_STYLE>>", headline_normalize.TITLE_STYLE_PROMPT)  # 見出しの書き方（scripts/headline_normalize.py）
-
-
-# お金・税・制度の記事の章立て（2026-11-03 の比較調査の7位・大きく作るもの7）。facts_bundle.is_money_topic のとき genre.outline の代わりに使う
-MONEY_OUTLINE = """**お金・税・制度の記事の章立て（この順番で。材料の無い章は省く）**
-## 概要
-短い文3〜4つで、何が変わるのかを専門用語なしで書く。1段落は1〜3文。ここだけ読めば全体がつかめるようにする。
-
-## 何が変わる？
-前と後で何が変わるのかを、元記事と確認済みの事実の束の事実だけで書く。`###` 小見出し（中身が分かる言葉）で論点ごとに整理する（最低2つ）。
-決まったことか、案（検討中・意見募集中）かを必ず区別する。
-
-## いつから？
-開始日・期限・経過措置を日付つきで書く。元記事に無ければ「発表では示されていません」と書く。
-
-## 誰が対象？
-対象になる人・ならない人を箇条書きで。所得・年齢・地域などの条件は元記事の表記どおりに書く。
-
-## 早見表
-金額・税率・期限・対象などを表（Markdown table。最後の列は「出典」）にする。表に入れてよい数字は、元記事・確認済みの事実の束（公的資料など）の公式の数字と、
-「計算済みの数字」だけ。自分で計算した数字・仮の例の金額は入れない。材料が無ければこの章は作らない。
-
-## 自分の場合の確かめ方
-読者が自分の場合を確かめる方法を、番号つきの手順（1. 2. 3.）で書く（どの書類・明細を見るか、公式の計算ページ・相談窓口）。
-書類の欄の名前・ページ名・窓口は、元記事か確認済みの事実の束にあるものだけ。無ければ「発表元（〇〇）の案内ページで確かめる」と書き、場所を作らない。
-
-## 自分に関係ある？
-{relate}
-
-## まとめ
-今後の予定と、読者が次に取るべき行動を短い文で2〜3つ。
-
-よくある質問は faq の欄に3〜5問書く（本文に「よくある質問」の章は作らない。記事ページが faq を本文の後に出す）。"""
-
-
-def money_outline() -> str:
-    from genres import RELATE_PERSONA  # noqa: PLC0415
-
-    return MONEY_OUTLINE.replace("{relate}", RELATE_PERSONA)
+BROAD_PROMPT_TEMPLATE = BROAD_PROMPT_TEMPLATE.replace("<<EASY_RULE>>", news_types.EASY_RULE)  # かんたん版の書き方（scripts/news_types.py）
 
 
 def build_broad_prompt(item: dict, text: str, genre, context: str = "", outline: str | None = None) -> str:
@@ -445,8 +401,9 @@ def build_broad_prompt(item: dict, text: str, genre, context: str = "", outline:
         url=item["url"],
         genre_name=f"{genre.slug}（{genre.name}）",
         text=text,
-        outline=outline or genre.outline,
-        field_notes=genre.field_notes,
+        outline=outline or news_types.prompt_block(item.get("newsType") or news_types.classify(item["title"], text, url=item.get("url", ""), genre=genre.slug),
+                                                   genre_slug=genre.slug),
+        field_notes=news_types.clean_field_notes(genre.field_notes),
         topic_guard=f"  **このジャンルの対象範囲**: {genre.topic_guard}",
         genre_choices="\n".join(f"  - {g.slug}: {g.name}" for g in ALL_GENRES),
     )
@@ -772,27 +729,6 @@ TREND_SOURCE_NOTE = """## 今回の取材対象（重要）
 ## トレンド記事の編集ルール（必ず守る）
 {rules}"""
 
-TREND_OUTLINE = """## 概要
-短い文3〜4つで、何が話題になっていて、読者に何が関係するのかを専門用語なしで説明する（1段落は1〜3文）。
-
-## なぜいま話題？
-きっかけ（発表・発売・料金改定・障害・制度変更など）を、報道に書かれた事実だけで説明する。
-
-## 報道で分かっていることは？
-各報道の内容を `###` 小見出し（中身が分かる言葉か疑問の形）で整理し、媒体名を明示する。報道間で食い違う点はその旨を書く。
-
-## 自分にとって何が変わる？
-お金・手間・使い方・注意点など、生活や仕事への具体的な影響。
-
-## もう使える？申し込める？
-話題がサービス・製品・制度など読者が実際に使う/申し込むものの場合だけ書く。当てはまらない話題ではこの章を省く。
-
-## まだ分からないことは？
-報道で明らかになっていない点を「現時点では発表されていない」と明記する。
-
-## まとめ
-読者が次に取るべき行動を3行程度で。"""
-
 TREND_PROMPT_TEMPLATE = """日本でいま話題になっているキーワードについて、関連報道を読み解き、日本語のSEO記事を作成してください。
 
 # 話題
@@ -805,27 +741,23 @@ TREND_PROMPT_TEMPLATE = """日本でいま話題になっているキーワー�
 
 # 品質基準
 - 本文は報道の情報量と読者の疑問に合わせた長さにする。文字数のために水増ししない。必要な条件や背景があれば省かない。
-- `##` の章名は構成で指定された名前をそのまま使う（表示のときに記事ごとの見出しへ言い換える）。`###` の小見出しは、その記事でしか使えない中身の言葉にする（例「iPhoneは17%増、日本は1%減」）。決まり文句の質問にしない。
-- 材料が無い章は見出しごと書かない。「元記事には書かれていません」「言及なし」で章や表の欄を埋めない。
+- 本文の組み立ては下の「記事の型」に従う（決まった章立ては使わない。材料のあることだけを書く）。
 - 表は「表の使い方」に従う（比べるときと早見表だけ）。
 
-# 出力する記事の構成（body_markdown に Markdown で記述）
+# 記事の型（body_markdown に Markdown で記述）
 {outline}
 
 # 各フィールドの要件
 - title: <<TITLE_STYLE>>
 - seo_title: 全角24〜30文字。検索されるキーワードを先頭に置く。記号は「｜」「：」を最大1つまで。
 - threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（書き出し／要約すると、＋2文／問いかけ の3つのかたまり・URLなし）。
-- easy_markdown: 「かんたんに読む」版（本文の必要な内容を過不足なく、短く分かりやすく）。必ず「## ひとことで言うと」から始め、
-  ## ひとことで言うと / ## 何が新しいのか / ## 影響を受ける人 / ## 利用を始めるには の4見出しをこの順に使う。
-  話題が「使う」ものでない場合、「利用を始めるには」では読者が取れる行動（公式情報の確認など）を書く。
-  専門用語は使わない。body_markdown に無い事実は書かない。です・ます調。
-- lede: 150〜200字。なぜ話題か＋結論を先に。報道記事のリードの文体で、よく知られた会社に説明を付けず、幼い言い方・話し言葉は使わない。
+<<EASY_RULE>>
+- lede: 150〜200字。1文目で何が起きたか（今回の新しい事実）を言い切り、2文目になぜ話題か・一番大事な数字を置く。報道記事のリードの文体で、よく知られた会社に説明を付けず、幼い言い方・話し言葉は使わない。
 - description: 100〜130文字。
 - mentioned_tools: 記事中で言及した製品・サービス・企業・制度の正式名称（0〜12個）。
 - slug_en: 英小文字とハイフン、3〜6単語、40文字以内。
 - keywords: 8〜12個。tags: 3〜6個。
-- highlights: ちょうど3つ、各40〜60文字。報道にある数値や固有名詞を含める。
+- highlights: ちょうど3つ、各40〜60文字。報道にある数値や固有名詞を含める。リードの文をくり返さない。
 - timetable: **必ず空配列 []**。
 - verdict: 話題がサービス・製品・制度など読者が使う/申し込むものの場合だけ埋める（基準: status available/limited/soon/demo、
   japan ok/partial/no/unknown、price 14字以内、free true/false/null、audience 2〜8字、take 25〜55字）。
@@ -839,6 +771,7 @@ TREND_PROMPT_TEMPLATE = """日本でいま話題になっているキーワー�
 body_markdown 内では h1 (`#`) を使わないでください。
 """
 TREND_PROMPT_TEMPLATE = TREND_PROMPT_TEMPLATE.replace("<<TITLE_STYLE>>", headline_normalize.TITLE_STYLE_PROMPT)  # 見出しの書き方（scripts/headline_normalize.py）
+TREND_PROMPT_TEMPLATE = TREND_PROMPT_TEMPLATE.replace("<<EASY_RULE>>", news_types.EASY_RULE)  # かんたん版の書き方（scripts/news_types.py）
 
 
 def fetch_trend_sources(item: dict) -> list[dict]:
@@ -875,12 +808,15 @@ def build_trend_prompt(item: dict, fetched: list[dict], genre, context: str = ""
             f"## 報道{n}: {s.get('source') or '不明'}「{s.get('title', '')}」（{s.get('published', '')}）\n"
             f"URL: {s['url']}\n<<<\n{s['text']}\n>>>"
         )
+    joined = "\n".join(s.get("text", "")[:1500] for s in fetched)
+    item["newsType"] = item.get("newsType") or news_types.classify(item["title"] + " " + " ".join(s.get("title", "") for s in fetched), joined,
+                                                                   genre=genre.slug)
     prompt = TREND_PROMPT_TEMPLATE.format(
         keyword=item["title"],
         summary=item.get("summary", ""),
         genre_name=genre.name,
         sources="\n\n".join(blocks),
-        outline=TREND_OUTLINE,
+        outline=news_types.prompt_block(item["newsType"], genre_slug=genre.slug, source_kind="trend"),
         genre_choices="\n".join(f"  - {g.slug}: {g.name}" for g in GENRES),
     )
     return (prompt + context + extra_fields_block(genre.slug) + "\n\n" + persona.WORK_MONEY_FIELD
@@ -896,6 +832,7 @@ def build_trend_record(item: dict, fetched: list[dict], data: dict, model_name: 
         "source_name": trend_source_name(fetched),
         "source_slug": "trends",
         "published_at": item["published_at"],
+        "newsType": item.get("newsType") or "",
     }
     image = next((s["image"] for s in fetched if s.get("image")), "")
     record = build_web_record(pseudo, {**data, "genre": genre.slug}, {"image": image}, model_name, voice_key)
@@ -915,7 +852,7 @@ def log(message: str) -> None:
     print(message, flush=True)
 
 
-def build_prompt(item: dict, text: str, context: str = "") -> str:
+def build_prompt(item: dict, text: str, context: str = "", outline: str | None = None) -> str:
     genre = AI
     prompt = WEB_PROMPT_TEMPLATE.format(
         source_name=item["source_name"],
@@ -923,8 +860,8 @@ def build_prompt(item: dict, text: str, context: str = "") -> str:
         published_date=item["published_at"].astimezone(JST).strftime("%Y-%m-%d"),
         url=item["url"],
         text=text,
-        outline=genre.outline,
-        field_notes=genre.field_notes,
+        outline=outline or news_types.prompt_block(item.get("newsType") or news_types.classify(item["title"], text, url=item.get("url", ""))),
+        field_notes=news_types.clean_field_notes(genre.field_notes),
         topic_guard=f"  **このジャンルの対象範囲**: {genre.topic_guard}" if genre.topic_guard else "",
         genre_choices="\n".join(f"  - {g.slug}: {g.name}（{g.description[:48]}…）" for g in GENRES),
     )
@@ -949,18 +886,28 @@ def compose_with_facts(item: dict, text: str, lane: str, related: list[dict], vo
     """compose と同じものに、確かな事実の束（facts_bundle.Bundle）を足して返す。
     page（元記事の取得結果）を渡すと、元記事の中のリンクを最大2本追いかけて束に入れる。
     戻り値: (genre, system, prompt, schema, kind, check_context, bundle)"""
+    # 先に資料だけで種類を見て、深く読む種類（決算・脆弱性・製品・制度…）なら束を作るときにリンク先を長めに読む（scripts/news_types.py）
+    pre_type = news_types.classify(item["title"], text, url=item.get("url", ""), genre="" if lane == "ai" else lane, item=item)
     if bundle is None:
         try:
-            # 速報（速報レーン・大きなニュース）は待たせないよう、リンク先は1本だけ
+            # 速報（速報レーン・大きなニュース）は待たせないよう、リンク先は1本だけ（深く読む種類は2本）
+            fast = item.get("fast") or item.get("major")
+            deep = pre_type in source_links.TYPE_EXCERPT_CAP
             bundle = facts_bundle.build(item, text, related, lane, page, follow_links=page is not None, log=log,
-                                        max_links=1 if item.get("fast") or item.get("major")
-                                        else (GATE_RETRY_LINKS if item.get("gate_retry") else 2))
+                                        max_links=(2 if deep else 1) if fast
+                                        else (GATE_RETRY_LINKS if item.get("gate_retry") else (3 if deep else 2)),
+                                        news_type=pre_type)
         except Exception as error:  # noqa: BLE001 - 束が作れなくても記事は今までどおり作る
             log(f"   [facts] 確かな事実の束を作れませんでした（{str(error)[:80]}）")
             bundle = facts_bundle.Bundle()
     if not bundle.empty():
         log(f"   [facts] 束 {len(bundle.groups)} 欄（{'・'.join(g.label for g in bundle.groups)}）/ 計算済みの数字 {len(bundle.computed)} 個"
             f"{' / 料金の表を差し込む' if bundle.ladder else ''}{' / お金・制度の章立て' if bundle.money else ''}")
+    # ニュースの種類（決算・脆弱性・製品・料金・提携・制度・調査…）を決め、その種類の型で書かせる（scripts/news_types.py。2026-11-03 オーナー決定）
+    item["newsType"] = news_types.classify(item["title"], text, url=item.get("url", ""), genre="" if lane == "ai" else lane, bundle=bundle,
+                                           item=item)
+    log(f"   [type] {news_types.get(item['newsType']).label}（{item['newsType']}）")
+    outline = news_types.prompt_block(item["newsType"], genre_slug=lane)
     context = archive.prompt_block(related) + japan_availability.prompt_block(item["title"], text) + bundle.prompt_block()
     if item.get("late"):
         context += LATE_NOTE.format(date=f"{item['published_at'].astimezone(JST):%Y年%m月%d日}")
@@ -970,14 +917,13 @@ def compose_with_facts(item: dict, text: str, lane: str, related: list[dict], vo
         genre = AI
         system = (f"{m.SYSTEM_INSTRUCTION_BASE}\n\n{AI.persona}\n\n{WEB_SOURCE_NOTE}{secondary_note}{watch_note}\n\n"
                   f"{glossary.prompt_block()}\n\n## 今回の語り口\n{voice_text}")
-        prompt, schema, kind = build_prompt(item, text, context), schema_for(WEB_SCHEMA, AI.slug), "ai"
+        prompt, schema, kind = build_prompt(item, text, context, outline), schema_for(WEB_SCHEMA, AI.slug), "ai"
     else:
         genre = GENRES_BY_SLUG[lane]
         system = (
             f"{m.SYSTEM_INSTRUCTION_BASE}\n\n{genre.persona}\n\n{WEB_SOURCE_NOTE}{secondary_note}{watch_note}\n\n{BROAD_SOURCE_NOTE}"
             f"\n\n{glossary.prompt_block()}\n\n## 今回の語り口\n{voice_text}"
         )
-        outline = money_outline() if bundle.money else None
         prompt, schema, kind = build_broad_prompt(item, text, genre, context, outline), schema_for(TREND_SCHEMA, genre.slug), "broad"
     return genre, system, prompt, schema, kind, check_context_for(item["title"], text, related, bundle), bundle
 
@@ -1100,7 +1046,12 @@ def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_
     }
     if not record["body"].strip():
         raise ValueError("本文が空です")
+    if item.get("newsType"):
+        record["newsType"] = item["newsType"]  # ニュースの種類（scripts/news_types.py）。判定カードの有無・点検に使う
     record["verdict"] = genre_verdict(data.get("verdict"), resolved.slug, record)
+    if record.get("newsType") and record["verdict"] and not news_types.allows_verdict(record["newsType"]) \
+            and record["newsType"] not in ("general", "explainer"):
+        record["verdict"] = None  # 決算・脆弱性・提携・調査・人事などに「使えるか」の判定カードを出さない（報告の自動ゲート17・台帳 A8）
     # 判定を日本での提供の表で直したら、本文の「日本で使える？」の「まだ分かりません」も表の答えにそろえる
     record["body"] = japan_availability.fix_japan_section(record["body"], record)
     fix_ui_steps(record, item, page, bundle)
@@ -2063,9 +2014,18 @@ def main() -> int:
                 blocked = publish_blocked(record)
                 if blocked and blocked not in indexnow.PUBLISH_RETRYABLE:
                     return "skip", None, model_name, f"公開前の門: {indexnow.PUBLISH_FEEDBACK[blocked]}"
+                # ニュースの種類に必要な事実（決算の前年比・脆弱性の対象の版・製品の価格など）が、資料にあるのに本文に無い:
+                # 事実確認の前に、足りない事実を伝えて作り直す（最後の試行では作り直さず、記録だけして先へ進む。scripts/news_types.py）
+                missing = news_types.missing_facts(record.get("newsType") or "", record.get("body") or "", source_text) \
+                    if record.get("newsType") and not blocked else []
+                if missing:
+                    log(f"   [type] 資料にあるのに本文に無い事実: {'・'.join(x.label for x in missing)}"
+                        f"{'（最後の試行なので記録だけ）' if attempt >= attempts else ''}")
                 if blocked:
                     # 薄い・日本の読者向けの情報がない: 事実確認の前に、問題点を伝えて作り直す（LLM の確認を無駄に使わない）
                     verdict = gate_verdict(blocked)
+                elif missing and attempt < attempts and time_left() > EST_SEC_PER_ARTICLE:
+                    verdict = {"ok": False, "score": None, "problems": news_types.missing_feedback(record["newsType"], missing)}
                 else:
                     verdict = quality.evaluate(record, source_text, kind, context, check_facts=not args.no_gate)
                 tag = "合格" if verdict["ok"] else ("読みやすさのみ基準外" if verdict.get("soft") else "不合格")
@@ -2075,8 +2035,10 @@ def main() -> int:
                     f" {('/ ' + ' | '.join(verdict['problems'][:3])[:300]) if verdict['problems'] else ''}"
                     f"{(' / 注意: ' + ' | '.join(verdict['warnings'])) if verdict.get('warnings') else ''}")
                 log_quality(state, item, kind, verdict, attempt, verdict["ok"], model_name or "")
-                if not verdict["ok"] and not verdict.get("soft") and not blocked and quality.MAJOR and quality.surgical_ok(verdict):
-                    # 大きなニュース: 致命的でない細かい指摘（言い過ぎ・訳語・補足の程度）は、作り直さず指摘された文だけ直す
+                if not verdict["ok"] and not verdict.get("soft") and not blocked and verdict.get("fact") is not None \
+                        and (quality.MAJOR or record.get("newsType")) and quality.surgical_ok(verdict):
+                    # 大きなニュースと、種類の型で書いた記事（newsType。2026-11-03〜）: 致命的でない細かい指摘（言い過ぎ・訳語・補足の程度）は、
+                    # 作り直さず指摘された文だけ直す（安い段）。直したあとも事実確認を通す。残った指摘を受理するのは大きなニュースだけ（quality.surgical_fix）
                     try:
                         fixed, info = quality.surgical_fix(record, source_text, kind, verdict.get("problems") or [], context,
                                                            check_facts=not args.no_gate)

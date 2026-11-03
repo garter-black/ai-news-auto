@@ -219,3 +219,28 @@ class ProductLaunchTest(unittest.TestCase):
         prompt = images.ai_prompt(plan, {})
         self.assertIn("Do not depict the announced product or any similar device", prompt)
         self.assertNotIn("Do not depict", images.ai_prompt({"scene": "A rice paddy."}, {}))
+
+
+class BodyImagesTest(unittest.TestCase):
+    """本文に置く公式の写真・図（2026-11-03 オーナー決定。台帳 I6）: ロゴ・小さい画像・見出し画像に使ったものは置かない。出典を必ず残す"""
+
+    def test_picks_official_photos_and_figures_with_credit(self):
+        from unittest import mock  # noqa: PLC0415
+
+        from PIL import Image  # noqa: PLC0415
+
+        big, small = Image.new("RGB", (1200, 675)), Image.new("RGB", (400, 300))
+        found = [
+            {"kind": "photo", "url": "https://www.apple.com/a.jpg", "image": big},     # 見出し画像に使った
+            {"kind": "logo", "url": "https://www.apple.com/logo.png", "image": big},
+            {"kind": "dense", "url": "https://www.apple.com/chart.png", "image": big},
+            {"kind": "photo", "url": "https://www.apple.com/small.jpg", "image": small},
+            {"kind": "kit", "url": "https://www.apple.com/kit.jpg", "image": big},
+            {"kind": "photo", "url": "https://www.apple.com/third.jpg", "image": big},
+        ]
+        article = {"slug": "apple-q4", "sourceUrl": "https://www.apple.com/jp/newsroom/x/"}
+        with mock.patch.object(images, "store", side_effect=lambda key, image, dry, keep_aspect=False: (f"https://ai-tech-express.jp/img/{key}.jpg", image.size)):
+            figs = images.body_images(article, {"found": found}, {"dry_run": True}, "Apple", thumb_url="https://www.apple.com/a.jpg")
+        self.assertEqual([f["original"] for f in figs], ["https://www.apple.com/chart.png", "https://www.apple.com/kit.jpg"])
+        self.assertTrue(all(f["credit"] == "Apple" and f["sourceUrl"] == article["sourceUrl"] for f in figs))
+        self.assertTrue(all(f["src"].startswith("https://ai-tech-express.jp/img/apple-q4-fig") for f in figs))

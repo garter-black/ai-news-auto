@@ -73,6 +73,7 @@ import { cleanSections, cleanTake, retitleHtml, tocOf } from "@/lib/article-sect
 import ArticleProse from "@/components/ArticleProse";
 import CalculatorBox from "@/components/calc/CalculatorBox";
 import { CALC_SLOT, insertFigures, markCalculatorSlot, renderChart, type ChartFigure } from "@/lib/charts";
+import { insertBodyImages } from "@/lib/body-images";
 import { calculatorForArticle } from "@/lib/calculators";
 import { getFx, getPlanProduct } from "@/lib/plan-prices";
 import PriceTable from "@/components/PriceTable";
@@ -240,7 +241,12 @@ export default async function ArticlePage({ params }: Props) {
   // 記事に合う計算機（lib/calculators.ts）の置き場所の印を、合う章の終わりに入れる
   const calc = calculatorForArticle(article);
   // 見出しの言い換えは、章名で位置を探す差し込み（図・計算機）が終わってから
-  const bodyHtml = retitleHtml(markCalculatorSlot(insertFigures(html, figures), calc?.heading ?? null), "body", article.sectionTitles);
+  // 本文に置く公式の写真・図（出典つき・1〜2枚。lib/body-images.ts）
+  const bodyHtml = retitleHtml(
+    markCalculatorSlot(insertBodyImages(insertFigures(html, figures), article.bodyImages ?? [], article.title), calc?.heading ?? null),
+    "body",
+    article.sectionTitles,
+  );
   const calcInline = Boolean(calc && bodyHtml.includes(CALC_SLOT));
   const calcBox = calc ? <CalculatorBox calc={calc} className="my-10" /> : null;
   // 第3章の前に広告、さらに後半の前に収益導線を挟む

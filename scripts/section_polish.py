@@ -282,6 +282,14 @@ def _join(sections: list[tuple[str | None, str]], trailing_nl: bool) -> str:
     return re.sub(r"\n{3,}", "\n\n", text).strip() + ("\n" if trailing_nl else "")
 
 
+def wants_title(record: dict, head: str) -> bool:
+    """表示用の見出しを作る章か。ニュースの種類の型で書いた記事（newsType あり。scripts/news_types.py）は見出しが元から
+    記事ごとの言葉なので、決まり文句（BANNED_TITLE_RE）に当たる見出しだけ言い換える"""
+    if NO_TITLE_RE.match(head):
+        return False
+    return not record.get("newsType") or bool(BANNED_TITLE_RE.search(head))
+
+
 def build_request(record: dict) -> tuple[str, dict]:
     """(プロンプト, {id: (field, 見出し, 本文, 表, 書き直すか)})"""
     items: dict[str, tuple] = {}
@@ -295,7 +303,7 @@ def build_request(record: dict) -> tuple[str, dict]:
             masked, tables = mask_tables(content.strip())
             items[sid] = (field, head, content, tables, bool(reasons))
             label = "かんたん版" if field == "easy" else "本文"
-            if not NO_TITLE_RE.match(head):
+            if wants_title(record, head):
                 gist = re.sub(r"\s+", " ", re.sub(r"(?m)^\|.*$", "", gate._clean_block(content)))[:140]
                 heading_lines.append(f"- id={sid}（{label}）今の章名「{head}」 中身: {gist}")
             if reasons:
@@ -318,7 +326,8 @@ def polish(record: dict, log=print, purpose: str | None = None) -> tuple[dict, d
         others = [m for m in llm.models_for("bulk") if m not in llm.QUALITY_MODELS and m not in POLISH_MODELS]
         llm._tiers["sections"] = POLISH_MODELS + others  # noqa: SLF001
     prompt, items = build_request(record)
-    if not items:
+    todo = [sid for sid, (field, head, _, _, rewrite) in items.items() if rewrite or wants_title(record, head)]
+    if not items or not todo:
         return record, {"titles": 0, "rewrites": 0, "rejected": [], "model": None}
     # purpose="helper" なら Claude API の Haiku（月の予算の配分の中で。llm.api_plan）→ だめなら無料モデル
     data, model = llm.generate_json(SYSTEM, prompt, SCHEMA, temperature=0.3, max_output_tokens=12000, tier="sections", purpose=purpose)

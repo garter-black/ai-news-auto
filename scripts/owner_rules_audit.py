@@ -56,7 +56,7 @@ OWNER_NAME_PAGES = ("/about", "/editorial-policy")
 AUDIT_RULES = (
     "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11",
     "I2", "I4", "I5",
-    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17",
+    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19",
     "W3", "W5", "W6", "W10", "W11",
 )
 
@@ -169,7 +169,27 @@ def record_problems(record: dict, page_headings: bool = False) -> list[str]:
             out.append(f"[W11] 「記載なし」が読者に見える（{field}:「{_snippet(text, m)}」）")
     out += image_record_problems(record)
     out += low_value_problems(record)
+    out += type_problems(record)
     return list(dict.fromkeys(out))
+
+
+# ニュースの種類の型（scripts/news_types.py）に切り替えた時刻。これより後に作った Web 記事を A18・A19 で見る
+TYPES_CUTOVER = "2026-11-03T13:45:00+00:00"
+
+
+def type_problems(record: dict) -> list[str]:
+    """[A18]・[A19]: 種類ごとの型で書かれているか（見出しの数・リードで新しさを言い切るか・くり返し）。公開前の門 scripts/article_style.py と同じ規則"""
+    if record.get("sourceType") != "web" or record.get("type") == "roundup":
+        return []
+    if str(record.get("generatedAt") or "") < TYPES_CUTOVER:
+        return []
+    try:
+        import article_style  # noqa: PLC0415
+    except Exception:  # noqa: BLE001
+        return []
+    out = [] if record.get("newsType") else ["[A18] ニュースの種類の型で書かれていない（newsType が無い）"]
+    out += [f"[{code}] {msg}" for code, msg in article_style.coded_problems(record) if code in ("A18", "A19")]
+    return out
 
 
 def image_record_problems(record: dict) -> list[str]:

@@ -53,7 +53,7 @@ PAST_DAYS = 60
 MAX_PAST = 4
 PROMPT_CAP = 5000  # 生成に渡す束の長さの上限（無料枠のモデルに収める）
 # 欄ごとの長さの上限（プロンプトに出す分）
-GROUP_CAP = {"料金": 1800, "他社との比較": 1400, "使い方ガイド": 700, "関連ページ": 800, "公的資料": 1000, "過去記事": 600, "元記事の注記": 600, "為替": 200}
+GROUP_CAP = {"元の資料の続き": 4000, "料金": 1800, "他社との比較": 1400, "使い方ガイド": 700, "関連ページ": 800, "公的資料": 1000, "過去記事": 600, "元記事の注記": 600, "為替": 200}
 CHECK_CAP = 6000
 ECB_URL = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
 
@@ -101,6 +101,16 @@ class Bundle:
     ladder: dict | None = None  # 本文に差し込む料金の段の表 {product, name, markdown, cite}
     money: bool = False
     fx: dict | None = None
+    news_type: str = ""  # ニュースの種類（scripts/news_types.py）。深く読む種類はリンク先の抜き出しを長めに渡す
+
+    def cap(self, label: str) -> int:
+        base = GROUP_CAP.get(label, 800)
+        if label in ("関連ページ", "公的資料") and self.news_type in source_links.TYPE_EXCERPT_CAP:
+            return max(base, source_links.TYPE_EXCERPT_CAP[self.news_type])
+        return base
+
+    def prompt_cap(self) -> int:
+        return PROMPT_CAP + (4000 if self.news_type in source_links.TYPE_EXCERPT_CAP else 0)
 
     def empty(self) -> bool:
         return not self.groups and not self.computed
@@ -120,7 +130,7 @@ class Bundle:
                 "- [F1]・[C1] のような欄の記号や「確認済みの事実の束」「計算済みの数字」という欄の名前は本文に書かない（出典は名前と確認日で書く）。"
             )
             for i, g in enumerate(self.groups, 1):
-                parts.append(f"## [F{i}] {g.label}：{g.cite}\n{g.body[:GROUP_CAP.get(g.label, 800)]}")
+                parts.append(f"## [F{i}] {g.label}：{g.cite}\n{g.body[:self.cap(g.label)]}")
         if self.computed:
             parts.append(
                 "# 計算済みの数字（プログラムが計算した。あなたは計算しない）\n"
@@ -129,9 +139,9 @@ class Bundle:
                 "- 比べている2つの数が本当に同じものか、文脈を見て合うものだけ使う（合わないものは使わない）。\n"
                 "- 「来月1日」のような言い方は、下の欄の日付（元記事の日付から数えたもの）で書く。\n"
                 + calc_facts.block(self.computed)
-                + "\n## 「この数字はどう読む？」の章\n"
-                "- 「## まとめ」の直前に「## この数字はどう読む？」の章を置き、計算済みの数字で「何と比べて大きいか小さいか」"
-                "「前と比べてどうか」を2〜4文で書く。どの記事にも当てはまる一般論は書かない。"
+                + "\n## 計算済みの数字の使い方\n"
+                "- 計算済みの数字は、関係する段落の中で「何と比べて大きいか小さいか」「前と比べてどうか」を2〜4文で書くのに使う"
+                "（専用の決まった章は作らない。見出しを付けるなら中身の言葉にする）。どの記事にも当てはまる一般論は書かない。"
             )
         if self.ladder:
             parts.append(
@@ -140,14 +150,14 @@ class Bundle:
                 "本文にはプランの一覧表を自分で作らない。表の読み方（どの段が誰向けか）を1〜2文で書くのはよい。"
             )
         text = "\n\n".join(parts)
-        if len(text) > PROMPT_CAP and self.groups:
+        if len(text) > self.prompt_cap() and self.groups:
             # 長すぎるときは、後ろの欄（リンク先・過去記事など）の中身から短くする。計算済みの数字と決まりは削らない
-            over = len(text) - PROMPT_CAP
+            over = len(text) - self.prompt_cap()
             for i in range(len(self.groups), 0, -1):
                 if over <= 0:
                     break
                 g = self.groups[i - 1]
-                body = g.body[:GROUP_CAP.get(g.label, 800)]
+                body = g.body[:self.cap(g.label)]
                 cut = min(over, max(0, len(body) - 200))
                 if cut:
                     text = text.replace(body, body[:len(body) - cut].rstrip() + "…", 1)
@@ -458,6 +468,32 @@ def statement_date(item: dict, text: str, page: dict | None = None) -> datetime 
     return None
 
 
+# 長い資料の後半から抜き出すときの手がかりの言葉（ニュースの種類ごと。scripts/news_types.py）
+CONTINUATION_WORDS = {
+    "filing": {"revenue", "revenues", "net", "loss", "income", "three", "nine", "months", "ended", "recent", "developments", "results",
+               "operations", "cash", "commitments", "obligations", "売上", "損失", "業績"},
+    "earnings": {"japan", "greater", "china", "americas", "europe", "segment", "guidance", "outlook", "quarter", "日本", "地域", "見通し"},
+    "research": {"回答", "調査", "割合", "前回", "結果", "percent", "respondents"},
+    "policy": {"対象", "申請", "期限", "金額", "上限", "要件", "手続"},
+    "security": {"cvss", "severity", "affected", "versions", "fixed", "mitigation", "exploit", "影響", "対策", "修正"},
+}
+
+
+def continuation_group(item: dict, page: dict | None, news_type: str, now: datetime) -> Group | None:
+    """生成に渡す本文（feeds.TEXT_CAP まで）で切れた長い資料の後半から、種類に必要な部分だけを抜き出す（2026-11-03。
+    上場の届出書は表紙で切れて、修正版で増えた業績の数字が入っていなかった）。元の資料そのものなので出典欄には出さない"""
+    full = (page or {}).get("full_text") or ""
+    if news_type not in CONTINUATION_WORDS or len(full) < len((page or {}).get("text") or "") + 2000:
+        return None
+    rest = full[len((page or {}).get("text") or ""):]
+    body = source_links.excerpt(rest, item.get("title") or "", CONTINUATION_WORDS[news_type], cap=GROUP_CAP["元の資料の続き"])
+    if len(body) < 200:
+        return None
+    name = item.get("source_name") or "元の資料"
+    return Group("continuation", "元の資料の続き", f"{name}（同じ資料の後半）", item.get("url") or "", now.astimezone(JST).strftime("%Y-%m-%d"),
+                 body, marks=[name], show=False)
+
+
 def link_groups(links: list[dict]) -> list[Group]:
     out = []
     for i, got in enumerate(links, 1):
@@ -482,7 +518,8 @@ def fx_group(fx: dict | None, needed: bool) -> Group | None:
 
 
 def build(item: dict, text: str, related: list[dict] | None = None, lane: str = "ai", page: dict | None = None, *,
-          follow_links: bool = True, now: datetime | None = None, log=None, fetcher=None, max_links: int = 2) -> Bundle:
+          follow_links: bool = True, now: datetime | None = None, log=None, fetcher=None, max_links: int = 2,
+          news_type: str = "") -> Bundle:
     """1本の記事の「確かな事実の束」。ネットワークに出るのはリンク先（最大2本）と為替（料金データが無いとき）だけ"""
     now = now or datetime.now(timezone.utc)
     title = item.get("title") or ""
@@ -494,11 +531,13 @@ def build(item: dict, text: str, related: list[dict] | None = None, lane: str = 
         groups.append(g)
     if g := footnote_group(item, text):
         groups.append(g)
+    if g := continuation_group(item, page, news_type, now):
+        groups.append(g)
     links = []
     if follow_links and page is not None:
         keywords = {w.lower() for w in re.findall(r"[A-Za-z][A-Za-z0-9.+-]{2,}|[ァ-ヶー]{2,}|[一-龠々]{2,}", title)}
         links = source_links.follow(page, item.get("url", ""), title, item.get("source_name", ""), money=money,
-                                    keywords=keywords, fetcher=fetcher, now=now, log=log, max_fetches=max_links)
+                                    keywords=keywords, fetcher=fetcher, now=now, log=log, max_fetches=max_links, news_type=news_type)
     groups += link_groups(links)
     past = past_rows(title, text, related or [], now)
     if g := past_group(past):
@@ -509,7 +548,7 @@ def build(item: dict, text: str, related: list[dict] | None = None, lane: str = 
                                   published=statement_date(item, text, page))
     if g := fx_group(fx, any(c.kind == "yen" for c in computed)):
         groups.append(g)
-    return Bundle(groups=groups, computed=computed, ladder=insert, money=money, fx=fx)
+    return Bundle(groups=groups, computed=computed, ladder=insert, money=money, fx=fx, news_type=news_type)
 
 
 # --------------------------------------------------------------------------- #

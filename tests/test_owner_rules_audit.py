@@ -75,6 +75,19 @@ class RecordTest(unittest.TestCase):
     def test_low_value_types(self):
         self.assertIn("A10", ids(audit.record_problems(rec(body="短い。", faq=[]))))
 
+    def test_news_type_template_after_cutover(self):
+        # A18・A19（2026-11-03 オーナー決定: 種類ごとの型・リードで新しさを言い切る）。切り替えより後の Web 記事だけを見る
+        new = dict(sourceType="web", generatedAt="2026-11-04T00:00:00+00:00")
+        found = ids(audit.record_problems(rec(**new)))
+        self.assertIn("A18", found)  # newsType が無い
+        many = "\n\n".join(f"## 見出し{i}\n\n" + "事実の文です。" * 20 for i in range(6))
+        found = ids(audit.record_problems(rec(newsType="product", body=many, lede="トヨタは新しい安全機能の概要を発表しました。", **new)))
+        self.assertTrue({"A18", "A19"} <= found, found)
+        good = "安全機能は2027年モデルの全車に付きます。" * 40 + "\n\n## 日本の販売店で選べる\n\n" + "価格は据え置きです。" * 40
+        self.assertFalse({"A18", "A19"} & ids(audit.record_problems(rec(newsType="product", body=good, lede="トヨタの2027年モデルに新しい安全機能が付きます。価格は据え置きです。", **new))))
+        # 切り替えより前の記事は見ない
+        self.assertNotIn("A18", ids(audit.record_problems(rec(sourceType="web", generatedAt="2026-11-01T00:00:00+00:00"))))
+
 
 class PageTest(unittest.TestCase):
     AD = '<a rel="sponsored nofollow noopener noreferrer" href="#">PR</a>'

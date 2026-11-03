@@ -69,6 +69,7 @@ def main() -> int:
             "source_slug": base.get("channelSlug") or "openai-news",
             "published_at": datetime.fromisoformat(base["publishedAt"]),
             "image": base.get("thumbnail"),
+            "newsType": "explainer",  # 別の切り口の解説（scripts/news_types.py の型）
         }
         voice_key, voice_text = m.pick_voice()
         system = f"{m.SYSTEM_INSTRUCTION_BASE}\n\n{AI.persona}\n\n{w.WEB_SOURCE_NOTE}\n\n## 今回の語り口\n{voice_text}"

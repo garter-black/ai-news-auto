@@ -39,12 +39,13 @@
 | I3 | 文字だけの図の画像を記事の写真にしない | 2026-11-03 | 写真の代わりにならない | `scripts/images.py`（`image_problem`・`graphic_problem`）・`tests/test_owner_rules_gaps.py::test_text_only_figure_is_rejected` | |
 | I4 | AI の画像には「AI生成」と出す | 2026-11-03 | 本物と間違えられないように | `components/ImageCredit.tsx`・毎日の見張り `scripts/owner_rules_audit.py` | ● |
 | I5 | 壊れた画像を出さない | 2026-11-02 | 壊れたアイコンは信用を落とす | `scripts/check_images.py`（`broken_images.yml` 1時間ごと）・`tests/test_check_images.py` | ● |
+| I6 | 公式の写真・図を本文に1〜2枚、出典（画像：会社名・公式発表へのリンク）つきで置く。会社・団体の自社サイトの発表にある報道向けの画像だけ（ロゴ・通信社の写真・ニュースサイトの画像は使わない） | 2026-11-03 | 他社は公式の図や写真を出典つきで入れていた | `scripts/images.py`（`body_images`）・`lib/body-images.ts`・`tests/test_body_images.cjs`・`tests/test_images_official.py` | |
 
 ## 記事
 
 | 番号 | ルール | 日付 | なぜ | 強制 | 点検 |
 |---|---|---|---|---|---|
-| A1 | 決まった型の小見出しを使わない（自分に関係ある？／ライバルと比べてどう？／もう使える？取引できる？／何がすごいの？） | 2026-11-03 | ロボットっぽい・恥ずかしい | 生成と品質ゲートは別の作業で直している（`scripts/quality.py`）。見張り `scripts/owner_rules_audit.py`・`tests/test_owner_rules_audit.py::RecordTest` | ● |
+| A1 | 決まった型の小見出しを使わない（自分に関係ある？／ライバルと比べてどう？／もう使える？取引できる？／何がすごいの？／料金は？／日本で使える？） | 2026-11-03 | ロボットっぽい・恥ずかしい | 公開前の門 `scripts/article_style.py`（決まった型の見出し）・`tests/test_article_style.py::GateTest`・表示の段 `scripts/section_gate.py`・見張り `scripts/owner_rules_audit.py`・`tests/test_owner_rules_audit.py::RecordTest` | ● |
 | A2 | 答えになっていない欄（元記事には書かれていません／判断できません／つなぎの編集部注）は欄ごと省く | 2026-11-03 | 読者の時間を無駄にする | `scripts/quality.py`（`faq_problems`・`promise_problems`）・表示と生成で文ごと消す `scripts/section_gate.py`（`SOURCE_NONANSWER_RE`）・`lib/article-sections.ts`・`tests/test_section_gate.py::test_no_data_cells_and_source_non_answers`・`tests/test_verdict_label.cjs`・見張り `scripts/owner_rules_audit.py` | ● |
 | A3 | 中身のない文（〜にとっても重要です／〜といえます）を書かない | 2026-11-03 | 水増しに見える | 見張り `scripts/owner_rules_audit.py`・`tests/test_owner_rules_audit.py::RecordTest` | ● |
 | A4 | 落ち着いた大人の文（ITmedia・日経クロステックの水準）。幼い言い回し（すごい／〜しちゃう／〜を作る道具）・ざっくりは使わない | 2026-11-03 | 「幼すぎる表現は本当にやめたい。恥ずかしい」 | `scripts/persona.py`（`STIFF_RE`）・見張り `scripts/owner_rules_audit.py`・`tests/test_owner_rules_audit.py::RecordTest` | ● |
@@ -61,6 +62,10 @@
 | A15 | 地震・津波の記事は AI に書かせない（気象庁のデータを型に入れるだけ） | 2026-10-28 | 推測や誤りが許されない | `scripts/quake.py`・`tests/test_owner_rules_gaps.py::test_quake_never_uses_llm` | |
 | A16 | 記事の数字は元記事・確かめた資料・計算済みの数字だけ | 2026-11-03 | 作った数字は信用を失う | `scripts/quality.py`（`number_problems`）・`tests/test_facts_bundle.py` | |
 | A17 | 判定のひとこと・本文を「〜しましょう」「〜してみましょう」の呼びかけで締めない（「〜するとよいでしょう」など落ち着いた言い方。事実は変えない） | 2026-11-03 | 幼い・売り込みに見える | 生成の前に直す `scripts/section_gate.py`（`professional`・`apply`・`style_problems`）・表示 `lib/article-sections.ts`（`professionalSentence`・`cleanTake`）・`scripts/persona.py`（`PLAIN_STYLE`）・`tests/test_section_gate.py::test_professional_register`・`tests/test_article_sections.cjs`・見張り `scripts/owner_rules_audit.py`・`tests/test_owner_rules_audit.py::RecordTest` | ● |
+| A18 | 記事はニュースの種類（決算・脆弱性・製品・料金・提携・書類・制度・調査・人事・イベント・速報・スポーツ・解説）ごとの型で書く。決まった章立てを使わない・材料の無い章を作らない・見出しは中身の言葉で本文1,000字に1つまで | 2026-11-03 | 「かなり大事」。決算にも脆弱性にも同じ章立てで、章の2割が「書かれていません」だった | `scripts/news_types.py`（判定と型）・`scripts/article_style.py`（見出しの数）・`tests/test_news_types.py::PromptTest`・`tests/test_article_style.py::GateTest`・見張り `scripts/owner_rules_audit.py` | ● |
+| A19 | リードの1文目で「今回なにが新しいか」を言い切る。リード・要点・本文・まとめで同じ文や数字をくり返さない（「## 概要」の章は作らない） | 2026-11-03 | 他社は最初の1文で新しさを言い切る。サイソクは同じ事実を何度も書いていた | `scripts/article_style.py`（リード・くり返しの門と、本文の最初の重なりの自動の削除）・`tests/test_article_style.py::GateTest`・見張り `scripts/owner_rules_audit.py` | ● |
+| A20 | 種類ごとに必ず入れる事実（決算の前年比・見通し、脆弱性の深刻度・対象の版・直し方・悪用の有無、製品の価格・発売日、制度の対象者・金額・期限など）は、資料にあれば入れる。元の資料は要約ページの先（財務諸表・修正版の告知・詳しい案内）まで読む。無い事実は書かない（推測で埋めない） | 2026-11-03 | 他社は読者が次に知りたい事実を先回りして書いていた | `scripts/news_types.py`（`missing_facts`。足りなければ作り直し）・`scripts/source_links.py`（種類ごとに深く読む）・`tests/test_news_types.py::MissingFactsTest`・`tests/test_news_types.py::DeepReadingTest` | |
+| A21 | 文体の決まりは1か所（`scripts/article_style.py`）にまとめ、すべての生成の段（通常・速報・幅広い話題・話題のキーワード・動画・まとめ・別の切り口・かんたん版）で使い、公開前の門で守らせる（落ちたら作り直し、2回落ちたら出さない） | 2026-11-03 | 新しい決まりを足しても、古い指示が残っていて直らなかった | `scripts/article_style.py`（`STYLE_PROMPT`・`problems`）・`scripts/quality.py`（`structural_problems`）・`tests/test_article_style.py::EveryPathTest` | |
 
 ## サイト
 
