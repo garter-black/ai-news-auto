@@ -2022,7 +2022,7 @@ def frame_box(page: Page, page_no: int, box: tuple, zmax: float, mx: float = FRA
     bw, bh = max(box[2] - box[0], 1), max(box[3] - box[1], 1)
     half_h = min(FOCUS[1], PH - FOCUS[1])
     s = min(s0 * zmax, (PW - 2 * mx) / bw, (2 * half_h - 2 * my) / bh)
-    s = max(s, s0 * 0.8)
+    s = max(s / (1 + DRIFT_MAX), s0 * 0.8)  # 止めている間にゆっくり寄る分（DRIFT_MAX）を先に引いておく
     return clamp_cam(page, page_no, (box[0] + box[2]) / 2, (box[1] + box[3]) / 2, s)
 
 
@@ -2099,6 +2099,7 @@ class Chart:
 
 
 DRIFT = 0.008  # 止まっている間もごくゆっくり寄る（1秒に0.8%。2026-11-03 動きを控えめに）
+DRIFT_MAX = 0.04  # 2026-11-04: ゆっくり寄るのは4%まで（長く止めても証拠の文が画面の端へはみ出さない。frame_box はこの分の余白を先に取る）
 
 
 class Camera:
@@ -2116,7 +2117,7 @@ class Camera:
 
     @staticmethod
     def _hold(cam: Cam, since: float, t: float) -> Cam:
-        return Cam(cam.page, cam.cx, cam.cy, cam.s * (1 + DRIFT * max(0.0, t - since)))
+        return Cam(cam.page, cam.cx, cam.cy, cam.s * (1 + min(DRIFT * max(0.0, t - since), DRIFT_MAX)))
 
     def at(self, t: float) -> Cam:
         idx = -1

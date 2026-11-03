@@ -95,6 +95,22 @@ class FramingTest(unittest.TestCase):
             span = tg.span
             self.assertTrue(gate._inside(list(span), list(view), v3.QA_MARGIN_X / cam.s, v3.QA_MARGIN_Y / cam.s))
 
+    def test_slow_drift_during_hold_keeps_margins(self):
+        """止めている間のゆっくり寄る動き（DRIFT）で、行の頭が余白の外へ出ない（2026-11-04 CI の実物で落ちた所）。
+        行の頭がページの左端のすぐ近く（12 CSS px）の、ページ幅いっぱいの段落"""
+        k = v3.CAPTURE_DPR
+        page = para_page(per_line=28)
+        # 段落を左へ寄せる（行の頭 x=12 CSS px・幅ほぼいっぱい）
+        b = page.blocks[0]
+        dx = b.rect[0] - 12 * k
+        b.chars = [(c, (r[0] - dx, r[1], r[2] - dx, r[3]) if r else None) for c, r in b.chars]
+        b.rect = (b.rect[0] - dx, b.rect[1], b.rect[2] - dx, b.rect[3])
+        tg = v3.find_target([page], "これまで1,000件以上の撮影を手がけ、", "1-1")
+        cam = v3.frame_box(page, 0, v3.line_box(tg), 1.6)
+        for hold in (0.0, 2.0, 5.0, 12.0):
+            c = v3.Camera._hold(cam, 0.0, hold)
+            self.assertTrue(gate._inside(list(v3.line_box(tg)), list(v3.cam_view(c)), v3.QA_MARGIN_X / c.s, v3.QA_MARGIN_Y / c.s), hold)
+
     def test_old_number_zoom_cropped_line_start(self):
         """前の寄り方（数字に 2.2倍）だと、証拠の文の2行目の頭が画面の外に出ていた（オーナーの指摘の再現）"""
         page = para_page()
