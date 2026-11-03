@@ -8,7 +8,7 @@
   "companyName": "Anthropic",
   "category": "AIモデル",
   "overview": {
-    "text": "Claude Fable 5.1は、Anthropicが開発した最上位のAIモデルです。複雑な仕事や開発、科学研究の自動化を目的として、2026年9月1日に発表されました。",
+    "text": "Claude Fable 5.1は、Anthropicが2026年9月1日に発表した最上位AIモデルの最新版です。複雑な多段階の推論や、ソフトウェア開発における自律的な問題解決を実行できます。",
     "sources": [
       "anthropic-releases-claude-fable-5-1"
     ]
@@ -20,29 +20,56 @@
       "sources": [
         "anthropic-releases-claude-fable-5-1"
       ]
+    },
+    {
+      "label": "日本での提供",
+      "value": "日本からも利用できます",
+      "sources": [
+        "anthropic-releases-claude-fable-5-1"
+      ]
+    },
+    {
+      "label": "使える場所",
+      "value": "あらゆる場所で一般提供",
+      "sources": [
+        "anthropic-releases-claude-fable-5-1"
+      ]
+    },
+    {
+      "label": "向いている人",
+      "value": "開発者",
+      "sources": [
+        "anthropic-releases-claude-fable-5-1"
+      ]
     }
   ],
   "capabilities": [
     {
-      "text": "金融モデルや数百の相互参照を含む契約書など、複雑な多段階の推論タスクを実行できます。",
+      "text": "金融モデルや数百の相互参照を持つ契約書などの複雑な多段階推論タスクを正確に実行できます。",
       "sources": [
         "anthropic-releases-claude-fable-5-1"
       ]
     },
     {
-      "text": "ソフトウェア開発でエラーに遭遇した際、試行錯誤のプロセスと原因を自律的に報告できます。",
+      "text": "コードレビューやパフォーマンスチューニングなどのソフトウェア開発業務を自律的に引き受けます。",
       "sources": [
         "anthropic-releases-claude-fable-5-1"
       ]
     },
     {
-      "text": "課題に対して調査、表計算シートの構築、要約メモ、プレゼンテーション資料を自動生成します。",
+      "text": "タスク実行中に壁にぶつかった際、自身が何を試してどこで行き詰まったかを整理してユーザーに報告します。",
       "sources": [
         "anthropic-releases-claude-fable-5-1"
       ]
     },
     {
-      "text": "科学研究の分野で、関連文献の読み込み、仮説の提案、実験の設計を自律的に行います。",
+      "text": "質問に対して調査を行い、表計算シートや要約メモ、プレゼン資料などのドキュメント群を自動生成します。",
+      "sources": [
+        "anthropic-releases-claude-fable-5-1"
+      ]
+    },
+    {
+      "text": "科学研究の分野で、関連文献の読み込みや新たな仮説の提案、実験の設計を行います。",
       "sources": [
         "anthropic-releases-claude-fable-5-1"
       ]
@@ -54,36 +81,63 @@
       "sources": [
         "anthropic-releases-claude-fable-5-1"
       ]
+    },
+    {
+      "text": "低い努力レベルにおいて、従来のFable 5と同等以上の結果を低いコストで達成できます。",
+      "sources": [
+        "anthropic-releases-claude-fable-5-1"
+      ]
     }
   ],
-  "japan": [],
+  "japan": [
+    {
+      "text": "発表の時点では、日本からも利用できます。",
+      "sources": [
+        "anthropic-releases-claude-fable-5-1"
+      ]
+    }
+  ],
   "howto": [],
-  "differences": [],
+  "differences": [
+    {
+      "text": "低い努力レベルにおいて、従来のFable 5と同等以上の結果をはるかに低いコストで達成できるコスト効率性を備えています。",
+      "sources": [
+        "anthropic-releases-claude-fable-5-1"
+      ]
+    }
+  ],
   "faq": [
     {
-      "q": "いつから使える？",
+      "q": "Claude Fable 5.1はいつから使えますか？",
       "a": "2026年9月1日より一般提供が開始されています。",
       "sources": [
         "anthropic-releases-claude-fable-5-1"
       ]
     },
     {
-      "q": "どのような用途に役立つ？",
-      "a": "複雑なマルチステップ作業やソフトウェア開発、科学研究の支援などが得意です。",
+      "q": "旧モデルと比べてどこが優れていますか？",
+      "a": "低い努力レベルにおいて、従来のFable 5と同等以上の結果を低いコストで達成できます。",
       "sources": [
         "anthropic-releases-claude-fable-5-1"
       ]
     },
     {
-      "q": "エラーが起きたときはどうなる？",
-      "a": "モデル自身が何を試してどこで行き詰まったかを整理し、ユーザーに報告します。",
+      "q": "エラーが発生した場合はどうなりますか？",
+      "a": "モデルが壁にぶつかった際、何を試してどこで行き詰まったかを整理してユーザーに詳細を報告します。",
       "sources": [
         "anthropic-releases-claude-fable-5-1"
       ]
     },
     {
-      "q": "誰が開発した？",
-      "a": "米Anthropic社が開発しています。",
+      "q": "資料作成ではどのような成果物を作れますか？",
+      "a": "表計算シートの構築や要約メモの執筆、プレゼンテーション資料の仕上げなどを自動生成します。",
+      "sources": [
+        "anthropic-releases-claude-fable-5-1"
+      ]
+    },
+    {
+      "q": "科学研究ではどのように活用できますか？",
+      "a": "関連文献の読み込み、新たな仮説の提案、検証のための実験設計において協働します。",
       "sources": [
         "anthropic-releases-claude-fable-5-1"
       ]
@@ -93,7 +147,7 @@
     {
       "date": "2026-09-02",
       "slug": "anthropic-releases-claude-fable-5-1",
-      "event": "Claude Fable 5.1を一般公開"
+      "event": "Claude Fable 5.1を発表"
     }
   ],
   "related": [],
@@ -103,9 +157,9 @@
   "linkFrom": [
     "anthropic-releases-claude-fable-5-1"
   ],
-  "signature": "b34645f6e09954e4",
-  "primarySignature": "d75a50174ce84298",
+  "signature": "3f74c14fb6c13db3",
+  "primarySignature": "3f74c14fb6c13db3",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:46:25+00:00",
-  "updatedAt": "2026-10-27T11:10:11+00:00"
+  "updatedAt": "2026-11-03T11:01:26+00:00"
 }

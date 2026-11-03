@@ -8,15 +8,16 @@
   "companyName": "Meta",
   "category": "AIモデル",
   "overview": {
-    "text": "Meta Museは、買い物や旅行の計画を自律的に代行する個人向けのAIエージェントです。Metaによって開発され、2026年10月に発表されました。",
+    "text": "Meta Museは、Metaが提供する個人向けの自律型AIアシスタントです。メールの整理や買い物の下調べなどをAIが手伝ってくれます。2026年10月4日に発表されました。",
     "sources": [
-      "nvidia-meta-muse-partnership-expansion"
+      "nvidia-meta-muse-partnership-expansion",
+      "meta-muse-singapore-launch"
     ]
   },
   "facts": [
     {
       "label": "料金",
-      "value": "基本機能は無料、有料プランあり",
+      "value": "基本的な機能は無料",
       "sources": [
         "nvidia-meta-muse-partnership-expansion",
         "meta-muse-singapore-launch"
@@ -24,7 +25,7 @@
     },
     {
       "label": "日本での提供",
-      "value": "日本で提供中",
+      "value": "10月23日に発表",
       "sources": [
         "nvidia-meta-muse-partnership-expansion",
         "meta-muse-singapore-launch"
@@ -41,16 +42,29 @@
   ],
   "capabilities": [
     {
-      "text": "ShopeeやGrabなどの現地サービスと連携して買い物を手伝います。",
+      "text": "メールの管理や予定の調整を代行します。",
       "sources": [
         "meta-muse-singapore-launch"
+      ]
+    },
+    {
+      "text": "買い物や旅行の計画を調べることができます。",
+      "sources": [
+        "meta-muse-singapore-launch"
+      ]
+    },
+    {
+      "text": "AIがペットに返事と落書きを返す機能もあります。",
+      "sources": [
+        "meta-waddle-world-ai-pet"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "ほとんどの用途は無料で利用できます。",
+      "text": "基本的な機能は無料で利用できます。",
       "sources": [
+        "nvidia-meta-muse-partnership-expansion",
         "meta-muse-singapore-launch"
       ]
     },
@@ -63,14 +77,14 @@
   ],
   "japan": [
     {
-      "text": "Metaは10月23日にMuseの日本での提供開始を発表しました。",
+      "text": "Metaは10月23日にMuseの日本提供を発表しました。",
       "sources": [
         "nvidia-meta-muse-partnership-expansion",
         "meta-muse-singapore-launch"
       ]
     },
     {
-      "text": "iOS、Android、Webで利用でき、基本的な機能は無料で使えます。",
+      "text": "iOS・Android・Webで利用できます。",
       "sources": [
         "nvidia-meta-muse-partnership-expansion",
         "meta-muse-singapore-launch"
@@ -79,7 +93,7 @@
   ],
   "howto": [
     {
-      "text": "iOSアプリやAndroidアプリ、ウェブサイトのmuse.aiから利用できます。",
+      "text": "iOSやAndroidのアプリ、またはウェブサイトのmuse.aiから利用できます。",
       "sources": [
         "meta-muse-singapore-launch"
       ]
@@ -89,15 +103,7 @@
   "faq": [
     {
       "q": "無料で使える？",
-      "a": "基本的な機能は無料で利用でき、有料プランも用意されています。",
-      "sources": [
-        "nvidia-meta-muse-partnership-expansion",
-        "meta-muse-singapore-launch"
-      ]
-    },
-    {
-      "q": "いつから使える？",
-      "a": "2026年10月に発表され、日本でもすでに提供が開始されています。",
+      "a": "基本的な機能は無料で使えます。より多く使いたい人向けの有料プランもあります。",
       "sources": [
         "nvidia-meta-muse-partnership-expansion",
         "meta-muse-singapore-launch"
@@ -105,15 +111,14 @@
     },
     {
       "q": "どんな端末で使える？",
-      "a": "iOSアプリ、Androidアプリ、およびウェブサイトで利用できます。",
+      "a": "iOS端末、Android端末、ウェブサイトで利用できます。AI搭載メガネへの対応も予定されています。",
       "sources": [
-        "nvidia-meta-muse-partnership-expansion",
         "meta-muse-singapore-launch"
       ]
     },
     {
-      "q": "どのような連携機能がある？",
-      "a": "買い物や旅行のサービスなど、現地の各種サービスと連携してタスクをこなします。",
+      "q": "安全面はどうなっている？",
+      "a": "専用の仮想環境で動き、パスワードや支払い情報はAIから見えないように保護されています。",
       "sources": [
         "meta-muse-singapore-launch"
       ]
@@ -123,12 +128,7 @@
     {
       "date": "2026-10-28",
       "slug": "nvidia-meta-muse-partnership-expansion",
-      "event": "NVIDIAとMetaがMuseの協業拡大を発表"
-    },
-    {
-      "date": "2026-10-28",
-      "slug": "meta-muse-singapore-launch",
-      "event": "Museがシンガポールで提供開始"
+      "event": "Metaが自律型AIエージェントアプリ「Muse」を発表"
     }
   ],
   "related": [
@@ -143,9 +143,9 @@
     "nvidia-meta-muse-partnership-expansion",
     "meta-muse-singapore-launch"
   ],
-  "signature": "3ea9a2eecc1c0d88",
-  "primarySignature": "ba923d21467fa5e6",
+  "signature": "359855876093ec48",
+  "primarySignature": "079906dbb7bc650f",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-28T03:14:57+00:00",
-  "updatedAt": "2026-10-31T06:22:11+00:00"
+  "updatedAt": "2026-11-03T11:01:18+00:00"
 }
