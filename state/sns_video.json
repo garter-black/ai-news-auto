@@ -373,6 +373,89 @@
       "link": "https://ai-tech-express.jp/articles/google-ai-news-october-2026?utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=full",
       "bufferId": "6ae92a976f053cdb90b1c0f2",
       "postedAt": "2026-11-03T00:28:18+00:00"
+    },
+    "honda-rn0-emtb-eicma-2026": {
+      "at": "2026-11-03T01:04:15+00:00",
+      "status": "ready",
+      "tries": 1,
+      "textAt": "2026-11-02T15:35:40+00:00",
+      "versions": {
+        "full": {
+          "ok": true,
+          "seconds": 54.704,
+          "reasons": [],
+          "post": {
+            "title": "Honda初のハイエンドe-MTB「Honda RN0」、EICMA 2026…",
+            "url": "https://ai-tech-express.jp/articles/honda-rn0-emtb-eicma-2026",
+            "total": 54.704,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "Hondaの高級e-MTB、今買える？"
+              },
+              "summary": "要約すると、HondaがドイツのROTWILDと共同開発した同社初のハイエンド電動アシストマウンテンバイク「Honda RN0」を、ミラノのEICMA 2026で世界初公開しました。ダウンヒル競技専用だったRN01と違い、登りから下りまで走るモデルです。車体は約24kgで、価格と発売時期は示されていません。"
+            }
+          }
+        },
+        "short": {
+          "ok": true,
+          "seconds": 40.457,
+          "reasons": [],
+          "post": {
+            "title": "Honda初のハイエンドe-MTB「Honda RN0」、EICMA 2026…",
+            "url": "https://ai-tech-express.jp/articles/honda-rn0-emtb-eicma-2026",
+            "total": 40.457,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "Hondaの高級e-MTB、今買える？"
+              },
+              "summary": "要約すると、HondaがドイツのROTWILDと共同開発した同社初のハイエンド電動アシストマウンテンバイク「Honda RN0」を、ミラノのEICMA 2026で世界初公開しました。ダウンヒル競技専用だったRN01と違い、登りから下りまで走るモデルです。車体は約24kgで、価格と発売時期は示されていません。"
+            }
+          }
+        }
+      },
+      "timings": {
+        "full": {
+          "script": 0.0,
+          "tts": 16.78,
+          "plan_audio": 3.52,
+          "render": 37.89,
+          "gate": 4.38,
+          "sheet": 1.67,
+          "total": 64.3
+        },
+        "short": {
+          "script": 0.0,
+          "tts": 11.33,
+          "plan_audio": 2.4,
+          "render": 27.29,
+          "gate": 3.43,
+          "sheet": 1.32,
+          "total": 45.8
+        }
+      },
+      "ok": true,
+      "reason": "",
+      "pages": [
+        "global.honda"
+      ],
+      "urls": {
+        "full": "https://ai-tech-express.jp/video/honda-rn0-emtb-eicma-2026-ca8343affa.mp4",
+        "short": "https://ai-tech-express.jp/video/honda-rn0-emtb-eicma-2026-4617c60dab.mp4",
+        "poster": "https://ai-tech-express.jp/video/honda-rn0-emtb-eicma-2026-f7af59317d.jpg"
+      },
+      "embedded": true
     }
   }
 }
