@@ -53,7 +53,7 @@ jobs:
           LLM_WORKFLOW: video
           CLAUDE_CODE_OAUTH_TOKEN: ${{ github.event.inputs.levels != 'L3,L4' && secrets.CLAUDE_CODE_OAUTH_TOKEN || '' }}
           CLAUDE_DAILY_MAX: ${{ vars.CLAUDE_DAILY_MAX || '40' }}
-          CLAUDE_MODEL: opus
+          CLAUDE_MODEL: sonnet  # 自動の処理では Opus を使わない（2026-11-04 オーナー決定）
           ANTHROPIC_API_KEY: ${{ (github.event.inputs.vision == 'api' || github.event.inputs.levels != 'L3,L4') && secrets.ANTHROPIC_API_KEY || '' }}
           LLM_DEFAULT_VISIBILITY: high
           LLM_DEFAULT_PURPOSE: video

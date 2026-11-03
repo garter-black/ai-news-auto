@@ -11,17 +11,19 @@
 - tier="bulk"   : 無料枠の大きい軽量モデル（flash-lite → Gemma）→ quality → 外部無料API（キーがあれば）→ Codex（ローカルのみ）
 - Claude API（クレジット）は月の予算いっぱいまで、段（purpose）ごとにモデルを分けて使う（2026-11-03 オーナー決定）:
     data, model = generate_json(system, prompt, schema, tier="write", purpose="core")
-    Opus 5.5  : "breaking"（速報・大きなニュース）/ "video"（動画の台本）        … 予算が苦しくても下げない
-    Sonnet 5.5: "sns"（SNS に出しそうな記事）/ "core"（読者像の中心の話題の記事）/ "video_review"（台本のレビュー）
-    Haiku 5.5 : "rest"（ほかの記事）/ "helper"（事実確認の指摘の手直し・FAQ の書き足し・SNS の問いかけ）
+    Sonnet 5.5: "breaking"（速報・大きなニュース）/ "video"（動画の台本）/ "video_review"（台本のレビュー） … 予算が苦しくても下げない
+                "sns"（SNS に出しそうな記事）/ "core"（読者像の中心の話題の記事） … 予算が苦しいと Haiku に下げる
+    Haiku 5.5 : "rest"（ほかの記事）/ "helper"（事実確認の指摘の手直し・FAQ の書き足し・SNS の問いかけ）/ "check"（事実確認）
+  自動の処理では Opus を使わない（2026-11-04 オーナー決定。費用を抑えるため）。どの段も上限は Sonnet で、余っても Opus に上げない。
+  CLAUDE_API_MODEL_* や CLAUDE_MODEL に Opus を書いても使わない（Sonnet に戻す。手で試すときだけ CLAUDE_ALLOW_OPUS=1）。
   予算は CLAUDE_API_MONTHLY_BUDGET_USD（既定 $95。期間はクレジットの補充日 4日〜翌月3日）。毎回、今日の目安額
   （残り予算÷残り日数）の残りを見込み回数で配り（api_plan）、足りなければ 中心→Haiku、SNS→Haiku、最後に その他→無料 の順に下げ、
-  余れば SNS→Opus、中心→Opus、その他→Sonnet の順に上げる（割合で混ぜる）。使用額は state/claude_api_usage*.json に
+  余れば 確認→Sonnet、その他→Sonnet の順に上げる（割合で混ぜる）。使用額は state/claude_api_usage*.json に
   段ごとに記録し、実行ログに1行の要約を出す。クレジット切れは次の補充日まで使わず、API の失敗で処理は止めない。
   API が使えない・失敗したときは、速報・SNS・動画だけ Claude CLI、それ以外は無料モデル。purpose なしは無料モデルだけ。
 - Claude CLI は Claude Code CLI（`claude -p`）をサブスクリプションの枠で呼ぶ。使えるのは
   `claude` が PATH にあり、かつ CLAUDE_CODE_OAUTH_TOKEN（GitHub Actions。`claude setup-token` で発行）
-  または LLM_USE_LOCAL_CLAUDE=1（手元の Mac）のときだけ。CLAUDE_MODEL でモデルを変更（既定 sonnet）。
+  または LLM_USE_LOCAL_CLAUDE=1（手元の Mac）のときだけ。CLAUDE_MODEL でモデルを変更（既定 sonnet。opus は使わない）。
   1日 CLAUDE_DAILY_MAX 回まで（速報 purpose="breaking" は上限なし）。
 - Codex は `codex` が PATH にあり LLM_USE_LOCAL_CODEX=1 のときだけ（手元の ChatGPT ログイン用。CI では使わない）。
 - 429 / RESOURCE_EXHAUSTED のモデルはその実行中は使わない。404 は飛ばす。5xx は短く2回まで再試行。
@@ -375,8 +377,24 @@ def claude_enabled() -> bool:
     return bool(os.environ.get("CLAUDE_CODE_OAUTH_TOKEN")) or os.environ.get("LLM_USE_LOCAL_CLAUDE") == "1"
 
 
+def opus_allowed() -> bool:
+    """Opus を使ってよいか。自動の処理では使わない（2026-11-04 オーナー決定）。手で試すときだけ CLAUDE_ALLOW_OPUS=1"""
+    return os.environ.get("CLAUDE_ALLOW_OPUS") == "1"
+
+
+def _no_opus(model: str, fallback: str) -> str:
+    """モデル名が Opus なら fallback（Sonnet）に置き換える"""
+    if "opus" in model.lower() and not opus_allowed():
+        return fallback
+    return model
+
+
+def claude_cli_model() -> str:
+    return _no_opus(os.environ.get("CLAUDE_MODEL") or CLAUDE_DEFAULT_MODEL, CLAUDE_DEFAULT_MODEL)
+
+
 def _claude_models() -> list[str]:
-    return [f"claude:{os.environ.get('CLAUDE_MODEL') or CLAUDE_DEFAULT_MODEL}"] if claude_enabled() else []
+    return [f"claude:{claude_cli_model()}"] if claude_enabled() else []
 
 
 def _codex_models() -> list[str]:
@@ -712,32 +730,37 @@ API_PRICES = {
 }
 API_CACHE_WRITE_MULT = 1.25
 # モデルの段: 0=無料モデル（API を使わない）/ 1=Haiku / 2=Sonnet / 3=Opus。環境変数 CLAUDE_API_MODEL_<LOW|MID|TOP> で変更
+# 3=Opus は自動の処理では使わない（2026-11-04 オーナー決定）。どの段も API_MAX_LEVEL（Sonnet）より上にはならない。
+# 3 の定義は、昔の記録（段×モデル）の料金を数えるためだけに残す
 API_LEVEL_NAMES = ("free", "low", "mid", "top")
 API_LEVEL_LABELS = ("無料", "Haiku", "Sonnet", "Opus")
 API_LEVEL_DEFAULTS = {1: "claude-haiku-5-5", 2: "claude-sonnet-5-5", 3: "claude-opus-5-5"}
+API_MAX_LEVEL = 2  # 自動の処理で使ってよいいちばん上の段（Sonnet）
 # purpose（段）: (いつもの段, 下げられる下限, 上げられる上限, 守る段か, 表示名)
-#   守る段（速報・動画・補助）は予算が苦しくても下げない（月の予算＋予備 API_PROTECTED_MARGIN まで使う）
+#   守る段（速報・動画・補助・確認）は予算が苦しくても下げない（月の予算＋予備 API_PROTECTED_MARGIN まで使う）
 API_TIERS = {
-    "breaking": (3, 3, 3, True, "速報"),
-    "video": (3, 3, 3, True, "動画"),
+    # 2026-11-04 オーナー決定: 費用を抑えるため、速報・動画も Sonnet（Opus は使わない）
+    "breaking": (2, 2, 2, True, "速報"),
+    "video": (2, 2, 2, True, "動画"),
     "video_review": (2, 2, 2, True, "動画レビュー"),
     "check": (1, 1, 2, True, "確認"),         # 品質ゲートの事実確認・続報の判定（Haiku。余れば Sonnet）
     "helper": (1, 1, 1, True, "補助"),        # 指摘の手直し・言葉の手直し・読みやすさの書き直し・FAQ の書き足し・SNS の問いかけ など
-    "sns": (2, 1, 3, False, "SNS"),          # SNS に出しそうな記事
-    "core": (2, 1, 3, False, "中心"),         # 読者像の中心の話題（AI・仕事とお金・ビジネス・投資・税金・補助金・起業）
+    "sns": (2, 1, 2, False, "SNS"),          # SNS に出しそうな記事
+    "core": (2, 1, 2, False, "中心"),         # 読者像の中心の話題（AI・仕事とお金・ビジネス・投資・税金・補助金・起業）
     "rest": (1, 0, 2, False, "その他"),       # ほかの記事（スポーツ・暮らし・エンタメ・科学など）
 }
 # Claude CLI（サブスクリプション）も使ってよい段（2026-11-03 オーナー決定: 速報・SNS・動画だけ）
 API_CLI_PURPOSES = {"breaking", "sns", "video", "video_review"}
 # 予算の配り方（優先順）。下の段ほど後回し＝予算が足りないと先に削られる:
 #   削る順 = 中心 Sonnet→Haiku → SNS Sonnet→Haiku → 最後に その他 Haiku→無料（月 $3 ほどなので最後まで残す。速報・動画は削らない）
-#   余るとき = さらに SNS→Opus → 中心→Opus → その他→Sonnet と上げる（CLAUDE_API_UPGRADES=0 で上げない）
+#   余るとき = さらに 確認→Sonnet → その他→Sonnet と上げる（CLAUDE_API_UPGRADES=0 で上げない。Opus には上げない）
 API_STEPS = [("rest", 0, 1), ("sns", 1, 2), ("core", 1, 2)]
-API_UPGRADE_STEPS = [("check", 1, 2), ("sns", 2, 3), ("core", 2, 3), ("rest", 1, 2)]
+API_UPGRADE_STEPS = [("check", 1, 2), ("rest", 1, 2)]  # Opus への格上げはしない（2026-11-04 オーナー決定）
 # 1日の呼び出し回数の見込み（実績が2日分たまるまでの仮の値。作り直しも1回と数える）
 API_DEMAND_DEFAULT = {"breaking": 7, "video": 5, "video_review": 5, "check": 90, "helper": 80, "sns": 13, "core": 27, "rest": 21}
 # 1回あたりの料金の見込み（Sonnet で書いたとき。実績が3回分たまったらその平均を使う）。ほかのモデルは料金の比で換算
 # 2026-11-03 の実績: 速報 Opus 平均 $0.25/回・SNS Sonnet $0.09/回・動画 Opus $0.11/回（入力 約1.5万・出力 約0.5〜0.9万トークン）
+# Opus は Sonnet の2倍の料金なので、2026-11-04 からの Sonnet では 速報 約 $0.125/回・動画 約 $0.055/回の見込み
 API_COST_MID_DEFAULT = {"breaking": 0.125, "video": 0.055, "video_review": 0.02, "check": 0.045, "helper": 0.04, "sns": 0.09, "core": 0.09, "rest": 0.09}
 API_LEVEL_COST_RATIO = {1: 0.05, 2: 1.0, 3: 2.0}
 # 1日の回数の安全上限（暴走よけ。環境変数 CLAUDE_API_DAILY_CALLS_<段> で変更）
@@ -774,9 +797,13 @@ def _env_int(name: str, default: int) -> int:
 
 
 def api_level_model(level: int) -> str | None:
+    """段の番号 → API のモデル名。自動の処理では Sonnet より上（Opus）にしない（環境変数で Opus を書いても Sonnet）"""
     if level <= 0:
         return None
-    return os.environ.get(f"CLAUDE_API_MODEL_{API_LEVEL_NAMES[level].upper()}") or API_LEVEL_DEFAULTS[level]
+    if not opus_allowed():
+        level = min(level, API_MAX_LEVEL)
+    model = os.environ.get(f"CLAUDE_API_MODEL_{API_LEVEL_NAMES[level].upper()}") or API_LEVEL_DEFAULTS[level]
+    return _no_opus(model, API_LEVEL_DEFAULTS[API_MAX_LEVEL])
 
 
 def api_cost(model: str, usage) -> float:
@@ -1022,7 +1049,7 @@ def api_choose(purpose: str, now: datetime | None = None, record: bool = True) -
     share = level_value - base
     n = s["req_today"].get(purpose, 0)  # 今日すでに来た回数（この回を含まない）
     level = base + 1 if share > 0 and int((n + 1) * share + 1e-9) > int(n * share + 1e-9) else base
-    model = api_level_model(min(level, 3))
+    model = api_level_model(min(level, API_TIERS[purpose][2], API_MAX_LEVEL))
     if not model:
         return None, f"{API_TIERS[purpose][4]}は今は無料モデル（予算の配分）"
     return model, ""

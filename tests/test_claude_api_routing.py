@@ -1,5 +1,7 @@
-"""Claude API（クレジット）の経路: 段ごとのモデル（Opus/Sonnet/Haiku）、予算に合わせた上げ下げ、CLI は速報・SNS・動画だけ、
-クレジット切れ・料金の記録。実際の API には一切つながない（_api_request をモックする）。"""
+"""Claude API（クレジット）の経路: 段ごとのモデル（Sonnet/Haiku。自動の処理では Opus を使わない＝2026-11-04 オーナー決定）、
+予算に合わせた上げ下げ、CLI は速報・SNS・動画だけ、クレジット切れ・料金の記録。実際の API には一切つながない（_api_request をモックする）。"""
+
+import re
 
 import json
 import os
@@ -36,11 +38,12 @@ class Base(unittest.TestCase):
         tmp = Path(self.tmp.name)
         self.env = patch.dict(os.environ, {"ANTHROPIC_API_KEY": "test-key-not-real"}, clear=False)
         self.env.start()
-        for key in [k for k in os.environ if k.startswith(("CLAUDE_API_", "LLM_DEFAULT_"))]:
+        for key in [k for k in os.environ if k.startswith(("CLAUDE_API_", "LLM_DEFAULT_", "CLAUDE_ALLOW_OPUS", "CLAUDE_MODEL"))]:
             os.environ.pop(key)
         self.patches = [
             patch.object(llm, "API_STATE_DIR", tmp),
             patch.object(llm, "USAGE_PATH", tmp / "llm_usage.json"),
+            patch.object(llm, "LLM_STATE_DIR", tmp),  # 手元の state/llm_usage_*.json（今日の CLI の回数）を読まない
             patch.object(llm, "_now", return_value=NOW),
         ]
         for p in self.patches:
@@ -64,16 +67,22 @@ class Base(unittest.TestCase):
         (llm.API_STATE_DIR / name).write_text(json.dumps(data), "utf-8")
 
 
+FLOOR = 1.20 + 0.20  # 守る段 + SNS・中心の Haiku（AdaptiveBudgetTests の見込みで）
+REST_HAIKU, SNS_UP, CORE_UP, REST_UP = 0.105, 1.235, 2.565, 1.995
+FULL = FLOOR + REST_HAIKU + SNS_UP + CORE_UP  # SNS・中心 Sonnet、その他 Haiku までの1日の額
+
+
 def levels(plan):
     return {t: round(v, 4) for t, v in plan["levels"].items() if t in ("sns", "core", "rest")}
 
 
 class RoutingTests(Base):
-    def test_breaking_uses_opus_api_first(self):
+    def test_breaking_uses_sonnet_api_first(self):
         with patch.object(llm, "_api_request", return_value=fake_message()) as api, \
              patch.object(llm, "models_for") as old_route, patch.object(llm, "_call_claude") as cli:
             data, model = llm.generate_json("sys", "prompt", SCHEMA, visibility="high", purpose="breaking")
-        self.assertEqual((data, model), ({"answer": "api"}, "anthropic-api:claude-opus-5-5"))
+        self.assertEqual((data, model), ({"answer": "api"}, "anthropic-api:claude-sonnet-5-5"))
+        self.assertEqual(api.call_args.args[0], "claude-sonnet-5-5")
         old_route.assert_not_called()
         cli.assert_not_called()
 
@@ -81,7 +90,7 @@ class RoutingTests(Base):
         with patch.dict(os.environ, {"CLAUDE_API_UPGRADES": "0", "CLAUDE_API_DAILY_BUDGET_USD": "50"}):
             got = {t: llm.api_choose(t, record=False)[0] for t in llm.API_TIERS}
         self.assertEqual(got, {
-            "breaking": "claude-opus-5-5", "video": "claude-opus-5-5", "video_review": "claude-sonnet-5-5",
+            "breaking": "claude-sonnet-5-5", "video": "claude-sonnet-5-5", "video_review": "claude-sonnet-5-5",
             "check": "claude-haiku-5-5", "helper": "claude-haiku-5-5", "sns": "claude-sonnet-5-5", "core": "claude-sonnet-5-5", "rest": "claude-haiku-5-5",
         })
         with patch.dict(os.environ, {"CLAUDE_API_UPGRADES": "0", "CLAUDE_API_DAILY_BUDGET_USD": "50", "CLAUDE_API_MODEL_LOW": "claude-x"}):
@@ -175,7 +184,10 @@ class RoutingTests(Base):
 
 class AdaptiveBudgetTests(Base):
     """予算に合わせた上げ下げ（仮の見込み: 1日 速報7・動画5+5・補助40・SNS13・中心27・その他21 回。
-    1回の料金はこのテスト用に固定: Sonnet で 速報0.11・動画0.05・レビュー0.02・補助0.04・記事0.10。Opus=2倍・Haiku=0.05倍）"""
+    1回の料金はこのテスト用に固定: Sonnet で 速報0.11・動画0.05・レビュー0.02・補助0.04・記事0.10。Haiku=0.05倍）
+    守る段の1日の額 = 速報 0.77 + 動画 0.25 + レビュー 0.10 + 補助 0.08 = $1.20（どれも Sonnet/Haiku のまま。Opus は使わない）
+    SNS・中心の下限（Haiku）$0.20 と合わせて FLOOR = $1.40。その他 Haiku $0.105、SNS Sonnet へ +$1.235、中心 Sonnet へ +$2.565、
+    その他 Sonnet へ +$1.995"""
 
     def setUp(self):
         super().setUp()
@@ -194,45 +206,58 @@ class AdaptiveBudgetTests(Base):
         with patch.dict(os.environ, {"CLAUDE_API_DAILY_BUDGET_USD": str(daily), **env}):
             return llm.api_plan()
 
-    def test_95_dollars_rest_haiku_sns_partly_sonnet_core_haiku(self):
-        # 守る段 $2.22 + SNS・中心の Haiku $0.20 = $2.42、その他 Haiku $0.105。残り $0.64 で SNS の約半分を Sonnet に
+    def test_95_dollars_rest_haiku_sns_sonnet_core_partly_sonnet(self):
+        # 守る段が Sonnet になって $1.00 浮いた分で、SNS はまるごと Sonnet、残りで中心の一部も Sonnet に
         got = levels(self.plan(95 / 30))
-        self.assertEqual((got["rest"], got["core"]), (1.0, 1.0))
-        self.assertAlmostEqual(got["sns"], 1 + (95 / 30 - 2.42 - 0.105) / 1.235, places=3)
+        self.assertEqual((got["rest"], got["sns"]), (1.0, 2.0))
+        self.assertAlmostEqual(got["core"], 1 + (95 / 30 - FLOOR - REST_HAIKU - SNS_UP) / CORE_UP, places=3)
 
-    def test_190_dollars_full_baseline(self):
+    def test_190_dollars_full_baseline_then_rest_upgrades(self):
         got = levels(self.plan(190 / 30))
-        self.assertEqual((got["core"], got["rest"]), (2.0, 1.0))
-        self.assertGreaterEqual(got["sns"], 2.0)
+        self.assertEqual((got["sns"], got["core"]), (2.0, 2.0))  # Sonnet が上限（Opus に上げない）
+        self.assertAlmostEqual(got["rest"], 1 + (190 / 30 - FULL) / REST_UP, places=3)  # 余りは その他 を Sonnet に
 
     def test_degrade_order_core_then_sns_then_rest_last(self):
-        full = 2.42 + 1.235 + 2.565 + 0.105  # SNS・中心 Sonnet、その他 Haiku までの1日の額
-        self.assertEqual(levels(self.plan(full, CLAUDE_API_UPGRADES="0")), {"sns": 2.0, "core": 2.0, "rest": 1.0})
-        got = levels(self.plan(full - 1.0))            # 足りない → まず中心の一部を Haiku に
+        self.assertEqual(levels(self.plan(FULL, CLAUDE_API_UPGRADES="0")), {"sns": 2.0, "core": 2.0, "rest": 1.0})
+        self.assertEqual(levels(self.plan(FULL)), {"sns": 2.0, "core": 2.0, "rest": 1.0})  # ちょうどなら上げも下げもしない
+        got = levels(self.plan(FULL - 1.0))            # 足りない → まず中心の一部を Haiku に
         self.assertEqual((got["sns"], got["rest"]), (2.0, 1.0))
         self.assertTrue(1 < got["core"] < 2)
-        got = levels(self.plan(2.42 + 0.105 + 0.5))    # もっと足りない → 中心は Haiku、SNS の一部だけ Sonnet（その他は Haiku のまま）
+        got = levels(self.plan(FLOOR + REST_HAIKU + 0.5))  # もっと足りない → 中心は Haiku、SNS の一部だけ Sonnet（その他は Haiku のまま）
         self.assertEqual((got["core"], got["rest"]), (1.0, 1.0))
         self.assertTrue(1 < got["sns"] < 2)
-        got = levels(self.plan(2.42 + 0.05))           # 最後に その他 を無料へ
+        got = levels(self.plan(FLOOR + 0.05))          # 最後に その他 を無料へ
         self.assertEqual((got["sns"], got["core"]), (1.0, 1.0))
         self.assertTrue(0 < got["rest"] < 1)
         self.assertEqual(levels(self.plan(1.0)), {"sns": 1.0, "core": 1.0, "rest": 0.0})  # 足りなくても SNS・中心は Haiku
 
     def test_breaking_and_video_never_degrade(self):
         with patch.dict(os.environ, {"CLAUDE_API_DAILY_BUDGET_USD": "0.01"}):
-            self.assertEqual(llm.api_choose("breaking", record=False)[0], "claude-opus-5-5")
-            self.assertEqual(llm.api_choose("video", record=False)[0], "claude-opus-5-5")
+            plan = llm.api_plan()
+            for tier, spec in llm.API_TIERS.items():
+                if spec[3]:  # 守る段は下限より下げない
+                    self.assertEqual(plan["levels"][tier], spec[1], tier)
+            self.assertEqual(llm.api_choose("breaking", record=False)[0], "claude-sonnet-5-5")
+            self.assertEqual(llm.api_choose("video", record=False)[0], "claude-sonnet-5-5")
             self.assertEqual(llm.api_choose("video_review", record=False)[0], "claude-sonnet-5-5")
             self.assertEqual(llm.api_choose("sns", record=False)[0], "claude-haiku-5-5")
             self.assertIsNone(llm.api_choose("rest", record=False)[0])  # 予算がほぼ無い日は その他 だけ無料
 
     def test_underspend_upgrades_next_tiers(self):
-        self.assertEqual(levels(self.plan(20)), {"sns": 3.0, "core": 3.0, "rest": 2.0})
-        got = levels(self.plan(2.42 + 1.235 + 2.565 + 0.105 + 0.65))  # 余り $0.65 → SNS の半分を Opus に
-        self.assertAlmostEqual(got["sns"], 2.5, places=2)
-        self.assertEqual((got["core"], got["rest"]), (2.0, 1.0))
+        self.assertEqual(levels(self.plan(20)), {"sns": 2.0, "core": 2.0, "rest": 2.0})  # 余っても Sonnet まで
+        got = levels(self.plan(FULL + 1.0))  # 余り $1.00 → その他 の約半分を Sonnet に（SNS・中心は Opus に上げない）
+        self.assertAlmostEqual(got["rest"], 1 + 1.0 / REST_UP, places=3)
+        self.assertEqual((got["sns"], got["core"]), (2.0, 2.0))
         self.assertEqual(levels(self.plan(20, CLAUDE_API_UPGRADES="0")), {"sns": 2.0, "core": 2.0, "rest": 1.0})
+
+    def test_check_upgrades_to_sonnet_first_when_budget_allows(self):
+        with patch.object(llm, "API_UPGRADE_STEPS", [("check", 1, 2), ("rest", 1, 2)]), \
+             patch.dict(llm.API_DEMAND_DEFAULT, {"check": 10}), patch.dict(llm.API_COST_MID_DEFAULT, {"check": 0.04}):
+            check_up = 10 * 0.04 * 0.95
+            got = self.plan(FULL + 10 * 0.04 * 0.05 + check_up / 2)["levels"]
+            self.assertAlmostEqual(got["check"], 1.5, places=3)  # 確認の半分を Sonnet に
+            self.assertEqual(got["rest"], 1.0)                   # その他はそのあと
+            self.assertEqual(self.plan(50)["levels"]["check"], 2.0)
 
     def test_allowance_from_remaining_budget_and_days(self):
         # 前日までに $11 使用・残り24日 → 今日の目安 (95-11)/24 = $3.5。使いすぎた日は翌日の目安が下がる
@@ -250,15 +275,20 @@ class AdaptiveBudgetTests(Base):
 
     def test_less_of_day_left_needs_less_room(self):
         evening = datetime(2026, 11, 10, 9, 0, tzinfo=timezone.utc)  # 日本時間 18:00（残り 1/4 日）
+        morning = levels(self.plan(2.0))  # まる1日分の見込みには足りない → SNS の一部だけ Sonnet
+        self.assertTrue(1 < morning["sns"] < 2)
         with patch.object(llm, "_now", return_value=evening):
-            got = levels(self.plan(2.0))  # 残りの見込みは $0.6 ほど → 余りで上げられる
-        self.assertGreater(got["sns"], 2.0)
+            got = levels(self.plan(2.0))  # 残りの見込みは $1.3 ほど → SNS・中心は Sonnet、余りで その他 も上げられる
+        self.assertEqual((got["sns"], got["core"]), (2.0, 2.0))
+        self.assertGreater(got["rest"], 1.0)
 
     def test_monthly_budget_reached_only_protected_continue(self):
         self.write_ledger("claude_api_usage.json", {"runs": {"2026-11-05": {"a": {"usd": 60.0}}}})
         self.write_ledger("claude_api_usage_video.json", {"runs": {"2026-11-06": {"b": {"usd": 35.5}}}})
         self.assertIsNone(llm.api_choose("core", record=False)[0])
-        self.assertEqual(llm.api_choose("breaking", record=False)[0], "claude-opus-5-5")  # 予備 $4 の範囲
+        self.assertEqual(llm.api_choose("breaking", record=False)[0], "claude-sonnet-5-5")  # 予備 $4 の範囲
+        self.assertEqual(llm.api_choose("video", record=False)[0], "claude-sonnet-5-5")
+        self.assertIsNone(llm.api_choose("sns", record=False)[0])  # 下げられる段は予算に到達したら API を使わない
         self.write_ledger("claude_api_usage_video.json", {"runs": {"2026-11-06": {"b": {"usd": 39.5}}}})
         self.assertIn("予算", llm.api_choose("breaking", record=False)[1])
 
@@ -354,12 +384,18 @@ class CostTests(Base):
                 llm._try_anthropic_api("s", "p", SCHEMA, 1024, "breaking")
                 llm._try_anthropic_api("s", "p", SCHEMA, 1024, "sns")
         entry = json.loads((llm.API_STATE_DIR / "claude_api_usage.json").read_text())["runs"]["2026-11-10"]["gh-77-1"]
-        self.assertAlmostEqual(entry["usd"], 0.14 + 0.07, places=6)  # Opus $0.14 + Sonnet $0.07
+        self.assertAlmostEqual(entry["usd"], 0.07 + 0.07, places=6)  # 速報も Sonnet $0.07（Opus なら $0.14 だった）+ SNS Sonnet $0.07
         self.assertEqual(entry["calls"], {"breaking": 1, "sns": 1})
         self.assertEqual(entry["req"], {"breaking": 1, "sns": 1})
-        self.assertEqual(set(entry["by"]), {"breaking|3", "sns|2"})  # 段×モデルごとの使用額
+        self.assertEqual(set(entry["by"]), {"breaking|2", "sns|2"})  # 段×モデルごとの使用額
         self.assertEqual((entry["in"], entry["out"]), (20_000, 10_000))
-        self.assertEqual(json.loads(llm.USAGE_PATH.read_text())[llm._today()]["anthropic-api:claude-opus-5-5"], 1)
+        self.assertEqual(json.loads(llm.USAGE_PATH.read_text())[llm._today()]["anthropic-api:claude-sonnet-5-5"], 2)
+
+    def test_old_opus_records_still_counted_as_opus(self):
+        llm.record_api_usage("breaking", "claude-opus-5-5", {"output_tokens": 10_000})  # 昔の記録・手で試した分
+        entry = json.loads((llm.API_STATE_DIR / "claude_api_usage.json").read_text())["runs"]["2026-11-10"]
+        stat = next(iter(entry.values()))["by"]
+        self.assertAlmostEqual(stat["breaking|3"]["usd"], 0.20, places=6)
 
     def test_ledger_name_from_env(self):
         with patch.dict(os.environ, {"CLAUDE_API_LEDGER": "video"}):
@@ -393,6 +429,76 @@ class CostTests(Base):
         item = out["properties"]["b"]["items"]
         self.assertEqual(item, {"type": "object", "properties": {"c": {"type": "integer"}}, "required": ["c"], "additionalProperties": False})
         self.assertNotIn("minItems", out["properties"]["b"])
+
+
+class NoOpusPolicyTests(Base):
+    """台帳 O8: 自動の処理では Opus を使わない（2026-11-04 オーナー決定。費用を抑えるため）"""
+
+    ROOT = Path(__file__).resolve().parents[1]
+
+    def test_no_tier_can_reach_level_3(self):
+        self.assertEqual(llm.API_MAX_LEVEL, 2)
+        for tier, (base, low, high, _protected, _label) in llm.API_TIERS.items():
+            self.assertLessEqual(max(base, low, high), 2, tier)
+        for tier, low, high in llm.API_STEPS + llm.API_UPGRADE_STEPS:
+            self.assertLessEqual(high, 2, tier)
+        for daily in (0.01, 3.0, 50.0, 10_000.0):  # 予算がどれだけ余っても Sonnet まで
+            with patch.dict(os.environ, {"CLAUDE_API_DAILY_BUDGET_USD": str(daily)}):
+                plan = llm.api_plan()
+                for tier, value in plan["levels"].items():
+                    self.assertLessEqual(value, 2.0, (daily, tier))
+                for tier in llm.API_TIERS:
+                    model = llm.api_choose(tier, record=False)[0]
+                    self.assertNotIn("opus", (model or "").lower(), (daily, tier))
+
+    def test_choose_never_returns_opus_even_if_plan_says_3(self):
+        llm._api_summary_logged.add("2026-11-10")
+        with patch.object(llm, "api_plan", return_value={"levels": {t: 3.0 for t in llm.API_TIERS}}):
+            for tier in llm.API_TIERS:
+                self.assertNotIn("opus", llm.api_choose(tier)[0], tier)
+        self.assertNotIn("opus", llm.api_level_model(3))
+
+    def test_env_overrides_cannot_switch_to_opus(self):
+        env = {"CLAUDE_API_MODEL_LOW": "claude-opus-5-5", "CLAUDE_API_MODEL_MID": "claude-opus-5-5",
+               "CLAUDE_API_MODEL_TOP": "claude-opus-5-5", "CLAUDE_MODEL": "opus", "CLAUDE_API_DAILY_BUDGET_USD": "50"}
+        with patch.dict(os.environ, env):
+            for level in (1, 2, 3):
+                self.assertEqual(llm.api_level_model(level), "claude-sonnet-5-5", level)
+            self.assertEqual(llm.claude_cli_model(), "sonnet")
+            with patch.object(llm, "claude_enabled", return_value=True):
+                self.assertEqual(llm._claude_models(), ["claude:sonnet"])
+        self.assertEqual(llm.CLAUDE_DEFAULT_MODEL, "sonnet")
+        with patch.dict(os.environ, {**env, "CLAUDE_ALLOW_OPUS": "1"}):  # 手で試すときだけ（ワークフローでは使わない）
+            self.assertEqual(llm.claude_cli_model(), "opus")
+
+    def test_cli_fallback_does_not_request_opus(self):
+        os.environ.pop("ANTHROPIC_API_KEY")
+        with patch.dict(os.environ, {"CLAUDE_MODEL": "opus"}), \
+             patch.object(llm, "claude_enabled", return_value=True), \
+             patch.object(llm, "_call_claude", return_value='{"answer": "cli"}') as cli, \
+             patch.object(llm, "models_for", return_value=[]):
+            self.assertEqual(llm.generate_json("s", "p", SCHEMA, purpose="breaking")[1], "claude:sonnet")
+        self.assertEqual(cli.call_args.args[0], "claude:sonnet")
+
+    def test_no_workflow_sets_an_opus_model(self):
+        bad = []
+        for path in sorted((self.ROOT / ".github" / "workflows").glob("*.y*ml")):
+            for n, line in enumerate(path.read_text("utf-8").splitlines(), 1):
+                code = re.sub(r"(^|\s)#.*$", "", line)  # コメントは除く
+                if re.search(r"opus|CLAUDE_ALLOW_OPUS", code, re.I):
+                    bad.append(f"{path.name}:{n}: {line.strip()}")
+        self.assertEqual(bad, [], "ワークフローで Opus を指定している（自動の処理では Sonnet まで）")
+
+    def test_no_script_forces_opus(self):
+        bad = []
+        pattern = re.compile(r"""--model["',\s=]+["']?opus|CLAUDE_(?:API_)?MODEL[A-Z_]*["']?\s*[:=,]\s*["']?(?:claude-)?opus|CLAUDE_ALLOW_OPUS["']?\s*[:=,]\s*["']?1""", re.I)
+        for path in sorted((self.ROOT / "scripts").rglob("*")):
+            if path.suffix not in (".py", ".sh", ".mjs", ".js", ".ts") or path.name == "llm.py":
+                continue
+            for n, line in enumerate(path.read_text("utf-8", errors="ignore").splitlines(), 1):
+                if pattern.search(line):
+                    bad.append(f"{path.relative_to(self.ROOT)}:{n}: {line.strip()}")
+        self.assertEqual(bad, [])
 
 
 class SnsSelectionTests(unittest.TestCase):

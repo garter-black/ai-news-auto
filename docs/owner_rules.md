@@ -121,3 +121,4 @@
 | O5 | 進み具合を短くこまめに報告する（何をしているか・どこまで・次に何を） | 2026-11-03 | 待たされている感じがした | 会話 | |
 | O6 | 見た目で2回外したら、3〜4案を並べて選んでもらう | 2026-10-21 | 当てずっぽうの繰り返しは時間の無駄 | 会話 | |
 | O7 | オーナーに直されたら、この台帳に1行足し、守らせる仕組みを同じ変更で入れる | 2026-11-03 | 「分かったふり」で同じ間違いを繰り返した | `AGENTS.md`・`tests/test_owner_rules_ledger.py` | |
+| O8 | 自動の処理では Opus を使わない（2026-11-04）。速報・動画の台本も Sonnet。余った予算でも Opus に上げない（確認・その他が Sonnet に上がるだけ）。Claude CLI の既定・ワークフローの `CLAUDE_MODEL` も Sonnet | 2026-11-04 | 費用を抑えるため（速報の Opus は1回約 $0.25 で、Sonnet の2倍） | `scripts/llm.py`（`API_MAX_LEVEL`・`api_level_model`・`claude_cli_model`）・`tests/test_claude_api_routing.py::NoOpusPolicyTests` | |

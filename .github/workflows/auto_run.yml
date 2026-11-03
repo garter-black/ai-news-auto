@@ -115,7 +115,7 @@ jobs:
           FAST_LANE_GH_TOKEN: ${{ github.token }}
           # 任意: 読み取りサービス（r.jina.ai）の鍵。openai.com の記事は直接読めないため、あると取りこぼしが減る
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
-          # Claude API のクレジットを月の予算いっぱいまで、段ごとのモデルで使う（速報=Opus、SNS・中心=Sonnet、ほか=Haiku。
+          # Claude API のクレジットを月の予算いっぱいまで、段ごとのモデルで使う（速報・SNS・中心=Sonnet、ほか=Haiku。Opus は使わない。
           # 予算に合わせて自動で上下）。だめなら速報・SNS は Claude CLI、そのあと無料モデル。仕組みは scripts/llm.py
           # 予算は GitHub の変数 CLAUDE_API_MONTHLY_BUDGET_USD（未設定なら $95。Ultra にしたら 190 くらい）
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

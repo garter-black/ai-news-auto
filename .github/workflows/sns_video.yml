@@ -82,7 +82,7 @@ jobs:
         env:
           # 2026-11-03: 動画の台本は無料の LLM（Gemini など）を使わない。鍵を渡さない＝記事づくりの無料枠を食わない（Claude API → CLI だけ。無ければ動画なし）
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          CLAUDE_MODEL: opus
+          CLAUDE_MODEL: sonnet  # 自動の処理では Opus を使わない（2026-11-04 オーナー決定）
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           LLM_DEFAULT_VISIBILITY: high
           LLM_DEFAULT_PURPOSE: video

@@ -240,7 +240,7 @@ def sns_likely(item: dict) -> bool:
 
 
 def article_purpose(item: dict, lane: str, major: bool = False) -> str:
-    """Claude API のどの段で書くか（llm.API_TIERS）。速報=Opus、SNS・読者像の中心=Sonnet、ほか=Haiku（予算で上下する）"""
+    """Claude API のどの段で書くか（llm.API_TIERS）。速報・SNS・読者像の中心=Sonnet、ほか=Haiku（予算で上下する。Opus は使わない）"""
     if major:
         return "breaking"
     if lane == "ai" and sns_likely(item):

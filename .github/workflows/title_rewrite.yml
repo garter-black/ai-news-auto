@@ -55,7 +55,7 @@ jobs:
           LLM_WORKFLOW: titles
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
-          # 余った予算で Opus に上げない（見出しには Sonnet で十分）
+          # 余った予算で上のモデルに上げない（見出しには Sonnet で十分。Opus はどこでも使わない）
           CLAUDE_API_UPGRADES: "0"
           CLAUDE_API_LEDGER: titles
           CLAUDE_API_DAILY_CALLS_CORE: ${{ inputs.core_cap || '60' }}
