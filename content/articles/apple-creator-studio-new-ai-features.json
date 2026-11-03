@@ -132,5 +132,25 @@
     }
   ],
   "sectionsPolishedAt": "2026-11-03T15:59:09+00:00",
-  "typesRewrittenAt": "2026-11-03T15:59:09+00:00"
+  "typesRewrittenAt": "2026-11-03T15:59:09+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/apple-creator-studio-new-ai-features-fig1-606144a2.jpg",
+      "width": 1200,
+      "height": 800,
+      "kind": "photo",
+      "credit": "Apple",
+      "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/apple-creator-studio-adds-powerful-new-ai-features-and-even-more-creative-tools/",
+      "original": "https://www.apple.com/newsroom/images/2026/10/apple-creator-studio-adds-powerful-new-ai-features-and-even-more-creative-tools/article/Apple-Creator-Studio-Final-Cut-Pro-MotionVFX-261027_big.jpg.medium_2x.jpg"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/apple-creator-studio-new-ai-features-fig2-503c80f2.jpg",
+      "width": 1200,
+      "height": 630,
+      "kind": "hero",
+      "credit": "Apple",
+      "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/apple-creator-studio-adds-powerful-new-ai-features-and-even-more-creative-tools/",
+      "original": "https://www.apple.com/newsroom/images/2026/10/apple-creator-studio-adds-powerful-new-ai-features-and-even-more-creative-tools/tile/Apple-Creator-Studio-hero-261027-lp.jpg.og.jpg?202610290814"
+    }
+  ]
 }

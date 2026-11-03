@@ -110,5 +110,16 @@
     }
   ],
   "sectionsPolishedAt": "2026-11-03T16:31:36+00:00",
-  "typesRewrittenAt": "2026-11-03T16:31:36+00:00"
+  "typesRewrittenAt": "2026-11-03T16:31:36+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/openai-updated-model-spec-2026-fig1-87fb39d3.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "hero",
+      "credit": "OpenAI",
+      "sourceUrl": "https://openai.com/index/updated-model-spec",
+      "original": "https://images.ctfassets.net/kftzwdyauwt9/75veJvi069XNefheZKrGT3/524e301a9565289e83b5a666d47b3da5/model-spec-update-more-capable-beneficial-ai-seo.png?w=1600&h=900&fit=fill"
+    }
+  ]
 }

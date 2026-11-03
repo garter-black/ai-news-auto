@@ -155,5 +155,25 @@
     }
   ],
   "sectionsPolishedAt": "2026-11-03T15:11:58+00:00",
-  "typesRewrittenAt": "2026-11-03T15:11:58+00:00"
+  "typesRewrittenAt": "2026-11-03T15:11:58+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/mistral-large-4-preview-fig1-ca0a5d1e.jpg",
+      "width": 1200,
+      "height": 791,
+      "kind": "dense",
+      "credit": "Mistral AI",
+      "sourceUrl": "https://mistral.ai/news/mistral-large-4/",
+      "original": "https://mistral.ai/_astro/human-evaluation---surge-(human-eval-on-code)%201_ZCsHgr.webp?dpl=6aea0c2f8fe27d4d8a550cc5"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/mistral-large-4-preview-fig2-c2dfb4ac.jpg",
+      "width": 1200,
+      "height": 791,
+      "kind": "dense",
+      "credit": "Mistral AI",
+      "sourceUrl": "https://mistral.ai/news/mistral-large-4/",
+      "original": "https://mistral.ai/_astro/scicode-verified-pass@1-(n_6)-alt_Z1DedbC.webp?dpl=6aea0c2f8fe27d4d8a550cc5"
+    }
+  ]
 }

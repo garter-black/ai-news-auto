@@ -136,5 +136,16 @@
     }
   ],
   "sectionsPolishedAt": "2026-11-03T16:26:12+00:00",
-  "typesRewrittenAt": "2026-11-03T16:26:12+00:00"
+  "typesRewrittenAt": "2026-11-03T16:26:12+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/nvidia-tensorrt-edge-llm-edge-ai-fig1-89f9f8b3.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "dense",
+      "credit": "NVIDIA",
+      "sourceUrl": "https://developer.nvidia.com/blog/run-ai-models-for-edge-application-development-with-just-a-few-commands/",
+      "original": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/nvidia-trtedge-chat-terminal-1920x1080-1.webp"
+    }
+  ]
 }

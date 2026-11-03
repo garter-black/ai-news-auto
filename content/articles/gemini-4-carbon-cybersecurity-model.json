@@ -139,5 +139,25 @@
     }
   ],
   "sectionsPolishedAt": "2026-11-03T16:07:14+00:00",
-  "typesRewrittenAt": "2026-11-03T16:07:14+00:00"
+  "typesRewrittenAt": "2026-11-03T16:07:14+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/gemini-4-carbon-cybersecurity-model-fig1-facf1223.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "hero",
+      "credit": "Google",
+      "sourceUrl": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/",
+      "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini_carbon_102726_social_share.width-1300.png"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/gemini-4-carbon-cybersecurity-model-fig2-4be6fb15.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "hero",
+      "credit": "Google",
+      "sourceUrl": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/",
+      "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini_carbon_102726_header.width-2200.format-webp.webp"
+    }
+  ]
 }

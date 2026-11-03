@@ -125,5 +125,25 @@
   },
   "newsType": "product",
   "sectionsPolishedAt": "2026-11-03T16:34:27+00:00",
-  "typesRewrittenAt": "2026-11-03T16:34:27+00:00"
+  "typesRewrittenAt": "2026-11-03T16:34:27+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/siri-ai-japanese-launch-fig1-f1eaa94c.jpg",
+      "width": 1200,
+      "height": 1142,
+      "kind": "photo",
+      "credit": "Apple",
+      "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/siri-ai-is-available-today-in-more-languages/",
+      "original": "https://www.apple.com/newsroom/images/2026/10/siri-ai-is-available-today-in-more-languages/article/Apple-iOS-27-Siri-AI-personal-context-JP_inline.jpg.large_2x.jpg"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/siri-ai-japanese-launch-fig2-08da4e02.jpg",
+      "width": 832,
+      "height": 792,
+      "kind": "photo",
+      "credit": "Apple",
+      "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/siri-ai-is-available-today-in-more-languages/",
+      "original": "https://www.apple.com/newsroom/images/2026/10/siri-ai-is-available-today-in-more-languages/article/Apple-iOS-27-Siri-AI-personal-context-JP_inline.jpg.small_2x.jpg"
+    }
+  ]
 }

@@ -170,5 +170,25 @@
     }
   ],
   "sectionsPolishedAt": "2026-11-03T15:03:05+00:00",
-  "typesRewrittenAt": "2026-11-03T15:03:05+00:00"
+  "typesRewrittenAt": "2026-11-03T15:03:05+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/github-copilot-app-projects-computer-use-fig1-47e174d8.jpg",
+      "width": 1200,
+      "height": 630,
+      "kind": "dense",
+      "credit": "GitHub",
+      "sourceUrl": "https://github.blog/changelog/2026-10-28-github-copilot-app-universe-releases",
+      "original": "https://github.com/user-attachments/assets/37b3573f-d42f-439f-a136-9613293cf984"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/github-copilot-app-projects-computer-use-fig2-cc4e5988.jpg",
+      "width": 1200,
+      "height": 569,
+      "kind": "dense",
+      "credit": "GitHub",
+      "sourceUrl": "https://github.blog/changelog/2026-10-28-github-copilot-app-universe-releases",
+      "original": "https://github.com/user-attachments/assets/e9610089-b2d9-4e7e-92a0-d541c924a569"
+    }
+  ]
 }

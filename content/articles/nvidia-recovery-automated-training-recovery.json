@@ -155,5 +155,16 @@
     "credit": "VOICEVOX:九州そら"
   },
   "newsType": "explainer",
-  "typesRewrittenAt": "2026-11-03T15:42:31+00:00"
+  "typesRewrittenAt": "2026-11-03T15:42:31+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/nvidia-recovery-automated-training-recovery-fig1-f5385bea.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "dense",
+      "credit": "NVIDIA",
+      "sourceUrl": "https://developer.nvidia.com/blog/keep-distributed-training-running-with-automated-workload-recovery/",
+      "original": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/image3.webp"
+    }
+  ]
 }

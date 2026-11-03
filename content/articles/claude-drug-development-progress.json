@@ -132,5 +132,16 @@
     "claude-finds-critical-vulnerabilities"
   ],
   "sectionsPolishedAt": "2026-11-03T16:01:20+00:00",
-  "typesRewrittenAt": "2026-11-03T16:01:20+00:00"
+  "typesRewrittenAt": "2026-11-03T16:01:20+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/claude-drug-development-progress-fig1-f170ff07.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "hero",
+      "credit": "Anthropic",
+      "sourceUrl": "https://www.anthropic.com/research/early-progress-drug-development",
+      "original": "https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F492ae2fdf955e71a24bfda5422f950febeeec07f-2000x1125.jpg&w=1920&q=75"
+    }
+  ]
 }

@@ -341,5 +341,25 @@
     "国内での取り扱いが決まったら、試乗や販売店の情報を調べる"
   ],
   "newsType": "product",
-  "typesRewrittenAt": "2026-11-03T16:16:14+00:00"
+  "typesRewrittenAt": "2026-11-03T16:16:14+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/honda-rn0-emtb-eicma-2026-fig1-d244d44a.jpg",
+      "width": 980,
+      "height": 654,
+      "kind": "photo",
+      "credit": "Honda",
+      "sourceUrl": "https://global.honda/jp/news/2026/2261103e.html",
+      "original": "https://global.honda/content/dam/site/global-jp/news-new/cq_img/2026/11/2261103e/2261103e_01.jpg"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/honda-rn0-emtb-eicma-2026-fig2-c45a6b10.jpg",
+      "width": 980,
+      "height": 588,
+      "kind": "photo",
+      "credit": "Honda",
+      "sourceUrl": "https://global.honda/jp/news/2026/2261103e.html",
+      "original": "https://global.honda/content/dam/site/global-jp/news-new/cq_img/2026/11/2261103e/2261103e_02.jpg"
+    }
+  ]
 }

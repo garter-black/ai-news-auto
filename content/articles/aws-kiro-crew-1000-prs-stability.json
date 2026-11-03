@@ -114,5 +114,25 @@
     "docker-coding-agent-horror-stories-cve"
   ],
   "sectionsPolishedAt": "2026-11-03T15:14:03+00:00",
-  "typesRewrittenAt": "2026-11-03T15:14:03+00:00"
+  "typesRewrittenAt": "2026-11-03T15:14:03+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/aws-kiro-crew-1000-prs-stability-fig1-1a47f671.jpg",
+      "width": 800,
+      "height": 450,
+      "kind": "dense",
+      "credit": "AWS",
+      "sourceUrl": "https://aws.amazon.com/jp/blogs/news/software-factory-stability/",
+      "original": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/10/28/software-factory-stability-fork-isolation.jpg"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/aws-kiro-crew-1000-prs-stability-fig2-d918c5d8.jpg",
+      "width": 800,
+      "height": 450,
+      "kind": "dense",
+      "credit": "AWS",
+      "sourceUrl": "https://aws.amazon.com/jp/blogs/news/software-factory-stability/",
+      "original": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/10/28/software-factory-stability-over-engineering-retrospective.jpg"
+    }
+  ]
 }

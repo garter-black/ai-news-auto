@@ -129,5 +129,16 @@
   },
   "newsType": "explainer",
   "sectionsPolishedAt": "2026-11-03T16:04:37+00:00",
-  "typesRewrittenAt": "2026-11-03T16:04:37+00:00"
+  "typesRewrittenAt": "2026-11-03T16:04:37+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/figma-weave-creative-workflow-fig1-93ce47e4.jpg",
+      "width": 1200,
+      "height": 620,
+      "kind": "dense",
+      "credit": "Figma",
+      "sourceUrl": "https://www.figma.com/blog/the-tldr-on-figma-weave/",
+      "original": "https://cdn.sanity.io/images/599r6htc/regionalized/f82e178de672d05fccf1527eadf6b20922ad4c01-3692x1907.jpg?w=804&q=75&fit=max&auto=format&dpr=2"
+    }
+  ]
 }

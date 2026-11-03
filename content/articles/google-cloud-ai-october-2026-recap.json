@@ -132,5 +132,25 @@
   "originalTitle": "Google Cloudの10月AI発表まとめ　新AI「Gemini 4 Argon」やOpenAIモデルも企業向けに",
   "sectionsPolishedAt": "2026-11-03T15:15:57+00:00",
   "newsType": "product",
-  "typesRewrittenAt": "2026-11-03T15:15:57+00:00"
+  "typesRewrittenAt": "2026-11-03T15:15:57+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/google-cloud-ai-october-2026-recap-fig1-58d45af0.jpg",
+      "width": 1200,
+      "height": 591,
+      "kind": "hero",
+      "credit": "Google Cloud",
+      "sourceUrl": "https://cloud.google.com/blog/products/ai-machine-learning/what-google-cloud-announced-in-ai-this-month/",
+      "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/AI_this_month.max-2500x2500.jpg"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/google-cloud-ai-october-2026-recap-fig2-3e48ea1c.jpg",
+      "width": 1200,
+      "height": 676,
+      "kind": "dense",
+      "credit": "Google Cloud",
+      "sourceUrl": "https://cloud.google.com/blog/products/ai-machine-learning/what-google-cloud-announced-in-ai-this-month/",
+      "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/1_0_gemini_enterprise_agent_platform.max-2200x2200.jpg"
+    }
+  ]
 }
