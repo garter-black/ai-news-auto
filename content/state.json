@@ -9792,6 +9792,13 @@
       "skipped": true,
       "url": "https://www.redhat.com/en/blog/sovereignty-ai-era-choice-control-and-autonomy"
     },
+    "aa02a3c870b2f55d": {
+      "at": "2026-11-03T05:58:26.517928+00:00",
+      "model": "anthropic-api:claude-opus-5-5",
+      "reason": "AWS re:Invent 2026のCloud Operationsトラックで開かれるセッションの紹介記事です。新製品の提供開始や料金などの発表ではなく、イベントのセッション告知が中心のため対象外としました。",
+      "skipped": true,
+      "url": "https://aws.amazon.com/jp/blogs/news/embracing-observability-for-the-ai-era-at-reinvent-2026/"
+    },
     "aa3a748ce9da0c45": {
       "at": "2026-11-02T23:51:22.049213+00:00",
       "kind": "update",
@@ -11770,6 +11777,13 @@
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102824"
     },
+    "ddc65a2a91363189": {
+      "at": "2026-11-03T05:58:03.398545+00:00",
+      "model": "anthropic-api:claude-opus-5-5",
+      "reason": "quality: 「数字で見るとどう変わった？」の「NUS・NTUへの支援の総額：600万ドル超（約9億4,700万円）」→ 600万ドルの円換算は計算済みの数字にあり正しいが、「600万ドル超」に「約9億4,700万円」を付けると、実際の総額が超過分だけ多い点が曖昧になる軽い言い過ぎ。; 「たとえるなら、強い部活のある学校に、企業が練習道具と指導者の費用を出すようなものです。すぐ試合に勝つわけで",
+      "skipped": true,
+      "url": "https://blog.google/innovation-and-ai/technology/research/partnering-singapore-advance-scientific-discovery/"
+    },
     "de3657a54534136e": {
       "at": "2026-11-02T18:44:08.097727+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11777,6 +11791,13 @@
       "section": "ai",
       "slug": "lumen-microsoft-enterprise-ai-networks",
       "url": "https://news.microsoft.com/source/2026/11/02/lumen-and-microsoft-expand-collaboration-to-co-sell-enterprise-ai-ready-networks/"
+    },
+    "de4cf53f9db96311": {
+      "at": "2026-11-03T05:55:06.469423+00:00",
+      "model": "anthropic-api:claude-opus-5-5",
+      "reason": "quality: 「銀行の窓口にたとえると…前は、用件が違っても全員が1つの列に並ぶ形に近い面がありました」→ OpenAIの旧基盤がそうした構造だったとは元記事に書かれておらず、旧基盤の構造を推測で描いている（一般的な方式の説明にとどまる）。; 「Pandoが目指したのは…」直後の「移行は…Gitの通信の決まりや、手元で使うGitの道具との互換性を保ったため」→ 元記事は互換性の維持と無停止移行",
+      "skipped": true,
+      "url": "https://openai.com/index/scaling-git-at-openai"
     },
     "de8ee9d6403bde44": {
       "at": "2026-11-02T20:12:13.263841+00:00",
@@ -13105,94 +13126,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-10-31T17:41:27.560326+00:00",
-      "attempt": 0,
-      "id": "81545d2d115d854d",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 71.0,
-        "avg_sentence": 31.3,
-        "long_share": 0.029,
-        "max_paragraph": 103,
-        "paragraphs": 15,
-        "sentences": 34
-      },
-      "score": 100,
-      "source": "boj",
-      "title": "（参考）ETFの売却ペースの見直しに関する決定（2026年10月）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-31T22:11:03.277777+00:00",
-      "attempt": 1,
-      "id": "8ffa3d02e5861448",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 60.5字・60字超の文が 41% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 147.8字・最長 215字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 147.8,
-        "avg_sentence": 60.5,
-        "long_share": 0.409,
-        "max_paragraph": 215,
-        "paragraphs": 9,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "tsr",
-      "title": "AIの脅威が迫る「デザイン業」、上半期の倒産が過去最多 ～ 前年同期比1.9倍、住宅業界の変化も影響 ～"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-31T22:11:06.818404+00:00",
-      "attempt": 0,
-      "id": "8ffa3d02e5861448",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 159.1字・最長 233字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 159.1,
-        "avg_sentence": 37.7,
-        "long_share": 0.079,
-        "max_paragraph": 233,
-        "paragraphs": 9,
-        "sentences": 38
-      },
-      "score": 100,
-      "source": "tsr",
-      "title": "AIの脅威が迫る「デザイン業」、上半期の倒産が過去最多 ～ 前年同期比1.9倍、住宅業界の変化も影響 ～"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-01T01:11:01.853293+00:00",
-      "attempt": 1,
-      "id": "2b2f487795f0e5d2",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 63.6字・60字超の文が 52% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 113.5字・最長 238字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 113.5,
-        "avg_sentence": 63.6,
-        "long_share": 0.52,
-        "max_paragraph": 238,
-        "paragraphs": 14,
-        "sentences": 25
-      },
-      "score": 100,
-      "source": "meta-engineering",
-      "title": "Catching Bugs Before They Land: JiTTesting’s Human-on-the-Loop Approach at Full "
-    },
     {
       "accepted": true,
       "at": "2026-11-01T01:11:05.150676+00:00",
@@ -19520,6 +19453,122 @@
       "title": "Preparing our next security sprint to harden OpenAI",
       "warnings": [
         "見出しが46字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T05:53:10.665185+00:00",
+      "attempt": 1,
+      "id": "de4cf53f9db96311",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "見出し・要点「送信待ちを5分の1近くに」→ 元記事は「median push latency by nearly 5x」で、5倍近く短縮（約5分の1）という意味なら概ね整合するが、「5分の1近く」は「5分の1に近い」とも読め、実際は約5分の1まで短縮という表現が不正確",
+        "「従来の多くの仕組みは…」「従来は、利用者ごとに…専用のpackfileを作るのが普通です」→ 元記事は“conventional approaches”として説明しており、おおむね妥当だが「普通です」と断定する部分は言い過ぎ",
+        "「かんたん版」のたとえ「レジを何台も並べ、同じ商品はまとめて袋詰め」→ 元記事に無い比喩だが、説明用で許容範囲",
+        "「かんたん版」の「保存にかかる時間（真ん中の値）」→ 元記事はpush latencyであり、「保存」と言い換えており不正確",
+        "「かんたん版」の「作った改良の一部を…Git本体に返していく」→ 元記事は「those improvements」を upstream に貢献したいとあり、「一部」は元記事に無い限定",
+        "判定「提供状況=demo」→ 元記事は本番稼働の社内基盤で、デモ段階ではないため分類が誤解を招く"
+      ],
+      "readability": {
+        "avg_paragraph": 71.2,
+        "avg_sentence": 32.5,
+        "long_share": 0.025,
+        "max_paragraph": 141,
+        "paragraphs": 37,
+        "sentences": 81
+      },
+      "score": 80,
+      "source": "openai-news",
+      "title": "Scaling Git at OpenAI",
+      "warnings": [
+        "見出しが45字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T05:55:06.469330+00:00",
+      "attempt": 2,
+      "id": "de4cf53f9db96311",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "「銀行の窓口にたとえると…前は、用件が違っても全員が1つの列に並ぶ形に近い面がありました」→ OpenAIの旧基盤がそうした構造だったとは元記事に書かれておらず、旧基盤の構造を推測で描いている（一般的な方式の説明にとどまる）。",
+        "「Pandoが目指したのは…」直後の「移行は…Gitの通信の決まりや、手元で使うGitの道具との互換性を保ったため」→ 元記事は互換性の維持と無停止移行を並べて述べており、互換性が理由で作業を止めずに済んだという因果関係は書かれていない。",
+        "「同社は公開している自社版のGitから、改良を本家へ返していきたい」→ 元記事は「our copy of Git」から upstream へ貢献したいとあるのみで、「公開している」自社版かどうかは明確ではない。",
+        "比較表の「3PC: 1つずつ更新」「WAL: 同じ台帳を奪い合う」「有利なのは Pando/3PC」→ 元記事の設計検討の説明を踏まえた整理だが、「有利」という判定自体は元記事にない編集部の評価である。"
+      ],
+      "readability": {
+        "avg_paragraph": 65.4,
+        "avg_sentence": 34.4,
+        "long_share": 0.039,
+        "max_paragraph": 108,
+        "paragraphs": 40,
+        "sentences": 76
+      },
+      "score": 80,
+      "source": "openai-news",
+      "title": "Scaling Git at OpenAI",
+      "warnings": [
+        "見出しが44字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T05:56:16.530350+00:00",
+      "attempt": 1,
+      "id": "ddc65a2a91363189",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "「600万ドル超は約9億4,700万円で、日本の感覚でも大学の研究費としては大きな額です」→「大学の研究費として大きい」は元記事にない編集部の評価を事実のように断定している。",
+        "「AIを少ない電力で動かす研究」「英語以外の言葉に強いAIを育てる狙いと読めます」→ 元記事は持続可能な計算とモデル提供の最適化、地域言語処理としか書いておらず、「少ない電力」「英語以外に強いAI」は推測・拡大解釈。",
+        "「東南アジアの言葉の処理」「東南アジアの言葉を扱う研究」→ 元記事は「regional language processing」としか書いておらず、東南アジアに限定する根拠がない。",
+        "「600万ドル超という金額は、Googleの事業規模から見て業績を左右する話ではない」→ 元記事にも確認済み文脈にもない業績への影響の判断で、根拠のない断定。",
+        "「2月にはAI Singaporeと組み、医療向けのAIモデル「MedGemma」を提供すると発表していました」→ 出典付きで文脈に概ね合うが、「今年に入って段階的に進んでいる」といった流れの整理は元記事にない推測を含む。",
+        "「ホー・テックフア教授が地域の取りまとめ役を務めます」「研究用のAIエージェントの育成」→ 元記事は「regional academic leadership」「foster internal research agents」で、役割や内容を断定的に言い換えすぎ。"
+      ],
+      "readability": {
+        "avg_paragraph": 72.1,
+        "avg_sentence": 39.5,
+        "long_share": 0.097,
+        "max_paragraph": 234,
+        "paragraphs": 34,
+        "sentences": 62
+      },
+      "score": 72,
+      "source": "google-blog-all",
+      "title": "Advancing research and partnering with universities in Singapore",
+      "warnings": [
+        "見出しが45字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T05:58:03.398414+00:00",
+      "attempt": 2,
+      "id": "ddc65a2a91363189",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "「数字で見るとどう変わった？」の「NUS・NTUへの支援の総額：600万ドル超（約9億4,700万円）」→ 600万ドルの円換算は計算済みの数字にあり正しいが、「600万ドル超」に「約9億4,700万円」を付けると、実際の総額が超過分だけ多い点が曖昧になる軽い言い過ぎ。",
+        "「たとえるなら、強い部活のある学校に、企業が練習道具と指導者の費用を出すようなものです。すぐ試合に勝つわけではなく、数年先の力を育てるお金です」→ 元記事に「数年先」という時間軸の記述はなく、成果の時期は不明とする本文とも食い違う。",
+        "「Googleの関連団体などが、ビジネススクールINSEADの研究所に300万ドルを出します」→ 元記事ではGoogle.orgとGoogle DeepMindが資金提供者であり、「関連団体など」は不正確な言い換え。",
+        "「ただし、研究はこれからです。今の業務ルールを変える材料にはまだなりません」→ 元記事に研究時期の記述はなく、編集部の見方として示されてはいるものの断定がやや強い。"
+      ],
+      "readability": {
+        "avg_paragraph": 62.7,
+        "avg_sentence": 37.1,
+        "long_share": 0.092,
+        "max_paragraph": 144,
+        "paragraphs": 45,
+        "sentences": 76
+      },
+      "score": 80,
+      "source": "google-blog-all",
+      "title": "Advancing research and partnering with universities in Singapore",
+      "warnings": [
+        "見出しが47字（目安40字以内）。一覧・カードでは前半だけを出す"
       ]
     }
   ],
