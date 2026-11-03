@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-02T01:50:40.814700+00:00",
+  "fetchedAt": "2026-11-03T03:43:41.610107+00:00",
   "pixel": "https://www15.a8.net/0.gif?a8mat=4BELTP+50ED2Q+2HOM+BWGDT",
   "books": {
     "voice": [
@@ -251,6 +251,20 @@
       }
     ],
     "security": [
+      {
+        "rbId": "18312826",
+        "itemId": "21678741",
+        "title": "ゼロからわかるITほんき入門＋マンガ セキュリティのなかみ",
+        "author": "長沼 良和",
+        "price": 1980,
+        "rating": 4.0,
+        "reviews": 2,
+        "year": 2025,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/2916/9784295022916_1_2.jpg?_ex=400x400",
+        "rank": 16,
+        "keyword": "サイバーセキュリティ 入門",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18312826%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21678741%252F"
+      },
       {
         "rbId": "18249715",
         "itemId": "21622080",
@@ -1227,6 +1241,20 @@
         "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18386104%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21751266%252F"
       },
       {
+        "rbId": "18578027",
+        "itemId": "21912146",
+        "title": "ChatGPT・Gemini・Copilot 頭がいい人の最新AIの使い方 完全ガイド よりぬきお得版",
+        "author": "晋遊舎",
+        "price": 579,
+        "rating": 3.0,
+        "reviews": 2,
+        "year": 2026,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/6908/9784801826908_1_3.jpg?_ex=400x400",
+        "rank": 28,
+        "keyword": "ChatGPT 使い方",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18578027%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21912146%252F"
+      },
+      {
         "rbId": "18585944",
         "itemId": "21919087",
         "title": "無料！ 3大AIはどれを選ぶ？ ChatGPT・Gemini・Copilot 超便利！使い方ガイド （メディアックスMOOK）",
@@ -1239,20 +1267,6 @@
         "rank": 29,
         "keyword": "ChatGPT 使い方",
         "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18585944%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21919087%252F"
-      },
-      {
-        "rbId": "18295383",
-        "itemId": "21664673",
-        "title": "おーつか先生＆看護師のかげさんの ChatGPT入門",
-        "author": "大塚 篤司",
-        "price": 2200,
-        "rating": 4.0,
-        "reviews": 2,
-        "year": 2025,
-        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/2398/9784260062398.jpg?_ex=400x400",
-        "rank": 26,
-        "keyword": "ChatGPT 入門",
-        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18295383%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21664673%252F"
       }
     ],
     "llm": [
@@ -1355,20 +1369,6 @@
         "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18250817%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21622578%252F"
       },
       {
-        "rbId": "18426876",
-        "itemId": "21784347",
-        "title": "直感 生成AI ハンズオンで動かして学ぶ拡散モデル入門",
-        "author": "Omar Sanseviero",
-        "price": 4840,
-        "rating": 5.0,
-        "reviews": 2,
-        "year": 2025,
-        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/1406/9784814401406_1_2.jpg?_ex=400x400",
-        "rank": 24,
-        "keyword": "大規模言語モデル",
-        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18426876%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21784347%252F"
-      },
-      {
         "rbId": "18502202",
         "itemId": "21847031",
         "title": "生成AI時代の国語力",
@@ -1395,6 +1395,20 @@
         "rank": 13,
         "keyword": "LLM",
         "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18403857%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21765845%252F"
+      },
+      {
+        "rbId": "18373674",
+        "itemId": "21740530",
+        "title": "その仕事、AIには無理です。",
+        "author": "高木裕仁",
+        "price": 2200,
+        "rating": 3.5,
+        "reviews": 10,
+        "year": 2025,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/4619/9784296124619_1_32.jpg?_ex=400x400",
+        "rank": 16,
+        "keyword": "LLM",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18373674%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21740530%252F"
       }
     ],
     "business": [
@@ -1743,6 +1757,115 @@
         "rank": 13,
         "keyword": "マイホーム 購入",
         "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F17114455%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F20639711%252F"
+      }
+    ],
+    "money-biz": [
+      {
+        "rbId": "18224297",
+        "itemId": "21601181",
+        "title": "貯金ゼロからのFIRE入門 ステップアップ式で達成できるお金の増やし方",
+        "author": "ナスビ",
+        "price": 1650,
+        "rating": 4.5,
+        "reviews": 6,
+        "year": 2025,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/5052/9784827215052_1_3.jpg?_ex=400x400",
+        "rank": 7,
+        "keyword": "新NISA 入門",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18224297%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21601181%252F"
+      },
+      {
+        "rbId": "18439015",
+        "itemId": "21793291",
+        "title": "一番売れてる月刊マネー誌ザイが作った「新NISA入門」「 新NISAで買うべき株＆投信77」2点セット",
+        "author": "ダイヤモンド・ザイ編集部",
+        "price": 3630,
+        "rating": 4.0,
+        "reviews": 1,
+        "year": 2025,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/1882/2100014701882.jpg?_ex=400x400",
+        "rank": 20,
+        "keyword": "新NISA 入門",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18439015%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21793291%252F"
+      },
+      {
+        "rbId": "18715181",
+        "itemId": "22026923",
+        "title": "マンガと図解でよくわかる新NISA＆iDeCo＆ふるさと納税［増補改訂3版］ ゼロからはじめる投資と節税入門",
+        "author": "酒井富士子",
+        "price": 1628,
+        "rating": null,
+        "reviews": 0,
+        "year": 2026,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/5771/9784295025771_1_3.jpg?_ex=400x400",
+        "rank": 30,
+        "keyword": "新NISA 入門",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18715181%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F22026923%252F"
+      }
+    ],
+    "side-biz": [
+      {
+        "rbId": "18155772",
+        "itemId": "21541282",
+        "title": "会社員を2度クビになった発達障害の僕が、 月100万円を稼げるようになった方法",
+        "author": "坂口康司",
+        "price": 1650,
+        "rating": 4.0,
+        "reviews": 2,
+        "year": 2025,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/3964/9784023323964_1_3.jpg?_ex=400x400",
+        "rank": 27,
+        "keyword": "副業 始め方",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18155772%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21541282%252F"
+      }
+    ],
+    "career-skill": [
+      {
+        "rbId": "18513611",
+        "itemId": "21857143",
+        "title": "AIアウトプット超大全 一瞬で最高のクオリティを実現する30の型と90のテクニック",
+        "author": "佐藤勝彦",
+        "price": 2200,
+        "rating": 3.67,
+        "reviews": 6,
+        "year": 2026,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/0347/9784815640347_1_14.jpg?_ex=400x400",
+        "rank": 26,
+        "keyword": "AI 仕事術",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18513611%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21857143%252F"
+      },
+      {
+        "rbId": "18546623",
+        "itemId": "21884800",
+        "title": "AI導入で今後は教えてもらえない 紙1枚すごい仕事術",
+        "author": "内田晋平",
+        "price": 1870,
+        "rating": 3.33,
+        "reviews": 6,
+        "year": 2026,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/4155/9784799114155_1_4.jpg?_ex=400x400",
+        "rank": 27,
+        "keyword": "AI 仕事術",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18546623%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21884800%252F"
+      }
+    ],
+    "remote-work": [],
+    "tax-filing": [],
+    "furusato": [],
+    "startup": [
+      {
+        "rbId": "18009129",
+        "itemId": "21392607",
+        "title": "眠れなくなるほど面白い 図解 起業の話 誰でもすぐ実践できる！世界一わかりやすい起業指南書",
+        "author": "林 尚弘",
+        "price": 990,
+        "rating": 3.17,
+        "reviews": 6,
+        "year": 2025,
+        "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/2579/9784537222579_1_4.jpg?_ex=400x400",
+        "rank": 19,
+        "keyword": "起業 会社設立",
+        "url": "https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26102173090_4BELTP_50ED2Q_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F18009129%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21392607%252F"
       }
     ]
   },
