@@ -346,7 +346,9 @@ jobs:
       # Buffer の無料枠（1日250リクエスト）を守るため、SNS の予約は6時間ごとの回だけ行う
       # （8時間先までの枠をまとめて予約するので、6時間ごとで足りる）
       - name: Post to Threads
-        if: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.mode != 'web') || github.event.schedule == '7 */6 * * *' }}
+        # 予約は次の8時間の空き枠だけを埋める（同じ枠は二重に取らない）。GitHub の定期実行は混むと数時間遅れて
+        # 朝の枠を取り逃すので、速報レーン以外の毎回（見張り番の web 回・20分ごとの回を含む）で空き枠を確かめる
+        if: ${{ (inputs.fast_url || '') == '' }}
         continue-on-error: true
         env:
           THREADS_MODE: ${{ vars.THREADS_MODE }}
