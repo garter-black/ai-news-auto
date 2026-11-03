@@ -66,6 +66,14 @@
   },
   "failed_web": {},
   "gate_retry": {
+    "0e889c44fa0a25a1": {
+      "first": "2026-11-03T18:43:01.853190+00:00",
+      "next": "2026-11-03T21:43:01.853190+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "What is call transcription? A practical business guide",
+      "tries": 1,
+      "url": "https://elevenlabs.io/blog/what-is-call-transcription"
+    },
     "20954e3ac0ff87f7": {
       "first": "2026-11-03T18:26:13.990511+00:00",
       "next": "2026-11-03T21:26:13.990511+00:00",
@@ -132,10 +140,10 @@
     },
     "ce9b39562dd42cfe": {
       "first": "2026-11-03T13:43:44.204259+00:00",
-      "next": "2026-11-03T16:43:44.204259+00:00",
-      "reason": "「ヒープ領域を最大8.4%削減」「ヒープ内のオブジェクト占有サイズは…最大8.4%削減されました」→ 元記事の8.4%は同一のキャプチャ済みオブジェクトをJOLのレイアウトモデルで試算した値で、実際のヒープが減ったわけではない。実測のように書いており言い過ぎ。; 「初期画面のヒープデータ：141.533 MiBから132.619 MiBへ減少」ほか→ これらは従来モデルとコンパクトモデルの試算の比",
+      "next": "2026-11-03T21:38:09.537688+00:00",
+      "reason": "要点「ガベージコレクションの実行回数・処理時間の削減を確認」→元記事ではモノレポのスクリプト操作中のGC時間などは別表で、PetclinicのCPU時間など一部は減少だが「全体的に軽減される傾向」は表の途中までしか確認できず、言い過ぎ。; FAQ「ガベージコレクションの実行回数や処理時間、消費CPU時間が全体的に軽減される傾向」→元記事で確認できるのはオープン・インデックス時などの限定的な比較で、",
       "title": "Where Did the Saved Bytes Go? Compact Object Headers in IntelliJ IDEA",
-      "tries": 1,
+      "tries": 2,
       "url": "https://blog.jetbrains.com/idea/2026/11/where-did-the-saved-bytes-go-compact-object-headers-in-intellij-idea/"
     },
     "de5d8c3372c230d4": {
@@ -4758,6 +4766,14 @@
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102910"
     },
+    "2479059235a0b85f": {
+      "at": "2026-11-03T18:44:12.106108+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 93,
+      "section": "ai",
+      "slug": "supabase-mcp-claude-issued-auth",
+      "url": "https://supabase.com/blog/claude-issued-enterprise-managed-auth-for-mcp"
+    },
     "2479fd3a59c35d02": {
       "at": "2026-10-27T15:55:42.967534+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9074,6 +9090,12 @@
       "skipped": true,
       "url": "https://www.mext.go.jp/b_menu/shingi/chousa/koutou/136/gijiroku/mext_00004.html"
     },
+    "92955b5c8ebb0120": {
+      "at": "2026-11-03T18:31:44.286402+00:00",
+      "reason": "dedupe: 固有名詞が一致（agentic・era）: docker-blueprint-alliance-agent-baseline",
+      "skipped": true,
+      "url": "https://cloud.google.com/blog/topics/consulting/lessons-for-adopting-ai-agents/"
+    },
     "92e285f26dfcc585": {
       "at": "2026-10-27T03:01:29.612252+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -11723,6 +11745,14 @@
       "slug": "kddi-alliance-park-osaka-sakai",
       "url": "https://newsroom.kddi.com/news/detail/kddi_nr-1209_4784.html"
     },
+    "d70bd31e10c047cb": {
+      "at": "2026-11-03T18:39:26.638663+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 93,
+      "section": "tech-gadget",
+      "slug": "apple-health-app-japanese-support",
+      "url": "https://www.apple.com/jp/newsroom/2026/11/redesigned-health-app-expands-language-support/"
+    },
     "d72bb5f34f047dd0": {
       "at": "2026-10-29T17:42:55.805106+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13385,180 +13415,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-02T03:31:26.022142+00:00",
-      "attempt": 0,
-      "id": "52dedc30355aed7e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 53.5字・60字超の文が 26% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 107.0,
-        "avg_sentence": 53.5,
-        "long_share": 0.263,
-        "max_paragraph": 196,
-        "paragraphs": 19,
-        "sentences": 38
-      },
-      "score": 100,
-      "source": "nvidia-developer-blog",
-      "title": "Run AI Models for Edge Application Development with Just a Few Commands"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T03:31:32.178726+00:00",
-      "attempt": 1,
-      "id": "b2b708c5b7035885",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "title / seo_title に感嘆符がある"
-      ],
-      "readability": {
-        "avg_paragraph": 149.8,
-        "avg_sentence": 47.3,
-        "long_share": 0.211,
-        "max_paragraph": 192,
-        "paragraphs": 6,
-        "sentences": 19
-      },
-      "score": null,
-      "source": "nintendo-topics",
-      "title": "『ピクミン4 Nintendo Switch 2 Edition + だれでもチャレンジ! ダンドリ検定』の体験版が配信開始。「Pikmin Day Direc"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T03:31:38.055563+00:00",
-      "attempt": 2,
-      "id": "b2b708c5b7035885",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 52.3字・60字超の文が 32% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 143.9字・最長 193字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 143.9,
-        "avg_sentence": 52.3,
-        "long_share": 0.318,
-        "max_paragraph": 193,
-        "paragraphs": 8,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "nintendo-topics",
-      "title": "『ピクミン4 Nintendo Switch 2 Edition + だれでもチャレンジ! ダンドリ検定』の体験版が配信開始。「Pikmin Day Direc"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T03:31:42.165688+00:00",
-      "attempt": 0,
-      "id": "b2b708c5b7035885",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 75.1,
-        "avg_sentence": 36.4,
-        "long_share": 0.03,
-        "max_paragraph": 120,
-        "paragraphs": 16,
-        "sentences": 33
-      },
-      "score": 100,
-      "source": "nintendo-topics",
-      "title": "『ピクミン4 Nintendo Switch 2 Edition + だれでもチャレンジ! ダンドリ検定』の体験版が配信開始。「Pikmin Day Direc"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T03:51:15.061885+00:00",
-      "attempt": 1,
-      "id": "bda2ca88f48f8801",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 73.9字・60字超の文が 64% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 135.4字・最長 318字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 135.4,
-        "avg_sentence": 73.9,
-        "long_share": 0.636,
-        "max_paragraph": 318,
-        "paragraphs": 12,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "databricks-blog",
-      "title": "Wealth Management Client Onboarding Needs More Than AI"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T03:51:18.940256+00:00",
-      "attempt": 0,
-      "id": "bda2ca88f48f8801",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 117.3,
-        "avg_sentence": 39.1,
-        "long_share": 0.111,
-        "max_paragraph": 205,
-        "paragraphs": 15,
-        "sentences": 45
-      },
-      "score": 100,
-      "source": "databricks-blog",
-      "title": "Wealth Management Client Onboarding Needs More Than AI"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T04:11:19.154342+00:00",
-      "attempt": 1,
-      "id": "97aa33a82ef0eed4",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 57.1字・60字超の文が 52% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 96.4,
-        "avg_sentence": 57.1,
-        "long_share": 0.519,
-        "max_paragraph": 195,
-        "paragraphs": 16,
-        "sentences": 27
-      },
-      "score": 100,
-      "source": "softbank-news-ai",
-      "title": "スマホのAI編集×撮影テクニックで料理を美味しく魅せる！ プロが教える「Google Pixel」での撮影術"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T04:11:23.551942+00:00",
-      "attempt": 0,
-      "id": "97aa33a82ef0eed4",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 115.5字・最長 238字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 115.5,
-        "avg_sentence": 19.7,
-        "long_share": 0.0,
-        "max_paragraph": 238,
-        "paragraphs": 16,
-        "sentences": 94
-      },
-      "score": 100,
-      "source": "softbank-news-ai",
-      "title": "スマホのAI編集×撮影テクニックで料理を美味しく魅せる！ プロが教える「Google Pixel」での撮影術"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T04:11:30.177566+00:00",
@@ -19906,6 +19762,196 @@
       "warnings": [
         "見出しが54字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（GCUL・LMA・DCI）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:34:01.158124+00:00",
+      "attempt": 1,
+      "id": "ce9b39562dd42cfe",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "jetbrains-blog",
+      "title": "Where Did the Saved Bytes Go? Compact Object Headers in IntelliJ IDEA"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:38:09.537607+00:00",
+      "attempt": 2,
+      "id": "ce9b39562dd42cfe",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "要点「ガベージコレクションの実行回数・処理時間の削減を確認」→元記事ではモノレポのスクリプト操作中のGC時間などは別表で、PetclinicのCPU時間など一部は減少だが「全体的に軽減される傾向」は表の途中までしか確認できず、言い過ぎ。",
+        "FAQ「ガベージコレクションの実行回数や処理時間、消費CPU時間が全体的に軽減される傾向」→元記事で確認できるのはオープン・インデックス時などの限定的な比較で、全体的と断定するのは言い過ぎ。",
+        "「かんたん版」の「64番HotSpot構成」→元記事は64-bit（64ビット）であり、誤記で内容が不正確。",
+        "「プロジェクトの規模やメモリ制限を変えて実測した」→元記事ではIDEの-Xmxは構成ごとに異なるが、同一比較内では固定しており、メモリ制限を変えて検証したかのような書き方は不正確。",
+        "「今日やること」「IntelliJ IDEAの公式ブログで最新のメモリプロファイリング機能を確かめる」→元記事の2026.3 EAPでの対応など条件に触れず、提供状況「available」「無料」の記載も元記事に根拠がない。",
+        "「オブジェクトの浅いサイズが8バイトの倍数に丸められる」→元記事は「by default」であり、既定値である条件が抜けている。"
+      ],
+      "readability": {
+        "avg_paragraph": 147.4,
+        "avg_sentence": 62.1,
+        "long_share": 0.632,
+        "max_paragraph": 256,
+        "paragraphs": 8,
+        "sentences": 19
+      },
+      "score": 72,
+      "source": "jetbrains-blog",
+      "title": "Where Did the Saved Bytes Go? Compact Object Headers in IntelliJ IDEA",
+      "warnings": [
+        "見出しが50字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（JEP・IDEA・JIT）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:38:39.336710+00:00",
+      "attempt": 1,
+      "id": "d70bd31e10c047cb",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "タイトル・リードの「日本語など11言語」→元記事は日本語、英語、中国語（簡体字・繁体字）、フランス語、韓国語、ノルウェー語、ポルトガル語、スペイン語、トルコ語、ベトナム語の列挙のみで、「11」という数は元記事に書かれていない（数え方によっては中国語を2つに分けて11になるが、記事が自分で数えた数字）",
+        "「日本では、iOS 27.3のデベロッパ向けベータ版で11月3日から使えます」→元記事は日本限定の提供とは述べておらず、日本での提供開始のように断定しすぎ（一方で「日本で使える機能の範囲は未発表」とも書いており矛盾気味）",
+        "「年内の配信日はまだ発表されていません」→元記事に言及なしの記述で問題はないが、「日本語に対応します」「判定: 提供状況=limited」はベータ版段階の記述として一般ユーザーが今使えるかのような誤解を避けているか要注意で軽微"
+      ],
+      "readability": {
+        "avg_paragraph": 68.5,
+        "avg_sentence": 38.0,
+        "long_share": 0.083,
+        "max_paragraph": 183,
+        "paragraphs": 20,
+        "sentences": 36
+      },
+      "score": 80,
+      "source": "apple-newsroom-jp-all",
+      "title": "再設計されたヘルスケアアプリの対応言語を拡大",
+      "warnings": [
+        "見出しが49字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（VO・LDL）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T18:38:54.375490+00:00",
+      "attempt": 1,
+      "id": "d70bd31e10c047cb",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 68.3,
+        "avg_sentence": 38.0,
+        "long_share": 0.083,
+        "max_paragraph": 183,
+        "paragraphs": 20,
+        "sentences": 36
+      },
+      "score": 93,
+      "source": "apple-newsroom-jp-all",
+      "title": "再設計されたヘルスケアアプリの対応言語を拡大",
+      "warnings": [
+        "見出しが50字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（VO・LDL）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:40:45.221712+00:00",
+      "attempt": 1,
+      "id": "0e889c44fa0a25a1",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "かんたん版に幼い言い方（「すごい」）。落ち着いた大人の言葉にする",
+        "かんたん版に決まった型の見出し（「何がすごいの？」）。中身の言葉にするか見出しを消す",
+        "題名で料金・価格を約束しているのに、本文に金額（円・ドル・無料など）が無い。元記事の金額を書くか、題名から料金の話を外す"
+      ],
+      "readability": {
+        "avg_paragraph": 117.5,
+        "avg_sentence": 37.1,
+        "long_share": 0.053,
+        "max_paragraph": 165,
+        "paragraphs": 12,
+        "sentences": 38
+      },
+      "score": null,
+      "source": "elevenlabs-blog",
+      "title": "What is call transcription? A practical business guide",
+      "warnings": [
+        "見出しが64字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（CRM・TXT・DOCX）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:43:01.853133+00:00",
+      "attempt": 2,
+      "id": "0e889c44fa0a25a1",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "elevenlabs-blog",
+      "title": "What is call transcription? A practical business guide"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:43:37.459284+00:00",
+      "attempt": 1,
+      "id": "2479059235a0b85f",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "「8月24日に公開された企業向けの認証」→ 元記事は「August」としか書いておらず、24日という日付は元記事にも確認済み文脈にも無い。",
+        "「編集部の見方では、IdPを無効にすれば全サービスが止まるという前提で運用している会社ほど…」→ 元記事に無い推測だが、「編集部の見方」と明示されており軽微。"
+      ],
+      "readability": {
+        "avg_paragraph": 86.7,
+        "avg_sentence": 36.7,
+        "long_share": 0.096,
+        "max_paragraph": 226,
+        "paragraphs": 22,
+        "sentences": 52
+      },
+      "score": 88,
+      "source": "supabase-blog",
+      "title": "Enterprise-managed auth for MCP: Claude can now issue the identity assertion",
+      "warnings": [
+        "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（JWT・SSO・GA）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T18:44:12.084565+00:00",
+      "attempt": 2,
+      "id": "2479059235a0b85f",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 82.6,
+        "avg_sentence": 35.8,
+        "long_share": 0.075,
+        "max_paragraph": 176,
+        "paragraphs": 23,
+        "sentences": 53
+      },
+      "score": 93,
+      "source": "supabase-blog",
+      "title": "Enterprise-managed auth for MCP: Claude can now issue the identity assertion",
+      "warnings": [
+        "見出しが59字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（MCP・SSO・JWT）"
       ]
     }
   ],

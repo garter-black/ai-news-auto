@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "supabase-mcp-claude-issued-auth",
+   "at": "2026-11-03T18:44:08.698463+00:00",
+   "title": "Supabase、MCPサーバーの企業向け認証でClaudeが本人確認の証明を発行　Okta以外のIdPでも利用可能に",
+   "head": "Supabase、MCPサーバーの企業向け認証でClaudeが本人確認の証明を発行　Okta以外のIdPでも利用可能に | Enterprise-managed auth for MCP: Claude can now issue the identity assertion",
+   "text": "Supabase、MCPサーバーの企業向け認証でClaudeが本人確認の証明を発行　Okta以外のIdPでも利用可能に | Enterprise-managed auth for MCP: Claude can now issue the identity assertion | Supabase MCP / 企業管理型認証 / Claude Auto-connect / ID-JAG / SSO / Okta / MCPサーバー / Claude Team / Claude Enterprise / アイデンティティプロバイダー / Supabase / Claude / MCP / 認証 / 生成AI",
+   "urls": [
+    "https://supabase.com/blog/claude-issued-enterprise-managed-auth-for-mcp"
+   ]
+  },
+  {
+   "slug": "apple-health-app-japanese-support",
+   "at": "2026-11-03T18:38:35.302963+00:00",
+   "title": "Apple、再設計した「ヘルスケア」アプリを日本語など複数の言語に拡大　iOS 27.3ベータで提供",
+   "head": "Apple、再設計した「ヘルスケア」アプリを日本語など複数の言語に拡大　iOS 27.3ベータで提供 | 再設計されたヘルスケアアプリの対応言語を拡大",
+   "text": "Apple、再設計した「ヘルスケア」アプリを日本語など複数の言語に拡大　iOS 27.3ベータで提供 | 再設計されたヘルスケアアプリの対応言語を拡大 | ヘルスケアアプリ / 日本語対応 / iOS 27.3 / Apple Intelligence / ヘルス年齢 / ロンジェビティ / Apple Watch / VO2 max / インサイト / 運動機能の評価 / アプリ / スマートフォン / Apple / ヘルスケア",
+   "urls": [
+    "https://www.apple.com/jp/newsroom/2026/11/redesigned-health-app-expands-language-support/"
+   ]
+  },
+  {
    "slug": "nammu21-syndicated-loans-gcul",
    "at": "2026-11-03T18:26:47.803870+00:00",
    "title": "Nammu21、Google Cloud台帳でシンジケートローンを自動化　19億4,500万ドルの融資で実証",

@@ -1,0 +1,139 @@
+{
+  "slug": "apple-health-app-japanese-support",
+  "sourceType": "web",
+  "sourceUrl": "https://www.apple.com/jp/newsroom/2026/11/redesigned-health-app-expands-language-support/",
+  "sourceName": "Apple Newsroom（日本）",
+  "title": "Apple、再設計した「ヘルスケア」アプリを日本語など複数の言語に拡大　iOS 27.3ベータで提供",
+  "seoTitle": "ヘルスケアアプリが日本語対応：iOS 27.3",
+  "threadsPost": "iPhoneとApple Watchを使っている人、押さえておきたい話です。\n\n要約すると、再設計されたヘルスケアアプリが日本語に対応しました。\niOS 27.3のデベロッパ向けベータ版で利用でき、年内に無料で配信されます。\n\n健康データ、ふだんどのくらい見ていますか？",
+  "threadsHook": "callout",
+  "threadsStyle": 3,
+  "writingVoice": "explainer",
+  "lede": "Appleは、Apple Intelligenceを中核に再設計したヘルスケアアプリを日本語など複数の言語・表記に広げました。iOS 27.3のデベロッパ向けベータ版で11月3日から使え、年内に無料のソフトウェアアップデートとして一般のユーザーにも提供されます。Apple Newsroomが発表しました。",
+  "description": "Appleが再設計したヘルスケアアプリの対応言語を日本語など11に拡大。iOS 27.3のデベロッパ向けベータで利用でき、年内に無料配信。ヘルス年齢や自宅での運動機能評価の条件も整理します。",
+  "keywords": [
+    "ヘルスケアアプリ",
+    "日本語対応",
+    "iOS 27.3",
+    "Apple Intelligence",
+    "ヘルス年齢",
+    "ロンジェビティ",
+    "Apple Watch",
+    "VO2 max",
+    "インサイト",
+    "運動機能の評価"
+  ],
+  "tags": [
+    "アプリ",
+    "スマートフォン",
+    "Apple",
+    "ヘルスケア"
+  ],
+  "highlights": [
+    "「ロンジェビティ」タブの中心は、実年齢と比べる「ヘルス年齢」です",
+    "iPhoneのカメラで柔軟性・筋力・バランスなどを測り、動画は保存されません",
+    "「ヘルス年齢」にはApple Watch、一部機能は18歳以上が条件です"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "limited",
+    "japan": "ok",
+    "price": "無料アップデート",
+    "free": true,
+    "audience": "iPhone利用者",
+    "take": "今はデベロッパ向けベータ版。一般向けは年内の無料配信を待つのが基本です。",
+    "judgedAt": "2026-11-03T18:38:35.302972+00:00"
+  },
+  "workMoney": {
+    "relevance": "low",
+    "points": [
+      "直接の影響は小さい話です。iPhoneとApple Watchで健康管理をしている人は、年内の配信に備えて対応機種を確かめておくとよいでしょう。"
+    ]
+  },
+  "body": "ヘルスケアは、iPhoneやApple Watchで集めた心拍や睡眠などのデータを確かめるAppleの標準アプリです。Appleは、これを作り直した新しい版の対応言語を広げました。Apple Newsroomによると、対応するのは日本語、英語（グローバル）、中国語（簡体字・繁体字）、フランス語、韓国語、ノルウェー語、ポルトガル語、スペイン語、トルコ語、ベトナム語です。\n\n**iOS 27.3のデベロッパ向けベータ版では11月3日から利用できます。**\n\n一般のユーザーには、年内に無料のソフトウェアアップデートとして提供される予定です。Appleは、新しい言語への対応を今後も広げていくとしています。\n\nApple Intelligence自体は日本で使え、対応言語に日本語があります（当サイトの確認：11/3）。\n\n## 「インサイト」と「For You」で毎日の状態をつかむ\n\n再設計の中心は、Apple Intelligence（AppleのAI機能）です。個人の健康指標に合わせて、最適な一日の過ごし方や、長期的な健康状態の見方を示します。\n\n「インサイト」タブは、心臓、睡眠、準備度、フィットネス、バイタル、周期記録のデータを要約します。一日を通して、その時々の情報を表示します。\n\n「For You」セクションは、毎日の習慣に合わせたおすすめを出します。たとえば睡眠の中断が何夜か続くと、就寝前のリラックスのための習慣を見直す案内が出ます。\n\nデータに合わせて、臨床専門家が登場する教育ビデオや記事も届きます。\n\n## 「ロンジェビティ」タブと「ヘルス年齢」の仕組み\n\n新しい「ロンジェビティ」タブは、長期的な指標を分析して見せます。扱う分野は次のとおりです。\n\n- 心臓の健康\n- 睡眠\n- 心の健康\n- 身体の動き\n- 代謝の健康\n- 聴覚\n- 栄養\n\nタブの中心にあるのが「ヘルス年齢」です。Apple Watchのデータを、体の状態が実年齢と比べてどう推移しているかを示す指標に変えます。使うデータは、最大酸素摂取量（VO2 max、運動時に取り込める酸素の量）、安静時心拍数、睡眠、心拍変動などです。\n\nA1c（血糖値の長期的な目安）やLDLコレステロールなどの臨床検査データを取り込んで、長期的な状態を確かめることもできます。\n\n**自宅の運動機能評価は端末内で完結**\n\n今回のアップデートでは、自宅での運動機能の評価も加わります。特別な機器は要りません。\n\niPhoneのカメラとApple Watchで、柔軟性、筋力、バランス、身体の動き、VO2 maxを測ります。結果は音声や画面でその場でフィードバックされます。\n\nこの体験には、端末の中で動く視覚ベースのAIモデルを使います。臨床専門家と共同で開発され、処理は完全に端末上で行われます。Appleによると、ビデオが記録、保存、共有されることは一切ありません。\n\n**使うための条件と、今できること**\n\n使えるのは、最新のソフトウェアを搭載し、Apple Intelligenceを有効にしたiPhoneとiPadです。一部の機能はiPhoneだけで使えます。\n\n条件は機能ごとに異なります。\n\n- 「ヘルス年齢」にはApple Watchが必要です。\n- VO2 maxを推定するテストには、Apple Watch、AirPods Pro 3、または他社製の心拍数センサー搭載デバイスが必要です。\n- 一部の機能は18歳以上のみが対象です。\n\nApple Intelligenceは、デバイスとSiriの言語を日本語などの対応言語に設定すると使えます。Appleの案内によると、対応機種にはiPhone 16以降のモデル、iPhone 15 Pro、iPhone 15 Pro Maxなどがあります（Appleサポート、11/4確認）。\n\n現在は、デベロッパ向けのベータ版の段階です。一般のユーザーは、年内のアップデートを待つことになります。\n\n## まだ分からないこと\n\n- 年内の配信日はまだ発表されていません。\n- 日本で使える機能の範囲は、まだ発表されていません。地域や言語によって使えない機能がある場合があります。",
+  "easy": "## ひとことで言うと\n\nAppleが作り直したヘルスケアアプリが、日本語でも使えるようになります。\n\nいまはデベロッパ向けのベータ版です。一般のユーザーには、年内に無料アップデートとして届く予定です。\n\n## 健康の状態を長い目で見られます\n\n新しい「ロンジェビティ」タブでは、心臓や睡眠などの長期的な指標を確認できます。\n\n中心にあるのは「ヘルス年齢」です。Apple Watchのデータをもとに、体の状態が実年齢と比べてどうかを示します。\n\n## 自宅で体の動きを測れます\n\niPhoneのカメラとApple Watchを使い、柔軟性、筋力、バランスなどを測れます。\n\n処理はすべて端末の中で行われます。動画が記録・保存・共有されることはありません。\n\n## 使うための条件\n\nApple Intelligenceを有効にしたiPhoneかiPadが必要です。「ヘルス年齢」にはApple Watchも必要です。\n\n一部の機能は18歳以上の人だけが使えます。",
+  "channel": "Apple Newsroom（日本）",
+  "channelId": "",
+  "channelSlug": "apple-newsroom-jp-all",
+  "genre": "テクノロジー・ガジェット",
+  "genreSlug": "tech-gadget",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。価格・仕様・提供時期は変更される場合があるため、購入・利用の前に発表元の一次情報をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "再設計されたヘルスケアアプリの対応言語を拡大",
+  "publishedAt": "2026-11-03T18:25:43.338000+00:00",
+  "generatedAt": "2026-11-03T18:38:35.302963+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/apple-health-app-japanese-support-c5b48aa7.jpg",
+  "model": "anthropic-api:claude-sonnet-5-5",
+  "affiliates": [],
+  "newsType": "product",
+  "faq": [
+    {
+      "q": "再設計されたヘルスケアアプリは日本語で使える？",
+      "a": "日本語に対応します。iOS 27.3のデベロッパ向けベータ版で11月3日から使え、一般向けには年内に提供される予定です。ただし地域や言語によって使えない機能もあります。"
+    },
+    {
+      "q": "ヘルスケアアプリの新しい版は無料で使える？",
+      "a": "年内に無料のソフトウェアアップデートとして提供されます。ただしApple Intelligenceを有効にしたiPhoneかiPadが必要です。"
+    },
+    {
+      "q": "「ヘルス年齢」を使うには何が必要？",
+      "a": "Apple Watchが必要です。最大酸素摂取量や安静時心拍数、睡眠、心拍変動などのデータを、実年齢と比べる指標に変えます。"
+    },
+    {
+      "q": "自宅での運動機能の評価では動画は保存される？",
+      "a": "保存されません。処理は完全にデバイス上で行われ、ビデオが記録、保存、共有されることは一切ないとAppleは説明しています。"
+    }
+  ],
+  "todayActions": [
+    "使っているiPhoneがApple Intelligence対応機種か、Appleのサポートページで確かめる",
+    "デバイスとSiriの言語が日本語などの対応言語か、公式の設定画面で確認する",
+    "「ヘルス年齢」を使うなら、Apple Watchを持っているか確認する"
+  ],
+  "qualityScore": 93,
+  "sourcePublishedAt": "2026-11-03T18:25:43+00:00",
+  "detectedAt": "2026-11-03T18:31:10+00:00",
+  "speedMinutes": 17,
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/apple-health-app-japanese-support-fig1-123418c8.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "photo",
+      "credit": "Apple",
+      "sourceUrl": "https://www.apple.com/jp/newsroom/2026/11/redesigned-health-app-expands-language-support/",
+      "original": "https://www.apple.com/newsroom/images/2026/11/redesigned-health-app-expands-language-support/article/Apple-Health-app-language-expansion_quick-read-16x9.jpg.small_2x.jpg"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/apple-health-app-japanese-support-fig2-8728ea70.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "photo",
+      "credit": "Apple",
+      "sourceUrl": "https://www.apple.com/jp/newsroom/2026/11/redesigned-health-app-expands-language-support/",
+      "original": "https://www.apple.com/newsroom/images/2026/11/redesigned-health-app-expands-language-support/article/Apple-Health-app-language-expansion_quick-read-16x9.jpg.medium_2x.jpg"
+    }
+  ],
+  "imageCredit": {
+    "kind": "official",
+    "org": "Apple",
+    "provider": "Apple Newsroom（日本）",
+    "sourceUrl": "https://www.apple.com/jp/newsroom/2026/11/redesigned-health-app-expands-language-support/",
+    "original": "https://www.apple.com/newsroom/images/2026/11/redesigned-health-app-expands-language-support/tile/Apple-Health-app-language-expansion.jpg.og.jpg?202611031826",
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-03T18:44:34+00:00"
+  },
+  "imageFocus": {
+    "x": 0.479,
+    "y": 0.494,
+    "box": [
+      0.084,
+      0.006,
+      0.875,
+      0.982
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/apple-health-app-japanese-support-c5b48aa7.jpg"
+  }
+}

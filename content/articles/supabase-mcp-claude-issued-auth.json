@@ -1,0 +1,144 @@
+{
+  "slug": "supabase-mcp-claude-issued-auth",
+  "sourceType": "web",
+  "sourceUrl": "https://supabase.com/blog/claude-issued-enterprise-managed-auth-for-mcp",
+  "sourceName": "Supabase公式ブログ",
+  "title": "Supabase、MCPサーバーの企業向け認証でClaudeが本人確認の証明を発行　Okta以外のIdPでも利用可能に",
+  "seoTitle": "Supabase MCPのClaude認証とは？設定と注意点",
+  "threadsPost": "Supabaseを会社で使っている開発者の皆さん、押さえておきたい話です。\n\n要約すると、SupabaseのMCP連携で、Claudeが本人確認の証明を発行できるようになりました。\nOkta以外の認証基盤でも、同意画面なしで使えます。\n\n退職者の扱いは、今の運用とどこが違うか気になりますか？",
+  "threadsHook": "callout",
+  "threadsStyle": 3,
+  "writingVoice": "honest",
+  "lede": "Supabaseは11月3日、MCPサーバー向けの企業管理型認証で、Claudeが本人確認の証明（アサーション）を発行できるようにしたと公開しました。これまでは認証基盤側の対応が必要でしたが、不要になります。Supabaseは一般提供で、対象はSSOを設定したTeamとEnterpriseの組織です。ClaudeのAuto-connectはベータ版です。",
+  "description": "SupabaseのMCPサーバーで、Claudeが企業管理型認証の署名付き証明を発行できるようになりました。Okta以外のIdPでも利用可能です。設定は約10分で、退職処理など注意点もまとめます。",
+  "keywords": [
+    "Supabase MCP",
+    "企業管理型認証",
+    "Claude Auto-connect",
+    "ID-JAG",
+    "SSO",
+    "Okta",
+    "MCPサーバー",
+    "Claude Team",
+    "Claude Enterprise",
+    "アイデンティティプロバイダー"
+  ],
+  "tags": [
+    "Supabase",
+    "Claude",
+    "MCP",
+    "認証",
+    "生成AI"
+  ],
+  "highlights": [
+    "設定にかかる時間は、SSO設定済みなら約10分。Supabaseの組織設定とClaudeのコネクタ設定の両方で行います",
+    "IdPで無効化してもアクセスは止まらず、SupabaseとClaudeの両方から削除する必要があります"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "limited",
+    "japan": "unknown",
+    "price": "法人向け",
+    "free": false,
+    "audience": "管理者",
+    "take": "IdPがMCP拡張に未対応なら有力な選択肢です。退職処理の変更点を確認してから切り替えるとよいでしょう。",
+    "judgedAt": "2026-11-03T18:44:08.698472+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "Supabaseの組織の管理者は、メンバーごとの同意画面なしでClaude連携を配れます。",
+      "IdPがMCP拡張に未対応でも、約10分の設定で企業管理型認証を始められます。",
+      "退職処理の手順が変わるため、情報システム担当は運用ルールの見直しが必要です。"
+    ]
+  },
+  "body": "SupabaseのMCPサーバーは、AIアシスタントからSupabaseを操作するための接続口です。今回の変更は、この接続を会社として一括管理したい管理者に関係します。\n\nSupabase公式ブログによると、通常は各メンバーが自分のSupabaseアカウントでログインし、同意画面でClaudeを組織ごとに承認します。8月に始まった企業管理型認証は、これを管理者による1回の承認に置き換えるものです。認証基盤（IdP）が、メンバーごとに署名付きの証明を発行します。\n\nただし、この仕組みはMCPの拡張仕様に対応した認証基盤が前提でした。公式ブログによると、開始時に対応していたのはOktaだけで、いまも多くは未対応です。今回の変更で、こうした組織はClaudeを発行元にして待たずに使えます。認証基盤側の変更は要りません。\n\n**提供範囲と対象プラン**\n\nSupabase側は一般提供で、SSOを設定したTeamとEnterpriseの組織が対象です。Claude側のAuto-connectはベータ版で、ClaudeのTeamとEnterpriseの組織で使えます。Claudeの管理者なら誰でも有効にできます。\n\nClaude自体は日本で使えます（当サイトの確認：11/3）。ただし、今回の機能の日本での提供はまだ発表されていません。\n\nClaudeの料金は、Teamのスタンダードシートが年払いで1人あたり月$20、Enterpriseが年払いで1人あたり月$20（最低20シート）です（Anthropic公式の料金ページ、11/3確認）。Supabaseの有料プランは月$25からです（Supabase公式の料金ページ、11/4確認）。この機能の追加料金はまだ発表されていません。\n\n**ClaudeがIDを証明する仕組み**\n\nメンバーは、これまでどおりClaudeにログインします。SupabaseをClaudeから使うとき、Claudeは短期間だけ有効な署名付きの証明を必要とします。メンバーを特定でき、Supabaseでしか使えないものです。MCPの拡張仕様では、これをID-JAG（Identity Assertion JWT Authorization Grant）と呼びます。\n\nClaudeは証明に署名する前に、2点だけを確かめます。\n\n- その人が、Claude組織の現在のメンバーであること\n- Claudeアカウントで使っているメールアドレス\n\nIdPでのログイン、多要素認証、Supabase独自のサインイン規則は確認しません。\n\nClaudeが証明をSupabaseに送ると、Supabaseは3つを確認します。\n\n- 署名が、登録した発行元と一致すること\n- メンバーが、SSOのIDが一致する形で組織に所属していること\n- 所有者か管理者が、Claudeを承認していること\n\nすべて通ると、Supabaseはそのメンバーに紐づく短期のアクセストークンを発行します。期限が切れても、Claudeが新しい証明を出すので、手動で再接続する必要はありません。\n\n**約10分の設定手順と必要な条件**\n\nSSOが設定済みなら、設定は約10分です。必要なのは、Supabase組織の所有者か管理者と、Claude組織の管理者です。各メンバーは、Claudeで使うメールアドレスで、一度はSupabaseにSSOでログインしている必要があります。\n\n手順は4段階です。\n\n1. 承認：所有者か管理者がClaudeとSupabaseを接続し、組織で承認します。承認は、ダッシュボードの組織設定の「Authorized apps」に表示され、確認や取り消しもここでできます。\n2. 発行元の選択：Claudeの組織設定でSupabaseコネクタを開きます。Configurationタブの「Managed authorization」の横にある「Set up」を押します。Connectの手順で「Claude-issued」を選び、発行元URLをコピーします。URLはClaude組織ごとに固有です。\n3. 登録：SupabaseのSSOページで「Advanced settings」を開き、ID-JAG Issuerの欄にURLを貼って保存します。\n4. テストと有効化：Claudeで「Run test」を押し、すべて通ることを確認します。続けて「Enable and continue」を押し、RolesとScopesの手順を進めます。Rolesでは、自動で接続するClaudeのロールを選びます。\n\n選んだロールのメンバーは、ログインも同意画面もなしでSupabaseが接続済みになります。対応するSupabaseアカウントがない人には、通常の接続画面が出ます。管理者でない人は、Claudeの「Send to an admin」で設定を管理者に送れます（Supabase公式ドキュメント、11/4確認）。\n\n**退職処理と発行元URLの置き換えに注意**\n\n切り替える前に、運用面の違いを確認する必要があります。\n\nまず、退職者の扱いです。IdPでメンバーを無効にしても、アクセスは止まりません。ClaudeもSupabaseも、IdPに在籍状況を問い合わせないためです。メンバーを外すには、SupabaseとClaudeの両方の組織から削除します。すでに発行されたトークンは、期限が切れるまで有効です。\n\n次に、発行元URLの制約です。Supabaseは、SSOプロバイダーごとに信頼する発行元を1つだけ持ちます。ClaudeのURLでIdPのURLを置き換えると、IdPが署名した証明はすべて拒否されます。IdPを使う他のAIツールの証明も対象です。元のURLに戻すまで受け付けません。さらに、1つの発行元URLで扱えるSupabase組織は1つだけです。\n\nIdPがすでに証明を発行している場合は、何も変える必要はありません。SupabaseにはIdPのURLを入れたままにします。\n\n編集部の見方では、退職処理が2か所になる点が運用上の変更点です。切り替え前に、手順書を更新しておくと漏れを防げます。\n\n## まだ分からないこと\n\n- この機能の日本での提供はまだ発表されていません。\n- Auto-connectの正式版への移行時期は、まだ発表されていません。\n- Claude Auto-connectの追加料金の有無は、まだ発表されていません。",
+  "easy": "## ひとことで言うと\n\nSupabaseをClaudeから使うとき、会社の管理者が1回承認すれば、社員ごとの同意画面が出なくなります。これまでは認証基盤が対応している必要がありましたが、Claudeが代わりに本人確認の証明を出せるようになりました。\n\nSupabaseのMCPサーバーは、AIアシスタントからSupabaseを操作するための接続口です。通常は、社員が自分のSupabaseアカウントでログインし、組織ごとにClaudeを承認します。\n\n8月に始まった企業管理型認証は、管理者の承認を1回にまとめる仕組みです。ただし、対応していた認証基盤はOktaだけで、ほかの多くは未対応でした。今回はClaudeが証明を出すので、認証基盤側の設定変更は要りません。\n\n**設定の流れ**\n\nSSOが設定済みなら、約10分で終わります。Supabaseの管理者がClaudeを承認し、Claude側で発行元のURLをコピーします。それをSupabaseのSSO設定に貼り付け、テストを通して有効にします。\n\n**切り替える前の注意**\n\n退職者の扱いが変わります。認証基盤で無効にしても、Claudeからのアクセスは止まりません。SupabaseとClaudeの両方の組織から外す必要があります。\n\nまた、発行元URLを置き換えると、元の認証基盤が署名した証明はすべて拒否されます。他のAIツールで同じ仕組みを使っている場合も同様です。",
+  "channel": "Supabase公式ブログ",
+  "channelId": "",
+  "channelSlug": "supabase-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Enterprise-managed auth for MCP: Claude can now issue the identity assertion",
+  "publishedAt": "2026-11-03T07:00:00+00:00",
+  "generatedAt": "2026-11-03T18:44:08.698463+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/supabase-mcp-claude-issued-auth-5deeed7b.jpg",
+  "model": "anthropic-api:claude-sonnet-5-5",
+  "affiliates": [],
+  "newsType": "product",
+  "faq": [
+    {
+      "q": "SupabaseのMCPでClaudeが証明を発行するとは？",
+      "a": "Okta以外のIdPがMCP拡張に未対応でも、Claudeが署名付きの本人確認の証明を発行します。管理者が1回承認すれば、メンバーごとの同意画面が不要になります。"
+    },
+    {
+      "q": "Supabase MCPのClaude発行元はいつ使える？",
+      "a": "Supabase側は一般提供で、SSO設定済みのTeamとEnterpriseの組織が対象です。ClaudeのAuto-connectはTeamとEnterpriseで使えるベータ版です。"
+    },
+    {
+      "q": "Claude発行元への切り替えにかかる時間は？",
+      "a": "SSOが設定済みなら約10分です。Claudeで発行元URLをコピーし、SupabaseのSSO設定に登録して、テストと有効化を行います。"
+    },
+    {
+      "q": "切り替え後に退職者のアクセスはどうなる？",
+      "a": "IdPで無効にしてもアクセスは止まりません。SupabaseとClaudeの両方の組織から削除する必要があり、発行済みのトークンは期限まで有効です。"
+    },
+    {
+      "q": "IdPがすでに証明を発行している場合は？",
+      "a": "何も変える必要はありません。SupabaseにはIdPの発行元URLを入れたままにします。ClaudeのURLで置き換えると、IdPの証明は拒否されます。"
+    }
+  ],
+  "todayActions": [
+    "自社のIdPがMCPの企業管理型認証拡張に対応しているか、提供元に確認する",
+    "SupabaseとClaudeの組織の管理者を確認し、設定担当者を決める",
+    "退職処理の手順書に、Supabase組織とClaude組織の両方から削除する手順を足す"
+  ],
+  "qualityScore": 93,
+  "factSources": [
+    {
+      "label": "料金",
+      "name": "Anthropic公式の料金ページ",
+      "url": "https://claude.com/pricing",
+      "checkedAt": "2026-11-03"
+    }
+  ],
+  "sourcePublishedAt": "2026-11-03T07:00:00+00:00",
+  "detectedAt": "2026-11-03T18:31:10+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/supabase-mcp-claude-issued-auth-fig1-f44bb621.jpg",
+      "width": 1200,
+      "height": 630,
+      "kind": "hero",
+      "credit": "Supabase",
+      "sourceUrl": "https://supabase.com/blog/claude-issued-enterprise-managed-auth-for-mcp",
+      "original": "https://supabase.com/_next/image?url=%2Fimages%2Fblog%2F2026-11-03-claude-issued-enterprise-managed-auth-for-mcp%2Fthumb.png&w=3840&q=100&dpl=dpl_7gyxv1bzht5QH6a8vr2SsbbGKcyF"
+    }
+  ],
+  "imageCredit": {
+    "kind": "official",
+    "org": "Supabase",
+    "provider": "Supabase公式ブログ",
+    "sourceUrl": "https://supabase.com/blog/claude-issued-enterprise-managed-auth-for-mcp",
+    "original": "https://supabase.com/images/blog/2026-11-03-claude-issued-enterprise-managed-auth-for-mcp/og.png",
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-03T18:44:21+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.455,
+    "y": 0.447,
+    "box": [
+      0.0,
+      0.06,
+      0.909,
+      0.833
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/supabase-mcp-claude-issued-auth-5deeed7b.jpg"
+  }
+}
