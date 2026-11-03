@@ -43,10 +43,10 @@ def article() -> dict:
 SCRIPT = {
     "hook": {"text": "Fixture AIの新プラン、月3000円の価値ある？", "payoff": "月3000円", "speech": "フィクスチャーエーアイの新プラン、月3000円の価値はある？", "block": "", "target": "¥3000"},
     "beats": [
-        {"keyword": "毎日使う人向け", "sub": "仕事で毎日使う人", "speech": "仕事で毎日たくさん使う人に向いたプランです。", "block": "", "target": "毎日たくさん使う人に"},
-        {"keyword": "利用量5倍", "sub": "通常プランと比べて", "speech": "利用量は通常プランの5倍になります。", "block": "", "target": "通常プランの5倍"},
-        {"keyword": "日本でも提供", "sub": "2026年11月から", "speech": "日本でも2026年11月から提供されます。", "block": "", "target": "2026年11月から"},
-        {"keyword": "月額3000円", "sub": "", "speech": "料金は月額3000円です。", "block": "", "target": "¥3000"},
+        {"keyword": "毎日使う人向け", "sub": "仕事で毎日使う人", "speech": "仕事で毎日たくさん使う人に向いたプランです。資料作りや調べものを、まとめて任せられます。", "block": "", "target": "毎日たくさん使う人に"},
+        {"keyword": "利用量5倍", "sub": "通常プランと比べて", "speech": "利用量は通常プランの5倍になります。同じ作業でも、上限に当たりにくくなります。", "block": "", "target": "通常プランの5倍"},
+        {"keyword": "日本でも提供", "sub": "2026年11月から", "speech": "日本でも2026年11月から提供されます。申し込みは公式サイトからできます。", "block": "", "target": "日本では2026年11月から提供"},
+        {"keyword": "月額3000円", "sub": "", "speech": "料金は月額3000円です。毎日使うなら、検討する価値があります。", "block": "", "target": "¥3000"},
     ],
     "compare": {"beat": 2, "base": "通常", "subject": "Pro Max", "ratio": "5倍"},
     "conclusion": {"text": "毎日使う人なら検討の価値", "speech": "毎日たくさん使う人なら、検討する価値があります。"},
@@ -126,7 +126,7 @@ class GoldenRenderTest(unittest.TestCase):
     def setUpClass(cls):
         # 合成の短い台本（4場面）なので、長さの範囲だけ短い版にする（本番は 45〜75秒）
         cls._saved = (v3.TARGET_MIN, v3.TARGET_MAX, v3.LENGTH_RANGE)
-        v3.TARGET_MIN, v3.TARGET_MAX, v3.LENGTH_RANGE = 20.5, 30.5, (20.0, 32.0)
+        v3.TARGET_MIN, v3.TARGET_MAX, v3.LENGTH_RANGE = 24.0, 42.0, (20.0, 45.0)
         cls.tmp = Path(tempfile.mkdtemp())
         cls.report = v3.make_video(
             "fixture-ai-plan", cls.tmp, tts="fake", article=article(), pages=[fake_page()], script=copy.deepcopy(SCRIPT),

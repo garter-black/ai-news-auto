@@ -672,6 +672,7 @@ hook の問いに、**具体的な数字と比較で答える**。忙しい会�
   speech: 読み上げ。短い文で1〜3文・60字以内。keyword の数字・名前を必ず含める。
   block: 下の「画面の文字」一覧の番号（例: 1-23）。target: その行の文字から、この beat の証拠になる部分を**一文字も変えずに**抜き出す（日本語は2〜40字。英語は100字まで）。
   英語の target は文として完結する範囲（文の頭から、文末のピリオドかカンマまで）を選ぶ。文の途中で切らない。
+  証拠の文は画面で選択（青）して読んでいる間ずっと見せるので、その場面の keyword の数字か言葉を必ず含む文を選ぶ（英語なら ja の訳に入っていればよい）。
   ja: target が英語のときだけ、target の日本語訳（画面のその英文のすぐ下に訳として出す）。文全体を、自然なです・ます調で（36字以内）。
   直訳の硬さを避け、文の一部だけを訳さない・言葉を足さない・target に無い数字を入れない。製品名は英字のまま。target が日本語なら空文字。hook も同じ。
   英文の頭の返事の語（Yes. / No.）は訳さなくてよい。
@@ -880,6 +881,9 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
         if pages and not tgt:
             out.append(f"{name}.target「{item.get('target', '')}」が画面の文字にありません。一覧の文字をそのまま抜き出してください。")
             continue
+        if tgt and name != "hook" and not gate.key_fact_ok(item.get("keyword", ""), item.get("sub", ""), item.get("target", ""), item.get("ja", "")):
+            out.append(f"{name}.target「{item.get('target', '')[:40]}」に、キーワード「{item.get('keyword', '')}」の数字・言葉がありません。"
+                       "選択して見せる証拠の文には、その場面の大事な数字か言葉を含む行を選んでください（英語なら ja の訳に入っていればよい）。")
         if tgt:
             have = {float(x) for x in _digits(tgt.block.text)}
             miss = [d for d in _digits(kw) if float(d) not in have]
@@ -1608,7 +1612,7 @@ class Chart:
     ratio: str
 
 
-DRIFT = 0.02  # 止まっている間もゆっくり寄る（1秒に2%）
+DRIFT = 0.008  # 止まっている間もごくゆっくり寄る（1秒に0.8%。2026-11-03 動きを控えめに）
 
 
 class Camera:
@@ -1882,6 +1886,8 @@ class Plan:
     focus: list[dict]
     credits: list[str]
     ladders: list = field(default_factory=list)
+    highlights: list = field(default_factory=list)  # 証拠の文の選択（ゲートが長さと中身を見る）
+    camera_moves: list = field(default_factory=list)  # カメラの動き（ゲートが回数と割合を見る）
 
 
 def _source_label(page: Page) -> str:
@@ -1954,6 +1960,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     charts: list[Chart] = []
     events: list[dict] = []
     sub_spans: list[tuple[float, float, int]] = []  # (t0, t1, 台本の番号 0=hook)
+    move_log: list[dict] = []  # カメラの動き（ゲートが1場面の回数と動いている時間の割合を見る）
 
     def ev(t: float, kind: str, note: str = "") -> None:
         events.append({"t": round(max(0.0, t), 3), "kind": kind, "note": note})
@@ -1978,159 +1985,121 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     if hook_xl:
         sub_spans.append((1.25, lines[1].start - 0.08, 0))
 
+    # 2026-11-03 オーナー「右の画面の動きが多すぎるときがある」→ 動きの予算:
+    #   1場面のカメラの動きは「行へ」1回＋証拠に寄る1回まで・動いたあとは1.5秒以上止める・行ったり来たりしない・ゆっくり動かす。
+    #   止まっている間の変化は、選択の青が文をなぞる・訳の吹き出し・補足の文字で出す（カメラは動かさない）
+    # 「日本語のページでどこを読んでいるか分からない」→ 日本語の証拠も英語と同じく、読んでいる文に選択の青を付け、読み終わるまで画面に入れておく
+    MOVE = 0.9  # 1回の動きの長さ（ゆっくり）
+    HOLD = 1.5  # 動いたあと止めておく最短
+    highlights: list[dict] = []
+
+    def last_end() -> float:
+        return max((m.t + m.dur for m in moves), default=0.0)
+
+    def add_move(t: float, cam: Cam, note: str, beat_no: int, cut: bool = False, dur: float = MOVE) -> bool:
+        if t < last_end() + HOLD - 1e-6:  # 前の動きのあと1.5秒たっていない
+            return False
+        moves.append(Move(t, 0.5 if cut else dur, cam, cut=cut))
+        move_log.append({"t": round(t, 3), "dur": 0.5 if cut else dur, "beat": beat_no, "note": note})
+        ev(t, "cut" if cut else "move", note)
+        return True
+
+    move_log[:] = [{"t": 0.18, "dur": 0.8, "beat": 0, "note": "つかみ: 数字へ寄る"}]
     for i, (beat, line) in enumerate(zip(beats, lines[1 : n_beats + 1]), 1):
         tg = targets[i]
         page = pages[tg.page]
         nxt = lines[i + 1].start
-        dur = nxt - line.start
-        prev_page = moves[-1].cam.page
-        a_t = line.start - 0.16
-        cut = tg.page != prev_page
+        a_t = max(line.start - 0.16, last_end() + HOLD)
+        cut = tg.page != moves[-1].cam.page
         wide_block = tg.block.rect[2] - tg.block.rect[0] > 0.5 * page.width
-        # 英文に訳を付ける beat は、文全体（複数行）を選択して、その下に訳の吹き出しを出す
-        xl = found[i] and is_english(beat.get("target", "")) and len((beat.get("ja") or "").strip()) >= 10  # 短すぎる訳（「今週からです。」など）は出さない
-        span = tg.span if xl else tg.rect
-        sel = tg.rows if xl else [tg.match]
+        # 証拠の文（target の全行）に選択の青。英語なら訳の吹き出しも
+        xl = found[i] and is_english(beat.get("target", "")) and len((beat.get("ja") or "").strip()) >= 10  # 短すぎる訳は出さない
+        span = tg.span if found[i] else tg.rect
+        sel = tg.rows if found[i] else [tg.match]
         line_rect = (tg.block.rect[0], span[1], tg.block.rect[2], span[3]) if wide_block else span
         block_cam = frame_rect(page, tg.page, line_rect, 0.96, 1.6, zmin=1.25 if wide_block else ZOOM_BLOCK)
-        moves.append(Move(a_t, 0.45 if cut else 0.55, block_cam, cut=cut))
-        ev(a_t, "cut" if cut else "move", f"beat{i}: 行へ")
-        b_t = line.start + max(0.85, 0.42 * dur)
-        sub_t0, sub_end = a_t + 0.95, nxt - 0.08
-        if i in lad_map:
-            # 料金の段階: 本物の料金表の価格を安い順に1つずつ見せて（証拠）、そのあと比較のグラフでまとめる
+        chart_beat = i in lad_map or i in flow_map or i == uni_beat or i == comp_beat
+        if i in lad_map:  # 料金の段階: 証拠は主役のプランの価格の行（表の行を順に回らない）
             lad = lad_map[i]
-            lad_rows = lad["rows"]
-            moves.pop()
-            events.pop()
-            row_tgs = [find_target(pages, r.get("target", ""), r.get("block", ""), keyword=r.get("price", "")) for r in lad_rows]
-            shown = [(r, t) for r, t in zip(lad_rows, row_tgs) if t is not None]
-            step = min(1.6, max(1.0, 0.5 * dur / max(len(shown), 1)))
-            t_cur = a_t
-            for r, rt in shown:
-                rp = pages[rt.page]
-                cam_r = frame_rect(rp, rt.page, rt.zoom_rect, 0.30, 1.9, zmin=1.35, line=rt.rect, chars=rt.line_chars)
-                is_cut = rt.page != moves[-1].cam.page
-                moves.append(Move(t_cur, 0.45 if is_cut else 0.55, cam_r, cut=is_cut))
-                ev(t_cur, "cut" if is_cut else "move", f"料金表: {r.get('name')}")
-                spots.append(Spot(t_cur + 0.4, t_cur + step - 0.05, rt.page, rt.rect, [rt.zoom_rect], t_cur + 0.5))
-                t_cur += step
-            t_c = t_cur if shown else line.start + 0.3
-            reveal = 0.5
-            t_hi = t_c + 0.3 + reveal * len(lad_rows) + 0.3
-            # 読み上げが長い場面は、グラフを出したまま1行ずつ順に強調していく（読み上げで各行を話す間ずっと見せる）
-            tour = nxt - t_hi > 4.0
-            t_end = min(nxt - 0.06, t_hi + (1.8 * len(lad_rows) + 0.2 if tour else 1.5))
-            L_new = Ladder(t_c, t_end, lad_rows, lad.get("subject", ""), reveal, "price", "", lad.get("title", ""), lad.get("source", ""))
-            L_new.tour = 1.8 if tour else 0.0
-            ladders.append(L_new)
-            ev(t_c, "chart", "料金の段階のグラフ")
-            if tour:
-                for k in range(len(lad_rows)):
-                    ev(t_hi + 1.8 * k, "pop", f"グラフ: {lad_rows[k].get('name')}")
+            sub_row = next((r for r in lad["rows"] if r.get("name", "").lower() == lad.get("subject", "").lower()), lad["rows"][-1])
+            rt = find_target(pages, sub_row.get("target", ""), sub_row.get("block", ""), keyword=sub_row.get("price", ""))
+            if rt is not None:
+                tg, page = rt, pages[rt.page]
+                span, sel = rt.rect, [rt.zoom_rect]
+                block_cam = frame_rect(page, rt.page, rt.zoom_rect, 0.30, 1.9, zmin=1.35, line=rt.rect, chars=rt.line_chars)
+                cut = rt.page != moves[-1].cam.page
+        move_dur = MOVE if nxt - line.start >= 4.0 else 0.6  # 短い場面は少し速く（選択を見せる時間を残す）
+        if not add_move(a_t, block_cam, f"beat{i}: 行へ", i, cut=cut, dur=move_dur):
+            a_t = last_end() + HOLD
+            add_move(a_t, block_cam, f"beat{i}: 行へ", i, cut=cut, dur=move_dur)
+        arrive = a_t + (0.5 if cut else move_dur)
+        sel_t = arrive + 0.15
+        sweep = 0.35 + 0.12 * (len(sel) - 1)
+        ev(sel_t, "highlight", f"beat{i}: 読んでいる文に選択の青")
+        chart_t = None
+        if chart_beat:
+            chart_t = max(sel_t + sweep + 1.4, line.start + 0.25 * (nxt - line.start))  # 選択を1.2秒以上見せてからグラフ
+            if nxt - chart_t < 1.6:
+                chart_t = None
+        spot_end = (chart_t - 0.05) if chart_t else nxt - 0.08
+        spots.append(Spot(a_t + 0.35, spot_end, tg.page, span, sel, sel_t))
+        if found[i]:
+            highlights.append({"beat": i, "text": beat.get("target", ""), "ja": beat.get("ja", "") if xl else "", "keyword": beat.get("keyword", ""), "sub": beat.get("sub", ""),
+                               "t_full": round(sel_t + sweep, 3), "t_end": round(spot_end, 3), "line": [round(line.start, 3), round(line.end, 3)]})
+        if xl and spot_end - (sel_t + 0.4) > 0.6:
+            sub_spans.append((sel_t + 0.4, spot_end, i))
+            ev(sel_t + 0.4, "text", f"beat{i}: 訳")
+        if chart_t is not None:
+            if i in lad_map:
+                lad = lad_map[i]
+                t_hi = chart_t + 0.3 + 0.5 * len(lad["rows"]) + 0.3
+                tour = nxt - t_hi > 4.0
+                t_end = min(nxt - 0.06, t_hi + (1.8 * len(lad["rows"]) + 0.2 if tour else 2.4))
+                L_new = Ladder(chart_t, t_end, lad["rows"], lad.get("subject", ""), 0.5, "price", "", lad.get("title", ""), lad.get("source", ""))
+                L_new.tour = 1.8 if tour else 0.0
+                ladders.append(L_new)
+                ev(chart_t, "chart", "料金の段階のグラフ")
+                if tour:
+                    for k in range(len(lad["rows"])):
+                        ev(t_hi + 1.8 * k, "pop", f"グラフ: {lad['rows'][k].get('name')}")
+                else:
+                    ev(t_hi, "pop", "グラフ: 主役を強調")
+            elif i in flow_map:
+                steps = [str(x) for x in flow_map[i].get("steps")][:4]
+                t_hi = chart_t + 0.3 + 0.7 * len(steps) + 0.2
+                t_end = min(nxt - 0.06, t_hi + 2.4)
+                ladders.append(Ladder(chart_t, t_end, [{"name": x} for x in steps], "", 0.7, "flow", flow_map[i].get("note", ""), flow_map[i].get("title", ""), ""))
+                ev(chart_t, "chart", "手順の絵")
+                ev(t_hi, "pop", "手順: まとめ")
+            elif i == uni_beat:
+                t_hi = chart_t + 0.3 + 0.5 * len(uni_rows) + 0.3
+                t_end = min(nxt - 0.06, t_hi + 2.2)
+                ladders.append(Ladder(chart_t, t_end, uni_rows, uni.get("subject", ""), 0.5, "units", uni.get("unit", "")))
+                ev(chart_t, "chart", "たとえの絵")
+                ev(t_hi, "pop", "たとえ: 主役を強調")
             else:
-                ev(t_hi, "pop", "グラフ: 主役を強調")
-            if nxt - t_end > 0.8 and shown:  # 残りの時間は料金表の主役のプランへ戻る
-                sub_r, sub_t = next(((r, t) for r, t in shown if r.get("name", "").lower() == lad.get("subject", "").lower()), shown[-1])
-                cam_s = frame_rect(pages[sub_t.page], sub_t.page, sub_t.rect, 0.8, 1.5, zmin=1.2)
-                moves.append(Move(t_end - 0.1, 0.6, cam_s, cut=sub_t.page != moves[-1].cam.page))
-                ev(t_end - 0.1, "move", f"料金表: {sub_r.get('name')} へ戻る")
-                spots.append(Spot(t_end + 0.3, nxt - 0.08, sub_t.page, sub_t.rect, [sub_t.zoom_rect], t_end + 0.4))
+                t_end = min(nxt - 0.06, chart_t + 3.2)
+                charts.append(Chart(chart_t, t_end, comp["base"], comp["subject"], comp["ratio"]))
+                ev(chart_t, "chart", "比較のグラフ")
+            if nxt - t_end > 1.2:  # グラフのあとは、証拠の行の画面のまま（選択も戻す）
+                spots.append(Spot(t_end + 0.2, nxt - 0.08, tg.page, span, sel, t_end + 0.2))
             continue
-        if i in flow_map and i not in lad_map:
-            # 手順の絵: 行の証拠を見せたあと、作業の流れを箱と矢印で1つずつ出す
-            fl = flow_map[i]
-            steps = [str(x) for x in fl.get("steps")][:4]
-            t_u = line.start + max(0.9, 0.22 * dur)
-            t_hi = t_u + 0.3 + 0.7 * len(steps) + 0.2
-            t_end = min(nxt - 0.06, t_hi + 2.0)
-            ladders.append(Ladder(t_u, t_end, [{"name": x} for x in steps], "", 0.7, "flow", fl.get("note", ""), fl.get("title", ""), ""))
-            ev(t_u, "chart", "手順の絵")
-            ev(t_hi, "pop", "手順: まとめ")
-            spots.append(Spot(a_t + 0.35, t_u, tg.page, span, sel, a_t + 0.6))
-            if xl and t_u - (a_t + 0.95) > 0.8:
-                sub_spans.append((a_t + 0.95, t_u - 0.05, i))
-            if nxt - t_end > 0.8:
-                moves.append(Move(t_end - 0.1, 0.6, block_cam))
-                ev(t_end - 0.1, "move", f"beat{i}: 画面へ戻る")
-            continue
-        if i == uni_beat and i not in lad_map:
-            # たとえ: 行の証拠を見せたあと、基準の量を四角1つとして並べる絵
-            t_u = line.start + max(0.9, 0.3 * dur)
-            t_hi = t_u + 0.3 + 0.5 * len(uni_rows) + 0.3
-            t_end = min(nxt - 0.06, t_hi + 1.8)
-            ladders.append(Ladder(t_u, t_end, uni_rows, uni.get("subject", ""), 0.5, "units", uni.get("unit", "")))
-            ev(t_u, "chart", "たとえの絵")
-            ev(t_hi, "pop", "たとえ: 主役を強調")
-            spots.append(Spot(a_t + 0.35, t_u, tg.page, span, sel, a_t + 0.6))
-            if xl:
-                sub_spans.append((a_t + 0.95, t_u - 0.05, i))
-            if nxt - t_end > 0.8:
-                moves.append(Move(t_end - 0.1, 0.6, block_cam))
-                ev(t_end - 0.1, "move", f"beat{i}: 画面へ戻る")
-            continue
-        if i == comp_beat:
-            c_end = min(nxt - 0.06, b_t + 2.8)  # グラフは2.8秒まで。残りは画面へ戻る（止まった絵を長く出さない）
-            charts.append(Chart(b_t, c_end, comp["base"], comp["subject"], comp["ratio"]))
-            ev(b_t, "chart", "比較のグラフ")
-            spots.append(Spot(a_t + 0.35, b_t, tg.page, span, sel, a_t + 0.6))
-            sub_end = b_t - 0.05
-            if nxt - c_end > 0.8:
-                moves.append(Move(c_end - 0.1, 0.6, block_cam))
-                ev(c_end - 0.1, "move", f"beat{i}: 画面へ戻る")
-                spots.append(Spot(c_end + 0.3, nxt - 0.08, tg.page, span, sel, c_end + 0.4))
-                if xl and nxt - c_end > 1.6:
-                    sub_spans.append((c_end + 0.6, nxt - 0.08, i))
-        elif nxt - b_t > 0.9:
-            zr = tg.zoom_rect
-            moves.append(Move(b_t, 0.6, frame_rect(page, tg.page, zr, 0.36 if tg.focus else 0.7, ZOOM_MAX, zmin=1.7, line=tg.rect, chars=tg.line_chars)))
-            ev(b_t, "move", f"beat{i}: 数字へ寄る")
-            if xl:  # 行に着いたらすぐ文を選択して訳を出し、寄っている間も出したまま
-                spots.append(Spot(a_t + 0.35, nxt - 0.08, tg.page, span, sel, a_t + 0.6))
-            else:
-                spots.append(Spot(b_t + 0.3, nxt - 0.08, tg.page, span, sel, b_t + 0.55))
-            clicks.append(Click(b_t + 0.55, tg.page, *click_point(tg)))
-            ev(b_t + 0.55, "click")
-            if nxt - b_t > 3.3:  # 長い beat: 途中で少し引いて行の前後も見せる（3.6秒より長く止まらない）
-                m_t = b_t + (nxt - b_t) * 0.55
-                moves.append(Move(m_t, 0.6, frame_rect(page, tg.page, line_rect, 0.96, 1.4, zmin=1.15)))
-                ev(m_t, "move", f"beat{i}: 少し引く")
-        else:
-            spots.append(Spot(a_t + 0.3, nxt - 0.08, tg.page, span, sel, a_t + 0.55))
-            sub_t0 = a_t + 0.9
-        if xl and sub_end - sub_t0 > 0.6:
-            sub_spans.append((sub_t0, sub_end, i))
+        # 証拠に寄る（1場面に1回）: 行に着いて1.5秒以上たってから・寄ったあとも1.5秒以上止められるときだけ
+        zoom_t = max(sel_t + sweep + 0.6, arrive + HOLD)
+        if nxt - zoom_t >= 0.9 + HOLD:
+            cam_z = frame_rect(page, tg.page, tg.zoom_rect, 0.36 if tg.focus else 0.8, ZOOM_MAX, zmin=1.6 if tg.focus else 1.35, line=tg.rect, chars=tg.line_chars)
+            if add_move(zoom_t, cam_z, f"beat{i}: 証拠に寄る", i):
+                clicks.append(Click(zoom_t + 0.6, tg.page, *click_point(tg)))
+                ev(zoom_t + 0.6, "click")
 
-    # 締め: 最初の画面（ページ幅いっぱい）へ引いて戻る
+    # 締め: 最初の画面へ戻る（1回）→ 止めてから最初の数字へ寄る（1回）
     concl = lines[-1]
-    moves.append(Move(concl.start - 0.16, 0.7, Camera._hold(first, 0, 0), cut=first.page != moves[-1].cam.page))
-    ev(concl.start - 0.16, "move", "締め: 最初の画面へ戻る")
-    c_t = concl.start + max(0.9, 0.45 * (concl.end - concl.start))
-    if narr.end_start - c_t > 0.9:  # 最初の数字へもう一度寄る（最初と最後がつながる）
-        moves.append(Move(c_t, 0.7, hook_close))
-        ev(c_t, "move", "締め: 最初の数字へ")
+    n_last = n_beats + 1
+    back_t = max(concl.start - 0.16, last_end() + HOLD)
+    add_move(back_t, Camera._hold(first, 0, 0), "締め: 最初の画面へ戻る", n_last, cut=first.page != moves[-1].cam.page)
+    c_t = max(back_t + MOVE + HOLD, concl.start + 0.45 * (concl.end - concl.start))
+    if narr.end_start - c_t > 0.9 + 1.0 and add_move(c_t, hook_close, "締め: 最初の数字へ", n_last):
         spots.append(Spot(c_t + 0.35, narr.end_start, t0.page, t0.rect, [t0.match], c_t + 0.5))
-    # 2.6秒より長く何も変わらない所には、ゆっくり寄る・引くを足す（長い動画でも 1.5〜3秒ごとに何かが変わる）
-    cover = [(c.t0, c.t1) for c in charts] + [(L.t0, L.t1) for L in ladders]
-    for _ in range(3):
-        camera = Camera(first, moves)
-        changes = sorted({e["t"] for e in events if e["kind"] in ("move", "cut", "chart", "pop")})
-        bounds = [0.0] + changes + [narr.end_start]
-        added = False
-        for a, b in zip(bounds, bounds[1:]):
-            if b - a <= 2.9 or any(c0 - 0.2 <= (a + b) / 2 <= c1 + 0.2 for c0, c1 in cover):
-                continue
-            n_add = math.ceil((b - a) / 2.4) - 1
-            for k in range(1, n_add + 1):
-                t = a + (b - a) * k / (n_add + 1)
-                c = camera.at(t)
-                pg = pages[c.page]
-                zin = c.s * 1.22 <= fit_s(pg) * ZOOM_MAX * 1.1 and k % 2 == 1
-                moves.append(Move(t, 0.7, clamp_cam(pg, c.page, c.cx, c.cy, c.s * (1.22 if zin else 1 / 1.22))))
-                ev(t, "move", "ゆっくり寄る" if zin else "少し引く")
-                added = True
-        if not added:
-            break
     camera = Camera(first, moves)
 
     # 文字（左の列）: 小さな見出し → キーワード（マーカー）→ 補足。キーワードの中心は画面の注目の行と同じ高さ
@@ -2159,9 +2128,14 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         parts = [("eyebrow", brow, 0), ("keyword", kw, 18)]
         if beat.get("sub"):
             parts.append(("sub", fit_line(beat["sub"], "bold", range(42, 30, -2), COL_W, color=MUTED, accent=False), 30))
+        # 補足は、長い場面では読み上げの途中で出す（カメラを動かさずに画面が変わる）
+        sub_delay = 0.22 if t_out - t_in < 5.0 else round(0.42 * (t_out - t_in), 2)
         for role, spr, x, y in column_group(parts, ANCHOR_Y):
             text = {"eyebrow": label, "keyword": beat["keyword"], "sub": beat.get("sub", "")}[role]
-            texts.append(TextItem(role, text, spr, x, y, t_in, t_out, anim="wipe" if role == "keyword" else "rise", delay={"eyebrow": 0.0, "keyword": 0.06, "sub": 0.22}[role], marker=role == "keyword"))
+            texts.append(TextItem(role, text, spr, x, y, t_in, t_out, anim="wipe" if role == "keyword" else "rise", delay={"eyebrow": 0.0, "keyword": 0.06, "sub": sub_delay}[role], marker=role == "keyword"))
+        ev(t_in, "text", f"beat{i}: キーワード")
+        if beat.get("sub") and sub_delay > 1.0:
+            ev(t_in + sub_delay, "text", f"beat{i}: 補足")
     concl_info = script["conclusion"]
     brow_text = concl_info.get("eyebrow") or "要約すると"
     concl_brow = fit_line(brow_text, "bold", range(28, 20, -2), COL_W, color=BLUE, accent=False, tracking=0.08)
@@ -2229,7 +2203,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
             focus.append({"t0": round(w0, 3), "t1": round(w1, 3), "bbox": [round(PANEL[0] + max(0, x0), 1), round(PANEL[1] + max(0, y0), 1), round(PANEL[0] + min(PW, x1), 1), round(PANEL[1] + min(PH, y1), 1)]})
 
     events.sort(key=lambda e: e["t"])
-    return Plan(article, script, narr, pages, targets, camera, spots, clicks, charts, texts, subtitles, events, focus, credits, ladders)
+    return Plan(article, script, narr, pages, targets, camera, spots, clicks, charts, texts, subtitles, events, focus, credits, ladders, highlights, move_log)
 
 
 def stage_bg() -> np.ndarray:
@@ -3098,6 +3072,9 @@ def make_video(
                 "fonts": [FONT_FAMILY, LOGO_FAMILY],
                 "rendered_strings": sorted(set(RENDERED)),
                 "charts": [{"t0": round(c.t0, 3), "t1": round(c.t1, 3), "base": c.base, "subject": c.subject, "ratio": c.ratio} for c in plan.charts],
+                "camera_moves": plan.camera_moves,
+                "highlights": plan.highlights,
+                "motion_budget": True,
                 "ladders": [{"t0": round(L.t0, 3), "t1": round(L.t1, 3), "mode": L.mode, "unit": L.unit, "title": L.title, "subject": L.subject, "rows": [{k: r.get(k, "") for k in ("name", "price", "usage", "mult", "count") if k in r} for r in L.rows]} for L in plan.ladders],
                 "official_text": official_text(plan.pages),
                 "length_range": list(length_targets(plan.script)[2]),

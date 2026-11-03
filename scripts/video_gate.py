@@ -724,24 +724,88 @@ def _overlap(a, b) -> float:
     return max(0.0, min(a[2], b[2]) - max(a[0], b[0])) * max(0.0, min(a[3], b[3]) - max(a[1], b[1]))
 
 
+# 動きの予算（2026-11-03 オーナー「右の画面の動きが多すぎる」）。report["motion_budget"] がある新しい動画だけに当てる
+CALM_MAX_MOVES_PER_BEAT = 2  # 「行へ」＋「証拠に寄る」
+CALM_MOVING_SHARE = 0.35  # カメラが動いている時間の割合の上限
+CALM_MIN_HOLD = 1.4  # 動いたあと止めておく最短（計画は 1.5秒）
+CALM_MAX_SEGMENT = 4.8  # 止めておく分、何も変わらない区間の上限は少し長く（選択・訳・補足の文字で変化を出す）
+CALM_AVG_SEGMENT = (1.5, 3.6)
+CALM_MOTION_MIN = 0.2
+CALM_EVENT_MIN_SOFT = 0.3  # 文字・選択の変化の直後の差（カメラの動きより小さい）
+HIGHLIGHT_MIN_SEC = 1.2  # 証拠の文の選択を見せる最短
+
+
+def key_fact_ok(keyword: str, sub: str, text: str, ja: str = "") -> bool:
+    """選択した証拠の文（英語なら訳も）に、その場面のキーワードの数字・言葉が入っているか"""
+    hay = norm(f"{text} {ja}")
+    digits = re.findall(r"\d+(?:\.\d+)?", norm(keyword))
+    if digits:
+        have = {float(x) for x in re.findall(r"\d+(?:\.\d+)?", hay)}
+        return all(float(d) in have for d in digits)
+    terms = [t for t in _TERM.findall(norm(f"{keyword} {sub}")) if t not in LATIN_OK and not re.fullmatch(r"\d+", t)]
+    terms = [t for t in terms if t not in ("ドル", "時間", "毎週", "毎月", "月額", "プラン")]
+    return not terms or any(_term_in(t, hay) for t in terms)
+
+
+def check_calm(report: dict, total: float, result: GateResult) -> None:
+    """カメラの動きの予算と、証拠の文の選択（長さ・中身）"""
+    moves = report.get("camera_moves") or []
+    per_beat: dict = {}
+    for mv in moves:
+        per_beat[mv.get("beat", -1)] = per_beat.get(mv.get("beat", -1), 0) + 1
+    share = sum(float(mv.get("dur", 0)) for mv in moves) / max(total, 1)
+    holds = [b["t"] - (a["t"] + a["dur"]) for a, b in zip(moves, moves[1:])]
+    m = result.metrics
+    m.update({"calm_moves_max": max(per_beat.values(), default=0), "calm_moving_share": round(share, 3), "calm_min_hold": round(min(holds), 2) if holds else None})
+    if m["calm_moves_max"] > CALM_MAX_MOVES_PER_BEAT:
+        worst = max(per_beat, key=per_beat.get)
+        result.reasons.append(f"v3: カメラの動きが多い（場面{worst}で{per_beat[worst]}回。{CALM_MAX_MOVES_PER_BEAT}回まで）")
+    if share > CALM_MOVING_SHARE:
+        result.reasons.append(f"v3: カメラが動いている時間が長い（{share:.0%}。{CALM_MOVING_SHARE:.0%}まで）")
+    if holds and min(holds) < CALM_MIN_HOLD - 1e-6:
+        result.reasons.append(f"v3: カメラが止まらずに続けて動く（{min(holds):.1f}秒。{CALM_MIN_HOLD}秒以上止める）")
+    for h in report.get("highlights") or []:
+        shown = float(h.get("t_end", 0)) - float(h.get("t_full", 0))
+        if shown < HIGHLIGHT_MIN_SEC - 1e-6:
+            result.reasons.append(f"v3: 場面{h.get('beat')}の証拠の選択が短い（{shown:.1f}秒。{HIGHLIGHT_MIN_SEC}秒以上）")
+        line = h.get("line") or [0, total]
+        if float(h.get("t_full", 0)) > float(line[1]) + 0.5:
+            result.reasons.append(f"v3: 場面{h.get('beat')}の選択が読み上げに間に合っていない")
+        if not key_fact_ok(h.get("keyword", ""), h.get("sub", ""), h.get("text", ""), h.get("ja", "")):
+            result.reasons.append(f"v3: 場面{h.get('beat')}の選択した文に、キーワード「{h.get('keyword')}」の数字・言葉が無い")
+
+
 def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, article: dict | None = None, renderer: Path | None = None) -> None:
     m = result.metrics
+    calm = bool(report.get("motion_budget"))
     lo, hi = report.get("length_range") or V3_SEC
     if not (lo <= duration <= hi):
         result.reasons.append(f"v3: 長さが {lo:.0f}〜{hi:.0f}秒の外（{duration:.1f}秒）")
     end = float(report.get("end_start") or duration)
     # 場面の変化（カメラの移動・切り替え・数字・グラフ）。クリックは数えない
-    changes = sorted({round(e["t"], 2) for e in report.get("events") or [] if e.get("kind") in ("move", "cut", "chart", "pop") and e["t"] < end - 0.3})
+    kinds = ("move", "cut", "chart", "pop", "highlight", "text") if calm else ("move", "cut", "chart", "pop")
+    changes = sorted({round(e["t"], 2) for e in report.get("events") or [] if e.get("kind") in kinds and e["t"] < end - 0.3})
+    soft = {round(e["t"], 2) for e in report.get("events") or [] if e.get("kind") in ("highlight", "text")} if calm else set()
+    if calm:  # 0.7秒以内に続いた変化は1回と数える（文字と選択が同時に出るなど）。カメラの動き・グラフがあればそちらを残す
+        merged: list[float] = []
+        for t in changes:
+            if merged and t - merged[-1] < 0.7:
+                if merged[-1] in soft and t not in soft:
+                    merged[-1] = t
+                continue
+            merged.append(t)
+        changes = merged
+    max_seg, avg_rng, motion_min = (CALM_MAX_SEGMENT, CALM_AVG_SEGMENT, CALM_MOTION_MIN) if calm else (V3_MAX_SEGMENT, V3_AVG_SEGMENT, V3_MOTION_MIN)
     bounds = [0.0] + [t for t in changes if t > 0.3] + [end]
     segs = [(a, b) for a, b in zip(bounds, bounds[1:]) if b - a > 0.05]
     avg = (end / len(segs)) if segs else 99
     m.update({"v3_changes": len(changes), "v3_avg_segment": round(avg, 2), "v3_max_segment": round(max((b - a for a, b in segs), default=99), 2)})
     if len(changes) < V3_MIN_CHANGES:
         result.reasons.append(f"v3: 画面の変化が少ない（{len(changes)}回 < {V3_MIN_CHANGES}回）")
-    if not (V3_AVG_SEGMENT[0] <= avg <= V3_AVG_SEGMENT[1]):
-        result.reasons.append(f"v3: 1場面の平均が {V3_AVG_SEGMENT[0]}〜{V3_AVG_SEGMENT[1]}秒の外（{avg:.2f}秒）")
-    if m["v3_max_segment"] > V3_MAX_SEGMENT:
-        result.reasons.append(f"v3: {m['v3_max_segment']:.1f}秒間なにも変わらない区間がある（{V3_MAX_SEGMENT}秒まで）")
+    if not (avg_rng[0] <= avg <= avg_rng[1]):
+        result.reasons.append(f"v3: 1場面の平均が {avg_rng[0]}〜{avg_rng[1]}秒の外（{avg:.2f}秒）")
+    if m["v3_max_segment"] > max_seg:
+        result.reasons.append(f"v3: {m['v3_max_segment']:.1f}秒間なにも変わらない区間がある（{max_seg}秒まで）")
     # 実際の動き（動画のフレーム差）: 各区間が止まっていない・変化の直後に本当に絵が変わっている
     fw, fh = report.get("frame") or (W, H)
     panel = report.get("panel")
@@ -757,13 +821,13 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
         part = diffs[int(a / step) : max(int(a / step) + 1, int(b / step))]
         seg_scores.append(round(sum(part) / max(len(part), 1), 2))
     m["v3_motion"] = seg_scores
-    still = [f"{a:.1f}〜{b:.1f}秒({s})" for (a, b), s in zip(segs, seg_scores) if s < V3_MOTION_MIN]
+    still = [f"{a:.1f}〜{b:.1f}秒({s})" for (a, b), s in zip(segs, seg_scores) if s < motion_min]
     if still:
-        result.reasons.append(f"v3: 動きが足りない区間 {', '.join(still[:4])}（基準 {V3_MOTION_MIN}）")
+        result.reasons.append(f"v3: 動きが足りない区間 {', '.join(still[:4])}（基準 {motion_min}）")
     weak = []
     for t in changes:
         win = diffs[int(t / step) : int((t + 0.8) / step) + 1]
-        if not win or max(win) < V3_EVENT_MIN:
+        if not win or max(win) < (CALM_EVENT_MIN_SOFT if t in soft else V3_EVENT_MIN):
             weak.append(f"{t:.1f}秒")
     if weak:
         result.reasons.append(f"v3: 変化と記録した所で絵がほとんど変わっていない（{', '.join(weak[:4])}）")
@@ -805,6 +869,8 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
         for d in re.findall(r"\d+(?:\.\d+)?", norm(ch.get("ratio", ""))):
             if d not in spoken:
                 result.reasons.append(f"v3: グラフの数字 {d} がキーワード・読み上げに無い")
+    if calm:
+        check_calm(report, end, result)
     fonts = report.get("fonts") or []
     if not fonts or len(set(fonts)) > V3_MAX_FONTS:
         result.reasons.append(f"v3: 書体は{V3_MAX_FONTS}つまで（{fonts}）")

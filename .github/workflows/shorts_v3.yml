@@ -67,6 +67,8 @@ jobs:
           for slug in $SLUGS; do
             t=$(date +%s)
             python scripts/shorts_v3.py "$slug" --tts voicevox --out out/shorts_v3 --profile production
+            # 同じ台本から SNS 用の短い版も（LLM は呼ばない）
+            [ -f "out/shorts_v3/$slug.v3script.json" ] && python scripts/shorts_v3.py "$slug" --tts voicevox --out out/shorts_v3 --profile production --short
             echo "時間: $slug $(( $(date +%s) - t ))秒（ジョブ開始から $(( $(date +%s) - JOB_T0 ))秒）"
           done
           docker logs voicevox 2>&1 | tail -3 || true
