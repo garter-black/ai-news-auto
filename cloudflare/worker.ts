@@ -10,7 +10,7 @@
 import { default as handler } from "../.open-next/worker.js";
 import { flushHeld, handlePush, type PushEnv } from "./push";
 import { handleAff, type AffEnv } from "./aff";
-import { countVideoVisit, serveVideo } from "./video";
+import { serveVideo } from "./video";
 // @ts-ignore ビルド時に生成される（scripts/cf_content.mjs。JS・CSS のファイル名の組のハッシュ）
 import codeInfo from "../.open-next/saisoku-code.json";
 
@@ -200,8 +200,6 @@ export default {
     if (url.pathname.startsWith("/api/push/")) return handlePush(request, url, env as unknown as PushEnv, ctx);
     // 提携リンクのクリックの自前集計（cloudflare/aff.ts）
     if (url.pathname.startsWith("/api/aff/")) return handleAff(request, url, env as unknown as AffEnv, ctx);
-
-    countVideoVisit(request, url, env, ctx);
 
     const cacheKey = edgeCacheKey(request, url, env);
     const edge = cacheKey ? (caches as unknown as { default: Cache }).default : null;

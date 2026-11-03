@@ -45,7 +45,7 @@ jobs:
         run: |
           node scripts/test_aff.mjs
           node --test tests/test_offer_time.cjs tests/test_offer_integrity.cjs tests/test_offer_relevance.cjs tests/test_story_topics.cjs
-          python3 -m unittest tests/test_a8_pr_copy.py tests/test_muse_japan_correction.py
+          python3 -m unittest tests/test_a8_pr_copy.py tests/test_muse_japan_correction.py tests/test_inflow_report.py
 
       - name: Verify guide routing without external requests
         run: |

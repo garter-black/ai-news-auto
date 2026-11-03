@@ -109,6 +109,8 @@
 - テストでブラウザを動かすときは、a8.net・楽天・Amazon・AdSense への通信を止める（`docs/automation.md`）。止めないと広告の数字が水増しされる。
 - 訪問者数は **Cloudflare Web Analytics（ロボット除外）** を見る。Facebook からの大量アクセスはロボット（リンクプレビュー）なので人として数えない。
 - 広告の「人によるクリック」は `python3 scripts/aff_stats.py --yesterday`。
+- **SNS・検索から記事に来た人の実数**は `python3 scripts/inflow_report.py --yesterday`（`--date YYYY-MM-DD` も可。毎晩・毎朝の報告で aff_stats と並べて出す）。流入元別・流入元ごとの人気記事・Threads の投稿ごと（`state/threads_posted.json` と突き合わせ）・動画の短い版/全部の版を出す。JS が動いた実ブラウザの「入口の1表示」だけを数え、ロボット・リンクプレビュー・HeadlessChrome・Lighthouse・PageSpeed は数えない。仕組みは `components/InflowBeacon.tsx` → `cloudflare/inflow.ts`（AFF_KV の `i:<日付>:…`）。
+- **自社アクセスを数えない（必ず守る）**: 本番のページを自分で開く・確かめるときは、URL に **`?_internal=1`** を付けるか（例 `https://ai-tech-express.jp/articles/<slug>?_internal=1`）、リクエストにヘッダー **`X-Saisoku-Internal: 1`** を付ける。curl・WebFetch・Python のスクリプト・Playwright（`extraHTTPHeaders`）・Lighthouse / PageSpeed の実行（`--extra-headers='{"X-Saisoku-Internal":"1"}'` か URL に `?_internal=1`）すべて。`?_internal=1` で一度開いたブラウザは、以後そのブラウザでは数えない（`?_internal=0` で戻る。オーナー自身のスマホ・PCもこれで除外できる）。提携リンクのクリック計測（aff_stats）も同じしるしで除外する。
 
 ### 安全
 - **秘密の値（APIキー・パスワード・トークン）を画面やログに出さない**。保存場所は GitHub Secrets / Cloudflare の secret。

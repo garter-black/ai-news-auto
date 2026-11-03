@@ -2,8 +2,6 @@
  * SNS 用の解説動画の配信と、動画投稿から記事に来た人の数え方（cloudflare/worker.ts が使う）。
  * テスト: node scripts/test_video.mjs（本番の KV には通信しない）
  */
-import { BOT_UA } from "../lib/revenue-funnel";
-
 type Ctx = { waitUntil(promise: Promise<unknown>): void };
 type VideoEnv = Record<string, unknown>;
 type KvNamespace = { get(key: string, type: "arrayBuffer"): Promise<ArrayBuffer | null> };
@@ -55,17 +53,19 @@ export async function serveVideo(request: Request, url: URL, env: VideoEnv, ctx:
 
 /**
  * SNS の動画投稿（utm_campaign=sns_video・utm_content=short|full）から記事に来た人を数える（短い版と全部の版の比べ）。
- * AFF_KV に「v:<日付>:<slug>:<版>:<時分秒><乱数>」の空のキーを1つ置く（400日で消える）。ボット・プレビューは数えない。
- * scripts/sns_video_followup.py --ab-report が数える
+ * AFF_KV に「v:<日付>:<slug>:<版>:<時分秒><乱数>」の空のキーを1つ置く（400日で消える）。scripts/sns_video_followup.py --ab-report が数える。
+ * 2026-11-03 から、記事の HTML を取りに来た時点ではなく、実ブラウザが送る入口の計測（cloudflare/inflow.ts の POST /api/aff/view）から呼ぶ。
+ * 以前は UA に bot を含まないリンクプレビュー（facebookexternalhit など）や JS を動かさない取得も数えていた
  */
-export function countVideoVisit(request: Request, url: URL, env: VideoEnv, ctx: Ctx): void {
-  if (request.method !== "GET" || url.searchParams.get("utm_campaign") !== "sns_video") return;
-  const variant = url.searchParams.get("utm_content");
-  const m = /^\/articles\/([A-Za-z0-9][A-Za-z0-9_-]{0,160})\/?$/.exec(url.pathname);
-  const kv = env.AFF_KV as { put(key: string, value: string, opts?: { expirationTtl?: number }): Promise<void> } | undefined;
-  if (!m || !kv || (variant !== "short" && variant !== "full") || BOT_UA.test(request.headers.get("user-agent") || "")) return;
-  const now = new Date(Date.now() + 9 * 3600_000).toISOString();
-  const key = `v:${now.slice(0, 10)}:${m[1]}:${variant}:${now.slice(11, 19).replace(/:/g, "")}${Math.random().toString(36).slice(2, 8)}`;
+export function recordVideoVisit(
+  kv: { put(key: string, value: string, opts?: { expirationTtl?: number }): Promise<void> },
+  slug: string,
+  variant: "short" | "full",
+  ctx: Ctx,
+  nowMs = Date.now(),
+): void {
+  if (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,160}$/.test(slug)) return;
+  const now = new Date(nowMs + 9 * 3600_000).toISOString();
+  const key = `v:${now.slice(0, 10)}:${slug}:${variant}:${now.slice(11, 19).replace(/:/g, "")}${Math.random().toString(36).slice(2, 8)}`;
   ctx.waitUntil(kv.put(key, "", { expirationTtl: 400 * 86400 }).catch((error) => console.error("[video] visit count failed", String(error))));
 }
-

@@ -9,6 +9,9 @@ try {
   const outfile = join(dir, "test.mjs");
   await build({ entryPoints: ["cloudflare/aff.test.ts"], outfile, bundle: true, platform: "node", format: "esm", logLevel: "warning" });
   await import(pathToFileURL(outfile).href);
+  const inflowOutfile = join(dir, "inflow-test.mjs");
+  await build({ entryPoints: ["cloudflare/inflow.test.ts"], outfile: inflowOutfile, bundle: true, platform: "node", format: "esm", logLevel: "warning" });
+  await import(pathToFileURL(inflowOutfile).href);
   const clientOutfile = join(dir, "client-test.mjs");
   await build({ entryPoints: ["components/RevenueFunnelTracker.test.ts"], outfile: clientOutfile, bundle: true, platform: "node", format: "esm", logLevel: "warning", plugins: [{
     name: "unused-react-hooks-for-client-event-unit-test",

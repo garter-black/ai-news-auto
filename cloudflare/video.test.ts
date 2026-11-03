@@ -1,6 +1,6 @@
 /** /video/ の配信（Range・HEAD・416）と、動画投稿からの訪問の数え方のテスト。node scripts/test_video.mjs */
 import assert from "node:assert/strict";
-import { countVideoVisit, serveVideo } from "./video";
+import { recordVideoVisit, serveVideo } from "./video";
 
 const cache = new Map<string, Response>();
 Object.defineProperty(globalThis, "caches", { configurable: true, value: { default: {
@@ -44,11 +44,8 @@ assert.equal(res.headers.get("content-length"), "1000");
 assert.equal((await call("/video/nothing-here.mp4")).status, 404);
 assert.equal((await call("/video/../secret.mp4")).status, 404);
 
-const visit = (path: string, ua = "Mozilla/5.0 (iPhone) Safari") => countVideoVisit(req(path, { headers: { "user-agent": ua } }), new URL(req(path).url), env, ctx);
-visit("/articles/claude-ultra?utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=short");
-visit("/articles/claude-ultra?utm_campaign=sns_video&utm_content=full", "facebookexternalhit/1.1 preview");
-visit("/articles/claude-ultra?utm_campaign=other&utm_content=full");
-visit("/articles/claude-ultra?utm_campaign=sns_video&utm_content=long");
+recordVideoVisit(env.AFF_KV, "claude-ultra", "short", ctx);
+recordVideoVisit(env.AFF_KV, "../bad", "full", ctx);
 await Promise.all(waits);
 assert.equal(visits.length, 1);
 assert.match(visits[0], /^v:\d{4}-\d{2}-\d{2}:claude-ultra:short:\d{6}[a-z0-9]+$/);

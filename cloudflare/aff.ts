@@ -4,6 +4,7 @@
  *
  *   POST /api/aff/click                   1クリックを記録（画面 components/AffClickTracker.tsx から。同じオリジンだけ）
  *   GET  /api/aff/stats?date=YYYY-MM-DD   その日（日本時間）の集計（Bearer AFF_STATS_TOKEN。scripts/aff_stats.py が読む）
+ *   POST /api/aff/view・GET /api/aff/inflow   記事に外から来た人の数（cloudflare/inflow.ts。scripts/inflow_report.py が読む）
  *
  * 保存先は Workers KV の AFF_KV（saisoku-aff）:
  *   c:<日付>:<提携先ID>:<時分秒><乱数>   1クリック = 1キー（同時に押されても数がずれない）。値は空で metadata にパス・置き場所・訪問者の短いハッシュ。400日で消える
@@ -11,6 +12,7 @@
  * 連打・機械的な連投は Cache API（そのデータセンターの一時置き場）で間引く。
  */
 import { json, readJson, safeEqual, sameOrigin, sha256Hex, type KvNamespace } from "./push";
+import { handleInflow, isInternal } from "./inflow";
 import { ARTICLE_MEASUREMENT_VERSION, ARTICLE_PATHS, BOT_UA, FUNNEL, SOURCES, STAGES, isMeasuredArticle, validFunnelEvent } from "../lib/revenue-funnel";
 
 export type AffEnv = {
@@ -71,7 +73,7 @@ async function click(request: Request, url: URL, env: AffEnv, ctx: Ctx): Promise
   if (!sameOrigin(request) || (site && site !== "same-origin")) return json({ error: "origin" }, 403);
   const ua = request.headers.get("user-agent") ?? "";
   // 機械のアクセス・設定が無いときは黙って捨てる（画面には何も返さなくてよい）
-  if (!ua || BOT_UA.test(ua) || !env.AFF_KV || !env.AFF_STATS_TOKEN) return noContent();
+  if (!ua || BOT_UA.test(ua) || isInternal(request) || !env.AFF_KV || !env.AFF_STATS_TOKEN) return noContent();
 
   const body = await readJson<{ p?: unknown; path?: unknown; pos?: unknown }>(request, 1024);
   const program = typeof body?.p === "string" ? body.p : "";
@@ -101,7 +103,7 @@ async function funnelEvent(request: Request, url: URL, env: AffEnv, ctx: Ctx): P
   const site = request.headers.get("sec-fetch-site");
   if (!sameOrigin(request) || (site && site !== "same-origin")) return json({ error: "origin" }, 403);
   const ua = request.headers.get("user-agent") ?? "";
-  if (!ua || BOT_UA.test(ua) || request.headers.get("dnt") === "1" || request.headers.get("sec-gpc") === "1" || !env.AFF_KV || !env.AFF_STATS_TOKEN) return noContent();
+  if (!ua || BOT_UA.test(ua) || isInternal(request) || request.headers.get("dnt") === "1" || request.headers.get("sec-gpc") === "1" || !env.AFF_KV || !env.AFF_STATS_TOKEN) return noContent();
   const body = await readJson<Record<string, unknown>>(request, 1024);
   const field = (key: string) => typeof body?.[key] === "string" ? body[key] as string : "";
   const stage = field("stage"), path = field("path"), source = field("source"), choice = field("choice"), pos = field("pos") || "other";
@@ -246,5 +248,7 @@ export async function handleAff(request: Request, url: URL, env: AffEnv, ctx: Ct
   if (url.pathname === "/api/aff/click") return click(request, url, env, ctx);
   if (url.pathname === "/api/aff/event") return funnelEvent(request, url, env, ctx);
   if (url.pathname === "/api/aff/stats") return stats(request, url, env);
+  // 記事に外から来た人の数（流入元 × 記事 × utm）。cloudflare/inflow.ts
+  if (url.pathname === "/api/aff/view" || url.pathname === "/api/aff/inflow") return handleInflow(request, url, env, ctx);
   return json({ error: "not found" }, 404);
 }

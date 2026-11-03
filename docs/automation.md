@@ -14,7 +14,8 @@
    - `*.googlesyndication.com` `*.doubleclick.net` `*.googleadservices.com` `adservice.google.com` `*.adtrafficquality.google`（AdSense）
 2. **提携リンク（`rel` に `sponsored` を含む a）は押さない・URL を取りに行かない**（curl・WebFetch・リンク切れ検査も禁止）。
    リンク先の確認は管理画面（A8 など）で行う。
-3. 見た目の確認はできるだけローカル（`npm run dev`）で行う。`next dev` では計測画像を出さない（`VERCEL_ENV` が production のときだけ出す）。
+3. **自社アクセスのしるしを付ける**: 本番の URL には `?_internal=1` を付けるか、ヘッダー `X-Saisoku-Internal: 1` を付ける（curl・Playwright の `extraHTTPHeaders`・Lighthouse の `--extra-headers`）。記事への流入数（`scripts/inflow_report.py`）と提携リンクのクリック数から除くため。
+4. 見た目の確認はできるだけローカル（`npm run dev`）で行う。`next dev` では計測画像を出さない（`VERCEL_ENV` が production のときだけ出す）。
    `npm run cf:preview`（wrangler dev）は wrangler.jsonc の `VERCEL_ENV=production` で計測画像が出るので、1. と同じく止めること。
 
 ## 止め方
@@ -32,3 +33,4 @@
 
 提携リンクのクリックは自前でも数えている（自動ブラウザ・クローラーは数えない）。
 `python3 scripts/aff_stats.py --yesterday` で前日分が出る（A8 の数字と並べて見る）。仕組みは cloudflare/aff.ts。
+記事に外から来た人（流入元・投稿ごと）は `python3 scripts/inflow_report.py --yesterday`。仕組みは cloudflare/inflow.ts。
