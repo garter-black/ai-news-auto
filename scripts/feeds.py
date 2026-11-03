@@ -362,10 +362,11 @@ def log(message: str) -> None:
 # --------------------------------------------------------------------------- #
 
 
-def fetch(url: str, timeout: int = 25, accept: str = "*/*", token: str = "") -> tuple[bytes, str]:
+def fetch(url: str, timeout: int = 25, accept: str = "*/*", token: str = "", extra_headers: dict | None = None) -> tuple[bytes, str]:
     """(本文バイト列, 最終URL)。gzip 圧縮のまま返すサーバー（deepmind.google 等）にも対応。
-    token は読み取りサービス（r.jina.ai）の鍵（JINA_API_KEY。あれば回数制限にかかりにくい）"""
-    headers = {"User-Agent": UA, "Accept": accept, "Accept-Encoding": "gzip, deflate", "Accept-Language": "ja,en;q=0.8"}
+    token は読み取りサービス（r.jina.ai）の鍵（JINA_API_KEY。あれば回数制限にかかりにくい）。
+    extra_headers は読み取りサービスへの指定など（例: {"X-Return-Format": "html"}）"""
+    headers = {"User-Agent": UA, "Accept": accept, "Accept-Encoding": "gzip, deflate", "Accept-Language": "ja,en;q=0.8", **(extra_headers or {})}
     if token:
         headers["Authorization"] = f"Bearer {token}"
     request = urllib.request.Request(url, headers=headers)
@@ -737,23 +738,25 @@ def robots_allows(url: str) -> bool:
     return parser is None or parser.can_fetch("*", url)
 
 
-def fetch_jina(url: str, timeout: int = 25, accept: str = "text/plain", check_robots: bool = True) -> tuple[bytes, str]:
+def fetch_jina(url: str, timeout: int = 25, accept: str = "text/plain", check_robots: bool = True, return_format: str = "") -> tuple[bytes, str]:
     """読み取りサービス（r.jina.ai）経由で取る。鍵（JINA_API_KEY）が残高切れ（402）・無効（401）なら、
-    この実行の残りは鍵なし（無料枠。回数制限は厳しめ）で読む。robots.txt が禁じるページは読まない"""
+    この実行の残りは鍵なし（無料枠。回数制限は厳しめ）で読む。robots.txt が禁じるページは読まない。
+    return_format="html" で描画後の HTML を返させる（scripts/images.py が写真の候補を探すとき）"""
+    extra = {"extra_headers": {"X-Return-Format": return_format}} if return_format else {}  # 指定が無いときは今までどおりの呼び方
     global _jina_key_dead
     if check_robots and not robots_allows(url):
         raise RuntimeError(f"robots.txt が許していない: {url}")
     key = os.environ.get("JINA_API_KEY", "")
     if key and not _jina_key_dead:
         try:
-            return fetch(JINA_READER + url, timeout=timeout, accept=accept, token=key)
+            return fetch(JINA_READER + url, timeout=timeout, accept=accept, token=key, **extra)
         except urllib.error.HTTPError as error:
             if error.code not in (401, 402):
                 raise
             _jina_key_dead = f"HTTP {error.code}"
             note = "残高切れ" if error.code == 402 else "鍵が無効"
             print(f"[jina] JINA_API_KEY が使えない（{_jina_key_dead}: {note}）。この実行は鍵なし（無料枠）で読みます", flush=True)
-    return fetch(JINA_READER + url, timeout=timeout, accept=accept)
+    return fetch(JINA_READER + url, timeout=timeout, accept=accept, **extra)
 
 
 def _clean_markdown(body: str, url: str) -> tuple[str, list[dict]]:

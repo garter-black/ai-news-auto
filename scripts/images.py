@@ -641,12 +641,11 @@ def fetch_page(page_url: str) -> tuple[str, str]:
         data, _, final = http_get(page_url, accept="text/html,application/xhtml+xml", timeout=20, limit=6 * 1024 * 1024)
     except Exception as error:  # noqa: BLE001
         try:
-            req = urllib.request.Request(
-                "https://r.jina.ai/" + page_url,
-                headers={"User-Agent": BOT_UA, "X-Return-Format": "html", **({"Authorization": f"Bearer {os.environ['JINA_API_KEY']}"} if os.environ.get("JINA_API_KEY") else {})},
-            )
-            with urllib.request.urlopen(req, timeout=45) as res:
-                data = res.read(6 * 1024 * 1024)
+            # feeds.fetch_jina: 鍵（JINA_API_KEY）が残高切れ（402）・無効（401）なら鍵なしの無料枠で読み直し、
+            # robots.txt が禁じるページは読まない（以前は鍵つきで直接呼んでいたため、残高切れの間は公式の写真を探せなかった）
+            import feeds  # noqa: PLC0415
+
+            data, _ = feeds.fetch_jina(page_url, timeout=45, accept="text/html", return_format="html")
             final = page_url
         except Exception as error2:  # noqa: BLE001
             raise RuntimeError(f"元記事を開けない: {str(error)[:60]} / {str(error2)[:60]}") from error2
