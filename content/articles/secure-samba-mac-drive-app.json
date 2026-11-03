@@ -70,7 +70,7 @@
   "videoTitle": "オンラインストレージ「セキュアSAMBA」がMacのFinderから直接利用できるMac向けドライブアプリの提供を開始 &#8211; Windowsとの混在環境でもファイル共有を効率化",
   "publishedAt": "2026-11-03T08:30:00+00:00",
   "generatedAt": "2026-11-03T08:39:58.789604+00:00",
-  "thumbnail": "",
+  "thumbnail": "https://ai-tech-express.jp/img/secure-samba-mac-drive-app-a620cc14.jpg",
   "model": "anthropic-api:claude-opus-5-5",
   "affiliates": [],
   "faq": [
@@ -113,5 +113,24 @@
   "sourcePublishedAt": "2026-11-03T08:30:00+00:00",
   "detectedAt": "2026-11-03T08:37:24+00:00",
   "fastLane": true,
-  "speedMinutes": 14
+  "speedMinutes": 14,
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A MacBook on a clean office desk with a Finder window open, showing a folder icon, illuminated by soft natural light.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-03T09:01:29+00:00"
+  },
+  "imageFocus": {
+    "x": 0.373,
+    "y": 0.575,
+    "box": [
+      0.0,
+      0.149,
+      0.747,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/secure-samba-mac-drive-app-a620cc14.jpg"
+  }
 }

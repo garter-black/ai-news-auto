@@ -1,6 +1,7 @@
 {
  "pages": {
   "chatgpt-pricing": {
+   "error": "HTTPError: HTTP Error 401: Unauthorized",
    "hash": "2cf63d272fbcbaf4",
    "lines": [
     "About",
@@ -429,6 +430,7 @@
    "since": "2026-11-02T18:41:16+00:00"
   },
   "chatgpt-release-notes": {
+   "error": "HTTPError: HTTP Error 401: Unauthorized",
    "last_date": "2026-10-30",
    "ok": "2026-11-03"
   },
