@@ -1,13 +1,13 @@
 {
- "updatedAt": "2026-10-28T15:50:00+00:00",
- "generatedAt": "2026-11-01T22:24:49+00:00",
+ "updatedAt": "2026-11-02T22:32:17+00:00",
+ "generatedAt": "2026-11-03T01:15:10+00:00",
  "stats": {
-  "articlesScanned": 797,
-  "candidateArticles": 90,
-  "rowsVerified": 28,
-  "rowsRejected": 46,
-  "plans": 3,
-  "apis": 13
+  "articlesScanned": 916,
+  "candidateArticles": 97,
+  "rowsVerified": 32,
+  "rowsRejected": 56,
+  "plans": 5,
+  "apis": 14
  },
  "items": [
   {
@@ -29,7 +29,7 @@
     "slug": "claude-opus-55-comprehensive-analysis-matome",
     "title": "Claude Opus 5.5まとめ：性能・コスト・安全性を5本の報告から整理",
     "publishedAt": "2026-09-24T22:51:54+00:00",
-    "quote": "API料金は入力100万トークンあたり4ドル、出力100万トークンあたり20ドルに設定され、前世代のOpus 5(入力5ドル/出力25ドル)から基本単価が20%引き下げられました。"
+    "quote": "API料金は入力100万トークンあたり4ドル、出力100万トークンあたり20ドルに設定され"
    },
    "verdictSource": "claude-opus-5-5-gpt-6-sol-luna-release",
    "confirmedIn": 2,
@@ -61,6 +61,31 @@
    "legacy": false
   },
   {
+   "id": "api-gemini3-8flash",
+   "kind": "api",
+   "vendor": "Google",
+   "companySlug": "google",
+   "product": "Gemini 3.8 Flash",
+   "plan": null,
+   "currency": "USD",
+   "monthly": null,
+   "input": 0.75,
+   "output": 3.75,
+   "cachedInput": null,
+   "japan": "unknown",
+   "status": null,
+   "free": null,
+   "source": {
+    "slug": "affinity-for-ipad-canva-release",
+    "title": "Affinity for iPadとは？無料で使える？機能と注意点",
+    "publishedAt": "2026-11-02T22:32:17+00:00",
+    "quote": "| Gemini 3.8 Flash | $0.75 | $3.75 | 約120円/約590円 |"
+   },
+   "verdictSource": null,
+   "confirmedIn": 1,
+   "legacy": false
+  },
+  {
    "id": "api-gemini4argon",
    "kind": "api",
    "vendor": "Google",
@@ -69,20 +94,20 @@
    "plan": null,
    "currency": "USD",
    "monthly": null,
-   "input": null,
+   "input": 2,
    "output": 10,
    "cachedInput": null,
    "japan": "ok",
    "status": "available",
    "free": false,
    "source": {
-    "slug": "google-gemini-4-argon-review-alignment-issues",
-    "title": "Gemini 4 Argon検証：会話力向上とアライメント課題",
-    "publishedAt": "2026-10-19T08:49:21+00:00",
-    "quote": "| API出力価格(導入価格) | $10 / 100万トークン | 業界他社フラッグシップモデル | 動画内公表値 |"
+    "slug": "affinity-for-ipad-canva-release",
+    "title": "Affinity for iPadとは？無料で使える？機能と注意点",
+    "publishedAt": "2026-11-02T22:32:17+00:00",
+    "quote": "| Gemini 4 Argon | $2 | $10 | 約320円/約1,580円 |"
    },
-   "verdictSource": null,
-   "confirmedIn": 1,
+   "verdictSource": "google-gemini-4-argon-review-alignment-issues",
+   "confirmedIn": 2,
    "legacy": false
   },
   {
@@ -254,7 +279,7 @@
     "slug": "claude-opus-55-comprehensive-analysis-matome",
     "title": "Claude Opus 5.5まとめ：性能・コスト・安全性を5本の報告から整理",
     "publishedAt": "2026-09-24T22:51:54+00:00",
-    "quote": "API料金は入力100万トークンあたり4ドル、出力100万トークンあたり20ドルに設定され、前世代のOpus 5(入力5ドル/出力25ドル)から基本単価が20%引き下げられました。"
+    "quote": "前世代のOpus 5(入力5ドル/出力25ドル)から基本単価が20%引き下げられました。"
    },
    "verdictSource": null,
    "confirmedIn": 2,
@@ -380,6 +405,56 @@
     "title": "GitHub EnterpriseにCopilotが標準内包｜料金と提供状況",
     "publishedAt": "2026-10-28T15:50:00+00:00",
     "quote": "- Copilot Standaloneの価格:月額10ドル(1ユーザーあたり)"
+   },
+   "verdictSource": null,
+   "confirmedIn": 1,
+   "legacy": false
+  },
+  {
+   "id": "plan-microsoft365copilotbusiness",
+   "kind": "plan",
+   "vendor": "Microsoft",
+   "companySlug": "microsoft",
+   "product": "Microsoft 365 Copilot Business",
+   "plan": "月払い",
+   "currency": "JPY",
+   "monthly": 3778,
+   "input": null,
+   "output": null,
+   "cachedInput": null,
+   "japan": "unknown",
+   "status": null,
+   "free": null,
+   "source": {
+    "slug": "copilot-cowork-build-lessons-rust",
+    "title": "Copilot Cowork開発とは？AIにコードを書かせる6つの教訓",
+    "publishedAt": "2026-11-02T15:13:56+00:00",
+    "quote": "| Microsoft 365 Copilot Business | 2,698円/人・月から(年払い・税別・通常3,148円) / 3,778円/人・月(月払い・税別) | 約4,160円(税込みの目安) | 利用中の Microsoft 365 プランにアドオン |"
+   },
+   "verdictSource": null,
+   "confirmedIn": 1,
+   "legacy": false
+  },
+  {
+   "id": "plan-microsoft365copilot",
+   "kind": "plan",
+   "vendor": "Microsoft",
+   "companySlug": "microsoft",
+   "product": "Microsoft 365 Copilot(大企業向け)",
+   "plan": "月払い",
+   "currency": "JPY",
+   "monthly": 4722,
+   "input": null,
+   "output": null,
+   "cachedInput": null,
+   "japan": "unknown",
+   "status": null,
+   "free": null,
+   "source": {
+    "slug": "copilot-cowork-build-lessons-rust",
+    "title": "Copilot Cowork開発とは？AIにコードを書かせる6つの教訓",
+    "publishedAt": "2026-11-02T15:13:56+00:00",
+    "quote": "| Microsoft 365 Copilot(大企業向け) | 4,497円/人・月(年払い・税別) / 4,722円/人・月(月払い・税別) | 約5,190円(税込みの目安) | — |"
    },
    "verdictSource": null,
    "confirmedIn": 1,

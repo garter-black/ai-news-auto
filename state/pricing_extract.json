@@ -1,7 +1,40 @@
 {
+ "affinity-for-ipad-canva-release": {
+  "at": "2026-11-03T01:14:59+00:00",
+  "hash": "cf6a354548a2521e",
+  "model": "gemini-3.5-flash-lite",
+  "rows": [
+   {
+    "cachedInputPerM": null,
+    "currency": "USD",
+    "inputPerM": 2,
+    "kind": "api",
+    "monthlyPrice": null,
+    "ok": true,
+    "outputPerM": 10,
+    "plan": null,
+    "product": "Gemini 4 Argon",
+    "quote": "| Gemini 4 Argon | $2 | $10 | 約320円／約1,580円 |",
+    "vendor": "Google"
+   },
+   {
+    "cachedInputPerM": null,
+    "currency": "USD",
+    "inputPerM": 0.75,
+    "kind": "api",
+    "monthlyPrice": null,
+    "ok": true,
+    "outputPerM": 3.75,
+    "plan": null,
+    "product": "Gemini 3.8 Flash",
+    "quote": "| Gemini 3.8 Flash | $0.75 | $3.75 | 約120円／約590円 |",
+    "vendor": "Google"
+   }
+  ]
+ },
  "amazon-bedrock-managed-kb-agentic-retrieval-cdk": {
-  "at": "2026-10-28T22:51:07+00:00",
-  "hash": "defe37d057e89424",
+  "at": "2026-11-03T01:15:06+00:00",
+  "hash": "e8deb66b45581efb",
   "model": "gemini-3.5-flash-lite",
   "rows": []
  },
@@ -55,9 +88,15 @@
   "model": "gemini-3.5-flash-lite",
   "rows": []
  },
+ "chatgpt-pro-monthly-api-credits": {
+  "at": "2026-11-03T01:14:59+00:00",
+  "hash": "db3408ef30d67617",
+  "model": "gemini-3.5-flash-lite",
+  "rows": []
+ },
  "chatgpt-work-for-sales-comprehensive-summary-matome": {
-  "at": "2026-10-27T10:58:07+00:00",
-  "hash": "4c833bcc4469b5e1",
+  "at": "2026-11-03T01:15:08+00:00",
+  "hash": "98a518c53011e015",
   "model": "gemini-3.5-flash-lite",
   "rows": [
    {
@@ -201,8 +240,8 @@
   ]
  },
  "claude-opus-55-comprehensive-analysis-matome": {
-  "at": "2026-10-27T10:58:05+00:00",
-  "hash": "71fe0074a28bb09e",
+  "at": "2026-11-03T01:15:07+00:00",
+  "hash": "d5b1a322b98faf9a",
   "model": "gemini-3.5-flash-lite",
   "rows": [
    {
@@ -215,7 +254,7 @@
     "outputPerM": 20.0,
     "plan": null,
     "product": "Claude Opus 5.5",
-    "quote": "API料金は入力100万トークンあたり4ドル、出力100万トークンあたり20ドルに設定され、前世代のOpus 5（入力5ドル／出力25ドル）から基本単価が20%引き下げられました。",
+    "quote": "API料金は入力100万トークンあたり4ドル、出力100万トークンあたり20ドルに設定され",
     "vendor": "Anthropic"
    },
    {
@@ -228,7 +267,7 @@
     "outputPerM": 25.0,
     "plan": null,
     "product": "Opus 5",
-    "quote": "API料金は入力100万トークンあたり4ドル、出力100万トークンあたり20ドルに設定され、前世代のOpus 5（入力5ドル／出力25ドル）から基本単価が20%引き下げられました。",
+    "quote": "前世代のOpus 5（入力5ドル／出力25ドル）から基本単価が20%引き下げられました。",
     "vendor": "Anthropic"
    },
    {
@@ -245,6 +284,12 @@
     "vendor": "OpenAI"
    }
   ]
+ },
+ "claude-ultra-plan-price-limits": {
+  "at": "2026-11-03T01:15:03+00:00",
+  "hash": "3dfa9a04156492b3",
+  "model": "gemini-3.5-flash-lite",
+  "rows": []
  },
  "coderabbit-secure-gpt-6-1-sol-security": {
   "at": "2026-10-27T22:36:29+00:00",
@@ -263,6 +308,66 @@
     "quote": "GPT-6.1 Terraは、API料金が入力1ドル・出力5ドルで、Solの半額とされています。",
     "reason": "編集部注の段落",
     "vendor": "OpenAI"
+   }
+  ]
+ },
+ "copilot-cowork-build-lessons-rust": {
+  "at": "2026-11-03T01:15:02+00:00",
+  "hash": "f23971670fecff44",
+  "model": "gemini-3.5-flash-lite",
+  "rows": [
+   {
+    "currency": "JPY",
+    "kind": "plan",
+    "monthlyPrice": 2130,
+    "ok": false,
+    "plan": "月払い",
+    "product": "Microsoft 365 Personal",
+    "quote": "| Microsoft 365 Personal | 2,130円/月（月払い） / 21,300円/年（年払い） | — | 1 ユーザー用、無料版よりも高い使用上限での、高度な Copilot、Copilot での AI イメージ作成を無料プランよりも高い使用量で使用可能 |",
+    "reason": "AIの製品名ではない",
+    "vendor": "Microsoft"
+   },
+   {
+    "currency": "JPY",
+    "kind": "plan",
+    "monthlyPrice": 2740,
+    "ok": false,
+    "plan": "月払い",
+    "product": "Microsoft 365 Family",
+    "quote": "| Microsoft 365 Family | 2,740円/月（月払い） / 27,400円/年（年払い） | — | 1 - 6 ユーザー (AI はサブスクリプション所有者のみが使用可能) |",
+    "reason": "AIの製品名ではない",
+    "vendor": "Microsoft"
+   },
+   {
+    "currency": "JPY",
+    "kind": "plan",
+    "monthlyPrice": 3200,
+    "ok": false,
+    "plan": "月払い",
+    "product": "Microsoft 365 Premium",
+    "quote": "| Microsoft 365 Premium | 3,200円/月（月払い） / 32,000円/年（年払い） | — | 非常に高い利用上限での高度な Copilot |",
+    "reason": "AIの製品名ではない",
+    "vendor": "Microsoft"
+   },
+   {
+    "currency": "JPY",
+    "kind": "plan",
+    "monthlyPrice": 3778,
+    "ok": true,
+    "plan": "月払い",
+    "product": "Microsoft 365 Copilot Business",
+    "quote": "| Microsoft 365 Copilot Business | 2,698円/人・月から（年払い・税別・通常3,148円） / 3,778円/人・月（月払い・税別） | 約4,160円（税込みの目安） | 利用中の Microsoft 365 プランにアドオン |",
+    "vendor": "Microsoft"
+   },
+   {
+    "currency": "JPY",
+    "kind": "plan",
+    "monthlyPrice": 4722,
+    "ok": true,
+    "plan": "月払い",
+    "product": "Microsoft 365 Copilot（大企業向け）",
+    "quote": "| Microsoft 365 Copilot（大企業向け） | 4,497円/人・月（年払い・税別） / 4,722円/人・月（月払い・税別） | 約5,190円（税込みの目安） | — |",
+    "vendor": "Microsoft"
    }
   ]
  },
@@ -481,6 +586,24 @@
     "plan": null,
     "product": "Nano Banana 2.1",
     "quote": "| Image Output | $0.0336 | 動画内UI表示 |",
+    "reason": "AIの製品名ではない",
+    "vendor": "Google"
+   }
+  ]
+ },
+ "google-cloud-ai-october-2026-recap": {
+  "at": "2026-11-03T01:15:00+00:00",
+  "hash": "a33fe8480b2fee95",
+  "model": "gemini-3.5-flash-lite",
+  "rows": [
+   {
+    "currency": "JPY",
+    "kind": "plan",
+    "monthlyPrice": 2900,
+    "ok": false,
+    "plan": "Pro",
+    "product": "Google AI",
+    "quote": "- Gemini 4 Argonは、個人向けのGoogle AI Pro（月2,900円）で使えます（サイソクのGeminiガイド、10/30確認）。",
     "reason": "AIの製品名ではない",
     "vendor": "Google"
    }
@@ -897,8 +1020,8 @@
   ]
  },
  "openai-chatgpt-voice-gpt56-integration-matome": {
-  "at": "2026-10-27T10:58:08+00:00",
-  "hash": "8d7dc6aa893d54b7",
+  "at": "2026-11-03T01:15:10+00:00",
+  "hash": "ce0dec07657fba89",
   "model": "gemini-3.5-flash-lite",
   "rows": [
    {
@@ -911,7 +1034,7 @@
     "outputPerM": null,
     "plan": "Plus",
     "product": "ChatGPT",
-    "quote": "- 記事4の「ChatGPT Voice」デスクトップ版は、月額20ドルのPlusプランからEnterpriseまで、追加課金なしで提供されています。",
+    "quote": "- [「OpenAI、音声でPC操作と複数エ…」](/articles/openai-chatgpt-voice-desktop-gpt-live)の「ChatGPT Voice」デスクトップ版は、月額20ドルのPlusプランからEnterpriseまで、追加課金なしで提供されています。",
     "vendor": "OpenAI"
    },
    {
@@ -924,7 +1047,7 @@
     "outputPerM": 12,
     "plan": null,
     "product": "GPT-5.6 Sol",
-    "quote": "- しかし、記事2の「Build Hour」では、GPT-5.6 Solの高度な推論モード（maxやultra）はトークン消費が多いため、コンソールから明示的に有効化する必要があるとされ、API料金（入力$3.00/出力$12.00）がかかります。",
+    "quote": "- しかし、[「OpenAIが示す「GPT-5.6」…」](/articles/openai-build-hour-gpt56-valuemaxxing)の「Build Hour」では、GPT-5.6 Solの高度な推論モード（maxやultra）はトークン消費が多いため、コンソールから明示的に有効化する必要があるとされ、API料金（入力$3.00/出力$12.00）がかかります。",
     "reason": "100万トークンあたりと書かれていない",
     "vendor": "OpenAI"
    }
@@ -1450,6 +1573,97 @@
    }
   ]
  },
+ "vercel-longcat-2-5-ai-gateway": {
+  "at": "2026-11-03T01:15:05+00:00",
+  "hash": "de94d5d4f2338a91",
+  "model": "gemini-3.5-flash-lite",
+  "rows": [
+   {
+    "cachedInputPerM": null,
+    "currency": "USD",
+    "inputPerM": null,
+    "kind": "plan",
+    "monthlyPrice": 0,
+    "ok": false,
+    "outputPerM": null,
+    "plan": "Free",
+    "product": "LongCat 2.5",
+    "quote": "| Free | $0/月 | — | 制限された使用量（5 時間ごと・毎週） |",
+    "reason": "AIの製品名ではない",
+    "vendor": "LongCat"
+   },
+   {
+    "cachedInputPerM": null,
+    "currency": "USD",
+    "inputPerM": null,
+    "kind": "plan",
+    "monthlyPrice": 20,
+    "ok": false,
+    "outputPerM": null,
+    "plan": "Pro",
+    "product": "LongCat 2.5",
+    "quote": "| Pro | $17/月（年払い・一括$200） / $20/月（月払い） | 約3,470円（税込みの目安） | Free より多い使用量（5 時間ごと・毎週） |",
+    "reason": "AIの製品名ではない",
+    "vendor": "LongCat"
+   },
+   {
+    "cachedInputPerM": null,
+    "currency": "USD",
+    "inputPerM": null,
+    "kind": "plan",
+    "monthlyPrice": 100,
+    "ok": false,
+    "outputPerM": null,
+    "plan": "Max",
+    "product": "LongCat 2.5",
+    "quote": "| Max | $100/月（月払い） | 約17,370円（税込みの目安） | Pro の 5 倍の使用量（5 時間ごと・毎週）、Claude Platform での開発に利用できる月額 $100 分の API クレジット |",
+    "reason": "AIの製品名ではない",
+    "vendor": "LongCat"
+   },
+   {
+    "cachedInputPerM": null,
+    "currency": "USD",
+    "inputPerM": null,
+    "kind": "plan",
+    "monthlyPrice": 200,
+    "ok": false,
+    "outputPerM": null,
+    "plan": "Ultra",
+    "product": "LongCat 2.5",
+    "quote": "| Ultra | $200/月（月払い） | 約34,740円（税込みの目安） | 5 時間制限なし、Pro の 10 倍の使用量（毎週）、月額 $200 分の API クレジット（Max の $100 からアップグレード） |",
+    "reason": "AIの製品名ではない",
+    "vendor": "LongCat"
+   },
+   {
+    "cachedInputPerM": null,
+    "currency": "USD",
+    "inputPerM": null,
+    "kind": "plan",
+    "monthlyPrice": 25,
+    "ok": false,
+    "outputPerM": null,
+    "plan": "Team（スタンダードシート）",
+    "product": "LongCat 2.5",
+    "quote": "| Team（スタンダードシート） | $20/人・月（年払い） / $25/人・月（月払い） | 約4,340円（税込みの目安） | すべてのClaude 機能、さらにProより多い使用量 |",
+    "reason": "AIの製品名ではない",
+    "vendor": "LongCat"
+   },
+   {
+    "cachedInputPerM": null,
+    "currency": "USD",
+    "inputPerM": null,
+    "kind": "plan",
+    "monthlyPrice": 125,
+    "ok": false,
+    "outputPerM": null,
+    "plan": "Team（プレミアムシート）",
+    "product": "LongCat 2.5",
+    "quote": "| Team（プレミアムシート） | $100/人・月（年払い） / $125/人・月（月払い） | 約21,710円（税込みの目安） | スタンダードシートの5倍の使用量 |",
+    "reason": "AIの製品名ではない",
+    "vendor": "LongCat"
+   }
+  ]
+ },
  "what-is-ai-slop-exhibition-sf": {
   "at": "2026-10-27T10:54:09+00:00",
   "hash": "b7b15faff6cf719b",
@@ -1496,6 +1710,12 @@
  "xiaomi-mimo-v2-6-rl-training-breakdown": {
   "at": "2026-10-27T10:48:59+00:00",
   "hash": "29e14383de87170e",
+  "model": "gemini-3.5-flash-lite",
+  "rows": []
+ },
+ "xreal-aura-android-xr-glasses": {
+  "at": "2026-11-03T01:15:05+00:00",
+  "hash": "8ebc9c2e1a7438e7",
   "model": "gemini-3.5-flash-lite",
   "rows": []
  }
