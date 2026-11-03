@@ -672,6 +672,9 @@
     "nvidia-ai-cluster-runtime-dynamo": {
       "liveAt": "2026-11-02T03:34:05+00:00"
     },
+    "nvidia-ai-semiconductor-fab-cases": {
+      "liveAt": "2026-11-03T16:19:04+00:00"
+    },
     "nvidia-aicr-vera-rubin-kubernetes": {
       "liveAt": "2026-11-02T19:42:22+00:00"
     },
