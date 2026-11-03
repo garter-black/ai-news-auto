@@ -19,6 +19,10 @@ on:
         description: "Claude API の段（core = Sonnet 中心 / helper = Haiku）"
         required: false
         default: "core"
+      core_cap:
+        description: "この回だけの core の1日の呼び出し上限（空なら既定の60。全記事を一度に直すときだけ上げる）"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -54,6 +58,7 @@ jobs:
           # 余った予算で Opus に上げない（見出しには Sonnet で十分）
           CLAUDE_API_UPGRADES: "0"
           CLAUDE_API_LEDGER: titles
+          CLAUDE_API_DAILY_CALLS_CORE: ${{ inputs.core_cap || '60' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
