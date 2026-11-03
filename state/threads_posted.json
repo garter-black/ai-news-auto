@@ -3633,7 +3633,8 @@
         "twitter": "6aea4c5246499f925e7c3280",
         "facebook": "6aea4c551ee1ad0996cd39a0"
       },
-      "videoVariant": "short"
+      "videoVariant": "short",
+      "blueskyFailed": "Bluesky の動画の処理に失敗しました: {'did': '', 'error': 'unconfirmed_email', 'jobId': '', 'state': ''}"
     }
   },
   "extraPending": {}
