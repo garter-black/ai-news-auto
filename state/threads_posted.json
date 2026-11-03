@@ -3327,6 +3327,25 @@
         }
       },
       "id": "6ae940f20d3397810d083d26"
+    },
+    "artex-agentic-offensive-frameworks": {
+      "id": "6ae941a5186a5afbce7ae1bd",
+      "via": "buffer",
+      "permalink": "",
+      "channels": {
+        "twitter": "6ae941a56f053cdb90b8819e",
+        "facebook": "6ae941a55d11dd638e9c1c98"
+      },
+      "hook": "caution",
+      "score": 6,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "Google",
+      "question": true,
+      "questionText": "あなたの会社では、自律型攻撃への備えは進んでいますか？",
+      "dueAt": "2026-11-03T09:30:00+00:00",
+      "postedAt": "2026-11-03T02:06:29+00:00"
     }
   },
   "extraPending": {}
