@@ -108,17 +108,17 @@
     {
       "url": "https://chatgpt.com/ja-JP/pricing/",
       "title": "プランと料金 | ChatGPT",
-      "checkedAt": "2026-11-01T06:53:00+09:00"
+      "checkedAt": "2026-11-03T16:15:21+09:00"
     },
     {
       "url": "https://help.openai.com/ja-jp/articles/6783457-what-is-chatgpt",
       "title": "ChatGPT とは？ | OpenAI Help Center",
-      "checkedAt": "2026-11-01T06:53:00+09:00"
+      "checkedAt": "2026-11-03T16:15:21+09:00"
     },
     {
       "url": "https://openai.com/ja-JP/chatgpt/overview/",
       "title": "概要 | ChatGPT",
-      "checkedAt": "2026-11-01T06:53:00+09:00"
+      "checkedAt": "2026-11-03T16:15:21+09:00"
     }
   ],
   "sourceHash": "f6304a28fe46aa06",
@@ -130,5 +130,5 @@
   "promptVersion": 1,
   "createdAt": "2026-11-01T06:53:00+09:00",
   "updatedAt": "2026-11-01T06:53:00+09:00",
-  "checkedAt": "2026-11-01T06:53:00+09:00"
+  "checkedAt": "2026-11-03T16:15:21+09:00"
 }
