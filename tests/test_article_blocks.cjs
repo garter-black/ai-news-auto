@@ -17,7 +17,7 @@ function load(rel) {
   m._compile(compiled, file);
   return m.exports;
 }
-const { dropSummarySections, displayHeading, isNonanswerTitle } = load("lib/article-sections.ts");
+const { dropSummarySections, displayHeading, isNonanswerTitle, cleanSections } = load("lib/article-sections.ts");
 const { concreteWorkMoney, workMoneyHeading, WORK_MONEY_HEADING } = load("lib/work-money.ts");
 const page = fs.readFileSync(path.join(__dirname, "../app/articles/[slug]/page.tsx"), "utf8");
 
@@ -67,4 +67,11 @@ test("答えになっていない見出し（「〜は不明」）は普通の�
 test("トップの一番上の記事は公式の発表から（報道をもとにした記事を主役にしない。台帳 W17）", () => {
   const home = fs.readFileSync(path.join(__dirname, "../app/page.tsx"), "utf8");
   assert.match(home, /!isNewsOutletChannel\(a\.channelSlug\)/);
+});
+
+test("答えになっていない小見出し（### 枠が新設かどうかは不明）は見出しの行だけ外し、事実の文は残す", () => {
+  const md = "## プランに含まれるクレジット\n\n### 枠が新設かどうかは不明\n\n料金ページには月200ドル分のクレジットとあります。\n";
+  const out = cleanSections(md).markdown;
+  assert.ok(!out.includes("枠が新設かどうかは不明"), out);
+  assert.match(out, /月200ドル分のクレジット/);
 });

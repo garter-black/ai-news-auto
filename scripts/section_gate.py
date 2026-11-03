@@ -378,6 +378,9 @@ def _clean_block(text: str) -> str:
     # ### 小見出しの下が空になったら小見出しごと消す
     result: list[str] = []
     for idx, line in enumerate(out):
+        # 「### 〜は不明」のような答えになっていない小見出しは、見出しの行だけ外す（下の事実の文は残す。台帳 A24）
+        if line.startswith("### ") and is_nonanswer_title(line[4:].strip()):
+            continue
         if line.startswith("### "):
             rest = out[idx + 1:]
             nxt = next((j for j, x in enumerate(rest) if x.startswith("### ")), len(rest))

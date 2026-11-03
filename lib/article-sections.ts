@@ -295,6 +295,8 @@ function cleanBlock(text: string): string {
   }
   const result: string[] = [];
   out.forEach((line, idx) => {
+    // 「### 〜は不明」のような答えになっていない小見出しは、見出しの行だけ外す（下の事実の文は残す。台帳 A24）
+    if (line.startsWith("### ") && isNonanswerTitle(line.slice(4).trim())) return;
     if (line.startsWith("### ")) {
       const rest = out.slice(idx + 1);
       let next = rest.findIndex((x) => x.startsWith("### "));
