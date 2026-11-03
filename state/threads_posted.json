@@ -3618,7 +3618,8 @@
         "fmt": "classic",
         "forceVariant": "short",
         "hold": true
-      }
+      },
+      "convertedAt": "2026-11-03T19:19:23+00:00"
     },
     "chatgpt-pro-monthly-api-credits": {
       "id": "6ae9e0a01e1aeba3c6bb1c77",
@@ -3668,22 +3669,105 @@
     "github-copilot-jetbrains-air": {
       "id": "",
       "via": "buffer",
-      "permalink": "",
-      "status": "skipped_no_video",
+      "status": "awaiting_video",
       "hook": "callout",
       "opener": "see",
       "slotTest": "ai",
       "genre": "ai",
       "score": 5,
       "style": "standalone",
-      "image": "card",
+      "image": "video",
       "format": "classic",
       "topic": "Copilot",
       "question": true,
       "questionText": "ふだんのコード作業、IDEとブラウザのどちらで進めることが多いですか？",
-      "dueAt": "2026-11-04T00:45:00+00:00",
+      "dueAt": "2026-11-04T12:15:00+09:00",
       "postedAt": "2026-11-03T17:20:06+00:00",
-      "why": "動画を作れなかった（gate_failed: full: v3: QA(目視): つかみ（選択の青）: 右画面に選択の青が見当たらない（文に青が付いていない）。・v3: QA(目視): 場面1（選択の青）: 選択文「You can now delegate…」に選択の青が付いておらず、文が吹き出しにも一部隠れている。 / short: v3: QA(目視): つか）"
+      "pausedIds": {},
+      "channels": {},
+      "pending": {
+        "inputs": {
+          "threads": {
+            "channelId": "6ad942f3778b240e2f82f180",
+            "text": "Copilotユーザーの皆さん、朗報です。\n\n要約すると、JetBrainsの「Air」でGitHub Copilotを選べるようになりました。\nクラウドでの実行も、手持ちのCopilotの契約で動きます。\n\nふだんのコード作業、IDEとブラウザのどちらで進めることが多いですか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/github-copilot-jetbrains-air?utm_source=threads&utm_medium=social&utm_campaign=classic",
+            "schedulingType": "automatic",
+            "assets": [],
+            "metadata": {
+              "threads": {
+                "topic": "Copilot",
+                "thread": [
+                  {
+                    "text": "Copilotユーザーの皆さん、朗報です。\n\n要約すると、JetBrainsの「Air」でGitHub Copilotを選べるようになりました。\nクラウドでの実行も、手持ちのCopilotの契約で動きます。\n\nふだんのコード作業、IDEとブラウザのどちらで進めることが多いですか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/github-copilot-jetbrains-air?utm_source=threads&utm_medium=social&utm_campaign=classic",
+                    "assets": [
+                      {
+                        "image": {
+                          "url": "https://ai-tech-express.jp/card/github-copilot-jetbrains-air"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "mode": "customScheduled",
+            "dueAt": "2026-11-04T12:15:00+09:00"
+          },
+          "twitter": {
+            "channelId": "6ade35f52f1f5ed648cb07cf",
+            "schedulingType": "automatic",
+            "text": "Copilotユーザーの皆さん、朗報です。\n\n要約すると、JetBrainsの「Air」でGitHub Copilotを選べるようになりました。\nクラウドでの実行も、手持ちのCopilotの契約で動きます。\n\nふだんのコード作業、IDEとブラウザのどちらで進めることが多いですか？\n\n#AI #Copilot",
+            "assets": [],
+            "metadata": {
+              "twitter": {
+                "thread": [
+                  {
+                    "text": "Copilotユーザーの皆さん、朗報です。\n\n要約すると、JetBrainsの「Air」でGitHub Copilotを選べるようになりました。\nクラウドでの実行も、手持ちのCopilotの契約で動きます。\n\nふだんのコード作業、IDEとブラウザのどちらで進めることが多いですか？\n\n#AI #Copilot",
+                    "assets": [
+                      {
+                        "image": {
+                          "url": "https://ai-tech-express.jp/card/github-copilot-jetbrains-air"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "text": "詳しくはこちら👇\n（専門用語なしの「かんたん版」もあります）\nhttps://ai-tech-express.jp/articles/github-copilot-jetbrains-air?utm_source=x&utm_medium=social&utm_campaign=classic",
+                    "assets": []
+                  }
+                ]
+              }
+            },
+            "mode": "customScheduled",
+            "dueAt": "2026-11-04T12:27:00+09:00",
+            "_offsetMin": 12
+          },
+          "facebook": {
+            "channelId": "6ade3ad12f1f5ed648cb6936",
+            "schedulingType": "automatic",
+            "text": "Copilotユーザーの皆さん、朗報です。\n\n要約すると、JetBrainsの「Air」でGitHub Copilotを選べるようになりました。\nクラウドでの実行も、手持ちのCopilotの契約で動きます。\n\nふだんのコード作業、IDEとブラウザのどちらで進めることが多いですか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/github-copilot-jetbrains-air?utm_source=facebook&utm_medium=social&utm_campaign=classic",
+            "assets": [],
+            "metadata": {
+              "facebook": {
+                "type": "post",
+                "linkAttachment": {
+                  "url": "https://ai-tech-express.jp/articles/github-copilot-jetbrains-air?utm_source=facebook&utm_medium=social&utm_campaign=classic",
+                  "title": "JetBrains AirのGitHub Copilotとは？使い方と注意点",
+                  "description": "JetBrains AirでGitHub Copilotが使えるようになりました。手元のIDEでもクラウドでも、既存のCopilot契約で動きます。クラウド実行の条件、隔離環境の仕組み、管理面の制約を整理します。",
+                  "thumbnail": {
+                    "url": "https://ai-tech-express.jp/card/github-copilot-jetbrains-air"
+                  }
+                }
+              }
+            },
+            "mode": "customScheduled",
+            "dueAt": "2026-11-04T12:42:00+09:00",
+            "_offsetMin": 27
+          }
+        },
+        "slot": "2026-11-04T12:15:00+09:00",
+        "fmt": "classic"
+      },
+      "convertedAt": "2026-11-03T19:23:33+00:00"
     }
   },
   "extraPending": {}

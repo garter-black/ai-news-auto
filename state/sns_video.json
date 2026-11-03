@@ -824,7 +824,7 @@
     "github-copilot-jetbrains-air": {
       "status": "waiting",
       "why": "動画を作っている途中・順番待ち",
-      "checkedAt": "2026-11-03T19:21:19+00:00"
+      "checkedAt": "2026-11-03T19:23:37+00:00"
     }
   },
   "converted": {
@@ -976,7 +976,7 @@
       "applied": true
     },
     "github-copilot-jetbrains-air": {
-      "at": "2026-11-03T19:21:15+00:00",
+      "at": "2026-11-03T19:23:33+00:00",
       "pending": {
         "inputs": {
           "threads": {
@@ -1002,7 +1002,7 @@
               }
             },
             "mode": "customScheduled",
-            "dueAt": "2026-11-04T00:45:00Z"
+            "dueAt": "2026-11-04T12:15:00+09:00"
           },
           "twitter": {
             "channelId": "6ade35f52f1f5ed648cb07cf",
@@ -1030,7 +1030,7 @@
               }
             },
             "mode": "customScheduled",
-            "dueAt": "2026-11-04T00:57:00Z",
+            "dueAt": "2026-11-04T12:27:00+09:00",
             "_offsetMin": 12
           },
           "facebook": {
@@ -1052,11 +1052,11 @@
               }
             },
             "mode": "customScheduled",
-            "dueAt": "2026-11-04T01:12:00Z",
+            "dueAt": "2026-11-04T12:42:00+09:00",
             "_offsetMin": 27
           }
         },
-        "slot": "2026-11-04T00:45:00+00:00",
+        "slot": "2026-11-04T12:15:00+09:00",
         "fmt": "classic"
       },
       "threadsSent": false,
