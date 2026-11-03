@@ -1,13 +1,15 @@
 name: SNS video follow-up (flagged, default off)
 
-# SNS（Threads）に投稿した記事の解説動画（v3）を作り、あとから「動画で解説」の投稿として出す。記事ページにもサイト用を載せる。
+# SNS（Threads）に出す記事の解説動画（v3）を作り、Buffer に予約中の投稿の写真を動画に差し替える（1記事1投稿。2026-11-03 オーナー決定）。
+# 間に合わなければ写真のまま出て、動画は記事ページだけ（同じ記事の2本目の投稿は出さない）。記事ページにもサイト用を載せる。
 # 2026-11-03 オーナー決定「SNS に投稿した記事は全部」「同じ台本からサイト用（全部）と SNS 用（短い版）」「1週間、投稿ごとに短い版と全部の版を交互（A/B）」。
 # **既定では何もしない。** Actions の Variables で順に有効にする（docs/sns-video-v3-20261102.md「自動化の計画」）:
 #   SNS_VIDEO_FOLLOWUP=on  … 定期実行で動画を作る（ゲートまで。投稿しない）
 #   SNS_VIDEO_UPLOAD=on    … 合格した動画を Workers KV（saisoku-images）に置き、https://ai-tech-express.jp/video/<名前>.mp4 で配信（新しい鍵は不要。
 #                            配信は cloudflare/worker.ts の /video/。サイトのデプロイ後に有効）
 #   SNS_VIDEO_EMBED=on     … 記事 JSON に video を書く（次のデプロイで記事ページに動画が出る）
-#   SNS_VIDEO_POST=live    … Buffer で Threads に出す（オーナーの確認のあと）
+#   SNS_VIDEO_POST=live    … Buffer の予約中の Threads の投稿の写真を動画に差し替える（予約の時刻は変えない）
+#   SNS_VIDEO_BREAKING_FOLLOWUP=on … 速報の記事だけ、あとから動画の投稿を別に出す（既定 off・オーナーの判断待ち）
 #   SNS_VIDEO_AB_UNTIL=YYYY-MM-DD … この日まで投稿ごとに short / full を交互（記事のリンクに utm_content=short|full）
 # 手動実行（workflow_dispatch）は投稿しない（作る・置く・記事に載せるは Variables に従う）。
 on:
@@ -28,6 +30,12 @@ on:
       check_post:
         description: "（確認）この Buffer の投稿 ID の状態を読むだけ。空なら何もしない"
         default: ""
+      merge_draft_slug:
+        description: "（テスト）この記事の写真の下書きを1本作り、動画に差し替えて読み直す（下書きなので公開しない）。空なら何もしない"
+        default: ""
+      today_report:
+        description: "（確認）今日の Threads の投稿ごとに、動画が付いたか・理由を読むだけ（true）"
+        default: "false"
 
 permissions:
   contents: write  # state/sns_video.json と Claude API の使用量を main に残すため
@@ -82,7 +90,17 @@ jobs:
           SNS_VIDEO_AB_UNTIL: ${{ vars.SNS_VIDEO_AB_UNTIL }}
           SNS_VIDEO_AFTER_AB: ${{ vars.SNS_VIDEO_AFTER_AB || 'short' }}
           SNS_VIDEO_STORE: ${{ vars.SNS_VIDEO_STORE || 'kv' }}
+          SNS_VIDEO_BREAKING_FOLLOWUP: ${{ vars.SNS_VIDEO_BREAKING_FOLLOWUP || 'off' }}
         run: |
+          if [ "${{ github.event.inputs.today_report }}" = "true" ]; then
+            python scripts/sns_video_followup.py --today
+            exit $?
+          fi
+          if [ -n "${{ github.event.inputs.merge_draft_slug }}" ]; then
+            # 差し替えのテストだけ（下書き。公開しない）。ほかは何もしない
+            python scripts/sns_video_followup.py --merge-draft-test "${{ github.event.inputs.merge_draft_slug }}" --yes
+            exit $?
+          fi
           if [ -n "${{ github.event.inputs.check_post }}" ]; then
             python scripts/sns_video_followup.py --check-post "${{ github.event.inputs.check_post }}"
             python scripts/sns_video_followup.py --ab-report || true

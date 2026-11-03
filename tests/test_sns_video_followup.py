@@ -123,9 +123,16 @@ class PostTimingTest(unittest.TestCase):
     def test_published_at_uses_due(self):
         self.assertEqual(fu.published_at({"postedAt": "2026-11-02T10:00:00+00:00", "dueAt": "2026-11-02T12:00:00+00:00"}).hour, 12)
 
-    def test_future_due_is_not_candidate(self):
-        p = {"posted": {"a": {"postedAt": (NOW - timedelta(hours=1)).isoformat(), "dueAt": (NOW + timedelta(hours=2)).isoformat()}}}
-        self.assertEqual(fu.candidates(p, {"videos": {}}, NOW, 12, load_article=lambda s: {}, eligible=lambda a: True, score=lambda a: 1), [])
+    def test_scheduled_posts_come_first_nearest_due(self):
+        """予約中（まだ出ていない）で差し替えに間に合う投稿を、予約の時刻が近い順に先に作る。出たあとの記事はそのあと"""
+        def sched(minutes, **extra):
+            return {"id": "b", "format": "classic", "postedAt": (NOW - timedelta(hours=1)).isoformat(), "dueAt": (NOW + timedelta(minutes=minutes)).isoformat(), **extra}
+        p = {"posted": {
+            "late": sched(300), "soon": sched(60), "tooclose": sched(10), "brk": sched(90, breaking=True), "hook": sched(90, format="hook_thread"),
+            "pub": {"id": "b", "postedAt": (NOW - timedelta(hours=1)).isoformat()},
+        }}  # fmt: skip
+        got = fu.candidates(p, {"videos": {}}, NOW, 12, load_article=lambda s: {}, eligible=lambda a: True, score=lambda a: 1)
+        self.assertEqual(got, ["soon", "late", "pub"])
 
     def test_quiet_hours_and_gap(self):
         night = datetime(2026, 11, 2, 18, 0, tzinfo=timezone.utc)  # 日本時間 3:00
@@ -261,3 +268,103 @@ class ShortScriptTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MergeTest(unittest.TestCase):
+    """1記事1投稿: 予約中の投稿の写真を動画に差し替える（2本目は出さない）"""
+
+    F = {"ab_until": "2026-11-10", "after_ab": "short", "post": True, "breaking_followup": False}
+    TEXT = "書き出し。\n\n要約すると、こうです。\n\nあなたはどう使う？\n\n詳しくはこちら👇\nhttps://ai-tech-express.jp/articles/x?utm_source=threads&utm_medium=social&utm_campaign=classic"
+
+    def ready(self):
+        post = dict(REPORT, url="https://ai-tech-express.jp/articles/x")
+        return {"status": "ready", "versions": {k: {"ok": True, "post": post} for k in ("short", "full")}, "urls": {k: f"https://ai-tech-express.jp/video/x-{k}.mp4" for k in ("short", "full")}}
+
+    def posted_rec(self, minutes, **extra):
+        return {"id": f"p{minutes}", "format": "classic", "dueAt": (NOW + timedelta(minutes=minutes)).isoformat(), **extra}
+
+    def test_merged_text_swaps_link_and_adds_line(self):
+        text, notes = fu.merged_text(self.TEXT, REPORT, "full")
+        self.assertIn("utm_campaign=sns_video&utm_content=full", text)
+        self.assertNotIn("utm_campaign=classic", text)
+        self.assertIn("35秒の動画で解説", text)
+        self.assertLess(text.index("35秒の動画で解説"), text.index("詳しくはこちら"))
+        self.assertTrue(text.endswith("音声：VOICEVOX:九州そら"))
+        self.assertTrue(text.startswith("書き出し。\n\n要約すると、こうです。\n\nあなたはどう使う？"))  # 中身は変えない
+        self.assertEqual(notes, {"link": "video", "line": True, "credit": True})
+
+    def test_merged_text_respects_limit(self):
+        long = "あ" * 330 + self.TEXT  # 元の本文は上限の内側（約460字）
+        text, notes = fu.merged_text(long, REPORT, "short")
+        self.assertLessEqual(len(text), fu.MAX_CHARS)
+        self.assertFalse(notes["line"])
+
+    def test_attach_scheduled_and_alternate(self):
+        state = {"videos": {"a": self.ready(), "b": self.ready()}}
+        posted = {"posted": {"a": self.posted_rec(60), "b": self.posted_rec(200)}}
+        calls = []
+        def editor(post_id, report, variant, url, now):
+            calls.append((post_id, variant, url))
+            return {"status": "attached", "body": "x"}
+        out = fu.attach_ready(state, posted, NOW, self.F, editor)
+        self.assertEqual([c[:2] for c in calls], [("p60", "short"), ("p200", "full")])  # 予約の近い順・同じ日の中で交互
+        self.assertEqual([r["status"] for r in out], ["attached", "attached"])
+        self.assertEqual(state["videos"]["a"]["bufferId"], "p60")  # A/B の数字は文面の投稿の ID で読む
+
+    def test_no_second_post_when_too_late_or_breaking(self):
+        state = {"videos": {"late": self.ready(), "brk": self.ready(), "gone": self.ready()}}
+        posted = {"posted": {"late": self.posted_rec(5), "brk": self.posted_rec(-30, breaking=True), "gone": self.posted_rec(-120)}}
+        out = fu.attach_ready(state, posted, NOW, self.F, lambda *a: self.fail("差し替えてはいけない"))
+        self.assertEqual({r["slug"]: r["status"] for r in out}, {"late": "article_only", "brk": "article_only", "gone": "article_only"})
+        # 2本目の投稿（post_one）は速報の後追いのフラグが無ければ呼ばない
+        rows = fu.run(now=NOW, env={"SNS_VIDEO_FOLLOWUP": "on", "SNS_VIDEO_POST": "live"}, make_versions=lambda *a: self.fail("作らない"), select=lambda *a: [], poster=lambda *a: self.fail("2本目を出してはいけない"), editor=lambda *a: self.fail("差し替えない"))
+        self.assertIsInstance(rows, list)
+
+    def test_not_live_does_not_edit(self):
+        state = {"videos": {"a": self.ready()}}
+        out = fu.attach_ready(state, {"posted": {"a": self.posted_rec(60)}}, NOW, dict(self.F, post=False), lambda *a: self.fail("差し替えない"))
+        self.assertEqual(out, [])
+        self.assertEqual(state["videos"]["a"]["status"], "ready")
+
+    def test_breaking_followup_only_breaking(self):
+        state = {"videos": {"n": dict(self.ready(), textAt=(NOW - timedelta(hours=1)).isoformat()), "b": dict(self.ready(), textAt=(NOW - timedelta(hours=1)).isoformat(), breaking=True)}}
+        out = fu.post_one(state, NOW, self.F, lambda *a: {"status": "posted", "postedAt": NOW.isoformat()}, only_breaking=True)
+        self.assertEqual(out["slug"], "b")
+
+    def test_edit_scheduled_keeps_time_and_checks_video(self):
+        due = (NOW + timedelta(hours=2)).isoformat()
+        store = {"status": "scheduled", "dueAt": due, "text": self.TEXT, "metadata": {"topic": "AI", "threadCount": 1, "thread": [{"text": self.TEXT, "assets": [{"mimeType": "image/png"}]}]}}
+        sent = []
+        import threads_post
+        orig = threads_post.buffer_graphql
+        def fake(key, query, variables=None):
+            if "editPost" in query:
+                inp = variables["input"]
+                sent.append(inp)
+                if "mode" not in inp:
+                    store["text"] = inp["text"]
+                    store["metadata"]["thread"] = [{"text": inp["text"], "assets": [{"mimeType": "video/mp4"}]}]
+                return {"editPost": {"__typename": "PostActionSuccess", "post": {"id": "p"}}}
+            return {"post": dict(store)}
+        threads_post.buffer_graphql = fake
+        try:
+            res = fu.edit_scheduled("p", REPORT, "short", "https://ai-tech-express.jp/video/x.mp4", NOW, api_key="k")
+        finally:
+            threads_post.buffer_graphql = orig
+        self.assertEqual(res["status"], "attached")
+        self.assertEqual(len(sent), 1)
+        self.assertNotIn("mode", sent[0])  # 予約の時刻・方式は送らない（そのまま）
+        self.assertNotIn("dueAt", sent[0])
+        self.assertEqual(sent[0]["metadata"]["threads"]["topic"], "AI")
+        self.assertEqual(sent[0]["metadata"]["threads"]["thread"][0]["assets"], [{"video": {"url": "https://ai-tech-express.jp/video/x.mp4"}}])
+        self.assertEqual(sent[0]["text"], sent[0]["metadata"]["threads"]["thread"][0]["text"])
+
+    def test_edit_scheduled_skips_sent_or_close(self):
+        import threads_post
+        orig = threads_post.buffer_graphql
+        for store, want in (({"status": "sent"}, "article_only"), ({"status": "scheduled", "dueAt": (NOW + timedelta(minutes=3)).isoformat()}, "article_only")):
+            threads_post.buffer_graphql = lambda key, query, variables=None, store=store: {"post": store} if "editPost" not in query else self.fail("差し替えない")
+            try:
+                self.assertEqual(fu.edit_scheduled("p", REPORT, "short", "u", NOW, api_key="k")["status"], want)
+            finally:
+                threads_post.buffer_graphql = orig

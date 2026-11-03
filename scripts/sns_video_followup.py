@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
-"""SNS（Threads）に投稿した記事の解説動画を作り、あとから「動画で解説」の投稿として出す。記事ページにも動画を載せる。
+"""SNS（Threads）に出す記事の解説動画を作り、**予約済みの投稿の写真を動画に差し替える**（1記事1投稿）。記事ページにも動画を載せる。
+
+2026-11-03 オーナー決定（その2）: 「SNS投稿なのに動画じゃない投稿がある」「写真の投稿と動画の投稿が2本並ぶのは変」
+  - 1記事につき投稿は1本。通常の投稿は threads_post.py が最大8時間先まで Buffer に予約する。その時刻より前に
+    動画がゲートに合格したら、Buffer の editPost で**予約中の投稿の写真を動画に差し替える**（本文の記事のリンクを
+    utm_campaign=sns_video&utm_content=short|full に替え、入るなら「◯秒で解説」の行と音声のクレジットを足す。予約の時刻は変えない）。
+  - 間に合わなければ写真のまま出る。**同じ記事の2本目（動画だけの投稿）は出さない**（記事ページには動画を載せる）。
+  - 速報（すぐ出す文面の投稿）も2本目は出さない。後追いの動画投稿は SNS_VIDEO_BREAKING_FOLLOWUP=on のときだけ（既定 off・オーナー判断待ち）。
+  - 短い版／全部の版の A/B は、差し替えた投稿で続ける（同じ日の中で交互）。
+  - 作る順番: 予約の時刻が近い（まだ間に合う）投稿から。そのあと、出たあとの記事（記事ページ用）。
 
 2026-11-03 オーナー決定
   - SNS に投稿した記事は**全部**動画にする（今は Threads 1日約9枠）。それ以外の記事は収益が伸びてから。
@@ -22,7 +31,8 @@
   SNS_VIDEO_UPLOAD=on      合格した動画とポスター画像を Workers KV（saisoku-images）に置く → https://ai-tech-express.jp/video/<名前>
                            （cloudflare/video.ts が Range つきで配信。書き込みは images.kv_put と同じデプロイ用トークン。新しい鍵は不要）
   SNS_VIDEO_EMBED=on       記事 JSON に video（サイト用の URL・ポスター・秒数）を書く → 次のデプロイで記事ページに出る
-  SNS_VIDEO_POST=live      Buffer で Threads に出す。それ以外は投稿文を記録するだけ
+  SNS_VIDEO_POST=live      Buffer の予約中の投稿の写真を動画に差し替える。それ以外は差し替えない（記録だけ）
+  SNS_VIDEO_BREAKING_FOLLOWUP=on  速報の記事だけ、あとから動画の投稿を別に出す（既定 off。オーナーの判断待ち）
   SNS_VIDEO_DAILY_MAX=12   1日（日本時間）に作る本数の上限（SNS の投稿の数より多めに）
   SNS_VIDEO_PER_RUN=3      1回の実行で作る本数（1本 約5分）
   SNS_VIDEO_WINDOW_H=12    Threads に投稿してから何時間以内の記事を対象にするか
@@ -30,13 +40,13 @@
   SNS_VIDEO_STORE=kv       置き場所（kv＝既定 / r2。r2 は SNS_VIDEO_R2_BUCKET・SNS_VIDEO_PUBLIC_BASE と R2 の権限が要る）
 
 約束（scripts/sns_video.py の約束を引き継ぐ）
-  1. 文面の投稿は今までどおり先に出る（threads_post.py。このスクリプトは文面の投稿にさわらない）。
+  1. 文面の投稿は今までどおり threads_post.py が予約する。このスクリプトが触るのは、まだ出ていない予約の写真と本文のリンクだけ
+     （予約の時刻・問いかけ・本文の中身は変えない。返信つきの形 hook_thread は触らない）。
   2. 台本は Claude API（purpose=video。予算の範囲）→ Claude CLI → 無料モデル。どの経路でも事実の検査と編集長のレビューは同じに通す。
   3. 品質ゲートに落ちた・時間切れ・置けなかった → その版は出さない・再挑戦しない（記録は state/sns_video.json）。
-  4. Buffer は出た投稿への返信を作れないので、動画は**別の投稿**として出す（本文＋動画。本文の最後に記事のリンク）。
-  5. Buffer にはっきり断られても、受理されたか分からない失敗でも、二重投稿を避けるため再送しない。
-  6. 出す時刻: 文面の投稿が Threads に出て（dueAt）20分以上たってから。1回の実行で出すのは1本だけ、動画の投稿どうしは40分以上あける。
-     深夜（日本時間 1〜6時台）は出さず、朝の回に回す。作るのは先にやっておく（status=ready で待つ）。
+  4. 差し替えは予約の時刻の EDIT_LEAD_MIN 分前まで。差し替えたら Buffer から読み直し、予約の時刻と状態が変わっていないこと・
+     動画が付いたことを確かめる（時刻が動いていたら元の時刻に戻す）。断られたら写真のまま（再挑戦しない）。
+  5. 動画の投稿を別に出すのは速報の後追い（フラグ）だけ。そのときも再送しない。深夜（1〜6時台）は出さない。動画の投稿どうしは40分以上あける。
 """
 
 from __future__ import annotations
@@ -75,6 +85,7 @@ def flags(env: dict | None = None) -> dict:
         "upload": env.get("SNS_VIDEO_UPLOAD", "off") == "on",
         "embed": env.get("SNS_VIDEO_EMBED", "off") == "on",
         "post": env.get("SNS_VIDEO_POST", "off") == "live",
+        "breaking_followup": env.get("SNS_VIDEO_BREAKING_FOLLOWUP", "off") == "on",
         "daily_max": int(env.get("SNS_VIDEO_DAILY_MAX", "12") or 12),
         "per_run": int(env.get("SNS_VIDEO_PER_RUN", "3") or 3),
         "window_h": float(env.get("SNS_VIDEO_WINDOW_H", "12") or 12),
@@ -118,14 +129,22 @@ def published_at(rec: dict) -> datetime | None:
 # 動画の投稿を出してよい時間（日本時間）。深夜（1〜6時台）は出さず朝に回す（速報の静かな時間 BREAKING_QUIET_HOURS_JST と同じ考え）
 QUIET_HOURS_JST = range(1, 7)
 MIN_GAP_MIN = 40  # 動画の投稿どうしの間隔（同じ時間帯に続けて出さない）
-AFTER_TEXT_MIN = 20  # 文面の投稿が出てから動画を出すまでの最短
+AFTER_TEXT_MIN = 20  # （速報の後追いだけ）文面の投稿が出てから動画を出すまでの最短
+MAKE_LEAD_MIN = 20  # 予約の時刻まで、これだけあれば動画を作って差し替えに間に合う見込み（1本 約5〜10分）
+EDIT_LEAD_MIN = 10  # 予約の時刻のこれより直前には差し替えない（Buffer が出し始めている途中に触らない）
+LIVE_STATUSES = ("posted", "attached")  # Threads に動画が出た（出る）記録
+
+
+def mergeable(rec: dict) -> bool:
+    """予約中の写真を動画に差し替えられる文面の投稿か（Buffer の通常の予約・本文1つの形。速報・まとめ・問いかけは除く）"""
+    return bool(rec.get("id")) and not rec.get("breaking") and rec.get("format", "classic") == "classic" and rec.get("via", "buffer") == "buffer"
 
 
 def can_post_now(state: dict, now: datetime) -> tuple[bool, str]:
     """静かな時間・前の動画の投稿からの間隔を見て、今この回で動画を1本出してよいか"""
     if now.astimezone(JST).hour in QUIET_HOURS_JST:
         return False, "深夜（1〜6時台）は出さない"
-    last = max((_parse(r.get("postedAt", "")) for r in (state.get("videos") or {}).values() if r.get("status") == "posted" and r.get("postedAt")), default=None)
+    last = max((_parse(r.get("postedAt", "")) for r in (state.get("videos") or {}).values() if r.get("status") == "posted" and r.get("postedAt")), default=None)  # 別に出した動画の投稿だけ
     if last and now - last < timedelta(minutes=MIN_GAP_MIN):
         return False, f"前の動画の投稿から{MIN_GAP_MIN}分たっていない"
     return True, ""
@@ -144,12 +163,13 @@ def pick_variant(state: dict, now: datetime, ab_until: str, after_ab: str = "sho
         until = None
     if until is not None and now.astimezone(JST).date() > until:
         return after_ab if after_ab in ("short", "full") else "short"
-    shown = sum(1 for rec in (state.get("videos") or {}).values() if rec.get("variant") and rec.get("status") == "posted" and _today({"at": rec.get("postedAt", "")}, now))
+    shown = sum(1 for rec in (state.get("videos") or {}).values() if rec.get("variant") and rec.get("status") in LIVE_STATUSES and _today({"at": rec.get("postedAt", "")}, now))
     return "short" if shown % 2 == 0 else "full"
 
 
 def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_article=None, eligible=None, score=None, retry_dry: bool = False) -> list[str]:
-    """Threads に投稿済み・窓の中・まだ動画を作っていない・v3 の対象の記事を、Threads の点数の高い順に"""
+    """動画を作る記事の順番。①予約中で、まだ差し替えに間に合う投稿（予約の時刻が近い順）
+    ②Threads に出たあと・窓の中の記事（記事ページ用。点数の高い順）。まだ動画を作っていない・v3 の対象だけ"""
     # 重いモジュール（Pillow・numpy）は、既定の関数を使うときだけ読み込む（テストは軽い環境でも動く）
     if load_article is None:
         import shorts
@@ -175,17 +195,25 @@ def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_a
     rows = []
     for slug, rec in (posted.get("posted") or {}).items():
         at = published_at(rec)
-        if slug in done or not at or now - at > timedelta(hours=window_h) or at > now:
+        if slug in done or not at:
             continue
+        if at > now:
+            if not mergeable(rec) or at - now < timedelta(minutes=MAKE_LEAD_MIN):
+                continue
+            group = 0
+        elif now - at > timedelta(hours=window_h):
+            continue
+        else:
+            group = 1
         try:
             article = load_article(slug)
         except (Exception, SystemExit):  # noqa: BLE001 - 記事が無い（消えた・まとめ記事）なら対象外
             continue
         if not eligible(article):
             continue
-        rows.append((score(article), at, slug))
-    rows.sort(key=lambda r: (-r[0], r[1]))
-    return [slug for _, _, slug in rows]
+        rows.append((group, at.timestamp() if group == 0 else -score(article), at, slug))
+    rows.sort(key=lambda r: r[:3])
+    return [r[3] for r in rows]
 
 
 def article_link(report: dict, variant: str) -> str:
@@ -277,8 +305,10 @@ def post_report(report: dict) -> dict:
     }  # fmt: skip
 
 
-def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = False, make_versions=None, select=None, poster=None) -> list[dict]:
-    """1回分: ①新しく SNS に出た記事の動画を作る（2つの版）→ 置く → 記事に載せる ②用意できた動画を1本だけ投稿する（静かな時間・間隔を守る）"""
+def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = False, make_versions=None, select=None, poster=None, editor=None) -> list[dict]:
+    """1回分: ①動画を作る（予約の時刻が近い記事から。2つの版）→ 置く → 記事に載せる
+    ②用意できた動画で、予約中の投稿の写真を差し替える（1記事1投稿。間に合わなければ記事ページだけ）
+    ③（フラグ）速報の後追いの動画の投稿を1本だけ"""
     f = flags(env)
     now = now or datetime.now(timezone.utc)
     state = load_json(STATE, {"videos": {}})
@@ -299,7 +329,12 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
     results = []
     for slug in picks:
         prev_tries = int((state["videos"].get(slug) or {}).get("tries", 0) or 0)
-        rec = {"at": now.isoformat(timespec="seconds"), "status": "started", "tries": prev_tries + 1, "textAt": (published_at((posted.get("posted") or {}).get(slug) or {}) or now).isoformat(timespec="seconds")}
+        prec = (posted.get("posted") or {}).get(slug) or {}
+        rec = {
+            "at": now.isoformat(timespec="seconds"), "status": "started", "tries": prev_tries + 1,
+            "textAt": (published_at(prec) or now).isoformat(timespec="seconds"), "textId": prec.get("id", ""),
+            "breaking": bool(prec.get("breaking")), "scheduled": bool((published_at(prec) or now) > now),
+        }  # fmt: skip
         state["videos"][slug] = rec
         save_state(state)  # 途中で落ちても同じ記事を二度作らない
         reports = make_versions(slug, OUT)
@@ -342,12 +377,152 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
                 rec["embedError"] = str(error)[:200]
         save_state(state)
         results.append({"slug": slug, **rec})
-    if f["post"]:
-        out = post_one(state, now, f, poster or post_video)
+    results += attach_ready(state, posted, now, f, editor or edit_scheduled)
+    save_state(state)
+    if f["post"] and f["breaking_followup"]:
+        out = post_one(state, now, f, poster or post_video, only_breaking=True)
         if out:
             results.append(out)
         save_state(state)
     return results
+
+
+def attach_ready(state: dict, posted: dict, now: datetime, f: dict, editor) -> list[dict]:
+    """用意できた動画（ready）で、まだ出ていない予約の投稿の写真を動画に差し替える（予約の時刻が近い順）。
+    間に合わない・速報・形式が違う → 記事ページだけ（article_only）。2本目の投稿は作らない"""
+    out = []
+    rows = []
+    for slug, rec in (state.get("videos") or {}).items():
+        if rec.get("status") != "ready":
+            continue
+        prec = (posted.get("posted") or {}).get(slug) or {}
+        rows.append((published_at(prec) or now, slug, rec, prec))
+    for due, slug, rec, prec in sorted(rows, key=lambda r: r[0]):
+        if prec.get("breaking"):
+            if f.get("breaking_followup"):
+                continue  # 速報の後追い（post_one）に回す
+            rec.update({"status": "article_only", "why": "速報（文面の投稿はすぐ出した）"})
+        elif not mergeable(prec):
+            rec.update({"status": "article_only", "why": "差し替えられない形の投稿（返信つき・Buffer 以外など）"})
+        elif due - now < timedelta(minutes=EDIT_LEAD_MIN):
+            rec.update({"status": "article_only", "why": "動画ができる前に投稿の時刻が来た（写真で出た）"})
+        elif not f.get("post"):
+            continue  # 差し替えは止めている（SNS_VIDEO_POST が live ではない）。次の回でまた見る
+        else:
+            variant = pick_variant(state, now, f["ab_until"], f["after_ab"])
+            versions = rec.get("versions") or {}
+            if not (versions.get(variant) or {}).get("ok") or variant not in (rec.get("urls") or {}):
+                variant = next((k for k in ("short", "full") if (versions.get(k) or {}).get("ok") and k in (rec.get("urls") or {})), "")
+            if not variant:
+                rec.update({"status": "article_only", "why": "投稿に使える版が無い"})
+            else:
+                res = editor(prec["id"], versions[variant]["post"], variant, rec["urls"][variant], now)
+                rec.update({"variant": variant, "bufferId": prec["id"], "postedAt": due.isoformat(timespec="seconds"), **res})
+                log(f"[video-followup] 差し替え {slug}（{variant}・予約 {due.astimezone(JST):%H:%M}）: {rec.get('status')} {rec.get('why', '')} {rec.get('error', '')}")
+        out.append({"slug": slug, **rec})
+    return out
+
+
+VIDEO_LINE = "公式ページの画面を見ながら、{seconds}秒の動画で解説しています。"
+URL_RE = re.compile(r"https?://\S+/articles/[^\s?]+\S*")
+
+
+def merged_text(text: str, report: dict, variant: str, limit: int = MAX_CHARS) -> tuple[str, dict]:
+    """予約中の投稿の本文を、動画つきの本文にする。中身は変えず
+    ①記事のリンクを動画の A/B 用（utm_campaign=sns_video&utm_content=版）に替える（長すぎるなら元のまま）
+    ②入るなら「◯秒の動画で解説」の行（リンクの案内の前）と、音声のクレジット（最後）を足す"""
+    notes = {"link": "kept", "line": False, "credit": False}
+    m = URL_RE.search(text)
+    new = text
+    if m:
+        cand = text[: m.start()] + article_link(report, variant) + text[m.end():]
+        if len(cand) <= limit:
+            new, notes["link"] = cand, "video"
+    seconds = int(round(float(report.get("total") or 0)))
+    line = VIDEO_LINE.format(seconds=seconds) if seconds else ""
+    credit = (report.get("voice") or {}).get("credit", "")
+    if line:
+        idx = new.find("詳しくはこちら")
+        cand = (new[:idx] + line + "\n" + new[idx:]) if idx > 0 else (new.rstrip() + "\n\n" + line)
+        if len(cand) <= limit:
+            new, notes["line"] = cand, True
+    if credit and len(new) + len(credit) + 4 <= limit:
+        new, notes["credit"] = new.rstrip() + f"\n音声：{credit}", True
+    return new, notes
+
+
+POST_FIELDS = "id status dueAt sentAt text externalLink assets { mimeType source } metadata { ... on ThreadsPostMetadata { topic threadCount thread { text assets { mimeType source } } } }"
+
+
+def read_post(api_key: str, post_id: str) -> dict | None:
+    import threads_post
+
+    try:
+        return threads_post.buffer_graphql(api_key, f"query($id: PostId!) {{ post(input: {{ id: $id }}) {{ {POST_FIELDS} }} }}", {"id": post_id}).get("post")
+    except Exception as error:  # noqa: BLE001
+        log(f"[video-followup] 投稿を読めない {post_id}: {str(error)[:200]}")
+        return None
+
+
+def edit_post(api_key: str, inp: dict) -> None:
+    import threads_post
+
+    data = threads_post.buffer_graphql(
+        api_key,
+        """mutation($input: EditPostInput!) { editPost(input: $input) { __typename ... on PostActionSuccess { post { id } } ... on MutationError { message } } }""",
+        {"input": inp},
+    )
+    res = data.get("editPost") or {}
+    if res.get("message") or res.get("__typename") not in ("PostActionSuccess", None):
+        raise RuntimeError(f"Buffer: {res.get('__typename')}: {res.get('message', '')}"[:300])
+
+
+def _has_video(post: dict | None) -> bool:
+    thread = ((post or {}).get("metadata") or {}).get("thread") or []
+    assets = (thread[0].get("assets") if thread else None) or (post or {}).get("assets") or []
+    return any(str(a.get("mimeType", "")).startswith("video") for a in assets)
+
+
+def edit_scheduled(post_id: str, report: dict, variant: str, video_url: str, now: datetime | None = None, api_key: str | None = None, allow_draft: bool = False) -> dict:
+    """予約中（scheduled）の Threads の投稿の写真を動画に差し替える（editPost。mode を送らないので予約の時刻はそのまま）。
+    差し替えたら読み直して、状態・時刻が変わっていないこと・動画が付いたことを確かめる。時刻が動いていたら元に戻す"""
+    now = now or datetime.now(timezone.utc)
+    key = api_key if api_key is not None else os.environ.get("BUFFER_API_KEY", "")
+    cur = read_post(key, post_id)
+    if not cur:
+        return {"status": "attach_failed", "error": "Buffer で予約の投稿を読めない（写真のまま）"}
+    ok_status = ("scheduled", "draft") if allow_draft else ("scheduled",)
+    if cur.get("status") not in ok_status:
+        return {"status": "article_only", "why": f"Buffer の状態が {cur.get('status')}（もう出た・出ている途中など）"}
+    due = _parse(cur.get("dueAt") or "")
+    if cur.get("status") == "scheduled" and (not due or due - now < timedelta(minutes=EDIT_LEAD_MIN)):
+        return {"status": "article_only", "why": "予約の時刻の直前なので差し替えない（写真で出た）"}
+    meta = cur.get("metadata") or {}
+    if int(meta.get("threadCount") or len(meta.get("thread") or []) or 1) > 1:
+        return {"status": "article_only", "why": "返信つきの形なので差し替えない"}
+    text, notes = merged_text(cur.get("text") or "", report, variant)
+    threads_meta: dict = {"thread": [{"text": text, "assets": [{"video": {"url": video_url}}]}]}
+    if meta.get("topic"):
+        threads_meta["topic"] = meta["topic"]
+    inp = {"id": post_id, "text": text, "assets": [], "metadata": {"threads": threads_meta}}
+    error = ""
+    try:
+        edit_post(key, inp)
+    except Exception as err:  # noqa: BLE001 - 断られたら写真のまま（再挑戦しない）
+        error = str(err)[:300]
+    after = read_post(key, post_id) or {}
+    check = {"status": after.get("status"), "dueAt": after.get("dueAt"), "video": _has_video(after), "before": {"status": cur.get("status"), "dueAt": cur.get("dueAt")}}
+    # 予約の時刻・状態が動いていたら元に戻す（差し替えが通ったかどうかに関係なく）
+    if cur.get("status") == "scheduled" and after and (after.get("status") != "scheduled" or _parse(after.get("dueAt") or "") != due):
+        try:
+            edit_post(key, {"id": post_id, "mode": "customScheduled", "dueAt": cur["dueAt"], "saveToDraft": False})
+            check["restored"] = read_post(key, post_id) or {}
+            check["restored"] = {k: check["restored"].get(k) for k in ("status", "dueAt")}
+        except Exception as err:  # noqa: BLE001
+            check["restoreError"] = str(err)[:200]
+    if error or not check["video"]:
+        return {"status": "attach_failed", "error": error or "差し替えたあとに動画が見当たらない", "check": check, "notes": notes}
+    return {"status": "attached", "body": text, "notes": notes, "check": check, "link": article_link(report, variant) if notes["link"] == "video" else ""}
 
 
 def fail_reason(reports: dict, ok: dict) -> str:
@@ -370,7 +545,7 @@ def daily_rates(state: dict) -> dict:
             continue
         d = days.setdefault(at.astimezone(JST).date().isoformat(), {"tried": 0, "ok": 0, "reasons": {}})
         d["tried"] += 1
-        good = rec.get("ok") if "ok" in rec else rec.get("status") in ("ready", "posted", "dry_run", "uploaded")
+        good = rec.get("ok") if "ok" in rec else rec.get("status") in ("ready", "posted", "attached", "article_only", "attach_failed", "dry_run", "uploaded")
         if good:
             d["ok"] += 1
         else:
@@ -381,8 +556,9 @@ def daily_rates(state: dict) -> dict:
     return dict(sorted(days.items()))
 
 
-def post_one(state: dict, now: datetime, f: dict, poster) -> dict | None:
-    """用意できた動画（ready）を1本だけ出す。文面の投稿が出てから20分以上・24時間以内・古い順。静かな時間と間隔を守る"""
+def post_one(state: dict, now: datetime, f: dict, poster, only_breaking: bool = False) -> dict | None:
+    """（速報の後追いだけ。SNS_VIDEO_BREAKING_FOLLOWUP=on）用意できた動画（ready）を1本だけ別の投稿で出す。
+    文面の投稿が出てから20分以上・24時間以内・古い順。静かな時間と間隔を守る"""
     allowed, why = can_post_now(state, now)
     if not allowed:
         log(f"[video-followup] この回は動画を出さない: {why}")
@@ -390,7 +566,7 @@ def post_one(state: dict, now: datetime, f: dict, poster) -> dict | None:
     ready = []
     for slug, rec in (state.get("videos") or {}).items():
         text_at = _parse(rec.get("textAt", "")) or _parse(rec.get("at", ""))
-        if rec.get("status") != "ready" or not text_at:
+        if rec.get("status") != "ready" or not text_at or (only_breaking and not rec.get("breaking")):
             continue
         if now - text_at < timedelta(minutes=AFTER_TEXT_MIN) or now - text_at > timedelta(hours=24):
             continue
@@ -433,7 +609,7 @@ def ab_rows(state: dict, metrics: dict, visits: dict) -> dict:
     """短い版と全部の版の比べ: 投稿ごとの平均（記事への訪問・いいね・返信・再投稿・表示）"""
     out: dict = {}
     for slug, rec in (state.get("videos") or {}).items():
-        if rec.get("status") != "posted" or rec.get("variant") not in ("short", "full"):
+        if rec.get("status") not in LIVE_STATUSES or rec.get("variant") not in ("short", "full"):
             continue
         m = (metrics.get(rec.get("bufferId", "")) or {}).get("metrics") or {}
         row = out.setdefault(rec["variant"], {"posts": 0, "visits": 0.0, "likes": 0.0, "replies": 0.0, "reposts": 0.0, "views": 0.0})
@@ -531,6 +707,78 @@ def read_draft(api_key: str, channel_id: str, post_id: str, statuses: tuple = ("
     return {"found": False, "errors": tries}
 
 
+def merge_draft_test(slug: str, yes: bool = False) -> dict:
+    """差し替えのテスト: いつもの形（本文＋カード画像）の**下書き**を1本作り、editPost で動画に差し替えて読み直す。
+    下書き（saveToDraft）なので公開されない。yes=False なら何も送らない"""
+    import shorts
+    import threads_post as tp
+
+    rec = (load_json(STATE, {"videos": {}}).get("videos") or {}).get(slug) or {}
+    versions, urls = rec.get("versions") or {}, rec.get("urls") or {}
+    variant = next((k for k in ("short", "full") if (versions.get(k) or {}).get("ok") and k in urls), "")
+    if not variant:
+        raise RuntimeError(f"{slug} に置いた動画が無い")
+    article = shorts.load_article(slug)
+    text = tp.with_link(tp.compose(article), article, "threads", "classic")
+    plan = {"slug": slug, "variant": variant, "video": urls[variant], "photoText": text, "videoText": merged_text(text, versions[variant]["post"], variant)[0]}
+    if not yes:
+        return {**plan, "sent": False}
+    key = os.environ.get("BUFFER_API_KEY", "")
+    channel = tp.buffer_threads_channel(key)
+    if not channel:
+        raise RuntimeError("Buffer に Threads のチャンネルが無い")
+    made = tp.publish_via_buffer(key, channel["id"], text, f"{SITE}/articles/{slug}", article, draft=True, fmt="classic")
+    before = read_post(key, made["id"]) or {}
+    res = edit_scheduled(made["id"], versions[variant]["post"], variant, urls[variant], api_key=key, allow_draft=True)
+    after = read_post(key, made["id"]) or {}
+    return {**plan, "sent": True, "draftId": made["id"], "before": {"status": before.get("status"), "assets": before.get("metadata"), "text": before.get("text")}, "result": res, "after": after}
+
+
+def today_report(now: datetime | None = None, api_key: str | None = None) -> list[dict]:
+    """今日（日本時間）の Threads の投稿（出た・予約中）ごとに、動画が付いたか・付かなかった理由（読むだけ）"""
+    import threads_post as tp
+
+    now = now or datetime.now(timezone.utc)
+    key = api_key if api_key is not None else os.environ.get("BUFFER_API_KEY", "")
+    channel = tp.buffer_threads_channel(key) or {}
+    start = now.astimezone(JST).replace(hour=0, minute=0, second=0, microsecond=0)
+    end = start + timedelta(days=1)
+    videos = load_json(STATE, {"videos": {}}).get("videos") or {}
+    posted = load_json(POSTED, {"posted": {}}).get("posted") or {}
+    by_id = {r.get("id"): s for s, r in posted.items() if r.get("id")}
+    video_post_ids = {r.get("bufferId"): s for s, r in videos.items() if r.get("status") == "posted" and r.get("bufferId")}
+    nodes = []
+    for org in tp.buffer_graphql(key, "query { account { organizations { id } } }")["account"]["organizations"]:
+        flt = f"channelIds: {json.dumps([channel.get('id', '')])}, startDate: {json.dumps(tp.utc_z(start))}, endDate: {json.dumps(tp.utc_z(end))}"
+        query = f"query {{ posts(first: 100, input: {{ organizationId: {json.dumps(org['id'])}, filter: {{ {flt} }} }}) {{ edges {{ node {{ {POST_FIELDS} }} }} }} }}"
+        nodes += [e["node"] for e in tp.buffer_graphql(key, query)["posts"]["edges"]]
+    rows = []
+    for n in nodes:
+        when = _parse(n.get("sentAt") or n.get("dueAt") or "")
+        if not when or not (start <= when.astimezone(JST) < end) or n.get("status") == "draft":
+            continue
+        m = re.search(r"/articles/([^\s?/]+)", n.get("text") or "")
+        slug = video_post_ids.get(n["id"]) or by_id.get(n["id"]) or (m.group(1) if m else "")
+        v = videos.get(slug) or {}
+        if n["id"] in video_post_ids:
+            kind, why = "動画だけの2本目（前のやり方）", ""
+        elif _has_video(n):
+            kind, why = "動画つき（写真を差し替え）", ""
+        else:
+            kind = "写真（動画なし）"
+            prec = posted.get(slug) or {}
+            if slug.startswith(("digest-", "poll-")) or prec.get("format") in ("digest", "poll"):
+                why = "朝のまとめ・問いかけ（記事の投稿ではない）"
+            elif not v:
+                why = "速報（すぐ出した）で動画はまだ／動画を作る前に出た" if prec.get("breaking") else "まだ動画を作っていない（作る順番待ち・対象外）"
+            elif v.get("status") == "gate_failed":
+                why = "動画が品質ゲートに不合格: " + (v.get("reason") or "")[:140]
+            else:
+                why = f"{v.get('status')}: {v.get('why') or v.get('error') or ''}"[:160]
+        rows.append({"time": when.astimezone(JST).strftime("%H:%M"), "status": n.get("status"), "slug": slug, "kind": kind, "why": why, "id": n["id"]})
+    return sorted(rows, key=lambda r: r["time"])
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="SNS に投稿した記事の動画を作って後から出す（既定は止まっている）")
     parser.add_argument("--plan", action="store_true", help="対象と残りの本数を表示するだけ")
@@ -538,12 +786,21 @@ def main() -> None:
     parser.add_argument("--draft-test", nargs=2, metavar=("REPORT_JSON", "VIDEO_URL"), help="Buffer に Threads の動画の下書きを作るテスト（--yes が無ければ表示だけ）")
     parser.add_argument("--yes", action="store_true", help="--draft-test を本当に送る")
     parser.add_argument("--check-post", metavar="BUFFER_ID", help="出した動画の投稿の状態を Buffer で読む（読むだけ）")
+    parser.add_argument("--merge-draft-test", metavar="SLUG", help="写真の下書きを1本作り、動画に差し替えて読み直す（--yes が無ければ表示だけ。公開しない）")
+    parser.add_argument("--today", action="store_true", help="今日の Threads の投稿ごとに、動画が付いたか・理由（読むだけ）")
     args = parser.parse_args()
     import llm
 
     llm._load_env_local()
     if args.draft_test:
         print(json.dumps(draft_test(Path(args.draft_test[0]), args.draft_test[1], args.yes), ensure_ascii=False, indent=2))
+        return
+    if args.merge_draft_test:
+        print(json.dumps(merge_draft_test(args.merge_draft_test, args.yes), ensure_ascii=False, indent=2))
+        return
+    if args.today:
+        for row in today_report():
+            print(json.dumps(row, ensure_ascii=False))
         return
     if args.check_post:
         import threads_post
