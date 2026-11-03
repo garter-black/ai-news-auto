@@ -949,21 +949,8 @@ _VIDEO_CHECK: dict = {}
 def video_possible(article: dict) -> bool:
     """動画（shorts_v3）を作れる記事か（撮ってよい公式ページがある）。記事の投稿は動画つきだけなので、作れない記事は SNS の候補にしない。
     動画の仕組みを読み込めない環境（軽いテスト）では判定しない（True）"""
-    if "mod" not in _VIDEO_CHECK:
-        try:
-            import shorts_v3  # noqa: PLC0415
-
-            _VIDEO_CHECK["mod"] = shorts_v3
-        except Exception as error:  # noqa: BLE001
-            log(f"[warn] 動画の仕組みを読み込めないため、動画を作れるかは確かめません: {type(error).__name__}")
-            _VIDEO_CHECK["mod"] = None
-    mod = _VIDEO_CHECK["mod"]
-    if mod is None:
-        return True
-    try:
-        return bool(mod.page_urls(article))
-    except Exception:  # noqa: BLE001
-        return True
+    # 2026-11-04〜: 段（video_ladder）の L4 は記事の文だけで動画を作れるので、公式ページが撮れない記事も候補にする
+    return bool(article.get("slug"))
 
 
 def candidates(state: dict, hours: int, genres: set[str] | None = None) -> list[dict]:

@@ -102,7 +102,7 @@ jobs:
           SNS_VIDEO_POST: ${{ github.event_name != 'workflow_dispatch' && vars.SNS_VIDEO_POST || 'off' }}
           SNS_VIDEO_EMBED: ${{ vars.SNS_VIDEO_EMBED || 'off' }}
           SNS_VIDEO_DAILY_MAX: ${{ vars.SNS_VIDEO_DAILY_MAX || '30' }}  # 記事の投稿はすべて動画が要る（通常枠9＋速報）
-          SNS_VIDEO_PER_RUN: ${{ vars.SNS_VIDEO_PER_RUN || '3' }}
+          SNS_VIDEO_PER_RUN: ${{ vars.SNS_VIDEO_PER_RUN || '2' }}  # 1本は段（最大12分）まで。50分のうちに入るように
           SNS_VIDEO_AB_UNTIL: ${{ vars.SNS_VIDEO_AB_UNTIL }}
           SNS_VIDEO_AFTER_AB: ${{ vars.SNS_VIDEO_AFTER_AB || 'short' }}
           SNS_VIDEO_STORE: ${{ vars.SNS_VIDEO_STORE || 'kv' }}

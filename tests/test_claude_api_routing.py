@@ -556,3 +556,40 @@ class UrgentFixTests(Base):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TrialScopeTest(unittest.TestCase):
+    """（2026-11-04）見本・試走・手動の確かめ（*_trial）の回数は、本番の1日の上限と別に数える"""
+
+    def test_trial_calls_do_not_eat_production_cap(self):
+        import json
+        import tempfile
+        from pathlib import Path
+        from unittest.mock import patch
+
+        import llm
+
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            today = llm._jst_day()
+            run = {"runs": {today: {"r1": {"usd": 0.5, "calls": {"video": 25}}}}}
+            (d / "claude_api_usage_video_trial.json").write_text(json.dumps(run))
+            (d / "claude_api_usage_video.json").write_text(json.dumps({"runs": {today: {"r2": {"usd": 0.1, "calls": {"video": 3}}}}}))
+            with patch.object(llm, "API_STATE_DIR", d):
+                with patch.dict("os.environ", {"CLAUDE_API_LEDGER": "video", "LLM_WORKFLOW": "video"}):
+                    s = llm.api_ledger_summary()
+                    self.assertEqual(s["calls_today"].get("video"), 3)  # 本番は本番の分だけ
+                    self.assertAlmostEqual(s["spent_today"], 0.6)  # お金は合わせる
+                with patch.dict("os.environ", {"CLAUDE_API_LEDGER": "video_trial", "LLM_WORKFLOW": "video_trial"}):
+                    self.assertTrue(llm.is_trial())
+                    self.assertEqual(llm.api_ledger_summary()["calls_today"].get("video"), 25)
+
+    def test_trial_workflows_use_trial_ledgers(self):
+        from pathlib import Path
+
+        root = Path(__file__).resolve().parents[1] / ".github" / "workflows"
+        for name in ("shorts_v3.yml", "video_template_samples.yml", "video_ladder_dryrun.yml"):
+            text = (root / name).read_text("utf-8")
+            self.assertIn("CLAUDE_API_LEDGER: video_trial", text, name)
+            self.assertIn("LLM_WORKFLOW: video_trial", text, name)
+        self.assertIn("CLAUDE_API_LEDGER: video\n", (root / "sns_video.yml").read_text("utf-8"))

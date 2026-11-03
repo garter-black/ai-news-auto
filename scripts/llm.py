@@ -404,8 +404,26 @@ def _codex_models() -> list[str]:
     return [f"codex:{os.environ.get('CODEX_MODEL') or 'default'}"]
 
 
+# 試し（見本・試走・手動の確かめ）のジョブ。本番（記事・速報・SNS の動画）の1日の上限を食わないよう、回数を別に数える（2026-11-04）。
+# ジョブ名（LLM_WORKFLOW）・Claude API の記録の名前（CLAUDE_API_LEDGER）が _trial で終わるもの
+TRIAL_SUFFIX = "_trial"
+
+
+def is_trial() -> bool:
+    return (os.environ.get("LLM_WORKFLOW") or "").endswith(TRIAL_SUFFIX) or (os.environ.get("CLAUDE_API_LEDGER") or "").endswith(TRIAL_SUFFIX)
+
+
 def claude_calls_today() -> int:
-    return sum(n for m, n in usage_today().items() if m.startswith("claude:"))
+    """Claude CLI の今日の回数。試しのジョブと本番のジョブは別に数える（試しは試しの分だけ・本番は本番の分だけ）"""
+    trial = is_trial()
+    total = 0
+    for job, models in workflow_usage_by_job().items():
+        if job.endswith(TRIAL_SUFFIX) != trial:
+            continue
+        total += sum(n for m, n in models.items() if m.startswith("claude:"))
+    if not trial:
+        total = max(total, sum(n for m, n in dict(_load_usage().get(_today(), {})).items() if m.startswith("claude:")))
+    return total
 
 
 def _claude_daily_max() -> int:
@@ -886,8 +904,11 @@ def api_ledger_summary(now: datetime | None = None) -> dict:
     req_by_day: dict[str, dict[str, int]] = {}
     cost_stats: dict[str, list[float]] = {}  # "段|モデルの段" → [回数, 米ドル]（今と前の期間）
     exhausted_until, reason = None, ""
+    trial = is_trial()
     for path in sorted(API_STATE_DIR.glob("claude_api_usage*.json")):
         data = _read_json(path)
+        # 1日の回数（calls）は、試しのジョブ（claude_api_usage_*_trial.json）と本番を別に数える。お金（月の予算）は全部を合わせる
+        same_scope = path.stem.endswith(TRIAL_SUFFIX) == trial
         for day, runs in (data.get("runs") or {}).items():
             if not isinstance(runs, dict) or day < prev_first:
                 continue
@@ -905,7 +926,7 @@ def api_ledger_summary(now: datetime | None = None) -> dict:
                 spent += usd
                 if day == today:
                     spent_today += usd
-                    for tier, count in (entry.get("calls") or {}).items():
+                    for tier, count in ((entry.get("calls") or {}).items() if same_scope else ()):
                         calls_today[tier] = calls_today.get(tier, 0) + int(count or 0)
                     for tier, count in (entry.get("req") or {}).items():
                         req_today[tier] = req_today.get(tier, 0) + int(count or 0)

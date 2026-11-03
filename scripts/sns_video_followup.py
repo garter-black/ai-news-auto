@@ -206,7 +206,8 @@ def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_a
     if eligible is None:
         import shorts_v3 as v3
 
-        eligible = lambda a: bool(v3.page_urls(a))  # noqa: E731
+        # 段（video_ladder）の L3/L4 は公式ページが撮れない記事でも作れる（2026-11-04 オーナー「動画がダメで投稿が止まるのはだめ」）
+        eligible = lambda a: bool(a.get("slug"))  # noqa: E731
     if score is None:
         import threads_post
 
@@ -256,7 +257,7 @@ def compose_post(report: dict, variant: str = "short") -> str:
     hook = ((sv3.get("hook") or {}).get("text") or report.get("title") or "").strip()
     seconds = int(round(float(report.get("total") or 0)))
     summary = (sv3.get("summary") or "").strip()
-    head = f"{hook}\n公式ページの画面を見ながら、{seconds}秒で解説しました。"
+    head = f"{hook}\n" + (f"{seconds}秒で解説しました。" if report.get("level") in ("L3", "L4") else f"公式ページの画面を見ながら、{seconds}秒で解説しました。")
     voice = (report.get("voice") or {}).get("credit")
     tail = f"\n\n詳しくはこちら👇\n{article_link(report, variant)}" + (f"\n音声：{voice}" if voice else "")
     room = MAX_CHARS - len(head) - len(tail) - 2
@@ -327,7 +328,7 @@ def post_report(report: dict) -> dict:
     """投稿文を作るのに要る所だけ（state に残して、あとの回で出す）"""
     sv3 = report.get("script_v3") or {}
     return {
-        "title": report.get("title", ""), "url": report.get("url", ""), "total": report.get("total"), "voice": report.get("voice") or {},
+        "title": report.get("title", ""), "url": report.get("url", ""), "total": report.get("total"), "voice": report.get("voice") or {}, "level": report.get("level"),
         "script_v3": {"hook": {"text": (sv3.get("hook") or {}).get("text", "")}, "summary": sv3.get("summary", "")},
     }  # fmt: skip
 
@@ -350,9 +351,11 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
             log("[video-followup] SNS_VIDEO_FOLLOWUP が on ではないので、何も作らない")
         return [{"slug": s, "status": "planned"} for s in picks]
     if make_versions is None:
-        import shorts_v3 as v3
+        # 2026-11-04 オーナー「動画がダメなら投稿しない、で投稿が止まってはいけない」: L1（今の型）→ L2（作り直し）→
+        # L3（公式の画像＋字幕）→ L4（記事の文だけ）の順に試し、検査に通った最初の段を使う（scripts/video_ladder.py）
+        import video_ladder
 
-        make_versions = v3.make_versions
+        make_versions = video_ladder.make_versions
     results = []
     for slug in picks:
         prev_tries = int((state["videos"].get(slug) or {}).get("tries", 0) or 0)
@@ -367,9 +370,13 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
         reports = make_versions(slug, OUT)
         ok = {k: bool((r.get("gate") or {}).get("ok")) and (OUT / f"{slug}__v3{'short' if k == 'short' else ''}.mp4").exists() for k, r in reports.items()}
         rec["versions"] = {k: {"ok": ok[k], "seconds": r.get("total"), "reasons": (r.get("gate") or {}).get("reasons", [])[:3],
-                               "qa": (r.get("gate") or {}).get("qa") or {}, "template": r.get("template", ""),
+                               "qa": (r.get("gate") or {}).get("qa") or {}, "template": r.get("template", ""), "level": r.get("level"),
                                **({"post": post_report(r)} if ok[k] else {})} for k, r in reports.items()}
         rec["timings"] = {k: r.get("timings") for k, r in reports.items()}
+        levels = sorted({r.get("level") for r in reports.values() if r.get("level")})
+        if levels:
+            rec["level"] = levels[-1]  # 低い方の段（L4 が一番低い）
+            rec["ladder"] = {k: r.get("ladder") for k, r in reports.items()}
         rec["ok"] = any(ok.values())
         rec["reason"] = fail_reason(reports, ok)
         rec["pages"] = sorted({p.get("host", "") for r in reports.values() for p in (r.get("pages") or [])})
@@ -408,6 +415,12 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
         results.append({"slug": slug, **rec})
     results += attach_ready(state, posted, now, f, editor or edit_scheduled)
     save_state(state)
+    try:
+        import video_ladder
+
+        video_ladder.fallback_alert(state)  # L3/L4 が直近20本の3割を超えたら issue（sns-video-fallback）
+    except Exception as error:  # noqa: BLE001
+        log(f"[video-followup] 段の見張りをとばしました: {type(error).__name__}")
     apply_converted(state, posted)
     results += publish_queued(state, posted, now, f, creator=creator)
     results += publish_extra_queued(state, now, f, creator=creator)
@@ -530,13 +543,8 @@ def missing_issue(slug: str, why: str) -> None:
 
 
 def _eligible_default(slug: str) -> bool:
-    try:
-        import shorts
-        import shorts_v3 as v3
-
-        return bool(v3.page_urls(shorts.load_article(slug)))
-    except (Exception, SystemExit):  # noqa: BLE001
-        return False
+    """動画を作れる記事か。段（video_ladder）の L4 は記事の文だけで作れるので、記事があれば作れる"""
+    return (ARTICLES / f"{slug}.json").exists()
 
 
 def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=None, issue=None, eligible=None) -> list[dict]:
@@ -933,6 +941,7 @@ def sync_posted(state: dict, posted: dict) -> int:
 
 
 VIDEO_LINE = "公式ページの画面を見ながら、{seconds}秒の動画で解説しています。"
+VIDEO_LINE_PLAIN = "{seconds}秒の動画で解説しています。"  # L3/L4（公式ページの画面を使わない段）
 URL_RE = re.compile(r"https?://\S+/articles/[^\s?]+\S*")
 
 
@@ -948,7 +957,8 @@ def merged_text(text: str, report: dict, variant: str, limit: int = MAX_CHARS) -
         if len(cand) <= limit:
             new, notes["link"] = cand, "video"
     seconds = int(round(float(report.get("total") or 0)))
-    line = VIDEO_LINE.format(seconds=seconds) if seconds else ""
+    form = VIDEO_LINE_PLAIN if report.get("level") in ("L3", "L4") else VIDEO_LINE
+    line = form.format(seconds=seconds) if seconds else ""
     credit = (report.get("voice") or {}).get("credit", "")
     if line:
         idx = new.find("詳しくはこちら")

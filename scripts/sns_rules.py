@@ -215,7 +215,7 @@ ENGLISH_RUN = re.compile(r"[A-Za-z][A-Za-z'’\-]*(?:[ ,]+[A-Za-z][A-Za-z'’\-]
 JAPANESE_CHAR = re.compile(r"[぀-ヿ一-鿿ｦ-ﾟ]")
 LINK_LINE = re.compile(r"^(?:詳しくはこちら|記事はこちら|続きはこちら)")
 # リンクの案内に添える行（動画の案内・音声のクレジット）も、書き出し・要約・問いかけの形の判定からは除く
-NOTE_LINE = re.compile(r"^(?:音声：|公式ページの画面を見ながら、\d+秒)")
+NOTE_LINE = re.compile(r"^(?:音声：|画像：|公式ページの画面を見ながら、\d+秒|\d+秒の動画で解説)")
 # 文字の帯がある画像（見出し入りのカバー・号の縦長画像・以前の縦長カード）
 TEXT_BAND_PATHS = [re.compile(r"/cover/[^/?#]+"), re.compile(r"/digest/[^/]+/card\.png")]
 DIGEST_SHARE = re.compile(r"/digest/[^/]+/share\.png")
