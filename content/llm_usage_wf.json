@@ -25,7 +25,8 @@
       "cloudflare:@cf/openai/gpt-oss-120b": 9
     },
     "products": {
-      "gemini-3.5-flash-lite": 12
+      "gemini-3.5-flash-lite": 15,
+      "gemini-flash-lite-latest": 1
     }
   }
 }

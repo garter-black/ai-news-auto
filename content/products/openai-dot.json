@@ -149,7 +149,7 @@
     "codex",
     "gpt-6-astra",
     "gpt-6",
-    "gpt-6-1-terra"
+    "gpt-5-6"
   ],
   "articles": [
     "openai-dot-bug-hunting-codex",

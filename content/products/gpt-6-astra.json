@@ -143,12 +143,11 @@
     "gpt-6",
     "codex",
     "chatgpt-work",
-    "gpt-6-1-terra"
+    "gpt-5-6"
   ],
   "articles": [
     "qodo-codex-plugin-code-review",
     "amazon-bedrock-openai-prompt-caching",
-    "openai-gpt-6-1-terra-announcement",
     "nvidia-isaac-gpt6-astra-robotics-agile-one",
     "openai-astra-shield-forge-it-support",
     "openai-chatgpt-plugin-extensions-mcp",

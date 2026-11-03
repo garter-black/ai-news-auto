@@ -194,10 +194,10 @@
     }
   ],
   "related": [
-    "codex",
-    "gpt-6-astra",
     "gpt-6",
-    "chatgpt-pro"
+    "codex",
+    "chatgpt-pro",
+    "gpt-6-astra"
   ],
   "articles": [
     "openai-gpt-61-terra-amazon-bedrock",

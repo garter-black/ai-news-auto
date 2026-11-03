@@ -225,7 +225,7 @@
     "gpt-6-astra",
     "chatgpt-work",
     "gpt-6",
-    "gpt-6-1-terra"
+    "gpt-5-6"
   ],
   "articles": [
     "openai-bigger-bug-bounties",
@@ -239,7 +239,6 @@
     "shopify-cto-codex-ai-prototyping",
     "openai-oracle-partnership-chatgpt",
     "sullivan-cromwell-openai-codex-legal-tool",
-    "openai-gpt-6-1-terra-announcement",
     "openai-dot-bug-hunting-codex",
     "openai-codex-benefit-street-partners-financial-tool",
     "openai-dot-on-call-agent-demo",
