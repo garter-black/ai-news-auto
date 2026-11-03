@@ -791,9 +791,9 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
         result.reasons.append(f"v3: 長さが {lo:.0f}〜{hi:.0f}秒の外（{duration:.1f}秒）")
     end = float(report.get("end_start") or duration)
     # 場面の変化（カメラの移動・切り替え・数字・グラフ）。クリックは数えない
-    kinds = ("move", "cut", "chart", "pop", "highlight", "text") if calm else ("move", "cut", "chart", "pop")
+    kinds = ("move", "cut", "chart", "pop", "highlight", "text", "click") if calm else ("move", "cut", "chart", "pop")
     changes = sorted({round(e["t"], 2) for e in report.get("events") or [] if e.get("kind") in kinds and e["t"] < end - 0.3})
-    soft = {round(e["t"], 2) for e in report.get("events") or [] if e.get("kind") in ("highlight", "text")} if calm else set()
+    soft = {round(e["t"], 2) for e in report.get("events") or [] if e.get("kind") in ("highlight", "text", "click")} if calm else set()
     if calm:  # 0.7秒以内に続いた変化は1回と数える（文字と選択が同時に出るなど）。カメラの動き・グラフがあればそちらを残す
         merged: list[float] = []
         for t in changes:

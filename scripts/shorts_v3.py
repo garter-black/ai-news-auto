@@ -994,7 +994,7 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
     tier = os.environ.get("V3_LLM_TIER", "quality")
     reviews = 0
     best = None  # 事実の検査に通った最後の台本（レビューの書き直しが通らなかったときに使う）
-    for attempt in range(1, 9):
+    for attempt in range(1, 7):
         try:
             data, model = llm.generate_json(script_system(), prompt + feedback, SCRIPT_SCHEMA, temperature=0.5, max_output_tokens=8192, tier=tier, visibility="high", purpose="video")
         except RuntimeError:
@@ -1006,6 +1006,12 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
         data["beats"] = [b for b in data.get("beats") or [] if isinstance(b, dict)][:BEATS_MAX]
         latin_names(data)
         problems = script_problems(data, article, pages)
+        if problems and any(EVIDENCE_PROBLEM.search(p) for p in problems):  # 証拠の行だけの問題は、画面の文字から付け替えて試す
+            fixed = repair_evidence(data, article, pages)
+            if fixed is not None:
+                fixed_problems = script_problems(fixed, article, pages)
+                if len(fixed_problems) < len(problems):
+                    data, problems = fixed, fixed_problems
         style = [p for p in problems if p.startswith(STYLE_PREFIXES)]
         if attempt >= 4 and len(style) == len(problems):
             # 英文の区切りが直らない beat は、訳の吹き出しを出さない（ja を空に）。途中で切れた文の訳は出さない
@@ -1050,6 +1056,12 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
         data["beats"] = [b for b in data.get("beats") or [] if isinstance(b, dict)][:BEATS_MAX]
         latin_names(data)
         problems = script_problems(data, article, pages)
+        if problems and any(EVIDENCE_PROBLEM.search(p) for p in problems):  # 証拠の行だけの問題は、画面の文字から付け替えて試す
+            fixed = repair_evidence(data, article, pages)
+            if fixed is not None:
+                fixed_problems = script_problems(fixed, article, pages)
+                if len(fixed_problems) < len(problems):
+                    data, problems = fixed, fixed_problems
         style = [p for p in problems if p.startswith(STYLE_PREFIXES)]
         for p in style:  # 区切りの直らない訳は出さない（上と同じ）
             if m := re.match(r"target の区切り: (beat(\d)|hook)\.", p):
@@ -1078,11 +1090,24 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
     raise RuntimeError(f"台本を作れませんでした: {last[:400]}")
 
 
+EVIDENCE_PROBLEM = re.compile(r"の数字・言葉がありません|が証拠の行 \[|が画面の文字にありません")
+
+
 def repair_evidence(data: dict, article: dict, pages: list[Page]) -> dict | None:
     """証拠の文にキーワードの数字・言葉が無い beat は、画面の文字からそれを含む文を探して付け替える（LLM を呼ばない）。
     付け替えた英語の文は訳が無いので ja は空にする（吹き出しは出さない）"""
     out = json.loads(json.dumps(data, ensure_ascii=False))
     changed = False
+    hook = out.get("hook") or {}
+    digits = _digits(hook.get("payoff", ""))
+    htg = find_target(pages, hook.get("target", ""), hook.get("block", ""), keyword=hook.get("payoff", "")) if hook else None
+    if digits and (not htg or any(float(d) not in {float(x) for x in _digits(htg.block.text)} for d in digits)):
+        for p in pages:
+            hit = next((blk for blk in sorted(p.blocks, key=lambda b: -b.font_px) if all(float(d) in {float(x) for x in _digits(blk.text)} for d in digits) and len(blk.text) <= 200), None)
+            if hit:
+                hook.update({"block": hit.id, "target": hit.text, "ja": ""})
+                changed = True
+                break
     for b in out.get("beats") or []:
         tgt = find_target(pages, b.get("target", ""), b.get("block", ""), keyword=b.get("keyword", ""))
         if tgt and gate.key_fact_ok(b.get("keyword", ""), b.get("sub", ""), b.get("target", ""), b.get("ja", "")):
@@ -2135,6 +2160,32 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     c_t = max(back_t + MOVE + HOLD, concl.start + 0.45 * (concl.end - concl.start))
     if narr.end_start - c_t > 0.9 + 1.0 and add_move(c_t, hook_close, "締め: 最初の数字へ", n_last):
         spots.append(Spot(c_t + 0.35, narr.end_start, t0.page, t0.rect, [t0.match], c_t + 0.5))
+    # 4秒より長く何も変わらない所は、カーソルが読んでいる文を指す（カメラは動かさない）。左端と右端を交互に
+    cover = [(c.t0, c.t1) for c in charts] + [(L.t0, L.t1) for L in ladders]
+    camera = Camera(first, moves)
+    side = 0
+    for _ in range(3):
+        changes = sorted({e["t"] for e in events if e["kind"] in ("move", "cut", "chart", "pop", "highlight", "text", "click")})
+        bounds = [0.0] + changes + [narr.end_start]
+        added = False
+        for a, b in zip(bounds, bounds[1:]):
+            if b - a <= 4.0 or any(c0 - 0.2 <= (a + b) / 2 <= c1 + 0.2 for c0, c1 in cover):
+                continue
+            t = (a + b) / 2
+            cam = camera.at(t)
+            sp = next((x for x in spots if x.page == cam.page and x.t0 <= t <= x.t1 and x.sel), None)
+            if sp is None:
+                continue
+            r = sp.sel[-1] if side % 2 == 0 else sp.sel[0]
+            h = r[3] - r[1]
+            x = r[2] + h * 0.15 if side % 2 == 0 else r[0] + h * 0.3
+            clicks.append(Click(t, cam.page, x, r[1] + h * 0.7))
+            ev(t, "click", "読んでいる文を指す")
+            side += 1
+            added = True
+        if not added:
+            break
+    clicks.sort(key=lambda c: c.t)
     camera = Camera(first, moves)
 
     # 文字（左の列）: 小さな見出し → キーワード（マーカー）→ 補足。キーワードの中心は画面の注目の行と同じ高さ
