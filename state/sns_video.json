@@ -634,12 +634,13 @@
       "variant": "full",
       "bufferId": "6ae941a5186a5afbce7ae1bd",
       "postedAt": "2026-11-03T09:30:00+00:00",
-      "attachError": "Buffer で予約の投稿を読めない（次の回でもう一度）"
+      "attachError": "Buffer で予約の投稿を読めない（次の回でもう一度）",
+      "deferred": "Buffer API 429 RATE_LIMIT_EXCEEDED: 2026-11-03T13:22+00:00 まで呼び出しを止めます"
     },
     "nvidia-recovery-automated-training-recovery": {
-      "at": "2026-11-03T06:54:09+00:00",
+      "at": "2026-11-03T07:17:10+00:00",
       "status": "gate_failed",
-      "tries": 1,
+      "tries": 2,
       "textAt": "2026-11-03T12:00:00+00:00",
       "textId": "6ae96058da2711fd26adb7eb",
       "breaking": false,
@@ -649,14 +650,14 @@
           "ok": false,
           "seconds": null,
           "reasons": [
-            "台本を作れない: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です"
+            "台本を作れない: 台本を作れませんでした: beat1.ja に記事・target に無い語 Claude。; target の区切り: beat3.target「recorded approximately 8,550 anomaly det」は文の途中で切れています。文の頭から、文末（ピリオド）か読点（カンマ）までのまとまりを選んでください。; speech で数字 1 をかなや漢数字にしました。数字はアラビア"
           ]
         },
         "short": {
           "ok": false,
           "seconds": null,
           "reasons": [
-            "台本を作れない: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です"
+            "台本を作れない: 台本を作れませんでした: beat1.ja に記事・target に無い語 Claude。; target の区切り: beat3.target「recorded approximately 8,550 anomaly det」は文の途中で切れています。文の頭から、文末（ピリオド）か読点（カンマ）までのまとまりを選んでください。; speech で数字 1 をかなや漢数字にしました。数字はアラビア"
           ]
         }
       },
@@ -665,7 +666,7 @@
         "short": null
       },
       "ok": false,
-      "reason": "full: 台本を作れない: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です / short: 台本を作れない: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です",
+      "reason": "full: 台本を作れない: 台本を作れませんでした: beat1.ja に記事・target に無い語 Claude。; target の区切り: beat3.target「recorded approximately 8,550 anomaly det」は文の途中で切れています。文の頭から、文末（ピリオド）か読点（カンマ）まで / short: 台本を作れない: 台本を作れませんでした: beat1.ja に記事・target に無い語 Claude。; target の区切り: beat3.target「recorded approximately 8,550 anomaly det」は文の途中で切れています。文の頭から、文末（ピリオド）か読点（カンマ）まで",
       "pages": []
     }
   }
