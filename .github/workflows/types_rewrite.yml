@@ -4,6 +4,9 @@ name: Rewrite existing articles by news type
 # よく読まれている順に、まだの記事だけ。本文を書く段は Sonnet、事実確認・手直しはいつもの配分（月の予算の中）。
 # 品質ゲートに合格しなかった記事は書き換えない。URL・題名・公開日時・続報・画像は変えない。SNS には何も出さない。
 on:
+  # 残りの記事を1日20本ずつ（日本時間 4:50。記事づくりの回が少ない時間）。対象が無くなったら何もしないで終わる
+  schedule:
+    - cron: "50 19 * * *"
   workflow_dispatch:
     inputs:
       max:
