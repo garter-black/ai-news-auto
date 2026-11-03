@@ -281,6 +281,13 @@
    "sourceUrl": "https://www.boj.or.jp/mopo/mpmdeci/mpr_2026/k261030c.pdf",
    "title": "日本銀行がETFの売却ペース見直しを決定、2026年10月の決定会合で発表"
   },
+  "boj-governor-press-conference-oct30": {
+   "channel": "boj",
+   "reason": "notice-minutes",
+   "retiredAt": "2026-11-03T23:24:17+09:00",
+   "sourceUrl": "http://www.boj.or.jp/about/release/sousaidouga.htm",
+   "title": "日本銀行、10月30日の総裁定例記者会見の動画を公開　再生は約22時間で1万回超"
+  },
   "boj-interest-rate-raise-impact": {
    "channel": "liberal-arts",
    "reason": "creator-video",
@@ -336,6 +343,13 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "投資で人は本当に幸せになれるのか、元17LIVEのCEOと僧侶が語る資本主義の限界",
    "videoUrl": "https://www.youtube.com/watch?v=uiBLLXJLSqo"
+  },
+  "cao-consumer-confidence-survey-oct-2026": {
+   "channel": "cao",
+   "reason": "notice-statistics",
+   "retiredAt": "2026-11-03T23:24:17+09:00",
+   "sourceUrl": "https://www.esri.cao.go.jp/jp/stat/shouhi/shouhi.html",
+   "title": "内閣府、2026年10月分の消費動向調査を公表　消費者態度指数などを掲載"
   },
   "car-insurance-premium-saving-tips": {
    "channel": "nikkei",
@@ -491,6 +505,13 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "sourceUrl": "https://www.tsr-net.co.jp/data/detail/1203394_1527.html",
    "title": "新型コロナ関連の倒産、10月は125件で一進一退続く　累計は1万4825件に"
+  },
+  "craft-beer-shipments-2026-tsr": {
+   "channel": "tsr",
+   "reason": "notice-statistics",
+   "retiredAt": "2026-11-03T23:24:17+09:00",
+   "sourceUrl": "https://www.tsr-net.co.jp/data/detail/1203392_1527.html",
+   "title": "地ビール1-8月出荷量は2年連続増　首位はエチゴビール、55.1％は前年割れ"
   },
   "craft-boss-croissant-latte": {
    "channel": "suntory",
@@ -1298,6 +1319,20 @@
    "title": "投資1年目の完全ガイド、新NISAの活用法と失敗しないための手順を解説",
    "videoUrl": "https://www.youtube.com/watch?v=NqwuNlZJy1s"
   },
+  "ipa-dx-certification-nov-2026": {
+   "channel": "ipa",
+   "reason": "notice-statistics",
+   "retiredAt": "2026-11-03T23:24:17+09:00",
+   "sourceUrl": "https://disclosure.dx-portal.ipa.go.jp/",
+   "title": "IPA、DX認定制度で2026年11月1日適用の118件を公表"
+  },
+  "ipa-r08-zenki-exam-deadline": {
+   "channel": "ipa",
+   "reason": "notice-campaign",
+   "retiredAt": "2026-11-03T23:24:17+09:00",
+   "sourceUrl": "https://www.ipa.go.jp/shiken/2026/r08zen_exam.html",
+   "title": "IPA、令和8年度前期の高度試験の申込受付を終了　全試験がCBT方式で実施"
+  },
   "itoham-yonekyu-future-logistics-project": {
    "channel": "kyodo-prwire",
    "reason": "wire",
@@ -1367,6 +1402,13 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "日本の海に眠るレアアースと離島防衛、経済安全保障の重要性を専門家解説",
    "videoUrl": "https://www.youtube.com/watch?v=Xbs-l-XSxOQ"
+  },
+  "japan-population-mobility-september-2026": {
+   "channel": "stat",
+   "reason": "notice-statistics",
+   "retiredAt": "2026-11-03T23:24:17+09:00",
+   "sourceUrl": "https://www.stat.go.jp/data/idou/sokuhou/tsuki/index.html",
+   "title": "総務省、9月の人口移動報告を公表　市区町村間の移動者数は5.6％減"
   },
   "japan-stock-market-outlook-kinouchi": {
    "channel": "rakumachi",
@@ -1775,6 +1817,13 @@
    "sourceUrl": "https://www.mhlw.go.jp/kouseiroudoushou/shikaku_shiken/index.html",
    "title": "厚労省、令和9年医政局所管国家試験の日程を公表　医師・看護師などの実施日まとめ"
   },
+  "mhlw-izoku-nenkin-chosa-2026": {
+   "channel": "mhlw",
+   "reason": "notice-campaign",
+   "retiredAt": "2026-11-03T23:24:17+09:00",
+   "sourceUrl": "https://www.mhlw.go.jp/toukei/list/95-1.html",
+   "title": "厚労省、11月1日から「遺族年金受給者実態調査」を実施　オンライン回答にも対応"
+  },
   "mhlw-job-openings-september-2026": {
    "channel": "mhlw",
    "reason": "off-focus",
@@ -1829,10 +1878,16 @@
   "mlit-autumn-2026-decoration": {
    "channel": "mlit-press",
    "reason": "duplicate",
-   "redirect": "mlit-autumn-2026-medals-of-honor",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "sourceUrl": "http://www.mlit.go.jp/report/press/kanbo03_hh_000428.html",
    "title": "国交省、令和8年秋の叙勲受章者292名を発表　11月26日に伝達式を開催"
+  },
+  "mlit-autumn-2026-medals-of-honor": {
+   "channel": "mlit-press",
+   "reason": "notice-listing",
+   "retiredAt": "2026-11-03T23:24:17+09:00",
+   "sourceUrl": "http://www.mlit.go.jp/report/press/kanbo03_hh_000427.html",
+   "title": "国土交通省、令和8年秋の褒章受章者を発表　伝達式は11月18日に開催"
   },
   "mof-jgb-interest-rate-202610": {
    "channel": "mof",
@@ -1848,12 +1903,26 @@
    "sourceUrl": "https://www.mof.go.jp/about_mof/councils/meeting_of_jgbsp/press_release/261102.html",
    "title": "財務省、国債市場特別参加者会合の第121回を開催へ　11月26日に最近の市場状況を議論"
   },
+  "mof-onchain-government-bonds-study": {
+   "channel": "mof",
+   "reason": "notice-minutes",
+   "retiredAt": "2026-11-03T23:24:17+09:00",
+   "sourceUrl": "https://www.mof.go.jp/about_mof/councils/study_on_chain/index.html",
+   "title": "財務省が国債のオンチェーン対応に関する研究会の議事要旨を公開　第2回会合まで"
+  },
   "mof-tax-stamp-revenue-sep-2026": {
    "channel": "mof",
    "reason": "thin",
    "retiredAt": "2026-11-03T18:55:45+09:00",
    "sourceUrl": "https://www.mof.go.jp/tax_policy/reference/taxes_and_stamp_revenues/202609.pdf",
    "title": "財務省、令和8年度9月末の租税及び印紙収入の収入額調を公表"
+  },
+  "mof-tobacco-retail-price-approval": {
+   "channel": "mof",
+   "reason": "notice-listing",
+   "retiredAt": "2026-11-03T23:24:17+09:00",
+   "sourceUrl": "https://www.mof.go.jp/policy/tab_salt/topics/kouriteika.html",
+   "title": "財務省、製造たばこの小売定価の認可情報を随時公開　日付ごとにPDFで確認可能"
   },
   "morinaga-cocoa-bowel-movement-study": {
    "channel": "morinaga",
@@ -1904,6 +1973,13 @@
    "retiredAt": "2026-11-03T18:55:45+09:00",
    "sourceUrl": "https://www.jst.go.jp/pr/announce/20261029-2/index.html",
    "title": "ショウジョウバエの睡眠たんぱく質から新抗菌ペプチドを発見　筑波大など"
+  },
+  "nenkin-no-hi-2026-mhlw": {
+   "channel": "mhlw",
+   "reason": "notice-campaign",
+   "retiredAt": "2026-11-03T23:24:17+09:00",
+   "sourceUrl": "https://www.mhlw.go.jp/stf/nenkinnohi2026_00001.html",
+   "title": "厚労省、11月30日の「年金の日」と11月の「ねんきん月間」で啓発　「ねんきんネット」の活用を呼びかけ"
   },
   "neoclouds-ai-infrastructure-winners-and-risks": {
    "channel": "bycloud",
@@ -2634,6 +2710,13 @@
    "title": "50代孤独死の現実と賃貸経営のリスク、見守りサービス「まもりこ」が果たす役割",
    "videoUrl": "https://www.youtube.com/watch?v=CoIqBpEaR18"
   },
+  "soumu-kkj-2025-3rd-result": {
+   "channel": "stat",
+   "reason": "notice-statistics",
+   "retiredAt": "2026-11-03T23:24:17+09:00",
+   "sourceUrl": "https://www.stat.go.jp/data/kkj/kekka/index.html",
+   "title": "総務省、2025年経済構造実態調査の三次集計を公表　事業所に関する結果"
+  },
   "soumu-local-allocation-tax-nov-2026": {
    "channel": "soumu",
    "reason": "thin",
@@ -2823,6 +2906,13 @@
    "title": "賃貸アパートの断熱改修で熱中症対策。東京都の補助金活用で物件価値も向上",
    "videoUrl": "https://www.youtube.com/watch?v=9XFYvqVAMsE"
   },
+  "tokyo-chiiki-kigyo-challenge-2026": {
+   "channel": "tokyo-metro",
+   "reason": "notice-listing",
+   "retiredAt": "2026-11-03T23:24:17+09:00",
+   "sourceUrl": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102903",
+   "title": "東京都、地域企業グループチャレンジ促進事業で4グループを決定　令和10年1月まで伴走支援"
+  },
   "tokyo-disaster-prevention-app-underpass-warning": {
    "channel": "tokyo-metro",
    "reason": "off-focus",
@@ -2955,6 +3045,13 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "sourceUrl": "https://www.value-press.com/pressrelease/383196",
    "title": "東方LostWord、伴都美子×豚乙女による新曲「朝露」配信開始"
+  },
+  "toyota-2026-half-year-results": {
+   "channel": "toyota",
+   "reason": "notice-statistics",
+   "retiredAt": "2026-11-03T23:24:17+09:00",
+   "sourceUrl": "https://global.toyota/jp/company/profile/production-sales-figures/202609.html",
+   "title": "トヨタ、2026年度上半期の販売・生産・輸出実績を発表　ダイハツ含むグループ全体"
   },
   "transformers-js-structured-output": {
    "channel": "hugging-face",
