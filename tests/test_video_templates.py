@@ -199,6 +199,10 @@ def _photo(path: Path) -> str:
     yy, xx = np.mgrid[0:630, 0:1200]
     img = np.stack([(xx / 1200 * 200 + 30), (yy / 630 * 160 + 40), np.full_like(xx, 180)], axis=-1).astype(np.uint8)
     img[(xx - 600) ** 2 + (yy - 315) ** 2 < 120**2] = (240, 240, 250)
+    rng = np.random.default_rng(7)  # 本物の写真のような細かい模様（なめらかな絵だと寄っても差が出にくい）
+    for _ in range(160):
+        x, y, r = int(rng.integers(0, 1200)), int(rng.integers(0, 630)), int(rng.integers(8, 40))
+        img[(xx - x) ** 2 + (yy - y) ** 2 < r**2] = rng.integers(0, 255, 3)
     Image.fromarray(img).save(path)
     return str(path)
 

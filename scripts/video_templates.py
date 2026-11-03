@@ -576,7 +576,7 @@ def card_base(r, L) -> dict:
         from PIL import Image
 
         img = np.asarray(Image.open(L.extra["image"]).convert("RGB"))
-        box_w, box_h = PW - 2 * X0, PH - 150 - 120
+        box_w, box_h = PW - 2 * 40, PH - 130 - 110 - 80  # 写真はカードの幅いっぱい近くまで大きく
         h, w = img.shape[:2]
         scale = min(box_w / w, box_h / h)
         info.update({"img": img, "size": (int(w * scale), int(h * scale)), "focus": L.extra.get("focus") or [0.5, 0.5]})
@@ -682,7 +682,7 @@ def card_frame(r, info: dict, L, t: float):
 
     PW, PH, X0 = v3.PW, v3.PH, r.LAD_X
     arr = np.full((PH, PW, 3), 255, dtype=np.uint8)
-    if info.get("title") is not None:
+    if info.get("title") is not None and L.mode != "image":  # 写真の見出しは写真の左端にそろえる（_image_frame）
         v3.blend(arr, info["title"], X0, 64)
     if info.get("src") is not None:
         v3.blend(arr, info["src"], X0 + info["title"].shape[1] + 24 if info.get("title") is not None else X0, 68)
@@ -770,11 +770,14 @@ def _image_frame(info: dict, L, t: float, arr):
 
     PW, PH, X0 = v3.PW, v3.PH, 76
     w, h = info["size"]
-    x, y = (PW - w) // 2, 150 + (PH - 150 - 120 - h) // 2
+    x, y = (PW - w) // 2, 130 + (PH - 130 - 110 - h) // 2
+    if info.get("title") is not None:
+        v3.blend(arr, info["title"], x, y - info["title"].shape[0] - 26)
     img = info["img"]
     ih, iw = img.shape[:2]
-    k = v3.ease(min(1.0, max(0.0, (t - L.t0) / max(L.t1 - L.t0, 0.5))))
-    zoom = 1.0 + 0.10 * k  # 10% まで寄る（落ち着いた動き）
+    # 一定の速さでゆっくり寄る（16%まで。止まった絵にしない＝ゲートの「動き」の基準を満たす。速さが変わらないので落ち着いて見える）
+    k = min(1.0, max(0.0, (t - L.t0) / max(L.t1 - L.t0 + 0.2, 0.5)))
+    zoom = 1.0 + 0.16 * k
     fx, fy = info["focus"]
     cw, ch = iw / zoom, ih / zoom
     cx = min(max(iw / 2 + (fx * iw - iw / 2) * k, cw / 2), iw - cw / 2)
@@ -790,9 +793,9 @@ def _image_frame(info: dict, L, t: float, arr):
     photo = photo.copy()
     _mask_round(photo, info["corner"])
     arr[y : y + h, x : x + w] = photo
-    a = v3.ease_out((t - L.t0 - 0.6) / 0.4)
+    a = v3.ease_out((t - L.t0 - 1.0) / 0.4)  # 出どころは1秒後（計画の「カード: 写真の出どころ」と同じ時刻）
     if a > 0:
-        v3.blend(arr, info["credit"], X0, y + h + 28 + int((1 - a) * 12), a)
+        v3.blend(arr, info["credit"], x, y + h + 28 + int((1 - a) * 12), a)
     return arr
 
 

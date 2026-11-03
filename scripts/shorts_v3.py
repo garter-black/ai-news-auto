@@ -2139,18 +2139,22 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
                 reveal = 0.5 if cd["mode"] != "image" else 0.0
                 t_hi = chart_t + 0.3 + reveal * len(rows_c) + 0.3
                 tour = cd["mode"] in ("specs", "checklist", "timeline") and nxt - t_hi > 1.6 * len(rows_c) + 0.6
-                hold = 1.6 * len(rows_c) + 0.4 if tour else (4.2 if cd["mode"] == "image" else 2.4)
+                hold = 1.6 * len(rows_c) + 0.4 if tour else (3.4 if cd["mode"] == "image" else 2.4)
                 t_end = min(nxt - 0.06, t_hi + hold)
                 L_new = Ladder(chart_t, t_end, rows_c, cd.get("subject", ""), reveal, cd["mode"], cd.get("note", ""), cd.get("title", ""), cd.get("source", ""),
                                extra={k: cd[k] for k in ("image", "focus") if k in cd})  # fmt: skip
                 L_new.tour = 1.6 if tour else 0.0
                 ladders.append(L_new)
                 ev(chart_t, "chart", f"型のカード: {cd['mode']}")
-                if tour:
+                if cd["mode"] == "image":  # 写真はゆっくり寄るだけ。1秒後に小さく出どころ（画像：◯◯（公式発表より））
+                    ev(chart_t + 1.0, "text", "カード: 写真の出どころ")
+                elif tour:
                     for k in range(len(rows_c)):
                         ev(t_hi + 1.6 * k, "pop", f"カード: {k + 1}行目")
                 else:
                     ev(t_hi, "pop", "カード: 強調")
+                if nxt - t_end > 1.2:  # カードが消えて証拠の画面に戻る（大きく絵が変わる所）
+                    ev(t_end + 0.05, "chart", "カード: 画面へ戻る")
             elif i == uni_beat:
                 t_hi = chart_t + 0.3 + 0.5 * len(uni_rows) + 0.3
                 t_end = min(nxt - 0.06, t_hi + 2.2)
