@@ -862,7 +862,7 @@
       "postedAt": "2026-11-04T09:45:00+09:00"
     },
     "github-copilot-jetbrains-air": {
-      "at": "2026-11-03T19:56:46+00:00",
+      "at": "2026-11-03T20:04:26+00:00",
       "status": "attached",
       "tries": 1,
       "textAt": "2026-11-04T12:15:00+09:00",
@@ -937,18 +937,18 @@
       },
       "timings": {
         "full": {
-          "tts": 9.4,
-          "render": 10.6,
-          "gate": 1.2,
-          "total": 21.4,
-          "ladder_total": 382.1
+          "tts": 12.2,
+          "render": 14.8,
+          "gate": 1.8,
+          "total": 29.7,
+          "ladder_total": 468.6
         },
         "short": {
-          "tts": 1.1,
-          "render": 6.6,
-          "gate": 0.7,
-          "total": 8.5,
-          "ladder_total": 382.1
+          "tts": 1.6,
+          "render": 9.0,
+          "gate": 1.2,
+          "total": 11.8,
+          "ladder_total": 468.6
         }
       },
       "level": "L4",
@@ -958,10 +958,10 @@
             "level": "L1",
             "ok": false,
             "reasons": [
-              "full: 台本を作れない: 台本を作れませんでした（LLM 9回・94秒）: hook.text は10〜22字のニュースの見出し（今は27字）。; hook.speech は25〜45字（何が起きたか＋なぜ大事か）。",
-              "short: 台本を作れない: 台本を作れませんでした（LLM 9回・94秒）: hook.text は10〜22字のニュースの見出し（今は27字）。; hook.speech は25〜45字（何が起きたか＋なぜ大事か）。"
+              "full: 台本を作れない: 台本を作れませんでした（LLM 9回・82秒）: hook.text は10〜22字のニュースの見出し（今は27字）。; speech に英単語 JetBrains が残っています。カタカナにしてください。",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 9回・82秒）: hook.text は10〜22字のニュースの見出し（今は27字）。; speech に英単語 JetBrains が残っています。カタカナにしてください。"
             ],
-            "seconds": 305.0,
+            "seconds": 355.2,
             "variants": {
               "full": false,
               "short": false
@@ -972,7 +972,7 @@
             "ok": false,
             "skipped": true,
             "reasons": [
-              "時間が足りない（残り 415秒）"
+              "時間が足りない（残り 365秒）"
             ],
             "seconds": 0.0,
             "variants": {}
@@ -981,10 +981,10 @@
             "level": "L3",
             "ok": false,
             "reasons": [
-              "full: 描画: RuntimeError: 公式の画像を取れない（L3 は写真・図が要る）",
+              "full: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））",
               "short: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
             ],
-            "seconds": 46.6,
+            "seconds": 71.1,
             "variants": {
               "full": false,
               "short": false
@@ -994,7 +994,7 @@
             "level": "L4",
             "ok": true,
             "reasons": [],
-            "seconds": 30.5,
+            "seconds": 42.4,
             "variants": {
               "full": true,
               "short": true
@@ -1006,10 +1006,10 @@
             "level": "L1",
             "ok": false,
             "reasons": [
-              "full: 台本を作れない: 台本を作れませんでした（LLM 9回・94秒）: hook.text は10〜22字のニュースの見出し（今は27字）。; hook.speech は25〜45字（何が起きたか＋なぜ大事か）。",
-              "short: 台本を作れない: 台本を作れませんでした（LLM 9回・94秒）: hook.text は10〜22字のニュースの見出し（今は27字）。; hook.speech は25〜45字（何が起きたか＋なぜ大事か）。"
+              "full: 台本を作れない: 台本を作れませんでした（LLM 9回・82秒）: hook.text は10〜22字のニュースの見出し（今は27字）。; speech に英単語 JetBrains が残っています。カタカナにしてください。",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 9回・82秒）: hook.text は10〜22字のニュースの見出し（今は27字）。; speech に英単語 JetBrains が残っています。カタカナにしてください。"
             ],
-            "seconds": 305.0,
+            "seconds": 355.2,
             "variants": {
               "full": false,
               "short": false
@@ -1020,7 +1020,7 @@
             "ok": false,
             "skipped": true,
             "reasons": [
-              "時間が足りない（残り 415秒）"
+              "時間が足りない（残り 365秒）"
             ],
             "seconds": 0.0,
             "variants": {}
@@ -1029,10 +1029,10 @@
             "level": "L3",
             "ok": false,
             "reasons": [
-              "full: 描画: RuntimeError: 公式の画像を取れない（L3 は写真・図が要る）",
+              "full: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））",
               "short: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
             ],
-            "seconds": 46.6,
+            "seconds": 71.1,
             "variants": {
               "full": false,
               "short": false
@@ -1042,7 +1042,7 @@
             "level": "L4",
             "ok": true,
             "reasons": [],
-            "seconds": 30.5,
+            "seconds": 42.4,
             "variants": {
               "full": true,
               "short": true
@@ -1054,13 +1054,13 @@
       "reason": "",
       "pages": [],
       "urls": {
-        "full": "https://ai-tech-express.jp/video/github-copilot-jetbrains-air-70a607ed83.mp4",
-        "short": "https://ai-tech-express.jp/video/github-copilot-jetbrains-air-da086cbfaf.mp4",
+        "full": "https://ai-tech-express.jp/video/github-copilot-jetbrains-air-ee27e14104.mp4",
+        "short": "https://ai-tech-express.jp/video/github-copilot-jetbrains-air-f986b48b81.mp4",
         "poster": "https://ai-tech-express.jp/video/github-copilot-jetbrains-air-8dbe982a05.jpg"
       },
       "embedded": true,
       "variant": "full",
-      "bufferId": "6aea3e03b3ec15847385f6a7",
+      "bufferId": "6aea40275a7c19a37cd1e45f",
       "postedAt": "2026-11-04T12:15:00+09:00"
     }
   },
@@ -1083,11 +1083,11 @@
       "why": "動画を作っている途中・順番待ち",
       "checkedAt": "2026-11-03T19:50:08+00:00",
       "channels": {
-        "threads": "6aea3e03b3ec15847385f6a7",
-        "twitter": "6aea3e065a7c19a37cd11efb",
-        "facebook": "6aea3e0a5a7c19a37cd127e4"
+        "threads": "6aea40275a7c19a37cd1e45f",
+        "twitter": "6aea40285a7c19a37cd1e523",
+        "facebook": "6aea402a52391758e2e82f0b"
       },
-      "id": "6aea3e03b3ec15847385f6a7",
+      "id": "6aea40275a7c19a37cd1e45f",
       "dueAt": "2026-11-04T12:15:00+09:00",
       "variant": "full",
       "delayedMin": 0
