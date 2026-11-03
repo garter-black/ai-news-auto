@@ -176,10 +176,10 @@
     }
   ],
   "related": [
+    "chatgpt",
     "chatgpt-work",
     "gpt-6-astra",
-    "gpt-6",
-    "gpt-5-6"
+    "gpt-6"
   ],
   "articles": [
     "heimstaden-openai-real-estate-ai",
@@ -214,8 +214,6 @@
     "openai-chatgpt-voice-desktop-gpt-live"
   ],
   "linkFrom": [
-    "heimstaden-openai-real-estate-ai",
-    "chatgpt-codex-shared-usage-limits",
     "qodo-codex-plugin-code-review",
     "openai-codex-astra-merge-ceo-interview",
     "shopify-cto-codex-ai-prototyping",

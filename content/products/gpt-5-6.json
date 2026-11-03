@@ -177,10 +177,10 @@
     }
   ],
   "related": [
+    "chatgpt",
     "codex",
     "gpt-6-astra",
-    "gpt-6",
-    "chatgpt-work"
+    "gpt-6"
   ],
   "articles": [
     "v7-go-gpt-5-6-integration-context-graph",

@@ -129,10 +129,10 @@
     }
   ],
   "related": [
+    "gemini",
     "gemini-4-argon",
     "google-ai-studio",
-    "project-suncatcher",
-    "gemini-notebook"
+    "claude"
   ],
   "articles": [
     "antigravity-google-cloud-developer-plugin",

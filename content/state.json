@@ -73,6 +73,22 @@
       "tries": 1,
       "url": "https://blog.google/products-and-platforms/products/education/google-org-funding-ai-education/"
     },
+    "4f3b7c9dffa0995a": {
+      "first": "2026-11-03T14:37:59.464761+00:00",
+      "next": "2026-11-03T17:37:59.464761+00:00",
+      "reason": "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルのまま」「日本の売上は1%減」）",
+      "title": "映画『ストリートファイター／ザ・ムービー』が、全米週間興行収入ランキング1位を獲得！～ 映画化を通じ、IPのグローバルな認知拡大と価値向上に寄与 ～",
+      "tries": 1,
+      "url": "https://www.capcom.co.jp/ir/news/html/261102.html"
+    },
+    "63cd61900c41a18d": {
+      "first": "2026-11-03T14:36:42.320928+00:00",
+      "next": "2026-11-03T17:36:42.320928+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "LIFULL Investmentが利用するクラウドサービスにおける不正アクセスに関するお知らせ",
+      "tries": 1,
+      "url": "https://lifull.com/news/50881/"
+    },
     "6e8810a5139499c0": {
       "first": "2026-11-03T14:05:53.826377+00:00",
       "next": "2026-11-03T17:05:53.826377+00:00",
@@ -80,6 +96,22 @@
       "title": "AI in the learning era",
       "tries": 1,
       "url": "https://blog.google/products-and-platforms/products/education/ai-learning-era-2026/"
+    },
+    "9824d9cb50fa7b55": {
+      "first": "2026-11-03T14:46:44.535250+00:00",
+      "next": "2026-11-03T17:46:44.535250+00:00",
+      "reason": "「マンション内を顔認証だけで移動することができる」→ 元記事は入退室・本人確認・入退館の利便性を述べているだけで、マンション内の移動全般が顔認証でできるとは書いていない（見出しの「顔だけで移動」はあるが、機能範囲を広げて説明している）。; 「過去30年間で3物件目となる希少な新築分譲マンション」→ 元記事は過去30年で3物件のみ（本物件を含む）という意味で、「3物件目」という順序づけは元記事にない",
+      "title": "マンション内を“顔だけ”で移動できる暮らしを実現 ルジェンテシリーズ初導入！顔認証セキュリティサービス「FreeiD」を標準装備した「ルジェンテ新宿」が竣工 ～新宿御苑の緑に近接する、全邸角住戸の資産価値～",
+      "tries": 1,
+      "url": "https://www.tokyu-fudosan-hd.co.jp/news/companies/pdf/c63f39dc2efcf88691dcd42fe07a304905d1074a.pdf"
+    },
+    "9aef92b29b8064d2": {
+      "first": "2026-11-03T14:24:40.899481+00:00",
+      "next": "2026-11-03T17:24:40.899481+00:00",
+      "reason": "「教員が「いちばん時間を減らしたい」と挙げた作業に絞っています」→ 元記事は「教員が最も必要とする場面で時間を節約できるよう」とあるだけで、「いちばん減らしたい」作業に絞ったとまでは言っていない（やや言い過ぎ）。; 「3つ目は、生成AIの普及で宿題をAIに丸投げされる心配に向き合う内容です。AIを使わせない方向ではなく…」→ 元記事に無い背景・方針の解釈で、事実として断定している。; 「英国では、",
+      "title": "Expanding AI educator training to new countries",
+      "tries": 1,
+      "url": "https://blog.google/products-and-platforms/products/education/google-ai-educator-series-global-expansion-november-2026/"
     },
     "ce9b39562dd42cfe": {
       "first": "2026-11-03T13:43:44.204259+00:00",
@@ -8889,6 +8921,12 @@
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102920"
     },
+    "916a69791bdd7e61": {
+      "at": "2026-11-03T14:38:00.260209+00:00",
+      "reason": "stale: 発表から279時間（記事ページの日付）",
+      "skipped": true,
+      "url": "https://www.redhat.com/en/blog/trustworthy-ai-starts-community-governance"
+    },
     "919a93a7bb387b8c": {
       "at": "2026-10-30T04:21:56.177506+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -10100,6 +10138,12 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000004.000187109.html"
     },
+    "b11c79f1767963cd": {
+      "at": "2026-11-03T14:24:41.427335+00:00",
+      "reason": "prefilter: お知らせ・統計の書き写しになる発表（記事にしない）",
+      "skipped": true,
+      "url": "https://www.jpx.co.jp/corporate/news/news-releases/0063/20261102-11.html"
+    },
     "b123b42749d58b1d": {
       "at": "2026-10-28T19:51:48.974334+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（開催について）",
@@ -10930,6 +10974,12 @@
       "reason": "quality: 本文が短い（1096字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）; easy_markdown が短い（296字 / 基準 400字以上）; 独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に",
       "skipped": true,
       "url": "https://finance.yahoo.co.jp/news/detail/65b4a0a7e70edecc612197f989383681afde2351"
+    },
+    "c692a0ee57b38cbf": {
+      "at": "2026-11-03T14:24:41.427390+00:00",
+      "reason": "prefilter: お知らせ・統計の書き写しになる発表（記事にしない）",
+      "skipped": true,
+      "url": "https://www.jpx.co.jp/corporate/news/news-releases/0060/20261102-02.html"
     },
     "c6b0a4068250698a": {
       "at": "2026-10-30T10:11:20.602198+00:00",
@@ -13201,181 +13251,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-01T08:11:20.829349+00:00",
-      "attempt": 0,
-      "id": "4937bb769d43b7b6",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 149.2字・最長 254字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 149.2,
-        "avg_sentence": 30.8,
-        "long_share": 0.0,
-        "max_paragraph": 254,
-        "paragraphs": 13,
-        "sentences": 63
-      },
-      "score": 100,
-      "source": "docker-blog",
-      "title": "Coding Agent Horror Stories: The CVE That Did Not Exist"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-01T14:31:21.769085+00:00",
-      "attempt": 1,
-      "id": "2b6e779ca763ccab689b4a5956d7ee40b8a853d2",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 56.7字・60字超の文が 50% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 145.9字・最長 251字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 145.9,
-        "avg_sentence": 56.7,
-        "long_share": 0.5,
-        "max_paragraph": 251,
-        "paragraphs": 7,
-        "sentences": 18
-      },
-      "score": 100,
-      "source": "trends",
-      "title": "柿谷曜一朗"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-01T14:31:24.523365+00:00",
-      "attempt": 0,
-      "id": "2b6e779ca763ccab689b4a5956d7ee40b8a853d2",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 118.2,
-        "avg_sentence": 42.6,
-        "long_share": 0.16,
-        "max_paragraph": 172,
-        "paragraphs": 9,
-        "sentences": 25
-      },
-      "score": 100,
-      "source": "trends",
-      "title": "柿谷曜一朗"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-01T14:31:31.999976+00:00",
-      "attempt": 1,
-      "id": "c583a2d982c5151e",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 62.2字・60字超の文が 44% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 159.9字・最長 290字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 159.9,
-        "avg_sentence": 62.2,
-        "long_share": 0.444,
-        "max_paragraph": 290,
-        "paragraphs": 7,
-        "sentences": 18
-      },
-      "score": 100,
-      "source": "jtta",
-      "title": "百十四銀行 第60回全日本社会人卓球選手権大会 閉幕！"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-01T14:31:35.149619+00:00",
-      "attempt": 0,
-      "id": "c583a2d982c5151e",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 156.7字・最長 279字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 156.7,
-        "avg_sentence": 30.5,
-        "long_share": 0.028,
-        "max_paragraph": 279,
-        "paragraphs": 7,
-        "sentences": 36
-      },
-      "score": 100,
-      "source": "jtta",
-      "title": "百十四銀行 第60回全日本社会人卓球選手権大会 閉幕！"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-01T18:15:43.002069+00:00",
-      "attempt": 1,
-      "id": "852d5d7ce61f0e5a",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 154.1,
-        "avg_sentence": 51.4,
-        "long_share": 0.333,
-        "max_paragraph": 201,
-        "paragraphs": 8,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "gov-online",
-      "title": "お子さんの進学・在学資金を支援!国の教育ローンをご利用ください"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-01T18:15:50.120249+00:00",
-      "attempt": 2,
-      "id": "852d5d7ce61f0e5a",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 56.9字・60字超の文が 33% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 170.8字・最長 248字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 170.8,
-        "avg_sentence": 56.9,
-        "long_share": 0.333,
-        "max_paragraph": 248,
-        "paragraphs": 8,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "gov-online",
-      "title": "お子さんの進学・在学資金を支援!国の教育ローンをご利用ください"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-01T18:15:54.421304+00:00",
-      "attempt": 0,
-      "id": "852d5d7ce61f0e5a",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 49.4,
-        "avg_sentence": 31.7,
-        "long_share": 0.0,
-        "max_paragraph": 85,
-        "paragraphs": 27,
-        "sentences": 42
-      },
-      "score": 100,
-      "source": "gov-online",
-      "title": "お子さんの進学・在学資金を支援!国の教育ローンをご利用ください"
-    },
     {
       "accepted": true,
       "at": "2026-11-01T20:21:05.404387+00:00",
@@ -19694,6 +19569,180 @@
       "title": "Designing responsible AI for learning",
       "warnings": [
         "見出しが55字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T14:22:27.485198+00:00",
+      "attempt": 1,
+      "id": "9aef92b29b8064d2",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "「インドへの展開は、5月19日にロンドンで開かれた「Education World Forum 2026」で発表された」→ 確認済み文脈には5月19日付の記事でロンドンのフォーラムでの発表とあるが、5月19日が開催日とは限らず、開催日の断定は言い過ぎ。",
+        "「米国では…K-12と大学の教員600万人を対象」「修了するとバッジ」→ 確認済み文脈の内容と一致するが、元記事の「Earn your badge」以外はGESがオンデマンドで全員にバッジという断定はFAQ内でやや言い過ぎ。",
+        "「教育省は、全国の教職員と事務職員にGESを推奨する公式の通達を出しました」→ 元記事は「teaching and non-teaching staff」で、「事務職員」への訳は非教員職員全般より狭く不正確。",
+        "「経済の授業で、市場の動きをGeminiで模擬する」→ 元記事は「complex market scenarios」で、「複雑な市場シナリオ」の趣旨が落ちているが軽微。",
+        "「誤答にヒントと即時の解説を返す例」→ 元記事は「instant feedback and hints」で、「解説」を返すとは書かれていない。",
+        "「英国：65万人の教員が…研修を受けられます」→ 元記事は「can receive」で問題ないが、アイルランドを含む対象人数であることが曖昧。"
+      ],
+      "readability": {
+        "avg_paragraph": 86.5,
+        "avg_sentence": 45.5,
+        "long_share": 0.211,
+        "max_paragraph": 141,
+        "paragraphs": 10,
+        "sentences": 19
+      },
+      "score": 80,
+      "source": "google-blog-all",
+      "title": "Expanding AI educator training to new countries",
+      "warnings": [
+        "見出しが50字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T14:24:15.549104+00:00",
+      "attempt": 2,
+      "id": "9aef92b29b8064d2",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "「教員が「いちばん時間を減らしたい」と挙げた作業に絞っています」→ 元記事は「教員が最も必要とする場面で時間を節約できるよう」とあるだけで、「いちばん減らしたい」作業に絞ったとまでは言っていない（やや言い過ぎ）。",
+        "「3つ目は、生成AIの普及で宿題をAIに丸投げされる心配に向き合う内容です。AIを使わせない方向ではなく…」→ 元記事に無い背景・方針の解釈で、事実として断定している。",
+        "「英国では、教育分野の職務の74%がAIで高度化できる」→ 確認済みの文脈にある事実だが、元記事のGES記事にあるのではなく関連ページ由来で、「英国・アイルランドの教員65万人」など一部の範囲の書き分けにも注意が必要。",
+        "「教員の研修と、生徒の利用の管理が並行して整えられています」→ 両者の関係を結びつけた解釈で、元記事・文脈に根拠がない。",
+        "Q&Aの「日本向けの提供予定はまだ発表されていません」「5地域とも日本は含まれず」→ 元記事に日本の言及が無いことの言い換えで問題は軽微だが、Classroom記事の「4つがオフ」などの詳細は文脈の要旨に記載が無く、Gemini Notebookなど4つの内訳を作っている可能性がある。"
+      ],
+      "readability": {
+        "avg_paragraph": 117.1,
+        "avg_sentence": 42.8,
+        "long_share": 0.122,
+        "max_paragraph": 216,
+        "paragraphs": 15,
+        "sentences": 41
+      },
+      "score": 80,
+      "source": "google-blog-all",
+      "title": "Expanding AI educator training to new countries",
+      "warnings": [
+        "見出しが48字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T14:29:16.076336+00:00",
+      "attempt": 1,
+      "id": "63cd61900c41a18d",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "lifull",
+      "title": "LIFULL Investmentが利用するクラウドサービスにおける不正アクセスに関するお知らせ"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T14:36:42.320897+00:00",
+      "attempt": 2,
+      "id": "63cd61900c41a18d",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "lifull",
+      "title": "LIFULL Investmentが利用するクラウドサービスにおける不正アクセスに関するお知らせ"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T14:37:15.776178+00:00",
+      "attempt": 1,
+      "id": "4f3b7c9dffa0995a",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "「この数字は公開初週の集計で、速報値のため、最終的な数字とは変わる可能性があります」→ 元記事は速報値と注記するのみで、変動の可能性は書いていない。「公開初週」も元記事に明記がなく、記事の推測である。",
+        "「公開にあわせて日米でプレミア上映を行った」は元記事どおりだが、「日本の配給は東和ピクチャーズと東宝」の「日本の」は元記事に無い。元記事は「配給」とだけ書いている。",
+        "「アメリカの映画の売上を集計するサイト、Box Office Mojo」→ 元記事に無い説明で、一般的な補足の域を出ない。",
+        "「10月27日には2027年3月期第2四半期の決算を発表済み」→ 確認済み文脈とは整合するが、映画の売上が波及したかどうかを今後の資料で確かめられるという説明は、第2四半期資料の内容を確認しておらず断定的である。",
+        "「年間販売本数は6,500万本の達成を目指しています」→ 文脈のIR質疑に基づくが、文の流れでは映画の影響と結びついて読め、誤解を招く。"
+      ],
+      "readability": {
+        "avg_paragraph": 84.3,
+        "avg_sentence": 37.0,
+        "long_share": 0.098,
+        "max_paragraph": 160,
+        "paragraphs": 18,
+        "sentences": 41
+      },
+      "score": 80,
+      "source": "capcom-ir",
+      "title": "映画『ストリートファイター／ザ・ムービー』が、全米週間興行収入ランキング1位を獲得！～ 映画化を通じ、IPのグローバルな認知拡大と価値向上に寄与 ～",
+      "warnings": [
+        "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T14:37:59.464731+00:00",
+      "attempt": 2,
+      "id": "4f3b7c9dffa0995a",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "capcom-ir",
+      "title": "映画『ストリートファイター／ザ・ムービー』が、全米週間興行収入ランキング1位を獲得！～ 映画化を通じ、IPのグローバルな認知拡大と価値向上に寄与 ～"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T14:41:50.714885+00:00",
+      "attempt": 1,
+      "id": "9824d9cb50fa7b55",
+      "kind": "broad",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "tokyu-fudosan",
+      "title": "マンション内を“顔だけ”で移動できる暮らしを実現 ルジェンテシリーズ初導入！顔認証セキュリティサービス「FreeiD」を標準装備した「ルジェンテ新宿」が竣工 ～"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T14:46:17.786433+00:00",
+      "attempt": 2,
+      "id": "9824d9cb50fa7b55",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "「マンション内を顔認証だけで移動することができる」→ 元記事は入退室・本人確認・入退館の利便性を述べているだけで、マンション内の移動全般が顔認証でできるとは書いていない（見出しの「顔だけで移動」はあるが、機能範囲を広げて説明している）。",
+        "「過去30年間で3物件目となる希少な新築分譲マンション」→ 元記事は過去30年で3物件のみ（本物件を含む）という意味で、「3物件目」という順序づけは元記事にない。",
+        "「ZEH-M Orientedの採用により…光熱費を抑える設計」「BELS認証を取得し一次エネルギー消費量を25%削減するZEH-M Oriented」→ 元記事は光熱費を抑えると述べているが、25%削減は現行基準からの削減であり、BELS取得との因果関係を『これにより』とするのは言い過ぎ。",
+        "「ルジェンテ新宿販売センター」→ 元記事は問い合わせ窓口として「ルジェンテ新宿」のTELを記載しているだけで、「販売センター」という名称は書かれていない。",
+        "「専用アプリを通じて」→ 元記事は「アプリから」とあるのみで、「専用」は元記事にない。",
+        "「顔認証システムやZEH基準の省エネ性能を標準装備」→ ZEH-M Orientedは設備の標準装備ではなく基準を満たす性能であり、元記事の表現（標準化）と少しずれている。"
+      ],
+      "readability": {
+        "avg_paragraph": 91.3,
+        "avg_sentence": 57.7,
+        "long_share": 0.474,
+        "max_paragraph": 200,
+        "paragraphs": 12,
+        "sentences": 19
+      },
+      "score": 80,
+      "source": "tokyu-fudosan",
+      "title": "マンション内を“顔だけ”で移動できる暮らしを実現 ルジェンテシリーズ初導入！顔認証セキュリティサービス「FreeiD」を標準装備した「ルジェンテ新宿」が竣工 ～",
+      "warnings": [
+        "見出しが49字（目安40字以内）。一覧・カードでは前半だけを出す"
       ]
     }
   ],

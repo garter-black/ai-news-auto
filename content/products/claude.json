@@ -7,8 +7,18 @@
   "category": "アプリ・サービス",
   "refreshMode": "editorial",
   "editorialNote": "料金は公式の料金ページ（content/pricing）、日本での提供は公式の対応国の案内（content/japan_availability.json）、機能と履歴はサイソクの記事から編集部がまとめた。products.py は自動で書き直さない（記事の一覧・関連製品だけ更新する）。",
-  "related": [],
-  "linkFrom": [],
+  "related": [
+    "gemini",
+    "claude-fable-5-1",
+    "codex",
+    "antigravity"
+  ],
+  "linkFrom": [
+    "claude-ultra-plan-price-limits",
+    "salesforce-aiforce-claude-slack",
+    "ai-for-science-expansion-institutions",
+    "claude-drug-development-progress"
+  ],
   "createdAt": "2026-11-03T13:30:00+00:00",
   "updatedAt": "2026-11-03T13:30:00+00:00",
   "overview": {
@@ -82,10 +92,21 @@
     }
   ],
   "articles": [
+    "google-cloud-ai-october-2026-recap",
+    "anthropic-s1a-amendment-ant-nasdaq",
     "claude-ultra-plan-price-limits",
+    "deepseek-super-agent-coding-prototype",
+    "claude-finds-critical-vulnerabilities",
+    "kddi-iret-ai-use-cases-113",
     "salesforce-aiforce-claude-slack",
     "ai-for-science-expansion-institutions",
     "claude-drug-development-progress",
-    "anthropic-releases-claude-fable-5-1"
+    "anthropic-s1-sec-ipo-filing",
+    "aws-weekly-20261019-updates",
+    "hugging-face-business-dashboard-ai-agent",
+    "anthropic-releases-claude-fable-5-1",
+    "anthropic-model-hardware-standard-preview",
+    "iceland-national-ai-education-pilot",
+    "prompt-caching-explained-huggingface"
   ]
 }

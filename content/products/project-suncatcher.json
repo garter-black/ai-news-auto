@@ -154,8 +154,8 @@
   "related": [
     "gemma-4",
     "google-kubernetes-engine",
-    "antigravity",
-    "google-ai-studio"
+    "gemini",
+    "antigravity"
   ],
   "articles": [
     "google-project-suncatcher-satellite-response",

@@ -178,10 +178,10 @@
     }
   ],
   "related": [
+    "gemini",
     "project-suncatcher",
     "antigravity",
-    "google-ai-studio",
-    "gemini-notebook"
+    "google-ai-studio"
   ],
   "articles": [
     "google-agent-compute-engine-governance",

@@ -53,14 +53,15 @@
     "gemma-4-31b-it": 1
   },
   "2026-11-03": {
-    "anthropic-api:claude-haiku-5-5": 7,
-    "anthropic-api:claude-opus-5-5": 7,
-    "anthropic-api:claude-sonnet-5-5": 12,
+    "anthropic-api:claude-haiku-5-5": 11,
+    "anthropic-api:claude-opus-5-5": 9,
+    "anthropic-api:claude-sonnet-5-5": 21,
     "cf-image:flux-1-schnell": 3,
     "cf-image:flux-2-klein-4b": 8,
-    "cloudflare:@cf/openai/gpt-oss-120b": 10,
+    "cloudflare:@cf/openai/gpt-oss-120b": 11,
     "gemini-3.5-flash": 2,
-    "gemini-3.5-flash-lite": 61,
-    "gemini-flash-lite-latest": 1
+    "gemini-3.5-flash-lite": 63,
+    "gemini-flash-lite-latest": 1,
+    "openrouter:nvidia/nemotron-3.5-super-vl:free": 3
   }
 }

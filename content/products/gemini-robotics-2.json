@@ -129,10 +129,10 @@
     }
   ],
   "related": [
+    "gemini",
     "antigravity",
     "google-ai-studio",
-    "project-suncatcher",
-    "gemini-notebook"
+    "project-suncatcher"
   ],
   "articles": [
     "google-deepmind-gemini-robotics-2-apollo",

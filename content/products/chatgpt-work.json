@@ -147,10 +147,10 @@
     }
   ],
   "related": [
+    "chatgpt",
     "codex",
     "gpt-6-astra",
-    "gpt-6",
-    "chatgpt-work-for-sales"
+    "gpt-6"
   ],
   "articles": [
     "chatgpt-codex-shared-usage-limits",
@@ -187,7 +187,6 @@
     "openai-chatgpt-work-product-insights-demo",
     "chatgpt-work-data-agent-setup",
     "chatgpt-work-data-agent-launch",
-    "openai-chatgpt-work-launch",
     "openai-chatgpt-work-data-agent",
     "chatgpt-work-personalized-meal-planner-agents",
     "openai-chatgpt-work-voice-agent",

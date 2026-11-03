@@ -150,7 +150,9 @@
       "event": "Claude Fable 5.1を発表"
     }
   ],
-  "related": [],
+  "related": [
+    "claude"
+  ],
   "articles": [
     "anthropic-releases-claude-fable-5-1"
   ],

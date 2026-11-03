@@ -122,10 +122,10 @@
     }
   ],
   "related": [
+    "gemini",
     "gemini-4-argon",
     "gemini-4",
-    "gemini-4-carbon",
-    "gemma-4"
+    "gemini-4-carbon"
   ],
   "articles": [
     "google-ai-news-october-2026",

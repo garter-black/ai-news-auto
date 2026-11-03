@@ -134,10 +134,10 @@
     }
   ],
   "related": [
+    "chatgpt",
     "gpt-6",
     "codex",
-    "chatgpt-work",
-    "gpt-5-6"
+    "chatgpt-work"
   ],
   "articles": [
     "qodo-codex-plugin-code-review",

@@ -149,7 +149,9 @@
       "event": "契約業務90%削減の活用事例を公開"
     }
   ],
-  "related": [],
+  "related": [
+    "chatgpt"
+  ],
   "articles": [
     "openai-legora-legal-ai-agent",
     "openai-legora-legal-ai-transformation"

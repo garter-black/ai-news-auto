@@ -176,10 +176,10 @@
     }
   ],
   "related": [
+    "gemini",
     "google-ai-studio",
     "gemini-notebook",
-    "antigravity",
-    "project-suncatcher"
+    "antigravity"
   ],
   "articles": [
     "google-gemini-live-sprout-plant-robot",
@@ -187,7 +187,6 @@
     "voice-agent-observability-langsmith-gemini-live"
   ],
   "linkFrom": [
-    "google-gemini-live-sprout-plant-robot",
     "voice-agent-observability-langsmith-gemini-live"
   ],
   "signature": "c1ff0e7b6744bf0e",
