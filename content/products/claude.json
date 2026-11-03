@@ -14,6 +14,7 @@
     "amazon-bedrock"
   ],
   "linkFrom": [
+    "crowdstrike-ai-kill-switch-falcon-guardian",
     "supabase-mcp-claude-issued-auth",
     "claude-ultra-plan-price-limits",
     "salesforce-aiforce-claude-slack",
@@ -93,6 +94,7 @@
     }
   ],
   "articles": [
+    "crowdstrike-ai-kill-switch-falcon-guardian",
     "supabase-mcp-claude-issued-auth",
     "google-cloud-ai-october-2026-recap",
     "anthropic-s1a-amendment-ant-nasdaq",

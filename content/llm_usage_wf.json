@@ -31,14 +31,14 @@
     },
     "images": {
       "cf-image:flux-1-schnell": 6,
-      "cf-image:flux-2-klein-4b": 13,
-      "cloudflare:@cf/openai/gpt-oss-120b": 20
+      "cf-image:flux-2-klein-4b": 14,
+      "cloudflare:@cf/openai/gpt-oss-120b": 21
     },
     "local": {
       "gemini-3.5-flash-lite": 2
     },
     "products": {
-      "anthropic-api:claude-haiku-5-5": 7,
+      "anthropic-api:claude-haiku-5-5": 8,
       "gemini-3.1-flash-lite": 1,
       "gemini-3.5-flash-lite": 65,
       "gemini-flash-lite-latest": 1
