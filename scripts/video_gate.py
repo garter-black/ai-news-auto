@@ -735,6 +735,40 @@ CALM_EVENT_MIN_SOFT = 0.3  # 文字・選択の変化の直後の差（カメラ
 HIGHLIGHT_MIN_SEC = 1.2  # 証拠の文の選択を見せる最短
 
 
+def bare_phrase(text: str) -> bool:
+    """画面の見出し・キーワードが「名詞1つだけ」か（2026-11-04 オーナー: 「答え クラスター」「前と比べると Recovery」は意味が分からない）。
+    名詞1つだけ = 英字だけ（Recovery・NVIDIA Recovery）・カタカナだけ（クラスター）・漢字だけで3字まで（実績・注意）。
+    数字・ひらがな・記号（→・？）を含む言い回し（検知まで平均69秒・人手から自動へ・何ができる？）や、4字以上の漢字の言葉（世界初公開）はよい"""
+    t = re.sub(r"[\s　]+", "", text or "")
+    if not t:
+        return True
+    if re.search(r"[0-9０-９ぁ-ん→・？?！!〜～/／]", t):
+        return False
+    if re.fullmatch(r"[A-Za-z.\-+&']+", t) or re.fullmatch(r"[ァ-ヴー]+", t):
+        return True
+    return bool(re.fullmatch(r"[一-龥々]{1,3}", t))
+
+
+def label_problems(script_v3: dict) -> list[str]:
+    """左の列の見出し（label）とキーワード（keyword）: 場面ごとに違い、名詞1つだけではない（2026-11-04）"""
+    out = []
+    beats = [b for b in (script_v3 or {}).get("beats") or [] if isinstance(b, dict)]
+    for field_name, name in (("label", "見出し"), ("keyword", "キーワード")):
+        seen: dict[str, int] = {}
+        for i, b in enumerate(beats, 1):
+            text = (b.get(field_name) or "").strip()
+            if not text:
+                continue
+            key = norm(re.sub(r"[\s　？?]+", "", text)).lower()
+            if key in seen:
+                out.append(f"beat{i} の{name}「{text}」が beat{seen[key]} と同じ（場面ごとに違う言葉に）")
+            else:
+                seen[key] = i
+            if bare_phrase(text):
+                out.append(f"beat{i} の{name}「{text}」が名詞1つだけ（意味の分かる言い回しに。例: 何ができる？・検知まで平均69秒）")
+    return out
+
+
 def key_fact_ok(keyword: str, sub: str, text: str, ja: str = "") -> bool:
     """選択した証拠の文（英語なら訳も）に、その場面のキーワードの数字・言葉が入っているか"""
     hay = norm(f"{text} {ja}")
@@ -882,6 +916,9 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
                 result.reasons.append(f"v3: グラフの数字 {d} がキーワード・読み上げに無い")
     if calm:
         check_calm(report, end, result)
+    # 左の列の見出し・キーワード（同じ言葉の繰り返し・名詞1つだけは不合格。2026-11-04）
+    for p in label_problems(sv3):
+        result.reasons.append(f"v3: {p}")
     fonts = report.get("fonts") or []
     if not fonts or len(set(fonts)) > V3_MAX_FONTS:
         result.reasons.append(f"v3: 書体は{V3_MAX_FONTS}つまで（{fonts}）")

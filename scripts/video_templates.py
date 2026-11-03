@@ -19,7 +19,7 @@
 | breaking（速報） | 記事の breaking ＝ true（上の4つ＝データの型に当たらないとき） | SNS 用は 15〜25秒の短い版（答え1つ＋締め） |
 | default | どれにも当たらない | 今の承認済みの型のまま |
 
-切り替え: 環境変数 SNS_VIDEO_TEMPLATES=on のときだけ shorts_v3.make_versions がこの型を使う（既定 off ＝今のまま）。
+切り替え: 2026-11-04 オーナーの承認で既定 on（shorts_v3.make_versions が記事ごとに型を選ぶ）。SNS_VIDEO_TEMPLATES=off で今までの1つの型に戻る。
 見本は --template（またはこのファイルの --render）で作る。
 
 決まり（docs/owner_rules.md）:
@@ -43,7 +43,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
 ENV = "SNS_VIDEO_TEMPLATES"
-APPROVED = "default"  # オーナーが承認した今の型（shorts_v3 そのまま）
+APPROVED = "default"  # 型を使わないときの型（shorts_v3 そのまま。SNS_VIDEO_TEMPLATES=off のとき）
 TEMPLATES = ("launch", "pricing", "comparison", "security", "policy_money", "earnings", "breaking", "default")
 DATA_FIRST = ("security", "earnings", "comparison", "pricing")  # 速報でも、記事に形のあるデータがあればこちら
 NAMES = {
@@ -64,7 +64,7 @@ CARD_MODES = ("image", "specs", "checklist", "timeline", "figures", "versus")
 
 
 def enabled(env: dict | None = None) -> bool:
-    """新しい型を本番で使うか（既定 off。オーナーの承認後に GitHub の変数で on にする）"""
+    """新しい型を本番で使うか（2026-11-04 オーナー承認で既定 on。SNS_VIDEO_TEMPLATES=off で今までの1つの型に戻せる）"""
     return str((env if env is not None else os.environ).get(ENV, "off")).strip().lower() in ("on", "1", "true", "yes")
 
 
@@ -488,10 +488,11 @@ BREAKING_ENDING = {"text": "くわしくは記事で", "speech": "続きは記�
 
 
 def breaking_script(script: dict) -> dict:
-    """速報の SNS 版（15〜25秒）: つかみ → 答えの場面1つ（短ければ2つ）→ 締め。LLM は呼ばない（同じ台本から）"""
+    """速報の SNS 版（15〜25秒）: つかみ → これは何？（beat 1）→ 短ければ答えの場面 → 締め。LLM は呼ばない（同じ台本から）。
+    2026-11-04 オーナー「最初に何か・なぜ大事かを初心者向けに」→ beat 1 は必ず入れる"""
     beats = script.get("beats") or []
-    picks = [int(i) for i in (script.get("short_beats") or []) if isinstance(i, (int, float)) and 1 <= int(i) <= len(beats)] or [1]
-    picks = list(dict.fromkeys(picks))
+    chosen = [int(i) for i in (script.get("short_beats") or []) if isinstance(i, (int, float)) and 1 <= int(i) <= len(beats)]
+    picks = list(dict.fromkeys([1] + [b for b in chosen if b != 1]))
     hook_len = len((script.get("hook") or {}).get("speech", ""))
     keep = [picks[0]]
     # 九州そら（速さ1.38）は約1秒5.5字。つかみ＋場面＋締め（31字）＋間で 25秒を超えないように、2つめは短いときだけ

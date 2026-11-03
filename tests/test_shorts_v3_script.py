@@ -91,7 +91,7 @@ GOOD = {
              "1-3", "Fixture Recovery detects anomalies in 69 seconds on average.", "Fixture Recoveryは平均69秒で異常を検知します。"),
         beat("必要な人", "数千台のGPU", "学習を回す担当", "数千台のGPUで学習を回す担当者に向いています。夜の障害対応を、ツールに任せられます。",
              "1-2", "Manual recovery becomes unsustainable when jobs run on thousands of GPUs.", "数千台のGPUで学習を回すと、手作業の復旧は追いつきません。"),
-        beat("注意", "最初は監視モード", "勝手に操作しない", "最初は監視モードで始まり、勝手に操作することはありません。安心して試せます。",
+        beat("使う前の注意", "最初は監視モード", "勝手に操作しない", "最初は監視モードで始まり、勝手に操作することはありません。安心して試せます。",
              "1-4", "It starts in observe-only mode by default.", "最初は監視モードで始まります。"),
         beat("確かめ方", "GitHubで公開", "ソースコード", "ソースコードはギットハブで公開されています。まずは中身を読んでみてください。",
              "1-5", "The source code is available on GitHub.", "ソースコードはGitHubで公開されています。"),
@@ -209,7 +209,7 @@ class ScriptSelfCorrectTest(unittest.TestCase):
     def test_relax_keyword_to_word_in_translation(self):
         s = good()
         s["beats"][0]["keyword"] = "手作業から自動へ"  # 2026-11-03 の失敗と同じ形: 訳に無い言い回し
-        s["beats"][0]["ja"] = "数千台のGPUで学習を回すと、人の手での対応は追いつきません。"
+        s["beats"][0]["ja"] = "数千台のGPUで学習を回すと、学習の復旧が追いつきません。"  # 2026-11-04: 「数千台のGPU」は beat3 と同じなので使えない
         probs = self.problems(s)
         self.assertTrue(any("キーワード「手作業から自動へ」" in p for p in probs), probs)
         fixed = v3.repair_evidence(s, ARTICLE, self.pages)
@@ -217,7 +217,8 @@ class ScriptSelfCorrectTest(unittest.TestCase):
         kw = fixed["beats"][0]["keyword"]
         self.assertNotEqual(kw, "手作業から自動へ")
         self.assertIn(kw, fixed["beats"][0]["ja"])  # 証拠の訳にある言葉
-        self.assertIn(kw.lower(), gate.material_text(ARTICLE).lower())  # 記事にある言葉（作らない）
+        self.assertEqual(kw, "学習の復旧")  # ほかの場面と同じ言葉（数千台のGPU）・名詞1つだけ（学習）は選ばない
+        self.assertTrue(all(t in gate.material_text(ARTICLE) for t in gate._TERM.findall(kw)))  # 中の語は記事にある（作らない）
         self.assertEqual(fixed["beats"][0]["target"], s["beats"][0]["target"])  # 証拠と訳はそのまま
         self.assertFalse([p for p in self.problems(fixed) if v3.EVIDENCE_PROBLEM.search(p)])
 
@@ -245,13 +246,16 @@ class ScriptSelfCorrectTest(unittest.TestCase):
         # ほかの場面のキーワードと同じ言葉は後ろへ
         b2 = dict(b, keyword="人の代わりに", speech="", ja="数千台のGPUでは、復旧が追いつきません。")
         self.assertEqual(v3.keyword_candidates(b2, ARTICLE)[0], "数千台のGPU")
-        self.assertEqual(v3.keyword_candidates(b2, ARTICLE, ["数千台のGPU"])[0], "復旧")
+        # 2026-11-04: ほかの場面と同じ言葉・名詞1つだけ（復旧）は候補にしない（「答え クラスター」が4回続いた失敗）
+        self.assertEqual(v3.keyword_candidates(b2, ARTICLE, ["数千台のGPU"]), [])
+        b3 = dict(b2, ja="数千台のGPUでは、学習の復旧が追いつきません。")
+        self.assertEqual(v3.keyword_candidates(b3, ARTICLE, ["数千台のGPU"]), ["学習の復旧"])
 
     # ---- LLM の書き直し（偽物） -------------------------------------------- #
     def test_deterministic_fix_avoids_second_llm_call(self):
         s = self.long_script()
         s["beats"][0]["keyword"] = "手作業から自動へ"
-        s["beats"][0]["ja"] = "数千台のGPUで学習を回すと、人の手での対応は追いつきません。"
+        s["beats"][0]["ja"] = "数千台のGPUで学習を回すと、学習の復旧が追いつきません。"  # 2026-11-04: 「数千台のGPU」は beat3 と同じなので使えない
         fake = FakeLLM([s])
         data, model = self.run_write(fake)
         self.assertEqual(len(fake.prompts), 1)  # 書き直しを頼まずに通った

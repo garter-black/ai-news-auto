@@ -182,6 +182,52 @@ class ScriptTest(unittest.TestCase):
         self.assertNotIn("cards", vt.decorate("launch", dict(LAUNCH, body=""), self.SCRIPT, image_path=""))  # 写真が取れない・特長が無い → 足さない
 
 
+class LabelTest(unittest.TestCase):
+    """2026-11-04 オーナー: 左の列の見出し・キーワードが「答え クラスター」×4・「前と比べると Recovery」で意味が分からない"""
+
+    def setUp(self):
+        import importlib
+
+        try:
+            self.gate = importlib.import_module("video_gate")
+        except ImportError:  # pragma: no cover
+            self.skipTest("video_gate を読めない")
+
+    def test_bare_phrase(self):
+        for bad in ("クラスター", "Recovery", "NVIDIA Recovery", "実績", "注意", "オープンソース", ""):
+            self.assertTrue(self.gate.bare_phrase(bad), bad)
+        for ok in ("何ができる？", "検知まで平均69秒", "人手から自動へ", "止まっても自動で再開", "世界初公開", "金融・小売・交通", "学習の復旧", "GPU故障", "答えは？"):
+            self.assertFalse(self.gate.bare_phrase(ok), ok)
+
+    def test_label_problems(self):
+        nvidia = {"beats": [{"label": "答え", "keyword": "クラスター"}, {"label": "答え", "keyword": "クラスター"},
+                            {"label": "前と比べると", "keyword": "Recovery"}, {"label": "答え", "keyword": "クラスター"}]}  # fmt: skip
+        probs = self.gate.label_problems(nvidia)
+        joined = " ".join(probs)
+        self.assertIn("beat2 の見出し「答え」が beat1 と同じ", joined)
+        self.assertIn("beat2 のキーワード「クラスター」が beat1 と同じ", joined)
+        self.assertIn("キーワード「Recovery」が名詞1つだけ", joined)
+        good = {"beats": [{"label": "何ができる？", "keyword": "学習を自動で再開"}, {"label": "どれくらい速い？", "keyword": "検知まで平均69秒"},
+                          {"label": "前と何が違う？", "keyword": "人手から自動へ"}]}  # fmt: skip
+        self.assertEqual(self.gate.label_problems(good), [])
+
+
+@unittest.skipUnless(READY, "ffmpeg / numpy / Pillow / budoux が必要")
+class IntroTest(unittest.TestCase):
+    def test_short_versions_start_with_what_it_is(self):
+        """SNS 用の短い版・速報の版も beat 1（これは何？）から始まる"""
+        s = copy.deepcopy(ScriptTest.SCRIPT)
+        s["beats"][0]["label"] = "何ができる？"
+        s["short_beats"] = [2, 3]
+        short = v3.short_script(s)
+        self.assertEqual(short["beats"][0]["label"], "何ができる？")
+        self.assertEqual([b["label"] for b in short["beats"]], ["何ができる？", "プランの比較", "必要な人"])
+        self.assertEqual(short["compare"]["beat"], 2)  # 付け替え
+        brk = vt.breaking_script(s)
+        self.assertEqual(brk["beats"][0]["label"], "何ができる？")
+        self.assertIn("これは何？", v3.script_system())  # 台本の決まりにも書いてある
+
+
 @unittest.skipUnless(READY, "ffmpeg / numpy / Pillow / budoux が必要")
 class LintTest(unittest.TestCase):
     def test_cards_have_no_lines_or_bars(self):
@@ -267,6 +313,16 @@ class CardRenderTest(unittest.TestCase):
         self.assertTrue(r["gate"]["ok"], r["gate"]["reasons"])
         self.assertEqual(r["min_changes"], vt.BREAKING_MIN_CHANGES)
         self.assertGreaterEqual(r["gate"]["metrics"]["v3_changes"], vt.BREAKING_MIN_CHANGES)
+
+    def test_repeated_labels_fail_gate(self):
+        bad = copy.deepcopy(self.reports["b"])
+        for b in bad["script_v3"]["beats"]:
+            b["label"] = "答え"
+        bad["script_v3"]["beats"][0]["keyword"] = "クラスター"
+        res = gate.check_video(self.tmp / "b" / "fixture-ai-plan__v3.mp4", bad, t3.article(), "test")
+        self.assertFalse(res.ok)
+        self.assertTrue(any("見出し「答え」が beat1 と同じ" in x for x in res.reasons), res.reasons)
+        self.assertTrue(any("「クラスター」が名詞1つだけ" in x for x in res.reasons), res.reasons)
 
     def test_card_numbers_are_checked(self):
         """カードに記事に無い数字を描いたら落ちる（rendered_strings の照合）"""

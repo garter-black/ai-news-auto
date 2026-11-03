@@ -637,6 +637,8 @@ def script_system() -> str:
 ナレーションの話し方: {p['voice']} 詳しくて頼れる先輩が話すように、です・ます調で短い文。専門用語は普通の言葉に言い換える。
 
 # いちばん大事なこと
+**初心者でもわかるが、専門家が物足りなくない**動画にする（2026-11-04 オーナー）。最初に「それは何か・なぜ大事か・誰向けか」をやさしい言葉で言い、
+そのあとで本物の画面の証拠（数字・しくみ）を見せる。専門用語は最初に出たときに普通の言葉で言い換えるが、具体的な数字・しくみは省かない。
 hook の問いに、**具体的な数字と比較で答える**。忙しい会社員が頭の中で絵を描ける答えにする。
 「Proで足りない人向けです」のような、聞かなくても分かる答え・中身の無い言い回しは禁止。
 例（料金のニュース）: 問い「最上位プラン、月200ドル必要？」→ 答え「多くの人は月20ドルのProで足ります。毎日長い作業を任せる人だけ」
@@ -654,8 +656,11 @@ hook の問いに、**具体的な数字と比較で答える**。忙しい会�
 - hook（最初の2秒）: text は画面に大きく出す1行（12〜20字）。見る人が「自分ごと」になる問いかけ。
   payoff はその答えの手がかりになる数字のキーワード（8字以内・資料の表記どおり。例: 月200ドル）。speech は text を自然に読む1文（20字以内）。
   block / target は payoff の証拠になる画面の文字。できれば文字の大きい行（番号に「|大」）を選ぶ。
-- beats: {BEATS_MIN}〜{BEATS_MAX}個。話題に合わせて次の役目から選んで、この順に並べる（label は左上に小さく出す見出し・2〜7字）:
-  1. 答え（label 例: 答え）: hook の問いへの答えを1行で。誰ならイエスか。
+- beats: {BEATS_MIN}〜{BEATS_MAX}個。**1つめは必ず「これは何？」**、2つめ以降は話題に合わせて次の役目から選んで、この順に並べる:
+  0. これは何？（必ず beat 1。label 例: 何ができる？・どんなもの？）: 初めて聞く人向けに、主役が**何か**と、**なぜ大事か・誰向けか**を1〜2文・35〜65字で。
+     主役の名前で始める。例「NVIDIA Recoveryは、AIの学習が止まったときに自動で見つけて再開する仕組みです。GPUで大きなモデルを学習させる会社向けです。」
+     専門用語は普通の言葉に（GPU→AIの計算に使う部品、など。言い換えに資料に無い数字を入れない）。keyword は何ができるかの短い言葉（例: 学習を自動で再開）。
+  1. 答え（label 例: 答えは？・結論から）: hook の問いへの答えを1行で。誰ならイエスか。
   2. 比較（label 例: プランの比較・前と比べると）: 料金のニュースなら料金の段階を並べる（ladder を使う）。製品のニュースなら前の版・他のプランとの違い。
      並べて初めて分かる違いを1つ必ず言う（例: Maxは月100ドルでProの5倍、Ultraは月200ドルでProの10倍＝1ドルあたりの量は同じ。
      だからUltraを選ぶ理由は量ではなく、5時間制限が無いこと）。計算の答えを新しい数字として書かない（「同じ」「倍」のように言葉で）。
@@ -668,7 +673,10 @@ hook の問いに、**具体的な数字と比較で答える**。忙しい会�
      画面の keyword・sub も場面そのものを短く（例: keyword「集計→提案書を丸投げ」sub「朝から晩まで任せる」）。「長い作業を任せる」のような種類の言葉にしない。
   5. 要らない人・注意（label 例: 要らない人・注意）: これも具体的な仕事の場面で（例: 「1日に数回、メールの言い回しを相談する程度ならPro」）。条件（月払いのみ・アプリ経由は価格が違う）も入れてよい。
   6. 確かめ方・使い方（label 例: 確かめ方・使い方）: どこを押せば確かめられる・試せるか（例: 設定の使用状況）。
-  keyword: 画面に大きく出す言葉。2〜10字（短いほどよい）。文にしない。句読点を付けない。sub: 補足（14字以内。不要なら空）。
+  label: 左上に小さく出す見出し（2〜9字）。**その場面の中身が分かる日本語の言葉**にし、場面ごとに必ず違う言葉にする（同じ見出しを2回使わない）。
+  問いの形でもよい（何ができる？・前と何が違う？・どれくらい速い？・誰に効く？・どう試す？）。英語の製品名だけ・名詞1つだけ（実績・注意・Recovery）にしない。
+  keyword: 画面に大きく出す言葉。2〜10字（短いほどよい）。文にしない。句読点を付けない。**意味の分かる短い言い回し**にする（例: 学習を自動で再開・検知まで平均69秒・人手から自動へ）。
+  名詞1つだけ（クラスター）・英語の製品名だけ（Recovery）にしない。場面ごとに違う言葉にする（同じ keyword を2回使わない）。sub: 補足（14字以内。不要なら空）。
   speech: 読み上げ。短い文で1〜3文・60字以内。keyword の数字・名前を必ず含める。
   block: 下の「画面の文字」一覧の番号（例: 1-23）。target: その行の文字から、この beat の証拠になる部分を**一文字も変えずに**抜き出す（日本語は2〜40字。英語は100字まで）。
   英語の target は文として完結する範囲（文の頭から、文末のピリオドかカンマまで）を選ぶ。文の途中で切らない。
@@ -689,8 +697,8 @@ hook の問いに、**具体的な数字と比較で答える**。忙しい会�
   rows は2〜4行で name と count（公式の倍率の数字どおり。例: Pro 1・Max 5・Ultra 10。12まで）。公式に倍率が無ければ使わない。
 - compare: 2つを倍率で比べる事実があり、ladder を使わないときだけ。beat はその beat の番号、base は基準（例: Pro）、subject は相手（例: Ultra）、
   ratio は資料の表記どおりの倍率（例: 10倍）。無ければ beat=0、他は空文字。
-- short_beats: SNS 用の短い版（30〜40秒）に使う beat の番号を2つ（例: [1, 2]）。1つめは「答え」、2つめは「並べて初めて分かる違い」を言う beat。
-  短い版は hook → この2つ → 「◯◯は記事で」で終わるので、この2つだけで問いへの本当の答えが伝わる beat を選ぶ。
+- short_beats: SNS 用の短い版（30〜40秒）に使う beat の番号を2つ（beat 1 以外。例: [2, 3]）。1つめは「答え」、2つめは「並べて初めて分かる違い」を言う beat。
+  短い版は hook → beat 1（これは何？）→ この2つ → 「◯◯は記事で」で終わるので、これだけで問いへの本当の答えが伝わる beat を選ぶ（長すぎるときは2つめを落とす）。
 - conclusion: 最後の一言。text は16字以内で hook の問いに答える。speech は14〜30字。
 - title: 40字以内・主役の名前を入れて事実をそのまま。summary: 説明欄の要約。「要約すると、」で始めて80〜140字。hashtags: 3〜4個（#付き）。
 
@@ -711,6 +719,8 @@ REVIEW_SCHEMA = {
 
 def review_system() -> str:
     return """あなたは経済ニュース番組の厳しい編集長。短い解説動画の台本を読んで、次を判定する。
+0. beat 1 が「これは何？」になっているか（初めて聞く人が、主役が何で、なぜ大事か・誰向けかを最初の数秒で分かるか。専門家が退屈しない具体さもあるか）。
+   label と keyword が場面ごとに違い、意味の分かる言葉か（名詞1つだけ・英語の製品名だけ・同じ言葉の繰り返しは不合格）。
 1. hook の問いに、具体的な数字や比較で答えているか（忙しい会社員が頭の中で絵を描けるか）。
 2. 聞かなくても分かる当たり前の文・中身の無い言い回し（例:「Proで足りない人向けです」「用途に合わせて選びましょう」）が無いか。
 3. 料金のニュースなら料金の段階、製品のニュースなら使い方と比較があるか。並べて初めて分かる違い（例: 1ドルあたりの量が同じ・選ぶ理由は量ではなく制限の有無）を1つ言っているか。
@@ -862,6 +872,9 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
             out.append(f"beat{i}.speech が長すぎます（60字以内。今は{len(b.get('speech', ''))}字）。")
         if not (2 <= len(b.get("label", "")) <= 9):
             out.append(f"beat{i}.label は2〜7字の見出し（例: 答え・プランの比較）。")
+    out += [f"見出し: {p}" for p in gate.label_problems(s)]  # 同じ見出し・名詞1つだけの見出しやキーワード（ゲートでも見る）
+    if beats and len(beats[0].get("speech", "")) > 80:
+        out.append("beat1（これは何？）の speech は35〜65字で、主役が何か・誰向けかを短く。")
     total_speech = sum(len(x.get("speech", "")) for x in [hook, concl] + beats)
     if total_speech > SPEECH_TOTAL_MAX:
         out.append(f"読み上げの合計が長すぎます（{total_speech}字。{SPEECH_TOTAL_MAX - 30}字前後まで）。")
@@ -1087,6 +1100,8 @@ def keyword_candidates(beat: dict, article: dict, others: list[str] | None = Non
             continue
         overlap = any(t[k : k + 2] in old for k in range(len(t) - 1)) or t.lower() in old.lower()
         dup = any(t.lower() in o.lower() or o.lower() in t.lower() for o in others or [] if o)
+        if gate.bare_phrase(t) or any(gate.norm(t).lower() == gate.norm(o).lower() for o in others or [] if o):
+            continue  # 名詞1つだけ（クラスター）・英語の製品名だけ（Recovery）・ほかの場面と同じ言葉は、画面の大きな言葉にしない（2026-11-04）
         latin = bool(re.fullmatch(r"[A-Za-z0-9 .\-+]+", t))  # 英字だけ（製品名・社名）は画面の大きな言葉として弱いので後ろへ
         out.append(((0 if overlap else 1, 1 if dup else 0, 0 if any(gate._term_in(x, speech) for x in terms) else 1, 1 if latin else 0, abs(len(t) - 6), -len(t)), t))
     return [t for _, t in sorted(out)]
@@ -1440,20 +1455,24 @@ def length_targets(script: dict) -> tuple[float, float, tuple[float, float]]:
 
 
 def short_script(script: dict) -> dict:
-    """同じ台本から SNS 用の短い版を作る（LLM は呼ばない）: hook → 答え → 並べて初めて分かる違い → 「◯◯は記事で」。
+    """同じ台本から SNS 用の短い版を作る（LLM は呼ばない）: hook → これは何？（beat 1）→ 答え → 並べて初めて分かる違い → 「◯◯は記事で」。
+    2026-11-04 オーナー「最初に何か・なぜ大事かを初心者向けに」→ beat 1 は必ず入れる。長すぎる（読み上げ約200字超）ときは最後の場面を落とす。
     beat の番号を持つ ladder・units・flows・compare は新しい番号に付け替える"""
     beats = script.get("beats") or []
     n = len(beats)
-    picks = [int(i) for i in (script.get("short_beats") or []) if isinstance(i, (int, float)) and 1 <= int(i) <= n]
-    picks = list(dict.fromkeys(picks))[:2]
-    if len(picks) < 2:  # 台本に無いとき: 答え（1つめ）＋ 比較のグラフの beat（無ければ2つめ）
+    chosen = [int(i) for i in (script.get("short_beats") or []) if isinstance(i, (int, float)) and 1 <= int(i) <= n]
+    chosen = [b for b in dict.fromkeys(chosen) if b != 1][:2]
+    if not chosen:  # 台本に無いとき: 比較のグラフの beat（無ければ2つめ）
         graph = [int((script.get(k) or {}).get("beat") or 0) for k in ("ladder", "compare")] + [int(L.get("beat") or 0) for L in script.get("ladders") or []]
-        second = next((b for b in graph if b and b != 1), 2 if n >= 2 else 0)
-        picks = [b for b in dict.fromkeys([1, second]) if 1 <= b <= n]
+        chosen = [b for b in [next((b for b in graph if b and b != 1), 2 if n >= 2 else 0)] if 1 <= b <= n]
+    picks = [1] + chosen if n else []
+
     # 30秒に届かない（読み上げが約145字未満）なら、グラフの場面 → 次の場面の順に1つ足す（短すぎて答えが薄くならないように）
     def chars(ps: list[int]) -> int:
         return len((script.get("hook") or {}).get("speech", "")) + sum(len(beats[i - 1].get("speech", "")) for i in ps) + 24
 
+    while chars(picks) > 200 and len(picks) > 2:  # 45秒に収める（締めの案内の分を残す）
+        picks.pop()
     if chars(picks) < 145 and len(picks) < n:
         graph = [int((script.get(k) or {}).get("beat") or 0) for k in ("ladder", "compare", "units")] + [int(L.get("beat") or 0) for L in script.get("ladders") or []]
         extra = [b for b in graph if b and b not in picks] + [b for b in range(1, n + 1) if b not in picks]
@@ -2416,10 +2435,24 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
             sp = next((x for x in spots if x.page == cam.page and x.t0 <= t <= x.t1 and x.sel), None)
             if sp is None:
                 continue
-            r = sp.sel[-1] if side % 2 == 0 else sp.sel[0]
-            h = r[3] - r[1]
-            x = r[2] + h * 0.15 if side % 2 == 0 else r[0] + h * 0.3
-            clicks.append(Click(t, cam.page, x, r[1] + h * 0.7))
+            # 2026-11-04: カーソルが前に指した所のすぐ近くを指すと、絵がほとんど変わらずゲートに落ちていた（読んでいる文を指す）。
+            # 読んでいる文の行の左端・右端から、画面の上で前のカーソルの位置からいちばん遠い所を選ぶ（画面の外は選ばない）
+            prev = [c for c in clicks if c.page == cam.page and c.t < t]
+            last = max(prev, key=lambda c: c.t) if prev else None
+            px, py = cam.map(last.x, last.y) if last else (PW + 260.0, PH + 420.0)
+            cands = []
+            for r in sp.sel:
+                h = r[3] - r[1]
+                for k, x in enumerate((r[2] + h * 0.15, r[0] + h * 0.3)):
+                    sx, sy = cam.map(x, r[1] + h * 0.7)
+                    if 40 <= sx <= PW - 60 and 40 <= sy <= PH - 70:
+                        cands.append((math.hypot(sx - px, sy - py), (k + side) % 2, x, r[1] + h * 0.7))
+            if not cands:
+                r = sp.sel[-1] if side % 2 == 0 else sp.sel[0]
+                h = r[3] - r[1]
+                cands = [(0.0, 0, r[2] + h * 0.15 if side % 2 == 0 else r[0] + h * 0.3, r[1] + h * 0.7)]
+            _, _, x, y = max(cands, key=lambda c: (c[0], -c[1]))
+            clicks.append(Click(t, cam.page, x, y))
             ev(t, "click", "読んでいる文を指す")
             side += 1
             added = True
@@ -3481,8 +3514,8 @@ def prepare_versions(slug: str, a: dict, out_dir: Path, reuse: bool = False, ext
 def make_versions(slug: str, out_dir: Path, tts: str = "voicevox", reuse: bool = False, extra_pages: list[str] | None = None, template: str | None = None, **kw) -> dict:
     """同じ台本から2本: サイト用（全部）と SNS 用（短い版）。ページの撮影と台本は1回だけ。
     戻り値 {"full": report, "short": report}。どちらも例外は投げず report に残す。
-    template: 中身に合わせた型（video_templates）。None のときは SNS_VIDEO_TEMPLATES=on の間だけ記事から選ぶ。
-    既定（off）は今の承認済みの型そのまま（下の処理は 2026-11-03 までと同じ）"""
+    template: 中身に合わせた型（video_templates）。None のときは記事から選ぶ（2026-11-04 既定 on）。
+    SNS_VIDEO_TEMPLATES=off のときは型を使わない（下の処理。2026-11-03 までと同じ）"""
     a = shorts.load_article(slug)
     if template is None:
         import video_templates
