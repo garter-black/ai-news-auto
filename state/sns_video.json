@@ -461,6 +461,89 @@
       "link": "https://ai-tech-express.jp/articles/honda-rn0-emtb-eicma-2026?utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=short",
       "bufferId": "6ae937d17996caf141c3a729",
       "postedAt": "2026-11-03T01:24:43+00:00"
+    },
+    "elevenlabs-synthetic-voice-creation": {
+      "at": "2026-11-03T06:34:22+00:00",
+      "status": "ready",
+      "tries": 1,
+      "textAt": "2026-11-03T06:30:00+00:00",
+      "versions": {
+        "full": {
+          "ok": true,
+          "seconds": 56.354,
+          "reasons": [],
+          "post": {
+            "title": "ElevenLabsの音声クローン、自分の録音から声を再現する仕組み",
+            "url": "https://ai-tech-express.jp/articles/elevenlabs-synthetic-voice-creation",
+            "total": 56.354,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "自分の声をAIで読ませるには？"
+              },
+              "summary": "要約すると、ElevenLabsは2分未満の録音で声を再現するInstant Cloning、30分〜3時間の録音で感情や抑揚まで再現するProfessional Cloning、録音なしで文字から声を作るVoice Designを提供しています。日本から使えますが、料金は記事に記載がありません。"
+            }
+          }
+        },
+        "short": {
+          "ok": true,
+          "seconds": 36.742,
+          "reasons": [],
+          "post": {
+            "title": "ElevenLabsの音声クローン、自分の録音から声を再現する仕組み",
+            "url": "https://ai-tech-express.jp/articles/elevenlabs-synthetic-voice-creation",
+            "total": 36.742,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "自分の声をAIで読ませるには？"
+              },
+              "summary": "要約すると、ElevenLabsは2分未満の録音で声を再現するInstant Cloning、30分〜3時間の録音で感情や抑揚まで再現するProfessional Cloning、録音なしで文字から声を作るVoice Designを提供しています。日本から使えますが、料金は記事に記載がありません。"
+            }
+          }
+        }
+      },
+      "timings": {
+        "full": {
+          "script": 0.0,
+          "tts": 16.98,
+          "plan_audio": 3.97,
+          "render": 48.37,
+          "gate": 5.15,
+          "sheet": 2.06,
+          "total": 76.8
+        },
+        "short": {
+          "script": 0.0,
+          "tts": 10.74,
+          "plan_audio": 2.62,
+          "render": 29.75,
+          "gate": 3.87,
+          "sheet": 1.46,
+          "total": 48.5
+        }
+      },
+      "ok": true,
+      "reason": "",
+      "pages": [
+        "elevenlabs.io"
+      ],
+      "urls": {
+        "full": "https://ai-tech-express.jp/video/elevenlabs-synthetic-voice-creation-40960d4d45.mp4",
+        "short": "https://ai-tech-express.jp/video/elevenlabs-synthetic-voice-creation-2eb00ebe2a.mp4",
+        "poster": "https://ai-tech-express.jp/video/elevenlabs-synthetic-voice-creation-0a79e665a7.jpg"
+      },
+      "embedded": true
     }
   }
 }

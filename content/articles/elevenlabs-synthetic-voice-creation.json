@@ -120,5 +120,12 @@
     ],
     "ar": 1.31,
     "src": "https://ai-tech-express.jp/img/elevenlabs-synthetic-voice-creation-08d8c4df.jpg"
+  },
+  "video": {
+    "src": "https://ai-tech-express.jp/video/elevenlabs-synthetic-voice-creation-40960d4d45.mp4",
+    "poster": "https://ai-tech-express.jp/video/elevenlabs-synthetic-voice-creation-0a79e665a7.jpg",
+    "seconds": 56.4,
+    "title": "ElevenLabsの音声クローン、自分の録音から声を再現する仕組み",
+    "credit": "VOICEVOX:九州そら"
   }
 }
