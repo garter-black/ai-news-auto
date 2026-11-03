@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://blogs.nvidia.com/blog/developers-simulation-frontier-ai-agents/",
   "sourceName": "NVIDIA公式ブログ",
-  "title": "NVIDIAが公開、自律型AIでシミュレーション開発を効率化する新手法",
-  "seoTitle": "NVIDIAがシミュレーション開発支援のAI活用事例を公開　使い方と日本での状況",
+  "title": "NVIDIA、AIエージェントで「Omniverse」のシミュレーション開発を効率化する事例を公開",
+  "seoTitle": "NVIDIA Omniverseとは？AIエージェントでシミュレーション開発",
   "threadsPost": "【速報】NVIDIAが、自律型AIモデルを使いシミュレーション開発を自動化・効率化する複数の実践事例を公式ブログで公開しました。倉庫の復元やガスタービンの挙動検証など、開発者の作業をどう変えるのか。くわしく解説します。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -72,5 +72,6 @@
     "height": 675,
     "at": "2026-11-02T03:48:08+00:00"
   },
-  "originalTitle": "AI半導体のNVIDIAが公開、自律型AIでシミュレーション開発を効率化する新手法"
+  "originalTitle": "AI半導体のNVIDIAが公開、自律型AIでシミュレーション開発を効率化する新手法",
+  "titleStyle": "2026-11-03"
 }

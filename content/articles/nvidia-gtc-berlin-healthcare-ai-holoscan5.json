@@ -1,7 +1,7 @@
 {
   "slug": "nvidia-gtc-berlin-healthcare-ai-holoscan5",
-  "title": "NVIDIAが医療向けAI発表　創薬から手術支援まで自動化を促進",
-  "seoTitle": "NVIDIA医療AIとは：Holoscan 5と創薬AI",
+  "title": "NVIDIA、医療向け制御基盤「Holoscan 5」を発表　タンパク質設計AIも公開",
+  "seoTitle": "NVIDIA「Holoscan 5」とは？医療AIと創薬モデルの全容",
   "threadsPost": "【速報】NVIDIAが医療分野のAI最新技術を一挙公開。\nAIエージェントとリアルタイムロボットが創薬や放射線治療を自動化します。\n人手不足に悩む医療現場の作業効率を大きく高める取り組みです。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -142,5 +142,6 @@
     "ar": 1.7778,
     "src": "https://i.ytimg.com/vi/QqeKRvAkIc8/maxresdefault.jpg"
   },
-  "originalTitle": "AI半導体のNVIDIAが医療向けAI発表　創薬から手術支援まで自動化を促進"
+  "originalTitle": "AI半導体のNVIDIAが医療向けAI発表　創薬から手術支援まで自動化を促進",
+  "titleStyle": "2026-11-03"
 }

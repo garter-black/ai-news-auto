@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.niandc.co.jp/news/20261030_78488/",
   "sourceName": "NTT ニュースリリース",
-  "title": "NTTインテグレーションがAI導入検証サービス「Spyreトライアルサービス」を開始　IBM Power環境でのAI活用を支援",
-  "seoTitle": "Spyreトライアルサービスとは？料金やIBM PowerでのAI導入検証",
+  "title": "NTTインテグレーション、AI導入の検証サービス「Spyreトライアルサービス」を開始",
+  "seoTitle": "Spyreトライアルサービスとは？IBM PowerでのAI導入検証",
   "threadsPost": "結論：IBM Power環境でのAI導入を実機で試せる新サービスです。\nNTTインテグレーションが提供を開始し、初期投資を抑えてAI推論やRAGの検証ができます。\n既存の基幹業務データとAIを連携させたい企業に向いています。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -75,5 +75,7 @@
     "query": "サーバールーム",
     "original": "https://www.niandc.co.jp/wp-content/themes/nic/assets/images/common/ogp.png",
     "at": "2026-10-30T06:36:07+00:00"
-  }
+  },
+  "originalTitle": "NTTインテグレーションがAI導入検証サービス「Spyreトライアルサービス」を開始　IBM Power環境でのAI活用を支援",
+  "titleStyle": "2026-11-03"
 }

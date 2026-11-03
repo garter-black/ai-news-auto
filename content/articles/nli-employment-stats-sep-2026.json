@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.nli-research.co.jp/topics_detail1/id=87224?site=nli",
   "sourceName": "ニッセイ基礎研究所",
-  "title": "ニッセイ基礎研究所が雇用統計を解説、2026年9月の就業者数は振れが大きいも増加傾向",
-  "seoTitle": "雇用統計2026年9月、ニッセイ基礎研究所が労働市場の動きを解説",
+  "title": "9月の完全失業率は2.4％、就業者数は34万人増　ニッセイ基礎研が雇用統計を分析",
+  "seoTitle": "雇用統計2026年9月：失業率2.4％と就業者数の動き",
   "threadsPost": "就業者数が上がったり下がったりしながらも、全体としてはしっかり増えています。\nニッセイ基礎研究所がまとめた2026年9月の雇用関連統計によると、失業率は2.4％と横ばい傾向を維持しました。\n気になる労働市場の今を、分かりやすく読み解きます。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -108,5 +108,7 @@
         "url": "https://www.nli-research.co.jp/topics_detail1/id=87224?site=nli"
       }
     }
-  ]
+  ],
+  "originalTitle": "ニッセイ基礎研究所が雇用統計を解説、2026年9月の就業者数は振れが大きいも増加傾向",
+  "titleStyle": "2026-11-03"
 }

@@ -1,6 +1,6 @@
 {
   "slug": "microsoft-scale-one-ai-agent-across-sites",
-  "title": "Microsoftが製造業向けAI構想を発表　1つのAIを300箇所の工場に一括展開する新手法",
+  "title": "Microsoft、製造業向けAIエージェントの展開手法を公開　1つの設計を300の工場に適用",
   "seoTitle": "Microsoftの製造業AIとは：1つのエージェントを300工場で運用",
   "threadsPost": "工場300箇所のAI、1つの仕組みで動かす。\n\nマイクロソフトが製造業でのAIエージェント展開手法を発表しました。\nクラウドや現場のPCなど動作環境が違っても、1つの設計図で一括管理できます。",
   "threadsHook": "number",
@@ -78,5 +78,7 @@
   "generatedAt": "2026-10-27T12:00:46.127691+00:00",
   "thumbnail": "https://i.ytimg.com/vi/TRHV_Ze4x5M/maxresdefault.jpg",
   "model": "gemini-3.5-flash",
-  "affiliates": []
+  "affiliates": [],
+  "originalTitle": "Microsoftが製造業向けAI構想を発表　1つのAIを300箇所の工場に一括展開する新手法",
+  "titleStyle": "2026-11-03"
 }

@@ -1,7 +1,7 @@
 {
   "slug": "nvidia-gtc-grid-reliability-resiliency",
-  "title": "NVIDIAと欧州エネルギー大手が挑む送配電網のAI自律化と防衛戦略",
-  "seoTitle": "送配電網のAI自律化とは？NVIDIAと欧州大手の電力防衛",
+  "title": "NVIDIA、欧州電力大手と送配電網のAI自律制御を議論　GTC Berlinで防衛策も紹介",
+  "seoTitle": "送配電網のAI自律化　NVIDIAと欧州電力大手の取り組み",
   "threadsPost": "AIを動かす電力、実は送配電網の限界に直面しています。ドイツの電力大手BayernwerkやTenneT、Siemens EnergyがNVIDIAのAIを使って送配電網の自律化やサイバー防衛を本格化させました。自動運転の技術を変圧器の監視やテロ対策に応用する試みです。安定給電を守る現場の挑戦をまとめました。",
   "threadsHook": "contrarian",
   "threadsStyle": 2,
@@ -99,5 +99,7 @@
   "generatedAt": "2026-10-30T12:17:10.210687+00:00",
   "thumbnail": "https://i.ytimg.com/vi/JXEMFLQwi4A/maxresdefault.jpg",
   "model": "gemini-flash-latest",
-  "affiliates": []
+  "affiliates": [],
+  "originalTitle": "NVIDIAと欧州エネルギー大手が挑む送配電網のAI自律化と防衛戦略",
+  "titleStyle": "2026-11-03"
 }

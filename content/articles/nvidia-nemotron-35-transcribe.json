@@ -4,7 +4,7 @@
   "sourceUrl": "https://huggingface.co/blog/nvidia/nemotron-transcribe-granary",
   "sourceName": "Hugging Face公式ブログ",
   "title": "NVIDIAの音声AI「Nemotron 3.5 Transcribe」登場　文字起こしと話者の識別に対応",
-  "seoTitle": "NVIDIA Nemotron 3.5とは？機能と日本語対応状況",
+  "seoTitle": "Nemotron 3.5 Transcribeとは？NVIDIAの音声認識モデル",
   "threadsPost": "音声の文字起こしや話者分けをまとめてこなせる、NVIDIAの新しい音声AIモデルが登場しました。40言語の文字起こしや最大8人の話者識別に対応し、オープンモデルとして公開されています。GPU1台で高速に処理できるのが特徴です。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -81,5 +81,6 @@
     "query": "server room",
     "original": "https://cdn-uploads.huggingface.co/production/uploads/68127936de624fb6f57d9989/3vFxCEUXz_xJVrTBr4hNr.jpeg",
     "at": "2026-10-28T15:48:32+00:00"
-  }
+  },
+  "titleStyle": "2026-11-03"
 }

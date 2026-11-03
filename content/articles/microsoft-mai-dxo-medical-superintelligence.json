@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://microsoft.ai/news/building-medical-superintelligence/",
   "sourceName": "Microsoft Source（ニュースルーム）",
-  "title": "マイクロソフトが医療AI診断システムを発表。医師を上回る精度で病気を特定",
-  "seoTitle": "マイクロソフトの医療AI診断システム MAI-DxOの全貌",
+  "title": "Microsoft、医療AI診断システム「MAI-DxO」を発表　難症例で医師を上回る精度",
+  "seoTitle": "Microsoft「MAI-DxO」とは？医療AI診断システムの仕組み",
   "threadsPost": "複雑な診断、AIは医師より正確にできるのか。\n救急や難解な症例で、医師を超える診断精度を記録した新システムが登場。\n複数のAIが議論して答えを導く仕組みとは。\n\n✅ 難治性症例で医師の数倍の精度\n✅ コストを抑えた段階的診断プロセス\n記事で👇",
   "threadsHook": "number",
   "writingVoice": "senpai",
@@ -69,5 +69,6 @@
     "width": 1200,
     "height": 672,
     "at": "2026-11-02T03:58:05+00:00"
-  }
+  },
+  "titleStyle": "2026-11-03"
 }

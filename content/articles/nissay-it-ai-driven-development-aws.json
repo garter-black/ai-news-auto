@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/jp/blogs/news/ai-dlc-unicorn-gym-nissay-it-202611/",
   "sourceName": "AWS ブログ（日本）",
-  "title": "ニッセイ情報テクノロジー、個人保険システムでAI駆動開発に挑戦　AWSの新ワークフローを活用",
-  "seoTitle": "ニッセイ情報テクノロジーのAI駆動開発　AWS新ワークフロー活用",
+  "title": "ニッセイ情報テクノロジー、個人保険システムの保守にAI駆動開発を適用　AWSの新手法を活用",
+  "seoTitle": "ニッセイ情報テクノロジーのAI駆動開発とAWS新ワークフロー",
   "threadsPost": "金融系の基幹システム開発にAIはどう使える？ニッセイ情報テクノロジーがAWSの新ワークフローを使って、個人保険システムの保守開発に挑んだ事例が公開されました。内製ツールと組み合わせた実践的な取り組みの工夫が分かります。",
   "threadsHook": "question",
   "threadsStyle": 2,
@@ -90,5 +90,7 @@
     ],
     "ar": 1.3333,
     "src": "https://ai-tech-express.jp/img/nissay-it-ai-driven-development-aws-1b5fccad.jpg"
-  }
+  },
+  "originalTitle": "ニッセイ情報テクノロジー、個人保険システムでAI駆動開発に挑戦　AWSの新ワークフローを活用",
+  "titleStyle": "2026-11-03"
 }

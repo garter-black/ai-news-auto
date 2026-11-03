@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://openai.com/index/rewarding-defenders-with-bigger-bug-bounties",
   "sourceName": "OpenAI公式ブログ",
-  "title": "OpenAIがセキュリティのバグ報奨金を増額　ChatGPTの重大な穴は最大3万ドルに",
+  "title": "OpenAI、セキュリティのバグ報奨金を増額　ChatGPTなどの重大な欠陥は最大3万ドル",
   "seoTitle": "OpenAIバグ報奨金とは？重大な欠陥は最大3万ドルに増額",
   "threadsPost": "セキュリティに強いエンジニアの人、これは見てほしいです。\n\n要約すると、ChatGPTを開発するOpenAIが、バグ報奨金を大きく引き上げました。\nChatGPTなど主力製品の重大な欠陥は、最大3万ドルになります。\n\nあなたは、仕事でセキュリティ診断をしたことがありますか？",
   "threadsHook": "callout",
@@ -169,5 +169,7 @@
     ],
     "ar": 1.7778,
     "src": "https://ai-tech-express.jp/img/openai-bigger-bug-bounties-4ec0e48b.jpg"
-  }
+  },
+  "originalTitle": "OpenAIがセキュリティのバグ報奨金を増額　ChatGPTの重大な穴は最大3万ドルに",
+  "titleStyle": "2026-11-03"
 }

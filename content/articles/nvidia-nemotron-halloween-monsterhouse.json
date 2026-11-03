@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://huggingface.co/blog/nvidia/nemotron-halloween",
   "sourceName": "Hugging Face公式ブログ",
-  "title": "NVIDIAのAIが動かす「しゃべる不機嫌なガレージドア」とは？ローカルで動く音声エージェントの仕組み",
-  "seoTitle": "NVIDIA Nemotron Halloweenとは？仕組みと使い方",
+  "title": "NVIDIA社員、ローカルで動く音声エージェント「MonsterHouse」の仕組みを公開",
+  "seoTitle": "NVIDIA Nemotron MonsterHouseとは？仕組みと使い方",
   "threadsPost": "【速報】NVIDIAが、ハロウィン向けのしゃべる不機嫌なガレージドアの仕組みを公開しました。\nローカルのワークステーション1台で動く音声エージェントの、驚きの仕組みを解説します。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -100,5 +100,7 @@
     ],
     "ar": 1.8519,
     "src": "https://ai-tech-express.jp/img/nvidia-nemotron-halloween-monsterhouse-6c7accef.jpg"
-  }
+  },
+  "originalTitle": "NVIDIAのAIが動かす「しゃべる不機嫌なガレージドア」とは？ローカルで動く音声エージェントの仕組み",
+  "titleStyle": "2026-11-03"
 }

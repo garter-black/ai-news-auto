@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://developer.nvidia.com/blog/build-world-models-for-interactive-simulation-with-nvidia-cosmos/",
   "sourceName": "NVIDIA Developer Blog",
-  "title": "NVIDIAが物理AI向け世界モデル「Cosmos」を拡張　自動運転やロボットのシミュレーションを高速化",
-  "seoTitle": "NVIDIA Cosmosとは？ロボット・自動運転向け世界モデルの機能と使い方",
+  "title": "NVIDIA、物理AI向け世界モデル「Cosmos」を拡張　自動運転やロボットのシミュレーションを高速化",
+  "seoTitle": "NVIDIA Cosmosとは？ロボット・自動運転向け世界モデル",
   "threadsPost": "ついに来た。自動運転やロボット開発に使えるNVIDIAの新しい世界モデル。\n\n要約すると、NVIDIAが物理AI向けプラットフォーム「Cosmos」を拡張し、ロボットや自動運転向けのシミュレーション機能などを公開した。\nH200 GPU環境で高速な推論も実現している。\n\n自動運転やロボットの開発に携わっていますか？",
   "threadsHook": "finally",
   "threadsStyle": 3,
@@ -92,5 +92,7 @@
     ],
     "ar": 1.25,
     "src": "https://ai-tech-express.jp/img/nvidia-cosmos-world-models-simulation-9d78afc4.jpg"
-  }
+  },
+  "originalTitle": "NVIDIAが物理AI向け世界モデル「Cosmos」を拡張　自動運転やロボットのシミュレーションを高速化",
+  "titleStyle": "2026-11-03"
 }

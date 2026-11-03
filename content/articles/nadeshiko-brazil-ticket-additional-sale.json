@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.jfa.jp/news/00036955/",
   "sourceName": "日本サッカー協会（JFA）",
-  "title": "サッカーなでしこジャパン対ブラジル戦、広島開催分の追加販売が決定",
-  "seoTitle": "なでしこジャパン対ブラジル女子代表、10月31日からチケット追加販売",
+  "title": "JFA、なでしこジャパン対ブラジル戦のチケットを追加販売　10月31日午前10時から",
+  "seoTitle": "なでしこジャパン対ブラジル戦　広島のチケット追加販売",
   "threadsPost": "チケット探してた人、まだチャンスあります。11月29日開催のなでしこジャパン対ブラジル女子代表戦で、バックスタンド席の追加販売が決まりました。✅10月31日午前10時から先着順で販売開始✅チケットJFAのみでの取り扱い詳細は記事で👇",
   "threadsHook": "callout",
   "writingVoice": "senpai",
@@ -65,5 +65,6 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.jfa.jp/img/cache/6acda72f-cfac-4140-91a4-7cb4d3093d95.jpg",
     "at": "2026-10-28T03:42:56+00:00"
-  }
+  },
+  "titleStyle": "2026-11-03"
 }

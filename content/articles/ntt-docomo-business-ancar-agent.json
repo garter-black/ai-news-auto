@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.ntt.com/about-us/press-releases/news/article/2026/1028.html",
   "sourceName": "NTT ニュースリリース",
-  "title": "NTTドコモビジネス、AIが電話応対を自律実行する新サービス「ANCAR Agent」を発表",
-  "seoTitle": "docomo business ANCARとは？AI新機能とマーケティング活用",
+  "title": "NTTドコモビジネス、AIが電話応対を自動で行う「ANCAR Agent」を発表",
+  "seoTitle": "docomo business ANCAR Agentとは？AI電話応対の機能",
   "threadsPost": "電話応対、まだ人が対応していませんか？\nNTTドコモビジネスが発表した新サービスは、AIが電話の一次対応から予約・注文の手続きまで自律的に完結させるもの。\n人手不足の現場で、AIが窓口業務を支える仕組みになりそうです。",
   "threadsHook": "question",
   "threadsStyle": 2,
@@ -73,5 +73,7 @@
     "query": "call center",
     "original": "https://www.ntt.com/content/dam/nttcom/hq/cmn/img/logo-ogp-1200-630_release-2022.png",
     "at": "2026-10-28T04:07:01+00:00"
-  }
+  },
+  "originalTitle": "NTTドコモビジネス、AIが電話応対を自律実行する新サービス「ANCAR Agent」を発表",
+  "titleStyle": "2026-11-03"
 }

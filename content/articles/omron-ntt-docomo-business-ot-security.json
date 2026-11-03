@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://www.ntt.com/about-us/press-releases/news/article/2026/1027_2.html",
   "sourceName": "NTT ニュースリリース",
-  "title": "オムロンとNTTドコモビジネスが提携、工場の製造現場をサイバー攻撃から守る新サービス",
+  "title": "オムロンとNTTドコモビジネス、製造現場のセキュリティで協業　制御システムとITを一体で保護",
   "seoTitle": "オムロンとNTTドコモビジネスが提携　工場セキュリティの新サービス",
   "threadsPost": "【速報】オムロンとNTTドコモビジネスが、製造現場のセキュリティ対策で協業を開始しました。\n\n工場の設備とITネットワークを統合して監視し、サイバー攻撃のリスクを可視化。現場の止まらない安定稼働を支援します。",
   "threadsHook": "breaking",
@@ -67,5 +67,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.ntt.com/content/dam/nttcom/hq/cmn/img/logo-ogp-1200-630_release-2022.png",
     "at": "2026-10-28T04:00:48+00:00"
-  }
+  },
+  "originalTitle": "オムロンとNTTドコモビジネスが提携、工場の製造現場をサイバー攻撃から守る新サービス",
+  "titleStyle": "2026-11-03"
 }

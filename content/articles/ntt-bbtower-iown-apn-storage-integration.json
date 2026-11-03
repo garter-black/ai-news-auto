@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://www.ntt-east.co.jp/release/detail/20261027_01.html",
   "sourceName": "NTT ニュースリリース",
-  "title": "NTTとブロードバンドタワー、東京～北海道間1,000km超のストレージ統合実証に成功",
+  "title": "NTT東日本とブロードバンドタワー、東京〜北海道間1000km超でストレージ統合の実証に成功",
   "seoTitle": "NTTのIOWN APN、東京-北海道1000km超のストレージ統合実証に成功",
   "threadsPost": "NTT東日本とブロードバンドタワーが、次世代通信基盤「IOWN APN」を使い、東京と北海道の1,000km超離れたデータセンター間でストレージ統合の実証に成功しました。遠隔地でも同一拠点と同等の読み出し性能を実現し、データセンターの地方分散を推進します。",
   "threadsHook": "conclusion",
@@ -89,5 +89,7 @@
       "sourceName": "NTT ニュースリリース"
     }
   ],
-  "updatedAt": "2026-10-30T09:31:34.740477+00:00"
+  "updatedAt": "2026-10-30T09:31:34.740477+00:00",
+  "originalTitle": "NTTとブロードバンドタワー、東京～北海道間1,000km超のストレージ統合実証に成功",
+  "titleStyle": "2026-11-03"
 }

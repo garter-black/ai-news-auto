@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://blogs.nvidia.co.jp/blog/local-ai-gtc-rtx-dgx-spark-station-sync/",
   "sourceName": "NVIDIA日本版ブログ",
-  "title": "NVIDIAが欧州GTCでローカルAIの全貌を公開、RTX SparkやDGX Sparkの展開を加速",
-  "seoTitle": "NVIDIAローカルAI発表：RTX SparkとDGX Sparkの全貌｜GTC Berlin",
+  "title": "NVIDIA、GTC BerlinでローカルAI製品群を発表　「DGX Spark 64GB」は10月23日発売",
+  "seoTitle": "NVIDIAのローカルAI発表　RTX SparkとDGX Sparkの全貌",
   "threadsPost": "ついに来た。手元のPCやサーバーで高度なAIエージェントを動かすためのハードウェアとソフトウェアが、欧州GTCで一挙に拡充されました。\nノートPCから巨大クラスターまで、ローカルAIの選択肢がさらに広がっています。\n\n✅ 最大128GBメモリのRTX Sparkでパーソナルエージェントが動作\n✅ 新開発のコーディングモデル「Recursive Flint」を公開初日からサポート\n\n編集部としてはここからの実機検証が楽しみです。\n記事で👇",
   "threadsHook": "finally",
   "writingVoice": "honest",
@@ -76,5 +76,7 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T03:58:29+00:00"
-  }
+  },
+  "originalTitle": "NVIDIAが欧州GTCでローカルAIの全貌を公開、RTX SparkやDGX Sparkの展開を加速",
+  "titleStyle": "2026-11-03"
 }

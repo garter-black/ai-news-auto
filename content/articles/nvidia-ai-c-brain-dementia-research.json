@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://blogs.nvidia.com/blog/open-source-ai-tools-cbrain-dementia/",
   "sourceName": "NVIDIA公式ブログ",
-  "title": "NVIDIAのAI技術が挑む認知症研究の加速、データ解析を数週間から数時間へ",
-  "seoTitle": "NVIDIAの認知症研究AIツールとは？仕組みと影響を解説",
+  "title": "NVIDIA、認知症研究コンソーシアムC-BRAINを支援　データ解析を数分に短縮",
+  "seoTitle": "NVIDIAとC-BRAINの認知症研究AI：OpenScientistとは",
   "threadsPost": "結論：世界中の認知症研究のスピードが、AIの力で数週間から数時間に短縮されます。\nNVIDIAが支援する研究コンソーシアム「C-BRAIN」が、これまで未公開だったデータや未発表の成果を安全に解析するオープンソースのAIツールを公開しました。\n研究の足かせだった膨大なデータを、どうやって数時間で分析できるようになったのでしょうか。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -71,5 +71,7 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T03:54:37+00:00"
-  }
+  },
+  "originalTitle": "NVIDIAのAI技術が挑む認知症研究の加速、データ解析を数週間から数時間へ",
+  "titleStyle": "2026-11-03"
 }

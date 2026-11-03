@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://developer.nvidia.com/blog/run-ai-models-for-edge-application-development-with-just-a-few-commands/",
   "sourceName": "NVIDIA Developer Blog",
-  "title": "NVIDIA、AI開発を数コマンドで始められる「TensorRT Edge-LLM」公開",
-  "seoTitle": "NVIDIA TensorRT Edge-LLMとは？使い方と日本での提供状況",
+  "title": "NVIDIA、エッジAI開発を数コマンドで始められる「TensorRT Edge-LLM」を公開",
+  "seoTitle": "NVIDIA TensorRT Edge-LLMとは？使い方と提供状況",
   "threadsPost": "【速報】NVIDIAがエッジ向けAI開発を数コマンドで始められる「TensorRT Edge-LLM」を公開しました。\n組み込みデバイス向けの軽量C++推論ランタイムを提供し、Nemotron-3.5 Lightningなどを手軽に動かせるようになります。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -96,5 +96,6 @@
     "title": "NVIDIA、TensorRT Edge-LLMを公開 数コマンドでAI開発",
     "credit": "VOICEVOX:九州そら"
   },
-  "originalTitle": "半導体大手のNVIDIA、AI開発を数コマンドで始められる「TensorRT Edge-LLM」公開"
+  "originalTitle": "半導体大手のNVIDIA、AI開発を数コマンドで始められる「TensorRT Edge-LLM」公開",
+  "titleStyle": "2026-11-03"
 }

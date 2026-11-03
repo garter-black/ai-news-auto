@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://mistral.ai/news/mistral-large-4/",
   "sourceName": "Mistral AI公式ニュース",
-  "title": "欧州Mistral AIが新AIモデル「Mistral Large 4」を公開　1兆パラメータ、重みは月末公開",
-  "seoTitle": "Mistral Large 4とは？日本で使える？料金も",
+  "title": "仏Mistral AI、新AIモデル「Mistral Large 4」の重みを公開　1兆パラメータ",
+  "seoTitle": "Mistral Large 4とは？重みの公開と特徴・ライセンス",
   "threadsPost": "【速報】フランスのAI企業Mistral AIが、新しいAIモデル「Mistral Large 4」のプレビューを公開しました。\n1兆パラメータ規模で、画像も読めます。\nセキュリティ調査やコード作成が得意とのこと。\n今はAPIで試せる段階で、中身のデータは月末に公開予定。価格は元記事では未掲載です。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -96,5 +96,7 @@
     }
   ],
   "updatedAt": "2026-10-29T15:56:24.108805+00:00",
-  "duplicateReason": "製品名が一致（large4・mistrallarge4）"
+  "duplicateReason": "製品名が一致（large4・mistrallarge4）",
+  "originalTitle": "欧州Mistral AIが新AIモデル「Mistral Large 4」を公開　1兆パラメータ、重みは月末公開",
+  "titleStyle": "2026-11-03"
 }

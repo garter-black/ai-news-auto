@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.nttdata-strategy.com/newsrelease/261029/",
   "sourceName": "NTT ニュースリリース",
-  "title": "NTTデータ経営研究所、AIで未来の兆しを先読みするコンサル支援「SPARK」を開始",
-  "seoTitle": "SPARKとは？NTTデータ経営研究所のAIコンサル支援の概要",
+  "title": "NTTデータ経営研究所、AIで変化の兆しを分析するコンサルサービス「SPARK」を開始",
+  "seoTitle": "SPARKとは？NTTデータ経営研究所のAIコンサル",
   "threadsPost": "NTTデータ経営研究所が、AIを活用したコンサルティングサービス「SPARK」を立ち上げました。AIで未来の兆しを先読みし、人間の判断と組み合わせて戦略立案を支援する仕組みです。まずは「AI Foresight & Intelligence」から提供が始まっています。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -72,5 +72,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.nttdata-strategy.com/images/ogp/ogp-common.jpg",
     "at": "2026-10-29T06:53:58+00:00"
-  }
+  },
+  "originalTitle": "NTTデータ経営研究所、AIで未来の兆しを先読みするコンサル支援「SPARK」を開始",
+  "titleStyle": "2026-11-03"
 }

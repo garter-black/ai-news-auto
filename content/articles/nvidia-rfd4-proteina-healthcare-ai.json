@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://blogs.nvidia.co.jp/blog/healthcare-and-life-sciences-leaders-build-on-nvidia-to-advance-drug-discovery-and-expand-patient-care/",
   "sourceName": "NVIDIA日本版ブログ",
-  "title": "NVIDIAがタンパク質設計のオープンモデル「RFD4-Proteina」などを発表、ヘルスケア・創薬を加速",
-  "seoTitle": "NVIDIAタンパク質設計モデルRFD4-Proteina発表",
+  "title": "NVIDIA、タンパク質設計の公開モデル「RFD4-Proteina」を発表",
+  "seoTitle": "NVIDIA「RFD4-Proteina」とは？タンパク質設計モデル",
   "threadsPost": "平均閲覧1.2の型を検証\n3時間かかってたタンパク質設計の探索プロセスが、最先端AIモデルで劇的に変わるかも。\nNVIDIAがワシントン大学などと共同で、新たなオープンモデル「RFD4-Proteina」を発表。創薬や医療現場をどう変えるのか、医療・ライフサイエンス分野の最新動向を整理しました。\n\n✅ ワシントン大学医学部タンパク質設計研究所との共同開発\n✅ Siemens Healthineersなど各社が次世代医療や自動化ラボで活用\n\n記事で👇",
   "threadsHook": "before_after",
   "writingVoice": "qa",
@@ -67,5 +67,7 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T03:57:54+00:00"
-  }
+  },
+  "originalTitle": "NVIDIAがタンパク質設計のオープンモデル「RFD4-Proteina」などを発表、ヘルスケア・創薬を加速",
+  "titleStyle": "2026-11-03"
 }

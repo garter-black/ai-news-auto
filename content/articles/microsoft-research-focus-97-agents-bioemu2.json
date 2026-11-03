@@ -1,6 +1,6 @@
 {
   "slug": "microsoft-research-focus-97-agents-bioemu2",
-  "title": "Microsoftが最新AI研究7選を発表　業務エージェントから創薬・気象予測まで",
+  "title": "Microsoft、AI研究7件を公開　エージェントの推論負荷を最大59%削減",
   "seoTitle": "Microsoft最新AI研究まとめ　エージェントとBioEmu2の性能",
   "threadsPost": "AIの回答を待つコスト、最大59%削れるかもしれません。\n米マイクロソフトが業務AIエージェントの自己改善技術「ForkPilot」や、分子シミュレーションAI「BioEmu2」などを発表しました。\nバイオAIのBioEmu2はオープンソースとして無料公開されています。\n自律型AIの実務導入を考えている開発者は必見です。",
   "threadsHook": "number",
@@ -95,5 +95,7 @@
   "generatedAt": "2026-10-30T12:37:23.378721+00:00",
   "thumbnail": "https://i.ytimg.com/vi/k6oC-6TPAr8/maxresdefault.jpg",
   "model": "gemini-flash-latest",
-  "affiliates": []
+  "affiliates": [],
+  "originalTitle": "Microsoftが最新AI研究7選を発表　業務エージェントから創薬・気象予測まで",
+  "titleStyle": "2026-11-03"
 }

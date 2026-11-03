@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://group.ntt/jp/newsrelease/2026/10/27/261027b.html",
   "sourceName": "NTT ニュースリリース",
-  "title": "NTTが遠方の小物体を3倍以上先で検知する映像監視技術を実証、4K映像のAI推論でインフラ監視を効率化",
+  "title": "NTT、遠方の小さな物体を3倍以上の距離で検知する映像監視技術を実証　4K映像をAIで解析",
   "seoTitle": "NTT、遠方小物体を3倍検知する映像監視技術を発表",
   "threadsPost": "結論：無料プランの人も今日から使えます。\n道路や空港などのインフラ監視を効率化する、新しい4K映像のAI解析技術が発表されました。\nNTTが独自開発した超高精細映像AI推論LSIを活用し、遠方の小さな対象を従来比3倍以上の距離で検知できます。",
   "threadsHook": "conclusion",
@@ -68,5 +68,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://group.ntt/common/img/ogp.jpg?20250701",
     "at": "2026-10-28T03:39:32+00:00"
-  }
+  },
+  "originalTitle": "NTTが遠方の小物体を3倍以上先で検知する映像監視技術を実証、4K映像のAI推論でインフラ監視を効率化",
+  "titleStyle": "2026-11-03"
 }

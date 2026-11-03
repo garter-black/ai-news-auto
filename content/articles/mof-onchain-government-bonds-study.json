@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.mof.go.jp/about_mof/councils/study_on_chain/index.html",
   "sourceName": "財務省",
-  "title": "財務省が「国債のオンチェーン対応に関する研究会」を開催、第2回会合までの議事要旨を公開",
-  "seoTitle": "財務省：国債のオンチェーン対応に関する研究会",
+  "title": "財務省が国債のオンチェーン対応に関する研究会の議事要旨を公開　第2回会合まで",
+  "seoTitle": "財務省の国債オンチェーン対応研究会　第2回までの内容",
   "threadsPost": "国債のデジタル化に向けた議論が進んでいます。\n\n要約すると、財務省が「国債のオンチェーン対応に関する研究会」を立ち上げました。\n令和8年9月末の設置から、10月までに2回の会合が開催されています。\n\nブロックチェーン技術を活用した国債の取引について、今後の動向が気になりますか？",
   "threadsHook": "question",
   "threadsStyle": 3,
@@ -78,5 +78,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/mof-onchain-government-bonds-study-fadf101b.jpg"
-  }
+  },
+  "originalTitle": "財務省が「国債のオンチェーン対応に関する研究会」を開催、第2回会合までの議事要旨を公開",
+  "titleStyle": "2026-11-03"
 }

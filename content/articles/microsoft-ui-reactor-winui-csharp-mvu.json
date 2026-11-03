@@ -4,7 +4,7 @@
   "sourceUrl": "https://devblogs.microsoft.com/ifdef-windows/microsoft-ui-reactor-a-c-first-way-to-build-winui-apps/",
   "sourceName": "Microsoft公式",
   "title": "MicrosoftがWinUIアプリ開発の新ツール「Reactor」発表　XAML不要でC#だけで記述可能に",
-  "seoTitle": "Microsoft.UI.Reactorとは？使い方と料金　日本での提供状況",
+  "seoTitle": "Microsoft.UI.Reactorとは？C#だけで書けるWinUI開発",
   "threadsPost": "Windowsアプリを作っている人には、気になるニュースです。\n\nMicrosoftがデザイン言語（XAML）を使わず、C#だけで画面を作れるツール「Reactor」を実験公開しました。\n\nオープンソースなので、今すぐ無料で手元で試せます。",
   "threadsHook": "callout",
   "threadsStyle": 2,
@@ -72,5 +72,6 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://devblogs.microsoft.com/ifdef-windows/wp-content/uploads/sites/61/2026/10/reactor-01-header-v2.webp",
     "at": "2026-10-28T06:35:51+00:00"
-  }
+  },
+  "titleStyle": "2026-11-03"
 }

@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://developer.nvidia.com/blog/build-specialized-agents-on-a-stack-you-control-with-nvidia-nemoclaw/",
   "sourceName": "NVIDIA Developer Blog",
-  "title": "NVIDIAがオープンなAIエージェント構築基盤「NemoClaw」を発表",
-  "seoTitle": "NVIDIA NemoClawとは？エージェント構築基盤の機能と使い方",
+  "title": "NVIDIA、AIエージェントのオープンな構築基盤「NemoClaw」を発表　既存の仕組みを活用",
+  "seoTitle": "NVIDIA NemoClawとは？AIエージェント構築基盤の特徴",
   "threadsPost": "NVIDIAがオープンなAIエージェントの構築基盤「NemoClaw」を発表しました。\n自前のモデルや既存の仕組みをそのまま活かしたまま、安全な実行環境や最適化ツールを組み込めるのが特徴です。\nAIエージェントの開発や運用に関わる方は要チェックです。",
   "threadsHook": "callout",
   "threadsStyle": 2,
@@ -86,5 +86,6 @@
     "ar": 1.7778,
     "src": "https://ai-tech-express.jp/img/nvidia-nemoclaw-agent-platform-3439b593.jpg"
   },
-  "originalTitle": "AI半導体のNVIDIAがオープンなAIエージェント構築基盤「NemoClaw」を発表"
+  "originalTitle": "AI半導体のNVIDIAがオープンなAIエージェント構築基盤「NemoClaw」を発表",
+  "titleStyle": "2026-11-03"
 }

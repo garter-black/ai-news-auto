@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://blogs.nvidia.com/blog/ai-joins-the-search-for-extraterrestrial-signals/",
   "sourceName": "NVIDIA公式ブログ",
-  "title": "NVIDIA、地球外生命体の探索に「自律型AI」を投入　米アレン・テレスコープ・アレイで運用開始",
+  "title": "NVIDIA、地球外生命体の探索に自律型AIを投入　米アレン・テレスコープ・アレイで運用開始",
   "seoTitle": "NVIDIAの自律型AIが地球外生命体探索に投入　仕組みと特徴",
   "threadsPost": "ついに来た。地球外生命体の探索にAIエージェントが本格投入され、天体観測を自然言語の指示で自動化できるように。",
   "threadsHook": "finally",
@@ -73,5 +73,6 @@
     "height": 800,
     "at": "2026-11-02T03:45:47+00:00"
   },
-  "originalTitle": "AI半導体のNVIDIA、地球外生命体の探索に「自律型AI」を投入　米アレン・テレスコープ・アレイで運用開始"
+  "originalTitle": "AI半導体のNVIDIA、地球外生命体の探索に「自律型AI」を投入　米アレン・テレスコープ・アレイで運用開始",
+  "titleStyle": "2026-11-03"
 }
