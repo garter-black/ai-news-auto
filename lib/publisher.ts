@@ -13,7 +13,7 @@ export const publisherJsonLd = {
   email: siteConfig.operator.email,
   contactPoint: { "@type": "ContactPoint", email: siteConfig.operator.email, contactType: "editorial" },
   publishingPrinciples: `${siteConfig.url}/editorial-policy`,
-  correctionsPolicy: `${siteConfig.url}/editorial-policy`,
+  correctionsPolicy: `${siteConfig.url}/corrections`,
   sameAs: siteConfig.social.map((social) => social.url),
   // 運営責任者（所在地は都道府県まで）
   founder: { "@type": "Person", name: siteConfig.operator.representative },
