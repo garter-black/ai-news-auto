@@ -6039,6 +6039,13 @@
       "skipped": true,
       "url": "https://aws.amazon.com/blogs/machine-learning/how-worldwide-express-automated-freight-exceptions-with-amazon-bedrock/"
     },
+    "4488c54237454bf6": {
+      "at": "2026-11-03T20:01:50.710969+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "followup quality: 「2026年11月4日、…発表しました」→ 元記事に公開日の記載がなく、確認済みの文脈にも日付がないため、日付は創作の疑いがある。; 「ローカル利用には法人向け組織「Air Teams」は不要」「法人向けプランが不要」→ 元記事は Air Teams が不要としか書いておらず、「法人向けプラン」の要否には触れていない。ただしCopilotの契約は必要で、「サイン",
+      "skipped": true,
+      "url": "https://blog.jetbrains.com/air/2026/11/github-copilot-in-air/"
+    },
     "44c40aaac29222c10f7c6b4d0af9467078985b1c": {
       "at": "2026-10-28T15:04:53.742681+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13481,26 +13488,6 @@
   "quality_log": [
     {
       "accepted": true,
-      "at": "2026-11-02T05:31:51.218877+00:00",
-      "attempt": 0,
-      "id": "191056a627871c9b",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 115.3,
-        "avg_sentence": 27.5,
-        "long_share": 0.0,
-        "max_paragraph": 174,
-        "paragraphs": 16,
-        "sentences": 67
-      },
-      "score": 100,
-      "source": "aws-japan-blog",
-      "title": "AI ガードレールによるコンタクトセンターでの責任ある AI の実装"
-    },
-    {
-      "accepted": true,
       "at": "2026-11-02T05:32:07.170159+00:00",
       "attempt": 1,
       "id": "72be3fcc67999367",
@@ -20036,6 +20023,25 @@
       "score": null,
       "source": "aws-ml-blog",
       "title": "Building ultra-low-latency voice AI applications on AWS"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T20:01:50.710944+00:00",
+      "attempt": 1,
+      "id": "4488c54237454bf6",
+      "kind": "update",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "「2026年11月4日、…発表しました」→ 元記事に公開日の記載がなく、確認済みの文脈にも日付がないため、日付は創作の疑いがある。",
+        "「ローカル利用には法人向け組織「Air Teams」は不要」「法人向けプランが不要」→ 元記事は Air Teams が不要としか書いておらず、「法人向けプラン」の要否には触れていない。ただしCopilotの契約は必要で、「サインインするだけで使える」は契約が必要な点を落としている。",
+        "要点「他のAIと同列に扱えることが判明しました」→ 元記事は同じタスク一覧に並ぶと述べているだけで、「同列」「判明」は言い過ぎ。",
+        "「スケジュールやプルリクエストに応じてクラウドタスクを起動する自動化機能にも対応」→ 元記事は Automations を挙げているが、利用に Air Teams が必要という前提が記事中で説明されておらず、ローカル利用との混同を招く。",
+        "「クラウド側の作業は事前にリモートブランチへコードをpush」→ 元記事に沿うが、クラウド利用には Air Teams と Copilot 契約が必要という条件が抜けている。",
+        "「公式のCopilot CLIをACP経由で実行」のカギ括弧付き引用「GitHub Copilot CLIの公式版」→ 元記事の英文は official GitHub Copilot CLI であり、引用符付きの日本語表現は原文の発言ではなく訳。"
+      ],
+      "score": 50,
+      "source": "jetbrains-blog",
+      "title": "Use Your GitHub Copilot Plan in JetBrains Air – in Your IDE and in the Cloud"
     }
   ],
   "short_text_retry": {
