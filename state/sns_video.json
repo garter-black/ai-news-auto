@@ -548,7 +548,7 @@
     },
     "artex-agentic-offensive-frameworks": {
       "at": "2026-11-03T06:54:09+00:00",
-      "status": "ready",
+      "status": "article_only",
       "tries": 1,
       "textAt": "2026-11-03T09:30:00+00:00",
       "textId": "6ae941a5186a5afbce7ae1bd",
@@ -635,7 +635,8 @@
       "bufferId": "6ae941a5186a5afbce7ae1bd",
       "postedAt": "2026-11-03T09:30:00+00:00",
       "attachError": "Buffer で予約の投稿を読めない（次の回でもう一度）",
-      "deferred": "Buffer の上限で 2026-11-03T13:22+00:00 まで呼び出しを止めています"
+      "deferred": "Buffer の上限で 2026-11-03T13:22+00:00 まで呼び出しを止めています",
+      "why": "動画ができる前に投稿の時刻が来た（写真で出た）"
     },
     "nvidia-recovery-automated-training-recovery": {
       "at": "2026-11-03T07:21:29+00:00",
