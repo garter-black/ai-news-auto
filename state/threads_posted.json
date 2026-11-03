@@ -3330,7 +3330,26 @@
           "updatedAt": "2026-11-03T02:03:28+00:00"
         }
       },
-      "id": "6ae940f20d3397810d083d26"
+      "id": "6ae940f20d3397810d083d26",
+      "metrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "views": 0,
+        "quotes": 0,
+        "reposts": 0
+      },
+      "metricsUpdatedAt": "2026-11-03T03:15:18.775Z",
+      "sentAt": "2026-11-03T03:15:17.888Z",
+      "externalLink": "https://www.threads.com/@saisoku637/post/DfQ5JyaEe7d",
+      "xMetrics": {
+        "reactions": 0,
+        "comments": 0,
+        "engagementRate": 0,
+        "reposts": 0,
+        "impressions": 0,
+        "clicks": 0
+      }
     },
     "artex-agentic-offensive-frameworks": {
       "id": "6ae941a5186a5afbce7ae1bd",
