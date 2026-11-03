@@ -1,0 +1,31 @@
+{
+  "fetchedAt": "2026-11-03T13:24:44+00:00",
+  "orgs": [
+    {
+      "id": "6ad94291c83c18be724edb15",
+      "channels": [
+        {
+          "id": "6ade3ad12f1f5ed648cb6936",
+          "name": "サイソクニュース",
+          "displayName": "サイソクニュース",
+          "service": "facebook",
+          "isQueuePaused": false
+        },
+        {
+          "id": "6ade35f52f1f5ed648cb07cf",
+          "name": "saisoku_ai",
+          "displayName": "saisoku_ai",
+          "service": "twitter",
+          "isQueuePaused": false
+        },
+        {
+          "id": "6ad942f3778b240e2f82f180",
+          "name": "saisoku637",
+          "displayName": "saisoku637",
+          "service": "threads",
+          "isQueuePaused": false
+        }
+      ]
+    }
+  ]
+}
