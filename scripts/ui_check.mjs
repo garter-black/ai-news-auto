@@ -503,11 +503,15 @@ async function auditOne(browser, page, vp, theme, dela) {
     if (vp.name === "desktop" && theme === "light" && page.kind === "home") await interactions(p, page, result);
 
     if (SHOTS) {
-      const file = join(OUT, "shots", `${slugOf(page, vp, theme)}.png`);
-      // Chrome は 16384px（端末の画素）より長い画像を撮ると中身が繰り返されるので、そこで切る
+      // 成果物が大きくなりすぎない（1回 240MB になった）よう JPEG にし、ライトはページの上から最大 6000px、
+      // ダークは最初の1画面だけ撮る。崩れが見つかったページは長さの上限まで撮る。
+      // Chrome は 16384px（端末の画素）より長い画像を撮ると中身が繰り返されるので、それより短く切る
+      const file = join(OUT, "shots", `${slugOf(page, vp, theme)}.jpg`);
       const h = await p.evaluate(() => document.documentElement.scrollHeight);
-      const maxCss = Math.floor(16000 / vp.deviceScaleFactor);
-      await p.screenshot({ path: file, fullPage: true, clip: { x: 0, y: 0, width: vp.width, height: Math.min(h, maxCss) }, timeout: 30000 }).catch(async () => p.screenshot({ path: file, timeout: 15000 }));
+      const cap = result.errors.length ? Math.floor(16000 / vp.deviceScaleFactor) : theme === "dark" ? vp.height : 6000;
+      await p
+        .screenshot({ path: file, type: "jpeg", quality: 60, fullPage: true, clip: { x: 0, y: 0, width: vp.width, height: Math.min(h, cap) }, timeout: 30000 })
+        .catch(async () => p.screenshot({ path: file, type: "jpeg", quality: 60, timeout: 15000 }));
       result.shot = file;
     }
     // 広告（PR）枠の見出しと商品名。記事との関係を人が見直せるように残す（押さない・取りに行かない）
@@ -661,7 +665,7 @@ function imageSize(buf) {
 }
 
 async function checkImagesAndFeed(pages, report) {
-  const slugs = pages.filter((p) => p.kind === "article").slice(0, 5).map((p) => p.article.slug);
+  const slugs = pages.filter((p) => p.kind === "article").slice(0, 5).map((p) => p.article?.slug || decodeURIComponent(p.path.replace(/^\/articles\//, "").split(/[?#]/)[0]));
   // /card は lib/card-designs.tsx の CARD_SIZES（いまは写真だけの p1 = 1200×675）。描けないと /cover に転送される
   const expect = { card: null, cover: [1200, 630] };
   for (const slug of slugs) {

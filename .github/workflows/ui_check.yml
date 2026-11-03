@@ -81,7 +81,7 @@ jobs:
         with:
           name: ui-check-${{ github.run_id }}
           path: out/ui_check
-          retention-days: 14
+          retention-days: 7
           if-no-files-found: ignore
 
       # 崩れがあれば issue（ui-broken）に書く。開いているものがあればコメントを足し、無くなったら閉じる
