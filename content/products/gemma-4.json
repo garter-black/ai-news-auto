@@ -8,10 +8,9 @@
   "companyName": "Google",
   "category": "AIモデル",
   "overview": {
-    "text": "Gemma 4は、Google DeepMindが公開したマルチモーダルオープンモデルの最新世代です。スマートフォンからクラウド環境までをカバーする5つのモデルサイズで構成されています。Googleの宇宙AIプロジェクトでも利用されています。",
+    "text": "Gemma 4は、Google DeepMindが公開したマルチモーダルオープンモデルファミリーです。スマートフォンからクラウド環境までカバーする5つのモデルサイズを展開しています。",
     "sources": [
-      "google-deepmind-gemma-4-family-explained",
-      "google-project-suncatcher-satellite-response"
+      "google-deepmind-gemma-4-family-explained"
     ]
   },
   "facts": [
@@ -23,8 +22,22 @@
       ]
     },
     {
+      "label": "提供開始",
+      "value": "すでに提供が開始されています",
+      "sources": [
+        "google-deepmind-gemma-4-family-explained"
+      ]
+    },
+    {
       "label": "日本での提供",
-      "value": "利用できる",
+      "value": "日本からも利用できます",
+      "sources": [
+        "google-deepmind-gemma-4-family-explained"
+      ]
+    },
+    {
+      "label": "使える場所",
+      "value": "Hugging Faceなど",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
@@ -39,25 +52,25 @@
   ],
   "capabilities": [
     {
-      "text": "テキストだけでなく音声や画像をネイティブに処理できます。",
+      "text": "テキストや音声、画像をネイティブに処理するマルチモーダル性能を備えています。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
-      "text": "12Bモデルでは専用エンコーダーを排除し、入力を直接LLMへ投影します。",
+      "text": "12Bモデルでは専用エンコーダーを排除し、入力を直接LLMへとマッピングします。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
-      "text": "260億パラメータのうち40億のみを活性化するMoEで高速処理します。",
+      "text": "260億パラメータのうち40億のみを動的に活性化して高速処理を行います。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
-      "text": "宇宙空間でのテストにおいて、宇宙をテーマにした詩の生成を実証しました。",
+      "text": "試作衛星を使った宇宙空間でのオープンモデルによる詩の生成実証に活用されました。",
       "sources": [
         "google-project-suncatcher-satellite-response"
       ]
@@ -73,7 +86,7 @@
   ],
   "japan": [
     {
-      "text": "開発者が即座に利用できる実用フェーズの技術として一般提供されています。",
+      "text": "外部プラットフォームを通じて利用できます。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
@@ -89,13 +102,7 @@
   ],
   "differences": [
     {
-      "text": "テキストだけでなく音声や画像をネイティブに処理できるようになりました。",
-      "sources": [
-        "google-deepmind-gemma-4-family-explained"
-      ]
-    },
-    {
-      "text": "12Bモデルでは専用の音声・画像エンコーダーを完全に排除した設計になりました。",
+      "text": "テキストだけでなく音声や複数のモダリティをネイティブに処理できるようになりました。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
@@ -103,39 +110,39 @@
   ],
   "faq": [
     {
-      "q": "無料で試せる？",
-      "a": "オープンモデルとして公開されています。",
+      "q": "無料で使える？",
+      "a": "オープンモデルとして提供されています。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
-      "q": "誰に向いている？",
-      "a": "開発者向けの技術として提供されています。",
+      "q": "どこで入手できる？",
+      "a": "Hugging Faceなどの外部プラットフォームで公開されています。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
-      "q": "モデルのサイズはいくつある？",
-      "a": "5つのモデルサイズで構成されています。",
+      "q": "モデルサイズには何がある？",
+      "a": "E2B、E4B、12B、26B A4B、31Bの5つのサイズがあります。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
-      "q": "宇宙空間でも使われている？",
-      "a": "Googleの試作衛星を使ったプロジェクトで詩の生成に利用されました。",
+      "q": "音声や画像は処理できる？",
+      "a": "テキストだけでなく、音声や画像をネイティブに処理できます。",
       "sources": [
-        "google-project-suncatcher-satellite-response"
+        "google-deepmind-gemma-4-family-explained"
       ]
     }
   ],
   "timeline": [
     {
-      "date": "2026-09-22",
-      "slug": "google-deepmind-gemma-4-family-explained",
-      "event": "Gemma 4を公開"
+      "date": "2026-10-31",
+      "slug": "google-project-suncatcher-satellite-response",
+      "event": "試作衛星からの最初のAI応答を受信"
     }
   ],
   "related": [
@@ -153,8 +160,8 @@
     "google-deepmind-gemma-4-family-explained"
   ],
   "signature": "b0ab4f5ad419c5d3",
-  "primarySignature": "42c9e5c43bc9115e",
+  "primarySignature": "b0ab4f5ad419c5d3",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:44:10+00:00",
-  "updatedAt": "2026-11-03T11:21:29+00:00"
+  "updatedAt": "2026-11-03T13:03:13+00:00"
 }
