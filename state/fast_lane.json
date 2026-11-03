@@ -67,14 +67,14 @@
     },
     "1ae1679f93e7f725": {
       "detectedAt": "2026-11-03T01:29:24+00:00",
-      "finishedAt": "2026-11-03T01:36:00+00:00",
+      "finishedAt": "2026-11-03T01:37:39+00:00",
       "outcome": "retry",
       "reason": "作れなかった（次の起動で再挑戦）",
-      "run": "41560163171",
+      "run": "41560822448",
       "slug": "",
       "source": "radar-9to5google.com",
       "sourcePublishedAt": "2026-11-03T01:29:24+00:00",
-      "startedAt": "2026-11-03T01:30:55+00:00",
+      "startedAt": "2026-11-03T01:36:54+00:00",
       "title": "Google Home Speaker gets first discount since June launch",
       "url": "https://9to5google.com/2026/11/02/google-home-speaker-discount/"
     },

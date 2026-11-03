@@ -64,7 +64,7 @@
   },
   "failed_web": {},
   "major_tries": {
-    "1ae1679f93e7f725": 1
+    "1ae1679f93e7f725": 2
   },
   "processed": {
     "--kyzoeUuBk": {
@@ -13059,29 +13059,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-31T06:01:00.763097+00:00",
-      "attempt": 1,
-      "id": "633bbdcdf71bbe9b",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1249字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（319字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 127.6,
-        "avg_sentence": 55.8,
-        "long_share": 0.375,
-        "max_paragraph": 137,
-        "paragraphs": 7,
-        "sentences": 16
-      },
-      "score": null,
-      "source": "boj",
-      "title": "米ドル資金供給オペレーションのオファー日程（2026年11月～2027年3月）"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-31T06:01:05.861979+00:00",
       "attempt": 2,
       "id": "633bbdcdf71bbe9b",
@@ -19456,6 +19433,28 @@
         "max_paragraph": 123,
         "paragraphs": 40,
         "sentences": 83
+      },
+      "score": null,
+      "source": "radar-9to5google.com",
+      "title": "Google Home Speaker gets first discount since June launch"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T01:37:39.247299+00:00",
+      "attempt": 1,
+      "id": "1ae1679f93e7f725",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "事実確認を実行できなかった（すべてのモデルで失敗しました: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You ）"
+      ],
+      "readability": {
+        "avg_paragraph": 56.8,
+        "avg_sentence": 28.8,
+        "long_share": 0.014,
+        "max_paragraph": 109,
+        "paragraphs": 36,
+        "sentences": 71
       },
       "score": null,
       "source": "radar-9to5google.com",
