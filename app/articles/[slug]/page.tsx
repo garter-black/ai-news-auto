@@ -4,6 +4,8 @@ import Thumb from "@/components/Thumb";
 import ImageCredit from "@/components/ImageCredit";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import GoneView, { GONE_TITLE } from "@/components/GoneView";
+import { getRetired } from "@/lib/retired";
 import AdSlot from "@/components/AdSlot";
 import MobilePrBar from "@/components/rail/MobilePrBarLazy";
 import RailRanking from "@/components/rail/RailRanking";
@@ -96,7 +98,8 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = getArticle(slug);
-  if (!article) return {};
+  // 取り下げた記事（content/retired.json）。cloudflare/worker.ts がこのページを 410 で返す（台帳 W22）
+  if (!article) return getRetired(slug) ? { title: GONE_TITLE, robots: { index: false, follow: true } } : {};
 
   const url = `/articles/${article.slug}`;
   const cover = coverPath(article);
@@ -142,7 +145,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
   const article = getArticle(slug);
-  if (!article) notFound();
+  if (!article) {
+    // 取り下げた記事は、サイトの見た目のまま「掲載を終了しました」と近い記事を出す（状態コード 410 は cloudflare/worker.ts が付ける。台帳 W22）
+    const retired = getRetired(slug);
+    if (retired) return <GoneView entry={retired} />;
+    notFound();
+  }
 
   const isRoundup = article.type === "roundup";
   // 検索に出さない記事（薄い・主題外・重複・他人の動画の要約など）には AdSense の広告枠を出さない。

@@ -2,9 +2,10 @@ import type { Bundle, RailBundle, StoryItem } from "@/components/story/SwipeDeck
 import { coverPath, getAllArticles, type ArticleSummary } from "@/lib/articles";
 import { COMPANIES, companyOf } from "@/lib/companies";
 import { easyGist } from "@/lib/general";
+import { AI_TOPIC } from "@/lib/indexing";
 import { BROAD_SECTIONS } from "@/lib/sections";
 import { byTierThenNewest, STORY_WINDOW_MS } from "@/lib/story-window";
-import { freeLabel, japanLabel, listUsability, usability, USABILITY_LABEL, verdictOf } from "@/lib/verdict";
+import { freeLabel, isProductNews, japanLabel, listUsability, usability, USABILITY_LABEL, verdictOf } from "@/lib/verdict";
 
 /*
  * 丸に入れるのは直近24時間の記事だけ。
@@ -45,6 +46,14 @@ const AGENT = /エージェント|Agent/i;
 const NOT_FEATURE = /事例|調査|動向|理由|教訓|全貌|とは[？?]|発表予定/;
 /** 企業のIT基盤の話（一般の人が「今使える」ものではない） */
 const INFRA = /Azure|AWS|Bedrock|Kubernetes|基盤|SDK|API|半導体|データセンター|GPU|TPU|サーバー/;
+
+/**
+ * 「今使えるAI新機能」「無料で試せるAI」に入れてよいか: AIの話題（題名・タグ）で、製品・サービスの記事（lib/verdict.ts の isProductNews）。
+ * ジャンルが ai でも AI でない記事（法人向けストレージの Mac 用アプリなど）や、制度・取り組みの記事は入れない（2026-11-03 の点検 13）
+ */
+function aiProduct(a: ArticleSummary): boolean {
+  return AI_TOPIC.test(`${a.title} ${(a.tags ?? []).join(" ")}`) && isProductNews(a);
+}
 
 /** 読む人が技術者・管理者だけか（一般の人・働く人が一緒に書かれていれば違う） */
 const TECH_AUDIENCE = /開発|エンジニア|研究|インフラ|情シス|情報システム|IT|管理者|データ|セキュリティ|クラウド|AI基盤|AI導入|DX/;
@@ -104,6 +113,8 @@ type Timed = { a: ArticleSummary; at: number };
  * 段の中は新しい記事がある丸から（開発者向けなどが先頭の次に来ないように）。
  */
 const PINNED = new Set(["today"]);
+/** 表紙（丸の顔）がほかの丸と同じ記事になるなら出さない丸 */
+const UNIQUE_LEAD = new Set(["go", "free"]);
 const CORE = new Set([
   "money", "g-business", "go", "work", "free", "followup",
   "openai", "anthropic", "google", "microsoft", "nvidia", "agent",
@@ -120,6 +131,9 @@ function lookKey(a: ArticleSummary): string {
 /**
  * 丸ごとに違う表紙を選ぶ。同じ記事・同じ見た目（同じ企業色の独自カバー）は使い回さず、
  * 写真のある記事を優先する。どうしても無ければ、まだ表紙にしていない記事で妥協する。
+ * 「今使えるAI新機能」「無料で試せるAI」（UNIQUE_LEAD）は、まだ表紙にしていない記事が1本も無ければ undefined（その丸は出さない）。
+ * 2026-11-03 の点検 13: 先頭の3つの丸（最新・今使える・無料）がすべて同じ記事だった。
+ * テーマの丸（勉強・仕事など）は、総合と重なっても出す前からの決まりのまま（表紙は使い回しで妥協する）
  */
 function pickCovers(drafts: Draft[]): (ArticleSummary | undefined)[] {
   const usedSlug = new Set<string>();
@@ -131,7 +145,7 @@ function pickCovers(drafts: Draft[]): (ArticleSummary | undefined)[] {
       fresh.find((a) => a.thumbnail && !usedLook.has(lookKey(a))) ??
       fresh.find((a) => !usedLook.has(lookKey(a))) ??
       fresh[0] ??
-      items[0];
+      (UNIQUE_LEAD.has(d.key) ? undefined : items[0]);
     if (pick) {
       usedSlug.add(pick.slug);
       usedLook.add(lookKey(pick));
@@ -165,13 +179,15 @@ export function getStoryBundles(now: number = Date.now()): Bundle[] {
       key: "go",
       label: "今使えるAI新機能",
       items: aiWhere(
-        (a) => listUsability(a) === "go" && forPeople(a) && !NOT_FEATURE.test(a.title) && !INFRA.test(a.title),
+        (a) => aiProduct(a) && listUsability(a) === "go" && forPeople(a) && !NOT_FEATURE.test(a.title) && !INFRA.test(a.title),
       ),
     },
     {
       key: "free",
       label: "無料で試せるAI",
-      items: aiWhere((a) => !!listUsability(a) && a.verdict?.free === true && a.verdict.status === "available" && forPeople(a) && !INFRA.test(a.title)),
+      items: aiWhere(
+        (a) => aiProduct(a) && !!listUsability(a) && a.verdict?.free === true && a.verdict.status === "available" && forPeople(a) && !INFRA.test(a.title),
+      ),
     },
     { key: "work", label: "仕事を助けるAI", items: aiWhere((a) => WORK.test(a.title) && forPeople(a)) },
     { key: "study", label: "勉強に使えるAI", items: aiWhere((a) => STUDY.test(a.title) && forPeople(a)) },
@@ -202,15 +218,16 @@ export function getStoryBundles(now: number = Date.now()): Bundle[] {
     .sort(byTierThenNewest);
 
   const covers = pickCovers(drafts);
-  return drafts.map((d, i) => {
+  return drafts.flatMap((d, i) => {
     const cover = covers[i];
-    return {
+    if (!cover) return [];
+    return [{
       key: d.key,
       label: d.label,
       tier: d.tier,
       cover: cover ? cover.thumbnail || coverPath(cover) || "" : "",
       items: d.items.map((x) => toItem(x.a, x.at)),
-    };
+    }];
   });
 }
 

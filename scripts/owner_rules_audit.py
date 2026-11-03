@@ -57,7 +57,7 @@ AUDIT_RULES = (
     "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11",
     "I2", "I4", "I5",
     "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19",
-    "W3", "W5", "W6", "W10", "W11", "W12", "W13",
+    "W3", "W5", "W6", "W10", "W11", "W12", "W13", "W21", "W22", "W23",
 )
 
 # ---- 記事の言葉 ----------------------------------------------------------------
@@ -377,6 +377,78 @@ def product_links(html: str) -> list[str]:
     return list(dict.fromkeys(re.findall(r'href="(/products/[a-z0-9-]+)"', html)))
 
 
+# ---- AI料金表・410 ページ・ヘッダー下の帯（2026-11-03 オーナー決定） ---------------------------------
+
+# W21: AI料金表の為替は1つ（同じ出典・同じ日付）。出典は公式の料金ページ（自社の記事を出典にしない）
+FX_VALUE = re.compile(r"1ドル[＝=]\s*(\d{2,3}(?:\.\d+)?)円")
+
+
+def pricing_page_problems(html: str) -> list[str]:
+    visible = "".join(parse(html).text)
+    out = []
+    rates = sorted({float(x) for x in FX_VALUE.findall(visible)})
+    if not rates:
+        out.append("[W21] AI料金表に為替（1ドル＝◯円）と日付が出ていない")
+    elif len(rates) > 1:
+        out.append(f"[W21] AI料金表に為替が{len(rates)}種類ある（{', '.join(f'{r:g}円' for r in rates)}）。サイトで1つにする")
+    if "記事で確認" in visible:
+        out.append("[W21] AI料金表の出典が自社の記事（「記事で確認」）。公式の料金ページを出典にする")
+    if "公式：" not in visible and "公式の料金ページ" not in visible:
+        out.append("[W21] AI料金表に公式の料金ページの出典が出ていない")
+    return out
+
+
+def gone_page_problems(status: int, html: str) -> list[str]:
+    """W22: 取り下げた記事は 410 のまま、サイトの見た目（ヘッダー・フッター）と近い記事へのリンクを出す"""
+    out = []
+    if status != 410:
+        out.append(f"[W22] 取り下げた記事が 410 になっていない（HTTP {status}）")
+        return out
+    if "site-header" not in html or "<footer" not in html:
+        out.append("[W22] 410 のページにサイトのヘッダー・フッターが無い（素のページ）")
+    if 'data-gone-page' in html and not re.search(r'href="/articles/[A-Za-z0-9_-]+"', html):
+        out.append("[W22] 410 のページに、今も載っている記事へのリンクが無い")
+    if "取り下げました" in "".join(parse(html).text):
+        out.append("[W22] 410 のページの言い方が丁寧でない（「取り下げました」）")
+    return out
+
+
+LIVE_LINE = re.compile(r'class="live-line"[\s\S]{0,1500}?</div>\s*</div>')
+LIVE_LABEL = re.compile(r'(?:data-live-label="([^"]+)"[^>]*>|<span[^>]*>)\s*(速報|最新)\s*</span>')
+
+
+def live_line_problems(html: str, by_slug: dict[str, dict]) -> list[str]:
+    """W23: ヘッダー下の帯の赤い「速報」は本当の速報だけ（画像の札と同じ判定。sns_rules.is_fast_news）"""
+    m = LIVE_LINE.search(html)
+    if not m:
+        return []
+    block = m.group(0)
+    label = LIVE_LABEL.search(block)
+    link = re.search(r'href="/articles/([A-Za-z0-9_-]+)"', block)
+    if not label or not link or label.group(2) != "速報":
+        return []
+    article = by_slug.get(link.group(1))
+    if article is None:
+        return []
+    try:
+        import sns_rules  # noqa: PLC0415
+
+        fast = sns_rules.is_fast_news(article)
+    except Exception:  # noqa: BLE001
+        minutes = article.get("speedMinutes")
+        fast = bool(article.get("breaking")) or isinstance(minutes, (int, float))
+    return [] if fast else [f"[W23] 速報ではない記事（{link.group(1)}）にヘッダー下の赤い「速報」が付いている。「最新」にする"]
+
+
+def retired_sample(limit: int = 2) -> list[str]:
+    """W22 の確かめに使う、転送のない取り下げた記事（410 のもの）"""
+    try:
+        data = json.loads(RETIRED_PATH.read_text("utf-8")).get("articles") or {}
+    except (OSError, ValueError):
+        return []
+    return [f"/articles/{slug}" for slug, e in sorted(data.items()) if isinstance(e, dict) and not e.get("redirect")][:limit]
+
+
 def fetch(url: str, timeout: int = 30) -> tuple[int, str]:
     req = urllib.request.Request(url, headers=HEADERS)
     for _ in range(2):
@@ -529,6 +601,19 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
         for retired_path in RETIRED_TOOL_PAGES:
             if f'href="{retired_path}"' in home:
                 found.setdefault("/", []).append(f"[W12] 終了したページ {retired_path} へのリンクがトップに残っている")
+    # W21: AI料金表の為替と出典
+    status, html = pages.get("/ai-pricing", (0, ""))
+    if status == 200 and (v := pricing_page_problems(html)):
+        found.setdefault("/ai-pricing", []).extend(v)
+    # W23: ヘッダー下の帯の「速報」
+    status, html = pages.get("/", (0, ""))
+    if status == 200 and (v := live_line_problems(html, {a["slug"]: a for a in load_articles()})):
+        found.setdefault("/", []).extend(v)
+    # W22: 取り下げた記事の 410 ページ
+    for path in retired_sample():
+        status, html = fetch(base + path)
+        if v := gone_page_problems(status, html):
+            found.setdefault(path, []).extend(v)
     # I5: 画像が読めるか（scripts/check_images.py と同じ判定。新しい記事のページだけ）
     try:
         import check_images  # noqa: PLC0415

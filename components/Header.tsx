@@ -3,6 +3,7 @@ import GenreTabs from "@/components/HeaderNav";
 import LiveLine from "@/components/LiveLine";
 import ThemeToggle from "@/components/ThemeToggle";
 import { getAllArticles } from "@/lib/articles";
+import { isFastNews } from "@/lib/cover-path";
 import { displayHeadline } from "@/lib/headline";
 import { genreNav, UTILITY_NAV } from "@/lib/nav";
 import { siteConfig } from "@/site.config";
@@ -26,6 +27,8 @@ export default function Header() {
   // いちばん新しいAIの記事（AI速報サイトの看板の1行）
   // トップでは先頭の大きな記事と重ならないよう、2番目の記事を出す（LiveLine が切り替える）
   const [latest, second] = getAllArticles().filter((a) => a.genreSlug === "ai").slice(0, 2);
+  // 描いた時刻（静的ページの「速報／最新」の札の初期値。表示後に閲覧時刻で当て直す。components/LiveLine.tsx）
+  const renderedAt = Date.now();
 
   return (
     <>
@@ -74,7 +77,14 @@ export default function Header() {
 
       {latest && (
         <LiveLine
-          items={[latest, second ?? latest].map((a) => ({ slug: a.slug, title: displayHeadline(a.title), publishedAt: a.publishedAt }))}
+          renderedAt={renderedAt}
+          items={[latest, second ?? latest].map((a) => ({
+            slug: a.slug,
+            title: displayHeadline(a.title),
+            publishedAt: a.publishedAt,
+            // 赤い「速報」は本当の速報だけ（画像の札と同じ判定。台帳 A9・W23）
+            fast: isFastNews(a),
+          }))}
         />
       )}
     </>

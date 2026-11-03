@@ -65,6 +65,9 @@ jobs:
       - name: Verify one ad slot / newsletter signup per page and no "記載なし" shown to readers
         run: node --test tests/test_page_slots.cjs tests/test_no_data.cjs tests/test_products_hub.cjs
 
+      - name: Verify official AI pricing with one FX rate, the 410 page layout and the breaking ticker (W21-W23)
+        run: node --test tests/test_pricing_fx.cjs tests/test_gone_page.cjs tests/test_live_line.cjs
+
       - name: Build
         run: npm run cf:build
         env:
