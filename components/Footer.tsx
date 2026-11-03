@@ -4,6 +4,7 @@ import NewsletterSignup from "@/components/NewsletterSignup";
 import DifyDecisionLink from "@/components/DifyDecisionLink";
 import { ROUNDUP_CHANNEL, getAllArticles, getAllChannels, getAllTags } from "@/lib/articles";
 import { companyCounts } from "@/lib/companies";
+import { CREATOR_CHANNELS, WIRE_SOURCES } from "@/lib/indexing";
 import { hasActiveAffiliate } from "@/lib/monetization";
 import { genreNav } from "@/lib/nav";
 import { siteConfig } from "@/site.config";
@@ -37,7 +38,10 @@ export default function Footer() {
   const ai = getAllArticles().filter((a) => a.genreSlug === "ai");
   // 発信元はジャンルを問わず記事の多い順（AIだけに絞らない）。足元が伸びないよう上限を設ける
   // まとめ記事しかない発信元（名前が「◯本の記事から編集部が統合」のまま）は出さない
-  const channels = getAllChannels().filter((c) => !ROUNDUP_CHANNEL.test(c.label)).slice(0, 24);
+  // 足元の「情報源」には企業・機関の公式の発信元だけを並べる（個人・他媒体の動画やプレスリリース配信は出さない）
+  const channels = getAllChannels()
+    .filter((c) => !ROUNDUP_CHANNEL.test(c.label) && !CREATOR_CHANNELS.has(c.slug) && !WIRE_SOURCES.has(c.slug))
+    .slice(0, 24);
   const genres = genreNav();
   const companies = companyCounts(ai).slice(0, 8);
   const tags = getAllTags(true).slice(0, 16);
@@ -177,7 +181,7 @@ export default function Footer() {
       <div className="border-t border-line">
         <div className="mx-auto max-w-[1240px] px-5 py-6 sm:px-8">
           <p className="text-note leading-[1.9] text-muted">
-            本サイトの記事は、公開されている動画や公式発表・報道を生成AIが解析・要約して自動生成したものです（出典は各記事に記載）。誤りが含まれる可能性があるため、重要な判断の際は必ず出典および各社の公式発表をご確認ください。
+            本サイトの記事は、公式発表・公開されている動画・報道をもとに生成AIを使って作成し、元の発表と照らし合わせる自動の事実確認を通したものです（出典は各記事に記載。詳しくは<Link href="/editorial-policy" className="underline underline-offset-2 hover:text-ink">編集方針</Link>）。誤りが含まれる可能性があるため、重要な判断の際は必ず出典および各社の公式発表をご確認ください。
             {hasActiveAffiliate() &&
               "当サイトは広告およびアフィリエイトプログラムによる収益を得ています。"}
           </p>
