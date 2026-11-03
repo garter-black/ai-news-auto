@@ -275,6 +275,14 @@ class MergeTest(unittest.TestCase):
     """1記事1投稿: 予約中の投稿の写真を動画に差し替える（2本目は出さない）"""
 
     F = {"ab_until": "2026-11-10", "after_ab": "short", "post": True, "breaking_followup": False}
+
+    def setUp(self):
+        # ここは差し替えの仕組みの試験。動画の検査（qa）の決まりは tests/test_sns_video_required.py で確かめる
+        from unittest.mock import patch
+
+        p = patch.dict("os.environ", {"SNS_VIDEO_REQUIRE_QA": "off"})
+        p.start()
+        self.addCleanup(p.stop)
     TEXT = "書き出し。\n\n要約すると、こうです。\n\nあなたはどう使う？\n\n詳しくはこちら👇\nhttps://ai-tech-express.jp/articles/x?utm_source=threads&utm_medium=social&utm_campaign=classic"
 
     def ready(self):

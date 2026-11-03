@@ -132,8 +132,11 @@ def video_of(slug: str, videos: dict | None = None) -> dict:
             videos = {}
     rec = videos.get(slug) or {}
     urls = rec.get("urls") or {}
+    import sns_video_followup as fu  # noqa: PLC0415
+
     for variant in (rec.get("variant"), "short", "full"):
-        if variant and urls.get(variant) and ((rec.get("versions") or {}).get(variant) or {}).get("ok", True):
+        version = (rec.get("versions") or {}).get(variant) or {}
+        if variant and urls.get(variant) and version.get("ok", True) and fu.qa_ok(version):
             credit = ((((rec.get("versions") or {}).get(variant) or {}).get("post") or {}).get("voice") or {}).get("credit", "")
             return {"url": urls[variant], "variant": variant, "credit": credit}
     return {}

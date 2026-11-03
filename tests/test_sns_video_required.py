@@ -189,7 +189,8 @@ def queued_rec(slot: datetime) -> dict:
 def ready_video(slug: str) -> dict:
     post = {"title": "t", "url": f"https://ai-tech-express.jp/articles/{slug}", "total": 34.6, "voice": {"credit": "VOICEVOX:九州そら"},
             "script_v3": {"hook": {"text": "h"}, "summary": "s"}}
-    return {"status": "ready", "tries": 1, "versions": {"short": {"ok": True, "post": post}, "full": {"ok": True, "post": post}},
+    qa = {"geometry": True, "vision": True, "version": 1}
+    return {"status": "ready", "tries": 1, "versions": {"short": {"ok": True, "post": post, "qa": qa}, "full": {"ok": True, "post": post, "qa": qa}},
             "urls": {"short": f"https://ai-tech-express.jp/video/{slug}-s.mp4", "full": f"https://ai-tech-express.jp/video/{slug}-f.mp4"}}
 
 
@@ -249,6 +250,19 @@ class PublishQueuedTest(unittest.TestCase):
         late = NOW - timedelta(hours=fu.QUEUE_GIVE_UP_H + 1)
         state, sent, issues, _ = self.run_queue({"c": queued_rec(late)}, {})
         self.assertEqual((sent, state["queued"]["c"]["status"]), ([], "skipped"))
+
+    def test_video_without_render_and_vision_qa_is_not_posted_but_rerendered(self):
+        slot = NOW + timedelta(hours=1)
+        old = ready_video("a")
+        for ver in old["versions"].values():
+            ver["qa"] = {"geometry": True, "vision": False}
+        state, sent, issues, _ = self.run_queue({"a": queued_rec(slot)}, {"a": old})
+        self.assertEqual((sent, issues), ([], []))
+        self.assertNotIn("a", state["videos"])  # 作り直す
+        self.assertIn("a", state["videosArchive"])
+        self.assertEqual(state["queued"]["a"]["status"], "waiting")
+        self.assertFalse(fu.qa_ok({"ok": True}, env={}))
+        self.assertTrue(fu.qa_ok({"qa": {"geometry": True, "vision": True}}, env={}))
 
     def test_retryable_failure_waits(self):
         slot = NOW + timedelta(hours=1)

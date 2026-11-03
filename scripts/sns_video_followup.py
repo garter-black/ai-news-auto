@@ -180,6 +180,16 @@ def will_retry(r: dict) -> bool:
     return r.get("status") == "gate_failed" and bool(re.search(r"撮れる|台本|公式ページか台本が無い|文字が入りません|動き|変化|フレーム差", why))
 
 
+def qa_ok(version: dict | None, env: dict | None = None) -> bool:
+    """（2026-11-04 オーナー指摘: 青い線のずれ・行の頭の切れ・左の文字と読み上げの食い違い）SNS に出す動画は、描いた位置の検査（geometry）と
+    画像のレビュー（vision）の両方に合格したものだけ。前のコードで作った動画（qa が無い）は出さない。SNS_VIDEO_REQUIRE_QA=off で止める（試験用）"""
+    env = os.environ if env is None else env
+    if env.get("SNS_VIDEO_REQUIRE_QA", "on") == "off":
+        return True
+    qa = (version or {}).get("qa") or {}
+    return bool(qa.get("geometry")) and bool(qa.get("vision"))
+
+
 def awaiting(rec: dict) -> bool:
     """動画を待っている記事の投稿か（threads_post.queue_for_video。Buffer にはまだ送っていない）"""
     return rec.get("status") == "awaiting_video" and bool((rec.get("pending") or {}).get("inputs"))
@@ -356,7 +366,9 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
         save_state(state)  # 途中で落ちても同じ記事を二度作らない
         reports = make_versions(slug, OUT)
         ok = {k: bool((r.get("gate") or {}).get("ok")) and (OUT / f"{slug}__v3{'short' if k == 'short' else ''}.mp4").exists() for k, r in reports.items()}
-        rec["versions"] = {k: {"ok": ok[k], "seconds": r.get("total"), "reasons": (r.get("gate") or {}).get("reasons", [])[:3], **({"post": post_report(r)} if ok[k] else {})} for k, r in reports.items()}
+        rec["versions"] = {k: {"ok": ok[k], "seconds": r.get("total"), "reasons": (r.get("gate") or {}).get("reasons", [])[:3],
+                               "qa": (r.get("gate") or {}).get("qa") or {}, "template": r.get("template", ""),
+                               **({"post": post_report(r)} if ok[k] else {})} for k, r in reports.items()}
         rec["timings"] = {k: r.get("timings") for k, r in reports.items()}
         rec["ok"] = any(ok.values())
         rec["reason"] = fail_reason(reports, ok)
@@ -434,10 +446,11 @@ def attach_ready(state: dict, posted: dict, now: datetime, f: dict, editor) -> l
         else:
             variant = pick_variant(state, now, f["ab_until"], f["after_ab"])
             versions = rec.get("versions") or {}
-            if not (versions.get(variant) or {}).get("ok") or variant not in (rec.get("urls") or {}):
-                variant = next((k for k in ("short", "full") if (versions.get(k) or {}).get("ok") and k in (rec.get("urls") or {})), "")
+            usable = lambda k: (versions.get(k) or {}).get("ok") and k in (rec.get("urls") or {}) and qa_ok(versions.get(k))  # noqa: E731
+            if not usable(variant):
+                variant = next((k for k in ("short", "full") if usable(k)), "")
             if not variant:
-                rec.update({"status": "article_only", "why": "投稿に使える版が無い"})
+                rec.update({"status": "article_only", "why": "投稿に使える版が無い（動画の検査に合格した版が無い）"})
             else:
                 res = editor(prec["id"], versions[variant]["post"], variant, rec["urls"][variant], now)
                 if res.get("deferred"):
@@ -571,8 +584,15 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
             break
         variant = (rec.get("pending") or {}).get("forceVariant") or pick_variant(state, now, f["ab_until"], f["after_ab"])
         versions = v.get("versions") or {}
-        if not (versions.get(variant) or {}).get("ok") or variant not in urls:
-            variant = next((k for k in ("short", "full") if (versions.get(k) or {}).get("ok") and k in urls), "")
+        usable = lambda k: (versions.get(k) or {}).get("ok") and k in urls and qa_ok(versions.get(k))  # noqa: E731
+        if not usable(variant):
+            variant = next((k for k in ("short", "full") if usable(k)), "")
+        if not variant and any((versions.get(k) or {}).get("ok") for k in ("short", "full")):
+            # 動画はあるが、描いた位置・画像のレビューの検査に合格していない（前のコードの動画など）→ 作り直す
+            state.setdefault("videosArchive", {})[slug] = state["videos"].pop(slug)
+            q.update({"status": "waiting", "why": "動画の検査（描いた位置・画像のレビュー）に合格していないので作り直す"})
+            out.append({"slug": slug, **q})
+            break
         if not variant:
             q.update({"status": "skipped", "why": "投稿に使える版が無い"})
             issue(slug, q["why"])
