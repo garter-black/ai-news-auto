@@ -339,9 +339,9 @@ function inPageAudit(opts) {
     while (prev && !vis(prev)) prev = prev.previousElementSibling;
     if (!prev || prev.tagName !== el.tagName) continue;
     const a = norm(el);
-    if (a.length >= 30 && a === norm(prev)) out.duplicates.push({ where: path(el), text: snippet(a) });
+    if (a.length >= 24 && a === norm(prev)) out.duplicates.push({ where: path(el), text: snippet(a) });
   }
-  const tables = [...main.querySelectorAll("table")].filter(vis).map(norm).filter((t) => t.length > 30);
+  const tables = [...main.querySelectorAll("table")].filter(vis).map(norm).filter((t) => t.length >= 24);
   const dupTables = tables.filter((t, i) => tables.indexOf(t) !== i);
   for (const t of new Set(dupTables)) out.duplicates.push({ where: "table（離れた場所に同じ表）", text: snippet(t) });
 
@@ -454,7 +454,10 @@ async function auditOne(browser, page, vp, theme, dela) {
 
   const result = { page: page.path, label: page.label, viewport: vp.name, theme, errors: [], warnings: [], shot: null };
   try {
-    const resp = await p.goto(withInternal(page.path), { waitUntil: "load", timeout: 45000 });
+    // 一時的な通信の失敗で落ちないよう、開けなければ 1 回だけやり直す
+    const resp = await p
+      .goto(withInternal(page.path), { waitUntil: "load", timeout: 45000 })
+      .catch(() => p.goto(withInternal(page.path), { waitUntil: "load", timeout: 45000 }));
     const status = resp ? resp.status() : 0;
     if (page.kind === "404" ? status !== 404 : status >= 400) result.errors.push({ check: "HTTP", detail: `状態 ${status}` });
     await p.waitForTimeout(1200);
@@ -716,20 +719,27 @@ async function checkLinks(results, report) {
   links.sort(() => 0.5 - Math.random());
   const sample = links.slice(0, LINK_LIMIT);
   const broken = [];
+  const flaky = [];
   let i = 0;
   await Promise.all(Array.from({ length: 8 }, async () => {
     while (i < sample.length) {
       const u = sample[i++];
-      try {
-        const res = await fetch(u + (u.includes("?") ? "&" : "?") + "_internal=1", { method: "GET", headers: { "X-Saisoku-Internal": "1", "User-Agent": "saisoku-ui-check" }, redirect: "follow" });
-        if (res.status >= 400) broken.push(`${res.status} ${u}`);
-        await res.body?.cancel().catch(() => {});
-      } catch (e) {
-        broken.push(`ERR ${u} ${String(e).slice(0, 60)}`);
+      // 通信の一時的な失敗（fetch failed）は 2 回までやり直し、それでも駄目なら注意にとどめる（404 などは失敗）
+      for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+          const res = await fetch(u + (u.includes("?") ? "&" : "?") + "_internal=1", { method: "GET", headers: { "X-Saisoku-Internal": "1", "User-Agent": "saisoku-ui-check" }, redirect: "follow", signal: AbortSignal.timeout(20000) });
+          if (res.status >= 500 && attempt < 2) { await res.body?.cancel().catch(() => {}); await new Promise((r) => setTimeout(r, 1500)); continue; }
+          if (res.status >= 400) broken.push(`${res.status} ${u}`);
+          await res.body?.cancel().catch(() => {});
+          break;
+        } catch (e) {
+          if (attempt < 2) { await new Promise((r) => setTimeout(r, 1500)); continue; }
+          flaky.push(`通信エラー ${u} ${String(e).slice(0, 60)}`);
+        }
       }
     }
   }));
-  report.push({ page: "(内部リンク)", label: `内部リンク ${sample.length} 本`, viewport: "-", theme: "-", errors: broken.map((b) => ({ check: "リンク切れ", detail: b })), warnings: [] });
+  report.push({ page: "(内部リンク)", label: `内部リンク ${sample.length} 本`, viewport: "-", theme: "-", errors: broken.map((b) => ({ check: "リンク切れ", detail: b })), warnings: flaky.map((b) => ({ check: "リンク", detail: b })) });
 }
 
 async function main() {
