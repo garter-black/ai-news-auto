@@ -2,6 +2,7 @@ import { isWeb, sourceHref, sourceLabel, type FullArticle } from "@/lib/articles
 import { COMPANIES, OTHER, companyOf, type Company } from "@/lib/companies";
 import { renderMarkdown, slugifyHeading } from "@/lib/markdown";
 import { STATUS_LABEL, isUnknownValue, japanLabel, verdictOf } from "@/lib/verdict";
+import { cleanTake } from "@/lib/article-sections";
 import { questionFor } from "./questions";
 
 /**
@@ -140,7 +141,7 @@ export async function buildConceptView(article: FullArticle): Promise<ConceptVie
   const isOther = company.slug === OTHER.slug;
 
   // 結論の1文：判定のひとこと → かんたん版の「ひとことで言うと」→ リード文の1文目
-  const conclusion = (verdict?.take?.trim() || article.easyGist?.trim() || firstSentence(article.lede)).replace(/\s+/g, " ");
+  const conclusion = (cleanTake(verdict?.take ?? "") || article.easyGist?.trim() || firstSentence(article.lede)).replace(/\s+/g, " ");
 
   const fitParts: string[] = [];
   if (verdict) {

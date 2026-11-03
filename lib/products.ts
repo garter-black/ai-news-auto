@@ -1,6 +1,7 @@
 import fs from "@/lib/content-fs";
 import path from "node:path";
 import { getArticleSummary, type ArticleSummary } from "@/lib/articles";
+import { withoutNoData } from "@/lib/no-data";
 
 /**
  * 製品ごとのまとめページ（content/products/*.json、scripts/products.py が作る）。
@@ -105,7 +106,9 @@ export function getAllProducts(): Product[] {
     .flatMap((file) => {
       try {
         const data = JSON.parse(fs.readFileSync(/* turbopackIgnore: true */ `${PRODUCTS_DIR}${path.sep}${file}`, "utf8")) as Product;
-        return data.slug && data.overview?.text ? [editorialCorrections(data)] : [];
+        // 基本情報の「記載なし」の欄は出さない（lib/no-data.ts）
+        const facts = (data.facts ?? []).map((f) => ({ ...f, value: withoutNoData(f.value) })).filter((f) => f.value);
+        return data.slug && data.overview?.text ? [editorialCorrections({ ...data, facts })] : [];
       } catch {
         return [];
       }

@@ -69,7 +69,7 @@ import {
   splitBeforeHeading,
 } from "@/lib/markdown";
 import { siteConfig } from "@/site.config";
-import { cleanSections, retitleHtml, tocOf } from "@/lib/article-sections";
+import { cleanSections, cleanTake, retitleHtml, tocOf } from "@/lib/article-sections";
 import ArticleProse from "@/components/ArticleProse";
 import CalculatorBox from "@/components/calc/CalculatorBox";
 import { CALC_SLOT, insertFigures, markCalculatorSlot, renderChart, type ChartFigure } from "@/lib/charts";
@@ -167,11 +167,14 @@ export default async function ArticlePage({ params }: Props) {
   // 同じ発表の重複記事（scripts/story.py の duplicateOf）は、代表の記事へ案内する（検索では代表だけを出す）
   const mainArticle =
     article.duplicateOf && article.duplicateOf !== article.slug ? getArticleSummary(article.duplicateOf) : undefined;
-  const workMoney = workMoneyOf(article.workMoney);
+  // 「仕事・お金」の欄・よくある質問も、本文と同じく答えになっていない文を除き、「〜しましょう」は落ち着いた言い方にする（lib/article-sections.ts）
+  const workMoneyRaw = workMoneyOf(article.workMoney);
+  const workMoneyPoints = (workMoneyRaw?.points ?? []).map(cleanTake).filter(Boolean);
+  const workMoney = workMoneyRaw && workMoneyPoints.length ? { ...workMoneyRaw, points: workMoneyPoints } : null;
   // 同じ製品の料金・使い方ガイドへの固定の案内（要点のすぐ下と、本文の料金の章の下。lib/guide-links.ts）
   const guideLinks = guideLinksForArticle(article);
   const pricingLink = guideLinks.find((link) => link.kind === "pricing");
-  const articleFaq = (article.faq ?? []).filter((row) => row.q && row.a);
+  const articleFaq = (article.faq ?? []).map((row) => ({ ...row, a: cleanTake(row.a ?? "") })).filter((row) => row.q && row.a);
   const todayActions = article.todayActions ?? [];
   // 広告枠は記事との関連の点数が基準を超えた商品だけを、関連の高い順に出す（lib/offers.ts）。
   // 右側（1〜3位）と本文中（4〜6位）で同じ商品は出さない。
@@ -268,7 +271,7 @@ export default async function ArticlePage({ params }: Props) {
     ? articleFaq.map((row) => ({ q: row.q, a: row.a }))
     : verdict && cardKind === "product"
     ? [
-        { q: `${name}は今すぐ使える？`, a: `${STATUS_LABEL[verdict.status]}。${verdict.take}` },
+        { q: `${name}は今すぐ使える？`, a: `${STATUS_LABEL[verdict.status]}。${cleanTake(verdict.take ?? "")}` },
         { q: `${name}は日本から使える？`, a: japanLabel(verdict) },
         { q: `${name}の料金は？`, a: verdict.price || "不明" },
         { q: `${name}は無料で試せる？`, a: freeLabel(verdict.free) },
@@ -682,6 +685,9 @@ export default async function ArticlePage({ params }: Props) {
           )}
 
 
+          {/* かんたん版と通常版は両方ともサーバーで描画し、読み方の切り替え（components/ReadingMode.tsx）で片方を隠す。
+              本文中の PR の囲み・「あわせて読みたい」は、どちらの版にも入れず、2つの版のあいだ（通常版の後半の前）に1つだけ置く。
+              かんたん版ではかんたん版の直後、通常版では後半の前に見える（同じ広告の枠をページに2つ置かない。2026-11-03） */}
           <div id="article-flow" data-read-mode="expert">
           {easyHtml && (
             <div className="read-easy">
@@ -689,12 +695,6 @@ export default async function ArticlePage({ params }: Props) {
                 要約版：専門用語を控えて説明しています
               </p>
               <article className="prose mt-5 max-w-[40em]" dangerouslySetInnerHTML={{ __html: easyHtml }} />
-              {inlineOffer && (
-                <div className="my-10 max-w-[46em]">
-                  <RailRanking offer={inlineOffer} wide title={inlineOffer.headline} countImpression={false} />
-                </div>
-              )}
-              {readNextInline && <ReadNextBox link={readNextInline} className={`my-10 ${readNextInlineClass}`} />}
             </div>
           )}
 
@@ -730,7 +730,9 @@ export default async function ArticlePage({ params }: Props) {
 
           {/* 本文に馴染ませる収益導線。関連ツールは本文の途中（読者がまだ読んでいる位置）に置く。記事末だけだと、ページの4分の3より下まで読んだ人にしか見えなかった */}
           {bodyTail && chooseGuide && <ChooseGuideNote guide={chooseGuide} className="my-10" />}
+          </div>
 
+          {/* 本文中の PR（4〜6位の商品枠。Amazon / 楽天の1行は同じ囲みの中）と「あわせて読みたい」。ページに1つだけ */}
           {bodyTail && inlineOffer && (
             <div className="my-10 max-w-[46em]">
               <RailRanking offer={inlineOffer} wide id="offer-inline" title={inlineOffer.headline} />
@@ -741,12 +743,13 @@ export default async function ArticlePage({ params }: Props) {
           )}
           {bodyTail && readNextInline && <ReadNextBox link={readNextInline} className={`my-10 ${readNextInlineClass}`} />}
           {bodyTail && !inlineOffer && shopLink && <ShopLinks link={shopLink} className="my-10" />}
-          {bodyTail && inlineCta && <CtaBanner genreSlug={article.genreSlug} slot="inline" className="my-10" />}
 
           {bodyTail && (
-            <ArticleProse className="prose max-w-[40em]" html={bodyTail} slot={calcInline ? calcBox : undefined} priceSlot={priceBox} />
+            <div className="read-expert">
+              {inlineCta && <CtaBanner genreSlug={article.genreSlug} slot="inline" className="my-10" />}
+              <ArticleProse className="prose max-w-[40em]" html={bodyTail} slot={calcInline ? calcBox : undefined} priceSlot={priceBox} />
+            </div>
           )}
-          </div>
           </div>
 
           {/* 計算機は合う章の下に置く。合う章が無い記事は本文の終わり（かんたん版でも見える位置） */}

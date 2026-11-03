@@ -56,3 +56,22 @@ test("描画済みの見出しを言い換え、目次と同じ id を付ける"
     { id: "sec-2", text: "買い替えを考える人への影響" },
   ]);
 });
+
+test("「〜しましょう」は「〜するとよいでしょう」に（Python の門と同じ見本。2026-11-03 オーナーのルール A17）", () => {
+  const { professionalSentence, cleanTake } = loaded.exports;
+  const reg = JSON.parse(fs.readFileSync(path.join(root, "tests/fixtures/register_cases.json"), "utf8"));
+  for (const [sentence, want] of reg.sentences) assert.equal(professionalSentence(sentence), want, sentence);
+  for (const [take, want] of reg.takes) assert.equal(cleanTake(take), want, take);
+});
+
+test("表の「記載なし」は空欄、全部空の列は列ごと消す。「元記事には書かれていません」は文ごと消す（W11・A2）", () => {
+  const md =
+    "## 他社との比較\n\n| 項目 | A | B | C |\n|---|---|---|---|\n| 重さ | 公式に記載なし | 1.2kg | 公式に記載なし |\n| 価格 | 10万円 | 12万円 | — |\n\n" +
+    "- 「公式に記載なし」は、その会社の公式ページに書かれていない項目です。\n\n" +
+    "## 料金\n\n本体は10万円です（元記事では税の扱いは言及なし）。保証の料金は、元記事には書かれていません。\n";
+  const { markdown } = cleanSections(md);
+  assert.ok(!markdown.includes("記載なし"));
+  assert.ok(!markdown.includes("元記事"));
+  assert.ok(markdown.includes("| 重さ |  | 1.2kg |"));
+  assert.ok(markdown.includes("本体は10万円です。"));
+});

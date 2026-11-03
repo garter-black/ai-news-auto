@@ -89,7 +89,7 @@
 | `missed_check.yml` | 毎朝8:30、取りこぼした大ニュースがないか確認 |
 | `newsletter.yml` | 毎朝7時のメルマガ |
 | `readability.yml` | 文字の見やすさの自動チェック |
-| `ui_check.yml` | 画面の崩れの見張り（デプロイ後と毎朝7:17）。`scripts/ui_check.mjs` が本番の主要ページをスマホ/PC×ライト/ダークで開き、読めない画像・はみ出し・undefined や生の Markdown・コンソールのエラー・ロゴ用書体の漏れ・同じ区切りの重なり・PR表示のない広告・CLS>0.1 を探す。見つかれば issue（ラベル `ui-broken`）、スクショは成果物。手元では `node scripts/ui_check.mjs [--set full] [--paths /,/articles]`（`npm i --no-save playwright-core` が必要） |
+| `ui_check.yml` | 画面の崩れの見張り（デプロイ後と毎朝7:17）。`scripts/ui_check.mjs` が本番の主要ページをスマホ/PC×ライト/ダークで開き、読めない画像・はみ出し・undefined や生の Markdown・コンソールのエラー・ロゴ用書体の漏れ・同じ区切りの重なり・同じ広告の枠／メール登録欄の重なり・「記載なし」の表示・PR表示のない広告・CLS>0.1 を探す。見つかれば issue（ラベル `ui-broken`）、スクショは成果物。手元では `node scripts/ui_check.mjs [--set full] [--paths /,/articles]`（`npm i --no-save playwright-core` が必要） |
 | `review_sync.yml` | 20分ごと。編集部の記事確認ページ（`/review`、`cloudflare/review.ts`。メールの6桁コードでログイン）で付けた「確認済み」「直してほしい」を記事 JSON の `review` に書き写して公開（`scripts/review_sync.py`）。記録は Workers KV `REVIEW_KV`。「直してほしい」は issue（ラベル `review-fix`）。確認は任意で、毎日の義務ではない（2026-11-03） |
 | `pricing_watch.yml` | 毎朝6:17、公式の料金ページを読み直して料金の段の表（`content/pricing/*.json`、円の目安つき）を更新。金額が変わったら記事の候補にする。読み方は `scripts/pricing.py`（Python）と `lib/pricing-ladder.ts`・`components/PriceTable.tsx`（サイト） |
 

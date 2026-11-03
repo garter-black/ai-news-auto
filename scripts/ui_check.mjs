@@ -183,7 +183,7 @@ async function buildPages() {
 /* eslint-disable */
 function inPageAudit(opts) {
   const { dela, viewportWidth } = opts;
-  const out = { brokenImages: [], fallbacks: [], overflow: [], badText: [], fontLeaks: [], duplicates: [], prMissing: [], missingAlt: [], emptyBoxes: [], stretched: [] };
+  const out = { brokenImages: [], fallbacks: [], overflow: [], badText: [], fontLeaks: [], duplicates: [], prMissing: [], missingAlt: [], emptyBoxes: [], stretched: [], repeatedSlots: [], noData: [] };
   const vis = (el) => {
     const s = getComputedStyle(el);
     if (s.display === "none" || s.visibility === "hidden" || Number(s.opacity) === 0) return false;
@@ -317,6 +317,17 @@ function inPageAudit(opts) {
     .map((el) => path(el));
   for (const where of [...new Set(emptyCells)].slice(0, 5)) out.badText.push({ label: "答えのない欄（警告）", text: "記載なし・不明など", where, warn: true });
   if (/lorem ipsum/i.test(main.innerText || "")) out.badText.push({ label: "仮の文章", text: "lorem ipsum" });
+  // 「記載なし」を読者に見せない（表・料金表・判定カード・本文。空の列や行は隠し、残る空欄は空のまま。2026-11-03 オーナーのルール W11）
+  const seenNoData = new Set();
+  for (const el of main.querySelectorAll("td, th, dd, li, p, span, strong, b, figcaption, caption")) {
+    if (el.children.length > 0 && !el.matches("td, th, dd, li")) continue;
+    const t = (el.textContent || "").replace(/\s+/g, " ").trim();
+    if (!/記載なし/.test(t) || !vis(el) || el.closest("code, pre")) continue;
+    const key = path(el) + snippet(t);
+    if (seenNoData.has(key)) continue;
+    seenNoData.add(key);
+    out.noData.push({ text: snippet(t), where: path(el) });
+  }
 
   // 4. ロゴ用の書体（Dela）を決まった文言以外に使っていないか
   const allowedChars = new Set([...dela.chars]);
@@ -362,6 +373,14 @@ function inPageAudit(opts) {
       out.prMissing.push({ where: key, text: snippet(a.innerText || a.getAttribute("aria-label") || ""), pageDisclosed });
     }
   }
+
+  // 6b. 同じ広告の枠・メール登録欄は1ページに1つまで（見えていない方も数える。かんたん版と通常版の両方に入れない。2026-11-03 オーナーのルール W10）
+  const slotCount = new Map();
+  const count = (key) => slotCount.set(key, (slotCount.get(key) || 0) + 1);
+  for (const el of document.querySelectorAll("[data-aff-pos]")) count(`広告の枠 ${el.getAttribute("data-aff-pos")}`);
+  for (const el of document.querySelectorAll("[data-ad-position]")) count(`AdSense の枠 ${el.getAttribute("data-ad-position")}`);
+  for (const el of document.querySelectorAll("[data-newsletter-signup]")) count("メール配信の登録欄");
+  for (const [key, n] of slotCount) if (n > 1) out.repeatedSlots.push({ key, n });
 
   // 7. 中身のない箱（見出しだけ・枠だけ）
   for (const el of main.querySelectorAll("section, aside")) {
@@ -484,6 +503,8 @@ async function auditOne(browser, page, vp, theme, dela) {
     add("おかしな文字", audit.badText, (i) => `${i.label}: 「${i.text}」${i.where ? `（${i.where}）` : ""}`);
     add("ロゴ用書体の漏れ", audit.fontLeaks, (i) => `「${i.text}」${i.missing ? ` 書体に無い字: ${i.missing}` : ""}（${i.where}）`);
     add("同じ区切りが2回", audit.duplicates, (i) => `${i.where}「${i.text}」`);
+    add("同じ枠が2つ", audit.repeatedSlots, (i) => `${i.key} が ${i.n} 個（1ページに1つまで）`);
+    add("「記載なし」の表示", audit.noData, (i) => `「${i.text}」（${i.where}）`);
     add("PR表示なしの提携リンク", audit.prMissing.filter((i) => !i.pageDisclosed), (i) => `${i.where}「${i.text}」`);
     add("PR表示なしの提携リンク", audit.prMissing.filter((i) => i.pageDisclosed), (i) => `${i.where}「${i.text}」（ページ上部の表記のみ）`, true);
     add("画像の縦横比・ぼやけ", audit.stretched, (i) => `${i.blurry ? "ぼやけ" : "引き伸ばし"} ${i.shown}（元 ${i.natural}）${i.src}`, true);

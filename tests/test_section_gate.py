@@ -83,6 +83,40 @@ class SectionPolishCheckTest(unittest.TestCase):
         self.assertFalse(sp.valid_title("価格は300万円から", "料金は？", "", "価格"))  # 本文に無い数字
         self.assertFalse(sp.valid_title("何がすごいのか", "何がすごいの？", "", ""))
 
+    def test_professional_register(self):
+        """「〜しましょう」「〜してみましょう」は「〜するとよいでしょう」に（2026-11-03 オーナーのルール A17）。
+        表示の段（lib/article-sections.ts）と同じ見本 tests/fixtures/register_cases.json"""
+        cases = json.loads((ROOT / "tests" / "fixtures" / "register_cases.json").read_text("utf-8"))
+        for sentence, want in cases["sentences"]:
+            self.assertEqual(g.professional(sentence), want, sentence)
+        for take, want in cases["takes"]:
+            self.assertEqual(g.clean_take(take), want, take)
+        # 生成の門: 判定のひとことの「〜しましょう」は書き出しの前に直し（apply）、直せない文だけ問題にする
+        record = {"body": "## 概要\n\nA社が発表しました。", "easy": "", "verdict": {"take": "公式サイトで試してみましょう。"}}
+        g.apply(record)
+        self.assertEqual(record["verdict"]["take"], "公式サイトで試してみるとよいでしょう。")
+        self.assertEqual([], [p for p in g.style_problems(record) if "しましょう" in p])
+        stuck = {"body": "## 概要\n\nウェブましょう。", "easy": ""}
+        self.assertTrue(any("しましょう" in p for p in g.style_problems(stuck)))
+
+    def test_no_data_cells_and_source_non_answers(self):
+        """表の「記載なし」は空欄（全部空の列は列ごと消す）。「元記事には書かれていません」は文ごと消す（2026-11-03 W11・A2）"""
+        md = ("## 他社との比較\n\n| 項目 | A | B | C |\n|---|---|---|---|\n| 重さ | 公式に記載なし | 1.2kg | 公式に記載なし |\n| 価格 | 10万円 | 12万円 | — |\n\n"
+              "- 「公式に記載なし」は、その会社の公式ページに書かれていない項目です。\n\n"
+              "## 料金\n\n本体は10万円です（元記事では税の扱いは言及なし）。保証の料金は、元記事には書かれていません。\n")
+        out, _ = g.clean_markdown(md)
+        self.assertNotIn("記載なし", out)
+        self.assertNotIn("元記事", out)
+        self.assertIn("| 重さ |  | 1.2kg |", out)
+        self.assertNotIn("| C |", out)
+        self.assertIn("空欄は、", out)
+        self.assertIn("本体は10万円です。", out)
+        # 確かめ済みの比較表（scripts/rivals.py）も、表の「公式に記載なし」は空欄にする（文は消さない）
+        rival = f"## {g.DATA_RIVAL_HEADING}\n\n| 項目 | A | B |\n|---|---|---|\n| 重さ | 1.2kg | 公式に記載なし |\n| 価格 | 10万円 | 12万円 |\n\n- 「公式に記載なし」は公式ページに無い項目です。\n"
+        out, _ = g.clean_markdown(rival)
+        self.assertNotIn("記載なし", out)
+        self.assertIn("| 重さ | 1.2kg |  |", out)
+
     def test_tables_are_masked(self):
         content = "前文です。\n\n| a | b |\n| --- | --- |\n| 1 | 2 |\n\n後文です。"
         masked, tables = sp.mask_tables(content)

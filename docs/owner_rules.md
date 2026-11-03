@@ -45,7 +45,7 @@
 | 番号 | ルール | 日付 | なぜ | 強制 | 点検 |
 |---|---|---|---|---|---|
 | A1 | 決まった型の小見出しを使わない（自分に関係ある？／ライバルと比べてどう？／もう使える？取引できる？／何がすごいの？） | 2026-11-03 | ロボットっぽい・恥ずかしい | 生成と品質ゲートは別の作業で直している（`scripts/quality.py`）。見張り `scripts/owner_rules_audit.py`・`tests/test_owner_rules_audit.py::RecordTest` | ● |
-| A2 | 答えになっていない欄（元記事には書かれていません／判断できません／つなぎの編集部注）は欄ごと省く | 2026-11-03 | 読者の時間を無駄にする | `scripts/quality.py`（`faq_problems`・`promise_problems`）・`tests/test_verdict_label.cjs`・見張り `scripts/owner_rules_audit.py` | ● |
+| A2 | 答えになっていない欄（元記事には書かれていません／判断できません／つなぎの編集部注）は欄ごと省く | 2026-11-03 | 読者の時間を無駄にする | `scripts/quality.py`（`faq_problems`・`promise_problems`）・表示と生成で文ごと消す `scripts/section_gate.py`（`SOURCE_NONANSWER_RE`）・`lib/article-sections.ts`・`tests/test_section_gate.py::test_no_data_cells_and_source_non_answers`・`tests/test_verdict_label.cjs`・見張り `scripts/owner_rules_audit.py` | ● |
 | A3 | 中身のない文（〜にとっても重要です／〜といえます）を書かない | 2026-11-03 | 水増しに見える | 見張り `scripts/owner_rules_audit.py`・`tests/test_owner_rules_audit.py::RecordTest` | ● |
 | A4 | 落ち着いた大人の文（ITmedia・日経クロステックの水準）。幼い言い回し（すごい／〜しちゃう／〜を作る道具）・ざっくりは使わない | 2026-11-03 | 「幼すぎる表現は本当にやめたい。恥ずかしい」 | `scripts/persona.py`（`STIFF_RE`）・見張り `scripts/owner_rules_audit.py`・`tests/test_owner_rules_audit.py::RecordTest` | ● |
 | A5 | 題名は自然な日本語（有名な会社に「ChatGPTのOpenAI」のような説明を付けない・「」、を使わない・変な記号や区切りを使わない） | 2026-11-03 | 「日本語として変なタイトル」 | `scripts/headline_normalize.py`（区切り・かっこ・会社名。別の作業で拡張中）・`tests/test_headline_normalize.py`・`tests/test_headline_display.cjs`・見張り `scripts/owner_rules_audit.py`・`tests/test_owner_rules_audit.py::TitleTest` | ● |
@@ -60,6 +60,7 @@
 | A14 | サイソクが自分で試したように書かない（「筆者」など）。題名の約束に本文で答える | 2026-11-03 | 事実と違う書き方をしない | `scripts/quality.py`（`first_person_problems`・`promise_problems`）・`tests/test_article_quickwins.py::test_gate_rejects_first_person_testing` | |
 | A15 | 地震・津波の記事は AI に書かせない（気象庁のデータを型に入れるだけ） | 2026-10-28 | 推測や誤りが許されない | `scripts/quake.py`・`tests/test_owner_rules_gaps.py::test_quake_never_uses_llm` | |
 | A16 | 記事の数字は元記事・確かめた資料・計算済みの数字だけ | 2026-11-03 | 作った数字は信用を失う | `scripts/quality.py`（`number_problems`）・`tests/test_facts_bundle.py` | |
+| A17 | 判定のひとこと・本文を「〜しましょう」「〜してみましょう」の呼びかけで締めない（「〜するとよいでしょう」など落ち着いた言い方。事実は変えない） | 2026-11-03 | 幼い・売り込みに見える | 生成の前に直す `scripts/section_gate.py`（`professional`・`apply`・`style_problems`）・表示 `lib/article-sections.ts`（`professionalSentence`・`cleanTake`）・`scripts/persona.py`（`PLAIN_STYLE`）・`tests/test_section_gate.py::test_professional_register`・`tests/test_article_sections.cjs`・見張り `scripts/owner_rules_audit.py`・`tests/test_owner_rules_audit.py::RecordTest` | ● |
 
 ## サイト
 
@@ -74,6 +75,8 @@
 | W7 | 自分のアクセスを数えない（`?_internal=1` か `X-Saisoku-Internal: 1`） | 2026-11-03 | 数字が水増しされる | `cloudflare/inflow.ts`・`tests/test_inflow_report.py` | |
 | W8 | 嫌いな見た目を使わない（Zen Kaku の書体・AI っぽい「↗」・黄色いマーカー） | 2026-10-21 | オーナーの好み | `tests/test_owner_rules_site.cjs` | |
 | W9 | 文字の見やすさの点検は0件 | 2026-10-27 | 読みにくいと離れる | `scripts/check_readability.mjs`（`readability.yml`） | |
+| W10 | 同じ広告の枠・メール登録欄は1ページに1つまで（かんたん版と通常版の両方に入れない。広告はすべての記事に出す） | 2026-11-03 | 同じ枠が2つあると広告だらけ・押し売りに見える | `app/articles/[slug]/page.tsx`・`lib/newsletter-placement.ts`・`tests/test_page_slots.cjs`・`scripts/ui_check.mjs`（同じ枠が2つ）・見張り `scripts/owner_rules_audit.py`（`slot_problems`） | ● |
+| W11 | 表・料金表・判定・本文に「記載なし」を出さない（値の無い列・行は隠し、残る空欄は空のまま。「—」で埋めない） | 2026-11-03 | 壊れて見える・答えになっていない | `lib/no-data.ts`・`components/PriceTable.tsx`・`lib/article-sections.ts`（表の空欄）・`tests/test_no_data.cjs`・`scripts/ui_check.mjs`（「記載なし」の表示）・見張り `scripts/owner_rules_audit.py`・`tests/test_owner_rules_audit.py::PageTest` | ● |
 
 ## 運用
 

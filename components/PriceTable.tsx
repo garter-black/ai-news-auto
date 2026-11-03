@@ -10,6 +10,7 @@ import {
   type PlanTier,
   type PricingProductId,
 } from "@/lib/pricing-ladder";
+import { hasValue } from "@/lib/no-data";
 
 /**
  * 料金の段の表・会社をまたいだ比較表（公式ページから毎日更新。lib/pricing-ladder.ts）。
@@ -43,57 +44,73 @@ function Label({ children }: { children: React.ReactNode }) {
   return <span className="mb-0.5 block text-meta text-muted sm:hidden">{children}</span>;
 }
 
+// 値の無い列は列ごと隠し、残った空のセルは空欄のままにする（「—」「料金ページに記載なし」を読者に見せない。2026-11-03 オーナーのルール W11）
 function PlanRows({ rows, compare }: { rows: PlanRow[]; compare: boolean }) {
+  const showJpy = rows.some((r) => hasValue(r.jpyText));
+  const showLimits = rows.some((r) => r.limits.some(hasValue));
   return (
     <>
       <thead className="hidden border-b border-line bg-surface sm:table-header-group">
         <tr>
           <th scope="col" className={th}>{compare ? "サービス・プラン" : "プラン"}</th>
           <th scope="col" className={th}>料金（公式）</th>
-          <th scope="col" className={th}>円の目安</th>
-          <th scope="col" className={th}>主な上限・違い</th>
+          {showJpy && <th scope="col" className={th}>円の目安</th>}
+          {showLimits && <th scope="col" className={th}>主な上限・違い</th>}
         </tr>
       </thead>
       <tbody>
-        {rows.map((r) => (
-          <tr key={`${r.product}-${r.id}`} className="grid grid-cols-2 gap-x-4 gap-y-2 border-b border-line px-4 py-4 last:border-0 sm:table-row sm:p-0">
-            <th scope="row" className={`${cell} col-span-2 text-left font-bold text-ink`}>
-              {compare && <CompanyDot slug={r.company} />}
-              {compare ? r.compareName : r.name}
-              {r.manual && <span className="ml-1 text-muted" title="公式ページを人が確認して記入した値">※</span>}
-            </th>
-            <td className={`${cell} text-ink`}>
-              <Label>料金（公式）</Label>
-              <ul className="grid gap-0.5">
-                {(compare ? [r.mainPriceText] : r.priceTexts).map((t) => (
-                  <li key={t} className="font-bold tabular-nums sm:whitespace-nowrap">{t}</li>
-                ))}
-              </ul>
-            </td>
-            <td className={`${cell} text-ink-soft`}>
-              <Label>円の目安</Label>
-              <span className="tabular-nums">{r.jpyText || "—"}</span>
-            </td>
-            <td className={`${cell} col-span-2 text-ink-soft`}>
-              <Label>主な上限・違い</Label>
-              {r.limits.length ? (
+        {rows.map((r) => {
+          const limits = r.limits.filter(hasValue);
+          return (
+            <tr key={`${r.product}-${r.id}`} className="grid grid-cols-2 gap-x-4 gap-y-2 border-b border-line px-4 py-4 last:border-0 sm:table-row sm:p-0">
+              <th scope="row" className={`${cell} col-span-2 text-left font-bold text-ink`}>
+                {compare && <CompanyDot slug={r.company} />}
+                {compare ? r.compareName : r.name}
+                {r.manual && <span className="ml-1 text-muted" title="公式ページを人が確認して記入した値">※</span>}
+              </th>
+              <td className={`${cell} text-ink`}>
+                <Label>料金（公式）</Label>
                 <ul className="grid gap-0.5">
-                  {(compare ? r.limits.slice(0, 2) : r.limits).map((t) => (
-                    <li key={t}>{t}</li>
+                  {(compare ? [r.mainPriceText] : r.priceTexts).map((t) => (
+                    <li key={t} className="font-bold tabular-nums sm:whitespace-nowrap">{t}</li>
                   ))}
                 </ul>
-              ) : (
-                "—"
+              </td>
+              {showJpy && (
+                <td className={`${cell} text-ink-soft ${hasValue(r.jpyText) ? "" : "max-sm:hidden"}`}>
+                  {hasValue(r.jpyText) && (
+                    <>
+                      <Label>円の目安</Label>
+                      <span className="tabular-nums">{r.jpyText}</span>
+                    </>
+                  )}
+                </td>
               )}
-            </td>
-          </tr>
-        ))}
+              {showLimits && (
+                <td className={`${cell} col-span-2 text-ink-soft ${limits.length ? "" : "max-sm:hidden"}`}>
+                  {limits.length > 0 && (
+                    <>
+                      <Label>主な上限・違い</Label>
+                      <ul className="grid gap-0.5">
+                        {(compare ? limits.slice(0, 2) : limits).map((t) => (
+                          <li key={t}>{t}</li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+                </td>
+              )}
+            </tr>
+          );
+        })}
       </tbody>
     </>
   );
 }
 
 function ModelRows({ rows, compare }: { rows: ModelRow[]; compare: boolean }) {
+  const showCache = rows.some((r) => hasValue(r.cacheReadText));
+  const showJpy = rows.some((r) => hasValue(r.jpyText));
   return (
     <>
       <thead className="hidden border-b border-line bg-surface sm:table-header-group">
@@ -101,8 +118,8 @@ function ModelRows({ rows, compare }: { rows: ModelRow[]; compare: boolean }) {
           <th scope="col" className={th}>モデル</th>
           <th scope="col" className={th}>入力</th>
           <th scope="col" className={th}>出力</th>
-          <th scope="col" className={th}>キャッシュ読み込み</th>
-          <th scope="col" className={th}>円の目安（入力／出力・税別）</th>
+          {showCache && <th scope="col" className={th}>キャッシュ読み込み</th>}
+          {showJpy && <th scope="col" className={th}>円の目安（入力／出力・税別）</th>}
         </tr>
       </thead>
       <tbody>
@@ -114,28 +131,32 @@ function ModelRows({ rows, compare }: { rows: ModelRow[]; compare: boolean }) {
               {r.context && <span className="ml-1 block text-meta font-normal text-muted sm:inline">（{r.context}）</span>}
               {r.scheduledText && <span className="mt-1 block text-meta font-normal text-official">予定：{r.scheduledText}</span>}
             </th>
-            {r.listed ? (
-              <>
-                <td className={`${cell} tabular-nums text-ink`}>
-                  <Label>入力</Label>
-                  <span className="font-bold">{r.inputText}</span>
-                </td>
-                <td className={`${cell} tabular-nums text-ink`}>
-                  <Label>出力</Label>
-                  <span className="font-bold">{r.outputText}</span>
-                </td>
-                <td className={`${cell} tabular-nums text-ink-soft`}>
-                  <Label>キャッシュ読み込み</Label>
-                  {r.cacheReadText}
-                </td>
-                <td className={`${cell} tabular-nums text-ink-soft`}>
-                  <Label>円の目安（入力／出力・税別）</Label>
-                  {r.jpyText || "—"}
-                </td>
-              </>
-            ) : (
-              <td colSpan={4} className={`${cell} col-span-2 text-ink-soft`}>
-                料金ページに記載なし
+            <td className={`${cell} tabular-nums text-ink`}>
+              <Label>入力</Label>
+              <span className="font-bold">{hasValue(r.inputText) ? r.inputText : ""}</span>
+            </td>
+            <td className={`${cell} tabular-nums text-ink`}>
+              <Label>出力</Label>
+              <span className="font-bold">{hasValue(r.outputText) ? r.outputText : ""}</span>
+            </td>
+            {showCache && (
+              <td className={`${cell} tabular-nums text-ink-soft ${hasValue(r.cacheReadText) ? "" : "max-sm:hidden"}`}>
+                {hasValue(r.cacheReadText) && (
+                  <>
+                    <Label>キャッシュ読み込み</Label>
+                    {r.cacheReadText}
+                  </>
+                )}
+              </td>
+            )}
+            {showJpy && (
+              <td className={`${cell} tabular-nums text-ink-soft ${hasValue(r.jpyText) ? "" : "max-sm:hidden"}`}>
+                {hasValue(r.jpyText) && (
+                  <>
+                    <Label>円の目安（入力／出力・税別）</Label>
+                    {r.jpyText}
+                  </>
+                )}
               </td>
             )}
           </tr>
@@ -146,7 +167,9 @@ function ModelRows({ rows, compare }: { rows: ModelRow[]; compare: boolean }) {
 }
 
 export default function PriceTable(props: Props) {
-  const table = tableOf(props);
+  const found = tableOf(props);
+  // 料金ページに載っていないモデル（not_listed）の行は出さない（「料金ページに記載なし」の行を見せない）
+  const table = found && { ...found, rows: (found.rows as (PlanRow | ModelRow)[]).filter((r) => r.kind !== "api" || r.listed) };
   if (!table || table.rows.length === 0) return null;
   const compare = !("product" in table);
   const sources = [...new Map(table.sources.map((s) => [s.url, s])).values()];

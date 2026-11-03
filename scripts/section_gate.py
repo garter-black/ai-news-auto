@@ -78,6 +78,90 @@ FILLER_RE = re.compile(
     r"(?:機会|選択肢)が(?:生まれる|広がる)可能性があります|この立場への直接の影響"
 )
 
+# 読者への答えになっていない「元記事には〜書かれていません」「判断できません」の文（オーナーのルール A2。2026-11-03）。
+# 文ごと消す（章に答えが残らなければ章ごと隠れる）。「〇〇はまだ発表されていません」（何が未定かを主語にした答え）は消さない。
+# 毎日の見張り scripts/owner_rules_audit.py（NON_ANSWER）も同じ式を使う
+SOURCE_NONANSWER_RE = re.compile(
+    r"元記事(?:に|で)(?:は|も)?、?[^。\n]{0,30}?(?:書かれて(?:い)?(?:ません|ない)|触れられて(?:い)?(?:ません|ない)|"
+    r"(?:記載|言及|明記)(?:は|が)?(?:ありません|ない|なし|されていません|されてい?ない))|"
+    r"[はも]、?(?:公式(?:ページ)?に)?記載(?:は|が)?(?:なし|ありません)|判断できません|判断できない状態です"
+)
+# 文の中のかっこ書きの注記（「（元記事では価格情報は言及なし）」）。かっこごと消す
+NONANSWER_PAREN_RE = re.compile(r"[（(](?=[^（）()]*元記事)(?=[^（）()]*(?:言及|記載|明記|書かれて|触れられ))[^（）()]{0,60}[）)]")
+# 表の注記の「『公式に記載なし』は〜」。表の空欄に合わせて「空欄」と言う（読者に「記載なし」を見せない。2026-11-03）
+EMPTY_TOKEN_RE = re.compile(r"「(?:公式に|料金ページに|元記事に)?記載なし」")
+
+# 呼びかけの「〜しましょう」「〜してみましょう」を、落ち着いた言い方（「〜するとよいでしょう」）にする（オーナーのルール A4。2026-11-03
+# 「〜してみましょう」が幼い・売り込みに見える）。事実は変えず、文末の言い方だけを変える。lib/article-sections.ts の professionalSentence と同じ規則
+_ICHIDAN_I = ("落ち", "用い", "起き", "生き", "でき", "過ぎ", "浴び", "伸び", "延び", "試み", "借り", "見", "居", "着", "似")
+_GODAN_SHI_COMPOUND = ("見直", "見通", "手放", "見逃", "見落", "見渡", "問い直", "引き出", "取り消", "打ち出", "乗り出", "洗い出", "割り出", "探し出", "見出")
+_GODAN_ROW = {"い": "う", "き": "く", "ぎ": "ぐ", "し": "す", "ち": "つ", "に": "ぬ", "び": "ぶ", "み": "む", "り": "る"}
+_E_ROW = set("えけげせぜてでねべぺめれへ")
+_SURU_HEAD_RE = re.compile(r"(?:[\u3400-\u9fff々]{2}|[ァ-ヴー]|[A-Za-zＡ-Ｚａ-ｚ0-9０-９]|[をのに])$")
+_TE_MASHOU_RE = re.compile(r"([てで])(みましょう|おきましょう|いきましょう)([。！]?)$")
+_INTRO_RE = re.compile(r"(見|整理し|確認し|比較し|紹介し)ていきましょう([。！]?)$")
+_MASHOU_RE = re.compile(r"ましょう([。！]?)$")
+
+
+def _dictionary_form(stem: str) -> str | None:
+    """「〜ましょう」の前（連用形）を辞書形にする。分からなければ None（言い換えない）"""
+    if not stem:
+        return None
+    if stem.endswith("し"):
+        head = stem[:-1]
+        if head.endswith(_GODAN_SHI_COMPOUND):
+            return head + "す"
+        return head + ("する" if (not head or _SURU_HEAD_RE.search(head)) else "す")
+    if stem.endswith("じ"):
+        return stem + "る"
+    if stem.endswith(_ICHIDAN_I) or stem[-1] in _E_ROW:
+        return stem + "る"
+    if stem[-1] in _GODAN_ROW:
+        return stem[:-1] + _GODAN_ROW[stem[-1]]
+    return None
+
+
+def _open_brackets(text: str) -> int:
+    depth = 0
+    for ch in text:
+        if ch in "「『（(":
+            depth += 1
+        elif ch in "」』）)" and depth > 0:
+            depth -= 1
+    return depth
+
+
+def professional(sentence: str) -> str:
+    """1文の文末の「〜しましょう」を「〜するとよいでしょう」に（節の前置きの「見ていきましょう」は「見ていきます」）。
+    かっこの中（引用）や、言い換え方が分からない文はそのまま"""
+    s = sentence.rstrip()
+    tail = sentence[len(s):]
+    if "ましょう" not in s or _open_brackets(s):
+        return sentence
+    end = lambda mark: "。" if mark else ""  # noqa: E731（「！」は「。」にそろえる）
+    if m := _INTRO_RE.search(s):
+        return s[: m.start()] + m.group(1) + "ていきます" + end(m.group(2)) + tail
+    if m := _TE_MASHOU_RE.search(s):
+        aux = {"みましょう": "みる", "おきましょう": "おく", "いきましょう": "いく"}[m.group(2)]
+        return s[: m.start()] + m.group(1) + aux + "とよいでしょう" + end(m.group(3)) + tail
+    if m := _MASHOU_RE.search(s):
+        base = _dictionary_form(s[: m.start()])
+        if base:
+            return base + "とよいでしょう" + end(m.group(1)) + tail
+    return sentence
+
+
+def ends_with_call(sentence: str) -> bool:
+    """「〜しましょう」で終わる文か（かっこの中の引用は除く）。毎日の見張り（読者に見える文）が使う"""
+    s = sentence.rstrip()
+    return bool(_MASHOU_RE.search(s)) and not _open_brackets(s)
+
+
+def calling_out(sentence: str) -> bool:
+    """言い換えても「〜しましょう」で終わる文が残るか（生成の門の問題点）"""
+    return ends_with_call(professional(sentence))
+
+
 # 「事実」の印: 数字・英字の名前・かぎかっこ
 FACT_RE = re.compile(r"[0-9０-９]|[A-Za-zＡ-Ｚａ-ｚ]{2,}|[「『]")
 # 表・箇条書きの「値が無い」印
@@ -133,8 +217,17 @@ def _cells(line: str) -> list[str]:
     return [c.strip() for c in line.strip().strip("|").split("|")]
 
 
+def _is_empty_value(cell: str) -> bool:
+    return bool(EMPTY_VALUE_RE.match(re.sub(r"[*_`]", "", cell)))
+
+
+def _row(cells: list[str]) -> str:
+    return "| " + " | ".join(cells) + " |"
+
+
 def _clean_table(lines: list[str]) -> list[str]:
-    """値が全部「言及なし」などの行を消す。見出し行と区切り行だけになったら表ごと消す"""
+    """値が全部「言及なし」などの行・列を消し、残った「記載なし」「—」のセルは空欄にする（読者に「記載なし」を見せない。2026-11-03）。
+    見出し行と区切り行だけになったら表ごと消す"""
     if len(lines) < 2 or not TABLE_SEP_RE.match(lines[1].strip()):
         return lines
     header = _cells(lines[0])
@@ -143,29 +236,55 @@ def _clean_table(lines: list[str]) -> list[str]:
     for line in lines[2:]:
         cells = _cells(line)
         values = [c for i, c in enumerate(cells) if i > 0 and i != source_col]
-        if values and all(EMPTY_VALUE_RE.match(re.sub(r"[*_`]", "", v)) for v in values):
+        if values and all(_is_empty_value(v) for v in values):
             continue
         kept.append(line)
-    return kept if len(kept) > 2 else []
+    if len(kept) <= 2:
+        return []
+    rows = [_cells(line) for line in kept[2:]]
+    if not any(_is_empty_value(c) for r in rows for c in r[1:]):
+        return kept
+    width = len(header)
+    drop = {i for i in range(1, width) if all(i >= len(r) or _is_empty_value(r[i]) for r in rows)}
+    keep_cols = [i for i in range(width) if i not in drop]
+    sep = _cells(kept[1])
+    out = [_row([header[i] for i in keep_cols]), _row([sep[i] if i < len(sep) else "---" for i in keep_cols])]
+    for r in rows:
+        out.append(_row(["" if i > 0 and i < len(r) and _is_empty_value(r[i]) else (r[i] if i < len(r) else "") for i in keep_cols]))
+    return out
+
+
+def _tidy(text: str) -> str:
+    """文の前の下ごしらえ: かっこ書きの「元記事では言及なし」を消し、表の注記の「『記載なし』」を「空欄」にする"""
+    return EMPTY_TOKEN_RE.sub("空欄", NONANSWER_PAREN_RE.sub("", text))
+
+
+def _keep_sentence(sentence: str) -> bool:
+    return not is_meta(sentence) and not SOURCE_NONANSWER_RE.search(sentence)
 
 
 def _clean_list_item(line: str) -> str | None:
     """「- 価格: 言及なし」のような、値が無いだけの箇条書きを消す"""
-    body = LIST_RE.sub("", line, count=1).strip()
+    body = _tidy(LIST_RE.sub("", line, count=1).strip())
     m = re.match(r"^[^：:]{1,40}[：:]\s*(.+)$", re.sub(r"[*_`]", "", body))
     if m and EMPTY_VALUE_RE.match(m.group(1).strip()):
         return None
     if EMPTY_VALUE_RE.match(re.sub(r"[*_`]", "", body)):
         return None
-    sentences = [s for s in split_sentences(body) if not is_meta(s)]
-    if not sentences:
+    # 「注意点：〜」の見出し語は残し、値の文だけを整える
+    label_m = re.match(r"^([^：:。]{1,40}[：:]\s*)(.+)$", body)
+    label, value = (label_m.group(1), label_m.group(2)) if label_m else ("", body)
+    sentences = [professional(s) for s in split_sentences(value) if _keep_sentence(s)]
+    text = "".join(sentences).strip()
+    if not text:
         return None
+    text = label + text
     prefix = line[: len(line) - len(line.lstrip())] + LIST_RE.match(line).group(0).strip() + " "
-    return prefix + "".join(sentences).strip()
+    return prefix + text
 
 
 def _clean_prose(line: str) -> str:
-    sentences = [s for s in split_sentences(line) if not is_meta(s) and not is_filler(s)]
+    sentences = [professional(s) for s in split_sentences(_tidy(line)) if _keep_sentence(s) and not is_filler(s)]
     return "".join(sentences).strip()
 
 
@@ -206,6 +325,29 @@ def _clean_block(text: str) -> str:
         result.append(line)
     text = "\n".join(result)
     return re.sub(r"\n{3,}", "\n\n", text).strip()
+
+
+def _clean_data_table(text: str) -> str:
+    """確かめ済みの比較表の章（scripts/rivals.py）。文は消さず、表の「公式に記載なし」を空欄にして注記の言い方をそろえるだけ"""
+    lines = text.split("\n")
+    out: list[str] = []
+    i = 0
+    while i < len(lines):
+        if lines[i].strip().startswith("|"):
+            block = []
+            while i < len(lines) and lines[i].strip().startswith("|"):
+                block.append(lines[i])
+                i += 1
+            out.extend(_clean_table(block))
+            continue
+        out.append(EMPTY_TOKEN_RE.sub("空欄", lines[i]))
+        i += 1
+    return "\n".join(out)
+
+
+def clean_take(take: str) -> str:
+    """判定のひとこと: 答えになっていない文を除き、呼びかけの文末をそろえる。全部消えるなら空"""
+    return "".join(professional(x) for x in split_sentences(_tidy(take or "")) if _keep_sentence(x)).strip()
 
 
 def _prose_sentences(text: str) -> list[str]:
@@ -292,7 +434,7 @@ def clean_markdown(markdown: str, keep_index_headings: bool = False) -> tuple[st
             out.append(content.strip())
             continue
         if head == DATA_RIVAL_HEADING:
-            out.append(f"## {head}\n\n{content.strip()}")
+            out.append(f"## {head}\n\n{_clean_data_table(content).strip()}")
             continue
         before = len(_prose_sentences(content))
         cleaned = _clean_block(content)
@@ -317,6 +459,12 @@ def apply(record: dict) -> list[str]:
             record[field] = cleaned
             hidden = "・".join(report["hidden"])
             logs.append(f"{field}: 中身のない章 {len(report['hidden'])}個{('（' + hidden + '）') if hidden else ''} / つなぎの文 {report['dropped']}文を削除")
+    verdict = record.get("verdict")
+    if isinstance(verdict, dict) and isinstance(verdict.get("take"), str):
+        take = clean_take(verdict["take"]) or verdict["take"]
+        if take != verdict["take"]:
+            logs.append(f"判定のひとこと: 「{verdict['take'][-14:]}」→「{take[-16:]}」")
+            verdict["take"] = take
     return logs
 
 
@@ -347,6 +495,10 @@ def style_problems(record: dict) -> list[str]:
         problems.append(f"1つの文を2つに割っている（「{m.group(0)[:40]}」）。1文で言う")
     if m := CHILDISH_RE.search(re.sub(r"(?m)^#+ .*$", "", text)):
         problems.append(f"幼い言い方がある（「{m.group(0)}」）。大人のニュースの言葉で書く")
+    take = str((record.get("verdict") or {}).get("take") or "") if isinstance(record.get("verdict"), dict) else ""
+    calls = [x for x in _prose_sentences(text) + ([take] if take else []) if calling_out(x)]
+    if calls:
+        problems.append(f"呼びかけの「〜しましょう」が残っている（「{calls[0][-20:]}」）。「〜するとよいでしょう」など落ち着いた言い方で書く")
     qa = [l for l in text.split("\n") if l.strip() and not l.startswith("#") and QA_LINE_RE.search(l.strip())]
     if len(qa) >= 2:
         problems.append("一問一答の口調（「〜の？」で終わる行）がある。地の文で書く")

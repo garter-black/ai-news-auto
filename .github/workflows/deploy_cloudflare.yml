@@ -62,6 +62,9 @@ jobs:
           node --test tests/test_article_sections.cjs
           python3 -m unittest tests.test_section_gate
 
+      - name: Verify one ad slot / newsletter signup per page and no "記載なし" shown to readers
+        run: node --test tests/test_page_slots.cjs tests/test_no_data.cjs
+
       - name: Build
         run: npm run cf:build
         env:

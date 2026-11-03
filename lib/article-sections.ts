@@ -57,6 +57,74 @@ const FILLER_RE = new RegExp(
 );
 
 const FACT_RE = /[0-9０-９]|[A-Za-zＡ-Ｚａ-ｚ]{2,}|[「『]/;
+// 読者への答えになっていない「元記事には〜書かれていません」「判断できません」の文（オーナーのルール A2）。文ごと消す。
+// 「〇〇はまだ発表されていません」（何が未定かを主語にした答え）は消さない
+const SOURCE_NONANSWER_RE = new RegExp(
+  [
+    "元記事(?:に|で)(?:は|も)?、?[^。\\n]{0,30}?(?:書かれて(?:い)?(?:ません|ない)|触れられて(?:い)?(?:ません|ない)|",
+    "(?:記載|言及|明記)(?:は|が)?(?:ありません|ない|なし|されていません|されてい?ない))|",
+    "[はも]、?(?:公式(?:ページ)?に)?記載(?:は|が)?(?:なし|ありません)|判断できません|判断できない状態です",
+  ].join(""),
+);
+// 文の中のかっこ書きの注記（「（元記事では価格情報は言及なし）」）
+const NONANSWER_PAREN_RE = /[（(](?=[^（）()]*元記事)(?=[^（）()]*(?:言及|記載|明記|書かれて|触れられ))[^（）()]{0,60}[）)]/g;
+// 表の注記の「『公式に記載なし』は〜」→「空欄は〜」（表の「記載なし」のセルは空欄にする）
+const EMPTY_TOKEN_RE = /「(?:公式に|料金ページに|元記事に)?記載なし」/g;
+
+// 呼びかけの「〜しましょう」「〜してみましょう」を「〜するとよいでしょう」にする（オーナーのルール A4）。scripts/section_gate.py の professional と同じ
+const ICHIDAN_I = ["落ち", "用い", "起き", "生き", "でき", "過ぎ", "浴び", "伸び", "延び", "試み", "借り", "見", "居", "着", "似"];
+const GODAN_SHI_COMPOUND = ["見直", "見通", "手放", "見逃", "見落", "見渡", "問い直", "引き出", "取り消", "打ち出", "乗り出", "洗い出", "割り出", "探し出", "見出"];
+const GODAN_ROW: Record<string, string> = { い: "う", き: "く", ぎ: "ぐ", し: "す", ち: "つ", に: "ぬ", び: "ぶ", み: "む", り: "る" };
+const E_ROW = new Set([..."えけげせぜてでねべぺめれへ"]);
+const SURU_HEAD_RE = /(?:[㐀-鿿々]{2}|[ァ-ヴー]|[A-Za-zＡ-Ｚａ-ｚ0-9０-９]|[をのに])$/;
+const TE_MASHOU_RE = /([てで])(みましょう|おきましょう|いきましょう)([。！]?)$/;
+const INTRO_RE = /(見|整理し|確認し|比較し|紹介し)ていきましょう([。！]?)$/;
+const MASHOU_RE = /ましょう([。！]?)$/;
+
+function dictionaryForm(stem: string): string | null {
+  if (!stem) return null;
+  if (stem.endsWith("し")) {
+    const head = stem.slice(0, -1);
+    if (GODAN_SHI_COMPOUND.some((x) => head.endsWith(x))) return `${head}す`;
+    return head + (!head || SURU_HEAD_RE.test(head) ? "する" : "す");
+  }
+  if (stem.endsWith("じ")) return `${stem}る`;
+  const last = stem.slice(-1);
+  if (ICHIDAN_I.some((x) => stem.endsWith(x)) || E_ROW.has(last)) return `${stem}る`;
+  if (GODAN_ROW[last]) return stem.slice(0, -1) + GODAN_ROW[last];
+  return null;
+}
+
+function openBrackets(text: string): number {
+  let depth = 0;
+  for (const ch of text) {
+    if ("「『（(".includes(ch)) depth += 1;
+    else if ("」』）)".includes(ch) && depth > 0) depth -= 1;
+  }
+  return depth;
+}
+
+/** 1文の文末の「〜しましょう」を「〜するとよいでしょう」に（「見ていきましょう」は「見ていきます」）。かっこの中や、言い換え方が分からない文はそのまま */
+export function professionalSentence(sentence: string): string {
+  const s = sentence.trimEnd();
+  const tail = sentence.slice(s.length);
+  if (!s.includes("ましょう") || openBrackets(s)) return sentence;
+  const end = (mark: string | undefined) => (mark ? "。" : "");
+  let m = INTRO_RE.exec(s);
+  if (m) return `${s.slice(0, m.index)}${m[1]}ていきます${end(m[2])}${tail}`;
+  m = TE_MASHOU_RE.exec(s);
+  if (m) {
+    const aux = ({ みましょう: "みる", おきましょう: "おく", いきましょう: "いく" } as Record<string, string>)[m[2]];
+    return `${s.slice(0, m.index)}${m[1]}${aux}とよいでしょう${end(m[3])}${tail}`;
+  }
+  m = MASHOU_RE.exec(s);
+  if (m) {
+    const base = dictionaryForm(s.slice(0, m.index));
+    if (base) return `${base}とよいでしょう${end(m[1])}${tail}`;
+  }
+  return sentence;
+}
+
 const EMPTY_VALUE_RE =
   /^(?:元記事(?:では|に)?)?(?:言及なし|記載なし|記載はなし|不明|案内なし|言及はなし|非公表|未公表|公式に記載なし|料金ページに記載なし|—|－|-|–)(?:（[^）]*）)?。?$/;
 const TABLE_SEP_RE = /^\|?\s*:?-{2,}/;
@@ -94,6 +162,9 @@ const cells = (line: string) =>
     .split("|")
     .map((c) => c.trim());
 
+const isEmptyValue = (cell: string) => EMPTY_VALUE_RE.test(stripMarks(cell));
+const row = (cs: string[]) => `| ${cs.join(" | ")} |`;
+
 function cleanTable(lines: string[]): string[] {
   if (lines.length < 2 || !TABLE_SEP_RE.test(lines[1].trim())) return lines;
   const header = cells(lines[0]);
@@ -101,27 +172,48 @@ function cleanTable(lines: string[]): string[] {
   const kept = lines.slice(0, 2);
   for (const line of lines.slice(2)) {
     const values = cells(line).filter((_, i) => i > 0 && i !== sourceCol);
-    if (values.length && values.every((v) => EMPTY_VALUE_RE.test(stripMarks(v)))) continue;
+    if (values.length && values.every(isEmptyValue)) continue;
     kept.push(line);
   }
-  return kept.length > 2 ? kept : [];
+  if (kept.length <= 2) return [];
+  // 残った「記載なし」「—」のセルは空欄に、全部が空の列は列ごと消す（読者に「記載なし」を見せない。2026-11-03）
+  const rows = kept.slice(2).map(cells);
+  if (!rows.some((r) => r.slice(1).some(isEmptyValue))) return kept;
+  const width = header.length;
+  const keepCols: number[] = [];
+  for (let i = 0; i < width; i++) {
+    if (i > 0 && rows.every((r) => i >= r.length || isEmptyValue(r[i]))) continue;
+    keepCols.push(i);
+  }
+  const sep = cells(kept[1]);
+  const out = [row(keepCols.map((i) => header[i])), row(keepCols.map((i) => (i < sep.length ? sep[i] : "---")))];
+  for (const r of rows) out.push(row(keepCols.map((i) => (i > 0 && i < r.length && isEmptyValue(r[i]) ? "" : i < r.length ? r[i] : ""))));
+  return out;
 }
 
+/** 文の前の下ごしらえ: かっこ書きの「元記事では言及なし」を消し、表の注記の「『記載なし』」を「空欄」にする */
+const tidy = (text: string) => text.replace(NONANSWER_PAREN_RE, "").replace(EMPTY_TOKEN_RE, "空欄");
+const keepSentence = (s: string) => !isMeta(s) && !SOURCE_NONANSWER_RE.test(s);
+
 function cleanListItem(line: string): string | null {
-  const body = line.replace(LIST_RE, "").trim();
+  const body = tidy(line.replace(LIST_RE, "").trim());
   const m = /^[^：:]{1,40}[：:]\s*(.+)$/.exec(stripMarks(body));
   if (m && EMPTY_VALUE_RE.test(m[1].trim())) return null;
   if (EMPTY_VALUE_RE.test(stripMarks(body))) return null;
-  const sentences = splitSentences(body).filter((s) => !isMeta(s));
-  if (!sentences.length) return null;
+  // 「注意点：〜」の見出し語は残し、値の文だけを整える
+  const lm = /^([^：:。]{1,40}[：:]\s*)(.+)$/.exec(body);
+  const [label, value] = lm ? [lm[1], lm[2]] : ["", body];
+  const text = splitSentences(value).filter(keepSentence).map(professionalSentence).join("").trim();
+  if (!text) return null;
   const indent = line.slice(0, line.length - line.trimStart().length);
   const marker = (LIST_RE.exec(line)?.[0] ?? "- ").trim();
-  return `${indent}${marker} ${sentences.join("").trim()}`;
+  return `${indent}${marker} ${label}${text}`;
 }
 
 function cleanProse(line: string): string {
-  return splitSentences(line)
-    .filter((s) => !isMeta(s) && !isFiller(s))
+  return splitSentences(tidy(line))
+    .filter((s) => keepSentence(s) && !isFiller(s))
+    .map(professionalSentence)
     .join("")
     .trim();
 }
@@ -160,6 +252,33 @@ function cleanBlock(text: string): string {
     result.push(line);
   });
   return result.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+/** 確かめ済みの比較表の章（scripts/rivals.py）。文は消さず、表の「公式に記載なし」を空欄にして注記の言い方をそろえるだけ */
+function cleanDataTable(text: string): string {
+  const lines = text.split("\n");
+  const out: string[] = [];
+  let i = 0;
+  while (i < lines.length) {
+    if (lines[i].trim().startsWith("|")) {
+      const block: string[] = [];
+      while (i < lines.length && lines[i].trim().startsWith("|")) block.push(lines[i++]);
+      out.push(...cleanTable(block));
+      continue;
+    }
+    out.push(lines[i].replace(EMPTY_TOKEN_RE, "空欄"));
+    i += 1;
+  }
+  return out.join("\n");
+}
+
+/** 判定のひとこと: 答えになっていない文を除き、呼びかけの文末をそろえる（scripts/section_gate.py の clean_take と同じ）。全部消えるなら空 */
+export function cleanTake(take: string): string {
+  return splitSentences(tidy(take ?? ""))
+    .filter(keepSentence)
+    .map(professionalSentence)
+    .join("")
+    .trim();
 }
 
 function proseSentences(text: string): string[] {
@@ -228,7 +347,7 @@ export function cleanSections(markdown: string): { markdown: string; hidden: str
       continue;
     }
     if (heading === DATA_RIVAL_HEADING) {
-      out.push(`## ${heading}\n\n${content.trim()}`);
+      out.push(`## ${heading}\n\n${cleanDataTable(content).trim()}`);
       continue;
     }
     const cleaned = cleanBlock(content);

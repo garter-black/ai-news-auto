@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { hasOwnSignup } from "@/lib/newsletter-placement";
 
 /**
  * メール配信の登録欄。記事末・フッター・/newsletter に置く。
@@ -27,6 +29,7 @@ export default function NewsletterSignup({ variant = "article" }: { variant?: Va
   useEffect(() => {
     shownAt.current = Date.now();
   }, []);
+  const pathname = usePathname();
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -57,11 +60,15 @@ export default function NewsletterSignup({ variant = "article" }: { variant?: Va
     }
   }
 
+  // 本文に登録欄があるページ（記事・/newsletter）では、フッターの登録欄は出さない（1ページに1つ。lib/newsletter-placement.ts）
+  if (variant === "footer" && hasOwnSignup(pathname)) return null;
+
   const compact = variant === "footer";
   const done = phase === "sent" || phase === "queued";
 
   return (
     <section
+      data-newsletter-signup={variant}
       aria-labelledby={variant === "page" ? undefined : `nl-${variant}`}
       aria-label={variant === "page" ? "メール配信の登録" : undefined}
       style={{ fontFamily: FONT }}

@@ -37,6 +37,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import section_gate  # noqa: E402（表示の段 lib/article-sections.ts と同じ規則で、読者に見える形にしてから確かめる）
+
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
 RETIRED_PATH = ROOT / "content" / "retired.json"
@@ -54,20 +56,24 @@ OWNER_NAME_PAGES = ("/about", "/editorial-policy")
 AUDIT_RULES = (
     "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11",
     "I2", "I4", "I5",
-    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12",
-    "W3", "W5", "W6",
+    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17",
+    "W3", "W5", "W6", "W10", "W11",
 )
 
 # ---- 記事の言葉 ----------------------------------------------------------------
 
 # A1: 決まった型の小見出し（2026-11-03「自分に関係ある？」「ライバルと比べてどう？」「もう使える？取引できる？」）
 TEMPLATE_HEADINGS = re.compile(r"^(?:自分に関係ある[？?]|ライバルと比べてどう[？?]|もう使える[？?]|取引できる[？?]|もう使える[？?]取引できる[？?]|何がすごいの[？?])$")
-# A2: 答えになっていない欄（元記事に無いことを「書かれていません」で埋める）
-NON_ANSWER = re.compile(r"元記事(?:に|で)は[^。\n]{0,16}(?:書かれて|記載(?:されて)?|明記(?:されて)?|触れられて|言及(?:されて)?)(?:い)?(?:ません|なし)|判断できません|判断できない状態です")
+# A2: 答えになっていない欄（元記事に無いことを「書かれていません」で埋める）。表示の段・生成の門と同じ式（scripts/section_gate.py）
+NON_ANSWER = section_gate.SOURCE_NONANSWER_RE
 # A3: 中身のない決まり文句
 FILLER = re.compile(r"にとっても重要です|と(?:いえ|言え)(?:ます|るでしょう)|とも(?:いえ|言え)(?:ます|るでしょう)|目が離せません|注目が集まりそうです")
 # A4: 幼い言い回し（2026-11-03「幼すぎる表現は本当にやめたい。恥ずかしい」）。「ざっくり」も使わない
 CHILDISH = re.compile(r"すごい|スゴい|すっごく|しちゃう|しちゃい|ちゃいます|ちゃった|を作る道具|めっちゃ|ヤバい|やばい|ワクワク|ざっくり")
+# W10: 同じ広告の枠・メール登録欄は1ページに1つまで（HTML の属性で数える。見えていない方も数える）
+SLOT_ATTR = re.compile(r'data-(aff-pos|ad-position|newsletter-signup)="([^"]*)"')
+# W11: 「記載なし」を読者に見せない（表・料金表・判定・本文）
+NO_DATA = re.compile(r"記載なし")
 # A6: 見出しの札があざとい（「3秒でわかる」など）
 GIMMICK_LABEL = re.compile(r"\d+秒でわかる|\d+分でわかる|一瞬でわかる|サクッと")
 
@@ -105,29 +111,47 @@ def _headings(markdown: str) -> list[str]:
 
 
 def _texts(record: dict) -> list[tuple[str, str]]:
-    """言葉を確かめる欄（欄の名前, 文字）"""
-    out = [(k, str(record.get(k) or "")) for k in ("title", "lede", "description", "body", "easy")]
+    """言葉を確かめる欄（欄の名前, 読者に見える文字）。本文・かんたん版は表示の段と同じ整え方（中身なしの章・答えになっていない文を除く）、
+    判定のひとこと・よくある質問・「仕事・お金」の欄は表示と同じ cleanTake を通してから確かめる（本番のページで読者が読むもの）"""
+    out = [(k, str(record.get(k) or "")) for k in ("title", "lede", "description")]
+    for k in ("body", "easy"):
+        text = str(record.get(k) or "")
+        out.append((k, section_gate.clean_markdown(text.strip() if k == "easy" else text)[0] if text.strip() else ""))
     out += [("highlights", str(h)) for h in record.get("highlights") or []]
     wm = record.get("workMoney") or {}
-    out += [("workMoney", str(p)) for p in (wm.get("points") or [] if isinstance(wm, dict) else [])]
-    out += [("faq", f"{r.get('q', '')} {r.get('a', '')}") for r in record.get("faq") or [] if isinstance(r, dict)]
+    out += [("workMoney", section_gate.clean_take(str(p))) for p in (wm.get("points") or [] if isinstance(wm, dict) else [])]
+    out += [("faq", f"{r.get('q', '')} {section_gate.clean_take(str(r.get('a') or ''))}") for r in record.get("faq") or [] if isinstance(r, dict)]
     out += [("todayActions", str(x)) for x in record.get("todayActions") or []]
     v = record.get("verdict") or {}
     if isinstance(v, dict):
-        out.append(("verdict", str(v.get("take") or "")))
+        out.append(("verdict", section_gate.clean_take(str(v.get("take") or ""))))
     return [(k, t) for k, t in out if t]
+
+
+def _usable_title(title: object) -> bool:
+    """lib/article-sections.ts の usableTitle と同じ（記事ごとの見出しとして表示に使えるか）"""
+    if not isinstance(title, str):
+        return False
+    t = title.strip()
+    return 2 <= len(t) <= 32 and not re.search(r"[<>#\n|]", t) and not t.endswith("。")
 
 
 def _snippet(text: str, m: re.Match) -> str:
     return text[max(0, m.start() - 8): m.end() + 8].replace("\n", " ")
 
 
-def record_problems(record: dict) -> list[str]:
-    """記事の JSON だけで分かる違反（本番を開かない）"""
+def record_problems(record: dict, page_headings: bool = False) -> list[str]:
+    """記事の JSON だけで分かる違反（本番を開かない）。page_headings=True のときは、小見出しは本番のページの見出しで数える
+    （article_page_problems。表示では記事ごとの見出し・普通の見出しに言い換えているため、JSON の章名では数えない）"""
     out = title_problems(record.get("title") or "")
-    for heading in _headings(f"{record.get('body') or ''}\n{record.get('easy') or ''}"):
-        if TEMPLATE_HEADINGS.match(heading):
-            out.append(f"[A1] 決まった型の小見出し（「{heading}」）")
+    if not page_headings:
+        titles = record.get("sectionTitles") or {}
+        for kind in ("body", "easy"):
+            own = (titles.get(kind) or {}) if isinstance(titles, dict) else {}
+            shown = section_gate.clean_markdown(str(record.get(kind) or ""))[0]
+            for heading in _headings(shown):
+                if TEMPLATE_HEADINGS.match(heading) and not _usable_title(own.get(heading)):
+                    out.append(f"[A1] 決まった型の小見出し（「{heading}」）")
     for field, text in _texts(record):
         # 型の小見出しの行は [A1] で数えるので、言葉の点検からは外す（同じものを2回数えない）
         text = "\n".join(line for line in text.splitlines() if not TEMPLATE_HEADINGS.match(re.sub(r"^#+\s*", "", line).strip()))
@@ -137,6 +161,12 @@ def record_problems(record: dict) -> list[str]:
             out.append(f"[A3] 中身のない決まり文句（{field}:「{_snippet(text, m)}」）")
         if m := CHILDISH.search(text):
             out.append(f"[A4] 幼い言い回し（{field}:「{_snippet(text, m)}」）")
+        calls = [x for line in text.splitlines() if not line.lstrip().startswith(("#", "|", ">"))
+                 for x in section_gate.split_sentences(re.sub(r"^\s*(?:[-*+]|\d+[.)])\s+", "", line)) if section_gate.ends_with_call(x)]
+        if calls:
+            out.append(f"[A17] 呼びかけの「〜しましょう」で締めている（{field}:「{calls[0].strip()[-24:]}」）")
+        if field in ("verdict", "workMoney", "faq") and (m := NO_DATA.search(text)):
+            out.append(f"[W11] 「記載なし」が読者に見える（{field}:「{_snippet(text, m)}」）")
     out += image_record_problems(record)
     out += low_value_problems(record)
     return list(dict.fromkeys(out))
@@ -217,14 +247,11 @@ def article_page_problems(html: str, record: dict) -> list[str]:
     """記事のページ（本番）の違反"""
     out = []
     page = parse(html)
-    # 記事の JSON にある小見出しは record_problems で数える。ここではページの部品が足した小見出しだけ
-    own = set(_headings(f"{record.get('body') or ''}\n{record.get('easy') or ''}"))
+    # 小見出しは、読者に見える本番のページの見出しで数える（本文の章名は記事ごとの見出し・普通の見出しに言い換えて表示している）
     gimmick = False
     for h in page.headings:
-        if h in own:
-            continue
         if TEMPLATE_HEADINGS.match(h):
-            out.append(f"[A1] 決まった型の小見出しがページの部品から出ている（「{h}」）")
+            out.append(f"[A1] 決まった型の小見出しがページに出ている（「{h}」）")
         elif CHILDISH.search(h):
             out.append(f"[A4] 小見出しに幼い言い回し（「{h}」）")
         if GIMMICK_LABEL.search(h):
@@ -240,7 +267,19 @@ def article_page_problems(html: str, record: dict) -> list[str]:
         out.append("[A11] 記事に広告（PR）が1つもない")
     if OWNER_NAME in html:  # 見えない構造化データ（JSON-LD）も含めて見る
         out.append("[W6] オーナーの名前が記事のページに出ている（/about・/editorial-policy だけ）")
+    out += slot_problems(html)
+    if m := NO_DATA.search(visible):
+        out.append(f"[W11] 「記載なし」がページに出ている（「{_snippet(visible, m)}」）")
     return list(dict.fromkeys(out))
+
+
+def slot_problems(html: str) -> list[str]:
+    """W10: 同じ広告の枠・メール登録欄が1ページに2つ以上（かんたん版と通常版の両方に入れない。2026-11-03）"""
+    counts: dict[str, int] = {}
+    for kind, value in SLOT_ATTR.findall(html):
+        key = "メール配信の登録欄" if kind == "newsletter-signup" else f"広告の枠（{value}）"
+        counts[key] = counts.get(key, 0) + 1
+    return [f"[W10] {key}が{n}つある（1ページに1つまで）" for key, n in counts.items() if n > 1]
 
 
 REVIEW_CLAIM = re.compile(
@@ -263,6 +302,9 @@ def static_page_problems(path: str, html: str) -> list[str]:
             out.append(f"[W5] {path} に別の連絡先（{', '.join(sorted(others))[:60]}）")
     if path not in OWNER_NAME_PAGES and OWNER_NAME in html:
         out.append(f"[W6] オーナーの名前が {path} に出ている（/about・/editorial-policy だけ）")
+    out += slot_problems(html)
+    if m := NO_DATA.search(visible):
+        out.append(f"[W11] 「記載なし」が {path} に出ている（「{_snippet(visible, m)}」）")
     return out
 
 
@@ -376,14 +418,14 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
     articles = load_articles()[:latest]
     pages: dict[str, tuple[int, str]] = {}
     if network:
-        urls = [f"/articles/{a['slug']}" for a in articles] + ["/", "/about", "/editorial-policy", "/contact", "/news"]
+        urls = [f"/articles/{a['slug']}" for a in articles] + ["/", "/about", "/editorial-policy", "/contact", "/news", "/ai-pricing", "/newsletter"]
         with ThreadPoolExecutor(max_workers=6) as pool:
             pages = dict(zip(urls, pool.map(lambda p: fetch(base + p), urls)))
     for a in articles:
         path = f"/articles/{a['slug']}"
-        v = record_problems(a)
+        status, html = pages.get(path, (0, "")) if network else (0, "")
+        v = record_problems(a, page_headings=status == 200)
         if network:
-            status, html = pages.get(path, (0, ""))
             if status != 200:
                 v.append(f"[W3] ページが開けない（HTTP {status}）")
             else:
@@ -392,7 +434,7 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
             found[path] = list(dict.fromkeys(v))
     if not network:
         return found
-    for path in ("/", "/about", "/editorial-policy", "/contact", "/news"):
+    for path in ("/", "/about", "/editorial-policy", "/contact", "/news", "/ai-pricing", "/newsletter"):
         status, html = pages.get(path, (0, ""))
         v = [f"[W3] ページが開けない（HTTP {status}）"] if status != 200 else static_page_problems(path, html)
         if v:

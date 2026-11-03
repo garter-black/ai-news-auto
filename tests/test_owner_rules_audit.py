@@ -40,19 +40,37 @@ class RecordTest(unittest.TestCase):
         self.assertEqual([], audit.record_problems(rec()))
 
     def test_template_headings(self):
-        for h in ("自分に関係ある？", "ライバルと比べてどう？", "もう使える？取引できる？", "何がすごいの？"):
-            self.assertIn("A1", ids(audit.record_problems(rec(easy=f"## ひとことで言うと\n\n増えます。\n\n## {h}\n\n説明です。"))), h)
+        for h in ("自分に関係ある？", "もう使える？取引できる？", "何がすごいの？"):
+            self.assertIn("A1", ids(audit.record_problems(rec(easy=f"## ひとことで言うと\n\n増えます。\n\n## {h}\n\nトヨタは2027年モデルから搭載します。"))), h)
         # 型の小見出しは「幼い言い回し」と2回数えない
         found = audit.record_problems(rec(easy="## 何がすごいの？\n\n説明です。"))
         self.assertNotIn("A4", ids(found))
+        # 読者に見える形で数える: 材料の無い比較の章は表示で隠れる・記事ごとの見出しがあれば言い換えて出る
+        hidden = rec(easy="## ひとことで言うと\n\n増えます。\n\n## ライバルと比べてどう？\n\n元記事には、他社製品との比較は書かれていません。")
+        self.assertNotIn("A1", ids(audit.record_problems(hidden)))
+        titled = rec(easy="## ひとことで言うと\n\n増えます。\n\n## 自分に関係ある？\n\nトヨタは2027年モデルから搭載します。",
+                     sectionTitles={"easy": {"自分に関係ある？": "対象になる車"}})
+        self.assertNotIn("A1", ids(audit.record_problems(titled)))
+        # 本番のページを読めたときは、小見出しはページの見出しで数える（article_page_problems）
+        self.assertNotIn("A1", ids(audit.record_problems(rec(easy="## 自分に関係ある？\n\nトヨタは2027年モデルから搭載します。"), page_headings=True)))
 
     def test_non_answer_filler_childish(self):
-        self.assertIn("A2", ids(audit.record_problems(rec(body=LONG_BODY + "\n\n元記事には、他社との比較は書かれていません。"))))
-        self.assertIn("A2", ids(audit.record_problems(rec(body=LONG_BODY + "\n\n元記事だけでは判断できません。"))))
+        # 本文の「元記事には〜書かれていません」は表示で文ごと消える（lib/article-sections.ts）。読者に見える欄に残れば数える
+        self.assertNotIn("A2", ids(audit.record_problems(rec(body=LONG_BODY + "\n\n元記事には、他社との比較は書かれていません。"))))
+        self.assertIn("A2", ids(audit.record_problems(rec(lede="料金は元記事には書かれていません。"))))
+        self.assertIn("A2", ids(audit.record_problems(rec(description="元記事だけでは判断できません。"))))
+        self.assertNotIn("A2", ids(audit.record_problems(rec(faq=[{"q": "料金は？", "a": "公式サイトで確認してください（元記事では価格情報は言及なし）。"}]))))
         self.assertIn("A3", ids(audit.record_problems(rec(lede="会社員にとっても重要です。"))))
         self.assertIn("A3", ids(audit.record_problems(rec(lede="大きな一歩といえます。"))))
         self.assertIn("A4", ids(audit.record_problems(rec(lede="これはすごい機能です。"))))
         self.assertIn("A4", ids(audit.record_problems(rec(lede="ざっくり言うと便利です。"))))
+
+    def test_calling_out_register(self):
+        # 判定のひとこと・本文の「〜してみましょう」は表示で「〜してみるとよいでしょう」になる。言い換えない欄に残れば数える（A17）
+        self.assertNotIn("A17", ids(audit.record_problems(rec(verdict={"status": "available", "take": "公式サイトで試してみましょう。"}))))
+        self.assertNotIn("A17", ids(audit.record_problems(rec(body=LONG_BODY + "\n\nまずは無料版を試してみましょう。"))))
+        self.assertIn("A17", ids(audit.record_problems(rec(lede="公式サイトで試してみましょう。"))))
+        self.assertNotIn("A17", ids(audit.record_problems(rec(lede="「一緒に試しましょう」と呼びかけました。"))))
 
     def test_low_value_types(self):
         self.assertIn("A10", ids(audit.record_problems(rec(body="短い。", faq=[]))))
@@ -69,11 +87,21 @@ class PageTest(unittest.TestCase):
         self.assertNotIn("I4", ids(audit.article_page_problems(f"<h1>題名</h1><span>AI生成</span>{self.AD}", rec(imageCredit={"kind": "ai"}))))
         self.assertIn("W6", ids(audit.article_page_problems(f"<p>小室</p>{self.AD}", rec())))
 
-    def test_component_headings_counted_once(self):
+    def test_component_headings_counted_on_the_page(self):
         html = f"<h2>自分に関係ある？</h2>{self.AD}"
         self.assertIn("A1", ids(audit.article_page_problems(html, rec())))
-        same = rec(easy="## 自分に関係ある？\n\n説明です。")
-        self.assertNotIn("A1", ids(audit.article_page_problems(html, same)))  # JSON の小見出しは record_problems が数える
+        self.assertNotIn("A1", ids(audit.article_page_problems(f"<h2>影響を受ける人</h2>{self.AD}", rec(easy="## 自分に関係ある？\n\n説明です。"))))
+
+    def test_one_slot_each_and_no_data(self):
+        twice = f'<aside data-aff-pos="ranking-inline">{self.AD}</aside><aside data-aff-pos="ranking-inline"></aside>'
+        self.assertIn("W10", ids(audit.article_page_problems(twice, rec())))
+        signup = f'{self.AD}<section data-newsletter-signup="article"></section><section data-newsletter-signup="footer"></section>'
+        self.assertIn("W10", ids(audit.article_page_problems(signup, rec())))
+        once = f'<aside data-aff-pos="ranking-inline">{self.AD}</aside><aside data-aff-pos="ranking-rail"></aside><section data-newsletter-signup="article"></section>'
+        self.assertNotIn("W10", ids(audit.article_page_problems(once, rec())))
+        self.assertIn("W11", ids(audit.article_page_problems(f"<table><tr><td>記載なし</td></tr></table>{self.AD}", rec())))
+        self.assertIn("W11", ids(audit.static_page_problems("/ai-pricing", "<p>税：ページに税の記載なし</p>")))
+        self.assertIn("W10", ids(audit.static_page_problems("/newsletter", '<section data-newsletter-signup="page"></section><section data-newsletter-signup="footer"></section>')))
 
     def test_static_pages(self):
         ok = f"<p>{audit.CONTACT_EMAIL}</p><p>代表 小室</p>"

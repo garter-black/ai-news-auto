@@ -2,6 +2,7 @@ import fs from "@/lib/content-fs";
 import path from "node:path";
 import { getArticleSummary, type ArticleSummary } from "@/lib/articles";
 import { partnerItem, type OfferItem } from "@/lib/offers";
+import { withoutNoData, withoutNoDataList } from "@/lib/no-data";
 
 /**
  * 比較ガイド（content/buying-guides/*.json）。scripts/buying_guides.py が作る。
@@ -102,6 +103,19 @@ let cache: BuyingGuide[] | null = null;
  */
 export const COMPARE_PUBLIC = false;
 
+/** 「公式ページに記載なし」は表に出さない（比較表のセルは空欄、注意点の箇条書きは項目ごと消す。lib/no-data.ts） */
+function withoutNoDataGuide(guide: BuyingGuide): BuyingGuide {
+  return {
+    ...guide,
+    products: (guide.products ?? []).map((product) => ({
+      ...product,
+      specs: product.specs?.map(withoutNoData),
+      limits: withoutNoDataList(product.limits),
+      cells: product.cells && Object.fromEntries(Object.entries(product.cells).map(([k, v]) => [k, withoutNoData(v)])),
+    })),
+  };
+}
+
 export function getAllBuyingGuides(): BuyingGuide[] {
   // 開発中は生成スクリプトが書き足したガイドをすぐ見られるよう、毎回読み直す
   if (cache && process.env.NODE_ENV === "production") return cache;
@@ -111,7 +125,7 @@ export function getAllBuyingGuides(): BuyingGuide[] {
     .filter((file) => file.endsWith(".json"))
     .flatMap((file) => {
       try {
-        return [JSON.parse(fs.readFileSync(path.join(DIR, file), "utf8")) as BuyingGuide];
+        return [withoutNoDataGuide(JSON.parse(fs.readFileSync(path.join(DIR, file), "utf8")) as BuyingGuide)];
       } catch {
         return [];
       }

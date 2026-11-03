@@ -273,7 +273,7 @@ const internet: ChooseGuide = {
       cells: {
         price: { text: "3GBまで1,078円／20GBまで2,178円／無制限3,278円（使った分だけ）" },
         data: { text: "無制限（混雑時などは速度制御の場合あり）", tone: "good" },
-        speed: { text: "公式ページに記載なし" },
+        speed: { text: "通信速度の数値は公表されていません" },
         contract: { text: "1年以内の解約は解約事務手数料（最大1,078円）。1年経過後は0円" },
         start: { text: "工事不要（SIM・eSIM）", tone: "good" },
         perk: { text: "最強家族割で各段階110円引き。キャンペーンは公式で確認" },
@@ -428,7 +428,7 @@ const career: ChooseGuide = {
         area: { text: "東京・神奈川・愛知・大阪・福岡などの求人" },
         cost: { text: "無料（登録・相談）", tone: "good" },
         what: { text: "求人10,000件以上（2026年8月時点・公開と非公開の合計）" },
-        note: { text: "対象の経験年数は公式に記載なし" },
+        note: { text: "対象の経験年数は公表されていません" },
       },
       bestFor: "経験を積んだエンジニアで、AI関連の上位職や年収アップを狙う人",
       cautions: ["年収条件の高い求人を探しやすい作りです。自分の経験で紹介を受けられるかは、無料相談で確かめましょう。"],

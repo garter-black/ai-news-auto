@@ -61,7 +61,8 @@ export default function Footer() {
               {siteConfig.description}
             </p>
 
-            <div className="mt-8">
+            {/* 記事・/newsletter では本文に登録欄があるので、ここは空になる（lib/newsletter-placement.ts） */}
+            <div className="mt-8 empty:hidden">
               <NewsletterSignup variant="footer" />
             </div>
 

@@ -6,6 +6,7 @@ import perplexity from "@/content/pricing/perplexity.json";
 import claudeApi from "@/content/pricing/claude-api.json";
 import openaiApi from "@/content/pricing/openai-api.json";
 import geminiApi from "@/content/pricing/gemini-api.json";
+import { withoutNoData, withoutNoDataList } from "@/lib/no-data";
 
 /**
  * 料金の段の表と、会社をまたいだ比較表（content/pricing/<product>.json）。
@@ -292,7 +293,7 @@ function planRow(data: PricingProduct, plan: LadderPlan): PlanRow {
     mainPriceText: main ? priceText(main) : "",
     // 円の公式価格があるときは目安を出さない（公式の円が正）
     jpyText: main?.currency === "JPY" && main.taxIncluded !== false ? "" : jpyText(estimatePrice(plan, main)),
-    limits: plan.limits ?? [],
+    limits: withoutNoDataList(plan.limits),
     manual: plan.prices.some((p) => p.src === "manual"),
     sourceUrl: main?.sourceUrl ?? plan.sourceUrl ?? data.sources[0]?.url ?? "",
   };
@@ -324,7 +325,7 @@ function modelRow(data: PricingProduct, model: LadderModel): ModelRow {
     cacheReadText: cell(model.cacheRead),
     jpyText: jp?.input != null && jp?.output != null ? `${yenText(jp.input)}／${yenText(jp.output)}` : "",
     scheduledText: scheduled,
-    notes: model.notes ?? [],
+    notes: withoutNoDataList(model.notes),
     sourceUrl: model.sourceUrl ?? data.sources[0]?.url ?? "",
   };
 }
@@ -349,9 +350,10 @@ export function getLadder(id: PricingProductId): LadderTable | null {
     mode: data.mode,
     checkedAt: data.checkedAt,
     sources: data.sources,
-    taxNote: data.taxNote ?? "",
+    // 「税の扱いの記載なし」のような文は出さない（読者に「記載なし」を見せない。lib/no-data.ts）
+    taxNote: withoutNoData(data.taxNote),
     fxNote: fxNote(data.fx, data.kind),
-    notes: data.notes ?? [],
+    notes: withoutNoDataList(data.notes),
     rows,
   };
 }

@@ -1,4 +1,5 @@
 import VerdictIcon from "@/components/VerdictIcon";
+import { cleanTake } from "@/lib/article-sections";
 import {
   STATUS_LABEL_BY_KIND,
   VERDICT_HEADING,
@@ -43,6 +44,7 @@ export default function VerdictCard({
   );
   const cols = facts.length >= 4 ? "sm:grid-cols-4" : facts.length === 3 ? "sm:grid-cols-3" : "";
   const japanSource = cardKind === "product" ? verdict.japanSource : undefined;
+  const take = cleanTake(verdict.take ?? "");
 
   return (
     <section aria-labelledby="verdict-heading" className="mt-6 overflow-hidden rounded-2xl border border-line-strong">
@@ -55,7 +57,8 @@ export default function VerdictCard({
           <h2 id="verdict-heading" className="t-h3">
             {VERDICT_HEADING[cardKind]}
           </h2>
-          <p className="mt-1 text-[16px] font-bold leading-[1.65] text-ink text-balance">{verdict.take}</p>
+          {/* 答えになっていない文を除き、「〜しましょう」の呼びかけは落ち着いた言い方にして出す（lib/article-sections.ts の cleanTake。2026-11-03） */}
+          {take && <p className="mt-1 text-[16px] font-bold leading-[1.65] text-ink text-balance">{take}</p>}
         </div>
       </div>
 

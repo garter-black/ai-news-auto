@@ -235,19 +235,34 @@ class PoliteSummaryTest(unittest.TestCase):
         self.assertTrue(any("です・ます" in v for v in out), out)
         self.assertTrue(any("硬い言葉" in v for v in out), out)
 
-    def test_real_article_summary_is_polite_without_llm(self):
-        path = Path(__file__).resolve().parents[1] / "content" / "articles" / "nenkin-no-hi-2026-mhlw.json"
-        if not path.exists():
-            self.skipTest("記事のファイルが無い")
-        article = json.loads(path.read_text("utf-8"))
+    def _summary_of(self, article: dict) -> tuple[str, str]:
         with patch.object(tp, "recent_openers", MagicMock(return_value=[])):
             text = tp.compose(article, [])
-        summary = tp.post_blocks_of(text)[1]
+        return text, tp.post_blocks_of(text)[1]
+
+    def test_real_article_summary_is_polite_without_llm(self):
+        # 記事のファイルは見出しの書き直しなどでボットが毎日書き換えるので、2026-11-03 の記事をそのまま写した見本で確かめる
+        # （本番の記事の題名が「厚労省、…」に変わって、この試験がルールと関係なく落ちた。2026-11-03）
+        path = Path(__file__).resolve().parent / "fixtures" / "sns" / "nenkin-no-hi-2026-mhlw.json"
+        article = json.loads(path.read_text("utf-8"))
+        text, summary = self._summary_of(article)
         self.assertEqual(sns_rules.impolite_sentences(summary), [], summary)
         self.assertIsNone(sns_rules.HARD_WORDS.search(summary), summary)
         self.assertIn("厚生労働省", summary)
         self.assertEqual(sns_rules.check_post("threads", tp.with_link(text, article, "threads", "classic"), [], article), [])
 
+    def test_live_article_summary_keeps_its_subject(self):
+        # 今の記事（題名が書き直されていても）でも、要約の1文目は記事の主役（題名の頭の「厚労省」など）で始まり、門を通る
+        path = Path(__file__).resolve().parents[1] / "content" / "articles" / "nenkin-no-hi-2026-mhlw.json"
+        if not path.exists():
+            self.skipTest("記事のファイルが無い")
+        article = json.loads(path.read_text("utf-8"))
+        text, summary = self._summary_of(article)
+        subject = tp.subject_of(article)
+        self.assertTrue(subject, article.get("title"))
+        self.assertIn(subject, summary.splitlines()[0])
+        self.assertEqual(sns_rules.impolite_sentences(summary), [], summary)
+        self.assertEqual(sns_rules.check_post("threads", tp.with_link(text, article, "threads", "classic"), [], article), [])
 
 if __name__ == "__main__":
     unittest.main()
