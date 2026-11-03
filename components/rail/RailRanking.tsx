@@ -47,7 +47,7 @@ function Header({ offer, wide, title }: { offer: Offer; wide: boolean; title: st
         <span className="rounded border border-current px-1.5 text-meta tracking-wider">PR</span>
         広告・紹介
       </p>
-      <p className={`font-display mt-1.5 leading-snug ${wide ? "text-[22px]" : "text-[19px]"}`}>
+      <p className={`mt-1.5 font-black leading-snug ${wide ? "text-[22px]" : "text-[19px]"}`}>
         {title}
       </p>
       {title !== offer.headline && <p className="mt-1 text-meta leading-snug opacity-85">{offer.headline}</p>}
