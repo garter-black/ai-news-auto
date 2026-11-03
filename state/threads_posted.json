@@ -3541,7 +3541,8 @@
       "permalink": "",
       "channels": {
         "twitter": "6ae9e0a0c6fbbde82488f994",
-        "facebook": "6ae9e0a18ed9bcac81a39052"
+        "facebook": "6ae9e0a18ed9bcac81a39052",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzg3f673tp2z"
       },
       "hook": "callout",
       "opener": "see",
@@ -3554,7 +3555,8 @@
       "question": true,
       "questionText": "自分のアプリやAIを作る予定、ありますか？",
       "dueAt": "2026-11-03T13:45:00+00:00",
-      "postedAt": "2026-11-03T13:24:49+00:00"
+      "postedAt": "2026-11-03T13:24:49+00:00",
+      "blueskyAt": "2026-11-03T14:47:09+00:00"
     },
     "google-pixel-11-pro-food-photography": {
       "id": "6ae9e0adf08b305d7c07a1a3",
