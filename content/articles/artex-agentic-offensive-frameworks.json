@@ -90,5 +90,12 @@
     ],
     "ar": 2.0339,
     "src": "https://ai-tech-express.jp/img/artex-agentic-offensive-frameworks-7b759614.jpg"
+  },
+  "video": {
+    "src": "https://ai-tech-express.jp/video/artex-agentic-offensive-frameworks-0e9a635029.mp4",
+    "poster": "https://ai-tech-express.jp/video/artex-agentic-offensive-frameworks-da9cd9be3b.jpg",
+    "seconds": 56.8,
+    "title": "Google、ARTEX悪用を確認 実行は約2〜25秒に集中",
+    "credit": "VOICEVOX:九州そら"
   }
 }

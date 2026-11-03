@@ -464,7 +464,7 @@
     },
     "elevenlabs-synthetic-voice-creation": {
       "at": "2026-11-03T06:34:22+00:00",
-      "status": "ready",
+      "status": "article_only",
       "tries": 1,
       "textAt": "2026-11-03T06:30:00+00:00",
       "versions": {
@@ -543,7 +543,130 @@
         "short": "https://ai-tech-express.jp/video/elevenlabs-synthetic-voice-creation-2eb00ebe2a.mp4",
         "poster": "https://ai-tech-express.jp/video/elevenlabs-synthetic-voice-creation-0a79e665a7.jpg"
       },
-      "embedded": true
+      "embedded": true,
+      "why": "動画ができる前に投稿の時刻が来た（写真で出た）"
+    },
+    "artex-agentic-offensive-frameworks": {
+      "at": "2026-11-03T06:54:09+00:00",
+      "status": "ready",
+      "tries": 1,
+      "textAt": "2026-11-03T09:30:00+00:00",
+      "textId": "6ae941a5186a5afbce7ae1bd",
+      "breaking": false,
+      "scheduled": true,
+      "versions": {
+        "full": {
+          "ok": true,
+          "seconds": 56.778,
+          "reasons": [],
+          "post": {
+            "title": "Google、ARTEX悪用を確認 実行は約2〜25秒に集中",
+            "url": "https://ai-tech-express.jp/articles/artex-agentic-offensive-frameworks",
+            "total": 56.778,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "script_v3": {
+              "hook": {
+                "text": "AIの侵入、どれほど速い？"
+              },
+              "summary": "要約すると、GoogleのGTIGとMandiantが、ペンテスト用のARTEXなどを攻撃者が悪用していると公表しました。実行は約2秒から25秒の短時間に集中し、23秒で27件のAWS権限スキャンが起きた例もあります。試行錯誤で痕跡が多く残るため、ログの監視が手がかりになります。"
+            }
+          }
+        },
+        "short": {
+          "ok": true,
+          "seconds": 41.339,
+          "reasons": [],
+          "post": {
+            "title": "Google、ARTEX悪用を確認 実行は約2〜25秒に集中",
+            "url": "https://ai-tech-express.jp/articles/artex-agentic-offensive-frameworks",
+            "total": 41.339,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.42
+            },
+            "script_v3": {
+              "hook": {
+                "text": "AIの侵入、どれほど速い？"
+              },
+              "summary": "要約すると、GoogleのGTIGとMandiantが、ペンテスト用のARTEXなどを攻撃者が悪用していると公表しました。実行は約2秒から25秒の短時間に集中し、23秒で27件のAWS権限スキャンが起きた例もあります。試行錯誤で痕跡が多く残るため、ログの監視が手がかりになります。"
+            }
+          }
+        }
+      },
+      "timings": {
+        "full": {
+          "script": 0.0,
+          "tts": 24.21,
+          "plan_audio": 4.42,
+          "render": 48.07,
+          "gate": 5.59,
+          "sheet": 2.32,
+          "total": 84.7
+        },
+        "short": {
+          "script": 0.0,
+          "tts": 34.2,
+          "plan_audio": 2.62,
+          "render": 32.32,
+          "gate": 4.17,
+          "sheet": 1.8,
+          "total": 75.1
+        }
+      },
+      "ok": true,
+      "reason": "",
+      "pages": [
+        "cloud.google.com"
+      ],
+      "urls": {
+        "full": "https://ai-tech-express.jp/video/artex-agentic-offensive-frameworks-0e9a635029.mp4",
+        "short": "https://ai-tech-express.jp/video/artex-agentic-offensive-frameworks-3b07a6b824.mp4",
+        "poster": "https://ai-tech-express.jp/video/artex-agentic-offensive-frameworks-da9cd9be3b.jpg"
+      },
+      "embedded": true,
+      "variant": "full",
+      "bufferId": "6ae941a5186a5afbce7ae1bd",
+      "postedAt": "2026-11-03T09:30:00+00:00",
+      "attachError": "Buffer で予約の投稿を読めない（次の回でもう一度）"
+    },
+    "nvidia-recovery-automated-training-recovery": {
+      "at": "2026-11-03T06:54:09+00:00",
+      "status": "gate_failed",
+      "tries": 1,
+      "textAt": "2026-11-03T12:00:00+00:00",
+      "textId": "6ae96058da2711fd26adb7eb",
+      "breaking": false,
+      "scheduled": true,
+      "versions": {
+        "full": {
+          "ok": false,
+          "seconds": null,
+          "reasons": [
+            "台本を作れない: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です"
+          ]
+        },
+        "short": {
+          "ok": false,
+          "seconds": null,
+          "reasons": [
+            "台本を作れない: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です"
+          ]
+        }
+      },
+      "timings": {
+        "full": null,
+        "short": null
+      },
+      "ok": false,
+      "reason": "full: 台本を作れない: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です / short: 台本を作れない: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です",
+      "pages": []
     }
   }
 }
