@@ -178,8 +178,13 @@ def main() -> int:
     since = datetime.now(timezone.utc) - timedelta(days=args.days)
     posts: list[dict] = []
     key = os.environ.get("BUFFER_API_KEY", "").strip()
+    buffer_error = ""
     if key and not args.no_buffer:
-        posts += [normalize_buffer(n) for n in buffer_posts(key, since)]
+        try:
+            posts += [normalize_buffer(n) for n in buffer_posts(key, since)]
+        except RuntimeError as error:  # 回数制限など。Bluesky の分は続けて点検する
+            buffer_error = str(error)[:200]
+            print(f"[audit] Buffer を読めません（Threads・X・Facebook は未点検）: {buffer_error[:80]}")
     posts += [normalize_bsky(p) for p in bluesky_posts(since)]
     for post in posts:
         post["violations"] = judge(post)
@@ -187,12 +192,12 @@ def main() -> int:
         post["atJst"] = when.astimezone(JST).strftime("%m/%d %H:%M") if when else ""
     posts.sort(key=lambda p: p.get("at") or "")
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
-    Path(args.out).write_text(json.dumps(posts, ensure_ascii=False, indent=1), "utf-8")
+    Path(args.out).write_text(json.dumps({"bufferError": buffer_error, "posts": posts}, ensure_ascii=False, indent=1), "utf-8")
     counts: dict[str, int] = {}
     for p in posts:
         counts[p["platform"]] = counts.get(p["platform"], 0) + 1
     print(f"[audit] {len(posts)} 件 {counts}・違反の候補 {sum(1 for p in posts if p['violations'])} 件 → {args.out}")
-    return 0
+    return 1 if buffer_error else 0
 
 
 if __name__ == "__main__":
