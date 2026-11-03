@@ -389,7 +389,7 @@ def problems(record: dict) -> list[str]:
 # 誰でも知っている略語（言い換えなくてよい）
 KNOWN_ACRONYMS = {"AI", "IT", "PC", "OS", "SNS", "URL", "CEO", "CFO", "CTO", "USB", "GPU", "CPU", "AWS", "iOS", "API", "PDF", "SEC",
                   "NHK", "EU", "US", "UK", "DX", "IPO", "Wi", "Fi", "HTML", "QR", "TV", "GB", "TB", "MB", "PR", "KDDI", "NTT", "NEC",
-                  "IBM", "NVIDIA", "AMD", "LINE", "ID", "FAQ", "GPT", "SDK", "M", "OK"}
+                  "IBM", "NVIDIA", "AMD", "LINE", "ID", "FAQ", "GPT", "SDK", "M", "OK", "ECB", "JP", "LLC"}
 ACRONYM_RE = re.compile(r"(?<![A-Za-z])([A-Z]{2,6})(?![A-Za-z])")
 
 

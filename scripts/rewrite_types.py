@@ -226,6 +226,8 @@ def rewrite(slug: str, attempts: int = 2) -> tuple[dict | None, dict]:
     """(新しい記事 or None, 報告)"""
     path = ARTICLES_DIR / f"{slug}.json"
     old = json.loads(path.read_text("utf-8"))
+    if slug in corrected_slugs() or CORRECTION_RE.search(old.get("body") or "") or old.get("refreshMode") == "editorial":
+        return None, {"slug": slug, "history": [], "why": "訂正した記事なので書き直さない"}
     item = item_from_article(old)
     lane = "ai" if old.get("genreSlug") in ("ai", "", None) else old["genreSlug"]
     report: dict = {"slug": slug, "history": []}
