@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://machinelearning.apple.com/research/planning-grounding-ui-navigation",
   "sourceName": "Apple Machine Learning Research",
-  "title": "Appleの研究チームが新AI学習手法を発表、スマホ画面の自動操作で大幅に性能向上",
-  "seoTitle": "AppleのスマホUI自動操作AIとは？仕組みと性能向上",
+  "title": "Apple、iOSアプリの画面を自動操作するAIの強化学習手法を発表　数百台の仮想端末で訓練",
+  "seoTitle": "AppleのiOS画面操作AI：新しい強化学習手法の仕組み",
   "threadsPost": "スマホ画面の自動操作、まだ手探りですか？\n\n要約すると、Appleの研究チームがスマホの画面操作をAIに学習させる新しい手法を発表しました。\n複数の端末を同時に動かすことで、従来の学習方法よりも高い精度を実現しています。\n\nお使いのスマホで、こうした自動操作機能が当たり前になる日は近そうですか？",
   "threadsHook": "question",
   "threadsStyle": 3,
@@ -89,5 +89,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/apple-ui-navigation-rl-agent-3dcf1ae2.jpg"
-  }
+  },
+  "originalTitle": "Appleの研究チームが新AI学習手法を発表、スマホ画面の自動操作で大幅に性能向上",
+  "titleStyle": "2026-11-03"
 }

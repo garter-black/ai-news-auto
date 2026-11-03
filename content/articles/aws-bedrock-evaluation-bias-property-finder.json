@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/fix-evaluation-bias-to-unlock-better-models-on-amazon-bedrock/",
   "sourceName": "AWS Machine Learning Blog",
-  "title": "AWSのAmazon Bedrock、AI評価の歪みを直して最適モデル選定へ",
-  "seoTitle": "Amazon Bedrock評価バイアス修正とは？料金や使い方",
+  "title": "AWS、Amazon Bedrockでのモデル評価の偏りを正す手法を公開　Property Finderの事例",
+  "seoTitle": "Amazon Bedrockのモデル評価バイアス修正手法を解説",
   "threadsPost": "これまでAIの正解データが既存モデルの出力偏重だった課題に対し、AWSが評価バイアスを排除して最適モデルを選ぶ手法を公開しました。不動産アプリでの事例やプロンプト最適化の仕組みを詳しく解説します。",
   "threadsHook": "contrarian",
   "threadsStyle": 2,
@@ -70,5 +70,7 @@
     "width": 1200,
     "height": 900,
     "at": "2026-11-02T03:53:55+00:00"
-  }
+  },
+  "originalTitle": "AWSのAmazon Bedrock、AI評価の歪みを直して最適モデル選定へ",
+  "titleStyle": "2026-11-03"
 }

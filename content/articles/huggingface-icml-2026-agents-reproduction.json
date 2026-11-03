@@ -75,7 +75,7 @@
   "model": "gemini-3.5-flash",
   "affiliates": [],
   "roundupSlug": "ai-agent-mem0-prompt-caching-smolagents-integration-matome",
-  "roundupTitle": "AIエージェント実用化の分水嶺：長期記憶「Mem0」、コスト9割減のプロンプトキャッシュ、smolagentsによる自律検証を徹底統合",
+  "roundupTitle": "AIエージェント実用化の3技術を整理　長期記憶「Mem0」とコスト最大9割減のキャッシュ",
   "seoTitle": "AIエージェントがICML論文を再現｜Hugging Face競技の結果",
   "verdict": {
     "status": "demo",

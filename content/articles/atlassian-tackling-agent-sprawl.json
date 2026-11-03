@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.atlassian.com/blog/ai-at-work/tackling-ai-agent-sprawl",
   "sourceName": "Atlassian公式ブログ",
-  "title": "タスク管理のAtlassianがAIエージェントの野良増殖を防ぐ管理機能を発表",
-  "seoTitle": "AtlassianがAIエージェントの管理機能を発表　使い方と料金",
+  "title": "Atlassian、AIエージェントの無秩序な増加を防ぐ管理機能を発表　権限やコストを可視化",
+  "seoTitle": "Atlassian AIエージェント管理機能：無秩序な増加を防ぐ仕組み",
   "threadsPost": "社内で野良AIエージェントが増えすぎて困っていませんか。\nタスク管理ツールのAtlassianが、企業のAI管理機能を発表しました。\n誰が何を作ったか可視化し、安全に運用できます。",
   "threadsHook": "question",
   "threadsStyle": 2,
@@ -83,5 +83,7 @@
     ],
     "ar": 1.7778,
     "src": "https://ai-tech-express.jp/img/atlassian-tackling-agent-sprawl-218ad228.jpg"
-  }
+  },
+  "originalTitle": "タスク管理のAtlassianがAIエージェントの野良増殖を防ぐ管理機能を発表",
+  "titleStyle": "2026-11-03"
 }

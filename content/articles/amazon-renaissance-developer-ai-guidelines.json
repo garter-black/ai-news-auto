@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.aboutamazon.com/news/company-news/amazon-software-engineer-role-guideline-ai?utm_source=rss",
   "sourceName": "Amazon公式ニュース（About Amazon）",
-  "title": "Amazonが示すAI時代のエンジニア像　「ルネサンス・デベロッパー」の正体",
-  "seoTitle": "Amazonが示すAI時代の開発者像とは？ルネサンス・デベロッパーの全貌",
+  "title": "Amazon、AI時代の開発者向け役割指針を公開　「ルネサンス・デベロッパー」を提唱",
+  "seoTitle": "Amazonの開発者指針：ルネサンス・デベロッパーとは",
   "threadsPost": "Amazonのエンジニア組織が、AI時代における開発者の役割ガイドラインを更新しました。道具に頼るだけでなく、AIと人間の判断を組み合わせる「ルネサンス・デベロッパー」の考え方を解説します。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -75,5 +75,7 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T03:53:46+00:00"
-  }
+  },
+  "originalTitle": "Amazonが示すAI時代のエンジニア像　「ルネサンス・デベロッパー」の正体",
+  "titleStyle": "2026-11-03"
 }

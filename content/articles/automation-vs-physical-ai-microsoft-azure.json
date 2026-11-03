@@ -1,7 +1,7 @@
 {
   "slug": "automation-vs-physical-ai-microsoft-azure",
-  "title": "Microsoft幹部が語る「フィジカルAI」と「従来の自動化」の決定的な違い",
-  "seoTitle": "フィジカルAIとは？産業自動化との違いや特徴を解説",
+  "title": "Microsoft幹部、フィジカルAIと従来の自動化の違いを解説　作業のたびに学習",
+  "seoTitle": "フィジカルAIとは？従来の産業自動化との違いを解説",
   "threadsPost": "工場のロボットや現場の自動化、従来と何が違うかご存じですか？\n\nマイクロソフト幹部が「フィジカルAI」の考え方を解説。\nあらかじめ決めたルールを繰り返すだけの自動化と違い、AIは動くたびにデータを学んで賢くなります。\nこれからの現場づくりに必要な視点です。",
   "threadsHook": "question",
   "threadsStyle": 2,
@@ -89,5 +89,7 @@
     ],
     "ar": 1.7778,
     "src": "https://i.ytimg.com/vi/1lX4bK3FTPk/maxresdefault.jpg"
-  }
+  },
+  "originalTitle": "Microsoft幹部が語る「フィジカルAI」と「従来の自動化」の決定的な違い",
+  "titleStyle": "2026-11-03"
 }

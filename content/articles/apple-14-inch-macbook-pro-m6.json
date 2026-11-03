@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/apple-introduces-the-new-14-inch-macbook-pro-with-m6/",
   "sourceName": "Apple Newsroom（日本）",
-  "title": "Appleが「M6」搭載の新14インチMacBook Proを発表、最大24時間駆動で33万9800円から",
-  "seoTitle": "Apple、M6搭載の新14インチMacBook Pro発表",
+  "title": "Appleが「M6」搭載の14インチMacBook Proを発表　33万9800円から",
+  "seoTitle": "Apple M6搭載14インチMacBook Proの価格と発売日",
   "threadsPost": "アップルが、新しい「M6」チップを搭載した14インチMacBook Proを発表しました。\nCPUとGPUが12コアになり、最大24時間のバッテリー駆動やWi-Fi 7に対応しています。\n価格は33万9800円（税込）からで、10月29日から予約が始まります。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -290,5 +290,7 @@
       "url": "https://www.asus.com/jp/laptops/for-home/zenbook/asus-zenbook-s-14-ux5406/",
       "checkedAt": "2026-11-03"
     }
-  ]
+  ],
+  "originalTitle": "Appleが「M6」搭載の新14インチMacBook Proを発表、最大24時間駆動で33万9800円から",
+  "titleStyle": "2026-11-03"
 }

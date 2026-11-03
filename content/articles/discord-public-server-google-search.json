@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.itmedia.co.jp/news/article/2610/28/2000002656/",
   "sourceName": "ITmedia",
-  "title": "チャットのDiscordが公開サーバの会話をGoogle検索対象に　投稿を守る設定は",
-  "seoTitle": "Discordの会話がGoogle検索に？設定と対象を解説",
+  "title": "Discord、公開サーバの会話をGoogle検索の対象に　11月に要約、12月に投稿本文",
+  "seoTitle": "Discordの会話がGoogle検索に　対象と除外設定を解説",
   "threadsPost": "先に言うと、日本のDiscordユーザーも初期設定で対象です。\nチャットサービスのDiscordが、一部の公開サーバの会話をGoogle検索などで見つかるようにします。\n12月中旬からは投稿本文も対象。外すには、ユーザー設定でオフにする必要があります。\n10代のメッセージは対象外です。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -73,5 +73,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.itmedia.co.jp/news/article/ogp/2610/28/2000002656/10010674/2048",
     "at": "2026-10-28T04:30:18+00:00"
-  }
+  },
+  "originalTitle": "チャットのDiscordが公開サーバの会話をGoogle検索対象に　投稿を守る設定は",
+  "titleStyle": "2026-11-03"
 }

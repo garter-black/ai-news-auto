@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://www.bloomberg.com/news/articles/2026-11-01/deepseek-drops-enhanced-coding-agent-with-aim-to-rival-anthropic",
   "sourceName": "ブルームバーグ",
-  "title": "DeepSeekがプログラミングAIの試作版「Super-Agent」　呼ばれなくても助言",
+  "title": "DeepSeek、プログラミング支援AI「Super-Agent」の試作版を公開　呼ばれなくても提案",
   "seoTitle": "Super-Agentとは？DeepSeekの先回りコーディングAI",
   "threadsPost": "呼ばれる前に、AIが先に口を出す時代かも。\n中国のAI企業DeepSeekが、開発者のグループチャットを見守って、困りごとに自分から解決策を出すプログラミングAIの試作版を公開しました。\n名前は「Super-Agent」で、オープンソースです。\n料金や日本での使い方は、報道では確認できていません。",
   "threadsHook": "future",
@@ -92,5 +92,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/deepseek-super-agent-coding-prototype-e891c9ab.jpg"
-  }
+  },
+  "originalTitle": "DeepSeekがプログラミングAIの試作版「Super-Agent」　呼ばれなくても助言",
+  "titleStyle": "2026-11-03"
 }

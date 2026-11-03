@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://www.nli-research.co.jp/topics_detail1/id=87236?site=nli",
   "sourceName": "ニッセイ基礎研究所",
-  "title": "日銀短観の物価見通し、企業間で乖離－全般は2％超でも自社の販売価格見通しは1％未満",
+  "title": "日銀短観の企業物価見通しに乖離　物価全般は2％台半ば、自社販売価格は中期1％未満",
   "seoTitle": "日銀短観：企業の物価見通しと販売価格見通しの乖離",
   "threadsPost": "日銀短観の企業アンケートで、物価全般の見通しは2％超と高い一方、自社の販売価格見通しは1％未満にとどまることが分かりました。価格転嫁の難しさやデフレマインドが背景にあるようです。",
   "threadsHook": "contrarian",
@@ -78,5 +78,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/boj-tankan-price-forecast-gap-113e1969.jpg"
-  }
+  },
+  "originalTitle": "日銀短観の物価見通し、企業間で乖離－全般は2％超でも自社の販売価格見通しは1％未満",
+  "titleStyle": "2026-11-03"
 }

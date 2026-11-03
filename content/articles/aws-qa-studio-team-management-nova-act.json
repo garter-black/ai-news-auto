@@ -4,7 +4,7 @@
   "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/accelerating-software-delivery-with-agentic-qa-automation-using-amazon-nova-act-part-3/",
   "sourceName": "AWS Machine Learning Blog",
   "title": "AWS、AI自動テスト基盤「QA Studio」にチーム管理機能を追加",
-  "seoTitle": "AWS QA Studioとは？チーム管理とメトリクス機能の仕組み",
+  "seoTitle": "AWS QA Studioとは？チーム管理と健全性スコア",
   "threadsPost": "テストが増えすぎて管理に困っていませんか。\nAWSが、自然言語によるテスト基盤「QA Studio」に、チームごとの権限管理とアプリ別の健康状態を把握できる新機能を追加しました。\n数百件のテストケースを組織全体で安全に分担できるようになります。",
   "threadsHook": "question",
   "threadsStyle": 2,
@@ -68,5 +68,6 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/27/ML-21434-featured-image.png",
     "at": "2026-10-28T20:54:19+00:00"
-  }
+  },
+  "titleStyle": "2026-11-03"
 }

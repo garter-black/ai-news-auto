@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.docker.com/blog/coding-agent-horror-stories-the-cve-that-did-not-exist/",
   "sourceName": "Docker公式ブログ",
-  "title": "AIのコード査読ボットが架空の脆弱性をでっち上げ？Docker公式ブログが明かす恐怖の事件",
-  "seoTitle": "AIコードレビューボットの誤作動事件とは？Docker公式解説",
+  "title": "Docker、AIコーディングエージェント向けサンドボックスのコード配置3手法を公開",
+  "seoTitle": "Docker Sandboxのコード配置3手法　AIコード査読ボット事件",
   "threadsPost": "新モデルの性能より、大事なのは料金のほう。\nDocker公式ブログで公開された、AIのコード査読ボットが架空の脆弱性をでっち上げて大騒ぎを引き起こした事件の記録。\nAIの出力をそのまま信用することの危険性を、実際の事例をもとに解説しています。",
   "threadsHook": "contrarian",
   "threadsStyle": 2,
@@ -104,5 +104,7 @@
     ],
     "ar": 1.9081,
     "src": "https://ai-tech-express.jp/img/docker-coding-agent-horror-stories-cve-b874a4db.jpg"
-  }
+  },
+  "originalTitle": "AIのコード査読ボットが架空の脆弱性をでっち上げ？Docker公式ブログが明かす恐怖の事件",
+  "titleStyle": "2026-11-03"
 }

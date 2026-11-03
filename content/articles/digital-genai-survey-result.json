@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.digital.go.jp/policies/genai/f9ed1b1c-b22f-4466-8e50-c1c9adf9f8eb",
   "sourceName": "デジタル庁",
-  "title": "デジタル庁の政府職員向け生成AI「源内」、満足度71.7％　第1回利用状況アンケート結果を公表",
-  "seoTitle": "デジタル庁のガバメントAI源内アンケート、7割が満足",
+  "title": "デジタル庁、政府職員向け生成AI「源内」の利用調査を公表　満足度は71.7％",
+  "seoTitle": "ガバメントAI「源内」の満足度71.7％　デジタル庁アンケート結果",
   "threadsPost": "政府職員18万人を対象にした生成AI利用環境「ガバメントAI 源内」の第1回アンケート調査結果が公表されました。利用者の7割以上が「満足」と回答し、過半数が週1時間以上の業務時間短縮を実感しているとのことです。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -61,5 +61,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.digital.go.jp/themes/custom/gov_theme_da_2023/assets/images/ogp.png",
     "at": "2026-10-30T00:20:53+00:00"
-  }
+  },
+  "originalTitle": "デジタル庁の政府職員向け生成AI「源内」、満足度71.7％　第1回利用状況アンケート結果を公表",
+  "titleStyle": "2026-11-03"
 }

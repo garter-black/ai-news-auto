@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/apple-unveils-new-imac-with-m6/",
   "sourceName": "Apple Newsroom（日本）",
-  "title": "AppleがM6チップ搭載の新iMacを発表、最高18倍の高速化で24万9800円から",
+  "title": "Apple、M6チップ搭載の新iMacを発表　Intel製モデル比で最大18倍高速、24万9800円から",
   "seoTitle": "Apple M6搭載iMac発表：価格とスペック、前モデルとの違い",
   "threadsPost": "新しいMacを考えてる人、これはチェックしてほしい。\nAppleが超高速なM6チップを搭載した新しい24インチiMacを発表しました。\nIntel製モデルと比べて最大18倍のパフォーマンスを発揮し、価格は24万9800円（税込）から。10月29日予約開始です。",
   "threadsHook": "callout",
@@ -72,5 +72,7 @@
     "width": 1200,
     "height": 900,
     "at": "2026-11-02T03:54:07+00:00"
-  }
+  },
+  "originalTitle": "AppleがM6チップ搭載の新iMacを発表、最高18倍の高速化で24万9800円から",
+  "titleStyle": "2026-11-03"
 }

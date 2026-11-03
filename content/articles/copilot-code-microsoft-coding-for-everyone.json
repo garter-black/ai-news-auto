@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://blogs.windows.com/japan/2026/10/27/copilot-code-make-the-power-of-coding-accessible-to-everyone/",
   "sourceName": "Windows ブログ（日本）",
-  "title": "MicrosoftのCopilot Code登場、専門知識なしで業務アプリを自作",
+  "title": "Microsoft、AIコーディング機能「Copilot Code」を発表　自然言語で業務アプリを作成",
   "seoTitle": "Copilot Codeとは？使い方と日本での提供状況　Microsoftの新機能",
   "threadsPost": "専門知識やエンジニアの予算がなくても、業務のアイデアをそのまま動くアプリにできるようになりました。マイクロソフトのCopilot Codeは、自然言語で指示するだけでライブコントロールセンターなどのアプリを構築し、必要に応じてGitHubにつないで本格的な開発へ拡張できます。",
   "threadsHook": "question",
@@ -70,5 +70,7 @@
     "prompt": "Hands typing on a laptop keyboard while a code editor is displayed on the screen, set in a bright, modern office with a clean desk.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-10-28T03:38:10+00:00"
-  }
+  },
+  "originalTitle": "MicrosoftのCopilot Code登場、専門知識なしで業務アプリを自作",
+  "titleStyle": "2026-11-03"
 }

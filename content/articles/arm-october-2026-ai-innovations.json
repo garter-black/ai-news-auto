@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://newsroom.arm.com/blog/top-arm-based-innovations-in-october-2026",
   "sourceName": "Armニュースルーム",
-  "title": "英Armの10月動向：433コアの自律走行ロボやスマホ向け新AIの全貌",
-  "seoTitle": "英Armの10月動向とは？AIロボやスマホ向け新技術の仕組み",
+  "title": "Arm、10月のAI動向を公開　433コアの自動運転ロボットなど",
+  "seoTitle": "Armの10月動向とは？AIロボやスマホ向け新技術を解説",
   "threadsPost": "ロボットからスマホまで、共通の技術基盤でAIはどう進化しているのでしょうか。\n\n要約すると、英Armの10月の発表では、433コアを搭載した自動運転ロボや、スマホ向けの新しいAIモデルが公開されました。\nデバイス側での処理効率を高める技術やツールも順次提供されています。\n\nお使いのスマホやパソコンで、AIの動作速度やバッテリー持ちの変化を感じますか？",
   "threadsHook": "question",
   "threadsStyle": 3,
@@ -91,5 +91,7 @@
     ],
     "ar": 1.791,
     "src": "https://ai-tech-express.jp/img/arm-october-2026-ai-innovations-ad3b4946.jpg"
-  }
+  },
+  "originalTitle": "英Armの10月動向：433コアの自律走行ロボやスマホ向け新AIの全貌",
+  "titleStyle": "2026-11-03"
 }

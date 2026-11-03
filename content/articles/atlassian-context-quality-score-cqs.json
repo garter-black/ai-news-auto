@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.atlassian.com/blog/context/context-quality-score",
   "sourceName": "Atlassian公式ブログ",
-  "title": "アトラシアンがAIの精度を高める「CQS」を発表　散らばったデータを整理して回答の質を向上",
-  "seoTitle": "CQSとは？アトラシアンが発表したAIデータの評価指標",
+  "title": "アトラシアン、AI向けデータの品質指標「CQS」を発表　完全性・接続性・関連性の3軸で評価",
+  "seoTitle": "CQSとは？アトラシアンのAI向けデータ品質指標を解説",
   "threadsPost": "【速報】アトラシアンが、AIが読み込むデータの品質を測る新しい枠組み「CQS」を発表しました。\n企業内の様々なツールにある情報を整理し、AIの回答精度を高めるための仕組みです。\nチームでAIを使っている管理職や開発者は要チェックです。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -83,5 +83,7 @@
     ],
     "ar": 2.0548,
     "src": "https://ai-tech-express.jp/img/atlassian-context-quality-score-cqs-39986496.jpg"
-  }
+  },
+  "originalTitle": "アトラシアンがAIの精度を高める「CQS」を発表　散らばったデータを整理して回答の質を向上",
+  "titleStyle": "2026-11-03"
 }

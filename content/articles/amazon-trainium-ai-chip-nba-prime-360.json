@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.aboutamazon.com/news/innovation/trainium-ai-chip-prime-360-nba-highlights?utm_source=rss",
   "sourceName": "Amazon公式ニュース（About Amazon）",
-  "title": "AmazonのAI半導体「Trainium」、NBA中継の映像生成を支える仕組み",
-  "seoTitle": "Amazon Trainiumとは？NBA中継のAI映像生成を支える半導体",
+  "title": "Amazon、NBA中継「Prime 360」の映像生成にAI半導体「Trainium」を活用",
+  "seoTitle": "Amazon TrainiumとNBA中継「Prime 360」の仕組み",
   "threadsPost": "これまで難しかったバスケの生中継でのシネマティック映像。Amazonの独自AI半導体「Trainium」が、リアルタイムでのAI映像生成を支えていることが明らかになりました。",
   "threadsHook": "number",
   "threadsStyle": 2,
@@ -71,5 +71,7 @@
     "width": 1200,
     "height": 672,
     "at": "2026-11-02T03:51:57+00:00"
-  }
+  },
+  "originalTitle": "AmazonのAI半導体「Trainium」、NBA中継の映像生成を支える仕組み",
+  "titleStyle": "2026-11-03"
 }

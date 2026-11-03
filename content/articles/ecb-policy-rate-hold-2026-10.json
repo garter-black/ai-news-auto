@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.nli-research.co.jp/topics_detail1/id=87227?site=nli",
   "sourceName": "ニッセイ基礎研究所",
-  "title": "欧州中央銀行のECBが政策金利据え置きを発表、今後の利上げを示唆",
-  "seoTitle": "ECB政策金利据え置き、利上げ示唆",
+  "title": "ECB、政策金利の据え置きを全会一致で決定　次回12月の利上げを示唆",
+  "seoTitle": "ECB政策金利据え置き：10月29日の理事会と利上げ見通し",
   "threadsPost": "結論：政策金利は据え置きでしたが、次回12月の利上げが強く意識される内容でした。\nエネルギー高の影響を警戒しつつも、エネルギーを除く基調的インフレ率は安定しており、今後の経済動向に注目が集まります。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -128,5 +128,7 @@
         "url": "https://www.nli-research.co.jp/topics_detail1/id=87227?site=nli"
       }
     }
-  ]
+  ],
+  "originalTitle": "欧州中央銀行のECBが政策金利据え置きを発表、今後の利上げを示唆",
+  "titleStyle": "2026-11-03"
 }

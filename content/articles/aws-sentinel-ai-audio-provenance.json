@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/jp/blogs/news/jpmne-building-audio-provenance-for-ai-generated-content-at-the-source-with-aws/",
   "sourceName": "AWS ブログ（日本）",
-  "title": "AWSがAI生成オーディオの来歴情報保持パイプライン「SENTINEL」を発表",
-  "seoTitle": "AWS SENTINELとは？AI生成オーディオの来歴情報保持パイプライン",
+  "title": "AWS、AI生成音声の来歴を保持する構成「SENTINEL」を公開　EU AI法に対応",
+  "seoTitle": "AWS SENTINELとは？AI生成音声の来歴保持パイプライン",
   "threadsPost": "EU AI法の期限に向けて、AWSがAI生成オーディオに暗号技術と透かしを埋め込むパイプライン「SENTINEL」を発表しました。生成時から配信、復元までの管理の連鎖をAWS上で構築できます。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -73,5 +73,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/10/28/Building-audio-provenance-for-AI-generated-content-at-the-source-with-AWS.png",
     "at": "2026-10-28T21:53:00+00:00"
-  }
+  },
+  "originalTitle": "AWSがAI生成オーディオの来歴情報保持パイプライン「SENTINEL」を発表",
+  "titleStyle": "2026-11-03"
 }

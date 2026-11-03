@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://www.anthropic.com/news/s1-sec",
   "sourceName": "Anthropic公式ニュース",
-  "title": "Anthropicが米SECにS-1を提出　株式上場に向けた手続きが始まる",
+  "title": "Anthropic、米SECにForm S-1を提出　ナスダックで「ANT」上場を予定",
   "seoTitle": "Anthropic上場とは？S-1提出とANTの買い方",
   "threadsPost": "先に言うと、まだ株は買えません。\nClaudeのAnthropicが、株式上場に向けた書類(S-1)を米SECに提出しました。\nナスダックで「ANT」の銘柄名を予定しています。\n株の数も価格帯も、まだ決まっていません。",
   "threadsHook": "conclusion",
@@ -76,5 +76,6 @@
     "original": "https://www-cdn.anthropic.com/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg",
     "at": "2026-10-28T03:16:27+00:00"
   },
-  "originalTitle": "ClaudeのAnthropicが米SECにS-1を提出　株式上場に向けた手続きが始まる"
+  "originalTitle": "ClaudeのAnthropicが米SECにS-1を提出　株式上場に向けた手続きが始まる",
+  "titleStyle": "2026-11-03"
 }

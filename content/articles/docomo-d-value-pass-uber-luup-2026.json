@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.docomo.ne.jp/info/news_release/2026/10/30_00.html",
   "sourceName": "NTT ニュースリリース",
-  "title": "NTTドコモの「dバリューパス」にUberやLUUPの特典追加、デイリーチャンスも拡充",
-  "seoTitle": "ドコモのdバリューパス：UberやLUUPの特典が追加",
+  "title": "ドコモが「dバリューパス」にUberとLUUPの特典を追加　デイリーチャンスも拡充",
+  "seoTitle": "dバリューパス：UberギフトカードとLUUP特典の内容と開始日",
   "threadsPost": "結論から言うと、ドコモの有料サービスにUberの割引やLUUPの無料クーポンが追加されます。\n日常の移動やデリバリーがおトクになるほか、コンビニ商品の抽選クーポンも増量されるので、よく使う人には見逃せない内容です。\nいつから使えるのか、詳しい条件をまとめました。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -70,5 +70,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.docomo.ne.jp/images_osp/common/header/logo_header_ogp.png",
     "at": "2026-10-30T02:36:41+00:00"
-  }
+  },
+  "originalTitle": "NTTドコモの「dバリューパス」にUberやLUUPの特典追加、デイリーチャンスも拡充",
+  "titleStyle": "2026-11-03"
 }

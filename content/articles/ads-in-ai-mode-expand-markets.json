@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://blog.google/products/ads-commerce/ads-in-ai-mode-global/",
   "sourceName": "Google公式ブログ",
-  "title": "Googleの「AIモード」の広告が10カ国に拡大　続けて聞く質問にも広告を表示",
-  "seoTitle": "AIモード広告とは？日本で使える？対象国も",
+  "title": "Google、検索「AIモード」の広告を10カ国・地域に拡大　米国では追加質問にも表示",
+  "seoTitle": "AIモード広告の対象10カ国　日本は対象外か",
   "threadsPost": "先に言うと、日本はまだ対象外です。\nGoogle検索の「AIモード」の広告が、豪・加・印・星など10カ国に広がりました。\n米国では、続けて質問した回答にも広告が出る新方式も始まります。\n英国・ブラジル・メキシコは2026年第4四半期に追加予定です。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -74,5 +74,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/ai_mode_global_ads_hero.max-1440x810.png",
     "at": "2026-10-28T21:32:54+00:00"
-  }
+  },
+  "originalTitle": "Googleの「AIモード」の広告が10カ国に拡大　続けて聞く質問にも広告を表示",
+  "titleStyle": "2026-11-03"
 }

@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/groundhog-day-for-ai-agents-prompt-caching-patterns-for-using-openai-models-on-amazon-bedrock/",
   "sourceName": "AWS Machine Learning Blog",
-  "title": "Amazon BedrockのOpenAIモデルで、AIの回答コストを約6割減らす新機能の活用術",
-  "seoTitle": "Amazon Bedrock：プロンプトキャッシュの使い方と料金",
+  "title": "AWS、Amazon BedrockのOpenAIモデルでプロンプトキャッシュの活用法を公開　入力コスト約6割減",
+  "seoTitle": "Amazon Bedrockのプロンプトキャッシュ　使い方とコスト削減効果",
   "threadsPost": "ビフォーアフター型\nエージェントが毎回すべての履歴を読み直していた処理が、プロンプトキャッシュの活用で大幅に効率化されます。\nAmazon Bedrock上でのOpenAIモデル利用におけるコスト削減手法についてです。\n✅ 仕組みの解説\n✅ 実装パターンの例\nこれ、地味に効いてくるやつですね。\n記事で👇",
   "threadsHook": "before_after",
   "writingVoice": "friendly",
@@ -75,5 +75,6 @@
     "query": "data center",
     "original": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/23/ML-22246-featured-image.png",
     "at": "2026-10-28T04:44:20+00:00"
-  }
+  },
+  "titleStyle": "2026-11-03"
 }

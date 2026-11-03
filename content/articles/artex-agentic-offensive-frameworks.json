@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://cloud.google.com/blog/ja/topics/threat-intelligence/artex-and-friends-enter-agentic-offensive-frameworks/",
   "sourceName": "Google Cloud 公式ブログ（日本）",
-  "title": "Google、自律型攻撃フレームワーク「ARTEX」の悪用を確認　企業への侵入がマシンスピードに",
-  "seoTitle": "ARTEXとは？自律型攻撃フレームワークの脅威と影響",
+  "title": "Google、攻撃者による自律型フレームワーク「ARTEX」の悪用を確認　侵入が数分規模に",
+  "seoTitle": "ARTEXとは？自律型攻撃フレームワークの脅威と対策",
   "threadsPost": "ペネトレーションテスト用のオープンソースツールが、実際の攻撃に悪用されています。\nGoogleの脅威インテリジェンスによると、ARTEXなどのマルチエージェント型フレームワークが使われ、侵入スピードが極めて高速化しているとのこと。\n企業のセキュリティ対策見直しが急務です。",
   "threadsHook": "caution",
   "threadsStyle": 2,
@@ -97,5 +97,7 @@
     "seconds": 56.8,
     "title": "Google、ARTEX悪用を確認 実行は約2〜25秒に集中",
     "credit": "VOICEVOX:九州そら"
-  }
+  },
+  "originalTitle": "Google、自律型攻撃フレームワーク「ARTEX」の悪用を確認　企業への侵入がマシンスピードに",
+  "titleStyle": "2026-11-03"
 }

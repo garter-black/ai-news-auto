@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://elevenlabs.io/blog/sfx-v3-for-developers",
   "sourceName": "ElevenLabs公式ブログ",
-  "title": "ElevenLabsが音響効果モデル「SFX v3」公開　複数指示への追従性が向上",
+  "title": "ElevenLabs、効果音生成モデル「SFX v3」を公開　複数指示への追従性が向上",
   "seoTitle": "ElevenLabs SFX v3とは？使い方と新機能の解説",
   "threadsPost": "ElevenLabsが音響効果生成モデルの最新版「SFX v3」を発表しました。\n\n要約すると、複数の指示や人の声、音楽の処理が従来よりも自然になりました。\n同じエンドポイントでv2とのA/Bテストも手軽に試せます。\n\nあなたの制作作業に、音響効果AIを取り入れたことはありますか？",
   "threadsHook": "question",
@@ -84,5 +84,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/elevenlabs-sfx-v3-sound-effects-f70ed081.jpg"
-  }
+  },
+  "originalTitle": "ElevenLabsが音響効果モデル「SFX v3」公開　複数指示への追従性が向上",
+  "titleStyle": "2026-11-03"
 }

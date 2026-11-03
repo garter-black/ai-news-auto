@@ -1,7 +1,7 @@
 {
   "slug": "chatgpt-pro-business-api-credits-benefit",
-  "title": "ChatGPT Pro・BusinessのAPIクレジットとは？対象と受け取り方",
-  "seoTitle": "ChatGPTのAPIクレジット特典　対象・料金・受け取り方",
+  "title": "OpenAI、ChatGPT Pro・Business契約者にAPIクレジット　金額はプランと席数で変動",
+  "seoTitle": "ChatGPTのAPIクレジット特典　対象・金額・受け取り方",
   "threadsPost": "ChatGPT Pro・BusinessのAPIクレジット特典、対象の方は受け取り手続きが必要です。\n\n契約から7日以上などの条件があり、金額はプランごとに異なります。\nAPIとChatGPTの請求は別なので、残高と自動チャージ設定も確認しましょう。",
   "threadsHook": "callout",
   "threadsStyle": 2,
@@ -58,5 +58,7 @@
   "thumbnail": "https://i.ytimg.com/vi/ujmyzWSj8IU/maxresdefault.jpg",
   "model": "gemini-3.6-flash",
   "affiliates": [],
-  "updatedAt": "2026-10-31T17:05:14.958236+00:00"
+  "updatedAt": "2026-10-31T17:05:14.958236+00:00",
+  "originalTitle": "ChatGPT Pro・BusinessのAPIクレジットとは？対象と受け取り方",
+  "titleStyle": "2026-11-03"
 }

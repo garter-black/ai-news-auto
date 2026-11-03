@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://openai.com/index/gpt-6-1-sol-coderabbit-code-security",
   "sourceName": "OpenAI公式ブログ",
-  "title": "AIコードレビューのCodeRabbit、OpenAIの新AI「GPT-6.1 Sol」で脆弱性の調査から修正案まで",
+  "title": "CodeRabbitが「GPT-6.1 Sol」をセキュリティ調査の主力に採用　脆弱性の検証から修正案まで",
   "seoTitle": "CodeRabbit Secureとは？GPT-6.1 Solで脆弱性を調査",
   "threadsPost": "コードを書く人には、地味に大きい話です。\nAIコードレビューのCodeRabbitが、OpenAIの新AI「GPT-6.1 Sol」をセキュリティ調査の主力に採用しました。\n変更1カ所だけでなく、共有ライブラリなど関連部分まで追って弱点を探し、修正案のPRまで作ります。\n最後に承認するのは人間です。",
   "threadsHook": "callout",
@@ -80,5 +80,7 @@
     "query": "laptop code review",
     "original": "https://images.ctfassets.net/kftzwdyauwt9/1ksgDNZQ7aw2uHUY6xbaVm/0ffd141428e2cea70f4dcbf67ccd6245/gpt-6-1-sol-helps-coderabbit-strengthen-security-across-complex-codebases-social.png?w=1600&h=900&fit=fill",
     "at": "2026-10-28T05:46:57+00:00"
-  }
+  },
+  "originalTitle": "AIコードレビューのCodeRabbit、OpenAIの新AI「GPT-6.1 Sol」で脆弱性の調査から修正案まで",
+  "titleStyle": "2026-11-03"
 }

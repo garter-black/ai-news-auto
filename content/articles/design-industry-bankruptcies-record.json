@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://www.tsr-net.co.jp/data/detail/1203387_1527.html",
   "sourceName": "東京商工リサーチ",
-  "title": "東京商工リサーチの調査、デザイン業の上半期倒産が過去最多の41件に",
+  "title": "東京商工リサーチ、デザイン業の上半期倒産が過去最多の41件と発表",
   "seoTitle": "デザイン業の倒産が過去最多、AIや住宅不振が影響か",
   "threadsPost": "デザイン業の倒産が過去最多を記録しています。2026年度上半期は前年同期の1.9倍となる41件に急増し、その大半を小・零細規模が占めました。生成AIの普及や住宅業界の変化が受注にどう影響しているのでしょうか。",
   "threadsHook": "number",
@@ -73,5 +73,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/design-industry-bankruptcies-record-6d80de17.jpg"
-  }
+  },
+  "originalTitle": "東京商工リサーチの調査、デザイン業の上半期倒産が過去最多の41件に",
+  "titleStyle": "2026-11-03"
 }

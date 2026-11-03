@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/build-agentic-retrieval-on-a-managed-amazon-bedrock-knowledge-base-with-cdk/",
   "sourceName": "AWS Machine Learning Blog",
-  "title": "AWS CDKで実現するマネージドBedrockの自律的データ検索構築法",
-  "seoTitle": "Amazon Bedrock知識ベースの自律検索｜CDKでの構築手順",
+  "title": "AWS、Bedrock知識ベースのエージェント型検索をCDKで構築する手法を公開",
+  "seoTitle": "Amazon Bedrock知識ベースのエージェント型検索　CDK構築手順",
   "threadsPost": "これまで3つのツールを行き来してた作業が、1画面で完結。\nAmazon Bedrockの知識ベースで、エージェントが複数ソースを自律的に検索できるようになりました。\nCDKでの具体的な構築手順を徹底解説。\n記事で👇",
   "threadsHook": "before_after",
   "writingVoice": "senpai",
@@ -105,5 +105,7 @@
       "sourceName": "AWS Machine Learning Blog"
     }
   ],
-  "updatedAt": "2026-11-02T19:52:48.817902+00:00"
+  "updatedAt": "2026-11-02T19:52:48.817902+00:00",
+  "originalTitle": "AWS CDKで実現するマネージドBedrockの自律的データ検索構築法",
+  "titleStyle": "2026-11-03"
 }

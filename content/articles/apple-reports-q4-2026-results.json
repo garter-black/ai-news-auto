@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.apple.com/jp/newsroom/2026/11/apple-reports-fourth-quarter-results/",
   "sourceName": "Apple Newsroom（日本）",
-  "title": "Apple、7〜9月期売上高が1145億ドルで過去最高　新iPhoneやサービス好調",
-  "seoTitle": "Apple 7〜9月期業績発表：売上高1145億ドルで過去最高",
+  "title": "Apple、7〜9月期の売上高が12％増の1145億ドル　同期として過去最高",
+  "seoTitle": "Apple 7〜9月期決算：売上高1145億ドルで過去最高",
   "threadsPost": "【速報】Appleが7〜9月期の業績を発表。\n\n要約すると、売上高は前年同期比12%増の1,145億ドルで、7〜9月期として過去最高でした。\niPhoneやサービス事業が好調で、通期売上は4,790億ドルに達しています。\n\nAppleの新製品や業績の動き、気になりますか？",
   "threadsHook": "breaking",
   "threadsStyle": 3,
@@ -102,5 +102,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/apple-reports-q4-2026-results-743d3b15.jpg"
-  }
+  },
+  "originalTitle": "Apple、7〜9月期売上高が1145億ドルで過去最高　新iPhoneやサービス好調",
+  "titleStyle": "2026-11-03"
 }

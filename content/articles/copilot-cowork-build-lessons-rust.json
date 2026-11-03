@@ -4,7 +4,7 @@
   "sourceUrl": "https://commandline.microsoft.com/how-we-built-copilot-cowork-python-to-rust-migration/",
   "sourceName": "Microsoft Source（ニュースルーム）",
   "title": "MicrosoftのAI秘書「Copilot Cowork」、9人が1日1,211件の更新　AIに書かせる開発の6つの教訓",
-  "seoTitle": "Copilot Cowork開発とは？AIにコードを書かせる6つの教訓",
+  "seoTitle": "Copilot Cowork開発とは？AIにコードを書かせる6つの実践",
   "threadsPost": "1日で1,211件。9人のチームの数字です。\n\n要約すると、MicrosoftのCopilot Cowork開発チームは、AIにほとんどのコードを書かせました。\n10月21日に9人のエンジニアが、1,211件の変更を本流に取り込んでいます。\n\nあなたの仕事に、AIへ任せられる作業はありますか？",
   "threadsHook": "number",
   "threadsStyle": 3,
@@ -127,5 +127,6 @@
     ],
     "ar": 1.6064,
     "src": "https://ai-tech-express.jp/img/copilot-cowork-build-lessons-rust-8ef962b1.jpg"
-  }
+  },
+  "titleStyle": "2026-11-03"
 }

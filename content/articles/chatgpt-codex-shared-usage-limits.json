@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://help.openai.com/en/articles/20001625-understanding-chatgpt-and-codex-usage-limits",
   "sourceName": "OpenAI公式",
-  "title": "OpenAI、12月から利用枠を「Codex」と共通化　AI作業機能は本体へ",
+  "title": "OpenAI、12月からChatGPTの利用枠を「Codex」と共通化　対象はPlusなど3プラン",
   "seoTitle": "ChatGPTの利用枠とは？Codexと共通化　12月から",
   "threadsPost": "注意してほしい変更です。\nChatGPTのOpenAIが、12月からPlus・Pro・Businessの利用枠を、コード作業用AI「Codex」と共通にします。\n消費は、選ぶモデルや作業の重さで変わります。ただ、通常のチャット（Instant）は枠を使いません。\n有料プランの人は、設定の「Usage」で残量を見られます。",
   "threadsHook": "caution",
@@ -90,5 +90,6 @@
     "title": "ChatGPT、12月から利用枠をCodexと共通化 Instantチャットは…",
     "credit": "VOICEVOX:九州そら"
   },
-  "originalTitle": "ChatGPTのOpenAI、12月から利用枠を「Codex」と共通化　AI作業機能は本体へ"
+  "originalTitle": "ChatGPTのOpenAI、12月から利用枠を「Codex」と共通化　AI作業機能は本体へ",
+  "titleStyle": "2026-11-03"
 }

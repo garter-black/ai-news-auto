@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.docker.com/blog/docker-blueprint-alliance-agent-baseline/",
   "sourceName": "Docker公式ブログ",
-  "title": "Docker、AIエージェントの安全な活用を目指す「Blueprint Alliance」に参画",
-  "seoTitle": "Dockerとは？AIエージェントの安全基準を策定する仕組みを解説",
+  "title": "Docker、AIエージェントの安全基準づくり「Blueprint Alliance」に参画",
+  "seoTitle": "Blueprint AllianceとDocker：AIエージェントの安全基準",
   "threadsPost": "AIエージェントの安全基準、どう作ればいいか迷っていませんか？\n\n要約すると、Dockerが12社で「Blueprint Alliance」を立ち上げました。\nAIエージェントの安全な管理に向けた共通基準を作ります。\n\nあなたの会社では、業務でのAIエージェントの利用ルールは決まっていますか？",
   "threadsHook": "question",
   "threadsStyle": 3,
@@ -88,5 +88,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/docker-blueprint-alliance-agent-baseline-677a4308.jpg"
-  }
+  },
+  "originalTitle": "Docker、AIエージェントの安全な活用を目指す「Blueprint Alliance」に参画",
+  "titleStyle": "2026-11-03"
 }

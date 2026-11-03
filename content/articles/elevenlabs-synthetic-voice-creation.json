@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://elevenlabs.io/blog/synthetic-voices",
   "sourceName": "ElevenLabs公式ブログ",
-  "title": "ElevenLabsが提供するAI音声合成の仕組みと音声クローン作成方法",
-  "seoTitle": "ElevenLabs AI音声合成とは？使い方と料金",
+  "title": "ElevenLabs、AI音声合成と音声クローンの作成方法を公開　2分未満の録音から対応",
+  "seoTitle": "ElevenLabsの音声クローン作成方法　録音2分から",
   "threadsPost": "音声合成の作業、まだ手作業ですか？\n\n要約すると、ElevenLabsは録音だけで音声をクローンできます。\nInstantは2分未満、Professionalは30分～3時間で高精度です。\n\n自分の声でAIナレーション、作ってみませんか？",
   "threadsHook": "empathy",
   "threadsStyle": 3,
@@ -127,5 +127,7 @@
     "seconds": 56.4,
     "title": "ElevenLabsの音声クローン、自分の録音から声を再現する仕組み",
     "credit": "VOICEVOX:九州そら"
-  }
+  },
+  "originalTitle": "ElevenLabsが提供するAI音声合成の仕組みと音声クローン作成方法",
+  "titleStyle": "2026-11-03"
 }

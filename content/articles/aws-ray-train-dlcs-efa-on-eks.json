@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/distributed-training-with-ray-train-dlcs-and-efa-on-eks/",
   "sourceName": "AWS Machine Learning Blog",
-  "title": "AWSが公開した「Ray Train DLCs」とは？大規模AIの分散学習が手軽に",
-  "seoTitle": "AWSのRay Train DLCsとは？大規模AI分散学習の仕組み",
+  "title": "AWS、AI分散学習用コンテナ「Ray Train DLCs」を公開　Amazon EKSで利用可能",
+  "seoTitle": "Ray Train DLCsとは？AWSのAI分散学習の仕組み",
   "threadsPost": "分散型AI学習の準備、毎回コンテナ構築で苦労していませんか？AWSが公開した公式DLCなら、面倒な設定なしでそのまま高速な分散学習が始められます。",
   "threadsHook": "question",
   "threadsStyle": 2,
@@ -73,5 +73,7 @@
     "query": "data center",
     "original": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/19/ML-22002-featured-image.png",
     "at": "2026-10-28T19:54:36+00:00"
-  }
+  },
+  "originalTitle": "AWSが公開した「Ray Train DLCs」とは？大規模AIの分散学習が手軽に",
+  "titleStyle": "2026-11-03"
 }
