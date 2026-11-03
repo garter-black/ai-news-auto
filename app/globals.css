@@ -643,6 +643,18 @@ mark {
   text-underline-offset: 3px;
 }
 
+/*
+ * 本文の長い URL・英数字の連なり（リンク・コード）がスマホで横にはみ出さないよう、入りきらないときだけ途中で折る。
+ * 日本語の普段の改行位置は変わらない（overflow-wrap は折れる場所が無い連なりにだけ効く）。
+ * 地の文に直書きされた URL も、段落・箇条書きの幅を超えるときだけ折る（break-word は表の列幅の計算に影響しない）
+ */
+.prose :where(a, code) {
+  overflow-wrap: anywhere;
+}
+.prose :where(p, li) {
+  overflow-wrap: break-word;
+}
+
 .prose :where(img) {
   border-radius: 6px;
 }
