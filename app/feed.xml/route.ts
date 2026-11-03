@@ -1,3 +1,4 @@
+import { articleTitle } from "@/lib/headline";
 import { getAllArticles } from "@/lib/articles";
 import { getAllWeeks, weekPublishedAt } from "@/lib/weekly";
 import { isNewsOutletChannel } from "@/lib/news-outlets";
@@ -22,7 +23,7 @@ export function GET() {
   const articleItems = articles.map((article) => ({
     at: Date.parse(postedAt(article)),
     xml: `    <item>
-      <title>${escapeXml(article.title)}</title>
+      <title>${escapeXml(articleTitle(article))}</title>
       <link>${siteConfig.url}/articles/${article.slug}</link>
       <guid isPermaLink="true">${siteConfig.url}/articles/${article.slug}</guid>
       <description>${escapeXml(article.description)}</description>

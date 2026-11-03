@@ -1,3 +1,4 @@
+import { articleTitle } from "@/lib/headline";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -361,7 +362,7 @@ function ArticleList({ articles }: { articles: ArticleSummary[] }) {
               <span className="tabular-nums">{day.format(Date.parse(article.generatedAt || article.publishedAt))}</span>
             </p>
             <Link href={`/articles/${article.slug}`} className="mt-1 block text-[15.5px] font-bold leading-snug text-ink hover:underline">
-              {article.seoTitle || article.title}
+              {articleTitle(article)}
             </Link>
             {article.highlights[0] && <p className="mt-1 line-clamp-2 text-desc leading-[1.75] text-ink-soft">{article.highlights[0]}</p>}
           </li>

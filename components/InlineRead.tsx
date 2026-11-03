@@ -1,3 +1,4 @@
+import { articleTitle } from "@/lib/headline";
 import Link from "next/link";
 import type { NextRead } from "@/lib/articles";
 
@@ -11,7 +12,7 @@ export default function InlineRead({ item }: { item?: NextRead }) {
     >
       <span className="shrink-0 text-meta font-bold text-live">あわせて読みたい</span>
       <span className="min-w-0 flex-1 truncate text-note font-bold text-ink group-hover:underline">
-        {item.article.seoTitle || item.article.title}
+        {articleTitle(item.article)}
       </span>
       <span aria-hidden className="text-muted">→</span>
     </Link>

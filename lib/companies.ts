@@ -102,6 +102,35 @@ export const COMPANIES: Company[] = [
     color: "#2b2b2b",
     pattern: /Kimi|Moonshot/i,
   },
+  // 2026-11-03 の点検 11: AWS・Apple・サムスン・Salesforce の AI の発表が「その他」にまとめられていた（台帳 A30）
+  {
+    slug: "amazon",
+    name: "Amazon（AWS）",
+    mark: "Am",
+    color: "#a35200",
+    pattern: /Amazon|アマゾン|\bAWS\b|Bedrock|Alexa|Trainium|\bKiro\b/i,
+  },
+  {
+    slug: "apple",
+    name: "Apple",
+    mark: "Ap",
+    color: "#3a3a3c",
+    pattern: /\bApple\b|アップル|iPhone|iPad|MacBook|Mac Studio|iMac|\biOS\b|macOS|Siri|visionOS/,
+  },
+  {
+    slug: "samsung",
+    name: "Samsung",
+    mark: "S",
+    color: "#1428a0",
+    pattern: /Samsung|サムスン|Galaxy/i,
+  },
+  {
+    slug: "salesforce",
+    name: "Salesforce",
+    mark: "Sf",
+    color: "#0b6fb0",
+    pattern: /Salesforce|セールスフォース|Agentforce|Tableau/i,
+  },
 ];
 
 export const OTHER: Company = {
@@ -127,6 +156,25 @@ const CHANNEL_COMPANY: Record<string, string> = {
 
 const BY_SLUG = new Map(COMPANIES.map((c) => [c.slug, c]));
 
+/**
+ * 見出しの主語（最初の「、」「が」の前。かっこの中は見ない）。scripts/labels.py の subject_of と同じ。
+ * 「Qodo、Codex向けプラグインを公開」の主語は Qodo（OpenAI ではない）
+ */
+export function subjectOf(title: string): string {
+  const t = (title ?? "").normalize("NFKC").trim();
+  let depth = 0;
+  for (let i = 0; i < Math.min(t.length, 40); i++) {
+    const ch = t[i];
+    if ("「『(（".includes(ch)) depth++;
+    else if ("」』)）".includes(ch) && depth > 0) depth--;
+    else if (depth === 0 && (ch === "、" || ch === "が")) return t.slice(0, i);
+  }
+  return "";
+}
+
+/** 主語が会社・団体の名前らしいか（英字・カタカナの名前、または会社・団体を表す言葉） */
+const ENTITY_LIKE = /[A-Za-z]{2,}|[ァ-ヴー]{3,}|(?:社|大学|大|省|庁|政府|研究所|機構|銀行|協会|グループ|など|ら\d+者|CEO|氏)$/;
+
 /** 文章中で最も手前に出てくる企業（見出しの主語になりやすい） */
 function firstMention(text: string): Company | undefined {
   let best: { company: Company; index: number } | undefined;
@@ -145,8 +193,14 @@ export function companyOf(article: ArticleSummary): Company {
   const cached = cache.get(article.slug);
   if (cached) return cached;
 
+  // 主語の会社（見出しの「だれが」）。主語が一覧に無い会社なら「その他」（発信元が OpenAI の公式ブログでも、Qodo の発表は OpenAI にしない。台帳 A30）
+  const subject = subjectOf(article.title);
+  const bySubject = subject ? (firstMention(subject) ?? (ENTITY_LIKE.test(subject) ? OTHER : undefined)) : undefined;
   const company =
+    // 記事 JSON の companySlug（scripts/label_check.py が Haiku の確認で直したもの）が最優先
+    (article.companySlug ? getCompany(article.companySlug) : undefined) ??
     BY_SLUG.get(CHANNEL_COMPANY[article.channelSlug] ?? "") ??
+    bySubject ??
     // 公式ブログ・プレスリリースは発信元名（「OpenAI公式ブログ」など）を優先する
     (isWeb(article) ? firstMention(article.sourceName ?? "") : undefined) ??
     firstMention(article.title) ??

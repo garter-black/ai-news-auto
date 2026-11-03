@@ -1,3 +1,4 @@
+import { articleTitle } from "@/lib/headline";
 import { canonicalPathOf, isIndexable } from "@/lib/indexing";
 import type { Metadata } from "next";
 import Thumb from "@/components/Thumb";
@@ -103,10 +104,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const url = `/articles/${article.slug}`;
   const cover = coverPath(article);
+  // 題名は1つだけ（lib/headline.ts の articleTitle）。タブ・og:title・X のカード・画像の alt・見出し（h1）・構造化データで同じ（台帳 A29）。
+  // 以前は <title> と画像の alt に検索向けの seoTitle（「〜とは？日本で使える？」）を使い、見出しと別ものになっていた（2026-11-03 の点検 10）
+  const title = articleTitle(article);
   return {
-    // 検索結果では全角30字前後で切れるため、短い題名を優先する。
-    // 記事内の見出し・OGP（SNSカード）は情報量の多い本来の title のまま
-    title: article.seoTitle || article.title,
+    title,
     description: article.description,
     keywords: article.keywords,
     // 同じ発表の重複記事は、代表の記事を正式なページにする（lib/indexing.ts）
@@ -121,21 +123,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: { siteName: siteConfig.siteName, locale: siteConfig.locale,
       type: "article",
       url,
-      title: article.title,
+      title,
       description: article.description,
       publishedTime: article.generatedAt || article.publishedAt,
       modifiedTime: lastModifiedOf(article),
       tags: article.tags,
       // SNSのカードは日本語見出し入りの独自カバー。無い記事は元動画（元記事）の画像
       images: cover
-        ? [{ url: cover, width: 1200, height: 630, alt: article.seoTitle || article.title }]
+        ? [{ url: cover, width: 1200, height: 630, alt: title }]
         : article.thumbnail
           ? [{ url: article.thumbnail, width: 1280, height: 720 }]
           : undefined,
     },
     twitter: {
       card: "summary_large_image",
-      title: article.title,
+      title,
       description: article.description,
       images: cover ? [cover] : article.thumbnail ? [article.thumbnail] : undefined,
     },
@@ -310,7 +312,7 @@ export default async function ArticlePage({ params }: Props) {
     {
       "@context": "https://schema.org",
       "@type": "NewsArticle",
-      headline: article.title,
+      headline: articleTitle(article),
       description: article.description,
       // サイトで配信する写真（/img/、幅 1200px の JPEG）があれば先頭に置く（Google Discover の大きな画像。robots は max-image-preview:large）。
       // 写真が無い・外部の画像の記事は従来どおり見出し入りのカバーが先
@@ -373,7 +375,7 @@ export default async function ArticlePage({ params }: Props) {
       itemListElement: [
         { name: "ホーム", item: siteConfig.url },
         ...crumbs.map((c) => ({ name: c.label, item: `${siteConfig.url}${c.href}` })),
-        { name: article.title },
+        { name: articleTitle(article) },
       ].map((entry, i) => ({ "@type": "ListItem", position: i + 1, ...entry })),
     },
     ...(faq.length > 0
@@ -448,7 +450,7 @@ export default async function ArticlePage({ params }: Props) {
 
           <Morph name={`title-${article.slug}`}>
             <h1 className="t-h1 headline mt-3">
-              <Highlight text={article.title} />
+              <Highlight text={articleTitle(article)} />
             </h1>
           </Morph>
 
@@ -486,7 +488,7 @@ export default async function ArticlePage({ params }: Props) {
             </section>
           )}
           {/* シェア（要点を読んだ直後。小さく1行） */}
-          <ShareButtons url={`${siteConfig.url}/articles/${article.slug}`} title={article.title} className="mt-4" />
+          <ShareButtons url={`${siteConfig.url}/articles/${article.slug}`} title={articleTitle(article)} className="mt-4" />
           {/* 同じ製品の料金・使い方ガイド（あるときだけ。要点のすぐ下に固定） */}
           {guideLinks.length > 0 && (
             <nav aria-label="この製品のガイド" className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-note">
@@ -785,7 +787,7 @@ export default async function ArticlePage({ params }: Props) {
           {/* 読み終えたところでもう一度シェア */}
           <div className="mt-12 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-y border-line py-4">
             <p className="text-note font-bold text-ink">この記事をシェアする</p>
-            <ShareButtons url={`${siteConfig.url}/articles/${article.slug}`} title={article.title} />
+            <ShareButtons url={`${siteConfig.url}/articles/${article.slug}`} title={articleTitle(article)} />
           </div>
 
           {/* 出典（公式）・日時・確認方法・更新履歴 */}

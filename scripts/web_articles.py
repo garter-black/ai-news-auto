@@ -59,6 +59,7 @@ import followup  # noqa: E402
 import glossary  # noqa: E402
 import indexnow  # noqa: E402  検索に出せない記事は公開しない（公開前の門）
 import japan_availability  # noqa: E402
+import labels  # noqa: E402  ジャンル・タグの付け間違いを直す（台帳 A30）
 import llm  # noqa: E402
 import main as m  # noqa: E402
 import news_types  # noqa: E402  ニュースの種類ごとの記事の型
@@ -1018,6 +1019,10 @@ def web_disclaimer(genre) -> str:
 def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_key: str,
                      bundle: facts_bundle.Bundle | None = None) -> dict:
     resolved = GENRES_BY_SLUG.get(str(data.get("genre", "")).strip(), AI)
+    # ジャンルは記事の中身（見出し・タグ）で決め直す。発信元のフィードのジャンルのままだと、AI の話でない記事が「AI・テクノロジー」、
+    # 決算が「テクノロジー・ガジェット」になっていた（2026-11-03 の点検 11。scripts/labels.py。台帳 A30）
+    if fixed := labels.genre_fix({"title": str(data.get("title", "")), "tags": data.get("tags"), "genreSlug": resolved.slug}):
+        resolved = GENRES_BY_SLUG.get(fixed[0], resolved)
     thumbnail = page.get("image") or item.get("image") or ""
     record = {
         "slug": m.unique_slug(m.slugify(data.get("slug_en", "")), item["id"][:8]),
@@ -1034,7 +1039,7 @@ def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_
         "lede": m.normalize_body(data.get("lede", "")),
         "description": str(data["description"]).strip(),
         "keywords": m.clean_list(data.get("keywords"), 14),
-        "tags": m.clean_list(data.get("tags"), 8),
+        "tags": labels.normalize_tags(m.clean_list(data.get("tags"), 8)),  # 会社名の形・表記ゆれをそろえる（台帳 A30）
         "highlights": m.clean_list(data.get("highlights"), 3),
         "timetable": [],
         "verdict": None,  # 下で genre_verdict（ジャンル別の判定・日本での提供の表）

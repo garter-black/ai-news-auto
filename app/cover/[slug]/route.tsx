@@ -6,6 +6,7 @@ import sharp from "sharp";
 import { coverPath, getAllArticles, getArticle, PRERENDER_LIMIT, type FullArticle } from "@/lib/articles";
 import { companyOf } from "@/lib/companies";
 import { isFastNews } from "@/lib/cover-path";
+import { articleTitle, splitHeadline } from "@/lib/headline";
 import { officialCreditText } from "@/lib/image-credit";
 import { siteConfig } from "@/site.config";
 import {
@@ -64,10 +65,12 @@ function loadFonts() {
   return fonts;
 }
 
-/** 「製品名｜説明」の形なら、製品名を大見出し・説明を小見出しに分ける */
+/** 「製品名｜説明」の形か、見出しの補足（最初の全角の空白のあと。lib/headline.ts の splitHeadline）があれば、前を大見出し・後ろを小見出しに分ける */
 function splitTitle(title: string): { head: string; tail: string } | null {
   const match = /^(.{2,36}?)[｜：|:]\s*(.+)$/.exec(title);
-  return match ? { head: match[1], tail: match[2] } : null;
+  if (match) return { head: match[1], tail: match[2] };
+  const { main, sub } = splitHeadline(title);
+  return sub && main.length <= 36 ? { head: main, tail: sub } : null;
 }
 
 /** 文字幅のおおよその合計（全角=1、半角=0.56） */
@@ -214,7 +217,8 @@ async function renderCover(article: FullArticle): Promise<ImageResponse> {
   // 以前は全部の記事に「速報」が付いていた）。文言を変えたら lib/cover-path.ts の COVER_VERSION を上げる
   const label = article.type === "roundup" ? `${article.sources?.length ?? 0}本の発表を統合` : isFastNews(article) ? "速報" : "ニュース";
   const labelColor = isFastNews(article) ? "#d92d20" : "#1d4a8f";
-  const title = article.seoTitle || article.title;
+  // 題名は記事の題名（lib/headline.ts の articleTitle。見出し h1・<title>・og:title と同じ。台帳 A29）。検索向けの seoTitle は使わない
+  const title = articleTitle(article);
   const parts = splitTitle(title);
 
   const baseColor = isOther ? "#1d1d22" : company.color;

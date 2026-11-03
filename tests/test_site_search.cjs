@@ -20,10 +20,11 @@ function load(rel) {
   return m.exports;
 }
 
-const { normalizeForSearch, queryTerms, scoreRow } = load("lib/search-match.ts");
+const { normalizeForSearch, normalizeTags, queryTerms, rankHits, scoreRow } = load("lib/search-match.ts");
 const { shareHref, sharedUrl } = load("lib/share.ts");
 
-const hit = (query, title, rest = "") => scoreRow(queryTerms(query), normalizeForSearch(title), normalizeForSearch(rest));
+const hit = (query, title, rest = "", tags = "") =>
+  scoreRow(queryTerms(query), normalizeForSearch(title), normalizeForSearch(`${rest} ${tags}`), normalizeTags(tags));
 
 test("全角・かっこ・空白の違いを無視して当たる", () => {
   assert.ok(hit("ＮＩＳＡ", "新NISAで月3万円") > 0);
@@ -60,4 +61,59 @@ test("シェアの URL に utm を付け、各 SNS の共有画面を使う", ()
   assert.match(new URL(shareHref("bluesky", url, "t")).searchParams.get("text"), /utm_source=share_bluesky/);
   assert.match(new URL(shareHref("threads", url, "t")).searchParams.get("text"), /utm_source=share_threads/);
   assert.match(new URL(shareHref("facebook", url, "t")).searchParams.get("u"), /utm_source=share_facebook/);
+});
+
+// ---- 台帳 W24: 並び順（関連の強さ → 新しい順）・取り下げ／noindex を出さない・日本語の言い換え ----
+
+test("カタカナの呼び名でも英字の製品名に当たる（「クロード」→Claude など）", () => {
+  assert.ok(hit("クロード", "Claude 5の料金が改定") > 0);
+  assert.ok(hit("ジェミニ", "Google、Gemini 4を発表") > 0);
+  assert.ok(hit("クロードコード", "「Claude Code」に新機能") > 0);
+  assert.ok(hit("ディープシーク", "DeepSeek、新モデルを公開") > 0);
+  assert.ok(hit("アトラシアン", "Atlassianが受賞") > 0);
+  // 逆向き（英字で探してカタカナの見出し）
+  assert.ok(hit("claude", "クロードの使い方") > 0);
+});
+
+test("半角カナ・全角英字もそろえる", () => {
+  assert.ok(hit("ｸﾛｰﾄﾞ", "Claudeの新機能") > 0);
+  assert.ok(hit("ＣＬＡＵＤＥ", "Claudeの新機能") > 0);
+});
+
+test("言葉の一部に入った呼び名も言い換える（「クロードの料金」）", () => {
+  assert.ok(hit("クロード料金", "Claude料金の早見表") > 0);
+});
+
+test("強さ: 題名の頭（主語）＞題名＞会社・製品のタグ＞要約だけ", () => {
+  const subject = hit("Claude", "Claude、新モデルを公開");
+  const inTitle = hit("Claude", "Anthropic、新しいClaudeを公開");
+  const inTag = hit("Claude", "Anthropic、新モデルを公開", "", "Anthropic Claude");
+  const inSummary = hit("Claude", "Anthropic、新モデルを公開", "Claudeの最新版です");
+  assert.ok(subject > inTitle && inTitle > inTag && inTag > inSummary && inSummary > 0);
+});
+
+test("同じ強さなら新しい記事が先（order が小さいほど新しい）", () => {
+  const ranked = rankHits([
+    { item: { order: 5, id: "old-title" }, score: 3 },
+    { item: { order: 1, id: "new-summary" }, score: 1 },
+    { item: { order: 2, id: "new-title" }, score: 3 },
+  ]);
+  assert.deepEqual(ranked.map((x) => x.id), ["new-title", "old-title", "new-summary"]);
+});
+
+test("取り下げた記事・検索に出さない記事（noindex）は索引に入れない", async () => {
+  const { searchArticles, searchExclusion } = await import(path.join(root, "lib/search-index.mjs"));
+  const items = [
+    { slug: "ok", title: "a" },
+    { slug: "thin", title: "b" },
+    { slug: "gone", title: "c" },
+    { slug: "dup", title: "d", duplicate: true },
+  ];
+  const exclude = searchExclusion((a) => (a.slug === "thin" ? "thin" : null), ["gone"]);
+  assert.deepEqual(searchArticles(items, exclude).map((a) => a.slug), ["ok"]);
+  // ビルドの索引と検索ページが同じ判定を使う
+  const build = fs.readFileSync(path.join(root, "scripts/build_index.mjs"), "utf8");
+  const page = fs.readFileSync(path.join(root, "app/search/page.tsx"), "utf8");
+  assert.match(build, /searchExclusion\(loadNoindexReason\(\), retired\)/);
+  assert.match(page, /searchExclusion\(noindexReason, retiredSlugs\(\)\)/);
 });

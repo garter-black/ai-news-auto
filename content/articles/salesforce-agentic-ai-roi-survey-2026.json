@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://www.salesforce.com/jp/news/stories/agentic-ai-leaders-survey-on-roi/",
   "sourceName": "Salesforce ニュース（日本）",
-  "title": "セールスフォース、AIエージェント調査の日本版を公開　日本企業の投資回収は平均7カ月",
+  "title": "Salesforce、AIエージェント調査の日本版を公開　日本企業の投資回収は平均7カ月",
   "seoTitle": "セールスフォースAI調査：日本企業の導入状況とROI期間",
   "threadsPost": "結論：日本企業は平均7カ月でAIエージェントの成果を出しています。セールスフォースが公開した最新の調査によると、本番導入率は32%。導入前のデータ整備やガバナンスが成功の鍵とのことです。",
   "threadsHook": "conclusion",
@@ -25,7 +25,7 @@
     "AIエージェント",
     "生成AI",
     "ビジネス",
-    "セールスフォース"
+    "Salesforce"
   ],
   "highlights": [
     "日本のAIエージェント本番導入率は32%で、グローバル水準と同等。試験導入は44%に上る。",

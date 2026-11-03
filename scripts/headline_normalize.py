@@ -150,6 +150,9 @@ COMPANY_FORMS: list[tuple[str, list[str]]] = [
     ("Anthropic", ["アンソロピック", "アンスロピック"]),
     ("ChatGPT", ["Chat GPT", "チャットGPT"]),
     ("YouTube", ["Youtube", "ユーチューブ"]),
+    # 2026-11-03 の点検 11: 同じページに「アトラシアン」と「Atlassian」が混ざっていた（台帳 A30）
+    ("Atlassian", ["アトラシアン"]),
+    ("Salesforce", ["セールスフォース"]),
 ]
 
 KATAKANA = r"ァ-ヴー・"

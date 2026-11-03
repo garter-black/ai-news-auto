@@ -1,3 +1,4 @@
+import { articleTitle } from "@/lib/headline";
 import fs from "@/lib/content-fs";
 import path from "node:path";
 import { getArticleSummary, type ArticleSummary } from "@/lib/articles";
@@ -312,7 +313,7 @@ function timelineOf(product: Product, articles: ArticleSummary[], skip: string[]
   const extra = articles
     .filter((a) => !seen.has(a.slug) && !skip.includes(a.slug))
     .slice(0, 6)
-    .map((a) => ({ date: a.publishedAt.slice(0, 10), slug: a.slug, event: a.seoTitle || a.title }));
+    .map((a) => ({ date: a.publishedAt.slice(0, 10), slug: a.slug, event: articleTitle(a) }));
   return [...live, ...extra].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 8);
 }
 

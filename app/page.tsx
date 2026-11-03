@@ -1,3 +1,4 @@
+import { articleTitle } from "@/lib/headline";
 import Link from "next/link";
 import CompanyMark from "@/components/CompanyMark";
 import HomeHero from "@/components/HomeHero";
@@ -238,7 +239,7 @@ function RailRoundup({ article }: { article: ArticleSummary }) {
           </span>
         </span>
         <span className="line-clamp-3 text-[15px] font-bold leading-[1.55] text-ink group-hover:underline">
-          {article.seoTitle || article.title}
+          {articleTitle(article)}
         </span>
       </Link>
     </li>

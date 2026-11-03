@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { smallThumb } from "@/lib/thumb-url";
-import { normalizeForSearch, queryTerms, scoreRow, type SearchRow } from "@/lib/search-match";
+import { normalizeForSearch, normalizeTags, queryTerms, rankHits, scoreRow, type SearchRow } from "@/lib/search-match";
 
 type Props = {
   chunks: number;
@@ -13,7 +13,7 @@ type Props = {
   suggestions: string[];
 };
 
-type Prepared = { row: SearchRow; title: string; rest: string; order: number };
+type Prepared = { row: SearchRow; title: string; rest: string; tags: string[]; order: number };
 
 const PAGE = 40;
 
@@ -58,6 +58,11 @@ export default function SearchView({ chunks, version, genres, genreOrder, sugges
       for (let n = 0; n < chunks; n++) {
         try {
           const res = await fetch(`/search-index/${n}.json?v=${version}`);
+          // 索引のファイルの数は、検索に出さない記事を除いた数で決まる（build_index.mjs）。渡された数より少なければ、そこで読み終わり
+          if (res.status === 404 && n > 0) {
+            if (alive) setLoaded(chunks);
+            return;
+          }
           if (!res.ok) throw new Error(String(res.status));
           const rows = (await res.json()) as SearchRow[];
           if (!alive) return;
@@ -67,6 +72,7 @@ export default function SearchView({ chunks, version, genres, genreOrder, sugges
               row,
               title: normalizeForSearch(row[1]),
               rest: normalizeForSearch(`${row[2]} ${row[3]} ${genres[row[4]] ?? ""}`),
+              tags: normalizeTags(row[3]),
               order: prev.length + i,
             })),
           ]);
@@ -107,11 +113,11 @@ export default function SearchView({ chunks, version, genres, genreOrder, sugges
     const hits: { item: Prepared; score: number }[] = [];
     for (const item of items) {
       if (genre && item.row[4] !== genre) continue;
-      const score = scoreRow(terms, item.title, item.rest);
+      const score = scoreRow(terms, item.title, item.rest, item.tags);
       if (score > 0) hits.push({ item, score });
     }
-    // 当たりの強さ（題名に入っているか）→ 新しい順
-    return hits.sort((a, b) => b.score - a.score || a.item.order - b.item.order).map((h) => h.item);
+    // 当たりの強さ（題名＞会社・製品のタグ＞要約）→ 新しい順（lib/search-match.ts の rankHits）
+    return rankHits(hits);
   }, [items, terms, genre]);
 
   // 当たった記事のジャンル（絞り込みの切り替えに出す。タブと同じ並び）
@@ -119,7 +125,7 @@ export default function SearchView({ chunks, version, genres, genreOrder, sugges
     if (terms.length === 0) return [];
     const count = new Map<string, number>();
     for (const item of items) {
-      if (scoreRow(terms, item.title, item.rest) > 0) count.set(item.row[4], (count.get(item.row[4]) ?? 0) + 1);
+      if (scoreRow(terms, item.title, item.rest, item.tags) > 0) count.set(item.row[4], (count.get(item.row[4]) ?? 0) + 1);
     }
     return [...count.entries()].sort(
       (a, b) => (genreOrder.indexOf(a[0]) + 1 || 99) - (genreOrder.indexOf(b[0]) + 1 || 99) || b[1] - a[1],

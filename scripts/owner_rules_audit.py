@@ -37,6 +37,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import headline_normalize as hn  # noqa: E402
 import section_gate  # noqa: E402（表示の段 lib/article-sections.ts と同じ規則で、読者に見える形にしてから確かめる）
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -56,7 +57,7 @@ OWNER_NAME_PAGES = ("/about", "/editorial-policy")
 AUDIT_RULES = (
     "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S13", "S14",
     "I2", "I4", "I5",
-    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23", "A24", "A25", "A26", "A28",
+    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23", "A24", "A25", "A26", "A28", "A29", "A30",
     "W3", "W5", "W6", "W10", "W11", "W12", "W13", "W17", "W18", "W19", "W20", "W21", "W22", "W23",
 )
 
@@ -195,6 +196,21 @@ def genre_problems(record: dict) -> list[str]:
     return out
 
 
+def label_problems(record: dict) -> list[str]:
+    """A30: ジャンル（タブ）の付け間違い・タグの会社名の形の混ざり（scripts/labels.py。生成の門と同じ判定）"""
+    try:
+        import labels  # noqa: PLC0415
+    except Exception:  # noqa: BLE001
+        return []
+    out = []
+    if fixed := labels.genre_fix(record):
+        out.append(f"[A30] ジャンルの付け間違い（{record.get('genreSlug')} → {fixed[0]}: {fixed[1]}）")
+    tags = list(record.get("tags") or [])
+    if labels.normalize_tags(tags) != tags:
+        out.append("[A30] タグの会社名・表記がそろっていない（「マイクロソフト」と「Microsoft」など）")
+    return out
+
+
 # ニュースの種類の型（scripts/news_types.py）に切り替えた時刻。これより後に作った Web 記事を A18・A19 で見る
 TYPES_CUTOVER = "2026-11-03T13:45:00+00:00"
 
@@ -304,6 +320,35 @@ def parse(html: str) -> PageParser:
     return p
 
 
+# A29: 記事の題名は1つ（見出し h1・<title>・og:title・twitter:title・OG 画像が同じ。lib/headline.ts の articleTitle）
+TITLE_TAG = re.compile(r"<title[^>]*>(.*?)</title>", re.S)
+META_TITLE = re.compile(r'<meta\s+(?:property|name)="(og:title|twitter:title)"\s+content="([^"]*)"')
+SITE_SUFFIX = re.compile(r"\s*-\s*サイソク(?:ニュース)?$")
+
+
+def title_tag_problems(html: str, record: dict | None = None) -> list[str]:
+    """A29: <title>・og:title・twitter:title が見出し（h1）と同じか。検索向けの seoTitle や説明つきの社名を出していないか"""
+    import html as _html  # noqa: PLC0415
+
+    page = parse(html)
+    h1 = next((h for h in page.headings[:1]), "")
+    if not h1:
+        return []
+    out = []
+    norm = lambda t: re.sub(r"\s+", " ", _html.unescape(t or "")).strip()  # noqa: E731
+    target = norm(h1)
+    if m := TITLE_TAG.search(html):
+        tab = SITE_SUFFIX.sub("", norm(m.group(1)))
+        if tab != target:
+            out.append(f"[A29] ブラウザのタブの題名（<title>）が見出しと違う（「{tab[:40]}」）")
+    for name, value in META_TITLE.findall(html):
+        if norm(value) != target:
+            out.append(f"[A29] {name} が見出しと違う（「{norm(value)[:40]}」）")
+    if hn.strip_known_descriptors(target) != target:
+        out.append(f"[A29] 題名に説明つきの社名（「{target[:40]}」）")
+    return out
+
+
 def article_page_problems(html: str, record: dict) -> list[str]:
     """記事のページ（本番）の違反"""
     out = []
@@ -332,6 +377,7 @@ def article_page_problems(html: str, record: dict) -> list[str]:
         out.append("[A11] 記事に広告（PR）が1つもない")
     if OWNER_NAME in html:  # 見えない構造化データ（JSON-LD）も含めて見る
         out.append("[W6] オーナーの名前が記事のページに出ている（/about・/editorial-policy だけ）")
+    out += title_tag_problems(html, record)
     out += slot_problems(html)
     out += related_problems(html, record)
     out += block_order_problems(html)
@@ -763,7 +809,7 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
     for a in articles:
         path = f"/articles/{a['slug']}"
         status, html = pages.get(path, (0, "")) if network else (0, "")
-        v = record_problems(a, page_headings=status == 200)
+        v = record_problems(a, page_headings=status == 200) + label_problems(a)
         if network:
             if status != 200:
                 v.append(f"[W3] ページが開けない（HTTP {status}）")

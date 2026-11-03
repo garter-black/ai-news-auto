@@ -77,3 +77,18 @@ export function gateHeadline(text: string, newsTitle?: string): string {
   if (newsTitle && (!t || SEO_QUESTION_RE.test(t))) t = stripKnownDescriptors(newsTitle.trim());
   return t;
 }
+
+// ------------------------------------------------------------------ //
+// 記事の題名の正本（2026-11-03 の点検 10。台帳 A29）
+// ------------------------------------------------------------------ //
+
+/**
+ * 記事の題名は1つだけ。見出し（h1）・ブラウザのタブ（<title>）・og:title・X のカード・OG 画像（/cover）・SNS カード（/card）・構造化データは、
+ * すべてこの関数の結果を使う。正本は記事 JSON の title（題名の書き直し scripts/rewrite_titles.py が直したもの）で、
+ * 検索向けの seoTitle（「〜とは？日本で使える？」の型）は題名には使わない（title が空のときの予備だけ）。
+ * 説明つきの社名（「ChatGPTのOpenAIが」）は門番で外す（headline_normalize.strip_known_descriptors と同じ）。
+ */
+export function articleTitle(article: { title?: string | null; seoTitle?: string | null }): string {
+  const title = stripKnownDescriptors((article.title ?? "").trim());
+  return title || stripKnownDescriptors((article.seoTitle ?? "").trim());
+}

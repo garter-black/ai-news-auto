@@ -1,3 +1,4 @@
+import { articleTitle } from "@/lib/headline";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -452,7 +453,7 @@ function ArticleLine({ article }: { article: ArticleSummary }) {
         href={`/articles/${article.slug}`}
         className="text-ink underline decoration-line-strong underline-offset-4 hover:text-accent hover:decoration-accent"
       >
-        {article.seoTitle || article.title}
+        {articleTitle(article)}
       </Link>
     </span>
   );

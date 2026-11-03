@@ -7,7 +7,7 @@ import type { FullArticle } from "@/lib/articles";
 import { companyOf } from "@/lib/companies";
 import { fetchPhoto } from "@/lib/cover";
 import { isFastNews } from "@/lib/cover-path";
-import { headOf } from "@/lib/headline";
+import { articleTitle, headOf } from "@/lib/headline";
 import { officialCreditText } from "@/lib/image-credit";
 import { containRect, coverFit, cornerRect, DEFAULT_AR, focusOf, freeCorner as freeCornerOf, NOTE, NOTE_SMALL, overlap, photoOnlyLayout, TAG, TAG_SMALL, type Box, type Corner, type Rect } from "@/lib/card-geometry";
 
@@ -79,7 +79,7 @@ function phrasesOf(text: string): string[] {
  * （例:「2026年10月の「円安」倒産は6件、52カ月連続で発生 1-10月累計は…」→ 前半だけ）。前半が短すぎるときは全文。
  */
 export function cardHeadline(article: FullArticle): string {
-  const title = (article.title || article.seoTitle || "").trim();
+  const title = articleTitle(article);
   // 区切りは全角の空白・－・｜と、日本語のすぐ後ろの半角空白だけ（lib/headline.ts。一覧の見出しと同じ切り方）
   let text = headOf(title) ?? title;
   // まだ長いときは、英字だけの製品名のかっこ（『Agent Compute Engine』など）を外す。製品名は投稿の本文に書く

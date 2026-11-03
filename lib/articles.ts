@@ -147,6 +147,8 @@ export type Article = {
   updatedAt?: string;
   /** 公式発表の日時（web 記事で取れたときだけ） */
   sourcePublishedAt?: string;
+  /** 企業の札の上書き（lib/companies.ts の slug か "other"。scripts/label_check.py が確かめて書く。台帳 A30） */
+  companySlug?: string;
   /** 同じ発表の重複記事のとき、代表の記事の slug（scripts/story.py が付ける。noindex・canonical は代表へ） */
   duplicateOf?: string;
   /** 意図して別の角度から書いた解説のとき、元の記事の slug（重複にしないがニュース用サイトマップには載せない） */
@@ -238,6 +240,7 @@ export type ArticleSummary = Pick<
   | "channelSlug"
   | "genre"
   | "genreSlug"
+  | "companySlug"
   | "sourceType"
   | "sourceUrl"
   | "sourceName"

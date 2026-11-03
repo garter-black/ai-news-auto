@@ -43,4 +43,4 @@ jobs:
             tests.test_rivals tests.test_verdict_scope tests.test_persona tests.test_article_quickwins \
             tests.test_buffer_budget tests.test_quality_language tests.test_sns_hook_context tests.test_article_quality_short \
             tests.test_git_safe_push tests.test_pipeline_health tests.test_pacing tests.test_review_period \
-            tests.test_news_types tests.test_article_style tests.test_products_gate tests.test_genre_focus tests.test_index_rules tests.test_digest_titles tests.test_digest_page tests.test_notice_gate
+            tests.test_news_types tests.test_article_style tests.test_products_gate tests.test_genre_focus tests.test_index_rules tests.test_digest_titles tests.test_digest_page tests.test_notice_gate tests.test_labels

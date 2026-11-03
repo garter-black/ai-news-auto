@@ -14,6 +14,11 @@ export function getRetired(slug: string): RetiredEntry | undefined {
   return Object.prototype.hasOwnProperty.call(RETIRED, slug) ? RETIRED[slug] : undefined;
 }
 
+/** 取り下げた記事の slug の一覧（サイト内検索の索引から外す。lib/search-index.mjs の searchExclusion） */
+export function retiredSlugs(): string[] {
+  return Object.keys(RETIRED);
+}
+
 // どの記事にも出てくる言葉は関連の手がかりにしない
 const STOP = new Set([
   "発表", "公開", "開始", "提供", "新機能", "機能", "記事", "解説", "まとめ", "日本", "対応", "搭載", "開催", "発売", "追加", "導入",

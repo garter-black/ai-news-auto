@@ -1,3 +1,4 @@
+import { articleTitle } from "@/lib/headline";
 import type { Metadata } from "next";
 import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
@@ -59,7 +60,7 @@ export default function UsablePage() {
       "@type": "ListItem",
       position: index + 1,
       url: `${siteConfig.url}/articles/${article.slug}`,
-      name: article.seoTitle || article.title,
+      name: articleTitle(article),
     })),
   };
 
@@ -176,7 +177,7 @@ function RailList({ id, title, note, articles }: { id: string; title: string; no
                   {verdict?.price && !isUnknownValue(verdict.price) && <span>・{verdict.price}</span>}
                 </span>
                 <span className="mt-1 line-clamp-2 block text-[15px] font-bold leading-snug text-ink group-hover:underline">
-                  {article.seoTitle || article.title}
+                  {articleTitle(article)}
                 </span>
               </Link>
             </li>

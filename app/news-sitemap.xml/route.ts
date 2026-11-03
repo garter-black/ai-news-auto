@@ -1,3 +1,4 @@
+import { articleTitle } from "@/lib/headline";
 import { newsSitemapReason } from "@/lib/indexing";
 import { getAllArticles, lastModifiedOf } from "@/lib/articles";
 import { siteConfig } from "@/site.config";
@@ -31,7 +32,7 @@ export function GET() {
         <news:language>ja</news:language>
       </news:publication>
       <news:publication_date>${new Date(a.generatedAt || a.publishedAt).toISOString()}</news:publication_date>
-      <news:title>${escapeXml(a.seoTitle || a.title)}</news:title>
+      <news:title>${escapeXml(articleTitle(a))}</news:title>
     </news:news>
   </url>`,
     )

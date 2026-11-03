@@ -290,6 +290,38 @@ class NoticeTest(unittest.TestCase):
         self.assertEqual([], audit.notice_problems({"slug": "a", "title": "Apple、7〜9月期の売上高が12％増"}, set()))
 
 
+
+class TitleTagTest(unittest.TestCase):
+    """A29: 題名は1つ（<title>・og:title・twitter:title が見出し h1 と同じ）"""
+
+    H1 = "OpenAI、セキュリティのバグ報奨金を増額　重大な欠陥は最大3万ドルに"
+
+    def page(self, tab, og=None):
+        og = og or self.H1
+        return (f'<html><head><title>{tab} - サイソクニュース</title><meta property="og:title" content="{og}"/>'
+                f'<meta name="twitter:title" content="{og}"/></head><body><h1>{self.H1}</h1></body></html>')
+
+    def test_seo_title_in_tab_is_flagged(self):
+        bad = self.page("OpenAIのバグ報奨金4倍超とは？セキュリティ強化策を解説")
+        self.assertEqual({"A29"}, ids(audit.title_tag_problems(bad)))
+
+    def test_same_title_everywhere_passes(self):
+        self.assertEqual([], audit.title_tag_problems(self.page(self.H1)))
+
+    def test_og_title_mismatch_and_descriptor(self):
+        self.assertEqual({"A29"}, ids(audit.title_tag_problems(self.page(self.H1, og="ChatGPTのOpenAIが報奨金を増額"))))
+
+
+class LabelTest(unittest.TestCase):
+    """A30: ジャンル・タグの付け間違い（scripts/labels.py）"""
+
+    def test_misfiled_genre_and_mixed_tags(self):
+        bad = rec(title="kubell、法人向けストレージ「セキュアSAMBA」にMac用アプリ", genreSlug="ai", tags=["マイクロソフト", "Microsoft"])
+        self.assertEqual({"A30"}, ids(audit.label_problems(bad)))
+        self.assertEqual(2, len(audit.label_problems(bad)))
+        good = rec(title="OpenAI、セキュリティのバグ報奨金を増額", genreSlug="ai", tags=["OpenAI", "セキュリティ"])
+        self.assertEqual([], audit.label_problems(good))
+
 class BlockOrderTest(unittest.TestCase):
     """A28（2026-11-03）: 記事ページで要約の欄を2つ出さない・目次は本文の前"""
 

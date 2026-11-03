@@ -1,3 +1,4 @@
+import { articleTitle } from "@/lib/headline";
 import type { Metadata } from "next";
 import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
@@ -70,7 +71,7 @@ export default function NewsletterPage() {
                 <span className="index-num pt-0.5 text-meta text-muted">{i + 1}</span>
                 <div>
                   <Link href={`/articles/${a.slug}`} className="text-[15px] font-bold leading-snug text-ink hover:text-accent">
-                    {a.seoTitle || a.title}
+                    {articleTitle(a)}
                   </Link>
                   <p className="mt-1.5 line-clamp-2 text-desc leading-[1.75] text-ink-soft">
                     {a.highlights.slice(0, 2).join(" ")}

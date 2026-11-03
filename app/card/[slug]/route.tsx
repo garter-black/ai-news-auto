@@ -6,6 +6,7 @@ import sharp from "sharp";
 import { getAllArticles, getArticle, type FullArticle } from "@/lib/articles";
 import { coverPath } from "@/lib/cover-path";
 import { companyOf } from "@/lib/companies";
+import { articleTitle } from "@/lib/headline";
 import { fetchPhoto } from "@/lib/cover";
 import { renderCardDesign, type CardDesign } from "@/lib/card-designs";
 import { siteConfig } from "@/site.config";
@@ -162,7 +163,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     // 転送は短いキャッシュにする（1週間残ると、直したあとも SNS の画像がカバーのままになる。2026-11-03 の点検 E）
     return new Response(null, {
       status: 302,
-      headers: { Location: new URL(coverPath({ slug }), siteConfig.url).toString(), "Cache-Control": "public, max-age=300, s-maxage=300" },
+      headers: { Location: new URL(coverPath(article), siteConfig.url).toString(), "Cache-Control": "public, max-age=300, s-maxage=300" },
     });
   }
 }
@@ -222,7 +223,7 @@ async function renderCard(article: FullArticle): Promise<ImageResponse> {
   const sourceName = article.sourceType === "web" ? article.sourceName || article.channel : "";
   const accent = isOther ? RED : company.color;
   const baseColor = isOther ? "#1d1d22" : company.color;
-  const title = article.title || article.seoTitle || "";
+  const title = articleTitle(article);
   const points = keyPoints(article);
   const size = fitSizes(title, points);
   const [bg, fontData] = await Promise.all([photoBackground(article.thumbnail, baseColor), loadFonts()]);
