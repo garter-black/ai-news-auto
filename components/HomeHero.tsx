@@ -7,6 +7,7 @@ import type { ArticleSummary } from "@/lib/articles";
 import { companyOf, thumbSource } from "@/lib/companies";
 import { Highlight } from "@/lib/highlight";
 import { officialCreditText } from "@/lib/image-credit";
+import ImageCredit from "@/components/ImageCredit";
 
 /**
  * トップの主役。
@@ -56,6 +57,8 @@ export default function HomeHero({ lead }: { lead: ArticleSummary }) {
       </Link>
       {/* 公式発表の写真は発表した会社・団体の名前を小さく添える（lib/image-credit.ts。記事ページと同じ文） */}
       {credit && <p className="mt-2 px-1 text-note leading-relaxed text-ink-soft">{credit}</p>}
+      {/* AI 生成の画像は本物の製品・人物と受け取られないよう、記事ページと同じ「AI生成」の札を出す */}
+      {!credit && lead.imageCredit?.kind === "ai" && <ImageCredit credit={lead.imageCredit} className="mt-2 px-1" />}
       </div>
 
       <div className="flex min-w-0 flex-col gap-4">

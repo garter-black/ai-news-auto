@@ -135,12 +135,12 @@ export default function HomePage() {
                   <li key={company.slug}>
                     <Link
                       href={`/companies/${company.slug}`}
-                      className="flex h-full items-center gap-2 rounded-xl border border-line px-3 py-2.5 text-meta font-bold text-ink transition-colors hover:border-ink"
+                      className="flex h-full items-center gap-1.5 rounded-xl border border-line px-2.5 py-2.5 text-meta font-bold text-ink transition-colors hover:border-ink"
                     >
                       <CompanyMark company={company} size={18} />
                       {/* 狭い右の列で「Huggin…」「Anthro…」と切れていたので、切らずに2行まで折り返す（2026-11-03 の画面の点検） */}
-                      <span className="line-clamp-2 min-w-0 leading-tight">{company.name}</span>
-                      <span className="index-num ml-auto text-meta font-normal text-muted">{count}</span>
+                      <span className="line-clamp-2 min-w-0 leading-tight [overflow-wrap:anywhere]">{company.name}</span>
+                      <span className="index-num ml-auto pl-0.5 text-meta font-normal text-muted">{count}</span>
                     </Link>
                   </li>
                 ))}
