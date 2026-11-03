@@ -1,0 +1,37 @@
+name: SNS audit (read only)
+
+# 実際に出た SNS 投稿（Buffer の Threads / X / Facebook と Bluesky の公開フィード）を読んで、
+# scripts/sns_rules.py のルールに合わない投稿の候補を一覧にする。投稿・削除・予約の変更は一切しない。
+# 結果（本文つき）は成果物 sns-audit-<番号> に3日だけ残す。ログには件数だけ。
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "何日前までを見るか"
+        default: "4"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Read posts (nothing is posted or deleted)
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: python scripts/sns_audit.py --days "${{ inputs.days || '4' }}" --out out/sns_audit.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: sns-audit-${{ github.run_number }}
+          path: out/sns_audit.json
+          retention-days: 3
+          if-no-files-found: ignore
