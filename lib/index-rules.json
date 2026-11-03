@@ -1,6 +1,20 @@
 {
   "_note": "scripts/indexnow.py --export-rules で生成。手で直さない（正本は scripts/indexnow.py と scripts/persona.py）",
   "thinBody": 1500,
+  "creatorChannels": [
+    "ai-explained",
+    "bank-academy",
+    "bycloud",
+    "ienomikata",
+    "liberal-arts",
+    "mansion-mania",
+    "matthew-berman",
+    "nikkei",
+    "rakumachi",
+    "two-minute-papers",
+    "uraken-fudosan",
+    "yukkuri-fudosan"
+  ],
   "focusGenres": [
     "ai",
     "tech-gadget"

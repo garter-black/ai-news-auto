@@ -14,9 +14,11 @@ import { displayHeadline } from "@/lib/headline";
 type Props = {
   current?: Article;
   affiliates?: AffiliateLink[];
+  /** false のとき広告枠を出さない（検索に出さない記事。app/articles/[slug]/page.tsx） */
+  showAds?: boolean;
 };
 
-export default function Sidebar({ current, affiliates = [] }: Props) {
+export default function Sidebar({ current, affiliates = [], showAds = true }: Props) {
   const latest = getAllArticles()
     .filter((a) => a.genreSlug === "ai" && a.slug !== current?.slug)
     .slice(0, 5);
@@ -25,7 +27,7 @@ export default function Sidebar({ current, affiliates = [] }: Props) {
   return (
     <div className="space-y-8 lg:sticky lg:top-20">
       {/* サイドバー最上部の広告枠 */}
-      <AdSlot position="sidebar" />
+      {showAds && <AdSlot position="sidebar" />}
 
       {/* 追従する収益導線 */}
       {current && <CtaBanner genreSlug={current.genreSlug} slot="secondary" />}

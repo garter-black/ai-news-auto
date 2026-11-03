@@ -132,6 +132,14 @@ def submit(base: str, key: str, urls: list[str]) -> int:
 
 # lib/indexing.ts の isIndexable と同じ基準（検索に出さない記事は通知しない。条件の説明はそちら）
 WIRE_SOURCES = {"prtimes", "prtimes-all", "atpress", "value-press", "kyodo-prwire", "dreamnews"}
+# 個人・他媒体の YouTube チャンネル（scripts/channels.py のうち、企業・機関の公式チャンネルではないもの）。
+# 他人の動画の内容を要約した記事は、独自の価値が出しにくく「複製されたコンテンツ」（AdSense）や翻案の心配があるので検索に出さない。
+# サイト内では読める。公式チャンネル（OpenAI・NVIDIA・楽天証券など）の発表動画は従来どおり対象
+CREATOR_CHANNELS = {
+    "ai-explained", "two-minute-papers", "bycloud", "matthew-berman",
+    "rakumachi", "uraken-fudosan", "yukkuri-fudosan", "mansion-mania", "ienomikata",
+    "liberal-arts", "bank-academy", "nikkei",
+}
 
 
 THIN_BODY = 1500
@@ -193,6 +201,8 @@ def noindex_reason(article: dict, dups: set[str] | frozenset = frozenset()) -> s
         return None
     if article.get("channelSlug") in WIRE_SOURCES:
         return "wire"
+    if article.get("channelSlug") in CREATOR_CHANNELS:
+        return "creator-video"
     body = article.get("body", "")
     if len(body) < THIN_BODY:
         return "thin"
@@ -218,6 +228,7 @@ def index_rules() -> dict:
     return {
         "_note": "scripts/indexnow.py --export-rules で生成。手で直さない（正本は scripts/indexnow.py と scripts/persona.py）",
         "thinBody": THIN_BODY,
+        "creatorChannels": sorted(CREATOR_CHANNELS),
         "focusGenres": sorted(FOCUS_GENRES),
         "aiTopic": _js_regex(AI_TOPIC),
         "personaGenres": list(persona.PERSONA_GENRES),

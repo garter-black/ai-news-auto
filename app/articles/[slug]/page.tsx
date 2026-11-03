@@ -143,6 +143,9 @@ export default async function ArticlePage({ params }: Props) {
   if (!article) notFound();
 
   const isRoundup = article.type === "roundup";
+  // 検索に出さない記事（薄い・主題外・重複・他人の動画の要約など）には AdSense の広告枠を出さない。
+  // 「有用性の低いコンテンツ」「複製されたコンテンツ」の画面に広告を載せないため（AdSense のパブリッシャー ポリシー）
+  const showAds = isIndexable({ ...article, duplicate: getArticleSummary(article.slug)?.duplicate });
   // 公式ブログ・プレスリリースから作った記事（動画の埋め込み・タイムテーブルを出さない）
   const web = isWeb(article);
   const video = isVideo(article);
@@ -294,7 +297,7 @@ export default async function ArticlePage({ params }: Props) {
       author: authorJsonLd,
       // 編集方針と訂正方針（誰がどう責任を持つかを検索エンジンに示す）
       publishingPrinciples: `${siteConfig.url}/editorial-policy`,
-      correctionsPolicy: `${siteConfig.url}/editorial-policy`,
+      correctionsPolicy: `${siteConfig.url}/corrections`,
       // AIを使った制作であることの開示（schema.org の backstory: 記事がどう作られたか）
       backstory: `生成AIで下書きを作成し、元の発表と照合してから公開しています。制作方法と事実確認の手順: ${siteConfig.url}/editorial-policy`,
       publisher: publisherJsonLd,
@@ -555,7 +558,7 @@ export default async function ArticlePage({ params }: Props) {
           )}
 
           {/* ① 記事トップの広告枠 */}
-          <AdSlot position="article-top" className="mt-6" />
+          {showAds && <AdSlot position="article-top" className="mt-6" />}
 
           {/* まとめ記事: 統合本数を主役に */}
           {isRoundup && (
@@ -706,7 +709,7 @@ export default async function ArticlePage({ params }: Props) {
           {bodyMid && inlineRead && <InlineRead item={{ article: inlineRead, reason: "同じ話題の記事" }} />}
 
           {/* ② 記事中盤の広告枠 */}
-          {bodyMid && <AdSlot position="article-middle" className="my-10" />}
+          {showAds && bodyMid && <AdSlot position="article-middle" className="my-10" />}
 
           {bodyMid && (
             <ArticleProse className="prose max-w-[40em]" html={bodyMid} slot={calcInline ? calcBox : undefined} priceSlot={priceBox} />
@@ -885,7 +888,7 @@ export default async function ArticlePage({ params }: Props) {
             <>
               {/* 合う広告が無い記事は、右側の先頭でガイドを案内する（スマホは本文中に出しているので重ねない） */}
               {readNextRail && <ReadNextBox link={readNextRail} className={`mb-8 ${readNextInline ? "hidden lg:block" : ""}`} />}
-              <Sidebar current={article} />
+              <Sidebar current={article} showAds={showAds} />
             </>
           )}
         </aside>

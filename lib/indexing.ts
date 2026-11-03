@@ -8,7 +8,7 @@ import rules from "./index-rules.json";
  * scripts/indexnow.py の is_indexable と同じ基準にしておくこと。
  *
  * 検索に出す条件（手動指定 indexable が最優先。まとめ記事は常に対象）:
- *  1. プレスリリース配信サービスではない
+ *  1. プレスリリース配信サービスではない。個人・他媒体の YouTube チャンネルの要約記事ではない（CREATOR_CHANNELS）
  *  2. 本文が THIN_BODY 文字以上（薄い要約を出さない）
  *  3. 読者像（scripts/persona.py）の話題: AI・テック（ジャンル ai / tech-gadget、または題名・タグにAI関連語）／
  *     ビジネス・投資・不動産のジャンル／制度・暮らし・テックのジャンルでお金・税・補助金・起業の話題（persona.is_persona_topic）／
@@ -22,6 +22,8 @@ import rules from "./index-rules.json";
 
 /** プレスリリースの配信サービス（量が多く、言い換えになりやすい） */
 export const WIRE_SOURCES = new Set(["prtimes", "prtimes-all", "atpress", "value-press", "kyodo-prwire", "dreamnews"]);
+/** 個人・他媒体の YouTube チャンネル（公式ではない）。他人の動画の要約記事は検索に出さない（正本は scripts/indexnow.py） */
+export const CREATOR_CHANNELS = new Set<string>(rules.creatorChannels);
 /** 本文の最低文字数（Markdown の本文の文字数） */
 export const THIN_BODY: number = rules.thinBody;
 /** いつでも主題として扱うジャンル（AI・テック） */
@@ -66,6 +68,7 @@ export function noindexReason(article: ArticleSummary): string | null {
   if (typeof article.indexable === "boolean") return article.indexable ? null : "manual";
   if (article.type === "roundup") return null;
   if (WIRE_SOURCES.has(article.channelSlug)) return "wire";
+  if (CREATOR_CHANNELS.has(article.channelSlug)) return "creator-video";
   if (article.bodyLength < THIN_BODY) return "thin";
   if (!isFocus(article)) return "off-focus";
   if (!article.verdict && !article.hasJapanValue) return "no-japan-value";
