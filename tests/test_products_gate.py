@@ -96,6 +96,12 @@ class SourcesTest(unittest.TestCase):
             self.assertIn("-white-", logo["srcDark"])
             self.assertEqual(logo["credit"], "ロゴ：OpenAI（公式ブランド素材）")
             self.assertEqual(logo["sourceUrl"], "https://openai.com/brand")
+        # 製品ページ上部の社名も、公式ロゴがある会社はロゴ（OpenAI・Anthropic）。無い会社だけサイトの色見本
+        for vendor in ("openai", "anthropic"):
+            logo = data["vendors"][vendor]["logo"]
+            self.assertTrue(logo["src"] and logo["srcDark"] and logo["sourceUrl"].startswith("https://"), vendor)
+        page = (ROOT / "app" / "products" / "[slug]" / "page.tsx").read_text(encoding="utf-8")
+        self.assertIn("vendorLogo(product.company)", page)
         css = (ROOT / "app" / "globals.css").read_text(encoding="utf-8")
         self.assertIn(':root[data-theme="dark"] .brand-on-light', css)
         self.assertIn(':root[data-theme="dark"] .brand-on-dark', css)

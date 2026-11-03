@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CompanyMark from "@/components/CompanyMark";
-import ProductVisual from "@/components/ProductVisual";
+import ProductVisual, { BrandImg } from "@/components/ProductVisual";
 import PriceTable from "@/components/PriceTable";
 import { formatDate, getAllArticles, getArticleSummary, type ArticleSummary } from "@/lib/articles";
 import { companyOf, getCompany } from "@/lib/companies";
@@ -15,6 +15,7 @@ import {
   productHeading,
   productProfile,
   productSeoTitle,
+  vendorLogo,
   type ProductProfile,
   type Sourced,
 } from "@/lib/products";
@@ -90,6 +91,10 @@ export default async function ProductPage({ params }: Props) {
     companyCandidate && getAllArticles().some((a) => a.genreSlug === "ai" && companyOf(a).slug === companyCandidate.slug) ? companyCandidate : undefined;
   const heading = productHeading(product);
   const url = `${siteConfig.url}/products/${product.slug}`;
+  const logo = vendorLogo(product.company);
+  const vendor = logo ? (
+    <BrandImg image={logo} alt={logo.alt ?? product.companyName} width={Math.round(28 * ((logo.width ?? 360) / (logo.height ?? 161)))} height={28} className="h-7 w-auto" />
+  ) : null;
 
   // 出典の番号（ページに出てくる順）
   const order: string[] = [];
@@ -202,7 +207,16 @@ export default async function ProductPage({ params }: Props) {
         <ProductVisual company={product.company} image={profile.source?.image} size={64} />
         <div className="min-w-0">
           <p className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-meta text-muted">
-            {company ? (
+            {vendor ? (
+              // 公式ロゴ（社名入りのワードマーク）がある会社はロゴを出す。無い会社だけサイトの色見本（2026-11-04 台帳 W16）
+              company ? (
+                <Link href={`/companies/${company.slug}`} className="inline-flex h-7 items-center hover:opacity-80">
+                  {vendor}
+                </Link>
+              ) : (
+                <span className="inline-flex h-7 items-center">{vendor}</span>
+              )
+            ) : company ? (
               <Link href={`/companies/${company.slug}`} className="hover:opacity-80">
                 <CompanyMark company={company} size={18} withName />
               </Link>
@@ -219,11 +233,13 @@ export default async function ProductPage({ params }: Props) {
           </h1>
         </div>
       </div>
-      {profile.source?.image && (
+      {(profile.source?.image || logo) && (
         <p className="mt-2 text-meta text-muted">
-          <a href={profile.source.image.sourceUrl} className="underline underline-offset-2 hover:text-accent" target="_blank" rel="noopener noreferrer">
-            {profile.source.image.credit}
-          </a>
+          {[...new Map([profile.source?.image, logo].filter((i): i is NonNullable<typeof i> => Boolean(i)).map((i) => [i.sourceUrl, i.credit])).entries()].map(([href, credit]) => (
+            <a key={href} href={href} className="mr-3 underline underline-offset-2 hover:text-accent" target="_blank" rel="noopener noreferrer">
+              {credit}
+            </a>
+          ))}
         </p>
       )}
 

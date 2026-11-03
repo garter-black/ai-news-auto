@@ -241,6 +241,19 @@
         "checkedAt": "2026-11-04",
         "note": "OpenAI の公式ワードマーク（Black・White）。縮小だけ"
       }
+    },
+    "anthropic": {
+      "logo": {
+        "src": "https://ai-tech-express.jp/img/brand-anthropic-logo-slate-677b0c17.sm.webp",
+        "srcDark": "https://ai-tech-express.jp/img/brand-anthropic-logo-ivory-c65bebed.sm.webp",
+        "width": 480,
+        "height": 104,
+        "alt": "Anthropic",
+        "credit": "画像：Anthropic（公式プレスキットより）",
+        "sourceUrl": "https://www.anthropic.com/press-kit",
+        "checkedAt": "2026-11-04",
+        "note": "Anthropic media resources の Anthropic logo（Slate・Ivory）。縮小と透明の余白だけで、色・形は変えていない。明るい画面は Slate、暗い画面は Ivory"
+      }
     }
   }
 }
