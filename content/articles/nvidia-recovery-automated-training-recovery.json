@@ -163,5 +163,12 @@
       "使ってみるには": "GPUなしで試せる手順と英語の資料"
     }
   },
-  "sectionsPolishedAt": "2026-11-03T12:11:52+00:00"
+  "sectionsPolishedAt": "2026-11-03T12:11:52+00:00",
+  "video": {
+    "src": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-f8818892e6.mp4",
+    "poster": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-abe4d867ff.jpg",
+    "seconds": 53.9,
+    "title": "NVIDIA Recovery公開 止まったAI学習を自動で検知し再開",
+    "credit": "VOICEVOX:九州そら"
+  }
 }
