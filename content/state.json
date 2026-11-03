@@ -64,7 +64,7 @@
   },
   "failed_web": {},
   "major_tries": {
-    "7034baa092128424": 2
+    "7034baa092128424": 3
   },
   "processed": {
     "--kyzoeUuBk": {
@@ -13065,28 +13065,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-31T09:21:04.480364+00:00",
-      "attempt": 1,
-      "id": "7f40581db2f3c2f0",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（325字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 92.0,
-        "avg_sentence": 60.0,
-        "long_share": 0.565,
-        "max_paragraph": 169,
-        "paragraphs": 15,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "cyberagent",
-      "title": "アニメーションの企画・制作およびプロデュースを行う子会社 「株式会社LATENT ONE」を設立"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-31T09:21:10.562138+00:00",
       "attempt": 2,
       "id": "7f40581db2f3c2f0",
@@ -19464,6 +19442,28 @@
         "max_paragraph": 98,
         "paragraphs": 23,
         "sentences": 51
+      },
+      "score": null,
+      "source": "apple-newsroom-jp-all",
+      "title": "Apple、第4四半期の業績を発表"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T02:57:00.839485+00:00",
+      "attempt": 1,
+      "id": "7034baa092128424",
+      "kind": "broad",
+      "model": "claude:sonnet",
+      "problems": [
+        "事実確認を実行できなかった（すべてのモデルで失敗しました: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You ）"
+      ],
+      "readability": {
+        "avg_paragraph": 67.5,
+        "avg_sentence": 35.4,
+        "long_share": 0.048,
+        "max_paragraph": 105,
+        "paragraphs": 22,
+        "sentences": 42
       },
       "score": null,
       "source": "apple-newsroom-jp-all",
