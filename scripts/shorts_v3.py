@@ -2735,9 +2735,10 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     (_, _, hx, hy), = column_group([("hook", hook_spr, 0)], ANCHOR_Y)
     texts.append(TextItem("hook", hook["text"], hook_spr, hx, hy, 0.0, hook_end, anim="none"))
     if hook.get("payoff") and lines[1].start - 0.06 - hook_end >= 0.5:
-        try:
-            pay = fit_line(hook["payoff"], "black", range(150, 84, -4), COL_W)
-        except RuntimeError:  # ニュースの中身の言い回し（2026-11-04 から長め）は2行に（文節で折り返す）
+        # 1行で 84px 以上に入らなければ2行に（文節で折り返す）。2026-11-04 から payoff はニュースの中身の言い回しで長め。
+        # fit_line は入らないと 24px まで小さくするので使わない（36px になってゲートの「文字が小さすぎる」に落ちた）
+        pay = next((spr for size in range(150, 83, -4) if (spr := render_text(accent_segments(hook["payoff"], "black"), size)).shape[1] <= COL_W), None)
+        if pay is None:
             pay = wrapped(hook["payoff"], "black", range(84, 52, -2), COL_W, 2)
         (_, _, px, py), = column_group([("keyword", pay, 0)], ANCHOR_Y)
         texts.append(TextItem("keyword", hook["payoff"], pay, px, py, hook_end, lines[1].start - 0.06, anim="wipe", marker=True))
