@@ -1235,7 +1235,7 @@ function designF(key: keyof typeof F_STYLES) {
   const tab = st.rank === "tab";
   return function DesignF({ digest, photos }: Ctx, format: DigestFormat) {
     const { width, height } = SIZES[format];
-    const stories = digest.stories.slice(0, 3).map((s, i) => ({ ...s, headline: compactHeadline(s.headline, i === 0 ? 16 : 12) }));
+    const stories = digest.stories.slice(0, 3).map((s, i) => ({ ...s, headline: compactHeadline(s.headline, i === 0 ? 20 : 12) }));
     const [top, ...rest] = stories;
     const GAP = tab ? 10 : 6;
     const LH = 1.22;
@@ -1248,7 +1248,7 @@ function designF(key: keyof typeof F_STYLES) {
       const PAD = 32;
       const num = tab ? 0 : 64;
       const ng = tab ? 0 : 16;
-      const topText = fitLines(top.headline, bigW - PAD * 2 - num - ng, 2, 66, 60, 16);
+      const topText = fitLines(top.headline, bigW - PAD * 2 - num - ng, 2, 66, 50, 20);
       const topBlock = Math.round(topText.lines.length * topText.size * LH) + 14 + 24;
       const sideNum = tab ? 0 : 38;
       const sg = tab ? 0 : 10;
@@ -1290,7 +1290,7 @@ function designF(key: keyof typeof F_STYLES) {
     const num = tab ? 0 : 88;
     const ng = tab ? 0 : 18;
     const topPh = Math.round((width * 9) / 16);
-    const topText = fitLines(top.headline, width - SAFE * 2 - num - ng, 2, 92, 84, 16);
+    const topText = fitLines(top.headline, width - SAFE * 2 - num - ng, 2, 92, 76, 20);
     const topBlock = Math.round(topText.lines.length * topText.size * LH) + 22 + 28;
     const rowH = Math.floor((height - HEAD - (st.rule ? 3 : 0) - topPh - topBlock - GAP * 2) / 2);
     const thumbW = Math.round((rowH * 16) / 9);

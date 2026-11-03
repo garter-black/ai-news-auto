@@ -16,7 +16,7 @@
 - 同じ話題（Threads のトピック）が重ならないように3本選ぶ。2本未満なら出さない
 - 本文は見出しを1行ずつ（煽らない）。見出しは「だれが＋何を」（scripts/digest_page.py の short_headline。会社名だけにしない）
 - リンクは自分への返信に置く（Threads はリンクカード）。リンク先はその日の号のページ /digest/<YYYYMMDD>（UTM 付き）、
-  Threads・X には号の縦長画像（/digest/<id>/card.png）を添える。号のデータは投稿前に KV へ置き、出せなければ従来の /news・画像なし
+  Threads・X には号の横長画像（/digest/<id>/share.png）を添える。号のデータは投稿前に KV へ置き、出せなければ従来の /news・画像なし
 - 7:30 は通常の予約枠から外してある（threads_post.DIGEST_SLOT_JST）ので、1日の本数は増えない
 - 1日1本だけ。state/threads_posted.json に digest-YYYYMMDD（style: digest）で記録する
 - SNS_DIGEST=0 なら何もしない
@@ -253,7 +253,8 @@ def build(kind: str, state: dict, now: datetime) -> dict | None:
         "x_text": compose_x(items, tp.utm_link(link, "x", "digest"), now),
         "slot": tp.DIGEST_SLOT_JST, "items": [a["slug"] for a in items],
         # ?v= はデザイン名（デザインを変えた日に古い画像のキャッシュを使わない）
-        "image": f"{tp.site_url()}/digest/{edition['id']}/card.png?v={dp.image_rev()}", "edition": edition,
+        # SNS は横長（16:9 前後）で統一する（2026-11-03 オーナー判断。縦長はタイムラインで場所を取りすぎる）
+        "image": f"{tp.site_url()}/digest/{edition['id']}/share.png?v={dp.image_rev()}", "edition": edition,
     }
 
 
@@ -288,8 +289,8 @@ def prepare_page(post: dict) -> dict:
     if not dp.publish(edition) or not dp.wait_live(post["image"]):
         log("[digest] 号のページ・画像を確認できないため、リンクは /news・画像なしで出します")
         return fallback_to_news(post)
-    # リンクカード用の横長画像もエッジに作っておく（失敗しても投稿は続ける）
-    dp.wait_live(post["image"].replace("/card.png", "/share.png"), tries=2, interval=5)
+    # 縦長画像（サイトの号ページ用）もエッジに作っておく（失敗しても投稿は続ける）
+    dp.wait_live(post["image"].replace("/share.png", "/card.png"), tries=2, interval=5)
     log(f"[digest] 号のページ: {post['link']}")
     return post
 

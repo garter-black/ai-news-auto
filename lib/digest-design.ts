@@ -17,4 +17,4 @@ export const DIGEST_DESIGNS: readonly DigestDesign[] = ["A", "B", "B1", "B2", "C
 export const DIGEST_DESIGN: DigestDesign = "F1";
 
 /** 画像の版。デザインや文字組みを変えたら上げる（画像URLの ?v= に入り、エッジ・SNS に古い画像が残らない）。scripts/digest_page.py も読む */
-export const DIGEST_IMAGE_REV = "F1-1";
+export const DIGEST_IMAGE_REV = "F1-2";

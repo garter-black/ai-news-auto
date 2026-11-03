@@ -386,7 +386,7 @@ class DigestPageTest(unittest.TestCase):
     def test_build_links_to_the_edition_page_with_utm_and_image(self):
         p = digest_post()
         self.assertEqual(p['link'], 'https://ai-tech-express.jp/digest/20261030')
-        self.assertEqual(p['image'], f'https://ai-tech-express.jp/digest/20261030/card.png?v={md.dp.image_rev()}')
+        self.assertEqual(p['image'], f'https://ai-tech-express.jp/digest/20261030/share.png?v={md.dp.image_rev()}')
         self.assertIn('https://ai-tech-express.jp/digest/20261030?utm_source=x&utm_medium=social&utm_campaign=digest', p['x_text'])
         self.assertIn('・Google DeepMind、新AI「Genie 4」を発表', p['text'])
         self.assertEqual(p['edition']['id'], '20261030')
