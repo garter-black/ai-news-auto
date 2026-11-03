@@ -1,7 +1,10 @@
 import { marked } from "marked";
 import { AFFILIATE_REL, isAffiliateUrl } from "@/lib/affiliate";
+import { bareUrlToken } from "@/lib/autolink";
 
 marked.setOptions({ gfm: true, breaks: false });
+// 生のURLの自動リンクは、日本語・全角記号・空白の手前で止める（lib/autolink.ts）
+marked.use({ tokenizer: { url: (src: string) => bareUrlToken(src) } });
 
 /**
  * 生成AIの出力をそのまま dangerouslySetInnerHTML に流すため、

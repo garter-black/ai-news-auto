@@ -54,7 +54,7 @@ jobs:
 
       - name: Verify search eligibility and unchanged distribution
         run: |
-          node --test tests/test_search_index_policy.cjs tests/test_verdict_label.cjs tests/test_site_search.cjs tests/test_headline_display.cjs tests/test_thumb_guard.cjs
+          node --test tests/test_search_index_policy.cjs tests/test_verdict_label.cjs tests/test_site_search.cjs tests/test_headline_display.cjs tests/test_thumb_guard.cjs tests/test_autolink.cjs
           python3 -m unittest tests.test_indexnow tests.test_publish_gate tests.test_headline_normalize tests.test_check_images tests.test_unescape_titles
 
       - name: Build
