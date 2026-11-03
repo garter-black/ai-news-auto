@@ -2,6 +2,31 @@
   "history": {},
   "runs": {
     "2026-11-04": {
+      "gh-41702570763-1": {
+        "by": {
+          "video_review|2": {
+            "n": 5,
+            "usd": 0.096324
+          },
+          "video|2": {
+            "n": 20,
+            "usd": 0.720581
+          }
+        },
+        "cache_read": 92329,
+        "cache_write": 41186,
+        "calls": {
+          "video": 20,
+          "video_review": 5
+        },
+        "in": 178352,
+        "out": 33877,
+        "req": {
+          "video": 21,
+          "video_review": 5
+        },
+        "usd": 0.816904
+      },
       "gh-41702641330-1": {
         "by": {
           "video_review|2": {
