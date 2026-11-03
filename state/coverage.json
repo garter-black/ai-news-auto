@@ -1028,16 +1028,6 @@
    "head": "Microsoftが「Intelligent Terminal」を公開　AIをオフラインで実行 | Running a 120B model offline on Surface RTX Spark Dev Box with Intelligent Terminal",
    "text": "Microsoftが「Intelligent Terminal」を公開　AIをオフラインで実行 | Running a 120B model offline on Surface RTX Spark Dev Box with Intelligent Terminal | Intelligent Terminal / Windows Terminal / ローカルLLM / Qwen 3.5 / Surface RTX Spark / Dev Box / Hyper-V / 使い方 / 料金 / オープンソース / Microsoft / Copilot / Intelligent Terminal / Windows / 生成AI / ローカルAI / 開発ツール",
    "urls": []
-  },
-  {
-   "slug": "amazon-bedrock-cost-management-playbook",
-   "at": "2026-10-30T22:51:13.633401+00:00",
-   "title": "AWSが「Amazon Bedrock」の生成AI利用費をチーム別に管理する5段階の運用手法を公開",
-   "head": "AWSが「Amazon Bedrock」の生成AI利用費をチーム別に管理する5段階の運用手法を公開 | Managing Amazon Bedrock costs end to end: A playbook for FinOps and platform teams",
-   "text": "AWSが「Amazon Bedrock」の生成AI利用費をチーム別に管理する5段階の運用手法を公開 | Managing Amazon Bedrock costs end to end: A playbook for FinOps and platform teams | Amazon Bedrock / AWS / コスト管理 / FinOps / 生成AI / IAM / クラウド利用料 / AWS Cost Explorer / 生成AI / AWS / クラウド / 開発ツール",
-   "urls": [
-    "https://aws.amazon.com/blogs/machine-learning/managing-amazon-bedrock-costs-end-to-end-a-playbook-for-finops-and-platform-teams/"
-   ]
   }
  ]
 }
