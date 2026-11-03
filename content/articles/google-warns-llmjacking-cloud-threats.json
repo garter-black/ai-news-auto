@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models/",
   "sourceName": "Google Cloud公式ブログ",
-  "title": "Googleが警告する「LLMJacking」とは？AIの不正利用で巨額の請求を受ける手口",
+  "title": "Google、AIの不正利用「LLMJacking」に警告　1日で10万ドル超の被害も",
   "seoTitle": "LLMJackingとは？Googleが警告するAI不正利用の手口と対策",
   "threadsPost": "議事録づくり、まだ手作業でやってますか？\n\n要約すると、企業のAI環境が乗っ取られ、不正にモデルが使われる事件が相次いでいます。\n1日で10万米ドルを超える請求が発生するケースも報告されました。\n\nあなたの会社でも、AIのAPIキーやクラウドの権限設定に不安は残っていませんか？",
   "threadsHook": "question",
@@ -91,5 +91,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/google-warns-llmjacking-cloud-threats-ad795203.jpg"
-  }
+  },
+  "originalTitle": "Googleが警告する「LLMJacking」とは？AIの不正利用で巨額の請求を受ける手口",
+  "titleStyle": "2026-11-03"
 }

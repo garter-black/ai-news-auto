@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://cloud.google.com/blog/ja/products/ai-machine-learning/latest-examples-of-generative-ai-applications-from-121-companies-released/",
   "sourceName": "Google Cloud 公式ブログ（日本）",
-  "title": "Googleの生成AI活用事例121社を公開、業務効率化の「エージェント」活用が急増",
+  "title": "Google Cloud、生成AI活用事例集を更新　11社を追加し計121社に",
   "seoTitle": "Google生成AI活用事例集とは？121社の導入効果と使い方",
   "threadsPost": "これまで3時間かかっていた作業が、40分で終わる。\nGoogleが公開した最新の生成AI活用事例集で、企業の「AIエージェント」活用が本格化していることが分かりました。\n単なるチャットツールから、業務を自律的にこなすパートナーへと進化しています。",
   "threadsHook": "before_after",
@@ -69,5 +69,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/image2_m5xiA3g.max-2000x2000.jpg",
     "at": "2026-10-28T04:32:58+00:00"
-  }
+  },
+  "originalTitle": "Googleの生成AI活用事例121社を公開、業務効率化の「エージェント」活用が急増",
+  "titleStyle": "2026-11-03"
 }

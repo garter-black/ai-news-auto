@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://huggingface.co/blog/announcing-project-protostar",
   "sourceName": "Hugging Face公式ブログ",
-  "title": "Hugging Faceが科学研究のAI活用を支援する「Project ProtoStar」を発足　公開データの再利用を促進",
-  "seoTitle": "Project ProtoStarとは？Hugging Faceが科学研究のAI活用を推進",
+  "title": "Hugging Face、科学研究データのAI活用を促す「Project ProtoStar」を発足",
+  "seoTitle": "Project ProtoStarとは？Hugging Faceの科学データ構想",
   "threadsPost": "結論：大学や研究機関の公開データをAIですぐ使える形にする新プロジェクトが始まります。\nHugging Faceなどが参加し、第1弾としてカーネギーメロン大学による気候変動リスクの予測チャレンジが11月2日から始まります。\n研究データの共有と再利用がどう変わるのか、詳しく解説します。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -68,5 +68,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://huggingface.co/blog/assets/announcing-project-protostar/thumbnail.jpg",
     "at": "2026-10-29T15:40:34+00:00"
-  }
+  },
+  "originalTitle": "Hugging Faceが科学研究のAI活用を支援する「Project ProtoStar」を発足　公開データの再利用を促進",
+  "titleStyle": "2026-11-03"
 }

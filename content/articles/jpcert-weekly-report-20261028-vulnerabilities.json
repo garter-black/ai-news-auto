@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.jpcert.or.jp/wr/2026/wr261028.html#1",
   "sourceName": "JPCERT/CC",
-  "title": "JPCERT/CCが注意喚起、VeloCloud OrchestratorやPHPなどに深刻な脆弱性",
-  "seoTitle": "JPCERT/CC脆弱性情報：VeloCloudやPHPなど相次ぐ更新呼びかけ",
+  "title": "JPCERT/CC、VeloCloud OrchestratorやPHPなどの脆弱性で注意喚起",
+  "seoTitle": "JPCERT/CC週報：VeloCloudやPHPの脆弱性と対策",
   "threadsPost": "JPCERT/CCが最新のセキュリティ関連情報を公開しました。\nAristaのVeloCloud OrchestratorにおけるSQLインジェクション脆弱性や、PHPのリモートコード実行につながる脆弱性などが報告されています。\n対象製品を利用中の方は、速やかな修正済みバージョンへの更新が必要です。",
   "threadsHook": "caution",
   "threadsStyle": 2,
@@ -62,5 +62,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.jpcert.or.jp/common/image/ogp_image.jpg",
     "at": "2026-10-28T19:37:43+00:00"
-  }
+  },
+  "originalTitle": "JPCERT/CCが注意喚起、VeloCloud OrchestratorやPHPなどに深刻な脆弱性",
+  "titleStyle": "2026-11-03"
 }

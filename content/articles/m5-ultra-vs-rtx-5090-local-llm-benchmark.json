@@ -1,6 +1,6 @@
 {
   "slug": "m5-ultra-vs-rtx-5090-local-llm-benchmark",
-  "title": "M5 UltraのMac StudioとRTX 5090を比較｜ローカルAIの速度・メモリ",
+  "title": "M5 Ultra搭載Mac StudioとRTX 5090を比較　ローカルAIの速度とメモリ",
   "lede": "ローカルAI向けの比較動画と、その参照元であるMacStoriesの検証を整理します。検証機はM5 Ultra搭載Mac Studioの256GB構成とRTX 5090の32GB VRAM搭載PC。Appleが公表するM5 Ultra搭載Mac Studioの最大メモリは512GBです。",
   "description": "M5 Ultra搭載Mac StudioとRTX 5090でローカルAIを動かした比較例を、メモリ容量、測定条件、価格の確認先とともに解説。256GBの検証機と最大512GBの製品仕様を区別します。",
   "keywords": [
@@ -74,7 +74,7 @@
       "pixel": "https://www14.a8.net/0.gif?a8mat=4BELTP+BOXHGY+5U1O+5YJRM"
     }
   ],
-  "seoTitle": "M5 UltraとRTX 5090比較｜ローカルAIの速度とメモリ",
+  "seoTitle": "M5 UltraとRTX 5090比較　ローカルAIの速度とメモリ",
   "verdict": {
     "status": "available",
     "japan": "unknown",
@@ -87,5 +87,7 @@
   "threadsPost": "AIを手元で動かすなら、MacとRTX 5090、どっちがいいと思いますか？\nM5 Ultra搭載Mac Studioは最大512GB。比較元が試したMacは256GB構成でした。\n速度はモデルや実行環境によって変わります。\nみなさんならどっちを選びますか？",
   "threadsHook": "question",
   "easy": "## ひとことで言うと\n\nAIを手元のパソコンで動かすとき、Mac StudioとRTX 5090を搭載したパソコンを比較する例があります。Appleが公表するM5 Ultra搭載Mac Studioの最大メモリは**512GB**です。今回紹介する比較で使われたMacは**256GB**構成でした。\n\n## どちらが速い？\n\n比較元のMacStoriesが同じ課題を1回ずつ試したところ、ある短い入力ではRTX 5090搭載PCの回答開始が約2秒、Macは約4秒でした。ただし、使ったソフトやデータの形式が異なるため、チップだけの性能を公平に測った数字ではありません。他のAIや設定でも同じ結果になる保証はありません。\n\n## 大きなAIは動く？\n\nRTX 5090のGPU専用メモリは32GBです。入り切らない場合でもパソコン本体のメモリを使う方法はありますが、条件によって遅くなることがあります。Macの256GBや512GBはパソコン全体で使うメモリです。大きいほど余裕は増えますが、どんなAIも快適に動くという意味ではありません。\n\n## 料金は？\n\nAppleは2026年8月の日本向け発表で、M5 Ultra搭載Mac Studioを税込949,800円からと案内しました。これは256GBや512GBの価格ではありません。RTXは部品だけの値段とパソコン一式の値段が違います。購入前に希望の構成の最新価格を確認してください。\n\n以前の記事は「最大256GB」と書き、測定条件の違う数字を一緒にしていました。2026年10月31日に公式資料と比較元を確認して訂正しました。",
-  "updatedAt": "2026-10-31T00:43:59.876064+00:00"
+  "updatedAt": "2026-10-31T00:43:59.876064+00:00",
+  "originalTitle": "M5 UltraのMac StudioとRTX 5090を比較｜ローカルAIの速度・メモリ",
+  "titleStyle": "2026-11-03"
 }

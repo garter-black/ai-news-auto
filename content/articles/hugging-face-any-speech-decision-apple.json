@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://huggingface.co/blog/anydecisionmodel",
   "sourceName": "Hugging Face公式ブログ",
-  "title": "Hugging FaceがApple端末向けAI開発ツールを公開、音声認識と意思決定をアプリに実装",
-  "seoTitle": "Hugging FaceのAnySpeechRecognizerとは？使い方と料金",
+  "title": "Hugging Face、Apple端末向けに音声認識と意思決定のAI開発パッケージを公開",
+  "seoTitle": "AnySpeechRecognizerとは？Apple向けAI開発パッケージ",
   "threadsPost": "会議の議事録で「誰が何を言ったか」を整理するの、地味に大変ですよね。\nHugging Faceが公開した新ツールを使えば、Apple端末上で音声認識から話者の特定まで、プライバシーを守りながらアプリに組み込めます。\nしかも、用途に合わせてAIエンジンを選べるのが面白いところです。",
   "threadsHook": "empathy",
   "threadsStyle": 2,
@@ -77,5 +77,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://huggingface.co/blog/assets/anydecisionmodel/banner.png",
     "at": "2026-10-29T16:01:00+00:00"
-  }
+  },
+  "originalTitle": "Hugging FaceがApple端末向けAI開発ツールを公開、音声認識と意思決定をアプリに実装",
+  "titleStyle": "2026-11-03"
 }

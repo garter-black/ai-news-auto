@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-october-2026/",
   "sourceName": "Google公式ブログ",
-  "title": "GoogleのAI「Gemini 4」など10月の新発表まとめ　詐欺対策や偽画像の判別も",
+  "title": "Google、10月のAI発表をまとめ公開　「Gemini 4 Argon」提供済み、詐欺対策も",
   "seoTitle": "Google AI 10月発表まとめ　Gemini 4とは？",
   "threadsPost": "先に言うと、10月のGoogleは発表が多すぎました。\n\n要約すると、Googleが新AI「Gemini 4 Argon」を公開し、2週間後に「Carbon」も発表しました。\nAIで作った画像や音声を調べる「SynthID Detector」も、英語で世界に広がりました。\n\nあなたの仕事で、いちばん気になった発表はどれですか？",
   "threadsHook": "free",
@@ -128,5 +128,7 @@
     "seconds": 53.7,
     "title": "Google、10月のAI発表を総括 Gemini 4 Argonは提供済み、…",
     "credit": "VOICEVOX:九州そら"
-  }
+  },
+  "originalTitle": "GoogleのAI「Gemini 4」など10月の新発表まとめ　詐欺対策や偽画像の判別も",
+  "titleStyle": "2026-11-03"
 }

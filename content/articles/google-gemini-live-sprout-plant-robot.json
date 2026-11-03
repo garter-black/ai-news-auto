@@ -1,6 +1,6 @@
 {
   "slug": "google-gemini-live-sprout-plant-robot",
-  "title": "GoogleのAI「Gemini」で観葉植物が自律移動、水やりを言葉で要求するロボット「Sprout」が登場",
+  "title": "Google、AI「Gemini」搭載の植物ロボット「Sprout」を公開　水が必要になると人に連絡",
   "seoTitle": "Gemini Liveとは？Googleの植物ロボットSproutの仕組み",
   "threadsPost": "AIやロボットの開発に関わる人には、かなり刺激的な実験です。\n\nGoogleがGeminiを組み込んだ自律走行ロボット「Sprout」の動画を公開しました。\n\n観葉植物が自ら日光を探して移動し、音声やチャットで水やりを頼んできます。",
   "threadsHook": "callout",
@@ -93,5 +93,7 @@
   "generatedAt": "2026-10-28T22:30:05.801792+00:00",
   "thumbnail": "https://i.ytimg.com/vi/ID6vEy94j7c/maxresdefault.jpg",
   "model": "gemini-3.5-flash",
-  "affiliates": []
+  "affiliates": [],
+  "originalTitle": "GoogleのAI「Gemini」で観葉植物が自律移動、水やりを言葉で要求するロボット「Sprout」が登場",
+  "titleStyle": "2026-11-03"
 }

@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://news.microsoft.com/source/2026/11/02/lumen-and-microsoft-expand-collaboration-to-co-sell-enterprise-ai-ready-networks/",
   "sourceName": "Microsoft Source（ニュースルーム）",
-  "title": "MicrosoftとLumen、企業向けAIネットワークを共同展開へ　クラウドと通信基盤を一本化",
+  "title": "MicrosoftとLumen、企業向けAIネットワークを共同販売へ　クラウドと通信基盤をつなぐ",
   "seoTitle": "LumenとMicrosoft提携とは？企業向けAIネットワーク",
   "threadsPost": "通信大手とクラウドの巨人が、AI時代の基盤でタッグを組みました。\n\n要約すると、Lumenとマイクロソフトが企業向けAIネットワークの共同販売で提携した。\n各地に散らばるデータやクラウドを、安全につなぐ仕組みを整える。\n\n企業のネットワーク担当やクラウド移行を進める人にとって、この動きは気になりませんか？",
   "threadsHook": "callout",
@@ -94,5 +94,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/lumen-microsoft-enterprise-ai-networks-b208b1fa.jpg"
-  }
+  },
+  "originalTitle": "MicrosoftとLumen、企業向けAIネットワークを共同展開へ　クラウドと通信基盤を一本化",
+  "titleStyle": "2026-11-03"
 }

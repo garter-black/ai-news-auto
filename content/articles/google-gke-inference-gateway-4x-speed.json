@@ -4,7 +4,7 @@
   "sourceUrl": "https://cloud.google.com/blog/ja/products/containers-kubernetes/zenteiq-scales-physical-ai-inference-4x-with-gke-and-llm-d/",
   "sourceName": "Google Cloud 公式ブログ（日本）",
   "title": "GoogleのGKEにAI推論の加速機能、バッチ処理性能が最大4倍に向上",
-  "seoTitle": "GKE Inference Gatewayとは？AI推論を4倍高速化する仕組み",
+  "seoTitle": "GKE Inference Gatewayとは？AI推論を4倍高速化",
   "threadsPost": "AIのデータ生成スピードが、最大4倍に向上しました。\nGoogle CloudのGKEに導入された新機能で、AIモデルが学習用のデータを準備する際の待ち時間を大幅にカットできます。\n複雑な計算を伴う科学AIの開発現場では、特に恩恵が大きそうです。",
   "threadsHook": "number",
   "threadsStyle": 2,
@@ -104,5 +104,6 @@
         "url": "https://cloud.google.com/blog/ja/products/containers-kubernetes/zenteiq-scales-physical-ai-inference-4x-with-gke-and-llm-d/"
       }
     }
-  ]
+  ],
+  "titleStyle": "2026-11-03"
 }

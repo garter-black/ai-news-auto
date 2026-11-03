@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://commandline.microsoft.com/agentic-software-engineering-large-scale-code-migration-language-modernization-spec-driven-development/",
   "sourceName": "Microsoft Source（ニュースルーム）",
-  "title": "MicrosoftがAIによる大規模なプログラム修正と信頼性確保の技術を公開",
-  "seoTitle": "Microsoft AIコード改修とは？信頼性担保の仕組みと手法",
+  "title": "Microsoft、AIエージェントによる大規模コード改修の信頼性確保策を公開",
+  "seoTitle": "Microsoft AIエージェントのコード改修　信頼性を担保する手法",
   "threadsPost": "コードを書く人には、今週いちばん大きいニュースかも。\nAIエージェントが数百万行のコードを書き換える時代の、信頼性担保に関するMicrosoftの公式見解。\n✅ 生成の高速化より検証が課題に\n✅ 形式手法や仕様駆動開発の導入\nMicrosoftのCoreAIチームが取り組む、大規模コード移行とRust言語近代化の現在地について解説します。\n記事で👇",
   "threadsHook": "callout",
   "writingVoice": "honest",
@@ -67,5 +67,6 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://commandline.microsoft.com/wp-content/uploads/2026/10/fosse-03-command-line-2.png",
     "at": "2026-10-28T04:37:05+00:00"
-  }
+  },
+  "titleStyle": "2026-11-03"
 }

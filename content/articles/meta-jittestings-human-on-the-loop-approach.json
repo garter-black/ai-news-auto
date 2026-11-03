@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://engineering.fb.com/2026/10/29/security/catching-bugs-before-they-land-jittestings-human-on-the-loop-approach-at-full-scale/",
   "sourceName": "Engineering at Meta",
-  "title": "Metaが開発した「JiTTests」　人工知能でバグを事前に自動検出する新技術",
-  "seoTitle": "MetaのJiTTestsとは？AIによるバグ自動検出の仕組みと仕組み",
+  "title": "Meta、AIでバグを事前検出する「JiTTests」の成果を公開　プライバシー関連の不具合を74件検出",
+  "seoTitle": "MetaのJiTTestsとは？AIによるバグ自動検出の仕組み",
   "threadsPost": "【速報】Metaが、人工知能を使ってプログラムのバグを事前に自動で防ぐ新技術「JiTTests」の成果を発表しました。\n大規模なコード変更に対応し、プライバシー関連の重大なバグを20%削減することに成功しています。\n開発現場の負担を減らす独自の仕組みとは。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -80,5 +80,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/meta-jittestings-human-on-the-loop-approach-589aa4c5.jpg"
-  }
+  },
+  "originalTitle": "Metaが開発した「JiTTests」　人工知能でバグを事前に自動検出する新技術",
+  "titleStyle": "2026-11-03"
 }

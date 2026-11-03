@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://about.fb.com/news/2026/10/muse-is-now-available-in-singapore-the-worlds-first-personal-ai-agent-built-for-everyone/",
   "sourceName": "Metaニュースルーム",
-  "title": "Metaの個人向けAIエージェント「Muse」　シンガポールで提供開始、買い物や旅行を代行",
-  "seoTitle": "Museとは？シンガポール提供開始と日本での使い方",
+  "title": "Meta、個人向けAIエージェント「Muse」をシンガポールで提供　ShopeeやGrabと連携",
+  "seoTitle": "Museとは？シンガポール提供開始と連携サービス",
   "threadsPost": "MetaのAIエージェント「Muse」は、シンガポールでも提供開始。日本でも10月23日から提供されています。買い物や旅行の連携先は地域ごとに確認が必要です。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -78,5 +78,7 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T03:53:25+00:00"
-  }
+  },
+  "originalTitle": "Metaの個人向けAIエージェント「Muse」　シンガポールで提供開始、買い物や旅行を代行",
+  "titleStyle": "2026-11-03"
 }

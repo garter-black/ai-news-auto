@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://blog.google/innovation-and-ai/products/gemini-notebook/new-access-textbooks/",
   "sourceName": "Google公式ブログ",
-  "title": "Googleの学習AI「Gemini Notebook」に無料の教科書が数百冊　出典つきで勉強できる",
+  "title": "GoogleがAI学習ノート「Gemini Notebook」に無料教科書を数百冊追加",
   "seoTitle": "Gemini Notebookの教科書機能とは？日本で使える？料金も",
   "threadsPost": "これ、学生なら無料で試せます。\nGoogleの学習AI「Gemini Notebook」に、無料の教科書が数百冊入りました。\n追加すると、AIの答えは教科書の内容だけが根拠になり、出典リンクも付きます。\n要点まとめや小テスト、暗記カードも作れます。",
   "threadsHook": "free",
@@ -83,5 +83,7 @@
     "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Gemini_Notebook_EI_Textbooks.max-1440x810.png",
     "at": "2026-10-29T16:04:42+00:00"
   },
-  "updatedAt": "2026-10-31T17:07:18.946505+00:00"
+  "updatedAt": "2026-10-31T17:07:18.946505+00:00",
+  "originalTitle": "Googleの学習AI「Gemini Notebook」に無料の教科書が数百冊　出典つきで勉強できる",
+  "titleStyle": "2026-11-03"
 }

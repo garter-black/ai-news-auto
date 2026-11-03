@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://cloud.google.com/blog/topics/ai-infrastructure/whats-new-in-ai-infrastructure-this-month/",
   "sourceName": "Google Cloud公式ブログ",
-  "title": "Google CloudがAI基盤の10月アップデート発表、GKEやTPU向けの高速化技術が続々",
-  "seoTitle": "Google Cloud AI基盤の10月更新　GKEやTPUの新機能と料金",
+  "title": "Google Cloud、AI基盤の10月更新を発表　GKEの起動高速化やTPU向け技術を公開",
+  "seoTitle": "Google CloudのAI基盤10月更新　GKEとTPUの新機能",
   "threadsPost": "【速報】Google Cloudが、AIインフラの10月アップデートを発表しました。\nGKEの起動高速化や新オープンソース「llm-d」など、エージェント運用を支える技術が多数登場しています。\nインフラ管理者やエンジニアの方はチェックしてみてください。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -88,5 +88,7 @@
     ],
     "ar": 2.0305,
     "src": "https://ai-tech-express.jp/img/google-cloud-ai-infrastructure-october-updates-4586dd7a.jpg"
-  }
+  },
+  "originalTitle": "Google CloudがAI基盤の10月アップデート発表、GKEやTPU向けの高速化技術が続々",
+  "titleStyle": "2026-11-03"
 }

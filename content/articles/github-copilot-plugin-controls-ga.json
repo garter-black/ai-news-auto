@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://github.blog/changelog/2026-10-28-repository-plugin-defaults-and-enterprise-plugin-controls-generally-available",
   "sourceName": "GitHub Changelog（Copilot）",
-  "title": "GitHub Copilot、組織ごとのプラグイン管理が一般提供へ　開発チームの標準ツールを自動導入",
-  "seoTitle": "GitHub Copilotプラグイン管理とは？一般提供の機能と使い方",
+  "title": "GitHub、Copilotのプラグイン管理機能を一般提供　組織の標準プラグインを自動導入",
+  "seoTitle": "Copilotのプラグイン管理機能とは？使い方と対象",
   "threadsPost": "開発チームの必需品になりそうです。\nGitHubのAI支援機能「GitHub Copilot」で、組織やリポジトリごとのプラグイン設定が一般提供となりました。\n管理者が承認したプラグインの強制適用や、利用するマーケットプレイスの制限が可能になり、チーム全体で開発環境を統一しやすくなっています。",
   "threadsHook": "callout",
   "threadsStyle": 2,
@@ -72,5 +72,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-improvements.jpg",
     "at": "2026-10-29T19:13:54+00:00"
-  }
+  },
+  "originalTitle": "GitHub Copilot、組織ごとのプラグイン管理が一般提供へ　開発チームの標準ツールを自動導入",
+  "titleStyle": "2026-11-03"
 }

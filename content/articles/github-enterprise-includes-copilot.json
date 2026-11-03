@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://github.blog/changelog/2026-10-28-github-enterprise-now-includes-access-to-github-copilot",
   "sourceName": "GitHub Changelog（Copilot）",
-  "title": "GitHub、法人プラン「GitHub Enterprise」にAI機能「GitHub Copilot」を標準内包へ",
-  "seoTitle": "GitHub EnterpriseにCopilotが標準内包　料金と提供状況",
+  "title": "GitHubが「GitHub Enterprise」にCopilotを標準で内包　ライセンス保有者全員が対象",
+  "seoTitle": "GitHub EnterpriseにCopilotを標準内包　提供状況",
   "threadsPost": "これまで別々だったGitHub EnterpriseとCopilotの契約がひとつにまとまりました。エンタープライズのライセンスを持つ全ユーザーでCopilotがそのまま利用できるようになります。セルフサービス版の導入時期や、スタンドアロン版の価格について詳しくまとめました。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -74,5 +74,7 @@
     "query": "programmer hands",
     "original": "https://github.blog/wp-content/uploads/2026/10/Changelog_NewRelease_Unfurl_Centered_GitHubEnterpriseCopilot.jpg",
     "at": "2026-10-28T18:42:24+00:00"
-  }
+  },
+  "originalTitle": "GitHub、法人プラン「GitHub Enterprise」にAI機能「GitHub Copilot」を標準内包へ",
+  "titleStyle": "2026-11-03"
 }

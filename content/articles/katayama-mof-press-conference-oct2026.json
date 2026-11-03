@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.mof.go.jp/public_relations/conference/my20261030.html",
   "sourceName": "財務省",
-  "title": "片山財務相、外国人旅行者の免税リファンド方式への移行やガソリン補助の見直しを表明",
-  "seoTitle": "片山財務相会見：免税のリファンド方式やガソリン補助を解説",
+  "title": "片山財務相、12月1日から免税をリファンド方式に移行と説明　ガソリン補助は予備費1兆1,481億円を使用",
+  "seoTitle": "片山財務相会見：免税のリファンド方式とガソリン補助",
   "threadsPost": "旅行者の免税手続き、来月どう変わる？\n\n要約すると、外国人向けの免税が12月1日から購入時に税金を払うリファンド方式に変わります。\nガソリン補助も段階的に縮小されます。\n\n海外旅行や免税店の利用予定はありますか？",
   "threadsHook": "question",
   "threadsStyle": 3,
@@ -80,5 +80,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/katayama-mof-press-conference-oct2026-aa230cf8.jpg"
-  }
+  },
+  "originalTitle": "片山財務相、外国人旅行者の免税リファンド方式への移行やガソリン補助の見直しを表明",
+  "titleStyle": "2026-11-03"
 }

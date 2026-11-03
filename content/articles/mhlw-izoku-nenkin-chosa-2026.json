@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.mhlw.go.jp/toukei/list/95-1.html",
   "sourceName": "厚生労働省",
-  "title": "厚労省が「遺族年金受給者実態調査」を実施、オンライン回答も可能に",
-  "seoTitle": "厚労省　遺族年金受給者実態調査の概要とオンライン回答",
+  "title": "厚労省、11月1日から「遺族年金受給者実態調査」を実施　オンライン回答にも対応",
+  "seoTitle": "遺族年金受給者実態調査とは？厚労省の概要とオンライン回答",
   "threadsPost": "厚生労働省が「遺族年金受給者実態調査」への協力を呼びかけています。\n令和8年11月1日からの調査で、政府統計オンライン調査総合窓口から回答できます。\n対象となる方は詳細を確認してみてください。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -59,5 +59,7 @@
     "prompt": "A senior woman seated at a kitchen table, typing on a laptop while a printed questionnaire lies beside her, illuminated by soft daylight from a nearby window.",
     "provider": "Cloudflare Workers AI",
     "at": "2026-10-30T11:12:45+00:00"
-  }
+  },
+  "originalTitle": "厚労省が「遺族年金受給者実態調査」を実施、オンライン回答も可能に",
+  "titleStyle": "2026-11-03"
 }

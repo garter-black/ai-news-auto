@@ -1,7 +1,7 @@
 {
   "slug": "microsoft-copilot-harness-foundry-agent-builder",
-  "title": "Microsoft、AI開発基盤で「Copilot harness」を発表　コンテナ不要で動くエージェント構築が可能に",
-  "seoTitle": "Microsoft Copilot harnessとは？使い方と料金　日本での提供状況",
+  "title": "Microsoft、AIエージェント構築機能「Copilot harness」を発表　コンテナ不要",
+  "seoTitle": "Microsoft Copilot harnessとは？使い方と日本での提供状況",
   "threadsPost": "AI開発者の方、これはチェックしてほしいです。\n\nMicrosoftがAI開発基盤のFoundryで「Copilot harness」を発表しました。\n\nこれまで必要だったサーバーやコンテナの準備なしで、高性能なAIエージェントを作れます。\n\n現在はプレビュー段階で、すぐ試せますよ。",
   "threadsHook": "callout",
   "threadsStyle": 2,
@@ -77,5 +77,7 @@
   "generatedAt": "2026-10-29T18:03:39.496753+00:00",
   "thumbnail": "https://i.ytimg.com/vi/oQqHV3UB_qA/maxresdefault.jpg",
   "model": "gemini-3.6-flash",
-  "affiliates": []
+  "affiliates": [],
+  "originalTitle": "Microsoft、AI開発基盤で「Copilot harness」を発表　コンテナ不要で動くエージェント構築が可能に",
+  "titleStyle": "2026-11-03"
 }

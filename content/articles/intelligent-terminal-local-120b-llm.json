@@ -1,7 +1,7 @@
 {
   "slug": "intelligent-terminal-local-120b-llm",
   "title": "Microsoftの新端末で1220億パラメータの巨大AIを完全オフライン駆動できる開発ツールが公開",
-  "seoTitle": "Intelligent Terminalとは：使い方と料金　オフラインAI駆動",
+  "seoTitle": "Intelligent Terminalとは？使い方と料金",
   "threadsPost": "コードを書く開発者の皆さん、朗報です。\n\nマイクロソフトが、1220億パラメータの巨大AIを完全オフラインで動かせる新ツールを公開しました。\n\nクラウド不要で機密データを守りつつ、ターミナルから仮想マシンの自動構築まで完結します。\n\nオープンソースで今すぐ無料で試せます。",
   "threadsHook": "callout",
   "threadsStyle": 2,
@@ -116,5 +116,6 @@
     ],
     "ar": 1.7778,
     "src": "https://i.ytimg.com/vi/L1b4AI_CPeA/maxresdefault.jpg"
-  }
+  },
+  "titleStyle": "2026-11-03"
 }

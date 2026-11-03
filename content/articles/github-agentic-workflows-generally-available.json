@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://github.blog/changelog/2026-10-28-github-agentic-workflows-generally-available",
   "sourceName": "GitHub Changelog（Copilot）",
-  "title": "GitHub、AIが自律作業する「Agentic Workflows」を一般提供開始",
+  "title": "GitHubが「Agentic Workflows」を一般提供　自然言語の指示でAIが開発作業を自動化",
   "seoTitle": "GitHub Agentic Workflowsとは？料金と使い方",
   "threadsPost": "ついに来た。GitHubが開発タスクを自動化する仕組みを一般向けに公開しました。\n自然言語で指示を出すだけで、AIエージェントがコードの修正やテストまで自律的にこなしてくれる機能です。\nGitHub Copilotなどのライセンスがあれば今日から試せます。",
   "threadsHook": "finally",
@@ -66,5 +66,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://github.blog/wp-content/uploads/2026/10/680621053-8ccb2d63-3035-4ec2-b12d-2455b119183a.png",
     "at": "2026-10-28T21:58:06+00:00"
-  }
+  },
+  "originalTitle": "GitHub、AIが自律作業する「Agentic Workflows」を一般提供開始",
+  "titleStyle": "2026-11-03"
 }

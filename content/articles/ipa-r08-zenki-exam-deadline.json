@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.ipa.go.jp/shiken/2026/r08zen_exam.html",
   "sourceName": "IPA（情報処理推進機構）",
-  "title": "令和8年度前期IPA高度試験の申込受付終了、CBT方式での実施や確認書類に注意",
-  "seoTitle": "令和8年度前期IPA高度試験申込終了｜CBT方式の注意点",
+  "title": "IPA、令和8年度前期の高度試験の申込受付を終了　全試験がCBT方式で実施",
+  "seoTitle": "令和8年度前期IPA高度試験の申込終了　CBT方式の注意点",
   "threadsPost": "これまで3つの試験区分に分かれていた応用情報技術者や高度試験、受ける準備は進んでますか？\n令和8年度前期試験の高度試験と支援士試験の申込受付が10月24日に終了しています。\n✅ CBT方式での実施や本人確認書類の持参など注意が必要\n✅ 応用情報の受付は11月7日まで継続中\n記事で👇",
   "threadsHook": "question",
   "writingVoice": "friendly",
@@ -66,5 +66,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.ipa.go.jp/k3q2q400000050d7-img/k3q2q400000050dg.jpg",
     "at": "2026-10-28T03:46:12+00:00"
-  }
+  },
+  "originalTitle": "令和8年度前期IPA高度試験の申込受付終了、CBT方式での実施や確認書類に注意",
+  "titleStyle": "2026-11-03"
 }

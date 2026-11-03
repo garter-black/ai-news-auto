@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://cloud.google.com/blog/ja/topics/developers-practitioners/four-eval-engineering-lessons/",
   "sourceName": "Google Cloud 公式ブログ（日本）",
-  "title": "Googleの評価エンジニアリング：エージェント開発で学ぶ4つの教訓",
-  "seoTitle": "Googleのエージェント評価手法とは？4つの教訓を解説",
+  "title": "Google Cloud、AIエージェント開発の評価で得た4つの教訓を公開　実行ステップの検証を重視",
+  "seoTitle": "Googleのエージェント評価手法：開発で得た4つの教訓",
   "threadsPost": "AIエージェントの正確な測定方法に悩んでいませんか？Google Cloudの公式ブログから、要約ではなく実行プロセスを評価する重要性と、具体的な4つの教訓を解説します。",
   "threadsHook": "question",
   "threadsStyle": 2,
@@ -83,5 +83,7 @@
     ],
     "ar": 2.0305,
     "src": "https://ai-tech-express.jp/img/google-agent-eval-engineering-lessons-1a5dbebc.jpg"
-  }
+  },
+  "originalTitle": "Googleの評価エンジニアリング：エージェント開発で学ぶ4つの教訓",
+  "titleStyle": "2026-11-03"
 }

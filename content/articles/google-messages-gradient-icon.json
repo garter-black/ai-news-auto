@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://9to5google.com/2026/11/02/google-messages-gradient-icon-beta/",
   "sourceName": "9to5Google",
-  "title": "Androidのメッセージアプリ「Google Messages」、アイコンがグラデーションに一新",
-  "seoTitle": "Google Messagesの新アイコンとは？日本で使える？",
+  "title": "「Google Messages」のベータ版、アイコンがグラデーションに一新",
+  "seoTitle": "Google Messagesの新アイコンとは？ベータ版の変更点",
   "threadsPost": "【速報】Googleのメッセージアプリが、アイコンを新しくしています。\n\n要約すると、Android向け「Google Messages」のベータ版に、グラデーションの新アイコンが入りました。\n安定版への配信は、まだ確認されていません。\n\n今のメッセージアプリ、何を使っていますか？",
   "threadsHook": "breaking",
   "threadsStyle": 3,
@@ -90,5 +90,7 @@
     "noProduct": true,
     "original": "https://9to5google.com/wp-content/uploads/sites/4/2026/11/google-messages-gradient-icon_e18c7d.jpg?quality=82&strip=all&resize=1200,628",
     "at": "2026-11-03T08:23:51+00:00"
-  }
+  },
+  "originalTitle": "Androidのメッセージアプリ「Google Messages」、アイコンがグラデーションに一新",
+  "titleStyle": "2026-11-03"
 }

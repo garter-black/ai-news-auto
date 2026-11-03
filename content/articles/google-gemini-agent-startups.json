@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://cloud.google.com/blog/ja/topics/startups/what-the-gemini-agent-means-for-startups/",
   "sourceName": "Google Cloud 公式ブログ（日本）",
-  "title": "Googleの生成AI「Gemini」に新機能、スタートアップ向けの自律型アシスタント発表",
-  "seoTitle": "Gemini エージェントとは？スタートアップ向け新機能の料金と仕組み",
+  "title": "Google、スタートアップ向けAIエージェント「Gemini エージェント」を発表",
+  "seoTitle": "Gemini エージェントとは？スタートアップ向け新機能",
   "threadsPost": "【速報】GoogleがGeminiのエージェント機能を発表しました。カレンダーやドキュメントの状況を把握して自動でタスクをこなすデジタル参謀として、少数チームの業務を支援します。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -68,5 +68,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/startups-gemini-agent-header2.max-2500x2500.png",
     "at": "2026-10-28T19:36:37+00:00"
-  }
+  },
+  "originalTitle": "Googleの生成AI「Gemini」に新機能、スタートアップ向けの自律型アシスタント発表",
+  "titleStyle": "2026-11-03"
 }

@@ -4,7 +4,7 @@
   "sourceUrl": "https://cloud.google.com/blog/ja/topics/hybrid-cloud/new-innovations-in-google-distributed-cloud/",
   "sourceName": "Google Cloud 公式ブログ（日本）",
   "title": "Google、機密データ領域のAI基盤「GDC」を刷新　検索や新半導体を追加",
-  "seoTitle": "Google Distributed Cloudとは？新機能と日本での提供状況",
+  "seoTitle": "Google Distributed Cloudの新機能と企業内検索の特徴",
   "threadsPost": "【速報】Googleが、極秘データを守る専用AI基盤「Google Distributed Cloud」の大型アップデートを発表しました。\n\nGeminiによる企業内検索やNVIDIAの最新半導体への対応など、セキュリティを妥協せずにAIを活用できる環境がさらに整いました。\n\n規制の厳しい環境でAI導入に悩んでいた組織に、大きな選択肢になりそうです。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -92,5 +92,6 @@
     ],
     "ar": 2.0305,
     "src": "https://ai-tech-express.jp/img/google-distributed-cloud-ai-innovations-2026-453fa15b.jpg"
-  }
+  },
+  "titleStyle": "2026-11-03"
 }

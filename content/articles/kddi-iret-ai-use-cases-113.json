@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://www.itmedia.co.jp/aiplus/article/2610/29/2000002685/",
   "sourceName": "ITmedia",
-  "title": "KDDIグループのKDDIアイレットが社内AI活用事例113件を無料公開　稟議チェックの例も",
+  "title": "KDDIアイレット、社内のAI活用事例113件を無料公開　稟議チェック支援の例も",
   "seoTitle": "KDDIアイレットのAI活用事例113件　無料公開の中身",
   "threadsPost": "113件。KDDIグループのKDDIアイレットが、社内のAI活用事例を無料で公開しました。\nGeminiやClaudeを、文章作成やコーディングに使う方法をまとめた特設サイトです。\nエンジニア以外の営業・人事向けも50件あります。\n自社でAIをどう使うか迷っている人の、参考になりそうです。",
   "threadsHook": "number",
@@ -79,5 +79,7 @@
     "query": "computer screen",
     "original": "https://www.itmedia.co.jp/aiplus/article/ogp/2610/29/2000002685/10010758/2048",
     "at": "2026-10-28T23:48:28+00:00"
-  }
+  },
+  "originalTitle": "KDDIグループのKDDIアイレットが社内AI活用事例113件を無料公開　稟議チェックの例も",
+  "titleStyle": "2026-11-03"
 }

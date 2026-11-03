@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://newsroom.kddi.com/news/detail/kddi_nr-1209_4782.html",
   "sourceName": "KDDI ニュースリリース",
-  "title": "KDDIとWingがドローン配送で提携、2027年中に食料品や日用品の配送開始へ",
+  "title": "KDDIとWing、ドローン配送で提携　2027年中に食料品や日用品の配送開始を目指す",
   "seoTitle": "KDDIとWingがドローン配送で提携",
   "threadsPost": "ついに、ドローンが日常の買い物に届くようになります。\nKDDIとAlphabet傘下のWingが提携し、2027年中に日本でドローン配送を開始する予定です。\n最初は食料品や日用品が対象。買い物に行く時間が足りない共働き世帯や、移動が大変なシニア層の助けになりそうですね。",
   "threadsHook": "finally",
@@ -82,5 +82,7 @@
     ],
     "ar": 1.5,
     "src": "https://ai-tech-express.jp/img/kddi-wing-drone-delivery-partnership-2b350abc.jpg"
-  }
+  },
+  "originalTitle": "KDDIとWingがドローン配送で提携、2027年中に食料品や日用品の配送開始へ",
+  "titleStyle": "2026-11-03"
 }

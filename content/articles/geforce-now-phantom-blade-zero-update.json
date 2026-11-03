@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://blogs.nvidia.com/blog/geforce-now-thursday-phantom-blade-zero/",
   "sourceName": "NVIDIA公式ブログ",
-  "title": "NVIDIAのクラウドゲーム『GeForce NOW』、新作アクション『Phantom Blade Zero』などが登場",
+  "title": "NVIDIAのGeForce NOW、新作アクション「Phantom Blade Zero」の配信を開始",
   "seoTitle": "GeForce NOWに新作Phantom Blade Zeroが登場　料金・使い方",
   "threadsPost": "NVIDIAのクラウドゲームサービス『GeForce NOW』で、新作アクション『Phantom Blade Zero』の配信が始まりました。\nダウンロードやインストールをしなくても、対応端末でスムーズに遊べるようになっています。\n今週はほかにも9タイトルの追加や、人気ゲームのMod対応などのアップデートが行われています。",
   "threadsHook": "breaking",
@@ -78,5 +78,7 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T03:48:36+00:00"
-  }
+  },
+  "originalTitle": "NVIDIAのクラウドゲーム『GeForce NOW』、新作アクション『Phantom Blade Zero』などが登場",
+  "titleStyle": "2026-11-03"
 }

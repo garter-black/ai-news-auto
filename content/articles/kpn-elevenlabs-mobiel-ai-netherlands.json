@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://elevenlabs.io/blog/kpn-mobiel-ai",
   "sourceName": "ElevenLabs公式ブログ",
-  "title": "オランダ通信大手KPN、ElevenLabsの音声AIで中小企業向け「Mobiel AI」提供開始",
-  "seoTitle": "KPNのMobiel AIとは？ElevenLabsの音声AI活用",
+  "title": "オランダ通信大手KPN、中小企業向け「Mobiel AI」を提供開始　音声AIはElevenLabs",
+  "seoTitle": "KPN「Mobiel AI」とは？ElevenLabsの音声AI活用",
   "threadsPost": "電話対応に追われる個人事業主の方へ。\n\n要約すると、オランダ通信大手KPNがElevenLabsの音声AIを導入しました。\n中小企業向けに留守番電話の文字起こしや要約を行う「Mobiel AI」を提供しています。\n\nあなたの仕事でも、電話の対応に作業を中断されることはありますか？",
   "threadsHook": "empathy",
   "threadsStyle": 3,
@@ -98,5 +98,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/kpn-elevenlabs-mobiel-ai-netherlands-6e06e494.jpg"
-  }
+  },
+  "originalTitle": "オランダ通信大手KPN、ElevenLabsの音声AIで中小企業向け「Mobiel AI」提供開始",
+  "titleStyle": "2026-11-03"
 }

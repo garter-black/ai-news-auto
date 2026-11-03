@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://disclosure.dx-portal.ipa.go.jp/",
   "sourceName": "IPA（情報処理推進機構）",
-  "title": "IPAのDX認定制度、2026年11月1日適用で118件の事業者を新たに公表",
+  "title": "IPA、DX認定制度で2026年11月1日適用の118件を公表",
   "seoTitle": "IPA DX認定制度　2026年11月認定事業者118社",
   "threadsPost": "【速報】IPAがDX認定制度の2026年11月1日適用分の事業者一覧を公表。\n新たに118件の事業者が認定され、法人番号順に公開されています。\n認定期間は適用日より2年間となります。",
   "threadsHook": "breaking",
@@ -71,5 +71,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/ipa-dx-certification-nov-2026-1103be04.jpg"
-  }
+  },
+  "originalTitle": "IPAのDX認定制度、2026年11月1日適用で118件の事業者を新たに公表",
+  "titleStyle": "2026-11-03"
 }

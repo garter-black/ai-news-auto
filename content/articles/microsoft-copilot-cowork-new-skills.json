@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://blogs.windows.com/japan/2026/10/26/microsoft-copilot-blog-whats-new-in-cowork-expanded-plugins-and-role-based-skills-4566221/",
   "sourceName": "Windows ブログ（日本）",
-  "title": "MicrosoftのAI「Cowork」が進化　営業や法務など専門業務を自動化する新スキルが登場",
-  "seoTitle": "Microsoft CopilotのCoworkとは？新機能と使い方を解説",
+  "title": "Microsoft、AIエージェント「Cowork」に営業・法務など4職種向けスキルを追加",
+  "seoTitle": "Microsoft Copilot「Cowork」とは？新スキルと使い方",
   "threadsPost": "これまで手作業で進めていた、営業や法務の定型業務。MicrosoftのAI『Cowork』が、専門スキルを追加することで自動化できるようになりました。会議の準備から契約書のレビューまで、アプリを行き来せずに完結します。自分の業務に合うものがあるか、一度チェックしてみるのがおすすめです。",
   "threadsHook": "empathy",
   "threadsStyle": 2,
@@ -71,5 +71,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://winblogs.thesourcemediaassets.com/sites/31/2026/10/29ff461bf5200c66bf79f3f420c41971.png",
     "at": "2026-10-28T03:37:15+00:00"
-  }
+  },
+  "originalTitle": "MicrosoftのAI「Cowork」が進化　営業や法務など専門業務を自動化する新スキルが登場",
+  "titleStyle": "2026-11-03"
 }

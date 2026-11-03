@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.nli-research.co.jp/topics_detail1/id=87222?site=nli",
   "sourceName": "ニッセイ基礎研究所",
-  "title": "家計貯蓄率がなぜ乖離？国民経済計算と家計調査、実態に近いのはどちらか",
-  "seoTitle": "家計貯蓄率の乖離　国民経済計算と家計調査を比較",
+  "title": "ニッセイ基礎研、家計貯蓄率が統計間で乖離する要因を分析　2025年は0.0％と35.0％",
+  "seoTitle": "家計貯蓄率の乖離　国民経済計算と家計調査の違い",
   "threadsPost": "貯蓄率が0％なのか35％なのか。同じ日本でも、統計によって数字が大きく違う理由をご存知でしょうか。\nニッセイ基礎研究所の最新分析から、家計の「貯蓄」という数字がどう捉えられているのか、その裏側を読み解きます。",
   "threadsHook": "question",
   "threadsStyle": 2,
@@ -61,5 +61,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.nli-research.co.jp/files/topics/87222_ext_03_0.jpg",
     "at": "2026-10-29T05:33:00+00:00"
-  }
+  },
+  "originalTitle": "家計貯蓄率がなぜ乖離？国民経済計算と家計調査、実態に近いのはどちらか",
+  "titleStyle": "2026-11-03"
 }

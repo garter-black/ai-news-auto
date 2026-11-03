@@ -1,7 +1,7 @@
 {
   "slug": "microsoft-foundry-agent-guardrails-security",
-  "title": "Microsoft Foundryのガードレール機能解説：AIエージェントの脱獄や個人情報漏洩を防ぐ安全対策",
-  "seoTitle": "Microsoft Foundry Guardrails｜AI脱獄・漏洩を防ぐ安全対策",
+  "title": "Microsoftが「Foundry」のガードレール機能を実演　AIエージェントの脱獄や情報漏えいを防止",
+  "seoTitle": "Microsoft Foundryのガードレール　AIの脱獄・漏えい対策",
   "threadsPost": "AIエージェントを開発している人は要チェックです。\n顧客向けAIが勝手にルールを破ったり、個人情報を漏洩させたりするリスクを事前に防ぐ仕組みが登場しました。\n✅ 脱獄や暴言、顧客データの漏洩を自動ブロック\n✅ 役割以外の脱線指示（ジョークや別キャラ）を拒否\n詳細は記事で👇",
   "threadsHook": "callout",
   "writingVoice": "explainer",
@@ -101,5 +101,7 @@
   "generatedAt": "2026-10-26T12:01:58.806256+00:00",
   "thumbnail": "https://i.ytimg.com/vi/Sae2yyNEQNM/maxresdefault.jpg",
   "model": "gemini-3.5-flash",
-  "affiliates": []
+  "affiliates": [],
+  "originalTitle": "Microsoft Foundryのガードレール機能解説：AIエージェントの脱獄や個人情報漏洩を防ぐ安全対策",
+  "titleStyle": "2026-11-03"
 }

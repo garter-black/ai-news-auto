@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/iphone-duo-arrives-at-apple-store-locations-worldwide/",
   "sourceName": "Apple Newsroom（日本）",
-  "title": "初の折りたためるiPhone Duoが世界中のApple Storeで販売開始",
-  "seoTitle": "iPhone Duoが世界中のApple Storeに登場｜価格と発売日",
+  "title": "Apple、折りたたみ型「iPhone Duo」向け最適化アプリを発表　NetflixやWordが対応",
+  "seoTitle": "iPhone Duo対応アプリ　NetflixやWordの最適化内容",
   "threadsPost": "3時間かかってた資料づくりが、5分で終わる。\n\n10月23日、初の折りたためるiPhone Duoが世界中のApple Storeで販売開始されました。\n\n✅ テキサスやニューヨークなどの店舗で盛大な店頭デビュー\n✅ Apple Store直営店やオンラインで購入可能\n\n店頭でのデモや新しいToday at Appleセッションも順次開催されています。詳しい購入方法やサポート体制は記事で👇",
   "threadsHook": "before_after",
   "writingVoice": "explainer",
@@ -88,5 +88,7 @@
     "width": 1200,
     "height": 630,
     "at": "2026-11-02T03:58:18+00:00"
-  }
+  },
+  "originalTitle": "初の折りたためるiPhone Duoが世界中のApple Storeで販売開始",
+  "titleStyle": "2026-11-03"
 }

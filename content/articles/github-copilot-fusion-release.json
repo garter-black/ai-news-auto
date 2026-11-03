@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://github.blog/changelog/2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion",
   "sourceName": "GitHub Changelog（Copilot）",
-  "title": "Copilot Fusionとは？料金・使い方と表示されない場合の確認",
+  "title": "GitHubが「Copilot Fusion」を一般提供　作業に合わせて複数のAIモデルを選択",
   "seoTitle": "Copilot Fusionとは？料金・使い方と表示されない場合の確認",
   "threadsPost": "これまでのように自分でAIモデルを選ばなくても、GitHub Copilotが作業に合わせて最適なモデルを自動で使い分けてくれる新機能が登場しました。有料プランのユーザーなら、Visual Studio Codeなどで今日から使えます。",
   "threadsHook": "conclusion",
@@ -68,5 +68,7 @@
     "original": "https://github.blog/wp-content/uploads/2026/11/683299408-b1d020a6-0c6d-49a5-ab57-5434d64fb7f9.png",
     "at": "2026-10-28T18:02:33+00:00"
   },
-  "updatedAt": "2026-10-30T21:17:12+09:00"
+  "updatedAt": "2026-10-30T21:17:12+09:00",
+  "originalTitle": "Copilot Fusionとは？料金・使い方と表示されない場合の確認",
+  "titleStyle": "2026-11-03"
 }

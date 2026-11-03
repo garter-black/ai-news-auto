@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://blog.google/products-and-platforms/products/gemini/college-student-favorite-features/",
   "sourceName": "Google公式ブログ（Gemini）",
-  "title": "GoogleのAI「Gemini」で勉強効率アップ。大学生が活用する11の便利機能",
-  "seoTitle": "Geminiの使い方11選｜大学生の活用術と日本での提供状況",
+  "title": "Google、大学生15人の「Gemini」活用法を公開　学習に役立つ11の機能を紹介",
+  "seoTitle": "Geminiの使い方11選　大学生の活用術と日本での提供状況",
   "threadsPost": "これまで3つのツールを行き来してた作業が、1画面で完結。\nグーグル公式ブログが公開した、大学生15人によるGeminiの実践的な活用術11選。勉強からリサーチ、スケジュール管理までどう使いこなしているのか。\n✅ 無料で試せる勉強ノートや音声概要の活用法\n編集部としては、特別な設定なしで明日から真似できるヒントが多くて参考になります。\n記事で👇",
   "threadsHook": "before_after",
   "writingVoice": "honest",
@@ -69,5 +69,6 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T03:56:34+00:00"
-  }
+  },
+  "titleStyle": "2026-11-03"
 }

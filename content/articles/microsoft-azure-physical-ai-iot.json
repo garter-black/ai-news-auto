@@ -1,7 +1,7 @@
 {
   "slug": "microsoft-azure-physical-ai-iot",
-  "title": "Microsoftが示す「フィジカルAI」とは？Azure IoT連携で現場ロボットはどう賢くなるか",
-  "seoTitle": "MicrosoftのフィジカルAIとは？Azure IoT連携と使い方",
+  "title": "Microsoft、Azure IoTと連携する「フィジカルAI」の活用構成を発表",
+  "seoTitle": "フィジカルAIとは？MicrosoftのAzure IoT連携を解説",
   "threadsPost": "【フィジカルAIで現場はどう変わる？】\nマイクロソフトがAzure IoTとAIを組み合わせた新しいアプローチを解説しました。\nただデータを集めるだけでなく、ロボットが動くたびに学習して現場で賢くなります。\n自律化を目指す製造業や物流の現場にとって大きな一手になりそうです。",
   "threadsHook": "callout",
   "threadsStyle": 2,
@@ -84,5 +84,7 @@
   "generatedAt": "2026-10-29T12:01:51.265421+00:00",
   "thumbnail": "https://i.ytimg.com/vi/NrcM8Rq73Q4/maxresdefault.jpg",
   "model": "gemini-3.5-flash",
-  "affiliates": []
+  "affiliates": [],
+  "originalTitle": "Microsoftが示す「フィジカルAI」とは？Azure IoT連携で現場ロボットはどう賢くなるか",
+  "titleStyle": "2026-11-03"
 }

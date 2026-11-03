@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://k-tai.watch.impress.co.jp/docs/news/2151840.html",
   "sourceName": "ケータイ Watch",
-  "title": "古いiPhone向け更新「iOS 18.7.11」公開　悪用報告ありの欠陥など3件を修正",
-  "seoTitle": "iOS 18.7.11とは？対象機種と修正内容",
+  "title": "Apple、古いiPhone向け「iOS 18.7.11」を公開　悪用報告のある脆弱性など3件を修正",
+  "seoTitle": "iOS 18.7.11とは？対象のiPhone機種と修正内容",
   "threadsPost": "先に言うと、iPhone XS・XS Max・XRの人は更新したほうがいいです。\nAppleが古いiPhone向けに「iOS 18.7.11」を公開しました。\nすでに攻撃で悪用された可能性がある欠陥など、3件を修正しています。\n許可なくカメラを使われる不具合も直っています。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -79,5 +79,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://k-tai.watch.impress.co.jp/img/ktw/list/2151/840/main.png",
     "at": "2026-10-28T04:32:22+00:00"
-  }
+  },
+  "originalTitle": "古いiPhone向け更新「iOS 18.7.11」公開　悪用報告ありの欠陥など3件を修正",
+  "titleStyle": "2026-11-03"
 }

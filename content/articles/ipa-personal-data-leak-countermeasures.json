@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://www.ipa.go.jp/security/anshin/attention/2026/mgdayori20261026.html",
   "sourceName": "IPA（情報処理推進機構）",
-  "title": "個人情報が漏えいしたら？IPAが示す二次被害対策と相談先",
+  "title": "IPA、個人情報漏えい時の二次被害対策を公開　情報の種類別に対処法と相談先を整理",
   "seoTitle": "個人情報が漏えいしたら？IPAが示す二次被害対策と相談先",
   "threadsPost": "個人情報が漏えいしたという連絡が来たら、まず確認すべきことは。慌てて対応を誤らないための手順を解説します。\n\n✅ 漏えいした情報に応じた具体的な二次被害防止策\n✅ 全員が日頃から心がけたいパスワードや認証の対策\n\nもしもの時の相談窓口や詳細な手順は記事で👇",
   "threadsHook": "question",
@@ -65,5 +65,7 @@
     "original": "https://www.ipa.go.jp/k3q2q400000050d7-img/k3q2q400000050dg.jpg",
     "at": "2026-10-28T03:46:58+00:00"
   },
-  "updatedAt": "2026-10-30T21:15:11+09:00"
+  "updatedAt": "2026-10-30T21:15:11+09:00",
+  "originalTitle": "個人情報が漏えいしたら？IPAが示す二次被害対策と相談先",
+  "titleStyle": "2026-11-03"
 }

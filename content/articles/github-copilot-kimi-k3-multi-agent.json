@@ -1,6 +1,6 @@
 {
   "slug": "github-copilot-kimi-k3-multi-agent",
-  "title": "GitHub Copilotに高性能AI「Kimi K3」が追加、複数のAIを使い分ける機能も強化",
+  "title": "GitHub Copilotに「Kimi K3」を追加　複数のAIを使い分ける機能も強化",
   "lede": "マイクロソフトとGitHubは、開発支援ツール「GitHub Copilot」において、新たなフロンティア級AIモデル「Kimi K3」の提供を開始しました。これに合わせ、複数の自律型AIが協調して動作する「マルチエージェントシステム」の構築ガイダンスを公開。さらに、用途に応じて最適なモデルを組み合わせる「マルチモデル戦略」を強化しています。本稿では、これらの最新アップデートが開発現場にもたらす影響を解説します。",
   "description": "GitHub Copilotにおける「Kimi K3」の提供開始と、Microsoft Agent Frameworkによるマルチエージェント構築ガイダンスの全貌を解説。マイクロソフトが推進するマルチモデル戦略の最新動向と、開発現場への影響に迫ります。",
   "keywords": [
@@ -69,7 +69,7 @@
   "affiliates": [],
   "roundupSlug": "openai-gpt-6-astra-comprehensive-guide-matome",
   "roundupTitle": "GPT-6 Astraと関連機能の全容、32本の公式発表から見えた「自律エージェント」の全貌",
-  "seoTitle": "GitHub CopilotにKimi K3追加｜MSのマルチモデル戦略",
+  "seoTitle": "GitHub CopilotにKimi K3追加　MSのマルチモデル戦略",
   "verdict": {
     "status": "available",
     "japan": "ok",
@@ -81,5 +81,6 @@
   },
   "easy": "## ひとことで言うと\n\nプログラミングを手伝うAI「GitHub Copilot」で、新しいAI「Kimi K3」が選べるようになりました。あわせてマイクロソフトは、複数のAIに役割分担させて仕事を進める方法の解説も公開しました。「1つのすごいAIに全部任せる」時代から、「AIを使い分ける」時代へ移っていることを示すニュースです。\n\n## 何がすごいの？\n\nKimi K3は、Moonshot AIという会社が作った高性能なAIです。Copilotの中で、ほかのAIと切り替えて使えるようになりました。難しい作業は考える力が強いAIに、簡単な作業は速くて安いAIに、というように使い分けられます。料理で包丁を使い分けるのに似ています。\n\n- 計画を立てる係、資料を集める係、分析する係など、AIに役割を分ける方法が紹介されました\n- 1つのAIに全部やらせるより、難しい仕事をうまくこなせるとされています\n- スタートアップ向けに、26種類のオープンなAIをAzure上で使えるようにする連携も発表されました\n\nKimi K3の詳しい性能の数字は、今回の発表では示されていません。\n\n## 自分に関係ある？\n\nこれは主に、プログラムを書く開発者や、AIの仕組みを設計する人向けのニュースです。プログラミングをしない人にはあまり関係がありません。ただ、Copilotを使っている開発者にとっては、選べるAIが増えて便利になります。\n\n## 使ってみるには\n\n日本からも使えます。GitHub Copilotの有料プラン（ProやBusinessなど）を契約していれば、追加料金なしでKimi K3を選べます。開発ソフトのCopilot拡張機能を最新にして、チャット画面のAI選択メニューから選びます。会社で契約している場合は、管理者がオンにしないと表示されないことがあります。無料では使えない点に注意してください。",
   "originalTitle": "GitHub Copilotに「Kimi K3」が追加　マイクロソフトが推進するマルチモデル・マルチエージェント戦略の全貌",
-  "titleRewritten": true
+  "titleRewritten": true,
+  "titleStyle": "2026-11-03"
 }
