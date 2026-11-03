@@ -2,7 +2,7 @@
   "slug": "microsoft-dotnet-11-azure-multicloud-db-sdk",
   "title": "Microsoftが「.NET 11」の性能改善とAzure自動ゾーン配置のプレビューを発表",
   "lede": "マイクロソフトは開発者向けニュース番組「The Upload」の第6回を公開し、次期「.NET 11」における数百におよぶパフォーマンス改善や、Azure Virtual Machine Scale Sets向けの「Automatic Zone Placement（自動ゾーン配置）」のパブリックプレビュー、さらにJava向け「MulticloudDB SDK」のパブリックプレビューなどを発表しました。本記事では、これら最新アップデートの技術的な詳細と、開発現場にもたらす具体的なメリットを詳しく解説します。",
-  "description": "マイクロソフトが公開した最新のデベロッパーニュースまとめ。.NET 11のパフォーマンス向上、Azure VMSSの自動ゾーン配置、Java向けマルチクラウドDB SDKのプレビューなど、開発効率と可用性を高める新機能をベテラン記者が徹底解説します。",
+  "description": "マイクロソフトが公開した最新のデベロッパーニュースまとめ。.NET 11のパフォーマンス向上、Azure VMSSの自動ゾーン配置、Java向けマルチクラウドDB SDKのプレビューなど、開発効率と可用性を高める新機能を解説します。",
   "keywords": [
     ".NET 11",
     "Azure VMSS",

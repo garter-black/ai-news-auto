@@ -2,7 +2,7 @@
   "slug": "visual-studio-ai-agents-mcp-sdk",
   "title": "MicrosoftがVisual Studioに新AIエージェント　MCP C# SDK 2.0も発表",
   "lede": "Microsoftは、開発環境「Visual Studio」において、GitHub Copilot SDKを基盤とする新しいAIエージェントのプレビュー提供を開始しました。これと同時に、AIモデル統合プラットフォーム「Microsoft Foundry」のアップデート、およびAIエージェント間の通信規格である「Model Context Protocol（MCP）C# SDK 2.0」のリリースを発表しました。今回の開発ツール群の刷新は、単一のAIモデルの性能向上にとどまらず、開発ライフサイクル全体を自律的に支援する「AIプラットフォーム」としての包括的な価値提供を目指す同社の戦略を明確に示しています。",
-  "description": "MicrosoftがVisual Studioへの新型AIエージェント統合と、MCP C# SDK 2.0のリリースを発表しました。GitHub Copilot SDKを基盤とした自律的な開発支援機能や、ステートレス通信に対応した新しい通信規格の全容を、専門記者が詳細に解説します。",
+  "description": "MicrosoftがVisual Studioへの新型AIエージェント統合と、MCP C# SDK 2.0のリリースを発表しました。GitHub Copilot SDKを基盤とした自律的な開発支援機能や、ステートレス通信に対応した新しい通信規格の全容を解説します。",
   "keywords": [
     "Visual Studio",
     "GitHub Copilot",

@@ -2,7 +2,7 @@
   "slug": "nvidia-ai-factory-vertically-integrated-horizontally-open",
   "title": "NVIDIA、AIファクトリーの設計思想「垂直統合かつ水平オープン」を説明　CUDA-Xを「スキル」に",
   "lede": "米NVIDIAは、エンタープライズAIファクトリーの構築に向けた基本設計思想「垂直統合かつ水平オープン（Vertically Integrated, Horizontally Open）」を提示しました。これはハードウェアからソフトウェアまでを一貫して最適化しつつ、各レイヤーをエコシステムに開放するアプローチです。本記事では、同社幹部らが語るCUDAの進化と、CUDA-XライブラリがAIエージェントの「スキル」として機能する未来の開発像を詳報します。",
-  "description": "NVIDIAのAIファクトリー設計思想「垂直統合かつ水平オープン」を徹底解説。CUDAの歴史からCUDA-Xライブラリの役割、AIエージェントが自律的にライブラリを「スキル」として活用する次世代のソフトウェア開発手法まで、専門記者が詳しく紐解きます。",
+  "description": "NVIDIAのAIファクトリー設計思想「垂直統合かつ水平オープン」を解説。CUDAの歴史からCUDA-Xライブラリの役割、AIエージェントが自律的にライブラリを「スキル」として活用する次世代のソフトウェア開発手法までを紐解きます。",
   "keywords": [
     "NVIDIA",
     "CUDA",

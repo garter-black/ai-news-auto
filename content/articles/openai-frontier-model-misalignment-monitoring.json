@@ -55,19 +55,35 @@
   "videoTitle": "How we detect frontier model misalignment",
   "publishedAt": "2026-10-29T09:00:00+00:00",
   "generatedAt": "2026-10-29T17:03:13.249705+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/openai-frontier-model-misalignment-monitoring-e50ce769.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/openai-frontier-model-misalignment-monitoring-ce55d1db.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-29T09:00:00+00:00",
   "detectedAt": "2026-10-29T17:01:13+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A dimly lit data center aisle with rows of server racks and a glowing monitoring console displaying multiple graphs, while a pair of hands operate a keyboard in the foreground.",
-    "provider": "Cloudflare Workers AI",
-    "at": "2026-10-29T17:08:31+00:00"
+    "kind": "official",
+    "org": "OpenAI",
+    "provider": "OpenAI公式ブログ",
+    "sourceUrl": "https://openai.com/index/how-we-detect-frontier-model-misalignment",
+    "original": "https://images.ctfassets.net/kftzwdyauwt9/5gtjUYZjCpVMAAv0AbX0Cs/510ae35e592775228a8ef7b7f0911237/how-we-detect-frontier-model-misalignment-social.png?w=1600&h=900&fit=fill",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-03T11:11:42+00:00",
+    "imageKind": "hero"
   },
   "originalTitle": "ChatGPTのOpenAIがAIモデルの隠れた誤作動を防ぐ多層モニタリングシステムを公開",
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "imageFocus": {
+    "x": 0.402,
+    "y": 0.355,
+    "box": [
+      0.0,
+      0.017,
+      0.803,
+      0.694
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/openai-frontier-model-misalignment-monitoring-ce55d1db.jpg"
+  }
 }

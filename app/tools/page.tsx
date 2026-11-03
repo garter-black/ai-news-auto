@@ -4,10 +4,10 @@ import Link from "next/link";
 import AssetShell, { Crumbs } from "@/components/assets/AssetShell";
 import { CALCULATORS, type CalculatorKind } from "@/lib/calculators";
 
-const DESCRIPTION = "ドル建てサブスクの円換算、AIの有料プランの月払い・年払い比較、防衛特別所得税の計算。数字の出典と前提を書いた、すぐ使える小さな計算ツールです。";
+const DESCRIPTION = "ドル建てサブスクの円換算と、防衛特別所得税の計算。数字の出典と前提を書いた、すぐ使える小さな計算ツールです。";
 
 export const metadata: Metadata = withPageShare("tools", "/tools", {
-  title: "計算ツール｜サブスクの円換算・AIプラン費用・防衛特別所得税",
+  title: "計算ツール｜サブスクの円換算・防衛特別所得税",
   description: DESCRIPTION,
   alternates: { canonical: "/tools" },
 });

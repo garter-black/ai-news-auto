@@ -6,7 +6,7 @@ export default function TodayActions({ actions }: { actions: string[] }) {
   return (
     <section aria-labelledby="today-actions-heading" className="mt-12 max-w-[40em] rounded-2xl border border-line-strong p-5 sm:p-6">
       <h2 id="today-actions-heading" className="t-h3">
-        今日やること
+        すぐにできること
       </h2>
       <ol className="mt-3.5 grid gap-2.5">
         {actions.map((action, index) => (

@@ -10,7 +10,7 @@
   "threadsStyle": 2,
   "writingVoice": "honest",
   "lede": "NVIDIAの開発者向け公式ブログによると、NVIDIAが大規模AIの分散推論フレームワーク「NVIDIA Dynamo」をKubernetes上で動かすための実行基盤「AI Cluster Runtime（AICR）」を発表しました。インフラ環境をレシピとして再現性高く構築できる仕組みです。",
-  "description": "NVIDIAが公開した大規模AI向けのKubernetes実行基盤「AICR」の仕組みと、Dynamoでの運用を支える2つのルーティング方式について専門記者が解説します。",
+  "description": "NVIDIAが公開した大規模AI向けのKubernetes実行基盤「AICR」の仕組みと、Dynamoでの運用を支える2つのルーティング方式について解説します。",
   "keywords": [
     "NVIDIA",
     "Kubernetes",

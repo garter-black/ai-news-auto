@@ -56,7 +56,7 @@
   "videoTitle": "NTTテクノクロス、「ForeSight Voice Mining®」に「AIナビゲーション」機能を追加 ～会話に合わせて次に案内すべき内容をリアルタイムで提示可能に～",
   "publishedAt": "2026-10-29T02:00:00+00:00",
   "generatedAt": "2026-10-29T02:41:55.318925+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/ntt-tx-foresight-voice-mining-ai-navigation-373d54b0.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/ntt-tx-foresight-voice-mining-ai-navigation-44cd49e4.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [
     {
@@ -72,13 +72,28 @@
   "detectedAt": "2026-10-29T02:41:17+00:00",
   "speedMinutes": 46,
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A modern call center workstation featuring a headset, microphone, and a laptop, illuminated by soft overhead lighting with a blurred background of similar desks.",
-    "provider": "Cloudflare Workers AI",
-    "original": "https://www.ntt-tx.co.jp/whatsnew/2026/img/261029_01.jpg",
-    "at": "2026-10-29T02:44:18+00:00"
+    "kind": "official",
+    "org": "NTT",
+    "provider": "NTT ニュースリリース",
+    "sourceUrl": "https://www.ntt-tx.co.jp/whatsnew/2026/261029.html",
+    "original": "https://www.ntt-tx.co.jp/whatsnew/2026/img/261029_02.jpg",
+    "width": 900,
+    "height": 415,
+    "at": "2026-11-03T11:13:30+00:00",
+    "imageKind": "hero"
   },
   "titleStyle": "2026-11-03",
-  "originalTitle": "NTTテクノクロスのコールセンター向けAI支援「ForeSight Voice Mining」に新機能　追加料金や開始時期は？"
+  "originalTitle": "NTTテクノクロスのコールセンター向けAI支援「ForeSight Voice Mining」に新機能　追加料金や開始時期は？",
+  "imageFocus": {
+    "x": 0.498,
+    "y": 0.523,
+    "box": [
+      0.05,
+      0.047,
+      0.947,
+      1.0
+    ],
+    "ar": 2.1687,
+    "src": "https://ai-tech-express.jp/img/ntt-tx-foresight-voice-mining-ai-navigation-44cd49e4.jpg"
+  }
 }

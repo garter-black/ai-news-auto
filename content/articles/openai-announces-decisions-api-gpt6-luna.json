@@ -2,7 +2,7 @@
   "slug": "openai-announces-decisions-api-gpt6-luna",
   "title": "OpenAIが「Decisions API」を発表　「GPT-6 Luna」で応答は100ミリ秒未満",
   "lede": "米OpenAIは2026年10月6日（現地時間）、テキストや画像入力からアプリケーション内の次のアクションを極めて高速に決定する新機能「Decisions API」を発表しました。新モデル「GPT-6 Luna」を基盤に採用し、モデルの出力を事前に定義した少数の選択肢に絞り込むことで、従来の最大10倍の高速化を達成しています。本記事では、公開された開発者向けデモの内容を基に、その技術的ブレイクスルーと具体的なユースケースを詳細に解説します。",
-  "description": "OpenAIがGPT-6 Lunaを搭載した「Decisions API」を発表。選択肢を絞り込むことで従来の10倍高速な100ミリ秒未満の応答を実現。テキスト分類、自動運転、ロボット制御などのデモをベテラン記者が徹底解説します。",
+  "description": "OpenAIがGPT-6 Lunaを搭載した「Decisions API」を発表。選択肢を絞り込むことで従来の10倍高速な100ミリ秒未満の応答を実現。テキスト分類、自動運転、ロボット制御などのデモを解説します。",
   "keywords": [
     "OpenAI",
     "Decisions API",

@@ -57,6 +57,11 @@ jobs:
           node --test tests/test_search_index_policy.cjs tests/test_verdict_label.cjs tests/test_site_search.cjs tests/test_headline_display.cjs tests/test_thumb_guard.cjs tests/test_autolink.cjs
           python3 -m unittest tests.test_indexnow tests.test_publish_gate tests.test_headline_normalize tests.test_check_images tests.test_unescape_titles
 
+      - name: Verify article sections (empty sections hidden, headings rewritten; same rules in Python and TS)
+        run: |
+          node --test tests/test_article_sections.cjs
+          python3 -m unittest tests.test_section_gate
+
       - name: Build
         run: npm run cf:build
         env:

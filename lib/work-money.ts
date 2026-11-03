@@ -9,12 +9,12 @@ export type WorkMoney = {
   points: string[];
 };
 
-export const WORK_MONEY_HEADING = "仕事・お金にどう活かせる？";
+export const WORK_MONEY_HEADING = "仕事とお金への影響";
 
 export const RELEVANCE_LABEL: Record<WorkMoney["relevance"], string> = {
-  high: "関係：大きい",
-  medium: "関係：一部の人に",
-  low: "関係：小さい",
+  high: "影響：大きい",
+  medium: "影響：一部の人",
+  low: "影響：小さい",
 };
 
 /** JSON の値を検証して返す（表示しないときは null） */

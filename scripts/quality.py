@@ -26,6 +26,7 @@ import headline_normalize  # noqa: E402
 import japan_availability  # noqa: E402
 import llm  # noqa: E402
 import persona  # noqa: E402
+import section_gate  # noqa: E402
 import ui_claims  # noqa: E402
 
 TITLE_RANGE = (18, 64)
@@ -1039,6 +1040,10 @@ def structural_problems(record: dict, kind: str, source_text: str = "", context:
         problems.append(f"work_money（「{persona.WORK_MONEY_HEADING}」欄）がありません")
     problems += persona.work_money_problems(record.get("workMoney"))
     problems += language_problems(record, source_text)
+    # 文体の門（報告「記事の文章レベル比較_2026-11-03」の自動ゲートのうち本文・かんたん版の分）:
+    # 中の人の注記・つなぎの文のくり返し・材料の無い章・割った文・幼い言い方・一問一答
+    if kind != "update":
+        problems += section_gate.style_problems(record)
     problems += future_start_problems(record, source_text)
     problems += raw_diff_problems(record)
     if kind != "update":
@@ -1139,10 +1144,12 @@ def evaluate(record: dict, source_text: str, kind: str, context: str = "", check
     soft=True は「形と事実は合格、読みやすさだけが基準外」。polish() で文を分け、だめでも受理してよい。
     形・事実の不合格のときの problems には読みやすさを混ぜない（作り直しで本文が縮み、長さで落ちるのを防ぐ）"""
     fix_video_leftover(record)
+    # 中身のない章・事実を含まないつなぎの文・中の人の注記は、プログラムで先に消す（scripts/section_gate.py。表示の段と同じ規則）
+    section_gate.apply(record)
     read = readability(record.get("body") or "")
     read_problems = readability_problems("", read)
     base = {"structural": [], "fact": None, "readability": read, "readability_problems": read_problems,
-            "warnings": title_warnings(record)}
+            "warnings": title_warnings(record) + section_gate.style_warnings(record)}
     structural = structural_problems(record, kind, source_text, context)
     if record.get("sourceType") == "web" and not (source_text or "").strip():
         structural.append("一次資料が空のため記事の内容を確認できません")
@@ -1178,9 +1185,9 @@ POLISH_PROMPT = """次の記事本文（Markdown）を、中身を変えずに�
 {problems}
 
 # 直し方
-- 1文は50字以内を目安にする。長い文は2〜3文に分ける。1文に言いたいことは1つ。読点（、）で文をつながない。
+- 1文は60字までを目安にする。長い文は分けるが、読点は1文に2つまで使ってよい。「〜があります。〇〇です。」のように1つの文を2つに割らない。
   例:「AはBを発表し、Cができるようになったことで、Dの手間が減ると期待されています。」
-  →「AはBを発表しました。これでCができるようになります。Dの手間が減りそうです。」
+  →「AはBを発表しました。Cができるようになり、Dの手間が減ります。」
 - 1段落は1〜3文。段落の間には空行を入れる。
 - 文中に数字が3つ以上並ぶところは箇条書きにする。
 - 飾りの誇張語（圧倒的・極限・劇的・強烈 など）は普通の言葉にする。
@@ -1188,7 +1195,7 @@ POLISH_PROMPT = """次の記事本文（Markdown）を、中身を変えずに�
 # 変えてはいけないもの
 - 見出し（## と ###）の文言・数・順番。表・リンク・既存の箇条書き。
 - 事実・数字・日付・価格・固有名詞・引用。情報を削らない。足さない。
-- 文字数はほぼ同じに保つ（{length}字前後。短くしない）。
+- 文を足して水増ししない（今は{length}字。分けた結果、短くなってもよい）。中身の無いつなぎ（「〜にとっても重要です」「〜と言えます」）は足さない。
 
 # 原稿
 <<<
@@ -1224,7 +1231,7 @@ def polish(record: dict, source_text: str, kind: str, context: str = "", check_f
     for a, b in zip(heads_old, heads_new):
         if _PROTECTED_HEADING_RE.match(a) and _norm(a) != _norm(b):
             return None, f"決まった章名が変わった（{a}→{b}）"[:80]
-    if _plain_len(new_body) < length * 0.9:
+    if _plain_len(new_body) < length * 0.7:
         return None, f"本文が縮んだ（{length}→{_plain_len(new_body)}字）"
     # 「3つあります」のような1桁の数は箇条書きにするときに増えるので見逃す（事実確認は後で通す）
     added = {n for n in _numbers(new_body) - _numbers(body) if len(n) > 1}

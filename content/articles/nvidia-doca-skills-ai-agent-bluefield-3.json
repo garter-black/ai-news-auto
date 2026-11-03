@@ -2,7 +2,7 @@
   "slug": "nvidia-doca-skills-ai-agent-bluefield-3",
   "title": "NVIDIA、AIエージェント向け「DOCA Skills」を検証　RDMA開発のコード量を73%削減",
   "lede": "NVIDIAは、AIコーディングエージェントに同社独自のデータセンター向け開発プラットフォーム「NVIDIA DOCA」の専門知識（スキル）を付与した際の開発効率を比較するデモ動画を公開しました。同一のAIエージェントに対し、BlueField-3 DPU上でのRDMA通信プログラム構築を指示したところ、スキルを持つエージェントはコード量を約73％削減し、ハードウェアへの試行錯誤コマンド数もほぼ半減させました。本記事では、この検証結果が示すAIによるインフラ開発の未来を解説します。",
-  "description": "NVIDIAが公開したデモ動画に基づき、AIコーディングエージェントに「NVIDIA DOCA Skills」を付与した際の効果を徹底解説。BlueField-3上でのRDMA開発において、手書きコード量を73%削減し、ハードウェア操作を半減させた検証結果を詳細にレポートします。",
+  "description": "NVIDIAが公開したデモ動画に基づき、AIコーディングエージェントに「NVIDIA DOCA Skills」を付与した際の効果を解説。BlueField-3上でのRDMA開発において、手書きコード量を73%削減し、ハードウェア操作を半減させた検証結果を詳細にレポートします。",
   "keywords": [
     "NVIDIA DOCA",
     "BlueField-3",

@@ -1,0 +1,354 @@
+/**
+ * 記事本文の章（## 見出しの区切り）を、表示の直前に整える（2026-11-03 オーナー指摘）。
+ *
+ *  1. 中身なしの章を出さない（「元記事には比較は書かれていません。…判断できません。」だけの「ライバルと比べてどう？」など）
+ *  2. 事実を含まない「つなぎ」の文（「〜にとっても重要です」「〜といえます」「判断材料になります」）と、中の人の注記を消す
+ *  3. 決まった型の見出し（「自分に関係ある？」「もう使える？取引できる？」）を、記事ごとの見出し（記事 JSON の sectionTitles）か、
+ *     ニュースサイトの普通の見出しに言い換える
+ *
+ * 1・2 の規則は scripts/section_gate.py（新しい記事を書き出す前の門）と同じ。変えるときは両方を直す
+ * （tests/fixtures/section_gate_cases.json で同じ結果になることを tests/test_article_sections.cjs と tests/test_section_gate.py が確かめる）。
+ * 本文 JSON の見出しは変えない（料金の表・図・計算機の差し込み位置や、検索に出す条件が決まった章名を使っているため）。
+ */
+
+// 中身が少なくても消さない章（記事の骨組み）
+const PROTECTED_RE =
+  /^(概要|ひとことで言うと|ひとすることで言うと|まとめ|これまでの流れ|続報|何が発表された|いつ、何が発表された|時系列で見る|この動画で語られていること)/;
+// scripts/rivals.py が公式ページの数字で作る比較表（品質ゲートで確かめ済み）。触らない
+export const DATA_RIVAL_HEADING = "同じクラスの製品と比べると？";
+const RIVAL_RE = /^(ライバルと比べて|競合サービスとの比較|競合との比較|他の選択肢との比較|ほかの選択肢と比べて)|と比べて(どう|みると)/;
+const NUMBERS_RE = /^(数字で見る|性能・ベンチマーク|この数字はどう読む|動画で示された数)/;
+const PRICE_HEADING_RE = /^(料金|価格|いくら)/;
+const PRICE_WORD_RE = /[0-9０-９]|無料|有料|月額|年額|円|ドル|ユーロ|価格|料金|課金|プラン|据え置き|値上げ|値下げ/;
+const OUTDATED_MODEL_RE =
+  /GPT-4o|GPT-4(?![.\d])|GPT‑4o|Claude 3(?:\.5)?(?![.\d])|Claude3|Gemini 1\.5|Gemini 1\.0|Llama 3(?![.\d])|\bo1(?:-preview|-mini)?\b/;
+
+const META_RE = new RegExp(
+  [
+    "ここは編集部注です|以下は編集部の(?:知識|見立て)による補足です",
+    "(?:元記事|元の記事|発表)(?:には|では)、?[^。]{0,30}(?:比較|ライバル|競合)[^。]{0,30}(?:書かれて|ありません|触れられて|示されて)",
+    "優劣は[^。]{0,30}判断できません",
+    "(?:前の版|前のモデル|従来)と比べられる数(?:値|字)は[^。]{0,30}(?:ありません|ない)",
+    "比較表は作りません",
+    "読者が次に取るべき(?:行動|アクション)(?:があります|は次のとおりです|です)",
+    "今回の発表の位置づけ(?:は|として)",
+  ].join("|"),
+);
+
+const NONANSWER_RE = new RegExp(
+  [
+    "書かれて(?:い)?ません|記載(?:は|が)?(?:ありません|ない|なし)|言及(?:は|が)?(?:ありません|なし|されていません)",
+    "触れられて(?:い)?ません|示されて(?:い)?ません|明らかにされて(?:い)?ません|判断できません|判断はできません",
+    "分かりません|わかりません|不明です|確認できていません|確認できません|公表されていません",
+    "案内(?:は|が)?(?:ありません|されていません)|提示(?:は|が)?(?:ありません|なし|されていません)|発表されていません",
+  ].join("|"),
+);
+
+const FILLER_RE = new RegExp(
+  [
+    "にとって(?:も)?(?:重要|大切|見逃せない|朗報|注目|うれしい)|と(?:い|言)え(?:ます|るでしょう)",
+    "判断材料(?:に|と)?(?:なります|なる|です)|チェックしておきたい",
+    "注目(?:の内容です|です|されそうです|が集まりそうです|が集まります|したいところです)|見逃せない",
+    "影響(?:は|が)(?:薄い|小さい|限定的)(?:です|でしょう|といえます)|直接(?:的な|の)影響は(?:大きく|小さ)",
+    "期待(?:されます|が高まります|できそうです)|参考になります|強いて言えば|関係する情報です",
+    "に(?:も)?関係があります|役立つでしょう|気になるところです|目が離せません",
+    "(?:機会|選択肢)が(?:生まれる|広がる)可能性があります|この立場への直接の影響",
+  ].join("|"),
+);
+
+const FACT_RE = /[0-9０-９]|[A-Za-zＡ-Ｚａ-ｚ]{2,}|[「『]/;
+const EMPTY_VALUE_RE =
+  /^(?:元記事(?:では|に)?)?(?:言及なし|記載なし|記載はなし|不明|案内なし|言及はなし|非公表|未公表|公式に記載なし|料金ページに記載なし|—|－|-|–)(?:（[^）]*）)?。?$/;
+const TABLE_SEP_RE = /^\|?\s*:?-{2,}/;
+const LIST_RE = /^\s*(?:[-*+]|\d+[.)])\s+/;
+const DATE_NUM_RE = /\d+(?=\s*(?:年|月|日|時|分))/g;
+const NUM_RE = /\d+(?:[.,]\d+)*/g;
+
+export function splitSentences(line: string): string[] {
+  const out: string[] = [];
+  let buf = "";
+  let depth = 0;
+  for (const ch of line) {
+    buf += ch;
+    if ("「『（(".includes(ch)) depth += 1;
+    else if ("」』）)".includes(ch) && depth > 0) depth -= 1;
+    else if ("。！？".includes(ch) && depth === 0) {
+      out.push(buf);
+      buf = "";
+    }
+  }
+  if (buf.trim()) out.push(buf);
+  return out;
+}
+
+const hasFact = (text: string) => FACT_RE.test(text);
+const isMeta = (s: string) => META_RE.test(s);
+const isNonanswer = (s: string) => NONANSWER_RE.test(s);
+const isFiller = (s: string) => FILLER_RE.test(s) && !hasFact(s);
+const stripMarks = (s: string) => s.replace(/[*_`]/g, "");
+const cells = (line: string) =>
+  line
+    .trim()
+    .replace(/^\|/, "")
+    .replace(/\|$/, "")
+    .split("|")
+    .map((c) => c.trim());
+
+function cleanTable(lines: string[]): string[] {
+  if (lines.length < 2 || !TABLE_SEP_RE.test(lines[1].trim())) return lines;
+  const header = cells(lines[0]);
+  const sourceCol = header.length && /出典|ソース/.test(header[header.length - 1]) ? header.length - 1 : -1;
+  const kept = lines.slice(0, 2);
+  for (const line of lines.slice(2)) {
+    const values = cells(line).filter((_, i) => i > 0 && i !== sourceCol);
+    if (values.length && values.every((v) => EMPTY_VALUE_RE.test(stripMarks(v)))) continue;
+    kept.push(line);
+  }
+  return kept.length > 2 ? kept : [];
+}
+
+function cleanListItem(line: string): string | null {
+  const body = line.replace(LIST_RE, "").trim();
+  const m = /^[^：:]{1,40}[：:]\s*(.+)$/.exec(stripMarks(body));
+  if (m && EMPTY_VALUE_RE.test(m[1].trim())) return null;
+  if (EMPTY_VALUE_RE.test(stripMarks(body))) return null;
+  const sentences = splitSentences(body).filter((s) => !isMeta(s));
+  if (!sentences.length) return null;
+  const indent = line.slice(0, line.length - line.trimStart().length);
+  const marker = (LIST_RE.exec(line)?.[0] ?? "- ").trim();
+  return `${indent}${marker} ${sentences.join("").trim()}`;
+}
+
+function cleanProse(line: string): string {
+  return splitSentences(line)
+    .filter((s) => !isMeta(s) && !isFiller(s))
+    .join("")
+    .trim();
+}
+
+function cleanBlock(text: string): string {
+  const lines = text.split("\n");
+  const out: string[] = [];
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    const stripped = line.trim();
+    if (stripped.startsWith("|")) {
+      const block: string[] = [];
+      while (i < lines.length && lines[i].trim().startsWith("|")) block.push(lines[i++]);
+      out.push(...cleanTable(block));
+      continue;
+    }
+    if (!stripped || /^(#|>|```|<)/.test(stripped) || /^!\[|^\[.*\]\(.*\)$/.test(stripped)) out.push(line);
+    else if (LIST_RE.test(line)) {
+      const item = cleanListItem(line);
+      if (item !== null) out.push(item);
+    } else {
+      const cleaned = cleanProse(stripped);
+      if (cleaned) out.push(cleaned);
+    }
+    i += 1;
+  }
+  const result: string[] = [];
+  out.forEach((line, idx) => {
+    if (line.startsWith("### ")) {
+      const rest = out.slice(idx + 1);
+      let next = rest.findIndex((x) => x.startsWith("### "));
+      if (next < 0) next = rest.length;
+      if (!rest.slice(0, next).some((x) => x.trim())) return;
+    }
+    result.push(line);
+  });
+  return result.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+function proseSentences(text: string): string[] {
+  const sentences: string[] = [];
+  for (const line of text.split("\n")) {
+    const s = line.trim();
+    if (!s || /^(#|\||>|```)/.test(s) || LIST_RE.test(line)) continue;
+    sentences.push(...splitSentences(s).filter((x) => x.trim()));
+  }
+  return sentences;
+}
+
+function numericCells(text: string): number {
+  let n = 0;
+  for (const line of text.split("\n")) {
+    const s = line.trim();
+    if (s.startsWith("|") && !TABLE_SEP_RE.test(s)) n += cells(s).slice(1).filter((c) => /[0-9０-９]/.test(c)).length;
+  }
+  return n;
+}
+
+function plainNumbers(text: string): string[] {
+  return text.normalize("NFKC").replace(DATE_NUM_RE, "").match(NUM_RE) ?? [];
+}
+
+export function sectionVerdict(heading: string, content: string): "keep" | "hide" {
+  const h = (heading ?? "").trim();
+  if (h === DATA_RIVAL_HEADING || PROTECTED_RE.test(h)) return "keep";
+  const structured = content.split("\n").filter((l) => (LIST_RE.test(l) || l.trim().startsWith("|")) && l.trim());
+  const structText = structured.join("\n");
+  const sentences = proseSentences(content);
+  const answers = sentences.filter((s) => !isNonanswer(s));
+  const nonanswers = sentences.filter((s) => isNonanswer(s));
+  const answerText = answers.join("");
+  if (!answers.length && !structured.length) return "hide";
+  if (RIVAL_RE.test(h)) {
+    if (OUTDATED_MODEL_RE.test(content)) return "hide";
+    return numericCells(content) >= 2 || plainNumbers(answerText).length >= 2 ? "keep" : "hide";
+  }
+  if (NUMBERS_RE.test(h)) return plainNumbers(`${answerText}\n${structText}`).length >= 2 ? "keep" : "hide";
+  if (PRICE_HEADING_RE.test(h) && !PRICE_WORD_RE.test(answerText + structText)) return "hide";
+  const factual = answers.filter(hasFact);
+  if (nonanswers.length && !structured.length && nonanswers.length >= answers.length && factual.length <= 1) return "hide";
+  return "keep";
+}
+
+export function splitSections(markdown: string): { heading: string | null; content: string }[] {
+  const parts = (markdown ?? "").split(/^## /m);
+  const out: { heading: string | null; content: string }[] = [];
+  if (parts[0]?.trim()) out.push({ heading: null, content: parts[0] });
+  for (const p of parts.slice(1)) {
+    const nl = p.indexOf("\n");
+    const head = nl < 0 ? p : p.slice(0, nl);
+    out.push({ heading: head.trim(), content: nl < 0 ? "" : p.slice(nl + 1) });
+  }
+  return out;
+}
+
+/** 中身なしの章・つなぎの文を除いた Markdown と、隠した章の見出し */
+export function cleanSections(markdown: string): { markdown: string; hidden: string[] } {
+  const hidden: string[] = [];
+  const out: string[] = [];
+  for (const { heading, content } of splitSections(markdown)) {
+    if (heading === null) {
+      out.push(content.trim());
+      continue;
+    }
+    if (heading === DATA_RIVAL_HEADING) {
+      out.push(`## ${heading}\n\n${content.trim()}`);
+      continue;
+    }
+    const cleaned = cleanBlock(content);
+    if (sectionVerdict(heading, cleaned) === "hide") {
+      hidden.push(heading);
+      continue;
+    }
+    out.push(cleaned ? `## ${heading}\n\n${cleaned}` : `## ${heading}`);
+  }
+  const text = out.filter(Boolean).join("\n\n").replace(/\n{3,}/g, "\n\n").trim();
+  return { markdown: text + ((markdown ?? "").endsWith("\n") ? "\n" : ""), hidden };
+}
+
+// ------------------------------------------------------------------ //
+// 見出しの言い換え
+// ------------------------------------------------------------------ //
+
+/** 記事ごとの見出し（記事 JSON の sectionTitles。scripts/section_polish.py が作り、事実と長さを確かめて保存） */
+export type SectionTitles = { body?: Record<string, string>; easy?: Record<string, string> };
+
+/**
+ * 記事ごとの見出しが無いときの、ニュースサイトの普通の見出し（決まった型の質問をそのまま出さない）。
+ * キーは本文 JSON の章名。ここに無い章名（記事ごとに書かれた見出し）はそのまま出す
+ */
+const BODY_FALLBACK: Record<string, string> = {
+  何が発表された: "発表の内容",
+  "何が発表された？": "発表の内容",
+  何が発表されたのか: "発表の内容",
+  "いつ、何が発表された？": "発表の内容",
+  "前と何が違う？": "従来からの変更点",
+  "前と何が違う？注意点は？": "変更点と注意点",
+  "従来との違い・注意点": "変更点と注意点",
+  "中身をくわしく見ると？": "詳しい内容",
+  "数字で見るとどう変わった？": "数字で見る変化",
+  "数字で見ると？": "主な数字",
+  "この数字はどう読む？": "数字の読み方",
+  "ライバルと比べてどう？": "競合との比較",
+  競合サービスとの比較: "競合との比較",
+  [DATA_RIVAL_HEADING]: "同クラスの製品との比較",
+  "料金は？": "料金",
+  "料金・提供プラン": "料金とプラン",
+  "料金と提供時期は？": "料金と提供時期",
+  "日本で使える？": "日本での提供状況",
+  日本から使う方法: "日本からの使い方",
+  "自分にはどう関係する？": "影響を受ける人",
+  "自分に関係ある？": "影響を受ける人",
+  誰にどう効くのか: "仕事への影響",
+  "もう使える？取引できる？": "提供時期と利用方法",
+  "もう使える？申し込める？": "提供時期と申し込み方法",
+  "もう使える？": "提供状況",
+  "もう買える？使える？": "発売時期と入手方法",
+  "もう買える？": "発売時期と入手方法",
+  "もう申し込める？使える？": "申し込み方法",
+  "もう申し込める？": "申し込み方法",
+  "もう見られる？遊べる？参加できる？": "公開時期と参加方法",
+  "なぜ今？業界への影響は？": "背景と業界への影響",
+  "なぜ今？気をつけることは？": "背景と注意点",
+  "スペックと価格は？": "仕様と価格",
+  "どんな製品？": "製品の特徴",
+  "どんな制度？": "制度の内容",
+  "どこが見どころ？": "見どころ",
+  "いつから、誰が、何をすればいい？": "対象と手続き",
+  "いつから、どこで参加できる？": "日程と参加方法",
+  "いつ、どこで楽しめる？": "日程と会場",
+  "性能・ベンチマーク": "性能",
+  "発表された機能・アップデートの全容": "新機能の内容",
+  "発表された機能・内容の全体像": "新機能の内容",
+  これまでの流れ: "これまでの経緯",
+  横断して見えてくること: "並べて見えること",
+  個別のポイント: "それぞれの要点",
+  結局どう捉えるべきか: "どう受け止めるか",
+  "まだ分からないことは？": "未発表の点",
+};
+
+const EASY_FALLBACK: Record<string, string> = {
+  ひとことで言うと: "要点",
+  ひとすることで言うと: "要点",
+  "何がすごいの？": "何が新しいのか",
+  "自分に関係ある？": "関係する人",
+  使ってみるには: "利用を始めるには",
+};
+
+/** 保存された見出しとして使ってよいか（scripts/section_polish.py の valid_title と同じ規則の最小限） */
+export function usableTitle(title: unknown): title is string {
+  if (typeof title !== "string") return false;
+  const t = title.trim();
+  return t.length >= 2 && t.length <= 32 && !/[<>#\n|]/.test(t) && !/。$/.test(t);
+}
+
+export function displayHeading(heading: string, kind: "body" | "easy", titles?: SectionTitles): string {
+  const own = titles?.[kind]?.[heading];
+  if (usableTitle(own)) return own.trim();
+  const fallback = kind === "easy" ? EASY_FALLBACK : BODY_FALLBACK;
+  return fallback[heading] ?? heading;
+}
+
+const unescapeHtml = (s: string) =>
+  s.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+const escapeHtml = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+/** 本文の章の id（目次のリンク先）。prefix で本文とかんたん版を分ける */
+export const sectionId = (prefix: string, index: number) => `${prefix}-${index + 1}`;
+
+/**
+ * 描画済み HTML の <h2>章名</h2> を、表示用の見出しに置き換え、目次のリンク先の id を付ける。
+ * 図・料金表・計算機の差し込み（章名で位置を探す）が終わってから呼ぶ
+ */
+export function retitleHtml(html: string, kind: "body" | "easy", titles?: SectionTitles, idPrefix = "sec"): string {
+  let index = 0;
+  return html.replace(/<h2>([\s\S]*?)<\/h2>/g, (_m, inner: string) => {
+    const plain = unescapeHtml(inner.replace(/<[^>]+>/g, "")).trim();
+    const display = displayHeading(plain, kind, titles);
+    const id = sectionId(idPrefix, index++);
+    return `<h2 id="${id}">${display === plain ? inner : escapeHtml(display)}</h2>`;
+  });
+}
+
+/** 目次（表示用の見出しと id）。cleanSections 済みの Markdown から */
+export function tocOf(markdown: string, titles?: SectionTitles, idPrefix = "sec"): { id: string; text: string }[] {
+  return splitSections(markdown)
+    .filter((s) => s.heading !== null)
+    .map((s, i) => ({ id: sectionId(idPrefix, i), text: displayHeading(stripMarks(s.heading as string), "body", titles) }));
+}

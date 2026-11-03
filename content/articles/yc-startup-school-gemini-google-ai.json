@@ -2,7 +2,7 @@
   "slug": "yc-startup-school-gemini-google-ai",
   "title": "Google DeepMind、YC Startup Schoolで取材　Gemini 3.1 FlashやAlphaFoldの活用例を紹介",
   "lede": "米Y CombinatorのStartup Schoolにて、Google DeepMindのPaige Bailey氏が若き創業者やエンジニアたちを取材しました。開発現場におけるGemini 3.1 Flashや軽量オープンモデルGemma、タンパク質構造予測AI「AlphaFold」の具体的な活用事例が明かされ、AIがいかに実務や研究のアシスタントとして機能しているかが示されています。",
-  "description": "YC Startup School参加者が語るGoogle AIの活用法を徹底解説。Gemini 3.1 Flashによる多言語レシート解析から、AlphaFoldを用いた抗生物質耐性研究、オフラインでのGemma活用まで、最先端の現場実態をレポートします。",
+  "description": "YC Startup School参加者が語るGoogle AIの活用法を解説。Gemini 3.1 Flashによる多言語レシート解析から、AlphaFoldを用いた抗生物質耐性研究、オフラインでのGemma活用まで、最先端の現場実態をレポートします。",
   "keywords": [
     "Gemini 3.1 Flash",
     "Gemma",

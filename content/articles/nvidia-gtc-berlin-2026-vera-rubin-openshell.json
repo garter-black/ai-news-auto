@@ -5,7 +5,7 @@
   "threadsPost": "結論：次世代AIインフラとエージェント制御基盤が公開されました。\nVera Rubin搭載のAI工場コンテナや安全フレームワークOpenShellなど、産業全体をAI化する技術が目白押しです。\n開発者や製造業の経営層は要チェックです。\n✅コンテナ型AI工場DSX POD\n✅エージェント安全基盤OpenShell\n記事で👇",
   "threadsHook": "conclusion",
   "lede": "米NVIDIAはドイツ・ベルリンで開催された「GTC Berlin 2026」にて、創業者兼CEOのジェンスン・フアン氏による基調講演を行いました。講演では、次世代GPUアーキテクチャ「Vera Rubin」をはじめ、コンテナ型AI工場「NVIDIA DSX POD」、自律型AIエージェントの安全性を担保するオープンソースの「NVIDIA OpenShell」などが発表されました。ヨーロッパ市場を中心に産業全般のAI化を加速させる姿勢を鮮明にしています。",
-  "description": "NVIDIAがGTC Berlin 2026で次世代GPUアーキテクチャVera Rubinやコンテナ一体型AI工場DSX POD、エージェント制御OpenShellを発表。概要と主要技術を記者が解説します。",
+  "description": "NVIDIAがGTC Berlin 2026で次世代GPUアーキテクチャVera Rubinやコンテナ一体型AI工場DSX POD、エージェント制御OpenShellを発表。概要と主要技術を解説します。",
   "keywords": [
     "NVIDIA",
     "GTC 2026",

@@ -82,7 +82,7 @@ export default function VerdictCard({
       )}
 
       <p className="border-t border-line bg-surface px-5 py-2 text-note text-muted sm:px-6">
-        {dateFormat.format(Date.parse(judgedAt))}時点の判定。発表内容から編集部AIが判定しています。最新の提供状況は公式情報をご確認ください。
+        {dateFormat.format(Date.parse(judgedAt))}時点の判定。発表内容をもとにAIで判定しています。最新の提供状況は公式情報をご確認ください。
         {japanSource?.url && (
           <>
             {" "}日本での提供は当サイトが

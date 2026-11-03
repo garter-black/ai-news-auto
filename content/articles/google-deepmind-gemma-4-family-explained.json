@@ -2,7 +2,7 @@
   "slug": "google-deepmind-gemma-4-family-explained",
   "title": "Google DeepMind、オープンモデル「Gemma 4」を公開　4種のアーキテクチャで5サイズを展開",
   "lede": "Google DeepMindは、オープンなマルチモーダル大規模言語モデル（LLM）の最新世代「Gemma 4」ファミリーの詳細を公開しました。本ファミリーは、スマートフォンなどのオンデバイス環境からクラウドサーバーまでをカバーする5つのモデルサイズで構成されています。最大の特徴は、用途に応じて「Per-Layer Embeddings」「エンコーダーフリー」「Mixture-of-Experts（MoE）」など、4つの異なる先進的なアーキテクチャを使い分けている点です。本記事では、この新たなオープンモデル群の技術的詳細と各モデルの構造的な差分を、専門記者の視点で詳しく解説します。",
-  "description": "Google DeepMindが発表したマルチモーダルオープンモデル「Gemma 4」ファミリーを徹底解説。オンデバイス向けのPLE技術から、12Bのエンコーダーフリー、MoE採用の26B、フラグシップの31Bまで、4つのアーキテクチャの差分を解説します。",
+  "description": "Google DeepMindが発表したマルチモーダルオープンモデル「Gemma 4」ファミリーを解説。オンデバイス向けのPLE技術から、12Bのエンコーダーフリー、MoE採用の26B、フラグシップの31Bまで、4つのアーキテクチャの差分を解説します。",
   "keywords": [
     "Gemma 4",
     "Google DeepMind",

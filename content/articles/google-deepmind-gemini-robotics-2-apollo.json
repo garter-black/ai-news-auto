@@ -2,7 +2,7 @@
   "slug": "google-deepmind-gemini-robotics-2-apollo",
   "title": "Google DeepMindが「Gemini Robotics 2」搭載ロボットのデモ公開　複数台が言葉で連携",
   "lede": "Google DeepMindは、人型ロボット「Apollo 2」に次世代のロボティクスAIシステム「Gemini Robotics 2」を搭載した最新の実証デモ動画を公開しました。今回の発表は研究段階のものであり、ロボットが周囲の環境を視覚的に認識して人間と自然に対話する様子や、物理的に極めて複雑な「ゴミ袋を結ぶ」といった日常タスク、さらには他のロボットと自律的に言語で連携して作業を分担するマルチエージェント協調の様子が示されています。",
-  "description": "Google DeepMindが公開した「Gemini Robotics 2」のデモ動画をベテラン記者が徹底解説。人型ロボット「Apollo 2」がゴミ袋を結ぶ微細な操作や、別ロボット「Duo」と言語で連携してガレージを片付ける最新技術の全容に迫ります。",
+  "description": "Google DeepMindが公開した「Gemini Robotics 2」のデモ動画を解説。人型ロボット「Apollo 2」がゴミ袋を結ぶ微細な操作や、別ロボット「Duo」と言語で連携してガレージを片付ける最新技術の全容に迫ります。",
   "keywords": [
     "Gemini Robotics 2",
     "Apollo 2",

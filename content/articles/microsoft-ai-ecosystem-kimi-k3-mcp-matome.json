@@ -36,8 +36,8 @@
     }
   ],
   "title": "GitHub Copilotに「Kimi K3」を追加　MicrosoftのAIエージェント戦略を整理",
-  "lede": "2026年8月から9月にかけて、マイクロソフトとGitHubは開発者向けAI支援環境において極めて重要なアップデートを相次いで発表しました。フロンティア級LLM「Kimi K3」の統合を契機として、自律型AIエージェントの構築、安全な実行環境、データベース接続規格「MCP」、そして「.NET Aspire」による開発運用の自動化まで、点と点がつながる巨大なAIエージェントエコシステムの全貌が明らかになりました。ベテラン記者がその詳細を徹底解説します。",
-  "description": "Kimi K3のGitHub Copilot統合から、GitHub Copilot SDK、SQL MCP Server、.NET Aspire連携まで、2026年秋にマイクロソフトが提示したAIエージェント戦略の全貌を、5本の公式発表を横断して徹底解説します。",
+  "lede": "2026年8月から9月にかけて、マイクロソフトとGitHubは開発者向けAI支援環境において極めて重要なアップデートを相次いで発表しました。フロンティア級LLM「Kimi K3」の統合を契機として、自律型AIエージェントの構築、安全な実行環境、データベース接続規格「MCP」、そして「.NET Aspire」による開発運用の自動化まで、点と点がつながる巨大なAIエージェントエコシステムの全貌が明らかになりました。その詳細を解説します。",
+  "description": "Kimi K3のGitHub Copilot統合から、GitHub Copilot SDK、SQL MCP Server、.NET Aspire連携まで、2026年秋にマイクロソフトが提示したAIエージェント戦略の全貌を、5本の公式発表を横断して解説します。",
   "keywords": [
     "Kimi K3",
     "GitHub Copilot",

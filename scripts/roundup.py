@@ -24,6 +24,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import headline_normalize  # noqa: E402
+import section_gate  # noqa: E402
 from cluster import build_clusters  # noqa: E402
 import threads_hooks  # noqa: E402
 from genres import GENRES_BY_SLUG  # noqa: E402
@@ -107,9 +108,9 @@ PROMPT = """以下は「{topic}」について書かれた {count} 本の記事�
   良い例:「GPT-6 Astra×Figma連携｜2時間でUI試作を自動化」「ChatGPT Plugin Extensionsとは：MCPでUI拡張」
 - threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（書き出し／要約すると、＋2文／問いかけ の3つのかたまり・URLなし）。
 - easy_markdown: 「かんたんに読む」版の本文（全角700〜1300字）。AIに詳しくない人向けに、body_markdown の内容をやさしく言い直したもの。
-  見出しは次の4つを「## 」でこの順に使う：## ひとことで言うと / ## 何がすごいの？ / ## 自分に関係ある？ / ## 使ってみるには
-  専門用語は使わない（どうしても使うなら直後に（＝〜のこと）と言い換える）。身近な例えを1つ以上入れる。
-  body_markdown に無い事実・数字・価格は書かない。「使ってみるには」は verdict と矛盾させない。です・ます調で、やさしく親しみのある語り口にする。
+  見出しは次の4つを「## 」でこの順に使う：## ひとことで言うと / ## 何が新しいのか / ## 影響を受ける人 / ## 利用を始めるには
+  専門用語は使わない（どうしても使うなら直後に（＝〜のこと）と言い換える）。例えは、社会人に通じるものを必要なときだけ使う（子ども向けの例えにしない）。
+  body_markdown に無い事実・数字・価格は書かない。「利用を始めるには」は verdict と矛盾させない。です・ます調で、専門外の社会人に向けた落ち着いた語り口にする（子ども向けの言い方・「すごい」「〜なんです」は使わない）。
 - lede: 180〜240字のリード文。
 - description: 100〜130文字のメタディスクリプション。
 - keywords: 検索されうる日本語キーワード 8〜12個。
@@ -416,6 +417,8 @@ def main() -> int:
 
         # 見出しの書き方をそろえる（scripts/headline_normalize.py。main.write_article と同じ後処理）
         headline_normalize.apply(record)
+        # 中身のない章・事実を含まないつなぎの文を消す（scripts/section_gate.py）
+        section_gate.apply(record)
         path = ARTICLES_DIR / f"{record['slug']}.json"
         path.write_text(
             json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

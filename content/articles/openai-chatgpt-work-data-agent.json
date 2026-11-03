@@ -2,7 +2,7 @@
   "slug": "openai-chatgpt-work-data-agent",
   "title": "OpenAI、ChatGPT Work向け「Data agent」を発表　社内データから資料を自動生成",
   "lede": "OpenAIは2026年9月10日、ビジネス向けの新環境「ChatGPT Work」において、社内データを自律的に分析・活用する「Data agent（データエージェント）」を発表しました。本機能は、SnowflakeやTableau、Slackなどの外部ツールと直接連携し、自然言語の指示だけでデータの可視化からスライド更新、報告までを一気通貫で実行します。",
-  "description": "OpenAIが発表した「ChatGPT Work」の「Data agent」をベテラン記者が徹底解説。SnowflakeやTableau、Slack等と連携し、自然言語でデータ分析からスライド生成、Slack共有まで自動化する新機能の全容に迫ります。",
+  "description": "OpenAIが発表した「ChatGPT Work」の「Data agent」を解説。SnowflakeやTableau、Slack等と連携し、自然言語でデータ分析からスライド生成、Slack共有まで自動化する新機能の全容に迫ります。",
   "keywords": [
     "ChatGPT Work",
     "Data agent",

@@ -1,8 +1,8 @@
 {
   "slug": "dotnet-memory-dumps-database-time-migration-ai-agent-memory",
   "title": "Microsoft、.NETのメモリダンプ自動生成手法とAIエージェント向け「永続メモリ」を公開",
-  "lede": "マイクロソフトは、開発者向けニュース番組「The Upload」にて複数の重要なアップデートを発表しました。生産環境での障害解析を効率化するC#によるクロスプラットフォームなメモリダンプ自動生成手法、PostgreSQLからSQL Serverへの移行における日時データのマッピング指針、そして「Microsoft Foundry」および「Azure Blob Storage」を組み合わせたAIエージェント向けの高度な隔離制御と永続的ワークスペースの提供開始が主な柱です。本記事では、これら発表内容の技術的詳細と実務への影響をベテラン記者が解説します。",
-  "description": "マイクロソフトが発表した.NETのメモリダンプ自動化、PostgreSQLからSQL Serverへの日時データ移行指針、FoundryとAzure Blob StorageによるAIエージェントの隔離・永続メモリ機能について、技術的詳細を徹底解説します。",
+  "lede": "マイクロソフトは、開発者向けニュース番組「The Upload」にて複数の重要なアップデートを発表しました。生産環境での障害解析を効率化するC#によるクロスプラットフォームなメモリダンプ自動生成手法、PostgreSQLからSQL Serverへの移行における日時データのマッピング指針、そして「Microsoft Foundry」および「Azure Blob Storage」を組み合わせたAIエージェント向けの高度な隔離制御と永続的ワークスペースの提供開始が主な柱です。本記事では、これら発表内容の技術的詳細と実務への影響を解説します。",
+  "description": "マイクロソフトが発表した.NETのメモリダンプ自動化、PostgreSQLからSQL Serverへの日時データ移行指針、FoundryとAzure Blob StorageによるAIエージェントの隔離・永続メモリ機能について、技術的詳細を解説します。",
   "keywords": [
     "マイクロソフト",
     ".NET",

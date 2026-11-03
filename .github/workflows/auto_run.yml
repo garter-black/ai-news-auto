@@ -206,6 +206,22 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: timeout 380 python scripts/rivals.py --recent-hours 36 --max 2 --budget 300 --apply
 
+      # 新しい記事の章の見出しを記事ごとの言葉にし、水増しの文を締める（scripts/section_polish.py。無料モデル・1記事1回）。
+      # 本文 JSON の章名は変えず、表示用の見出しを sectionTitles に保存する（lib/article-sections.ts が表示で使う）。
+      # 書き直しは数字・名前が残っているかをプログラムで確かめてから差し替える。間に合わない記事は次の回で拾う
+      - name: Section headings
+        if: ${{ (inputs.fast_url || '') == '' }}
+        continue-on-error: true
+        timeout-minutes: 6
+        env:
+          LLM_WORKFLOW: products
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: timeout 320 python scripts/section_polish.py --recent-hours 24 --max 6 --apply
+
       # 記事の写真（scripts/images.py）。元記事の写真が無い・ロゴだけの記事に、フリー素材（Wikimedia Commons・Openverse）か
       # AI 生成（Workers AI、1日40枚まで）の写真を付ける。画像は Workers KV に置き /img/ で配信する。失敗しても記事の公開は止めない
       # 速報レーンの回は公開を急ぐので、時間を短く区切って速いモデルだけ使う

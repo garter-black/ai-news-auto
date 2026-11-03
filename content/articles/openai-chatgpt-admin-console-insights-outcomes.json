@@ -2,7 +2,7 @@
   "slug": "openai-chatgpt-admin-console-insights-outcomes",
   "title": "OpenAI、ChatGPTの管理画面に投資対効果の分析機能　業務別の利用内訳や開発への貢献度を表示",
   "lede": "OpenAIは2026年9月16日、企業向けChatGPTの利用状況や投資対効果（ROI）を詳細に分析できる「Admin Console（管理コンソール）」の新機能群を公開しました。消費クレジットの推移だけでなく、業務タスクごとの利用内訳や、開発部門におけるコードマージへの貢献度を定量化する機能を備えています。さらに、次世代モデル「GPT-6 Astra High」を活用し、自然言語の指示だけで分析レポートのスライドを作成し、Slackへ自動共有するデモも披露されました。",
-  "description": "OpenAIが発表したChatGPT Admin Consoleの新機能をベテラン記者が徹底解説。業務タスク別の利用内訳「Insights」や、開発貢献度を可視化する「Outcomes」、GPT-6搭載プラグインによるスライド自動生成・Slack共有の実力を紐解きます。",
+  "description": "OpenAIが発表したChatGPT Admin Consoleの新機能を解説。業務タスク別の利用内訳「Insights」や、開発貢献度を可視化する「Outcomes」、GPT-6搭載プラグインによるスライド自動生成・Slack共有の実力を紐解きます。",
   "keywords": [
     "OpenAI",
     "ChatGPT",

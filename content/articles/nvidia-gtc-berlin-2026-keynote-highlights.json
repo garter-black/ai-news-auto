@@ -6,7 +6,7 @@
   "threadsHook": "future",
   "writingVoice": "honest",
   "lede": "米NVIDIAはドイツ・ベルリンで開催された「GTC Berlin 2026」にて、創業者兼CEOのジェンスン・フアン氏による基調講演を実施しました。本講演では、AIモデルの学習・推論を超えた「AIエージェント」の安全な運用基盤や、次世代AIファクトリープラットフォーム「Vera Rubin NVL72」、さらに個人向けAI端末「RTX Spark」や人型ロボットの標準機に至るまで、同社の包括的なAI戦略が明かされました。",
-  "description": "NVIDIAがGTC Berlin 2026で発表した次世代計算基盤「Vera Rubin NVL72」、安全基盤「OpenShell」、AI端末「RTX Spark」、2027年提供予定の人型ロボットなどの主要トピックをベテラン記者が詳細に解説します。",
+  "description": "NVIDIAがGTC Berlin 2026で発表した次世代計算基盤「Vera Rubin NVL72」、安全基盤「OpenShell」、AI端末「RTX Spark」、2027年提供予定の人型ロボットなどの主要トピックを解説します。",
   "keywords": [
     "NVIDIA",
     "GTC 2026",

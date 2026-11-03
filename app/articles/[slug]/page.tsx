@@ -65,16 +65,16 @@ import {
 import { Highlight } from "@/lib/highlight";
 import { isOwnImage } from "@/lib/thumb-url";
 import {
-  extractHeadings,
   renderMarkdown,
   splitBeforeHeading,
 } from "@/lib/markdown";
 import { siteConfig } from "@/site.config";
+import { cleanSections, retitleHtml, tocOf } from "@/lib/article-sections";
 import ArticleProse from "@/components/ArticleProse";
 import CalculatorBox from "@/components/calc/CalculatorBox";
 import { CALC_SLOT, insertFigures, markCalculatorSlot, renderChart, type ChartFigure } from "@/lib/charts";
 import { calculatorForArticle } from "@/lib/calculators";
-import { getFx, getPlanProduct, getPlanProducts } from "@/lib/plan-prices";
+import { getFx, getPlanProduct } from "@/lib/plan-prices";
 import PriceTable from "@/components/PriceTable";
 import { hasPriceBlock, markPriceSlot, pricingForArticle, PRICE_SLOT, withPriceSlot } from "@/lib/price-slot";
 import { authorJsonLd, publisherJsonLd } from "@/lib/publisher";
@@ -198,12 +198,16 @@ export default async function ArticlePage({ params }: Props) {
   const readNextRail = !offer ? readNext : undefined;
   const readNextInlineClass = readNextRail && readNextInline ? "lg:hidden" : "";
   // 日本語の黙読はおよそ毎分600字
-  const readMinutes = Math.max(1, Math.round(article.body.length / 600));
+
   const reviewedLabel = reviewedDateLabel(article);
   // 「かんたんに読む」版（ある記事だけ、読み方を切り替えられる）
-  const easy = article.easy?.trim() ?? "";
+  // 中身なしの章・つなぎの文を除き（lib/article-sections.ts。scripts/section_gate.py と同じ規則）、
+  // 決まった型の見出しは記事ごとの見出し（sectionTitles）か普通の見出しに言い換えて出す
+  const easy = article.easy?.trim() ? cleanSections(article.easy.trim()).markdown : "";
   const easyMinutes = Math.max(1, Math.round(easy.length / 500));
-  const easyHtml = easy ? await renderMarkdown(easy, affiliates.map((a) => a.url)) : "";
+  const easyHtml = easy ? retitleHtml(await renderMarkdown(easy, affiliates.map((a) => a.url)), "easy", article.sectionTitles, "easy") : "";
+  const body = cleanSections(article.body).markdown;
+  const readMinutes = Math.max(1, Math.round(body.length / 600));
   // 料金の章に差し込んだ表は、毎日更新の料金表（と同じ段の他社比較）に差し替える（lib/price-slot.ts）。
   // 同じ製品の料金の段の図（charts の ladder）を出す記事では、表は図のすぐ下に「詳しい表」として出し、同じ数字を2か所に並べない
   const pricing = pricingForArticle(article);
@@ -212,13 +216,13 @@ export default async function ArticlePage({ params }: Props) {
     .map((chart) => renderChart(chart, getPlanProduct, fx))
     .filter((figure): figure is ChartFigure => figure !== null);
   const ladderChart = Boolean(
-    pricing && hasPriceBlock(article.body) && (article.charts ?? []).some((c) => c.kind === "ladder" && c.product === pricing.product) &&
+    pricing && hasPriceBlock(body) && (article.charts ?? []).some((c) => c.kind === "ladder" && c.product === pricing.product) &&
       chartFigures.some((f) => f.kind === "ladder"),
   );
   const figures = ladderChart ? chartFigures.map((f) => (f.kind === "ladder" ? { ...f, html: f.html + PRICE_SLOT } : f)) : chartFigures;
   const html = markPriceSlot(
     await renderMarkdown(
-      insertAfterPricingSection(pricing ? withPriceSlot(article.body, !ladderChart) : article.body, pricingLink),
+      insertAfterPricingSection(pricing ? withPriceSlot(body, !ladderChart) : body, pricingLink),
       affiliates.map((a) => a.url),
     ),
   );
@@ -231,8 +235,9 @@ export default async function ArticlePage({ params }: Props) {
     ) : undefined;
   // 記事の数字の図（記事 JSON の charts 欄。lib/charts.ts）を該当する章の下に差し込み、
   // 記事に合う計算機（lib/calculators.ts）の置き場所の印を、合う章の終わりに入れる
-  const calc = calculatorForArticle(article, getPlanProducts().map((p) => p.product));
-  const bodyHtml = markCalculatorSlot(insertFigures(html, figures), calc?.heading ?? null);
+  const calc = calculatorForArticle(article);
+  // 見出しの言い換えは、章名で位置を探す差し込み（図・計算機）が終わってから
+  const bodyHtml = retitleHtml(markCalculatorSlot(insertFigures(html, figures), calc?.heading ?? null), "body", article.sectionTitles);
   const calcInline = Boolean(calc && bodyHtml.includes(CALC_SLOT));
   const calcBox = calc ? <CalculatorBox calc={calc} className="my-10" /> : null;
   // 第3章の前に広告、さらに後半の前に収益導線を挟む
@@ -244,7 +249,7 @@ export default async function ArticlePage({ params }: Props) {
   const inlineCta = bodyTail && !inlineOffer && !shopLink && getCta(article.genreSlug, "inline") ? "inline" : undefined;
   const primaryCta = !inlineOffer && !shopLink && !inlineCta && getCta(article.genreSlug, "primary") ? "primary" : undefined;
   const hasInlinePr = Boolean(inlineOffer || shopLink || inlineCta || primaryCta);
-  const headings = extractHeadings(article.body);
+  const headings = tocOf(body, article.sectionTitles);
   // 読み終えた人に「次の1本」を大きく見せる。本文の途中にも1本だけ差し込む
   const nextReads = getNextReads(article, (a) => companyOf(a).slug);
   const nextSlugs = new Set(nextReads.map((n) => n.article.slug));
@@ -438,11 +443,11 @@ export default async function ArticlePage({ params }: Props) {
             )}
           </p>
 
-          {/* 3秒でわかる要点 */}
+          {/* この記事のポイント */}
           {article.highlights.length > 0 && (
             <section aria-labelledby="points-heading" className="mt-6 rounded-xl border-l-4 border-accent bg-surface p-5 sm:p-6">
               <h2 id="points-heading" className="t-h3">
-                3秒でわかる要点
+                この記事のポイント
               </h2>
               <ol className="mt-4 grid gap-3.5">
                 {article.highlights.map((highlight, index) => (
@@ -483,7 +488,7 @@ export default async function ArticlePage({ params }: Props) {
               judgedAt={verdict.judgedAt || article.generatedAt || article.publishedAt}
             />
           )}
-          {/* 「仕事・お金にどう活かせる？」（新しい記事だけ） */}
+          {/* 「仕事とお金への影響」（新しい記事だけ） */}
           {workMoney && <WorkMoneyCard workMoney={workMoney} />}
           {/* 料金早見表・イベントページへの案内（当てはまる記事だけ） */}
           <AssetLinks article={article} />
@@ -681,7 +686,7 @@ export default async function ArticlePage({ params }: Props) {
           {easyHtml && (
             <div className="read-easy">
               <p className="mt-8 inline-flex items-center gap-2 rounded-sm bg-go-soft px-3 py-1 text-badge font-bold text-go">
-                かんたん版：専門用語を使わずに説明しています
+                要約版：専門用語を控えて説明しています
               </p>
               <article className="prose mt-5 max-w-[40em]" dangerouslySetInnerHTML={{ __html: easyHtml }} />
               {inlineOffer && (
@@ -698,7 +703,7 @@ export default async function ArticlePage({ params }: Props) {
           {headings.length > 1 && (
             <nav aria-labelledby="toc-heading" className="mt-6 rounded-3xl border border-line p-6">
               <h2 id="toc-heading" className="t-h3">
-                この記事の章立て
+                目次
               </h2>
               <ol className="mt-3 grid list-decimal gap-2 pl-5 marker:font-mono marker:text-meta marker:text-muted">
                 {headings.map((heading) => (

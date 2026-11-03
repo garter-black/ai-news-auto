@@ -7,7 +7,7 @@
   "threadsStyle": 2,
   "writingVoice": "explainer",
   "lede": "米マイクロソフトの研究機関であるMicrosoft Researchは、AIエージェントの運用コスト削減技術や創薬向け基盤モデルを含む7つの最新成果を公表しました。試行錯誤のやり直しを効率化するフレームワーク「ForkPilot」により、AI処理の需要を最大59%抑制することに成功しています。あわせてタンパク質の動態を高速シミュレーションする「BioEmu2」のオープン公開も開始しました。",
-  "description": "Microsoft Researchが最新研究7件を公開。エージェントの推論コストを最大59%抑えるForkPilotや、MITライセンスで無償公開された創薬AI基盤モデルBioEmu2など、実用化を見据えた技術群を専門記者が詳細に解説します。",
+  "description": "Microsoft Researchが最新研究7件を公開。エージェントの推論コストを最大59%抑えるForkPilotや、MITライセンスで無償公開された創薬AI基盤モデルBioEmu2など、実用化を見据えた技術群を解説します。",
   "keywords": [
     "マイクロソフト",
     "Microsoft Research",

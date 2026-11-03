@@ -2,7 +2,7 @@
   "slug": "openai-chatgpt-work-financial-reporting-demo",
   "title": "OpenAIが「ChatGPT Work」のデモを公開　財務資料の数値不整合を自動検出",
   "lede": "米OpenAIは、ビジネス向けの新しいインターフェースおよび機能群となる「ChatGPT Work」のデモ動画を公開しました。四半期末の決算処理において、財務モデル、エグゼクティブ向けメモ、取締役会向けスライドといった複数の資料間に存在する数値の不整合を自動で検出し、修正プロセスを支援する様子が実演されています。既存のチャット型UIから一歩踏み込み、外部の業務システムやクラウドストレージと深く連携する新機能です。",
-  "description": "OpenAIが公開した「ChatGPT Work」のデモを徹底解説。Google DriveやNetSuiteと連携し、財務モデル、取締役会資料、メモの間の数値不整合を自動で検出し、直接編集やコメント追加を行う実務フローを紹介します。",
+  "description": "OpenAIが公開した「ChatGPT Work」のデモを解説。Google DriveやNetSuiteと連携し、財務モデル、取締役会資料、メモの間の数値不整合を自動で検出し、直接編集やコメント追加を行う実務フローを紹介します。",
   "keywords": [
     "OpenAI",
     "ChatGPT Work",

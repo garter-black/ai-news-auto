@@ -10,7 +10,7 @@
   "threadsStyle": 2,
   "writingVoice": "honest",
   "lede": "米NVIDIAは、公式ブログにて多言語音声認識モデル「NVIDIA Nemotron 3.5 Transcribe」を発表した。文字起こしや話者識別、翻訳、音声対話を1つのモデルでこなせるオープンウェイトのAIで、Hugging Faceなどで公開されている。",
-  "description": "NVIDIAが発表した多言語音声認識モデル「NVIDIA Nemotron 3.5 Transcribe」の機能や特徴、ベンチマーク結果を専門記者が解説します。",
+  "description": "NVIDIAが発表した多言語音声認識モデル「NVIDIA Nemotron 3.5 Transcribe」の機能や特徴、ベンチマーク結果を解説します。",
   "keywords": [
     "NVIDIA",
     "Nemotron",

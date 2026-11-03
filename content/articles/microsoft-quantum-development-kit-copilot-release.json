@@ -2,7 +2,7 @@
   "slug": "microsoft-quantum-development-kit-copilot-release",
   "title": "Microsoft、Copilot統合の「Quantum Development Kit」を一般提供",
   "lede": "米マイクロソフトは、量子コンピューティング向け開発プラットフォームの最新版「Microsoft Quantum Development Kit（QDK）」の一般提供を開始しました。本開発キットは、開発環境「Visual Studio Code」およびAI開発支援ツール「GitHub Copilot」と緊密に統合されている点が最大の特徴です。開発者は生成AIの支援を受けながら、量子アルゴリズムの設計、検証、リソース見積もり、そして実機へのデプロイまでを同一のワークフロー上で実行できるようになります。",
-  "description": "Microsoftが発表した最新の「Quantum Development Kit（QDK）」を詳細解説。VS CodeやGitHub Copilotとの連携、画像からのQ#コード生成、高精度なリソース見積もり、分子シミュレーション連携など、量子開発を劇的に効率化する新機能をプロの記者がレポートします。",
+  "description": "Microsoftが発表した最新の「Quantum Development Kit（QDK）」を詳細解説。VS CodeやGitHub Copilotとの連携、画像からのQ#コード生成、高精度なリソース見積もり、分子シミュレーション連携など、量子開発を劇的に効率化する新機能をレポートします。",
   "keywords": [
     "Microsoft QDK",
     "量子コンピューティング",

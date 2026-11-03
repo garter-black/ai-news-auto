@@ -43,7 +43,7 @@
     "take": "2026年10月にGitHubで公開予定のリファレンス実装を確認し、EU AI法の期限に向けた準備を進めましょう。",
     "judgedAt": "2026-10-28T21:52:21.228268+00:00"
   },
-  "body": "## 概要\nAWS ブログによると、AWSはAI生成オーディオに暗号技術を用いた来歴情報（プロヴェナンス）の透かしを埋め込みます。検証可能な管理の連鎖を保持するパイプライン「SENTINEL」の構築方法を発表しました。AI生成オーディオがメディア・サプライチェーンに組み込まれる中、欧州市場向けのコンプライアンス要件に対応します。\n\n## 何が発表された？\nAWSは、AI生成オーディオの合成から配信、復元に至るまでのプロセスで、信頼性と透明性を担保するアーキテクチャ「SENTINEL」を発表しました。これは新製品そのものというよりも、既存のAWSサービスとオープンソース技術を組み合わせて構築するリファレンス実装の位置づけとなります。\n\nSENTINELの構築に関わる主なAWSサービスと構成要素は以下の通りです。\n- Amazon Polly：ニューラルエンジンによる生のPCMオーディオの合成\n- Amazon Bedrock Guardrails：ApplyGuardrail APIを用いた安全ポリシーの評価\n- AWS Key Management Service (AWS KMS)：FIPS 140-3レベル3のHSMによる暗号署名の保護とキーの導出\n- Amazon SageMaker：AudioSealジェネレーターを用いた透かしの埋め込み\n- AWS Elemental Media Services：MediaLive、MediaPackage、MediaTailorによるトランスコードと広告挿入\n- Amazon Aurora PostgreSQL 互換エディション Serverless v2：マニフェストストアとしての追跡データの保存\n- Amazon CloudFront と Lambda@Edge：エッジでの復元APIの提供\n\n## 前と何が違う？\n### 合成の時点での透かし埋め込み\nSENTINELは、オーディオを生成してプレーン1から送り出す前に処理を行います。Amazon Bedrock Guardrailsによる安全ポリシーの評価結果のハッシュを計算します。さらに、AWS KMSのECDSA_SHA_256で署名します。これで、特定の安全ポリシー設定のもとで生成されたことを示す永続的な記録を作ります。さらに、Amazon SageMaker上でAudioSealのジェネレーターを動かします。これで、エンコード前の生のPCM波形に16ビットのペイロードを埋め込みます。\n\n### ライブストリーム全体での管理の連鎖\nプレーン2では、メディア放送パイプラインの各段階で処理を行います。AWS ElementalサービスからのAmazon EventBridgeイベントがLambda関数（transformer-signer）を起動します。AWS Elemental MediaLive、MediaPackage v2、MediaTailorの各処理段階で動作します。これで、暗号署名されたアサーションを来歴情報のチェーンに追加します。データの改ざんを検知できるようになります。\n\n### 改ざん検知可能なレジストリと復元\nプレーン3のレジストリでは、Amazon Aurora PostgreSQLやAmazon S3のObject Lock、Amazon OpenSearch Serverlessなどを組み合わせて処理します。これで、監査証跡やフィンガープリントの照合を行います。プレーン4では、CloudFrontとLambda@Edgeにデプロイされた復元 API を利用します。これで、キャプチャした1秒以上のオーディオから来歴情報のチェーン全体を再構築します。\n\n## 数字で見るとどう変わった？\n元記事内で数値の提示はなし。\n\n## ライバルと比べてどう？\nGoogleのSynthIDが単一ベンダーの製品群の中で同様の生成時埋め込みとC2PAの組み合わせを実現しています。これに対し、SENTINELはAWS上のサードパーティのあらゆるパイプラインで利用できます。オープンな構成としてモデル化されている点が特徴です。\n\n## 料金は？\nAWS内での専用の追加料金は明示されていません。Amazon BedrockやAWS KMS、Amazon SageMaker、AWS Elemental Media Servicesなどの各AWSマネージドサービスの標準的な料金体系に準拠します。\n\n## 日本で使える？\n日本から利用可能です。Amazon BedrockやAWS Elementalなどの各サービスが提供されているAWSリージョンがあります。ここで、公開されるリファレンス実装を活用して構築を進めることができます。\n\n## 自分にはどう関係する？\n### エンジニアなら\nAudioSealやC2PA 2.0、Auroraなどを組み合わせた実践的な来歴情報管理パイプラインの設計図があります。これを、そのままシステムアーキテクチャの参考にできます。\n\n### 企画・マーケティングなら\n欧州市場へAI生成オーディオを展開する際に求められる規定があります。EU AI法第50条や各種ガイドラインへの適合性を担保するための技術的基盤を理解できます。\n\n### 経営者・管理者なら\n生成AIを活用したメディア制作における著作権やコンプライアンスリスクに対応できます。これで、組織をまたいだ信頼性の高い管理体制を構築するための指針が得られます。\n\n## これまでの流れ\n- **2026年10月27日**：Amazon BedrockのOpenAIモデルでプロンプトキャッシュを活用するパターンが公開され、コスト削減につながる実装のコツが紹介されました（[Amazon BedrockのOpenAIモデルで、AIの回答コストを約6割減らす新機能の活用術](/articles/amazon-bedrock-openai-prompt-caching)）\n- **2026年10月28日**：AWS Machine Learning BlogでAmazon BedrockにおけるAI評価バイアスの修正手法とプロンプト最適化の仕組みが公開されました（[AWSのAmazon Bedrock、AI評価の歪みを直して最適モデル選定へ](/articles/aws-bedrock-evaluation-bias-property-finder)）\n- **2026年10月28日**：AWSが、AI生成オーディオの来歴情報を生成元で構築し検証可能な管理の連鎖を保持する「SENTINEL」を発表しました。\n\n## まとめ\nSENTINELは、後処理ではなく生成の時点で透かしを埋め込みます。署名付きのアサーションによってあらゆる変換を通じて来歴情報を追跡するソリューションです。2026年10月に予定されているGitHubでのリファレンス実装の公開を確認します。そして、2026年12月2日のEU AI法の期限に向けた準備を進めましょう。",
+  "body": "## 概要\n\nAWS ブログによると、AWSはAI生成オーディオに暗号技術を用いた来歴情報（プロヴェナンス）の透かしを埋め込みます。検証可能な管理の連鎖を保持するパイプライン「SENTINEL」の構築方法を発表しました。AI生成オーディオがメディア・サプライチェーンに組み込まれる中、欧州市場向けのコンプライアンス要件に対応します。\n\n## 何が発表された？\n\nAWSは、AI生成オーディオの合成から配信、復元に至るまでのプロセスで、信頼性と透明性を担保するアーキテクチャ「SENTINEL」を発表しました。これは新製品そのものというよりも、既存のAWSサービスとオープンソース技術を組み合わせて構築するリファレンス実装の位置づけとなります。\n\nSENTINELの構築に関わる主なAWSサービスと構成要素は以下の通りです。\n- Amazon Polly：ニューラルエンジンによる生のPCMオーディオの合成\n- Amazon Bedrock Guardrails：ApplyGuardrail APIを用いた安全ポリシーの評価\n- AWS Key Management Service (AWS KMS)：FIPS 140-3レベル3のHSMによる暗号署名の保護とキーの導出\n- Amazon SageMaker：AudioSealジェネレーターを用いた透かしの埋め込み\n- AWS Elemental Media Services：MediaLive、MediaPackage、MediaTailorによるトランスコードと広告挿入\n- Amazon Aurora PostgreSQL 互換エディション Serverless v2：マニフェストストアとしての追跡データの保存\n- Amazon CloudFront と Lambda@Edge：エッジでの復元APIの提供\n\n## 前と何が違う？\n\n### 合成の時点での透かし埋め込み\nSENTINELは、オーディオを生成してプレーン1から送り出す前に処理を行います。Amazon Bedrock Guardrailsによる安全ポリシーの評価結果のハッシュを計算します。さらに、AWS KMSのECDSA_SHA_256で署名します。これで、特定の安全ポリシー設定のもとで生成されたことを示す永続的な記録を作ります。さらに、Amazon SageMaker上でAudioSealのジェネレーターを動かします。これで、エンコード前の生のPCM波形に16ビットのペイロードを埋め込みます。\n\n### ライブストリーム全体での管理の連鎖\nプレーン2では、メディア放送パイプラインの各段階で処理を行います。AWS ElementalサービスからのAmazon EventBridgeイベントがLambda関数（transformer-signer）を起動します。AWS Elemental MediaLive、MediaPackage v2、MediaTailorの各処理段階で動作します。これで、暗号署名されたアサーションを来歴情報のチェーンに追加します。データの改ざんを検知できるようになります。\n\n### 改ざん検知可能なレジストリと復元\nプレーン3のレジストリでは、Amazon Aurora PostgreSQLやAmazon S3のObject Lock、Amazon OpenSearch Serverlessなどを組み合わせて処理します。これで、監査証跡やフィンガープリントの照合を行います。プレーン4では、CloudFrontとLambda@Edgeにデプロイされた復元 API を利用します。これで、キャプチャした1秒以上のオーディオから来歴情報のチェーン全体を再構築します。\n\n## 数字で見るとどう変わった？\n\n数値データは発表されていません。\n\n## ライバルと比べてどう？\n\nGoogleのSynthIDが単一ベンダーの製品群の中で同様の生成時埋め込みとC2PAの組み合わせを実現しています。これに対し、SENTINELはAWS上のサードパーティのあらゆるパイプラインで利用できます。オープンな構成としてモデル化されている点が特徴です。\n\n## 料金は？\n\n専用の追加料金はなく、Amazon BedrockやAWS KMS、Amazon SageMaker、AWS Elemental Media Servicesなど各マネージドサービスの標準料金に準拠します。\n\n## 日本で使える？\n\n日本から利用可能です。Amazon BedrockやAWS Elementalなどの各サービスが提供されているAWSリージョンがあります。ここで、公開されるリファレンス実装を活用して構築を進めることができます。\n\n## 自分にはどう関係する？\n\n### エンジニアなら\nAudioSealやC2PA 2.0、Auroraなどを組み合わせた実践的な来歴情報管理パイプラインの設計図があります。これを、そのままシステムアーキテクチャの参考にできます。\n\n### 企画・マーケティングなら\n欧州市場へAI生成オーディオを展開する際に求められる規定があります。EU AI法第50条や各種ガイドラインへの適合性を担保するための技術的基盤を理解できます。\n\n### 経営者・管理者なら\n生成AIを活用したメディア制作における著作権やコンプライアンスリスクに対応できます。これで、組織をまたいだ信頼性の高い管理体制を構築するための指針が得られます。\n\n## これまでの流れ\n\n- **2026年10月27日**：Amazon BedrockのOpenAIモデルでプロンプトキャッシュを活用するパターンが公開され、コスト削減につながる実装のコツが紹介されました（[Amazon BedrockのOpenAIモデルで、AIの回答コストを約6割減らす新機能の活用術](/articles/amazon-bedrock-openai-prompt-caching)）\n- **2026年10月28日**：AWS Machine Learning BlogでAmazon BedrockにおけるAI評価バイアスの修正手法とプロンプト最適化の仕組みが公開されました（[AWSのAmazon Bedrock、AI評価の歪みを直して最適モデル選定へ](/articles/aws-bedrock-evaluation-bias-property-finder)）\n- **2026年10月28日**：AWSが、AI生成オーディオの来歴情報を生成元で構築し検証可能な管理の連鎖を保持する「SENTINEL」を発表しました。\n\n## まとめ\n\nSENTINELは、後処理ではなく生成の時点で透かしを埋め込みます。署名付きのアサーションによってあらゆる変換を通じて来歴情報を追跡するソリューションです。2026年10月に予定されているGitHubでのリファレンス実装の公開を確認します。そして、2026年12月2日のEU AI法の期限に向けた準備を進めましょう。",
   "easy": "## ひとことで言うと\nAWSが発表した「SENTINEL」は、AIが作った音声に目に見えない電子透かしと証明書を埋め込み、誰がいつ作ったかを証明できるようにする仕組みのことです。\n\n## 何がすごいの？\nAIで作った音声は、途中で加工されたり書き換えられたりしても、音声そのものに入った電子透かし（＝信号の中に埋め込まれた目に見えない目印）と暗号化された証明書によって、正しく追跡できます。これにより、ヨーロッパの厳しい法律である「EU AI法」のルールに確実に対応できるようになります。\n\n## 自分に関係ある？\nヨーロッパ向けにAIで作った音声や音楽を配信しているメディア企業や、AI音声を使う開発者にとって、法律を守るための具体的な設計図としてそのまま役立ちます。\n\n## 使ってみるには\nSENTINELのリファレンス実装（＝参考にできる見本プログラム）は、2026年10月にGitHub（＝プログラムを公開するサイト）で公開される予定です。AWSの公式ブログやサービスを通じて最新情報を確認できます。",
   "channel": "AWS ブログ（日本）",
   "channelId": "",
@@ -56,7 +56,7 @@
   "videoTitle": "AWS で AI 生成コンテンツのオーディオ来歴情報を生成元で構築する",
   "publishedAt": "2026-10-28T10:12:44+00:00",
   "generatedAt": "2026-10-28T21:52:21.228334+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/aws-sentinel-ai-audio-provenance-6cbac920.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/aws-sentinel-ai-audio-provenance-12b4f55f.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "relatedSlugs": [
@@ -67,13 +67,45 @@
   "sourcePublishedAt": "2026-10-28T10:12:44+00:00",
   "detectedAt": "2026-10-28T21:51:16+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A dimly lit server room with rows of blinking server racks and a studio microphone on a desk, hands reaching to adjust the microphone while a computer screen displays an audio waveform.",
-    "provider": "Cloudflare Workers AI",
+    "kind": "official",
+    "org": "AWS",
+    "provider": "AWS ブログ（日本）",
+    "sourceUrl": "https://aws.amazon.com/jp/blogs/news/jpmne-building-audio-provenance-for-ai-generated-content-at-the-source-with-aws/",
     "original": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/10/28/Building-audio-provenance-for-AI-generated-content-at-the-source-with-AWS.png",
-    "at": "2026-10-28T21:53:00+00:00"
+    "width": 1152,
+    "height": 576,
+    "at": "2026-11-03T11:13:58+00:00",
+    "imageKind": "banner"
   },
   "originalTitle": "AWSがAI生成オーディオの来歴情報保持パイプライン「SENTINEL」を発表",
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "imageFocus": {
+    "x": 0.472,
+    "y": 0.497,
+    "box": [
+      0.009,
+      0.0,
+      0.934,
+      0.994
+    ],
+    "ar": 2.0,
+    "src": "https://ai-tech-express.jp/img/aws-sentinel-ai-audio-provenance-12b4f55f.jpg"
+  },
+  "sectionsPolishedAt": "2026-11-03T11:38:43+00:00",
+  "sectionTitles": {
+    "body": {
+      "何が発表された？": "AI音声の来歴管理基盤SENTINELを発表",
+      "前と何が違う？": "生成時の透かし埋め込みと署名処理",
+      "数字で見るとどう変わった？": "数値による性能指標の開示",
+      "ライバルと比べてどう？": "オープンな構成による他社との差異",
+      "料金は？": "利用料金と課金体系",
+      "日本で使える？": "日本国内での利用環境",
+      "自分にはどう関係する？": "エンジニアと企画担当者の活用法"
+    },
+    "easy": {
+      "何がすごいの？": "EU AI法に対応する技術的背景",
+      "自分に関係ある？": "対象となる企業と開発者",
+      "使ってみるには": "リファレンス実装の公開時期"
+    }
+  }
 }

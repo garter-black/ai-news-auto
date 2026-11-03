@@ -31,8 +31,8 @@ export default function ReadingMode({ easyMinutes, expertMinutes }: { easyMinute
   };
 
   const options: { key: Mode; label: string; sub: string }[] = [
-    { key: "easy", label: "かんたんに読む", sub: `約${easyMinutes}分・専門用語なし` },
-    { key: "expert", label: "専門家として読む", sub: `約${expertMinutes}分・数字や仕様まで` },
+    { key: "easy", label: "要約版で読む", sub: `約${easyMinutes}分・用語を控えめに` },
+    { key: "expert", label: "詳細版で読む", sub: `約${expertMinutes}分・数字や仕様まで` },
   ];
 
   return (

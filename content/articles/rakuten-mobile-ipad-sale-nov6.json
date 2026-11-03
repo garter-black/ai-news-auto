@@ -58,7 +58,7 @@
   "videoTitle": "楽天モバイル、iPadを取り扱い開始 11月6日8時発売",
   "publishedAt": "2026-10-29T03:16:01+00:00",
   "generatedAt": "2026-10-29T03:25:39.631093+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/rakuten-mobile-ipad-sale-nov6-202d749a.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/rakuten-mobile-ipad-sale-nov6-6d2f682c.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "relatedSlugs": [
@@ -71,25 +71,28 @@
   "fastLane": true,
   "speedMinutes": 13,
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A bright café interior with a wooden table, a steaming coffee cup, and natural daylight streaming through a window, the surface empty and no electronic devices in sight.",
-    "provider": "Cloudflare Workers AI",
-    "noProduct": true,
-    "original": "https://k-tai.watch.impress.co.jp/img/ktw/list/2152/180/Apple-iPad-mini-hero-261026.jpg",
-    "at": "2026-11-03T01:05:02+00:00"
+    "kind": "official",
+    "org": "楽天モバイル株式会社",
+    "provider": "楽天モバイル株式会社",
+    "sourceUrl": "https://corp.mobile.rakuten.co.jp/news/press/2026/1029_01/",
+    "original": "https://network.mobile.rakuten.co.jp/assets/img/product/ipad/kv-sp.png",
+    "width": 750,
+    "height": 312,
+    "at": "2026-11-03T11:13:18+00:00",
+    "imageKind": "kit",
+    "foundFrom": "https://k-tai.watch.impress.co.jp/docs/news/2152180.html"
   },
   "imageFocus": {
-    "x": 0.481,
-    "y": 0.405,
+    "x": 0.517,
+    "y": 0.5,
     "box": [
-      0.109,
-      0.0,
-      0.853,
-      0.81
+      0.15,
+      0.03,
+      0.884,
+      0.97
     ],
-    "ar": 1.9048,
-    "src": "https://ai-tech-express.jp/img/rakuten-mobile-ipad-sale-nov6-202d749a.jpg"
+    "ar": 2.4038,
+    "src": "https://ai-tech-express.jp/img/rakuten-mobile-ipad-sale-nov6-6d2f682c.jpg"
   },
   "originalTitle": "楽天モバイルがiPadの取り扱い開始　新型iPad miniなど4機種、11月6日8時に発売",
   "titleStyle": "2026-11-03"

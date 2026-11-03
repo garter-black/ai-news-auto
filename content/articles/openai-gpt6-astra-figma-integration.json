@@ -2,7 +2,7 @@
   "slug": "openai-gpt6-astra-figma-integration",
   "title": "OpenAIが「GPT-6 Astra」とFigmaの連携デモを公開　約2時間でUIプロトタイプを自動構築",
   "lede": "米国時間2026年9月21日、OpenAIは公式YouTubeチャンネルにおいて、開発中の次世代AIモデル「GPT-6 Astra」を用いた自律的なUI/UXデザインのデモ動画を公開しました。FigmaのAI部門責任者であるJohn Milinovich氏が登壇し、Astraに対して「個人用ヘリコプターのフライトコントロールシステムを設計する」という極めて抽象度の高い課題（ムーンショット）を提示。Astraが自律的に思考し、Figmaのコンポーネントシステムと直接連携しながら、わずか2時間強で実用レベルのインタラクティブなプロトタイプを構築する様子が明らかになりました。",
-  "description": "OpenAIが公開した「GPT-6 Astra」のデモを徹底解説。Figmaと直接連携し、自律的な思考（Reasoning）とMCP Serverを駆使して、複雑なアプリのプロトタイプを2時間で自動構築する技術の全貌に迫ります。",
+  "description": "OpenAIが公開した「GPT-6 Astra」のデモを解説。Figmaと直接連携し、自律的な思考（Reasoning）とMCP Serverを駆使して、複雑なアプリのプロトタイプを2時間で自動構築する技術の全貌に迫ります。",
   "keywords": [
     "GPT-6 Astra",
     "OpenAI",

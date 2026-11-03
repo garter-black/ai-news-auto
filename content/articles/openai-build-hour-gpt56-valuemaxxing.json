@@ -2,7 +2,7 @@
   "slug": "openai-build-hour-gpt56-valuemaxxing",
   "title": "OpenAIが「GPT-5.6」の活用手法「Valuemaxxing」を公開　入力コストを最大90%削減",
   "lede": "OpenAIは、開発者向けイベント「Build Hour」を開催し、最新のAIモデル「GPT-5.6」ファミリーを活用した開発手法「Valuemaxxing（バリューマキシング）」を公開しました。従来のトークン消費量を競う開発から、トークンあたりの成果価値を最大化する設計への移行を提唱しています。本稿では、発表された新モデルの特性やAPIの最適化機能、そして先行導入企業による劇的なコスト削減実績について、詳細にレポートします。",
-  "description": "OpenAIが「GPT-5.6」ファミリーを活用した開発手法「Valuemaxxing」を公開。Sol、Terra、Lunaの特徴や、プロンプトキャッシュ、プログラムによるツール呼び出しなどのAPI最適化機能をプロの記者が詳しく解説します。",
+  "description": "OpenAIが「GPT-5.6」ファミリーを活用した開発手法「Valuemaxxing」を公開。Sol、Terra、Lunaの特徴や、プロンプトキャッシュ、プログラムによるツール呼び出しなどのAPI最適化機能を解説します。",
   "keywords": [
     "OpenAI",
     "GPT-5.6",

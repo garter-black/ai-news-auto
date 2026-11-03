@@ -129,6 +129,37 @@ async function retiredResponse(request: Request, url: URL, env: Env): Promise<Re
   return new Response(request.method === "HEAD" || match[1] !== "articles" ? null : GONE_HTML, { status: 410, headers });
 }
 
+/**
+ * 終了した固定ページ（記事以外）。410 Gone を返し、検索エンジンに「もう無い」と伝える。
+ * /tools/ai-plan-cost … AIの有料プランの費用計算。足し算・割り算だけで読者に新しい情報が無かったため 2026-11-03 に終了
+ * （AdSense「有用性の低いコンテンツ」への対策。ページ・計算機・サイトマップ・記事への埋め込みは消してある）
+ */
+const RETIRED_PAGES: Record<string, { title: string; text: string; links: [string, string][] }> = {
+  "/tools/ai-plan-cost": {
+    title: "この計算ツールは終了しました",
+    text: "「AIの有料プラン 費用計算」は終了しました。AIの料金は早見表で、ドル建ての料金の円の目安は円換算ツールで確かめられます。",
+    links: [
+      ["/ai-pricing", "AIの料金・日本対応 早見表"],
+      ["/tools/usd-jpy", "ドル建てサブスクの円換算"],
+      ["/tools", "計算ツールの一覧"],
+      ["/", "トップページ"],
+    ],
+  },
+};
+
+function retiredPageResponse(request: Request, url: URL): Response | null {
+  const path = url.pathname.replace(/\.rsc$/, "").replace(/\/+$/, "");
+  const page = RETIRED_PAGES[path];
+  if (!page) return null;
+  const links = page.links.map(([href, label]) => `<li><a href="${href}">${label}</a></li>`).join("");
+  const html = GONE_HTML.replace(/<title>[^<]*<\/title>/, `<title>${page.title}｜サイソクニュース</title>`).replace(
+    /<h1>[\s\S]*<\/ul>/,
+    `<h1>${page.title}</h1><p>${page.text}</p><ul>${links}</ul>`,
+  );
+  const headers = { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=3600", "X-Robots-Tag": "noindex" };
+  return new Response(request.method === "HEAD" || request.headers.has("rsc") ? null : html, { status: 410, headers });
+}
+
 /** wrangler.jsonc の triggers.crons と同じ文字列（UTC 22:00 = 日本時間 7:00） */
 const PUSH_MORNING_CRON = "0 22 * * *";
 
@@ -254,8 +285,8 @@ export default {
     // 編集部の記事確認ページ（cloudflare/review.ts。ログインした編集部だけ。キャッシュしない）
     if (url.pathname === "/review" || url.pathname.startsWith("/review/")) return handleReview(request, url, env as unknown as ReviewEnv);
 
-    // 取り下げた記事（301 か 410）。エッジキャッシュに古い版の HTML が残っていても先に返す
-    const retired = await retiredResponse(request, url, env);
+    // 取り下げた記事（301 か 410）・終了した固定ページ（410）。エッジキャッシュに古い版の HTML が残っていても先に返す
+    const retired = retiredPageResponse(request, url) ?? (await retiredResponse(request, url, env));
     if (retired) return retired;
 
     const cacheKey = edgeCacheKey(request, url, env);

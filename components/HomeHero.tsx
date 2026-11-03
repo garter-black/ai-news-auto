@@ -85,7 +85,7 @@ export default function HomeHero({ lead }: { lead: ArticleSummary }) {
 
         {lead.highlights.length > 0 && (
           <div className="border-t border-line pt-4">
-            <p className="text-meta font-bold text-muted">3秒でわかる要点</p>
+            <p className="text-meta font-bold text-muted">この記事のポイント</p>
             <ol className="mt-2.5 grid gap-2.5">
               {lead.highlights.slice(0, 3).map((point, index) => (
                 <li key={index} className="grid grid-cols-[22px_1fr] gap-3 text-desc leading-[1.7] text-ink">

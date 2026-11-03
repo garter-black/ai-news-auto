@@ -7,7 +7,7 @@
   "threadsStyle": 2,
   "writingVoice": "friendly",
   "lede": "Microsoftは、開発者向けプラットフォーム「Microsoft Foundry」において、AIエージェントのインフラ構築を不要にする新機能「Microsoft Copilot harness」を発表しました。従来のコンテナ準備や認証設計をスキップし、プロンプトとツールの定義だけで高度なAIを短時間で作成できるようになります。",
-  "description": "Microsoftが発表した「Microsoft Copilot harness」をベテラン記者が解説。コンテナやサーバー構築なしで高度なAIエージェントを作れる仕組みや、GitHub Copilot連携、日本での利用可否まで詳しく分かります。",
+  "description": "Microsoftが発表した「Microsoft Copilot harness」を解説。コンテナやサーバー構築なしで高度なAIエージェントを作れる仕組みや、GitHub Copilot連携、日本での利用可否まで詳しく分かります。",
   "keywords": [
     "Microsoft Copilot harness",
     "Microsoft Foundry",

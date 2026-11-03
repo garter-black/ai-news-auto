@@ -2,7 +2,7 @@
   "slug": "microsoft-copilot-work-iq-dev-tools",
   "title": "Microsoft、Copilot拡張の開発ツール「Work IQ Developer Tools」を披露",
   "lede": "Microsoftは、Microsoft 365 Copilotの機能を拡張するための統合開発環境「Work IQ Developer Tools（WIQD）」を用いたエージェント開発手法を公開しました。GitHub Copilot CLIやModel Context Protocol（MCP）と連携し、要件定義からプラグイン生成、自動評価、テナントカタログへの公開までをエージェント主導で完結させるエンドツーエンドの開発ライフサイクルを提示しています。",
-  "description": "Microsoft 365 Copilotを拡張するWork IQ Developer Tools（WIQD）の技術解説。MCP連携やGitHub Copilot CLIを活用したプラグイン構築から、LLM Judgeによる自動評価、テナント公開までの一連の流れを記者が解説します。",
+  "description": "Microsoft 365 Copilotを拡張するWork IQ Developer Tools（WIQD）の技術解説。MCP連携やGitHub Copilot CLIを活用したプラグイン構築から、LLM Judgeによる自動評価、テナント公開までの一連の流れを解説します。",
   "keywords": [
     "Microsoft 365 Copilot",
     "Work IQ Dev Tools",

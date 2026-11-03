@@ -70,7 +70,7 @@
   "videoTitle": "オンラインストレージ「セキュアSAMBA」がMacのFinderから直接利用できるMac向けドライブアプリの提供を開始 – Windowsとの混在環境でもファイル共有を効率化",
   "publishedAt": "2026-11-03T08:30:00+00:00",
   "generatedAt": "2026-11-03T08:39:58.789604+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/secure-samba-mac-drive-app-a620cc14.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/secure-samba-mac-drive-app-03b283e8.jpg",
   "model": "anthropic-api:claude-opus-5-5",
   "affiliates": [],
   "faq": [
@@ -115,23 +115,28 @@
   "fastLane": true,
   "speedMinutes": 14,
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A MacBook on a clean office desk with a Finder window open, showing a folder icon, illuminated by soft natural light.",
-    "provider": "Cloudflare Workers AI",
-    "at": "2026-11-03T09:01:29+00:00"
+    "kind": "official",
+    "org": "株式会社kubellストレージ",
+    "provider": "株式会社kubellストレージ",
+    "sourceUrl": "https://www.kubell-storage.com/news/2026/10/sambamacdrive.html",
+    "original": "https://www.kubell-storage.com/assets_c/2026/10/90d404af703a549288798b8a6f6bffb081b144e9-thumb-1999x1125-28945.png",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-03T11:08:28+00:00",
+    "imageKind": "hero",
+    "foundFrom": "https://news.mynavi.jp/techplus/article/20261103-5248905/"
   },
   "imageFocus": {
-    "x": 0.373,
-    "y": 0.575,
+    "x": 0.444,
+    "y": 0.564,
     "box": [
-      0.0,
-      0.149,
-      0.747,
+      0.028,
+      0.128,
+      0.859,
       1.0
     ],
-    "ar": 1.9048,
-    "src": "https://ai-tech-express.jp/img/secure-samba-mac-drive-app-a620cc14.jpg"
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/secure-samba-mac-drive-app-03b283e8.jpg"
   },
   "originalTitle": "法人向けオンライン保存「セキュアSAMBA」、Mac用アプリ提供開始　Finderで直接編集",
   "titleStyle": "2026-11-03"

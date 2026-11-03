@@ -58,7 +58,7 @@
   "videoTitle": "Siri AI、日本語で提供開始",
   "publishedAt": "2026-10-26T18:38:48.029000+00:00",
   "generatedAt": "2026-10-28T01:52:48.257203+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/siri-ai-japanese-launch-0f6eaed3.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/siri-ai-japanese-launch-76105e27.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "relatedSlugs": [
@@ -70,18 +70,27 @@
   "detectedAt": "2026-10-28T01:42:00+00:00",
   "fastLane": true,
   "imageCredit": {
-    "kind": "stock",
-    "title": "Smartphone use at railway station",
-    "creator": "Rawpixel.com",
-    "creatorUrl": "",
-    "license": "CC0",
-    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "provider": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Smartphone_use_at_railway_station.jpg",
-    "query": "スマートフォン",
-    "original": "https://www.apple.com/newsroom/images/2026/10/siri-ai-is-available-today-in-more-languages/article/Apple-Siri-AI-rich-conversations-with-Siri-JP_big.jpg.small_2x.jpg",
-    "at": "2026-10-28T05:37:49+00:00"
+    "kind": "official",
+    "org": "Apple",
+    "provider": "Apple Newsroom（日本）",
+    "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/siri-ai-is-available-today-in-more-languages/",
+    "original": "https://www.apple.com/newsroom/images/2026/10/siri-ai-is-available-today-in-more-languages/article/Apple-iOS-27-Siri-AI-personal-context-JP_inline.jpg.medium_2x.jpg",
+    "width": 1152,
+    "height": 1097,
+    "at": "2026-11-03T11:16:59+00:00"
   },
   "originalTitle": "iPhoneのSiriが生まれ変わる「Siri AI」　日本語でも提供開始、画面や写真も理解",
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.518,
+    "box": [
+      0.163,
+      0.036,
+      0.838,
+      1.0
+    ],
+    "ar": 1.0501,
+    "src": "https://ai-tech-express.jp/img/siri-ai-japanese-launch-76105e27.jpg"
+  }
 }

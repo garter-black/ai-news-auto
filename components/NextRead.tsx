@@ -18,7 +18,7 @@ export default function NextRead({ items }: { items: NextReadItem[] }) {
   return (
     <section aria-labelledby="next-read-heading" className="mt-12 max-w-[46em]">
       <h2 id="next-read-heading" className="t-h2 flex items-center gap-2">
-        次に読むならこれ
+        次に読む記事
         <span aria-hidden className="text-live">→</span>
       </h2>
 

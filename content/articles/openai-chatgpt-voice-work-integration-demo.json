@@ -2,7 +2,7 @@
   "slug": "openai-chatgpt-voice-work-integration-demo",
   "title": "OpenAIが「ChatGPT Voice」の仕事活用デモを公開　画面認識と外部アプリ連携で作業を支援",
   "lede": "OpenAIは2026年7月29日、音声対話機能「ChatGPT Voice」をビジネス作業で活用する最新デモ映像を公開しました。単なる音声文字入力（ディクテーション）とは異なり、画面共有による視覚情報の理解と、SlackやGoogle Calendar、Navanといった外部アプリケーションとのバックグラウンド連携を同時に行う点が最大の特徴です。ユーザーの作業フローを途切らせずにタスクを支援します。",
-  "description": "OpenAIが発表したChatGPT Voiceの仕事活用デモを徹底解説。画面共有とマルチアプリ連携により、バックグラウンドで旅行手配や資料作成を自動処理する新たなAIアシスタント機能の全容を記者が分析します。",
+  "description": "OpenAIが発表したChatGPT Voiceの仕事活用デモを解説。画面共有とマルチアプリ連携により、バックグラウンドで旅行手配や資料作成を自動処理する新たなAIアシスタント機能の全容を分析します。",
   "keywords": [
     "ChatGPT Voice",
     "OpenAI",

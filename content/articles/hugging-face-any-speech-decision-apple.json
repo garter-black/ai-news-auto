@@ -56,7 +56,7 @@
   "videoTitle": "Introducing AnySpeechRecognizer and AnyDecisionModel: Open Models for Speech and Decisions on Apple Platforms",
   "publishedAt": "2026-10-29T00:00:00+00:00",
   "generatedAt": "2026-10-29T15:57:05.400398+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/hugging-face-any-speech-decision-apple-6cc40bc4.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/hugging-face-any-speech-decision-apple-391a025b.jpg",
   "model": "gemini-3.1-flash-lite",
   "affiliates": [
     {
@@ -71,13 +71,28 @@
   "sourcePublishedAt": "2026-10-29T00:00:00+00:00",
   "detectedAt": "2026-10-29T15:51:17+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A close-up of a developer's hands typing on a laptop keyboard beside a smartphone showing a voice waveform on the screen, illuminated by soft natural light from a nearby window.",
-    "provider": "Cloudflare Workers AI",
-    "original": "https://huggingface.co/blog/assets/anydecisionmodel/banner.png",
-    "at": "2026-10-29T16:01:00+00:00"
+    "kind": "official",
+    "org": "Hugging Face",
+    "provider": "Hugging Face公式ブログ",
+    "sourceUrl": "https://huggingface.co/blog/anydecisionmodel",
+    "original": "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/anydecisionmodel/emoji-magnet.mp4",
+    "width": 1000,
+    "height": 720,
+    "at": "2026-11-03T11:12:14+00:00",
+    "imageKind": "video"
   },
   "originalTitle": "Hugging FaceがApple端末向けAI開発ツールを公開、音声認識と意思決定をアプリに実装",
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "imageFocus": {
+    "x": 0.498,
+    "y": 0.641,
+    "box": [
+      0.0,
+      0.283,
+      0.997,
+      1.0
+    ],
+    "ar": 1.3889,
+    "src": "https://ai-tech-express.jp/img/hugging-face-any-speech-decision-apple-391a025b.jpg"
+  }
 }

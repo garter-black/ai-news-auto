@@ -2,7 +2,7 @@
   "slug": "gemini-live-translation-broadcast-livekit",
   "title": "Googleが「Gemini 3.5 Live」とLiveKitによるリアルタイム多言語翻訳配信アプリを公開",
   "lede": "Google DeepMindは、Gemini APIで利用可能な「Gemini 3.5 Live」翻訳モデルとリアルタイム通信フレームワーク「LiveKit」を組み合わせた、多言語音声翻訳・配信アプリケーションのオープンソースデモを公開しました。配信者の音声をリアルタイムで複数言語に翻訳し、音声と字幕を同時に配信する仕組みを、Google Cloud Run上に構築する実用的な構成案が提示されています。",
-  "description": "GoogleがGemini 3.5 Live APIとLiveKit、Google Cloud Runを組み合わせたリアルタイム多言語翻訳配信アプリのデモを公開。アーキテクチャの解説からデプロイ手順、AIエージェントによるコード探索まで、プロの視点で徹底解説します。",
+  "description": "GoogleがGemini 3.5 Live APIとLiveKit、Google Cloud Runを組み合わせたリアルタイム多言語翻訳配信アプリのデモを公開。アーキテクチャの解説からデプロイ手順、AIエージェントによるコード探索まで、プロの視点で解説します。",
   "keywords": [
     "Gemini 3.5 Live",
     "LiveKit",

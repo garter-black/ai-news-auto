@@ -6,10 +6,13 @@
      写真（製品・人物・会場・調印式）> 公式動画 > プレスキットの写真 > 見出し画像・キービジュアル の順に選ぶ。
      ダウンロードして幅 1200px まで縮小（切り抜かない）し、自前の KV から配信する。記事には「画像：◯◯（公式発表より）」と出す。
      ほかの報道機関・通信社（ロイター・AP・Getty・日経・ITmedia など）の写真、他人の SNS の画像、関連記事のカード・メニュー・
-     古い宣伝画像は使わない。ほかのニュースサイト・ブログ・不明な発信元の記事では元記事の画像を使わない
+     古い宣伝画像は使わない。ほかのニュースサイト・ブログ・不明な発信元の記事では元記事の画像を使わない。
+     ただし製品・サービスの発表なら、報道の記事から会社自身の発表（自社のニュースルーム・PR TIMES）をたどって
+     その画像を使う（find_official_release。2026-11-03）
   2. AI 生成: Cloudflare Workers AI（flux-2-klein-4b → flux-1-schnell）。前からの写真風のプロンプト。話題を問わない。
      文字・ロゴ・実在の人物なし。1日 IMAGE_AI_DAILY_MAX 枚まで。
      製品の発表の記事（product_launch。2026-11-03）は製品そのもの・見間違える物を描かない（使う場面・会場の雰囲気・抽象）。
+     アプリ・クラウド・機能の発表（announcement_article）も、製品・画面・端末を描かない。
      描いてしまったら作り直し、だめなら AI 画像は使わない。前に付けた公式の写真は、選び直しで AI・素材に替えない
   3. フリー素材: Wikimedia Commons と Openverse（CC0・パブリックドメイン・CC BY だけ）。AI が使えないとき。関係の確認は厳しめ
   4. 公式のロゴ・文字の多い図・バナー（どれも無ければ今までどおり写真なしのカバー）
@@ -25,7 +28,8 @@ YouTube のサムネイルはそのまま使う。
   python3 scripts/images.py --slug <slug> --dry-run
   python3 scripts/images.py --recheck-source        # 元記事の写真を採用した記事を今の基準で見直す
   python3 scripts/images.py --repick-hours 72 --max 60  # 新しい記事の素材・AI の画像を今の基準で選び直す
-  python3 scripts/images.py --product-repick-days 7     # 製品の発表の記事の AI・素材の画像を選び直す（公式の製品写真→製品を描かない場面）
+  python3 scripts/images.py --product-repick-days 7     # 製品・サービスの発表の記事の AI・素材の画像を選び直す（公式の画像→製品を描かない場面）
+  python3 scripts/images.py --product-repick-days 7 --official-only  # 同じ記事で公式の画像だけを探す（無ければ今の画像のまま）
   python3 scripts/images.py --retry-ai --max 30     # AI 生成にした記事でフリー素材を探し直す（Commons が落ちていた日の後に）
   python3 scripts/images.py --cache-official --max 100  # 外部の写真を直リンクしている記事を直す（公式は自前に保存、それ以外は 2・3）
   python3 scripts/images.py --variants --max 400        # 前からある自前の写真に幅ごとの WebP を足す
@@ -675,9 +679,15 @@ def parse_page(page_url: str) -> tuple[_PageCollector, str] | None:
     # 出典の表示用（プレスリリース配信の記事は、発表した会社の名前を題名・構造化データから取る）
     title = re.search(r"<title[^>]*>([^<]{1,300})</title>", text, re.I)
     author = re.search(r'"author"\s*:\s*\{[^{}]{0,200}?"name"\s*:\s*"([^"]{1,60})"', text)
+    site = re.search(r'<meta[^>]+property=["\']og:site_name["\'][^>]+content=["\']([^"\']{1,80})["\']', text, re.I) or re.search(
+        r'<meta[^>]+content=["\']([^"\']{1,80})["\'][^>]+property=["\']og:site_name["\']', text, re.I
+    )
+    og_title = re.search(r'<meta[^>]+property=["\']og:title["\'][^>]+content=["\']([^"\']{1,300})["\']', text, re.I)
     PAGE_META.setdefault(page_url, {
         "title": html.unescape(title.group(1)).strip() if title else "",
         "author": html.unescape(author.group(1)).strip() if author else "",
+        "site": html.unescape(site.group(1)).strip() if site else "",
+        "ogTitle": html.unescape(og_title.group(1)).strip() if og_title else "",
     })
     return parser, final
 
@@ -1080,6 +1090,273 @@ def real_object_article(article: dict) -> bool:
     return bool(REAL_OBJECT_TITLE.search(title) or PRODUCT_NOUN.search(CORPORATE.sub("", title)))
 
 
+# --------------------------------------------------------------------------- #
+# 製品・サービスの発表（2026-11-03 オーナー決定: 画像は公式が先。AI 画像は公式が無いときだけで、製品そのものを描かない）
+# --------------------------------------------------------------------------- #
+# 形のある製品（product_launch・real_object_article）に加えて、アプリ・クラウド・機能の提供開始などの発表も含める
+# （kubell の「セキュアSAMBA」の Mac 用アプリの記事に、AI が Finder を開いた MacBook を描いた）。
+SERVICE_VERB = re.compile(
+    r"(提供開始|提供を開始|提供へ|提供する|サービス開始|リリース|発表|公開|発売|開始|登場|搭載|対応|追加|導入|実装|予約|"
+    r"新機能|新サービス|新プラン|新モデル|新製品|新商品|新アプリ|新版|試作版|プレビュー|一般提供|拡張|刷新|一新|操作可能|使えるように|"
+    r"launch|release|announce|unveil|introduc|roll(?:s|ing)? out)",
+    re.I,
+)
+# 発表ではない話題（業績・調査・事件・人事・解説など）
+NOT_ANNOUNCE = re.compile(
+    r"(決算|業績|実績|販売台数|赤字|黒字|調査|アンケート|ランキング|逮捕|訴訟|提訴|判決|障害|発見|事故|不正|流出|漏えい|漏洩|注意喚起|"
+    r"人事|辞任|退任|就任|受章|褒章|株価|上場|買収|合併|規制|法案|研究会|会合|議事|金利|失業率|物価|統計|指数|予測|トレンド|"
+    r"事例|使われ方|地震|被災|災害|ボランティア|寄付|まとめ|比較|レビュー|使ってみた|解説|選び方|おすすめ)"
+)
+# 製品・サービスの発表らしさ（「」の製品名・英字の製品名・サービスを指す言葉のどれか）
+SERVICE_NOUN = re.compile(
+    r"(アプリ|サービス|機能|モデル|ツール|ソフト|プラン|新製品|新商品|製品|商品|端末|新型|版|システム|プラットフォーム|基盤|"
+    r"エンジン|アシスタント|エージェント|クラウド|ストレージ|特典|API|SDK)"
+)
+
+
+def announcement_article(article: dict) -> bool:
+    """製品・サービス（端末・乗り物・アプリ・クラウド・機能）の発表の記事か。AI 画像で製品を描かず、公式の画像を先に探す"""
+    if article.get("type") == "roundup" or article.get("noPhoto"):
+        return False
+    if real_object_article(article):
+        return True
+    verdict = article.get("verdict") if isinstance(article.get("verdict"), dict) else {}
+    if article.get("genreSlug") in ("sports", "public") or verdict.get("kind") in ("sports", "public"):
+        return False
+    # 検索用の題名（seoTitle）には「とは？料金と始め方」などの決まり文句が付くので、本来の題名だけで見る
+    title = str(article.get("title") or "")
+    if not SERVICE_VERB.search(title) or NOT_ANNOUNCE.search(title):
+        return False
+    return bool(re.search(r"[「『][^」』]{2,40}[」』]", title) or re.search(r"[A-Z][A-Za-z0-9]{2,}", title) or SERVICE_NOUN.search(title))
+
+
+def secondary_source(article: dict) -> bool:
+    """出典が報道（ニュースサイト・まとめ）など、会社自身の発表ではない Web の記事か"""
+    return article.get("sourceType") == "web" and bool(article.get("sourceUrl")) and official_source(article) is None
+
+
+# 報道の記事から、その会社自身の発表（自社のニュースルーム・PR TIMES など）を探す（2026-11-03）。
+# マイナビニュースの記事の本文には会社のサイト（kubell-storage.com）が張られているだけのことが多いので、
+#   1. 本文から張られた発表のページ（PR TIMES の記事・会社のサイトの /news/ /press/ の記事）
+#   2. 本文から張られた会社のサイトのトップ（とニュース一覧）に並ぶ発表
+#   3. 記事の確かめ先（factSources）のうち発表のページ
+# の中から、題名の製品名（「」の中）・言葉・日付が合うものを選び、そのページの公式の画像を使う。
+OFFSITE_SKIP = re.compile(
+    r"(twitter\.com|//x\.com|facebook\.com|instagram\.com|youtube\.com|youtu\.be|tiktok\.com|linkedin\.com|line\.me|lin\.ee|note\.com|"
+    r"hatena|pinterest|threads\.(net|com)|bsky\.app|google\.|goo\.gl|apps\.apple\.com|play\.google|amazon\.|amzn\.|a8\.net|"
+    r"valuecommerce|doubleclick|googlesyndication|jsdelivr|cloudflare|wikipedia\.org|w3\.org|schema\.org|creativecommons)",
+    re.I,
+)
+RELEASE_PATH = re.compile(
+    r"/(news|newsroom|press|pressroom|pressrelease|press-?releases?|releases?|pr|topics|info|information|ir|announcements?|notice|blog)(/|[-_]|\.html?$)",
+    re.I,
+)
+RELEASE_LIST = re.compile(r"^/((ja|jp|en)/)?(news|newsroom|press|pressroom|press-?releases?|releases?|topics|info|information)/?(index\.\w+)?$", re.I)
+WIRE_RELEASE = re.compile(
+    r"^https?://(prtimes\.jp/main/html/rd/p/\d+\.\d+\.html|(www\.)?atpress\.ne\.jp/news/\d+|kyodonewsprwire\.jp/release/|"
+    r"(www\.)?value-press\.com/pressrelease/\d+|(www\.)?dreamnews\.jp/press/\d+|(www\.)?businesswire\.com/news/|(www\.)?prnewswire\.com/news-releases/)",
+    re.I,
+)
+_TERM_STOP = {
+    "the", "and", "for", "new", "app", "apps", "web", "inc", "ltd", "news", "press", "release", "com", "www", "html", "http", "https",
+    "サービス", "アプリ", "リリース", "プレスリリース", "ニュース", "オンライン", "ユーザー", "データ", "システム", "プラン",
+    "ソリューション", "プラットフォーム", "テクノロジー", "ビジネス", "インターネット", "お知らせ", "クラウド", "ツール",
+}
+
+
+def _root_domain(host: str) -> str:
+    parts = (host or "").lower().split(":")[0].removeprefix("www.").split(".")
+    if len(parts) >= 3 and parts[-1] == "jp" and parts[-2] in ("co", "or", "ne", "go", "lg", "ac", "ed"):
+        return ".".join(parts[-3:])
+    return ".".join(parts[-2:]) if len(parts) >= 2 else ".".join(parts)
+
+
+def _squash(text: str) -> str:
+    return re.sub(r"[\s\-_・.／/　]", "", html.unescape(urllib.parse.unquote(text or "")).lower())
+
+
+def release_terms(article: dict) -> tuple[list[str], set[str]]:
+    """(製品名＝題名の「」『』の中, 言葉＝題名・キーワードの英単語とカタカナ語)"""
+    title = str(article.get("title") or "")
+    names = [n.strip() for n in re.findall(r"[「『]([^」』]{2,40})[」』]", title) if n.strip()]
+    text = " ".join([title, *[str(k) for k in (article.get("keywords") or [])[:6]]])
+    words = {w.lower() for w in re.findall(r"[A-Za-z][A-Za-z0-9+]{2,}", text)} | set(re.findall(r"[ァ-ヴー]{3,}", text))
+    words -= _TERM_STOP
+    # 製品名の一部（「セキュアSAMBA」の セキュア・samba）は数えない（製品名だけでは、その会社のどの発表か分からない）
+    in_names = _squash(" ".join(names))
+    return names, {w for w in words if len(w) >= 3 and _squash(w) not in in_names}
+
+
+def _text_date(text: str) -> datetime | None:
+    """URL・文字の日付（/2026/10/ 20261028 2026.10.28 2026年10月28日）"""
+    for pattern in (r"(20\d\d)[年./-](\d{1,2})[月./-](\d{1,2})", r"(?<!\d)(20\d\d)(\d\d)(\d\d)(?!\d)", r"/(20\d\d)/(\d{1,2})/"):
+        match = re.search(pattern, text or "")
+        if not match:
+            continue
+        try:
+            day = int(match.group(3)) if match.lastindex and match.lastindex >= 3 else 15
+            return datetime(int(match.group(1)), int(match.group(2)), day, tzinfo=timezone.utc)
+        except ValueError:
+            continue
+    return None
+
+
+def release_score(text: str, article: dict) -> float:
+    """発表のページ（リンクの文字・URL・題名）が記事の発表と合う度合い。合わなければ 0。
+    製品名（「」の中）が題名にあるときは、その名前が入っていることが条件。日付は記事の45日前〜3日後まで"""
+    names, words = release_terms(article)
+    flat = _squash(text)
+    name_hits = sum(1 for n in names if _squash(n) and _squash(n) in flat)
+    word_hits = sum(1 for w in words if _squash(w) in flat)
+    if names and not name_hits:
+        return 0.0
+    if not names and word_hits < 2:
+        return 0.0
+    if names and name_hits + word_hits < 2:
+        return 0.0
+    score = 3.0 * name_hits + word_hits
+    when = _text_date(text)
+    if when:
+        try:
+            made = datetime.fromisoformat(str(article.get("publishedAt") or article.get("generatedAt")).replace("Z", "+00:00"))
+            days = (made - when).days
+        except Exception:  # noqa: BLE001
+            days = None
+        if days is not None:
+            if days > 45 or days < -3:
+                return 0.0
+            score += 2.0 if days <= 10 else 0.5
+    return score
+
+
+LINK_TEXT_GENERIC = re.compile(r"^(こちら|ここ|詳細|詳しく|公式サイト|公式|サイト|リンク|発表|プレスリリース|ニュースリリース|リリース|here|link|more|website|official)$", re.I)
+PARSE_CACHE: dict[str, tuple[_PageCollector, str] | None] = {}
+
+
+def parse_page_cached(page_url: str) -> tuple[_PageCollector, str] | None:
+    if page_url not in PARSE_CACHE:
+        PARSE_CACHE[page_url] = parse_page(page_url)
+    return PARSE_CACHE[page_url]
+
+
+def _release_link(url: str) -> bool:
+    path = urllib.parse.urlparse(url).path or "/"
+    if WIRE_RELEASE.match(url):
+        return True
+    return bool(RELEASE_PATH.search(path)) and not RELEASE_LIST.match(path) and len([p for p in path.split("/") if p]) >= 2
+
+
+def find_official_release(article: dict, max_pages: int = 6) -> dict | None:
+    """報道の記事から、その会社自身の発表のページを探す。
+    見つかれば {"url", "article"（発表のページを出典にした記事の写し）, "official"（official_source と同じ形）, "org"}"""
+    source = article.get("sourceUrl") or ""
+    parsed = parse_page_cached(source)
+    if not parsed:
+        return None
+    parser, final = parsed
+    outlet = _root_domain(urllib.parse.urlparse(final).netloc)
+    official_slugs()  # MEDIA_HOSTS に radar.outlets を足す
+
+    def offsite(url: str) -> bool:
+        host = urllib.parse.urlparse(url).netloc.lower()
+        if not url.startswith("http") or not host or _root_domain(host) == outlet:
+            return False
+        return not (_host_in(host, MEDIA_HOSTS) or _host_in(host, AGENCY_IMAGE_HOSTS) or OFFSITE_SKIP.search(url))
+
+    scored: dict[str, float] = {}
+    homes: list[str] = []
+    story = _squash(" ".join(str(article.get(k) or "") for k in ("title", "lede", "description")) + " " + str(article.get("body") or "")[:3000])
+    # 本文の囲みの名前（マイナビニュースは c-archiveMain）で本文のリンクが「本文ではない場所」に見えることがあるので、場所は問わず、
+    # 会社のサイトへのリンクは、リンクの文字（会社名・製品名）が記事に出てくるものだけにする（広告・関連サービスのリンクを除く）
+    for href, text, _bad in parser.links:
+        full = urllib.parse.urljoin(final, html.unescape(href.strip())).split("#")[0]
+        if not offsite(full):
+            continue
+        if _release_link(full):
+            score = release_score(f"{text} {full}", article)
+            if score:
+                scored[full] = max(scored.get(full, 0), score + 1)  # 報道が直接張った発表は少し上に
+            continue
+        host = urllib.parse.urlparse(full).netloc.lower()
+        if _host_in(host, WIRE_HOSTS):
+            continue  # 配信サービスのトップ・一覧
+        label = _squash(text)
+        if len(label) < 2 or label not in story or LINK_TEXT_GENERIC.search(text.strip()):
+            continue
+        home = f"{urllib.parse.urlparse(full).scheme}://{host}/"
+        if home not in homes:
+            homes.append(home)
+    for fact in article.get("factSources") or []:
+        url = str((fact or {}).get("url") or "")
+        if offsite(url) and _release_link(url):
+            score = release_score(f"{fact.get('name', '')} {url}", article)
+            if score:
+                scored[url] = max(scored.get(url, 0), score)
+    pages = 1
+    # 会社のサイトのトップ（無ければニュース一覧も1つ）に並ぶ発表から探す。トップのお知らせ欄は news-list などの
+    # 「本文ではない場所」の名前が付くことが多いので、ここでは場所を問わない（同じ会社のサイトの発表のページだけ）
+    for home in homes[:2]:
+        if scored or pages >= max_pages:
+            break
+        queue = [home]
+        while queue and pages < max_pages:
+            index = queue.pop(0)
+            sub = parse_page_cached(index)
+            pages += 1
+            if not sub:
+                continue
+            sub_parser, sub_final = sub
+            root = _root_domain(urllib.parse.urlparse(sub_final).netloc)
+            lists = []
+            for href, text, _ in sub_parser.links:
+                full = urllib.parse.urljoin(sub_final, html.unescape(href.strip())).split("#")[0]
+                host = urllib.parse.urlparse(full).netloc.lower()
+                if not full.startswith("http") or _root_domain(host) != root:
+                    continue
+                if _release_link(full):
+                    score = release_score(f"{text} {full}", article)
+                    if score:
+                        scored[full] = max(scored.get(full, 0), score)
+                elif RELEASE_LIST.match(urllib.parse.urlparse(full).path or "/") and full not in lists:
+                    lists.append(full)
+            if not scored and index == home and lists:
+                queue.append(lists[0])
+    # 点数の高い順に、発表のページを開いて題名でも確かめる
+    for url, _ in sorted(scored.items(), key=lambda kv: -kv[1])[:3]:
+        if pages >= max_pages + 2:
+            break
+        sub = parse_page_cached(url)
+        pages += 1
+        if not sub:
+            continue
+        _, rel_final = sub
+        meta = PAGE_META.get(url) or {}
+        heading = f"{meta.get('ogTitle', '')} {meta.get('title', '')}"
+        if not release_score(f"{heading} {url}", article):
+            log(f"   [img] 発表の候補の題名が記事と合わない: {url[:90]}（{heading[:60]}）")
+            continue
+        host = urllib.parse.urlparse(rel_final or url).netloc.lower()
+        wire = WIRE_HOSTS.get(_host_in(host, WIRE_HOSTS) or "") or ""
+        slug = next((s for s, name in WIRE_CHANNELS.items() if name == wire), "") if wire else "radar-official"
+        draft = {**article, "sourceUrl": url, "channelSlug": slug, "thumbnail": "", "sourceType": "web"}
+        if wire:
+            org = wire_org(draft)
+        else:
+            site = meta.get("site") or ""
+            if not site:
+                parts = [p.strip() for p in re.split(r"\s[|｜\-–]\s", meta.get("title") or "") if p.strip()]
+                site = parts[-1] if len(parts) >= 2 and len(parts[-1]) <= 40 else ""
+            org = org_name({"sourceName": site}) if site else _root_domain(host)
+        draft["sourceName"] = org or wire
+        draft["channel"] = org or wire
+        official = official_source(draft)
+        if official is None:
+            continue
+        log(f"   [img] 会社自身の発表を見つけた: {url[:100]}（{org or wire}）")
+        return {"url": url, "article": draft, "official": official, "org": org or wire}
+    return None
+
+
 def pick_official(article: dict, repeats: Counter, fast: bool = False) -> dict:
     """公式の発表の中から、いちばん良い画像を選ぶ。
     {"best": {"kind", "url", "image", "rank", "where"} or None, "reasons": [使わなかった理由]}"""
@@ -1090,7 +1367,7 @@ def pick_official(article: dict, repeats: Counter, fast: bool = False) -> dict:
     # 速報の回（fast）も同じ探し方をする（2026-11-03: 速報の回だけ動画・プレスキットを見ずに AI にしていた）。fast は AI のモデル選びだけに使う
     fast = False
     product = real_object_article(article)
-    parsed = parse_page(page) if page else None
+    parsed = parse_page_cached(page) if page else None
     if not parsed:
         return {"best": None, "reasons": ["元記事を開けない" if page else "元記事なし"]}
     parser, final = parsed
@@ -1227,7 +1504,7 @@ def pick_official(article: dict, repeats: Counter, fast: bool = False) -> dict:
     # 3. プレスキット・報道用素材のページ（製品の発表なら、本文から張られた製品ページも）
     if not fast and not any(f["rank"] < 2 for f in found):
         for kit in kit_pages(parser, final) + (product_pages(parser, final) if product else []):
-            sub = parse_page(kit)
+            sub = parse_page_cached(kit)
             if not sub:
                 continue
             for item in page_candidates(*sub, article=article)[:5]:
@@ -1312,8 +1589,16 @@ Readers must never mistake an illustration for the real product. So:
   Show instead the usage context without the product (e.g. an empty forest trail at dawn), the mood of the event venue
   (e.g. an exhibition hall with blurred stage lights and no exhibits), or the category in the abstract (light, motion, texture)."""
 
+# アプリ・クラウド・機能などの発表（形の無い製品）。画面・端末を描くと「その製品の画面」と受け取られる（2026-11-03）
+SERVICE_PLAN_RULE = """
+IMPORTANT: this article announces a specific product or service (an app, software, cloud service or feature).
+Readers must never mistake an illustration for the real product. So "scene" and "queries" must NOT depict the product,
+its screens or user interface, its logo, or any computer, laptop, phone, tablet, monitor or app window (not even partly or in the background).
+Show instead a calm abstract or atmospheric scene related to the topic without the product (e.g. soft light through office windows
+onto an empty desk with paper documents, neatly stacked folders, a quiet meeting room, abstract light and texture)."""
 
-def visual_plan(article: dict, product: bool = False) -> dict:
+
+def visual_plan(article: dict, product: bool = False, service: bool = False) -> dict:
     prompt = f"""Article (Japanese):
 title: {article.get('title', '')}
 summary: {article.get('description', '')}
@@ -1333,6 +1618,8 @@ Return:
   (people only from behind, as hands, or out of focus)."""
     if product:
         prompt += PRODUCT_PLAN_RULE
+    elif service:
+        prompt += SERVICE_PLAN_RULE
     schema = {**QUERY_SCHEMA, "properties": {**QUERY_SCHEMA["properties"], "product": {"type": "STRING"}}} if product else QUERY_SCHEMA
     data, model = llm.generate_json(QUERY_SYSTEM, prompt, schema, tier=llm_tier(), temperature=0.3, max_output_tokens=2048)
     queries = []
@@ -1346,8 +1633,9 @@ Return:
         "query_ja": str(data.get("query_ja") or "").strip()[:20],
         "scene": str(data.get("scene") or "").strip()[:400],
         "model": model,
-        "product": re.sub(r"[^\w\s-]", " ", str(data.get("product") or "")).strip()[:40] if product else "",
+        "product": re.sub(r"[^\w\s-]", " ", str(data.get("product") or "")).strip()[:40] if product else ("computer, phone or app screen" if service else ""),
         "productLaunch": product,
+        "serviceLaunch": bool(service and not product),
     }
 
 
@@ -1844,13 +2132,18 @@ NO_PRODUCT_RULE = (
     "Do not depict the announced product or any similar device, vehicle, machine or gadget, not even partly or in the background; "
     "show only the setting, light and atmosphere."
 )
+# アプリ・クラウド・機能などの発表で AI に必ず足す決まり（画面・端末も描かない。製品の画面と受け取られる）
+NO_SERVICE_RULE = (
+    "Do not depict the announced product, app or service, its user interface or logo, or any computer, laptop, phone, tablet, "
+    "monitor or screen, not even partly or in the background; show only the setting, light and atmosphere."
+)
 # 製品を描いてしまったときの、製品の無い場面（会場の雰囲気）
 NO_PRODUCT_SCENE = "A softly lit, empty exhibition hall with blurred stage lights and warm bokeh, polished floor, no exhibits, no products and no people in view."
 
 
 def ai_prompt(plan: dict, article: dict) -> str:
     scene = plan.get("scene") or ", ".join(plan.get("queries") or []) or article.get("genre", "")
-    rule = f" {NO_PRODUCT_RULE}" if plan.get("productLaunch") else ""
+    rule = f" {NO_PRODUCT_RULE}" if plan.get("productLaunch") else f" {NO_SERVICE_RULE}" if plan.get("serviceLaunch") else ""
     return (
         f"Photorealistic editorial news photograph. {scene} "
         "Natural muted colors, soft natural light, documentary style, shot on a full-frame camera with a 35mm lens, "
@@ -2108,6 +2401,10 @@ def process(path: Path, article: dict, ctx: dict) -> str:
     product = real_object_article(article)
     if product:
         log("   [img] 実物（製品・車・商品）が主役の記事: 公式の写真を最優先。AI・素材は製品を描かない場面だけ")
+    # 製品・サービス（アプリ・クラウド・機能を含む）の発表: 公式の画像を先に探し、AI・素材は製品・画面を描かない場面だけ
+    announce = product or announcement_article(article)
+    if announce and not product:
+        log("   [img] 製品・サービスの発表: 公式の画像を最優先。AI・素材は製品・画面を描かない場面だけ")
     # 自前の画像（まとめ記事・別の切り口の記事が元記事の画像を引き継いだ）なら出典も引き継ぐ
     if is_ours(thumb) and not ctx.get("retry_ai") and not ctx.get("repick"):
         credit = ctx["credit_by_thumb"].get(thumb)
@@ -2121,18 +2418,36 @@ def process(path: Path, article: dict, ctx: dict) -> str:
     #    プレスキットまで見て良い順に選び、縮小して自前の KV から配信する。ほかのニュースサイト・ブログ・SNS の画像は使わない
     official = official_source(article)
     best = None
+    release = None
+    # 報道（二次の記事）が出典の製品・サービスの発表は、その会社自身の発表（自社のニュースルーム・PR TIMES）を探して
+    # その画像を使う（2026-11-03 マイナビニュースの記事だけを見て、kubell の発表の画像を使わず AI にしていた）
+    if not ctx.get("retry_ai") and official is None and announce and secondary_source(article):
+        try:
+            release = find_official_release(article)
+        except Exception as error:  # noqa: BLE001 - 探せなくても今までどおり続ける
+            log(f"   [img] 会社自身の発表を探せない: {str(error)[:120]}")
+            release = None
+        if release:
+            official = release["official"]
+        else:
+            log("   [img] 会社自身の発表は見つからない")
     if not ctx.get("retry_ai") and official is None:
         log("   [img] 公式の発表ではないので元記事の写真は使わない")
     elif not ctx.get("retry_ai"):
-        result = pick_official(article, ctx["repeats"], fast=ctx.get("fast", False))
+        result = pick_official(release["article"] if release else article, ctx["repeats"], fast=ctx.get("fast", False))
         best = result["best"]
         if best:
             log(f"   [img] 公式の画像: {best['kind']}（{best['where']}）{best['url'][:90]}")
         else:
             log(f"   [img] 公式の画像は使わない: {' / '.join(result['reasons'])[:200]}")
-        # 製品の発表は、製品が写った公式のバナーも AI の作り物より良い
-        if best and best["rank"] <= OFFICIAL_RANK["banner" if product else "hero"]:
-            return use_official(path, article, ctx, best, official)
+        # 製品・サービスの発表は、製品が写った公式のバナー（発表のキービジュアル）も AI の作り物より良い
+        if best and best["rank"] <= OFFICIAL_RANK["banner" if announce else "hero"]:
+            return use_official(path, article, ctx, best, official, release)
+
+    # 公式の画像だけを探す選び直し（--official-only）: 見つからなければ今の画像のまま
+    if ctx.get("official_only"):
+        log("   [img] 使える公式の画像が無いので今の画像のまま（--official-only）")
+        return "kept"
 
     # 選び直し（--slug・--repick-hours など）で、前に付けた公式の写真を AI・素材・写真なしに替えない
     # （その回だけ元記事が開けない・判定が落ちた、で公式の写真を失わない）
@@ -2146,11 +2461,11 @@ def process(path: Path, article: dict, ctx: dict) -> str:
 
     # ここから先は、公式の写真・見出し画像が無い記事
     try:
-        plan = visual_plan(article, product=product)
+        plan = visual_plan(article, product=product, service=announce and not product)
     except Exception as error:  # noqa: BLE001
         log(f"   [img] 検索語を作れない: {str(error)[:100]}")
         if best:
-            return use_official(path, article, ctx, best, official)
+            return use_official(path, article, ctx, best, official, release)
         return "error"
     if ctx.get("scene"):
         plan["scene"] = ctx["scene"]
@@ -2176,24 +2491,24 @@ def process(path: Path, article: dict, ctx: dict) -> str:
                 made = None
                 continue
             # 製品の発表で、製品や見間違える物を描いた画像は使わない（作り物を本物の製品と受け取られる）
-            if made and product and depicts_product(made[0], plan.get("product", "")):
+            if made and announce and depicts_product(made[0], plan.get("product", "")):
                 log("   [img] AI 画像に製品か似た物が写ったので、製品の無い場面で作り直す")
                 made = None
                 drew_product = True
                 continue
-            if made and product:
+            if made and announce:
                 plan = use
             break
         if made:
             image, model = made
             credit = {"kind": "ai", "model": model, "prompt": plan.get("scene", "")[:300], "provider": "Cloudflare Workers AI"}
-            if product:
-                credit["noProduct"] = True  # 製品の発表: 製品を描かない場面で作り、写っていないことを確かめた
+            if announce:
+                credit["noProduct"] = True  # 製品・サービスの発表: 製品・画面を描かない場面で作り、写っていないことを確かめた
             log(f"   [img] AI 生成: {model}")
     # 3. フリー素材（AI が使えないとき。記事と関係がはっきりしたものだけ）
     if image is None and not ctx.get("ai_only"):
         pick, image = find_stock(article, plan, ctx["used_stock"])
-        if pick and image is not None and product and depicts_product(image, plan.get("product", "")):
+        if pick and image is not None and announce and depicts_product(image, plan.get("product", "")):
             log(f"   [img] 素材に製品か似た物が写っているので使わない: {pick['title'][:60]}")
             pick, image = None, None
         if pick and image is not None:
@@ -2216,7 +2531,7 @@ def process(path: Path, article: dict, ctx: dict) -> str:
     if image is None:
         # 4. 公式のロゴ・文字の多い図・バナー（AI も素材も無いとき）。それも無ければ今までどおり（写真なしのカバー）
         if best:
-            return use_official(path, article, ctx, best, official)
+            return use_official(path, article, ctx, best, official, release)
         return "none"
 
     try:
@@ -2236,11 +2551,13 @@ def process(path: Path, article: dict, ctx: dict) -> str:
     return credit["kind"]
 
 
-def use_official(path: Path, article: dict, ctx: dict, best: dict, official: dict) -> str:
-    """公式の画像（写真・動画のサムネイル・見出し画像・図・ロゴ）を保存して記事に付ける"""
+def use_official(path: Path, article: dict, ctx: dict, best: dict, official: dict, release: dict | None = None) -> str:
+    """公式の画像（写真・動画のサムネイル・見出し画像・図・ロゴ）を保存して記事に付ける。
+    release: 報道の記事から見つけた会社自身の発表（find_official_release）。出典はその発表のページにする"""
     slug = article.get("slug") or path.stem
     url, image, kind = best["url"], best["image"], best["kind"]
-    org = wire_org(article) if official["wire"] else org_name(article)
+    source = release["article"] if release else article
+    org = (release or {}).get("org") or (wire_org(source) if official["wire"] else org_name(source))
     reuse = ctx["official_by_original"].get(url)
     if reuse:
         new_url, size = reuse["thumbnail"], (reuse["credit"].get("width"), reuse["credit"].get("height"))
@@ -2258,8 +2575,8 @@ def use_official(path: Path, article: dict, ctx: dict, best: dict, official: dic
     credit = {
         "kind": "official",
         "org": org or official["wire"],
-        "provider": article.get("sourceName") or article.get("channel", ""),
-        "sourceUrl": article.get("sourceUrl", ""),
+        "provider": source.get("sourceName") or source.get("channel", ""),
+        "sourceUrl": source.get("sourceUrl", ""),
         "original": url,
         "width": size[0],
         "height": size[1],
@@ -2269,6 +2586,8 @@ def use_official(path: Path, article: dict, ctx: dict, best: dict, official: dic
         credit["imageKind"] = kind  # youtube / kit / hero / banner / dense / logo
     if official["wire"]:
         credit["via"] = official["wire"]
+    if release:
+        credit["foundFrom"] = article.get("sourceUrl", "")  # 報道の記事から会社自身の発表をたどった
     article["thumbnail"] = new_url
     article["imageCredit"] = credit
     ctx["official_by_original"][url] = {"thumbnail": new_url, "credit": credit}
@@ -2357,7 +2676,8 @@ def main() -> int:
     parser.add_argument("--ai-only", action="store_true", help="素材を探さず AI 生成だけ（確認用）")
     parser.add_argument("--recheck-source", action="store_true", help="元記事の写真を採用した記事を今の基準で見直す")
     parser.add_argument("--repick-hours", type=float, default=0, help="この時間以内の記事で、フリー素材・AI 生成・数字の図にした画像を今の基準で選び直す")
-    parser.add_argument("--product-repick-days", type=float, default=0, help="この日数以内の製品の発表の記事で、AI 生成・素材の画像を選び直す（公式の製品写真→製品を描かない場面）")
+    parser.add_argument("--product-repick-days", type=float, default=0, help="この日数以内の製品・サービスの発表の記事で、AI 生成・素材の画像を選び直す（公式の画像→製品を描かない場面）")
+    parser.add_argument("--official-only", action="store_true", help="選び直しで公式の画像だけを探す（見つからなければ今の画像のまま。AI は作らない）")
     parser.add_argument("--scene", help="AI 生成の場面（英語）をこの文にする（--slug で1本だけ直すとき用）")
     parser.add_argument("--report", help="記事ごとの結果（JSON Lines）をこのファイルに書く（確認用）")
     parser.add_argument("--retry-ai", action="store_true", help="AI 生成の画像の記事でフリー素材を探し直す（見つからなければそのまま）")
@@ -2400,6 +2720,7 @@ def main() -> int:
         "defer_hours": args.defer_hours,
         "retry_ai": args.retry_ai,
         "repick": bool(args.slug or args.repick_hours or args.product_repick_days),
+        "official_only": args.official_only,
         "scene": args.scene or "",
         # 選び直しの前の画像（公式の写真を AI・素材に替えないため。下で imageCredit を消す前に覚えておく）
         "previous_credit": {a.get("slug") or p.stem: a["imageCredit"] for p, a in articles.items() if isinstance(a.get("imageCredit"), dict)},
@@ -2430,10 +2751,10 @@ def main() -> int:
         targets = [
             (p, a)
             for p, a in ordered
-            if age_hours(a) <= args.product_repick_days * 24 and (a.get("imageCredit") or {}).get("kind") in ("stock", "ai") and real_object_article(a)
+            if age_hours(a) <= args.product_repick_days * 24 and (a.get("imageCredit") or {}).get("kind") in ("stock", "ai") and announcement_article(a)
         ]
         for p, a in targets:
-            log(f"[img] 製品の発表で AI・素材の画像: {a.get('slug')}")
+            log(f"[img] 製品・サービスの発表で AI・素材の画像: {a.get('slug')}")
             a.pop("imageCredit", None)
     elif args.recheck_source:
         # 元記事の写真を採用した記事を、今の基準（文字・図が主役の画像は不採用）で見直す
@@ -2497,7 +2818,7 @@ def main() -> int:
         if not article.get("imageCredit") and before and article.get("thumbnail") == ctx["previous_thumb"].get(slug):
             # 選び直せなかった（AI の上限・素材なし・失敗）ときは前の画像の出典を戻す（消したまま保存すると、AI の画像に注記が出なくなる）
             article["imageCredit"] = before
-            if args.product_repick_days and before.get("kind") == "ai" and not before.get("noProduct") and real_object_article(article):
+            if args.product_repick_days and not args.official_only and before.get("kind") == "ai" and not before.get("noProduct") and real_object_article(article):
                 # 製品の発表で、製品を描いたかもしれない前の AI 画像は残さない（写真なしのカバーにする）
                 log("   [img] 製品を描いたかもしれない前の AI 画像を外す（写真なしのカバー）")
                 article["thumbnail"] = ""
@@ -2506,7 +2827,8 @@ def main() -> int:
                 tally[outcome] -= 1
                 outcome = "removed-ai"
                 tally[outcome] += 1
-            if not args.dry_run:
+            # --official-only で今の画像のままなら、ファイルは書き直さない（出典の項目の順番だけが変わる差分を作らない）
+            if not args.dry_run and not (args.official_only and outcome == "kept"):
                 save(path, article)
         # 写真の主役の位置（SNS カードの切り抜き・ロゴの角に使う。scripts/image_focus.py）
         if not args.dry_run and image_focus.ensure_focus(article):

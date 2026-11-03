@@ -2,7 +2,7 @@
   "slug": "microsoft-sql-mcp-server-announcement",
   "title": "Microsoft、AIエージェントとデータベースを安全に接続する「SQL MCP Server」を発表",
   "lede": "米マイクロソフトは、AIエージェントとSQLデータベースを安全に接続する新技術「SQL MCP Server」を発表しました。本技術は、開発者が直接SQLクエリを書くことなく、自然言語によるデータ操作を安全に実現するものです。Anthropicが提唱する「Model Context Protocol（MCP）」を基盤とし、同社の「Data API builder（DAB）」を活用することで、既存のセキュリティモデルを維持したまま、AIエージェントにデータベース操作能力を提供します。",
-  "description": "マイクロソフトが発表した「SQL MCP Server」の技術詳細を解説。Model Context Protocol（MCP）とData API builder（DAB）を組み合わせ、AIエージェントによる安全なSQLデータ操作を実現する仕組みと、その設定手順をプロの記者が詳しくレポートします。",
+  "description": "マイクロソフトが発表した「SQL MCP Server」の技術詳細を解説。Model Context Protocol（MCP）とData API builder（DAB）を組み合わせ、AIエージェントによる安全なSQLデータ操作を実現する仕組みと、その設定手順をレポートします。",
   "keywords": [
     "SQL MCP Server",
     "Model Context Protocol",

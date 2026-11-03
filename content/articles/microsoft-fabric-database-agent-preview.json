@@ -7,7 +7,7 @@
   "threadsStyle": 2,
   "writingVoice": "friendly",
   "lede": "マイクロソフトは、統合データプラットフォーム「Microsoft Fabric」において、AIがデータベースの状態を常時監視して障害を先回りして検知する新機能「Database Agent」を発表しました。従来の「アプリが遅い」とユーザーから連絡を受けてから調査する運用を脱却できます。現在、パブリックプレビューとして順次展開が始まっています。",
-  "description": "Microsoft Fabricの新機能「Database Agent」を解説。AIがデータベースの処理詰まりや高負荷を自動検知し、SSMSやGitHub Copilotと連携して修正まで導きます。使い方や今後のロードマップをベテラン記者が分かりやすく紹介します。",
+  "description": "Microsoft Fabricの新機能「Database Agent」を解説。AIがデータベースの処理詰まりや高負荷を自動検知し、SSMSやGitHub Copilotと連携して修正まで導きます。使い方や今後のロードマップを紹介します。",
   "keywords": [
     "Database Agent",
     "Microsoft Fabric",

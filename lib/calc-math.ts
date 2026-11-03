@@ -29,46 +29,6 @@ export function usdToYen(usd: number, rate: number, withTax: boolean, feePercent
   return { base: Math.round(base), tax: Math.round(tax), fee: Math.round(fee), total: Math.round(base + tax + fee) };
 }
 
-export type BillingCompare = {
-  /** 月払いで months か月使ったときの合計 */
-  monthlyTotal: number;
-  /** 年払いの一括額（年払いが無ければ null） */
-  annualTotal: number | null;
-  /** 何か月以上使うなら年払いの方が安いか（年払いが無ければ null） */
-  breakEvenMonths: number | null;
-  /** 12か月使ったときの差（月払い − 年払い） */
-  yearlySaving: number | null;
-};
-
-export function compareBilling(monthly: number, annualTotal: number | null, months: number): BillingCompare {
-  const m = Math.max(1, Math.min(12, Math.round(months)));
-  const monthlyTotal = monthly * m;
-  if (annualTotal === null || !(monthly > 0)) return { monthlyTotal, annualTotal: null, breakEvenMonths: null, yearlySaving: null };
-  return {
-    monthlyTotal,
-    annualTotal,
-    breakEvenMonths: Math.ceil(annualTotal / monthly - 1e-9),
-    yearlySaving: monthly * 12 - annualTotal,
-  };
-}
-
-/** 「Pro何個分」の値段か（小数1けた）。比べる相手が無料・不明なら null */
-export function timesOf(price: number, reference: number): number | null {
-  if (!(reference > 0) || !(price >= 0)) return null;
-  return Math.round((price / reference) * 10) / 10;
-}
-
-/** 公式の説明にある「Pro の 10 倍の使用量」の 10（無ければ null） */
-export function usageMultiple(limits: string[], referenceName: string): number | null {
-  const name = referenceName.normalize("NFKC").replace(/\s+/g, "").replace(/[.*+?^$()|[\]\\{}]/g, "\\$&");
-  const pattern = new RegExp(name + "の(\\d+(?:\\.\\d+)?)倍の(?:毎週の)?使用量");
-  for (const text of limits) {
-    const m = text.normalize("NFKC").replace(/\s+/g, "").match(pattern);
-    if (m) return Number(m[1]);
-  }
-  return null;
-}
-
 /**
  * 防衛特別所得税・復興特別所得税（国の税）の税率。
  * 出典: 財務省「令和8年度税制改正の大綱」（防衛特別所得税＝基準所得税額×1%、令和9年＝2027年分から当分の間。

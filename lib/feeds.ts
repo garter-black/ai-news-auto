@@ -67,7 +67,7 @@ export async function feedHtml(article: FullArticle, options: FeedHtmlOptions): 
   const parts: string[] = [];
   if (article.lede) parts.push(`<p>${escapeXml(article.lede)}</p>`);
   if (article.highlights.length > 0) {
-    parts.push(`<h2>3秒でわかる要点</h2>`, `<ol>${article.highlights.map((h) => `<li>${escapeXml(h)}</li>`).join("")}</ol>`);
+    parts.push(`<h2>この記事のポイント</h2>`, `<ol>${article.highlights.map((h) => `<li>${escapeXml(h)}</li>`).join("")}</ol>`);
   }
   parts.push(body.trim());
 

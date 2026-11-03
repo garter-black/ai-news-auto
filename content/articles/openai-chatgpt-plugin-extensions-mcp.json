@@ -2,7 +2,7 @@
   "slug": "openai-chatgpt-plugin-extensions-mcp",
   "title": "OpenAIがChatGPT向け「Plugin Extensions」を発表　サイドバーに独自UIを追加",
   "lede": "OpenAIは、ChatGPTのユーザーインターフェース（UI）を開発者が大幅にカスタマイズ可能にする新機能「Plugin Extensions（プラグイン拡張）」を発表しました。本機能は、開発者が独自のツールやワークフロー、双方向のウィジェットをChatGPT内に直接埋め込むことを可能にするものです。従来の単なるウェブページの表示や静的な生成物の提示を超え、サイドバーへの常駐や会話に連動したサイドパネルの表示など、ネイティブアプリに近い操作性を実現します。本記事では、公開されたデモ映像をもとに、その技術的詳細とユースケースを解説します。",
-  "description": "OpenAIが発表したChatGPTの新機能「Plugin Extensions」を徹底解説。MCP（Model Context Protocol）を基盤に、サイドバーやサイドパネルに独自UIを統合し、Figmaや会議録音ツールと双方向で連携するデモの詳細をレポートします。",
+  "description": "OpenAIが発表したChatGPTの新機能「Plugin Extensions」を解説。MCP（Model Context Protocol）を基盤に、サイドバーやサイドパネルに独自UIを統合し、Figmaや会議録音ツールと双方向で連携するデモの詳細をレポートします。",
   "keywords": [
     "OpenAI",
     "ChatGPT",

@@ -58,7 +58,7 @@
   "videoTitle": "GitHub Copilot app, Universe releases",
   "publishedAt": "2026-10-28T15:55:00+00:00",
   "generatedAt": "2026-10-28T16:38:24.946653+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/github-copilot-app-projects-computer-use-d3428a34.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/github-copilot-app-projects-computer-use-6ca35e0e.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "relatedSlugs": [
@@ -71,12 +71,15 @@
   "fastLane": true,
   "speedMinutes": 47,
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-1-schnell",
-    "prompt": "A close-up of a computer monitor showing lines of code, with a hand typing on a keyboard in a softly lit office environment.",
-    "provider": "Cloudflare Workers AI",
+    "kind": "official",
+    "org": "GitHub",
+    "provider": "GitHub Changelog",
+    "sourceUrl": "https://github.blog/changelog/2026-10-28-github-copilot-app-universe-releases",
     "original": "https://github.blog/wp-content/uploads/2026/11/685514709-41f0ff65-b075-454a-a844-00d288bb4bc1.jpg",
-    "at": "2026-10-28T16:39:14+00:00"
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-03T11:15:40+00:00",
+    "imageKind": "banner"
   },
   "sources": [
     {
@@ -100,5 +103,17 @@
   ],
   "updatedAt": "2026-10-28T20:51:33.894050+00:00",
   "originalTitle": "GitHubのAI支援Copilotアプリに新機能「プロジェクト」　PC操作も任せられる",
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "imageFocus": {
+    "x": 0.483,
+    "y": 0.572,
+    "box": [
+      0.194,
+      0.143,
+      0.772,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/github-copilot-app-projects-computer-use-6ca35e0e.jpg"
+  }
 }

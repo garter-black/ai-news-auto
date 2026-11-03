@@ -25,7 +25,7 @@ function load(rel) {
 }
 const calc = load("lib/calc-math.ts");
 const charts = load("lib/charts.ts");
-const { calculatorForArticle, usdFromPrice } = load("lib/calculators.ts");
+const { calculatorForArticle, usdFromPrice, CALCULATORS } = load("lib/calculators.ts");
 const fx = { rate: 157.9, date: "2026-11-02", source: "ECB", fallback: true };
 
 test("ドル→円：消費税10%と手数料", () => {
@@ -35,19 +35,10 @@ test("ドル→円：消費税10%と手数料", () => {
   assert.equal(calc.usdToYen(-1, 150, true).total, 0);
 });
 
-test("月払いと年払い：Claude Pro（月$20・年$200）は10か月以上なら年払い", () => {
-  const r = calc.compareBilling(20, 200, 12);
-  assert.equal(r.monthlyTotal, 240);
-  assert.equal(r.breakEvenMonths, 10);
-  assert.equal(r.yearlySaving, 40);
-  assert.equal(calc.compareBilling(100, null, 3).annualTotal, null);
-});
-
-test("Pro何個分と、公式の使用量の倍率", () => {
-  assert.equal(calc.timesOf(200, 20), 10);
-  assert.equal(calc.timesOf(100, 0), null);
-  assert.equal(calc.usageMultiple(["Pro の 10 倍の使用量（毎週）"], "Pro"), 10);
-  assert.equal(calc.usageMultiple(["5 時間制限なし"], "Pro"), null);
+test("AIプランの費用計算の式は終了とともに消した（2026-11-03）", () => {
+  assert.equal(calc.compareBilling, undefined);
+  assert.equal(calc.timesOf, undefined);
+  assert.equal(calc.usageMultiple, undefined);
 });
 
 test("防衛特別所得税：財務省の大綱どおりの年ごとの税率", () => {
@@ -124,12 +115,15 @@ test("図は指定の章の下、計算機の印は料金の章の終わりに�
 test("記事に合う計算機は1つだけ", () => {
   const base = { title: "", tags: [], genreSlug: "ai" };
   assert.equal(calculatorForArticle({ ...base, title: "2027年から防衛特別所得税" }, ["claude"]).kind, "defense-tax");
+  // AIプランの費用計算（ai-plan-cost）は 2026-11-03 に終了。料金の段の図がある記事には計算機を置かない（図に円の目安がある）
   const plan = calculatorForArticle({ ...base, title: "Claude Ultra", charts: [{ kind: "ladder", product: "claude", highlight: "ultra" }], verdict: { price: "月200ドル" } }, ["claude"]);
-  assert.deepEqual([plan.kind, plan.product, plan.plan], ["ai-plan-cost", "claude", "ultra"]);
+  assert.equal(plan, null);
+  assert.equal(calculatorForArticle({ ...base, title: "Claude Ultra", charts: [{ kind: "ladder", product: "claude", highlight: "ultra" }] }), null);
   assert.equal(calculatorForArticle({ ...base, verdict: { price: "月20ドル" } }, []).usd, 20);
   assert.equal(calculatorForArticle({ ...base, genreSlug: "business", verdict: { price: "月20ドル" } }, []), null);
   assert.equal(usdFromPrice("月20〜200ドル"), null);
   assert.equal(usdFromPrice("$17/月"), 17);
+  assert.deepEqual(Object.keys(CALCULATORS).sort(), ["defense-tax", "usd-jpy"]);
 });
 
 test("同じクラスの製品との比較（rivals）は項目ごとに棒の基準を分け、変化の数字を出さない", () => {

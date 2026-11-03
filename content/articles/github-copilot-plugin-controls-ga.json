@@ -55,7 +55,7 @@
   "videoTitle": "Repository plugin defaults and enterprise plugin controls generally available",
   "publishedAt": "2026-10-28T15:33:00+00:00",
   "generatedAt": "2026-10-29T19:11:41.985878+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/github-copilot-plugin-controls-ga-de8b9cb5.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/github-copilot-plugin-controls-ga-46a5b71c.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "relatedSlugs": [
@@ -66,13 +66,28 @@
   "sourcePublishedAt": "2026-10-28T15:33:00+00:00",
   "detectedAt": "2026-10-29T19:11:20+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-1-schnell",
-    "prompt": "A close-up of a computer monitor showing a settings interface, with a hand typing on a keyboard in a modern office under soft ambient lighting.",
-    "provider": "Cloudflare Workers AI",
-    "original": "https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-improvements.jpg",
-    "at": "2026-10-29T19:13:54+00:00"
+    "kind": "official",
+    "org": "GitHub",
+    "provider": "GitHub Changelog（Copilot）",
+    "sourceUrl": "https://github.blog/changelog/2026-10-28-repository-plugin-defaults-and-enterprise-plugin-controls-generally-available",
+    "original": "https://github.blog/wp-content/uploads/2026/10/Changelog_Improvement_Unfurl_TextOnly_RepositoryPluginControls.jpg",
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-03T11:10:55+00:00",
+    "imageKind": "hero"
   },
   "originalTitle": "GitHub Copilot、組織ごとのプラグイン管理が一般提供へ　開発チームの標準ツールを自動導入",
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "imageFocus": {
+    "x": 0.488,
+    "y": 0.414,
+    "box": [
+      0.138,
+      0.036,
+      0.838,
+      0.792
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/github-copilot-plugin-controls-ga-46a5b71c.jpg"
+  }
 }

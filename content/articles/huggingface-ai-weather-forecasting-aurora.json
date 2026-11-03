@@ -2,7 +2,7 @@
   "slug": "huggingface-ai-weather-forecasting-aurora",
   "title": "Hugging Face、AI気象予測の実行環境を公開　Microsoftの「Aurora」を数行のコードで実行",
   "lede": "Hugging Faceは、オープンソースのAI気象予測モデルを誰でも簡単に実行・評価できる新しいエコシステムを構築したと発表しました。データプラットフォーム「Earthmover」との連携により、テラバイト級の気象データをローカル環境にダウンロードすることなく、必要なデータだけをオンデマンドで部分取得してシミュレーションを実行できます。Microsoftが開発した13億パラメータの地球システム基盤モデル「Aurora」をJupyter Notebook上で動作させるデモも公開され、従来の物理モデルと比較して計算時間を大幅に削減できることが実証されました。",
-  "description": "Hugging FaceがAI気象予測モデルの実行を容易にするエコシステムを公開。MicrosoftのAuroraモデルをEarthmoverのデータ連携とHugging Face Jobsを用いて、効率的に実行するデモと技術的背景をベテラン記者が詳細に解説します。",
+  "description": "Hugging FaceがAI気象予測モデルの実行を容易にするエコシステムを公開。MicrosoftのAuroraモデルをEarthmoverのデータ連携とHugging Face Jobsを用いて、効率的に実行するデモと技術的背景を解説します。",
   "keywords": [
     "気象予測",
     "AIモデル",

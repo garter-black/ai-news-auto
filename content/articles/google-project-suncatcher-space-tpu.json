@@ -2,7 +2,7 @@
   "slug": "google-project-suncatcher-space-tpu",
   "title": "Google、TPU搭載衛星で宇宙のAI処理を目指す「Project Suncatcher」を発表",
   "lede": "米Googleは、宇宙空間にAI処理専用の半導体「TPU（Tensor Processing Unit）」を搭載した人工衛星を配備し、太陽光エネルギーで直接AIモデルを駆動する研究プロジェクト「Project Suncatcher（プロジェクト・サンキャッチャー）」を公開しました。宇宙での太陽光発電は地上と比べて最大8倍の電力を得られるため、地上のデータセンターが抱える電力消費問題を解決する画期的なアプローチとして期待されます。本プロジェクトは現在、初期の研究開発段階にあります。",
-  "description": "Googleが発表した宇宙AIインフラ構想「Project Suncatcher」を徹底解説。TPU搭載衛星を「黎明・黄昏軌道」に配備し、地上比最大8倍の太陽光エネルギーで機械学習を処理する技術の全容に迫ります。",
+  "description": "Googleが発表した宇宙AIインフラ構想「Project Suncatcher」を解説。TPU搭載衛星を「黎明・黄昏軌道」に配備し、地上比最大8倍の太陽光エネルギーで機械学習を処理する技術の全容に迫ります。",
   "keywords": [
     "Google",
     "Project Suncatcher",

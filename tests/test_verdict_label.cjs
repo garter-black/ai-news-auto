@@ -33,7 +33,11 @@ test('「記載なし」「不明」など答えになっていない値は判�
     assert.equal(isUnknownValue(s), false, s);
   // 製品の判定で値が分からない欄は、カード側で省けるように「記載なし」として返る
   const facts = verdictFacts({ status: 'available', japan: 'unknown', price: '参加費の記載なし', free: null, audience: 'セキュリティ研究者', take: '' }, 'product');
-  assert.deepEqual(facts.filter((f) => !isUnknownValue(f.value)).map((f) => f.label), ['誰に向いている？']);
+  assert.deepEqual(facts.filter((f) => !isUnknownValue(f.value)).map((f) => f.label), ['主な対象']);
+  // 「日本は未確認」「未発表」「法人向け」も答えになっていないので出さない。無料枠は「ある」ときだけ（2026-11-03）
+  for (const s of ['日本は未確認', '未発表', '法人向け']) assert.equal(isUnknownValue(s), true, s);
+  const paid = verdictFacts({ status: 'soon', japan: 'ok', price: '言及なし', free: false, audience: '', take: '' }, 'product');
+  assert.equal(paid.filter((f) => !isUnknownValue(f.value)).some((f) => f.label === '無料枠'), false);
 });
 
 test('製品・サービスの発表でないニュースには判定も「使える」の札も付けない。スポーツ・制度は札なし（2026-11-03 の画面の点検 A）', () => {

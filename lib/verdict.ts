@@ -57,9 +57,9 @@ export const STATUS_LABEL_BY_KIND: Record<VerdictKind, Record<Verdict["status"],
 };
 
 export const VERDICT_HEADING: Record<VerdictKind, string> = {
-  product: "サイソクの判断",
-  sports: "観戦・参加の判断",
-  public: "申し込みの判断",
+  product: "サイソクの判定",
+  sports: "観戦・参加の可否",
+  public: "申し込みの可否",
 };
 
 /**
@@ -70,7 +70,7 @@ export const VERDICT_HEADING: Record<VerdictKind, string> = {
 export function isUnknownValue(value?: string | null): boolean {
   const v = (value ?? "").trim();
   if (!v || /^[—―\-–ー・?？]+$/.test(v)) return true;
-  return /^(不明|未定|記載なし|言及なし|情報なし|元記事では言及なし|未確認)$/.test(v) || /(の)?(記載|言及|情報)(が)?(なし|ない|ありません)$/.test(v) || /^.{0,12}は不明$/.test(v);
+  return /^(不明|未定|記載なし|言及なし|情報なし|元記事では言及なし|未確認|日本は未確認|未発表|法人向け)$/.test(v) || /(の)?(記載|言及|情報)(が)?(なし|ない|ありません)$/.test(v) || /^.{0,12}は不明$/.test(v);
 }
 
 /** 判定カードの4つの欄（種類ごとに問いを変える） */
@@ -78,25 +78,27 @@ export function verdictFacts(verdict: Verdict, kind: VerdictKind): { label: stri
   const unknown = (value?: string) => isUnknownValue(value);
   if (kind === "sports") {
     return [
-      { label: "観戦・参加できる？", value: STATUS_LABEL_BY_KIND.sports[verdict.status], muted: verdict.status !== "available" },
-      { label: "いつ？", value: verdict.when || "記載なし", muted: unknown(verdict.when) },
-      { label: "放送・配信は？", value: verdict.broadcast || "記載なし", muted: unknown(verdict.broadcast) },
-      { label: "チケット・参加費は？", value: verdict.price || "記載なし", muted: unknown(verdict.price) },
+      { label: "観戦・参加", value: STATUS_LABEL_BY_KIND.sports[verdict.status], muted: verdict.status !== "available" },
+      { label: "日程", value: verdict.when || "記載なし", muted: unknown(verdict.when) },
+      { label: "放送・配信", value: verdict.broadcast || "記載なし", muted: unknown(verdict.broadcast) },
+      { label: "チケット・参加費", value: verdict.price || "記載なし", muted: unknown(verdict.price) },
     ];
   }
   if (kind === "public") {
     return [
-      { label: "申し込める？", value: STATUS_LABEL_BY_KIND.public[verdict.status], muted: verdict.status !== "available" },
-      { label: "いつから・期限は？", value: verdict.when || "記載なし", muted: unknown(verdict.when) },
-      { label: "費用・金額は？", value: verdict.price || "記載なし", muted: unknown(verdict.price) },
-      { label: "対象は？", value: verdict.audience || "記載なし", muted: unknown(verdict.audience) },
+      { label: "受付状況", value: STATUS_LABEL_BY_KIND.public[verdict.status], muted: verdict.status !== "available" },
+      { label: "受付期間", value: verdict.when || "記載なし", muted: unknown(verdict.when) },
+      { label: "費用・金額", value: verdict.price || "記載なし", muted: unknown(verdict.price) },
+      { label: "対象", value: verdict.audience || "記載なし", muted: unknown(verdict.audience) },
     ];
   }
   return [
-    { label: "日本から使える？", value: japanLabel(verdict), muted: verdict.japan === "unknown" || verdict.status === "soon" || verdict.status === "demo" },
-    { label: "料金は？", value: verdict.price || "不明", muted: unknown(verdict.price) },
-    { label: "無料で試せる？", value: freeLabel(verdict.free), muted: verdict.free === null },
-    { label: "誰に向いている？", value: verdict.audience || "—", muted: !verdict.audience },
+    // 欄の名前は質問の形にしない（仕様表のような名詞。2026-11-03 オーナー指摘「定型の質問が機械的」）
+    { label: "日本での提供", value: japanLabel(verdict), muted: verdict.japan === "unknown" || verdict.status === "soon" || verdict.status === "demo" },
+    { label: "料金", value: verdict.price || "不明", muted: unknown(verdict.price) },
+    // 無料枠は「ある」ときだけ出す（車の外装オプションに「有料のみ」と出ていた。2026-11-03）
+    { label: "無料枠", value: verdict.free === true ? freeLabel(true) : "記載なし", muted: verdict.free !== true },
+    { label: "主な対象", value: verdict.audience || "—", muted: !verdict.audience },
   ];
 }
 
@@ -110,9 +112,9 @@ export function usability(verdict: Verdict): Usability {
 }
 
 export const USABILITY_LABEL: Record<Usability, string> = {
-  go: "使える",
-  partial: "一部",
-  wait: "まだ",
+  go: "提供中",
+  partial: "一部提供",
+  wait: "提供前",
 };
 
 export const STATUS_LABEL: Record<Verdict["status"], string> = {
@@ -167,6 +169,7 @@ export const NON_PRODUCT_PATTERN =
   "表彰|受賞|選出|アワード|Awards?|" +
   "統計(?!的)|倒産|件数|調査結果|決算|業績|自社株買い|株主還元|配当|物価|雇用統計|失業率|景気|口座数|契約数|販売台数|出荷台数|上方修正|下方修正|前年同月比|前年比|突破|有効求人倍率|短観";
 const NON_PRODUCT_RE = new RegExp(NON_PRODUCT_PATTERN);
+const NOT_PRODUCT_TAKE_RE = /製品(?:の)?発表ではな|新製品ではな|サービスの発表ではな|発表はな(?:い|く)/;
 
 /** 製品・サービスが使えるかを答える記事か（見出しとタグで見る） */
 export function isProductNews(article: { title: string; tags?: string[] }): boolean {
@@ -176,6 +179,8 @@ export function isProductNews(article: { title: string; tags?: string[] }): bool
 /** まとめ記事・判定のない古い記事・製品の発表でないニュースには出さない */
 export function verdictOf(article: Pick<ArticleSummary, "type" | "verdict" | "genreSlug" | "title" | "tags">): Verdict | undefined {
   if (article.type === "roundup" || !article.verdict) return undefined;
+  // 判定のひとこと自体が「製品の発表ではない」と言っている記事には出さない（研究・取材・告知など。2026-11-03）
+  if (NOT_PRODUCT_TAKE_RE.test(article.verdict.take ?? "")) return undefined;
   // 制度の記事でも、統計・事件・表彰などは「申し込める？」の答えにならない。スポーツ（「代表に選出」など）は観戦の判定なので残す
   if (verdictKind(article) !== "sports" && !isProductNews(article)) return undefined;
   return article.verdict;

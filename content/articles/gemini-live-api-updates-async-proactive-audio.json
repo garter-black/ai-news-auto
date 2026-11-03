@@ -2,7 +2,7 @@
   "slug": "gemini-live-api-updates-async-proactive-audio",
   "title": "Googleが「Gemini Live API」に非同期関数呼び出しやコンテキスト注入などの新機能を追加",
   "lede": "Googleは開発者向けイベントにおいて、音声によるリアルタイム双方向対話を可能にする「Gemini Live API」の最新アップデートを発表しました。今回の更新では、処理速度を向上させる非同期関数呼び出しや、必要な場面でのみ発話する「プロアクティブ・オーディオ」、リアルタイムに文脈を挿入する「sendClientContent」などが導入されます。これにより、音声アシスタントの応答性能と実用性が大幅に向上します。",
-  "description": "GoogleがGemini Live APIの最新アップデートを発表。非同期関数呼び出し、プロアクティブ・オーディオ、リアルタイムのコンテキスト注入、そしてネイティブ音声における高度な推論機能のデモを専門記者が詳細に解説します。",
+  "description": "GoogleがGemini Live APIの最新アップデートを発表。非同期関数呼び出し、プロアクティブ・オーディオ、リアルタイムのコンテキスト注入、そしてネイティブ音声における高度な推論機能のデモを解説します。",
   "keywords": [
     "Gemini Live API",
     "Google Gemini",

@@ -58,7 +58,7 @@
   "videoTitle": "Introducing Mistral Large 4",
   "publishedAt": "2026-10-06T12:00:27+00:00",
   "generatedAt": "2026-10-29T14:36:40.099122+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/mistral-large-4-preview-0e68e30f.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/mistral-large-4-preview-9649a4e1.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "relatedSlugs": [],
@@ -68,12 +68,15 @@
   "detectedAt": "2026-10-29T14:33:51+00:00",
   "fastLane": true,
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-1-schnell",
-    "prompt": "A dimly lit data center with rows of server racks and a technician’s hands typing on a keyboard in front of a glowing monitor displaying code.",
-    "provider": "Cloudflare Workers AI",
+    "kind": "official",
+    "org": "Mistral AI",
+    "provider": "Mistral AI公式ニュース",
+    "sourceUrl": "https://mistral.ai/news/mistral-large-4/",
     "original": "https://mistral.ai/cms-media/api/media/file/cover-mistral-sovereign%20copie.webp",
-    "at": "2026-10-29T14:37:39+00:00"
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-03T11:12:56+00:00",
+    "imageKind": "hero"
   },
   "sources": [
     {
@@ -98,5 +101,17 @@
   "updatedAt": "2026-10-29T15:56:24.108805+00:00",
   "duplicateReason": "製品名が一致（large4・mistrallarge4）",
   "originalTitle": "欧州Mistral AIが新AIモデル「Mistral Large 4」を公開　1兆パラメータ、重みは月末公開",
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "imageFocus": {
+    "x": 0.484,
+    "y": 0.64,
+    "box": [
+      0.0,
+      0.28,
+      0.969,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/mistral-large-4-preview-9649a4e1.jpg"
+  }
 }

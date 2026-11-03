@@ -292,7 +292,9 @@ def pricing_groups(title: str, text: str) -> tuple[list[Group], list[dict], dict
             groups.append(g)
             if lad.get("kind") != "api" and not rows:
                 rows = _ladder_rows_from_pricing(lad)
-            if insert is None and price_topic:
+            # 本文に差し込む表は、見出しに出てくる製品だけ（本文の冒頭にだけ名前が出る別の製品の表を入れない。
+            # Canva の記事に Gemini API の表、報奨金の記事に ChatGPT のプランの表が入っていた。2026-11-03）
+            if insert is None and price_topic and product in in_title:
                 insert = {"product": product, "name": lad.get("name") or product, "markdown": table, "cite": g.cite}
             if not any(x.label == "他社との比較" for x in groups):
                 if cmp := comparison_group(lad, title, text):
