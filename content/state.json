@@ -6085,6 +6085,12 @@
       "slug": "digital-agency-gbiz-id-dashboard-update",
       "url": "https://www.digital.go.jp/resources/govdashboard/gbiz-id"
     },
+    "4745bed385b63a30": {
+      "at": "2026-11-03T15:11:35.861500+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/newpage_77137.html"
+    },
     "476ace2fe1accb7b": {
       "at": "2026-10-28T04:22:17.393477+00:00",
       "model": "gemini-3.5-flash-lite",
