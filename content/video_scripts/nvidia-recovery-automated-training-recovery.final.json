@@ -1,0 +1,95 @@
+{
+  "hook": {
+    "text": "NVIDIAがAI学習の自動復旧ソフトを公開",
+    "payoff": "止まった学習を自動で再開",
+    "speech": "エヌビディアが、止まったAI学習を自動で再開させるソフトを無料で公開しました。",
+    "block": "1-3",
+    "target": "Keep Distributed Training Running with Automated Workload Recovery",
+    "ja": "自動の復旧で、分散学習を動かし続けます。"
+  },
+  "beats": [
+    {
+      "label": "AI基盤の復旧を任せる",
+      "keyword": "復旧をまとめて調整",
+      "sub": "",
+      "speech": "エヌビディアリカバリーは、AI学習が止まったときの復旧をまとめて調整するソフトです。大規模な学習を回す会社向けです。",
+      "block": "1-31",
+      "target": "NVIDIA Recovery coordinates recovery across the cluster’s training workloads.",
+      "ja": "NVIDIA Recoveryは学習ジョブの復旧をまとめて調整します。"
+    },
+    {
+      "label": "小さな故障が積み重なる",
+      "keyword": "まれな故障が積み重なる",
+      "sub": "規模が大きいほど",
+      "speech": "規模が大きくなると、GPU1基ごとのまれな故障が積み重なります。学習が止まる場面は、思ったより多くなります。",
+      "block": "1-27",
+      "target": "At cluster scale, rare per-GPU failures compound.",
+      "ja": "大規模になると、GPUごとのまれな故障が積み重なります。"
+    },
+    {
+      "label": "手作業の見守りは限界",
+      "keyword": "昼夜の手作業は限界",
+      "sub": "全ジョブを見続ける",
+      "speech": "以前は人がログを調べ、保存地点から再開していました。全ジョブを昼夜見続けるのは、手作業では限界があります。",
+      "block": "1-15",
+      "target": "Manual recovery becomes unsustainable when it must cover every training job across a cluster, around the clock, at scale.",
+      "ja": "手作業の復旧は、全ジョブを昼夜問わず見るには限界があります。"
+    },
+    {
+      "label": "見つけて外して再開する",
+      "keyword": "ログと信号で異常を検知",
+      "sub": "",
+      "speech": "まずアプリのログと処理を管理するソフトの信号から、クラッシュや停止、遅れを見つけます。",
+      "block": "1-32",
+      "target": "The Anomaly Detector combines application logs and scheduler signals to identify crashes, hangs, and stragglers.",
+      "ja": "Anomaly Detectorはログと信号で、クラッシュやハングなどを見つけます。"
+    },
+    {
+      "label": "問題の機器だけ外す",
+      "keyword": "問題のノードを除外",
+      "sub": "再起動先から外す",
+      "speech": "次に、問題のノード、つまり機器を再起動先から外します。無駄な再試行なら止めます。",
+      "block": "1-34",
+      "target": "The Anomaly Remediator applies the recovery recommendation, excluding implicated nodes from subsequent restart attempts or stopping the workload when further retries would be unproductive.",
+      "ja": "推奨に従い、問題のノードを除外するか再試行を止めます。"
+    }
+  ],
+  "compare": {
+    "beat": 0,
+    "base": "",
+    "subject": "",
+    "ratio": ""
+  },
+  "ladder": {
+    "beat": 0,
+    "subject": "",
+    "rows": []
+  },
+  "units": {
+    "beat": 0,
+    "unit": "",
+    "subject": "",
+    "rows": []
+  },
+  "conclusion": {
+    "text": "止まる学習を自動で復旧",
+    "speech": "まず監視モードで、提案の精度を確かめましょう。"
+  },
+  "short_beats": [
+    3,
+    4
+  ],
+  "title": "NVIDIAがAI学習の自動復旧ソフト「NVIDIA Recovery」を無料公開",
+  "summary": "要約すると、NVIDIAがオープンソースの「NVIDIA Recovery」を公開しました。止まった分散AI学習を検知し、問題のノードを除外して再開させます。検知は平均69秒で、導入は監視モードから始められます。",
+  "hashtags": [
+    "#NVIDIA",
+    "#AI学習",
+    "#オープンソース",
+    "#AIインフラ"
+  ],
+  "_mode": "strict",
+  "_reviews": 0,
+  "_attempts": 6,
+  "_script_seconds": 109.4,
+  "_model": "claude:sonnet"
+}
