@@ -692,26 +692,14 @@ def queue_fix(apply: bool = False, now: datetime | None = None, api_key: str | N
     for slug, nodes in by_slug.items():
         paused = {}
         for node in nodes:
-            how = "draft"
             try:
-                after = edit_post(key, {"id": node["id"], "saveToDraft": True})
+                after = pause_post(key, node)
                 ok = (after.get("status") or "") == "draft"
             except Exception as error:  # noqa: BLE001
                 if _buffer_unavailable(error):
                     raise
                 ok, after = False, {"error": str(error)[:200]}
-            if not ok:
-                # 下書きに戻せないときは、写真のまま出ないよう2週間先へずらす（消さない。issue で手で止めてもらう）
-                try:
-                    after = edit_post(key, {"id": node["id"], "mode": "customScheduled", "dueAt": _iso(now + timedelta(days=14)), "saveToDraft": False})
-                    ok, how = (_parse(after.get("dueAt") or "") or now) > now + timedelta(days=13), "pushed"
-                except Exception as error:  # noqa: BLE001
-                    if _buffer_unavailable(error):
-                        raise
-                    after = {"error": str(error)[:200]}
-            paused[node["service"]] = {"id": node["id"], "ok": ok, "how": how, "dueAt": node.get("dueAt"), "status": after.get("status") or after.get("error")}
-            if ok and how == "pushed":
-                missing_issue(slug, f"写真の予約（{node['service']}・{node['id']}）を下書きに戻せなかったので2週間先にずらしました。Buffer で消すか下書きにしてください")
+            paused[node["service"]] = {"id": node["id"], "ok": ok, "dueAt": node.get("dueAt"), "status": after.get("status") or after.get("error")}
             log(f"[queue-fix] {slug}/{node['service']} を下書きに戻す: {paused[node['service']]}")
         for row in rows:
             if row["slug"] == slug:
@@ -872,6 +860,39 @@ def read_post(api_key: str, post_id: str, raise_unavailable: bool = False) -> di
             raise
         log(f"[video-followup] 投稿を読めない {post_id}: {str(error)[:200]}")
         return None
+
+
+def pause_input(node: dict) -> dict:
+    """予約中の投稿を下書きに戻す editPost の入力（Buffer は本文と SNS ごとの形が無い編集を断る。画像は外す）"""
+    service = node.get("service", "")
+    text = node.get("text") or ""
+    thread = ((node.get("metadata") or {}).get("thread")) or []
+    if service == "facebook":
+        meta = {"facebook": {"type": "post"}}
+    else:
+        key = "twitter" if service == "twitter" else "threads"
+        meta = {key: {"thread": [{"text": t.get("text") or "", "assets": []} for t in thread] or [{"text": text, "assets": []}]}}
+    return {"id": node["id"], "text": text, "assets": [], "metadata": meta, "saveToDraft": True}
+
+
+def pause_post(api_key: str, node: dict) -> dict:
+    """予約中の投稿を下書きに戻す（公開しない・消さない）。門番は「下書きに戻すだけ」かを確かめる"""
+    import sns_rules
+    import threads_post
+
+    inp = pause_input(node)
+    sns_rules.enforce_buffer(node.get("service", "threads"), inp, None, source="sns_video_followup.pause_post", pausing=True)
+    data = threads_post.buffer_graphql(
+        api_key,
+        "mutation($input: EditPostInput!) { editPost(input: $input) { __typename "
+        f"... on PostActionSuccess {{ post {{ {POST_FIELDS} }} }} ... on MutationError {{ message }} }} }}",
+        {"input": inp},
+        gated=True,
+    )
+    res = data.get("editPost") or {}
+    if res.get("message") or res.get("__typename") not in ("PostActionSuccess", None):
+        raise RuntimeError(f"Buffer: {res.get('__typename')}: {res.get('message', '')}"[:300])
+    return res.get("post") or {}
 
 
 def edit_post(api_key: str, inp: dict, article: dict | None = None) -> dict:

@@ -743,9 +743,14 @@ def buffer_parts(service: str, post_input: dict) -> tuple[str, str, list[dict], 
 
 
 def enforce_buffer(service: str, post_input: dict, article: dict | None, *, source: str, kind: str = "article", history: bool = True, measurer=None,
-                   pending_video: bool = False) -> None:
+                   pending_video: bool = False, pausing: bool = False) -> None:
     """Buffer の createPost / editPost の直前に呼ぶ（threads_post.create_post・sns_video_followup.edit_post が呼ぶ）。
     すでにある投稿の中身を変える editPost は history=False（同じ投稿なので「もう投稿済み」とは数えない）"""
+    if pausing:
+        # 予約中の投稿を下書きに戻すだけ（公開しない）。Buffer は本文の付いた編集しか受け付けないので本文を送るが、内容の決まりは見ない
+        if post_input.get("saveToDraft") is not True or post_input.get("mode") or post_input.get("dueAt"):
+            raise SnsRuleViolation(["[ルール8] 下書きに戻す編集に、公開・予約の指定が入っている"], norm_platform(service), source)
+        return
     text, reply, media, _links = buffer_parts(service, post_input)
     platform = norm_platform(service)
     # X 以外は返信を作らない（リンクは本文）。返信やリンクカードにだけリンクがある形は、本文のリンク無しとして止める

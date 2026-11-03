@@ -244,6 +244,15 @@ class QueueFixTest(unittest.TestCase):
         self.assertEqual((slug, video), ("acme-tool", False))
         self.assertTrue(problems)
 
+    def test_pause_input_keeps_text_and_type_and_only_drafts(self):
+        fb = fu.pause_input({"id": "1", "service": "facebook", "text": "t"})
+        self.assertEqual((fb["text"], fb["metadata"], fb["saveToDraft"]), ("t", {"facebook": {"type": "post"}}, True))
+        x = fu.pause_input({"id": "2", "service": "twitter", "text": "a", "metadata": {"thread": [{"text": "a"}, {"text": "b"}]}})
+        self.assertEqual([t["text"] for t in x["metadata"]["twitter"]["thread"]], ["a", "b"])
+        r.enforce_buffer("facebook", fb, None, source="test", pausing=True)  # 下書きに戻すだけは通る
+        with self.assertRaises(r.SnsRuleViolation):
+            r.enforce_buffer("facebook", {**fb, "saveToDraft": False, "mode": "shareNow"}, None, source="test", pausing=True)
+
     def test_converted_post_waits_for_video_then_goes_out_with_video(self):
         slot = NOW + timedelta(hours=1)
         rec = queued_rec(slot)
