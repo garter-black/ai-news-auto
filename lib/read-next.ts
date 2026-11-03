@@ -2,7 +2,7 @@ import fs from "@/lib/content-fs";
 import path from "node:path";
 import type { ArticleSummary } from "@/lib/articles";
 import { CHOOSE_GUIDES } from "@/lib/choose-data";
-import { MIN_SCORE as OFFER_MIN_SCORE, isB2BArticle, matchesHostingTopic, relevanceScore } from "@/lib/offers";
+import { MIN_SCORE as OFFER_MIN_SCORE, isB2BArticle, isRoundupArticle, matchesHostingTopic, relevanceScore } from "@/lib/offers";
 
 /**
  * 記事に合う広告（lib/offers.ts）が無いときに出す「あわせて読みたい」。
@@ -19,7 +19,8 @@ export type ReadNextLink = {
 };
 
 /** consumer: 個人向けのサーバー・副業の案内。法人・企業向けの記事には、話題がサーバーそのもののときしか出さない */
-type Candidate = { href: string; match: string; genres?: string[]; consumer?: boolean };
+/** side: まとめ記事（lib/offers.ts の isRoundupArticle）では案内しない脇の話題（「詐欺対策も」の1語でセキュリティソフトの比較など。2026-11-03 の点検 D） */
+type Candidate = { href: string; match: string; genres?: string[]; consumer?: boolean; side?: boolean };
 
 /** 上ほど具体的。同点なら上を選ぶ */
 const CANDIDATES: Candidate[] = [
@@ -39,11 +40,11 @@ const CANDIDATES: Candidate[] = [
   { href: "/compare/ai-english", match: "英語|英会話|翻訳|語学|留学" },
   { href: "/compare/local-llm-pc", match: "ローカルLLM|ローカルAI|GPU|RTX|GeForce|VRAM|NVIDIA|半導体|ゲーミングPC", genres: ["ai", "tech-gadget"] },
   { href: "/compare/ai-mini-pc", match: "ミニPC|NPU|Copilot\\+ ?PC" },
-  { href: "/compare/security-software", match: "詐欺|フィッシング|不正アクセス|情報漏え?い|情報流出|個人情報|サイバー(?!エージェント)|ランサム|脆弱性|ウイルス|マルウェア|なりすまし|セキュリティ|攻撃者|サイバー攻撃|侵入|ハッキング" },
+  { href: "/compare/security-software", match: "詐欺|フィッシング|不正アクセス|情報漏え?い|情報流出|個人情報|サイバー(?!エージェント)|ランサム|脆弱性|ウイルス|マルウェア|なりすまし|セキュリティ|攻撃者|サイバー攻撃|侵入|ハッキング", side: true },
   { href: "/compare/kids-programming", match: "子ども向け|小学生|中学生|プログラミング教育|プログラミング教室|STEAM" },
   // 働き方・お金
-  { href: "/choose/internet-for-ai", match: "光回線|ネット回線|WiMAX|Wi-?Fi|格安SIM|スマホ料金|携帯料金|通信料金|5G|テレワーク|リモートワーク|在宅勤務" },
-  { href: "/compare/rental-server", match: "副業|複業|フリーランス|個人事業|独立|起業|開業|創業|ホームページ|Webサイト|ブログ|WordPress|集客|ネットショップ|ECサイト", consumer: true },
+  { href: "/choose/internet-for-ai", match: "光回線|ネット回線|WiMAX|Wi-?Fi|格安SIM|スマホ料金|携帯料金|通信料金|5G|テレワーク|リモートワーク|在宅勤務", side: true },
+  { href: "/compare/rental-server", match: "副業|複業|フリーランス|個人事業|独立|起業|開業|創業|ホームページ|Webサイト|ブログ|WordPress|集客|ネットショップ|ECサイト", consumer: true, side: true },
   { href: "/choose/ai-career", match: "転職|求人|採用|就職|雇用|就業者|人材|リスキリング|学び直し|スキル|資格|試験|キャリア|賃金|給与|年収|働き方|人手不足|AI人材" },
 ];
 
@@ -98,8 +99,10 @@ export function readNextForArticle(article: ArticleSummary, exclude: Iterable<st
   const skip = new Set(exclude);
   // 法人・企業向けの記事（lib/offers.ts の isB2BArticle）には、個人向けのサーバー・副業の案内を出さない
   const noConsumer = isB2BArticle(article) && !matchesHostingTopic(article);
+  const roundup = isRoundupArticle(article);
   const scored = CANDIDATES.flatMap((candidate, order) => {
     if (skip.has(candidate.href)) return [];
+    if (candidate.side && roundup) return [];
     if (candidate.consumer && noConsumer) return [];
     if (candidate.genres && !candidate.genres.includes(article.genreSlug)) return [];
     const score = relevanceScore(candidate.match, article);

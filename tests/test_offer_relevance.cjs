@@ -299,6 +299,8 @@ test("まとめ記事は脇の話題の1語でセキュリティソフトを出�
   const all = [...keys(plan.rail), ...keys(plan.inline)];
   assert.ok(all.length >= 1, "広告枠は必ず出す");
   for (const key of all) assert.ok(!/norton|eset|virusbuster|kaspersky|mcafee|nordvpn/.test(key), key);
+  // 「あわせて読みたい」の案内も、まとめ記事にはセキュリティソフトの比較を出さない
+  assert.ok(!readNextForArticle(roundup, [], 3).some((link) => link.href === "/compare/security-software"));
   // 同じ語でも、まとめでない記事ではセキュリティの話題を選べる
   const single = article({ title: "Googleが詐欺対策の新機能、偽画像を判別", tags: ["セキュリティ"] });
   assert.ok(offerPlanForArticle(single).offer.items.some((item) => item.topic === "security"));
