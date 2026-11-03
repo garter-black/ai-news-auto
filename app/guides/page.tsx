@@ -5,7 +5,7 @@ import Link from "next/link";
 import CompanyMark from "@/components/CompanyMark";
 import { formatDate } from "@/lib/articles";
 import { getCompany, OTHER } from "@/lib/companies";
-import { getAllGuides, guideArticles } from "@/lib/guides";
+import { getAllGuides, guideArticles, isThinGuide } from "@/lib/guides";
 import { getAllHowtos, type HowtoGuide } from "@/lib/howto";
 import { supersedesGuide } from "@/lib/products";
 
@@ -20,7 +20,8 @@ export const metadata: Metadata = withPageShare("guides", "/guides", {
 export default function GuidesPage() {
   const howtos = getAllHowtos();
   // まとめページ（/products）へ移した製品ガイドは転送しているので出さない
-  const guides = getAllGuides().filter((guide) => !supersedesGuide(guide.slug));
+  // 関連記事の無いガイド（根拠が無い）も出さない（台帳 W28）
+  const guides = getAllGuides().filter((guide) => !supersedesGuide(guide.slug) && !isThinGuide(guide));
   const groups = new Map<string, HowtoGuide[]>();
   for (const guide of howtos) {
     const key = guide.toolName.split(" / ")[0];

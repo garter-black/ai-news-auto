@@ -115,6 +115,7 @@
 | W25 | 内部リンクは 200 で開くページにだけ張る（企業ページの無い会社〔ガジェットだけのサムスンなど〕にはリンクしない。製品のまとめページへ移ったガイドは転送を経由せず直接リンクする） | 2026-11-04 | 土台の見直しで、サイトマップと内部リンク約1,200本を全部開いたところ、/companies/samsung の 404（4本の記事から）と /guides/gpt-6-astra の転送（9本の記事から）が見つかった | `lib/companies.ts`（`companyPageSlugs`）・`lib/guides.ts`（`guideHref`）・`tests/test_company_labels.cjs`・`tests/test_owner_rules_site.cjs`・`tests/test_guide_links.cjs` | |
 | W26 | 読み込みの途中で一覧がずれない（CLS 0.1 以下）。折り返す札に後から読む書体を使わない。画面の点検はヘッダーのタブにあるジャンルだけを開く | 2026-11-04 | 土台の見直しで、ジャンルの一覧（AI 以外の8ページ）が PC で読み込み中に 32px ずれていた（CLS 0.29〜0.32。札の件数の等幅の書体が後から読まれ、折り返しが変わるため） | `components/NewsHub.tsx`（`GenreChips`）・`scripts/ui_check.mjs`（CLS・ジャンルはヘッダーから）・`tests/test_owner_rules_site.cjs` | |
 | W27 | ジャンル・ガイド・サイトの説明に、やめた作り方（専門 YouTube の動画の解析）や決まった型の問い（「自分にどう関係する？何をすればいい？」まで3行で）を書かない。ニュース一覧（/news）の題名・説明に並べるジャンル名も、直近30日に5本以上あるものだけ（W14 を /news にも）。影響の欄の注記で「投資」に触れるのは投資・マネー／不動産・決算の記事だけ | 2026-11-04 | 土台の見直しで、ジャンルの説明文に「専門YouTubeチャンネルの動画をAIが解析」、サイトの説明文に決まった型の問いが残っていた。/news の題名は1〜3本しかない「暮らし・科学」を並べていた。AI の新機能や学校の記事にも「投資や契約の判断は」と出ていた | `site.config.ts`・`app/genres/[genre]/view.tsx`・`app/news/view.tsx`（`regularGenres`）・`components/WorkMoneyCard.tsx`・`tests/test_owner_rules_site.cjs` | |
+| W28 | 関連記事が1本も無い製品ガイド（元の記事を取り下げた・話題が消えた）は、一覧・サイトマップ・llms.txt に出さず、検索にも出さない（ページは残す） | 2026-11-04 | 土台の見直しで、「Jev」の製品ガイドが関連0本（根拠の記事が無い）のまま、一覧と検索に出ていた（薄いページ） | `lib/guides.ts`（`isThinGuide`）・`app/guides/page.tsx`・`lib/sitemap.ts`・`app/guides/[slug]/page.tsx`・`tests/test_owner_rules_site.cjs` | |
 
 ## 運用
 

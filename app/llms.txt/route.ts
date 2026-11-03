@@ -1,6 +1,6 @@
 import { getAllArticles } from "@/lib/articles";
 import { COMPANIES, companyCounts } from "@/lib/companies";
-import { getAllGuides } from "@/lib/guides";
+import { getAllGuides, isThinGuide } from "@/lib/guides";
 import { getAllBuyingGuides } from "@/lib/buying-guides";
 import { listedProducts, productHeading, supersedesGuide } from "@/lib/products";
 import { STATUS_LABEL, verdictOf } from "@/lib/verdict";
@@ -22,7 +22,7 @@ export function GET() {
   const line = (title: string, url: string, note?: string) => `- [${title}](${url})${note ? `: ${note}` : ""}`;
   const products = listedProducts();
   // まとめページへ移した製品ガイドは転送しているので載せない
-  const guides = getAllGuides().filter((g) => !supersedesGuide(g.slug));
+  const guides = getAllGuides().filter((g) => !supersedesGuide(g.slug) && !isThinGuide(g));
 
   const text = `# ${siteConfig.name}（${siteConfig.tagline}）
 

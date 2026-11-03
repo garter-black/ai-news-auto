@@ -11,7 +11,7 @@ import RelTime from "@/components/RelTime";
 import Timeline from "@/components/Timeline";
 import { coverPath, formatDate, getAllArticles, type AffiliateLink } from "@/lib/articles";
 import { companyPageSlugs, getCompany, OTHER } from "@/lib/companies";
-import { getAllGuides, getGuide, guideArticles } from "@/lib/guides";
+import { getAllGuides, getGuide, guideArticles, isThinGuide } from "@/lib/guides";
 import { Highlight } from "@/lib/highlight";
 import { getAllHowtos, getHowto } from "@/lib/howto";
 import { siteConfig } from "@/site.config";
@@ -44,6 +44,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: guide.seoTitle,
     description: guide.description,
     alternates: { canonical: `/guides/${guide.slug}` },
+    // 関連記事の無いガイドは根拠が無いので検索に出さない（台帳 W28）
+    ...(isThinGuide(guide) ? { robots: { index: false, follow: true } } : {}),
     openGraph: { siteName: siteConfig.siteName, locale: siteConfig.locale,
       type: "article",
       url: `/guides/${guide.slug}`,

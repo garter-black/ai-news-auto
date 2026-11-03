@@ -13,7 +13,7 @@ import {
   tagSlug,
 } from "@/lib/articles";
 import { companyCounts, companyOf } from "@/lib/companies";
-import { getAllGuides, guideArticles } from "@/lib/guides";
+import { getAllGuides, guideArticles, isThinGuide } from "@/lib/guides";
 import { getAllHowtos } from "@/lib/howto";
 import { getAllBuyingGuides } from "@/lib/buying-guides";
 import { getAllEvents } from "@/lib/events";
@@ -53,7 +53,7 @@ export function sitemapEntries(): SitemapEntry[] {
   }
   // 図鑑は中身がそろった製品だけ（ほかは noindex。2026-11-03 台帳 W13）
   const products = listedProducts();
-  const guides = getAllGuides().filter((guide) => !supersedesGuide(guide.slug));
+  const guides = getAllGuides().filter((guide) => !supersedesGuide(guide.slug) && !isThinGuide(guide));
   const howtos = getAllHowtos();
   const lastModified = articles[0]?.generatedAt
     ? new Date(articles[0].generatedAt)

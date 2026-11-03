@@ -130,3 +130,9 @@ test('[A4] 「使う人への影響」の注記で「投資」に触れるのは
   const src = read('components/WorkMoneyCard.tsx');
   assert.match(src, /money \? "投資や契約" : "導入や契約"/);
 });
+
+test('[W28] 関連記事の無い製品ガイドは、一覧・サイトマップ・llms.txt に出さず、検索にも出さない（2026-11-04: 「Jev」のガイドが関連0本のまま検索に出ていた）', () => {
+  assert.match(read('lib/guides.ts'), /export function isThinGuide/);
+  for (const rel of ['app/guides/page.tsx', 'lib/sitemap.ts', 'app/llms.txt/route.ts']) assert.match(read(rel), /!isThinGuide\(/, rel);
+  assert.match(read('app/guides/[slug]/page.tsx'), /isThinGuide\(guide\) \? \{ robots: \{ index: false/);
+});

@@ -85,6 +85,14 @@ export function guideArticles(guide: Guide): ArticleSummary[] {
 }
 
 /** 記事に対応するガイド（記事ページから案内するため） */
+/**
+ * 関連記事が1本も無い製品ガイド（元にした記事を取り下げた・話題が消えた）。本文の根拠が無く中身も更新されないので、
+ * 一覧・サイトマップ・llms.txt に出さず、検索にも出さない（2026-11-04 の点検で「Jev」のガイドが関連0本のまま検索に出ていた。台帳 W28）
+ */
+export function isThinGuide(guide: Guide): boolean {
+  return guideArticles(guide).length === 0;
+}
+
 export function guideForArticle(article: ArticleSummary): Guide | undefined {
   return getAllGuides().find((guide) =>
     new RegExp(guide.match).test(`${article.title} ${article.seoTitle ?? ""}`),
