@@ -262,9 +262,7 @@ class PlanTest(unittest.TestCase):
                     continue
                 plan = vl.build_plan(a, level, v, images=imgs)
                 times, total = fake_times(plan.lines())
-                tl = vl.build_timeline(plan, times, total, {"voice": "VOICEVOX:九州そら", "image": plan.images[0]["credit"] if plan.images else ""})
-                if not plan.images:
-                    vl.card_for(plan, tl)
+                tl = vl.layout_timeline(plan, times, total, {"voice": "VOICEVOX:九州そら", "image": plan.images[0]["credit"] if plan.images else ""})
                 rep = {"texts": vl.text_records(tl), "total": total, "units": tl.units, "speech_lines": plan.lines()}
                 with self.subTest(slug=slug, level=level, variant=v, image=bool(plan.images)):
                     self.assertEqual(vl.layout_problems(rep), [])

@@ -188,22 +188,26 @@ def is_ours(url: str) -> bool:
     return "ai-tech-express.jp/img/" in str(url or "")
 
 
+SKIP_KINDS = ("dense",)  # 文字の多い図・画面の写し（動画の大きさでは図の中の文字が読めない）は使わない
+COVER_KINDS = ("photo", "hero", "video", "kit")  # 枠いっぱいに切り抜いてよい写真。ほか（バナー・ロゴ）は切らずに全体を見せる
+
+
 def official_images(article: dict) -> list[dict]:
     """使ってよい画像（I1/I2）: imageCredit が official のサムネイル（サイトに保存した写し）と、本文の公式の写真・図（bodyImages）。
     AI 画像・素材写真・YouTube のサムネイル・ニュースサイトの写真は使わない"""
     out: list[dict] = []
     credit = article.get("imageCredit") or {}
     focus = article.get("imageFocus") or {}
-    if credit.get("kind") == "official":
+    if credit.get("kind") == "official" and str(credit.get("imageKind") or "").lower() not in SKIP_KINDS:
         url = article.get("thumbnail") or ""
         url = url if is_ours(url) else ""
         if url:
             org = (credit.get("org") or credit.get("provider") or "").strip()
-            out.append({"url": url, "org": org, "kind": "photo", "focus": [float(focus.get("x", 0.5)), float(focus.get("y", 0.5))]})
+            out.append({"url": url, "org": org, "kind": str(credit.get("imageKind") or "photo"), "focus": [float(focus.get("x", 0.5)), float(focus.get("y", 0.5))]})
     for b in article.get("bodyImages") or []:
         if not isinstance(b, dict) or not is_ours(b.get("src", "")) or not (b.get("credit") or "").strip():
             continue
-        if str(b.get("kind", "")).lower() in ("ai", "stock", "generated"):
+        if str(b.get("kind", "")).lower() in ("ai", "stock", "generated") + SKIP_KINDS:
             continue
         if any(x["url"] == b["src"] for x in out):
             continue
@@ -282,6 +286,7 @@ class SimplePlan:
     summary: str = ""
     length_range: tuple = (15.0, 30.0)
     script_from: str = "article"  # article（機械で）/ llm（L1/L2 の台本の場面）
+    sub_max: int = 58  # 字幕1枚の字数（SUB_MAX2。文字の面積が上限に近ければ SUB_MAX＝1行に）
 
     @property
     def mode(self) -> str:
@@ -445,7 +450,7 @@ def article_beats(article: dict) -> list[Beat]:
         used_labels.add(label)
         beats.append(Beat(label, q, speech, "faq"))
     for h2, h3, para in body_sections(article.get("body", "")):
-        head = clean_sentence(h3 or h2)
+        head = re.sub(r"^\s*(?:\d{1,2}|[①-⑩])[.．、)）]\s*", "", clean_sentence(h3 or h2))  # 見出しの頭の番号（「2. 」）は出さない
         if not head or SKIP_H2.search(h2) or (not h3 and not head.endswith(("？", "?"))) or not (4 <= len(head) <= 28):
             continue
         if _NOT_NARRATION.search(head):
@@ -801,7 +806,8 @@ def render_lines(lines: list[str], face: str, size: int, color=INK, accent: bool
 KEY_SIZES = range(58, 38, -2)
 HOOK_SIZES = range(52, 34, -2)
 SUB_SIZES = range(44, 34, -2)
-SUB_MAX = 38  # 字幕1枚の目安の字数（1行。長い文は文節の切れ目で同じくらいの長さに分ける）
+SUB_MAX = 38  # 字幕1枚を1行にするときの字数（文字の面積が上限に近い割り付けで使う）
+SUB_MAX2 = 58  # 字幕1枚の字数（2行まで。これより長い文は文節の切れ目で同じくらいの長さに分ける）
 
 
 def key_fit(text: str) -> tuple[int, list[str]] | None:
@@ -826,24 +832,33 @@ def fit_problems(plan: SimplePlan) -> list[str]:
     return out
 
 
-def sub_chunks(speech: str) -> list[str]:
-    """字幕の1枚ずつ: 文ごとに、SUB_MAX 字を超える文は文節の切れ目（読点を優先）で同じくらいの長さに分ける（つなぐと読み上げと同じ）"""
+_GOOD_END = re.compile(r"(?:は|が|を|に|で|と|も|へ|や|から|まで|より|ため|して|され|ており|ていて|し|く|て)$")
+
+
+def sub_chunks(speech: str, max_chars: int | None = None) -> list[str]:
+    """字幕の1枚ずつ: 文ごとに、max_chars 字（既定 SUB_MAX2＝2行まで）を超える文は、文節の切れ目で同じくらいの長さに分ける。
+    切れ目は読点の後 → 助詞・て形の後の順に選び、「の」の後では切らない（「…の」「上に…」のような読めない切れ端を作らない）。つなぐと読み上げと同じ"""
+    limit = max_chars or SUB_MAX2
     out = []
     for s in sentences(speech) or [speech]:
-        if len(s) <= SUB_MAX:
+        if len(s) <= limit:
             out.append(s)
             continue
         ph = _phrases(s)
         cum = [0]
         for x in ph:
             cum.append(cum[-1] + len(x))
-        k = math.ceil(len(s) / SUB_MAX)
+        k = math.ceil(len(s) / limit)
         cuts, last = [], 0
         for i in range(1, k):
             target = len(s) * i / k
 
             def cost(j: int) -> float:
-                return abs(cum[j] - target) - (3 if ph[j - 1].endswith("、") else 0) + (99 if cum[j] - cum[last] < 8 or len(s) - cum[j] < 8 else 0)
+                end = ph[j - 1]
+                bonus = 8 if end.endswith("、") else (3 if _GOOD_END.search(end) else 0)
+                penalty = 6 if end.endswith("の") or re.match(r"^(?:上|下|中|前|後|間|方|側)", ph[j] if j < len(ph) else "") else 0
+                too_long = cum[j] - cum[last] > limit or (i == k - 1 and len(s) - cum[j] > limit)
+                return abs(cum[j] - target) - bonus + penalty + (99 if cum[j] - cum[last] < 8 or len(s) - cum[j] < 8 or too_long else 0)
 
             j = min(range(last + 1, len(ph)), key=cost, default=None)
             if j is None:
@@ -885,6 +900,7 @@ class Timeline:
     credits: list[str]
     keyframes: list[tuple[float, str, str]]  # (時刻, 読み上げ, 要点)
     card: list = field(default_factory=list)  # ブランドのカードの文字 (文字, 枠, 大きさ)
+    card_image: object = None  # 写真なしのときのブランドのカード（numpy）
 
 
 def column_items(eyebrow: str, key_text: str, sizes, rows: int, t0: float, t1: float, role: str, accent: bool) -> list[Item]:
@@ -930,7 +946,7 @@ def build_timeline(plan: SimplePlan, line_times: list[tuple[float, float]], tota
     kinds = ["hook"] + ["point"] * n + ["use"]
     captions = [plan.hook_text] + [b.key for b in plan.beats] + [plan.ending_text]
     for li, ((s, e), speech) in enumerate(zip(line_times, plan.lines())):
-        chunks = sub_chunks(speech)
+        chunks = sub_chunks(speech, plan.sub_max)
         weights = [max(1, len(c)) for c in chunks]
         acc = s
         recs = []
@@ -996,7 +1012,7 @@ def load_picture(path: str, size: tuple[int, int], kind: str = "photo"):
     w, h = int(size[0] * 1.1), int(size[1] * 1.1)
     img = Image.open(path).convert("RGB")
     ar, want = img.width / img.height, w / h
-    if abs(ar - want) / want <= 0.04 and kind != "figure":
+    if abs(ar - want) / want <= 0.04 and kind in COVER_KINDS:
         scale = max(w / img.width, h / img.height)
         img = img.resize((max(w, round(img.width * scale)), max(h, round(img.height * scale))), Image.LANCZOS)
         x0, y0 = (img.width - w) // 2, (img.height - h) // 2
@@ -1045,6 +1061,26 @@ def brand_card(size: tuple[int, int], big: str, small: str, boxes: list | None =
     return np.asarray(img.convert("RGB"))
 
 
+def layout_timeline(plan: "SimplePlan", times: list, total: float, credits: dict) -> "Timeline":
+    """時刻の計画を作り、文字の面積が上限に近ければ字幕を1行ずつにして作り直す。写真なしならブランドのカードも（tl.card_image）"""
+    tl = build_timeline(plan, times, total, credits)
+    if timeline_ratio(tl, plan) > TEXT_RATIO_MAX - 0.005:
+        plan.sub_max = SUB_MAX
+        tl = build_timeline(plan, times, total, credits)
+    if not plan.images:
+        tl.card_image = card_for(plan, tl)
+    return tl
+
+
+def timeline_ratio(tl: "Timeline", plan: "SimplePlan") -> float:
+    """描く前の文字の面積の最大（写真なしなら、ブランドのカードの文字も入れて）"""
+    import video_gate as gate
+
+    if not plan.images:
+        card_for(plan, tl)
+    return gate.text_ratio_max(text_records(tl), tl.total, (W, H))[0]
+
+
 def card_for(plan: "SimplePlan", tl: "Timeline"):
     """写真なしのときのブランドのカード。文字の面積が上限に近ければ、カードの文字を小さく・出典の行を外す（tl.card に文字の枠を入れる）"""
     import video_gate as gate
@@ -1053,9 +1089,9 @@ def card_for(plan: "SimplePlan", tl: "Timeline"):
     big = plan.subject or plan.source_name
     small = f"出典：{plan.source_name}" if plan.subject and plan.source_name else ""
     card = None
-    for big_max, keep_small in ((96, True), (64, True), (56, False)):
+    for big_max, keep_small in ((96, True), (64, True), (56, False), (0, False)):  # 最後は文字の無い無地のカード
         boxes: list = []
-        card = brand_card(size, big, small if keep_small else "", boxes, big_max=big_max)
+        card = brand_card(size, big if big_max else "", small if keep_small else "", boxes, big_max=big_max or 56)
         tl.card = boxes
         if gate.text_ratio_max(text_records(tl), tl.total, (W, H))[0] <= TEXT_RATIO_MAX - 0.005:
             break
@@ -1120,7 +1156,7 @@ class Renderer:
         a, b = seg[0], seg[1]
         k = ease((t - a) / max(b - a, 0.1))
         img = self.plan.images[idx] if 0 <= idx < len(self.plan.images) else {}
-        zmax = 1.05 if img.get("kind") == "figure" or not self.plan.images else 1.08
+        zmax = 1.08 if img.get("kind") in COVER_KINDS else (1.05 if not self.plan.images else 1.02)  # 文字のあるバナー・ロゴは端を切らない
         s = 1.0 + (zmax - 1.0) * k
         fx, fy = (img.get("focus") or [0.5, 0.5]) if img else (0.5, 0.5)
         sh, sw = src.shape[:2]
@@ -1406,8 +1442,10 @@ VISION_SYSTEM = """あなたはニュース動画の厳しい最終チェック�
 下は読み上げと同じ字幕、一番下は小さなクレジットです。重大な問題:
 1. 文字が切れている・画面や枠からはみ出している・文字どうしが重なって読めない・小さすぎて読めない
 2. 左の要点と、読み上げ・字幕が別の話（同じ点を話していない）
-3. 写真・図が壊れている・真っ白・ほぼ単色・記事と関係が無い・実在の製品を AI で描いた作り物に見える
+3. 写真・図が壊れている・真っ白・ほぼ単色・記事と関係が無い・画像の中の大事な文字が枠で切れている
 4. 日本語が壊れている・不自然で意味が通らない
+右の写真・図・イラストは、どれも記事の会社が公式に出した素材です（CG やイラストも公式）。AI で作ったように見えるかどうかは判定しません。
+字幕は長い文を2〜3枚に分けて順に出すので、コマの字幕が文の途中から始まる・途中で終わるのは問題ではありません（下の読み上げの全文と比べてください）。
 細かい好み（もっと派手に、など）は問題にしません。ok が false のときは issue に、何がどうだめかを短く日本語で書きます（true のときは空文字）。
 すべてのコマについて index 順に答えます。"""
 
@@ -1538,10 +1576,10 @@ def make_simple(slug: str, level: str, variant: str, out_dir: Path, article: dic
             stages["tts"] = round(time.time() - st, 1)
             st = time.time()
             credits = {"voice": voice.get("credit", ""), "image": got[0]["credit"] if got else ""}
-            tl = build_timeline(plan, times, total, credits)
+            tl = layout_timeline(plan, times, total, credits)
             audio, audio_info = build_audio(samples, total, work)
             size = (IMG[2] - IMG[0], IMG[3] - IMG[1])
-            pics = [load_picture(g["path"], size, g.get("kind", "photo")) for g in got] or [card_for(plan, tl)]
+            pics = [load_picture(g["path"], size, g.get("kind", "photo")) for g in got] or [tl.card_image]
             encode(Renderer(plan, tl, pics), audio, mp4, fps=fps, out_scale=out_scale, workers=workers)
             stages["render"] = round(time.time() - st, 1)
         report["audio"] = audio_info
