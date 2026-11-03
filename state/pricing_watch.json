@@ -6,7 +6,8 @@
   },
   "chatgpt": {
    "ok": "2026-11-03",
-   "failures": 0
+   "failures": 1,
+   "error": "HTTPError: HTTP Error 402: Payment Required"
   },
   "gemini": {
    "ok": "2026-11-03",
@@ -14,7 +15,8 @@
   },
   "copilot": {
    "ok": "2026-11-03",
-   "failures": 0
+   "failures": 1,
+   "error": "HTTPError: HTTP Error 402: Payment Required"
   },
   "perplexity": {
    "ok": "2026-11-03",
@@ -33,5 +35,5 @@
    "failures": 0
   }
  },
- "lastRun": "2026-11-02T18:08:48+00:00"
+ "lastRun": "2026-11-03T02:57:05+00:00"
 }
