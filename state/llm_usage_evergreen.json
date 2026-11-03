@@ -3,5 +3,10 @@
     "evergreen": {
       "anthropic-api:claude-sonnet-5-5": 12
     }
+  },
+  "2026-11-03": {
+    "evergreen": {
+      "anthropic-api:claude-sonnet-5-5": 13
+    }
   }
 }
