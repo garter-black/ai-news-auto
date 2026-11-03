@@ -64,30 +64,31 @@
   "videoTitle": "Google Messages update rolling out new app icon with gradient design",
   "publishedAt": "2026-11-02T13:45:24.629000+00:00",
   "generatedAt": "2026-11-02T13:47:41.718441+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/google-messages-gradient-icon-bbe8d999.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/google-messages-gradient-icon-bf57d193.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "qualityScore": 93,
   "detectedAt": "2026-11-02T13:45:24+00:00",
   "fastLane": true,
-  "imageCredit": {
-    "kind": "ai",
-    "model": "flux-1-schnell",
-    "prompt": "A close-up of a hand holding a smartphone, displaying a vibrant gradient app icon on the home screen under soft ambient lighting.",
-    "provider": "Cloudflare Workers AI",
-    "original": "https://9to5google.com/wp-content/uploads/sites/4/2026/11/google-messages-gradient-icon_e18c7d.jpg?quality=82&strip=all&resize=1200,628",
-    "at": "2026-11-02T13:48:08+00:00"
-  },
   "imageFocus": {
-    "x": 0.548,
-    "y": 0.547,
+    "x": 0.58,
+    "y": 0.616,
     "box": [
-      0.097,
-      0.095,
-      1.0,
+      0.188,
+      0.232,
+      0.972,
       1.0
     ],
     "ar": 1.9048,
-    "src": "https://ai-tech-express.jp/img/google-messages-gradient-icon-bbe8d999.jpg"
+    "src": "https://ai-tech-express.jp/img/google-messages-gradient-icon-bf57d193.jpg"
+  },
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close-up view of a smooth wall illuminated by a soft purple-to-blue gradient light, with the colors blending seamlessly across the surface.",
+    "provider": "Cloudflare Workers AI",
+    "noProduct": true,
+    "original": "https://9to5google.com/wp-content/uploads/sites/4/2026/11/google-messages-gradient-icon_e18c7d.jpg?quality=82&strip=all&resize=1200,628",
+    "at": "2026-11-03T08:23:51+00:00"
   }
 }

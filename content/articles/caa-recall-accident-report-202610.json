@@ -47,19 +47,12 @@
   "videoTitle": "消費生活用製品の重大製品事故:リコール製品で火災等(電気シェーバー、マッサージ器(充電式))(10月27日)",
   "publishedAt": "2026-10-27T06:30:00+00:00",
   "generatedAt": "2026-10-27T16:54:16.235954+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/caa-recall-accident-report-202610-82de026f.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/caa-recall-accident-report-202610-692be11e.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-27T06:30:00+00:00",
   "detectedAt": "2026-10-27T16:50:59+00:00",
-  "imageCredit": {
-    "kind": "ai",
-    "model": "flux-1-schnell",
-    "prompt": "A close-up of a burnt electric shaver and a rechargeable massage device on a bathroom countertop, faint smoke rising, lit by soft natural light, with no visible brand markings.",
-    "provider": "Cloudflare Workers AI",
-    "at": "2026-10-28T03:41:18+00:00"
-  },
   "sources": [
     {
       "title": "消費生活用製品の重大製品事故:リコール製品で火災等(電気シェーバー、マッサージ器(充電式))(10月27日)",
@@ -80,5 +73,25 @@
       "sourceName": "消費者庁"
     }
   ],
-  "updatedAt": "2026-10-30T06:51:02.213465+00:00"
+  "updatedAt": "2026-10-30T06:51:02.213465+00:00",
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A softly lit, empty exhibition hall with blurred stage lights and warm bokeh, polished floor, no exhibits, no products and no people in view.",
+    "provider": "Cloudflare Workers AI",
+    "noProduct": true,
+    "at": "2026-11-03T08:30:32+00:00"
+  },
+  "imageFocus": {
+    "x": 0.452,
+    "y": 0.348,
+    "box": [
+      0.0,
+      0.0,
+      0.903,
+      0.696
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/caa-recall-accident-report-202610-692be11e.jpg"
+  }
 }

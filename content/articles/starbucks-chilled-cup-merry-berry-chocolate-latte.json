@@ -55,7 +55,7 @@
   "videoTitle": "大切な人に贈るワクワクなホリデーを。 スターバックス チルドカップ 「DELIGHT ME メリーベリーチョコレートラテ」11月3日（火）より期間限定発売",
   "publishedAt": "2026-10-26T15:00:00+00:00",
   "generatedAt": "2026-10-27T23:04:23.313587+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/starbucks-chilled-cup-merry-berry-chocolate-latte-c385f9cf.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/starbucks-chilled-cup-merry-berry-chocolate-latte-98a36f9d.jpg",
   "model": "gemini-3.1-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -63,9 +63,22 @@
   "detectedAt": "2026-10-27T23:00:56+00:00",
   "imageCredit": {
     "kind": "ai",
-    "model": "flux-1-schnell",
-    "prompt": "A close-up shot of a glass filled with a chocolate-colored beverage topped with whipped cream and berry garnish, sitting on a wooden cafe table in soft natural morning light.",
+    "model": "flux-2-klein-4b",
+    "prompt": "A softly lit coffee shop interior adorned with holiday lights and pine garlands, a wooden table set with a plate of pastries and a folded newspaper, and a window revealing gentle snowfall outside.",
     "provider": "Cloudflare Workers AI",
-    "at": "2026-10-28T03:22:56+00:00"
+    "noProduct": true,
+    "at": "2026-11-03T08:29:03+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.328,
+    "box": [
+      0.0,
+      0.0,
+      1.0,
+      0.655
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/starbucks-chilled-cup-merry-berry-chocolate-latte-98a36f9d.jpg"
   }
 }

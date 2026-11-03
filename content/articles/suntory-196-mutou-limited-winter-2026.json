@@ -57,7 +57,7 @@
   "videoTitle": "「－196(イチキューロク)無糖〈ピーチ＆マンゴー＆アップル〉」「同〈贅沢赤ぶどう＆白ぶどう〉」期間限定新発売",
   "publishedAt": "2026-10-26T15:00:00+00:00",
   "generatedAt": "2026-10-27T20:43:14.302247+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/suntory-196-mutou-limited-winter-2026-8a46086c.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/suntory-196-mutou-limited-winter-2026-28af00fe.jpg",
   "model": "gemini-3.1-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -66,8 +66,21 @@
   "imageCredit": {
     "kind": "ai",
     "model": "flux-2-klein-4b",
-    "prompt": "A close-up of two metallic beverage cans sitting on a wooden table next to fresh sliced peaches, mangoes, and grapes in soft natural light.",
+    "prompt": "Fresh peach, mango, and apple wedges together with red and white grapes are artfully arranged on a wooden countertop beside a clear glass filled with ice, illuminated by soft natural light.",
     "provider": "Cloudflare Workers AI",
-    "at": "2026-10-28T03:59:23+00:00"
+    "noProduct": true,
+    "at": "2026-11-03T08:29:34+00:00"
+  },
+  "imageFocus": {
+    "x": 0.436,
+    "y": 0.506,
+    "box": [
+      0.0,
+      0.143,
+      0.872,
+      0.869
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/suntory-196-mutou-limited-winter-2026-28af00fe.jpg"
   }
 }

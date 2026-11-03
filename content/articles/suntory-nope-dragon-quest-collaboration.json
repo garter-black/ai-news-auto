@@ -55,17 +55,30 @@
   "videoTitle": "スライムたちが のんでほしそうに こちらを みている！「ギルティ炭酸 NOPE」が『ドラゴンクエストモンスターズ4』とコラボ！",
   "publishedAt": "2026-10-25T15:00:00+00:00",
   "generatedAt": "2026-10-27T23:22:47.400442+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/suntory-nope-dragon-quest-collaboration-88387ad8.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/suntory-nope-dragon-quest-collaboration-ddaab6b4.jpg",
   "model": "gemini-3.1-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-25T15:00:00+00:00",
   "detectedAt": "2026-10-27T23:21:02+00:00",
+  "imageFocus": {
+    "x": 0.503,
+    "y": 0.256,
+    "box": [
+      0.006,
+      0.0,
+      1.0,
+      0.512
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/suntory-nope-dragon-quest-collaboration-ddaab6b4.jpg"
+  },
   "imageCredit": {
     "kind": "ai",
     "model": "flux-2-klein-4b",
-    "prompt": "A close-up shot of several colorful aluminum beverage cans arranged on a clean wooden table under soft natural indoor lighting.",
+    "prompt": "Close-up of sparkling bubbles rising through clear water in soft natural light, abstract and calm, no objects, no characters, no containers.",
     "provider": "Cloudflare Workers AI",
-    "at": "2026-10-28T03:20:19+00:00"
+    "noProduct": true,
+    "at": "2026-11-03T08:31:56+00:00"
   }
 }

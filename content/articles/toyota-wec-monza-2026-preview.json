@@ -45,29 +45,30 @@
   "videoTitle": "WEC 2026年シーズン 第8戦 モンツァ6時間レース ： プレビュー マニファクチャラーチャンピオンとして最終戦に挑む",
   "publishedAt": "2026-10-30T09:00:00+00:00",
   "generatedAt": "2026-11-02T03:11:22.106077+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/toyota-wec-monza-2026-preview-aff3311f.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/toyota-wec-monza-2026-preview-4acc774c.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-30T09:00:00+00:00",
   "detectedAt": "2026-11-02T03:10:44+00:00",
+  "imageFocus": {
+    "x": 0.442,
+    "y": 0.337,
+    "box": [
+      0.0,
+      0.0,
+      0.884,
+      0.673
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/toyota-wec-monza-2026-preview-4acc774c.jpg"
+  },
   "imageCredit": {
     "kind": "ai",
     "model": "flux-2-klein-4b",
-    "prompt": "A sleek prototype race car speeding around a curving section of a European race track, with blurred grandstands and a cloudy sky.",
+    "prompt": "An empty stretch of the Monza circuit under overcast skies, the wet asphalt reflecting the muted light and distant grandstands fading into the background.",
     "provider": "Cloudflare Workers AI",
-    "at": "2026-11-02T11:55:44+00:00"
-  },
-  "imageFocus": {
-    "x": 0.444,
-    "y": 0.428,
-    "box": [
-      0.0,
-      0.089,
-      0.887,
-      0.768
-    ],
-    "ar": 1.9048,
-    "src": "https://ai-tech-express.jp/img/toyota-wec-monza-2026-preview-aff3311f.jpg"
+    "noProduct": true,
+    "at": "2026-11-03T08:25:03+00:00"
   }
 }

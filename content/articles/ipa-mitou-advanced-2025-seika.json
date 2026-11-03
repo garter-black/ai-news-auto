@@ -47,18 +47,33 @@
   "videoTitle": "2025年度下期 未踏アドバンスト事業で実施したプロジェクトの成果概要、成果詳細を公開しました",
   "publishedAt": "2026-10-29T15:00:00+00:00",
   "generatedAt": "2026-10-30T01:52:23.956427+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/ipa-mitou-advanced-2025-seika-80812f6c.jpg",
+  "thumbnail": "https://ai-tech-express.jp/img/ipa-mitou-advanced-2025-seika-aa44210c.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-10-29T15:00:00+00:00",
   "detectedAt": "2026-10-30T01:51:11+00:00",
   "imageCredit": {
-    "kind": "ai",
-    "model": "flux-2-klein-4b",
-    "prompt": "A sleek, hands-free electric wheelchair placed in a bright, modern care facility corridor, with a tablet on a nearby table showing colorful AI data visualizations; soft natural light streams through large windows, and only a pair of hands adjusting the wheelchair controls are visible.",
-    "provider": "Cloudflare Workers AI",
+    "kind": "official",
+    "org": "IPA（情報処理推進機構）",
+    "provider": "IPA（情報処理推進機構）",
+    "sourceUrl": "https://www.ipa.go.jp/jinzai/mitou/advanced/2025second/seika.html",
     "original": "https://www.ipa.go.jp/k3q2q400000050d7-img/k3q2q400000050dg.jpg",
-    "at": "2026-10-30T02:07:22+00:00"
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-03T08:27:41+00:00",
+    "imageKind": "logo"
+  },
+  "imageFocus": {
+    "x": 0.481,
+    "y": 0.494,
+    "box": [
+      0.2,
+      0.292,
+      0.762,
+      0.696
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/ipa-mitou-advanced-2025-seika-aa44210c.jpg"
   }
 }
