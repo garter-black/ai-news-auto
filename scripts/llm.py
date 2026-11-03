@@ -134,11 +134,107 @@ def _record_usage(model: str) -> None:
     usage = {d: usage[d] for d in keep}
     USAGE_PATH.parent.mkdir(parents=True, exist_ok=True)
     USAGE_PATH.write_text(json.dumps(usage, ensure_ascii=False, indent=2, sort_keys=True) + "\n", "utf-8")
+    _record_workflow_usage(model)
 
 
 def usage_today() -> dict:
-    """{model: 今日（太平洋時間）の呼び出し回数}"""
-    return dict(_load_usage().get(_today(), {}))
+    """{model: 今日（太平洋時間）の呼び出し回数}。記事のジョブの記録と、ほかのジョブの記録（ジョブごとのファイル）の多い方"""
+    total = dict(_load_usage().get(_today(), {}))
+    for model, count in workflow_usage_today().items():
+        total[model] = max(total.get(model, 0), count)
+    return total
+
+
+# --------------------------------------------------------------------------- #
+# ジョブ（ワークフロー）ごとの無料枠の取り分（2026-11-03 オーナー「何回も記事作成が止まるのはやめたい」）
+# --------------------------------------------------------------------------- #
+# 1日の回数が決まっている無料モデル（FREE_DAILY_LIMITS）を、ジョブごとに分ける。記事・速報は取り分の上限なし、
+# ほかのジョブは下の割合まで（合計 40%）。だから記事・速報には、少なくとも 60% が必ず残る。
+# ジョブ名は環境変数 LLM_WORKFLOW（無ければ GitHub のワークフロー名から）。
+# 記録: 記事のジョブ（auto_run の中の articles・breaking・sns_helper・images・guides・products）は content/llm_usage_wf.json（記事と一緒にコミット）、
+# ほかのジョブは state/llm_usage_<ジョブ>.json（各ワークフローがコミット）。
+RESERVED_WORKFLOWS = {"articles", "breaking"}
+WORKFLOW_SHARES = {"video": 0.10, "evergreen": 0.10, "weekly": 0.05, "guides": 0.05, "sns_helper": 0.05, "images": 0.05}
+WORKFLOW_SHARE_DEFAULT = 0.0  # 知らないジョブは数のある無料モデルを使わない（数の無いモデル・Claude API は使える）
+AUTO_RUN_WORKFLOWS = {"articles", "breaking", "sns_helper", "images", "guides", "products"}
+LLM_STATE_DIR = ROOT / "state"
+WORKFLOW_BY_NAME = {"Auto Article Pipeline": "articles", "SNS video v3 (manual)": "video", "Weekly roundup": "weekly"}
+
+
+def current_workflow() -> str:
+    name = os.environ.get("LLM_WORKFLOW")
+    if name:
+        return re.sub(r"[^a-z0-9_]", "", name.lower()) or "local"
+    gh = os.environ.get("GITHUB_WORKFLOW")
+    if gh:
+        return WORKFLOW_BY_NAME.get(gh) or re.sub(r"[^a-z0-9_]+", "_", gh.lower()).strip("_") or "other"
+    return "local"
+
+
+def _workflow_usage_path(workflow: str) -> Path:
+    if workflow in AUTO_RUN_WORKFLOWS or workflow == "local":
+        return USAGE_PATH.with_name("llm_usage_wf.json")  # content/llm_usage_wf.json
+    return LLM_STATE_DIR / f"llm_usage_{workflow}.json"
+
+
+def _record_workflow_usage(model: str) -> None:
+    workflow = current_workflow()
+    path = _workflow_usage_path(workflow)
+    try:
+        data = json.loads(path.read_text("utf-8"))
+    except Exception:  # noqa: BLE001
+        data = {}
+    day = data.setdefault(_today(), {}).setdefault(workflow, {})
+    day[model] = day.get(model, 0) + 1
+    data = {d: data[d] for d in sorted(data)[-3:]}
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n", "utf-8")
+    except OSError:
+        pass
+
+
+def workflow_usage_by_job() -> dict[str, dict[str, int]]:
+    """{ジョブ: {モデル: 今日の回数}}（全ジョブのファイルを合わせて）"""
+    out: dict[str, dict[str, int]] = {}
+    paths = list(dict.fromkeys([USAGE_PATH.with_name("llm_usage_wf.json")] + sorted(LLM_STATE_DIR.glob("llm_usage_*.json"))))
+    for path in paths:
+        try:
+            data = json.loads(path.read_text("utf-8"))
+        except Exception:  # noqa: BLE001
+            continue
+        for workflow, models in (data.get(_today()) or {}).items():
+            if isinstance(models, dict):
+                acc = out.setdefault(workflow, {})
+                for model, count in models.items():
+                    acc[model] = acc.get(model, 0) + int(count or 0)
+    return out
+
+
+def workflow_usage_today() -> dict[str, int]:
+    total: dict[str, int] = {}
+    for models in workflow_usage_by_job().values():
+        for model, count in models.items():
+            total[model] = total.get(model, 0) + count
+    return total
+
+
+def workflow_share_cap(model: str, workflow: str | None = None) -> int | None:
+    """このジョブがこのモデルを今日使ってよい回数（None = 取り分の上限なし）"""
+    workflow = workflow or current_workflow()
+    limit = daily_limit(model)
+    if limit <= 0 or workflow in RESERVED_WORKFLOWS or workflow == "local":
+        return None
+    share = WORKFLOW_SHARES.get(workflow, WORKFLOW_SHARE_DEFAULT)
+    return int(limit * share)
+
+
+def over_workflow_share(model: str, workflow: str | None = None) -> bool:
+    workflow = workflow or current_workflow()
+    cap = workflow_share_cap(model, workflow)
+    if cap is None:
+        return False
+    return workflow_usage_by_job().get(workflow, {}).get(model, 0) >= cap
 
 
 def _load_slow() -> dict:
@@ -310,18 +406,16 @@ def models_for(tier: str) -> list[str]:
         override = [os.environ["GEMINI_MODEL"]] if os.environ.get("GEMINI_MODEL") else []
         quality = [m for m in dict.fromkeys(override + QUALITY_MODELS) if m in have]
         # Claude（CLI）はここに入れない。visibility="high" の呼び出しだけが generate_json の中で先頭に足す
-        if tier == "quality":
-            chosen = quality
-        elif tier == "write":
-            # 本文は強いモデルから。軽量モデル（flash-lite・Gemma）は最後の手段
-            bulk = [m for m in BULK_MODELS if m in have]
-            chosen = list(dict.fromkeys(
-                quality + _cloudflare_models()[:1] + _groq_models()[:1] + _openrouter_models() + bulk
-                + _cloudflare_models()[1:] + _groq_models()[1:]
-            )) + _codex_models()
+        # どの段も Gemini だけに頼らない（Gemini が全部 429 でも止まらないように。2026-11-03）:
+        #   Gemini → Cloudflare Workers AI（gpt-oss-120b など）→ OpenRouter の無料モデル → Groq
+        bulk = [m for m in BULK_MODELS if m in have]
+        cloudflare, openrouter, groq = _cloudflare_models(), _openrouter_models(), _groq_models()
+        others = cloudflare + openrouter + groq
+        if tier in ("quality", "write"):
+            # 強い Gemini（Flash）→ ほかの会社のいちばん強いモデル → 軽量の Gemini（flash-lite・Gemma）→ ほかの会社の残り
+            chosen = list(dict.fromkeys(quality + cloudflare[:1] + openrouter + groq[:1] + bulk + cloudflare[1:] + groq[1:])) + _codex_models()
         else:
-            bulk = [m for m in BULK_MODELS if m in have]
-            chosen = list(dict.fromkeys(bulk + quality)) + _groq_models() + _openrouter_models() + _cloudflare_models() + _codex_models()
+            chosen = list(dict.fromkeys(bulk + quality)) + others + _codex_models()
         _tiers[tier] = chosen
         log(f"[llm] {tier}: {' → '.join(chosen) or '（なし）'}")
     return _tiers[tier]
@@ -1219,6 +1313,12 @@ def generate_json(
                 _limit_logged.add((model, "slow"))
                 log(f"   [llm] {model}: 直近{int(SLOW_COOLDOWN.total_seconds() // 60)}分以内に時間切れになったので、本文の段では飛ばす")
             continue
+        if over_workflow_share(model):
+            if (model, "share") not in _limit_logged:
+                _limit_logged.add((model, "share"))
+                log(f"   [llm] {model}: このジョブ（{current_workflow()}）の今日の取り分 {workflow_share_cap(model)} 回を使ったので飛ばす"
+                    "（記事・速報の分を残す）")
+            continue
         if over_daily_limit(model, tier, used):
             if (model, tier) not in _limit_logged:
                 _limit_logged.add((model, tier))
@@ -1357,7 +1457,24 @@ def _api_ping() -> None:
     log(f"[llm] API の確認 OK: {model} → {text[:40]!r} / 入力 {message.usage.input_tokens} 出力 {message.usage.output_tokens} → ${usd:.6f}")
 
 
+def _main_merge_counts(argv: list[str]) -> None:
+    """ジョブごとの無料モデルの回数（{日: {ジョブ: {モデル: 回数}}}）を、モデルごとに多い方で合わせる"""
+    mine_path, dest_path = Path(argv[0]), Path(argv[1])
+    merged = _read_json(dest_path)
+    for day, jobs in _read_json(mine_path).items():
+        for job, models in (jobs or {}).items():
+            target = merged.setdefault(day, {}).setdefault(job, {})
+            for model, count in (models or {}).items():
+                target[model] = max(int(count or 0), int(target.get(model) or 0))
+    merged = {d: merged[d] for d in sorted(merged)[-3:]}
+    dest_path.parent.mkdir(parents=True, exist_ok=True)
+    dest_path.write_text(json.dumps(merged, ensure_ascii=False, indent=2, sort_keys=True) + "\n", "utf-8")
+
+
 if __name__ == "__main__":
+    if "--merge-usage-counts" in sys.argv:
+        _main_merge_counts(sys.argv[sys.argv.index("--merge-usage-counts") + 1:])
+        sys.exit(0)
     if "--merge-api-usage" in sys.argv:
         _main_merge(sys.argv[sys.argv.index("--merge-api-usage") + 1:])
         sys.exit(0)

@@ -37,6 +37,7 @@ on:
 permissions:
   contents: write
   actions: write
+  issues: write  # 記事づくりが止まったときの issue（scripts/pipeline_health.py）
 
 # 前の実行が走っている間は待機（同じ動画を二重処理しないため）
 concurrency:
@@ -108,6 +109,7 @@ jobs:
       - name: Generate web articles
         continue-on-error: true
         env:
+          LLM_WORKFLOW: ${{ (inputs.fast_url || '') != '' && 'breaking' || 'articles' }}  # 無料枠の取り分を数えるジョブ名（scripts/llm.py）
           FAST_URL: ${{ inputs.fast_url }}
           FAST_META: ${{ inputs.fast_meta }}
           FAST_LANE_GH_TOKEN: ${{ github.token }}
@@ -160,6 +162,7 @@ jobs:
         if: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.mode != 'web') || github.event.schedule == '7 */6 * * *' }}
         continue-on-error: true
         env:
+          LLM_WORKFLOW: guides  # 無料枠の取り分を数えるジョブ名（scripts/llm.py）
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           CLAUDE_DAILY_MAX: ${{ vars.CLAUDE_DAILY_MAX || '40' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -179,6 +182,7 @@ jobs:
         continue-on-error: true
         timeout-minutes: 10
         env:
+          LLM_WORKFLOW: products  # 無料枠の取り分を数えるジョブ名（scripts/llm.py）
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
@@ -194,6 +198,7 @@ jobs:
         continue-on-error: true
         timeout-minutes: 7
         env:
+          LLM_WORKFLOW: products  # 無料枠の取り分を数えるジョブ名（scripts/llm.py）
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
@@ -210,6 +215,7 @@ jobs:
         continue-on-error: true
         timeout-minutes: 9
         env:
+          LLM_WORKFLOW: images  # 無料枠の取り分を数えるジョブ名（scripts/llm.py）
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
@@ -244,6 +250,14 @@ jobs:
       # 前回のデプロイ時刻は state/last_deploy、保留の有無は state/deploy_pending（state/ はビルド対象外）
       # 速報（主要企業の公式発表。記事 JSON の breaking: true）を作った回は、待たずにデプロイして
       # breaking_post.yml を呼ぶ（デプロイ完了を待って Threads・X・Facebook にすぐ出す）
+      # 記事づくりの見張り: 候補があるのに0本の回が2回続いたら issue（ラベル pipeline-stalled）を立て、直ったら閉じる
+      - name: Pipeline health
+        if: ${{ (inputs.fast_url || '') == '' }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/pipeline_health.py --alert
+
       - name: Commit & push
         id: commit
         env:
@@ -272,7 +286,7 @@ jobs:
           if [ -n "$(git status --porcelain state/page_watch.json)" ]; then WATCH=1; fi
           # Claude API の使用量（月の予算の管理。scripts/llm.py）。記事が増えなかった回も残す（残さないと使った分を数え漏らす）
           APIUSE=0
-          if [ -n "$(git status --porcelain state/claude_api_usage.json)" ]; then APIUSE=1; fi
+          if [ -n "$(git status --porcelain state/claude_api_usage.json state/pipeline_health.json)" ]; then APIUSE=1; fi
           if [ -n "$(git status --porcelain content)" ]; then
             # 直近の記事の索引（見張り番のレーダーが「同じ話題の記事がもうあるか」を見る）。記事が変わった回だけ書き直す
             python scripts/radar.py coverage || echo "::warning::記事の索引（state/coverage.json）を更新できませんでした"
@@ -312,7 +326,7 @@ jobs:
           elif [ "$WATCH" = "1" ]; then
             MSG="chore(watch): 料金・リリースノートの見張りの記録を更新"
           elif [ "$APIUSE" = "1" ]; then
-            MSG="chore(llm): Claude API の使用量を記録"
+            MSG="chore(llm): Claude API の使用量・記事づくりの見張りを記録"
           else
             echo "変更なし。コミットをスキップします。"
             exit 0
@@ -321,6 +335,7 @@ jobs:
           if [ -f state/fast_lane.json ]; then git add state/fast_lane.json; fi
           if [ -f state/page_watch.json ]; then git add state/page_watch.json; fi
           if [ -f state/claude_api_usage.json ]; then git add state/claude_api_usage.json; fi
+          if [ -f state/pipeline_health.json ]; then git add state/pipeline_health.json; fi
           if [ -f state/rivals_checked.json ]; then git add state/rivals_checked.json; fi
           git commit -m "$MSG"
           # 実行中に main が進んでいても失敗しないよう rebase してから push（最大3回）
@@ -368,6 +383,7 @@ jobs:
         if: ${{ (inputs.fast_url || '') == '' }}
         continue-on-error: true
         env:
+          LLM_WORKFLOW: sns_helper  # 無料枠の取り分を数えるジョブ名（scripts/llm.py）
           THREADS_MODE: ${{ vars.THREADS_MODE }}
           THREADS_TOKEN_KEY: ${{ secrets.THREADS_TOKEN_KEY }}
           # Buffer 経由で投稿する場合の API キー（設定されていればこちらを優先）

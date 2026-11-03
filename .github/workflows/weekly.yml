@@ -45,6 +45,7 @@ jobs:
 
       - name: Build weekly roundup
         env:
+          LLM_WORKFLOW: weekly  # 無料枠の取り分を数えるジョブ名（scripts/llm.py）
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           CLAUDE_DAILY_MAX: ${{ vars.CLAUDE_DAILY_MAX || '40' }}
@@ -68,6 +69,7 @@ jobs:
           # 使用回数の記録は auto_run と取り合いになるので、ここではコミットしない
           git checkout -- content/llm_usage.json 2>/dev/null || true
           git add state/claude_api_usage_weekly.json 2>/dev/null || true
+          git add state/llm_usage_weekly.json 2>/dev/null || true
           if [ -z "$(git status --porcelain content/weekly.json)" ] && git diff --cached --quiet; then
             echo "変更なし"
             exit 0

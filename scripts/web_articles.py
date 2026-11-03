@@ -53,6 +53,7 @@ import article_charts  # noqa: E402
 import dedupe  # noqa: E402
 import facts_bundle  # noqa: E402
 import fast_lane  # noqa: E402
+import pipeline_health  # noqa: E402
 import feeds  # noqa: E402
 import followup  # noqa: E402
 import glossary  # noqa: E402
@@ -1911,6 +1912,7 @@ def main() -> int:
     per_section: dict[str, int] = {}
     per_feed: dict[str, int] = {}
     rejected = 0
+    last_problem = [""]  # 0本の回の理由（scripts/pipeline_health.py が記録する）
     wire_attempts = [0]
     used_queue_ids: set[str] = set()
     run_started = time.time()
@@ -1945,6 +1947,7 @@ def main() -> int:
                                      purpose=purpose)
         except Exception as error:  # noqa: BLE001
             log(f"   [NG] {str(error)[:200]}")
+            last_problem[0] = f"生成に失敗: {str(error)[:160]}"
             state["failed_web"][item_id] = state["failed_web"].get(item_id, 0) + 1
             return None, None
 
@@ -2015,6 +2018,7 @@ def main() -> int:
                 continue
             break
         reason = "; ".join(verdict.get("problems") or [])[:200]
+        last_problem[0] = f"品質ゲート不合格: {reason[:160]}"
         return "reject", None, model_name, reason
 
     def try_followup(item: dict, text: str, target: tuple) -> str:
@@ -2443,6 +2447,20 @@ def main() -> int:
                 state["major_tries"].pop(key, None)
         m.save_state(state)
         trends.remove_from_queue(used_queue_ids)
+
+    if not fast_mode and not args.only and not args.source:
+        # 見張り: 候補があるのに 0 本の回が2回続いたら state/pipeline_health.json に「止まっている」と書く（issue は workflow が立てる）
+        candidates = len(majors) + (len(queue) if trend_limit > 0 else 0) + (len(ai_items) if ai_limit > 0 else 0) \
+            + (len(broad_items) if broad_limit > 0 else 0)
+        reason = last_problem[0]
+        if llm.all_exhausted(args.tier):
+            reason = "無料モデルも Claude API も使えない（無料枠切れ・API 停止） " + reason
+        try:
+            health = pipeline_health.record(total_created() + updated_count[0], candidates, reason or "理由不明（ログを確認）")
+            if health.get("status") == "stalled":
+                log(f"[health] 止まっています: 0本の回が {health.get('consecutive_zero')} 回続いた / {health.get('reason')}")
+        except Exception as error:  # noqa: BLE001 - 見張りの失敗で記事づくりは止めない
+            log(f"[health] 記録に失敗: {str(error)[:100]}")
 
     log(
         f"\n[done] 新規記事 {total_created()} 本（大きなニュース {created['major']} / AI {created['ai']} / 幅広い話題 {created['broad']}"

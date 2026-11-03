@@ -63,6 +63,7 @@ jobs:
       - name: Write and re-check guides
         continue-on-error: true
         env:
+          LLM_WORKFLOW: evergreen  # 無料枠の取り分を数えるジョブ名（scripts/llm.py）
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           CLAUDE_DAILY_MAX: ${{ vars.CLAUDE_DAILY_MAX || '40' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -94,6 +95,7 @@ jobs:
           git add content/howto 2>/dev/null || true
           git add state/evergreen_failed.json 2>/dev/null || true
           git add state/claude_api_usage_evergreen.json 2>/dev/null || true
+          git add state/llm_usage_evergreen.json 2>/dev/null || true
           CHANGED=$(git diff --cached --name-only -- content/howto | sed -n 's#content/howto/\(.*\)\.json#\1#p' | tr '\n' ',')
           echo "changed=${CHANGED}" >> "$GITHUB_OUTPUT"
           if git diff --cached --quiet; then
