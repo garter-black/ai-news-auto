@@ -26,9 +26,19 @@ def pick(table: list[tuple[str, int]], today: str) -> int:
     return value
 
 
+# AdSense 再審査のあいだは量より質（2026-11-03 オーナー決定）。この日の前日までは、変数（WEB_DAILY_CAP=80）より小さい値に抑える。
+# 2026-11-18 に自動で元の上限（変数 WEB_DAILY_CAP）に戻る。延ばすときは日付を書き換える
+REVIEW_PERIOD = ("2026-11-03", "2026-11-18", 40)
+
+
+def review_cap(web: int, today: str) -> int:
+    start, until, cap = REVIEW_PERIOD
+    return min(web, cap) if start <= today < until else web
+
+
 def main() -> None:
     today = datetime.now(JST).strftime("%Y-%m-%d")
-    web = os.environ.get("WEB_DAILY_CAP_OVERRIDE") or str(pick(WEB_RAMP, today))
+    web = str(review_cap(int(os.environ.get("WEB_DAILY_CAP_OVERRIDE") or pick(WEB_RAMP, today)), today))
     sns = os.environ.get("SNS_PER_DAY_OVERRIDE") or str(pick(SNS_RAMP, today))
     out = os.environ.get("GITHUB_OUTPUT")
     # 20分ごと（1日72回）に出すので、上限が大きい週は1回あたりの本数も増やす
