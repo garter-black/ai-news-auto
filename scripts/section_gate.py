@@ -91,6 +91,32 @@ NONANSWER_PAREN_RE = re.compile(r"[（(](?=[^（）()]*元記事)(?=[^（）()]*
 # 表の注記の「『公式に記載なし』は〜」。表の空欄に合わせて「空欄」と言う（読者に「記載なし」を見せない。2026-11-03）
 EMPTY_TOKEN_RE = re.compile(r"「(?:公式に|料金ページに|元記事に)?記載なし」")
 
+# 読者像の3つの立場の小見出し（「### 会社員として」「### 副業・独立を考えている人」「### お金・資産づくりの面で」。
+# 太字の行にされたもの・「会社員として仕事で」も含む）。どの記事にも同じ3つが並び、中身が答えになっていないことが多い
+# （2026-11-03 オーナー決定・台帳 A24）。小見出しの行は出さず、その下は事実があって答えになっている文だけ残す。
+# 記事の文体の門（scripts/article_style.py）も、この式を読み込めば同じ規則で落とせる。lib/article-sections.ts の PERSONA_SUBHEAD_RE と同じ
+PERSONA_SUBHEAD_RE = re.compile(
+    r"^(?:#{3,4}\s*|\*\*)(?:会社員として(?:仕事で)?|副業・独立を考えている人|お金・資産づくりの面で)[^\n。]{0,12}?(?:\*\*)?\s*$"
+)
+# 立場の段落に出がちな「答えにならない」文（事実を含んでいても消す）
+PERSONA_FILLER_RE = re.compile(
+    r"この立場|立場への|直接(?:的な|の)?(?:影響|関係|優遇|メリット)[^。]{0,16}(?:小さ|な[いく]|ありません|薄|限定的)|強いて言えば|"
+    r"優遇措置(?:など)?はありません|収入にどうつながるか|直結(?:する(?:話|もの))?ではありません|直接(?:は)?関係(?:は|し)?(?:ない|ません)"
+)
+# 見出しの言葉だけ変えた「中身なしの章」の見出し（「比べられる数字は示されていない」「日本向けの提供条件はまだ分からない」
+# 「分野ごとの実績数字、前版との比較はなし」。2026-11-03 オーナー決定・台帳 A24）。記事ごとの見出し（sectionTitles）にも、
+# 本文の ## 見出しにも当てる。「## まだ分からないこと」（大事な未定事項をまとめる決まった章）は対象外。lib/article-sections.ts と同じ
+NONANSWER_TITLE_RE = re.compile(
+    r"(?:ない|なし|無し|未発表|未定|未公表|非公表|不明|分からない|わからない|未確認|言及なし|記載なし)[？?。]?$"
+)
+UNKNOWN_HEADING_RE = re.compile(r"^まだ分からないこと")
+
+
+def is_nonanswer_title(title: str) -> bool:
+    t = (title or "").strip()
+    return bool(t) and not UNKNOWN_HEADING_RE.match(t) and bool(NONANSWER_TITLE_RE.search(t))
+
+
 # 呼びかけの「〜しましょう」「〜してみましょう」を、落ち着いた言い方（「〜するとよいでしょう」）にする（オーナーのルール A4。2026-11-03
 # 「〜してみましょう」が幼い・売り込みに見える）。事実は変えず、文末の言い方だけを変える。lib/article-sections.ts の professionalSentence と同じ規則
 _ICHIDAN_I = ("落ち", "用い", "起き", "生き", "でき", "過ぎ", "浴び", "伸び", "延び", "試み", "借り", "見", "居", "着", "似")
@@ -288,9 +314,44 @@ def _clean_prose(line: str) -> str:
     return "".join(sentences).strip()
 
 
+def _persona_sentence_ok(sentence: str) -> bool:
+    s = sentence.strip()
+    return bool(s) and _keep_sentence(s) and not is_nonanswer(s) and not FILLER_RE.search(s) and not PERSONA_FILLER_RE.search(s)
+
+
+def _persona_paragraph(text: str) -> str:
+    """立場の段落: 答えにならない文を除き、事実（数字・英字の名前・「」）が残る段落だけ返す（残らなければ空）"""
+    kept = "".join(x for x in split_sentences(text) if _persona_sentence_ok(x)).strip()
+    return kept if has_fact(kept) else ""
+
+
+def _drop_persona(lines: list[str]) -> list[str]:
+    """立場の小見出しの行を消し、その下（次の見出し・太字の行まで）は事実があって答えになっている文だけ残す（台帳 A24）"""
+    out: list[str] = []
+    inside = False
+    for line in lines:
+        stripped = line.strip()
+        if PERSONA_SUBHEAD_RE.match(stripped):
+            inside = True
+            continue
+        if stripped.startswith("#") or re.match(r"^\*\*[^*]+\*\*$", stripped):
+            inside = False
+        if not inside or not stripped or stripped.startswith("|"):
+            out.append(line)
+            continue
+        if LIST_RE.match(line):
+            if _persona_paragraph(LIST_RE.sub("", line, count=1)):
+                out.append(line)
+            continue
+        kept = _persona_paragraph(stripped)
+        if kept:
+            out.append(kept)
+    return out
+
+
 def _clean_block(text: str) -> str:
     """章の本文（見出しの行を除く）から、注記・つなぎの文と値の無い行を消す"""
-    lines = text.split("\n")
+    lines = _drop_persona(text.split("\n"))
     out: list[str] = []
     i = 0
     while i < len(lines):
@@ -424,10 +485,22 @@ def split_sections(markdown: str) -> list[tuple[str | None, str]]:
 KEEP_FOR_INDEX_RE = re.compile(r"日本|無料|使い方|料金|始め方|使える")
 
 
-def clean_markdown(markdown: str, keep_index_headings: bool = False) -> tuple[str, dict]:
+def _substantive(content: str) -> bool:
+    """表があるか、事実のある答えの文・箇条書きが2つ以上あるか（見出しが「〜はない」でも中身がある章は隠さない）"""
+    if any(l.strip().startswith("|") for l in content.split("\n")):
+        return True
+    items = [LIST_RE.sub("", l, count=1) for l in content.split("\n") if LIST_RE.match(l)]
+    answers = [x for x in _prose_sentences(content) + items if has_fact(x) and not is_nonanswer(x)]
+    return len(answers) >= 2
+
+
+def clean_markdown(markdown: str, keep_index_headings: bool = False, titles: dict | None = None) -> tuple[str, dict]:
     """(整えた Markdown, {"hidden": [見出し], "dropped": 消した文の数})。
-    keep_index_headings=True（生成の段）は、検索に出す条件が見る見出しの章を消さない（中身の文の整理だけ）"""
+    keep_index_headings=True（生成の段）は、検索に出す条件が見る見出しの章を消さない（中身の文の整理だけ）。
+    titles は記事ごとの見出し（記事 JSON の sectionTitles の body か easy）。表示の見出しが「〜はない／未発表」の章は、
+    中身（表か、事実のある答えが2つ以上）が無ければ隠す（台帳 A24）"""
     report = {"hidden": [], "dropped": 0}
+    titles = titles or {}
     out: list[str] = []
     for head, content in split_sections(markdown):
         if head is None:
@@ -439,7 +512,12 @@ def clean_markdown(markdown: str, keep_index_headings: bool = False) -> tuple[st
         before = len(_prose_sentences(content))
         cleaned = _clean_block(content)
         report["dropped"] += max(0, before - len(_prose_sentences(cleaned)))
-        if section_verdict(head, cleaned) == "hide" and not (keep_index_headings and KEEP_FOR_INDEX_RE.search(head)):
+        protect = keep_index_headings and KEEP_FOR_INDEX_RE.search(head)
+        if section_verdict(head, cleaned) == "hide" and not protect:
+            report["hidden"].append(head)
+            continue
+        own = titles.get(head) if isinstance(titles.get(head), str) else ""
+        if (is_nonanswer_title(own) or is_nonanswer_title(head)) and not protect and not _substantive(cleaned):
             report["hidden"].append(head)
             continue
         out.append(f"## {head}\n\n{cleaned}" if cleaned else f"## {head}")
@@ -454,7 +532,8 @@ def apply(record: dict) -> list[str]:
         text = record.get(field)
         if not isinstance(text, str) or not text.strip():
             continue
-        cleaned, report = clean_markdown(text, keep_index_headings=(field == "body"))
+        titles = (record.get("sectionTitles") or {}).get(field) if isinstance(record.get("sectionTitles"), dict) else None
+        cleaned, report = clean_markdown(text, keep_index_headings=(field == "body"), titles=titles if isinstance(titles, dict) else None)
         if cleaned.strip() != text.strip():
             record[field] = cleaned
             hidden = "・".join(report["hidden"])
@@ -530,7 +609,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.slug:
         record = _load(args.slug)
         for field in ("body", "easy"):
-            cleaned, report = clean_markdown(record.get(field) or "")
+            cleaned, report = clean_markdown(record.get(field) or "", titles=(record.get("sectionTitles") or {}).get(field))
             print(f"===== {field}: 隠す章 {report['hidden']} / 消す文 {report['dropped']}")
             print(cleaned)
         print("===== 生成時の門:", style_problems(record))
@@ -545,7 +624,7 @@ def main(argv: list[str] | None = None) -> int:
             record = json.loads(path.read_text("utf-8"))
             changed = False
             for field in ("body", "easy"):
-                _, report = clean_markdown(record.get(field) or "")
+                _, report = clean_markdown(record.get(field) or "", titles=(record.get("sectionTitles") or {}).get(field))
                 hidden.update(f"{field}:{h}" for h in report["hidden"])
                 dropped += report["dropped"]
                 changed = changed or bool(report["hidden"] or report["dropped"])

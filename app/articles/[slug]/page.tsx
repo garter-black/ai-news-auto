@@ -207,10 +207,10 @@ export default async function ArticlePage({ params }: Props) {
   // 「かんたんに読む」版（ある記事だけ、読み方を切り替えられる）
   // 中身なしの章・つなぎの文を除き（lib/article-sections.ts。scripts/section_gate.py と同じ規則）、
   // 決まった型の見出しは記事ごとの見出し（sectionTitles）か普通の見出しに言い換えて出す
-  const easy = article.easy?.trim() ? cleanSections(article.easy.trim()).markdown : "";
+  const easy = article.easy?.trim() ? cleanSections(article.easy.trim(), article.sectionTitles?.easy).markdown : "";
   const easyMinutes = Math.max(1, Math.round(easy.length / 500));
   const easyHtml = easy ? retitleHtml(await renderMarkdown(easy, affiliates.map((a) => a.url)), "easy", article.sectionTitles, "easy") : "";
-  const body = cleanSections(article.body).markdown;
+  const body = cleanSections(article.body, article.sectionTitles?.body).markdown;
   const readMinutes = Math.max(1, Math.round(body.length / 600));
   // 料金の章に差し込んだ表は、毎日更新の料金表（と同じ段の他社比較）に差し替える（lib/price-slot.ts）。
   // 同じ製品の料金の段の図（charts の ladder）を出す記事では、表は図のすぐ下に「詳しい表」として出し、同じ数字を2か所に並べない

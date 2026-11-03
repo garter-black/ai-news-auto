@@ -393,7 +393,7 @@ class DigestPageTest(unittest.TestCase):
         self.assertIn('https://ai-tech-express.jp/digest/20261030?utm_source=x&utm_medium=social&utm_campaign=digest', reply)
         self.assertIn('・Google DeepMind、新AI「Genie 4」を発表', p['text'])
         self.assertEqual(p['edition']['id'], '20261030')
-        self.assertEqual([i['headline'] for i in p['edition']['items']], ['AI半導体のNVIDIAが医療向けAI発表', 'Google DeepMind、新AI「Genie 4」を発表'])
+        self.assertEqual([i['headline'] for i in p['edition']['items']], ['NVIDIAが医療向けAI発表', 'Google DeepMind、新AI「Genie 4」を発表'])
         self.assertEqual(p['text'].splitlines()[0], '今日のAIニュース2本（2026/10/30）')
 
     def test_threads_post_has_image_and_edition_link_card(self):

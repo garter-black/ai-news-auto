@@ -257,6 +257,9 @@ def valid_title(title: str, heading: str, section_text: str, article_text: str) 
     t = (title or "").strip()
     if not (6 <= len(t) <= 24) or re.search(r"[。<>#|\n]", t) or BANNED_TITLE_RE.search(t):
         return False
+    # 「〜は示されていない」「〜はまだ分からない」のような、見出しの言葉だけ変えた中身なしの章にしない（台帳 A24。表示でも弾く）
+    if gate.is_nonanswer_title(t):
+        return False
     if t == heading:
         return False
     if numbers(t) - numbers(section_text) - numbers(article_text):

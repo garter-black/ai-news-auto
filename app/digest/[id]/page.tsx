@@ -126,7 +126,7 @@ function Story({ story, rank, priority }: { story: DigestStory; rank: number; pr
           <span>出典: {sourceLabel(story.article)}</span>
         </p>
         <h2 className="mt-1.5 text-[1.25rem] font-bold leading-snug text-ink sm:text-[1.35rem]">
-          <Link href={href} className="hover:underline">
+          <Link href={href} className="hover:underline" data-title-gate="">
             {story.headline}
           </Link>
         </h2>

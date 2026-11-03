@@ -25,6 +25,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from digest import load_articles, score as digest_score  # noqa: E402
 from indexnow import is_distribution_eligible  # noqa: E402
+import headline_normalize  # noqa: E402  題名の門番（まとめにも通す。台帳 A25）
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT_PATH = ROOT / "content" / "weekly.json"
@@ -181,22 +182,33 @@ def candidates_for(wid: str, limit: int = 40) -> list[dict]:
     return result
 
 
+def item_title(article: dict) -> str:
+    """まとめに出す題名。記事の見出し（h1 の title）を題名の門番に通したもの。
+    検索向けの seoTitle（「〇〇とは？日本で使える？料金も」）は10本並ぶと機械的なので使わない（2026-11-03 オーナー決定・台帳 A25）"""
+    title = str(article.get("title") or article.get("seoTitle") or "")
+    return headline_normalize.normalize_title(title, article)
+
+
 def company_of(article: dict) -> str:
-    """lib/companies.ts の companyOf を簡略化（表示用の企業名）"""
+    """lib/companies.ts の companyOf を簡略化（表示用の企業名）。発信元の名前を先に見る
+    （「Apple Creator Studio」の記事が、タグの「Pixelmator Pro」で Google になっていた。2026-11-03 の点検）"""
     patterns = [
         ("OpenAI", r"OpenAI|ChatGPT|GPT-|Codex|Sora"), ("Anthropic", r"Anthropic|Claude"),
-        ("Google", r"Google|グーグル|DeepMind|Gemini|Gemma|Pixel|Android"), ("NVIDIA", r"NVIDIA|エヌビディア|RTX|CUDA"),
+        ("Apple", r"\bApple\b|アップル|iPhone|iPad|\bMac\b|Siri"),
+        ("Google", r"Google|グーグル|DeepMind|Gemini|Gemma|\bPixel\b|Android"), ("NVIDIA", r"NVIDIA|エヌビディア|RTX|CUDA"),
         ("Microsoft", r"Microsoft|マイクロソフト|Azure|Copilot|GitHub|Foundry"), ("Meta", r"\bMeta\b|Llama"),
         ("Hugging Face", r"Hugging ?Face"), ("DeepSeek", r"DeepSeek"), ("xAI", r"\bxAI\b|Grok"),
         ("Mistral AI", r"Mistral"), ("Moonshot AI", r"Kimi|Moonshot"),
     ]
-    text = f"{article.get('sourceName', '')} {article.get('title', '')} {' '.join(article.get('tags') or [])}"
-    best = None
-    for name, pattern in patterns:
-        match = re.search(pattern, text, re.I)
-        if match and (best is None or match.start() < best[1]):
-            best = (name, match.start())
-    return best[0] if best else ""
+    for text in (str(article.get("sourceName") or ""), f"{article.get('title', '')} {' '.join(article.get('tags') or [])}"):
+        best = None
+        for name, pattern in patterns:
+            match = re.search(pattern, text, re.I)
+            if match and (best is None or match.start() < best[1]):
+                best = (name, match.start())
+        if best:
+            return best[0]
+    return ""
 
 
 # --------------------------------------------------------------------------- #
@@ -258,7 +270,7 @@ def describe(article: dict) -> str:
     if verdict:
         judged = f" / 判定: 提供={verdict.get('status')} 日本={verdict.get('japan')} 料金={verdict.get('price', '')}"
     highlights = " ".join(str(h) for h in (article.get("highlights") or [])[:3])
-    title = article.get("seoTitle") or article.get("title", "")
+    title = item_title(article)
     return f"- {article['slug']} / {company_of(article) or 'その他'} / {title} / {highlights}{judged}"
 
 
@@ -338,7 +350,7 @@ def build_week(wid: str, use_llm: bool = True) -> dict | None:
         article = by_slug[p["slug"]]
         items.append({
             "slug": article["slug"],
-            "title": article.get("seoTitle") or article.get("title", ""),
+            "title": item_title(article),
             "company": company_of(article),
             "publishedAt": article.get("generatedAt") or article.get("publishedAt", ""),
             "what": p["what"],

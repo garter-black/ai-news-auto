@@ -20,6 +20,9 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import headline_normalize  # noqa: E402  題名の門番（朝のまとめにも通す。台帳 A25）
+
 ROOT = Path(__file__).resolve().parent.parent
 DIGESTS_DIR = ROOT / "content" / "digests"
 ARTICLES_DIR = ROOT / "content" / "articles"
@@ -106,8 +109,13 @@ def _shortened(head: str) -> tuple[list[str], list[str]]:
 
 
 def short_headline(article: dict, limit: int = ITEM_MAX) -> str:
-    """見出しを1行に（だれが＋何を）。会社名だけで終わる切り方はしない"""
-    title = str(article.get("title") or article.get("seoTitle") or "").strip()
+    """見出しを1行に（だれが＋何を）。会社名だけで終わる切り方はしない。
+    元は記事の見出し（h1）を題名の門番に通したもの、できた1行もう一度通す（「ChatGPTのOpenAIが」を出さない。台帳 A25）"""
+    return headline_normalize.strip_known_descriptors(_short_headline(article, limit))
+
+
+def _short_headline(article: dict, limit: int = ITEM_MAX) -> str:
+    title = headline_normalize.normalize_title(str(article.get("title") or article.get("seoTitle") or "").strip(), article)
     names = _names(article)
     segments = [s.strip() for s in SPLIT_RE.split(title) if s.strip()]
     if not segments:

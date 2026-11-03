@@ -123,7 +123,7 @@ export default async function WeeklyPage({ params }: Props) {
       </header>
 
       <section aria-labelledby="top-heading" className="mt-10">
-        <QHeading id="top-heading">今週いちばん大きなニュースは？</QHeading>
+        <QHeading id="top-heading">今週の主なニュース</QHeading>
         <ol className="grid gap-4">
           {top.map((item, index) => (
             <Item key={item.slug} item={item} rank={index + 1} large />
@@ -133,7 +133,7 @@ export default async function WeeklyPage({ params }: Props) {
 
       {rest.length > 0 && (
         <section aria-labelledby="rest-heading" className="mt-12">
-          <QHeading id="rest-heading">ほかに押さえておきたいニュースは？</QHeading>
+          <QHeading id="rest-heading">ほかの注目ニュース</QHeading>
           <ol className="grid gap-3">
             {rest.map((item, index) => (
               <Item key={item.slug} item={item} rank={index + 4} />
@@ -145,7 +145,7 @@ export default async function WeeklyPage({ params }: Props) {
       {upcoming.length > 0 && (
         <section aria-labelledby="next-heading" className="mt-12">
           <QHeading id="next-heading" note="日付は現地時間。基調講演の日本時間と、開催後の発表内容はイベントのページで見られます。">
-            次の週は何がある？
+            翌週の主な予定
           </QHeading>
           <ul className="grid gap-2">
             {upcoming.map((event) => (
@@ -205,7 +205,7 @@ function Item({ item, rank, large = false }: { item: WeeklyItem; rank: number; l
           )}
           <span className="tabular-nums">{day.format(Date.parse(item.publishedAt))}</span>
         </p>
-        <Link href={`/articles/${item.slug}`} className={`mt-1 block font-bold leading-snug text-ink hover:underline ${large ? "text-[17px]" : "text-[15.5px]"}`}>
+        <Link href={`/articles/${item.slug}`} data-title-gate="" className={`mt-1 block font-bold leading-snug text-ink hover:underline ${large ? "text-[17px]" : "text-[15.5px]"}`}>
           {item.title}
         </Link>
         <p className="mt-2 text-desc leading-[1.8] text-ink">{item.what}</p>

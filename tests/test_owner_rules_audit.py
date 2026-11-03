@@ -105,6 +105,26 @@ class PageTest(unittest.TestCase):
         self.assertIn("A1", ids(audit.article_page_problems(html, rec())))
         self.assertNotIn("A1", ids(audit.article_page_problems(f"<h2>影響を受ける人</h2>{self.AD}", rec(easy="## 自分に関係ある？\n\n説明です。"))))
 
+    def test_persona_subheads_and_nonanswer_titles(self):
+        """A24: 立場の小見出しと、見出しの言葉だけ変えた中身なしの章（2026-11-03 オーナー決定）"""
+        self.assertIn("A24", ids(audit.article_page_problems(f"<h3>会社員として</h3><p>説明</p>{self.AD}", rec())))
+        self.assertIn("A24", ids(audit.article_page_problems(f"<p><strong>副業・独立を考えている人</strong></p>{self.AD}", rec())))
+        self.assertIn("A24", ids(audit.article_page_problems(f"<h2>日本向けの提供条件はまだ分からない</h2>{self.AD}", rec())))
+        self.assertNotIn("A24", ids(audit.article_page_problems(f"<h2>まだ分からないこと</h2><h2>影響を受ける人</h2>{self.AD}", rec())))
+        # JSON だけで見るとき: 表示の段で消えるので、整えたあとには残らない
+        body = "## 自分にはどう関係する？\n\n### 会社員として\n\n社内でPSDを開けます。\n\n## 数字で見ると？\n\n比べられる数字は示されていません。\n"
+        r = rec(body=body, sectionTitles={"body": {"数字で見ると？": "比べられる数字は示されていない"}})
+        self.assertNotIn("A24", ids(audit.record_problems(r)))
+
+    def test_summary_titles_pass_headline_gate(self):
+        """A25: 朝のまとめ・週のまとめの題名（2026-11-03 オーナー決定）"""
+        bad = '<a data-title-gate="" href="/a">ChatGPTのOpenAIが電力対策</a><a href="/b" data-title-gate="">Mistral Large 4とは？日本で使える？料金も</a>'
+        self.assertEqual({"A25"}, ids(audit.summary_page_problems("/weekly/2026-44", bad)))
+        self.assertEqual(2, len(audit.summary_page_problems("/weekly/2026-44", bad)))
+        good = '<a data-title-gate="" href="/a">OpenAI、電力対策「Grid Protectors」を発表</a>'
+        self.assertEqual([], audit.summary_page_problems("/digest/20261103", good))
+        self.assertIn("A25", ids(audit.summary_page_problems("/digest/20261103", "<p>題名なし</p>")))
+
     def test_one_slot_each_and_no_data(self):
         twice = f'<aside data-aff-pos="ranking-inline">{self.AD}</aside><aside data-aff-pos="ranking-inline"></aside>'
         self.assertIn("W10", ids(audit.article_page_problems(twice, rec())))

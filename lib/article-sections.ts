@@ -71,6 +71,24 @@ const NONANSWER_PAREN_RE = /[（(](?=[^（）()]*元記事)(?=[^（）()]*(?:言
 // 表の注記の「『公式に記載なし』は〜」→「空欄は〜」（表の「記載なし」のセルは空欄にする）
 const EMPTY_TOKEN_RE = /「(?:公式に|料金ページに|元記事に)?記載なし」/g;
 
+// 読者像の3つの立場の小見出し（「### 会社員として」「### 副業・独立を考えている人」「### お金・資産づくりの面で」。太字の行・「会社員として仕事で」も）。
+// 小見出しの行は出さず、その下は事実があって答えになっている段落だけ残す（2026-11-03 オーナー決定・台帳 A24）。scripts/section_gate.py と同じ
+export const PERSONA_SUBHEAD_RE =
+  /^(?:#{3,4}\s*|\*\*)(?:会社員として(?:仕事で)?|副業・独立を考えている人|お金・資産づくりの面で)[^\n。]{0,12}?(?:\*\*)?\s*$/;
+const PERSONA_FILLER_RE = new RegExp(
+  [
+    "この立場|立場への|直接(?:的な|の)?(?:影響|関係|優遇|メリット)[^。]{0,16}(?:小さ|な[いく]|ありません|薄|限定的)|強いて言えば|",
+    "優遇措置(?:など)?はありません|収入にどうつながるか|直結(?:する(?:話|もの))?ではありません|直接(?:は)?関係(?:は|し)?(?:ない|ません)",
+  ].join(""),
+);
+// 見出しの言葉だけ変えた「中身なしの章」の見出し（「比べられる数字は示されていない」「日本向けの提供条件はまだ分からない」。台帳 A24）。
+// 「まだ分からないこと」（未定事項をまとめる決まった章）は対象外。scripts/section_gate.py の NONANSWER_TITLE_RE と同じ
+export const NONANSWER_TITLE_RE = /(?:ない|なし|無し|未発表|未定|未公表|非公表|不明|分からない|わからない|未確認|言及なし|記載なし)[？?。]?$/;
+export function isNonanswerTitle(title: string | null | undefined): boolean {
+  const t = (title ?? "").trim();
+  return Boolean(t) && !/^まだ分からないこと/.test(t) && NONANSWER_TITLE_RE.test(t);
+}
+
 // 呼びかけの「〜しましょう」「〜してみましょう」を「〜するとよいでしょう」にする（オーナーのルール A4）。scripts/section_gate.py の professional と同じ
 const ICHIDAN_I = ["落ち", "用い", "起き", "生き", "でき", "過ぎ", "浴び", "伸び", "延び", "試み", "借り", "見", "居", "着", "似"];
 const GODAN_SHI_COMPOUND = ["見直", "見通", "手放", "見逃", "見落", "見渡", "問い直", "引き出", "取り消", "打ち出", "乗り出", "洗い出", "割り出", "探し出", "見出"];
@@ -218,8 +236,42 @@ function cleanProse(line: string): string {
     .trim();
 }
 
+const personaSentenceOk = (s: string) =>
+  Boolean(s.trim()) && keepSentence(s) && !isNonanswer(s) && !FILLER_RE.test(s) && !PERSONA_FILLER_RE.test(s);
+
+/** 立場の段落: 答えにならない文を除き、事実が残る段落だけ返す（残らなければ空） */
+function personaParagraph(text: string): string {
+  const kept = splitSentences(text).filter(personaSentenceOk).join("").trim();
+  return hasFact(kept) ? kept : "";
+}
+
+/** 立場の小見出しの行を消し、その下（次の見出し・太字の行まで）は事実があって答えになっている段落だけ残す（台帳 A24） */
+function dropPersona(lines: string[]): string[] {
+  const out: string[] = [];
+  let inside = false;
+  for (const line of lines) {
+    const stripped = line.trim();
+    if (PERSONA_SUBHEAD_RE.test(stripped)) {
+      inside = true;
+      continue;
+    }
+    if (stripped.startsWith("#") || /^\*\*[^*]+\*\*$/.test(stripped)) inside = false;
+    if (!inside || !stripped || stripped.startsWith("|")) {
+      out.push(line);
+      continue;
+    }
+    if (LIST_RE.test(line)) {
+      if (personaParagraph(line.replace(LIST_RE, ""))) out.push(line);
+      continue;
+    }
+    const kept = personaParagraph(stripped);
+    if (kept) out.push(kept);
+  }
+  return out;
+}
+
 function cleanBlock(text: string): string {
-  const lines = text.split("\n");
+  const lines = dropPersona(text.split("\n"));
   const out: string[] = [];
   let i = 0;
   while (i < lines.length) {
@@ -337,8 +389,20 @@ export function splitSections(markdown: string): { heading: string | null; conte
   return out;
 }
 
-/** 中身なしの章・つなぎの文を除いた Markdown と、隠した章の見出し */
-export function cleanSections(markdown: string): { markdown: string; hidden: string[] } {
+/** 表があるか、事実のある答えの文・箇条書きが2つ以上あるか（見出しが「〜はない」でも中身がある章は隠さない） */
+function substantive(content: string): boolean {
+  const lines = content.split("\n");
+  if (lines.some((l) => l.trim().startsWith("|"))) return true;
+  const items = lines.filter((l) => LIST_RE.test(l)).map((l) => l.replace(LIST_RE, ""));
+  return [...proseSentences(content), ...items].filter((x) => hasFact(x) && !isNonanswer(x)).length >= 2;
+}
+
+/**
+ * 中身なしの章・つなぎの文を除いた Markdown と、隠した章の見出し。
+ * titles は記事ごとの見出し（記事 JSON の sectionTitles の body か easy）。表示の見出しが「〜はない／未発表」の章は、
+ * 中身（表か、事実のある答えが2つ以上）が無ければ隠す。中身があれば見出しだけ普通の言い方になる（usableTitle が弾く。台帳 A24）
+ */
+export function cleanSections(markdown: string, titles?: Record<string, string>): { markdown: string; hidden: string[] } {
   const hidden: string[] = [];
   const out: string[] = [];
   for (const { heading, content } of splitSections(markdown)) {
@@ -352,6 +416,11 @@ export function cleanSections(markdown: string): { markdown: string; hidden: str
     }
     const cleaned = cleanBlock(content);
     if (sectionVerdict(heading, cleaned) === "hide") {
+      hidden.push(heading);
+      continue;
+    }
+    const own = typeof titles?.[heading] === "string" ? titles[heading] : "";
+    if ((isNonanswerTitle(own) || isNonanswerTitle(heading)) && !substantive(cleaned)) {
       hidden.push(heading);
       continue;
     }
@@ -434,7 +503,7 @@ const EASY_FALLBACK: Record<string, string> = {
 export function usableTitle(title: unknown): title is string {
   if (typeof title !== "string") return false;
   const t = title.trim();
-  return t.length >= 2 && t.length <= 32 && !/[<>#\n|]/.test(t) && !/。$/.test(t);
+  return t.length >= 2 && t.length <= 32 && !/[<>#\n|]/.test(t) && !/。$/.test(t) && !isNonanswerTitle(t);
 }
 
 export function displayHeading(heading: string, kind: "body" | "easy", titles?: SectionTitles): string {

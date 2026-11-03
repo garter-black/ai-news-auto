@@ -16,7 +16,7 @@ CASES = json.loads((ROOT / "tests" / "fixtures" / "section_gate_cases.json").rea
 class SectionGateTest(unittest.TestCase):
     def test_fixtures(self):
         for case in CASES:
-            out, report = g.clean_markdown(case["markdown"])
+            out, report = g.clean_markdown(case["markdown"], titles=case.get("titles"))
             self.assertEqual(out, case["expected"], case["name"])
             self.assertEqual(report["hidden"], case["hidden"], case["name"])
 
