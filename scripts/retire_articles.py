@@ -31,6 +31,14 @@
   python3 scripts/retire_articles.py --noindex                 # 数えるだけ
   python3 scripts/retire_articles.py --noindex --apply         # 取り下げる
   python3 scripts/retire_articles.py --noindex --append out.md # 一覧を Markdown の末尾に足す
+
+お知らせ・統計の転載の取り下げ（2026-11-03 オーナー決定・台帳 A26）: --notice で、発表をそのまま書き写しただけの記事
+（認可・受章者の一覧、議事要旨、決算発表日の予告、毎年の啓発・手続きのお知らせ、統計・実績の数字の転載。判定は scripts/notice_gate.py）を取り下げる。
+  直近7日に SNS（Threads・Bluesky・SNS 動画）に出した記事は残し、一覧に別で出す。転送先は無いので 410。
+  これからは公開前の門（scripts/indexnow.py の publish_block_reason → "notice"）で作らない。
+
+  python3 scripts/retire_articles.py --notice                    # 数えるだけ
+  python3 scripts/retire_articles.py --notice --apply --append out.md
 """
 
 from __future__ import annotations
@@ -44,6 +52,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import indexnow  # noqa: E402
+import notice_gate  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES = ROOT / "content" / "articles"
@@ -70,6 +79,7 @@ NOINDEX_LABELS = {
     "wire": "プレスリリースの言い換え",
     "roundup-of-retired": "元記事がすべて取り下げになったまとめ",
 }
+NOTICE_LABELS = {f"notice-{k}": v for k, v in notice_gate.LABELS.items()}
 # 重複ではないが、はっきり近い記事があるもの（2026-11-03 に題名・本文を見て決めた）。転送先が残っていなければ 410
 REPRESENTATIVES = {
     # JPCERT/CC の週報が PHP の脆弱性の注意喚起を含む
@@ -259,6 +269,63 @@ def plan_noindex(articles: list[dict], now: datetime) -> tuple[dict[str, dict], 
         if len(alive) < 2 and a["slug"] not in targets and a["slug"] not in sns:
             picked[a["slug"]] = {"reason": "roundup-of-retired", "title": a.get("title", ""), "channel": a.get("channelSlug", "")}
     return picked, kept
+
+
+def plan_notice(articles: list[dict], now: datetime) -> tuple[dict[str, dict], list[dict]]:
+    """お知らせ・告知・統計の転載の記事を取り下げる計画 {slug: {reason, title}} と、SNS に出したので残す記事"""
+    sns = recent_sns(now, everywhere=True)
+    picked: dict[str, dict] = {}
+    kept: list[dict] = []
+    for a in articles:
+        if isinstance(a.get("indexable"), bool) and a["indexable"]:
+            continue  # 手で「検索に出す」と決めた記事は触らない
+        kind = notice_gate.notice_reason(a)
+        if not kind:
+            continue
+        reason = f"notice-{kind}"
+        if a["slug"] in sns:
+            kept.append({"slug": a["slug"], "title": a.get("title", ""), "reason": reason, "why": f"直近{SNS_KEEP_DAYS}日に SNS に出した"})
+            continue
+        entry = {"reason": reason, "title": a.get("title", ""), "channel": a.get("channelSlug", "")}
+        for key in ("sourceUrl", "videoUrl"):
+            if a.get(key):
+                entry[key] = a[key]
+        picked[a["slug"]] = entry
+    return picked, kept
+
+
+def report_notice(retired: dict[str, dict], kept: list[dict], before: int, after: int, path: Path) -> None:
+    """お知らせ・統計の転載の取り下げの一覧を、既存の Markdown の末尾に足す"""
+    lines = [
+        "",
+        "## お知らせ・統計の転載の取り下げ",
+        "",
+        "### 結論",
+        "",
+        f"- 発表をそのまま書き写しただけの記事（お知らせ・告知・統計の転載）を **{len(retired)}本** 取り下げました。記事は {before}本 → **{after}本**。",
+        "- 取り下げた記事の URL は「この記事は掲載を終了しました」と返します（410 Gone）。一覧・サイトマップ・関連記事からも外れました。",
+        f"- 直近{SNS_KEEP_DAYS}日に SNS に出した記事は、投稿のリンクが生きているので残しました（下の「残した記事」）。",
+        "- これからは、同じ種類の記事は公開前に止めます（`scripts/notice_gate.py` の判定を `scripts/indexnow.py` の公開前の門で使う）。",
+        "",
+        "### 区分ごとの本数",
+        "",
+        "| 区分 | 本数 |",
+        "|---|---|",
+    ]
+    cats = [c for c in NOTICE_LABELS if any(e["reason"] == c for e in retired.values())]
+    lines += [f"| {NOTICE_LABELS[c]} | {sum(1 for e in retired.values() if e['reason'] == c)} |" for c in cats]
+    lines += ["", f"### 残した記事（直近{SNS_KEEP_DAYS}日に SNS に出したため）", ""]
+    if kept:
+        lines += ["| slug | 題名 | 区分 |", "|---|---|---|"]
+        lines += [f"| {k['slug']} | {k['title'].replace('|', '｜')} | {NOTICE_LABELS.get(k['reason'], k['reason'])} |" for k in kept]
+    else:
+        lines.append("なし")
+    lines += ["", "### 取り下げた記事の一覧", "", "| slug | 題名 | 区分 |", "|---|---|---|"]
+    for cat in cats:
+        for slug, e in sorted((s, e) for s, e in retired.items() if e["reason"] == cat):
+            lines.append(f"| {slug} | {e['title'].replace('|', '｜')} | {NOTICE_LABELS[cat]} |")
+    with path.open("a", encoding="utf-8") as out:
+        out.write("\n".join(lines) + "\n")
 
 
 # ---- 参照の付け替え ----------------------------------------------------------------
@@ -519,13 +586,32 @@ def main() -> int:
     parser.add_argument("--report", type=Path, help="対象の一覧を Markdown に書く")
     parser.add_argument("--refs", action="store_true", help="取り下げ済みの記事への参照だけを付け替える（新しく取り下げない）")
     parser.add_argument("--noindex", action="store_true", help="検索に出していない（noindex の）記事をすべて取り下げる")
-    parser.add_argument("--append", type=Path, help="--noindex の一覧を Markdown の末尾に足す")
+    parser.add_argument("--notice", action="store_true", help="お知らせ・告知・統計の転載の記事を取り下げる（scripts/notice_gate.py）")
+    parser.add_argument("--append", type=Path, help="--noindex / --notice の一覧を Markdown の末尾に足す")
     args = parser.parse_args()
     now = datetime.now(timezone.utc)
     if args.refs:
         print(f"[retire] 参照の付け替え: {json.dumps(apply({}, now), ensure_ascii=False)}")
         return 0
     articles = load_articles()
+    if args.notice:
+        retired, kept = plan_notice(articles, now)
+        counts = {c: sum(1 for e in retired.values() if e["reason"] == c) for c in NOTICE_LABELS}
+        print(f"[retire] 全 {len(articles)} 本のうち、お知らせ・統計の転載の取り下げ {len(retired)} 本: "
+              + "・".join(f"{NOTICE_LABELS[c]} {n}" for c, n in counts.items() if n))
+        for slug, e in sorted(retired.items()):
+            print(f"  - {slug}: {e['title']}")
+        print("[retire] 残す: " + (", ".join(f"{k['slug']}（{k['why']}）" for k in kept) or "なし"))
+        if args.apply:
+            stats = apply(retired, now)
+            again = apply({}, now)
+            stats["second_pass"] = again["articles_rewritten"] + again["data_rewritten"]
+            print(f"[retire] 実行: {json.dumps(stats, ensure_ascii=False)}")
+        if args.append:
+            after = len(load_articles()) if args.apply else len(articles) - len(retired)
+            report_notice(retired, kept, len(articles), after, args.append)
+            print(f"[retire] 一覧 → {args.append}")
+        return 0
     if args.noindex:
         retired, kept = plan_noindex(articles, now)
         counts = {c: sum(1 for e in retired.values() if e["reason"] == c) for c in (*NOINDEX_CATEGORIES, "roundup-of-retired")}

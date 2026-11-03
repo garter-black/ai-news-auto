@@ -256,6 +256,7 @@ export type ArticleSummary = Pick<
   | "imageCredit"
   | "speedMinutes"
   | "breaking"
+  | "newsType"
 > &
   ArticleDerived;
 

@@ -23,6 +23,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import persona  # noqa: E402  読者像（検索に出す話題の基準）
+import notice_gate  # noqa: E402  お知らせ・告知・統計の転載を作らない（公開前の門）
 import genre_focus  # noqa: E402  エンタメはビジネス・テックの目線だけ（2026-11-03）
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -236,6 +237,7 @@ PUBLISH_FEEDBACK = {
         "見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める"
         "（例「日本で使えるのは12月から」「料金は月200ドルのまま」「日本の売上は1%減」）"
     ),
+    "notice": "お知らせ・告知・統計の転載（認可・受章者・議事要旨・決算発表日の予告・啓発月間・出荷量など）は公開しません",
     "thin": f"本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を{THIN_BODY}字以上にしてください",
 }
 
@@ -244,6 +246,9 @@ def publish_block_reason(article: dict) -> str | None:
     """公開しない理由（公開してよいなら None）。判定は noindex_reason と同じ（サイトの noindex と食い違わない）"""
     if article.get("disaster") or article.get("type") == "roundup" or isinstance(article.get("indexable"), bool):
         return None
+    # お知らせ・告知・統計の転載（2026-11-03 オーナー決定・台帳 A26）。検索の基準（noindex_reason）とは別に、作らない
+    if notice_gate.is_notice(article):
+        return "notice"
     reason = noindex_reason(article)
     return reason if reason in PUBLISH_BLOCK else None
 

@@ -540,3 +540,16 @@ export function tocOf(markdown: string, titles?: SectionTitles, idPrefix = "sec"
     .filter((s) => s.heading !== null)
     .map((s, i) => ({ id: sectionId(idPrefix, i), text: displayHeading(stripMarks(s.heading as string), "body", titles) }));
 }
+
+/** 要約の役目の章（「ひとことで言うと」「要点」）。上の「この記事のポイント」とくり返しになる（台帳 A28） */
+export const SUMMARY_HEADING_RE = /^(?:ひとことで言うと|ひとすることで言うと|要点|この記事のポイント|ポイント|要約)[？?]?$/;
+
+/** 要約の役目の章を除く（記事の上に「この記事のポイント」があるときに使う） */
+export function dropSummarySections(markdown: string): string {
+  return splitSections(markdown)
+    .filter((s) => s.heading === null || !SUMMARY_HEADING_RE.test(s.heading.replace(/[*_`]/g, "").trim()))
+    .map((s) => (s.heading === null ? s.content.trim() : `## ${s.heading}\n${s.content}`.trim()))
+    .filter(Boolean)
+    .join("\n\n");
+}
+

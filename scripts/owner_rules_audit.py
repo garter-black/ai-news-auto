@@ -56,7 +56,7 @@ OWNER_NAME_PAGES = ("/about", "/editorial-policy")
 AUDIT_RULES = (
     "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11",
     "I2", "I4", "I5",
-    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23", "A24", "A25",
+    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23", "A24", "A25", "A26", "A28",
     "W3", "W5", "W6", "W10", "W11", "W12", "W13", "W17", "W18", "W19", "W20", "W21", "W22", "W23",
 )
 
@@ -242,7 +242,26 @@ def low_value_problems(record: dict) -> list[str]:
         return ["[A10] プレスリリース配信の言い換えの記事（新しく作らない種類）"]
     if retire_articles.is_thin(record):
         return ["[A10] 独自の情報が少ない短い記事"]
-    return []
+    return notice_problems(record)
+
+
+def notice_problems(record: dict, sns: set[str] | None = None) -> list[str]:
+    """A26: お知らせ・告知・統計の転載の記事（認可・受章者・議事要旨・決算発表日の予告・啓発月間・出荷量など）。
+    直近7日に SNS に出した記事は投稿のリンクのために残している（7日を過ぎたら retire_articles.py --notice で取り下げる）"""
+    try:
+        import notice_gate  # noqa: PLC0415
+        import retire_articles  # noqa: PLC0415
+    except Exception:  # noqa: BLE001
+        return []
+    kind = notice_gate.notice_reason(record)
+    if not kind:
+        return []
+    if sns is None:
+        sns = retire_articles.recent_sns(datetime.now(timezone.utc), everywhere=True)
+    if record.get("slug") in sns:
+        return []
+    return [f"[A26] お知らせ・統計の転載の記事（{notice_gate.LABELS[kind]}）が公開されている。"
+            "python3 scripts/retire_articles.py --notice --apply で取り下げる"]
 
 
 # ---- 本番のページ ---------------------------------------------------------------
@@ -315,11 +334,34 @@ def article_page_problems(html: str, record: dict) -> list[str]:
         out.append("[W6] オーナーの名前が記事のページに出ている（/about・/editorial-policy だけ）")
     out += slot_problems(html)
     out += related_problems(html, record)
+    out += block_order_problems(html)
     if "WEB SERVICE" in visible:
         out.append("[W20] 広告に写真の代わりの「WEB SERVICE」の板が出ている（頭文字の札にする）")
     if m := NO_DATA.search(visible):
         out.append(f"[W11] 「記載なし」がページに出ている（「{_snippet(visible, m)}」）")
     return list(dict.fromkeys(out))
+
+
+# A28: 記事ページの欄の並び（要約の欄を2つ出さない・目次は本文の前）
+H2_RE = re.compile(r"<h2\b([^>]*)>(.*?)</h2>", re.S)
+SUMMARY_DUP = re.compile(r"^(?:要点|ひとことで言うと|要約|ポイント)$")
+
+
+def block_order_problems(html: str) -> list[str]:
+    """A28: 「この記事のポイント」と要約版の「要点」が両方ある／目次が本文（詳細版・要約版）の章より後ろにある"""
+    heads = []
+    for attrs, inner in H2_RE.findall(html):
+        m = re.search(r'\bid="([^"]+)"', attrs)
+        heads.append((m.group(1) if m else "", re.sub(r"<[^>]+>", "", inner).strip()))
+    out = []
+    texts = [h for _, h in heads]
+    if "この記事のポイント" in texts and any(SUMMARY_DUP.match(h) for h in texts):
+        out.append("[A28] 要約の欄が2つある（「この記事のポイント」と要約版の「要点」）")
+    toc = next((i for i, (hid, _) in enumerate(heads) if hid == "toc-heading"), None)
+    first_body = next((i for i, (hid, _) in enumerate(heads) if re.match(r"(?:sec|easy)-\d+$", hid)), None)
+    if toc is not None and first_body is not None and toc > first_body:
+        out.append("[A28] 目次が本文の章より後ろにある（本文の前に置く）")
+    return out
 
 
 # W19: 関連記事・「次に読むならこれ」の欄（記事ページの id で切り出す）と、地震・津波の速報の記事（lib/related.ts の isDisasterArticle と同じ見分け方）
@@ -696,6 +738,16 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
                 v += article_page_problems(html, a)
         if v:
             found[path] = list(dict.fromkeys(v))
+    # A26: 全部の記事のうち、お知らせ・統計の転載（新しい記事だけでなく、前から残っているものも）
+    try:
+        import retire_articles  # noqa: PLC0415
+
+        sns = retire_articles.recent_sns(datetime.now(timezone.utc), everywhere=True)
+    except Exception:  # noqa: BLE001
+        sns = set()
+    for a in load_articles():
+        if v := notice_problems(a, sns):
+            found.setdefault(f"/articles/{a['slug']}", []).extend(x for x in v if x not in found.get(f"/articles/{a['slug']}", []))
     if not network:
         return found
     for path in ("/", "/about", "/editorial-policy", "/contact", "/news", "/ai-pricing", "/newsletter"):

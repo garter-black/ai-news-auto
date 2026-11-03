@@ -8,7 +8,8 @@ import RailRanking from "@/components/rail/RailRanking";
 import { getAllArticles, type ArticleSummary } from "@/lib/articles";
 import { companyOf } from "@/lib/companies";
 import { offerForTopic } from "@/lib/offers";
-import { isUnknownValue, usability, verdictOf } from "@/lib/verdict";
+import { AI_TOPIC } from "@/lib/indexing";
+import { isUnknownValue, usability, verdictKind, verdictOf } from "@/lib/verdict";
 import { siteConfig } from "@/site.config";
 
 const TITLE = "今すぐ使える最新AIツール・新機能まとめ【毎日更新】";
@@ -29,8 +30,9 @@ const dayFormat = new Intl.DateTimeFormat("ja-JP", { month: "numeric", day: "num
  * トップと同じく、左に時系列・右に補助の列を置いて横幅を使い切る。
  */
 export default function UsablePage() {
-  const ai = getAllArticles().filter((a) => a.genreSlug === "ai");
-  const judged = ai.filter((a) => verdictOf(a));
+  // AI の製品・サービスの記事だけ（ジャンルが「AI」でも AI でない話題・製品でない発表は出さない。2026-11-03 の点検・台帳 A27）
+  const ai = getAllArticles().filter((a) => a.genreSlug === "ai" && AI_TOPIC.test(`${a.title} ${a.tags.join(" ")}`));
+  const judged = ai.filter((a) => verdictOf(a) && verdictKind(a) === "product");
   const usable = judged.filter((a) => usability(verdictOf(a)!) === "go");
   const free = usable.filter((a) => verdictOf(a)?.free === true);
   const soon = judged.filter((a) => verdictOf(a)?.status === "soon");

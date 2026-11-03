@@ -278,3 +278,25 @@ class RelatedAndAdBoxTest(unittest.TestCase):
     def test_web_service_board_is_reported(self):
         html = '<main><a rel="sponsored nofollow">x</a><span>WEB SERVICE</span></main>'
         self.assertIn("W20", ids(audit.article_page_problems(html, {"slug": "a", "title": "b"})))
+
+
+class NoticeTest(unittest.TestCase):
+    """A26（2026-11-03 オーナー決定 1）: お知らせ・告知・統計の転載の記事を残さない（直近7日に SNS に出したものは除く）"""
+
+    def test_notice_flagged_unless_recent_sns(self):
+        record = {"slug": "tobacco", "title": "財務省、製造たばこの小売定価の認可情報を随時公開"}
+        self.assertEqual({"A26"}, ids(audit.notice_problems(record, set())))
+        self.assertEqual([], audit.notice_problems(record, {"tobacco"}))
+        self.assertEqual([], audit.notice_problems({"slug": "a", "title": "Apple、7〜9月期の売上高が12％増"}, set()))
+
+
+class BlockOrderTest(unittest.TestCase):
+    """A28（2026-11-03）: 記事ページで要約の欄を2つ出さない・目次は本文の前"""
+
+    def test_duplicate_summary_and_toc_position(self):
+        bad = ('<h2 id="points-heading">この記事のポイント</h2><h2 id="easy-1">要点</h2><h2 id="easy-2">a</h2>'
+               '<h2 id="toc-heading">目次</h2><h2 id="sec-1">b</h2>')
+        self.assertEqual(2, len(audit.block_order_problems(bad)))
+        self.assertEqual({"A28"}, ids(audit.block_order_problems(bad)))
+        good = '<h2 id="points-heading">この記事のポイント</h2><h2 id="toc-heading">目次</h2><h2 id="easy-1">a</h2><h2 id="sec-1">b</h2>'
+        self.assertEqual([], audit.block_order_problems(good))

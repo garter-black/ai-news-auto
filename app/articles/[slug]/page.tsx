@@ -20,7 +20,7 @@ import InlineRead from "@/components/InlineRead";
 import ReadingMode from "@/components/ReadingMode";
 import VerdictCard from "@/components/VerdictCard";
 import WorkMoneyCard from "@/components/WorkMoneyCard";
-import { workMoneyOf } from "@/lib/work-money";
+import { concreteWorkMoney, workMoneyHeading, workMoneyOf } from "@/lib/work-money";
 import AssetLinks from "@/components/assets/AssetLinks";
 import SourceRecord from "@/components/SourceRecord";
 import { OTHER, companyOf, sourceBadge, thumbSource } from "@/lib/companies";
@@ -71,7 +71,7 @@ import {
   splitBeforeHeading,
 } from "@/lib/markdown";
 import { siteConfig } from "@/site.config";
-import { cleanSections, cleanTake, retitleHtml, tocOf } from "@/lib/article-sections";
+import { cleanSections, cleanTake, dropSummarySections, retitleHtml, tocOf } from "@/lib/article-sections";
 import ArticleProse from "@/components/ArticleProse";
 import CalculatorBox from "@/components/calc/CalculatorBox";
 import { CALC_SLOT, insertFigures, markCalculatorSlot, renderChart, type ChartFigure } from "@/lib/charts";
@@ -179,7 +179,11 @@ export default async function ArticlePage({ params }: Props) {
   // 「仕事・お金」の欄・よくある質問も、本文と同じく答えになっていない文を除き、「〜しましょう」は落ち着いた言い方にする（lib/article-sections.ts）
   const workMoneyRaw = workMoneyOf(article.workMoney);
   const workMoneyPoints = (workMoneyRaw?.points ?? []).map(cleanTake).filter(Boolean);
-  const workMoney = workMoneyRaw && workMoneyPoints.length ? { ...workMoneyRaw, points: workMoneyPoints } : null;
+  // 記事ごとの中身（数字・名前）がある点だけ。要点・リードのくり返しと一般論は外し、残らなければ欄ごと出さない（台帳 A28）
+  const workMoney = concreteWorkMoney(
+    workMoneyRaw && workMoneyPoints.length ? { ...workMoneyRaw, points: workMoneyPoints } : null,
+    [...article.highlights, article.lede ?? ""],
+  );
   // 同じ製品の料金・使い方ガイドへの固定の案内（要点のすぐ下と、本文の料金の章の下。lib/guide-links.ts）
   const guideLinks = guideLinksForArticle(article);
   const pricingLink = guideLinks.find((link) => link.kind === "pricing");
@@ -215,7 +219,9 @@ export default async function ArticlePage({ params }: Props) {
   // 「かんたんに読む」版（ある記事だけ、読み方を切り替えられる）
   // 中身なしの章・つなぎの文を除き（lib/article-sections.ts。scripts/section_gate.py と同じ規則）、
   // 決まった型の見出しは記事ごとの見出し（sectionTitles）か普通の見出しに言い換えて出す
-  const easy = article.easy?.trim() ? cleanSections(article.easy.trim(), article.sectionTitles?.easy).markdown : "";
+  // 要約版の最初の「ひとことで言うと（要点）」は、上の「この記事のポイント」と同じ役目なので出さない（台帳 A28）
+  const easyClean = article.easy?.trim() ? cleanSections(article.easy.trim(), article.sectionTitles?.easy).markdown : "";
+  const easy = article.highlights.length > 0 ? dropSummarySections(easyClean) : easyClean;
   const easyMinutes = Math.max(1, Math.round(easy.length / 500));
   const easyHtml = easy ? retitleHtml(await renderMarkdown(easy, affiliates.map((a) => a.url)), "easy", article.sectionTitles, "easy") : "";
   const body = cleanSections(article.body, article.sectionTitles?.body).markdown;
@@ -506,8 +512,8 @@ export default async function ArticlePage({ params }: Props) {
               judgedAt={verdict.judgedAt || article.generatedAt || article.publishedAt}
             />
           )}
-          {/* 「仕事とお金への影響」（新しい記事だけ） */}
-          {workMoney && <WorkMoneyCard workMoney={workMoney} />}
+          {/* 仕事・お金への影響（記事ごとの中身があるときだけ。見出しはニュースの種類に合わせる） */}
+          {workMoney && <WorkMoneyCard workMoney={workMoney} heading={workMoneyHeading(article.newsType, article.genreSlug)} />}
           {/* 料金早見表・イベントページへの案内（当てはまる記事だけ） */}
           <AssetLinks article={article} />
 
@@ -704,18 +710,9 @@ export default async function ArticlePage({ params }: Props) {
               本文中の PR の囲み・「あわせて読みたい」は、どちらの版にも入れず、2つの版のあいだ（通常版の後半の前）に1つだけ置く。
               かんたん版ではかんたん版の直後、通常版では後半の前に見える（同じ広告の枠をページに2つ置かない。2026-11-03） */}
           <div id="article-flow" data-read-mode="expert">
-          {easyHtml && (
-            <div className="read-easy">
-              <p className="mt-8 inline-flex items-center gap-2 rounded-sm bg-go-soft px-3 py-1 text-badge font-bold text-go">
-                要約版：専門用語を控えて説明しています
-              </p>
-              <article className="prose mt-5 max-w-[40em]" dangerouslySetInnerHTML={{ __html: easyHtml }} />
-            </div>
-          )}
-
           <div className="read-expert">
-          {/* 章立て */}
-          {headings.length > 1 && (
+          {/* 章立て（本文の前。章が3つ以下の短い記事には出さない。台帳 A28） */}
+          {headings.length > 3 && (
             <nav aria-labelledby="toc-heading" className="mt-6 rounded-3xl border border-line p-6">
               <h2 id="toc-heading" className="t-h3">
                 目次
@@ -731,6 +728,17 @@ export default async function ArticlePage({ params }: Props) {
               </ol>
             </nav>
           )}
+          </div>
+          {easyHtml && (
+            <div className="read-easy">
+              <p className="mt-8 inline-flex items-center gap-2 rounded-sm bg-go-soft px-3 py-1 text-badge font-bold text-go">
+                要約版：専門用語を控えて説明しています
+              </p>
+              <article className="prose mt-5 max-w-[40em]" dangerouslySetInnerHTML={{ __html: easyHtml }} />
+            </div>
+          )}
+
+          <div className="read-expert">
 
           {/* 本文（前半） */}
           <ArticleProse className="prose mt-10 max-w-[40em]" html={bodyTop} slot={calcInline ? calcBox : undefined} priceSlot={priceBox} />

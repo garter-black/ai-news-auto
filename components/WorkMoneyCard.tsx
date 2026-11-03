@@ -4,12 +4,20 @@ import { RELEVANCE_LABEL, WORK_MONEY_HEADING, type WorkMoney } from "@/lib/work-
  * 「仕事・お金にどう活かせる？」欄。判定カード（VerdictCard）のすぐ下に、同じ枠の形で小さく出す。
  * 読者（仕事とお金に意欲の高い働く人）が「自分はどう動けばいいか」を数秒でつかむためのもの。
  */
-export default function WorkMoneyCard({ workMoney, id = "work-money-heading" }: { workMoney: WorkMoney; id?: string }) {
+export default function WorkMoneyCard({
+  workMoney,
+  id = "work-money-heading",
+  heading = WORK_MONEY_HEADING,
+}: {
+  workMoney: WorkMoney;
+  id?: string;
+  heading?: string;
+}) {
   return (
     <section aria-labelledby={id} className="mt-4 rounded-2xl border border-line-strong p-5 sm:p-6" data-work-money>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
         <h2 id={id} className="t-h3">
-          {WORK_MONEY_HEADING}
+          {heading}
         </h2>
         <span className="rounded-full bg-surface-2 px-2.5 py-1 text-meta font-bold leading-none text-ink-soft">
           {RELEVANCE_LABEL[workMoney.relevance]}
