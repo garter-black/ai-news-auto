@@ -6964,6 +6964,13 @@
       "skipped": true,
       "url": "https://www.kantei.go.jp/jp/tyoukanpress/202610/26_a.html"
     },
+    "626336898532a6f5": {
+      "at": "2026-11-03T04:15:41.032571+00:00",
+      "model": "anthropic-api:claude-opus-5-5",
+      "reason": "quality: 「GPT-6.1 Solより5割以上安く、作業は3倍以上速い」「作業の速さはGPT-6 AstraやGPT-6.1 Solの3倍以上」→元記事は3倍以上速いのはタスク完了で、比較対象はGPT-6 AstraとGPT-6.1 Solだが、かんたん版の「上位のGPT-6 Astraなどの3倍以上」は一部のみで、Sol比の50%低価格との混同を招く軽い言い過ぎ。; 「11月3日に…まと",
+      "skipped": true,
+      "url": "https://aws.amazon.com/jp/blogs/news/aws-weekly-20261026/"
+    },
     "6263ebc41abd08ca": {
       "at": "2026-10-30T22:01:29.491217+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13082,54 +13089,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-31T10:01:18.566361+00:00",
-      "attempt": 1,
-      "id": "7e57fe29156770b5b0125eeddeffbdd683ed29bb",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（935字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（284字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 119.9,
-        "avg_sentence": 64.5,
-        "long_share": 0.462,
-        "max_paragraph": 188,
-        "paragraphs": 7,
-        "sentences": 13
-      },
-      "score": null,
-      "source": "trends",
-      "title": "柳田 悠 岐 馬"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-31T10:01:23.850920+00:00",
-      "attempt": 2,
-      "id": "7e57fe29156770b5b0125eeddeffbdd683ed29bb",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1226字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（347字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 159.1,
-        "avg_sentence": 61.9,
-        "long_share": 0.444,
-        "max_paragraph": 229,
-        "paragraphs": 7,
-        "sentences": 18
-      },
-      "score": null,
-      "source": "trends",
-      "title": "柳田 悠 岐 馬"
-    },
     {
       "accepted": false,
       "at": "2026-10-31T16:01:23.251074+00:00",
@@ -19485,6 +19444,60 @@
       "score": 100,
       "source": "apple-newsroom-jp-all",
       "title": "Apple、第4四半期の業績を発表"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T04:13:43.323518+00:00",
+      "attempt": 1,
+      "id": "626336898532a6f5",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "タイトル「料金は半分以下」→ 元記事は「50%以上低い」と述べるのみで、「半分以下」はほぼ同義だが、比較相手がGPT-6.1 SolとGPT-5.6 Terraである点がタイトル・リードで「従来の上位モデル」とぼかされている。",
+        "要点「GPT-6.1 TerraでSolやTerra比…」→ 概要で「従来の上位モデルより」とするが、GPT-5.6 Terraは上位モデルではなく前世代のTerraであり、言い換えが不正確。",
+        "「どれも新製品ではなく、既存サービスへの機能追加です。研究段階のものはなく」→ GPT-6.1 Terraは新モデルの提供開始であり、「既存サービスへの機能追加」に一律で括る断定は元記事に無い。",
+        "「AWS ブログ（日本）が11月3日に公開」→ 公開日時は11月3日で元記事情報に合致するが、「10月26日から30日までの主な更新」と整合しており問題なし（軽微：杉山氏の肩書き表現は元記事に沿う）。",
+        "「Q. ...東京リージョンを含む7リージョン」→ 元記事に沿うが、「今日やること」でKMSやAuroraの量子対策検証を始める助言は一般的助言の範囲。",
+        "「GPT-6.1 Terraで入出力の単価を50%以上下げられる可能性」→ 比較対象のモデルから乗り換えた場合に限られるのに、AWS上の現行モデル全般に当てはまるように読める。"
+      ],
+      "readability": {
+        "avg_paragraph": 81.5,
+        "avg_sentence": 41.2,
+        "long_share": 0.143,
+        "max_paragraph": 195,
+        "paragraphs": 53,
+        "sentences": 105
+      },
+      "score": 80,
+      "source": "aws-japan-blog",
+      "title": "週刊AWS – 2026/10/26週"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T04:15:41.032450+00:00",
+      "attempt": 2,
+      "id": "626336898532a6f5",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "「GPT-6.1 Solより5割以上安く、作業は3倍以上速い」「作業の速さはGPT-6 AstraやGPT-6.1 Solの3倍以上」→元記事は3倍以上速いのはタスク完了で、比較対象はGPT-6 AstraとGPT-6.1 Solだが、かんたん版の「上位のGPT-6 Astraなどの3倍以上」は一部のみで、Sol比の5",
+        "「11月3日に…まとめました」→元記事の公開日時は11月3日で矛盾しないが、タイトルの「ChatGPTのOpenAI新AIモデル」はChatGPTとの関係を強調しすぎ（元記事にChatGPT新モデルとの記述なし）。",
+        "「使用率は2倍以上になりました」→CPU 42→91%、メモリ41→88%は2倍以上だが、元記事・計算済みの数字に倍率の記載がなく、記事独自の計算。",
+        "「GPT-6.1 Terraが使いたいリージョンで提供されているか」→元記事にリージョン記載がないことは明示されているが、「提供開始」を日本で使えるかのように読ませる余地は軽微。",
+        "「Terraへの切り替えで単価が50%以上下がる設定か確かめられます」→元記事は価格が50%以上低いとだけ述べており、切り替えで下がるとの含みは軽い言い過ぎ。",
+        "かんたん版「値段は…半分以下の設定です」→元記事は「50%以上低い」で、「半分以下」は言い換えとして許容範囲だが、かんたん版の末尾が途中で切れている。"
+      ],
+      "readability": {
+        "avg_paragraph": 82.2,
+        "avg_sentence": 41.1,
+        "long_share": 0.153,
+        "max_paragraph": 170,
+        "paragraphs": 49,
+        "sentences": 98
+      },
+      "score": 72,
+      "source": "aws-japan-blog",
+      "title": "週刊AWS – 2026/10/26週"
     }
   ],
   "short_text_retry": {

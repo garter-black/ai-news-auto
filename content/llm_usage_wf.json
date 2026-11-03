@@ -1,11 +1,12 @@
 {
   "2026-11-02": {
     "articles": {
-      "anthropic-api:claude-opus-5-5": 1
+      "anthropic-api:claude-opus-5-5": 3,
+      "anthropic-api:claude-sonnet-5-5": 3
     },
     "images": {
       "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 1,
-      "cloudflare:@cf/openai/gpt-oss-120b": 31
+      "cloudflare:@cf/openai/gpt-oss-120b": 41
     }
   }
 }

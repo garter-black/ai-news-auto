@@ -1,5 +1,7 @@
 {
-  "consecutive_zero": 0,
-  "reason": "",
+  "candidates": 4,
+  "consecutive_zero": 1,
+  "last_zero_at": "2026-11-03T04:15:41+00:00",
+  "reason": "品質ゲート不合格: 「GPT-6.1 Solより5割以上安く、作業は3倍以上速い」「作業の速さはGPT-6 AstraやGPT-6.1 Solの3倍以上」→元記事は3倍以上速いのはタスク完了で、比較対象はGPT-6 AstraとGPT-6.1 Solだが、かんたん版の「上位のGPT-6 Astraなどの3倍以上」は一部のみで、Sol比の5",
   "status": "ok"
 }
