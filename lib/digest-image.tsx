@@ -176,6 +176,16 @@ function Telop({ story, rank, size, width, meta }: { story: DigestStory; rank: n
   );
 }
 
+/** AI の画像には「AI生成」と出す（台帳 I4。記事ページと同じ。2026-11-03 の点検でシェア画像に札が無かった） */
+function AiTag({ story }: { story: DigestStory }) {
+  if (story.article.imageCredit?.kind !== "ai") return null;
+  return (
+    <div style={{ position: "absolute", right: 8, bottom: 8, display: "flex", padding: "3px 8px", borderRadius: 4, background: "rgba(11,26,51,0.78)", color: "#ffffff", fontSize: 16, fontWeight: 700 }}>
+      AI生成
+    </div>
+  );
+}
+
 function Credit({ text, size }: { text: string; size: number }) {
   if (!text) return null;
   return <div style={{ display: "flex", fontSize: size, fontWeight: 700, color: "rgba(255,255,255,0.86)", textShadow: "0 1px 6px rgba(0,0,0,0.7)" }}>{text}</div>;
@@ -825,11 +835,13 @@ function compactHeadline(headline: string, maxEm: number): string {
   const candidates = [headline];
   const comma = headline.search(/[、，]/);
   const tail = comma > 0 ? headline.slice(comma + 1) : "";
-  const noPrefix = headline.replace(/^[^、，「『]{1,8}?の(?=[A-Za-z゠-ヿ])/, "");
-  if (noPrefix !== headline) candidates.push(noPrefix);
+  // 「GoogleのAI「Gemini 4」…」の頭だけを外して「AI「Gemini 4」…」にする言い換えはしない（2026-11-03 の点検「変な書き方」）。
+  // 説明つきの社名（「ChatGPTのOpenAI」）は lib/digest.ts で題名の門番（gateHeadline）が外している
   if (tail) candidates.push(tail);
   const bracket = /[「『]([^」』]+)[」』](を|が)?(.{0,6})$/.exec(headline);
-  if (bracket) candidates.push(`${bracket[1]}${bracket[2] ?? ""}${bracket[3]}`.replace(/を(発表|公開|開始)$/, "を$1"));
+  // 製品名だけ（「Grid Protectors」のような説明のない英語だけ）にはしない。日本語の述語が残るときだけ
+  const named = bracket ? `${bracket[1]}${bracket[2] ?? ""}${bracket[3]}` : "";
+  if (bracket && /[^\x00-\x7f]/.test(named)) candidates.push(named);
   for (const text of candidates) if (emWidth(text) <= maxEm) return text;
   const base = candidates[candidates.length - 1];
   let out = "";
@@ -1055,11 +1067,12 @@ function EPhoto({ photo, story, width, height }: { photo: Photo; story: DigestSt
   const ph = Math.round((pw * 9) / 16);
   return (
     <div style={{ display: "flex", width, height, justifyContent: "center", alignItems: "flex-start", background: E_BG }}>
-      <div style={{ display: "flex", width: pw, height: ph, background: photo ? "#111" : story.company.color, overflow: "hidden" }}>
+      <div style={{ position: "relative", display: "flex", width: pw, height: ph, background: photo ? "#111" : story.company.color, overflow: "hidden" }}>
         {photo && (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={photo} alt="" width={pw} height={ph} style={{ width: pw, height: ph, objectFit: "cover", objectPosition: "center top" }} />
         )}
+        {photo && <AiTag story={story} />}
       </div>
     </div>
   );
@@ -1225,6 +1238,7 @@ function FPhoto({ photo, story, width, height, st, tab }: { photo: Photo; story:
           <img src={photo} alt="" width={pw} height={ph} style={{ width: pw, height: ph, objectFit: "cover", objectPosition: "center top" }} />
         )}
         {tab}
+        {photo && <AiTag story={story} />}
       </div>
     </div>
   );

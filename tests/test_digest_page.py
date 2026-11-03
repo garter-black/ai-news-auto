@@ -28,15 +28,17 @@ class ShortHeadlineTest(unittest.TestCase):
         self.assertEqual(got, "Google DeepMind、「Gemini Robotics 2」を発表")
 
     def test_short_titles_are_kept(self):
-        self.assertEqual(dp.short_headline(article("AI半導体のNVIDIAが医療向けAI発表 創薬から手術支援まで自動化を促進")), "AI半導体のNVIDIAが医療向けAI発表")
+        # よく知られた会社の説明（「AI半導体の」）は題名の門番が外す（台帳 A25）
+        self.assertEqual(dp.short_headline(article("AI半導体のNVIDIAが医療向けAI発表 創薬から手術支援まで自動化を促進")), "NVIDIAが医療向けAI発表")
         self.assertEqual(
             dp.short_headline(article("仏AIのミストラルが新AIモデル『Mistral Large 4』を公開 サイバー防衛に強み")),
-            "仏AIのミストラルが新AIモデル『Mistral Large 4』を公開",
+            "仏AIのミストラルが新AIモデル「Mistral Large 4」を公開",  # 製品名は「」にそろえる（headline_normalize）
         )
 
     def test_drops_trailing_clause_not_subject(self):
         got = dp.short_headline(article("ChatGPTのOpenAI、12月から利用枠を「Codex」と共通化 AI作業機能は本体へ"))
-        self.assertEqual(got, "ChatGPTのOpenAI、12月から利用枠を「Codex」と共通化")
+        # 「ChatGPTのOpenAI」は出さない（台帳 A5・A25）。説明を外すと40字に収まるので補足まで残る
+        self.assertTrue(got.startswith("OpenAI、12月から利用枠を「Codex」と共通化"), got)
 
     def test_does_not_end_with_particle(self):
         got = dp.short_headline(article("生成AIサービスのアガタが、社内資料のAI読み取りやVPN接続などの新サービスを開始"))

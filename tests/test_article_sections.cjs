@@ -20,7 +20,7 @@ const cases = JSON.parse(fs.readFileSync(path.join(root, "tests/fixtures/section
 
 test("Python の門（scripts/section_gate.py）と同じ結果になる", () => {
   for (const c of cases) {
-    const { markdown, hidden } = cleanSections(c.markdown);
+    const { markdown, hidden } = cleanSections(c.markdown, c.titles);
     assert.equal(markdown, c.expected, c.name);
     assert.deepEqual(hidden, c.hidden, c.name);
   }

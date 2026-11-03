@@ -56,7 +56,7 @@ OWNER_NAME_PAGES = ("/about", "/editorial-policy")
 AUDIT_RULES = (
     "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11",
     "I2", "I4", "I5",
-    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23",
+    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23", "A24", "A25",
     "W3", "W5", "W6", "W10", "W11", "W12", "W13", "W17", "W18", "W19", "W20",
 )
 
@@ -74,6 +74,8 @@ CHILDISH = re.compile(r"すごい|スゴい|すっごく|しちゃう|しちゃ�
 SLOT_ATTR = re.compile(r'data-(aff-pos|ad-position|newsletter-signup)="([^"]*)"')
 # W11: 「記載なし」を読者に見せない（表・料金表・判定・本文）
 NO_DATA = re.compile(r"記載なし")
+# A24: 読者像の3つの立場の小見出し（会社員として／副業・独立を考えている人／お金・資産づくりの面で）が、見出し・太字の行で出ている
+PERSONA_HEADING_HTML = re.compile(r"<(?:h[2-4]|strong)[^>]*>\s*(会社員として(?:仕事で)?|副業・独立を考えている人|お金・資産づくりの面で)\s*<")
 # A6: 見出しの札があざとい（「3秒でわかる」など）
 GIMMICK_LABEL = re.compile(r"\d+秒でわかる|\d+分でわかる|一瞬でわかる|サクッと")
 
@@ -133,7 +135,7 @@ def _usable_title(title: object) -> bool:
     if not isinstance(title, str):
         return False
     t = title.strip()
-    return 2 <= len(t) <= 32 and not re.search(r"[<>#\n|]", t) and not t.endswith("。")
+    return 2 <= len(t) <= 32 and not re.search(r"[<>#\n|]", t) and not t.endswith("。") and not section_gate.is_nonanswer_title(t)
 
 
 def _snippet(text: str, m: re.Match) -> str:
@@ -148,10 +150,16 @@ def record_problems(record: dict, page_headings: bool = False) -> list[str]:
         titles = record.get("sectionTitles") or {}
         for kind in ("body", "easy"):
             own = (titles.get(kind) or {}) if isinstance(titles, dict) else {}
-            shown = section_gate.clean_markdown(str(record.get(kind) or ""))[0]
+            shown = section_gate.clean_markdown(str(record.get(kind) or ""), titles=own if isinstance(own, dict) else None)[0]
             for heading in _headings(shown):
                 if TEMPLATE_HEADINGS.match(heading) and not _usable_title(own.get(heading)):
                     out.append(f"[A1] 決まった型の小見出し（「{heading}」）")
+                display = own.get(heading) if _usable_title(own.get(heading)) else heading
+                if section_gate.is_nonanswer_title(display):
+                    out.append(f"[A24] 見出しの言葉だけ変えた中身なしの章（「{display}」）")
+            for line in shown.splitlines():
+                if section_gate.PERSONA_SUBHEAD_RE.match(line.strip()):
+                    out.append(f"[A24] 立場の小見出しが残っている（「{line.strip().strip('#* ')}」）")
     for field, text in _texts(record):
         # 型の小見出しの行は [A1] で数えるので、言葉の点検からは外す（同じものを2回数えない）
         text = "\n".join(line for line in text.splitlines() if not TEMPLATE_HEADINGS.match(re.sub(r"^#+\s*", "", line).strip()))
@@ -291,6 +299,10 @@ def article_page_problems(html: str, record: dict) -> list[str]:
         if GIMMICK_LABEL.search(h):
             gimmick = True
             out.append(f"[A6] あざとい札（「{h}」）")
+        if section_gate.is_nonanswer_title(h):
+            out.append(f"[A24] 見出しの言葉だけ変えた中身なしの章がページに出ている（「{h}」）")
+    if m := PERSONA_HEADING_HTML.search(html):
+        out.append(f"[A24] 立場の小見出しがページに出ている（「{m.group(1)}」）")
     visible = "".join(page.text)
     if not gimmick and (m := GIMMICK_LABEL.search(visible)):
         out.append(f"[A6] あざとい札がページに出ている（「{_snippet(visible, m)}」）")
@@ -326,6 +338,41 @@ def related_problems(html: str, record: dict) -> list[str]:
     if _is_disaster(record):
         return []
     return [f"[W19] 関連記事に地震・津波の記事が混ざっている（/articles/{slug}）" for slug in sorted(links)]
+# A25: 朝のまとめ・週のまとめの題名（ページの data-title-gate の付いた題名）。検索向けの問いの型・説明つきの社名を出さない
+TITLE_GATE_HTML = re.compile(r'data-title-gate="[^"]*"[^>]*>\s*([^<]+?)\s*<')
+SEO_QUESTION = re.compile(r"とは[？?]|日本で(?:も)?使える[？?]|の買い方|使い方と料金|料金も$|料金と提供状況")
+
+
+def summary_page_problems(path: str, html: str) -> list[str]:
+    """[A25] まとめのページの題名が題名の門番を通っているか（2026-11-03 オーナー決定）"""
+    import html as htmllib  # noqa: PLC0415
+
+    titles = [htmllib.unescape(t) for t in TITLE_GATE_HTML.findall(html)]
+    out = []
+    if not titles:
+        out.append(f"[A25] まとめの題名が見つからない（{path}。data-title-gate の印が無い）")
+    for t in titles:
+        for problem in title_problems(t):
+            if "説明を付けた" in problem:
+                out.append(f"[A25] まとめの題名に説明つきの社名（{path}:「{t}」）")
+        if SEO_QUESTION.search(t):
+            out.append(f"[A25] まとめの題名が検索向けの問いの型（{path}:「{t}」）")
+    return list(dict.fromkeys(out))
+
+
+def latest_summary_paths() -> list[str]:
+    """同梱の最新の朝のまとめと週のまとめのページ"""
+    paths = []
+    digests = sorted(p.stem for p in (ROOT / "content" / "digests").glob("*.json") if re.fullmatch(r"\d{8}", p.stem))
+    if digests:
+        paths.append(f"/digest/{digests[-1]}")
+    try:
+        weeks = sorted(w.get("id", "") for w in json.loads((ROOT / "content" / "weekly.json").read_text("utf-8")).get("weeks") or [])
+    except (OSError, ValueError):
+        weeks = []
+    if weeks and weeks[-1]:
+        paths.append(f"/weekly/{weeks[-1]}")
+    return paths
 
 
 def slot_problems(html: str) -> list[str]:
@@ -598,6 +645,13 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
             v = source_page_problems(path, html) if path in source_paths else choose_page_problems(path, html)
         if v:
             found.setdefault(path, []).extend(v)
+    # A25: 朝のまとめ・週のまとめの題名
+    summaries = latest_summary_paths()
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        for path, (status, html) in zip(summaries, pool.map(lambda p: fetch(base + p), summaries)):
+            v = [f"[W3] ページが開けない（HTTP {status}）"] if status != 200 else summary_page_problems(path, html)
+            if v:
+                found.setdefault(path, []).extend(v)
     # W12・W13: 図鑑・ハブのページ
     hubs = ["/products", "/guides", "/ai-pricing"]
     with ThreadPoolExecutor(max_workers=4) as pool:
