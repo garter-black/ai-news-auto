@@ -2,6 +2,7 @@ import type { WorkMoney } from "@/lib/work-money";
 import fs from "@/lib/content-fs";
 import path from "node:path";
 import { getAllArticles, type ArticleSummary } from "@/lib/articles";
+import { politeDeep } from "@/lib/polite-text";
 
 /**
  * 使い方ガイド（content/howto/*.json、scripts/evergreen.py が作る。URL は /guides/<slug>）。
@@ -70,7 +71,8 @@ export function getAllHowtos(): HowtoGuide[] {
     .filter((file) => file.endsWith(".json"))
     .flatMap((file) => {
       try {
-        const data = JSON.parse(fs.readFileSync(/* turbopackIgnore: true */ `${HOWTO_DIR}${path.sep}${file}`, "utf8")) as HowtoGuide;
+        // 文末の「〜しましょう」は落ち着いた言い方にして出す（台帳 W13。lib/polite-text.ts）
+        const data = politeDeep(JSON.parse(fs.readFileSync(/* turbopackIgnore: true */ `${HOWTO_DIR}${path.sep}${file}`, "utf8")) as HowtoGuide);
         return data.slug && data.steps?.length ? [data] : [];
       } catch {
         return [];

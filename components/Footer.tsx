@@ -6,6 +6,7 @@ import { ROUNDUP_CHANNEL, getAllArticles, getAllChannels, getAllTags } from "@/l
 import { companyCounts } from "@/lib/companies";
 import { CREATOR_CHANNELS, WIRE_SOURCES } from "@/lib/indexing";
 import { hasActiveAffiliate } from "@/lib/monetization";
+import { isThinSourceChannel } from "@/lib/news-outlets";
 import { genreNav } from "@/lib/nav";
 import { siteConfig } from "@/site.config";
 
@@ -39,8 +40,17 @@ export default function Footer() {
   // 発信元はジャンルを問わず記事の多い順（AIだけに絞らない）。足元が伸びないよう上限を設ける
   // まとめ記事しかない発信元（名前が「◯本の記事から編集部が統合」のまま）は出さない
   // 足元の「情報源」には企業・機関の公式の発信元だけを並べる（個人・他媒体の動画やプレスリリース配信は出さない）
+  // 報道機関の発信元（radar-<報道機関>）・話題のまとめも並べない（公式の発信元ではない。台帳 W12）。
+  // 同じ名前の発信元（「NTT ニュースリリース」の全体版と AI 版など）は1つだけ（記事の多い方。2026-11-03 の点検で2回出ていた）
+  const seenLabels = new Set<string>();
   const channels = getAllChannels()
-    .filter((c) => !ROUNDUP_CHANNEL.test(c.label) && !CREATOR_CHANNELS.has(c.slug) && !WIRE_SOURCES.has(c.slug))
+    .filter((c) => !ROUNDUP_CHANNEL.test(c.label) && !CREATOR_CHANNELS.has(c.slug) && !WIRE_SOURCES.has(c.slug) && !isThinSourceChannel(c.slug))
+    .filter((c) => {
+      const key = c.label.replace(/\s+/g, "");
+      if (seenLabels.has(key)) return false;
+      seenLabels.add(key);
+      return true;
+    })
     .slice(0, 24);
   const genres = genreNav();
   const companies = companyCounts(ai).slice(0, 8);

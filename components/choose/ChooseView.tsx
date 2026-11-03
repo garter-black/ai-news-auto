@@ -74,7 +74,8 @@ export default function ChooseView({ guide, services, related, others, jsonLd }:
       <section aria-labelledby="table-heading" className="mt-14">
         <QHeading
           id="table-heading"
-          note={guide.tableNote ?? `${checked}に各社の公式サイトで確認。速度はすべて公称値（規格上の最大値）です。`}
+          // ガイドごとの注記は guide.tableNote に置く。全部のガイドに共通の文だけを既定にする（「速度は公称値」が転職ガイドに出ていた。台帳 W13）
+          note={guide.tableNote ?? `${checked}に各社の公式サイトで確認。`}
         >
           比較表：{services.length}件を同じ物差しで
         </QHeading>

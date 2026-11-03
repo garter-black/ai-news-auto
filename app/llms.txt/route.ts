@@ -19,8 +19,6 @@ export function GET() {
   const roundups = ai.filter((a) => a.type === "roundup").slice(0, 10);
   const companies = companyCounts(ai).filter(({ company }) => COMPANIES.some((c) => c.slug === company.slug));
 
-  // 公式ブログ・プレスリリース由来の記事があれば、案内文にも含める
-  const hasWeb = ai.some((a) => a.sourceType === "web");
   const line = (title: string, url: string, note?: string) => `- [${title}](${url})${note ? `: ${note}` : ""}`;
   const products = listedProducts();
   // まとめページへ移した製品ガイドは転送しているので載せない
@@ -30,7 +28,7 @@ export function GET() {
 
 > ${siteConfig.description}
 
-${siteConfig.name}は、AI企業の公式発表動画とAI専門の解説動画${hasWeb ? "、各社の公式ブログ・プレスリリース" : ""}を常時監視し、${hasWeb ? "内容" : "映像と音声"}を解析して日本語の記事にする速報メディアです。
+${siteConfig.name}は、企業・官公庁の公式ブログ・ニュースリリース・発表を常時監視し、日本語の記事にする速報メディアです。公式の資料が無い話題は報道機関の記事を出典にし、その旨を記事に明記しています。
 各記事には「使えるか」の判定（提供状況・日本から使えるか・料金・無料で試せるか・向いている人）を付けています。
 判定は発表時点の情報にもとづき、記事内に判定日を明記しています。運営：${siteConfig.operator.name}（${siteConfig.operator.email}）
 

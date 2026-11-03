@@ -21,7 +21,7 @@ import WorkMoneyCard from "@/components/WorkMoneyCard";
 import { workMoneyOf } from "@/lib/work-money";
 import AssetLinks from "@/components/assets/AssetLinks";
 import SourceRecord from "@/components/SourceRecord";
-import { OTHER, companyOf, thumbSource } from "@/lib/companies";
+import { OTHER, companyOf, sourceBadge, thumbSource } from "@/lib/companies";
 import { guideForArticle } from "@/lib/guides";
 import { howtoForArticle } from "@/lib/howto";
 import { productForArticle, supersedesGuide } from "@/lib/products";
@@ -404,7 +404,8 @@ export default async function ArticlePage({ params }: Props) {
           <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-meta">
             <ArticleMark company={company} genre={article.genre} size={20} />
             <span className="rounded-sm border border-line-strong px-2 py-[1px] text-badge font-bold text-ink-soft">
-              {isRoundup ? `まとめ ${article.sources?.length ?? 0}本` : video ? "動画紹介" : "公開情報"}
+              {/* 報道機関の記事は「報道」、企業・官公庁の発表は「公式発表」（台帳 W12） */}
+              {isRoundup ? `まとめ ${article.sources?.length ?? 0}本` : video ? "動画紹介" : sourceBadge(article)}
             </span>
             {speedLabel(article) && (
               <span className="rounded-sm border border-live/40 px-2 py-[1px] text-badge font-bold text-live">

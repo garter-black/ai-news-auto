@@ -15,7 +15,7 @@ export function tagMetadata(tag: string, page: number): Metadata {
 
   return {
     title: `${label} の最新ニュース・解説記事${pageSuffix(page)}`,
-    description: `${label} に関する${genres}の解説記事を ${articles.length} 本掲載。公式発表や専門家の動画をAIが解析し、要点・数字・注意点まで日本語でまとめています。`,
+    description: `${label} に関する${genres}の解説記事を ${articles.length} 本掲載。公式発表などをもとに、要点・数字・注意点まで日本語でまとめています。`,
     alternates: { canonical: pageHref(base, page) },
     // 検索対象の記事が少ない薄いタグは検索対象から外す
     ...listingRobots(articles),
@@ -39,8 +39,7 @@ export default function TagView({ tag, page }: { tag: string; page: number }) {
       </h1>
       <p className="t-lead mt-4">
         {label} に関連する{genres}
-        の動画をAIが映像・音声ごと解析し、要点・数字・注意点まで日本語でまとめた記事が
-        {articles.length} 本あります。
+        の話題を、公式発表などをもとに要点・数字・注意点まで日本語でまとめた記事が {articles.length} 本あります。
       </p>
 
       <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
