@@ -964,38 +964,6 @@
    "urls": [
     "https://blogs.nvidia.com/blog/ai-joins-the-search-for-extraterrestrial-signals/"
    ]
-  },
-  {
-   "slug": "microsoft-research-focus-97-agents-bioemu2",
-   "at": "2026-10-30T12:37:23.378721+00:00",
-   "title": "Microsoft、AI研究7件を公開　エージェントの推論負荷を最大59%削減",
-   "head": "Microsoft、AI研究7件を公開　エージェントの推論負荷を最大59%削減 | Microsoft Research Focus – Edition #97",
-   "text": "Microsoft、AI研究7件を公開　エージェントの推論負荷を最大59%削減 | Microsoft Research Focus – Edition #97 | マイクロソフト / Microsoft Research / AIエージェント / ForkPilot / BioEmu2 / TeleTune / CABRA / Copilot / 創薬AI / 気象予測AI / Microsoft / AI研究 / AIエージェント / LLM / バイオテクノロジー / 機械学習",
-   "urls": []
-  },
-  {
-   "slug": "google-antigravity-autonomous-software-development",
-   "at": "2026-10-30T12:29:37.189392+00:00",
-   "title": "Google、AIコーディングツール「Antigravity」事例を公開　新機能を即日リリース",
-   "head": "Google、AIコーディングツール「Antigravity」事例を公開　新機能を即日リリース | Accelerate shipping to scale with Google Antigravity",
-   "text": "Google、AIコーディングツール「Antigravity」事例を公開　新機能を即日リリース | Accelerate shipping to scale with Google Antigravity | Google Antigravity / Gemini 3.8 Flash / 自律型AIエージェント / AIプログラミング / MoveCars / ソフトウェア開発 自動化 / CLIツール / プルリクエスト 自動化 / Google / 開発者向け / 生成AI / 開発ツール / ソフトウェアエンジニアリング",
-   "urls": []
-  },
-  {
-   "slug": "nvidia-gtc-grid-reliability-resiliency",
-   "at": "2026-10-30T12:17:10.210687+00:00",
-   "title": "NVIDIA、欧州電力大手と送配電網のAI自律制御を議論　GTC Berlinで防衛策も紹介",
-   "head": "NVIDIA、欧州電力大手と送配電網のAI自律制御を議論　GTC Berlinで防衛策も紹介 | GTC Berlin 2026: Power Demand, Increasing Grid Reliability and Resiliency",
-   "text": "NVIDIA、欧州電力大手と送配電網のAI自律制御を議論　GTC Berlinで防衛策も紹介 | GTC Berlin 2026: Power Demand, Increasing Grid Reliability and Resiliency | NVIDIA GTC / 送配電網 / 電力グリッド / デジタルツイン / Siemens Energy / TenneT / Bayernwerk / AIインフラ / サイバーセキュリティ / 再生可能エネルギー / NVIDIA / GPU / エネルギー / 生成AI / インフラ / サイバーセキュリティ",
-   "urls": []
-  },
-  {
-   "slug": "zendesk-chatgpt-enterprise-case-study",
-   "at": "2026-10-30T12:03:26.362386+00:00",
-   "title": "OpenAI、Zendeskの活用事例を公開　社内で約600のAIアプリを自作",
-   "head": "OpenAI、Zendeskの活用事例を公開　社内で約600のAIアプリを自作 | ChatGPT Enterprise at Zendesk: Putting Company Data to Work",
-   "text": "OpenAI、Zendeskの活用事例を公開　社内で約600のAIアプリを自作 | ChatGPT Enterprise at Zendesk: Putting Company Data to Work | ChatGPT Enterprise / Zendesk / 社内データ連携 / AIエージェント / 営業支援AI / 生成AI活用事例 / DAU / 使い方 / 料金 / 日本語 / OpenAI / ChatGPT / ChatGPT Enterprise / Zendesk / 生成AI / AIエージェント / 社内データ活用",
-   "urls": []
   }
  ]
 }

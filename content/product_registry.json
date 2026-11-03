@@ -1214,6 +1214,10 @@
     "figma": {
       "at": "2026-11-01T01:41:23+00:00",
       "signature": "e8a77abaa2cef678"
+    },
+    "gemini-4-argon": {
+      "at": "2026-11-03T12:41:36+00:00",
+      "signature": "29f34b934c73f373"
     }
   },
   "deferred": {}

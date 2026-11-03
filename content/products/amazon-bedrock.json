@@ -6,82 +6,77 @@
   "companyName": "Amazon",
   "category": "開発ツール",
   "overview": {
-    "text": "Amazon Bedrockは、AWSが提供する生成AI開発基盤です。様々なAIモデルをAPI経由で利用したり、カスタムアプリケーションを開発したりすることができます。2026年10月以降、新モデルの提供やコスト管理、エージェント機能などの多彩なアップデートが発表されています。",
+    "text": "Amazon Bedrockは、AWSのAI開発基盤です。Amazonが提供しており、2026年11月に一般提供が開始されました。",
     "sources": [
-      "openai-gpt-61-terra-amazon-bedrock",
-      "amazon-bedrock-cost-management-playbook"
+      "openai-gpt-61-terra-amazon-bedrock"
     ]
   },
   "facts": [
     {
       "label": "料金",
-      "value": "AWSの従量課金制",
-      "sources": [
-        "openai-gpt-61-terra-amazon-bedrock",
-        "amazon-bedrock-cost-management-playbook"
-      ]
-    },
-    {
-      "label": "提供開始",
-      "value": "一般提供中（各機能による）",
-      "sources": [
-        "openai-gpt-61-terra-amazon-bedrock",
-        "amazon-bedrock-cost-management-playbook"
-      ]
-    },
-    {
-      "label": "日本での提供",
-      "value": "日本から利用可能",
-      "sources": [
-        "openai-gpt-61-terra-amazon-bedrock",
-        "amazon-bedrock-cost-management-playbook"
-      ]
-    },
-    {
-      "label": "向いている人",
-      "value": "開発者・企業管理者・AIエンジニア",
-      "sources": [
-        "openai-gpt-61-terra-amazon-bedrock",
-        "amazon-bedrock-cost-management-playbook"
-      ]
-    }
-  ],
-  "capabilities": [
-    {
-      "text": "OpenAIの新AIモデル「GPT-6.1 Terra」を利用でき、視覚推論やコンピュータ操作が行えます。",
+      "value": "API従量課金",
       "sources": [
         "openai-gpt-61-terra-amazon-bedrock"
       ]
     },
     {
-      "text": "IAMプリンシパル単位でコストを自動で割り当て、利用費を細かく可視化・管理できます。",
+      "label": "提供開始",
+      "value": "2026年11月",
       "sources": [
-        "amazon-bedrock-cost-management-playbook"
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     },
     {
-      "text": "AgentCore Gatewayを使い、社内のプライベートAPI約400個をAIエージェントの道具に変換できます。",
+      "label": "日本での提供",
+      "value": "日本国内からも利用可能",
       "sources": [
-        "aws-moengage-agentcore-gateway"
+        "openai-gpt-61-terra-amazon-bedrock"
       ]
     },
     {
-      "text": "ClaudeモデルにおけるStructured Outputsが一般提供され、JSON Schemaに完全準拠した応答を取得できます。",
+      "label": "使える場所",
+      "value": "Amazon Bedrock",
+      "sources": [
+        "openai-gpt-61-terra-amazon-bedrock"
+      ]
+    },
+    {
+      "label": "向いている人",
+      "value": "開発者・企業管理者",
+      "sources": [
+        "openai-gpt-61-terra-amazon-bedrock"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "text": "OpenAIのモデル「GPT-6.1 Terra」などのAIモデルを利用できます。",
+      "sources": [
+        "openai-gpt-61-terra-amazon-bedrock"
+      ]
+    },
+    {
+      "text": "最大100万入力トークンのコンテキストに対応し、画像データも処理できます。",
+      "sources": [
+        "openai-gpt-61-terra-amazon-bedrock"
+      ]
+    },
+    {
+      "text": "ClaudeモデルでJSON Schemaに完全準拠した構造化出力が利用できます。",
       "sources": [
         "aws-weekly-20261019-updates"
+      ]
+    },
+    {
+      "text": "マネージド知識ベースを活用したエージェント型検索が利用できます。",
+      "sources": [
+        "amazon-bedrock-managed-kb-agentic-retrieval-cdk"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "基盤モデルの利用は従来のAWSの従量課金に準拠します。",
-      "sources": [
-        "openai-gpt-61-terra-amazon-bedrock",
-        "amazon-bedrock-cost-management-playbook"
-      ]
-    },
-    {
-      "text": "新モデル「GPT-6.1 Terra」は従来モデルと比べて50%以上低い価格設定になっています。",
+      "text": "Amazon Bedrockを通じた従量課金制となります。GPT-6.1 Terraの入出力トークンの価格は従来モデルより50%以上低く設定されています。",
       "sources": [
         "openai-gpt-61-terra-amazon-bedrock"
       ]
@@ -89,14 +84,7 @@
   ],
   "japan": [
     {
-      "text": "日本国内からもAmazon Bedrockが提供されているリージョンを通じて利用できます。",
-      "sources": [
-        "openai-gpt-61-terra-amazon-bedrock",
-        "amazon-bedrock-cost-management-playbook"
-      ]
-    },
-    {
-      "text": "特別な申し込みは不要で、コンソールやAPI経由で今日の業務に組み込むことができます。",
+      "text": "日本国内からも利用可能です。Amazon Bedrockが提供されているリージョンを通じて利用できます。",
       "sources": [
         "openai-gpt-61-terra-amazon-bedrock"
       ]
@@ -104,48 +92,60 @@
   ],
   "howto": [
     {
-      "text": "Amazon BedrockのコンソールやAPIから直接モデルを呼び出して利用します。",
+      "text": "Amazon BedrockのAPIから直接呼び出して利用できます。",
       "sources": [
-        "openai-gpt-61-terra-amazon-bedrock",
-        "amazon-bedrock-cost-management-playbook"
+        "openai-gpt-61-terra-amazon-bedrock"
+      ]
+    },
+    {
+      "text": "AWS CDKを用いて環境構築を行い、マネージド知識ベースなどをデプロイして利用できます。",
+      "sources": [
+        "amazon-bedrock-managed-kb-agentic-retrieval-cdk"
       ]
     }
   ],
   "differences": [
     {
-      "text": "新モデル「GPT-6.1 Terra」は従来モデルと比べ、視覚推論やコンピュータ操作の能力が向上し、価格が50%以上安くなっています。",
+      "text": "GPT-6.1 Terraでは、従来モデルと比べて視覚推論の能力やコンピュータ操作の能力が向上しています。",
       "sources": [
         "openai-gpt-61-terra-amazon-bedrock"
+      ]
+    },
+    {
+      "text": "新たにマネージド知識ベース（Type: MANAGED）が提供され、ベクトルストアの保守が不要になりました。",
+      "sources": [
+        "amazon-bedrock-managed-kb-agentic-retrieval-cdk"
       ]
     }
   ],
   "faq": [
     {
-      "q": "無料で使える？",
-      "a": "記事内では無料枠についての言及はなく、AWSの標準的なAPI従量課金に準拠します。",
+      "q": "利用できるAIモデルには何がありますか？",
+      "a": "OpenAIのGPT-6.1 TerraやAnthropicのClaudeなど各種モデルを利用できます。",
       "sources": [
-        "amazon-bedrock-cost-management-playbook"
-      ]
-    },
-    {
-      "q": "コストを管理する方法はある？",
-      "a": "IAMプリンシパル単位での自動コスト割り当てや、リクエストログの監視を活用した管理モデルが提供されています。",
-      "sources": [
-        "amazon-bedrock-cost-management-playbook"
-      ]
-    },
-    {
-      "q": "社内APIをAIに接続できる？",
-      "a": "AgentCore Gateway機能を利用して、パブリックエンドポイントを露出させずに安全に統合できます。",
-      "sources": [
-        "aws-moengage-agentcore-gateway"
-      ]
-    },
-    {
-      "q": "JSON形式での出力に対応している？",
-      "a": "ClaudeモデルにおけるStructured Outputsの一般提供により、JSON Schemaに準拠したレスポンスが可能です。",
-      "sources": [
+        "openai-gpt-61-terra-amazon-bedrock",
         "aws-weekly-20261019-updates"
+      ]
+    },
+    {
+      "q": "コストを管理する仕組みはありますか？",
+      "a": "IAMプリンシパル単位での自動的な費用割り当てや、ログを活用したコスト管理が可能です。",
+      "sources": [
+        "amazon-bedrock-cost-management-playbook"
+      ]
+    },
+    {
+      "q": "どのような検索機能が使えますか？",
+      "a": "マネージド知識ベースを活用して、エージェントが自ら必要な情報を複数回探しに行く検索が利用できます。",
+      "sources": [
+        "amazon-bedrock-managed-kb-agentic-retrieval-cdk"
+      ]
+    },
+    {
+      "q": "安全なポリシー評価は行えますか？",
+      "a": "ApplyGuardrail APIを用いた安全ポリシーの評価が行えます。",
+      "sources": [
+        "aws-sentinel-ai-audio-provenance"
       ]
     }
   ],
@@ -153,32 +153,32 @@
     {
       "date": "2026-10-27",
       "slug": "amazon-bedrock-openai-prompt-caching",
-      "event": "Amazon BedrockのOpenAIモデルでプロンプトキャッシュを活用するパターンが公開された"
+      "event": "OpenAIモデルでプロンプトキャッシュの活用法が公開された"
     },
     {
-      "date": "2026-10-28",
-      "slug": "aws-bedrock-evaluation-bias-property-finder",
-      "event": "Amazon BedrockにおけるAIモデル評価バイアスの修正手法が公開された"
+      "date": "2026-10-27",
+      "slug": "amazon-bedrock-managed-kb-agentic-retrieval-cdk",
+      "event": "知識ベースのエージェント型検索をCDKで構築する手法を公開"
     },
     {
       "date": "2026-10-28",
       "slug": "aws-bedrock-agentcore-alarm-management",
-      "event": "電力・公益事業向け生成AIエージェント「Amazon Bedrock AgentCore」が発表された"
+      "event": "電力・公益事業向けアラーム管理基盤を公開"
     },
     {
-      "date": "2026-10-30",
-      "slug": "aws-moengage-agentcore-gateway",
-      "event": "社内APIをAIエージェントのツールへ変換するAgentCore Gateway機能が紹介された"
+      "date": "2026-10-28",
+      "slug": "aws-bedrock-evaluation-bias-property-finder",
+      "event": "モデル評価の偏りを正す手法を公開"
     },
     {
       "date": "2026-10-31",
       "slug": "amazon-bedrock-cost-management-playbook",
-      "event": "Amazon Bedrockのコストを管理する5つのステップからなる運用プレイブックが発表された"
+      "event": "生成AI利用費をチーム別に管理する運用手法を公開"
     },
     {
       "date": "2026-11-02",
       "slug": "openai-gpt-61-terra-amazon-bedrock",
-      "event": "OpenAIの新AIモデル「GPT-6.1 Terra」がAmazon Bedrockで一般提供開始された"
+      "event": "GPT-6.1 Terraの提供開始"
     }
   ],
   "related": [
@@ -204,9 +204,9 @@
     "amazon-bedrock-openai-prompt-caching",
     "amazon-bedrock-managed-kb-agentic-retrieval-cdk"
   ],
-  "signature": "5c60c41b87afecb2",
-  "primarySignature": "b39b906ef9354aa3",
+  "signature": "3861f1a0d1f0f2cb",
+  "primarySignature": "d31a064e0b748deb",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:46:34+00:00",
-  "updatedAt": "2026-11-02T19:55:31+00:00"
+  "updatedAt": "2026-11-03T12:41:29+00:00"
 }

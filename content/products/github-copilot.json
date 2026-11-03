@@ -10,19 +10,13 @@
   "companyName": "Microsoft",
   "category": "開発ツール",
   "overview": {
-    "text": "GitHub Copilotは、開発を支援するAIアシスタントです。GitHubによって提供され、デスクトップアプリの一般提供が2026年9月12日に発表されました。",
+    "text": "GitHub Copilotは、AIがコード生成やタスクの自動処理を行う開発支援ツールです。GitHubが提供し、WindowsやmacOS向けに展開されています。",
     "sources": [
-      "github-copilot-native-app-released"
+      "github-copilot-native-app-released",
+      "github-copilot-security-extension"
     ]
   },
   "facts": [
-    {
-      "label": "料金",
-      "value": "月額10ドル",
-      "sources": [
-        "github-enterprise-includes-copilot"
-      ]
-    },
     {
       "label": "提供開始",
       "value": "2026年9月12日",
@@ -31,15 +25,16 @@
       ]
     },
     {
-      "label": "日本での提供",
-      "value": "日本からも利用できます",
+      "label": "使える場所",
+      "value": "Windows、macOS、VS Code",
       "sources": [
-        "github-copilot-security-extension"
+        "github-copilot-app-projects-computer-use",
+        "github-copilot-native-app-released"
       ]
     },
     {
       "label": "向いている人",
-      "value": "開発者",
+      "value": "開発者や法務チームなどの非開発者",
       "sources": [
         "github-copilot-native-app-released"
       ]
@@ -47,19 +42,25 @@
   ],
   "capabilities": [
     {
-      "text": "チャット画面から直接Visual Studio Codeを開いてコードを編集できます。",
-      "sources": [
-        "microsoft-foundry-agent-framework-customization"
-      ]
-    },
-    {
-      "text": "独立したワークツリーを作成し、開発中のコードと衝突させずにAIがIssuesやPRを自動処理します。",
+      "text": "独立したワークツリーを使い、開発中のコードと衝突させずにIssuesやPRを自動処理する。",
       "sources": [
         "github-copilot-native-app-released"
       ]
     },
     {
-      "text": "Kimi K3などのフロンティア級LLMをモデル選択肢から利用できます。",
+      "text": "複数のリポジトリや資料をプロジェクトにまとめ、AIが裏で作業を進める。",
+      "sources": [
+        "github-copilot-app-projects-computer-use"
+      ]
+    },
+    {
+      "text": "セキュリティのコードスキャンアラートを閲覧し、説明や修正を直接依頼できる。",
+      "sources": [
+        "github-copilot-security-extension"
+      ]
+    },
+    {
+      "text": "Kimi K3などのLLMをモデル選択肢から動的に切り替えて利用できる。",
       "sources": [
         "github-copilot-kimi-k3-multi-agent"
       ]
@@ -67,35 +68,36 @@
   ],
   "pricing": [
     {
-      "text": "スタンドアロン版は月額10ドルで利用できます。",
+      "text": "既存のCopilotプランに含まれており、追加料金はかからない。",
       "sources": [
-        "github-enterprise-includes-copilot"
-      ]
-    },
-    {
-      "text": "GitHub EnterpriseにAI機能が標準内包されます。",
-      "sources": [
-        "github-enterprise-includes-copilot"
+        "github-copilot-native-app-released",
+        "github-copilot-security-extension"
       ]
     }
   ],
   "japan": [
     {
-      "text": "日本国内のユーザーも、対象となるプランを契約していれば利用できます。",
+      "text": "セキュリティ拡張機能などは、日本のユーザーでも今日から試すことができる。",
       "sources": [
-        "github-copilot-plugin-controls-ga"
+        "github-copilot-security-extension"
+      ]
+    },
+    {
+      "text": "発表の時点では、アプリ版の新機能における日本での提供について記載はない。",
+      "sources": [
+        "github-copilot-app-projects-computer-use"
       ]
     }
   ],
   "howto": [
     {
-      "text": "公式サイトからお使いのOSに対応するインストーラーをダウンロードします。",
+      "text": "公式サイトからお使いのOS用のインストーラーをダウンロードする。",
       "sources": [
         "github-copilot-native-app-released"
       ]
     },
     {
-      "text": "アプリを起動し、有効なサブスクリプションが紐づいているGitHubアカウントでログインします。",
+      "text": "有効なサブスクリプションが紐づくアカウントでログインして利用する。",
       "sources": [
         "github-copilot-native-app-released"
       ]
@@ -103,62 +105,59 @@
   ],
   "differences": [
     {
-      "text": "従来のIDEの拡張機能から、OS上で直接動作するスタンドアロン型のネイティブアプリケーションになりました。",
+      "text": "OS上で直接動作するスタンドアロン型のネイティブアプリとして利用できる。",
       "sources": [
         "github-copilot-native-app-released"
+      ]
+    },
+    {
+      "text": "ブラウザを行き来せず、1つのアプリ内でセキュリティ脆弱性の修正が完結する。",
+      "sources": [
+        "github-copilot-security-extension"
       ]
     }
   ],
   "faq": [
     {
-      "q": "いつから使える？",
-      "a": "デスクトップアプリの一般提供は2026年9月12日から開始されています。",
+      "q": "無料で使える？",
+      "a": "既存のCopilotプランの契約が前提となり、通常のプランに含まれて追加料金なしで利用できる。",
       "sources": [
-        "github-copilot-native-app-released"
+        "github-copilot-native-app-released",
+        "github-copilot-security-extension"
       ]
     },
     {
-      "q": "対応しているモデルは何？",
-      "a": "Kimi K3などのフロンティア級モデルが追加されています。",
-      "sources": [
-        "github-copilot-kimi-k3-multi-agent"
-      ]
-    },
-    {
-      "q": "セキュリティ機能はある？",
-      "a": "アプリ内でコードスキャンアラートを確認して修正を依頼できるセキュリティ拡張が利用できます。",
+      "q": "セキュリティ機能は勝手にコードを変更する？",
+      "a": "変更はローカルの作業用コピーにのみ行われ、勝手にコミットやプッシュをされないため安全にレビューできる。",
       "sources": [
         "github-copilot-security-extension"
       ]
     },
     {
-      "q": "プラグインの管理はどうなる？",
-      "a": "企業管理者がプラグインの強制やブロックを行える機能が提供されています。",
+      "q": "どのモデルが使える？",
+      "a": "Kimi K3などのフロンティア級LLMがモデル選択肢に追加されており、タスクに応じて切り替えられる。",
       "sources": [
-        "github-copilot-plugin-controls-ga"
+        "github-copilot-kimi-k3-multi-agent"
+      ]
+    },
+    {
+      "q": "開発者以外でも使える？",
+      "a": "GitHub社の法務チームなど非開発者の部門でも、契約書のドラフト作成などの業務に導入されている。",
+      "sources": [
+        "github-copilot-native-app-released"
       ]
     }
   ],
   "timeline": [
     {
-      "date": "2026-08-15",
-      "slug": "github-copilot-kimi-k3-multi-agent",
-      "event": "Kimi K3を追加"
-    },
-    {
       "date": "2026-09-12",
       "slug": "github-copilot-native-app-released",
-      "event": "Copilotアプリを一般提供"
+      "event": "Windows・Mac向けCopilotアプリを一般提供"
     },
     {
       "date": "2026-10-29",
-      "slug": "github-enterprise-includes-copilot",
-      "event": "Enterpriseに標準内包へ"
-    },
-    {
-      "date": "2026-10-29",
-      "slug": "github-copilot-security-extension",
-      "event": "セキュリティ拡張が登場"
+      "slug": "github-copilot-app-projects-computer-use",
+      "event": "プロジェクトとコンピューター使用を追加"
     }
   ],
   "related": [
@@ -202,8 +201,8 @@
     "github-copilot-kimi-k3-multi-agent"
   ],
   "signature": "24fef4faeca8d18c",
-  "primarySignature": "e1c80a53bf346482",
+  "primarySignature": "2b71f6d8c0452296",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:43:48+00:00",
-  "updatedAt": "2026-11-03T10:03:08+00:00"
+  "updatedAt": "2026-11-03T12:41:19+00:00"
 }
