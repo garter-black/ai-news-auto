@@ -63,9 +63,7 @@
     "zoohZ1BiHs0": 1
   },
   "failed_web": {},
-  "major_tries": {
-    "1ae1679f93e7f725": 2
-  },
+  "major_tries": {},
   "processed": {
     "--kyzoeUuBk": {
       "at": "2026-08-10T15:58:56.932533+00:00",
@@ -4285,6 +4283,12 @@
       "reason": "quality: 本文が短い（1661字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://www.fsa.go.jp/common/conference/minister/2026b/20261020-1.html"
+    },
+    "1ae1679f93e7f725": {
+      "at": "2026-11-03T01:40:46.595523+00:00",
+      "reason": "major gave up x3: reject: 事実確認を実行できなかった（すべてのモデルで失敗しました: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You ）",
+      "skipped": true,
+      "url": "https://9to5google.com/2026/11/02/google-home-speaker-discount/"
     },
     "1b0064df51b95a9e": {
       "at": "2026-11-02T15:12:16.344887+00:00",
@@ -13059,42 +13063,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-31T06:01:05.861979+00:00",
-      "attempt": 2,
-      "id": "633bbdcdf71bbe9b",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1286字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（316字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 106.1,
-        "avg_sentence": 48.2,
-        "long_share": 0.227,
-        "max_paragraph": 160,
-        "paragraphs": 10,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "boj",
-      "title": "米ドル資金供給オペレーションのオファー日程（2026年11月～2027年3月）"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-31T06:01:11.936114+00:00",
-      "attempt": 1,
-      "id": "a113d2d75254b38d",
-      "kind": "update",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "score": 100,
-      "source": "boj",
-      "title": "総裁記者会見（10月30日）動画の配信開始"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-31T06:59:32.755922+00:00",
       "attempt": 1,
       "id": "3f1629502128b181",
@@ -19455,6 +19423,50 @@
         "max_paragraph": 109,
         "paragraphs": 36,
         "sentences": 71
+      },
+      "score": null,
+      "source": "radar-9to5google.com",
+      "title": "Google Home Speaker gets first discount since June launch"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T01:39:23.930741+00:00",
+      "attempt": 1,
+      "id": "1ae1679f93e7f725",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "題名で「日本で使えるか」を約束しているのに、本文の「日本で使える？」が「分からない」で始まっている。「当サイトで確認済み」の欄に答えがあればそれで答え、無ければ題名から日本の話を外す"
+      ],
+      "readability": {
+        "avg_paragraph": 54.0,
+        "avg_sentence": 28.1,
+        "long_share": 0.026,
+        "max_paragraph": 101,
+        "paragraphs": 40,
+        "sentences": 77
+      },
+      "score": null,
+      "source": "radar-9to5google.com",
+      "title": "Google Home Speaker gets first discount since June launch"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T01:40:46.595469+00:00",
+      "attempt": 2,
+      "id": "1ae1679f93e7f725",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "事実確認を実行できなかった（すべてのモデルで失敗しました: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You ）"
+      ],
+      "readability": {
+        "avg_paragraph": 73.2,
+        "avg_sentence": 31.9,
+        "long_share": 0.016,
+        "max_paragraph": 157,
+        "paragraphs": 27,
+        "sentences": 62
       },
       "score": null,
       "source": "radar-9to5google.com",
