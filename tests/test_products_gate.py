@@ -44,6 +44,22 @@ class NonAnswerTest(unittest.TestCase):
         self.assertTrue(any("答えになっていない" in p for p in problems))
 
 
+class EditorialPagesTest(unittest.TestCase):
+    def test_editorial_product_pages_are_not_rewritten(self):
+        # ChatGPT・Claude・Gemini の図鑑ページは編集部がまとめた（2026-11-03 オーナー承認）。products.py は LLM で書き直さない
+        src = (ROOT / "scripts" / "products.py").read_text(encoding="utf-8")
+        self.assertIn('current.get("refreshMode") == "editorial"', src)
+        for slug in ("chatgpt", "claude", "gemini"):
+            data = json.loads((ROOT / "content" / "products" / f"{slug}.json").read_text(encoding="utf-8"))
+            self.assertEqual(data.get("refreshMode"), "editorial", slug)
+            self.assertGreaterEqual(len(data["timeline"]), 2, slug)
+            for item in [data["overview"], *data["capabilities"], *data["differences"]]:
+                self.assertFalse(products.non_answer(item["text"]), item["text"])
+                self.assertTrue(item["sources"], f"{slug}: 出典の記事が無い →「{item['text'][:30]}」")
+                for s in item["sources"]:
+                    self.assertTrue((ROOT / "content" / "articles" / f"{s}.json").exists(), s)
+
+
 class SourcesTest(unittest.TestCase):
     def test_product_sources_point_to_real_rows(self):
         sources = json.loads((ROOT / "content" / "product_sources.json").read_text(encoding="utf-8"))["items"]
@@ -64,8 +80,8 @@ class SourcesTest(unittest.TestCase):
                 self.assertIn(src["japan"], japan, slug)
                 self.assertNotEqual(japan[src["japan"]]["japan"], "unknown", slug)
             if src.get("image"):
-                # 公式の画像は自前の /brand に置き、出典を書く（記事の写真・素材は使わない）
-                self.assertTrue(src["image"]["src"].startswith("/brand/"), slug)
+                # 公式プレスキットの画像は自前の KV（/img/brand-<名前>）に置き、出典を書く（記事の写真・素材は使わない）
+                self.assertRegex(src["image"]["src"], r"^https://ai-tech-express\.jp/img/brand-[a-z0-9-]+\.jpg$", slug)
                 self.assertTrue(src["image"]["credit"] and src["image"]["sourceUrl"].startswith("https://"), slug)
 
     def test_business_plans_really_cover_codex_and_work(self):

@@ -1,5 +1,5 @@
 {
-  "_about": "AIサービス図鑑（/products）の製品と、確かめた公式データのつなぎ（人が確かめて更新する）。pricing は content/pricing/<product>.json の行（plans はプランの id、models は API モデルの id）。japan は content/japan_availability.json の id。why には、その行がこの製品の料金だと言える根拠（公式ページの書き方）を書く。ここに無い製品・行が見つからない製品は、図鑑の一覧に出さず noindex（lib/products.ts の productListing。2026-11-03 オーナーの指摘「内容がすごく薄い」）。lead は図鑑のカードとページの冒頭に出す2〜3文の説明（leadSources の記事に書かれている事実だけで書く）。timelineSkip は発表の日付と記事の日付がずれる記事（インタビューなど）を発表の履歴から外す。image は公式の製品画像・ロゴがあるときだけ（src・credit・sourceUrl）。無ければ文字の無いブランド色の図形を出す（components/ProductVisual.tsx）。",
+  "_about": "AIサービス図鑑（/products）の製品と、確かめた公式データのつなぎ（人が確かめて更新する）。pricing は content/pricing/<product>.json の行（plans はプランの id、models は API モデルの id）。japan は content/japan_availability.json の id。why には、その行がこの製品の料金だと言える根拠（公式ページの書き方）を書く。ここに無い製品・行が見つからない製品は、図鑑の一覧に出さず noindex（lib/products.ts の productListing。2026-11-03 オーナーの指摘「内容がすごく薄い」）。lead は図鑑のカードとページの冒頭に出す2〜3文の説明（leadSources の記事に書かれている事実だけで書く）。rivalsTier は「同じ価格帯のサービスとの比較」に使う段（全プランを載せる製品は standard＝月20ドル前後）。timelineSkip は発表の日付と記事の日付がずれる記事（インタビューなど）を発表の履歴から外す。image は報道向けの公式プレスキット・ブランド素材にある製品画像・ロゴだけ（src・credit・sourceUrl・checkedAt）。縮小と余白の追加のほかは変えない。KV（saisoku-images）に置き /img/brand-<名前> で配信する。OpenAI はロゴのダウンロードに利用条件への同意が要り、Google は申請制のため、いまは使っていない（2026-11-03）。無ければ文字の無いブランド色の図形を出す（components/ProductVisual.tsx）。",
   "updatedAt": "2026-11-03",
   "items": {
     "chatgpt-pro": {
@@ -103,6 +103,80 @@
       "leadSources": [
         "google-ai-news-october-2026",
         "google-cloud-ai-october-2026-recap"
+      ]
+    },
+    "chatgpt": {
+      "pricing": {
+        "product": "chatgpt",
+        "plans": [
+          "free",
+          "go",
+          "plus",
+          "pro-100",
+          "pro-200",
+          "pro-500",
+          "business-standard",
+          "business-premium"
+        ]
+      },
+      "rivalsTier": "standard",
+      "why": "ChatGPT の全プラン（OpenAI ヘルプと chatgpt.com の日本向け料金ページ）",
+      "japan": "chatgpt",
+      "audience": "文章作成・調べもの・資料作成にAIを使う個人と、チームで導入する企業",
+      "lead": "OpenAIの対話型AIサービスです。無料版のほか、Go・Plus・Pro・Businessの有料プランがあります。2026年8月のGPT-5.6 Lunaの提供開始とともに、テキストの対話は無料プランを含めて回数制限がなくなりました。",
+      "leadSources": [
+        "openai-chatgpt-gpt56-luna-no-limits"
+      ]
+    },
+    "claude": {
+      "pricing": {
+        "product": "claude",
+        "plans": [
+          "free",
+          "pro",
+          "max",
+          "ultra",
+          "team-standard",
+          "team-premium",
+          "enterprise"
+        ]
+      },
+      "rivalsTier": "standard",
+      "why": "Claude の全プラン（claude.com の料金ページ）",
+      "japan": "claude",
+      "audience": "長い文書の読み込みや執筆、開発にAIを使う個人と、チームで導入する企業",
+      "lead": "Anthropicの対話型AIサービスです。個人向けのFree・Pro・Max・Ultraと、法人向けのTeam・Enterpriseのプランがあります。2026年11月に最上位プランのMax 20xが「Ultra」に改称され、月200ドルのまま利用量はProの毎週10倍です。",
+      "leadSources": [
+        "claude-ultra-plan-price-limits"
+      ],
+      "image": {
+        "src": "https://ai-tech-express.jp/img/brand-claude-icon-0ea91b42.jpg",
+        "credit": "画像：Anthropic（公式プレスキットより）",
+        "sourceUrl": "https://www.anthropic.com/press-kit",
+        "checkedAt": "2026-11-03",
+        "note": "Anthropic media resources の Claude icon（Square）。256px に縮小しただけで、色・形は変えていない"
+      }
+    },
+    "gemini": {
+      "pricing": {
+        "product": "gemini",
+        "plans": [
+          "free",
+          "ai-plus",
+          "ai-pro",
+          "ai-ultra-5x",
+          "ai-ultra-20x",
+          "enterprise-business",
+          "enterprise-standard"
+        ]
+      },
+      "rivalsTier": "standard",
+      "why": "Gemini（Google AI プラン）の全プラン（gemini.google の日本向け料金ページ）",
+      "japan": "gemini",
+      "audience": "Googleのサービス（Gmail・ドライブなど）と組み合わせてAIを使う個人と企業",
+      "lead": "Googleの対話型AIサービスです。無料版と、Google AI Plus・Pro・Ultraの有料プランがあり、日本向けの料金は円建てです。2026年10月からは、チャットの中で文書・PDF・スライド・表を作成・編集できるようになりました。",
+      "leadSources": [
+        "gemini-edit-files-directly"
       ]
     }
   }

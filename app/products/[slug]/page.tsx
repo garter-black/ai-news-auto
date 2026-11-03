@@ -174,7 +174,7 @@ export default async function ProductPage({ params }: Props) {
     { label: "提供元", value: product.companyName },
     { label: "分類", value: product.category },
     ...(profile.startingPrice
-      ? [{ label: "料金", value: <>{profile.startingPrice}{profile.startingPriceNote ? <span className="ml-1.5 text-note text-muted">{profile.startingPriceNote}</span> : null}</> }]
+      ? [{ label: "料金", value: <>{profile.startingPrice}{profile.startingPriceNote ? <span className="ml-1.5 text-ink-soft">（{profile.startingPriceNote}）</span> : null}</> }]
       : []),
     ...(profile.japan ? [{ label: "日本での提供", value: profile.japan.label }] : []),
     ...(profile.audience ? [{ label: "主な対象", value: profile.audience }] : []),
@@ -218,7 +218,14 @@ export default async function ProductPage({ params }: Props) {
           </h1>
         </div>
       </div>
-      {profile.source?.image && <p className="mt-2 text-meta text-muted">{profile.source.image.credit}</p>}
+      {profile.source?.image && (
+        <p className="mt-2 text-meta text-muted">
+          {profile.source.image.credit}
+          <a href={profile.source.image.sourceUrl} className="ml-1 underline underline-offset-2 hover:text-accent" target="_blank" rel="noopener noreferrer">
+            出典
+          </a>
+        </p>
+      )}
 
       <p className="mt-6 text-[16px] leading-[2] text-ink">
         {profile.overview}

@@ -3,96 +3,149 @@
   "tool": "ai-agents",
   "toolName": "Meta Muse",
   "company": "meta",
-  "intent": "日本での使い方・料金",
-  "keyword": "Meta Muse 日本 使い方 料金 無料 旅行 予約",
-  "title": "Meta Museは日本で使える？無料の範囲と旅行・買い物の始め方",
-  "seoTitle": "Meta Museは日本で使える？料金・始め方と旅行予約の注意点",
-  "description": "MetaのAIエージェントMuseは日本で利用できる？公式発表をもとに、無料の範囲、対応端末、旅行や買い物の連携、利用前の確認点を整理します。",
-  "editorialNote": "Metaの日本向け公式発表を確認して整理しました。日本のアカウントで実際に操作した検証や、予約の実行は行っていません。",
+  "intent": "日本での使い方・料金・違い",
+  "keyword": "Meta Muse 日本 使い方 料金 無料 旅行 予約 Muse Wonder OpenAI dot 違い",
+  "title": "Meta Museガイド：日本での提供・料金・Muse WonderとOpenAI dotとの違い",
+  "seoTitle": "Meta Museは日本で使える？料金・始め方とMuse Wonder・OpenAI dotとの違い",
+  "description": "MetaのAIエージェントMuseを1ページで整理。日本での提供開始日、無料の範囲、旅行・買い物の連携、AIモデルMuse Wonderとの関係、OpenAI dotとの違いを公式発表から確認できます。",
+  "editorialNote": "Metaの日本向け・シンガポール向け発表、Muse Wonderの発表、OpenAIのdotの公式ヘルプを確認して整理しました。日本のアカウントでの操作検証や予約の実行、同じ条件での実機比較は行っていません。2026年11月3日に、Muse Wonder・OpenAI dotとの比較のガイドをこのページにまとめました。",
   "refreshMode": "editorial",
   "conclusion": [
-    "Metaは2026年10月23日にMuseの日本提供を開始したと発表。iOS・Android・Webに対応します。",
-    "日本では多くの基本機能は無料で、有料プランもあります。具体的な料金や上限は公式画面で確認してください。",
-    "旅行や買い物の連携先・使える機能はサービスごとに確認。日本企業との一部連携は発表時点では進行中です。"
+    "Metaは2026年10月23日にMuseの日本提供を開始したと発表しました。iOS・Android・Web（muse.ai）で使えます。",
+    "日本では多くの基本機能が無料で、有料プランもあります。旅行・宿泊・買い物の代金はAIの料金とは別にかかります。",
+    "Muse WonderとWonder Fullは、Museとは別のAIモデルです。開発者向けのMeta Model APIとMuse Codeで提供されます。",
+    "OpenAIのdotは、対象プラン・地域で段階的に提供されているAIエージェントです。Museと同じく、購入や送信の前に許可範囲と確認設定を確かめる必要があります。"
   ],
-  "intro": "旅行の下調べやメールの整理を、AIに任せられるのか。Metaが日本向けに公表した内容から、できることと、まだ確認が必要なことを分けて見ていきます。",
+  "intro": "旅行の下調べやメールの整理を任せられる、MetaのAIエージェント「Muse」。日本での提供条件、名前の似たAIモデル「Muse Wonder」との関係、OpenAIの「dot」との違いを、各社の公式発表をもとに1ページにまとめます。",
   "steps": [
     {
-      "title": "日本でどこから使える？",
-      "body": "Metaによると、Museは日本でiOS・Android・muse.aiから提供されています。公式サイトやアプリの案内で、利用できる機能とアカウントの条件を確認してください。"
+      "title": "日本での提供と対応端末",
+      "body": "Metaによると、Museは2026年10月23日から日本でiOS・Android・muse.aiを通じて提供されています。使える機能はアカウントや連携先によって異なるため、アプリの案内で条件を確認してください。"
     },
     {
-      "title": "旅行や買い物はどこまで任せられる？",
-      "body": "MetaはAgoda、Klook、Trip.comなどとの連携による旅行計画や予約を案内しています。日付・料金・対応サービスは操作前に確認してください。発表の例が、すべてのアカウントで同じように使えるとは限りません。"
+      "title": "旅行・買い物の連携",
+      "body": "Metaは日本向けにGmail、Googleカレンダー、Instagramや、Agoda、Klook、Trip.comなどとの連携を挙げています。日付・料金・対応サービスは操作の前に確認してください。発表の例が、すべてのアカウントで同じように使えるとは限りません。"
     },
     {
-      "title": "日本のサービスと連携できる？",
-      "body": "Metaはメルカリ、マネーフォワード ME、チケットぴあとの連携を進めると発表しました。発表だけでは、個々の機能がすでに利用できるとは断定できません。利用画面や各社の案内を確認しましょう。"
+      "title": "日本のサービスとの連携（進行中）",
+      "body": "Metaはメルカリ、マネーフォワード ME、チケットぴあとの連携を進めていると発表しました。発表の時点では進行中のため、個々の機能の開始状況は利用画面や各社の案内で確認してください。"
     },
     {
-      "title": "メール送信や購入の前に何を確認する？",
-      "body": "Metaは、メール送信や商品の購入など重要な操作の前に利用者へ確認すると説明しています。接続するアプリと許可範囲を選び、送信先や購入金額を確定前に見直しましょう。"
+      "title": "メール送信や購入の前の確認",
+      "body": "Metaは、メール送信や商品の購入など重要な操作の前に利用者へ確認すると説明しています。接続するアプリと許可範囲を選び、送信先や購入金額を確定前に見直してください。"
+    },
+    {
+      "title": "Muse WonderとWonder Full（AIモデル）",
+      "body": "Muse WonderとWonder Fullは、Metaが2026年10月に発表したAIモデルです。Muse WonderはMeta Model APIとMuse Codeを通じて開発者向けに、Wonder FullはMuse Codeのサブスクリプション登録者向けに提供すると発表されました。MetaはWonderを個人向けのMuseにも段階的に展開するとしています。アプリの利用条件と、モデル・開発者向けサービスの利用条件は別々に確認してください。"
+    },
+    {
+      "title": "OpenAI dotとの違い",
+      "body": "dotは、ChatGPTで目標を伝えると、接続したアプリや専用の環境を使って調査や作業を進めるOpenAIのAIエージェントです。対象は対象地域の18歳以上のPro、対象のBusiness Premiumなどで、段階的に提供されています。最初の1体は対象プランに含まれ、より深い作業には利用枠があります。Museは日本で多くの基本機能が無料で使える点が異なります。"
     }
   ],
   "pricing": [
     {
-      "plan": "基本機能",
+      "plan": "Meta Muse（日本）基本機能",
       "price": "多くの機能が無料",
-      "note": "Metaの日本向け発表に基づきます。利用上限は公式画面で確認。"
+      "note": "Metaの日本向け発表に基づきます。利用上限は公式画面で確認してください。"
     },
     {
-      "plan": "有料プラン",
-      "price": "詳細は公式画面で確認",
-      "note": "発表には具体的な金額の記載がありません。"
+      "plan": "Meta Muse（日本）有料プラン",
+      "price": "有料プランあり",
+      "note": "金額と利用枠は、アプリの購入画面で確認してください。"
+    },
+    {
+      "plan": "OpenAI dot",
+      "price": "対象プランに含む（最初の1体）",
+      "note": "Proなどの対象者向け。深い作業には利用枠があります。"
     }
   ],
   "freeTier": [
-    "AIの基本機能が無料でも、旅行・宿泊・購入する商品の代金は別にかかります。"
+    "AIの基本機能が無料でも、旅行・宿泊・購入する商品の代金は別にかかります。",
+    "dotの最初の1体がプランに含まれることと、ChatGPT自体が無料で使えることは別です。",
+    "Muse WonderとWonder Fullは、Meta Model APIやMuse Codeの契約条件に従います。個人向けMuseの無料枠とは別です。"
   ],
   "japan": {
-    "answer": "Metaは2026年10月23日から日本で提供を開始したと発表しています。",
-    "body": "個別の連携先や新機能は利用者ごとに異なる場合があります。発表に挙がった日本企業との連携は、進行中と説明されています。"
+    "answer": "Metaは2026年10月23日からMuseを日本で提供していると発表しています。",
+    "body": "個別の連携先や新機能は利用者ごとに異なる場合があります。発表に挙がった日本企業との連携は進行中です。OpenAIのdotは、対象プラン・地域・アカウントによって利用条件が異なります。VPNで地域制限を回避する使い方はお勧めしません。"
   },
   "tips": [
     {
       "title": "デモと自分の画面を分けて確認",
-      "body": "紹介映像の操作が、すべての地域・連携先で利用できるとは限りません。確認した内容を少額の作業から試しましょう。"
+      "body": "紹介映像の操作が、すべての地域・連携先で利用できるとは限りません。確認できた機能から、少額・小さな作業で試すと安全です。"
+    },
+    {
+      "title": "重要な操作は人が確かめる",
+      "body": "文書の内容や予約・送信のような重要な操作は、AIの出力や実行条件を自分で確認してください。"
     }
   ],
   "faq": [
     {
       "q": "Museは日本で無料で使えますか？",
-      "a": "Metaは日本で多くの基本機能を無料で提供し、有料プランも用意すると説明しています。最新の料金・利用枠は公式画面で確認してください。"
+      "a": "Metaは日本で多くの基本機能を無料で提供し、有料プランも用意していると説明しています。最新の料金・利用枠は公式画面で確認してください。"
     },
     {
       "q": "旅行の予約代金も無料ですか？",
-      "a": "いいえ。AIの機能の料金と、宿泊・交通などの予約代金は別です。"
+      "a": "いいえ。AIの無料枠やプランに含まれることと、宿泊・交通・買い物の代金は別です。"
     },
     {
       "q": "メルカリやチケットぴあと連携できますか？",
-      "a": "Metaは日本向け発表で連携を進めると説明しています。個別機能の開始状況は各サービスの案内を確認してください。"
+      "a": "Metaは日本向けの発表で連携を進めていると説明しています。個別機能の開始状況は各サービスの案内を確認してください。"
+    },
+    {
+      "q": "Muse WonderとMuseは同じサービスですか？",
+      "a": "いいえ。Muse WonderはMetaが発表したAIモデルで、Museは個人向けのAIエージェントです。MetaはモデルをMuseにも段階的に展開すると説明しています。"
+    },
+    {
+      "q": "Museとdotはどちらも日本で使えますか？",
+      "a": "MetaはMuseを日本で提供しています。dotは対象プラン・地域・アカウントによって異なるため、ChatGPTの画面に表示される案内を確認してください。"
     }
   ],
-  "match": "(?:Meta.*Muse|Muse.*Meta|Muse)",
+  "match": "(?:Meta.*Muse|Muse.*Meta|Muse|OpenAI.*dots?|dots?.*OpenAI)",
   "articleIntent": {
-    "match": "Muse(?! Wonder)|Muse.*日本",
+    "match": "Muse|Wonder|dots?",
     "priority": 15
   },
   "products": [
-    "meta-muse"
+    "meta-muse",
+    "openai-dot"
   ],
   "sources": [
     {
       "url": "https://about.fb.com/ja/news/2026/10/muse-personal-ai-agent-launches-in-japan/",
       "title": "Meta公式：Museの日本での提供",
       "checkedAt": "2026-10-31T06:01:07+00:00"
+    },
+    {
+      "url": "https://about.fb.com/news/2026/10/muse-is-now-available-in-singapore-the-worlds-first-personal-ai-agent-built-for-everyone/",
+      "title": "Meta公式：Museのシンガポール提供",
+      "checkedAt": "2026-10-31T12:40:00+09:00"
+    },
+    {
+      "url": "https://help.openai.com/en/articles/20001530-getting-started-with-your-dot",
+      "title": "OpenAI公式：dotの利用条件と設定",
+      "checkedAt": "2026-10-31T12:40:00+09:00"
+    },
+    {
+      "url": "https://openai.com/index/introducing-dots/",
+      "title": "OpenAI公式：dotsの紹介",
+      "checkedAt": "2026-10-31T12:40:00+09:00"
+    },
+    {
+      "url": "https://about.fb.com/ja/news/2026/10/introducing-muse-wonder-models/",
+      "title": "Meta公式：Muse WonderとMuse Wonder Full",
+      "checkedAt": "2026-10-31T12:40:00+09:00"
     }
   ],
   "officialAction": {
     "url": "https://muse.ai/",
     "label": "Muse公式サイトで確認する"
   },
+  "mergedFrom": [
+    "meta-muse-wonder",
+    "meta-muse-openai-dot-compare"
+  ],
   "createdAt": "2026-10-31T06:01:07+00:00",
-  "updatedAt": "2026-10-31T06:01:07+00:00",
-  "checkedAt": "2026-10-31T06:01:07+00:00"
+  "updatedAt": "2026-11-03T22:30:00+09:00",
+  "checkedAt": "2026-11-03T22:30:00+09:00"
 }

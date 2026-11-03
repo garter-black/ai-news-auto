@@ -272,8 +272,10 @@ function startingPriceOf(table: LadderTable | null, fx: number): { text: string;
   const data = getPricingProduct(table.product);
   const ids = new Set(table.rows.map((r) => r.id));
   let best: { price: LadderPrice; plan: string; yen: number } | null = null;
+  let free = false;
   for (const plan of data?.plans ?? []) {
     if (!ids.has(plan.id)) continue;
+    if (plan.prices.some((p) => p.amount === 0)) free = true;
     for (const price of plan.prices) {
       if (typeof price.amount !== "number" || price.amount <= 0) continue;
       const yen = price.currency === "JPY" ? price.amount : price.amount * fx;
@@ -282,13 +284,14 @@ function startingPriceOf(table: LadderTable | null, fx: number): { text: string;
   }
   if (!best) return { text: "", note: "" };
   const text = priceText(best.price);
-  return { text: /から/.test(text) ? text : text.replace(/^([^（]+)/, "$1から"), note: best.plan };
+  // 無料プランがある製品は「無料プランあり」と、有料のいちばん安いプランを並べる
+  return { text: /から/.test(text) ? text : text.replace(/^([^（]+)/, "$1から"), note: free ? `無料プランあり・有料は${best.plan}` : best.plan };
 }
 
 /** 近い他社の製品と、同じ段の料金で比べる表（公式の料金データがある段だけ。自社の行だけなら出さない） */
-function rivalsOf(table: LadderTable | null, company: string): ComparisonTable | null {
+function rivalsOf(table: LadderTable | null, company: string, preferred?: string): ComparisonTable | null {
   if (!table) return null;
-  const tier = table.kind === "api" ? (table.rows[0] as ModelRow).tier : (table.rows[0] as PlanRow).tier;
+  const tier = preferred ?? (table.kind === "api" ? (table.rows[0] as ModelRow).tier : (table.rows[0] as PlanRow).tier);
   if (!tier) return null;
   const compare = getComparison(tier as PlanTier | ApiTier, table.kind);
   return compare.rows.some((r) => r.company !== company) ? compare : null;
@@ -372,7 +375,7 @@ export function productProfile(product: Product): ProductProfile {
     pricingTable,
     startingPrice: start.text,
     startingPriceNote: start.note,
-    rivals: rivalsOf(pricingTable, product.company),
+    rivals: rivalsOf(pricingTable, product.company, source?.rivalsTier),
     japan,
     timeline,
     faq,

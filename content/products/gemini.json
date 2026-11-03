@@ -1,0 +1,90 @@
+{
+  "slug": "gemini",
+  "name": "Gemini",
+  "aliases": [
+    "Google Gemini",
+    "Geminiアプリ"
+  ],
+  "company": "google",
+  "companyName": "Google",
+  "category": "アプリ・サービス",
+  "refreshMode": "editorial",
+  "editorialNote": "料金は公式の料金ページ（content/pricing）、日本での提供は公式の対応国の案内（content/japan_availability.json）、機能と履歴はサイソクの記事から編集部がまとめた。products.py は自動で書き直さない（記事の一覧・関連製品だけ更新する）。",
+  "related": [],
+  "linkFrom": [],
+  "createdAt": "2026-11-03T13:30:00+00:00",
+  "updatedAt": "2026-11-03T13:30:00+00:00",
+  "overview": {
+    "text": "Geminiは、Googleの対話型AIサービスです。無料版と、Google AI Plus・Pro・Ultraの有料プランがあり、日本向けの料金は円建てです。2026年10月からは、チャットの中で文書・PDF・スライド・表を作成・編集できるようになりました。",
+    "sources": [
+      "gemini-edit-files-directly"
+    ]
+  },
+  "facts": [],
+  "capabilities": [
+    {
+      "text": "チャットの中で文書・PDF・スライド・表・コードを作成し、全画面で直接編集できます。選んだ部分だけをGeminiに直してもらうこともできます。",
+      "sources": [
+        "gemini-edit-files-directly"
+      ]
+    },
+    {
+      "text": "PDFの作成・編集はWebとモバイルで、ほかの形式はWebで使えます。全ユーザーが対象です。",
+      "sources": [
+        "gemini-edit-files-directly"
+      ]
+    },
+    {
+      "text": "資料を読み込ませるスタディノートや音声概要、Googleアプリとの連携によるスケジュール・タスクの整理などの使い方が紹介されています。",
+      "sources": [
+        "google-gemini-college-student-features"
+      ]
+    }
+  ],
+  "pricing": [],
+  "japan": [],
+  "howto": [],
+  "differences": [
+    {
+      "text": "チャットの中でドキュメントやPDFなどを作成・プレビュー・編集できるようになりました。",
+      "sources": [
+        "gemini-edit-files-directly"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "PDFの作成・編集はスマートフォンでもできますか？",
+      "a": "PDFはWebとモバイルの両方で使えます。文書・スライド・表などほかの形式はWebのみです。",
+      "sources": [
+        "gemini-edit-files-directly"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2026-10-29",
+      "slug": "gemini-edit-files-directly",
+      "event": "チャットの中で文書やPDFを作成・編集できる機能を追加"
+    },
+    {
+      "date": "2026-10-26",
+      "slug": "google-gemini-college-student-features",
+      "event": "大学生15人によるGeminiの活用法（11の機能）を公開"
+    }
+  ],
+  "articles": [
+    "gemini-edit-files-directly",
+    "gemini-notebook-free-textbooks",
+    "google-gemini-agent-startups",
+    "google-gemini-college-student-features",
+    "building-digital-synth-with-google-gemini",
+    "operating-real-hardware-with-gemini-ai",
+    "gemini-remote-robotics-low-latency-control",
+    "google-gemini-journal-receipts-iot",
+    "gemini-live-api-updates-async-proactive-audio",
+    "gemini-agentic-video-understanding",
+    "google-pixel-watch-5-offline-gemini-health",
+    "android-studio-quail-2-stable-gemini"
+  ]
+}

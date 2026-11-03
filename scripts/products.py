@@ -1020,6 +1020,10 @@ def main() -> int:
         )
         if args.only and slug not in args.only.split(","):
             continue
+        # 編集部がまとめたページ（refreshMode: editorial）は LLM で書き直さない（記事の一覧・関連製品だけ下でそろえる）
+        if current and current.get("refreshMode") == "editorial":
+            log("    （編集部がまとめたページのため書き直さない）")
+            continue
         last_fail = failed.get(slug) or {}
         if stale and not args.force and last_fail.get("signature") == signature(match["primary"] + match["secondary"]) and last_fail.get("at", "") > week_ago:
             log(f"    （{last_fail['at'][:10]} に検査で落ちたため、記事が増えるまで待つ）")

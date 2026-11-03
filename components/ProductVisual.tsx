@@ -20,7 +20,7 @@ export default function ProductVisual({
   if (image) {
     return (
       <span className={`inline-block shrink-0 overflow-hidden rounded-xl border border-line bg-paper ${className}`} style={{ width: size, height: size }}>
-        {/* 公式の画像は自前の /brand に置いたものだけ（外部への直リンクはしない） */}
+        {/* 公式プレスキットの画像は自前の KV（/img/brand-<名前>）に置いたものだけ（外部への直リンクはしない） */}
         <img src={image.src} alt="" width={size} height={size} className="size-full object-contain" loading="lazy" decoding="async" />
       </span>
     );

@@ -90,6 +90,21 @@ export default function ProductsPage() {
         })}
       </div>
 
+      {profiles.some((p) => p.source?.image) && (
+        <p className="mt-10 text-meta leading-[1.8] text-muted">
+          {profiles
+            .filter((p) => p.source?.image)
+            .map((p) => (
+              <span key={p.product.slug} className="mr-3 inline-block">
+                {p.product.name}の{p.source!.image!.credit}
+                <a href={p.source!.image!.sourceUrl} className="ml-1 underline underline-offset-2 hover:text-accent" target="_blank" rel="noopener noreferrer">
+                  出典
+                </a>
+              </span>
+            ))}
+        </p>
+      )}
+
       <p className="mt-12 border-t border-line pt-5 text-note leading-[1.9] text-muted">
         料金・提供条件は変わることがあります。各製品のページに公式の出典と確認日を載せています。AIの料金を横に並べて比べるなら
         <Link href="/ai-pricing" className="mx-1 font-bold text-ink underline underline-offset-4">AIの料金・日本対応 早見表</Link>

@@ -345,7 +345,7 @@ def static_page_problems(path: str, html: str) -> list[str]:
 # ---- 図鑑・ハブのページ（2026-11-03 オーナー「内容がすごく薄い」「このページもいらない」） ----
 
 # W13: 図鑑に記事の写真・フリー素材・AI 画像を出さない（Codex に関係のない記事の写真、ChatGPT Work に素材のノートPCが出ていた）
-ARTICLE_IMAGE = re.compile(r'<img[^>]+src="[^"]*(?:/img/[A-Za-z0-9_-]+\.|/cover/|ytimg\.com|unsplash|pexels|pixabay)', re.I)
+ARTICLE_IMAGE = re.compile(r'<img[^>]+src="[^"]*(?:/img/(?!brand-)[A-Za-z0-9_-]+\.|/cover/|ytimg\.com|unsplash|pexels|pixabay)', re.I)
 # W13: 決まった型の問いかけの小見出し（lib/product-substance.ts の TEMPLATE_PRODUCT_HEADINGS と同じ）
 PRODUCT_TEMPLATE_HEADINGS = {"何ができる？", "料金は？", "日本で使える？", "どうやって使う？", "これまでと何が違う？", "前のモデルと何が違う？"}
 # W13: 一覧に載る製品ページに必要な章（3つ以上）

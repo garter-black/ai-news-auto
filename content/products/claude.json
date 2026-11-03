@@ -1,0 +1,91 @@
+{
+  "slug": "claude",
+  "name": "Claude",
+  "aliases": [],
+  "company": "anthropic",
+  "companyName": "Anthropic",
+  "category": "アプリ・サービス",
+  "refreshMode": "editorial",
+  "editorialNote": "料金は公式の料金ページ（content/pricing）、日本での提供は公式の対応国の案内（content/japan_availability.json）、機能と履歴はサイソクの記事から編集部がまとめた。products.py は自動で書き直さない（記事の一覧・関連製品だけ更新する）。",
+  "related": [],
+  "linkFrom": [],
+  "createdAt": "2026-11-03T13:30:00+00:00",
+  "updatedAt": "2026-11-03T13:30:00+00:00",
+  "overview": {
+    "text": "Claudeは、Anthropicの対話型AIサービスです。個人向けのFree・Pro・Max・Ultraと、法人向けのTeam・Enterpriseのプランがあります。2026年11月に最上位プランのMax 20xが「Ultra」に改称され、月200ドルのまま利用量はProの毎週10倍です。",
+    "sources": [
+      "claude-ultra-plan-price-limits"
+    ]
+  },
+  "facts": [],
+  "capabilities": [
+    {
+      "text": "最上位のUltraプランは月200ドルで、利用量はProの毎週10倍です。確認済みのアカウントには5時間ごとの制限がありません。",
+      "sources": [
+        "claude-ultra-plan-price-limits"
+      ]
+    },
+    {
+      "text": "全モデル共通の週の上限に加えて、最上位モデルのFableには別枠の週の上限があります。",
+      "sources": [
+        "claude-ultra-plan-price-limits"
+      ]
+    },
+    {
+      "text": "最上位モデルのClaude Fable 5.1は、金融モデルや数百の相互参照を持つ契約書など、複雑な多段階の作業に対応します。",
+      "sources": [
+        "anthropic-releases-claude-fable-5-1"
+      ]
+    },
+    {
+      "text": "新薬開発の共同研究では、書類確認の時間が25時間超から3時間未満（89%短縮）になった事例が公開されています。",
+      "sources": [
+        "claude-drug-development-progress"
+      ]
+    }
+  ],
+  "pricing": [],
+  "japan": [],
+  "howto": [],
+  "differences": [
+    {
+      "text": "最上位プランのMax 20xが「Ultra」に改称されました。月額200ドルの価格は据え置きです。",
+      "sources": [
+        "claude-ultra-plan-price-limits"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "UltraとMaxの違いは何ですか？",
+      "a": "Ultraは旧Max 20xを改称したプランで、月200ドル、利用量はProの毎週10倍です。公式の料金ページでは、Maxは月100ドルで利用量はProの5倍です。",
+      "sources": [
+        "claude-ultra-plan-price-limits"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2026-11-02",
+      "slug": "claude-ultra-plan-price-limits",
+      "event": "最上位プランMax 20xを「Ultra」に改称（月200ドルで据え置き）"
+    },
+    {
+      "date": "2026-10-27",
+      "slug": "claude-drug-development-progress",
+      "event": "新薬開発での初期成果を6組織と公開"
+    },
+    {
+      "date": "2026-09-01",
+      "slug": "anthropic-releases-claude-fable-5-1",
+      "event": "最上位モデル「Claude Fable 5.1」を一般提供"
+    }
+  ],
+  "articles": [
+    "claude-ultra-plan-price-limits",
+    "salesforce-aiforce-claude-slack",
+    "ai-for-science-expansion-institutions",
+    "claude-drug-development-progress",
+    "anthropic-releases-claude-fable-5-1"
+  ]
+}

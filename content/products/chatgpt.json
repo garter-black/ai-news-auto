@@ -1,0 +1,162 @@
+{
+  "slug": "chatgpt",
+  "name": "ChatGPT",
+  "aliases": [
+    "チャットGPT"
+  ],
+  "company": "openai",
+  "companyName": "OpenAI",
+  "category": "アプリ・サービス",
+  "refreshMode": "editorial",
+  "editorialNote": "料金は公式の料金ページ（content/pricing）、日本での提供は公式の対応国の案内（content/japan_availability.json）、機能と履歴はサイソクの記事から編集部がまとめた。products.py は自動で書き直さない（記事の一覧・関連製品だけ更新する）。",
+  "related": [],
+  "linkFrom": [],
+  "createdAt": "2026-11-03T13:30:00+00:00",
+  "updatedAt": "2026-11-03T13:30:00+00:00",
+  "overview": {
+    "text": "ChatGPTは、OpenAIの対話型AIサービスです。無料版のほか、Go・Plus・Pro・Businessの有料プランがあります。2026年8月のGPT-5.6 Lunaの提供開始とともに、テキストの対話は無料プランを含めて回数制限がなくなりました。",
+    "sources": [
+      "openai-chatgpt-gpt56-luna-no-limits"
+    ]
+  },
+  "facts": [],
+  "capabilities": [
+    {
+      "text": "Word内でChatGPTを使い、文書の作成や書式の修正ができます。修正は「変更履歴の記録」や「コメント」と連動します（ChatGPT for Word。無料プランを含む全ユーザーが対象）。",
+      "sources": [
+        "chatgpt-for-microsoft-word-available"
+      ]
+    },
+    {
+      "text": "チームで共有する定期タスクをクラウド上で自動実行できます。Gmailなどと連携し、メールの受付・要約・担当者の割り当てまで行えます。",
+      "sources": [
+        "chatgpt-team-tasks-recurring-cloud-automation"
+      ]
+    },
+    {
+      "text": "実務向けの「ChatGPT Work」では、資料作成からメール送信までを自動化できます。",
+      "sources": [
+        "openai-chatgpt-work-launch"
+      ]
+    },
+    {
+      "text": "Pro 100・200・500には、毎月それぞれ100ドル・200ドル・500ドル分のAPIクレジットが付きます。",
+      "sources": [
+        "chatgpt-pro-monthly-api-credits"
+      ]
+    }
+  ],
+  "pricing": [],
+  "japan": [],
+  "howto": [],
+  "differences": [
+    {
+      "text": "12月からPlus・Pro・Businessの利用枠がCodexと共通になり、トークンで測るようになります。Instantチャットは枠を消費しません。",
+      "sources": [
+        "chatgpt-codex-shared-usage-limits"
+      ]
+    },
+    {
+      "text": "GPT-5.6 Lunaの提供開始とともに、無料プランを含むすべてのユーザーでテキスト対話の回数制限がなくなりました。",
+      "sources": [
+        "openai-chatgpt-gpt56-luna-no-limits"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "無料版でもテキストの対話に回数制限はありますか？",
+      "a": "2026年8月のGPT-5.6 Lunaの提供開始とともに、無料プランを含むすべてのユーザーでテキスト対話の回数制限がなくなりました。",
+      "sources": [
+        "openai-chatgpt-gpt56-luna-no-limits"
+      ]
+    },
+    {
+      "q": "利用枠の残りはどこで確認できますか？",
+      "a": "Settings→Usageで確認できます。12月からはPlus・Pro・BusinessでCodexと合わせた残量になります。",
+      "sources": [
+        "chatgpt-codex-shared-usage-limits"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2026-11-02",
+      "slug": "chatgpt-codex-shared-usage-limits",
+      "event": "12月から利用枠をCodexと共通にすると発表"
+    },
+    {
+      "date": "2026-11-02",
+      "slug": "chatgpt-pro-monthly-api-credits",
+      "event": "料金ページにProの月額APIクレジットを明記"
+    },
+    {
+      "date": "2026-10-16",
+      "slug": "chatgpt-team-tasks-recurring-cloud-automation",
+      "event": "「チームタスク」を追加"
+    },
+    {
+      "date": "2026-09-17",
+      "slug": "chatgpt-for-microsoft-word-available",
+      "event": "「ChatGPT for Word」を提供開始"
+    },
+    {
+      "date": "2026-09-15",
+      "slug": "openai-chatgpt-work-launch",
+      "event": "実務向けの「ChatGPT Work」を追加"
+    },
+    {
+      "date": "2026-08-25",
+      "slug": "openai-chatgpt-gpt56-luna-no-limits",
+      "event": "GPT-5.6 Lunaを提供開始、テキスト対話の回数制限を撤廃"
+    }
+  ],
+  "articles": [
+    "heimstaden-openai-real-estate-ai",
+    "chatgpt-pro-monthly-api-credits",
+    "openai-bigger-bug-bounties",
+    "chatgpt-codex-shared-usage-limits",
+    "oracle-ai-workspace-chatgpt",
+    "zendesk-chatgpt-enterprise-case-study",
+    "chatgpt-pro-business-api-credits-benefit",
+    "openai-servicenow-partnership-expansion",
+    "openai-oracle-partnership-chatgpt",
+    "openai-signals-chatgpt-work-data",
+    "uber-openai-chatgpt-work-enterprise-deployment",
+    "thomson-reuters-openai-chatgpt-enterprise-cocounsel",
+    "chatgpt-team-tasks-recurring-cloud-automation",
+    "chatgpt-mobile-dot-setup",
+    "openai-chatgpt-plugin-extensions-mcp",
+    "openai-chatgpt-voice-update-gpt6-astra",
+    "openai-chatgpt-semantic-layer-data-agent",
+    "chatgpt-work-dashboard-generation",
+    "chatgpt-work-tailor-dashboards-demo",
+    "openai-chatgpt-work-data-agent-scale",
+    "openai-chatgpt-work-product-insights-demo",
+    "chatgpt-work-data-agent-setup",
+    "chatgpt-work-data-agent-launch",
+    "chatgpt-for-microsoft-word-available",
+    "openai-reimagining-it-with-chatgpt",
+    "openai-academy-meet-chatgpt",
+    "openai-chatgpt-admin-console-insights-outcomes",
+    "openai-chatgpt-work-launch",
+    "chatgpt-wildfire-detection-sensory-ai",
+    "openai-chatgpt-work-data-agent",
+    "chatgpt-work-for-sales-comprehensive-summary-matome",
+    "openai-chatgpt-images-manga-generation",
+    "chatgpt-work-personalized-meal-planner-agents",
+    "openai-chatgpt-gpt56-luna-no-limits",
+    "chatgpt-visualize-skill-interactive-ui",
+    "openai-chatgpt-work-voice-agent",
+    "openai-chatgpt-voice-gpt56-integration-matome",
+    "openai-chatgpt-work-financial-reporting-demo",
+    "chatgpt-work-scheduled-metrics-report",
+    "chatgpt-work-sites-forecast-spreadsheet",
+    "openai-birding-pal-chatgpt-diy-companion",
+    "openai-chatgpt-voice-work-integration-demo",
+    "chatgpt-work-sales-revenue-learning",
+    "openai-chatgpt-work-admin-api",
+    "openai-chatgpt-work-enterprise-rollout",
+    "openai-chatgpt-voice-desktop-gpt-live"
+  ]
+}

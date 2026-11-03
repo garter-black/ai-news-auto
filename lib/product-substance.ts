@@ -80,9 +80,12 @@ export type ProductSource = {
   /** 図鑑のカードとページの冒頭の説明（leadSources の記事に書かれている事実だけ） */
   lead?: string;
   leadSources?: string[];
+  /** 「同じ価格帯のサービスとの比較」に使う段（全プランを載せる製品は standard） */
+  rivalsTier?: string;
   /** 発表の履歴から外す記事（インタビューなど、記事の日付と出来事の日付がずれるもの） */
   timelineSkip?: string[];
-  image?: { src: string; credit: string; sourceUrl: string };
+  /** 報道向けの公式プレスキット・ブランド素材の画像（KV の /img/brand-<名前>）。縮小と余白のほかは変えない */
+  image?: { src: string; credit: string; sourceUrl: string; checkedAt?: string; note?: string };
 };
 
 /** 料金の JSON（content/pricing/<id>.json）のうち、判定に使う部分 */

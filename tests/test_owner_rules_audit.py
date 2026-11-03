@@ -164,6 +164,8 @@ class ProductHubTest(unittest.TestCase):
         self.assertIn("W13", ids(audit.hub_page_problems("/products/codex", '<img src="/cover/codex-news?v=3">')))
         self.assertIn("W13", ids(audit.hub_page_problems("/products/chatgpt-work", '<img src="https://images.unsplash.com/photo-1">')))
         self.assertEqual([], audit.hub_page_problems("/products", '<span data-product-visual="placeholder"><svg></svg></span><h1>AIサービス図鑑</h1>'))
+        # 公式プレスキットのロゴ（KV の /img/brand-<名前>）は使ってよい
+        self.assertEqual([], audit.hub_page_problems("/products/claude", '<img src="https://ai-tech-express.jp/img/brand-claude-icon-0ea91b42.jpg">'))
 
     def test_template_headings_and_non_answers(self):
         self.assertIn("W13", ids(audit.hub_page_problems("/products/codex", "<h2>何ができる？</h2>")))

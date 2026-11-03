@@ -18,6 +18,7 @@ function guideRedirects() {
     return [
       // 計算ツールの一覧は、ツールが防衛特別所得税だけになったので、そのページへ転送する（2026-11-03 台帳 W12）
       { source: "/tools", destination: "/tools/defense-tax", permanent: true },
+      ...Object.entries(MERGED_GUIDES).map(([from, to]) => ({ source: `/guides/${from}`, destination: `/guides/${to}`, permanent: true })),
       ...moved.map((slug) => ({ source: `/guides/${slug}`, destination: `/products/${slug}`, permanent: true })),
       ...(howtos.length === 0 && guides.length > 0 && moved.length === guides.length
         ? [{ source: "/guides", destination: "/products", permanent: true }]
@@ -27,6 +28,15 @@ function guideRedirects() {
     return [];
   }
 }
+
+/**
+ * 1つにまとめた使い方ガイド（古い URL → まとめた先）。2026-11-03 オーナー承認:
+ * 「Meta Muse」「Muse Wonder」「Museとdot」の3つの見出し・ページを1つのガイドにした（台帳 W15）
+ */
+const MERGED_GUIDES: Record<string, string> = {
+  "meta-muse-wonder": "meta-muse-japan-availability",
+  "meta-muse-openai-dot-compare": "meta-muse-japan-availability",
+};
 
 // Cloudflare Workers 向けビルド（scripts/cf_build.sh が CF_BUILD=1 を立てる）
 const isCloudflare = process.env.CF_BUILD === "1";

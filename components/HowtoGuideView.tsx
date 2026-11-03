@@ -190,7 +190,11 @@ export default function HowtoGuideView({ guide }: { guide: HowtoGuide }) {
           {checked}時点で公式ページの表記を確認した内容です。料金や上限は変わることがあるため、申し込む前に公式サイトで最新の情報を確認してください。
         </p>
         {guide.officialAction && (
-          <a href={guide.officialAction.url} target="_blank" rel="sponsored nofollow noopener noreferrer" className="mt-5 inline-flex rounded-lg border border-ink px-5 py-3 text-note font-bold text-ink underline underline-offset-4 hover:text-accent">
+          // 公式サイトへの普通のリンク（広告ではない）。提携リンクの URL のときだけ広告の印（sponsored）を付ける
+          <a
+            href={guide.officialAction.url}
+            target="_blank"
+            rel={/a8\.net|rakuten|amazon\.|amzn\.|valuecommerce|moshimo/.test(guide.officialAction.url) ? "sponsored nofollow noopener noreferrer" : "nofollow noopener noreferrer"} className="mt-5 inline-flex rounded-lg border border-ink px-5 py-3 text-note font-bold text-ink underline underline-offset-4 hover:text-accent">
             {guide.officialAction.label}
           </a>
         )}
