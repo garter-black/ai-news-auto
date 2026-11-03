@@ -6,7 +6,7 @@
     },
     "images": {
       "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 2,
-      "cloudflare:@cf/openai/gpt-oss-120b": 58
+      "cloudflare:@cf/openai/gpt-oss-120b": 72
     },
     "products": {
       "gemma-4-31b-it": 1
