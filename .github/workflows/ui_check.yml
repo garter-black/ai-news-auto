@@ -1,0 +1,114 @@
+name: UI check
+
+# 画面の崩れを本番の本物のブラウザで見張る（scripts/ui_check.mjs）。
+# 主要なページ（トップ・一覧・ジャンル・記事の種類ごと・検索・ツール・料金表・ガイド・選び方・朝のまとめ・404）を
+# スマホ 375px / PC 1440px × ライト / ダーク で開き、読めない画像・横のはみ出し・undefined などの文字・生の Markdown・
+# コンソールのエラー・ロゴ用書体の漏れ・同じ区切りの重なり・PR 表示のない広告・レイアウトのずれ（CLS > 0.1）を探す。
+# 見つかったら issue（ラベル ui-broken）に書き、直ったら閉じる。スクショは成果物に残す。
+#
+# いつ動くか: デプロイが成功した後（記事の自動追加のデプロイも含む。新しい記事の崩れを拾うため）と、毎日 1 回。
+# 広告（A8・楽天・Amazon・AdSense）と計測への通信は止め、自社のしるし（?_internal=1・X-Saisoku-Internal）を付ける（docs/automation.md）。
+on:
+  workflow_run:
+    workflows: ["Deploy to Cloudflare Workers"]
+    types: [completed]
+    branches: [main]
+  schedule:
+    - cron: "17 22 * * *" # 毎日 7:17（日本時間）
+  workflow_dispatch:
+    inputs:
+      set:
+        description: "ci（主要ページ）か full（すべての種類）"
+        type: choice
+        options: [ci, full]
+        default: ci
+      paths:
+        description: "調べるページ（カンマ区切り。空なら set のページ）"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    if: ${{ github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # 続けてデプロイされたら最後の 1 回だけ見る
+    concurrency:
+      group: ui-check
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      # 日本語の書体。調べるときの端末は iPhone / Mac の名乗りなので、サイトは Web フォントを読まず端末の書体を使う
+      # （app/layout.tsx）。ランナーに日本語の書体が無いと豆腐になり、文字の幅・折り返しも実機と変わる
+      - name: Japanese fonts
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends fonts-noto-cjk >/dev/null
+
+      # ブラウザ本体はランナーの Chrome を使う（ダウンロードしない）。サイトの依存（npm ci）は入れない
+      - name: Install playwright-core
+        run: npm i --no-save --no-package-lock --no-audit --no-fund --ignore-scripts playwright-core@1.56.1
+
+      - name: Wait for the new version
+        if: ${{ github.event_name == 'workflow_run' }}
+        run: sleep 45
+
+      - name: Check UI on production
+        id: check
+        continue-on-error: true
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+          SET: ${{ inputs.set || 'ci' }}
+          PATHS: ${{ inputs.paths }}
+        run: node scripts/ui_check.mjs --set "$SET" --out out/ui_check ${PATHS:+--paths "$PATHS"}
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f out/ui_check/report.md ]; then cat out/ui_check/report.md >> "$GITHUB_STEP_SUMMARY"; fi
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: ui-check-${{ github.run_id }}
+          path: out/ui_check
+          retention-days: 14
+          if-no-files-found: ignore
+
+      # 崩れがあれば issue（ui-broken）に書く。開いているものがあればコメントを足し、無くなったら閉じる
+      - name: Report to issue
+        if: ${{ always() && (github.event_name != 'workflow_dispatch' || inputs.paths == '') }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          OUTCOME: ${{ steps.check.outcome }}
+        run: |
+          gh label create ui-broken --color d93f0b --description "画面の崩れ（scripts/ui_check.mjs）" 2>/dev/null || true
+          open=$(gh issue list --label ui-broken --state open --json number --jq '.[0].number' || true)
+          if [ "$OUTCOME" = "failure" ] && [ -f out/ui_check/report.md ]; then
+            { cat out/ui_check/report.md; echo; echo "スクショ・report.json: $RUN_URL （成果物 ui-check）"; echo; echo "見張り: scripts/ui_check.mjs（.github/workflows/ui_check.yml）。崩れが無くなったら自動で閉じます。"; } > body.md
+            # issue の本文は 65,536 字まで
+            head -c 60000 body.md > body_cut.md
+            if [ -n "$open" ]; then
+              gh issue comment "$open" --body-file body_cut.md
+            else
+              gh issue create --title "画面の崩れが見つかりました（UI check）" --label ui-broken --body-file body_cut.md
+            fi
+          elif [ "$OUTCOME" = "success" ] && [ -n "$open" ]; then
+            gh issue close "$open" --comment "崩れは無くなりました（$RUN_URL）。"
+          fi
+
+      - name: Fail when broken
+        if: ${{ steps.check.outcome == 'failure' }}
+        run: |
+          echo "::warning::画面の崩れがあります（issue: ラベル ui-broken）"
+          exit 1
