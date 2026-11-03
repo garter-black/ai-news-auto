@@ -99,7 +99,7 @@ class FramingTest(unittest.TestCase):
         """止めている間のゆっくり寄る動き（DRIFT）で、行の頭が余白の外へ出ない（2026-11-04 CI の実物で落ちた所）。
         行の頭がページの左端のすぐ近く（12 CSS px）の、ページ幅いっぱいの段落"""
         k = v3.CAPTURE_DPR
-        page = para_page(per_line=28)
+        page = para_page(per_line=27)  # 行の頭 12 CSS px・行の終わりは右端から 41 CSS px（左右が非対称＝ページの真ん中に置くと左が足りない）
         # 段落を左へ寄せる（行の頭 x=12 CSS px・幅ほぼいっぱい）
         b = page.blocks[0]
         dx = b.rect[0] - 12 * k
@@ -107,7 +107,7 @@ class FramingTest(unittest.TestCase):
         b.rect = (b.rect[0] - dx, b.rect[1], b.rect[2] - dx, b.rect[3])
         tg = v3.find_target([page], "これまで1,000件以上の撮影を手がけ、", "1-1")
         cam = v3.frame_box(page, 0, v3.line_box(tg), 1.6)
-        for hold in (0.0, 2.0, 5.0, 12.0):
+        for hold in (0.0, 2.0, 5.0, 7.5, 12.0, 30.0):
             c = v3.Camera._hold(cam, 0.0, hold)
             self.assertTrue(gate._inside(list(v3.line_box(tg)), list(v3.cam_view(c)), v3.QA_MARGIN_X / c.s, v3.QA_MARGIN_Y / c.s), hold)
 

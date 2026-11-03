@@ -8,9 +8,14 @@ on:
       pairs:
         description: "slug:型 をスペース区切り（例: apple-reports-q4-2026-results:earnings）。型は launch/pricing/comparison/security/policy_money/earnings/breaking/default"
         required: true
+      reuse_run:
+        description: "（任意）前の見本の実行の番号（run id）。その Artifacts の台本（*.v3script.json）を使い回す（LLM を呼ばない。描画と QA だけやり直す）"
+        required: false
+        default: ""
 
 permissions:
   contents: write  # Claude API の使用量（state/claude_api_usage_video.json）を main に残すため（shorts_v3.yml と同じ）
+  actions: read  # reuse_run の Artifacts（台本）を読む
 
 concurrency:
   group: video-template-samples-${{ github.run_id }}
@@ -54,12 +59,23 @@ jobs:
           CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
           CLAUDE_API_DAILY_CALLS_VIDEO: ${{ vars.CLAUDE_API_DAILY_CALLS_VIDEO }}
           PAIRS: ${{ github.event.inputs.pairs }}
+          REUSE_RUN: ${{ github.event.inputs.reuse_run }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set +e
+          REUSE=""
+          if [ -n "$REUSE_RUN" ]; then
+            mkdir -p "$RUNNER_TEMP/reuse"
+            gh run download "$REUSE_RUN" -R "$GITHUB_REPOSITORY" -D "$RUNNER_TEMP/reuse" --pattern 'video-template-samples-*' && REUSE="--reuse-script"
+          fi
           for pair in $PAIRS; do
             slug="${pair%%:*}"; tpl="${pair##*:}"
             t=$(date +%s)
-            python scripts/video_templates.py "$slug" --render --template "$tpl" --tts voicevox --out "out/video_templates/$tpl" --profile production
+            if [ -n "$REUSE" ]; then
+              mkdir -p "out/video_templates/$tpl"
+              find "$RUNNER_TEMP/reuse" -name "$slug*.v3script.json" -path "*/$tpl/*" -exec cp {} "out/video_templates/$tpl/" \;
+            fi
+            python scripts/video_templates.py "$slug" --render --template "$tpl" --tts voicevox --out "out/video_templates/$tpl" --profile production $REUSE
             echo "時間: $slug $tpl $(( $(date +%s) - t ))秒"
           done
           python - <<'PY'

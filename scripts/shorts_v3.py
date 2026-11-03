@@ -2026,8 +2026,22 @@ def frame_box(page: Page, page_no: int, box: tuple, zmax: float, mx: float = FRA
     s = min(s0 * zmax, (PW - 2 * mx) / bw, (2 * half_h - 2 * my) / bh)
     s = max(s / (1 + DRIFT_MAX), s0 * 0.8)  # 止めている間にゆっくり寄る分（DRIFT_MAX）を先に引いておく
     # 2026-11-04: ページの左端近く（x=48 など）から始まる行は、ページの中に収めると左の余白が取れず QA(b) に落ちていた
-    # → 左右は余白の分だけページの外（地の色・端はなじませる）を見せてよい
-    return clamp_cam(page, page_no, (box[0] + box[2]) / 2, (box[1] + box[3]) / 2, s, over=mx)
+    # → 左右は余白の分だけページの外（地の色・端はなじませる）を見せてよい（over=mx）。
+    # ページが画面より細いときは、ページの真ん中ではなく証拠の文の真ん中に置く。いちばん寄ったとき（DRIFT_MAX）に余白が足りなければ少しずつ引く
+    bx, by = (box[0] + box[2]) / 2, (box[1] + box[3]) / 2
+    cam = clamp_cam(page, page_no, bx, by, s, over=mx)
+    for _ in range(10):
+        cam = clamp_cam(page, page_no, bx, by, s, over=mx)
+        if page.width * s < PW:
+            slack = (PW / s - page.width) / 2
+            cam = Cam(page_no, min(max(bx, page.width / 2 - slack), page.width / 2 + slack), cam.cy, s)
+        top = Cam(cam.page, cam.cx, cam.cy, cam.s * (1 + DRIFT_MAX))
+        v = cam_view(top)
+        mx_p, my_p = (QA_MARGIN_X + 6) / top.s, (QA_MARGIN_Y + 4) / top.s
+        if (box[0] >= v[0] + mx_p and box[2] <= v[2] - mx_p and box[1] >= v[1] + my_p and box[3] <= v[3] - my_p) or s <= s0 * 0.62:
+            break
+        s *= 0.96
+    return cam
 
 
 def cam_view(cam: Cam) -> tuple:
