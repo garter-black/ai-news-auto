@@ -64,7 +64,7 @@
   },
   "failed_web": {},
   "major_tries": {
-    "7034baa092128424": 1
+    "7034baa092128424": 2
   },
   "processed": {
     "--kyzoeUuBk": {
@@ -13065,30 +13065,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-10-31T06:59:38.639257+00:00",
-      "attempt": 2,
-      "id": "3f1629502128b181",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1423字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（389字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 125.3,
-        "avg_sentence": 59.7,
-        "long_share": 0.429,
-        "max_paragraph": 178,
-        "paragraphs": 10,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "boj",
-      "title": "「指数連動型上場投資信託受益権等の処分の指針」の一部改正について"
-    },
-    {
-      "accepted": false,
       "at": "2026-10-31T09:21:04.480364+00:00",
       "attempt": 1,
       "id": "7f40581db2f3c2f0",
@@ -19466,6 +19442,28 @@
         "max_paragraph": 123,
         "paragraphs": 28,
         "sentences": 55
+      },
+      "score": null,
+      "source": "apple-newsroom-jp-all",
+      "title": "Apple、第4四半期の業績を発表"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T02:52:59.463372+00:00",
+      "attempt": 1,
+      "id": "7034baa092128424",
+      "kind": "broad",
+      "model": "claude:sonnet",
+      "problems": [
+        "事実確認を実行できなかった（すべてのモデルで失敗しました: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You ）"
+      ],
+      "readability": {
+        "avg_paragraph": 63.9,
+        "avg_sentence": 28.8,
+        "long_share": 0.0,
+        "max_paragraph": 98,
+        "paragraphs": 23,
+        "sentences": 51
       },
       "score": null,
       "source": "apple-newsroom-jp-all",

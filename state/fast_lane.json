@@ -312,14 +312,14 @@
     },
     "7034baa092128424": {
       "detectedAt": "2026-11-03T02:44:20+00:00",
-      "finishedAt": "2026-11-03T02:50:12+00:00",
+      "finishedAt": "2026-11-03T02:52:59+00:00",
       "outcome": "retry",
       "reason": "作れなかった（次の起動で再挑戦）",
-      "run": "41567958168",
+      "run": "41568566320",
       "slug": "",
       "source": "apple-newsroom-jp-all",
       "sourcePublishedAt": "2026-11-02T00:00:00+00:00",
-      "startedAt": "2026-11-03T02:47:53+00:00",
+      "startedAt": "2026-11-03T02:50:54+00:00",
       "title": "Apple、第4四半期の業績を発表",
       "url": "https://www.apple.com/jp/newsroom/2026/11/apple-reports-fourth-quarter-results/"
     },
