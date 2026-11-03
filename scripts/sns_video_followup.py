@@ -874,7 +874,10 @@ def repost(slug: str, api_key: str | None = None, now: datetime | None = None, s
     others = {"posted": {k: v for k, v in (posted.get("posted") or {}).items() if k != slug}}
     original = _parse(rec.get("dueAt") or "")
     if slot is None:
-        slot = original if original and original - now >= timedelta(minutes=90) and rec.get("status") == "skipped_no_video" else next_normal_slot(others, now)
+        taken = [t for t in (_parse(r.get("dueAt") or "") for r in others["posted"].values()) if t]
+        keep = (original and original - now >= timedelta(minutes=90) and rec.get("status") == "skipped_no_video"
+                and all(abs((original - t).total_seconds()) >= 90 * 60 for t in taken))  # 元の枠がまだ先で、ほかの投稿と重ならないときだけ
+        slot = original if keep else next_normal_slot(others, now)
     services = spec.get("services") or ["threads", "twitter", "facebook"]
     pending = requeue_inputs(key, tp.buffer_channels(key), slug, services, slot, classic=spec.get("classic", ""))
     if spec.get("variant"):
