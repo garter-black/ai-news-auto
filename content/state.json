@@ -63,9 +63,7 @@
     "zoohZ1BiHs0": 1
   },
   "failed_web": {},
-  "major_tries": {
-    "7034baa092128424": 3
-  },
+  "major_tries": {},
   "processed": {
     "--kyzoeUuBk": {
       "at": "2026-08-10T15:58:56.932533+00:00",
@@ -7522,6 +7520,14 @@
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102804"
     },
+    "7034baa092128424": {
+      "at": "2026-11-03T03:23:12.415878+00:00",
+      "model": "gemini-3.5-flash",
+      "score": 100,
+      "section": "tech-gadget",
+      "slug": "apple-reports-q4-2026-results",
+      "url": "https://www.apple.com/jp/newsroom/2026/11/apple-reports-fourth-quarter-results/"
+    },
     "7087d444d8f5d17d": {
       "at": "2026-10-27T15:56:20.936356+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13027,6 +13033,12 @@
       "skipped": true,
       "url": "https://www.mhlw.go.jp/stf/newpage_76777.html"
     },
+    "ff138f709a7e7c37": {
+      "at": "2026-11-03T03:23:13.363349+00:00",
+      "reason": "dedupe: 固有名詞が一致（openai・security）: Preparing our next security sprint to ha",
+      "skipped": true,
+      "url": "https://openai.com/index/dan-driscoll-joins-openai"
+    },
     "ff5860a7e60d608b": {
       "at": "2026-10-26T15:37:17.057889+00:00",
       "reason": "prefilter: 告知・お知らせ系",
@@ -13063,28 +13075,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-31T09:21:10.562138+00:00",
-      "attempt": 2,
-      "id": "7f40581db2f3c2f0",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が短い（361字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 99.4,
-        "avg_sentence": 56.8,
-        "long_share": 0.357,
-        "max_paragraph": 151,
-        "paragraphs": 16,
-        "sentences": 28
-      },
-      "score": null,
-      "source": "cyberagent",
-      "title": "アニメーションの企画・制作およびプロデュースを行う子会社 「株式会社LATENT ONE」を設立"
-    },
     {
       "accepted": false,
       "at": "2026-10-31T10:01:18.566361+00:00",
@@ -19468,9 +19458,31 @@
       "score": null,
       "source": "apple-newsroom-jp-all",
       "title": "Apple、第4四半期の業績を発表"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T03:23:11.587332+00:00",
+      "attempt": 1,
+      "id": "7034baa092128424",
+      "kind": "broad",
+      "model": "gemini-3.5-flash",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 45.6,
+        "avg_sentence": 42.4,
+        "long_share": 0.138,
+        "max_paragraph": 70,
+        "paragraphs": 27,
+        "sentences": 29
+      },
+      "score": 100,
+      "source": "apple-newsroom-jp-all",
+      "title": "Apple、第4四半期の業績を発表"
     }
   ],
   "short_text_retry": {
+    "262cfa35f4308cc0": "2026-11-03T03:23:13.244152+00:00",
+    "6fd6ad7938fa5bc5": "2026-11-03T03:21:20.051350+00:00",
     "de4cf53f9db96311": "2026-11-03T00:11:19.346586+00:00",
     "ff138f709a7e7c37": "2026-11-03T00:51:13.945206+00:00"
   },

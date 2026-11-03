@@ -54,14 +54,14 @@
     "gemini-3.5-flash-lite": 237
   },
   "2026-11-02": {
-    "anthropic-api:claude-opus-5-5": 13,
+    "anthropic-api:claude-opus-5-5": 14,
     "anthropic-api:claude-sonnet-5-5": 8,
     "cf-image:flux-1-schnell": 7,
     "cf-image:flux-2-klein-4b": 33,
     "claude:sonnet": 35,
-    "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 10,
-    "cloudflare:@cf/openai/gpt-oss-120b": 517,
-    "gemini-3.5-flash": 10,
-    "gemini-3.5-flash-lite": 322
+    "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 12,
+    "cloudflare:@cf/openai/gpt-oss-120b": 539,
+    "gemini-3.5-flash": 11,
+    "gemini-3.5-flash-lite": 324
   }
 }
