@@ -85,7 +85,7 @@ class PromptTest(unittest.TestCase):
                 self.assertIn("1文目で「今回なにが新しいか」を言い切る", block)
                 self.assertIn("材料の無い章は作らない", block)
                 self.assertIn("1,000字につき1つまで", block)
-                self.assertIn("「## 概要」の章は作らない", block)
+                self.assertIn("「## 概要」「## これまでの流れ」の章は作らない", block)
                 self.assertIn("まだ分からないこと", block)
                 self.assertIn("1,600字以上", block)  # 公開前の門（indexnow の thin）と同じ長さ
 

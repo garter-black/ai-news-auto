@@ -350,7 +350,7 @@ def coded_problems(record: dict) -> list[tuple[str, str]]:
     lede_sents = _sentences(lede)
     if first_body and lede_sents and any(similarity(first_body, x) >= 0.8 for x in lede_sents):
         add("A19", "本文の最初の文がリードのくり返し。本文はリードに無い新しい事実から始める")
-    if lede_sents and re.search(r"(?:業績|決算|結果|注意喚起|お知らせ|概要|内容|方針|計画|報告書|レポート|資料|調査)(?:について|に関する[^。]{0,10})?を"
+    if lede_sents and re.search(r"(?:業績|決算|結果|注意喚起|お知らせ|概要|内容|方針|計画|報告書|レポート|資料|調査|更新|アップデート)(?:について|に関する[^。]{0,10})?を"
                                 r"(?:発表|公表|公開)しました。?$", lede_sents[0]) \
             and not re.search(r"\d[\d,.]*\s?(?:%|％|円|ドル|億|万|倍|人|件|社|台)", lede_sents[0]) \
             or (lede_sents and len(lede_sents[0]) < 36 and re.search(r"(?:発表|公開|公表)しました。?$", lede_sents[0])):
