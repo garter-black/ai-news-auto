@@ -629,6 +629,22 @@ def relative_dates(text: str, published: datetime | None) -> list[Computed]:
     return out
 
 
+def spec_difference(a_label: str, a: float, b_label: str, b: float, unit: str) -> Computed:
+    """2つの製品の同じ項目の差（製品の比較表 scripts/rivals.py）。「Aの105Nm − Bの100Nm = 5Nm」。
+    差は絶対値（どちらが大きいかは呼び出し側が文で書く）。単位はそろえてから渡す"""
+    diff = abs(a - b)
+    decimals = max(_decimals(a), _decimals(b))
+    diff = round(diff, decimals)
+    big, small = ((a_label, a), (b_label, b)) if a >= b else ((b_label, b), (a_label, a))
+    show = lambda v: f"{v:,.{decimals}f}{unit}"  # noqa: E731
+    return Computed("spec_diff", f"{big[0]}の{show(big[1])} − {small[0]}の{show(small[1])} = {show(diff)}", [diff])
+
+
+def _decimals(value: float) -> int:
+    text = f"{value:.6f}".rstrip("0").rstrip(".")
+    return len(text.split(".")[1]) if "." in text else 0
+
+
 TAIL_RE = re.compile(r"\n\s*(?:あわせて読みたい|関連記事|関連ニュース|人気記事|この記事に関する|おすすめ記事|Related (?:articles|posts|stories)|More from)")
 
 

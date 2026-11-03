@@ -185,6 +185,21 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: timeout 540 python scripts/products.py --max 3 --budget 420 --tier bulk
 
+      # 製品の記事の「同じクラスの製品と比べると？」（scripts/rivals.py）。ライバル2〜3つの仕様と価格を、各社の公式ページから読み取って表にする。
+      # 記事を作る段で時間が足りなかった記事・速報レーンで作った記事をここで拾う（無料モデルだけ・1回2本まで）。
+      # 公式ページが読めない・確認画面が出るライバルは飛ばす。調べた記事は state/rivals_checked.json に残して調べ直さない
+      - name: Rival comparison
+        if: ${{ (inputs.fast_url || '') == '' }}
+        continue-on-error: true
+        timeout-minutes: 7
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: timeout 380 python scripts/rivals.py --recent-hours 36 --max 2 --budget 300 --apply
+
       # 記事の写真（scripts/images.py）。元記事の写真が無い・ロゴだけの記事に、フリー素材（Wikimedia Commons・Openverse）か
       # AI 生成（Workers AI、1日40枚まで）の写真を付ける。画像は Workers KV に置き /img/ で配信する。失敗しても記事の公開は止めない
       # 速報レーンの回は公開を急ぐので、時間を短く区切って速いモデルだけ使う
@@ -305,6 +320,7 @@ jobs:
           if [ -f state/fast_lane.json ]; then git add state/fast_lane.json; fi
           if [ -f state/page_watch.json ]; then git add state/page_watch.json; fi
           if [ -f state/claude_api_usage.json ]; then git add state/claude_api_usage.json; fi
+          if [ -f state/rivals_checked.json ]; then git add state/rivals_checked.json; fi
           git commit -m "$MSG"
           # 実行中に main が進んでいても失敗しないよう rebase してから push（最大3回）
           for i in 1 2 3; do

@@ -152,6 +152,8 @@ export type Article = {
   relatedSlugs?: string[];
   /** 元記事のほかに確かめた資料（scripts/facts_bundle.py。記事末の「出典と更新履歴」に「料金：Anthropic公式の料金ページ（11/3確認）」の形で出す） */
   factSources?: FactSource[];
+  /** 同じクラスの製品との比較（scripts/rivals.py）。本文の「同じクラスの製品と比べると？」の表の元データ（値・根拠の文・出典 URL・確認日） */
+  rivals?: RivalsComparison;
   /** 本文の料金の章に出す料金の段の表の製品（components/PriceTable.tsx。content/pricing/<product>.json） */
   pricingProduct?: string;
   /** 料金の章に添える同じ段の他社比較（"plan:top" / "api:flagship" など） */
@@ -233,6 +235,18 @@ export type ArticleSummary = Pick<
   ArticleDerived;
 
 export type FactSource = { label: string; name: string; url?: string; checkedAt?: string };
+
+/** 製品の比較の1項目（値は公式ページの記載のまま。quote はその根拠の文） */
+export type RivalSpec = { display: string; quote: string; url: string; checkedAt: string; via?: string };
+export type RivalsComparison = {
+  version: number;
+  category: string;
+  categoryLabel: string;
+  checkedAt: string;
+  products: { name: string; maker: string; self: boolean; url: string; sourceName: string; checkedAt: string; specs: Record<string, RivalSpec> }[];
+  takeaway?: string[];
+  priceNote?: string;
+};
 
 /** 記事ページ用の全データ（本文つき）。一覧用の値も持つので ArticleSummary として扱える */
 export type FullArticle = Article & ArticleDerived;

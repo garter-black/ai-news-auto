@@ -134,10 +134,78 @@ def faq_problems(record: dict) -> list[str]:
     return problems
 
 
+# 製品の比較表の章（scripts/rivals.py）。数字は各社の公式ページの根拠の文と照合する（rival_problems）。元記事との照合からは外す
+RIVALS_HEADING = "同じクラスの製品と比べると？"
+RIVALS_SECTION_RE = re.compile(rf"^## {re.escape(RIVALS_HEADING)}\n.*?(?=^## |\Z)", re.M | re.S)
+RIVAL_NUM_RE = re.compile(r"\d+(?:,\d{3})*(?:\.\d+)?")
+
+
+def _plain_numbers(text: str) -> list[float]:
+    import unicodedata  # noqa: PLC0415
+
+    return [float(m.group(0).replace(",", "")) for m in RIVAL_NUM_RE.finditer(unicodedata.normalize("NFKC", text or ""))]
+
+
+def rival_problems(record: dict) -> list[str]:
+    """製品の比較表（「同じクラスの製品と比べると？」）の数字が、全部「公式ページの根拠の文」か「計算の式」にあるか（API 不要）。
+    - 表の値は、記事 JSON の rivals 欄に、根拠の文（quote）・出典 URL・確認日つきで残っていること
+    - 値の数字は全部その根拠の文にあること（scripts/rivals.py が取ったページで確かめた文）
+    - 章の数字は全部、値・根拠の文・計算の式（差・円の目安）・為替・確認日のどれかにあること"""
+    body = record.get("body") or ""
+    m = RIVALS_SECTION_RE.search(body)
+    data = record.get("rivals")
+    if not m and not data:
+        return []
+    if m and not data:
+        return ["製品の比較表の章があるのに、根拠のデータ（rivals）が無い。章を消す"]
+    if data and not m:
+        return ["製品の比較表のデータ（rivals）があるのに、本文に章が無い"]
+    problems = []
+    allowed: list[float] = []
+    products = data.get("products") or []
+    if sum(1 for p in products if not p.get("self")) < 2:
+        problems.append("製品の比較表のライバルが2つ未満")
+    for p in products:
+        if not p.get("url"):
+            problems.append(f"製品の比較表の「{p.get('name')}」に出典 URL が無い")
+        elif not p.get("self") and p["url"] not in m.group(0):
+            problems.append(f"製品の比較表の出典に「{p.get('name')}」の公式ページへのリンクが無い")
+        for key, spec in (p.get("specs") or {}).items():
+            quote = spec.get("quote") or ""
+            if not (spec.get("url") and spec.get("checkedAt") and quote):
+                problems.append(f"製品の比較表の「{p.get('name')}」の{key}に、根拠の文・出典・確認日が無い")
+                continue
+            qnums = _plain_numbers(quote)
+            for n in _plain_numbers(spec.get("display") or ""):
+                if not any(abs(n - q) < 1e-9 for q in qnums):
+                    problems.append(f"製品の比較表の「{p.get('name')}」の{key}（{spec.get('display')}）の数字が、公式ページの根拠の文に無い")
+                    break
+            allowed += qnums
+            if isinstance(spec.get("amount"), (int, float)):
+                allowed.append(float(spec["amount"]))
+        for date in [p.get("checkedAt") or ""]:
+            allowed += _plain_numbers(date) + [float(x) for x in re.findall(r"\d+", re.sub(r"^\d{4}-", "", date))]
+    for c in data.get("computed") or []:
+        allowed += _plain_numbers(c.get("text") or "") + [float(v) for v in c.get("values") or []]
+    fx = data.get("fx") or {}
+    allowed += _plain_numbers(f"{fx.get('rate', '')} {fx.get('date', '')}") + [1.0]
+    checked = str(data.get("checkedAt") or "")
+    allowed += [float(x) for x in re.findall(r"\d+", checked)] + [float(x.lstrip("0") or 0) for x in re.findall(r"\d+", checked)]
+    section = re.sub(r"\]\([^)]*\)", "]", m.group(0))  # リンク先の URL は見ない
+    missing = []
+    for n in _plain_numbers(section):
+        if not any(abs(n - a) <= 1e-9 * max(1.0, abs(a)) for a in allowed) and n not in missing:
+            missing.append(n)
+    if missing:
+        problems.append("製品の比較表に、公式ページの根拠の文・計算の式のどれにも無い数字がある（"
+                        + "、".join(f"{n:g}" for n in missing[:5]) + "）")
+    return problems
+
+
 # 数字の照合で見る欄（記事に出る文章）。リンク先の URL は見ない
 def _article_numbers_text(record: dict) -> str:
     parts = [record.get("title") or "", record.get("lede") or "", " ".join(record.get("highlights") or []),
-             record.get("body") or "", record.get("easy") or ""]
+             RIVALS_SECTION_RE.sub("", record.get("body") or ""), record.get("easy") or ""]
     parts += [f"{r.get('q', '')} {r.get('a', '')}" for r in record.get("faq") or []]
     parts += list(record.get("todayActions") or [])
     parts += list((record.get("workMoney") or {}).get("points") or [])
@@ -980,6 +1048,7 @@ def structural_problems(record: dict, kind: str, source_text: str = "", context:
         if m := persona.OLD_VIEWPOINT_RE.search(body):
             problems.append(f"古い立場の小見出し（「{m.group(0).lstrip('# ')}」）がある。立場は「" + "」「".join(persona.VIEWPOINTS) + "」の3つにする")
         problems += number_problems(record, source_text, context)
+        problems += rival_problems(record)
         problems += money_outline_problems(record)
         problems += ui_step_problems(record, source_text, context)
     if source_text:

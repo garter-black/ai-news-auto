@@ -62,6 +62,7 @@ import main as m  # noqa: E402
 import page_watch  # noqa: E402
 import persona  # noqa: E402
 import quality  # noqa: E402
+import rivals  # noqa: E402
 import story  # noqa: E402
 import trends  # noqa: E402
 import ui_claims  # noqa: E402
@@ -1155,6 +1156,25 @@ def attach_charts(record: dict) -> dict:
     return record
 
 
+RIVALS_MIN_LEFT_SEC = 2 * EST_SEC_PER_ARTICLE
+
+
+def attach_rivals(record: dict, fast: bool, time_left: float) -> None:
+    """製品の記事に「同じクラスの製品と比べると？」の比較表（scripts/rivals.py。ライバルの数字は各社の公式ページだけ・無料モデル）。
+    速報レーンと時間が足りない回は公開を急ぐので飛ばし、同じ実行の後の工程（auto_run.yml の Rival comparison）に回す"""
+    if fast or time_left < RIVALS_MIN_LEFT_SEC:
+        return
+    try:
+        catalog = rivals.load_catalog()
+        if rivals.guess_category(record, catalog) is None:
+            return
+        ok, why = rivals.attach(record, catalog=catalog, budget=min(rivals.ARTICLE_BUDGET, time_left - EST_SEC_PER_ARTICLE), log_fn=log)
+    except Exception as error:  # noqa: BLE001 - 比較表が作れなくても記事は出す
+        ok, why = False, f"失敗（{str(error)[:80]}）"
+    log(f"   [rivals] {'比較表を追加' if ok else '比較表なし'}: {why}")
+    rivals.remember(record.get("slug") or "", "added" if ok else why)
+
+
 def finalize_facts(record: dict, source_text: str) -> dict:
     """品質ゲートを通った記事に、元記事のほかに確かめた資料（factSources）を残し、束の中身（_facts）を外す"""
     if record.get("_facts"):
@@ -2218,6 +2238,7 @@ def main() -> int:
             record["late"] = True
         finalize_facts(record, text)
         attach_charts(record)
+        attach_rivals(record, fast_mode, time_left())
         stamp_times(record, item, run_detected_at)
         path = m.write_article(record)
         recent.add(record["title"], record["sourceUrl"], record.get("keywords"))

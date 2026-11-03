@@ -131,3 +131,29 @@ test("記事に合う計算機は1つだけ", () => {
   assert.equal(usdFromPrice("月20〜200ドル"), null);
   assert.equal(usdFromPrice("$17/月"), 17);
 });
+
+test("同じクラスの製品との比較（rivals）は項目ごとに棒の基準を分け、変化の数字を出さない", () => {
+  const chart = {
+    kind: "rivals",
+    title: "同じクラスの製品との比較",
+    groups: [
+      { label: "重さ", unit: "kg", items: [{ label: "Honda RN0", value: 24, display: "約24kg", highlight: true }, { label: "Turbo Levo 4 Comp", value: 24.41, display: "24.41kg" }] },
+      { label: "最大トルク", unit: "Nm", items: [{ label: "Honda RN0", value: 100, display: "100Nm", highlight: true }, { label: "Turbo Levo 4 Comp", value: 105, display: "105Nm" }] },
+      { label: "1つだけ", items: [{ label: "A", value: 1, display: "1" }] },
+    ],
+    afterHeading: "同じクラスの製品と比べると？",
+    source: { name: "各社の公式ページ・発表資料", checkedAt: "11/3" },
+  };
+  const fig = charts.renderChart(chart, () => undefined, fx);
+  assert.ok(fig);
+  assert.equal(fig.kind, "rivals");
+  assert.equal(fig.afterHeading, "同じクラスの製品と比べると？");
+  assert.match(fig.html, /data-chart="rivals"/);
+  assert.match(fig.html, /約24kg/);
+  assert.match(fig.html, /sc-hl/);
+  assert.doesNotMatch(fig.html, /1つだけ/);
+  assert.doesNotMatch(fig.html, /sc-delta">[^<]+</);
+  // 105Nm が最大トルクの棒の基準（100%）。重さの 24.41kg も重さの中で 100%
+  assert.equal((fig.html.match(/width="100%" height="10" rx="2"><\/rect><\/svg>/g) || []).length, 2);
+  assert.equal(charts.renderChart({ ...chart, groups: [chart.groups[2]] }, () => undefined, fx), null);
+});

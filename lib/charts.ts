@@ -5,7 +5,7 @@ import type { Fx, PlanProduct } from "@/lib/plan-prices";
 /**
  * 記事の数字の図（記事 JSON の charts 欄。scripts/article_charts.py が記事の表から作る）。
  *
- * - 前と今（before_after）・推移（series）・料金の段（ladder）の3種類
+ * - 前と今（before_after）・推移（series）・料金の段（ladder）・同じクラスの製品との比較（rivals。scripts/rivals.py）
  * - 比べられる本物の数字が2つ以上あるときだけ出す。棒はかならず0から（長さで差を大きく見せない）
  * - 表示する値は記事に書いてある文字のまま。棒の長さだけを数字から決める
  * - JavaScript を使わない HTML＋インライン SVG を本文の該当する章の下に差し込む（ページの読み込みを遅くしない）
@@ -32,7 +32,15 @@ export type SeriesChart = {
   source?: ChartSource;
 };
 export type LadderChart = { kind: "ladder"; product: string; highlight?: string; afterHeading?: string | null };
-export type ArticleChart = BeforeAfterChart | SeriesChart | LadderChart;
+/** 同じクラスの製品との比較（scripts/rivals.py）。項目ごとに主役（highlight）とライバルの棒。値は各社の公式ページの記載のまま */
+export type RivalsChart = {
+  kind: "rivals";
+  title: string;
+  groups: { label: string; unit?: string; items: ChartItem[] }[];
+  afterHeading?: string | null;
+  source?: ChartSource;
+};
+export type ArticleChart = BeforeAfterChart | SeriesChart | LadderChart | RivalsChart;
 
 /** 表示する図（HTML）と、差し込む章 */
 export type ChartFigure = { html: string; afterHeading: string | null; kind: ArticleChart["kind"] };
@@ -87,7 +95,8 @@ function figure(kind: string, title: string, inner: string, foot: string, side =
     `<figure class="sc-chart not-prose" data-chart="${kind}">` +
     `<figcaption class="sc-group-head"><span class="sc-title">${esc(title)}</span>${side ? `<span class="sc-delta">${esc(side)}</span>` : ""}</figcaption>` +
     inner +
-    `<p class="sc-source text-note">${foot}</p>` +
+    // 出典の注記（.text-note は 14px まで可。本文の段落 p にしない: docs/typography.md の注記の扱い）
+    `<div class="sc-source text-note">${foot}</div>` +
     `</figure>`
   );
 }
@@ -137,6 +146,29 @@ export function renderSeries(chart: SeriesChart): string | null {
   const last = points.length - 1;
   const inner = `<div class="sc-group">${points.map((p, i) => row({ ...p, highlight: p.highlight ?? i === last }, max)).join("")}</div>`;
   return figure("series", chart.title, inner, sourceLine(chart.source, ["数字は記事の表のとおり"]));
+}
+
+/**
+ * 同じクラスの製品との比較。項目（重さ・トルクなど）ごとに棒の長さの基準を分ける（単位が違うため）。
+ * 前と今ではないので変化の数字は出さない。「どちらが良い」とも書かない（長さは大きさだけ）
+ */
+export function renderRivals(chart: RivalsChart): string | null {
+  const groups = (chart.groups ?? []).map((g) => ({ ...g, items: (g.items ?? []).filter(isReal) })).filter((g) => g.items.length >= 2);
+  if (groups.length === 0) return null;
+  const inner = groups
+    .map((g) => {
+      const max = Math.max(...g.items.map((i) => i.value));
+      if (!(max > 0)) return "";
+      return (
+        `<div class="sc-group">` +
+        `<div class="sc-group-head"><span class="sc-group-label">${esc(g.label)}</span><span></span></div>` +
+        g.items.map((i) => row(i, max)).join("") +
+        `</div>`
+      );
+    })
+    .join("");
+  if (!inner) return null;
+  return figure("rivals", chart.title, inner, sourceLine(chart.source, ["数字は各社の公式ページ・発表資料の記載のとおり", "測ったサイズ・条件は製品ごとに違います"]));
 }
 
 /** 料金の段の1行（どの通貨で比べたか） */
@@ -207,6 +239,7 @@ export function renderChart(chart: ArticleChart, resolve: (product: string) => P
   if (chart.kind === "before_after") html = renderBeforeAfter(chart);
   else if (chart.kind === "series") html = renderSeries(chart);
   else if (chart.kind === "ladder") html = renderLadder(chart, resolve(chart.product), fx);
+  else if (chart.kind === "rivals") html = renderRivals(chart);
   return html ? { html, afterHeading: chart.afterHeading ?? null, kind: chart.kind } : null;
 }
 

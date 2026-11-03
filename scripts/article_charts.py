@@ -238,6 +238,8 @@ def _date_before(body: str, num: str, scale: str) -> str | None:
 def before_after_from_to(article: dict) -> dict | None:
     body = article.get("body", "")
     for heading, header, rows in _tables(body):
+        if "同じクラスの製品と比べると" in (heading or ""):
+            continue  # 製品の比較表は scripts/rivals.py の図にする
         for row in rows:
             for cell in row[1:2]:
                 text = _clean(cell)
@@ -354,6 +356,8 @@ def derive_charts(article: dict) -> list[dict]:
     charts: list[dict] = []
     body = article.get("body", "")
     for heading, header, rows in _tables(body):
+        if "同じクラスの製品と比べると" in (heading or ""):
+            continue  # 製品の比較表は scripts/rivals.py の図にする
         c = before_after_from_table(heading, header, rows) or series_from_table(heading, header, rows)
         if c and not any(x["kind"] == c["kind"] for x in charts):
             charts.append(c)
@@ -369,7 +373,10 @@ def derive_charts(article: dict) -> list[dict]:
     for c in charts:
         if c["kind"] != "ladder" and source["name"]:
             c["source"] = {k: v for k, v in source.items() if v}
-    return charts[:3]
+    charts = charts[:3]
+    # 同じクラスの製品との比較の図（scripts/rivals.py が作る。数字は各社の公式ページ）は、作り直しても残す
+    charts += [c for c in article.get("charts") or [] if c.get("kind") == "rivals"][:1]
+    return charts
 
 
 def _recent(days: int):
