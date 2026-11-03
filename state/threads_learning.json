@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-03T13:43:50+00:00",
+  "updatedAt": "2026-11-03T17:19:59+00:00",
   "metricsFetchedAt": "2026-11-03T13:24:45+00:00",
-  "visitsFetchedAt": "2026-11-03T13:43:50+00:00",
+  "visitsFetchedAt": "2026-11-03T17:19:59+00:00",
   "target": "visits",
   "visitRate": 0.02,
   "postsWithVisits": 0,
@@ -424,22 +424,22 @@
     },
     "genre": {
       "AI以外": {
-        "n": 3,
-        "avgViews": 747.0,
-        "avgEngagement": 9.33,
-        "avgComments": 2.33,
-        "avgVisits": 14.94,
+        "n": 9,
+        "avgViews": 451.2,
+        "avgEngagement": 5.0,
+        "avgComments": 0.78,
+        "avgVisits": 9.02,
         "nVisits": 0,
-        "score": 842.48
+        "score": 725.99
       },
       "AI": {
-        "n": 78,
-        "avgViews": 65.1,
-        "avgEngagement": 0.56,
+        "n": 72,
+        "avgViews": 45.3,
+        "avgEngagement": 0.38,
         "avgComments": 0.01,
-        "avgVisits": 1.3,
+        "avgVisits": 0.91,
         "nVisits": 0,
-        "score": 132.68
+        "score": 94.53
       }
     },
     "slotTest": {
@@ -576,7 +576,7 @@
       "postFormatKind": "A/B前/速報",
       "question": "記録前",
       "opener": "記録前",
-      "genre": "AI",
+      "genre": "AI以外",
       "slotTest": "なし"
     },
     {
@@ -648,7 +648,7 @@
       "postFormatKind": "A/B前/速報",
       "question": "記録前",
       "opener": "記録前",
-      "genre": "AI",
+      "genre": "AI以外",
       "slotTest": "なし"
     },
     {
