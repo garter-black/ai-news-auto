@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/build-a-repeatable-php-to-java-migration-engine-with-kiro/",
   "sourceName": "AWS Machine Learning Blog",
-  "title": "AWSがPHPをJavaに自動変換するAI移行エンジン『Kiro』公開",
+  "title": "AWSがPHPをJavaに自動変換するAI移行エンジン「Kiro」公開",
   "seoTitle": "AWSのPHP-Java移行エンジンKiroとは？使い方と仕組み",
   "threadsPost": "【速報】AWSが、PHPのプログラムをJavaのSpring Bootに変換するAI移行エンジン「Kiro」を公開しました。独自の8つのフェーズと検証の仕組みを使い、手作業の移植を確実で繰り返し行えるプロセスに変えます。",
   "threadsHook": "breaking",

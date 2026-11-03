@@ -1,7 +1,7 @@
 {
   "slug": "google-deepmind-genie-4-world-model",
-  "title": "Google DeepMindが新AI『Genie 4』発表 映像と音声が動的に連動する世界モデル",
-  "seoTitle": "Genie 4とは？使い方と仕組み｜Google世界モデルの進化",
+  "title": "Google DeepMindが新AI「Genie 4」発表　映像と音声が動的に連動する世界モデル",
+  "seoTitle": "Genie 4とは？使い方と仕組み　Google世界モデルの進化",
   "threadsPost": "結論：動画からリアルタイムに遊べる世界を作るAIです。\n\nGoogle DeepMindが世界モデルの最新版「Genie 4」を公開。\n今回は映像だけでなく音声やキャラクター対話までリアルタイムで生成できるようになりました。\n現在は研究段階ですがAPI提供も予定されています。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,

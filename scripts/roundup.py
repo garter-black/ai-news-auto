@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import headline_normalize  # noqa: E402
 from cluster import build_clusters  # noqa: E402
 import threads_hooks  # noqa: E402
 from genres import GENRES_BY_SLUG  # noqa: E402
@@ -413,6 +414,8 @@ def main() -> int:
         if old:
             record["slug"] = old["slug"]
 
+        # 見出しの書き方をそろえる（scripts/headline_normalize.py。main.write_article と同じ後処理）
+        headline_normalize.apply(record)
         path = ARTICLES_DIR / f"{record['slug']}.json"
         path.write_text(
             json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

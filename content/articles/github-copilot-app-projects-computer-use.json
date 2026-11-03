@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://github.blog/changelog/2026-10-28-github-copilot-app-universe-releases",
   "sourceName": "GitHub Changelog",
-  "title": "GitHubのAI支援Copilotアプリに新機能「プロジェクト」 PC操作も任せられる",
+  "title": "GitHubのAI支援Copilotアプリに新機能「プロジェクト」　PC操作も任せられる",
   "seoTitle": "GitHub Copilotアプリのプロジェクト機能とは？日本で使える？",
   "threadsPost": "複数のリポジトリをまたぐ作業、地味に大変ですよね。\nGitHubのAIアシスタントCopilotのアプリに「プロジェクト」機能が入りました。\n目標を伝えると、複数のAIが裏で動いてPull Requestなどを返してくれます。\nアプリを操作する「コンピューター使用」も、macOSとWindowsで公開プレビューです。",
   "threadsHook": "empathy",

@@ -9,6 +9,7 @@ import type { ArticleSummary } from "@/lib/articles";
 import { companyOf, thumbSource } from "@/lib/companies";
 import { Highlight } from "@/lib/highlight";
 import { usability, verdictOf } from "@/lib/verdict";
+import { displayHeadline } from "@/lib/headline";
 
 /** 48時間以内に続報を足した記事（並び順は作成日時のまま、印だけ付ける） */
 const updatedRecently = (article: ArticleSummary) =>
@@ -114,7 +115,7 @@ function TimelineRow({ article }: { article: ArticleSummary }) {
           </p>
 
           <h4 className="t-card mt-1.5 decoration-1 underline-offset-4 group-hover:underline">
-            <Highlight text={article.title} />
+            <Highlight text={displayHeadline(article.title)} />
           </h4>
 
           {verdict && (

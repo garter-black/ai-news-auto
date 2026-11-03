@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://developer.nvidia.com/blog/support-new-ai-frameworks-faster-using-nvidia-workload-map/",
   "sourceName": "NVIDIA Developer Blog",
-  "title": "AI半導体のNVIDIAが公開、複雑なAIフレームワークを効率管理する『Workload Map』とは",
+  "title": "AI半導体のNVIDIAが公開、複雑なAIフレームワークを効率管理する「Workload Map」とは",
   "seoTitle": "NVIDIA Workload Mapとは？AIフレームワーク管理の仕組み",
   "threadsPost": "複雑なAIフレームワークの管理、別々の対応に追われていませんか。\n\n要約すると、NVIDIAが公開した「Workload Map」は、分散AIワークロードの構造を共通で定義する仕組みです。\nJobSetやPyTorchJobなどの設定を一つにまとめ、専用のコードを書かずに各ツールで再利用できます。\n\nあなたの開発環境でも、フレームワークごとの管理に手間取っていませんか。",
   "threadsHook": "question",

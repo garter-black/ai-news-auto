@@ -9,6 +9,7 @@ import {
   type AffiliateLink,
   type Article,
 } from "@/lib/articles";
+import { displayHeadline } from "@/lib/headline";
 
 type Props = {
   current?: Article;
@@ -42,7 +43,7 @@ export default function Sidebar({ current, affiliates = [] }: Props) {
                     {formatDate(article.publishedAt)}
                   </span>
                   <span className="mt-1 block text-note font-medium leading-snug text-ink-soft group-hover:text-accent">
-                    {article.title}
+                    {displayHeadline(article.title)}
                   </span>
                 </Link>
               </li>

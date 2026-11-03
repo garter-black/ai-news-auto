@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://blogs.microsoft.com/blog/2026/10/28/introducing-the-microsoft-copilot-harness-unlocking-the-potential-of-truly-multi-model-agentic-work/",
   "sourceName": "Microsoft公式ブログ",
-  "title": "GitHub Copilotの中核をAI開発基盤で提供 複数のAIを使い分けるMicrosoftの新部品",
+  "title": "GitHub Copilotの中核をAI開発基盤で提供　複数のAIを使い分けるMicrosoftの新部品",
   "seoTitle": "Copilot harnessとは？Foundryでの使い方と提供状況",
   "threadsPost": "コードを書く人には、地味に大きいニュースかも。\nMicrosoftがGitHub Copilotの土台の仕組みを、AI開発基盤「Foundry」で使えるようにしました。\n20以上のAIモデルから、仕事に合うものを選んで動かせます。\n自社でゼロから作って守る手間が減りそうです。",
   "threadsHook": "callout",

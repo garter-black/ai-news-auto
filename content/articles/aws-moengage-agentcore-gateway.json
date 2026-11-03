@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/how-moengage-turned-over-400-apis-into-agent-tools-with-agentcore-gateway/",
   "sourceName": "AWS Machine Learning Blog",
-  "title": "AWSの生成AI基盤『Amazon Bedrock』、社内API400個をAIの道具に化かす新機能",
+  "title": "AWSの生成AI基盤「Amazon Bedrock」、社内API400個をAIの道具に化かす新機能",
   "seoTitle": "AWS AgentCore Gatewayとは？社内APIをAIツール化する方法",
   "threadsPost": "社内のバラバラなAPIをAIエージェントの道具に変える、AWSの新機能が登場しました。数百のAPI管理とセキュリティの課題をどう解決したのか、詳しく解説します。",
   "threadsHook": "number",

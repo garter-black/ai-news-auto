@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/jp/blogs/news/software-factory-stability/",
   "sourceName": "AWS ブログ（日本）",
-  "title": "AWSの開発エージェント『Kiro Crew』が週1000件のPRを安定処理する仕組み",
+  "title": "AWSの開発エージェント「Kiro Crew」が週1000件のPRを安定処理する仕組み",
   "seoTitle": "AWS Kiro Crewとは？週1000件のPRを安定させる開発プロセスの仕組み",
   "threadsPost": "週1000件ものプルリクエストをAIエージェントに処理させても、なぜシステムが壊れないのか。AWSのKiro Crewチームが公開した、自動テストとレビューの厳格な仕組みを徹底解説します。",
   "threadsHook": "contrarian",

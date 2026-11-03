@@ -1,7 +1,7 @@
 {
   "slug": "google-antigravity-autonomous-software-development",
-  "title": "Googleの開発者向けAI『Antigravity』 自律エージェントで新機能を即日本番反映",
-  "seoTitle": "Google Antigravityとは？機能と使い方｜自律AI開発",
+  "title": "Googleの開発者向けAI「Antigravity」　自律エージェントで新機能を即日本番反映",
+  "seoTitle": "Google Antigravityとは？機能と使い方　自律AI開発",
   "threadsPost": "1日で複数の新機能を本番反映できるようになります。\nGoogleが発表した開発ツール「Antigravity」は、自律AIエージェントが指示通りにコード生成からテスト、プルリクエスト作成まで実行します。\nエンジニアは設計と指示に集中でき、少人数での大規模開発を可能にします。",
   "threadsHook": "before_after",
   "threadsStyle": 2,

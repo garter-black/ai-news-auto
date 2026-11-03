@@ -1328,6 +1328,8 @@ def log_quality(state: dict, item: dict, kind: str, verdict: dict, attempt: int,
     }
     if verdict.get("readability"):
         entry["readability"] = verdict["readability"]
+    if verdict.get("warnings"):
+        entry["warnings"] = [str(w)[:120] for w in verdict["warnings"]][:3]
     entries = state.setdefault("quality_log", [])
     entries.append(entry)
     del entries[:-QUALITY_LOG_KEEP]
@@ -1990,7 +1992,8 @@ def main() -> int:
                 r = verdict.get("readability") or {}
                 log(f"   [gate] {tag} score={verdict.get('score')} 試行{attempt}/{attempts}"
                     f" 文{r.get('avg_sentence')}字/60字超{r.get('long_share', 0):.0%}/段落{r.get('avg_paragraph')}字(最長{r.get('max_paragraph')})"
-                    f" {('/ ' + ' | '.join(verdict['problems'][:3])[:300]) if verdict['problems'] else ''}")
+                    f" {('/ ' + ' | '.join(verdict['problems'][:3])[:300]) if verdict['problems'] else ''}"
+                    f"{(' / 注意: ' + ' | '.join(verdict['warnings'])) if verdict.get('warnings') else ''}")
                 log_quality(state, item, kind, verdict, attempt, verdict["ok"], model_name or "")
                 if not verdict["ok"] and not verdict.get("soft") and quality.MAJOR and quality.surgical_ok(verdict):
                     # 大きなニュース: 致命的でない細かい指摘（言い過ぎ・訳語・補足の程度）は、作り直さず指摘された文だけ直す

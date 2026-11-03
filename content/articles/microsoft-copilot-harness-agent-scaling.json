@@ -1,7 +1,7 @@
 {
   "slug": "microsoft-copilot-harness-agent-scaling",
-  "title": "Microsoftが新機能発表 インフラ構築なしでAIエージェントを自動拡張『Copilot Harness』",
-  "seoTitle": "Copilot Harnessの使い方と機能｜インフラ不要のAI拡張法",
+  "title": "Microsoftが新機能発表　インフラ構築なしでAIエージェントを自動拡張「Copilot Harness」",
+  "seoTitle": "Copilot Harnessの使い方と機能　インフラ不要のAI拡張法",
   "threadsPost": "インフラ構築に時間をかけるのは、もう終わりです。\nMicrosoftがAIエージェントの拡張機能「Copilot Harness」を発表。\nサーバーやコンテナを用意しなくても、スキルを追加するだけで複雑な業務を処理できます。\n開発者はロジック作りに集中できるようになります。",
   "threadsHook": "before_after",
   "threadsStyle": 2,

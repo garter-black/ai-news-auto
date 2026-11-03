@@ -5,6 +5,7 @@ import Image from "next/image";
 import { coverPath, formatDate, isRecentlyUpdated, sourceLabel, speedLabel, type ArticleSummary } from "@/lib/articles";
 import { thumbSource } from "@/lib/companies";
 import { Highlight } from "@/lib/highlight";
+import { displayHeadline } from "@/lib/headline";
 
 type Props = {
   article: ArticleSummary;
@@ -85,7 +86,7 @@ export default function ArticleCard({ article, priority, morph = false, quickIma
 
           <Morph name={`title-${article.slug}`} enabled={morph}>
             <h3 className="t-card decoration-[1.5px] underline-offset-4 group-hover:underline">
-              <Highlight text={article.title} />
+              <Highlight text={displayHeadline(article.title)} />
             </h3>
           </Morph>
 

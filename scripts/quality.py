@@ -22,6 +22,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import calc_facts  # noqa: E402
 import glossary  # noqa: E402
+import headline_normalize  # noqa: E402
 import japan_availability  # noqa: E402
 import llm  # noqa: E402
 import persona  # noqa: E402
@@ -1128,14 +1129,20 @@ def fix_video_leftover(record: dict) -> None:
         record[key] = text
 
 
+def title_warnings(record: dict) -> list[str]:
+    """見出しの警告（不合格にはしない）。40字を超えると一覧・カードで前半だけになる（scripts/headline_normalize.py）"""
+    return headline_normalize.title_warnings(record)
+
+
 def evaluate(record: dict, source_text: str, kind: str, context: str = "", check_facts: bool = True) -> dict:
-    """{ok, soft, score, problems, structural, fact, readability, readability_problems}。形で落ちたときは事実確認を省く（API の節約）。
+    """{ok, soft, score, problems, structural, fact, readability, readability_problems, warnings}。warnings は不合格にしない注意（見出しの長さ）。形で落ちたときは事実確認を省く（API の節約）。
     soft=True は「形と事実は合格、読みやすさだけが基準外」。polish() で文を分け、だめでも受理してよい。
     形・事実の不合格のときの problems には読みやすさを混ぜない（作り直しで本文が縮み、長さで落ちるのを防ぐ）"""
     fix_video_leftover(record)
     read = readability(record.get("body") or "")
     read_problems = readability_problems("", read)
-    base = {"structural": [], "fact": None, "readability": read, "readability_problems": read_problems}
+    base = {"structural": [], "fact": None, "readability": read, "readability_problems": read_problems,
+            "warnings": title_warnings(record)}
     structural = structural_problems(record, kind, source_text, context)
     if record.get("sourceType") == "web" and not (source_text or "").strip():
         structural.append("一次資料が空のため記事の内容を確認できません")

@@ -6,6 +6,7 @@ import sharp from "sharp";
 import type { FullArticle } from "@/lib/articles";
 import { companyOf } from "@/lib/companies";
 import { fetchPhoto } from "@/lib/cover";
+import { headOf } from "@/lib/headline";
 import { officialCreditText } from "@/lib/image-credit";
 import { containRect, coverFit, cornerRect, DEFAULT_AR, focusOf, freeCorner as freeCornerOf, NOTE, NOTE_SMALL, overlap, photoOnlyLayout, TAG, TAG_SMALL, type Box, type Corner, type Rect } from "@/lib/card-geometry";
 
@@ -78,10 +79,8 @@ function phrasesOf(text: string): string[] {
  */
 export function cardHeadline(article: FullArticle): string {
   const title = (article.title || article.seoTitle || "").trim();
-  // 区切りは全角の空白・－・｜と、日本語のすぐ後ろの半角空白だけ（「Agent Compute Engine」の中の空白では切らない）
-  const head = title.split(/(?<=[^\x00-\x7f])[ 　]|[　－―—｜|]/)[0].trim();
-  const balanced = (head.match(/[『「（(]/g) ?? []).length === (head.match(/[』」）)]/g) ?? []).length;
-  let text = head.length >= 12 && head.length < title.length && balanced ? head : title;
+  // 区切りは全角の空白・－・｜と、日本語のすぐ後ろの半角空白だけ（lib/headline.ts。一覧の見出しと同じ切り方）
+  let text = headOf(title) ?? title;
   // まだ長いときは、英字だけの製品名のかっこ（『Agent Compute Engine』など）を外す。製品名は投稿の本文に書く
   if (text.length > 34) text = text.replace(/[『「][\x20-\x7e]+[』」]/g, "").replace(/\s+/g, " ").trim();
   return text;

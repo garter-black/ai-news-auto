@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://www.anthropic.com/research/discovering-vulnerabilities-with-claude",
   "sourceName": "Anthropic公式ニュース",
-  "title": "Claudeの開発元Anthropicが未公開AIでChromeやSafariの深刻な欠陥を発見 攻撃手順まで自動作成",
+  "title": "Claudeの開発元Anthropicが未公開AIでChromeやSafariの深刻な欠陥を発見　攻撃手順まで自動作成",
   "seoTitle": "Claudeの脆弱性発見とは？Chromeなど5例と日本での使い方",
   "threadsPost": "62件。\nChatGPTのライバル、Claudeを作るAnthropicが、社内の未公開AIでChromeの重大な欠陥を見つけた数です。\nブラウザやWindows、Androidの弱点を、攻撃の手順まで自分で組み立てたそうです。\n欠陥は報告済みでChromeは修正済み。このAI自体は一般には使えません。",
   "threadsHook": "number",

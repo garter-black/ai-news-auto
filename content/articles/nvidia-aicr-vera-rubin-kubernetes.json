@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://developer.nvidia.com/blog/making-kubernetes-ai-ready-for-nvidia-vera-rubin-on-day-one/",
   "sourceName": "NVIDIA Developer Blog",
-  "title": "NVIDIAの次世代AI基盤『Vera Rubin』、Kubernetes実行環境のレシピが公開に",
+  "title": "NVIDIAの次世代AI基盤「Vera Rubin」、Kubernetes実行環境のレシピが公開に",
   "seoTitle": "NVIDIA Vera Rubinとは？Kubernetes設定レシピと提供状況",
   "threadsPost": "【速報】NVIDIAが次世代AI基盤向けのKubernetes設定レシピを公開しました。\n\n要約すると、新ハードウェア『Vera Rubin NVL72』の導入を支援する実行基盤のレシピが公開されました。\nドライバやネットワーク設定があらかじめ組み込まれ、検証環境の構築を簡素化します。\n\nお使いのインフラ環境で、次世代ハードウェアの導入準備は進んでいますか？",
   "threadsHook": "breaking",

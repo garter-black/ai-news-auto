@@ -3,6 +3,7 @@ import GenreTabs from "@/components/HeaderNav";
 import LiveLine from "@/components/LiveLine";
 import ThemeToggle from "@/components/ThemeToggle";
 import { getAllArticles } from "@/lib/articles";
+import { displayHeadline } from "@/lib/headline";
 import { genreNav, UTILITY_NAV } from "@/lib/nav";
 import { siteConfig } from "@/site.config";
 
@@ -73,7 +74,7 @@ export default function Header() {
 
       {latest && (
         <LiveLine
-          items={[latest, second ?? latest].map((a) => ({ slug: a.slug, title: a.title, publishedAt: a.publishedAt }))}
+          items={[latest, second ?? latest].map((a) => ({ slug: a.slug, title: displayHeadline(a.title), publishedAt: a.publishedAt }))}
         />
       )}
     </>

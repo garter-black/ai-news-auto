@@ -1,7 +1,7 @@
 {
   "slug": "google-gemini-4-argon-surf-clock-hardware",
-  "title": "GoogleのAI『Gemini 4 Argon』で電子工作を自動化 3日25ドルでスマート機器を作る技術",
-  "seoTitle": "Gemini 4 Argonとは？使い方と料金｜ハードウェア開発をAIで自動化",
+  "title": "GoogleのAI「Gemini 4 Argon」で電子工作を自動化　3日25ドルでスマート機器を作る技術",
+  "seoTitle": "Gemini 4 Argonとは？使い方と料金　ハードウェア開発をAIで自動化",
   "threadsPost": "発表動画でいちばん驚いたのは、最後の30秒でした。\n\nGoogleの最新AIを使ったら、3D CADの知識なしで物理的なスマート時計が3日で完成。\n\n設計から配線、データ解析までAIがほぼ自動で行ってくれます。\n\n個人開発のハードルが劇的に下がりそうです。",
   "threadsHook": "surprise",
   "threadsStyle": 2,

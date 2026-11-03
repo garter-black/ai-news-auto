@@ -31,6 +31,7 @@ from genres import GENRES, GENRES_BY_SLUG  # noqa: E402
 from topics import is_off_topic  # noqa: E402
 import threads_hooks  # noqa: E402
 import persona  # noqa: E402
+import headline_normalize  # noqa: E402
 
 # --------------------------------------------------------------------------- #
 # 設定
@@ -866,6 +867,9 @@ def build_record(entry: dict, data: dict) -> dict:
 
 def write_article(record: dict) -> Path:
     record.pop("_facts", None)  # 品質ゲート用の中身（scripts/facts_bundle.py）は書き出さない
+    # 見出しの書き方をそろえる（かっこ・区切り・会社名・西暦。LLM を使わない後処理。scripts/headline_normalize.py）
+    for change in headline_normalize.apply(record):
+        log(f"   [headline] {change}")
     ARTICLES_DIR.mkdir(parents=True, exist_ok=True)
     path = ARTICLES_DIR / f"{record['slug']}.json"
     path.write_text(

@@ -1,6 +1,6 @@
 {
   "slug": "microsoft-foundry-agent-framework-customization",
-  "title": "マイクロソフトのAI開発「Microsoft Foundry」チャットからコードを開いてエージェントを直接カスタム",
+  "title": "MicrosoftのAI開発「Microsoft Foundry」チャットからコードを開いてエージェントを直接カスタム",
   "seoTitle": "Microsoft Foundryとは？使い方とAIエージェントのカスタマイズ",
   "threadsPost": "AIエージェントの開発をしている人、必読の機能です。\n\nマイクロソフトのMicrosoft Foundryでは、チャット画面のVS Codeアイコンを押すだけで背景のコードが開きます。\n\n指示プロンプトやMCPツールの連携コードを直接編集できます。\n\n開発環境とAIツールがシームレスにつながります。",
   "threadsHook": "callout",

@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/jp/blogs/news/intelligent-alarm-management-for-power-and-utilities-using-amazon-bedrock-agentcore/",
   "sourceName": "AWS ブログ（日本）",
-  "title": "AWSが電力・公益事業向け生成AIエージェント『Amazon Bedrock AgentCore』発表、アラーム調査を数分に",
+  "title": "AWSが電力・公益事業向け生成AIエージェント「Amazon Bedrock AgentCore」発表、アラーム調査を数分に",
   "seoTitle": "Amazon Bedrock AgentCoreとは？電力・公益事業向けAIアラーム管理の仕組みと料金",
   "threadsPost": "【速報】AWSが電力・公益事業向けの新しいAIアラーム管理アーキテクチャを発表しました。発電所や送配電の現場で大量に発生するアラームの根本原因を、マルチエージェントAIが数分で自動調査してくれます。",
   "threadsHook": "breaking",

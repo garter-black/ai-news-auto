@@ -1,7 +1,7 @@
 {
   "slug": "microsoft-fabric-database-agent-preview",
-  "title": "マイクロソフトがDB管理AI機能「Database Agent」を発表 アプリ遅延を自動検知",
-  "seoTitle": "Database Agentとは？使い方や料金｜Microsoft Fabric",
+  "title": "MicrosoftがDB管理AI機能「Database Agent」を発表　アプリ遅延を自動検知",
+  "seoTitle": "Database Agentとは？使い方や料金　Microsoft Fabric",
   "threadsPost": "障害が起きてから怒られて対応する日々は、もう終わりです。\n\nマイクロソフトがFabricの新機能「Database Agent」を発表しました。\n\nAIがデータベースを24時間監視し、遅延や処理の詰まりを自動で見つけて教えてくれます。\n\n現在はAzure SQLでプレビュー提供中です。",
   "threadsHook": "before_after",
   "threadsStyle": 2,
