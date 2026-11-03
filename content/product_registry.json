@@ -619,6 +619,14 @@
       "category": "ガジェット"
     },
     {
+      "slug": "isaac",
+      "name": "Isaac",
+      "aliases": [],
+      "company": "nvidia",
+      "companyName": "NVIDIA",
+      "category": "ロボット"
+    },
+    {
       "slug": "jetson-thor",
       "name": "Jetson Thor",
       "aliases": [],
@@ -748,7 +756,9 @@
     {
       "slug": "microsoft-foundry",
       "name": "Microsoft Foundry",
-      "aliases": [],
+      "aliases": [
+        "Foundry"
+      ],
       "company": "microsoft",
       "companyName": "Microsoft",
       "category": "開発ツール"
@@ -842,6 +852,14 @@
       "category": "半導体・インフラ"
     },
     {
+      "slug": "omniverse",
+      "name": "Omniverse",
+      "aliases": [],
+      "company": "nvidia",
+      "companyName": "NVIDIA",
+      "category": "アプリ・サービス"
+    },
+    {
       "slug": "onelake",
       "name": "OneLake",
       "aliases": [],
@@ -898,6 +916,14 @@
       "company": "nvidia",
       "companyName": "NVIDIA",
       "category": "ガジェット"
+    },
+    {
+      "slug": "secure-agent-workspace",
+      "name": "Secure Agent Workspace",
+      "aliases": [],
+      "company": "microsoft",
+      "companyName": "Microsoft",
+      "category": "アプリ・サービス"
     },
     {
       "slug": "sharepoint",
@@ -1056,8 +1082,10 @@
     "Agent Optimizer",
     "Agent Plugins",
     "Agent Plugins 1.0",
+    "Agent Skills",
     "AICR",
     "AIインフラ",
+    "AIコーディング",
     "AIコードレビュー",
     "AIスロップ",
     "AIファクトリー",
@@ -1071,6 +1099,7 @@
     "AI音声",
     "ANT",
     "APIクレジット",
+    "API料金",
     "Astra",
     "Atlassian",
     "Birding Pal",
@@ -1078,6 +1107,7 @@
     "Cooley",
     "Copilot harness",
     "Cosmos",
+    "CUDA",
     "Databricks",
     "DiskANN",
     "Docker",
@@ -1105,6 +1135,7 @@
     "Kiro",
     "Kubernetes",
     "KVキャッシュ",
+    "LangChain",
     "Llama",
     "LLM学習",
     "Mac",
@@ -1143,8 +1174,10 @@
     "UIデザイン",
     "Ultrafast",
     "V7",
+    "Valuemaxxing",
     "Xiaomi",
     "Zendesk",
+    "エッジAI",
     "エージェンティックAI",
     "エージェントAI",
     "コーディングAI",
@@ -1168,7 +1201,7 @@
     "自律型AI",
     "音声AI"
   ],
-  "updatedAt": "2026-11-03T04:34:34+00:00",
+  "updatedAt": "2026-11-03T11:41:16+00:00",
   "failed": {
     "gpt-5-6-sol": {
       "at": "2026-10-27T11:05:30+00:00",

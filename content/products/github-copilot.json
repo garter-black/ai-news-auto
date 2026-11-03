@@ -165,7 +165,7 @@
     "microsoft-foundry",
     "kimi-k3",
     "azure-sql",
-    "typescript-7"
+    "work-iq"
   ],
   "articles": [
     "microsoft-foundry-agent-framework-customization",
@@ -183,8 +183,8 @@
     "microsoft-copilot-work-iq-dev-tools",
     "github-copilot-native-app-released",
     "agent-plugins-one-zero-comprehensive-guide-matome",
-    "dotnet-aspire-github-copilot-integration",
     "microsoft-ai-ecosystem-kimi-k3-mcp-matome",
+    "dotnet-aspire-github-copilot-integration",
     "github-copilot-reusable-agent-skills-guide",
     "microsoft-sql-mcp-server-announcement",
     "github-copilot-kimi-k3-multi-agent",
@@ -193,12 +193,10 @@
     "microsoft-qdk-tutorial-vscode-github-copilot"
   ],
   "linkFrom": [
-    "microsoft-copilot-harness-foundry",
     "github-copilot-app-projects-computer-use",
-    "github-enterprise-includes-copilot",
     "github-copilot-security-extension",
-    "github-copilot-plugin-controls-ga",
     "github-copilot-native-app-released",
+    "microsoft-ai-ecosystem-kimi-k3-mcp-matome",
     "dotnet-aspire-github-copilot-integration",
     "github-copilot-reusable-agent-skills-guide",
     "github-copilot-kimi-k3-multi-agent"

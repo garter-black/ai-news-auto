@@ -1,12 +1,14 @@
 {
   "slug": "microsoft-foundry",
   "name": "Microsoft Foundry",
-  "aliases": [],
+  "aliases": [
+    "Foundry"
+  ],
   "company": "microsoft",
   "companyName": "Microsoft",
   "category": "開発ツール",
   "overview": {
-    "text": "Microsoft Foundryは、Microsoftが提供するAIエージェントの開発プラットフォームです。チャットからコードを開く機能やコスト最適化機能を備えています。2026年9月に最新機能が発表されました。",
+    "text": "Microsoft Foundryは、Microsoftが提供するAIエージェント開発のための統合プラットフォームです。プロンプト調整やモデル選択、セキュリティ対策を自動化し、開発効率の向上とコスト削減を支援します。2026年9月に機能拡張やツールが発表されています。",
     "sources": [
       "microsoft-foundry-agent-framework-customization",
       "microsoft-foundry-model-router-update"
@@ -17,15 +19,7 @@
       "label": "料金",
       "value": "API従量課金",
       "sources": [
-        "microsoft-foundry-agent-framework-customization",
-        "microsoft-foundry-agent-guardrails-security"
-      ]
-    },
-    {
-      "label": "提供開始",
-      "value": "2026年9月",
-      "sources": [
-        "microsoft-foundry-model-router-update"
+        "microsoft-foundry-agent-framework-customization"
       ]
     },
     {
@@ -35,75 +29,47 @@
         "microsoft-foundry-agent-framework-customization",
         "microsoft-copilot-harness-foundry-agent-builder"
       ]
-    },
-    {
-      "label": "向いている人",
-      "value": "開発者",
-      "sources": [
-        "microsoft-foundry-agent-framework-customization",
-        "microsoft-copilot-harness-foundry-agent-builder"
-      ]
     }
   ],
   "capabilities": [
     {
-      "text": "チャット画面のボタンから直接Visual Studio Codeを開き、エージェントの基盤コードを即座に編集できます。",
+      "text": "チャット画面から直接VS Codeを開き、エージェントの基盤コードを即座に編集できます。",
       "sources": [
         "microsoft-foundry-agent-framework-customization"
       ]
     },
     {
-      "text": "サーバーやコンテナの準備なしで、指示とツールを設定するだけでAIエージェントを作成できます。",
+      "text": "Model Routerにより、リクエストの難易度に応じて適切なLLMへ動的に処理を振り分けます。",
       "sources": [
-        "microsoft-copilot-harness-foundry-agent-builder"
-      ]
-    },
-    {
-      "text": "ユーザーからの入力に対して脱獄プロンプトや個人情報の漏洩を自動的に検出してブロックします。",
-      "sources": [
-        "microsoft-foundry-agent-guardrails-security"
-      ]
-    },
-    {
-      "text": "本番環境のログから評価データを自動抽出し、プロンプトと構成を継続的に最適化できます。",
-      "sources": [
-        "microsoft-foundry-agent-optimizer-guide",
         "microsoft-foundry-ai-agent-cost-optimization"
       ]
     },
     {
-      "text": "リクエストの内容に応じてリアルタイムに最適な大規模言語モデルへ処理を振り分けます。",
+      "text": "Agent Optimizerが本番環境のトレースから評価データを自動抽出し、プロンプトを継続更新します。",
       "sources": [
-        "microsoft-foundry-ai-agent-cost-optimization",
-        "microsoft-foundry-model-router-update"
+        "microsoft-foundry-ai-agent-cost-optimization"
+      ]
+    },
+    {
+      "text": "Guardrails機能により、脱獄プロンプトや個人情報の漏洩を自動でブロックします。",
+      "sources": [
+        "microsoft-foundry-agent-guardrails-security"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "配備するモデルの呼び出し回数に応じたAPI従量課金が発生します。",
+      "text": "配備するモデルの呼び出し回数に応じたAPI従量課金およびAzureインフラストラクチャの使用料が発生します。",
       "sources": [
         "microsoft-foundry-agent-framework-customization"
-      ]
-    },
-    {
-      "text": "Azureの無料初期クレジット枠などを活用して検証が可能です。",
-      "sources": [
-        "microsoft-foundry-agent-guardrails-security"
       ]
     }
   ],
   "japan": [
     {
-      "text": "日本国内からAzureのアカウントを開設し、ポータルサイトにログインすることで利用できます。",
+      "text": "発表の時点では、日本国内からAzureアカウントを開設してポータルサイトを利用できます。",
       "sources": [
         "microsoft-foundry-agent-framework-customization",
-        "microsoft-copilot-harness-foundry-agent-builder"
-      ]
-    },
-    {
-      "text": "日本語のプロンプトや指示文も問題なく動作します。",
-      "sources": [
         "microsoft-copilot-harness-foundry-agent-builder"
       ]
     }
@@ -116,47 +82,56 @@
       ]
     },
     {
-      "text": "Microsoft Foundryのポータルサイトへログインして新しいプロジェクトを作成します。",
+      "text": "Microsoft Foundryのポータルサイトへログインし、開発対象のワークスペースを設定します。",
       "sources": [
+        "microsoft-foundry-agent-framework-customization",
         "microsoft-copilot-harness-foundry-agent-builder"
       ]
     }
   ],
   "differences": [
     {
-      "text": "チャット画面からワンクリックでローカルのコードエディターへ直接遷移できるようになりました。",
+      "text": "チャット画面からワンクリックでローカルコードのエディターへ直接遷移できるようになりました。",
       "sources": [
         "microsoft-foundry-agent-framework-customization"
       ]
     },
     {
-      "text": "サーバーやコンテナの構築を一切行わずにAIエージェントの機能を拡張できるようになりました。",
+      "text": "複数のAIモデルを固定ではなく、タスクに応じて自動で振り分けるルーター機能が統合されました。",
       "sources": [
-        "microsoft-copilot-harness-foundry-agent-builder"
+        "microsoft-foundry-ai-agent-cost-optimization",
+        "microsoft-foundry-model-router-update"
       ]
     }
   ],
   "faq": [
     {
-      "q": "無料で試すことはできますか？",
-      "a": "Azureの無料初期クレジット枠などを活用して検証が可能です。",
+      "q": "無料で試せる？",
+      "a": "Azureの無料初期クレジット枠などを活用して検証が可能です。VS Codeエディター自体は無料で利用できます。",
+      "sources": [
+        "microsoft-foundry-agent-framework-customization",
+        "microsoft-foundry-agent-guardrails-security"
+      ]
+    },
+    {
+      "q": "セキュリティ機能はある？",
+      "a": "脱獄攻撃や個人情報の漏洩、タスクの脱線を防ぐガードレール機能が備わっています。",
       "sources": [
         "microsoft-foundry-agent-guardrails-security"
       ]
     },
     {
-      "q": "どのような安全機能がありますか？",
-      "a": "脱獄プロンプトや個人情報（PII）の漏洩、タスクの乖離を防ぐガードレール機能を備えています。",
+      "q": "対応しているモデルの数は？",
+      "a": "モデルルーターでは最大27モデルなど、多くの最先端モデルに対応しています。",
       "sources": [
-        "microsoft-foundry-agent-guardrails-security"
-      ]
-    },
-    {
-      "q": "コストを抑える機能はありますか？",
-      "a": "リクエストに応じて最適なモデルを自動で振り分けるモデルルーター機能などが用意されています。",
-      "sources": [
-        "microsoft-foundry-ai-agent-cost-optimization",
         "microsoft-foundry-model-router-update"
+      ]
+    },
+    {
+      "q": "誰に向いている？",
+      "a": "基幹システムと連携する高度な自律型AIエージェントを実装するソフトウェアエンジニアに向いています。",
+      "sources": [
+        "microsoft-foundry-agent-framework-customization"
       ]
     }
   ],
@@ -164,39 +139,39 @@
     {
       "date": "2026-09-26",
       "slug": "microsoft-foundry-model-router-update",
-      "event": "Model Routerの最新機能を公開"
+      "event": "Model Routerを更新"
     },
     {
       "date": "2026-10-02",
       "slug": "microsoft-foundry-model-router-auto-evaluation",
-      "event": "モデル自動評価ツールを公開"
+      "event": "Model Router評価ツールを公開"
     },
     {
       "date": "2026-10-20",
       "slug": "microsoft-foundry-ai-agent-cost-optimization",
-      "event": "コスト自動最適化の2機能を公開"
+      "event": "AIエージェントの費用抑制機能を発表"
     },
     {
       "date": "2026-10-22",
       "slug": "microsoft-foundry-agent-optimizer-guide",
-      "event": "Agent Optimizerの解説動画を公開"
+      "event": "Agent Optimizerを解説"
     },
     {
       "date": "2026-10-26",
       "slug": "microsoft-foundry-agent-guardrails-security",
-      "event": "ガードレール機能の解説を公開"
+      "event": "ガードレール機能を実演"
     },
     {
       "date": "2026-10-31",
       "slug": "microsoft-foundry-agent-framework-customization",
-      "event": "エージェント直接カスタム手法を公開"
+      "event": "VS Code連携を追加"
     }
   ],
   "related": [
     "github-copilot",
+    "work-iq",
     "kimi-k3",
-    "typescript-7",
-    "azure-sql"
+    "typescript-7"
   ],
   "articles": [
     "microsoft-foundry-agent-framework-customization",
@@ -210,19 +185,22 @@
     "dotnet-memory-dumps-database-time-migration-ai-agent-memory",
     "microsoft-foundry-model-router-update",
     "github-copilot-kimi-k3-multi-agent",
-    "visual-studio-ai-agents-mcp-sdk"
+    "visual-studio-ai-agents-mcp-sdk",
+    "microsoft-fabric-onelake-ai-stack"
   ],
   "linkFrom": [
     "microsoft-foundry-agent-framework-customization",
+    "microsoft-copilot-harness-foundry",
+    "dotnet-11-rc2-python-arm64-foundry-browser-automation",
     "microsoft-foundry-agent-guardrails-security",
     "microsoft-foundry-agent-optimizer-guide",
     "microsoft-foundry-ai-agent-cost-optimization",
     "microsoft-foundry-model-router-auto-evaluation",
     "microsoft-foundry-model-router-update"
   ],
-  "signature": "536ec73500fb42c1",
-  "primarySignature": "9d19619498a7ad96",
+  "signature": "16304db2188978a2",
+  "primarySignature": "96dd02d177699dee",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:43:54+00:00",
-  "updatedAt": "2026-11-01T12:14:36+00:00"
+  "updatedAt": "2026-11-03T11:41:30+00:00"
 }

@@ -189,7 +189,6 @@
     "openai-gpt-61-terra-amazon-bedrock",
     "amazon-bedrock-cost-management-playbook",
     "aws-inter-bee-2026-preview",
-    "aws-moengage-agentcore-gateway",
     "aws-sentinel-ai-audio-provenance",
     "aws-bedrock-agentcore-alarm-management",
     "aws-bedrock-evaluation-bias-property-finder",
@@ -198,8 +197,8 @@
     "aws-weekly-20261019-updates"
   ],
   "linkFrom": [
+    "openai-gpt-61-terra-amazon-bedrock",
     "amazon-bedrock-cost-management-playbook",
-    "aws-moengage-agentcore-gateway",
     "aws-bedrock-agentcore-alarm-management",
     "aws-bedrock-evaluation-bias-property-finder",
     "amazon-bedrock-openai-prompt-caching",

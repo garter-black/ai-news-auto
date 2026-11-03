@@ -125,18 +125,20 @@
     }
   ],
   "related": [
-    "azure-sql",
     "github-copilot",
     "microsoft-foundry",
+    "azure-sql",
     "typescript-7"
   ],
   "articles": [
     "copilot-cowork-build-lessons-rust",
+    "microsoft-copilot-work-iq-dev-tools",
     "microsoft-copilot-to-agent-ecosystem-guide",
     "microsoft-work-iq-agent-context-m365",
     "microsoft-fabric-onelake-ai-stack"
   ],
   "linkFrom": [
+    "microsoft-copilot-work-iq-dev-tools",
     "microsoft-work-iq-agent-context-m365"
   ],
   "signature": "f304e38a4c76cbb0",
