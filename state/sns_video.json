@@ -376,7 +376,7 @@
     },
     "honda-rn0-emtb-eicma-2026": {
       "at": "2026-11-03T01:04:15+00:00",
-      "status": "ready",
+      "status": "posted",
       "tries": 1,
       "textAt": "2026-11-02T15:35:40+00:00",
       "versions": {
@@ -455,7 +455,12 @@
         "short": "https://ai-tech-express.jp/video/honda-rn0-emtb-eicma-2026-4617c60dab.mp4",
         "poster": "https://ai-tech-express.jp/video/honda-rn0-emtb-eicma-2026-f7af59317d.jpg"
       },
-      "embedded": true
+      "embedded": true,
+      "variant": "short",
+      "body": "Hondaの高級e-MTB、今買える？\n公式ページの画面を見ながら、40秒で解説しました。\n\n要約すると、HondaがドイツのROTWILDと共同開発した同社初のハイエンド電動アシストマウンテンバイク「Honda RN0」を、ミラノのEICMA 2026で世界初公開しました。ダウンヒル競技専用だったRN01と違い、登りから下りまで走るモデルです。車体は約24kgで、価格と発売時期は示されていません。\n\n詳しくはこちら👇\nhttps://ai-tech-express.jp/articles/honda-rn0-emtb-eicma-2026?utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=short\n音声：VOICEVOX:九州そら",
+      "link": "https://ai-tech-express.jp/articles/honda-rn0-emtb-eicma-2026?utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=short",
+      "bufferId": "6ae937d17996caf141c3a729",
+      "postedAt": "2026-11-03T01:24:43+00:00"
     }
   }
 }
