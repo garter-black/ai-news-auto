@@ -1,0 +1,78 @@
+name: Rewrite existing articles by news type
+
+# 今ある記事を、ニュースの種類ごとの型（scripts/news_types.py）で書き直す（scripts/rewrite_types.py。2026-11-03 オーナー承認）。
+# よく読まれている順に、まだの記事だけ。本文を書く段は Sonnet、事実確認・手直しはいつもの配分（月の予算の中）。
+# 品質ゲートに合格しなかった記事は書き換えない。URL・題名・公開日時・続報・画像は変えない。SNS には何も出さない。
+on:
+  workflow_dispatch:
+    inputs:
+      max:
+        description: "1回で書き直す記事の数"
+        required: false
+        default: "20"
+      slugs:
+        description: "この記事だけ（カンマ区切り。空ならよく読まれている順）"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: types-rewrite
+  cancel-in-progress: false
+
+jobs:
+  rewrite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Rewrite
+        id: rewrite
+        continue-on-error: true
+        env:
+          LLM_WORKFLOW: products
+          # API の使用額はこのジョブ専用のファイルに記録（予算はファイルの合計で見る）
+          CLAUDE_API_LEDGER: types
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
+          AFF_STATS_TOKEN: ${{ secrets.AFF_STATS_TOKEN }}
+          MAX: ${{ inputs.max || '20' }}
+          SLUGS: ${{ inputs.slugs }}
+        run: |
+          timeout 4800 python -u scripts/rewrite_types.py --apply --max "$MAX" --slug "$SLUGS" --budget-sec 4200 --report rewrite_report.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: rewrite-report
+          path: rewrite_report.json
+          if-no-files-found: ignore
+      - name: Commit and deploy
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add content/articles
+          if [ -f state/claude_api_usage_types.json ]; then git add state/claude_api_usage_types.json; fi
+          if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
+          N=$(git diff --cached --name-only -- 'content/articles/*.json' | wc -l | tr -d ' ')
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(content): 今ある記事をニュースの種類ごとの型で書き直す（${N}本）"
+          # 記事づくりの回（auto_run）が走っている間は push を待つ。ぶつかっても項目ごとにマージする（scripts/git_safe_push.py）
+          if python3 scripts/git_safe_push.py --wait-idle auto_run.yml --wait-max 1200; then
+            gh workflow run deploy_cloudflare.yml --ref main
+            exit 0
+          fi
+          exit 1

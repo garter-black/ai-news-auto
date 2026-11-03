@@ -60,7 +60,7 @@ jobs:
       - name: Verify article sections (empty sections hidden, headings rewritten; same rules in Python and TS)
         run: |
           node --test tests/test_article_sections.cjs tests/test_body_images.cjs tests/test_article_blocks.cjs
-          python3 -m unittest tests.test_section_gate tests.test_news_types tests.test_article_style
+          python3 -m unittest tests.test_section_gate tests.test_news_types tests.test_article_style tests.test_rewrite_types
 
       - name: Verify one ad slot / newsletter signup per page and no "記載なし" shown to readers
         run: node --test tests/test_page_slots.cjs tests/test_no_data.cjs tests/test_products_hub.cjs
