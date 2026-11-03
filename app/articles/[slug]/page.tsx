@@ -513,7 +513,7 @@ export default async function ArticlePage({ params }: Props) {
             />
           )}
           {/* 仕事・お金への影響（記事ごとの中身があるときだけ。見出しはニュースの種類に合わせる） */}
-          {workMoney && <WorkMoneyCard workMoney={workMoney} heading={workMoneyHeading(article.newsType, article.genreSlug)} />}
+          {workMoney && <WorkMoneyCard workMoney={workMoney} heading={workMoneyHeading(article.newsType, article.genreSlug, article.title, article.tags)} />}
           {/* 料金早見表・イベントページへの案内（当てはまる記事だけ） */}
           <AssetLinks article={article} />
 

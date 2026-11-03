@@ -63,3 +63,12 @@ test("同梱の朝のまとめ・週のまとめを表示と同じ手順で通�
     }
   }
 });
+
+test("朝のまとめの要約の文も、説明つきの社名を外す（「ChatGPTのOpenAIが」。2026-11-03 本番で要約に残っていた）", () => {
+  assert.equal(
+    stripKnownDescriptors("ChatGPTのOpenAIが、新しく作るAI用の大きな施設で、電気が足りない日には使う量を減らすと発表しました。"),
+    "OpenAIが、新しく作るAI用の大きな施設で、電気が足りない日には使う量を減らすと発表しました。",
+  );
+  const src = fs.readFileSync(path.join(__dirname, "../lib/digest.ts"), "utf8");
+  assert.match(src, /summary: stripKnownDescriptors\(oneLineSummary\(article\)\)/);
+});

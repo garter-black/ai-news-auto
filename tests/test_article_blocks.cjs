@@ -17,7 +17,7 @@ function load(rel) {
   m._compile(compiled, file);
   return m.exports;
 }
-const { dropSummarySections } = load("lib/article-sections.ts");
+const { dropSummarySections, displayHeading, isNonanswerTitle } = load("lib/article-sections.ts");
 const { concreteWorkMoney, workMoneyHeading, WORK_MONEY_HEADING } = load("lib/work-money.ts");
 const page = fs.readFileSync(path.join(__dirname, "../app/articles/[slug]/page.tsx"), "utf8");
 
@@ -52,5 +52,14 @@ test("欄の見出しはニュースの種類（無ければジャンル）に�
   assert.equal(workMoneyHeading("product"), "使う人への影響");
   assert.equal(workMoneyHeading(undefined, "public"), "対象になる人への影響");
   assert.equal(workMoneyHeading(undefined, "business"), WORK_MONEY_HEADING);
-  assert.match(page, /heading=\{workMoneyHeading\(article\.newsType, article\.genreSlug\)\}/);
+  assert.equal(workMoneyHeading(undefined, "tech-gadget", "Apple、7〜9月期の売上高が12％増の1145億ドル", ["決算"]), "株主・取引先への影響");
+  assert.match(page, /heading=\{workMoneyHeading\(article\.newsType, article\.genreSlug, article\.title, article\.tags\)\}/);
+});
+
+test("答えになっていない見出し（「〜は不明」）は普通の見出しに、事実の見出し（「〜を変えない」「追加料金なし」）はそのまま（台帳 A24）", () => {
+  assert.equal(displayHeading("枠が新設かどうかは不明", "body"), "補足");
+  assert.equal(displayHeading("Slurmとのつなぎ方はアプリを変えない", "body"), "Slurmとのつなぎ方はアプリを変えない");
+  assert.equal(isNonanswerTitle("追加料金なし"), false);
+  assert.equal(isNonanswerTitle("比べられる数字は示されていない"), true);
+  assert.equal(isNonanswerTitle("まだ分からないこと"), false);
 });

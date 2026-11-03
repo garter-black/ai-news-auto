@@ -621,7 +621,12 @@ def fetch(url: str, timeout: int = 30) -> tuple[int, str]:
             with urllib.request.urlopen(req, timeout=timeout) as res:
                 return res.status, res.read(3_000_000).decode("utf-8", "replace")
         except urllib.error.HTTPError as error:
-            return error.code, ""
+            # 410 のページ（W22）は本文も見るので、エラーの応答でも本文を読む
+            try:
+                body = error.read(3_000_000).decode("utf-8", "replace")
+            except Exception:  # noqa: BLE001
+                body = ""
+            return error.code, body
         except Exception:  # noqa: BLE001
             continue
     return 0, ""

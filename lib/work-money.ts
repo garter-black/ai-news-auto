@@ -38,8 +38,17 @@ const HEADING_BY_GENRE: Record<string, string> = {
   entertainment: "楽しむ人への情報",
 };
 
-export function workMoneyHeading(newsType?: string, genreSlug?: string): string {
-  return HEADING_BY_TYPE[newsType ?? ""] ?? HEADING_BY_GENRE[genreSlug ?? ""] ?? WORK_MONEY_HEADING;
+// 種類の無い古い記事は、題名・タグのはっきりした言葉で種類を推す（決算の記事に「使う人への影響」と出ないように）
+const TYPE_HINTS: [RegExp, string][] = [
+  [/決算|業績|売上高|営業利益|純利益|配当/, "earnings"],
+  [/脆弱性|不正アクセス|流出|障害/, "security"],
+  [/買収|提携|協定|出資|合併/, "deal"],
+  [/値上げ|値下げ|料金改定|新料金|プラン変更/, "pricing"],
+];
+
+export function workMoneyHeading(newsType?: string, genreSlug?: string, title = "", tags: string[] = []): string {
+  const hinted = newsType || TYPE_HINTS.find(([re]) => re.test(`${title} ${tags.join(" ")}`))?.[1] || "";
+  return HEADING_BY_TYPE[hinted] ?? HEADING_BY_GENRE[genreSlug ?? ""] ?? WORK_MONEY_HEADING;
 }
 
 // 事実（数字・英字の名前・「」）を含むか。含まない一般論（「業務効率が上がります」だけ）は記事ごとの中身ではない

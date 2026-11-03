@@ -83,7 +83,7 @@ const PERSONA_FILLER_RE = new RegExp(
 );
 // 見出しの言葉だけ変えた「中身なしの章」の見出し（「比べられる数字は示されていない」「日本向けの提供条件はまだ分からない」。台帳 A24）。
 // 「まだ分からないこと」（未定事項をまとめる決まった章）は対象外。scripts/section_gate.py の NONANSWER_TITLE_RE と同じ
-export const NONANSWER_TITLE_RE = /(?:ない|なし|無し|未発表|未定|未公表|非公表|不明|分からない|わからない|未確認|言及なし|記載なし)[？?。]?$/;
+export const NONANSWER_TITLE_RE = /(?:(?:示されて|書かれて|触れられて|明かされて|明らかにされて|公表されて|発表されて|決まって|分かって|わかって|確認できて|開示されて)(?:い)?ない|まだない|(?:比較|数字|数値|言及|記載|情報|発表|説明|案内|前版との比較)(?:は|も)?(?:なし|無し|ない)|未発表|未定|未公表|非公表|不明|分からない|わからない|未確認)[？?。]?$/;
 export function isNonanswerTitle(title: string | null | undefined): boolean {
   const t = (title ?? "").trim();
   return Boolean(t) && !/^まだ分からないこと/.test(t) && NONANSWER_TITLE_RE.test(t);
@@ -510,7 +510,9 @@ export function displayHeading(heading: string, kind: "body" | "easy", titles?: 
   const own = titles?.[kind]?.[heading];
   if (usableTitle(own)) return own.trim();
   const fallback = kind === "easy" ? EASY_FALLBACK : BODY_FALLBACK;
-  return fallback[heading] ?? heading;
+  const shown = fallback[heading] ?? heading;
+  // 本文の見出しそのものが「〜は不明」のような答えになっていない言い方なら、中身のある章でも普通の見出しにする（台帳 A24）
+  return isNonanswerTitle(shown) ? "補足" : shown;
 }
 
 const unescapeHtml = (s: string) =>

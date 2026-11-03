@@ -3,7 +3,7 @@ import { getArticleSummary, type ArticleSummary } from "@/lib/articles";
 import { COMPANIES, companyOf, type Company } from "@/lib/companies";
 import { DIGEST_IMAGE_REV } from "@/lib/digest-design";
 import { easyGist } from "@/lib/general";
-import { gateHeadline } from "@/lib/headline";
+import { gateHeadline, stripKnownDescriptors } from "@/lib/headline";
 
 /**
  * 朝のまとめ「今朝のAIニュース3本」の号（edition）。
@@ -121,7 +121,8 @@ export function toDigest(data: DigestData): Digest {
     stories.push({
       slug: item.slug,
       headline,
-      summary: oneLineSummary(article),
+      // 要約の文にも「ChatGPTのOpenAIが」のような説明つきの社名を出さない（台帳 A5・A25）
+      summary: stripKnownDescriptors(oneLineSummary(article)),
       photo: article.thumbnail || "",
       credit: creditOf(article),
       company: companyFor(headline, article),
