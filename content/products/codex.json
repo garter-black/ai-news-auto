@@ -228,6 +228,7 @@
     "gpt-6-1-terra"
   ],
   "articles": [
+    "openai-bigger-bug-bounties",
     "chatgpt-codex-shared-usage-limits",
     "qodo-codex-plugin-code-review",
     "oracle-ai-workspace-chatgpt",

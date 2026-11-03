@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "openai-bigger-bug-bounties",
+   "at": "2026-11-03T05:15:31.394200+00:00",
+   "title": "OpenAIがセキュリティのバグ報奨金を増額　ChatGPTの重大な穴は最大3万ドルに",
+   "head": "OpenAIがセキュリティのバグ報奨金を増額　ChatGPTの重大な穴は最大3万ドルに | Rewarding defenders with bigger bug bounties",
+   "text": "OpenAIがセキュリティのバグ報奨金を増額　ChatGPTの重大な穴は最大3万ドルに | Rewarding defenders with bigger bug bounties | OpenAI バグ報奨金 / バグバウンティ / ChatGPT 脆弱性 / OpenAI セキュリティ / 脆弱性 報奨金 / Codex / API Platform / PROMPT2PWN / ホワイトハッカー 報酬 / 責任ある開示 / OpenAI / ChatGPT / セキュリティ / バグバウンティ / 生成AI",
+   "urls": [
+    "https://openai.com/index/rewarding-defenders-with-bigger-bug-bounties"
+   ]
+  },
+  {
    "slug": "apple-reports-q4-2026-results",
    "at": "2026-11-03T03:23:10.592204+00:00",
    "title": "Apple、7〜9月期売上高が1145億ドルで過去最高　新iPhoneやサービス好調",
@@ -1746,16 +1756,6 @@
    "text": "理研と東大、「未来」の観測記録で光の量子状態を正確に推定することに成功 | 「未来」の観測が明らかにする光の量子ダイナミクス | 理化学研究所 / 東京大学 / 量子状態スムージング / 光量子制御 / 量子コンピュータ / スクイーズド状態 / 量子揺らぎ / npj Quantum Information / 科学 / 物理 / 量子コンピュータ",
    "urls": [
     "https://www.riken.jp/press/2026/20261030_2/index.html"
-   ]
-  },
-  {
-   "slug": "stat-go-jp-social-life-basic-survey",
-   "at": "2026-10-30T05:02:28.892898+00:00",
-   "title": "総務省の社会生活基本調査から紐解く、日本人の時間の使い方と生活の変化",
-   "head": "総務省の社会生活基本調査から紐解く、日本人の時間の使い方と生活の変化 | 統計Today No.210 社会生活基本調査から分かること（PDF：795KB）",
-   "text": "総務省の社会生活基本調査から紐解く、日本人の時間の使い方と生活の変化 | 統計Today No.210 社会生活基本調査から分かること（PDF：795KB） | 総務省統計局 / 社会生活基本調査 / 統計Today / 時間の使い方 / 生活時間 / 働き方 / 統計データ / 公的統計 / ビジネス / 統計 / 経済 / 暮らし",
-   "urls": [
-    "https://www.stat.go.jp/info/today/pdf/210.pdf"
    ]
   }
  ]

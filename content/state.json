@@ -7528,6 +7528,14 @@
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/047972/"
     },
+    "6fd6ad7938fa5bc5": {
+      "at": "2026-11-03T05:15:34.327724+00:00",
+      "model": "anthropic-api:claude-opus-5-5",
+      "score": 93,
+      "section": "ai",
+      "slug": "openai-bigger-bug-bounties",
+      "url": "https://openai.com/index/rewarding-defenders-with-bigger-bug-bounties"
+    },
     "701a674e4edfd0f9": {
       "at": "2026-10-28T23:13:03.555313+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（を開催）",
@@ -13089,53 +13097,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-31T16:01:23.251074+00:00",
-      "attempt": 1,
-      "id": "82d5e32da8b2fad037b61ea20d71e7757abe3f6e",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1139字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（386字 / 基準 400字以上）",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 126.1,
-        "avg_sentence": 56.1,
-        "long_share": 0.333,
-        "max_paragraph": 196,
-        "paragraphs": 8,
-        "sentences": 18
-      },
-      "score": null,
-      "source": "trends",
-      "title": "ヨドバシドットコム"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-31T16:01:29.827278+00:00",
-      "attempt": 2,
-      "id": "82d5e32da8b2fad037b61ea20d71e7757abe3f6e",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1781字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（355字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 129.1,
-        "avg_sentence": 64.5,
-        "long_share": 0.591,
-        "max_paragraph": 201,
-        "paragraphs": 11,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "trends",
-      "title": "ヨドバシドットコム"
-    },
     {
       "accepted": false,
       "at": "2026-10-31T17:41:15.264757+00:00",
@@ -19498,6 +19459,59 @@
       "score": 72,
       "source": "aws-japan-blog",
       "title": "週刊AWS – 2026/10/26週"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T05:13:21.689357+00:00",
+      "attempt": 1,
+      "id": "6fd6ad7938fa5bc5",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "「2026年11月3日、…発表しました」「2026年11月3日の発表時点から適用です」→ 公開日時は米国時間11/2 18:00 UTC（日本時間11/3）で時差の範囲だが、「発表の時点で新基準が使われています」という適用開始時期は元記事に明記がない。",
+        "「特に深刻な欠陥は最大10万ドル」「例外的な発見は、これまでどおり最大10万ドル」→ 元記事は'remain eligible for up to $100,000'で矛盾しないが、「報酬はコア製品（ChatGPT・Codex・API Platform）に限る」と読める箇所があり、例外的な発見の対象が'those ta",
+        "「ChatGPTのOpenAIが」というタイトル・かんたん版の表現 → OpenAI自体の名称としては不自然で、誤読を招く。",
+        "「段階が上がるほど、ボーナスが増えます」→ 元記事は'scaling bonuses'とあるので概ね矛盾しないが、段階ごとの増加の仕組みは書かれていない（軽い言い過ぎ）。",
+        "「ChatGPTを使う人にとっても、守りが厚くなる発表なんです」「外部の目で穴が探される体制が厚くなる」→ 元記事にない効果の断定（セキュリティ向上）で、言い過ぎ。",
+        "「ワンクリックでのアカウント乗っ取りは6,500ドルから51,577ドルに上がっています」→ 元記事は'All scenarios and historical awards are illustrative'であり、実際の引き上げ額のように読める箇所がある（本文中で例示とは断っている）。"
+      ],
+      "readability": {
+        "avg_paragraph": 56.7,
+        "avg_sentence": 34.5,
+        "long_share": 0.025,
+        "max_paragraph": 140,
+        "paragraphs": 48,
+        "sentences": 79
+      },
+      "score": 80,
+      "source": "openai-news",
+      "title": "Rewarding defenders with bigger bug bounties",
+      "warnings": [
+        "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T05:15:34.314265+00:00",
+      "attempt": 2,
+      "id": "6fd6ad7938fa5bc5",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 67.6,
+        "avg_sentence": 35.8,
+        "long_share": 0.06,
+        "max_paragraph": 124,
+        "paragraphs": 44,
+        "sentences": 83
+      },
+      "score": 93,
+      "source": "openai-news",
+      "title": "Rewarding defenders with bigger bug bounties",
+      "warnings": [
+        "見出しが43字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
     }
   ],
   "short_text_retry": {
