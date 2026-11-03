@@ -84,10 +84,11 @@ type Sort = "cost" | "company" | "newest";
  * 早見表の本体。上から「いちばん安いといくら（大きな数字）」「使い方」「モデルごとの月額（棒グラフ）」
  * 「料金と日本対応の一覧」「月額プラン」。一覧はサーバーで描画済みの初期状態のまま検索エンジンにも読める。
  */
-export default function PricingBoard({ rows }: { rows: PriceRow[] }) {
+export default function PricingBoard({ rows, fx }: { rows: PriceRow[]; fx: { rate: number; date: string; source: string } }) {
   const [usage, setUsage] = useState<Usage>(DEFAULT);
   const [custom, setCustom] = useState<{ input: number; output: number } | null>(null);
-  const [rate, setRate] = useState(150);
+  // 初期値はサイト共通の為替（lib/fx.ts。ページごとに別の数字を持たない）。読者が自分のレートに変えるのは自由
+  const [rate, setRate] = useState(fx.rate);
   const [japanOnly, setJapanOnly] = useState(false);
   const [showLegacy, setShowLegacy] = useState(false);
   const [sort, setSort] = useState<Sort>("cost");
@@ -210,7 +211,9 @@ export default function PricingBoard({ rows }: { rows: PriceRow[] }) {
               （月 {yen(planYen(cheapestPlan, rate))}〜）を選ぶ方法もあります。
             </p>
           )}
-          <p className="mt-3 text-meta text-muted">{usageLabel}・1ドル＝{rate}円で計算</p>
+          <p className="mt-3 text-meta text-muted">
+            {usageLabel}・1ドル＝{rate === fx.rate ? `${fx.rate.toFixed(2)}円（${fx.date.replace(/-/g, "/")}・${fx.source}）` : `${rate}円（入力した値）`}で計算
+          </p>
         </div>
       </section>
 
@@ -242,7 +245,7 @@ export default function PricingBoard({ rows }: { rows: PriceRow[] }) {
                 </span>
                 <span className="col-span-2 sm:col-span-1">
                   {jpy === null ? (
-                    <span className="text-meta text-muted">{row.input === null ? "入力" : "出力"}の料金がまだ記事で確認できていません</span>
+                    <span className="text-meta text-muted">{row.input === null ? "入力" : "出力"}の料金が公式ページにありません</span>
                   ) : (
                     <span className="block h-2.5 overflow-hidden rounded-[2px] bg-surface" aria-hidden>
                       {/* 最安だけ赤、ほかは紺。読み込み時に順に伸びる */}
@@ -278,7 +281,7 @@ export default function PricingBoard({ rows }: { rows: PriceRow[] }) {
             >
               <option value="cost">安い順</option>
               <option value="company">会社ごと</option>
-              <option value="newest">記事が新しい順</option>
+              <option value="newest">確認日が新しい順</option>
             </select>
           </label>
           {legacyCount > 0 && (
@@ -362,7 +365,7 @@ export default function PricingBoard({ rows }: { rows: PriceRow[] }) {
 
       {/* ============ 月額プラン ============ */}
       <section aria-labelledby="plan-heading" className="mt-16">
-        <SectionHead id="plan-heading" note="ChatGPT・Claude・Geminiなどをアプリで使うときの有料プラン。記事で金額を確認できたものだけ載せています。">
+        <SectionHead id="plan-heading" note="ChatGPT・Claude・Geminiなどをアプリで使うときの個人向けの有料プラン。公式の料金ページで金額を確認できたものだけ載せています。">
           アプリで使うなら、月額プランはいくら？
         </SectionHead>
         <ul className="grid gap-3 sm:grid-cols-2">
@@ -374,7 +377,7 @@ export default function PricingBoard({ rows }: { rows: PriceRow[] }) {
               </p>
               <p className="mt-2 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                 <span className="text-[18px] font-bold text-ink">
-                  {row.product} {row.plan}
+                  {[row.product, row.plan].filter(Boolean).join(" ")}
                 </span>
                 <span className="tabular-nums">
                   <span className="text-[13px] font-bold text-ink">月 </span>
@@ -602,8 +605,21 @@ function Usd({ value }: { value: number | null }) {
   return <>{formatMoney(value, "USD")}</>;
 }
 
-/** 出典の記事（いつの記事で確かめた数字か） */
+/** 出典。公式の料金ページの行は「公式：ページ名（確認日）」、記事から抜き出した行は記事 */
 function SourceLink({ row }: { row: PriceRow }) {
+  if (row.source.url) {
+    return (
+      <a
+        href={row.source.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={row.source.quote ? `公式ページの記載:「${row.source.quote}」` : undefined}
+        className="underline decoration-line-strong underline-offset-2 hover:text-ink"
+      >
+        公式：{row.source.title}（{day.format(Date.parse(row.source.publishedAt))}確認）
+      </a>
+    );
+  }
   // 出典の記事を取り下げたとき（scripts/retire_articles.py が slug を空にする）は、日付だけを出す
   if (!row.source.slug) {
     return (

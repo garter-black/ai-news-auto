@@ -2,14 +2,15 @@ import Link from "next/link";
 import { getAllArticles } from "@/lib/articles";
 import { getAllChooseGuides } from "@/lib/choose";
 import { getAllHowtos } from "@/lib/howto";
-import { getPricing } from "@/lib/pricing";
+import { officialPricingCheckedAt } from "@/lib/official-pricing";
 
 /** トップの「サイソクで調べられること」。独自にまとめている定番ページを控えめに並べる */
 export default function HomeAssets() {
   const howtos = getAllHowtos().length;
   const chooses = getAllChooseGuides().length;
   const judged = getAllArticles().filter((a) => a.verdict).length;
-  const pricingAt = getPricing().updatedAt?.slice(0, 10).replace(/-/g, "/") ?? "";
+  // 早見表のページと同じ値（公式の料金ページの確認日。lib/official-pricing.ts）
+  const pricingAt = officialPricingCheckedAt().replace(/-/g, "/");
 
   const items = [
     { href: "/usable", title: "日本で使える？無料？", note: `発表ごとに判定（${judged}本）` },

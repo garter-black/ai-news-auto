@@ -6,6 +6,7 @@ import perplexity from "@/content/pricing/perplexity.json";
 import claudeApi from "@/content/pricing/claude-api.json";
 import openaiApi from "@/content/pricing/openai-api.json";
 import geminiApi from "@/content/pricing/gemini-api.json";
+import { getUsdJpy } from "@/lib/fx";
 import { withoutNoData, withoutNoDataList } from "@/lib/no-data";
 
 /**
@@ -251,8 +252,10 @@ export function jpyText(price: LadderPrice | null | undefined): string {
   return `${yenText(est.exTax)}（税別の目安）`;
 }
 
-export function fxNote(fx: FxRate | undefined, kind: "plan" | "api" = "plan"): string {
-  if (!fx || !(fx.rate > 50 && fx.rate < 400)) return "";
+/** 円の目安の注記。為替はサイト共通の1つ（lib/fx.ts）を出す（製品ごとのファイルの fx が古くても、表示はサイトで1つにそろえる） */
+export function fxNote(_fx: FxRate | undefined, kind: "plan" | "api" = "plan"): string {
+  const fx = getUsdJpy();
+  if (!(fx.rate > 50 && fx.rate < 400)) return "";
   const tax = kind === "api" ? "API の料金は税別です。" : "ドルのプランは消費税10%を足しています。";
   return `円は1ドル=${fx.rate.toFixed(2)}円（${fx.date}、${fx.source}）で計算した目安です。${tax}実際の請求額は為替とカード会社の手数料で変わります。`;
 }

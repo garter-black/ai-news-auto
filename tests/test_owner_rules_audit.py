@@ -232,6 +232,32 @@ class SourcePageTest(unittest.TestCase):
         self.assertIn("W18", ids(audit.choose_page_problems("/choose/ai-career", "<p>登録前に確認しましょう。</p>")))
         self.assertEqual([], audit.choose_page_problems("/choose/ai-career", "<p>登録前に確認しておくと安心です。</p>"))
 
+class PricingGoneLiveTest(unittest.TestCase):
+    """W21・W22・W23（2026-11-03）: AI料金表の為替は1つ・出典は公式／410 ページはサイトの見た目／帯の「速報」は本当の速報だけ"""
+
+    def test_pricing_page_one_fx_and_official_source(self):
+        good = "<p>1ドル＝157.90円（2026/11/02・ECB参照レート）</p><a>公式：Claude 料金ページ（11/3確認）</a><p>1ドル＝157.90円で計算</p>"
+        self.assertEqual([], audit.pricing_page_problems(good))
+        self.assertIn("W21", ids(audit.pricing_page_problems("<p>1ドル＝150円で計算</p><p>1ドル＝157.90円</p><a>公式：x</a>")))
+        self.assertIn("W21", ids(audit.pricing_page_problems("<p>1ドル＝157.90円</p><span>9/25の記事で確認</span>")))
+        self.assertIn("W21", ids(audit.pricing_page_problems("<p>公式：x</p>")))
+
+    def test_gone_page_has_site_layout(self):
+        good = '<header class="site-header"></header><div data-gone-page><a href="/articles/gemini-4">x</a></div><footer></footer>'
+        self.assertEqual([], audit.gone_page_problems(410, good))
+        self.assertIn("W22", ids(audit.gone_page_problems(200, good)))
+        self.assertIn("W22", ids(audit.gone_page_problems(410, "<main><h1>この記事は取り下げました</h1></main>")))
+        self.assertTrue(all(p.startswith("/articles/") for p in audit.retired_sample()))
+
+    def test_live_line_red_only_for_breaking(self):
+        html = '<div class="live-line"><div><span data-live-label="速報" class="bg-live">速報</span><a href="/articles/samba">kubell</a></div></div>'
+        self.assertIn("W23", ids(audit.live_line_problems(html, {"samba": {"slug": "samba"}})))
+        self.assertEqual([], audit.live_line_problems(html, {"samba": {"slug": "samba", "breaking": True}}))
+        latest = html.replace('data-live-label="速報" class="bg-live">速報', 'data-live-label="最新" class="bg-accent">最新')
+        self.assertEqual([], audit.live_line_problems(latest, {"samba": {"slug": "samba"}}))
+        # 前の作り（決め打ちの「速報」）も見つける
+        old = '<div class="live-line"><div><span class="bg-live">速報</span><a href="/articles/samba">kubell</a></div></div>'
+        self.assertIn("W23", ids(audit.live_line_problems(old, {"samba": {"slug": "samba"}})))
 
 if __name__ == "__main__":
     unittest.main()

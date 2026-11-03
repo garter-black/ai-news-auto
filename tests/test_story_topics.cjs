@@ -14,7 +14,9 @@ const mocks={
  '@/lib/general':{easyGist:(a)=>a.lede},
  '@/lib/sections':{BROAD_SECTIONS:[{slug:'business',label:'ビジネス・経済'}]},
  '@/lib/story-window':win.exports,
- '@/lib/verdict':{freeLabel:()=>'',japanLabel:()=>'',usability:(v)=>v.status==='available'?'go':'wait',listUsability:(a)=>a.verdict?(a.verdict.status==='available'?'go':'wait'):undefined,verdictOf:(a)=>a.verdict??undefined,USABILITY_LABEL:{go:'使える',wait:'まだ'}}
+ // AIの話題の判定は本物（lib/index-rules.json。scripts/indexnow.py が書き出す）
+ '@/lib/indexing':(()=>{const r=JSON.parse(fs.readFileSync(path.join(root,'lib/index-rules.json'),'utf8'));return {AI_TOPIC:new RegExp(r.aiTopic.source,r.aiTopic.flags)}})(),
+ '@/lib/verdict':{freeLabel:()=>'',japanLabel:()=>'',usability:(v)=>v.status==='available'?'go':'wait',listUsability:(a)=>a.verdict?(a.verdict.status==='available'?'go':'wait'):undefined,verdictOf:(a)=>a.verdict??undefined,isProductNews:(a)=>!/決算|統計|取り組み|啓発/.test(a.title),USABILITY_LABEL:{go:'使える',wait:'まだ'}}
 };
 const source=ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
 const m=new Module(file,module);m.filename=file;m.paths=Module._nodeModulePaths(path.dirname(file));const orig=m.require.bind(m);m.require=(name)=>mocks[name]||orig(name);m._compile(source,file);
@@ -97,4 +99,27 @@ test('閲覧時に24時間を過ぎた記事を外し、空の丸を消して新
  assert.ok(google.items.some(it=>it.image===google.cover));
  assert.equal(later[0].key,'today');
  assert.deepEqual(win.exports.liveBundles(built,NOW+30*H),[]);
+});
+
+test('先頭の丸たちの表紙に同じ記事を使わない（AIでない記事・製品でない記事は「今使える」「無料で試せる」に入れない。点検13）',()=>{
+ items=[
+  article('samba','kubell、法人向けストレージ「セキュアSAMBA」にMac用アプリ',{hours:0.5,company:'other'}),
+  article('grid','OpenAI、電力網を守る取り組み「Grid Protectors」',{hours:1,company:'openai',verdict:{status:'soon',japan:'unknown',free:null,audience:'電力会社'}}),
+ ];
+ assert.equal(find('go'),undefined,'AIでない記事で「今使えるAI新機能」の丸を作っている');
+ assert.equal(find('free'),undefined,'AIでない記事で「無料で試せるAI」の丸を作っている');
+ items.push(article('gemini','Geminiに無料の新機能',{hours:2}),article('claude','Claudeの新機能が無料で使える',{hours:3,company:'other'}));
+ const list=bundles();
+ assert.ok(find('go')&&find('free'));
+ assert.ok(!find('go').items.some(x=>x.slug==='samba'));
+});
+test('「今使える」「無料で試せる」は、ほかの丸と同じ記事を表紙にするなら出さない（先頭の3つの丸が同じ記事にならない）',()=>{
+ items=[article('only','Geminiに無料の新機能',{hours:1,thumbnail:'/a.jpg'})];
+ const keys=bundles().map(b=>b.key);
+ assert.equal(keys[0],'today');
+ assert.ok(!keys.includes('go')&&!keys.includes('free'),`同じ1本の記事を表紙にした丸がある: ${keys}`);
+ items.push(article('two','ChatGPTに無料の新機能',{hours:2,company:'openai',thumbnail:'/b.jpg'}),article('three','Claudeの新機能を無料で提供',{hours:3,company:'other',thumbnail:'/c.jpg'}));
+ const list=bundles();
+ const lead=['today','go','free'].map(k=>list.find(b=>b.key===k)).filter(Boolean).map(b=>b.cover);
+ assert.equal(new Set(lead).size,lead.length,`先頭の丸の表紙が重なっている: ${lead}`);
 });

@@ -1,3 +1,4 @@
+import { FX_FALLBACK as SITE_FX_FALLBACK, getUsdJpy } from "@/lib/fx";
 import { getPricingProduct } from "@/lib/pricing";
 
 /**
@@ -10,8 +11,8 @@ import { getPricingProduct } from "@/lib/pricing";
 
 export type Fx = { rate: number; date: string; source: string; fallback: boolean };
 
-/** 為替の控え（content/pricing/_fx.json が無いとき）。2026-11-02 の ECB 参照レート（1ユーロ=1.1216ドル=177.10円）から計算 */
-export const FX_FALLBACK: Fx = { rate: 157.9, date: "2026-11-02", source: "ECB参照レート（ユーロ経由で計算）", fallback: true };
+/** 為替の控え。サイト共通の為替（lib/fx.ts）と同じもの */
+export const FX_FALLBACK: Fx = { rate: SITE_FX_FALLBACK.rate, date: SITE_FX_FALLBACK.date, source: SITE_FX_FALLBACK.source, fallback: true };
 
 export type PlanPrice = {
   /** 1か月あたりの金額 */
@@ -126,19 +127,16 @@ let cache: { products: PlanProduct[]; fx: Fx } | null = null;
 function load(): { products: PlanProduct[]; fx: Fx } {
   if (cache) return cache;
   const products: PlanProduct[] = [];
-  let rawFx: { rate?: number; date?: string; source?: string } | undefined;
   for (const id of PLAN_PRODUCTS) {
-    const raw = getPricingProduct(id) as unknown as (RawProduct & { fx?: { rate?: number; date?: string; source?: string } }) | null;
+    const raw = getPricingProduct(id) as unknown as RawProduct | null;
     if (!raw) continue;
-    rawFx ??= raw.fx;
     const product = toProduct(raw, id);
     if (product) products.push(product);
   }
   if (!products.some((p) => p.product === "claude")) products.unshift(CLAUDE_FALLBACK);
-  const fx: Fx =
-    rawFx && typeof rawFx.rate === "number" && rawFx.rate > 50 && rawFx.rate < 400 && rawFx.date
-      ? { rate: rawFx.rate, date: rawFx.date, source: rawFx.source ?? "", fallback: false }
-      : FX_FALLBACK;
+  // 為替はサイト共通の1つ（lib/fx.ts。製品ごとのファイルの fx は読まない）
+  const site = getUsdJpy();
+  const fx: Fx = { rate: site.rate, date: site.date, source: site.source, fallback: site.fallback };
   cache = { products: sortProducts(products), fx };
   return cache;
 }

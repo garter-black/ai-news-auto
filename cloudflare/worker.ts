@@ -107,9 +107,42 @@ function loadRetired(env: Env): Promise<Map<string, RetiredEntry>> {
 
 const RETIRED_PATH = /^\/(articles|cover|card)\/([^/]+?)(\.rsc)?\/?$/;
 
-const GONE_HTML = `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>この記事は取り下げました｜サイソクニュース</title><style>body{margin:0;background:#f3f5f8;color:#0b1a33;font:16px/1.8 system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif}main{max-width:640px;margin:0 auto;padding:48px 16px}h1{font-size:22px;margin:0 0 12px}a{color:#1d4a8f}ul{padding-left:1.2em}</style></head><body><main><p style="color:#c8221a;font-weight:700;margin:0">410 Gone</p><h1>この記事は取り下げました</h1><p>サイソクニュースでは、読者の役に立つ記事を残すため、内容の重なる記事や独自の情報が少ない記事を整理しました。</p><ul><li><a href="/">トップページ</a></li><li><a href="/articles">新着記事</a></li><li><a href="/editorial-policy">編集方針</a></li></ul></main></body></html>`;
+const GONE_HTML = `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>この記事は掲載を終了しました｜サイソクニュース</title><style>body{margin:0;background:#f3f5f8;color:#0b1a33;font:16px/1.8 system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif}main{max-width:640px;margin:0 auto;padding:48px 16px}h1{font-size:22px;margin:0 0 12px}a{color:#1d4a8f}ul{padding-left:1.2em}</style></head><body><main><p style="color:#1d4a8f;font-weight:700;margin:0">サイソクニュース</p><h1>この記事は掲載を終了しました</h1><p>サイソクニュースでは、読者の方に役立つ記事を中心にお届けするため、記事の整理を行っています。この記事はその中で掲載を終了しました。ご不便をおかけし、申し訳ありません。</p><ul><li><a href="/">トップページ</a></li><li><a href="/articles">新着記事</a></li><li><a href="/editorial-policy">編集方針</a></li></ul></main></body></html>`;
 
-async function retiredResponse(request: Request, url: URL, env: Env): Promise<Response | null> {
+/**
+ * Next の読み込み用スクリプトを外した HTML（410 のページは画面を動かさない静的なページにする）。
+ * 状態コードが 200 以外の文書をブラウザでハイドレーションすると、同じ HTML でも React のエラー（#418）が出るため。
+ * リンク・検索窓（ただのフォーム）・見た目はそのまま。テーマの初期化などの小さなインラインスクリプトは残す
+ */
+function staticHtml(html: string): string {
+  return html
+    .replace(/<script[^>]*\bsrc="\/_next\/[^"]*"[^>]*><\/script>/g, "")
+    .replace(/<script[^>]*>\s*\(?self\.__next_f[\s\S]*?<\/script>/g, "")
+    .replace(/<script id="_R_"[^>]*>[\s\S]*?<\/script>/g, "")
+    .replace(/<link[^>]+as="script"[^>]*>/g, "");
+}
+
+/**
+ * 取り下げた記事の 410 ページ。サイトのヘッダー・フッター・色のまま（同じ URL を Next に描かせ、記事ページが
+ * components/GoneView.tsx を出す。状態コードだけ 410 にする。2026-11-03 オーナー決定・台帳 W22）。
+ * 別の URL（/gone/…）で描くと、ブラウザの URL と描いたページがずれてハイドレーションのエラーになる。描けないときだけ上の素の HTML
+ */
+async function goneResponse(request: Request, url: URL, env: Env, ctx: Ctx, rsc: boolean): Promise<Response> {
+  const headers = { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=3600", "X-Robots-Tag": "noindex" };
+  if (request.method === "HEAD" || rsc) return new Response(null, { status: 410, headers });
+  try {
+    const page = await render(new Request(request.url, { method: "GET", headers: request.headers }), url, env, ctx);
+    if (page.status === 200 && (page.headers.get("content-type") ?? "").includes("text/html")) {
+      const html = await page.text();
+      if (html.includes("data-gone-page")) return new Response(staticHtml(html), { status: 410, headers });
+    }
+  } catch (error) {
+    console.error("[worker] gone page failed", url.pathname, String(error));
+  }
+  return new Response(GONE_HTML, { status: 410, headers });
+}
+
+async function retiredResponse(request: Request, url: URL, env: Env, ctx: Ctx): Promise<Response | null> {
   const match = RETIRED_PATH.exec(url.pathname);
   if (!match) return null;
   let slug: string;
@@ -125,8 +158,10 @@ async function retiredResponse(request: Request, url: URL, env: Env): Promise<Re
     to.search = url.search;
     return new Response(null, { status: 301, headers: { Location: to.pathname + to.search, "Cache-Control": "public, max-age=3600" } });
   }
-  const headers = { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=3600", "X-Robots-Tag": "noindex" };
-  return new Response(request.method === "HEAD" || match[1] !== "articles" ? null : GONE_HTML, { status: 410, headers });
+  if (match[1] !== "articles") {
+    return new Response(null, { status: 410, headers: { "Cache-Control": "public, max-age=3600", "X-Robots-Tag": "noindex" } });
+  }
+  return goneResponse(request, url, env, ctx, Boolean(match[3]) || request.headers.has("rsc"));
 }
 
 /**
@@ -295,7 +330,7 @@ export default {
     if (url.pathname === "/review" || url.pathname.startsWith("/review/")) return handleReview(request, url, env as unknown as ReviewEnv);
 
     // 取り下げた記事（301 か 410）・終了した固定ページ（410）。エッジキャッシュに古い版の HTML が残っていても先に返す
-    const retired = retiredPageResponse(request, url) ?? (await retiredResponse(request, url, env));
+    const retired = retiredPageResponse(request, url) ?? (await retiredResponse(request, url, env, ctx));
     if (retired) return retired;
 
     const cacheKey = edgeCacheKey(request, url, env);

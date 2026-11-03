@@ -1,5 +1,6 @@
 import data from "@/content/pricing.json";
 import { getCompany, OTHER } from "@/lib/companies";
+import { officialPriceItems } from "@/lib/official-pricing";
 import { listedProducts } from "@/lib/products";
 
 /**
@@ -26,7 +27,8 @@ export type PriceItem = {
   free: boolean | null;
   /** 同じ系列に新しい版がある API モデル */
   legacy: boolean;
-  source: { slug: string; title: string; publishedAt: string; quote: string };
+  /** 出典。公式の料金ページの行（lib/official-pricing.ts）は url と確認日（publishedAt）を持ち、slug は空 */
+  source: { slug: string; title: string; publishedAt: string; quote: string; url?: string };
   /** 日本対応の判定を別の記事から取ったとき、その記事 */
   verdictSource: string | null;
   /** この数字が書かれていた記事の数 */
@@ -65,8 +67,9 @@ export function getPricing(): PricingData {
   return pricing;
 }
 
-export function priceRows(): PriceRow[] {
-  return pricing.items.map((item) => {
+/** 記事から抜き出した数字の行（content/pricing.json）。早見表のページはもう使わない（公式の料金ページの行は officialPriceRows） */
+export function priceRows(items: PriceItem[] = pricing.items): PriceRow[] {
+  return items.map((item) => {
     const company = getCompany(item.companySlug);
     const known = company && company.slug !== OTHER.slug;
     return {
@@ -78,6 +81,11 @@ export function priceRows(): PriceRow[] {
       productSlug: item.kind === "api" ? productSlugOf(item.product) : null,
     };
   });
+}
+
+/** 早見表（/ai-pricing）の行。各社の公式の料金ページの金額だけ（lib/official-pricing.ts。台帳 W21） */
+export function officialPriceRows(): PriceRow[] {
+  return priceRows(officialPriceItems());
 }
 
 /** 記事が早見表の出典になっているか（記事ページから早見表へ案内するため） */
