@@ -255,6 +255,95 @@ class PacingTest(unittest.TestCase):
         self.assertIn("investment", order)
 
 
+class ReplaceOnFirstTest(unittest.TestCase):
+    """新しい質の良い投資・マネーの記事が出た回に、古い記事（証券会社の動画の要約）を取り下げる一回きりの決まり（2026-11-04 オーナー承認）"""
+
+    OLD = "gyakuhibu-cross-trade-complete-guide-matome"
+
+    def setUp(self):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        self.root = Path(directory.name)
+        self.dir = self.root / "content" / "articles"
+        self.dir.mkdir(parents=True)
+        self.write({"slug": self.OLD, "genreSlug": "investment", "title": "株主優待の「つなぎ売り」入門　失敗しないコツ",
+                    "generatedAt": "2026-08-12T01:04:16+00:00", "channelSlug": "rakuten-sec", "body": "あ" * 3000,
+                    "videoUrl": "https://www.youtube.com/watch?v=x"})
+        self.write({"slug": "ai-news", "genreSlug": "ai", "title": "新しいAIモデル", "relatedSlugs": [self.OLD],
+                    "generatedAt": "2026-11-03T20:00:00+00:00", "body": "## 日本で使える\n" + "あ" * 2000})
+
+    def write(self, data):
+        (self.dir / f"{data['slug']}.json").write_text(json.dumps(data, ensure_ascii=False), "utf-8")
+
+    def good(self, slug="nisa-fee", **kw):
+        data = {"slug": slug, "genreSlug": "investment", "title": "〇〇証券、投資信託の購入手数料を12月から無料に",
+                "generatedAt": "2026-11-04T01:00:00+00:00", "body": "## 料金は12月から無料\n" + "あ" * 2000,
+                "disclaimer": genres.INVESTMENT.disclaimer}
+        data.update(kw)
+        self.write(data)
+
+    def test_armed_until_a_quality_article_appears(self):
+        self.assertEqual(genre_focus.replacement_plan(self.dir), {})
+        # 合図にならない: 古い記事・別ジャンル・薄い・お知らせの転載・投資助言の言い回し・免責文なし
+        self.good("before", generatedAt="2026-11-03T10:00:00+00:00")
+        self.good("other", genreSlug="business")
+        self.good("thin", body="短い")
+        self.good("notice", title="決算発表日のお知らせ　11月10日に発表予定")
+        self.good("advice", body="## 料金は12月から無料\n今が買い時です。" + "あ" * 2000)
+        self.good("nodisc", disclaimer="本記事は自動生成です。")
+        self.assertEqual(genre_focus.replacement_plan(self.dir), {})
+
+    def test_fires_with_410_when_no_related_article(self):
+        self.good()
+        plan = genre_focus.replacement_plan(self.dir)
+        self.assertEqual(list(plan), [self.OLD])
+        self.assertEqual(plan[self.OLD]["replacedBy"], "nisa-fee")
+        self.assertNotIn("redirect", plan[self.OLD])  # 410
+        self.assertEqual(plan[self.OLD]["reason"], "investment-advice")
+
+    def test_redirects_to_related_live_article(self):
+        self.good()
+        self.good("yutai-guide", title="株主優待の制度変更　〇〇社が信用取引の条件を見直し", generatedAt="2026-11-04T02:00:00+00:00")
+        self.assertEqual(genre_focus.replacement_plan(self.dir)[self.OLD]["redirect"], "yutai-guide")
+
+    def test_apply_uses_the_retirement_mechanism_once(self):
+        import retire_articles
+
+        self.good()
+        retired = self.root / "content" / "retired.json"
+        with patch.object(genre_focus, "ARTICLES_DIR", self.dir), patch.object(retire_articles, "ARTICLES", self.dir), \
+                patch.object(retire_articles, "RETIRED", retired), patch.object(retire_articles, "ROOT", self.root):
+            genre_focus.retire_replaced(apply_changes=True)
+            self.assertFalse((self.dir / f"{self.OLD}.json").exists())
+            store = json.loads(retired.read_text("utf-8"))["articles"]
+            self.assertEqual(store[self.OLD]["reason"], "investment-advice")
+            # 関連記事のリンクも外れる
+            self.assertNotIn(self.OLD, json.loads((self.dir / "ai-news.json").read_text("utf-8")).get("relatedSlugs", []))
+            # 二度目は何もしない（一回きり）
+            self.assertEqual(genre_focus.retire_replaced(apply_changes=True), {})
+
+    def test_rule_points_at_the_real_article_and_runs_in_the_pipeline(self):
+        rule = genre_focus.REPLACE_ON_FIRST[0]
+        self.assertEqual(rule["retire"], self.OLD)
+        workflow = (ROOT / ".github" / "workflows" / "auto_run.yml").read_text("utf-8")
+        self.assertIn("genre_focus.py --retire-replaced", workflow)
+
+
+class NoticeAlignmentTest(unittest.TestCase):
+    """全体のお知らせ・統計の門（scripts/notice_gate.py）を先に使い、投資・不動産に特有の知らせだけを足す"""
+
+    def test_global_gate_is_used(self):
+        for lane, title in (("investment", "2027年3月期の決算発表日のお知らせ"), ("real-estate", "住宅着工統計の速報値を公表"),
+                            ("entertainment", "〇〇賞の受章者を発表")):
+            with self.subTest(title=title):
+                self.assertIn("お知らせ・統計の転載", genre_focus.candidate_problem(lane, title) or "")
+        self.assertEqual(genre_focus.route_section({"title": "住宅ローン金利の議事要旨を公開"}, "business"), "business")
+
+    def test_genre_specific_notices_still_blocked_and_analysis_passes(self):
+        self.assertIn("書き写し", genre_focus.candidate_problem("investment", "2026年10月の売買状況について") or "")
+        self.assertIsNone(genre_focus.candidate_problem("investment", "家計調査の数字が示すNISAの広がりを分析", source_slug="nli-research"))
+
+
 class SourcesTest(unittest.TestCase):
     def test_lanes_and_feeds(self):
         import web_articles

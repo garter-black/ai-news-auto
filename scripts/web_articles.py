@@ -438,7 +438,7 @@ def broad_prefilter(item: dict) -> str | None:
     if not item.get("section"):
         return "セクションを判定できない"
     # 投資・マネー／不動産／エンタメで扱わない候補（書き写し・告知・ゴシップ。scripts/genre_focus.py）
-    if focus_reason := genre_focus.candidate_problem(item["section"], title, item.get("summary", "")):
+    if focus_reason := genre_focus.candidate_problem(item["section"], title, item.get("summary", ""), item.get("source_slug", "")):
         return focus_reason
     if item.get("section") == "sports":
         # スポーツは日本のスポーツだけ（世界的な大会は例外。scripts/persona.py の SPORTS_SCOPE_RULE）

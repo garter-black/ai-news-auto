@@ -259,6 +259,15 @@ jobs:
             python scripts/story.py mark --days 7 | tail -20
           fi
 
+      # 新しい質の良い記事が出たら古い記事を取り下げる一回きりの決まり（scripts/genre_focus.py の REPLACE_ON_FIRST。2026-11-04 オーナー承認）。
+      # 投資・マネーの新しい記事が公開に回った回に、証券会社の動画の要約の記事を取り下げる（同じ回のコミット・デプロイに入る）。済んだら何もしない
+      - name: Retire replaced genre articles
+        continue-on-error: true
+        run: |
+          if [ -n "$(git status --porcelain content/articles)" ]; then
+            python scripts/genre_focus.py --retire-replaced
+          fi
+
       # 記事は毎回コミットするが、Vercel へのデプロイは1時間に1回にまとめる。
       # デプロイのたびに全ファイルの保存（Deployment Storage）と ISR キャッシュの作り直し
       # （Fast Origin Transfer）が発生するため、20分ごとに出すと無駄が大きい。

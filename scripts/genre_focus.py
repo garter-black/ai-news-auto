@@ -24,7 +24,9 @@
   - 1日の最低本数（DAILY_MIN・boost_lanes）… 質の良い候補があれば、まだ最低本数に届いていないジャンルを先に回す（品質の基準は下げない）
   - 助言の言い回し（advice_problems）… 品質ゲートで作り直させる
 
-  python3 scripts/genre_focus.py   # 今日のジャンル別の本数と、最低本数に届いていないジャンルを表示
+  python3 scripts/genre_focus.py                   # 今日のジャンル別の本数と、最低本数に届いていないジャンルを表示
+  python3 scripts/genre_focus.py --check-replaced  # 新しい記事が出たら古い記事を取り下げる一回きりの決まりの状態（表示だけ）
+  python3 scripts/genre_focus.py --retire-replaced # 同じく、合図の記事があれば取り下げる（auto_run.yml が毎回動かす）
 """
 from __future__ import annotations
 
@@ -34,6 +36,8 @@ import re
 import unicodedata
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+
+import notice_gate  # お知らせ・告知・統計の転載の全体の門（2026-11-03・台帳 A26）。このファイルはその上に投資・不動産の決まった知らせを足す
 
 JST = timezone(timedelta(hours=9))
 ROOT = Path(__file__).resolve().parent.parent
@@ -106,10 +110,12 @@ ENTERTAINMENT_EXCLUDE_RE = re.compile(
     re.IGNORECASE,
 )
 
-# お知らせ・統計の書き写し（投資・不動産のレーンでは LLM を呼ぶ前に落とす。全体の門は別にある）
+# お知らせ・統計の書き写し。全体の門は scripts/notice_gate.py（認可・受章者・議事要旨・決算発表日の予告・啓発・統計の転載）で、
+# genre_focus はまずそれを使い（notice_problem）、そのうえで投資・不動産に特有の決まった知らせ（取引所の月次・銘柄の指定・
+# 自己株式の取得状況・配当の支払い・行政処分など）と、不動産会社の催し・サステナビリティの知らせだけをここで足す（2026-11-04 に全体の門とそろえた）
 ROUTINE_NOTICE_RE = re.compile(
-    r"売買状況|マンスリー|ヘッドライン|月報|週報|日報|統計(?:表|データ)|速報値の公表|集計結果|"
-    r"(?:を|について)更新しました|掲載しました。?$|議事(?:録|次第|要旨)|開催について|の開催|説明会|"
+    r"売買状況|マンスリー|ヘッドライン|月報|週報|日報|統計(?:表|データ)|集計結果|"
+    r"(?:を|について)更新しました|掲載しました。?$|議事次第|開催について|の開催|説明会|"
     r"取得状況|自己株式の取得状況|制限値幅|監理銘柄|整理銘柄|上場廃止|売買停止|基準値段|気配|"
     r"人事|役員|組織変更|異動|行政処分|登録の取消|業務改善命令|剰余金の配当|配当金(?:の)?支払|動画を(?:公開|掲載)|"
     r"寄稿記事|資料を(?:公表|掲載)|報告書の公表|統合報告書|サステナビリティ|再エネ化|"
@@ -146,13 +152,23 @@ ROUTE_ENTERTAINMENT_BUSINESS_RE = re.compile(
 ROUTABLE_SECTIONS = ("business", "public", "lifestyle", "tech-gadget")
 
 
+def notice_problem(title: str, source_slug: str = "") -> str | None:
+    """お知らせ・統計の書き写しか（理由。当たらなければ None）。全体の門（notice_gate）→ 投資・不動産に特有の知らせ の順"""
+    kind = notice_gate.notice_reason({"title": title, "channelSlug": source_slug})
+    if kind:
+        return f"お知らせ・統計の転載（{notice_gate.LABELS.get(kind, kind)}）"
+    if ROUTINE_NOTICE_RE.search(_nfkc(title)):
+        return "お知らせ・統計の書き写しになる発表（記事にしない）"
+    return None
+
+
 def route_section(item: dict, section: str | None) -> str | None:
     """候補のセクション（ジャンル slug）を、投資・マネー／不動産の話題なら付け替える。それ以外はそのまま返す。
     題名で見る（概要は補助）。不動産の目印が先（住宅ローン金利・REIT は不動産）"""
     if section not in ROUTABLE_SECTIONS:
         return section
     title = _nfkc(item.get("title", ""))
-    if ROUTINE_NOTICE_RE.search(title):
+    if notice_problem(title, item.get("source_slug", "")):
         return section
     if ROUTE_REAL_ESTATE_RE.search(title):
         return "real-estate"
@@ -173,13 +189,15 @@ def entertainment_focus(title: str, tags: list | tuple | None = None) -> bool:
     return bool(ENTERTAINMENT_BUSINESS_RE.search(text))
 
 
-def candidate_problem(lane: str, title: str, summary: str = "") -> str | None:
+def candidate_problem(lane: str, title: str, summary: str = "", source_slug: str = "") -> str | None:
     """生成の前に、そのジャンルで扱わない候補か（理由。扱うなら None）。投資・不動産・エンタメのレーンだけ見る"""
     t = _nfkc(title)
     text = f"{t} {_nfkc(summary)[:300]}"
+    if lane in MONEY_GENRES and (why := notice_problem(t, source_slug)):
+        return why  # 全体の門＋投資・不動産に特有の知らせ
+    if lane == "entertainment" and (kind := notice_gate.notice_reason({"title": t, "channelSlug": source_slug})):
+        return f"お知らせ・統計の転載（{notice_gate.LABELS.get(kind, kind)}）"
     if lane in MONEY_GENRES:
-        if ROUTINE_NOTICE_RE.search(t):
-            return "お知らせ・統計の書き写しになる発表（記事にしない）"
         topic = INVESTMENT_TOPIC_RE if lane == "investment" else REAL_ESTATE_TOPIC_RE
         if not topic.search(text):
             return f"{'投資・マネー' if lane == 'investment' else '不動産'}の話題ではない"
@@ -291,7 +309,115 @@ def boost_lanes(lanes, state: dict | None = None, now: datetime | None = None, a
     return [g for _, g in sorted(short, key=lambda x: (-x[0], FOCUS_GENRES.index(x[1])))]
 
 
+# --------------------------------------------------------------------------- #
+# 新しい記事が出たら古い記事を取り下げる、一回きりの決まり（2026-11-04 オーナー承認）
+# --------------------------------------------------------------------------- #
+# 投資・マネーの唯一の記事は証券会社の動画の要約で、取引のやり方まで書いていた（台帳 A22 に当たる）。今すぐ取り下げると
+# メニューの「投資・マネー」が空になって消えるので、新しい質の良い投資・マネーの記事が1本公開された回に取り下げる。
+# 取り下げは scripts/retire_articles.py の仕組み（content/retired.json・JSON を消す・関連/まとめ/本文のリンクを付け替え）。
+# 転送先: 同じ話題（relevant_re）の公開中の記事があれば 301、無ければ 410。一度取り下げたら（JSON が無ければ）何もしない。
+# 動かすのは auto_run.yml の「Retire replaced genre articles」（記事を作った回のコミットに一緒に入る）。
+REPLACE_ON_FIRST = [
+    {
+        "genre": "investment",
+        "retire": "gyakuhibu-cross-trade-complete-guide-matome",
+        "since": "2026-11-03T14:05:00+00:00",  # この仕組みを入れた時刻。これより後に作った記事だけを「新しい記事」とみなす
+        "reason": "investment-advice",
+        "relevant_re": r"株主優待|逆日歩|つなぎ売り|信用取引|クロス取引",
+    },
+]
+
+
+def _load_live(articles_dir: Path) -> list[dict]:
+    out = []
+    for path in sorted(articles_dir.glob("*.json")):
+        try:
+            data = json.loads(path.read_text("utf-8"))
+        except (OSError, ValueError):
+            continue
+        if isinstance(data, dict) and data.get("slug"):
+            out.append(data)
+    return out
+
+
+def quality_replacement(article: dict, rule: dict) -> bool:
+    """取り下げの合図になる「新しい質の良い記事」か: 同じジャンル・仕組みを入れた後に作った・検索に出せる（公開前の門と同じ基準）・
+    お知らせの転載ではない・投資助言の言い回しがない"""
+    import indexnow  # noqa: PLC0415 - indexnow が genre_focus を読み込むので、ここで読む
+
+    if article.get("genreSlug") != rule["genre"] or article.get("slug") == rule["retire"]:
+        return False
+    try:
+        made = datetime.fromisoformat(str(article.get("generatedAt") or "").replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    if made < datetime.fromisoformat(rule["since"]):
+        return False
+    if indexnow.noindex_reason(article) is not None or indexnow.publish_block_reason(article) is not None:
+        return False
+    return not notice_gate.is_notice(article) and not advice_problems(article)
+
+
+def replacement_plan(articles_dir: Path | None = None) -> dict[str, dict]:
+    """いま取り下げる記事 {slug: retired.json の項目}。合図の記事がまだ無い・もう取り下げ済みなら空"""
+    articles_dir = articles_dir or ARTICLES_DIR
+    live = _load_live(articles_dir)
+    by_slug = {a["slug"]: a for a in live}
+    plan: dict[str, dict] = {}
+    for rule in REPLACE_ON_FIRST:
+        old = by_slug.get(rule["retire"])
+        if not old:
+            continue  # もう取り下げた
+        fresh = sorted((a for a in live if quality_replacement(a, rule)), key=lambda a: str(a.get("generatedAt")))
+        if not fresh:
+            continue
+        pattern = re.compile(rule["relevant_re"])
+        import indexnow  # noqa: PLC0415
+
+        related = [a for a in live if a["slug"] != old["slug"] and indexnow.noindex_reason(a) is None
+                   and pattern.search(f"{a.get('title', '')} {' '.join(a.get('tags') or [])} {' '.join(a.get('keywords') or [])}")]
+        related.sort(key=lambda a: str(a.get("generatedAt")), reverse=True)
+        entry = {"reason": rule["reason"], "title": old.get("title", ""), "channel": old.get("channelSlug", ""),
+                 "replacedBy": fresh[0]["slug"]}
+        for key in ("sourceUrl", "videoUrl"):
+            if old.get(key):
+                entry[key] = old[key]
+        if related:
+            entry["redirect"] = related[0]["slug"]
+        plan[old["slug"]] = entry
+    return plan
+
+
+def retire_replaced(apply_changes: bool = False) -> dict[str, dict]:
+    """replacement_plan を retire_articles の仕組みで取り下げる（apply_changes=False は表示だけ）"""
+    plan = replacement_plan()
+    for slug, e in plan.items():
+        where = f"/articles/{e['redirect']} へ 301" if e.get("redirect") else "410（同じ話題の記事なし）"
+        print(f"[genre] 取り下げ{'' if apply_changes else '（予定）'}: {slug}（{e['title'][:40]}）→ {where} / 合図の新しい記事: {e['replacedBy']}")
+    if not plan:
+        waiting = [r["retire"] for r in REPLACE_ON_FIRST if (ARTICLES_DIR / f"{r['retire']}.json").exists()]
+        print("[genre] 一回きりの取り下げ: " + (f"待機中（新しい質の良い記事がまだ無い）: {', '.join(waiting)}" if waiting else "済み"))
+    if plan and apply_changes:
+        import retire_articles  # noqa: PLC0415
+
+        now = datetime.now(timezone.utc)
+        stats = retire_articles.apply(plan, now)
+        again = retire_articles.apply({}, now)  # 入れ子のリンクの付け替え残し
+        stats["second_pass"] = again["articles_rewritten"] + again["data_rewritten"]
+        print(f"[genre] 取り下げを実行: {json.dumps(stats, ensure_ascii=False)}")
+    return plan
+
+
 def main() -> int:
+    import argparse  # noqa: PLC0415
+
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--retire-replaced", action="store_true", help="新しい質の良い記事が出ていれば、置き換える古い記事を取り下げる（一回きり）")
+    parser.add_argument("--check-replaced", action="store_true", help="上の取り下げの予定を表示するだけ")
+    args = parser.parse_args()
+    if args.retire_replaced or args.check_replaced:
+        retire_replaced(apply_changes=args.retire_replaced)
+        return 0
     counts = today_counts()
     mins = daily_min()
     print("今日のジャンル別（公開中）: " + " / ".join(f"{g} {n}" for g, n in sorted(counts.items(), key=lambda x: -x[1])))
