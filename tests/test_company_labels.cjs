@@ -45,6 +45,13 @@ test("主語の会社が先（発信元が OpenAI の公式ブログでも、Qod
   assert.equal(companyOf(art("OpenAI、セキュリティのバグ報奨金を増額", { sourceName: "OpenAI公式ブログ" })).slug, "openai");
 });
 
+test("公式チャンネルの動画でも、主語が別の会社なら主語で決める（Copilot の名前を含む別製品も Microsoft にしない）", () => {
+  assert.equal(companyOf(art("Uber、全社員3万人超に「ChatGPT Work」を展開", { channelSlug: "openai", sourceType: "video" })).slug, "other");
+  assert.equal(companyOf(art("Moonshot AI、2.8兆パラメータのオープンMoEモデル「Kimi K3」を公開", { channelSlug: "hugging-face" })).slug, "moonshot");
+  assert.equal(companyOf(art("AI組み込みツール「CopilotKit」がAngularに公式対応")).slug, "other");
+  assert.equal(companyOf(art("新しいモデルの使い方", { channelSlug: "openai", sourceType: "video" })).slug, "openai");
+});
+
 test("AWS・Apple・サムスン・Salesforce は「その他」にまとめない", () => {
   assert.equal(companyOf(art("AWS、Bedrockの構造化出力を一般提供", { sourceName: "AWS ブログ（日本）" })).slug, "amazon");
   assert.equal(companyOf(art("Amazon Bedrockで「GPT-6.1 Terra」の提供開始　料金は前モデルの半分以下", { sourceName: "AWS ブログ（日本）" })).slug, "amazon");

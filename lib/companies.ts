@@ -58,7 +58,7 @@ export const COMPANIES: Company[] = [
     mark: "M",
     color: "#0067b8",
     pattern:
-      /Microsoft|マイクロソフト|Azure|Copilot|GitHub|\.NET|TypeScript|VS ?Code|Visual Studio|Windows|Foundry|Work IQ|ZoomIt|Fabric/i,
+      /Microsoft|マイクロソフト|Azure|Copilot(?![A-Za-z])|GitHub|\.NET|TypeScript|VS ?Code|Visual Studio|Windows|Foundry|Work IQ|ZoomIt|Fabric/i,
   },
   {
     slug: "meta",
@@ -173,7 +173,7 @@ export function subjectOf(title: string): string {
 }
 
 /** 主語が会社・団体の名前らしいか（英字・カタカナの名前、または会社・団体を表す言葉） */
-const ENTITY_LIKE = /[A-Za-z]{2,}|[ァ-ヴー]{3,}|(?:社|大学|大|省|庁|政府|研究所|機構|銀行|協会|グループ|など|ら\d+者|CEO|氏)$/;
+const ENTITY_LIKE = /[A-Za-z][A-Za-z0-9]|[ァ-ヴー]{3,}|(?:社|大学|大|省|庁|政府|研究所|機構|銀行|協会|グループ|など|ら\d+者|CEO|氏)$/;
 
 /** 文章中で最も手前に出てくる企業（見出しの主語になりやすい） */
 function firstMention(text: string): Company | undefined {
@@ -199,8 +199,9 @@ export function companyOf(article: ArticleSummary): Company {
   const company =
     // 記事 JSON の companySlug（scripts/label_check.py が Haiku の確認で直したもの）が最優先
     (article.companySlug ? getCompany(article.companySlug) : undefined) ??
-    BY_SLUG.get(CHANNEL_COMPANY[article.channelSlug] ?? "") ??
+    // 主語が先（OpenAI の公式チャンネルの動画でも、Uber の導入事例は Uber＝その他。Haiku の確認で 30 本あまりずれていた）
     bySubject ??
+    BY_SLUG.get(CHANNEL_COMPANY[article.channelSlug] ?? "") ??
     // 公式ブログ・プレスリリースは発信元名（「OpenAI公式ブログ」など）を優先する
     (isWeb(article) ? firstMention(article.sourceName ?? "") : undefined) ??
     firstMention(article.title) ??

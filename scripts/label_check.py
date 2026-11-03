@@ -8,13 +8,14 @@
 - ジャンル: 機械の判定が直すと言ったもの。Haiku と機械が同じ答えのとき、または Haiku だけが違うと言い、それが
   --accept-llm に書いた slug のとき（人が案を見て選ぶ）
 - 企業の札: Haiku の答えた主語の会社が、サイトの判定（lib/companies.ts の companyOf を node で動かした結果）と違い、
-  サイトの企業の一覧にある会社（または「その他」）のとき、記事 JSON に companySlug を書く（サイトはこれを優先する）
+  人が案を見て --accept-company に書いた slug だけ、記事 JSON に companySlug を書く（サイトはこれを優先する）。
+  まずはサイトの判定の決まり（companyOf）を直し、決まりで直せないものだけ companySlug を使う
 - タグ: normalize_tags でそろえる
 - 見出しの会社名: headline_normalize.unify_companies（「アトラシアン」→「Atlassian」）
 
 使い方:
   python scripts/label_check.py --propose out/labels.json [--limit N] [--no-llm]
-  python scripts/label_check.py --apply out/labels.json [--accept-llm slug1,slug2] [--dry-run]
+  python scripts/label_check.py --apply out/labels.json [--accept-llm slug1,slug2] [--accept-company slug3] [--dry-run]
 """
 from __future__ import annotations
 
@@ -146,7 +147,7 @@ def propose(limit: int | None, use_llm: bool) -> dict:
     return out
 
 
-def apply(proposals: dict, accept_llm: set[str], dry_run: bool) -> int:
+def apply(proposals: dict, accept_llm: set[str], dry_run: bool, accept_company: set[str] = frozenset()) -> int:
     import web_articles  # noqa: PLC0415  web_disclaimer（ジャンルごとの免責文）
 
     changed = 0
@@ -164,8 +165,8 @@ def apply(proposals: dict, accept_llm: set[str], dry_run: bool) -> int:
             record["genre"], record["genreSlug"] = genre.name, genre.slug
             if record.get("sourceType") == "web" and not str(record.get("disclaimer", "")).startswith("本記事は報道"):
                 record["disclaimer"] = web_articles.web_disclaimer(genre)
-        # 企業の札: Haiku の主語の会社がサイトの判定と違うとき（人が確かめた案だけ。--accept-llm と同じ一覧）
-        if slug in accept_llm and p.get("llm_company") and p.get("llm_company") != p.get("site_company"):
+        # 企業の札: Haiku の主語の会社がサイトの判定と違うとき（人が確かめた案だけ。--accept-company に書いた slug）
+        if slug in accept_company and p.get("llm_company") and p.get("llm_company") != p.get("site_company"):
             record["companySlug"] = p["llm_company"]
         record["tags"] = labels.normalize_tags(record.get("tags"))
         title = hn.unify_companies(record.get("title", ""))
@@ -185,7 +186,8 @@ def main() -> int:
     ap.add_argument("--apply")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--no-llm", action="store_true")
-    ap.add_argument("--accept-llm", default="")
+    ap.add_argument("--accept-llm", default="", help="Haiku のジャンルの案を採る slug（カンマ区切り）")
+    ap.add_argument("--accept-company", default="", help="Haiku の企業の案を companySlug に書く slug（カンマ区切り）")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
     if args.propose:
@@ -196,7 +198,8 @@ def main() -> int:
     if args.apply:
         proposals = json.loads(Path(args.apply).read_text("utf-8"))
         accept = {s.strip() for s in args.accept_llm.split(",") if s.strip()}
-        print(f"[labels] 直した記事 {apply(proposals, accept, args.dry_run)} 本{'（試し）' if args.dry_run else ''}")
+        accept_company = {s.strip() for s in args.accept_company.split(",") if s.strip()}
+        print(f"[labels] 直した記事 {apply(proposals, accept, args.dry_run, accept_company)} 本{'（試し）' if args.dry_run else ''}")
         return 0
     ap.print_help()
     return 1

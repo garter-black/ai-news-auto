@@ -91,8 +91,8 @@
   "thumbnail": "https://i.ytimg.com/vi/2j-y_YtR2r0/maxresdefault.jpg",
   "model": "gemini-3.6-flash",
   "affiliates": [],
-  "genre": "AI・テクノロジー",
-  "genreSlug": "ai",
+  "genre": "テクノロジー・ガジェット",
+  "genreSlug": "tech-gadget",
   "disclaimer": "本記事は元動画の映像・音声をAIが解析して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
   "seoTitle": "Azure SQL×Fabricでリアルタイム異常検知を実装する方法",
   "verdict": {
