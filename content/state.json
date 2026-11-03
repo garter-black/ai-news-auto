@@ -54,6 +54,7 @@
     "tTuk4pGnT0A": 1,
     "u5t7-BLYvfQ": 2,
     "udRxVK7mKn0": 2,
+    "uuXijUuj4MA": 1,
     "xP1kjDOisVw": 1,
     "y6L37mXkTw0": 2,
     "y6g2J5NTlM8": 1,
@@ -65,6 +66,14 @@
   },
   "failed_web": {},
   "gate_retry": {
+    "20954e3ac0ff87f7": {
+      "first": "2026-11-03T18:26:13.990511+00:00",
+      "next": "2026-11-03T21:26:13.990511+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "CWE-bench v2: More coverage, quality, and transparency",
+      "tries": 1,
+      "url": "https://huggingface.co/blog/cwe-bench"
+    },
     "4676cabae1997d08": {
       "first": "2026-11-03T14:03:16.393263+00:00",
       "next": "2026-11-03T20:12:40.645672+00:00",
@@ -112,6 +121,14 @@
       "title": "StateBench: Testing how language models track state changes over long documents",
       "tries": 1,
       "url": "https://huggingface.co/blog/allenai/statebench"
+    },
+    "bc4177032a04e266": {
+      "first": "2026-11-03T18:23:56.532871+00:00",
+      "next": "2026-11-03T21:23:56.532871+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "Palette: teaching a small model to build decks in your design language",
+      "tries": 1,
+      "url": "https://huggingface.co/blog/ibm-research/palette-deck-building"
     },
     "ce9b39562dd42cfe": {
       "first": "2026-11-03T13:43:44.204259+00:00",
@@ -7922,6 +7939,14 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000516.000047561.html"
     },
+    "7709dfd32db6bb50": {
+      "at": "2026-11-03T18:26:50.577238+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 93,
+      "section": "ai",
+      "slug": "nammu21-syndicated-loans-gcul",
+      "url": "https://cloud.google.com/blog/topics/financial-services/how-nammu21-automates-syndicated-loans-on-google-cloud-universal-ledger/"
+    },
     "77db3705f153125d": {
       "at": "2026-10-29T18:13:41.962786+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（開催について）",
@@ -13360,115 +13385,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T03:11:10.844019+00:00",
-      "attempt": 1,
-      "id": "0fcb48d7b86dff5e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 60.0字・60字超の文が 46% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 102.9,
-        "avg_sentence": 60.0,
-        "long_share": 0.458,
-        "max_paragraph": 167,
-        "paragraphs": 14,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "databricks-blog",
-      "title": "Databricks and SAP unleash end-to-end data & AI capabilities to level up enterpr"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T03:11:14.087312+00:00",
-      "attempt": 0,
-      "id": "0fcb48d7b86dff5e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 108.8,
-        "avg_sentence": 35.4,
-        "long_share": 0.023,
-        "max_paragraph": 176,
-        "paragraphs": 14,
-        "sentences": 43
-      },
-      "score": 100,
-      "source": "databricks-blog",
-      "title": "Databricks and SAP unleash end-to-end data & AI capabilities to level up enterpr"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T03:11:23.074303+00:00",
-      "attempt": 1,
-      "id": "a189685b4c1284e8",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 62.4字・60字超の文が 41% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 137.2字・最長 206字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 137.2,
-        "avg_sentence": 62.4,
-        "long_share": 0.409,
-        "max_paragraph": 206,
-        "paragraphs": 10,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "toyota",
-      "title": "WEC 2026年シーズン 第8戦 モンツァ6時間レース ： プレビュー マニファクチャラーチャンピオンとして最終戦に挑む"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T03:11:26.618195+00:00",
-      "attempt": 0,
-      "id": "a189685b4c1284e8",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 141.9字・最長 208字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 141.9,
-        "avg_sentence": 41.7,
-        "long_share": 0.176,
-        "max_paragraph": 208,
-        "paragraphs": 10,
-        "sentences": 34
-      },
-      "score": 100,
-      "source": "toyota",
-      "title": "WEC 2026年シーズン 第8戦 モンツァ6時間レース ： プレビュー マニファクチャラーチャンピオンとして最終戦に挑む"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T03:31:21.523514+00:00",
-      "attempt": 1,
-      "id": "52dedc30355aed7e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 61.9字・60字超の文が 47% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 104.2,
-        "avg_sentence": 61.9,
-        "long_share": 0.469,
-        "max_paragraph": 196,
-        "paragraphs": 19,
-        "sentences": 32
-      },
-      "score": 100,
-      "source": "nvidia-developer-blog",
-      "title": "Run AI Models for Edge Application Development with Just a Few Commands"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T03:31:26.022142+00:00",
@@ -19899,6 +19815,98 @@
       "score": null,
       "source": "tokyu-fudosan",
       "title": "マンション内を“顔だけ”で移動できる暮らしを実現 ルジェンテシリーズ初導入！顔認証セキュリティサービス「FreeiD」を標準装備した「ルジェンテ新宿」が竣工 ～"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:22:51.176447+00:00",
+      "attempt": 1,
+      "id": "bc4177032a04e266",
+      "kind": "ai",
+      "model": "gemini-3.1-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "hugging-face-blog",
+      "title": "Palette: teaching a small model to build decks in your design language"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:23:56.532826+00:00",
+      "attempt": 2,
+      "id": "bc4177032a04e266",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "hugging-face-blog",
+      "title": "Palette: teaching a small model to build decks in your design language"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:25:16.701406+00:00",
+      "attempt": 1,
+      "id": "20954e3ac0ff87f7",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "元記事の文をそのまま書き写している（2文。例「hf auth login --token $HF_TOKEN --add-to-git-crede」）。自分の言葉で要約する"
+      ],
+      "readability": {
+        "avg_paragraph": 74.1,
+        "avg_sentence": 35.6,
+        "long_share": 0.04,
+        "max_paragraph": 273,
+        "paragraphs": 12,
+        "sentences": 25
+      },
+      "score": null,
+      "source": "hugging-face-blog",
+      "title": "CWE-bench v2: More coverage, quality, and transparency",
+      "warnings": [
+        "見出しが44字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（CWE・HF）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:26:13.990454+00:00",
+      "attempt": 2,
+      "id": "20954e3ac0ff87f7",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "hugging-face-blog",
+      "title": "CWE-bench v2: More coverage, quality, and transparency"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T18:26:50.563833+00:00",
+      "attempt": 1,
+      "id": "7709dfd32db6bb50",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 73.3,
+        "avg_sentence": 38.3,
+        "long_share": 0.136,
+        "max_paragraph": 144,
+        "paragraphs": 23,
+        "sentences": 44
+      },
+      "score": 93,
+      "source": "google-cloud-blog",
+      "title": "How Nammu21 automates syndicated loans on Google Cloud Universal Ledger",
+      "warnings": [
+        "見出しが54字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（GCUL・LMA・DCI）"
+      ]
     }
   ],
   "short_text_retry": {
