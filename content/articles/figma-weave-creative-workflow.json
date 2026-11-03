@@ -10,7 +10,7 @@
   "threadsStyle": 2,
   "writingVoice": "qa",
   "lede": "デザインツールのFigmaは公式ブログで、画像や動画をAIで作る制作基盤「Figma Weave」の使い方を解説しました。作業を「ノード」という部品でつなぎ、チームで再利用できる点が軸です。コミュニティでのツール公開も始まりました。料金と日本での提供条件は元記事に記載がありません。",
-  "description": "Figma公式ブログがFigma Weaveの使い方を解説。ノードをつないで画像・動画のAI制作を再利用でき、Weaveツールのコミュニティ公開も開始。料金や日本対応は記載なし。",
+  "description": "Figma公式ブログがFigma Weaveの使い方を解説。ノードをつないで画像・動画のAI制作を再利用でき、Weaveツールのコミュニティ公開も開始。",
   "keywords": [
     "Figma Weave",
     "Figma Weaveとは",
