@@ -15,8 +15,7 @@ export const publisherJsonLd = {
   publishingPrinciples: `${siteConfig.url}/editorial-policy`,
   correctionsPolicy: `${siteConfig.url}/corrections`,
   sameAs: siteConfig.social.map((social) => social.url),
-  // 運営責任者（所在地は都道府県まで）
-  founder: { "@type": "Person", name: siteConfig.operator.representative },
+  // 運営責任者の名前は全ページに載せない（オーナーの決まり: 名前は /about と /editorial-policy だけ。docs/owner_rules.md W6）
   address: { "@type": "PostalAddress", addressRegion: siteConfig.operator.location, addressCountry: "JP" },
 } as const;
 

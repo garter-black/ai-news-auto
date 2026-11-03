@@ -95,6 +95,11 @@
 
 ## 6. 大事なルール（必ず守る）
 
+### オーナーに直されたら（2026-11-03）
+- **When the owner corrects something, add it to `docs/owner_rules.md` with an enforcing test/gate/monitor in the same change.**
+  オーナーに直されたことは、同じ変更の中で台帳 `docs/owner_rules.md` に1行足し、守らせるテスト・門番・毎日の見張り（`scripts/owner_rules_audit.py`）を付ける。メモや「分かりました」だけで終わらせない。
+  台帳に書いたテストが GitHub Actions で動いているかは `tests/test_owner_rules_ledger.py`（`owner_rules.yml`）が確かめる。毎日 4:40 の点検（`owner_rules_audit.yml`、読むだけ）は違反を issue（ラベル `owner-rule-violation`）にまとめる。
+
 ### 中身
 - **事実だけを書く**。推測で数字や機能を作らない。出典は公式発表を優先し、確認日を書く。
 - **地震・津波の記事はAIに文章を書かせない**（気象庁のデータを型に入れるだけ）。推測・被害の記述は禁止。

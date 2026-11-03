@@ -1,0 +1,47 @@
+name: Owner rules audit (read only)
+
+# オーナーのルールの毎日の点検（scripts/owner_rules_audit.py）。本番の新しい記事・固定ページ・Bluesky の直近の投稿を
+# 読んで、台帳（docs/owner_rules.md）の番号ごとに違反を探し、issue（ラベル owner-rule-violation）にまとめる。
+# 読むだけ: 投稿・削除・予約の変更・記事の書き換えは一切しない。Buffer も読まない（回数の節約）。
+# 本番のページには X-Saisoku-Internal: 1 を付ける（自社アクセスとして数えない）。
+on:
+  schedule:
+    - cron: "40 19 * * *" # 毎日 4:40（日本時間）。投稿・記事づくりの少ない時間
+  workflow_dispatch:
+    inputs:
+      latest:
+        description: "点検する新しい記事の数"
+        default: "20"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: owner-rules-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Audit production (nothing is posted or changed)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SNS_RULES_NO_ISSUE: "1"
+        run: python scripts/owner_rules_audit.py --latest "${{ inputs.latest || '20' }}" --issue --out out/owner_rules_audit.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: owner-rules-audit-${{ github.run_id }}
+          path: out/owner_rules_audit.json
+          retention-days: 14
+          if-no-files-found: ignore

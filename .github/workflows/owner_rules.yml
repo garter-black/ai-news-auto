@@ -1,0 +1,44 @@
+name: Owner rules tests
+
+# オーナーのルールの台帳（docs/owner_rules.md）を守らせるテスト。台帳に書いたテストのうち、
+# ほかのワークフロー（deploy_cloudflare.yml・sns_rules.yml など）で動いていないものをここでまとめて動かす。
+# tests/test_owner_rules_ledger.py が「台帳に書いたテストがどこかで動いているか」を確かめる。何も投稿しない。
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - "tests/**"
+      - "lib/**"
+      - "app/**"
+      - "components/**"
+      - "cloudflare/**"
+      - "docs/owner_rules.md"
+      - "AGENTS.md"
+      - "site.config.ts"
+      - ".github/workflows/**"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Owner rule tests (nothing is posted)
+        env:
+          SNS_RULES_NO_ISSUE: "1"
+        run: |
+          python -m unittest -v \
+            tests.test_owner_rules_ledger tests.test_owner_rules_audit tests.test_owner_rules_gaps \
+            tests.test_sns_owner_rules_20261103 tests.test_retired_sources tests.test_images_official \
+            tests.test_rivals tests.test_verdict_scope tests.test_persona tests.test_article_quickwins \
+            tests.test_buffer_budget tests.test_quality_language tests.test_sns_hook_context tests.test_article_quality_short
