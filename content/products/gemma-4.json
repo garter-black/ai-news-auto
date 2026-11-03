@@ -8,9 +8,10 @@
   "companyName": "Google",
   "category": "AIモデル",
   "overview": {
-    "text": "Gemma 4は、Google DeepMindが開発した新世代のオープンなマルチモーダル大規模言語モデルです。テキストだけでなく音声や画像も処理できます。2026年9月に公開されました。",
+    "text": "Gemma 4は、Google DeepMindが公開したマルチモーダルオープンモデルの最新世代です。スマートフォンからクラウド環境までをカバーする5つのモデルサイズで構成されています。Googleの宇宙AIプロジェクトでも利用されています。",
     "sources": [
-      "google-deepmind-gemma-4-family-explained"
+      "google-deepmind-gemma-4-family-explained",
+      "google-project-suncatcher-satellite-response"
     ]
   },
   "facts": [
@@ -22,22 +23,8 @@
       ]
     },
     {
-      "label": "提供開始",
-      "value": "2026年9月",
-      "sources": [
-        "google-deepmind-gemma-4-family-explained"
-      ]
-    },
-    {
       "label": "日本での提供",
       "value": "利用できる",
-      "sources": [
-        "google-deepmind-gemma-4-family-explained"
-      ]
-    },
-    {
-      "label": "使える場所",
-      "value": "Hugging FaceやGitHub",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
@@ -52,33 +39,33 @@
   ],
   "capabilities": [
     {
-      "text": "E2BやE4Bモデルでは、レイヤー別埋め込み技術によりメモリ消費を抑えられます。",
+      "text": "テキストだけでなく音声や画像をネイティブに処理できます。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
-      "text": "12Bモデルでは専用エンコーダーを廃し、音声や画像を直接LLMに投影します。",
+      "text": "12Bモデルでは専用エンコーダーを排除し、入力を直接LLMへ投影します。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
-      "text": "26B A4BモデルはMoEを導入し、総パラメータ260億のうち40億を活性化します。",
+      "text": "260億パラメータのうち40億のみを活性化するMoEで高速処理します。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
-      "text": "フラグシップの31Bモデルは、60層デコーダー構成で高い表現力を誇ります。",
+      "text": "宇宙空間でのテストにおいて、宇宙をテーマにした詩の生成を実証しました。",
       "sources": [
-        "google-deepmind-gemma-4-family-explained"
+        "google-project-suncatcher-satellite-response"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "オープンソースとして公開されています。",
+      "text": "オープンモデルとして提供されています。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
@@ -86,7 +73,7 @@
   ],
   "japan": [
     {
-      "text": "発表の時点では、日本でも利用できるオープンモデルとして提供されています。",
+      "text": "開発者が即座に利用できる実用フェーズの技術として一般提供されています。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
@@ -94,7 +81,7 @@
   ],
   "howto": [
     {
-      "text": "Hugging FaceやGitHubを通じて入手できます。",
+      "text": "Hugging Faceなどの外部プラットフォームを通じて利用できます。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
@@ -102,7 +89,13 @@
   ],
   "differences": [
     {
-      "text": "テキストに加えて音声や画像をネイティブに処理できるようになりました。",
+      "text": "テキストだけでなく音声や画像をネイティブに処理できるようになりました。",
+      "sources": [
+        "google-deepmind-gemma-4-family-explained"
+      ]
+    },
+    {
+      "text": "12Bモデルでは専用の音声・画像エンコーダーを完全に排除した設計になりました。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
@@ -110,31 +103,31 @@
   ],
   "faq": [
     {
-      "q": "無料で使えますか？",
-      "a": "オープンモデルとして提供されており、開発者が利用できます。",
+      "q": "無料で試せる？",
+      "a": "オープンモデルとして公開されています。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
-      "q": "モデルのサイズには何種類ありますか？",
-      "a": "スマートフォン向けからクラウド向けまで、5つのモデルサイズで構成されています。",
+      "q": "誰に向いている？",
+      "a": "開発者向けの技術として提供されています。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
-      "q": "エンコーダーフリーとは何ですか？",
-      "a": "画像や音声の専用エンコーダーを廃止し、直接LLMに投影する構造のことです。",
+      "q": "モデルのサイズはいくつある？",
+      "a": "5つのモデルサイズで構成されています。",
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
-      "q": "PLE技術とは何ですか？",
-      "a": "レイヤーごとに異なるベクトル表現を割り当て、フラッシュストレージを活用する技術です。",
+      "q": "宇宙空間でも使われている？",
+      "a": "Googleの試作衛星を使ったプロジェクトで詩の生成に利用されました。",
       "sources": [
-        "google-deepmind-gemma-4-family-explained"
+        "google-project-suncatcher-satellite-response"
       ]
     }
   ],
@@ -158,9 +151,9 @@
   "linkFrom": [
     "google-deepmind-gemma-4-family-explained"
   ],
-  "signature": "be6aafb0f9bc22a6",
-  "primarySignature": "5aba8f3686174857",
+  "signature": "b0ab4f5ad419c5d3",
+  "primarySignature": "42c9e5c43bc9115e",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:44:10+00:00",
-  "updatedAt": "2026-10-30T17:17:32+00:00"
+  "updatedAt": "2026-11-03T11:21:29+00:00"
 }

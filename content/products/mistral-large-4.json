@@ -6,43 +6,22 @@
   "companyName": "Mistral AI",
   "category": "AIモデル",
   "overview": {
-    "text": "Mistral Large 4は、フランスのMistral AIが開発した1兆パラメータ規模の最新AIモデルです。2026年10月に発表されました。",
+    "text": "Mistral Large 4は、フランスのMistral AIが開発した新しい大規模AIモデルです。文章や画像の理解に優れ、プログラム作成やセキュリティ調査に対応しています。2026年10月6日にパブリックプレビューが発表されました。",
     "sources": [
       "mistral-large-4-preview"
     ]
   },
   "facts": [
     {
-      "label": "料金",
-      "value": "モデル重みは無料",
-      "sources": [
-        "mistral-large-4-preview"
-      ]
-    },
-    {
       "label": "提供開始",
-      "value": "2026年10月6日",
-      "sources": [
-        "mistral-large-4-preview"
-      ]
-    },
-    {
-      "label": "日本での提供",
-      "value": "日本から利用できる",
-      "sources": [
-        "mistral-large-4-preview"
-      ]
-    },
-    {
-      "label": "使える場所",
-      "value": "Hugging Faceなど",
+      "value": "2026年10月6日（プレビュー）",
       "sources": [
         "mistral-large-4-preview"
       ]
     },
     {
       "label": "向いている人",
-      "value": "開発者やセキュリティ担当者",
+      "value": "開発者やシステムを守る人",
       "sources": [
         "mistral-large-4-preview"
       ]
@@ -50,13 +29,7 @@
   ],
   "capabilities": [
     {
-      "text": "サイバー防衛ベンチマークのCybenchで93%の課題をクリアしています。",
-      "sources": [
-        "mistral-large-4-preview"
-      ]
-    },
-    {
-      "text": "テキストだけでなく画像も理解できるネイティブなマルチモーダル機能を備えています。",
+      "text": "文章だけでなく画像も理解するネイティブなマルチモーダルモデルです。",
       "sources": [
         "mistral-large-4-preview"
       ]
@@ -66,31 +39,24 @@
       "sources": [
         "mistral-large-4-preview"
       ]
-    }
-  ],
-  "pricing": [
+    },
     {
-      "text": "Hugging Face Hubなどからのモデル重みのダウンロードは無料です。",
+      "text": "1兆パラメータのうち稼働時は約490億のMoEモデルとして動作します。",
       "sources": [
         "mistral-large-4-preview"
       ]
     },
     {
-      "text": "Mistral AI公式APIのLa Plateformeは従量課金制です。",
+      "text": "GmailやSlackなど657の業務を試すテストで59.9%を記録しました。",
       "sources": [
         "mistral-large-4-preview"
       ]
     }
   ],
+  "pricing": [],
   "japan": [
     {
-      "text": "日本から問題なく利用可能です。",
-      "sources": [
-        "mistral-large-4-preview"
-      ]
-    },
-    {
-      "text": "専門的なセキュリティ用語は英語での入力と出力が最も高精度です。",
+      "text": "発表の時点では、日本での提供について案内はありません。",
       "sources": [
         "mistral-large-4-preview"
       ]
@@ -98,51 +64,44 @@
   ],
   "howto": [
     {
-      "text": "Hugging Face Hubからモデル重みをダウンロードして自社サーバーで実行できます。",
+      "text": "Mistral Studioのプレビュー版APIから利用できます。",
       "sources": [
         "mistral-large-4-preview"
       ]
     },
     {
-      "text": "Mistral AIのLa Plateforme経由でAPIを利用できます。",
+      "text": "Hugging Faceなどでモデルウェイトが公開されています。",
       "sources": [
         "mistral-large-4-preview"
       ]
     }
   ],
-  "differences": [
-    {
-      "text": "総パラメータ数が前世代の約6000億から約1兆へと拡大しました。",
-      "sources": [
-        "mistral-large-4-preview"
-      ]
-    }
-  ],
+  "differences": [],
   "faq": [
     {
-      "q": "モデルの重みはどこからダウンロードできますか？",
-      "a": "Hugging Face Hubなどから自由に入手できます。",
+      "q": "モデルウェイトは公開されていますか？",
+      "a": "Hugging Faceなどで一般公開されています。",
       "sources": [
         "mistral-large-4-preview"
       ]
     },
     {
-      "q": "対応しているコンテキスト長はどのくらいですか？",
-      "a": "1Mトークンのコンテキストウィンドウに対応しています。",
+      "q": "どのようなハードウェアで学習されましたか？",
+      "a": "NVIDIA Grace Blackwell GPU 3,800基を使用して学習されました。",
       "sources": [
         "mistral-large-4-preview"
       ]
     },
     {
-      "q": "どのような分野のタスクに強いですか？",
-      "a": "プログラミングやサイバーセキュリティの防衛作業で威력을発揮します。",
+      "q": "対応している推論フレームワークは何ですか？",
+      "a": "TransformersやvLLM、Llama.cppなどに対応しています。",
       "sources": [
         "mistral-large-4-preview"
       ]
     },
     {
-      "q": "学習にはどのようなハードウェアが使われましたか？",
-      "a": "NVIDIA Grace Blackwell GPU 3,800基が使用されました。",
+      "q": "ビジョンエンコーダーには何が使われていますか？",
+      "a": "16億パラメータのPixtralが組み込まれています。",
       "sources": [
         "mistral-large-4-preview"
       ]
@@ -162,9 +121,9 @@
   "linkFrom": [
     "mistral-large-4-preview"
   ],
-  "signature": "1955a735c2264ee1",
-  "primarySignature": "1955a735c2264ee1",
+  "signature": "4172f1e55e547b69",
+  "primarySignature": "4172f1e55e547b69",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-11-01T13:17:12+00:00",
-  "updatedAt": "2026-11-01T13:17:12+00:00"
+  "updatedAt": "2026-11-03T11:21:24+00:00"
 }

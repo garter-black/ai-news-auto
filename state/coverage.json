@@ -14,9 +14,9 @@
   {
    "slug": "openai-security-sprint-bug-bounty",
    "at": "2026-11-03T05:32:30.731355+00:00",
-   "title": "ChatGPTのOpenAI、AIで自社の弱点探し強化　バグ報奨金4倍超、防御側に10億ドル",
-   "head": "ChatGPTのOpenAI、AIで自社の弱点探し強化　バグ報奨金4倍超、防御側に10億ドル | Preparing our next security sprint to harden OpenAI",
-   "text": "ChatGPTのOpenAI、AIで自社の弱点探し強化　バグ報奨金4倍超、防御側に10億ドル | Preparing our next security sprint to harden OpenAI | OpenAI セキュリティ / OpenAI バグバウンティ / バグ報奨金 / セキュリティスプリント / Codex 脆弱性 / Cathedral OpenAI / Daybreak OpenAI / AI サイバー防御 / 脆弱性診断 AI / 10億ドル 補助 / OpenAI / サイバーセキュリティ / 生成AI / Codex / バグバウンティ",
+   "title": "OpenAI、AIで自社の弱点探し強化　バグ報奨金4倍超、防御側に10億ドル",
+   "head": "OpenAI、AIで自社の弱点探し強化　バグ報奨金4倍超、防御側に10億ドル | Preparing our next security sprint to harden OpenAI",
+   "text": "OpenAI、AIで自社の弱点探し強化　バグ報奨金4倍超、防御側に10億ドル | Preparing our next security sprint to harden OpenAI | OpenAI セキュリティ / OpenAI バグバウンティ / バグ報奨金 / セキュリティスプリント / Codex 脆弱性 / Cathedral OpenAI / Daybreak OpenAI / AI サイバー防御 / 脆弱性診断 AI / 10億ドル 補助 / OpenAI / サイバーセキュリティ / 生成AI / Codex / バグバウンティ",
    "urls": [
     "https://openai.com/index/preparing-our-next-security-sprint-to-harden-openai"
    ]
@@ -64,9 +64,9 @@
   {
    "slug": "nvidia-recovery-automated-training-recovery",
    "at": "2026-11-02T23:38:15.807310+00:00",
-   "title": "AI半導体のNVIDIAが学習の自動復旧ツール公開　止まったAI開発を人手なしで再開",
-   "head": "AI半導体のNVIDIAが学習の自動復旧ツール公開　止まったAI開発を人手なしで再開 | Keep Distributed Training Running with Automated Workload Recovery | 連携するオープンソース診断ツールの詳細が判明",
-   "text": "AI半導体のNVIDIAが学習の自動復旧ツール公開　止まったAI開発を人手なしで再開 | Keep Distributed Training Running with Automated Workload Recovery | NVIDIA Recovery / 分散学習 / 自動復旧 / Slurm / NVIDIA DSX OS / GPUクラスター / チェックポイント / オープンソース / AI学習 障害 / goodput / NVIDIA / NVIDIA Recovery / 分散学習 / GPUクラスター / オープンソース / AIインフラ",
+   "title": "NVIDIAが学習の自動復旧ツール公開　止まったAI開発を人手なしで再開",
+   "head": "NVIDIAが学習の自動復旧ツール公開　止まったAI開発を人手なしで再開 | Keep Distributed Training Running with Automated Workload Recovery | 連携するオープンソース診断ツールの詳細が判明",
+   "text": "NVIDIAが学習の自動復旧ツール公開　止まったAI開発を人手なしで再開 | Keep Distributed Training Running with Automated Workload Recovery | NVIDIA Recovery / 分散学習 / 自動復旧 / Slurm / NVIDIA DSX OS / GPUクラスター / チェックポイント / オープンソース / AI学習 障害 / goodput / NVIDIA / NVIDIA Recovery / 分散学習 / GPUクラスター / オープンソース / AIインフラ",
    "urls": [
     "https://developer.nvidia.com/blog/keep-distributed-training-running-with-automated-workload-recovery/",
     "https://developer.nvidia.com/blog/diagnose-distributed-ai-workload-failures-with-nvidia-attribution/"
@@ -195,9 +195,9 @@
   {
    "slug": "openai-lifeval-everyday-tasks",
    "at": "2026-11-02T18:26:05.353135+00:00",
-   "title": "ChatGPTのOpenAIが生活の用事をこなす力を測る新テスト「LifeVal」を公開",
-   "head": "ChatGPTのOpenAIが生活の用事をこなす力を測る新テスト「LifeVal」を公開 | LifeVal",
-   "text": "ChatGPTのOpenAIが生活の用事をこなす力を測る新テスト「LifeVal」を公開 | LifeVal | LifeVal / OpenAI / ChatGPT / AIエージェント / 日常タスク / AI 評価 / ブラウザ操作 / コンピューター操作 / AIアシスタント / 生活の手続き / 生成AI / ChatGPT / OpenAI / AIエージェント / 評価指標",
+   "title": "OpenAIが生活の用事をこなす力を測る新テスト「LifeVal」を公開",
+   "head": "OpenAIが生活の用事をこなす力を測る新テスト「LifeVal」を公開 | LifeVal",
+   "text": "OpenAIが生活の用事をこなす力を測る新テスト「LifeVal」を公開 | LifeVal | LifeVal / OpenAI / ChatGPT / AIエージェント / 日常タスク / AI 評価 / ブラウザ操作 / コンピューター操作 / AIアシスタント / 生活の手続き / 生成AI / ChatGPT / OpenAI / AIエージェント / 評価指標",
    "urls": [
     "https://openai.com/index/lifeval"
    ]
@@ -285,9 +285,9 @@
   {
    "slug": "nvidia-workload-map-ai-frameworks",
    "at": "2026-11-02T16:11:22.866709+00:00",
-   "title": "AI半導体のNVIDIAが公開、複雑なAIフレームワークを効率管理する「Workload Map」とは",
-   "head": "AI半導体のNVIDIAが公開、複雑なAIフレームワークを効率管理する「Workload Map」とは | Support New AI Frameworks Faster Using NVIDIA Workload Map",
-   "text": "AI半導体のNVIDIAが公開、複雑なAIフレームワークを効率管理する「Workload Map」とは | Support New AI Frameworks Faster Using NVIDIA Workload Map | NVIDIA / Workload Map / Kubernetes / AIフレームワーク / JobSet / DSX AI Factory / Run:ai / 分散処理 / 生成AI / 開発ツール / Kubernetes / NVIDIA",
+   "title": "NVIDIAが公開、複雑なAIフレームワークを効率管理する「Workload Map」とは",
+   "head": "NVIDIAが公開、複雑なAIフレームワークを効率管理する「Workload Map」とは | Support New AI Frameworks Faster Using NVIDIA Workload Map",
+   "text": "NVIDIAが公開、複雑なAIフレームワークを効率管理する「Workload Map」とは | Support New AI Frameworks Faster Using NVIDIA Workload Map | NVIDIA / Workload Map / Kubernetes / AIフレームワーク / JobSet / DSX AI Factory / Run:ai / 分散処理 / 生成AI / 開発ツール / Kubernetes / NVIDIA",
    "urls": [
     "https://developer.nvidia.com/blog/support-new-ai-frameworks-faster-using-nvidia-workload-map/"
    ]
@@ -315,9 +315,9 @@
   {
    "slug": "anthropic-s1a-amendment-ant-nasdaq",
    "at": "2026-11-02T15:12:09.814909+00:00",
-   "title": "ClaudeのAnthropicが上場申請書を修正　株は「ANT」で売買予定、創業者側が議決権50.1%",
-   "head": "ClaudeのAnthropicが上場申請書を修正　株は「ANT」で売買予定、創業者側が議決権50.1% | Anthropic, PBC - S-1/A-1",
-   "text": "ClaudeのAnthropicが上場申請書を修正　株は「ANT」で売買予定、創業者側が議決権50.1% | Anthropic, PBC - S-1/A-1 | Anthropic 上場 / Anthropic IPO / ANT ナスダック / S-1/A / Claude 運営会社 / Anthropic 株 / 公益法人 PBC / Long-Term Benefit Trust / AI企業 新規上場 / Anthropic 議決権 / Anthropic / Claude / IPO / 生成AI / SEC / 株式上場",
+   "title": "Anthropicが上場申請書を修正　株は「ANT」で売買予定、創業者側が議決権50.1%",
+   "head": "Anthropicが上場申請書を修正　株は「ANT」で売買予定、創業者側が議決権50.1% | Anthropic, PBC - S-1/A-1",
+   "text": "Anthropicが上場申請書を修正　株は「ANT」で売買予定、創業者側が議決権50.1% | Anthropic, PBC - S-1/A-1 | Anthropic 上場 / Anthropic IPO / ANT ナスダック / S-1/A / Claude 運営会社 / Anthropic 株 / 公益法人 PBC / Long-Term Benefit Trust / AI企業 新規上場 / Anthropic 議決権 / Anthropic / Claude / IPO / 生成AI / SEC / 株式上場",
    "urls": [
     "https://www.sec.gov/Archives/edgar/data/2130357/000162828026068676/anthropicpbc-sx1ax1.htm"
    ]
@@ -325,9 +325,9 @@
   {
    "slug": "openai-grid-protectors-program",
    "at": "2026-11-02T15:08:03.915529+00:00",
-   "title": "ChatGPTのOpenAIが電力対策「Grid Protectors」　AI施設が電力逼迫時に使用量を減らす",
-   "head": "ChatGPTのOpenAIが電力対策「Grid Protectors」　AI施設が電力逼迫時に使用量を減らす | Introducing the Grid Protectors Program",
-   "text": "ChatGPTのOpenAIが電力対策「Grid Protectors」　AI施設が電力逼迫時に使用量を減らす | Introducing the Grid Protectors Program | Grid Protectors / OpenAI 電力 / データセンター 電力 / 需要調整 / Georgia Power / Effingham / AI 電気代 / 電力網 / データセンター 電気料金 / ChatGPT 電力消費 / OpenAI / データセンター / 電力 / 生成AI / エネルギー",
+   "title": "OpenAIが電力対策「Grid Protectors」　AI施設が電力逼迫時に使用量を減らす",
+   "head": "OpenAIが電力対策「Grid Protectors」　AI施設が電力逼迫時に使用量を減らす | Introducing the Grid Protectors Program",
+   "text": "OpenAIが電力対策「Grid Protectors」　AI施設が電力逼迫時に使用量を減らす | Introducing the Grid Protectors Program | Grid Protectors / OpenAI 電力 / データセンター 電力 / 需要調整 / Georgia Power / Effingham / AI 電気代 / 電力網 / データセンター 電気料金 / ChatGPT 電力消費 / OpenAI / データセンター / 電力 / 生成AI / エネルギー",
    "urls": [
     "https://openai.com/index/grid-protectors-program"
    ]
@@ -595,9 +595,9 @@
   {
    "slug": "chatgpt-codex-shared-usage-limits",
    "at": "2026-11-02T05:03:16.615957+00:00",
-   "title": "ChatGPTのOpenAI、12月から利用枠を「Codex」と共通化　AI作業機能は本体へ",
-   "head": "ChatGPTのOpenAI、12月から利用枠を「Codex」と共通化　AI作業機能は本体へ | ChatGPTの「Chat」と「Work」を統合、利用枠はCodexと共通に",
-   "text": "ChatGPTのOpenAI、12月から利用枠を「Codex」と共通化　AI作業機能は本体へ | ChatGPTの「Chat」と「Work」を統合、利用枠はCodexと共通に | ChatGPT 利用枠 / ChatGPT Codex 共通 / ChatGPT Work 統合 / ChatGPT Plus 上限 / ChatGPT Pro 利用制限 / ChatGPT Business / Codex 使用量 / ChatGPT クレジット 購入 / トークン 利用枠 / ChatGPT 12月 変更 / ChatGPT / Codex / OpenAI / 生成AI / 利用制限",
+   "title": "OpenAI、12月から利用枠を「Codex」と共通化　AI作業機能は本体へ",
+   "head": "OpenAI、12月から利用枠を「Codex」と共通化　AI作業機能は本体へ | ChatGPTの「Chat」と「Work」を統合、利用枠はCodexと共通に",
+   "text": "OpenAI、12月から利用枠を「Codex」と共通化　AI作業機能は本体へ | ChatGPTの「Chat」と「Work」を統合、利用枠はCodexと共通に | ChatGPT 利用枠 / ChatGPT Codex 共通 / ChatGPT Work 統合 / ChatGPT Plus 上限 / ChatGPT Pro 利用制限 / ChatGPT Business / Codex 使用量 / ChatGPT クレジット 購入 / トークン 利用枠 / ChatGPT 12月 変更 / ChatGPT / Codex / OpenAI / 生成AI / 利用制限",
    "urls": [
     "https://help.openai.com/en/articles/20001625-understanding-chatgpt-and-codex-usage-limits"
    ]
@@ -635,9 +635,9 @@
   {
    "slug": "nvidia-nemoclaw-agent-platform",
    "at": "2026-11-02T04:32:04.169933+00:00",
-   "title": "AI半導体のNVIDIAがオープンなAIエージェント構築基盤「NemoClaw」を発表",
-   "head": "AI半導体のNVIDIAがオープンなAIエージェント構築基盤「NemoClaw」を発表 | Build Specialized Agents on a Stack You Control with NVIDIA NemoClaw",
-   "text": "AI半導体のNVIDIAがオープンなAIエージェント構築基盤「NemoClaw」を発表 | Build Specialized Agents on a Stack You Control with NVIDIA NemoClaw | NVIDIA / NemoClaw / AIエージェント / Nemotron / OpenShell / LangChain / Hermes Agent / 生成AI / AI / 生成AI / 開発ツール / LLM",
+   "title": "NVIDIAがオープンなAIエージェント構築基盤「NemoClaw」を発表",
+   "head": "NVIDIAがオープンなAIエージェント構築基盤「NemoClaw」を発表 | Build Specialized Agents on a Stack You Control with NVIDIA NemoClaw",
+   "text": "NVIDIAがオープンなAIエージェント構築基盤「NemoClaw」を発表 | Build Specialized Agents on a Stack You Control with NVIDIA NemoClaw | NVIDIA / NemoClaw / AIエージェント / Nemotron / OpenShell / LangChain / Hermes Agent / 生成AI / AI / 生成AI / 開発ツール / LLM",
    "urls": [
     "https://developer.nvidia.com/blog/build-specialized-agents-on-a-stack-you-control-with-nvidia-nemoclaw/"
    ]
@@ -665,9 +665,9 @@
   {
    "slug": "nvidia-tensorrt-edge-llm-edge-ai",
    "at": "2026-11-02T03:31:20.769184+00:00",
-   "title": "半導体大手のNVIDIA、AI開発を数コマンドで始められる「TensorRT Edge-LLM」公開",
-   "head": "半導体大手のNVIDIA、AI開発を数コマンドで始められる「TensorRT Edge-LLM」公開 | Run AI Models for Edge Application Development with Just a Few Commands",
-   "text": "半導体大手のNVIDIA、AI開発を数コマンドで始められる「TensorRT Edge-LLM」公開 | Run AI Models for Edge Application Development with Just a Few Commands | NVIDIA / TensorRT Edge-LLM / DGX Spark / エッジAI / Nemotron / 推論ランタイム / 大規模言語モデル / 開発ツール / 生成AI / LLM / エッジAI / 開発ツール / ハードウェア",
+   "title": "NVIDIA、AI開発を数コマンドで始められる「TensorRT Edge-LLM」公開",
+   "head": "NVIDIA、AI開発を数コマンドで始められる「TensorRT Edge-LLM」公開 | Run AI Models for Edge Application Development with Just a Few Commands",
+   "text": "NVIDIA、AI開発を数コマンドで始められる「TensorRT Edge-LLM」公開 | Run AI Models for Edge Application Development with Just a Few Commands | NVIDIA / TensorRT Edge-LLM / DGX Spark / エッジAI / Nemotron / 推論ランタイム / 大規模言語モデル / 開発ツール / 生成AI / LLM / エッジAI / 開発ツール / ハードウェア",
    "urls": [
     "https://developer.nvidia.com/blog/run-ai-models-for-edge-application-development-with-just-a-few-commands/"
    ]
@@ -705,9 +705,9 @@
   {
    "slug": "nvidia-ai-cluster-runtime-dynamo",
    "at": "2026-11-02T02:51:19.694364+00:00",
-   "title": "AI半導体のNVIDIAが公開、大規模AI向けのKubernetes実行基盤「AICR」とは",
-   "head": "AI半導体のNVIDIAが公開、大規模AI向けのKubernetes実行基盤「AICR」とは | Build a Validated Kubernetes Runtime for NVIDIA Dynamo",
-   "text": "AI半導体のNVIDIAが公開、大規模AI向けのKubernetes実行基盤「AICR」とは | Build a Validated Kubernetes Runtime for NVIDIA Dynamo | NVIDIA / Kubernetes / Dynamo / AICR / AI / 推論 / インフラ / 分散推論 / 生成AI / LLM / 開発ツール / インフラ",
+   "title": "NVIDIAが公開、大規模AI向けのKubernetes実行基盤「AICR」とは",
+   "head": "NVIDIAが公開、大規模AI向けのKubernetes実行基盤「AICR」とは | Build a Validated Kubernetes Runtime for NVIDIA Dynamo",
+   "text": "NVIDIAが公開、大規模AI向けのKubernetes実行基盤「AICR」とは | Build a Validated Kubernetes Runtime for NVIDIA Dynamo | NVIDIA / Kubernetes / Dynamo / AICR / AI / 推論 / インフラ / 分散推論 / 生成AI / LLM / 開発ツール / インフラ",
    "urls": [
     "https://developer.nvidia.com/blog/build-a-validated-kubernetes-runtime-for-nvidia-dynamo/"
    ]
@@ -753,9 +753,9 @@
   {
    "slug": "nvidia-uk-ai-factories-robotics",
    "at": "2026-11-01T22:04:45.766011+00:00",
-   "title": "AI半導体のNVIDIAが英国AI構想を発表　創薬からロボットまで変える次世代基盤",
-   "head": "AI半導体のNVIDIAが英国AI構想を発表　創薬からロボットまで変える次世代基盤 | AI in the UK: Drug Discovery, Robotics and AI Factories | NVIDIA",
-   "text": "AI半導体のNVIDIAが英国AI構想を発表　創薬からロボットまで変える次世代基盤 | AI in the UK: Drug Discovery, Robotics and AI Factories | NVIDIA | NVIDIA / AIファクトリー / Isambard-AI / Vera Rubin / 創薬AI / ロボティクス / 英国AI / 半導体 / GPU / スーパーコンピュータ / NVIDIA / GPU / 生成AI / スーパーコンピュータ / ロボティクス / 医療AI",
+   "title": "NVIDIAが英国AI構想を発表　創薬からロボットまで変える次世代基盤",
+   "head": "NVIDIAが英国AI構想を発表　創薬からロボットまで変える次世代基盤 | AI in the UK: Drug Discovery, Robotics and AI Factories | NVIDIA",
+   "text": "NVIDIAが英国AI構想を発表　創薬からロボットまで変える次世代基盤 | AI in the UK: Drug Discovery, Robotics and AI Factories | NVIDIA | NVIDIA / AIファクトリー / Isambard-AI / Vera Rubin / 創薬AI / ロボティクス / 英国AI / 半導体 / GPU / スーパーコンピュータ / NVIDIA / GPU / 生成AI / スーパーコンピュータ / ロボティクス / 医療AI",
    "urls": []
   },
   {
@@ -771,9 +771,9 @@
   {
    "slug": "nvidia-gtc-berlin-healthcare-ai-holoscan5",
    "at": "2026-11-01T13:14:54.783855+00:00",
-   "title": "AI半導体のNVIDIAが医療向けAI発表　創薬から手術支援まで自動化を促進",
-   "head": "AI半導体のNVIDIAが医療向けAI発表　創薬から手術支援まで自動化を促進 | How AI Is Advancing Human Health",
-   "text": "AI半導体のNVIDIAが医療向けAI発表　創薬から手術支援まで自動化を促進 | How AI Is Advancing Human Health | NVIDIA / 医療AI / Holoscan 5 / RFD4-Proteina / BioNeMo / 創薬AI / 手術ロボット / 自律型ラボ / 適応放射線治療 / 使い方 / NVIDIA / GPU / 医療AI / 創薬 / ロボティクス / 生成AI",
+   "title": "NVIDIAが医療向けAI発表　創薬から手術支援まで自動化を促進",
+   "head": "NVIDIAが医療向けAI発表　創薬から手術支援まで自動化を促進 | How AI Is Advancing Human Health",
+   "text": "NVIDIAが医療向けAI発表　創薬から手術支援まで自動化を促進 | How AI Is Advancing Human Health | NVIDIA / 医療AI / Holoscan 5 / RFD4-Proteina / BioNeMo / 創薬AI / 手術ロボット / 自律型ラボ / 適応放射線治療 / 使い方 / NVIDIA / GPU / 医療AI / 創薬 / ロボティクス / 生成AI",
    "urls": []
   },
   {
@@ -940,9 +940,9 @@
   {
    "slug": "openai-refutes-exponential-time-hypothesis",
    "at": "2026-10-30T18:01:27.328138+00:00",
-   "title": "ChatGPTのOpenAIが計算機科学の常識を覆す論文を発表　指数時間仮説を否定か",
-   "head": "ChatGPTのOpenAIが計算機科学の常識を覆す論文を発表　指数時間仮説を否定か | OpenAI Claims It Just Did The Impossible",
-   "text": "ChatGPTのOpenAIが計算機科学の常識を覆す論文を発表　指数時間仮説を否定か | OpenAI Claims It Just Did The Impossible | OpenAI / 指数時間仮説 / ETH / 3-SAT / NP困難 / アルゴリズム / 計算機科学 / 最適化問題 / AI研究 / 論文 / OpenAI / AI論文 / 計算機科学 / アルゴリズム",
+   "title": "OpenAIが計算機科学の常識を覆す論文を発表　指数時間仮説を否定か",
+   "head": "OpenAIが計算機科学の常識を覆す論文を発表　指数時間仮説を否定か | OpenAI Claims It Just Did The Impossible",
+   "text": "OpenAIが計算機科学の常識を覆す論文を発表　指数時間仮説を否定か | OpenAI Claims It Just Did The Impossible | OpenAI / 指数時間仮説 / ETH / 3-SAT / NP困難 / アルゴリズム / 計算機科学 / 最適化問題 / AI研究 / 論文 / OpenAI / AI論文 / 計算機科学 / アルゴリズム",
    "urls": []
   },
   {
@@ -958,9 +958,9 @@
   {
    "slug": "nvidia-agentic-ai-extraterrestrial-search",
    "at": "2026-10-30T15:21:12.552456+00:00",
-   "title": "AI半導体のNVIDIA、地球外生命体の探索に「自律型AI」を投入　米アレン・テレスコープ・アレイで運用開始",
-   "head": "AI半導体のNVIDIA、地球外生命体の探索に「自律型AI」を投入　米アレン・テレスコープ・アレイで運用開始 | Things That Go Beep in the Night: Agentic AI Joins the Search for Extraterrestrial Signals",
-   "text": "AI半導体のNVIDIA、地球外生命体の探索に「自律型AI」を投入　米アレン・テレスコープ・アレイで運用開始 | Things That Go Beep in the Night: Agentic AI Joins the Search for Extraterrestrial Signals | NVIDIA / 自律型AI / AIエージェント / 地球外生命体探索 / SETI / アレン・テレスコープ・アレイ / Holoscan / CUDA-X / 人工知能 / NVIDIA Holoscan / Nemotron / ハードウェア / 科学",
+   "title": "NVIDIA、地球外生命体の探索に「自律型AI」を投入　米アレン・テレスコープ・アレイで運用開始",
+   "head": "NVIDIA、地球外生命体の探索に「自律型AI」を投入　米アレン・テレスコープ・アレイで運用開始 | Things That Go Beep in the Night: Agentic AI Joins the Search for Extraterrestrial Signals",
+   "text": "NVIDIA、地球外生命体の探索に「自律型AI」を投入　米アレン・テレスコープ・アレイで運用開始 | Things That Go Beep in the Night: Agentic AI Joins the Search for Extraterrestrial Signals | NVIDIA / 自律型AI / AIエージェント / 地球外生命体探索 / SETI / アレン・テレスコープ・アレイ / Holoscan / CUDA-X / 人工知能 / NVIDIA Holoscan / Nemotron / ハードウェア / 科学",
    "urls": [
     "https://blogs.nvidia.com/blog/ai-joins-the-search-for-extraterrestrial-signals/"
    ]
@@ -992,20 +992,10 @@
   {
    "slug": "zendesk-chatgpt-enterprise-case-study",
    "at": "2026-10-30T12:03:26.362386+00:00",
-   "title": "ChatGPTのOpenAIがZendesk事例公開　社内で600アプリ自作",
-   "head": "ChatGPTのOpenAIがZendesk事例公開　社内で600アプリ自作 | ChatGPT Enterprise at Zendesk: Putting Company Data to Work",
-   "text": "ChatGPTのOpenAIがZendesk事例公開　社内で600アプリ自作 | ChatGPT Enterprise at Zendesk: Putting Company Data to Work | ChatGPT Enterprise / Zendesk / 社内データ連携 / AIエージェント / 営業支援AI / 生成AI活用事例 / DAU / 使い方 / 料金 / 日本語 / OpenAI / ChatGPT / ChatGPT Enterprise / Zendesk / 生成AI / AIエージェント / 社内データ活用",
+   "title": "OpenAIがZendesk事例公開　社内で600アプリ自作",
+   "head": "OpenAIがZendesk事例公開　社内で600アプリ自作 | ChatGPT Enterprise at Zendesk: Putting Company Data to Work",
+   "text": "OpenAIがZendesk事例公開　社内で600アプリ自作 | ChatGPT Enterprise at Zendesk: Putting Company Data to Work | ChatGPT Enterprise / Zendesk / 社内データ連携 / AIエージェント / 営業支援AI / 生成AI活用事例 / DAU / 使い方 / 料金 / 日本語 / OpenAI / ChatGPT / ChatGPT Enterprise / Zendesk / 生成AI / AIエージェント / 社内データ活用",
    "urls": []
-  },
-  {
-   "slug": "mhlw-izoku-nenkin-chosa-2026",
-   "at": "2026-10-30T11:11:21.814657+00:00",
-   "title": "厚労省が「遺族年金受給者実態調査」を実施、オンライン回答も可能に",
-   "head": "厚労省が「遺族年金受給者実態調査」を実施、オンライン回答も可能に | 「遺族年金受給者実態調査」にご協力ください",
-   "text": "厚労省が「遺族年金受給者実態調査」を実施、オンライン回答も可能に | 「遺族年金受給者実態調査」にご協力ください | 厚生労働省 / 遺族年金受給者実態調査 / 年金制度基礎調査 / 政府統計オンライン / 遺族年金 / 年金局数理課 / e-Stat / 統計調査 / 年金 / 社会保障 / 行政 / 統計情報",
-   "urls": [
-    "https://www.mhlw.go.jp/toukei/list/95-1.html"
-   ]
   }
  ]
 }

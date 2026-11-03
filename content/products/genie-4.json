@@ -6,7 +6,7 @@
   "companyName": "Google",
   "category": "AIモデル",
   "overview": {
-    "text": "Genie 4は、映像と音声のリアルタイム生成や対話に対応したGoogle DeepMindの最新世界モデルです。2026年10月に発表されました。",
+    "text": "Genie 4は、言葉で指示してリアルタイムに動かす仮想の世界を作れるAIモデルです。Googleが2026年10月27日に研究を発表しました。",
     "sources": [
       "google-genie-4-world-model"
     ]
@@ -14,66 +14,47 @@
   "facts": [
     {
       "label": "提供開始",
-      "value": "一部の信頼できるテスター向けに提供中",
+      "value": "限定テスター向けに提供中",
       "sources": [
         "google-genie-4-world-model"
       ]
     },
     {
-      "label": "使える場所",
-      "value": "Google AI Ultraなどの予定",
+      "label": "日本での提供",
+      "value": "記載なし",
       "sources": [
         "google-genie-4-world-model"
       ]
     },
     {
       "label": "向いている人",
-      "value": "研究者、開発者、クリエイター",
+      "value": "開発者・制作者",
       "sources": [
-        "google-genie-4-world-model"
+        "google-ai-news-october-2026"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "映像と音声の同時生成に対応し、効果音や会話音声をリアルタイムで作ることができます。",
+      "text": "動かしている最中に、言葉でカメラを動かしたり天気を変えたりできます。",
       "sources": [
         "google-genie-4-world-model"
       ]
     },
     {
-      "text": "キーボードのWASDキーや矢印キーを使って、一人称視点で生成された空間内を自由に歩き回れます。",
+      "text": "新しい登場人物を出すなどの操作を、言葉でその場で行えます。",
       "sources": [
         "google-genie-4-world-model"
       ]
     },
     {
-      "text": "テキスト入力やマイクを通じた音声対話により、登場人物と会話したり世界を変化させたりできます。",
-      "sources": [
-        "google-genie-4-world-model"
-      ]
-    },
-    {
-      "text": "1枚の平面画像や絵画を、移動して探索できる立体的な3D世界に変換することが可能です。",
-      "sources": [
-        "google-genie-4-world-model"
-      ]
-    },
-    {
-      "text": "ロボットアームの動作訓練用シミュレーション環境として活用できます。",
+      "text": "環境音、音楽、対話型の会話などの音声を、自動で一緒に作ることができます。",
       "sources": [
         "google-genie-4-world-model"
       ]
     }
   ],
-  "pricing": [
-    {
-      "text": "価格や料金プランに関する具体的な数値の提示はありません。",
-      "sources": [
-        "google-genie-4-world-model"
-      ]
-    }
-  ],
+  "pricing": [],
   "japan": [
     {
       "text": "発表の時点では、日本での提供について案内はありません。",
@@ -84,51 +65,50 @@
   ],
   "howto": [
     {
-      "text": "Project GenieのウェイティングリストやGoogle AI Ultraを通じて提供される予定です。",
+      "text": "現在は、信頼できる限られたテスターに順次提供されています。",
       "sources": [
         "google-genie-4-world-model"
       ]
     },
     {
-      "text": "開発者向けには、Gemini APIおよびGoogle AI Studioの早期アクセスパートナー向けに提供予定です。",
+      "text": "今後はGoogle AI Ultraの契約者向けにProject Genieで提供される予定です。",
       "sources": [
         "google-genie-4-world-model"
       ]
-    }
-  ],
-  "differences": [
+    },
     {
-      "text": "Genie 3までは映像のみの出力でしたが、Genie 4では映像と音声を同時に予測・出力する構造に進化しました。",
+      "text": "早期アクセスのパートナー向けに、Gemini APIとAI Studioで提供予定です。",
       "sources": [
         "google-genie-4-world-model"
       ]
     }
   ],
+  "differences": [],
   "faq": [
     {
       "q": "いつから使える？",
-      "a": "現在は信頼できる限られたテスター向けに提供中です。今後はGoogle AI UltraやAPIを通じて順次提供されます。",
+      "a": "現在は一部の限定テスター向けに提供中で、今後はGoogle AI UltraやGemini APIなどで順次提供予定です。",
       "sources": [
         "google-genie-4-world-model"
       ]
     },
     {
-      "q": "Soraなどの動画AIと何が違う？",
-      "a": "Soraが動画ファイルを出力するのに対し、Genie 4はその場でキーボード操作できる空間を作ります。",
+      "q": "誰に向いている？",
+      "a": "映画やゲームを作る人、ロボットなどを研究する人に関係する発表とされています。",
       "sources": [
         "google-genie-4-world-model"
       ]
     },
     {
-      "q": "音声も一緒に作れる？",
-      "a": "環境音や音楽、対話型の会話音声をその場で自動生成することができます。",
+      "q": "どのような音が出る？",
+      "a": "環境音、音楽、対話型の会話の3種類の音声が、その場で自動的に生成されます。",
       "sources": [
         "google-genie-4-world-model"
       ]
     },
     {
-      "q": "安全性はどう確保されている？",
-      "a": "AIモデルの安全性確保にはSynthIDによる電子水脈技術が組み込まれています。",
+      "q": "どのように操作できる？",
+      "a": "自然な言葉を使って、場面を動かしている最中に操作することができます。",
       "sources": [
         "google-genie-4-world-model"
       ]
@@ -138,7 +118,7 @@
     {
       "date": "2026-10-27",
       "slug": "google-genie-4-world-model",
-      "event": "2026年10月27日にGenie 4を発表"
+      "event": "GoogleがGenie 4の研究を発表"
     }
   ],
   "related": [
@@ -154,9 +134,9 @@
   "linkFrom": [
     "google-genie-4-world-model"
   ],
-  "signature": "80e07496b7773b1e",
-  "primarySignature": "80e07496b7773b1e",
+  "signature": "10b60cccefc18a03",
+  "primarySignature": "0d1b63510905edea",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-11-01T18:17:09+00:00",
-  "updatedAt": "2026-11-01T18:17:09+00:00"
+  "updatedAt": "2026-11-03T11:21:20+00:00"
 }
