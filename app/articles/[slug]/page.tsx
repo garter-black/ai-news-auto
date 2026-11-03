@@ -24,7 +24,7 @@ import SourceRecord from "@/components/SourceRecord";
 import { OTHER, companyOf, thumbSource } from "@/lib/companies";
 import { guideForArticle } from "@/lib/guides";
 import { howtoForArticle } from "@/lib/howto";
-import { getProduct, productForArticle } from "@/lib/products";
+import { productForArticle, supersedesGuide } from "@/lib/products";
 import { buyingGuideForTopic, guideShortName } from "@/lib/buying-guides";
 import { chooseGuideForArticle } from "@/lib/choose";
 import type { ChooseGuide } from "@/lib/choose-data";
@@ -160,7 +160,7 @@ export default async function ArticlePage({ params }: Props) {
   const product = productForArticle(article.slug);
   // まとめページへ移した製品ガイドは案内しない（/guides/<slug> は /products/<slug> へ転送）
   const guideMatch = product ? undefined : guideForArticle(article);
-  const guide = guideMatch && !getProduct(guideMatch.slug) ? guideMatch : undefined;
+  const guide = guideMatch && !supersedesGuide(guideMatch.slug) ? guideMatch : undefined;
   // 題材の使い方ガイド（「料金・無料でどこまで」を知りたい読者の受け皿）
   const howto = guide ? undefined : howtoForArticle(article);
   const verdict = verdictOf(article);

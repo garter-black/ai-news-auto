@@ -442,7 +442,7 @@ def pick_sources(match: dict) -> list[tuple[dict, bool]]:
     return chosen
 
 
-JAPAN = {"ok": "利用できる", "partial": "条件付き", "no": "日本では未提供", "unknown": "記載なし"}
+JAPAN = {"ok": "利用できる", "partial": "条件付き", "no": "日本では未提供", "unknown": "未確認"}
 STATUS = {"available": "今すぐ使える", "limited": "一部で提供中", "soon": "提供はこれから", "demo": "研究・デモ段階"}
 
 
@@ -453,7 +453,7 @@ def source_block(article: dict, primary: bool) -> str:
         lines.append("要点: " + " / ".join(article["highlights"]))
     verdict = article.get("verdict") if article.get("type") != "roundup" else None
     if isinstance(verdict, dict):
-        free = {True: "無料で試せる", False: "有料のみ"}.get(verdict.get("free"), "記載なし")
+        free = {True: "無料で試せる", False: "有料のみ"}.get(verdict.get("free"), "無料かは未確認")
         lines.append(
             f"サイソク編集部の判定（公式の文言ではない）: 提供状況={STATUS.get(verdict.get('status'), '不明')} / 日本={JAPAN.get(verdict.get('japan'), '不明')}"
             f" / 料金={verdict.get('price') or '不明'} / {free} / 対象={verdict.get('audience') or '不明'}"
@@ -474,7 +474,7 @@ GEN_SYSTEM = """あなたは日本のITニュースサイト「サイソク」�
 - 1〜2本の記事だけに頼らず、渡された記事を広く使う（新しい記事の内容も入れる）。
 - 記事に根拠が無い項目は空配列にする。埋めるために一般論を書かない。
 - 原稿の文中に「記事」「本記事」という言葉を書かない（読者には「発表では」「発表の時点では」と書く）。
-- 「日本で使える？」は、記事に記載が無ければ「発表の時点では、日本での提供について案内はありません」と書いてよい。
+- 日本での提供・料金は、記事に根拠が無ければ空配列にする（「案内はありません」「記載なし」「未定」のような答えになっていない文は書かない。図鑑では公式の料金表・提供状況の表を別に出す）。
 - 「サイソク編集部の判定」の行を根拠にするときは「案内されています」「発表されています」と書かない（公式の文言ではないため）。「日本からも利用できます」のように書く。
 - よくある質問は、記事に答えが書いてある質問だけにする（「言及がありません」と答える質問は作らない）。
 - 1文は50字以内。です・ます調。1項目は2文まで。
@@ -701,6 +701,18 @@ DUP_QUESTIONS = [
 ]
 
 
+# 答えになっていない文（2026-11-03 オーナーの指摘「内容がすごく薄い」・台帳 W13）。サイトの lib/product-substance.ts の NON_ANSWER_RE と同じ
+NON_ANSWER_RE = re.compile(
+    r"元記事|記載(?:は|が)?(?:なし|ありません|ない|されていません)|言及(?:は|が)?(?:なし|ありません|されていません)|判断でき(?:ません|ない)|"
+    r"未発表|未定|不明|明らかにされていません|発表されていません|わかっていません|分かっていません|案内はありません"
+)
+
+
+def non_answer(text: str) -> bool:
+    """答えになっていない文を含むか（図鑑の原稿に入れない）"""
+    return bool(NON_ANSWER_RE.search(text or ""))
+
+
 def check_draft(
     draft: dict, by_slug: dict[str, dict], events: set[str] | None = None, want_sources: int = 0
 ) -> tuple[dict, list[str]]:
@@ -721,6 +733,9 @@ def check_draft(
         text = (text or "").strip()
         srcs = valid_sources(sources, allowed)
         if not text:
+            return None
+        if non_answer(text):
+            problems.append(f"{label}: 答えになっていない文（記載なし・元記事には・未定など）→「{text[:40]}」")
             return None
         if not srcs:
             problems.append(f"{label}: 出典の slug がない、または記事一覧に無い slug →「{text[:40]}」")
@@ -743,6 +758,9 @@ def check_draft(
         # 概要は文ごとに確かめ、合わない文だけ落とす
         kept = []
         for sentence in [s for s in re.split(r"(?<=。)", text) if s.strip()]:
+            if non_answer(sentence):
+                problems.append(f"overview: 答えになっていない文 →「{sentence[:60]}」")
+                continue
             bad = unsupported(sentence, facts_for(srcs))
             if bad:
                 problems.append(f"overview: 出典の記事に無い数字・日付 {bad} →「{sentence[:60]}」")

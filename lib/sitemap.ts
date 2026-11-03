@@ -18,7 +18,7 @@ import { getAllHowtos } from "@/lib/howto";
 import { getAllBuyingGuides } from "@/lib/buying-guides";
 import { getAllEvents } from "@/lib/events";
 import { getPricing } from "@/lib/pricing";
-import { getAllProducts } from "@/lib/products";
+import { listedProducts, supersedesGuide } from "@/lib/products";
 import { getAllWeeks, weekPublishedAt } from "@/lib/weekly";
 import { isBroadGenre } from "@/lib/sections";
 import { siteConfig } from "@/site.config";
@@ -50,9 +50,9 @@ export function sitemapEntries(): SitemapEntry[] {
       tagArticleCounts.set(slug, (tagArticleCounts.get(slug) ?? 0) + 1);
     }
   }
-  const products = getAllProducts();
-  const productSlugs = new Set(products.map((p) => p.slug));
-  const guides = getAllGuides().filter((guide) => !productSlugs.has(guide.slug));
+  // 図鑑は中身がそろった製品だけ（ほかは noindex。2026-11-03 台帳 W13）
+  const products = listedProducts();
+  const guides = getAllGuides().filter((guide) => !supersedesGuide(guide.slug));
   const howtos = getAllHowtos();
   const lastModified = articles[0]?.generatedAt
     ? new Date(articles[0].generatedAt)
@@ -106,8 +106,8 @@ export function sitemapEntries(): SitemapEntry[] {
     { url: `${base}/usable`, lastModified, changeFrequency: "daily" as const, priority: 0.9 },
     // 料金早見表・週まとめ・イベント（被リンクとブックマークを狙う定番ページ）
     { url: `${base}/ai-pricing`, lastModified: new Date(getPricing().updatedAt), changeFrequency: "weekly" as const, priority: 0.9 },
-    // 計算ツール（円換算・防衛特別所得税。AIプランの費用計算は 2026-11-03 に終了・410）
-    ...["/tools", "/tools/usd-jpy", "/tools/defense-tax"].map((path) => ({
+    // 計算ツールは防衛特別所得税だけ（AIプランの費用計算・ドル建てサブスクの円換算は 2026-11-03 に終了・410。/tools は転送）
+    ...["/tools/defense-tax"].map((path) => ({
       url: `${base}${path}`,
       lastModified,
       changeFrequency: "monthly" as const,

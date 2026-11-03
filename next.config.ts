@@ -8,12 +8,16 @@ import type { NextConfig } from "next";
 function guideRedirects() {
   try {
     const names = (dir: string) => fs.readdirSync(dir).filter((f) => f.endsWith(".json")).map((f) => f.slice(0, -5));
-    const products = new Set(names("content/products"));
+    // 公式の料金がつながった製品（content/product_sources.json）だけ。中身の薄いまとめページへは転送しない（lib/products.ts の supersedesGuide と同じ）
+    const linked = JSON.parse(fs.readFileSync("content/product_sources.json", "utf8")).items as Record<string, { pricing?: unknown }>;
+    const products = new Set(names("content/products").filter((slug) => linked[slug]?.pricing));
     const guides = names("content/guides");
     const moved = guides.filter((slug) => products.has(slug));
     // 使い方ガイド（content/howto）があれば一覧（/guides）は残す
     const howtos = fs.existsSync("content/howto") ? names("content/howto") : [];
     return [
+      // 計算ツールの一覧は、ツールが防衛特別所得税だけになったので、そのページへ転送する（2026-11-03 台帳 W12）
+      { source: "/tools", destination: "/tools/defense-tax", permanent: true },
       ...moved.map((slug) => ({ source: `/guides/${slug}`, destination: `/products/${slug}`, permanent: true })),
       ...(howtos.length === 0 && guides.length > 0 && moved.length === guides.length
         ? [{ source: "/guides", destination: "/products", permanent: true }]

@@ -25,14 +25,11 @@ function load(rel) {
 }
 const calc = load("lib/calc-math.ts");
 const charts = load("lib/charts.ts");
-const { calculatorForArticle, usdFromPrice, CALCULATORS } = load("lib/calculators.ts");
+const { calculatorForArticle, CALCULATORS } = load("lib/calculators.ts");
 const fx = { rate: 157.9, date: "2026-11-02", source: "ECB", fallback: true };
 
-test("ドル→円：消費税10%と手数料", () => {
-  assert.deepEqual(calc.usdToYen(200, 157.9, true), { base: 31580, tax: 3158, fee: 0, total: 34738 });
-  assert.deepEqual(calc.usdToYen(20, 150, false), { base: 3000, tax: 0, fee: 0, total: 3000 });
-  assert.equal(calc.usdToYen(20, 150, true, 2).total, 3366); // (3000+300)×1.02
-  assert.equal(calc.usdToYen(-1, 150, true).total, 0);
+test("ドル建てサブスクの円換算は終了とともに式を消した（2026-11-03・台帳 W12）", () => {
+  assert.equal(calc.usdToYen, undefined);
 });
 
 test("AIプランの費用計算の式は終了とともに消した（2026-11-03）", () => {
@@ -119,11 +116,9 @@ test("記事に合う計算機は1つだけ", () => {
   const plan = calculatorForArticle({ ...base, title: "Claude Ultra", charts: [{ kind: "ladder", product: "claude", highlight: "ultra" }], verdict: { price: "月200ドル" } }, ["claude"]);
   assert.equal(plan, null);
   assert.equal(calculatorForArticle({ ...base, title: "Claude Ultra", charts: [{ kind: "ladder", product: "claude", highlight: "ultra" }] }), null);
-  assert.equal(calculatorForArticle({ ...base, verdict: { price: "月20ドル" } }, []).usd, 20);
-  assert.equal(calculatorForArticle({ ...base, genreSlug: "business", verdict: { price: "月20ドル" } }, []), null);
-  assert.equal(usdFromPrice("月20〜200ドル"), null);
-  assert.equal(usdFromPrice("$17/月"), 17);
-  assert.deepEqual(Object.keys(CALCULATORS).sort(), ["defense-tax", "usd-jpy"]);
+  // ドル建てサブスクの円換算（usd-jpy）は 2026-11-03 に終了（オーナー「このページもいらない」・台帳 W12）。ドルの料金の記事にも置かない
+  assert.equal(calculatorForArticle({ ...base, verdict: { price: "月20ドル" } }, []), null);
+  assert.deepEqual(Object.keys(CALCULATORS).sort(), ["defense-tax"]);
 });
 
 test("同じクラスの製品との比較（rivals）は項目ごとに棒の基準を分け、変化の数字を出さない", () => {

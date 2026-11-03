@@ -132,16 +132,25 @@ async function retiredResponse(request: Request, url: URL, env: Env): Promise<Re
 /**
  * 終了した固定ページ（記事以外）。410 Gone を返し、検索エンジンに「もう無い」と伝える。
  * /tools/ai-plan-cost … AIの有料プランの費用計算。足し算・割り算だけで読者に新しい情報が無かったため 2026-11-03 に終了
+ * /tools/usd-jpy … ドル建てサブスクの円換算。オーナー「このページもいらない」（2026-11-03・台帳 W12）。料金の段の表の円の目安と重なる
  * （AdSense「有用性の低いコンテンツ」への対策。ページ・計算機・サイトマップ・記事への埋め込みは消してある）
  */
 const RETIRED_PAGES: Record<string, { title: string; text: string; links: [string, string][] }> = {
   "/tools/ai-plan-cost": {
     title: "この計算ツールは終了しました",
-    text: "「AIの有料プラン 費用計算」は終了しました。AIの料金は早見表で、ドル建ての料金の円の目安は円換算ツールで確かめられます。",
+    text: "「AIの有料プラン 費用計算」は終了しました。AIの料金と円の目安は早見表で確かめられます。",
     links: [
       ["/ai-pricing", "AIの料金・日本対応 早見表"],
-      ["/tools/usd-jpy", "ドル建てサブスクの円換算"],
-      ["/tools", "計算ツールの一覧"],
+      ["/products", "AIサービス図鑑"],
+      ["/", "トップページ"],
+    ],
+  },
+  "/tools/usd-jpy": {
+    title: "この計算ツールは終了しました",
+    text: "「ドル建てサブスクの円換算」は終了しました。主なAIサービスの料金は、公式の金額と円の目安を早見表と図鑑に載せています。",
+    links: [
+      ["/ai-pricing", "AIの料金・日本対応 早見表"],
+      ["/products", "AIサービス図鑑"],
       ["/", "トップページ"],
     ],
   },

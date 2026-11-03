@@ -39,6 +39,5 @@ export function genreNav(): NavItem[] {
 export const UTILITY_NAV: NavItem[] = [
   { href: "/guides", label: "使い方ガイド" },
   { href: "/ai-pricing", label: "AI料金表" },
-  { href: "/tools", label: "計算ツール" },
   { href: "/products", label: "AIサービス図鑑" },
 ];

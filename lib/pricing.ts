@@ -1,6 +1,6 @@
 import data from "@/content/pricing.json";
 import { getCompany, OTHER } from "@/lib/companies";
-import { getAllProducts } from "@/lib/products";
+import { listedProducts } from "@/lib/products";
 
 /**
  * AI料金・日本対応の早見表（/ai-pricing）のデータ。scripts/pricing_table.py が作る content/pricing.json。
@@ -55,7 +55,7 @@ const squash = (text: string) => text.normalize("NFKC").toLowerCase().replace(/[
 /** 製品名が製品まとめページ（/products）の名前・別名と一致すれば、その slug */
 function productSlugOf(name: string): string | null {
   const key = squash(name);
-  const found = getAllProducts().find((p) => [p.name, ...(p.aliases ?? [])].some((n) => squash(n) === key));
+  const found = listedProducts().find((p) => [p.name, ...(p.aliases ?? [])].some((n) => squash(n) === key));
   return found?.slug ?? null;
 }
 

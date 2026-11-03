@@ -60,6 +60,21 @@
       ]
     },
     {
+      "id": "gemini-api",
+      "name": "Gemini API・Google AI Studio",
+      "covers": "Gemini API（Google AI Studio の API キーで使う開発者向けの API）",
+      "match": "Gemini API|Google AI Studio",
+      "japan": "ok",
+      "japanese": null,
+      "note": "Google の公式ページ「Available regions for Google AI Studio and Gemini API」の対応地域の一覧に日本がある。料金はドル建て（税別）。",
+      "sources": [
+        {
+          "url": "https://aistudio.google.com/docs/available-regions",
+          "checkedAt": "2026-11-03"
+        }
+      ]
+    },
+    {
       "id": "notebooklm",
       "name": "NotebookLM（Gemini Notebook）",
       "covers": "NotebookLM / Gemini Notebook",

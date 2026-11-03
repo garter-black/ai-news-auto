@@ -1,33 +1,7 @@
 /**
- * 計算機（/tools）と記事の図で使う計算。サーバー・ブラウザ共通、依存なし。
+ * 計算機（/tools/defense-tax）と記事の図で使う計算。サーバー・ブラウザ共通、依存なし。
  * ここの式は tests/test_charts_calc.cjs で確かめている。
  */
-
-/** 日本の消費税（標準税率） */
-export const CONSUMPTION_TAX = 0.1;
-
-export type YenBreakdown = {
-  /** 税抜きの円 */
-  base: number;
-  /** 消費税 */
-  tax: number;
-  /** カード会社の海外事務手数料 */
-  fee: number;
-  /** 合計 */
-  total: number;
-};
-
-/**
- * ドル → 円。消費税はドルの価格に10%がかかる場合の目安（海外のサービスは請求のときに足されることが多い）。
- * 手数料は「税込みの請求額」にかかるものとして計算する（カード会社の一般的な扱い）。端数は1円単位で四捨五入。
- */
-export function usdToYen(usd: number, rate: number, withTax: boolean, feePercent = 0): YenBreakdown {
-  if (!Number.isFinite(usd) || !Number.isFinite(rate) || usd < 0 || rate <= 0) return { base: 0, tax: 0, fee: 0, total: 0 };
-  const base = usd * rate;
-  const tax = withTax ? base * CONSUMPTION_TAX : 0;
-  const fee = feePercent > 0 ? (base + tax) * (feePercent / 100) : 0;
-  return { base: Math.round(base), tax: Math.round(tax), fee: Math.round(fee), total: Math.round(base + tax + fee) };
-}
 
 /**
  * 防衛特別所得税・復興特別所得税（国の税）の税率。

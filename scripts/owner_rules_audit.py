@@ -57,7 +57,7 @@ AUDIT_RULES = (
     "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11",
     "I2", "I4", "I5",
     "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19",
-    "W3", "W5", "W6", "W10", "W11",
+    "W3", "W5", "W6", "W10", "W11", "W12", "W13",
 )
 
 # ---- 記事の言葉 ----------------------------------------------------------------
@@ -328,6 +328,55 @@ def static_page_problems(path: str, html: str) -> list[str]:
     return out
 
 
+# ---- 図鑑・ハブのページ（2026-11-03 オーナー「内容がすごく薄い」「このページもいらない」） ----
+
+# W13: 図鑑に記事の写真・フリー素材・AI 画像を出さない（Codex に関係のない記事の写真、ChatGPT Work に素材のノートPCが出ていた）
+ARTICLE_IMAGE = re.compile(r'<img[^>]+src="[^"]*(?:/img/[A-Za-z0-9_-]+\.|/cover/|ytimg\.com|unsplash|pexels|pixabay)', re.I)
+# W13: 決まった型の問いかけの小見出し（lib/product-substance.ts の TEMPLATE_PRODUCT_HEADINGS と同じ）
+PRODUCT_TEMPLATE_HEADINGS = {"何ができる？", "料金は？", "日本で使える？", "どうやって使う？", "これまでと何が違う？", "前のモデルと何が違う？"}
+# W13: 一覧に載る製品ページに必要な章（3つ以上）
+PRODUCT_SECTIONS = ("料金プラン", "日本での提供状況", "主な機能・仕様", "発表・更新の履歴", "よくある質問")
+NOINDEX = re.compile(r'<meta[^>]+name="robots"[^>]+noindex', re.I)
+# W12: 終了したページ
+RETIRED_TOOL_PAGES = ("/tools/usd-jpy",)
+
+
+def hub_page_problems(path: str, html: str) -> list[str]:
+    """図鑑・ハブのページ（/products・/products/<slug>・/guides・/ai-pricing）の違反"""
+    out = []
+    page = parse(html)
+    visible = "".join(page.text)
+    if path.startswith("/products") and (m := ARTICLE_IMAGE.search(html)):
+        out.append(f"[W13] 図鑑に記事・素材の写真が出ている（{path}: {m.group(0)[-60:]}）")
+    for h in page.headings:
+        if h in PRODUCT_TEMPLATE_HEADINGS:
+            out.append(f"[W13] 決まった型の問いかけの小見出し（{path}:「{h}」）")
+    if m := re.search(r"元記事(?:に|で)は", visible):
+        out.append(f"[W13] 「元記事には」が {path} に出ている（「{_snippet(visible, m)}」）")
+    if m := NO_DATA.search(visible):
+        out.append(f"[W11] 「記載なし」が {path} に出ている（「{_snippet(visible, m)}」）")
+    for retired in RETIRED_TOOL_PAGES:
+        if f'href="{retired}"' in html:
+            out.append(f"[W12] 終了したページ {retired} へのリンクが {path} に残っている")
+    return out
+
+
+def listed_product_problems(path: str, html: str) -> list[str]:
+    """図鑑の一覧に載っている製品ページの中身（一覧に載せたのに薄い・検索から外しているのは違反）"""
+    out = []
+    if NOINDEX.search(html):
+        out.append(f"[W13] 一覧に載っている製品ページが noindex（{path}）")
+    found = [s for s in PRODUCT_SECTIONS if s in parse(html).headings]
+    if len(found) < 3:
+        out.append(f"[W13] 一覧に載っている製品ページの中身が薄い（{path}: 章 {len(found)}/5）")
+    return out
+
+
+def product_links(html: str) -> list[str]:
+    """図鑑の一覧から製品ページへのリンク"""
+    return list(dict.fromkeys(re.findall(r'href="(/products/[a-z0-9-]+)"', html)))
+
+
 def fetch(url: str, timeout: int = 30) -> tuple[int, str]:
     req = urllib.request.Request(url, headers=HEADERS)
     for _ in range(2):
@@ -459,6 +508,27 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
         v = [f"[W3] ページが開けない（HTTP {status}）"] if status != 200 else static_page_problems(path, html)
         if v:
             found[path] = v
+    # W12・W13: 図鑑・ハブのページ
+    hubs = ["/products", "/guides", "/ai-pricing"]
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        hub_pages = dict(zip(hubs, pool.map(lambda p: fetch(base + p), hubs)))
+        listed = product_links(hub_pages["/products"][1])[:12] if hub_pages["/products"][0] == 200 else []
+        hub_pages.update(dict(zip(listed, pool.map(lambda p: fetch(base + p), listed))))
+        retired = dict(zip(RETIRED_TOOL_PAGES, pool.map(lambda p: fetch(base + p), RETIRED_TOOL_PAGES)))
+    for path, (status, html) in hub_pages.items():
+        v = [f"[W3] ページが開けない（HTTP {status}）"] if status != 200 else hub_page_problems(path, html)
+        if status == 200 and path in listed:
+            v += listed_product_problems(path, html)
+        if v:
+            found.setdefault(path, []).extend(x for x in v if x not in found.get(path, []))
+    for path, (status, _html) in retired.items():
+        if status != 410:
+            found.setdefault(path, []).append(f"[W12] 終了したページが 410 になっていない（HTTP {status}）")
+    status, home = pages.get("/", (0, ""))
+    if status == 200:
+        for retired_path in RETIRED_TOOL_PAGES:
+            if f'href="{retired_path}"' in home:
+                found.setdefault("/", []).append(f"[W12] 終了したページ {retired_path} へのリンクがトップに残っている")
     # I5: 画像が読めるか（scripts/check_images.py と同じ判定。新しい記事のページだけ）
     try:
         import check_images  # noqa: PLC0415

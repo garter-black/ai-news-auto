@@ -7,7 +7,7 @@ import { formatDate } from "@/lib/articles";
 import { getCompany, OTHER } from "@/lib/companies";
 import { getAllGuides, guideArticles } from "@/lib/guides";
 import { getAllHowtos, type HowtoGuide } from "@/lib/howto";
-import { getProduct } from "@/lib/products";
+import { supersedesGuide } from "@/lib/products";
 
 export const metadata: Metadata = withPageShare("guides", "/guides", {
   title: "AIの使い方ガイド：始め方・料金・無料でどこまで使えるか",
@@ -20,7 +20,7 @@ export const metadata: Metadata = withPageShare("guides", "/guides", {
 export default function GuidesPage() {
   const howtos = getAllHowtos();
   // まとめページ（/products）へ移した製品ガイドは転送しているので出さない
-  const guides = getAllGuides().filter((guide) => !getProduct(guide.slug));
+  const guides = getAllGuides().filter((guide) => !supersedesGuide(guide.slug));
   const groups = new Map<string, HowtoGuide[]>();
   for (const guide of howtos) {
     const key = guide.toolName.split(" / ")[0];

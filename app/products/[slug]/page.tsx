@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import CompanyMark from "@/components/CompanyMark";
-import Thumb from "@/components/Thumb";
-import { coverPath, formatDate, getAllArticles, getArticleSummary, type ArticleSummary } from "@/lib/articles";
-import { companyOf, getCompany, thumbSource } from "@/lib/companies";
+import ProductVisual from "@/components/ProductVisual";
+import PriceTable from "@/components/PriceTable";
+import { formatDate, getAllArticles, getArticleSummary, type ArticleSummary } from "@/lib/articles";
+import { companyOf, getCompany } from "@/lib/companies";
+import type { ModelRow, PlanRow } from "@/lib/pricing-ladder";
 import {
   getAllProducts,
   getProduct,
-  hasBuyingInfo,
-  productArticles,
+  isListedProduct,
   productHeading,
+  productProfile,
   productSeoTitle,
-  type Product,
+  type ProductProfile,
   type Sourced,
 } from "@/lib/products";
 import { Phrases } from "@/lib/highlight";
@@ -31,44 +32,48 @@ export function generateStaticParams() {
 }
 
 /** 検索結果の説明文（120字前後） */
-function describe(product: Product, count: number): string {
-  const first = product.overview.text.split("。")[0];
-  const tail = hasBuyingInfo(product)
-    ? `料金・日本で使えるか・使い方・これまでの流れを${count}本の記事からまとめています。`
-    : `できること・これまでの流れを${count}本の記事からまとめています。`;
-  return `${first}。${tail}`;
+function describe(profile: ProductProfile): string {
+  const first = profile.overview.split("。")[0];
+  const parts = [profile.startingPrice ? `料金は${profile.startingPrice}` : "", profile.japan ? profile.japan.label : ""].filter(Boolean);
+  return `${first}。${parts.length ? `${parts.join("・")}。` : ""}公式の料金・提供状況と発表の履歴を確認日つきで整理しています。`;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = getProduct(slug);
   if (!product) return {};
-  const articles = productArticles(product);
-  const cover = articles[0] ? coverPath(articles[0]) : null;
-  const description = describe(product, articles.length);
+  const profile = productProfile(product);
+  const description = describe(profile);
   return {
     title: productSeoTitle(product),
     description,
     alternates: { canonical: `/products/${product.slug}` },
-    openGraph: { siteName: siteConfig.siteName, locale: siteConfig.locale,
+    // 中身がそろわない製品は検索に出さない（一覧にも出さない。データがそろえば自動で外れる）
+    ...(profile.listing.listed ? {} : { robots: { index: false, follow: true } }),
+    // 記事の写真は使わない（関係のない写真が出ていた。2026-11-03）。共有画像はサイトの既定
+    openGraph: {
+      siteName: siteConfig.siteName,
+      locale: siteConfig.locale,
       type: "article",
       url: `/products/${product.slug}`,
       title: productHeading(product),
       description,
-      modifiedTime: product.updatedAt,
-      ...(cover ? { images: [{ url: cover, width: 1200, height: 630 }] } : {}),
+      modifiedTime: profile.updatedAt,
     },
   };
 }
 
 const SOFTWARE = new Set(["AIモデル", "アプリ・サービス", "開発ツール"]);
 
-/** 早見表の「料金」から円の価格を取り出す（ガジェットの Product 構造化データ用。取れなければ null） */
-function yenPrice(product: Product): number | null {
-  const value = product.facts.find((f) => f.label === "料金")?.value ?? "";
-  const m = value.replace(/,/g, "").match(/(\d+)万(\d+)?円|(\d+)円/);
-  if (!m) return null;
-  return m[3] ? Number(m[3]) : Number(m[1]) * 10000 + Number(m[2] ?? 0);
+/** 料金のよくある質問の答え（公式の料金の表から作る） */
+function priceAnswer(profile: ProductProfile): string {
+  const table = profile.pricingTable;
+  if (!table) return "";
+  const rows =
+    table.kind === "api"
+      ? (table.rows as ModelRow[]).map((r) => `${r.name}${r.context ? `（${r.context}）` : ""}は入力100万トークンあたり${r.inputText}、出力${r.outputText}`)
+      : (table.rows as PlanRow[]).map((r) => `${r.name}は${r.priceTexts.join("、")}`);
+  return `公式の料金ページ（確認日 ${table.checkedAt}）では、${rows.join("。")}です。`;
 }
 
 export default async function ProductPage({ params }: Props) {
@@ -76,8 +81,8 @@ export default async function ProductPage({ params }: Props) {
   const product = getProduct(slug);
   if (!product) notFound();
 
-  const articles = productArticles(product);
-  // 色・企業ページのある企業だけ印を出す（それ以外は企業名だけ）
+  const profile = productProfile(product);
+  const { articles } = profile;
   // 企業ページ（/companies/<slug>）は AI の記事がある企業だけ開ける（app/companies/[company]/view.tsx）。無ければ名前だけ出す
   const companyCandidate = product.company === "other" ? undefined : getCompany(product.company);
   const company =
@@ -95,39 +100,37 @@ export default async function ProductPage({ params }: Props) {
         return order.indexOf(s) + 1;
       })
       .sort((a, b) => a - b);
-  // 描画の前に番号を確定させる（見出しの順に並べる）
   const blocks = {
-    overview: cite(product.overview.sources),
-    facts: product.facts.map((f) => cite(f.sources)),
-    capabilities: product.capabilities.map((i) => cite(i.sources)),
-    pricing: product.pricing.map((i) => cite(i.sources)),
-    japan: product.japan.map((i) => cite(i.sources)),
-    howto: product.howto.map((i) => cite(i.sources)),
-    differences: product.differences.map((i) => cite(i.sources)),
-    faq: product.faq.map((i) => cite(i.sources)),
+    overview: cite(profile.overviewSources),
+    facts: profile.facts.map((f) => cite(f.sources)),
+    features: profile.features.map((i) => cite(i.sources)),
+    changes: profile.changes.map((i) => cite(i.sources)),
+    howto: profile.howto.map((i) => cite(i.sources)),
+    faq: profile.faq.map((i) => cite(i.sources)),
   };
   const cited = order.map((s) => getArticleSummary(s)!);
-  const others = articles.filter((a) => !order.includes(a.slug)).slice(0, 8);
+  const latest = profile.latest;
   const howtos = howtosForProduct(product.slug);
-  const related = product.related.map((s) => getProduct(s)).filter((p): p is Product => Boolean(p));
+  const related = product.related.filter((s) => isListedProduct(s)).map((s) => getProduct(s)!);
 
-  const joined = (items: Sourced[]) => items.map((i) => i.text).join("");
   const qa = [
-    ...(product.pricing.length > 0 ? [{ q: `${product.name}の料金は？`, a: joined(product.pricing) }] : []),
-    ...(product.japan.length > 0 ? [{ q: `${product.name}は日本で使える？`, a: joined(product.japan) }] : []),
-    ...product.faq.map((f) => ({ q: f.q, a: f.a })),
+    ...(profile.pricingTable ? [{ q: `${product.name}の料金はいくらですか？`, a: priceAnswer(profile), sources: [] as string[] }] : []),
+    ...(profile.japan
+      ? [{ q: `${product.name}は日本で使えますか？`, a: `${profile.japan.label}です。${profile.japan.covers}について、${profile.japan.note}（確認日 ${profile.japan.checkedAt}）`, sources: [] as string[] }]
+      : []),
+    ...profile.faq,
   ];
-  const price = product.category === "ガジェット" ? yenPrice(product) : null;
+  const faqRefs = [...qa.slice(0, qa.length - profile.faq.length).map(() => [] as number[]), ...blocks.faq];
 
   const jsonLd = [
     {
       "@context": "https://schema.org",
       "@type": "Article",
       headline: heading,
-      description: describe(product, articles.length),
+      description: describe(profile),
       inLanguage: "ja",
       datePublished: product.createdAt,
-      dateModified: product.updatedAt,
+      dateModified: profile.updatedAt,
       mainEntityOfPage: url,
       author: authorJsonLd,
       publisher: publisherJsonLd,
@@ -153,7 +156,6 @@ export default async function ProductPage({ params }: Props) {
           },
         ]
       : []),
-    // ソフトウェアは SoftwareApplication。ガジェットは円の価格が記事でわかるときだけ Product（価格の無い Product はエラー扱い）
     ...(SOFTWARE.has(product.category)
       ? [
           {
@@ -162,21 +164,21 @@ export default async function ProductPage({ params }: Props) {
             name: product.name,
             applicationCategory: product.category === "開発ツール" ? "DeveloperApplication" : "BusinessApplication",
             author: { "@type": "Organization", name: product.companyName },
-            description: product.overview.text,
+            description: profile.overview,
           },
         ]
-      : price
-        ? [
-            {
-              "@context": "https://schema.org",
-              "@type": "Product",
-              name: product.name,
-              brand: { "@type": "Brand", name: product.companyName },
-              description: product.overview.text,
-              offers: { "@type": "Offer", price, priceCurrency: "JPY", url },
-            },
-          ]
-        : []),
+      : []),
+  ];
+
+  const summary: { label: string; value: React.ReactNode; refs?: number[] }[] = [
+    { label: "提供元", value: product.companyName },
+    { label: "分類", value: product.category },
+    ...(profile.startingPrice
+      ? [{ label: "料金", value: <>{profile.startingPrice}{profile.startingPriceNote ? <span className="ml-1.5 text-note text-muted">{profile.startingPriceNote}</span> : null}</> }]
+      : []),
+    ...(profile.japan ? [{ label: "日本での提供", value: profile.japan.label }] : []),
+    ...(profile.audience ? [{ label: "主な対象", value: profile.audience }] : []),
+    ...profile.facts.filter((f) => f.label !== "向いている人").map((f) => ({ label: f.label, value: f.value, refs: blocks.facts[profile.facts.indexOf(f)] })),
   ];
 
   return (
@@ -195,39 +197,31 @@ export default async function ProductPage({ params }: Props) {
         <span>{product.name}</span>
       </nav>
 
-      <p className="mt-7 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-meta text-muted">
-        {company ? (
-          <Link href={`/companies/${company.slug}`} className="hover:opacity-80">
-            <CompanyMark company={company} size={18} withName />
-          </Link>
-        ) : (
-          <span className="font-bold text-ink">{product.companyName}</span>
-        )}
-        <span>{product.category}</span>
-        <span className="index-num">
-          最終更新 <time dateTime={product.updatedAt}>{formatDate(product.updatedAt)}</time>
-        </span>
-      </p>
-
-      <h1 className="t-h1 mt-3">
-        <Phrases text={heading} />
-      </h1>
-
-      {articles[0] && (
-        <Link href={`/articles/${articles[0].slug}`} className="group mt-6 block overflow-hidden rounded-xl border border-line" aria-label={`最新の関連記事：${articles[0].title}`}>
-          <span className="relative block aspect-[40/21] bg-surface-2">
-            {articles[0].thumbnail ? (
-              <Thumb src={articles[0].thumbnail} source={thumbSource(articles[0])} alt="" fill sizes="(max-width: 760px) 100vw, 760px" className="object-contain" />
+      <div className="mt-7 flex items-start gap-4">
+        <ProductVisual company={product.company} image={profile.source?.image} size={64} />
+        <div className="min-w-0">
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-meta text-muted">
+            {company ? (
+              <Link href={`/companies/${company.slug}`} className="hover:opacity-80">
+                <CompanyMark company={company} size={18} withName />
+              </Link>
             ) : (
-              <Image src={coverPath(articles[0])!} alt="" fill sizes="(max-width: 760px) 100vw, 760px" className="object-contain" />
+              <span className="font-bold text-ink">{product.companyName}</span>
             )}
-          </span>
-          <span className="block px-4 py-3 text-note font-bold text-ink group-hover:underline">関連記事：{articles[0].title}</span>
-        </Link>
-      )}
+            <span>{product.category}</span>
+            <span className="index-num">
+              最終更新 <time dateTime={profile.updatedAt}>{profile.updatedAt.slice(0, 10).replaceAll("-", "/")}</time>
+            </span>
+          </p>
+          <h1 className="t-h1 mt-2">
+            <Phrases text={heading} />
+          </h1>
+        </div>
+      </div>
+      {profile.source?.image && <p className="mt-2 text-meta text-muted">{profile.source.image.credit}</p>}
 
       <p className="mt-6 text-[16px] leading-[2] text-ink">
-        {product.overview.text}
+        {profile.overview}
         <Refs numbers={blocks.overview} />
       </p>
 
@@ -238,38 +232,56 @@ export default async function ProductPage({ params }: Props) {
         </p>
       )}
 
-      {product.facts.length > 0 && (
-        <dl className="mt-7 border-t border-ink text-[16px]">
-          {product.facts.map((fact, index) => (
-            <div key={fact.label} className="grid grid-cols-[6.5rem_1fr] gap-3 border-b border-line py-3 sm:grid-cols-[8.5rem_1fr]">
-              <dt className="font-bold text-ink-soft">{fact.label}</dt>
-              <dd className="text-ink">
-                {fact.value}
-                <Refs numbers={blocks.facts[index]} />
-              </dd>
-            </div>
-          ))}
-        </dl>
+      <dl className="mt-7 border-t border-ink text-[16px]">
+        {summary.map((row) => (
+          <div key={row.label} className="grid grid-cols-[6.5rem_1fr] gap-3 border-b border-line py-3 sm:grid-cols-[8.5rem_1fr]">
+            <dt className="font-bold text-ink-soft">{row.label}</dt>
+            <dd className="text-ink">
+              {row.value}
+              {row.refs && <Refs numbers={row.refs} />}
+            </dd>
+          </div>
+        ))}
+      </dl>
+
+      {profile.pricingTable && (
+        <Section id="price" title="料金プラン">
+          <PriceTable table={profile.pricingTable} />
+          {profile.source?.why && <p className="mt-3 text-note leading-[1.8] text-ink-soft">この製品の料金として載せた根拠：{profile.source.why}。</p>}
+        </Section>
       )}
 
-      <List id="can" title="何ができる？" items={product.capabilities} refs={blocks.capabilities} />
-      <Paragraphs id="price" title="料金は？" items={product.pricing} refs={blocks.pricing} />
-      <Paragraphs id="japan" title="日本で使える？" items={product.japan} refs={blocks.japan} />
-      <Paragraphs id="howto" title="どうやって使う？" items={product.howto} refs={blocks.howto} />
-      <List
-        id="diff"
-        title={product.category === "AIモデル" ? "前のモデルと何が違う？" : "これまでと何が違う？"}
-        items={product.differences}
-        refs={blocks.differences}
-      />
+      {profile.japan && (
+        <Section id="japan" title="日本での提供状況">
+          <p className="text-desc leading-[1.95] text-ink">
+            <span className="font-bold">{profile.japan.label}</span>。{profile.japan.covers}について、{profile.japan.note}
+          </p>
+          <p className="mt-2 text-note leading-[1.8] text-ink-soft">
+            出典：
+            <a href={profile.japan.url} className="text-accent underline underline-offset-2" target="_blank" rel="noopener noreferrer">
+              {profile.japan.url.replace(/^https?:\/\//, "").split("/")[0]}
+            </a>
+            （確認日 {profile.japan.checkedAt}）。新しい機能は国・地域やプランによって順番に提供されることがあります。
+          </p>
+        </Section>
+      )}
 
-      {product.timeline.length > 0 && (
-        <Section id="history" title="これまでの流れ">
+      <List id="features" title="主な機能・仕様" items={profile.features} refs={blocks.features} />
+      <List id="changes" title={product.category === "AIモデル" ? "前のモデルからの変更点" : "最近の変更点"} items={profile.changes} refs={blocks.changes} />
+      <List id="howto" title="利用の始め方" items={profile.howto} refs={blocks.howto} />
+
+      {profile.rivals && (
+        <Section id="rivals" title="同じ価格帯のサービスとの比較">
+          <PriceTable table={profile.rivals} />
+        </Section>
+      )}
+
+      {profile.timeline.length > 0 && (
+        <Section id="history" title="発表・更新の履歴">
           <ol className="border-l border-line-strong pl-5">
-            {product.timeline.map((item, index) => {
-              // 取り下げた記事（content/retired.json）はリンクにしない
+            {profile.timeline.map((item, index) => {
               const linked = Boolean(getArticleSummary(item.slug));
-              const sameDay = index > 0 && product.timeline[index - 1].date === item.date;
+              const sameDay = index > 0 && profile.timeline[index - 1].date === item.date;
               return (
                 <li key={item.slug} className={`relative ${sameDay ? "mt-2" : index > 0 ? "mt-5" : ""}`}>
                   {!sameDay && (
@@ -295,19 +307,31 @@ export default async function ProductPage({ params }: Props) {
         </Section>
       )}
 
-      {product.faq.length > 0 && (
+      {qa.length > 0 && (
         <Section id="faq" title="よくある質問">
           <dl className="grid gap-6">
-            {product.faq.map((item, index) => (
+            {qa.map((item, index) => (
               <div key={item.q}>
                 <dt className="text-[15.5px] font-bold leading-[1.7] text-ink">{item.q}</dt>
                 <dd className="mt-1.5 text-desc leading-[1.95] text-ink-soft">
                   {item.a}
-                  <Refs numbers={blocks.faq[index]} />
+                  <Refs numbers={faqRefs[index]} />
                 </dd>
               </div>
             ))}
           </dl>
+        </Section>
+      )}
+
+      {latest.length > 0 && (
+        <Section id="latest" title="最新の関連記事">
+          <ul className="grid gap-2.5 text-note">
+            {latest.map((article) => (
+              <li key={article.slug}>
+                <ArticleLine article={article} />
+              </li>
+            ))}
+          </ul>
         </Section>
       )}
 
@@ -321,18 +345,6 @@ export default async function ProductPage({ params }: Props) {
               </li>
             ))}
           </ol>
-        </Section>
-      )}
-
-      {others.length > 0 && (
-        <Section id="more" title="そのほかの関連記事">
-          <ul className="grid gap-2.5 text-note">
-            {others.map((article) => (
-              <li key={article.slug}>
-                <ArticleLine article={article} />
-              </li>
-            ))}
-          </ul>
         </Section>
       )}
 
@@ -372,7 +384,7 @@ export default async function ProductPage({ params }: Props) {
       )}
 
       <p className="mt-14 border-t border-line pt-5 text-note leading-[1.9] text-muted">
-        このページは、サイソクが公開した{articles.length}本の関連記事をもとに情報を整理しています。各記事の出典と確認日をご覧ください。料金や提供条件は変わることがあるため、最新の情報は公式発表をご確認ください。
+        料金は各社の公式料金ページ、日本での提供状況は公式の対応国・地域の案内で確認し、それぞれに確認日を付けています。機能と発表の履歴は、サイソクが公開した{articles.length}本の関連記事から整理しました。料金や提供条件は変わることがあるため、契約の前に公式ページもご確認ください。
         <Link href="/editorial-policy" className="ml-1 text-accent underline">
           編集方針
         </Link>
@@ -407,22 +419,6 @@ function List({ id, title, items, refs }: { id: string; title: string; items: So
           </li>
         ))}
       </ul>
-    </Section>
-  );
-}
-
-function Paragraphs({ id, title, items, refs }: { id: string; title: string; items: Sourced[]; refs: number[][] }) {
-  if (items.length === 0) return null;
-  return (
-    <Section id={id} title={title}>
-      <div className="grid gap-3">
-        {items.map((item, index) => (
-          <p key={index} className="text-desc leading-[1.95] text-ink">
-            {item.text}
-            <Refs numbers={refs[index]} />
-          </p>
-        ))}
-      </div>
     </Section>
   );
 }

@@ -1,0 +1,109 @@
+{
+  "_about": "AIサービス図鑑（/products）の製品と、確かめた公式データのつなぎ（人が確かめて更新する）。pricing は content/pricing/<product>.json の行（plans はプランの id、models は API モデルの id）。japan は content/japan_availability.json の id。why には、その行がこの製品の料金だと言える根拠（公式ページの書き方）を書く。ここに無い製品・行が見つからない製品は、図鑑の一覧に出さず noindex（lib/products.ts の productListing。2026-11-03 オーナーの指摘「内容がすごく薄い」）。lead は図鑑のカードとページの冒頭に出す2〜3文の説明（leadSources の記事に書かれている事実だけで書く）。timelineSkip は発表の日付と記事の日付がずれる記事（インタビューなど）を発表の履歴から外す。image は公式の製品画像・ロゴがあるときだけ（src・credit・sourceUrl）。無ければ文字の無いブランド色の図形を出す（components/ProductVisual.tsx）。",
+  "updatedAt": "2026-11-03",
+  "items": {
+    "chatgpt-pro": {
+      "pricing": {
+        "product": "chatgpt",
+        "plans": [
+          "pro-100",
+          "pro-200",
+          "pro-500"
+        ]
+      },
+      "why": "OpenAI ヘルプ「About ChatGPT Pro tiers」の Pro 100・200・500 の段",
+      "japan": "chatgpt",
+      "audience": "ChatGPT を毎日長時間使い、上位モデルの利用枠や API クレジットが必要な個人",
+      "lead": "ChatGPTの個人向けの上位プランです。Pro 100・200・500の3段階があり、毎月それぞれ100ドル・200ドル・500ドル分のAPIクレジットが付きます。自作アプリやAIエージェントの開発にも使えます。",
+      "leadSources": [
+        "chatgpt-pro-monthly-api-credits"
+      ]
+    },
+    "chatgpt-work": {
+      "pricing": {
+        "product": "chatgpt",
+        "plans": [
+          "business-standard",
+          "business-premium"
+        ]
+      },
+      "why": "OpenAI ヘルプ「What is ChatGPT Business?」に、Business のシートで ChatGPT Work を使えると書かれている",
+      "japan": "chatgpt",
+      "audience": "ChatGPT Business を契約する企業・チーム",
+      "lead": "OpenAIの企業向けAIワークスペースです。Slack・Google Drive・Databricksのデータを横断して分析し、指示からダッシュボードを自動で作れます。2026年7月にEnterpriseプラン向けに提供が始まりました。",
+      "leadSources": [
+        "openai-chatgpt-work-product-insights-demo",
+        "chatgpt-work-dashboard-generation",
+        "openai-chatgpt-work-enterprise-rollout"
+      ]
+    },
+    "codex": {
+      "pricing": {
+        "product": "chatgpt",
+        "plans": [
+          "business-standard",
+          "business-premium"
+        ]
+      },
+      "why": "OpenAI ヘルプ「What is ChatGPT Business?」に、Business のシートで Codex を使えると書かれている",
+      "japan": "chatgpt",
+      "audience": "ソフトウェア開発者と、試作・自動化を自分で進めたいビジネス職",
+      "lead": "OpenAIのAIコーディングエージェントです。大まかな指示から自律的にコードを書き、試作品の作成や初期テストまで進めます。12月からはPlus・Pro・Businessの各プランで、利用枠がChatGPTと共通になります。",
+      "leadSources": [
+        "shopify-cto-codex-ai-prototyping",
+        "chatgpt-codex-shared-usage-limits"
+      ],
+      "timelineSkip": [
+        "shopify-cto-codex-ai-prototyping"
+      ]
+    },
+    "gpt-6-1-terra": {
+      "pricing": {
+        "product": "openai-api",
+        "models": [
+          "gpt-6.1-terra"
+        ]
+      },
+      "why": "OpenAI の API 料金ページに GPT-6.1 Terra の行がある",
+      "japan": "chatgpt",
+      "audience": "API で AI を組み込む開発者・企業",
+      "lead": "OpenAIが2026年10月26日に発表したAIモデルです。PCの画面を見てキーボードやマウスを操作でき、最大100万トークンの入力に対応します。API料金は従来モデルより50%以上安く設定されています。",
+      "leadSources": [
+        "openai-gpt-6-1-terra-announcement",
+        "openai-gpt-61-terra-amazon-bedrock"
+      ]
+    },
+    "gpt-6-astra": {
+      "pricing": {
+        "product": "openai-api",
+        "models": [
+          "gpt-6-astra"
+        ]
+      },
+      "why": "OpenAI の API 料金ページに GPT-6 Astra の行がある",
+      "japan": "chatgpt",
+      "audience": "API で AI を組み込む開発者・企業",
+      "lead": "OpenAIが2026年9月に発表したAIモデルです。PCアプリの画面を直接操作し、数日にわたるタスクを自律的に進められます。APIとCodexでは、最大8倍速い「Ultrafast」モードも使えます。",
+      "leadSources": [
+        "openai-announces-gpt-6-astra",
+        "openai-gpt6-astra-ultrafast-release"
+      ]
+    },
+    "gemini-4-argon": {
+      "pricing": {
+        "product": "gemini-api",
+        "models": [
+          "gemini-4-argon"
+        ]
+      },
+      "why": "Gemini API の料金ページに Gemini 4 Argon の行がある",
+      "japan": "gemini-api",
+      "audience": "API で AI を組み込む開発者・企業",
+      "lead": "Googleが2026年10月に提供を始めた推論モデルです。複雑なソフトウェア開発や、財務・法務の細かい作業を、長い手順でも文脈を保って処理します。Gemini API・Google AI Studio・Google Cloud・Geminiアプリで使えます。",
+      "leadSources": [
+        "google-ai-news-october-2026",
+        "google-cloud-ai-october-2026-recap"
+      ]
+    }
+  }
+}

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
 import AssetShell, { Crumbs } from "@/components/assets/AssetShell";
 import { Calculator, CALC_NOTES } from "@/components/calc/CalculatorBox";
@@ -6,7 +5,7 @@ import { CALCULATORS, type CalculatorKind } from "@/lib/calculators";
 import { siteConfig } from "@/site.config";
 import { Phrases } from "@/lib/highlight";
 
-/** 計算機の単独ページ（/tools/*）の共通の枠 */
+/** 計算機の単独ページ（/tools/*）の共通の枠。計算ツールは1つだけなので一覧（/tools）は無く、/tools は next.config.ts で転送する（2026-11-03） */
 export default function ToolPage({ kind, lead, children }: { kind: CalculatorKind; lead: string; children?: ReactNode }) {
   const meta = CALCULATORS[kind];
   const url = `${siteConfig.url}${meta.href}`;
@@ -29,15 +28,14 @@ export default function ToolPage({ kind, lead, children }: { kind: CalculatorKin
       "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "ホーム", item: siteConfig.url },
-        { "@type": "ListItem", position: 2, name: "計算ツール", item: `${siteConfig.url}/tools` },
-        { "@type": "ListItem", position: 3, name: meta.title, item: url },
+        { "@type": "ListItem", position: 2, name: meta.title, item: url },
       ],
     },
   ];
   return (
     <AssetShell>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Crumbs items={[{ href: "/", label: "ホーム" }, { href: "/tools", label: "計算ツール" }, { label: meta.title }]} />
+      <Crumbs items={[{ href: "/", label: "ホーム" }, { label: meta.title }]} />
       <header className="mt-5">
         <h1 className="t-h1 text-ink"><Phrases text={meta.title} /></h1>
         <p className="t-lead mt-3">{lead}</p>
@@ -48,20 +46,6 @@ export default function ToolPage({ kind, lead, children }: { kind: CalculatorKin
       <p className="mt-4 max-w-[40em] text-note leading-[1.75] text-ink-soft">{CALC_NOTES[kind]}</p>
       <p className="mt-2 max-w-[40em] text-note leading-[1.75] text-ink-soft">入力した数字は、この画面の中の計算だけに使います。送信・保存はしません。</p>
       {children ? <div className="mt-12 max-w-[40em]">{children}</div> : null}
-      <nav aria-label="ほかの計算ツール" className="mt-12 border-t border-line pt-6">
-        <p className="text-meta font-bold text-muted">ほかの計算ツール</p>
-        <ul className="mt-2 grid gap-1.5">
-          {(Object.keys(CALCULATORS) as CalculatorKind[])
-            .filter((k) => k !== kind)
-            .map((k) => (
-              <li key={k}>
-                <Link href={CALCULATORS[k].href} className="text-desc font-bold text-ink underline decoration-line-strong underline-offset-4 hover:text-accent hover:decoration-accent">
-                  {CALCULATORS[k].title}
-                </Link>
-              </li>
-            ))}
-        </ul>
-      </nav>
     </AssetShell>
   );
 }

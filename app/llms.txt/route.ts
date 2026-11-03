@@ -2,7 +2,7 @@ import { getAllArticles } from "@/lib/articles";
 import { COMPANIES, companyCounts } from "@/lib/companies";
 import { getAllGuides } from "@/lib/guides";
 import { getAllBuyingGuides } from "@/lib/buying-guides";
-import { getAllProducts, productHeading } from "@/lib/products";
+import { listedProducts, productHeading, supersedesGuide } from "@/lib/products";
 import { STATUS_LABEL, verdictOf } from "@/lib/verdict";
 import { siteConfig } from "@/site.config";
 
@@ -22,9 +22,9 @@ export function GET() {
   // 公式ブログ・プレスリリース由来の記事があれば、案内文にも含める
   const hasWeb = ai.some((a) => a.sourceType === "web");
   const line = (title: string, url: string, note?: string) => `- [${title}](${url})${note ? `: ${note}` : ""}`;
-  const products = getAllProducts();
+  const products = listedProducts();
   // まとめページへ移した製品ガイドは転送しているので載せない
-  const guides = getAllGuides().filter((g) => !products.some((p) => p.slug === g.slug));
+  const guides = getAllGuides().filter((g) => !supersedesGuide(g.slug));
 
   const text = `# ${siteConfig.name}（${siteConfig.tagline}）
 

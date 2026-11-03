@@ -18,8 +18,6 @@ export type PageShare = {
 };
 
 export const PAGE_SHARE = {
-  tools: { heading: "計算ツール", lines: ["ドル建てサブスクの円換算", "防衛特別所得税の年ごとの税額"], footer: "公式の数字と当日の為替で計算" },
-  "usd-jpy": { heading: "サブスクの円換算", lines: ["ドル建ての月額を、今日の為替で円に", "消費税10%・年額つき"], footer: "サイソクの計算ツール" },
   "defense-tax": { heading: "防衛特別所得税", lines: ["2027年から始まる新しい税", "自分の場合の税額を年ごとに計算"], footer: "サイソクの計算ツール" },
   "ai-pricing": { heading: "AIの料金早見表", lines: ["ChatGPT・Claude・GeminiのAPIと月額プラン", "日本で使えるか・無料で試せるかも"], footer: "数字はすべて出典の記事で確認" },
   usable: { heading: "今すぐ使えるAI", lines: ["発表されたばかりの新機能・新モデルから", "今日から使えるものだけを毎日更新"], footer: "日本から使えるか・料金・無料かを判定" },

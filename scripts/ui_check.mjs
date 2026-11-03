@@ -153,7 +153,9 @@ async function buildPages() {
   pages.push(...(await pickArticles(full)));
   const queries = full ? ["ChatGPT", "確定申告", "大谷"] : ["ChatGPT"];
   for (const q of queries) pages.push({ path: `/search?q=${encodeURIComponent(q)}`, label: `検索「${q}」`, kind: "search" });
-  pages.push({ path: "/tools", label: "計算ツール", kind: "page" });
+  // 計算ツールの一覧（/tools）は防衛特別所得税のページへ転送（2026-11-03 台帳 W12）。図鑑の一覧と製品ページを見る
+  pages.push({ path: "/products", label: "AIサービス図鑑", kind: "list" });
+  pages.push({ path: "/products/codex", label: "図鑑 Codex", kind: "page" });
   const tools = existsSync(join(ROOT, "app/tools")) ? readdirSync(join(ROOT, "app/tools")).filter((d) => !d.includes(".")) : [];
   for (const t of full ? tools : tools.slice(0, 1)) pages.push({ path: `/tools/${t}`, label: `ツール ${t}`, kind: "tool" });
   pages.push({ path: "/ai-pricing", label: "AI料金表", kind: "page" });

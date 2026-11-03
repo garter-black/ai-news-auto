@@ -154,5 +154,34 @@ class CoverageTest(unittest.TestCase):
             self.assertIn(f"[{rid}]", src, rid)
 
 
+
+class ProductHubTest(unittest.TestCase):
+    """W12・W13（2026-11-03）: 図鑑・ハブのページに関係のない写真・決まった型の見出し・「元記事には」を出さない。一覧に載せた製品ページは中身があり検索に出す。終了したツールは 410"""
+
+    def test_no_article_or_stock_images_on_products(self):
+        bad = '<img src="https://ai-tech-express.jp/img/openai-bug-bounty.sm.webp"><h2>料金プラン</h2>'
+        self.assertIn("W13", ids(audit.hub_page_problems("/products", bad)))
+        self.assertIn("W13", ids(audit.hub_page_problems("/products/codex", '<img src="/cover/codex-news?v=3">')))
+        self.assertIn("W13", ids(audit.hub_page_problems("/products/chatgpt-work", '<img src="https://images.unsplash.com/photo-1">')))
+        self.assertEqual([], audit.hub_page_problems("/products", '<span data-product-visual="placeholder"><svg></svg></span><h1>AIサービス図鑑</h1>'))
+
+    def test_template_headings_and_non_answers(self):
+        self.assertIn("W13", ids(audit.hub_page_problems("/products/codex", "<h2>何ができる？</h2>")))
+        self.assertIn("W13", ids(audit.hub_page_problems("/products/codex", "<p>元記事には料金の記載がありません。</p>")))
+        self.assertIn("W11", ids(audit.hub_page_problems("/products/codex", "<dd>記載なし</dd>")))
+        self.assertEqual([], audit.hub_page_problems("/products/codex", "<h2>主な機能・仕様</h2><h2>料金プラン</h2>"))
+
+    def test_listed_product_must_have_substance_and_be_indexed(self):
+        thin = "<h1>Codex</h1><h2>関連記事</h2>"
+        self.assertIn("W13", ids(audit.listed_product_problems("/products/codex", thin)))
+        full = "<h2>料金プラン</h2><h2>日本での提供状況</h2><h2>主な機能・仕様</h2><h2>発表・更新の履歴</h2>"
+        self.assertEqual([], audit.listed_product_problems("/products/codex", full))
+        self.assertIn("W13", ids(audit.listed_product_problems("/products/codex", '<meta name="robots" content="noindex, follow">' + full)))
+        self.assertEqual(["/products/codex", "/products/gpt-6-astra"], audit.product_links('<a href="/products/codex">a</a><a href="/products/gpt-6-astra">b</a><a href="/products/codex">c</a>'))
+
+    def test_retired_usd_jpy_is_not_linked(self):
+        self.assertIn("W12", ids(audit.hub_page_problems("/guides", '<a href="/tools/usd-jpy">円換算</a>')))
+        self.assertIn("/tools/usd-jpy", audit.RETIRED_TOOL_PAGES)
+
 if __name__ == "__main__":
     unittest.main()
