@@ -159,12 +159,13 @@
     }
   ],
   "related": [
+    "gpt-6-astra",
     "chatgpt",
     "codex",
-    "gpt-6-astra",
     "gpt-6"
   ],
   "articles": [
+    "cisco-openai-cyber-defense",
     "openai-security-sprint-bug-bounty",
     "openai-daybreak-check-point-vulnerability",
     "sophos-openai-daybreak-security-agent"

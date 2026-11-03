@@ -9805,6 +9805,14 @@
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026103010"
     },
+    "a2357e701f020223": {
+      "at": "2026-11-03T20:23:12.371176+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 90,
+      "section": "ai",
+      "slug": "cisco-openai-cyber-defense",
+      "url": "https://openai.com/index/cisco-cyber"
+    },
     "a283ca869f875377": {
       "at": "2026-11-02T05:31:19.966464+00:00",
       "reason": "stale: 発表から62時間（48時間を超えた発表は通常の記事にしない）",
@@ -13486,85 +13494,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-02T05:32:07.170159+00:00",
-      "attempt": 1,
-      "id": "72be3fcc67999367",
-      "kind": "update",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "score": 100,
-      "source": "au-topics",
-      "title": "「XREAL AURA」をau +1 collectionから11月27日に発売"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T05:32:17.117259+00:00",
-      "attempt": 1,
-      "id": "755c6b2b63fba038",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 52.3字・60字超の文が 29% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 122.0字・最長 218字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 122.0,
-        "avg_sentence": 52.3,
-        "long_share": 0.286,
-        "max_paragraph": 218,
-        "paragraphs": 9,
-        "sentences": 21
-      },
-      "score": 100,
-      "source": "xbox-wire-jp",
-      "title": "『紅の砂漠 Enhanced』の旅は「未知なる旅路」へと続く"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T05:32:20.561691+00:00",
-      "attempt": 0,
-      "id": "755c6b2b63fba038",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 129.3字・最長 220字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 129.3,
-        "avg_sentence": 33.3,
-        "long_share": 0.029,
-        "max_paragraph": 220,
-        "paragraphs": 9,
-        "sentences": 35
-      },
-      "score": 100,
-      "source": "xbox-wire-jp",
-      "title": "『紅の砂漠 Enhanced』の旅は「未知なる旅路」へと続く"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T05:48:38.741594+00:00",
-      "attempt": 1,
-      "id": "1ff21a1fea64f84e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 53.1字・60字超の文が 35% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 111.1,
-        "avg_sentence": 53.1,
-        "long_share": 0.348,
-        "max_paragraph": 172,
-        "paragraphs": 11,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "aws-japan-blog",
-      "title": "週刊生成AI with AWS – 2026/10/26 週"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T05:48:42.542096+00:00",
@@ -20042,6 +19971,103 @@
       "score": 50,
       "source": "jetbrains-blog",
       "title": "Use Your GitHub Copilot Plan in JetBrains Air – in Your IDE and in the Cloud"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T20:22:06.381776+00:00",
+      "attempt": 1,
+      "id": "a2357e701f020223",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "「判定: 提供状況=demo」→ 元記事は顧客事例の紹介で、デモ段階とする根拠がなく、提供状況を取り違えている。",
+        "「今回は、攻撃対応と脆弱性修正の側面です」→ Codexデモとの関連づけは元記事にない編集上の解釈で、事実と区別されていない。",
+        "「step function improvements（段階的に大きく跳ね上がる改善）」→ 元記事は「ステップ関数的な改善」の発言のみで、訳語の補足が強め。",
+        "「OpenAIの推論AI（考えてから答えるAI）」→ 元記事は「frontier AI reasoning」で、推論AIという位置づけと補足説明は元記事にない。",
+        "「脆弱性の発見と修正、調査から対応までの時間を短縮できた」→ 元記事は「able to find and patch more efficiently, shortening time」という幹部の発言で、実績として断定しすぎ。",
+        "「Ciscoは『Daybreak』と『GPT-6 Astra』を使っています」→ 元記事は initiatives と呼んでいるだけで、使用の実態は確認できず断定しすぎ。"
+      ],
+      "readability": {
+        "avg_paragraph": 97.2,
+        "avg_sentence": 48.6,
+        "long_share": 0.219,
+        "max_paragraph": 143,
+        "paragraphs": 16,
+        "sentences": 32
+      },
+      "score": 72,
+      "source": "openai-news",
+      "title": "How Cisco defends at machine speed with OpenAI",
+      "warnings": [
+        "見出しが52字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T20:22:38.112650+00:00",
+      "attempt": 2,
+      "id": "a2357e701f020223",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "判定: 提供状況=limited → 元記事は顧客事例の紹介で、一部提供や限定提供といった提供状況の記述がなく、根拠がない。",
+        "「これにより、Ciscoは…機微なネットワーク情報を損なわずに導入できると見ていた」→ 元記事は「機微なテレメトリ」であり、「ネットワーク情報」への言い換えはやや広いが軽微。",
+        "「かんたん版」の「これまでは、社内と社外の境目に防御を置く方法が中心でした」→ 元記事は「単一のセキュリティ境界」とあるだけで、社内と社外の境目という説明は補足的で言い過ぎ。",
+        "「顧客事例を紹介した動画とブログです。新製品の発売ではなく」→ 元記事に新製品でないという明示はなく、記事側の解釈。"
+      ],
+      "readability": {
+        "avg_paragraph": 85.4,
+        "avg_sentence": 43.9,
+        "long_share": 0.27,
+        "max_paragraph": 169,
+        "paragraphs": 19,
+        "sentences": 37
+      },
+      "score": 80,
+      "source": "openai-news",
+      "title": "How Cisco defends at machine speed with OpenAI"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T20:22:55.208407+00:00",
+      "attempt": 2,
+      "id": "a2357e701f020223",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "文が長い（1文の平均 43.5字・60字超の文が 27% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 84.7,
+        "avg_sentence": 43.5,
+        "long_share": 0.27,
+        "max_paragraph": 169,
+        "paragraphs": 19,
+        "sentences": 37
+      },
+      "score": 90,
+      "source": "openai-news",
+      "title": "How Cisco defends at machine speed with OpenAI"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T20:23:12.361369+00:00",
+      "attempt": 0,
+      "id": "a2357e701f020223",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 86.7,
+        "avg_sentence": 39.2,
+        "long_share": 0.19,
+        "max_paragraph": 169,
+        "paragraphs": 19,
+        "sentences": 42
+      },
+      "score": 90,
+      "source": "openai-news",
+      "title": "How Cisco defends at machine speed with OpenAI"
     }
   ],
   "short_text_retry": {

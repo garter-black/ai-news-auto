@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "cisco-openai-cyber-defense",
+   "at": "2026-11-03T20:22:34.198191+00:00",
+   "title": "Cisco、OpenAIのAIを防御に活用　ネットワーク情報と組み合わせ",
+   "head": "Cisco、OpenAIのAIを防御に活用　ネットワーク情報と組み合わせ | How Cisco defends at machine speed with OpenAI",
+   "text": "Cisco、OpenAIのAIを防御に活用　ネットワーク情報と組み合わせ | How Cisco defends at machine speed with OpenAI | Cisco OpenAI / AIセキュリティ / サイバー防御 / 脆弱性対応 / Daybreak / GPT-6 Astra / AIエージェント セキュリティ / ゼロデータ保持 / 生成AI / セキュリティ / Cisco / OpenAI / AIエージェント",
+   "urls": [
+    "https://openai.com/index/cisco-cyber"
+   ]
+  },
+  {
    "slug": "openai-physical-engineering-ai",
    "at": "2026-11-03T19:12:14.922693+00:00",
    "title": "OpenAI、物理製品の設計支援AIの成果を公開　ハード部門のトークン利用は23倍に",
