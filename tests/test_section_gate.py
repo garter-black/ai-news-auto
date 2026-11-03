@@ -69,6 +69,14 @@ class SectionPolishCheckTest(unittest.TestCase):
         new = "2027年1月以降、300万円で買える車です。"
         self.assertTrue(any("増えた" in p for p in sp.rewrite_problems("自分に関係ある？", self.OLD, new, self.OLD)))
 
+    def test_register_and_lists_and_overcut(self):
+        old = "比較が行われました。商用モデルに匹敵する結果を示しました。"
+        self.assertTrue(any("です・ます" in p for p in sp.rewrite_problems("x", old, "比較が行われた。", old)))
+        lst = "数字は次のとおりです。\n\n- 要素：数千\n- 言語：23\n- 人数：最大6人"
+        self.assertTrue(any("箇条書き" in p for p in sp.rewrite_problems("x", lst, "要素は数千、言語は23、人数は最大6人です。", lst)))
+        long = "クレジットの項目はあるのに、金額が空欄の状態でした。今回は100ドルに置き換わっています。何ドル分もらえるのかが、一目で分かります。前の文には金額がありませんでした。"
+        self.assertTrue(any("削りすぎ" in p for p in sp.rewrite_problems("x", long, "100ドルです。", long)))
+
     def test_titles(self):
         self.assertTrue(sp.valid_title("ランクルFJを検討中の人は何が変わる？", "自分に関係ある？", "", "ランクルFJ ランドクルーザー"))
         self.assertFalse(sp.valid_title("自分に関係ある？", "自分に関係ある？", "", ""))

@@ -86,6 +86,8 @@ PROMPT = """# 記事
   同じことのくり返し、関係の薄い立場への言及（「この立場への直接の影響は小さいです」）。
 - 「元記事には書かれていません」「言及なし」「判断できません」は、読者に必要な未定の点なら「〇〇はまだ発表されていません」と、
   何が未定かを主語にして1文で書く。必要の無いものは消す。「元記事」という言葉は使わない。
+  「書かれていない」を「無い」と言い換えない（×「関連は書かれていません」→「関連はありません」。○「関連は示されていません」）。
+- です・ます調を保つ（「〜た。」「〜である。」にしない）。箇条書き（- で始まる行）は箇条書きのまま残す。
 - 「〜があります。〇〇です。」のように1つの文を2つに割らない。1文は60字まで。です・ます調。幼い言い方・一問一答にしない。
 - 硬い言い回し（「〜可能です」「〜において」「〜となっております」）は使わない（「〜できます」「〜で」）。
 - 残す: 数字・日付・価格・固有名詞・条件・手順・「（編集部注）」の印は全部そのまま残す。新しい事実・数字・名前・例えは足さない。
@@ -176,6 +178,24 @@ def unmask_tables(text: str, tables: list[str]) -> str | None:
     return text
 
 
+POLITE_END_RE = re.compile(r"(です|ます|でした|ました|ません|でしょう|ください|ましょう|ではありません)$")
+
+
+def _sentence_end(sentence: str) -> str:
+    t = re.sub(r"[（(][^）)]*[）)]$", "", sentence.strip().rstrip("。！？"))
+    return re.sub(r"[」』）)]+$", "", t).strip()
+
+
+def polite_share(text: str) -> float:
+    ends = [_sentence_end(s) for s in gate._prose_sentences(text) if s.strip().endswith("。")]
+    return sum(1 for e in ends if POLITE_END_RE.search(e)) / len(ends) if ends else 1.0
+
+
+def plain_sentences(text: str) -> list[str]:
+    """です・ます で終わらない文（「〜た。」「〜である。」など）"""
+    return [s for s in gate._prose_sentences(text) if s.strip().endswith("。") and not POLITE_END_RE.search(_sentence_end(s))]
+
+
 def plain_len(text: str) -> int:
     return len(re.sub(r"\s|[#*|`>-]", "", text or ""))
 
@@ -209,6 +229,21 @@ def rewrite_problems(heading: str, old: str, new: str, article_text: str) -> lis
         problems.append("幼い言い方が残った")
     if any(gate.is_meta(s) for s in gate._prose_sentences(new)):
         problems.append("中の人の注記が残った")
+    # です・ます調を崩さない（書き直した章だけ「〜た。」「〜である。」になっていた。2026-11-03 の抜き取り確認）
+    if polite_share(old) >= 0.6 and len(plain_sentences(new)) > len(plain_sentences(old)):
+        problems.append(f"です・ます調が崩れた（「{plain_sentences(new)[0][-20:]}」）")
+    # 箇条書きを地の文や「・」に崩さない
+    old_items = sum(1 for line in old.split("\n") if gate.LIST_RE.match(line))
+    new_items = sum(1 for line in new.split("\n") if gate.LIST_RE.match(line))
+    if old_items >= 2 and new_items < old_items - 1:
+        problems.append(f"箇条書きが減った（{old_items}→{new_items}行）")
+    # 説明を削りすぎない（消してよいのは、つなぎ・答えになっていない文・中の人の注記だけ）
+    keep = old
+    for s in gate._prose_sentences(old):
+        if gate.FILLER_RE.search(s) or gate.is_nonanswer(s) or gate.is_meta(s):
+            keep = keep.replace(s, "")
+    if new.strip() and plain_len(new) < plain_len(keep) * 0.45:
+        problems.append(f"説明を削りすぎた（{plain_len(keep)}→{plain_len(new)}字）")
     old_h3 = re.findall(r"(?m)^### .+$", old)
     new_h3 = re.findall(r"(?m)^### .+$", new)
     if any(h not in old_h3 for h in new_h3):
