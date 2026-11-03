@@ -3285,6 +3285,48 @@
       "questionText": "自分の声でAIナレーション、作ってみませんか？",
       "dueAt": "2026-11-03T06:30:00+00:00",
       "postedAt": "2026-11-03T00:26:57+00:00"
+    },
+    "poll-20261103": {
+      "style": "poll",
+      "format": "poll",
+      "hook": "poll",
+      "question": true,
+      "topic": "AI",
+      "items": [],
+      "via": "buffer",
+      "channels": {
+        "twitter": "6ae940f30d3397810d083d50"
+      },
+      "permalink": "",
+      "dueAt": "2026-11-03T03:15:00+00:00",
+      "postedAt": "2026-11-03T02:03:28+00:00",
+      "postPlan": {
+        "key": "poll-20261103",
+        "text": "AIの問いかけ（2026/11/03）\n仕事で使うならどれ？\n\nChatGPT／Copilot／Gemini\n\n番号でコメントしてもらえるとうれしいです。使い分けている人は、その分け方もぜひ。",
+        "reply": "",
+        "link": "",
+        "x_text": "AIの問いかけ（2026/11/03）\n仕事で使うならどれ？\n\nChatGPT／Copilot／Gemini\n\n番号でコメントしてもらえるとうれしいです。使い分けている人は、その分け方もぜひ。\n\n#AI",
+        "slot": [
+          12,
+          15
+        ],
+        "items": []
+      },
+      "expectedChannels": [
+        "threads",
+        "twitter"
+      ],
+      "delivery": {
+        "threads": {
+          "status": "accepted",
+          "updatedAt": "2026-11-03T02:03:28+00:00"
+        },
+        "twitter": {
+          "status": "accepted",
+          "updatedAt": "2026-11-03T02:03:28+00:00"
+        }
+      },
+      "id": "6ae940f20d3397810d083d26"
     }
   },
   "extraPending": {}
