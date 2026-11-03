@@ -2,8 +2,8 @@
   "2026-11-03": {
     "video": {
       "anthropic-api:claude-opus-5-5": 13,
-      "anthropic-api:claude-sonnet-5-5": 11,
-      "claude:opus": 33
+      "anthropic-api:claude-sonnet-5-5": 12,
+      "claude:opus": 38
     }
   }
 }
