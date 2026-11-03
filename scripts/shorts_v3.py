@@ -1932,10 +1932,12 @@ class Cam:
         return FOCUS[0] + self.s * (x - self.cx), FOCUS[1] + self.s * (y - self.cy)
 
 
-def clamp_cam(page: Page, page_no: int, cx: float, cy: float, s: float) -> Cam:
+def clamp_cam(page: Page, page_no: int, cx: float, cy: float, s: float, over: float = 0.0) -> Cam:
+    """カメラをページの中に収める。over（画面の画素）だけは左右にページの外（地の色）を見せてよい
+    （ページの左端近くから始まる行に、余白をつけて寄るため。frame_box が使う）"""
     pw, ph = page.width, page.height
     if pw * s >= PW:
-        cx = min(max(cx, FOCUS[0] / s), pw - (PW - FOCUS[0]) / s)
+        cx = min(max(cx, (FOCUS[0] - over) / s), pw - (PW - FOCUS[0] - over) / s)
     else:
         cx = pw / 2 + (FOCUS[0] - PW / 2) / s
     if ph * s >= PH:
@@ -2023,7 +2025,9 @@ def frame_box(page: Page, page_no: int, box: tuple, zmax: float, mx: float = FRA
     half_h = min(FOCUS[1], PH - FOCUS[1])
     s = min(s0 * zmax, (PW - 2 * mx) / bw, (2 * half_h - 2 * my) / bh)
     s = max(s / (1 + DRIFT_MAX), s0 * 0.8)  # 止めている間にゆっくり寄る分（DRIFT_MAX）を先に引いておく
-    return clamp_cam(page, page_no, (box[0] + box[2]) / 2, (box[1] + box[3]) / 2, s)
+    # 2026-11-04: ページの左端近く（x=48 など）から始まる行は、ページの中に収めると左の余白が取れず QA(b) に落ちていた
+    # → 左右は余白の分だけページの外（地の色・端はなじませる）を見せてよい
+    return clamp_cam(page, page_no, (box[0] + box[2]) / 2, (box[1] + box[3]) / 2, s, over=mx)
 
 
 def cam_view(cam: Cam) -> tuple:
@@ -2117,7 +2121,10 @@ class Camera:
 
     @staticmethod
     def _hold(cam: Cam, since: float, t: float) -> Cam:
-        return Cam(cam.page, cam.cx, cam.cy, cam.s * (1 + min(DRIFT * max(0.0, t - since), DRIFT_MAX)))
+        # 4%（DRIFT_MAX）まで寄ったら、同じ速さでゆっくり戻る（行き来する）。止めっぱなしにすると
+        # 長く止める場面で絵がまったく動かず、ゲートの「動きが足りない」に落ちていた（2026-11-04）
+        x = DRIFT * max(0.0, t - since) / DRIFT_MAX
+        return Cam(cam.page, cam.cx, cam.cy, cam.s * (1 + DRIFT_MAX * (1 - abs(1 - (x % 2.0)))))  # 0→4%→0… を一定の速さで
 
     def at(self, t: float) -> Cam:
         idx = -1

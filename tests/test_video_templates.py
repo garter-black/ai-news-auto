@@ -245,6 +245,25 @@ class IntroTest(unittest.TestCase):
 
 
 @unittest.skipUnless(READY, "ffmpeg / numpy / Pillow / budoux が必要")
+class CameraHoldTest(unittest.TestCase):
+    """2026-11-04 の CI の見本: 長く止めると絵が止まる（動きが足りない）・左端から始まる行に余白が取れない（QA(b)）"""
+
+    def test_hold_keeps_moving_within_cap(self):
+        cam = v3.Cam(0, 500.0, 500.0, 1.0)
+        ss = [v3.Camera._hold(cam, 0.0, t / 10).s for t in range(0, 300)]
+        self.assertLessEqual(max(ss), 1 + v3.DRIFT_MAX + 1e-9)
+        tail = ss[150:]  # 15秒より後も止まらない
+        self.assertGreater(max(tail) - min(tail), v3.DRIFT_MAX * 0.5)
+
+    def test_frame_box_gives_left_margin_for_line_at_page_edge(self):
+        page = t3.fake_page()
+        box = (48.0, 2000.0, page.width * 0.7, 2080.0)  # ページの左端近くから始まる行
+        cam = v3.frame_box(page, 0, box, v3.ZOOM_MAX)
+        x0 = cam.cx - v3.FOCUS[0] / cam.s
+        self.assertLessEqual(x0, box[0] - v3.QA_MARGIN_X / cam.s)
+
+
+@unittest.skipUnless(READY, "ffmpeg / numpy / Pillow / budoux が必要")
 class LintTest(unittest.TestCase):
     def test_cards_have_no_lines_or_bars(self):
         self.assertEqual(gate.lint_renderer(ROOT / "scripts" / "video_templates.py"), [])
