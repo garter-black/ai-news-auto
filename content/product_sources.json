@@ -1,6 +1,6 @@
 {
-  "_about": "AIサービス図鑑（/products）の製品と、確かめた公式データのつなぎ（人が確かめて更新する）。pricing は content/pricing/<product>.json の行（plans はプランの id、models は API モデルの id）。japan は content/japan_availability.json の id。why には、その行がこの製品の料金だと言える根拠（公式ページの書き方）を書く。ここに無い製品・行が見つからない製品は、図鑑の一覧に出さず noindex（lib/products.ts の productListing。2026-11-03 オーナーの指摘「内容がすごく薄い」）。lead は図鑑のカードとページの冒頭に出す2〜3文の説明（leadSources の記事に書かれている事実だけで書く）。rivalsTier は「同じ価格帯のサービスとの比較」に使う段（全プランを載せる製品は standard＝月20ドル前後）。timelineSkip は発表の日付と記事の日付がずれる記事（インタビューなど）を発表の履歴から外す。image は報道向けの公式プレスキット・ブランド素材にある製品画像・ロゴだけ（src・credit・sourceUrl・checkedAt）。縮小と余白の追加のほかは変えない。KV（saisoku-images）に置き /img/brand-<名前> で配信する。OpenAI はロゴのダウンロードに利用条件への同意が要り、Google は申請制のため、いまは使っていない（2026-11-03）。無ければ文字の無いブランド色の図形を出す（components/ProductVisual.tsx）。",
-  "updatedAt": "2026-11-03",
+  "_about": "AIサービス図鑑（/products）の製品と、確かめた公式データのつなぎ（人が確かめて更新する）。pricing は content/pricing/<product>.json の行（plans はプランの id、models は API モデルの id）。japan は content/japan_availability.json の id。why には、その行がこの製品の料金だと言える根拠（公式ページの書き方）を書く。ここに無い製品・行が見つからない製品は、図鑑の一覧に出さず noindex（lib/products.ts の productListing。2026-11-03 オーナーの指摘「内容がすごく薄い」）。lead は図鑑のカードとページの冒頭に出す2〜3文の説明（leadSources の記事に書かれている事実だけで書く）。rivalsTier は「同じ価格帯のサービスとの比較」に使う段（全プランを載せる製品は standard＝月20ドル前後）。timelineSkip は発表の日付と記事の日付がずれる記事（インタビューなど）を発表の履歴から外す。image は報道向けの公式プレスキット・ブランド素材にある製品画像・ロゴだけ（src・credit・sourceUrl・checkedAt）。縮小と余白の追加のほかは変えない。KV（saisoku-images）に置き /img/brand-<名前> で配信する。srcDark は暗い画面で使う版（白のロゴなど。色を塗り替えて作らない）。vendors は図鑑の一覧の提供元の見出しに出すロゴ。OpenAI はオーナーが 2026-11-04 に利用条件に同意して公式素材を取得。Google は申請制のため、いまは使っていない。無ければ文字の無いブランド色の図形を出す（components/ProductVisual.tsx）。",
+  "updatedAt": "2026-11-04",
   "items": {
     "chatgpt-pro": {
       "pricing": {
@@ -17,7 +17,15 @@
       "lead": "ChatGPTの個人向けの上位プランです。Pro 100・200・500の3段階があり、毎月それぞれ100ドル・200ドル・500ドル分のAPIクレジットが付きます。自作アプリやAIエージェントの開発にも使えます。",
       "leadSources": [
         "chatgpt-pro-monthly-api-credits"
-      ]
+      ],
+      "image": {
+        "src": "https://ai-tech-express.jp/img/brand-openai-blossom-black-31f77fe5.sm.webp",
+        "srcDark": "https://ai-tech-express.jp/img/brand-openai-blossom-white-794651fc.sm.webp",
+        "credit": "ロゴ：OpenAI（公式ブランド素材）",
+        "sourceUrl": "https://openai.com/brand",
+        "checkedAt": "2026-11-04",
+        "note": "OpenAI の公式ロゴ素材（Blossom の Black・White）。オーナーが利用条件に同意して取得。縮小と透明の余白（ロゴのまわりの空き）だけで、色・形は変えていない。明るい画面は Black、暗い画面は White"
+      }
     },
     "chatgpt-work": {
       "pricing": {
@@ -35,7 +43,15 @@
         "openai-chatgpt-work-product-insights-demo",
         "chatgpt-work-dashboard-generation",
         "openai-chatgpt-work-enterprise-rollout"
-      ]
+      ],
+      "image": {
+        "src": "https://ai-tech-express.jp/img/brand-openai-blossom-black-31f77fe5.sm.webp",
+        "srcDark": "https://ai-tech-express.jp/img/brand-openai-blossom-white-794651fc.sm.webp",
+        "credit": "ロゴ：OpenAI（公式ブランド素材）",
+        "sourceUrl": "https://openai.com/brand",
+        "checkedAt": "2026-11-04",
+        "note": "OpenAI の公式ロゴ素材（Blossom の Black・White）。オーナーが利用条件に同意して取得。縮小と透明の余白（ロゴのまわりの空き）だけで、色・形は変えていない。明るい画面は Black、暗い画面は White"
+      }
     },
     "codex": {
       "pricing": {
@@ -55,7 +71,15 @@
       ],
       "timelineSkip": [
         "shopify-cto-codex-ai-prototyping"
-      ]
+      ],
+      "image": {
+        "src": "https://ai-tech-express.jp/img/brand-openai-blossom-black-31f77fe5.sm.webp",
+        "srcDark": "https://ai-tech-express.jp/img/brand-openai-blossom-white-794651fc.sm.webp",
+        "credit": "ロゴ：OpenAI（公式ブランド素材）",
+        "sourceUrl": "https://openai.com/brand",
+        "checkedAt": "2026-11-04",
+        "note": "OpenAI の公式ロゴ素材（Blossom の Black・White）。オーナーが利用条件に同意して取得。縮小と透明の余白（ロゴのまわりの空き）だけで、色・形は変えていない。明るい画面は Black、暗い画面は White"
+      }
     },
     "gpt-6-1-terra": {
       "pricing": {
@@ -71,7 +95,15 @@
       "leadSources": [
         "openai-gpt-6-1-terra-announcement",
         "openai-gpt-61-terra-amazon-bedrock"
-      ]
+      ],
+      "image": {
+        "src": "https://ai-tech-express.jp/img/brand-openai-blossom-black-31f77fe5.sm.webp",
+        "srcDark": "https://ai-tech-express.jp/img/brand-openai-blossom-white-794651fc.sm.webp",
+        "credit": "ロゴ：OpenAI（公式ブランド素材）",
+        "sourceUrl": "https://openai.com/brand",
+        "checkedAt": "2026-11-04",
+        "note": "OpenAI の公式ロゴ素材（Blossom の Black・White）。オーナーが利用条件に同意して取得。縮小と透明の余白（ロゴのまわりの空き）だけで、色・形は変えていない。明るい画面は Black、暗い画面は White"
+      }
     },
     "gpt-6-astra": {
       "pricing": {
@@ -87,7 +119,15 @@
       "leadSources": [
         "openai-announces-gpt-6-astra",
         "openai-gpt6-astra-ultrafast-release"
-      ]
+      ],
+      "image": {
+        "src": "https://ai-tech-express.jp/img/brand-openai-blossom-black-31f77fe5.sm.webp",
+        "srcDark": "https://ai-tech-express.jp/img/brand-openai-blossom-white-794651fc.sm.webp",
+        "credit": "ロゴ：OpenAI（公式ブランド素材）",
+        "sourceUrl": "https://openai.com/brand",
+        "checkedAt": "2026-11-04",
+        "note": "OpenAI の公式ロゴ素材（Blossom の Black・White）。オーナーが利用条件に同意して取得。縮小と透明の余白（ロゴのまわりの空き）だけで、色・形は変えていない。明るい画面は Black、暗い画面は White"
+      }
     },
     "gemini-4-argon": {
       "pricing": {
@@ -126,7 +166,15 @@
       "lead": "OpenAIの対話型AIサービスです。無料版のほか、Go・Plus・Pro・Businessの有料プランがあります。2026年8月のGPT-5.6 Lunaの提供開始とともに、テキストの対話は無料プランを含めて回数制限がなくなりました。",
       "leadSources": [
         "openai-chatgpt-gpt56-luna-no-limits"
-      ]
+      ],
+      "image": {
+        "src": "https://ai-tech-express.jp/img/brand-openai-blossom-black-31f77fe5.sm.webp",
+        "srcDark": "https://ai-tech-express.jp/img/brand-openai-blossom-white-794651fc.sm.webp",
+        "credit": "ロゴ：OpenAI（公式ブランド素材）",
+        "sourceUrl": "https://openai.com/brand",
+        "checkedAt": "2026-11-04",
+        "note": "OpenAI の公式ロゴ素材（Blossom の Black・White）。オーナーが利用条件に同意して取得。縮小と透明の余白（ロゴのまわりの空き）だけで、色・形は変えていない。明るい画面は Black、暗い画面は White"
+      }
     },
     "claude": {
       "pricing": {
@@ -178,6 +226,21 @@
       "leadSources": [
         "gemini-edit-files-directly"
       ]
+    }
+  },
+  "vendors": {
+    "openai": {
+      "logo": {
+        "src": "https://ai-tech-express.jp/img/brand-openai-wordmark-black-15921e6e.sm.webp",
+        "srcDark": "https://ai-tech-express.jp/img/brand-openai-wordmark-white-26a983d0.sm.webp",
+        "width": 360,
+        "height": 161,
+        "alt": "OpenAI",
+        "credit": "ロゴ：OpenAI（公式ブランド素材）",
+        "sourceUrl": "https://openai.com/brand",
+        "checkedAt": "2026-11-04",
+        "note": "OpenAI の公式ワードマーク（Black・White）。縮小だけ"
+      }
     }
   }
 }

@@ -740,3 +740,14 @@ mark {
     transition: none;
   }
 }
+
+/* 公式ロゴの明るい画面用・暗い画面用（components/ProductVisual.tsx の BrandImg。色を塗り替えず、公式の Black・White を出し分ける） */
+.brand-on-dark {
+  display: none;
+}
+:root[data-theme="dark"] .brand-on-light {
+  display: none;
+}
+:root[data-theme="dark"] .brand-on-dark {
+  display: block;
+}

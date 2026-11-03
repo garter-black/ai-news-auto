@@ -85,7 +85,20 @@ export type ProductSource = {
   /** 発表の履歴から外す記事（インタビューなど、記事の日付と出来事の日付がずれるもの） */
   timelineSkip?: string[];
   /** 報道向けの公式プレスキット・ブランド素材の画像（KV の /img/brand-<名前>）。縮小と余白のほかは変えない */
-  image?: { src: string; credit: string; sourceUrl: string; checkedAt?: string; note?: string };
+  image?: BrandImage;
+};
+
+/** 公式プレスキット・ブランド素材の画像。srcDark は暗い画面用の公式の版（白のロゴなど。色を塗り替えて作らない） */
+export type BrandImage = {
+  src: string;
+  srcDark?: string;
+  credit: string;
+  sourceUrl: string;
+  checkedAt?: string;
+  note?: string;
+  width?: number;
+  height?: number;
+  alt?: string;
 };
 
 /** 料金の JSON（content/pricing/<id>.json）のうち、判定に使う部分 */

@@ -81,8 +81,24 @@ class SourcesTest(unittest.TestCase):
                 self.assertNotEqual(japan[src["japan"]]["japan"], "unknown", slug)
             if src.get("image"):
                 # 公式プレスキットの画像は自前の KV（/img/brand-<名前>）に置き、出典を書く（記事の写真・素材は使わない）
-                self.assertRegex(src["image"]["src"], r"^https://ai-tech-express\.jp/img/brand-[a-z0-9-]+\.jpg$", slug)
+                for key in ("src", "srcDark"):
+                    if key in src["image"]:
+                        self.assertRegex(src["image"][key], r"^https://ai-tech-express\.jp/img/brand-[a-z0-9-]+\.(?:jpg|sm\.webp)$", slug)
                 self.assertTrue(src["image"]["credit"] and src["image"]["sourceUrl"].startswith("https://"), slug)
+
+    def test_openai_logos_follow_brand_guidelines(self):
+        # OpenAI の公式ロゴ（2026-11-04 オーナーが利用条件に同意して取得）: 明るい画面は Black・暗い画面は White、出典は公式ブランドページ
+        data = json.loads((ROOT / "content" / "product_sources.json").read_text(encoding="utf-8"))
+        logos = [data["items"][s]["image"] for s in ("chatgpt", "chatgpt-work", "chatgpt-pro", "codex", "gpt-6-astra", "gpt-6-1-terra")]
+        logos.append(data["vendors"]["openai"]["logo"])
+        for logo in logos:
+            self.assertIn("-black-", logo["src"])
+            self.assertIn("-white-", logo["srcDark"])
+            self.assertEqual(logo["credit"], "ロゴ：OpenAI（公式ブランド素材）")
+            self.assertEqual(logo["sourceUrl"], "https://openai.com/brand")
+        css = (ROOT / "app" / "globals.css").read_text(encoding="utf-8")
+        self.assertIn(':root[data-theme="dark"] .brand-on-light', css)
+        self.assertIn(':root[data-theme="dark"] .brand-on-dark', css)
 
     def test_business_plans_really_cover_codex_and_work(self):
         # Codex・ChatGPT Work に Business の行をつなぐ根拠は、公式の料金ヘルプの文言（limits）にその名前があること

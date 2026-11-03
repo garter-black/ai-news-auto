@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
 import CompanyMark from "@/components/CompanyMark";
-import ProductVisual from "@/components/ProductVisual";
+import ProductVisual, { BrandImg } from "@/components/ProductVisual";
 import { getCompany } from "@/lib/companies";
-import { listedProducts, productProfile, type ProductProfile } from "@/lib/products";
+import { listedProducts, productProfile, vendorLogo, type ProductProfile } from "@/lib/products";
 
 export const metadata: Metadata = withPageShare("products", "/products", {
   title: "AIサービス図鑑：料金・日本での提供状況・最新の動き",
@@ -45,10 +45,20 @@ export default function ProductsPage() {
           const items = groups.get(key)!;
           const first = items[0].product;
           const company = first.company === "other" ? undefined : getCompany(first.company);
+          const logo = vendorLogo(first.company);
           return (
             <section key={key} aria-label={first.companyName}>
               <h2 className="t-h2 flex items-center gap-2 border-b-2 border-ink pb-2.5">
-                {company ? <CompanyMark company={company} size={26} withName /> : first.companyName}
+                {logo ? (
+                  // 公式のワードマーク（社名入り）。ロゴのまわりは公式素材の余白のまま
+                  <span className="inline-flex h-9 items-center">
+                    <BrandImg image={logo} alt={logo.alt ?? first.companyName} width={Math.round(36 * ((logo.width ?? 360) / (logo.height ?? 161)))} height={36} className="h-9 w-auto" />
+                  </span>
+                ) : company ? (
+                  <CompanyMark company={company} size={26} withName />
+                ) : (
+                  first.companyName
+                )}
                 <span className="index-num ml-auto text-meta font-normal text-muted">{items.length}製品</span>
               </h2>
               <ul>
@@ -90,20 +100,26 @@ export default function ProductsPage() {
         })}
       </div>
 
-      {profiles.some((p) => p.source?.image) && (
-        <p className="mt-10 text-meta leading-[1.8] text-muted">
-          {profiles
-            .filter((p) => p.source?.image)
-            .map((p) => (
-              <span key={p.product.slug} className="mr-3 inline-block">
-                {p.product.name}の{p.source!.image!.credit}
-                <a href={p.source!.image!.sourceUrl} className="ml-1 underline underline-offset-2 hover:text-accent" target="_blank" rel="noopener noreferrer">
-                  出典
+      {(() => {
+        // 画像の出典（同じ出典は1回だけ）
+        const credits = new Map<string, string>();
+        for (const p of profiles) {
+          const images = [p.source?.image, vendorLogo(p.product.company)].filter((i): i is NonNullable<typeof i> => Boolean(i));
+          for (const image of images) credits.set(image.sourceUrl, image.credit);
+        }
+        if (credits.size === 0) return null;
+        return (
+          <p className="mt-10 text-meta leading-[1.8] text-muted">
+            {[...credits].map(([url, credit]) => (
+              <span key={url} className="mr-4 inline-block">
+                <a href={url} className="underline underline-offset-2 hover:text-accent" target="_blank" rel="noopener noreferrer">
+                  {credit}
                 </a>
               </span>
             ))}
-        </p>
-      )}
+          </p>
+        );
+      })()}
 
       <p className="mt-12 border-t border-line pt-5 text-note leading-[1.9] text-muted">
         料金・提供条件は変わることがあります。各製品のページに公式の出典と確認日を載せています。AIの料金を横に並べて比べるなら

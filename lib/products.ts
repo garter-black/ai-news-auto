@@ -27,6 +27,7 @@ import {
   politeQuestion,
   productListing,
   productRelevance,
+  type BrandImage,
   type Listing,
   type ProductSource,
 } from "@/lib/product-substance";
@@ -201,6 +202,12 @@ export function supersededGuideSlugs(guideSlugs: string[]): string[] {
 // --------------------------------------------------------------------------- //
 
 const SOURCES = (sourcesJson as { items: Record<string, ProductSource> }).items;
+const VENDORS = ((sourcesJson as { vendors?: Record<string, { logo?: BrandImage }> }).vendors ?? {}) as Record<string, { logo?: BrandImage }>;
+
+/** 図鑑の一覧の提供元の見出しに出す公式ロゴ（無ければ企業の色見本） */
+export function vendorLogo(company: string): BrandImage | undefined {
+  return VENDORS[company]?.logo;
+}
 
 type JapanItem = { id: string; name: string; covers: string; japan: "ok" | "partial" | "no" | "unknown"; note: string; sources: { url: string; checkedAt: string }[] };
 const JAPAN = (japanJson as { items: JapanItem[] }).items;

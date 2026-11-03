@@ -221,9 +221,8 @@ export default async function ProductPage({ params }: Props) {
       </div>
       {profile.source?.image && (
         <p className="mt-2 text-meta text-muted">
-          {profile.source.image.credit}
-          <a href={profile.source.image.sourceUrl} className="ml-1 underline underline-offset-2 hover:text-accent" target="_blank" rel="noopener noreferrer">
-            出典
+          <a href={profile.source.image.sourceUrl} className="underline underline-offset-2 hover:text-accent" target="_blank" rel="noopener noreferrer">
+            {profile.source.image.credit}
           </a>
         </p>
       )}
