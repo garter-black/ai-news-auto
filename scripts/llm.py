@@ -741,7 +741,8 @@ API_DEMAND_DEFAULT = {"breaking": 7, "video": 5, "video_review": 5, "check": 90,
 API_COST_MID_DEFAULT = {"breaking": 0.125, "video": 0.055, "video_review": 0.02, "check": 0.045, "helper": 0.04, "sns": 0.09, "core": 0.09, "rest": 0.09}
 API_LEVEL_COST_RATIO = {1: 0.05, 2: 1.0, 3: 2.0}
 # 1日の回数の安全上限（暴走よけ。環境変数 CLAUDE_API_DAILY_CALLS_<段> で変更）
-API_DAILY_CALLS = {"breaking": 20, "video": 20, "video_review": 20, "check": 300, "helper": 300, "sns": 30, "core": 60, "rest": 80}
+# video_review: 台本のレビュー＋動画の目視の確認（2026-11-04 QA。1記事1回・画像つき）で 20 → 40
+API_DAILY_CALLS = {"breaking": 20, "video": 20, "video_review": 40, "check": 300, "helper": 300, "sns": 30, "core": 60, "rest": 80}
 API_MONTHLY_BUDGET_DEFAULT = 95.0  # CLAUDE_API_MONTHLY_BUDGET_USD（Ultra なら 190 くらい）
 API_PROTECTED_MARGIN = 4.0          # 守る段だけが予算を超えて使ってよい額（クレジット $100 との差の中）
 API_REFILL_DAY_DEFAULT = 4           # クレジットが補充される日（毎月）。期間は 4日〜翌月3日
@@ -1278,6 +1279,40 @@ def api_available(purpose: str) -> bool:
     if api_block_reason(purpose) is not None:
         return False
     return api_plan()["levels"].get(purpose, 0) > 0
+
+
+def generate_json_images(system_instruction: str, prompt: str, images: list[bytes], schema: dict, *, purpose: str = "video_review", max_output_tokens: int = 4096) -> tuple[dict, str]:
+    """画像（JPEG のバイト列）つきで JSON を返す（2026-11-04 動画の目視の確認用）。Claude API だけ（CLI・無料モデルは画像を送れない）。
+    使えない・失敗・必須キーが無いときは RuntimeError（呼び出し側は「確認できなかった＝不合格」にする）"""
+    import base64  # noqa: PLC0415
+
+    model, why = api_choose(purpose)
+    if not model:
+        raise RuntimeError(f"画像の確認に Claude API を使えない（{why}）")
+    content: list[dict] = []
+    for img in images:
+        content.append({"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": base64.b64encode(img).decode("ascii")}})
+    content.append({"type": "text", "text": prompt})
+    kwargs = {
+        "model": model,
+        "max_tokens": min(64000, max(16000, max_output_tokens + 16000)),
+        "system": [{"type": "text", "text": system_instruction}],
+        "messages": [{"role": "user", "content": content}],
+        "output_config": {"effort": os.environ.get("CLAUDE_API_EFFORT") or "medium", "format": {"type": "json_schema", "schema": _api_schema(schema)}},
+    }
+    try:
+        with _get_api_client().messages.stream(**kwargs) as stream:
+            message = stream.get_final_message()
+    except Exception as error:  # noqa: BLE001
+        raise RuntimeError(f"画像の確認に失敗（{type(error).__name__}: {str(error)[:160]}）") from error
+    usd = record_api_usage(purpose, model, message.usage)
+    _record_usage(f"{API_PREFIX}{model}")
+    log(f"   [llm] Claude API {model}（{purpose}・画像{len(images)}枚）→ ${usd:.4f}")
+    text = "".join(getattr(b, "text", "") for b in message.content if getattr(b, "type", "") == "text").strip()
+    data = parse_json_lenient(text)
+    if missing := missing_keys(data, schema):
+        raise RuntimeError(f"画像の確認の答えに {missing} が無い")
+    return data, f"{API_PREFIX}{model}"
 
 
 def generate_json(

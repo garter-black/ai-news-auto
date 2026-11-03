@@ -820,6 +820,74 @@ def key_fact_ok(keyword: str, sub: str, text: str, ja: str = "") -> bool:
     return not terms and not windows
 
 
+QA_VERSION = 1  # shorts_v3.QA_VERSION と同じ
+
+
+def narration_ok(keyword: str, speech: str) -> bool:
+    """左のキーワードの数字・言葉が、その場面の読み上げにあるか（読み上げは英字の名前をカタカナで読むので、英字だけのキーワードは問わない）"""
+    if not keyword.strip():
+        return True
+    if re.findall(r"\d+(?:\.\d+)?", norm(keyword)):
+        return key_fact_ok(keyword, "", speech)
+    if not re.search(r"[ぁ-んァ-ヴ一-龥々]", keyword):
+        return bool(re.search(r"[ァ-ヴー]{2,}", speech or "")) or key_fact_ok(keyword, "", speech)
+    return key_fact_ok(keyword, "", speech)
+
+
+def _inside(inner: list, outer: list, mx: float = 0.0, my: float = 0.0, tol: float = 2.0) -> bool:
+    return inner[0] >= outer[0] + mx - tol and inner[1] >= outer[1] + my - tol and inner[2] <= outer[2] - mx + tol and inner[3] <= outer[3] - my + tol
+
+
+def geometry_problems(report: dict) -> list[str]:
+    """2026-11-04 オーナー「選択の青がずれる・語の途中だけに付く・行の頭が切れる」を受けた QA（動画を付ける前に必ず通す）。
+    (a) 選択の枠が、選んだ文の文字の枠の中にあり、画面の中にある。選んだ文は意味のまとまり（語や文の途中で切れていない）
+    (b) 選択が出ている間の止まった時刻すべてで、証拠の文の枠がまるごと余白つきで画面に入っている（寄ったときも）
+    (c) 左のキーワード・数字が、その場面の読み上げと、選んだ文（英語なら訳）の両方にある"""
+    geo = report.get("geometry")
+    if not geo:
+        return ["QA: 選択と寄りの位置の記録が無い（古い仕組みで作った動画）"]
+    out = []
+    n_beats = len((report.get("script_v3") or {}).get("beats") or [])
+    for g in geo:
+        b = int(g.get("beat", 0))
+        name = "つかみ" if b == 0 else ("締め" if b > n_beats else f"場面{b}")
+        rows = g.get("rows") or []
+        if not rows:
+            out.append(f"QA: {name}の証拠の文の位置が無い")
+            continue
+        box = [min(r[0] for r in rows), min(r[1] for r in rows), max(r[2] for r in rows), max(r[3] for r in rows)]
+        # (a) 選択の枠は選んだ文の文字の中・意味のまとまり
+        for r in g.get("sel") or []:
+            if not any(_inside(r, row, tol=3.0) for row in rows):
+                out.append(f"QA(a): {name}の選択の青が、選んだ文の文字からはみ出している")
+                break
+        if not g.get("phrase_ok", False):
+            out.append(f"QA(a): {name}の選択が語や文の途中で切れている（「{str(g.get('target', ''))[:20]}」）")
+        # (b) 止まっている間はずっと、証拠の文がまるごと余白つきで画面の中
+        views = g.get("views") or []
+        if not views:
+            out.append(f"QA(b): {name}の選択が出ている間に止まった画面が無い")
+        mx, my = (g.get("margin") or [70, 16])[:2]
+        bad = [v for v in views if v[1] <= 0 or not _inside(box, v[2:6], mx / v[1], my / v[1])]
+        if bad:
+            v = bad[0]
+            why = "別のページが写っている" if v[1] <= 0 else "証拠の文が画面の端で切れている・余白が無い"
+            out.append(f"QA(b): {name}の{v[0]:.1f}秒で{why}")
+        sel_out = [r for r in g.get("sel") or [] for v in views if v[1] > 0 and not _inside(r, v[2:6])]
+        if sel_out:
+            out.append(f"QA(a): {name}の選択の青が画面の外にある")
+        # (c) 左のキーワード・数字 ＝ 読み上げ ＝ 選んだ文（訳）
+        kw, sub = str(g.get("keyword", "")), str(g.get("sub", ""))
+        if 1 <= b <= n_beats:
+            if not key_fact_ok(kw, sub, str(g.get("target", "")), str(g.get("ja", ""))):
+                out.append(f"QA(c): {name}の選んだ文（訳）に、左のキーワード「{kw}」の数字・言葉が無い")
+            if not narration_ok(kw, str(g.get("speech", ""))):
+                out.append(f"QA(c): {name}の読み上げに、左のキーワード「{kw}」の数字・言葉が無い")
+        elif re.findall(r"\d+(?:\.\d+)?", norm(kw)) and not key_fact_ok(kw, "", str(g.get("target", "")), str(g.get("ja", ""))):
+            out.append(f"QA(c): {name}の選んだ文に、数字「{kw}」が無い")
+    return out
+
+
 def check_calm(report: dict, total: float, result: GateResult) -> None:
     """カメラの動きの予算と、証拠の文の選択（長さ・中身）"""
     moves = report.get("camera_moves") or []
@@ -947,6 +1015,10 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
                 result.reasons.append(f"v3: グラフの数字 {d} がキーワード・読み上げに無い")
     if calm:
         check_calm(report, end, result)
+    geo = geometry_problems(report)
+    m["qa_geometry"] = not geo
+    for p in geo:
+        result.reasons.append(f"v3: {p}")
     # 左の列の見出し・キーワード（同じ言葉の繰り返し・名詞1つだけは不合格。2026-11-04）
     for p in label_problems(sv3):
         result.reasons.append(f"v3: {p}")

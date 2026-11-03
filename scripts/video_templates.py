@@ -543,7 +543,7 @@ def make_versions(slug: str, out_dir: Path, template: str, tts: str = "voicevox"
     import shorts_v3 as v3
 
     a = shorts.load_article(slug)
-    note = NOTES.get(template, "")
+    note = NOTES.get(template, "") + str(kw.pop("qa_note", "") or "")  # qa_note: QA に落ちた動画の作り直しの一言（shorts_v3.qa_versions）
     cache = f"{slug}.{template}.v3script.json" if note else f"{slug}.v3script.json"
     pages, script, reason = v3.prepare_versions(slug, a, out_dir, reuse, extra_pages, note=note, cache=cache)
     if not pages or not script:
@@ -825,7 +825,10 @@ def main() -> None:
             import llm
 
             llm._load_env_local()
-            out = make_versions(slug, Path(args.out), tpl, tts=args.tts, reuse=args.reuse_script, profile=args.profile)
+            import shorts_v3 as v3
+
+            # QA（位置の検査＋AI の目視の確認・1回だけ作り直し）まで本番と同じに通す
+            out = v3.make_versions(slug, Path(args.out), args.tts, args.reuse_script, template=tpl, profile=args.profile)
             for ver, rep in out.items():
                 g = rep.get("gate") or {}
                 print(f"  {ver}: {'合格' if g.get('ok') else '不合格'} {rep.get('total')}秒 {g.get('reasons', [])[:4]}")

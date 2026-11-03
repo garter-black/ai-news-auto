@@ -184,7 +184,7 @@ TEXT_JS = r"""(maxY) => {
   const blockOf = (el) => { while (el && el !== document.body) { const d = getComputedStyle(el).display; if (!d.startsWith('inline') && d !== 'contents') return el; el = el.parentElement; } return document.body; };
   const blocks = new Map(); const nodes = [];
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-  const range = document.createRange(); let n; let budget = 20000;
+  const range = document.createRange(); let n; let budget = 20000; const refs = [];
   while ((n = walker.nextNode()) && budget > 0) {
     const t = n.nodeValue; if (!t || !t.trim()) continue;
     const el = n.parentElement; if (!el || el.closest('script,style,noscript,svg,button,nav,footer')) continue;
@@ -202,10 +202,53 @@ TEXT_JS = r"""(maxY) => {
     }
     budget -= t.length;
     nodes.push({ b: id, t, c: chars, fs: parseFloat(cs.fontSize) || 16 });
+    refs.push(n);
   }
+  window.__v3refs = refs;  // OCCLUDE_JS が同じ順で「本当に見えているか」を確かめる
   const out = [];
   for (const [el, id] of blocks) { const r = el.getBoundingClientRect(); out[id] = [r.left + scrollX, r.top + scrollY, r.right + scrollX, r.bottom + scrollY]; }
   return { blocks: out, nodes, height: document.documentElement.scrollHeight, title: document.title };
+}"""
+
+
+# 2026-11-04 オーナー「選択の青が文字からずれる・別の文に付く」: 閉じたメニュー・横に流れる帯の外・別の要素の下に隠れた文字も
+# 位置は測れてしまう（その位置に写っているのは別の文字）。撮った画面と同じ配置のまま、文字の点（1つのノードの最初・真ん中・最後の字）で
+# elementsFromPoint を引き、その文字の要素が一番上（上にあるのは透明な要素だけ）のときだけ「見えている」とする。見えない文字は証拠に使わない
+OCCLUDE_JS = r"""async (maxY) => {
+  const refs = window.__v3refs || [];
+  const opaque = (e) => {
+    if (/^(IMG|VIDEO|CANVAS|IFRAME|PICTURE|svg)$/i.test(e.tagName)) return true;
+    const cs = getComputedStyle(e);
+    if (cs.backgroundImage && cs.backgroundImage !== 'none') return true;
+    const m = (cs.backgroundColor || '').match(/rgba?\(([^)]+)\)/);
+    if (!m) return false;
+    const p = m[1].split(',').map(parseFloat);
+    return p.length < 4 || p[3] > 0.5;
+  };
+  const range = document.createRange();
+  const picks = refs.map((n) => { const t = n.nodeValue || ''; const idx = []; for (let i = 0; i < t.length; i++) if (t[i].trim()) idx.push(i); return idx.length ? [...new Set([idx[0], idx[idx.length >> 1], idx[idx.length - 1]])] : []; });
+  const votes = refs.map(() => [0, 0]); const seen = refs.map(() => new Set());
+  const H = Math.min(maxY, document.documentElement.scrollHeight); const vh = innerHeight;
+  for (let y = 0; y < H; y += vh - 60) {
+    window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 50));
+    refs.forEach((n, k) => {
+      const el = n.parentElement; if (!el) return;
+      if (getComputedStyle(el).pointerEvents === 'none') return;  // 当たり判定が無い文字は確かめられない（見えているとみなす）
+      for (const i of picks[k]) {
+        if (seen[k].has(i)) continue;
+        range.setStart(n, i); range.setEnd(n, i + 1); const r = range.getBoundingClientRect();
+        const cx = (r.left + r.right) / 2, cy = (r.top + r.bottom) / 2;
+        if (r.width <= 0 || cy < 2 || cy > vh - 2 || cx < 1 || cx > innerWidth - 1) continue;
+        seen[k].add(i);
+        const stack = document.elementsFromPoint(cx, cy);
+        const at = stack.findIndex((e) => e === el || el.contains(e));
+        const ok = at >= 0 && stack.slice(0, at).every((e) => !opaque(e));
+        votes[k][ok ? 0 : 1]++;
+      }
+    });
+  }
+  window.scrollTo(0, 0);
+  return votes.map(([a, b]) => a >= b);
 }"""
 
 
@@ -324,6 +367,16 @@ async def _capture_one(browser, url: str, page_no: int, timeout_ms: int) -> Page
                 break
             log(f"   [v3] 撮っている間にページの配置が動いたので撮り直す（{_round + 1}）: {url}")
             data = after
+        try:
+            visible = await page.evaluate(OCCLUDE_JS, CAPTURE_MAX_H)
+        except Exception as error:  # noqa: BLE001 - 確かめられないときは今までどおり
+            visible = None
+            log(f"   [v3] 文字が見えているかを確かめられない: {type(error).__name__}")
+        if visible is not None and len(visible) == len(data["nodes"]):
+            hidden = sum(1 for v in visible if not v)
+            if hidden:
+                log(f"   [v3] 隠れている文字のまとまり {hidden}個は証拠に使わない: {url}")
+            data["nodes"] = [nd for nd, v in zip(data["nodes"], visible) if v]
     except Exception as error:  # noqa: BLE001
         log(f"   [v3] 撮影に失敗: {url}: {type(error).__name__}: {str(error)[:120]}")
         CAPTURE_FAILS.append(f"{urllib.parse.urlparse(url).netloc}: {type(error).__name__}")
@@ -810,6 +863,91 @@ def clause_ok(target: str, block_text: str) -> bool:
     return starts and ends
 
 
+# 日本語の証拠の文の区切り（2026-11-04 オーナー「行の終わりの『これま』だけに選択の青が付く」）。
+# 選択は意味のまとまり（句点・読点・かぎかっこの間）で始まり・終わる。語の途中で切らない
+JA_START_BREAK = set("。！？!?、，,」』）)】 　・：:")
+JA_END_BREAK = set("。！？!?、，,」』）)】")
+JA_PHRASE_MAX = 64  # これより長くなるなら句読点まで広げず、文節（budoux）の切れ目で止める
+
+
+def _bunsetsu_bounds(text: str) -> set[int]:
+    """文節の切れ目の位置（budoux が無ければ文字の種類の変わり目）"""
+    try:
+        import budoux
+
+        parts = budoux.load_default_japanese_parser().parse(text)
+    except Exception:  # noqa: BLE001
+        parts = [m.group(0) for m in re.finditer(r"[一-龥々]+[ぁ-ん]*|[ァ-ヴー]+[ぁ-ん]*|[A-Za-z0-9.,%$]+[ぁ-ん]*|.", text)]
+    out, at = {0}, 0
+    for part in parts:
+        at += len(part)
+        out.add(at)
+    return out
+
+
+def ja_phrase_bounds(block_text: str, start: int, end: int) -> tuple[int, int]:
+    """block_text[start:end] を意味のまとまりまで広げた範囲。句読点・かぎかっこ・行の頭と終わりまで（長すぎるなら文節の切れ目まで）"""
+    def brk(i: int, chars: set) -> bool:  # 数字の間のカンマ・ピリオド（1,000・1.5）は区切りではない
+        c = block_text[i]
+        if c in ",，.." and 0 < i < len(block_text) - 1 and block_text[i - 1].isdigit() and block_text[i + 1].isdigit():
+            return False
+        return c in chars
+
+    a, b = start, end
+    while a > 0 and not brk(a - 1, JA_START_BREAK):
+        a -= 1
+    while b < len(block_text) and not brk(b - 1, JA_END_BREAK):
+        b += 1
+    while a < start and block_text[a] in " 　":
+        a += 1
+    if b - a <= JA_PHRASE_MAX:
+        return a, b
+    bounds = sorted(_bunsetsu_bounds(block_text))
+    a2 = max([x for x in bounds if x <= start] or [start])
+    b2 = min([x for x in bounds if x >= end] or [end])
+    return a2, b2
+
+
+def ja_phrase_ok(target: str, block_text: str) -> bool:
+    """日本語の target が意味のまとまりか（ja_phrase_bounds で広げても変わらない）"""
+    at = block_text.find(target)
+    if at < 0 or not target:
+        return True  # 見つからないときは別の検査（画面の文字にありません）が落とす
+    a, b = ja_phrase_bounds(block_text, at, at + len(target))
+    punct = "".join(JA_START_BREAK | JA_END_BREAK)
+    return block_text[a:b].strip(punct) == target.strip(punct)
+
+
+def snap_target(item: dict, pages: list) -> bool:
+    """日本語の target を、画面の文字の意味のまとまりまで広げる（言葉は足さない・画面の文字そのまま）。変えたら True"""
+    tgt = str(item.get("target") or "")
+    if not tgt or is_english(tgt) or not pages:
+        return False
+    blocks = [b for p in pages for b in p.blocks]
+    blk = next((b for b in blocks if b.id == item.get("block") and tgt in b.text), None) or next((b for b in blocks if tgt in b.text), None)
+    if blk is None:
+        return False
+    at = blk.text.find(tgt)
+    a, b = ja_phrase_bounds(blk.text, at, at + len(tgt))
+    new = blk.text[a:b].strip()
+    for close, opener in (("」", "「"), ("』", "『"), ("）", "（"), (")", "(")):
+        if new.endswith(close) and opener not in new and not tgt.endswith(close):
+            new = new[: -len(close)].rstrip()
+    if new == tgt or len(new) < len(tgt):
+        return False
+    item["target"], item["block"] = new, blk.id
+    return True
+
+
+def snap_targets(script: dict, pages: list) -> list[str]:
+    """台本の hook と beats の日本語の証拠を意味のまとまりに広げる。直した場所の一覧"""
+    done = []
+    for name, item in [("hook", script.get("hook") or {})] + [(f"beat{i}", b) for i, b in enumerate(script.get("beats") or [], 1)]:
+        if isinstance(item, dict) and snap_target(item, pages):
+            done.append(name)
+    return done
+
+
 def is_english(text: str) -> bool:
     """英語の文・句か（字幕を付けるか）: 英字の語が2つ以上で、かなと漢字が無い"""
     return len(re.findall(r"[A-Za-z]{2,}", text or "")) >= 2 and not re.search(r"[ぁ-んァ-ヴ一-龥]", text or "")
@@ -896,6 +1034,8 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
         if pages and not tgt:
             out.append(f"{name}.target「{item.get('target', '')}」が画面の文字にありません。一覧の文字をそのまま抜き出してください。")
             continue
+        if tgt and not is_english(item.get("target", "")) and not ja_phrase_ok(item.get("target", ""), tgt.block.text):
+            out.append(f"証拠の文の区切り: {name}.target「{item.get('target', '')[:30]}」が語や文の途中で切れています。句点・読点・かぎかっこの間のまとまりをそのまま選んでください。")
         if tgt and name != "hook" and not gate.key_fact_ok(item.get("keyword", ""), item.get("sub", ""), item.get("target", ""), item.get("ja", "")):
             out.append(f"{name}.target「{item.get('target', '')[:40]}」に、キーワード「{item.get('keyword', '')}」の数字・言葉がありません。"
                        "選択して見せる証拠の文には、その場面の大事な数字か言葉を含む行を選んでください（英語なら ja の訳に入っていればよい）。")
@@ -1280,6 +1420,7 @@ def write_script(article: dict, pages: list[Page], note: str = "") -> tuple[dict
     def prepare(data: dict) -> tuple[dict, list[str]]:
         data["beats"] = [b for b in data.get("beats") or [] if isinstance(b, dict)][:BEATS_MAX]
         latin_names(data)
+        snap_targets(data, pages)  # 日本語の証拠は意味のまとまりまで広げる（選択の青が語の途中で切れないように）
         return self_correct(data, article, pages)
 
     # ① ふつうの書き直し（途中で編集長のレビュー1回）
@@ -1842,6 +1983,54 @@ def frame_rect(page: Page, page_no: int, rect: tuple, frac: float, zmax: float, 
     return clamp_cam(page, page_no, cx, (rect[1] + rect[3]) / 2, s)
 
 
+# 2026-11-04 オーナー「証拠の文が画面の端に寄って、行の頭が切れる（…締役、AKARI…）」:
+# 寄るときは、証拠の文が触れている行を行の頭から（寄りの段では行の頭〜証拠の文の終わりまで）まるごと画面に入れ、
+# 周りに余白を残して真ん中に置く。入らないほど寄らない（読める大きさまで引く）
+FRAME_MARGIN_X = 96  # 出力の画素。左右の端は EDGE_FADE（64）で地の色になじむので、それより内側に文字を置く
+FRAME_MARGIN_Y = 44
+QA_MARGIN_X = 70  # EDGE_FADE（64）＋少し。 ゲート（QA）が見る余白（少しのずれは許す）
+QA_MARGIN_Y = 16
+
+
+def row_extents(tg: "Target") -> list[tuple]:
+    """target が触れている行ごとの、行の頭から終わりまでの枠（同じブロックの文字の枠から）"""
+    out = []
+    chars = [r for _, r in tg.block.chars if r]
+    for r in tg.rows or [tg.match or tg.rect]:
+        cy = (r[1] + r[3]) / 2
+        same = [c for c in chars if c[1] <= cy <= c[3]]
+        out.append((min([c[0] for c in same] + [r[0]]), r[1], max([c[2] for c in same] + [r[2]]), r[3]))
+    return out
+
+
+def line_box(tg: "Target") -> tuple:
+    """証拠の文が触れている行の全体（行の頭から終わりまで）"""
+    return _union(row_extents(tg))
+
+
+def zoom_box(tg: "Target") -> tuple:
+    """寄るときに必ず入れる所: 最初の行の頭 〜 証拠の文の終わり（行の頭は切らない）"""
+    rows = tg.rows or [tg.match or tg.rect]
+    full = row_extents(tg)
+    return (min(r[0] for r in full), min(r[1] for r in rows), max(r[2] for r in rows), max(r[3] for r in rows))
+
+
+def frame_box(page: Page, page_no: int, box: tuple, zmax: float, mx: float = FRAME_MARGIN_X, my: float = FRAME_MARGIN_Y) -> Cam:
+    """box がまるごと余白つきで入る、いちばん大きな倍率（ページ幅いっぱいの zmax 倍まで）で、box の真ん中を注目の位置に置く。
+    ページ幅いっぱいでも入らないときは、ページ幅の 0.8 倍まで引く（それでも入らなければゲートが落とす）"""
+    s0 = fit_s(page)
+    bw, bh = max(box[2] - box[0], 1), max(box[3] - box[1], 1)
+    half_h = min(FOCUS[1], PH - FOCUS[1])
+    s = min(s0 * zmax, (PW - 2 * mx) / bw, (2 * half_h - 2 * my) / bh)
+    s = max(s, s0 * 0.8)
+    return clamp_cam(page, page_no, (box[0] + box[2]) / 2, (box[1] + box[3]) / 2, s)
+
+
+def cam_view(cam: Cam) -> tuple:
+    """カメラに写るページの範囲（ページの画素）"""
+    return (cam.cx - FOCUS[0] / cam.s, cam.cy - FOCUS[1] / cam.s, cam.cx + (PW - FOCUS[0]) / cam.s, cam.cy + (PH - FOCUS[1]) / cam.s)
+
+
 def hero_block(page: Page) -> Block | None:
     """ページの上の方（CSS 1600px まで）でいちばん大きな文字の見出し"""
     top = [b for b in page.blocks if b.rect[1] < 1600 * CAPTURE_DPR and b.font_px >= 26 and len(b.text) >= 6]
@@ -2185,6 +2374,7 @@ class Plan:
     ladders: list = field(default_factory=list)
     highlights: list = field(default_factory=list)  # 証拠の文の選択（ゲートが長さと中身を見る）
     camera_moves: list = field(default_factory=list)  # カメラの動き（ゲートが回数と割合を見る）
+    qa: list = field(default_factory=list)  # 選択と寄りの位置（geometry_records → ゲートの QA）
 
 
 def _source_label(page: Page) -> str:
@@ -2226,6 +2416,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     hook = script["hook"]
     beats = script["beats"]
     items = [hook] + beats
+    snap_targets(script, pages)  # 古い台本・型の台本も、選択は意味のまとまりで（2026-11-04）
     kws = [hook.get("payoff") or ""] + [b.get("keyword", "") for b in beats]
     targets = [find_target(pages, it.get("target", ""), it.get("block", ""), keyword=k) for it, k in zip(items, kws)]
     if not targets[0]:
@@ -2268,17 +2459,27 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     t0 = targets[0]
     p0 = pages[t0.page]
     wide_rect = t0.block.rect if t0.block.rect[2] - t0.block.rect[0] > 0.5 * p0.width else t0.rect
-    first = frame_rect(p0, t0.page, (wide_rect[0], t0.rect[1], wide_rect[2], t0.rect[3]), 0.96, 1.5, zmin=1.0 if wide_rect is t0.block.rect else 1.2)
+    first = frame_box(p0, t0.page, (min(wide_rect[0], line_box(t0)[0]), line_box(t0)[1], max(wide_rect[2], line_box(t0)[2]), line_box(t0)[3]), 1.5)
     hero = hero_block(p0)
     if t0.block.font_px < 22 and hero is not None and hero is not t0.block:
         first = frame_rect(p0, t0.page, hero.rect, 0.96, 1.4)
     # 数字に寄るときは大きく、見出し（数字なし）は全体が入る程度に寄る（見出しの途中で切らない）
-    hook_close = frame_rect(p0, t0.page, t0.zoom_rect, 0.34, ZOOM_MAX, zmin=1.6, line=t0.rect, chars=t0.line_chars) if t0.focus else frame_rect(p0, t0.page, t0.rect, 0.9, 1.6, zmin=1.15)
+    # 2026-11-04: 数字だけに寄って行の頭や文の続きを切らない。証拠の文（行の頭から）がまるごと入る所まで寄る
+    hook_close = frame_box(p0, t0.page, zoom_box(t0), ZOOM_MAX)
     moves.append(Move(0.18, 0.8, hook_close))
     ev(0.18, "move", "つかみ: 数字へ寄る")
     # つかみの訳は、同じ英文を beat でも訳すなら出さない（同じ訳が2回続かないように）
     hook_xl = is_english(hook.get("target", "")) and bool(hook.get("ja")) and all(_norm(b.get("target", "")) != _norm(hook.get("target", "")) for b in beats)
-    spots.append(Spot(0.7, lines[1].start - 0.08, t0.page, t0.span if hook_xl else t0.rect, t0.rows if hook_xl else [t0.match], 0.92))
+    # 選択は証拠の文の全部の行（日本語も。1行目の終わりの数文字だけにしない）
+    spots.append(Spot(0.7, lines[1].start - 0.08, t0.page, t0.span, list(t0.rows or [t0.match]), 0.92))
+    qa_items: list[dict] = []  # 選択と寄りの位置の記録（ゲートの QA が見る）
+
+    def qa_add(beat_no: int, tg_: "Target", sel_: list, t_sel: float, t_end: float, item: dict, keyword: str, sub: str, speech: str) -> None:
+        qa_items.append({"beat": beat_no, "page": tg_.page, "rows": [list(map(float, r)) for r in (tg_.rows or [tg_.match or tg_.rect])],
+                         "line": list(map(float, line_box(tg_))), "sel": [list(map(float, r)) for r in sel_], "t0": float(t_sel), "t1": float(t_end),
+                         "target": item.get("target", ""), "ja": item.get("ja", "") or "", "block_text": tg_.block.text, "keyword": keyword, "sub": sub, "speech": speech})
+
+    qa_add(0, t0, list(t0.rows or [t0.match]), 0.92, lines[1].start - 0.08, hook, hook.get("payoff", ""), "", hook.get("speech", ""))
     clicks.append(Click(0.92, t0.page, *click_point(t0)))
     ev(0.92, "click")
     if hook_xl:
@@ -2316,7 +2517,8 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         span = tg.span if found[i] else tg.rect
         sel = tg.rows if found[i] else [tg.match]
         line_rect = (tg.block.rect[0], span[1], tg.block.rect[2], span[3]) if wide_block else span
-        block_cam = frame_rect(page, tg.page, line_rect, 0.96, 1.6, zmin=1.25 if wide_block else ZOOM_BLOCK)
+        # 行へ: 証拠の文が触れている行を、行の頭から終わりまでまるごと（余白つき・真ん中）
+        block_cam = frame_box(page, tg.page, line_box(tg), 1.6) if found[i] else frame_rect(page, tg.page, line_rect, 0.96, 1.6, zmin=1.25 if wide_block else ZOOM_BLOCK)
         chart_beat = i in lad_map or i in flow_map or i == uni_beat or i == comp_beat or i in card_map
         if i in lad_map:  # 料金の段階: 証拠は主役のプランの価格の行（表の行を順に回らない）
             lad = lad_map[i]
@@ -2324,8 +2526,8 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
             rt = find_target(pages, sub_row.get("target", ""), sub_row.get("block", ""), keyword=sub_row.get("price", ""))
             if rt is not None:
                 tg, page = rt, pages[rt.page]
-                span, sel = rt.rect, [rt.zoom_rect]
-                block_cam = frame_rect(page, rt.page, rt.zoom_rect, 0.30, 1.9, zmin=1.35, line=rt.rect, chars=rt.line_chars)
+                span, sel = rt.span, list(rt.rows or [rt.match])
+                block_cam = frame_box(page, rt.page, zoom_box(rt), 1.9)
                 cut = rt.page != moves[-1].cam.page
         move_dur = MOVE if nxt - line.start >= 4.0 else 0.6  # 短い場面は少し速く（選択を見せる時間を残す）
         if not add_move(a_t, block_cam, f"beat{i}: 行へ", i, cut=cut, dur=move_dur):
@@ -2342,6 +2544,9 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
                 chart_t = None
         spot_end = (chart_t - 0.05) if chart_t else nxt - 0.08
         spots.append(Spot(a_t + 0.35, spot_end, tg.page, span, sel, sel_t))
+        if found[i]:
+            ev_item = beat if tg is targets[i] else {"target": next((r.get("target", "") for r in lad_map.get(i, {}).get("rows", []) if find_target(pages, r.get("target", ""), r.get("block", "")) is tg), "") or tg.text, "ja": ""}
+            qa_add(i, tg, sel, sel_t, spot_end, ev_item, beat.get("keyword", ""), beat.get("sub", ""), beat.get("speech", ""))
         if found[i]:
             highlights.append({"beat": i, "text": beat.get("target", ""), "ja": beat.get("ja", "") if xl else "", "keyword": beat.get("keyword", ""), "sub": beat.get("sub", ""),
                                "t_full": round(sel_t + sweep, 3), "t_end": round(spot_end, 3), "line": [round(line.start, 3), round(line.end, 3)]})
@@ -2408,8 +2613,9 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         # 証拠に寄る（1場面に1回）: 行に着いて1.5秒以上たってから・寄ったあとも1.5秒以上止められるときだけ
         zoom_t = max(sel_t + sweep + 0.6, arrive + HOLD)
         if nxt - zoom_t >= 0.9 + HOLD:
-            cam_z = frame_rect(page, tg.page, tg.zoom_rect, 0.36 if tg.focus else 0.8, ZOOM_MAX, zmin=1.6 if tg.focus else 1.35, line=tg.rect, chars=tg.line_chars)
-            if add_move(zoom_t, cam_z, f"beat{i}: 証拠に寄る", i):
+            # 寄る: 最初の行の頭〜証拠の文の終わりがまるごと入る所まで。行へ着いたときより1割以上寄れないなら動かさない
+            cam_z = frame_box(page, tg.page, zoom_box(tg), ZOOM_MAX) if found[i] else block_cam
+            if cam_z.s >= block_cam.s * 1.1 and add_move(zoom_t, cam_z, f"beat{i}: 証拠に寄る", i):
                 clicks.append(Click(zoom_t + 0.6, tg.page, *click_point(tg)))
                 ev(zoom_t + 0.6, "click")
 
@@ -2420,7 +2626,8 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     add_move(back_t, Camera._hold(first, 0, 0), "締め: 最初の画面へ戻る", n_last, cut=first.page != moves[-1].cam.page)
     c_t = max(back_t + MOVE + HOLD, concl.start + 0.45 * (concl.end - concl.start))
     if narr.end_start - c_t > 0.9 + 1.0 and add_move(c_t, hook_close, "締め: 最初の数字へ", n_last):
-        spots.append(Spot(c_t + 0.35, narr.end_start, t0.page, t0.rect, [t0.match], c_t + 0.5))
+        spots.append(Spot(c_t + 0.35, narr.end_start, t0.page, t0.span, list(t0.rows or [t0.match]), c_t + 0.5))
+        qa_add(n_last, t0, list(t0.rows or [t0.match]), c_t + 0.5, narr.end_start, hook, hook.get("payoff", ""), "", hook.get("speech", ""))
     # 4秒より長く何も変わらない所は、カーソルが読んでいる文を指す（カメラは動かさない）。左端と右端を交互に
     cover = [(c.t0, c.t1) for c in charts] + [(L.t0, L.t1) for L in ladders]
     camera = Camera(first, moves)
@@ -2566,7 +2773,9 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
             focus.append({"t0": round(w0, 3), "t1": round(w1, 3), "bbox": [round(PANEL[0] + max(0, x0), 1), round(PANEL[1] + max(0, y0), 1), round(PANEL[0] + min(PW, x1), 1), round(PANEL[1] + min(PH, y1), 1)]})
 
     events.sort(key=lambda e: e["t"])
-    return Plan(article, script, narr, pages, targets, camera, spots, clicks, charts, texts, subtitles, events, focus, credits, ladders, highlights, move_log)
+    plan = Plan(article, script, narr, pages, targets, camera, spots, clicks, charts, texts, subtitles, events, focus, credits, ladders, highlights, move_log)
+    plan.qa = qa_items
+    return plan
 
 
 def stage_bg() -> np.ndarray:
@@ -3228,6 +3437,40 @@ def encode(renderer: Renderer, audio: Path, out: Path, fps: int = FPS, workers: 
 SAFE_V3 = (40, 30, W - 40, H - 30)
 
 
+QA_VERSION = 1
+
+
+def geometry_records(plan: Plan, step: float = 0.1) -> list[dict]:
+    """選択の青と寄りの位置の記録（ゲートの QA が見る）。証拠ごとに、選択が出ている間の止まった時刻のカメラの範囲（ページの画素）・
+    選択の枠・証拠の文の行の枠・左のキーワードと読み上げ。どの時刻でも証拠の文がまるごと余白つきで写っているかをゲートが確かめる"""
+    moves = plan.camera.moves
+
+    def moving(t: float) -> bool:
+        return any(m.t - 1e-6 <= t <= m.t + m.dur + 0.04 for m in moves)
+
+    out = []
+    for q in plan.qa:
+        t0, t1 = q["t0"], q["t1"]
+        times = [round(t0 + k * step, 3) for k in range(int(max(0.0, t1 - t0) / step) + 1)]
+        views, peak = [], None
+        for t in times:
+            if moving(t):
+                continue
+            cam = plan.camera.at(t)
+            if cam.page != q["page"]:
+                views.append([t, -1, 0, 0, 0, 0])  # 別のページが写っている
+                continue
+            v = cam_view(cam)
+            views.append([t, round(cam.s, 5), *[round(x, 1) for x in v]])
+            if peak is None or cam.s > peak[1]:
+                peak = (t, cam.s)
+        tgt = q["target"]
+        phrase = clause_ok(tgt, q["block_text"]) if is_english(tgt) else ja_phrase_ok(tgt, q["block_text"])
+        out.append({k: v for k, v in q.items() if k != "block_text"} | {"views": views, "t_peak": round(peak[0], 3) if peak else round(t1, 3), "phrase_ok": bool(phrase),
+                                                                      "margin": [QA_MARGIN_X, QA_MARGIN_Y]})
+    return out
+
+
 def text_records(plan: Plan) -> list[dict]:
     out = []
     rows = [(item.role, item.text, item.sprite, item.bbox(), item.t0, item.t1) for item in plan.texts]
@@ -3351,6 +3594,192 @@ def contact_sheet(mp4: Path, plan: Plan, out: Path, every: float = 2.0) -> None:
     sheet.save(out)
 
 
+# --------------------------------------------------------------------------- #
+# QA（2026-11-04 オーナー「選択の青がずれる・意味の無い所に付く・行の頭が切れる・左の文字と話が合わない」）
+#   位置の検査はゲート（video_gate.geometry_problems）。ここでは2本の動画のコマ（場面ごとに一番寄った所）を AI に見せて目視の確認をし、
+#   だめなら台本を1回だけ作り直す。両方に通った動画だけ report["gate"]["qa"] が geometry=true・vision=true になる（投稿の条件）
+# --------------------------------------------------------------------------- #
+
+QA_RETRIES = int(os.environ.get("V3_QA_RETRIES", "1"))  # 作り直しの回数
+QA_RETRY_BEFORE = float(os.environ.get("V3_QA_RETRY_BEFORE", "420"))  # 1回目にこれより時間がかかったら作り直さない（CI の枠を守る）
+QA_RETRY_SCRIPT_CAP = float(os.environ.get("V3_QA_RETRY_SCRIPT_CAP", "300"))
+VISION_MAX_FRAMES = 14
+
+VISION_SCHEMA = {
+    "type": "OBJECT",
+    "properties": {
+        "frames": {
+            "type": "ARRAY",
+            "items": {
+                "type": "OBJECT",
+                "properties": {
+                    "index": {"type": "INTEGER"},
+                    "highlight_ok": {"type": "BOOLEAN"},
+                    "framing_ok": {"type": "BOOLEAN"},
+                    "coherent": {"type": "BOOLEAN"},
+                    "issue": {"type": "STRING"},
+                },
+                "required": ["index", "highlight_ok", "framing_ok", "coherent", "issue"],
+            },
+        }
+    },
+    "required": ["frames"],
+}
+
+
+def vision_system() -> str:
+    return """あなたは解説動画の厳しい最終チェック係。横長の動画のコマ（1枚＝1場面の、いちばん寄った瞬間）を見て、コマごとに次の3つを判定する。
+画面の右は公式ページの本物の画面。読んでいる文に、ブラウザで文字を選んだときの薄い青（選択の青）が付いている。英語の文には黒い吹き出しで日本語の訳が出る。
+画面の左には、場面の小見出しと大きなキーワード（数字は赤）と補足が出る。
+
+1. highlight_ok: 選択の青が、意味の通る完全なまとまり（文・節・句）にぴったり付いているか。
+   文字からずれている・文字の無い所にある・行の終わりの数文字だけ（例:「これま」）・語の途中で切れている・関係の無い別の文に付いている → false。
+2. framing_ok: 選択した文がまるごと画面の中にあるか。行の頭が画面の左端で切れている（例:「…締役、AKARI」「…ナ、飲食店の」）・文が画面の端に寄って続きが見えない → false。
+3. coherent: 左のキーワード・数字と、その場面の読み上げ（下に書く）と、選択した文（英語なら訳）が、同じことを言っているか。別の話なら false。
+
+細かい好みではなく、見る人が「ずれている」「切れている」「話が合わない」と感じるものだけを false にする。
+false のときは issue に、何がどうだめかを短く日本語で書く（true のときは空文字）。すべてのコマについて index 順に答える。"""
+
+
+def keyframe_jpeg(mp4: Path, t: float, width: int = 960) -> bytes:
+    return subprocess.run(
+        [shorts.ffmpeg_bin(), "-loglevel", "error", "-ss", f"{max(0.0, t):.2f}", "-i", str(mp4), "-frames:v", "1", "-vf", f"scale={width}:-2:flags=area",
+         "-q:v", "4", "-f", "image2pipe", "-vcodec", "mjpeg", "-"],
+        capture_output=True, check=True,
+    ).stdout  # fmt: skip
+
+
+def qa_frames(report: dict) -> list[dict]:
+    """目視の確認に見せるコマ: つかみと各場面の、選択が出ている間でいちばん寄った時刻（締めはつかみと同じ所なので除く）"""
+    n = len((report.get("script_v3") or {}).get("beats") or [])
+    return [g for g in report.get("geometry") or [] if 0 <= int(g.get("beat", 0)) <= n]
+
+
+def qa_sheet(mp4: Path, marks: list[tuple[float, str]], out: Path, tw: int = 640) -> None:
+    """QA の見比べ用: 指定した時刻のコマを並べて、下に場面とキーワードを書く"""
+    th = tw * 9 // 16
+    cols = 3
+    rows = max(1, math.ceil(len(marks) / cols))
+    sheet = Image.new("RGB", (cols * (tw + 12) + 12, rows * (th + 44) + 12), (226, 230, 237))
+    d = ImageDraw.Draw(sheet)
+    f = shorts.font("bold", 22)
+    for i, (t, label) in enumerate(marks):
+        raw = subprocess.run(
+            [shorts.ffmpeg_bin(), "-loglevel", "error", "-ss", f"{max(0.0, t):.2f}", "-i", str(mp4), "-frames:v", "1", "-vf", f"scale={tw}:{th}:flags=area", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
+            capture_output=True, check=True,
+        ).stdout  # fmt: skip
+        x, y = 12 + (i % cols) * (tw + 12), 12 + (i // cols) * (th + 44)
+        sheet.paste(Image.frombytes("RGB", (tw, th), raw[: tw * th * 3]), (x, y))
+        d.text((x, y + th + 8), f"{t:.1f}s  {label}"[:40], font=f, fill=(20, 26, 40))
+    sheet.save(out)
+
+
+def _scene_name(g: dict, n: int) -> str:
+    b = int(g.get("beat", 0))
+    return "つかみ" if b == 0 else ("締め" if b > n else f"場面{b}")
+
+
+def vision_review(versions: dict[str, dict]) -> tuple[dict[str, list[str]], str]:
+    """2本の動画のコマをまとめて1回で AI に見せる。戻り値 ({版: だめだった点}, 確認できなかった理由)"""
+    import llm
+
+    images, metas = [], []
+    for ver, rep in versions.items():
+        mp4 = Path(rep.get("mp4") or "")
+        if not mp4.exists():
+            continue
+        n = len((rep.get("script_v3") or {}).get("beats") or [])
+        for g in qa_frames(rep):
+            metas.append((ver, g, n))
+    if len(metas) > VISION_MAX_FRAMES:  # 多すぎるときは短い版を優先して残す（SNS に出す版）
+        metas = sorted(metas, key=lambda m: (m[0] != "short",))[:VISION_MAX_FRAMES]
+    if not metas:
+        return {}, "確認するコマが無い"
+    lines = []
+    for k, (ver, g, n) in enumerate(metas):
+        images.append(keyframe_jpeg(Path(versions[ver]["mp4"]), float(g.get("t_peak", 0))))
+        ja = f" / 訳: {g.get('ja')}" if g.get("ja") else ""
+        lines.append(f"[{k}] {'短い版' if ver == 'short' else '全部の版'}・{_scene_name(g, n)}: 読み上げ「{g.get('speech', '')}」 / 左のキーワード「{g.get('keyword', '')}」補足「{g.get('sub', '')}」 / 選択した文「{g.get('target', '')}」{ja}")
+    prompt = "コマは上の画像の順（index 0 から）。各コマの場面の情報:\n" + "\n".join(lines) + "\n\n判定を JSON で返してください。"
+    try:
+        verdict, _ = llm.generate_json_images(vision_system(), prompt, images, VISION_SCHEMA, purpose="video_review")
+    except Exception as error:  # noqa: BLE001 - 確認できない＝合格にしない
+        return {}, str(error)[:200]
+    got = {int(f.get("index", -1)): f for f in verdict.get("frames") or []}
+    issues: dict[str, list[str]] = {ver: [] for ver in versions}
+    for k, (ver, g, n) in enumerate(metas):
+        f = got.get(k)
+        if f is None:
+            issues[ver].append(f"{_scene_name(g, n)}: 判定が無い")
+            continue
+        bad = [name for key, name in (("highlight_ok", "選択の青"), ("framing_ok", "画面の切れ"), ("coherent", "話の食い違い")) if not f.get(key)]
+        if bad:
+            issues[ver].append(f"{_scene_name(g, n)}（{'・'.join(bad)}）: {str(f.get('issue', ''))[:80]}")
+    return issues, ""
+
+
+def _save_report(rep: dict) -> None:
+    mp4 = Path(rep.get("mp4") or "")
+    if mp4.name:
+        mp4.with_name(mp4.stem + ".report.json").write_text(json.dumps(rep, ensure_ascii=False, indent=2), "utf-8")
+
+
+def qa_note(versions: dict[str, dict]) -> str:
+    """作り直しの台本に足す一言（前回の QA で見つかった問題）"""
+    probs = []
+    for ver, rep in versions.items():
+        probs += [r.removeprefix("v3: ") for r in (rep.get("gate") or {}).get("reasons", []) if "QA" in r]
+    probs = list(dict.fromkeys(probs))[:10]
+    if not probs:
+        return ""
+    return ("\n\n# 前回の動画の確認で見つかった問題（必ず直す）\n" + "\n".join(f"- {p}" for p in probs)
+            + "\n- 証拠（target）は、その場面の読み上げと左のキーワードが言っていることを、そのまま書いた完全な文・節にする（語や文の途中で切らない）。"
+            + "\n- keyword の数字・言葉は、その場面の speech と target（英語なら ja）の両方に入れる。")
+
+
+def qa_versions(slug: str, out: dict, regen=None, started: float | None = None) -> dict:
+    """2本の動画に QA の目視の確認をして、report["gate"]["qa"] を決める。だめなら regen(note) で1回だけ作り直す"""
+    started = started or time.time()
+    global SCRIPT_TIME_CAP
+    for attempt in range(QA_RETRIES + 1):
+        ready = {k: r for k, r in out.items() if (r.get("gate") or {}).get("ok") and ((r.get("gate") or {}).get("qa") or {}).get("geometry")}
+        issues, unavailable = vision_review(ready) if ready else ({}, "")
+        for ver, rep in out.items():
+            g = rep.setdefault("gate", {"ok": False, "reasons": []})
+            qa = g.setdefault("qa", {"geometry": False, "vision": False, "version": QA_VERSION})
+            if ver not in ready:
+                qa["vision"] = False
+                continue
+            if unavailable:
+                qa["vision"] = False
+                g["reasons"] = list(g.get("reasons") or []) + [f"v3: QA(目視): AI の目視の確認ができない（{unavailable}）"]
+            elif issues.get(ver):
+                qa["vision"] = False
+                g["reasons"] = list(g.get("reasons") or []) + [f"v3: QA(目視): {x}" for x in issues[ver]]
+            else:
+                qa["vision"] = True
+            if not qa["vision"]:
+                g["ok"] = False
+            _save_report(rep)
+        passed = {k: bool((r.get("gate") or {}).get("ok")) for k, r in out.items()}
+        qa_failed = any(any("QA" in x for x in (r.get("gate") or {}).get("reasons", [])) for r in out.values())
+        log(f"[v3] {slug}: QA {'合格' if all(passed.values()) else '不合格'} {passed}" + (f"（目視の確認ができない: {unavailable}）" if unavailable else ""))
+        if all(passed.values()) or not qa_failed or unavailable or regen is None or attempt >= QA_RETRIES:
+            return out
+        if time.time() - started > QA_RETRY_BEFORE:
+            log(f"[v3] {slug}: QA に落ちたが、時間が足りないので作り直さない（{time.time() - started:.0f}秒）")
+            return out
+        note = qa_note(out)
+        log(f"[v3] {slug}: QA に落ちたので台本から1回だけ作り直す: {note[:300]}")
+        saved = SCRIPT_TIME_CAP
+        SCRIPT_TIME_CAP = min(SCRIPT_TIME_CAP, QA_RETRY_SCRIPT_CAP)
+        try:
+            out = regen(note)
+        finally:
+            SCRIPT_TIME_CAP = saved
+    return out
+
+
 def load_script(slug: str, article: dict, pages: list[Page], out_dir: Path, reuse: bool, note: str = "", cache: str = "") -> dict:
     """note: 型（video_templates）の一言を台本の決まりに足す（空なら今までと同じ）。cache: 台本を置くファイル名"""
     path = out_dir / (cache or f"{slug}.v3script.json")
@@ -3460,6 +3889,8 @@ def make_video(
                 "variant": plan.script.get("_variant", "full"),
                 "panel": list(PANEL),
                 "targets": [{"page": t.page + 1, "block": t.block.id, "text": t.text, "block_text": t.block.text[:160]} if t else None for t in plan.targets],
+                "geometry": geometry_records(plan),
+                "qa_version": QA_VERSION,
                 **make_meta(a, plan.script, plan.narr.voice, plan.pages, plan.credits[1] if len(plan.credits) > 1 else ""),
             }
         )
@@ -3475,7 +3906,12 @@ def make_video(
         contact_sheet(mp4, plan, out_dir / f"{name}.sheet.png")
         timer.mark("sheet", t)
     report["gate"] = res.to_dict()
+    # QA（2026-11-04）: 位置の検査（ゲートの中）と、AI の目視の確認（qa_versions が2本まとめて行う）。両方 true の動画だけ投稿に使う
+    report["gate"]["qa"] = {"geometry": bool(res.metrics.get("qa_geometry")), "vision": False, "version": QA_VERSION}
+    if not report["gate"]["qa"]["geometry"] and res.ok:
+        report["gate"]["ok"] = False
     report["sizeMB"] = round(mp4.stat().st_size / 1e6, 2) if mp4.exists() else 0
+    report["mp4"] = str(mp4)
     report["timings"] = {**timer.stages, "total": round(time.time() - timer.t0, 1)}
     (out_dir / f"{name}.report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), "utf-8")
     log(f"[v3] {name}: {'合格' if res.ok else '不合格'} {report['timings']['total']}秒 {report['sizeMB']}MB {res.reasons[:4]}")
@@ -3513,7 +3949,7 @@ def prepare_versions(slug: str, a: dict, out_dir: Path, reuse: bool = False, ext
     return pages, script, reason
 
 
-def make_versions(slug: str, out_dir: Path, tts: str = "voicevox", reuse: bool = False, extra_pages: list[str] | None = None, template: str | None = None, **kw) -> dict:
+def _make_versions_once(slug: str, out_dir: Path, tts: str = "voicevox", reuse: bool = False, extra_pages: list[str] | None = None, template: str | None = None, qa_note_text: str = "", **kw) -> dict:
     """同じ台本から2本: サイト用（全部）と SNS 用（短い版）。ページの撮影と台本は1回だけ。
     戻り値 {"full": report, "short": report}。どちらも例外は投げず report に残す。
     template: 中身に合わせた型（video_templates）。None のときは記事から選ぶ（2026-11-04 既定 on）。
@@ -3526,14 +3962,31 @@ def make_versions(slug: str, out_dir: Path, tts: str = "voicevox", reuse: bool =
     if template != "default":
         import video_templates
 
-        return video_templates.make_versions(slug, out_dir, template, tts=tts, reuse=reuse, extra_pages=extra_pages, **kw)
-    pages, script, reason = prepare_versions(slug, a, out_dir, reuse, extra_pages)
+        return video_templates.make_versions(slug, out_dir, template, tts=tts, reuse=reuse, extra_pages=extra_pages, qa_note=qa_note_text, **kw)
+    pages, script, reason = prepare_versions(slug, a, out_dir, reuse, extra_pages, note=qa_note_text, cache=f"{slug}.v3script.json") if qa_note_text else prepare_versions(slug, a, out_dir, reuse, extra_pages)
     if not pages or not script:
         empty = {"slug": slug, "errors": [reason], "gate": {"ok": False, "reasons": [reason]}, "failReason": reason, "captureFails": list(CAPTURE_FAILS)}
         return {"full": empty, "short": empty}
     full = make_video(slug, out_dir, tts, profile=kw.get("profile"), article=a, pages=pages, script=json.loads(json.dumps(script, ensure_ascii=False)))
     short = make_video(slug, out_dir, tts, profile=kw.get("profile"), article=a, pages=pages, script=short_script(script))
     return {"full": full, "short": short}
+
+
+def make_versions(slug: str, out_dir: Path, tts: str = "voicevox", reuse: bool = False, extra_pages: list[str] | None = None, template: str | None = None, **kw) -> dict:
+    """同じ台本から2本（サイト用・SNS 用）を作り、QA（位置の検査＋AI の目視の確認）にかける。だめなら1回だけ台本から作り直す。
+    戻り値 {"full": report, "short": report}。report["gate"]["qa"] = {"geometry", "vision", "version"}（両方 true の動画だけ投稿に使う）"""
+    started = time.time()
+    a = shorts.load_article(slug)
+    if template is None:
+        import video_templates
+
+        template = video_templates.template_for(a) if video_templates.enabled() else video_templates.APPROVED
+    out = _make_versions_once(slug, out_dir, tts, reuse, extra_pages, template, **kw)
+
+    def regen(note: str) -> dict:
+        return _make_versions_once(slug, out_dir, tts, False, extra_pages, template, qa_note_text=note, **kw)
+
+    return qa_versions(slug, out, regen, started)
 
 
 def main() -> None:
