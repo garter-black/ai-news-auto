@@ -81,6 +81,16 @@ const PERSONA_FILLER_RE = new RegExp(
     "優遇措置(?:など)?はありません|収入にどうつながるか|直結(?:する(?:話|もの))?ではありません|直接(?:は)?関係(?:は|し)?(?:ない|ません)",
   ].join(""),
 );
+// 立場の名前を行の頭に付けた書き方（「- 会社員として：〜」「**副業・独立を考えている人**：〜」）。見出しと同じ扱いで名前は出さず、
+// 値の文は事実があって答えになっているときだけ残す（2026-11-04 の点検。リフォームの記事のかんたん版に3行並んでいた。台帳 A24）。scripts/section_gate.py と同じ
+export const PERSONA_INLINE_RE = /^(?:\*\*)?(?:会社員として(?:仕事で)?|副業・独立を考えている人|お金・資産づくりの面で)(?:\*\*)?\s*[：:]\s*(?:\*\*)?\s*/;
+// 問いの見出し（「日本で使える？」）を普通の見出しに言い換えたあと、章の頭に残る「使えます。」「はい、」だけの答え（2026-11-04 の点検）。
+// 章の最初の地の文の頭だけ外す。scripts/section_gate.py と同じ
+const BARE_YESNO_RE = /^(?:はい|いいえ)、\s*/;
+const BARE_ANSWER_RE = /^(?:使えます|使えません|一部で使えます|まだ使えません|買えます|買えません|できます|できません|申し込めます|申し込めません)。\s*/;
+export function stripBareAnswer(line: string): string {
+  return line.replace(BARE_YESNO_RE, "").replace(BARE_ANSWER_RE, "").trim();
+}
 // 見出しの言葉だけ変えた「中身なしの章」の見出し（「比べられる数字は示されていない」「日本向けの提供条件はまだ分からない」。台帳 A24）。
 // 「まだ分からないこと」（未定事項をまとめる決まった章）は対象外。scripts/section_gate.py の NONANSWER_TITLE_RE と同じ
 export const NONANSWER_TITLE_RE = /(?:(?:示されて|書かれて|触れられて|明かされて|明らかにされて|公表されて|発表されて|決まって|分かって|わかって|確認できて|開示されて)(?:い)?ない|まだない|(?:比較|数字|数値|言及|記載|情報|発表|説明|案内|前版との比較)(?:は|も)?(?:なし|無し|ない)|未発表|未定|未公表|非公表|不明|分からない|わからない|未確認)[？?。]?$/;
@@ -123,7 +133,23 @@ function openBrackets(text: string): number {
 }
 
 /** 1文の文末の「〜しましょう」を「〜するとよいでしょう」に（「見ていきましょう」は「見ていきます」）。かっこの中や、言い換え方が分からない文はそのまま */
+// 幼い言い回し（「これ、地味にすごいんです。」「一番うれしいのは」「〜なんです」）を大人の言い方に（台帳 A4。2026-11-04 の点検で古い記事13本に残っていた）。
+// scripts/section_gate.py の adult_register と同じ
+const CHILDISH_ONLY_RE = /^(?:これ[、,]?\s*)?(?:地味に|本当に|とても)?(?:すごい|スゴい)(?:ん)?です(?:よ|ね)?[。！!]?$/;
+export function adultRegister(sentence: string): string {
+  const s = sentence.trim();
+  if (!s || openBrackets(s)) return sentence;
+  if (CHILDISH_ONLY_RE.test(s)) return "";
+  return sentence
+    .replace(/^(\s*)(?:一番|いちばん)?(?:うれしい|嬉しい)のは、/, "$1恩恵が大きいのは、")
+    .replace(/^(\s*)(?:一番|いちばん)(?:すごい|スゴい)のは、/, "$1最も目を引くのは、")
+    .replace(/地味に(?=[一-龯ぁ-んァ-ヶ])/g, "")
+    .replace(/なんです(?:よ|ね)?([。！!])/g, "です$1")
+    .replace(/なんです(?:よ|ね)?$/, "です");
+}
+
 export function professionalSentence(sentence: string): string {
+  sentence = adultRegister(sentence);
   const s = sentence.trimEnd();
   const tail = sentence.slice(s.length);
   if (!s.includes("ましょう") || openBrackets(s)) return sentence;
@@ -255,6 +281,13 @@ function dropPersona(lines: string[]): string[] {
       inside = true;
       continue;
     }
+    const marker = LIST_RE.exec(line)?.[0] ?? "";
+    const value = marker ? line.slice(marker.length).trim() : stripped;
+    if (PERSONA_INLINE_RE.test(value)) {
+      const kept = personaParagraph(value.replace(PERSONA_INLINE_RE, ""));
+      if (kept) out.push(`${marker}${kept}`);
+      continue;
+    }
     if (stripped.startsWith("#") || /^\*\*[^*]+\*\*$/.test(stripped)) inside = false;
     if (!inside || !stripped || stripped.startsWith("|")) {
       out.push(line);
@@ -274,6 +307,7 @@ function cleanBlock(text: string): string {
   const lines = dropPersona(text.split("\n"));
   const out: string[] = [];
   let i = 0;
+  let firstProse = true;
   while (i < lines.length) {
     const line = lines[i];
     const stripped = line.trim();
@@ -281,14 +315,17 @@ function cleanBlock(text: string): string {
       const block: string[] = [];
       while (i < lines.length && lines[i].trim().startsWith("|")) block.push(lines[i++]);
       out.push(...cleanTable(block));
+      firstProse = false;
       continue;
     }
     if (!stripped || /^(#|>|```|<)/.test(stripped) || /^!\[|^\[.*\]\(.*\)$/.test(stripped)) out.push(line);
     else if (LIST_RE.test(line)) {
       const item = cleanListItem(line);
       if (item !== null) out.push(item);
+      firstProse = false;
     } else {
-      const cleaned = cleanProse(stripped);
+      const cleaned = firstProse ? stripBareAnswer(cleanProse(stripped)) : cleanProse(stripped);
+      firstProse = false;
       if (cleaned) out.push(cleaned);
     }
     i += 1;
@@ -557,3 +594,47 @@ export function dropSummarySections(markdown: string): string {
     .join("\n\n");
 }
 
+
+/** 古い記事の「## 概要」の章（リードと「この記事のポイント」のくり返し。新しい記事では作らない。台帳 A19）。リードと要点がある記事で使う */
+export const OVERVIEW_HEADING_RE = /^概要$/;
+export function dropOverviewSections(markdown: string): string {
+  const parts = splitSections(markdown);
+  if (!parts.some((s) => s.heading !== null && OVERVIEW_HEADING_RE.test(stripMarks(s.heading)))) return markdown;
+  return parts
+    .filter((s) => s.heading === null || !OVERVIEW_HEADING_RE.test(stripMarks(s.heading)))
+    .map((s) => (s.heading === null ? s.content.trim() : `## ${s.heading}\n${s.content}`.trim()))
+    .filter(Boolean)
+    .join("\n\n");
+}
+
+// 本文の頭の「要約すると、」（リードの言い直しになる。2026-11-04 の点検で新しい記事5本中4本。台帳 A19）。scripts/article_style.py の strip_summary_opener と同じ
+const SUMMARY_OPENER_RE = /^要約すると\s*[、,:：]?\s*/;
+const OPENER_DUP = 0.5;
+function bigrams(text: string): Set<string> {
+  const t = text.normalize("NFKC").replace(/[\s　、。，．,.・「」『』()（）:：]/g, "");
+  const out = new Set<string>();
+  for (let i = 0; i < t.length - 1; i += 1) out.add(t.slice(i, i + 2));
+  return out;
+}
+export function overlap(a: string, b: string): number {
+  const x = bigrams(a);
+  const y = bigrams(b);
+  if (!x.size || !y.size) return 0;
+  let n = 0;
+  for (const g of x) if (y.has(g)) n += 1;
+  return n / Math.min(x.size, y.size);
+}
+
+/** 頭の「要約すると、」を外し、残った最初の文がリードとほぼ同じなら文ごと外す */
+export function stripSummaryOpener(markdown: string, lede: string): string {
+  const lines = (markdown ?? "").split("\n");
+  const i = lines.findIndex((l) => l.trim() && !l.trim().startsWith("#"));
+  if (i < 0 || !SUMMARY_OPENER_RE.test(lines[i].trim())) return markdown;
+  let sents = lines[i].trim().replace(SUMMARY_OPENER_RE, "").split(/(?<=。)/);
+  const ledeSents = (lede ?? "").split(/(?<=。)/).map((x) => x.trim()).filter((x) => x.length >= 6);
+  if (sents[0]?.trim() && ledeSents.some((x) => overlap(sents[0], x) >= OPENER_DUP)) sents = sents.slice(1);
+  const rest = sents.join("").trim();
+  if (rest) lines[i] = rest;
+  else lines.splice(i, 1);
+  return lines.join("\n").replace(/^\n+/, "").replace(/\n{3,}/g, "\n\n");
+}

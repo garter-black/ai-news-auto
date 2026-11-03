@@ -103,6 +103,18 @@ PERSONA_FILLER_RE = re.compile(
     r"この立場|立場への|直接(?:的な|の)?(?:影響|関係|優遇|メリット)[^。]{0,16}(?:小さ|な[いく]|ありません|薄|限定的)|強いて言えば|"
     r"優遇措置(?:など)?はありません|収入にどうつながるか|直結(?:する(?:話|もの))?ではありません|直接(?:は)?関係(?:は|し)?(?:ない|ません)"
 )
+# 立場の名前を行の頭に付けた書き方（「- 会社員として：〜」）。名前は出さず、値は事実があって答えになっているときだけ残す
+# （2026-11-04 の点検・台帳 A24）。lib/article-sections.ts の PERSONA_INLINE_RE と同じ
+PERSONA_INLINE_RE = re.compile(r"^(?:\*\*)?(?:会社員として(?:仕事で)?|副業・独立を考えている人|お金・資産づくりの面で)(?:\*\*)?\s*[：:]\s*(?:\*\*)?\s*")
+# 問いの見出しを普通の見出しに言い換えたあと、章の頭に残る「使えます。」「はい、」だけの答え（2026-11-04 の点検）。lib/article-sections.ts と同じ
+BARE_YESNO_RE = re.compile(r"^(?:はい|いいえ)、\s*")
+BARE_ANSWER_RE = re.compile(r"^(?:使えます|使えません|一部で使えます|まだ使えません|買えます|買えません|できます|できません|申し込めます|申し込めません)。\s*")
+
+
+def strip_bare_answer(line: str) -> str:
+    return BARE_ANSWER_RE.sub("", BARE_YESNO_RE.sub("", line, count=1), count=1).strip()
+
+
 # 見出しの言葉だけ変えた「中身なしの章」の見出し（「比べられる数字は示されていない」「日本向けの提供条件はまだ分からない」
 # 「分野ごとの実績数字、前版との比較はなし」。2026-11-03 オーナー決定・台帳 A24）。記事ごとの見出し（sectionTitles）にも、
 # 本文の ## 見出しにも当てる。「## まだ分からないこと」（大事な未定事項をまとめる決まった章）は対象外。lib/article-sections.ts と同じ
@@ -157,9 +169,28 @@ def _open_brackets(text: str) -> int:
     return depth
 
 
+# 幼い言い回し（「これ、地味にすごいんです。」「一番うれしいのは」「〜なんです」）を大人の言い方に（台帳 A4。2026-11-04 の点検で古い記事13本に残っていた）。
+# lib/article-sections.ts の adultRegister と同じ
+_CHILDISH_ONLY_RE = re.compile(r"^(?:これ[、,]?\s*)?(?:地味に|本当に|とても)?(?:すごい|スゴい)(?:ん)?です(?:よ|ね)?[。！!]?$")
+
+
+def adult_register(sentence: str) -> str:
+    s = sentence.strip()
+    if not s or _open_brackets(s):
+        return sentence
+    if _CHILDISH_ONLY_RE.match(s):
+        return ""
+    out = re.sub(r"^(\s*)(?:一番|いちばん)?(?:うれしい|嬉しい)のは、", r"\1恩恵が大きいのは、", sentence)
+    out = re.sub(r"^(\s*)(?:一番|いちばん)(?:すごい|スゴい)のは、", r"\1最も目を引くのは、", out)
+    out = re.sub(r"地味に(?=[一-龯ぁ-んァ-ヶ])", "", out)
+    out = re.sub(r"なんです(?:よ|ね)?([。！!])", r"です\1", out)
+    return re.sub(r"なんです(?:よ|ね)?$", "です", out)
+
+
 def professional(sentence: str) -> str:
     """1文の文末の「〜しましょう」を「〜するとよいでしょう」に（節の前置きの「見ていきましょう」は「見ていきます」）。
-    かっこの中（引用）や、言い換え方が分からない文はそのまま"""
+    かっこの中（引用）や、言い換え方が分からない文はそのまま。幼い言い回しも先に大人の言い方にする（adult_register）"""
+    sentence = adult_register(sentence)
     s = sentence.rstrip()
     tail = sentence[len(s):]
     if "ましょう" not in s or _open_brackets(s):
@@ -334,6 +365,14 @@ def _drop_persona(lines: list[str]) -> list[str]:
         if PERSONA_SUBHEAD_RE.match(stripped):
             inside = True
             continue
+        m = LIST_RE.match(line)
+        marker = m.group(0) if m else ""
+        value = line[len(marker):].strip() if marker else stripped
+        if PERSONA_INLINE_RE.match(value):
+            kept = _persona_paragraph(PERSONA_INLINE_RE.sub("", value, count=1))
+            if kept:
+                out.append(f"{marker}{kept}")
+            continue
         if stripped.startswith("#") or re.match(r"^\*\*[^*]+\*\*$", stripped):
             inside = False
         if not inside or not stripped or stripped.startswith("|"):
@@ -354,6 +393,7 @@ def _clean_block(text: str) -> str:
     lines = _drop_persona(text.split("\n"))
     out: list[str] = []
     i = 0
+    first_prose = True
     while i < len(lines):
         line = lines[i]
         stripped = line.strip()
@@ -363,6 +403,7 @@ def _clean_block(text: str) -> str:
                 block.append(lines[i])
                 i += 1
             out.extend(_clean_table(block))
+            first_prose = False
             continue
         if not stripped or stripped.startswith(("#", ">", "```", "<")) or re.match(r"^!\[|^\[.*\]\(.*\)$", stripped):
             out.append(line)
@@ -370,8 +411,10 @@ def _clean_block(text: str) -> str:
             item = _clean_list_item(line)
             if item is not None:
                 out.append(item)
+            first_prose = False
         else:
-            cleaned = _clean_prose(stripped)
+            cleaned = strip_bare_answer(_clean_prose(stripped)) if first_prose else _clean_prose(stripped)
+            first_prose = False
             if cleaned:
                 out.append(cleaned)
         i += 1

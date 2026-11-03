@@ -1,4 +1,4 @@
-import { getComparison, getLadder, type ApiTier, type PlanTier, type PricingProductId } from "@/lib/pricing-ladder";
+import { getComparison, getLadder, isOtherCopilot, type ApiTier, type PlanTier, type PricingProductId } from "@/lib/pricing-ladder";
 
 /**
  * 記事の料金の章に、毎日更新の料金表（components/PriceTable.tsx）を出す場所の印。
@@ -39,6 +39,8 @@ export function pricingForArticle(article: {
   if (!pricingRelevant(article)) return null;
   const product = article.pricingProduct as PricingProductId | undefined;
   if (!product || !getLadder(product)) return null;
+  // GitHub Copilot の記事に Microsoft 365 の Copilot の料金表を出さない（別の製品。2026-11-04 の点検・台帳 A32）
+  if (product === "copilot" && isOtherCopilot(`${article.title ?? ""} ${article.lede ?? ""}`)) return null;
   let compare: ArticlePricing["compare"] = null;
   const [kind, tier] = (article.pricingCompare ?? "").split(":");
   if ((kind === "plan" || kind === "api") && tier) {

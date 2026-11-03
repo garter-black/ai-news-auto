@@ -70,3 +70,15 @@ test("記事 JSON の companySlug（Haiku で確かめて直したもの）が�
   assert.equal(companyOf(art("Qodo、Codex向けプラグイン", { companySlug: "openai" })).slug, "openai");
   assert.equal(companyOf(art("OpenAIの話", { companySlug: "other" })).slug, "other");
 });
+
+test("[W3] 企業ページがあるのは AI の記事がある企業だけ（ガジェットだけのサムスンにはリンクしない。2026-11-04 の点検）", () => {
+  const { companyPageSlugs } = load(path.join(root, "lib/companies.ts"));
+  const pages = companyPageSlugs([
+    art("OpenAI、セキュリティのバグ報奨金を増額", { genreSlug: "ai" }),
+    art("サムスン、100µm未満のLEDを使う「Micro RGB TV」を発表", { genreSlug: "tech-gadget" }),
+    art("Qodo、AIコーディングツール「Codex」向けプラグインを公開", { genreSlug: "ai" }),
+  ]);
+  assert.ok(pages.has("openai"));
+  assert.ok(!pages.has("samsung"));
+  assert.ok(!pages.has("other"));
+});

@@ -76,7 +76,11 @@ SLOT_ATTR = re.compile(r'data-(aff-pos|ad-position|newsletter-signup)="([^"]*)"'
 # W11: 「記載なし」を読者に見せない（表・料金表・判定・本文）
 NO_DATA = re.compile(r"記載なし")
 # A24: 読者像の3つの立場の小見出し（会社員として／副業・独立を考えている人／お金・資産づくりの面で）が、見出し・太字の行で出ている
-PERSONA_HEADING_HTML = re.compile(r"<(?:h[2-4]|strong)[^>]*>\s*(会社員として(?:仕事で)?|副業・独立を考えている人|お金・資産づくりの面で)\s*<")
+PERSONA_HEADING_HTML = re.compile(
+    r"<(?:h[2-4]|strong)[^>]*>\s*(会社員として(?:仕事で)?|副業・独立を考えている人|お金・資産づくりの面で)\s*<|"
+    # 行の頭に立場の名前を付けた書き方（「<li>会社員として：〜」。2026-11-04 の点検でかんたん版に残っていた）
+    r"<(?:li|p)[^>]*>\s*(?:<strong>)?\s*(会社員として(?:仕事で)?|副業・独立を考えている人|お金・資産づくりの面で)\s*(?:</strong>)?\s*[：:]"
+)
 # A6: 見出しの札があざとい（「3秒でわかる」など）
 GIMMICK_LABEL = re.compile(r"\d+秒でわかる|\d+分でわかる|一瞬でわかる|サクッと")
 
@@ -940,7 +944,32 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
     return {k: v for k, v in found.items() if v}
 
 
-def render(found: dict[str, list[str]], latest: int) -> str:
+def legacy_backlog(articles: list[dict]) -> dict:
+    """参考: 公開中の記事のうち、今の公開前の門（scripts/article_style.py）に落ちるものの数（2026-11-04 の点検で 462 本中 421 本）。
+    門ができる前に作った古い型の記事で、表示の段（lib/article-sections.ts）が一部を隠し、書き直し（types_rewrite.yml）が少しずつ直す。
+    違反の件数には数えない（毎日 issue が開いたままになるため）。減っているかを毎日見るための数字"""
+    import copy  # noqa: PLC0415
+
+    try:
+        import article_style  # noqa: PLC0415
+    except Exception:  # noqa: BLE001
+        return {}
+    failing = 0
+    codes: dict[str, int] = {}
+    for record in articles:
+        if record.get("type") == "roundup" or record.get("disaster"):
+            continue
+        rec = copy.deepcopy(record)
+        article_style.autofix(rec)
+        found = {code for code, _ in article_style.coded_problems(rec)}
+        if found:
+            failing += 1
+            for code in found:
+                codes[code] = codes.get(code, 0) + 1
+    return {"failing": failing, "total": len(articles), "codes": dict(sorted(codes.items(), key=lambda x: -x[1]))}
+
+
+def render(found: dict[str, list[str]], latest: int, backlog: dict | None = None) -> str:
     total = sum(len(v) for v in found.values())
     by_rule: dict[str, int] = {}
     for v in found.values():
@@ -963,6 +992,13 @@ def render(found: dict[str, list[str]], latest: int) -> str:
         if len(v) > 15:
             lines.append(f"- …ほか {len(v) - 15} 件")
         lines.append("")
+    if backlog and backlog.get("total"):
+        top = "・".join(f"{k} {v}本" for k, v in list(backlog["codes"].items())[:5])
+        lines += [
+            f"参考（違反の件数には数えない）: 公開中の記事 {backlog['total']} 本のうち **{backlog['failing']} 本**が、今の公開前の門に落ちる古い型のままです"
+            f"（{top}）。表示の段で一部を隠し、書き直し（types_rewrite.yml）で順に直します。",
+            "",
+        ]
     lines.append("見張り: scripts/owner_rules_audit.py（.github/workflows/owner_rules_audit.yml）。読むだけで、投稿・変更はしません。違反が無くなると自動で閉じます。")
     return "\n".join(lines)
 
@@ -1006,7 +1042,7 @@ def main() -> int:
         print("\n".join(bad) or "ok: コメントはすべて 10:20〜22:59")
         return 0
     found = run(args.latest, args.sns_days, not args.no_network, args.base)
-    body = render(found, args.latest)
+    body = render(found, args.latest, legacy_backlog(load_articles()))
     print(body)
     if args.out:
         Path(args.out).parent.mkdir(parents=True, exist_ok=True)

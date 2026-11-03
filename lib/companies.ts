@@ -217,6 +217,23 @@ export function getCompany(slug: string): Company | undefined {
   return slug === OTHER.slug ? OTHER : BY_SLUG.get(slug);
 }
 
+/**
+ * 企業ページ（/companies/[slug]）を作る記事のジャンル。企業ページは AI の記事だけで作る（app/companies/[company]/view.tsx）。
+ * ガジェットだけの会社（サムスンなど）にはページが無いので、リンクを出さない（2026-11-04 の点検で 404 のリンクが4本の記事にあった。台帳 W3）
+ */
+export const COMPANY_PAGE_GENRE = "ai";
+
+/** 企業ページがある企業の slug（「その他」は除く）。リンクを出す前に必ずこれで確かめる */
+export function companyPageSlugs(articles: Pick<ArticleSummary, "slug" | "title" | "genreSlug">[]): Set<string> {
+  const out = new Set<string>();
+  for (const article of articles) {
+    if (article.genreSlug !== COMPANY_PAGE_GENRE) continue;
+    const { slug } = companyOf(article as ArticleSummary);
+    if (slug !== OTHER.slug) out.add(slug);
+  }
+  return out;
+}
+
 /** 記事数の多い順。トップの企業チップと /companies の一覧に使う */
 export function companyCounts(articles: ArticleSummary[]): { company: Company; count: number }[] {
   const counts = new Map<string, number>();

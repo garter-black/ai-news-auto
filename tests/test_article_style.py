@@ -160,6 +160,31 @@ class AutofixTest(unittest.TestCase):
         self.assertTrue(rec["verdict"])
 
 
+class SummaryOpenerTest(unittest.TestCase):
+    """2026-11-04 の点検: 新しい記事5本中4本で、本文の頭の「要約すると、」がリードの言い直しになっていた（台帳 A19）"""
+
+    LEDE = "Amazon BedrockのAIモデル「Kimi K3」で、推論処理をインド国内に限って実行できるプロファイルが加わりました。処理先は2リージョンです。"
+
+    def test_autofix_drops_restated_opener(self):
+        rec = {"lede": self.LEDE, "highlights": ["a1", "b2", "c3"],
+               "body": "要約すると、AIモデル「Kimi K3」をAmazon Bedrock経由で使うとき、処理をインド国内だけに限れるようになりました。\n\nBedrockはAWSのサービスです。",
+               "easy": "要約すると、新しい事例です。\n\nB"}
+        changes = st.autofix(rec)
+        self.assertEqual(rec["body"], "BedrockはAWSのサービスです。")
+        self.assertEqual(rec["easy"], "新しい事例です。\n\nB")
+        self.assertTrue(any("要約すると" in c for c in changes))
+
+    def test_gate_rejects_opener(self):
+        rec = {"lede": self.LEDE, "title": "t", "body": "## 背景\n\n要約すると、別の話です。", "easy": ""}
+        self.assertTrue(any(code == "A19" and "要約すると" in msg for code, msg in st.coded_problems(rec)))
+
+    def test_prompts_do_not_ask_articles_for_the_opener(self):
+        import persona  # noqa: PLC0415
+
+        self.assertIn("本文・かんたん版の頭に「要約すると、」の段落を置かない", st.STYLE_PROMPT)
+        self.assertNotIn("合うところでは、最初に「要約すると、」", persona.PLAIN_STYLE)
+
+
 class RepairTest(unittest.TestCase):
     """報告で「直す」とされた項目は、作り直す前に、その文だけ安いモデルで直す（quality.repair_language）"""
 

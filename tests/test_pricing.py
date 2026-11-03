@@ -318,6 +318,13 @@ class LibraryTest(unittest.TestCase):
         self.assertEqual({r["product"] for r in api["rows"]}, {"claude-api", "openai-api", "gemini-api"})
         self.assertTrue(all(r["context"] != "入力>272K" for r in api["rows"]))
 
+    def test_github_copilot_is_not_microsoft_365_copilot(self):
+        """2026-11-04 の点検: GitHub Copilot の記事に Microsoft 365 の Copilot の料金表が出ていた（台帳 A32）"""
+        self.assertNotIn("copilot", pricing.find_products("GitHubがJetBrainsの「Air」にCopilotを提供　クラウド実行もCopilotの契約で"))
+        self.assertNotIn("copilot", pricing.find_products("GitHub Copilot、新しいプランを追加"))
+        self.assertIn("copilot", pricing.find_products("Microsoft 365 Copilot、料金を改定"))
+        self.assertIn("copilot", pricing.find_products("Copilot Pro が値上げ"))
+
     def test_find_products_and_facts(self):
         self.assertEqual(pricing.find_products("Claude Ultra と ChatGPT Pro を比べる"), ["claude", "chatgpt"])
         self.assertIn("当サイトで確認済みの料金", pricing.facts_block("Gemini 4 Argon の API 料金"))

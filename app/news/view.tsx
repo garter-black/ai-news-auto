@@ -4,15 +4,17 @@ import { GenreChips, NewsGrid } from "@/components/NewsHub";
 import Pagination from "@/components/Pagination";
 import { pageHref, pageSuffix, paginate } from "@/lib/paginate";
 import { broadGenresWithArticles, getBroadArticles } from "@/lib/sections";
+import { regularGenres } from "@/lib/coverage";
 import { siteConfig } from "@/site.config";
 
 /** 1ページあたりの件数（4列で割り切れる数） */
 const PER_PAGE = 48;
 
 export function newsMetadata(page: number): Metadata {
-  const title = `ニュース｜ビジネス・テクノロジー・暮らし・科学ほか${pageSuffix(page)}`;
-  const description =
-    "AI以外の話題も、企業・研究機関・行政の公式発表から要点だけを日本語でまとめています。ビジネス・ガジェット・暮らし・エンタメ・スポーツ・科学・社会の最新ニュース。";
+  // 名前を出すジャンルは、直近30日に5本以上の記事があるものだけ（台帳 W14。決め打ちだと、1〜3本しかない暮らし・科学・エンタメまで並んでいた。2026-11-04 の点検）
+  const labels = regularGenres().map((g) => g.label.replace(/・(?:経済|ガジェット|生活|カルチャー|宇宙|行政)$/, ""));
+  const title = `ニュース｜${labels.length ? `${labels.slice(0, 3).join("・")}ほか` : "企業・行政の公式発表から"}${pageSuffix(page)}`;
+  const description = `AI以外の話題も、企業・研究機関・行政の公式発表から要点だけを日本語でまとめています。${labels.length ? `${labels.join("・")}などの最新ニュース。` : ""}`;
   const url = pageHref("/news", page);
   const image = { url: "/news/share.png", width: 1200, height: 630, alt: "サイソク ニュース — 企業・研究機関・行政の公式発表から" };
   return {

@@ -61,7 +61,9 @@ STYLE_PROMPT = """## サイソクの文体（ITmedia・日経クロステック�
   「設定の使用状況の画面」のように普通の言葉で書く。
 - 指示文の言葉（「読者が次に取るべき行動」「今回の発表の位置づけ」「今回の取材対象」）を本文に出さない。
   背景知識で補う「（編集部注）」は記事全体で2か所まで（それ以上要るなら、その補足は書かない）。
-- 一部改良を「新型」と書かない。前からあるものを「新たに」と書かない。「ざっくり」は使わない（要約は「要約すると、」）。"""
+- 一部改良を「新型」と書かない。前からあるものを「新たに」と書かない。「ざっくり」は使わない。
+- 本文・かんたん版の頭に「要約すると、」の段落を置かない（リードと「この記事のポイント」が要約の役目。同じことのくり返しになる）。
+  リードの次は、それが何か・誰のためかの1〜2文か、リードに無い新しい事実から始める。"""
 
 # --------------------------------------------------------------------------- #
 # 門の規則
@@ -171,6 +173,45 @@ def max_headings(body: str) -> int:
 # 直せるものはプログラムで直す
 # --------------------------------------------------------------------------- #
 
+# 本文の頭の「要約すると、」（表示の段 lib/article-sections.ts の SUMMARY_OPENER_RE と同じ）
+SUMMARY_OPENER_RE = re.compile(r"^要約すると\s*[、,:：]?\s*")
+# 外した後の最初の文が、リードのどれかの文とこの割合以上重なれば文ごと外す
+OPENER_DUP = 0.5
+
+
+def first_prose_index(lines: list[str]) -> int:
+    """最初の地の文の行の番号（見出しは飛ばす。表・箇条書き・画像が先に来たら -1）"""
+    for i, line in enumerate(lines):
+        t = line.strip()
+        if not t or t.startswith("#"):
+            continue
+        if t.startswith(("|", "!", ">", "<", "-", "*", "・")) or re.match(r"^\d+[.)）]", t):
+            return -1
+        return i
+    return -1
+
+
+def strip_summary_opener(text: str, lede: str) -> str:
+    """頭の「要約すると、」を外す。残った最初の文がリードの言い直しなら、その文も外す（台帳 A19）"""
+    lines = (text or "").split("\n")
+    i = first_prose_index(lines)
+    if i < 0 or not SUMMARY_OPENER_RE.match(lines[i].strip()):
+        return text
+    rest = SUMMARY_OPENER_RE.sub("", lines[i].strip())
+    sents = re.split(r"(?<=。)", rest)
+    lede_sents = _sentences(lede)
+    if sents and sents[0].strip() and lede_sents and any(similarity(sents[0], x) >= OPENER_DUP for x in lede_sents):
+        sents = sents[1:]
+    rest = "".join(sents).strip()
+    if rest:
+        lines[i] = rest
+    else:
+        del lines[i]
+        while i < len(lines) and not lines[i].strip() and (i == 0 or not lines[i - 1].strip()):
+            del lines[i]
+    return "\n".join(lines).lstrip("\n")
+
+
 
 def autofix(record: dict) -> list[str]:
     """プログラムで直せるもの。直した内容の一覧"""
@@ -192,6 +233,15 @@ def autofix(record: dict) -> list[str]:
         if fixed != vals:
             record[key] = fixed
             changes.append("要点: 「元記事」を言い換えた")
+    # 本文・かんたん版の頭の「要約すると、」の段落（2026-11-04 の点検。新しい記事5本中4本でリードの言い直しになっていた。台帳 A19）。
+    # 書き出しの「要約すると、」を外し、残った最初の文がリードとほぼ同じなら文ごと外す
+    for key in ("body", "easy"):
+        text = record.get(key)
+        if isinstance(text, str) and text.strip():
+            new_text = strip_summary_opener(text, record.get("lede") or "")
+            if new_text != text:
+                record[key] = new_text
+                changes.append(f"{key}: 頭の「要約すると、」を外した（リードのくり返し）")
     # 本文の最初の段落がリードと同じ文で始まるとき、その文を外す（リードの続きから始める。報告の自動ゲート13）
     body = record.get("body") or ""
     lede_sents = _sentences(record.get("lede") or "")
@@ -349,6 +399,11 @@ def coded_problems(record: dict) -> list[tuple[str, str]]:
     if len(MAYBE_RE.findall(body_nq)) >= 3:
         add("A3", "「可能性があります」が多い（3か所以上）。根拠のある事実だけを書く")
     # 13. リードのくり返し（本文の最初の文・要点）
+    for key, text in (("本文", body), ("かんたん版", easy)):
+        lines = text.split("\n")
+        i = first_prose_index(lines)
+        if i >= 0 and SUMMARY_OPENER_RE.match(lines[i].strip()):
+            add("A19", f"{key}の頭に「要約すると、」の段落（リードのくり返し）。リードに無い事実か、それが何か・誰のためかの文から始める")
     first_body = next(iter(_sentences(next((t for h, t in sections(body)), ""))), "")
     lede_sents = _sentences(lede)
     if first_body and lede_sents and any(similarity(first_body, x) >= 0.8 for x in lede_sents):

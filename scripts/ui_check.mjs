@@ -148,8 +148,16 @@ async function buildPages() {
     { path: "/", label: "トップ", kind: "home" },
     { path: "/articles", label: "記事一覧", kind: "list" },
   ];
-  const genres = ["ai", "business", "investment", "real-estate", "public", "tech-gadget", "sports", "lifestyle", "entertainment"];
-  for (const g of full ? genres : ["ai", "investment"]) pages.push({ path: `/genres/${g}`, label: `ジャンル ${g}`, kind: "list" });
+  // ジャンルはヘッダーのタブに出ているものだけ（記事の無いジャンルはタブにも無く 404 が正しい。決め打ちだと不動産の 404 を誤って数えていた。2026-11-04）
+  let genres = ["ai", "business", "investment", "public", "tech-gadget", "sports", "lifestyle", "entertainment"];
+  try {
+    const res = await fetch(`${BASE}/?_internal=1`, { headers: { "X-Saisoku-Internal": "1" } });
+    const linked = [...new Set([...(await res.text()).matchAll(/href="\/genres\/([a-z-]+)"/g)].map((m) => m[1]))];
+    if (linked.length) genres = linked;
+  } catch {
+    // 取れなければ決め打ちの一覧
+  }
+  for (const g of full ? genres : genres.filter((g) => ["ai", "investment"].includes(g))) pages.push({ path: `/genres/${g}`, label: `ジャンル ${g}`, kind: "list" });
   pages.push(...(await pickArticles(full)));
   const queries = full ? ["ChatGPT", "確定申告", "大谷"] : ["ChatGPT"];
   for (const q of queries) pages.push({ path: `/search?q=${encodeURIComponent(q)}`, label: `検索「${q}」`, kind: "search" });

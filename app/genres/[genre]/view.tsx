@@ -36,7 +36,7 @@ export function genreMetadata(genre: string, page: number): Metadata {
     title: `${label}の最新ニュース・解説記事${pageSuffix(page)}`,
     description: broad
       ? `${label}の最新ニュースを${count}本掲載。${broad.description}`
-      : `${label}に関する解説記事を${count}本掲載。専門YouTubeチャンネルの動画をAIが解析し、要点・数字・注意点まで日本語でまとめています。`,
+      : `${label}の最新ニュースを${count}本掲載。企業・官公庁などの公式発表をもとに、要点・数字・注意点まで日本語でまとめています。`,
     alternates: { canonical: pageHref(`/genres/${genre}`, page) },
     // 検索対象の記事が少ないジャンル（AI以外の話題など）は noindex
     ...listingRobots(items),

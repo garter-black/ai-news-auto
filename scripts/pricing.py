@@ -25,6 +25,7 @@ import argparse
 import json
 import math
 import re
+import unicodedata
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -445,10 +446,21 @@ def _squash(text: str) -> str:
     return re.sub(r"[\s\-‐‑–—_・]", "", (text or "")).lower()
 
 
+# GitHub の Copilot の話か（GitHub Copilot は Microsoft 365 の Copilot と別の契約・料金。2026-11-04 の点検で、GitHub Copilot の記事に
+# Microsoft 365 の料金表が出ていた。台帳 A32）。GitHub が出てきて、Microsoft 365 の Copilot を指す言葉が無ければ別の製品とみなす。lib/pricing-ladder.ts と同じ
+M365_COPILOT_RE = re.compile(r"microsoft365|m365|microsoftcopilot|copilotpro(?!mpt)")
+
+
+def is_other_copilot(text: str) -> bool:
+    flat = _squash(unicodedata.normalize("NFKC", text or ""))
+    return "github" in flat and not M365_COPILOT_RE.search(flat)
+
+
 def find_products(text: str) -> list[str]:
     """文章に出てくる製品（PRODUCTS の順）"""
-    flat = _squash(text)
-    return [p for p in PRODUCTS if any(_squash(a) in flat for a in ALIASES.get(p, []))]
+    flat = _squash(unicodedata.normalize("NFKC", text or ""))
+    other_copilot = is_other_copilot(text)
+    return [p for p in PRODUCTS if not (p == "copilot" and other_copilot) and any(_squash(a) in flat for a in ALIASES.get(p, []))]
 
 
 def facts_block(text: str, base: Path | None = None) -> str:

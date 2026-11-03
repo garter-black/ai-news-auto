@@ -37,7 +37,9 @@ export function GenreChips({ genres, active }: { genres: GenreChip[]; active?: s
               className={active === genre.slug ? on : off}
             >
               {genre.label}
-              <span className="index-num ml-1.5 text-meta font-normal opacity-70">{genre.count}</span>
+              {/* 件数は本文と同じ書体の等幅数字（後から読む Martian Mono だと、読み込みの前後で幅が変わって折り返しが変わり、
+                  下の一覧が 32px ずれていた。CLS 0.29〜0.32。2026-11-04 の点検・台帳 W3） */}
+              <span className="ml-1.5 text-meta font-normal tabular-nums opacity-70">{genre.count}</span>
             </Link>
           </li>
         ))}

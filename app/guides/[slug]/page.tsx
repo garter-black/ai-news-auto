@@ -9,8 +9,8 @@ import HowtoGuideView from "@/components/HowtoGuideView";
 import CompanyMark from "@/components/CompanyMark";
 import RelTime from "@/components/RelTime";
 import Timeline from "@/components/Timeline";
-import { coverPath, formatDate, type AffiliateLink } from "@/lib/articles";
-import { getCompany, OTHER } from "@/lib/companies";
+import { coverPath, formatDate, getAllArticles, type AffiliateLink } from "@/lib/articles";
+import { companyPageSlugs, getCompany, OTHER } from "@/lib/companies";
 import { getAllGuides, getGuide, guideArticles } from "@/lib/guides";
 import { Highlight } from "@/lib/highlight";
 import { getAllHowtos, getHowto } from "@/lib/howto";
@@ -215,7 +215,7 @@ export default async function GuidePage({ params }: Props) {
       {articles.length > 0 && (
         <Section id="news" title={`${guide.name}の最新ニュース`} note={`関連する発表 ${articles.length}本（新しい順・自動更新）`}>
           <Timeline articles={articles.slice(0, 12)} />
-          {company.slug !== OTHER.slug && (
+          {company.slug !== OTHER.slug && companyPageSlugs(getAllArticles()).has(company.slug) && (
             <Link
               href={`/companies/${company.slug}`}
               className="mt-6 inline-flex items-center gap-1.5 text-note font-bold text-ink underline-offset-4 hover:underline"
@@ -241,7 +241,7 @@ export default async function GuidePage({ params }: Props) {
       </Section>
 
       <p className="mt-12 rounded-2xl bg-surface px-5 py-4 text-note leading-relaxed text-muted">
-        このガイドは、サイソクが公開した関連記事（各社の公式発表や解説動画をAIが解析したもの）をもとに編集部がまとめたものです。最新の仕様・料金は各社の公式発表をご確認ください。
+        このガイドは、サイソクが公開した関連記事（各社の公式発表をもとにAIで作成し、出典と照合したもの）をもとに編集部がまとめたものです。最新の仕様・料金は各社の公式発表をご確認ください。
       </p>
     </div>
   );

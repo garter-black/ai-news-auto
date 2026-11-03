@@ -22,7 +22,7 @@ loaded.paths = Module._nodeModulePaths(path.dirname(sourcePath));
 const requireOriginal = loaded.require.bind(loaded);
 loaded.require = (name) => {
   if (name === "@/lib/howto") return { getAllHowtos: () => howtos };
-  if (name === "@/lib/guides") return { getAllGuides: () => [] };
+  if (name === "@/lib/guides") return { getAllGuides: () => [], guideHref: (slug) => `/guides/${slug}` };
   if (name === "@/lib/choose") return { chooseGuideForArticle: () => undefined };
   return requireOriginal(name);
 };

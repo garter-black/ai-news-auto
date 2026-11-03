@@ -403,8 +403,17 @@ export function getCompanyLadders(company: string): LadderTable[] {
 
 const squash = (text: string) => text.normalize("NFKC").toLowerCase().replace(/[\s\-‐‑–—_・]/g, "");
 
+// GitHub の Copilot の話か（GitHub Copilot は Microsoft 365 の Copilot と別の契約・料金。2026-11-04 の点検で、GitHub Copilot の記事に
+// Microsoft 365 の料金表が出ていた。台帳 A32）。GitHub が出てきて、Microsoft 365 の Copilot を指す言葉が無ければ別の製品とみなす。scripts/pricing.py と同じ
+const M365_COPILOT_RE = /microsoft365|m365|microsoftcopilot|copilotpro(?!mpt)/;
+export function isOtherCopilot(text: string): boolean {
+  const flat = squash(text);
+  return flat.includes("github") && !M365_COPILOT_RE.test(flat);
+}
+
 /** 文章に出てくる製品 */
 export function findPricingProducts(text: string): PricingProductId[] {
   const flat = squash(text);
-  return [...PLAN_PRODUCTS, ...API_PRODUCTS].filter((id) => ALIASES[id].some((a) => flat.includes(squash(a))));
+  const otherCopilot = isOtherCopilot(text);
+  return [...PLAN_PRODUCTS, ...API_PRODUCTS].filter((id) => !(id === "copilot" && otherCopilot) && ALIASES[id].some((a) => flat.includes(squash(a))));
 }

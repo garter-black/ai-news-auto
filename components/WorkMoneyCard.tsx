@@ -8,10 +8,13 @@ export default function WorkMoneyCard({
   workMoney,
   id = "work-money-heading",
   heading = WORK_MONEY_HEADING,
+  money = false,
 }: {
   workMoney: WorkMoney;
   id?: string;
   heading?: string;
+  /** 投資・マネー／不動産・決算の記事。注記で「投資」に触れるのはこの記事だけ（AI の新機能や学校の話に「投資の判断」は不自然。2026-11-04 の点検） */
+  money?: boolean;
 }) {
   return (
     <section aria-labelledby={id} className="mt-4 rounded-2xl border border-line-strong p-5 sm:p-6" data-work-money>
@@ -32,7 +35,7 @@ export default function WorkMoneyCard({
         ))}
       </ul>
       <p className="mt-3.5 text-note text-muted">
-        発表内容をもとにした一般的な情報です。投資や契約の判断は、公式情報を確かめたうえでご自身で行ってください。
+        発表内容をもとにした一般的な情報です。{money ? "投資や契約" : "導入や契約"}の判断は、公式情報を確かめたうえでご自身で行ってください。
       </p>
     </section>
   );

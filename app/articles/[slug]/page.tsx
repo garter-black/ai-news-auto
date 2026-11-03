@@ -24,8 +24,8 @@ import WorkMoneyCard from "@/components/WorkMoneyCard";
 import { concreteWorkMoney, workMoneyHeading, workMoneyOf } from "@/lib/work-money";
 import AssetLinks from "@/components/assets/AssetLinks";
 import SourceRecord from "@/components/SourceRecord";
-import { OTHER, companyOf, sourceBadge, thumbSource } from "@/lib/companies";
-import { guideForArticle } from "@/lib/guides";
+import { OTHER, companyOf, companyPageSlugs, sourceBadge, thumbSource } from "@/lib/companies";
+import { guideForArticle, guideHref } from "@/lib/guides";
 import { howtoForArticle } from "@/lib/howto";
 import { productForArticle, supersedesGuide } from "@/lib/products";
 import { buyingGuideForTopic, guideShortName } from "@/lib/buying-guides";
@@ -72,7 +72,7 @@ import {
   splitBeforeHeading,
 } from "@/lib/markdown";
 import { siteConfig } from "@/site.config";
-import { cleanSections, cleanTake, dropSummarySections, retitleHtml, tocOf } from "@/lib/article-sections";
+import { cleanSections, cleanTake, dropOverviewSections, dropSummarySections, retitleHtml, stripSummaryOpener, tocOf } from "@/lib/article-sections";
 import ArticleProse from "@/components/ArticleProse";
 import CalculatorBox from "@/components/calc/CalculatorBox";
 import { CALC_SLOT, insertFigures, markCalculatorSlot, renderChart, type ChartFigure } from "@/lib/charts";
@@ -222,11 +222,19 @@ export default async function ArticlePage({ params }: Props) {
   // 中身なしの章・つなぎの文を除き（lib/article-sections.ts。scripts/section_gate.py と同じ規則）、
   // 決まった型の見出しは記事ごとの見出し（sectionTitles）か普通の見出しに言い換えて出す
   // 要約版の最初の「ひとことで言うと（要点）」は、上の「この記事のポイント」と同じ役目なので出さない（台帳 A28）
-  const easyClean = article.easy?.trim() ? cleanSections(article.easy.trim(), article.sectionTitles?.easy).markdown : "";
+  // 頭の「要約すると、」はリードの言い直しなので外す（台帳 A19。新しい記事は書き出す前に scripts/article_style.py が外す）
+  const easyClean = article.easy?.trim()
+    ? cleanSections(stripSummaryOpener(article.easy.trim(), article.lede ?? ""), article.sectionTitles?.easy).markdown
+    : "";
   const easy = article.highlights.length > 0 ? dropSummarySections(easyClean) : easyClean;
   const easyMinutes = Math.max(1, Math.round(easy.length / 500));
   const easyHtml = easy ? retitleHtml(await renderMarkdown(easy, affiliates.map((a) => a.url)), "easy", article.sectionTitles, "easy") : "";
-  const body = cleanSections(article.body, article.sectionTitles?.body).markdown;
+  // 古い記事の「## 概要」の章は、リードと「この記事のポイント」のくり返しなので出さない（台帳 A19。新しい記事は門で作らせない）
+  const bodyOpened = stripSummaryOpener(article.body, article.lede ?? "");
+  const body = cleanSections(
+    article.lede && article.highlights.length > 0 ? dropOverviewSections(bodyOpened) : bodyOpened,
+    article.sectionTitles?.body,
+  ).markdown;
   const readMinutes = Math.max(1, Math.round(body.length / 600));
   // 料金の章に差し込んだ表は、毎日更新の料金表（と同じ段の他社比較）に差し替える（lib/price-slot.ts）。
   // 同じ製品の料金の段の図（charts の ladder）を出す記事では、表は図のすぐ下に「詳しい表」として出し、同じ数字を2か所に並べない
@@ -243,7 +251,8 @@ export default async function ArticlePage({ params }: Props) {
   const figures = ladderChart ? chartFigures.map((f) => (f.kind === "ladder" ? { ...f, html: f.html + PRICE_SLOT } : f)) : chartFigures;
   const html = markPriceSlot(
     await renderMarkdown(
-      insertAfterPricingSection(pricing ? withPriceSlot(body, !ladderChart) : body, pricingLink),
+      // 料金表を出さない記事（料金が話題でない・別の製品の表）では、本文 JSON に残った作った日の表も出さない（台帳 A32）
+      insertAfterPricingSection(pricing ? withPriceSlot(body, !ladderChart) : withPriceSlot(body, false), pricingLink),
       affiliates.map((a) => a.url),
     ),
   );
@@ -306,7 +315,8 @@ export default async function ArticlePage({ params }: Props) {
   // パンくず。企業が決まらない記事（ビジネス・お金の記事の多く）に「その他」を出さず、ジャンルを先に置く
   const crumbs = [
     ...(article.genreSlug && article.genre ? [{ href: `/genres/${article.genreSlug}`, label: article.genre }] : []),
-    ...(company.slug !== OTHER.slug ? [{ href: `/companies/${company.slug}`, label: company.name }] : []),
+    // 企業ページがある会社だけ（ガジェットだけの会社はページが無く 404 になる。台帳 W3）
+    ...(company.slug !== OTHER.slug && companyPageSlugs(getAllArticles()).has(company.slug) ? [{ href: `/companies/${company.slug}`, label: company.name }] : []),
     { href: `/channels/${article.channelSlug}`, label: article.channel },
   ];
   const jsonLd = [
@@ -516,7 +526,13 @@ export default async function ArticlePage({ params }: Props) {
             />
           )}
           {/* 仕事・お金への影響（記事ごとの中身があるときだけ。見出しはニュースの種類に合わせる） */}
-          {workMoney && <WorkMoneyCard workMoney={workMoney} heading={workMoneyHeading(article.newsType, article.genreSlug, article.title, article.tags)} />}
+          {workMoney && (
+            <WorkMoneyCard
+              workMoney={workMoney}
+              heading={workMoneyHeading(article.newsType, article.genreSlug, article.title, article.tags)}
+              money={article.genreSlug === "investment" || article.genreSlug === "real-estate" || article.newsType === "earnings"}
+            />
+          )}
           {/* 料金早見表・イベントページへの案内（当てはまる記事だけ） */}
           <AssetLinks article={article} />
 
@@ -801,7 +817,7 @@ export default async function ArticlePage({ params }: Props) {
                 howto
                   ? { href: `/guides/${howto.slug}`, label: howto.title }
                   : guide
-                    ? { href: `/guides/${guide.slug}`, label: `${guide.name}とは？できること・料金・使い方` }
+                    ? { href: guideHref(guide.slug), label: `${guide.name}とは？できること・料金・使い方` }
                     : product
                       ? { href: `/products/${product.slug}`, label: `${product.name}のまとめページ` }
                       : undefined

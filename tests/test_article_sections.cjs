@@ -75,3 +75,30 @@ test("表の「記載なし」は空欄、全部空の列は列ごと消す。�
   assert.ok(markdown.includes("| 重さ |  | 1.2kg |"));
   assert.ok(markdown.includes("本体は10万円です。"));
 });
+
+test("[A19] 本文の頭の「要約すると、」はリードの言い直しなので外す（2026-11-04 の点検。新しい記事5本中4本）", () => {
+  const { stripSummaryOpener } = loaded.exports;
+  const lede = "Amazon BedrockのAIモデル「Kimi K3」で、推論処理をインド国内に限って実行できるプロファイルが加わりました。処理先はムンバイとハイデラバードの2リージョンです。";
+  const body = "要約すると、AIモデル「Kimi K3」をAmazon Bedrock経由で使うとき、処理をインド国内だけに限れるようになりました。\n\nAmazon Bedrockは、AWSのサービスです。\n\n## 使い方\n\nA";
+  assert.equal(stripSummaryOpener(body, lede), "Amazon Bedrockは、AWSのサービスです。\n\n## 使い方\n\nA");
+  // リードと重ならない「それが何か」の文は残し、書き出しの言葉だけ外す
+  const other = "要約すると、半導体工場の計算待ちをAIで縮めた事例集です。新製品の発表ではありません。\n\n本文";
+  assert.equal(stripSummaryOpener(other, lede), "半導体工場の計算待ちをAIで縮めた事例集です。新製品の発表ではありません。\n\n本文");
+  // 見出しの下でも同じ。頭以外の「要約すると」には触らない
+  assert.equal(stripSummaryOpener("## 概要\n\n要約すると、事例集です。", lede), "## 概要\n\n事例集です。");
+  assert.equal(stripSummaryOpener("本文。\n\n要約すると、Aです。", lede), "本文。\n\n要約すると、Aです。");
+});
+
+test("[A19] 古い記事の「## 概要」の章は出さない（リードと要点のくり返し）", () => {
+  const { dropOverviewSections } = loaded.exports;
+  const md = "## 概要\n\nリードと同じ話です。\n\n## 発表の内容\n\nA社は10月1日に発表しました。\n\n## まとめ\n\nB";
+  assert.equal(dropOverviewSections(md), "## 発表の内容\n\nA社は10月1日に発表しました。\n\n## まとめ\n\nB");
+  assert.equal(dropOverviewSections("## 発表の内容\n\nA"), "## 発表の内容\n\nA");
+});
+
+test("[A24] 行の頭の立場の名前（「- 会社員として：〜」）は出さず、事実のある値だけ残す", () => {
+  const md = "## 活用点\n\n- 会社員として：社内の調達で手間が減ります。\n- 副業・独立を考えている人：参考になります。\n";
+  const { markdown, hidden } = cleanSections(md);
+  assert.ok(!/会社員として|副業・独立/.test(markdown), markdown);
+  assert.deepEqual(hidden, ["活用点"]);
+});

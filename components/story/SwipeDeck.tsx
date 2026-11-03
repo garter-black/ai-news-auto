@@ -101,6 +101,11 @@ function subscribeClock(onChange: () => void) {
  * 右スワイプ＝気になる（取っておく）、左＝スキップ、ボタンで今すぐ読む。
  * 束を見終えたら「気になった記事」をまとめて出し、次の束へ進める。
  */
+/** 丸の写真（表紙）と同じ記事。見つからなければ1本目 */
+function previewOf(b: { cover?: string; items: { title: string; image?: string }[] }) {
+  return (b.cover ? b.items.find((it) => it.image === b.cover) : undefined) ?? b.items[0];
+}
+
 export default function StoryRail({ bundles: built }: { bundles: RailBundle[] }) {
   const now = useSyncExternalStore(subscribeClock, minuteNow, () => null);
   const bundles = useMemo(() => (now === null ? built : liveBundles(built, now)), [built, now]);
@@ -182,7 +187,8 @@ export default function StoryRail({ bundles: built }: { bundles: RailBundle[] })
               <span className="sr-n" data-allow-small="" aria-hidden>{b.items.length}</span>
             </span>
             <span className="sr-label" title={b.label}>{b.label}</span>
-            <span className="sr-preview" title={b.items[0]?.title}>{Array.from(b.items[0]?.title ?? "").slice(0, 26).join("")}{(b.items[0]?.title.length ?? 0) > 26 ? "…" : ""}</span>
+            {/* PC で添える題名は、丸の写真と同じ記事のもの（表紙は丸どうしで重ならないよう別の記事を選ぶので、1本目の題名だと写真と食い違っていた。2026-11-04 の点検） */}
+            <span className="sr-preview" title={previewOf(b)?.title}>{Array.from(previewOf(b)?.title ?? "").slice(0, 26).join("")}{(previewOf(b)?.title.length ?? 0) > 26 ? "…" : ""}</span>
           </button>
         ))}
       </div>

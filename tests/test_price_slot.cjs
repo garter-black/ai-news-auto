@@ -17,7 +17,8 @@ loaded.paths = Module._nodeModulePaths(path.dirname(sourcePath));
 loaded.require = (name) => {
   if (name === "@/lib/pricing-ladder")
     return {
-      getLadder: (id) => (id === "claude" ? { rows: [{}] } : null),
+      getLadder: (id) => (id === "claude" || id === "copilot" ? { rows: [{}] } : null),
+      isOtherCopilot: (text) => /github/i.test(text) && !/microsoft\s*365|m365/i.test(text),
       getComparison: (tier) => ({ rows: tier === "top" ? [{ company: "anthropic" }, { company: "openai" }] : [{ company: "anthropic" }] }),
     };
   throw new Error(name);
@@ -65,4 +66,13 @@ test("料金データのある製品だけ。比較は2社以上のときだけ"
   assert.deepEqual(pricingForArticle({ pricingProduct: "claude", pricingCompare: "plan:high" }), { product: "claude", compare: null });
   assert.equal(pricingForArticle({ pricingProduct: "unknown" }), null);
   assert.equal(pricingForArticle({}), null);
+});
+
+test("[A32] GitHub Copilot の記事に Microsoft 365 の Copilot の料金表を出さない（2026-11-04 の点検）", () => {
+  const github = { pricingProduct: "copilot", newsType: "product", title: "GitHubがJetBrainsの「Air」にCopilotを提供", lede: "GitHub Copilotを選べます。料金はCopilotのプランから消費されます。" };
+  // 題名は「Copilot」だけでも、GitHub の Copilot の話なら出さない（2026-11-04 に見つかった記事そのもの）
+  assert.equal(pricingForArticle(github), null);
+  assert.equal(pricingForArticle({ ...github, title: "GitHub Copilot、料金プランを変更", lede: "GitHub Copilotのプランが変わります。" }), null);
+  assert.equal(pricingForArticle({ pricingProduct: "copilot", newsType: "pricing", title: "Microsoft 365 Copilot、料金を改定", lede: "Copilotのプランが変わります。" })?.product, "copilot");
+  assert.ok(github);
 });

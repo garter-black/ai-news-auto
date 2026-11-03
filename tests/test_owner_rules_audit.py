@@ -259,10 +259,6 @@ class PricingGoneLiveTest(unittest.TestCase):
         old = '<div class="live-line"><div><span class="bg-live">速報</span><a href="/articles/samba">kubell</a></div></div>'
         self.assertIn("W23", ids(audit.live_line_problems(old, {"samba": {"slug": "samba"}})))
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class RelatedAndAdBoxTest(unittest.TestCase):
     """W19・W20（2026-11-03）: 関連記事に地震の記事を混ぜない。広告に「WEB SERVICE」の板を出さない"""
 
@@ -332,3 +328,25 @@ class BlockOrderTest(unittest.TestCase):
         self.assertEqual({"A28"}, ids(audit.block_order_problems(bad)))
         good = '<h2 id="points-heading">この記事のポイント</h2><h2 id="toc-heading">目次</h2><h2 id="easy-1">a</h2><h2 id="sec-1">b</h2>'
         self.assertEqual([], audit.block_order_problems(good))
+
+
+class FoundationReviewTest(unittest.TestCase):
+    """2026-11-04 の土台の見直しで、毎日の見張りがすり抜けていたもの"""
+
+    def test_inline_persona_label_is_caught(self):
+        html = "<ul><li>会社員として：社内の調達で手間が減ります。</li></ul>"
+        self.assertTrue(audit.PERSONA_HEADING_HTML.search(html))
+        self.assertTrue(audit.PERSONA_HEADING_HTML.search("<p><strong>副業・独立を考えている人</strong>：参考になります。</p>"))
+        self.assertFalse(audit.PERSONA_HEADING_HTML.search("<p>会社員としての働き方が変わります。</p>"))
+
+    def test_legacy_backlog_counts_old_articles(self):
+        old = {"title": "t", "lede": "x", "body": "## 料金は？\n\n元記事には料金が書かれていません。\n", "easy": ""}
+        new = {"title": "t", "lede": "A社の売上高は前年同期比12%増の1,145億ドルでした。", "body": "iPhoneは17%増えました。", "easy": ""}
+        backlog = audit.legacy_backlog([old, new])
+        self.assertEqual(backlog["total"], 2)
+        self.assertEqual(backlog["failing"], 1)
+        self.assertIn("参考（違反の件数には数えない）", audit.render({}, 20, backlog))
+
+
+if __name__ == "__main__":
+    unittest.main()

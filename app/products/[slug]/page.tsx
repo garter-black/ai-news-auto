@@ -6,7 +6,7 @@ import CompanyMark from "@/components/CompanyMark";
 import ProductVisual, { BrandImg } from "@/components/ProductVisual";
 import PriceTable from "@/components/PriceTable";
 import { formatDate, getAllArticles, getArticleSummary, type ArticleSummary } from "@/lib/articles";
-import { companyOf, getCompany } from "@/lib/companies";
+import { companyPageSlugs, getCompany } from "@/lib/companies";
 import type { ModelRow, PlanRow } from "@/lib/pricing-ladder";
 import {
   getAllProducts,
@@ -88,7 +88,7 @@ export default async function ProductPage({ params }: Props) {
   // 企業ページ（/companies/<slug>）は AI の記事がある企業だけ開ける（app/companies/[company]/view.tsx）。無ければ名前だけ出す
   const companyCandidate = product.company === "other" ? undefined : getCompany(product.company);
   const company =
-    companyCandidate && getAllArticles().some((a) => a.genreSlug === "ai" && companyOf(a).slug === companyCandidate.slug) ? companyCandidate : undefined;
+    companyCandidate && companyPageSlugs(getAllArticles()).has(companyCandidate.slug) ? companyCandidate : undefined;
   const heading = productHeading(product);
   const url = `${siteConfig.url}/products/${product.slug}`;
   const logo = vendorLogo(product.company);

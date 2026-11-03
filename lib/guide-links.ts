@@ -1,6 +1,6 @@
 import type { ArticleSummary } from "@/lib/articles";
 import { getAllHowtos, type HowtoGuide } from "@/lib/howto";
-import { getAllGuides } from "@/lib/guides";
+import { getAllGuides, guideHref } from "@/lib/guides";
 import { chooseGuideForArticle } from "@/lib/choose";
 
 /**
@@ -42,7 +42,7 @@ export function guideLinksForArticle(article: ArticleSummary, howtos: HowtoGuide
   if (howto) links.push({ href: `/guides/${howto.slug}`, label: label(howto), kind: "howto" });
   if (links.length < 2) {
     const product = getAllGuides().find((guide) => test(guide.match, text));
-    if (product) links.push({ href: `/guides/${product.slug}`, label: `${product.name}とは？できること・料金・使い方`, kind: "guide" });
+    if (product) links.push({ href: guideHref(product.slug), label: `${product.name}とは？できること・料金・使い方`, kind: "guide" });
   }
   if (links.length < 2) {
     const choose = chooseGuideForArticle(article);

@@ -42,6 +42,29 @@ export function getAllGuides(): Guide[] {
   return cache;
 }
 
+/**
+ * 製品ガイドへのリンク先。製品のまとめページ（/products）へ移ったガイドは、next.config.ts が 308 で転送するので、
+ * リンクは転送先へ直接張る（転送を経由させない。2026-11-04 の点検で /guides/gpt-6-astra への内部リンクが 9 本の記事にあった。台帳 W3）。
+ * 規則は next.config.ts の guideRedirects と同じ（content/product_sources.json に公式の料金があり、content/products にある製品）
+ */
+let movedCache: Set<string> | null = null;
+export function guideHref(slug: string): string {
+  if (movedCache === null) {
+    movedCache = new Set();
+    try {
+      const linked = (JSON.parse(fs.readFileSync(path.join(process.cwd(), "content", "product_sources.json"), "utf8")) as {
+        items?: Record<string, { pricing?: unknown }>;
+      }).items ?? {};
+      for (const [key, value] of Object.entries(linked)) {
+        if (value?.pricing && fs.existsSync(path.join(process.cwd(), "content", "products", `${key}.json`))) movedCache.add(key);
+      }
+    } catch {
+      // 読めなければ従来どおり /guides へ（転送で着く）
+    }
+  }
+  return movedCache.has(slug) ? `/products/${slug}` : `/guides/${slug}`;
+}
+
 export function getGuide(slug: string): Guide | undefined {
   return getAllGuides().find((guide) => guide.slug === slug);
 }

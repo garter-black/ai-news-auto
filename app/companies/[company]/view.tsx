@@ -5,13 +5,13 @@ import CompanyChips from "@/components/CompanyChips";
 import Pagination from "@/components/Pagination";
 import Timeline from "@/components/Timeline";
 import { getAllArticles } from "@/lib/articles";
-import { companyCounts, companyOf, getCompany } from "@/lib/companies";
+import { COMPANY_PAGE_GENRE, companyCounts, companyOf, getCompany } from "@/lib/companies";
 import { listingRobots } from "@/lib/indexing";
 import { pageHref, pageSuffix, paginate } from "@/lib/paginate";
 import { productsByCompany } from "@/lib/products";
 import Link from "next/link";
 
-export const aiArticles = () => getAllArticles().filter((a) => a.genreSlug === "ai");
+export const aiArticles = () => getAllArticles().filter((a) => a.genreSlug === COMPANY_PAGE_GENRE);
 
 /** 企業ページの metadata（1ページ目と2ページ目以降で共通） */
 export function companyMetadata(slug: string, page: number): Metadata {

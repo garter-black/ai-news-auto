@@ -90,3 +90,43 @@ test('[W2] ホームのストーリーの丸はコンパクト（スマホは 60
   for (const m of css.matchAll(/\.sr-img\{[^}]*?width:(\d+)px/g)) assert.ok(Number(m[1]) <= 80, `丸が大きすぎる ${m[1]}px`);
   assert.match(css, /\.sr-label\{[^}]*white-space:nowrap/);
 });
+
+test('[W3] 企業ページ（/companies/…）へのリンクは、ページがある企業だけ（2026-11-04 の点検: /companies/samsung が 404 で4本の記事から張られていた）', () => {
+  // 企業ページは AI の記事だけで作る。ほかのページで「その他」以外の企業へリンクするときは companyPageSlugs で確かめる
+  for (const rel of ['app/articles/[slug]/page.tsx', 'app/guides/[slug]/page.tsx', 'app/products/[slug]/page.tsx']) {
+    const src = read(rel);
+    if (src.includes('/companies/${')) assert.match(src, /companyPageSlugs\(/, `${rel} が企業ページの有無を確かめずにリンクしている`);
+  }
+  assert.match(read('app/companies/[company]/view.tsx'), /COMPANY_PAGE_GENRE/);
+});
+
+test('[W3] 製品のまとめページへ移ったガイドには、転送を経由せず直接リンクする（/guides/gpt-6-astra → /products/gpt-6-astra）', () => {
+  assert.match(read('lib/guide-links.ts'), /guideHref\(product\.slug\)/);
+  assert.match(read('lib/guides.ts'), /export function guideHref/);
+});
+
+test('[W3] 折り返す絞り込みの札の件数に、後から読む等幅の書体（index-num）を使わない（読み込みの前後で折り返しが変わり CLS 0.3）', () => {
+  const src = read('components/NewsHub.tsx');
+  const chips = src.slice(src.indexOf('export function GenreChips'), src.indexOf('export function NewsGrid'));
+  assert.ok(chips.length > 0);
+  assert.doesNotMatch(chips, /index-num/);
+});
+
+test('[W14] サイトの説明に実態と違うこと・決まった型の問いを書かない（専門YouTubeの動画の解析・「自分にどう関係する？何をすればいい？」まで3行で）', () => {
+  const bad = [];
+  for (const rel of [...SITE, 'site.config.ts']) {
+    const src = read(rel);
+    if (/専門YouTubeチャンネルの動画をAIが解析|解説動画をAIが解析/.test(src)) bad.push(`${rel}: 動画の解析`);
+    if (/「自分にどう関係する？何をすればいい？」まで/.test(src)) bad.push(`${rel}: 決まった型の問い`);
+  }
+  assert.deepEqual(bad, []);
+  // ニュース一覧の題名・説明のジャンル名は、記事が定期的にあるものだけ（決め打ちにしない。台帳 W14）
+  const news = read('app/news/view.tsx');
+  assert.match(news, /regularGenres\(\)/);
+  assert.doesNotMatch(news, /暮らし・科学ほか/);
+});
+
+test('[A4] 「使う人への影響」の注記で「投資」に触れるのは投資・マネー／不動産・決算の記事だけ', () => {
+  const src = read('components/WorkMoneyCard.tsx');
+  assert.match(src, /money \? "投資や契約" : "導入や契約"/);
+});
