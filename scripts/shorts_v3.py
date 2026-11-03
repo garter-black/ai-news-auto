@@ -912,13 +912,7 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
         bad = [w for w in gate.proper_noun_problems(ja, mat + " " + tgt_text) if not re.fullmatch(r"[ァ-ヴー・]+", w)]
         if bad:
             out.append(f"{name}.ja に記事・target に無い語 {', '.join(bad)}。")
-    screen = [s.get("hook", {}).get(k, "") for k in ("text", "payoff", "ja")] + [(s.get("conclusion") or {}).get("text", "")]
-    screen += [b.get(k, "") for b in beats for k in ("keyword", "sub", "ja")]
-    speech_all = " ".join([hook.get("speech", ""), concl.get("speech", "")] + [b.get("speech", "") for b in beats])
-    for text in screen:
-        for kata in re.findall(r"[ァ-ヴー]{3,}", text or ""):
-            if kata in speech_all and kata not in mat and kata not in gate.KATAKANA_OK:
-                out.append(f"画面の文字「{text}」のカタカナ「{kata}」は読み上げ用の書き方です。画面では資料の英字の表記に。")
+    # 画面の文字のカタカナの製品名は latin_names が英字に直す（一般のカタカナ語「スピード」などは問わない）
     # 料金の段階（ladder）: 各行の価格がその行の証拠（公式ページ）にあり、公式ページで名前と価格が同じ話題に出てくる
     lad = s.get("ladder") or {}
     if lad.get("beat"):
@@ -971,7 +965,7 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
     return out
 
 
-STYLE_PREFIXES = ("speech で数字", "speech に英単語", "target の区切り")
+STYLE_PREFIXES = ("speech で数字", "speech に英単語", "target の区切り", "hook.payoff は", "hook.speech は", "conclusion.speech は", "読み上げの合計が")
 
 
 def review_script(data: dict, article: dict, pages: list[Page], tier: str) -> dict | None:
@@ -994,7 +988,7 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
     tier = os.environ.get("V3_LLM_TIER", "quality")
     reviews = 0
     best = None  # 事実の検査に通った最後の台本（レビューの書き直しが通らなかったときに使う）
-    for attempt in range(1, 7):
+    for attempt in range(1, 5):  # 2026-11-03: LLM の枠を食いすぎないよう、書き直しは4回まで（レビュー1回・立て直し2回は別）
         try:
             data, model = llm.generate_json(script_system(), prompt + feedback, SCRIPT_SCHEMA, temperature=0.5, max_output_tokens=8192, tier=tier, visibility="high", purpose="video")
         except RuntimeError:
@@ -1013,16 +1007,16 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
                 if len(fixed_problems) < len(problems):
                     data, problems = fixed, fixed_problems
         style = [p for p in problems if p.startswith(STYLE_PREFIXES)]
-        if attempt >= 4 and len(style) == len(problems):
+        if attempt >= 3 and len(style) == len(problems):
             # 英文の区切りが直らない beat は、訳の吹き出しを出さない（ja を空に）。途中で切れた文の訳は出さない
             for p in problems:
                 if m := re.match(r"target の区切り: (beat(\d)|hook)\.", p):
                     item = data["hook"] if m.group(1) == "hook" else data["beats"][int(m.group(2)) - 1]
                     item["ja"] = ""
-        if not problems or (attempt >= 4 and len(style) == len(problems)):
+        if not problems or (attempt >= 3 and len(style) == len(problems)):
             best = (json.loads(json.dumps(data, ensure_ascii=False)), model, list(problems))
             # 自己レビュー: 問いに具体的な数字・比較で答えているか、当たり前・空の文が無いか（2回まで書き直す）
-            if reviews < 2 and attempt < 8:
+            if reviews < 1 and attempt < 4:
                 reviews += 1
                 verdict = review_script(data, article, pages, tier)
                 if verdict and not verdict.get("ok") and verdict.get("issues"):
@@ -1047,7 +1041,7 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
         data["_reviews"] = reviews
         return data, model
     # まだ通らない: ①証拠の行だけで書き直す（温度を下げる）×2 → ②記事の要点と確かめた数字だけの簡単な台本 ×2（あきらめない）
-    for phase, note in (("strict", STRICT_NOTE), ("strict", STRICT_NOTE), ("simple", SIMPLE_NOTE), ("simple", SIMPLE_NOTE)):
+    for phase, note in (("strict", STRICT_NOTE), ("simple", SIMPLE_NOTE)):
         try:
             data, model = llm.generate_json(script_system() + note, prompt + feedback, SCRIPT_SCHEMA, temperature=0.2, max_output_tokens=8192, tier=tier, visibility="high", purpose="video")
         except RuntimeError as error:
