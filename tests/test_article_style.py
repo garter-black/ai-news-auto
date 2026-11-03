@@ -125,6 +125,24 @@ class GateTest(unittest.TestCase):
         self.assertTrue(any("同じ数字が多い" in w for w in st.warnings({"body": "価格は500万円です。" * 5})))
 
 
+class BeginnerExpertTest(unittest.TestCase):
+    """台帳 A31（2026-11-03 オーナー）: 初心者でもわかるが、専門家が物足りないとも思わない線"""
+
+    def test_rule_is_in_every_prompt(self):
+        import news_types  # noqa: PLC0415
+
+        self.assertIn("専門家が物足りないとも思わない", st.STYLE_PROMPT)
+        for key in news_types.TYPES:
+            block = news_types.prompt_block(key)
+            self.assertIn("それが何か・誰のためのものか", block, key)
+            self.assertIn("専門家向けの具体", block, key)
+
+    def test_unexplained_acronyms_are_noted(self):
+        self.assertEqual(st.unexplained_terms("CVSS（深刻さの点数）は9.8です。MCP（AI とアプリをつなぐ決まり）に対応。"), [])
+        self.assertEqual(st.unexplained_terms("CVSSは9.8です。AIとAPIの話です。"), ["CVSS"])
+        self.assertTrue(any("言い換えていない略語" in w for w in st.warnings({"body": "MCPに対応しました。"})))
+
+
 class AutofixTest(unittest.TestCase):
     def test_source_word_and_verdict(self):
         rec = {"sourceName": "Apple", "newsType": "earnings", "body": "元記事によると、売上は増えました。元記事では見通しも示しています。",

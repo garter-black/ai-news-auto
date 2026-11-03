@@ -127,12 +127,15 @@ class GenreVerdictTests(unittest.TestCase):
 
 
 class PersonaViewpointTests(unittest.TestCase):
-    def test_outlines_use_persona_viewpoints(self):
-        for genre in (genres.AI, genres.BUSINESS, genres.PUBLIC, genres.TECH_GADGET, genres.LIFESTYLE):
-            for view in persona.VIEWPOINTS:
-                self.assertIn(f"### {view}", genre.outline, genre.slug)
+    def test_outlines_never_ask_for_persona_subheadings(self):
+        # 2026-11-03 オーナー決定（台帳 A24）: 3つの立場の小見出し（### 会社員として など）は作らせない。
+        # 以前はこの3つを章立てに求めていた（2026-11-02）。指示の元から消したことを確かめる
         for genre in genres.ALL_GENRES:
+            for view in persona.VIEWPOINTS:
+                self.assertNotIn(f"### {view}", genre.outline, genre.slug)
             self.assertNotIn("エンジニアなら", genre.outline, genre.slug)
+        self.assertIn("小見出し", persona.relate_outline())
+        self.assertIn("作らない", persona.relate_outline())
 
     def test_gate_rejects_old_viewpoints(self):
         rec = web_record(body=CLAUDE_BODY.replace("## まとめ", "## 自分にはどう関係する？\n### エンジニアなら\n使えます。\n\n## まとめ"),

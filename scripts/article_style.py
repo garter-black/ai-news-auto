@@ -42,6 +42,9 @@ STYLE_PROMPT = """## サイソクの文体（ITmedia・日経クロステック�
   ひらがなの多用、子ども向けの例えは使わない。
 - 1文は60字までを目安にする。読点は1文に2つまで使ってよい。「〜があります。〇〇です。」のように1つの文を2つに割らない。
 - 専門用語は、初めて出たところで（ ）で短く言い換える。例：CVSS（深刻さを示す点数）。
+- 初心者でもわかるが、専門家が物足りないとも思わない線をねらう（2026-11-03 オーナー）。
+  リードのあと、細部に入る前に、それが何か・誰のためのものかを普通の言葉で1〜2文で言う（ニッチな話題ほど必ず）。
+  専門用語は初めて出たところで（ ）で短く言い換える。そのうえで、専門家向けの具体（数字・版・仕組み・条件・影響）は削らずに書く。
 - リードの1文目で「今回なにが新しいか」を言い切る（誰が・何を・いつ）。2文目に一番大事な数字か条件。
   発表した人を主語にした「〇〇は…を発表しました」だけの1文で始めない。
   ×「Appleは11月2日、第4四半期の決算を発表しました。」 ○「Appleの7〜9月期の売上高は前年同期比12%増の1,145億ドルで、過去最高でした。」
@@ -383,10 +386,35 @@ def problems(record: dict) -> list[str]:
     return [msg for _, msg in coded_problems(record)]
 
 
+# 誰でも知っている略語（言い換えなくてよい）
+KNOWN_ACRONYMS = {"AI", "IT", "PC", "OS", "SNS", "URL", "CEO", "CFO", "CTO", "USB", "GPU", "CPU", "AWS", "iOS", "API", "PDF", "SEC",
+                  "NHK", "EU", "US", "UK", "DX", "IPO", "Wi", "Fi", "HTML", "QR", "TV", "GB", "TB", "MB", "PR", "KDDI", "NTT", "NEC",
+                  "IBM", "NVIDIA", "AMD", "LINE", "ID", "FAQ", "GPT", "SDK", "M", "OK"}
+ACRONYM_RE = re.compile(r"(?<![A-Za-z])([A-Z]{2,6})(?![A-Za-z])")
+
+
+def unexplained_terms(body: str) -> list[str]:
+    """初めて出たところで言い換えていない略語（CVSS・MCP など。初心者がつまずく。2026-11-03 オーナー）"""
+    out = []
+    plain = re.sub(r"(?m)\]\([^)]*\)|`[^`]*`|^\|.*$", "", body or "")
+    for m in ACRONYM_RE.finditer(plain):
+        term = m.group(1)
+        if term in KNOWN_ACRONYMS or term in out:
+            continue
+        if plain.find(term) != m.start():
+            continue
+        after = plain[m.end(): m.end() + 3]
+        if not re.match(r"\s?[（(]", after):
+            out.append(term)
+    return out
+
+
 def warnings(record: dict) -> list[str]:
     """記録だけ（作り直しにはしない）"""
     out: list[str] = []
     body = record.get("body") or ""
+    if terms := unexplained_terms(body)[:3]:
+        out.append(f"初めて出たところで言い換えていない略語（{'・'.join(terms)}）")
     counts: dict[str, int] = {}
     for n in NUMBER_RE.findall(TABLE_LINE_RE.sub("", body)):
         counts[re.sub(r"\s", "", n)] = counts.get(re.sub(r"\s", "", n), 0) + 1

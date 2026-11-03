@@ -24,10 +24,10 @@ def record(**extra) -> dict:
     base = {
         "title": "NVIDIAが次世代GPU向けの新ツール『AICR』を公開 設定が数時間に",
         "seoTitle": "AICRとは？使い方と料金",
-        "lede": "NVIDIAは新しいツールを公開しました。",
+        "lede": "NVIDIAの新しいツールで、止まったAI学習を人手なしで再開できるようになりました。",
         "description": "NVIDIAの新しいツールの説明です。",
         "highlights": ["NVIDIAがAICRを公開した。", "設定が数時間で終わる。", "無料で使える。"],
-        "body": "## 概要\nNVIDIAは新しいツールを公開しました。\n\n## 日本で使える？\n使えます。誰でも入手できます。\n",
+        "body": "## 概要\nNVIDIAの新しいツールで、止まったAI学習を人手なしで再開できるようになりました。\n\n## 日本で使える？\n使えます。誰でも入手できます。\n",
         "easy": "## ひとことで言うと\n新しい道具です。",
         "threadsPost": POST_OK,
         "threadsStyle": 3,
