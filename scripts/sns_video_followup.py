@@ -949,8 +949,8 @@ def apply_converted(state: dict, posted: dict) -> int:
     n = 0
     for slug, conv in (state.get("converted") or {}).items():
         rec = (posted.get("posted") or {}).setdefault(slug, {"via": "buffer"})
-        if conv.get("applied") and (rec.get("status") in ("awaiting_video", "scheduled", "skipped_no_video") or conv.get("threadsSent")):
-            continue
+        if rec.get("convertedAt") == (conv.get("at") or "-") or (conv.get("threadsSent") and conv.get("applied")):
+            continue  # この出し直しはもう写した（何度当てても同じ）
         paused = conv.get("paused") or {}
         rec.setdefault("pausedIds", {}).update({k: v.get("id") for k, v in paused.items()})
         channels = {k: v for k, v in (rec.get("channels") or {}).items() if k not in paused}
@@ -962,7 +962,9 @@ def apply_converted(state: dict, posted: dict) -> int:
             # Threads は出ている（動画つき）。X・Facebook だけを動画待ちにする
             state.setdefault("extraQueued", {})[slug] = {"pending": conv["pending"], "status": "waiting"}
         else:
-            rec.update({"id": "", "status": "awaiting_video", "pending": conv["pending"], "dueAt": conv["pending"]["slot"], "image": "video"})
+            rec.update({"id": "", "status": "awaiting_video", "pending": conv["pending"], "dueAt": conv["pending"]["slot"], "image": "video",
+                        "convertedAt": conv.get("at") or "-"})
+            rec.pop("why", None)
         conv["applied"] = True
         n += 1
     return n

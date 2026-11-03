@@ -323,6 +323,12 @@ class QueueFixTest(unittest.TestCase):
         a = posted["posted"]["a"]
         self.assertEqual((a["id"], a["status"], a["channels"], a["pausedIds"]["threads"]), ("", "awaiting_video", {"bluesky": "at://b"}, "old-t"))
         self.assertEqual(fu.apply_converted(state, posted), 0)
+        # 見送った（skipped_no_video）記録を出し直すときも、新しい出し直しなら写す
+        a.update({"status": "skipped_no_video"})
+        a.pop("pending", None)
+        conv["at"] = "2026-11-04T05:00:00+00:00"
+        self.assertEqual(fu.apply_converted(state, posted), 1)
+        self.assertEqual(posted["posted"]["a"]["status"], "awaiting_video")
 
     def test_extra_only_requeue_uses_video(self):
         rec = queued_rec(NOW - timedelta(minutes=5))
