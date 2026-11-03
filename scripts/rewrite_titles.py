@@ -33,6 +33,7 @@ DIGESTS = ROOT / "content" / "digests"
 STYLE_KEY = "titleStyle"
 STYLE_VERSION = "2026-11-03"
 BATCH = 20
+BODY_HEAD = 700  # 本文の冒頭（新しい事実を探す範囲。数字の確かめにも使う）
 
 RULES = f"""あなたは日本の IT・ビジネス系ニュースサイトのデスクです。記事の見出し（title）と検索用の題名（seo_title）を直します。
 
@@ -45,7 +46,9 @@ RULES = f"""あなたは日本の IT・ビジネス系ニュースサイトの�
 - 見出しと同じく、よく知られた会社への説明・幼い言い方・不自然な言い方をしない。元の題名で自然なら、そのまま返す。
 
 # 守ること
-- 事実は入力（元の見出し・題名・説明・要点・リード）にあることだけ。社名・製品名・数字・日付は表記もそのまま使い、新しく足さない。
+- 見出しの主役は「今回のニュースで新しく分かったこと・変わったこと」。入力の本文の冒頭（body_head）・リード・要点から探す。
+  元の見出しが背景の古い事実（以前の発表・前からある機能）で作られていたら、今回の新しい事実に置き換える。
+- 事実は入力（元の見出し・題名・説明・要点・リード・本文の冒頭）にあることだけ。社名・製品名・数字・日付は表記もそのまま使い、新しく足さない。
 - 元の見出しの「」の製品名・英字の名前は、意味を変えずに残す（よく知られた会社の前の説明「ChatGPTの」「AI半導体の」だけは外す）。
 - すでに自然な見出しは、ほぼそのまま返してよい。
 出力は JSON: {{"items":[{{"slug":"...","title":"...","seo_title":"..."}}]}} のみ。"""
@@ -76,6 +79,7 @@ def source_text(record: dict) -> str:
     """書き直しに使ってよい事実の範囲"""
     parts = [record.get("originalTitle", ""), record.get("title", ""), record.get("seoTitle", ""), record.get("videoTitle", ""),
              record.get("description", ""), record.get("lede", ""), " ".join(record.get("highlights") or []),
+             str(record.get("body", ""))[:BODY_HEAD],
              " ".join(str(t) for t in record.get("mentionedTools") or []), " ".join(str(t) for t in record.get("tags") or [])]
     return " ".join(str(p) for p in parts)
 
@@ -128,6 +132,7 @@ def _payload(record: dict) -> dict:
         "slug": record["slug"], "genre": record.get("genre", ""), "title": record.get("title", ""),
         "seo_title": record.get("seoTitle", ""), "description": str(record.get("description", ""))[:160],
         "lede": str(record.get("lede", ""))[:220], "highlights": (record.get("highlights") or [])[:3],
+        "body_head": str(record.get("body", ""))[:BODY_HEAD],
     }
 
 
