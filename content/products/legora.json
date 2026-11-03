@@ -6,7 +6,7 @@
   "companyName": "Legora",
   "category": "アプリ・サービス",
   "overview": {
-    "text": "Legoraは、OpenAIの技術を活用して法律業務を効率化する法人向けの法務AIプラットフォームです。スウェーデンのストックホルムに本社を置くリーガルテック企業によって提供されています。2026年7月および10月に、大規模な導入事例やOpenAIとの提携が公開されました。",
+    "text": "Legoraは、法律業務専用のAIプラットフォームです。OpenAIのモデルをエンジンとして組み込み、法律事務所や企業の法務チームを対象に提供されています。2026年7月および10月にその活用事例や提携が公開されました。",
     "sources": [
       "openai-legora-legal-ai-agent",
       "openai-legora-legal-ai-transformation"
@@ -15,54 +15,42 @@
   "facts": [
     {
       "label": "料金",
-      "value": "個別見積もり",
+      "value": "法人向け個別見積もり",
       "sources": [
         "openai-legora-legal-ai-agent"
       ]
     },
     {
       "label": "日本での提供",
-      "value": "条件付きで利用可能",
-      "sources": [
-        "openai-legora-legal-ai-agent"
-      ]
-    },
-    {
-      "label": "使える場所",
-      "value": "グローバルWebサービス",
+      "value": "条件付き（英語圏向け最適化）",
       "sources": [
         "openai-legora-legal-ai-agent"
       ]
     },
     {
       "label": "向いている人",
-      "value": "法務担当・弁護士",
+      "value": "ビジネス職、法務担当者",
       "sources": [
-        "openai-legora-legal-ai-agent"
+        "openai-legora-legal-ai-agent",
+        "openai-legora-legal-ai-transformation"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "1万件の契約書ファイルに対する条件抽出と分析を数分で一括処理できます。",
+      "text": "契約書の一次チェックを自動化し、契約締結までの時間を従来の10分の1に短縮します。",
       "sources": [
         "openai-legora-legal-ai-agent"
       ]
     },
     {
-      "text": "企業の買収時におけるデューデリジェンスや大量の資料調査を自動化します。",
+      "text": "複雑な判例や法令の検索を行い、14個の正確な引用文献を紐付けて要約を生成します。",
       "sources": [
         "openai-legora-legal-ai-agent"
       ]
     },
     {
-      "text": "複雑な判例や法令を検索し、正確な引用文献を紐付けて要約を自動生成します。",
-      "sources": [
-        "openai-legora-legal-ai-agent"
-      ]
-    },
-    {
-      "text": "AIの回答画面から元文書の該当段落へ直接リンクし、ハイライト表示で検証できます。",
+      "text": "M&Aにおける膨大な資料や財務データのデューデリジェンスを自動で処理します。",
       "sources": [
         "openai-legora-legal-ai-agent"
       ]
@@ -70,13 +58,7 @@
   ],
   "pricing": [
     {
-      "text": "具体的な価格設定についての言及はありません。",
-      "sources": [
-        "openai-legora-legal-ai-agent"
-      ]
-    },
-    {
-      "text": "企業の規模や利用する弁護士数に応じた個別見積もり契約となっています。",
+      "text": "企業の規模や利用する法務担当者の数に応じた個別見積もり契約となっています。",
       "sources": [
         "openai-legora-legal-ai-agent"
       ]
@@ -84,13 +66,13 @@
   ],
   "japan": [
     {
-      "text": "システムはグローバルに展開されていますが、主に英語圏の英米法に最適化されています。",
+      "text": "システム自体はグローバルWebサービスとして存在しますが、主に英語圏の英米法に最適化されています。",
       "sources": [
         "openai-legora-legal-ai-agent"
       ]
     },
     {
-      "text": "日本での導入時は、公式サイトからのデモ申し込みや個別問い合わせが必要です。",
+      "text": "日本の民法・商法や判例データベースへの適応については個別問い合わせが必要です。",
       "sources": [
         "openai-legora-legal-ai-agent"
       ]
@@ -98,7 +80,13 @@
   ],
   "howto": [
     {
-      "text": "公式サイトからデモを申し込み、法人向け契約を行います。",
+      "text": "Legora公式サイトからデモを申し込みます。",
+      "sources": [
+        "openai-legora-legal-ai-agent"
+      ]
+    },
+    {
+      "text": "利用には法人向け契約が必要となります。",
       "sources": [
         "openai-legora-legal-ai-agent"
       ]
@@ -106,52 +94,46 @@
   ],
   "differences": [
     {
-      "text": "契約手続きの時間が従来の10分の1に短縮され、締結までの時間が90%削減されました。",
+      "text": "従来は数日かかっていた契約書の返送までの時間を90%削減しました。",
       "sources": [
         "openai-legora-legal-ai-agent"
       ]
     },
     {
-      "text": "従来は時間不足で上位10%しか見られなかった契約書を、全件チェックできるようになりました。",
+      "text": "OpenAIのモデルがGPT-3.5からGPT-4以降へと進化し、複雑な文脈理解が可能になりました。",
       "sources": [
-        "openai-legora-legal-ai-agent"
-      ]
-    },
-    {
-      "text": "AIが調査の大部分を処理するため、弁護士1人あたり毎週9.5時間の業務時間が創出されます。",
-      "sources": [
-        "openai-legora-legal-ai-agent"
+        "openai-legora-legal-ai-agent",
+        "openai-legora-legal-ai-transformation"
       ]
     }
   ],
   "faq": [
     {
-      "q": "誰向けのサービスですか？",
-      "a": "法律事務所や企業の法務部門を対象とした法人向けのプラットフォームです。",
+      "q": "どのような企業で導入されていますか？",
+      "a": "Fortune 100企業などの大企業で実用化されています。",
       "sources": [
         "openai-legora-legal-ai-agent"
       ]
     },
     {
-      "q": "どのようなエンジンを使っていますか？",
-      "a": "OpenAIの最新モデルやGPT-4などをエンジンとして組み込んでいます。",
+      "q": "導入するとどれくらい時間が浮きますか？",
+      "a": "弁護士1人あたり毎週9.5時間の業務時間を創出できます。",
       "sources": [
-        "openai-legora-legal-ai-agent",
+        "openai-legora-legal-ai-agent"
+      ]
+    },
+    {
+      "q": "外部費用はどれくらい削減できますか？",
+      "a": "外部の訴訟や調査にかかる費用を2000万ドル以上削減できます。",
+      "sources": [
+        "openai-legora-legal-ai-agent"
+      ]
+    },
+    {
+      "q": "どのような基盤モデルを採用していますか？",
+      "a": "OpenAIのGPT-4以降のモデルを全面的に採用しています。",
+      "sources": [
         "openai-legora-legal-ai-transformation"
-      ]
-    },
-    {
-      "q": "ハルシネーション対策はありますか？",
-      "a": "精度向上と根拠追跡のためのレイヤーを何重にも重ねて嘘を防ぐ設計になっています。",
-      "sources": [
-        "openai-legora-legal-ai-agent"
-      ]
-    },
-    {
-      "q": "根拠資料の確認はどのように行いますか？",
-      "a": "回答画面から元文書の該当段落へ1クリックでジャンプして目視確認できます。",
-      "sources": [
-        "openai-legora-legal-ai-agent"
       ]
     }
   ],
@@ -159,7 +141,7 @@
     {
       "date": "2026-07-27",
       "slug": "openai-legora-legal-ai-transformation",
-      "event": "OpenAIと提携を発表"
+      "event": "OpenAIと提携し法務AIプラットフォームを構築"
     },
     {
       "date": "2026-10-28",
@@ -176,9 +158,9 @@
     "openai-legora-legal-ai-agent",
     "openai-legora-legal-ai-transformation"
   ],
-  "signature": "c3c385d50783b0ca",
-  "primarySignature": "c3c385d50783b0ca",
+  "signature": "28758cee8ac4f648",
+  "primarySignature": "28758cee8ac4f648",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-29T12:59:21+00:00",
-  "updatedAt": "2026-10-29T12:59:21+00:00"
+  "updatedAt": "2026-11-03T10:41:31+00:00"
 }

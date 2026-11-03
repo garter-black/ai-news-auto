@@ -6,19 +6,12 @@
   "companyName": "OpenAI",
   "category": "アプリ・サービス",
   "overview": {
-    "text": "ChatGPT Work for Salesは、米OpenAIが2026年7月から9月にかけて段階的に発表した、法人向け営業特化型の自律型AIエージェントソリューションです。",
+    "text": "ChatGPT Work for Salesは、米OpenAIが2026年7月から9月にかけて発表した自律型AIエージェントソリューションです。",
     "sources": [
       "chatgpt-work-for-sales-comprehensive-summary-matome"
     ]
   },
   "facts": [
-    {
-      "label": "料金",
-      "value": "法人向け（詳細言及なし）",
-      "sources": [
-        "chatgpt-work-sales-workflow"
-      ]
-    },
     {
       "label": "提供開始",
       "value": "2026年7月〜9月",
@@ -28,21 +21,21 @@
     },
     {
       "label": "日本での提供",
-      "value": "発表の時点では案内なし",
+      "value": "記載なし",
       "sources": [
         "chatgpt-work-sales-workflow"
       ]
     },
     {
       "label": "使える場所",
-      "value": "Slack、Salesforce等",
+      "value": "Slack、Gmail、Salesforce",
       "sources": [
         "chatgpt-work-sales-workflow"
       ]
     },
     {
       "label": "向いている人",
-      "value": "営業職、営業責任者",
+      "value": "営業職",
       "sources": [
         "chatgpt-work-sales-workflow"
       ]
@@ -50,50 +43,34 @@
   ],
   "capabilities": [
     {
-      "text": "顧客企業の決算情報の監視からアカウント分析を自動で実行します。",
+      "text": "顧客企業の決算情報の監視やアカウント分析、ステークホルダーマップの自動生成を行います。",
       "sources": [
+        "chatgpt-work-for-sales-comprehensive-summary-matome",
         "chatgpt-work-sales-workflow"
       ]
     },
     {
-      "text": "個別のアプローチメールや提案用スライドを自動で下書き・作成します。",
+      "text": "決算での発言などを引用した個別のアウトバウンドメール文面をGmail上で自動作成します。",
       "sources": [
+        "chatgpt-work-for-sales-comprehensive-summary-matome",
         "chatgpt-work-sales-workflow"
       ]
     },
     {
-      "text": "商談後の文字起こしを解析し、Salesforceを自動で更新します。",
+      "text": "顧客課題に特化した12スライドのPPTやプロモ動画を一括自動生成します。",
       "sources": [
-        "chatgpt-work-sales-workflow"
+        "chatgpt-work-for-sales-comprehensive-summary-matome"
       ]
     },
     {
-      "text": "プロンプトから対話型のWebダッシュボードを数秒間で構築します。",
+      "text": "商談の文字起こしを解析し、Salesforceのステージや案件額などを自動で更新します。",
       "sources": [
-        "chatgpt-work-sales-workflow"
-      ]
-    },
-    {
-      "text": "Slackの新規チャンネル開設やメンバーのアサインを自律実行します。",
-      "sources": [
+        "chatgpt-work-for-sales-comprehensive-summary-matome",
         "chatgpt-work-sales-workflow"
       ]
     }
   ],
-  "pricing": [
-    {
-      "text": "単体価格や追加ライセンス費用に関する言及はありません。",
-      "sources": [
-        "chatgpt-work-sales-workflow"
-      ]
-    },
-    {
-      "text": "エンタープライズ・ビジネス向けプランの枠組みで導入されるか不明です。",
-      "sources": [
-        "chatgpt-work-sales-workflow"
-      ]
-    }
-  ],
+  "pricing": [],
   "japan": [
     {
       "text": "発表の時点では、日本での提供について案内はありません。",
@@ -104,19 +81,27 @@
   ],
   "howto": [
     {
-      "text": "ChatGPT Workの法人契約が必要です。",
+      "text": "ChatGPT Workの法人契約であるEnterpriseまたはTeam環境が必要です。",
       "sources": [
         "chatgpt-work-sales-workflow"
       ]
     },
     {
-      "text": "管理者権限にて各種サードパーティ連携を設定します。",
+      "text": "管理者権限で各種業務システムとの連携設定を行います。",
       "sources": [
         "chatgpt-work-sales-workflow"
       ]
     }
   ],
-  "differences": [],
+  "differences": [
+    {
+      "text": "従来のチャット型AIのようにテキストを返す受動的な枠組みを超え、主要業務システムと連携します。",
+      "sources": [
+        "chatgpt-work-for-sales-comprehensive-summary-matome",
+        "chatgpt-work-sales-workflow"
+      ]
+    }
+  ],
   "faq": [
     {
       "q": "いつから使えますか？",
@@ -126,23 +111,25 @@
       ]
     },
     {
-      "q": "誰に向いている製品ですか？",
-      "a": "営業職や営業責任者向けのソリューションとして設計されています。",
+      "q": "どのようなシステムと連携できますか？",
+      "a": "Salesforce、Slack、Google Workspace、Gmailなどと連携できます。",
+      "sources": [
+        "chatgpt-work-for-sales-comprehensive-summary-matome",
+        "chatgpt-work-sales-workflow"
+      ]
+    },
+    {
+      "q": "商談後は何を自動で行いますか？",
+      "a": "文字起こしを解析してSalesforceのレコードを自動更新します。",
       "sources": [
         "chatgpt-work-sales-workflow"
       ]
     },
     {
-      "q": "どのようなツールと連携できますか？",
-      "a": "Salesforce、Slack、Google Workspace、Gmailなどと連携します。",
+      "q": "誰に向いている製品ですか？",
+      "a": "営業プロセスの自動化を進めたい法人や営業職に向いています。",
       "sources": [
-        "chatgpt-work-for-sales-comprehensive-summary-matome"
-      ]
-    },
-    {
-      "q": "どのような機能がありますか？",
-      "a": "決算情報の監視や提案用スライドの作成、CRMの自動更新などが行えます。",
-      "sources": [
+        "chatgpt-work-for-sales-comprehensive-summary-matome",
         "chatgpt-work-sales-workflow"
       ]
     }
@@ -151,12 +138,12 @@
     {
       "date": "2026-07-28",
       "slug": "chatgpt-work-sales-workflow",
-      "event": "営業支援ワークフローを公開"
+      "event": "ChatGPT Work for Salesを公開"
     },
     {
       "date": "2026-09-08",
       "slug": "chatgpt-work-for-sales-comprehensive-summary-matome",
-      "event": "ChatGPT Work for Salesを発表"
+      "event": "GPT-6 Astraを正式発表"
     }
   ],
   "related": [
@@ -173,9 +160,9 @@
     "chatgpt-work-for-sales-comprehensive-summary-matome",
     "chatgpt-work-sales-workflow"
   ],
-  "signature": "d95dc39b471aac30",
-  "primarySignature": "d95dc39b471aac30",
+  "signature": "117a2cd18cae0e94",
+  "primarySignature": "117a2cd18cae0e94",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:44:20+00:00",
-  "updatedAt": "2026-10-27T10:44:20+00:00"
+  "updatedAt": "2026-11-03T10:41:44+00:00"
 }
