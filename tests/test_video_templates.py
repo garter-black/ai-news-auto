@@ -211,10 +211,30 @@ class LabelTest(unittest.TestCase):
         self.assertIn("beat2 の見出し「答え」が beat1 と同じ", joined)
         self.assertIn("beat2 のキーワード「クラスター」が beat1 と同じ", joined)
         self.assertIn("キーワード「Recovery」が名詞1つだけ", joined)
-        good = {"beats": [{"label": "何ができる？", "keyword": "学習を自動で再開", "speech": "止まった学習を自動で見つけて再開する仕組みです。"},
-                          {"label": "どれくらい速い？", "keyword": "検知まで平均69秒", "speech": "異常の検知までは平均69秒でした。"},
-                          {"label": "前と何が違う？", "keyword": "人手から自動へ", "speech": "これまで人手で直していた作業を、自動で回します。"}]}  # fmt: skip
+        good = {"beats": [{"label": "止まった学習を立て直す", "keyword": "学習を自動で再開", "speech": "止まった学習を自動で見つけて再開する仕組みです。"},
+                          {"label": "異常にすぐ気づく", "keyword": "検知まで平均69秒", "speech": "異常の検知までは平均69秒でした。"},
+                          {"label": "夜中の手作業が減る", "keyword": "人手から自動へ", "speech": "これまで人手で直していた作業を、自動で回します。"}]}  # fmt: skip
         self.assertEqual(self.gate.label_problems(good), [])
+        # 2026-11-04 オーナー「答えは？は不自然」: 決まった問い・役目の名前の見出しは不合格
+        tmpl = {"beats": [{"label": "答えは？", "keyword": "学習を自動で再開", "speech": "学習を自動で再開します。"},
+                          {"label": "注意", "keyword": "最初は監視だけ", "speech": "最初は監視だけです。"}]}  # fmt: skip
+        joined = " ".join(self.gate.label_problems(tmpl))
+        self.assertIn("見出し「答えは？」が決まった問い", joined)
+        self.assertIn("見出し「注意」が決まった問い", joined)
+
+    def test_opening_is_plain_news(self):
+        """2026-11-04 オーナー「99.9%でも学習は止まる？・左に99.9%だけで置いていかれる」→ 最初の5〜8秒で何のニュースか分かる"""
+        art_ = {"title": "NVIDIAがAI学習の自動復旧ツール「NVIDIA Recovery」を公開"}
+        bad = {"hook": {"text": "99.9%でも学習は止まる？", "payoff": "99.9%", "speech": "99.9パーセントでも学習は止まりますか"}}
+        joined = " ".join(self.gate.opening_problems(bad, art_))
+        self.assertIn("数字がある", joined)
+        self.assertIn("数字だけ", joined)
+        self.assertIn("主役の名前", joined)
+        good = {"hook": {"text": "NVIDIAが学習の自動復旧ソフトを公開", "payoff": "止まった学習を自動で再開",
+                         "speech": "NVIDIAが、止まったAI学習を自動で立て直すソフトを無料で公開しました。"}}  # fmt: skip
+        self.assertEqual(self.gate.opening_problems(good, art_), [])
+        self.assertTrue(self.gate.number_only("月200ドル"))
+        self.assertFalse(self.gate.number_only("1万台なら毎日どこかが止まる"))
 
     def test_left_text_matches_narration(self):
         """左の言葉は、その場面の読み上げ・証拠の文と同じ話（別の場面の数字を出さない）"""

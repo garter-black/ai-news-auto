@@ -699,7 +699,7 @@ def script_system() -> str:
 # いちばん大事なこと
 **初心者でもわかるが、専門家が物足りなくない**動画にする（2026-11-04 オーナー）。最初に「それは何か・なぜ大事か・誰向けか」をやさしい言葉で言い、
 そのあとで本物の画面の証拠（数字・しくみ）を見せる。専門用語は最初に出たときに普通の言葉で言い換えるが、具体的な数字・しくみは省かない。
-hook の問いに、**具体的な数字と比較で答える**。忙しい会社員が頭の中で絵を描ける答えにする。
+見る人の「で、自分にはどう関係する？」に、**具体的な数字と比較で答える**。忙しい会社員が頭の中で絵を描ける答えにする。
 「Proで足りない人向けです」のような、聞かなくても分かる答え・中身の無い言い回しは禁止。
 例（料金のニュース）: 問い「最上位プラン、月200ドル必要？」→ 答え「多くの人は月20ドルのProで足ります。毎日長い作業を任せる人だけ」
 → 料金の段階（Free 0ドル・Pro 20ドル・Max 100ドル・Ultra 200ドル）と使える量（Proの5倍・10倍）を並べる
@@ -713,29 +713,33 @@ hook の問いに、**具体的な数字と比較で答える**。忙しい会�
 - 煽らない（衝撃・ヤバい・革命・神・ついに・必見は禁止）。絵文字・記号の飾りは禁止。「ざっくり」は使わない（まとめるときは「要約すると」）。
 
 # 構成
-- hook（最初の2秒）: text は画面に大きく出す1行（12〜20字）。見る人が「自分ごと」になる問いかけ。
-  payoff はその答えの手がかりになる数字のキーワード（8字以内・資料の表記どおり。例: 月200ドル）。speech は text を自然に読む1文（20字以内）。
-  payoff は text か speech に入っている数字・言葉にする（読み上げと別の話の数字を左に出さない）。
-  block / target は payoff の証拠になる画面の文字。できれば文字の大きい行（番号に「|大」）を選ぶ。
+- hook（最初の5〜8秒。2026-11-04 オーナー）: **詳しくない人にも、何のニュースで、なぜ大事かが分かる**ふつうの言葉で始める（記事を読みたくなるように）。
+  問いかけ・説明の無い数字・専門用語で始めない（だめな例: 「99.9%でも学習は止まる？」・左に「99.9%」だけ）。
+  text は画面に大きく出すニュースの見出し（10〜22字・主役の名前を入れる・**数字を入れない**。例: NVIDIAが学習の自動復旧ソフトを公開）。
+  speech は何が起きたか＋なぜ大事かを1〜2文で（25〜45字・主役の名前で始める。例: 「NVIDIAが、止まったAI学習を自動で立て直すソフトを無料で公開しました。」）。
+  payoff は text が消えたあと左に出す、ニュースの中身の短い言い回し（6〜16字・**数字だけにしない**。例: 止まった学習を自動で再開）。payoff の言葉は speech にも入れる。
+  数字は、意味が分かる文脈のあと（beat）で、ふつうの言葉の説明と一緒に出す（例: 「1台の故障率は0.1%でも、1万台なら毎日どこかが止まる」）。
+  block / target は payoff の証拠になる画面の文字（記事の見出しなど、文字の大きい行（番号に「|大」）を選ぶ）。
 - beats: {BEATS_MIN}〜{BEATS_MAX}個。**1つめは必ず「これは何？」**、2つめ以降は話題に合わせて次の役目から選んで、この順に並べる:
-  0. これは何？（必ず beat 1。label 例: 何ができる？・どんなもの？）: 初めて聞く人向けに、主役が**何か**と、**なぜ大事か・誰向けか**を1〜2文・35〜65字で。
+  0. これは何？（必ず beat 1。label 例: 止まった学習を自動で再開・夜中の対応が減る）: 初めて聞く人向けに、主役が**何か**と、**なぜ大事か・誰向けか**を1〜2文・35〜65字で（hook の続き）。
      主役の名前で始める。例「NVIDIA Recoveryは、AIの学習が止まったときに自動で見つけて再開する仕組みです。GPUで大きなモデルを学習させる会社向けです。」
      専門用語は普通の言葉に（GPU→AIの計算に使う部品、など。言い換えに資料に無い数字を入れない）。keyword は何ができるかの短い言葉（例: 学習を自動で再開）。
-  1. 答え（label 例: 答えは？・結論から）: hook の問いへの答えを1行で。誰ならイエスか。
-  2. 比較（label 例: プランの比較・前と比べると）: 料金のニュースなら料金の段階を並べる（ladder を使う）。製品のニュースなら前の版・他のプランとの違い。
+  1. いちばん大事な点（label 例: 故障は台数が増えるほど起きる）: このニュースのいちばん大事な事実を、数字の意味が分かる言い方で1行。
+  2. 比較（label 例: 料金は3段階・前は人が手で直していた）: 料金のニュースなら料金の段階を並べる（ladder を使う）。製品のニュースなら前の版・他のプランとの違い。
      並べて初めて分かる違いを1つ必ず言う（例: Maxは月100ドルでProの5倍、Ultraは月200ドルでProの10倍＝1ドルあたりの量は同じ。
      だからUltraを選ぶ理由は量ではなく、5時間制限が無いこと）。計算の答えを新しい数字として書かない（「同じ」「倍」のように言葉で）。
-  3. たとえ（label 例: たとえると）: 公式の数字・倍率だけを使って、毎日の仕事の場面に置き換える。
+  3. たとえ（label 例: 1週間分で比べると）: 公式の数字・倍率だけを使って、毎日の仕事の場面に置き換える。
      比較（ladder・compare）で同じ倍率をもう言っているなら、たとえの場面は作らない（その時間を「必要な人」の具体的な場面に回す）。
-  4. 必要な人（label 例: 必要な人・こんな使い方）: **頭に絵が浮かぶ、具体的な1日の仕事の場面**で言う。種類の名前（資料作り・レポート・表計算）で終わらせない。
+  4. 必要な人（label 例: 大きな学習を回す会社に効く）: **頭に絵が浮かぶ、具体的な1日の仕事の場面**で言う。種類の名前（資料作り・レポート・表計算）で終わらせない。
      例: 「営業データの集計からグラフ、提案スライドまで、1日中まとめて任せる」「Claude Codeで、1日かけてアプリの修正を進める」
      「月曜の朝に、先週の問い合わせ100件を分類して、返信の下書きまで作らせる」のように、作業の流れが分かる言い方。
      見る人は20〜50代の会社員・個人事業主。場面の中の作業は例として自由に書いてよいが、数字（件数・時間など）は資料にあるものだけ。資料に無い数字を場面に入れない。
      画面の keyword・sub も場面そのものを短く（例: keyword「集計→提案書を丸投げ」sub「朝から晩まで任せる」）。「長い作業を任せる」のような種類の言葉にしない。
-  5. 要らない人・注意（label 例: 要らない人・注意）: これも具体的な仕事の場面で（例: 「1日に数回、メールの言い回しを相談する程度ならPro」）。条件（月払いのみ・アプリ経由は価格が違う）も入れてよい。
-  6. 確かめ方・使い方（label 例: 確かめ方・使い方）: どこを押せば確かめられる・試せるか（例: 設定の使用状況）。
-  label: 左上に小さく出す見出し（2〜9字）。**その場面の中身が分かる日本語の言葉**にし、場面ごとに必ず違う言葉にする（同じ見出しを2回使わない）。
-  問いの形でもよい（何ができる？・前と何が違う？・どれくらい速い？・誰に効く？・どう試す？）。英語の製品名だけ・名詞1つだけ（実績・注意・Recovery）にしない。
+  5. 要らない人・注意（label 例: 小さな使い方ならProで十分）: これも具体的な仕事の場面で（例: 「1日に数回、メールの言い回しを相談する程度ならPro」）。条件（月払いのみ・アプリ経由は価格が違う）も入れてよい。
+  6. 確かめ方・使い方（label 例: まず監視だけで試せる）: どこを押せば確かめられる・試せるか（例: 設定の使用状況）。
+  label: 左上に小さく出す見出し（4〜14字）。**その場面の中身から作った、自然な日本語の見出し**（例: 止まった学習を自動で再開・故障は台数が増えるほど起きる）。
+  場面ごとに必ず違う言葉にする。決まった問いの見出し（答えは？・何ができる？・前と何が違う？・誰に効く？・どう試す？）・問いの形（？で終わる）・
+  役目の名前（答え・注意・比較・確かめ方）・英語の製品名だけ・名詞1つだけ（実績・Recovery）にしない。label と keyword は同じ言葉にしない。
   keyword: 画面に大きく出す言葉。2〜10字（短いほどよい）。文にしない。句読点を付けない。**意味の分かる短い言い回し**にする（例: 学習を自動で再開・検知まで平均69秒・人手から自動へ）。
   名詞1つだけ（クラスター）・英語の製品名だけ（Recovery）にしない。場面ごとに違う言葉にする（同じ keyword を2回使わない）。
   **keyword と sub はその場面の speech と同じ話**にする（keyword・sub の数字と言葉は、その場面の speech にも入れる。別の場面の数字を出さない）。sub: 補足（14字以内。不要なら空）。
@@ -761,7 +765,7 @@ hook の問いに、**具体的な数字と比較で答える**。忙しい会�
   ratio は資料の表記どおりの倍率（例: 10倍）。無ければ beat=0、他は空文字。
 - short_beats: SNS 用の短い版（30〜40秒）に使う beat の番号を2つ（beat 1 以外。例: [2, 3]）。1つめは「答え」、2つめは「並べて初めて分かる違い」を言う beat。
   短い版は hook → beat 1（これは何？）→ この2つ → 「◯◯は記事で」で終わるので、これだけで問いへの本当の答えが伝わる beat を選ぶ（長すぎるときは2つめを落とす）。
-- conclusion: 最後の一言。text は16字以内で hook の問いに答える。speech は14〜30字。
+- conclusion: 最後の一言。text は16字以内でこのニュースの要点を言う。speech は14〜30字。
 - title: 40字以内・主役の名前を入れて事実をそのまま。summary: 説明欄の要約。「要約すると、」で始めて80〜140字。hashtags: 3〜4個（#付き）。
 
 # 画面の文字（text・payoff・keyword・sub・conclusion.text・ja・ladder）
@@ -781,9 +785,10 @@ REVIEW_SCHEMA = {
 
 def review_system() -> str:
     return """あなたは経済ニュース番組の厳しい編集長。短い解説動画の台本を読んで、次を判定する。
-0. beat 1 が「これは何？」になっているか（初めて聞く人が、主役が何で、なぜ大事か・誰向けかを最初の数秒で分かるか。専門家が退屈しない具体さもあるか）。
-   label と keyword が場面ごとに違い、意味の分かる言葉か（名詞1つだけ・英語の製品名だけ・同じ言葉の繰り返しは不合格）。
-1. hook の問いに、具体的な数字や比較で答えているか（忙しい会社員が頭の中で絵を描けるか）。
+0. 最初の5〜8秒（hook と beat 1）で、詳しくない人にも何のニュースで、なぜ大事かが分かるか（問いかけ・説明の無い数字・専門用語で始めていたら不合格）。
+   beat 1 が「これは何？」になっているか（初めて聞く人が、主役が何で、なぜ大事か・誰向けかを最初の数秒で分かるか。専門家が退屈しない具体さもあるか）。
+   label と keyword が場面ごとに違い、場面の中身から作った自然な日本語か（決まった問いの見出し「答えは？」など・名詞1つだけ・英語の製品名だけ・同じ言葉の繰り返しは不合格）。
+1. 見る人の「自分にどう関係する？」に、具体的な数字や比較で答えているか（忙しい会社員が頭の中で絵を描けるか）。
 2. 聞かなくても分かる当たり前の文・中身の無い言い回し（例:「Proで足りない人向けです」「用途に合わせて選びましょう」）が無いか。
 3. 料金のニュースなら料金の段階、製品のニュースなら使い方と比較があるか。並べて初めて分かる違い（例: 1ドルあたりの量が同じ・選ぶ理由は量ではなく制限の有無）を1つ言っているか。
 4. 必要な人・要らない人が、具体的な1日の仕事の場面になっているか（「資料作り」「レポート」のような種類の名前で終わっていたら不合格。
@@ -986,7 +991,7 @@ def flat_script(s: dict) -> dict:
     beats = s.get("beats") or []
     comp = s.get("compare") or {}
     numbers = []
-    if hook.get("payoff"):
+    if hook.get("payoff") and re.search(r"\d", hook["payoff"]):  # 数字のときだけ数字カードとして照合（2026-11-04 からはふつうの言い回しが多い）
         numbers.append({"value": hook["payoff"], "label": ""})
     if comp.get("beat") and comp.get("ratio"):
         numbers.append({"value": comp["ratio"], "label": ""})
@@ -1015,10 +1020,10 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
     hook, beats, concl = s.get("hook") or {}, s.get("beats") or [], s.get("conclusion") or {}
     if not (BEATS_MIN <= len(beats) <= BEATS_MAX):
         out.append(f"beats は{BEATS_MIN}〜{BEATS_MAX}個（今は{len(beats)}）。")
-    if not (6 <= len(hook.get("text", "")) <= 22):
-        out.append(f"hook.text は12〜20字（今は{len(hook.get('text', ''))}字）。")
-    if len(hook.get("payoff", "")) > 9:
-        out.append("hook.payoff は8字以内。")
+    if not (8 <= len(hook.get("text", "")) <= 24):
+        out.append(f"hook.text は10〜22字のニュースの見出し（今は{len(hook.get('text', ''))}字）。")
+    if len(hook.get("payoff", "")) > 17:
+        out.append("hook.payoff は6〜16字の言い回し。")
     if len(concl.get("text", "")) > 18:
         out.append("conclusion.text は16字以内。")
     for i, b in enumerate(beats, 1):
@@ -1029,9 +1034,10 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
             out.append(f"beat{i}.sub は14字以内。")
         if len(b.get("speech", "")) > 66:
             out.append(f"beat{i}.speech が長すぎます（60字以内。今は{len(b.get('speech', ''))}字）。")
-        if not (2 <= len(b.get("label", "")) <= 9):
-            out.append(f"beat{i}.label は2〜7字の見出し（例: 答え・プランの比較）。")
+        if not (2 <= len(b.get("label", "")) <= 15):
+            out.append(f"beat{i}.label は4〜14字の自然な見出し（例: 止まった学習を自動で再開）。")
     out += [f"見出し: {p}" for p in gate.label_problems(s)]  # 同じ見出し・名詞1つだけの見出しやキーワード（ゲートでも見る）
+    out += [f"始まり: {p}" for p in gate.opening_problems(s, article)]  # 最初の5〜8秒で何のニュースか分かる（ゲートでも見る）
     if beats and len(beats[0].get("speech", "")) > 80:
         out.append("beat1（これは何？）の speech は35〜65字で、主役が何か・誰向けかを短く。")
     total_speech = sum(len(x.get("speech", "")) for x in [hook, concl] + beats)
@@ -1039,8 +1045,8 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
         out.append(f"読み上げの合計が長すぎます（{total_speech}字。{SPEECH_TOTAL_MAX - 30}字前後まで）。")
     if total_speech < 190:
         out.append(f"読み上げの合計が短すぎます（{total_speech}字）。問いに数字と比較で答えるには足りません。")
-    if len(hook.get("speech", "")) > 24:
-        out.append("hook.speech は20字以内。")
+    if len(hook.get("speech", "")) > 50:
+        out.append("hook.speech は25〜45字（何が起きたか＋なぜ大事か）。")
     if len(concl.get("speech", "")) > 34:
         out.append("conclusion.speech は30字以内。")
     joined = json.dumps(s, ensure_ascii=False)
@@ -1683,6 +1689,8 @@ def short_ending(topics: list[str], seed: str = "") -> dict:
     画面「くわしくは記事で」＋「投稿のリンクからどうぞ ↗」＋ブランド。誘い文句は話題ごとに少し変える（同じ言い回しが続かないように）"""
     import zlib
 
+    # 見出しが文（「夜中の対応が減る」「？」で終わる）のときは「◯◯は、」にすると日本語が崩れるので、名詞の見出しだけを使う
+    topics = [x for x in topics if x and not re.search(r"[ぁ-んー？?]$", x)]
     joined = "と".join(topics)
     head = f"{joined}は、記事でくわしく解説しています。" if topics and len(joined) <= 14 else "くわしくは、記事で解説しています。"
     invite = SHORT_INVITES[zlib.crc32(seed.encode("utf-8")) % len(SHORT_INVITES)]
@@ -2727,7 +2735,10 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     (_, _, hx, hy), = column_group([("hook", hook_spr, 0)], ANCHOR_Y)
     texts.append(TextItem("hook", hook["text"], hook_spr, hx, hy, 0.0, hook_end, anim="none"))
     if hook.get("payoff") and lines[1].start - 0.06 - hook_end >= 0.5:
-        pay = fit_line(hook["payoff"], "black", range(150, 84, -4), COL_W)
+        try:
+            pay = fit_line(hook["payoff"], "black", range(150, 84, -4), COL_W)
+        except RuntimeError:  # ニュースの中身の言い回し（2026-11-04 から長め）は2行に（文節で折り返す）
+            pay = wrapped(hook["payoff"], "black", range(84, 52, -2), COL_W, 2)
         (_, _, px, py), = column_group([("keyword", pay, 0)], ANCHOR_Y)
         texts.append(TextItem("keyword", hook["payoff"], pay, px, py, hook_end, lines[1].start - 0.06, anim="wipe", marker=True))
         ev(hook_end, "pop", "つかみの数字")
@@ -3668,10 +3679,30 @@ VISION_SCHEMA = {
                 },
                 "required": ["index", "highlight_ok", "framing_ok", "coherent", "issue"],
             },
-        }
+        },
+        # 2026-11-04 オーナー「始まりで置いていかれる」: 版ごとに、最初の8秒で詳しくない人が何のニュースか分かるか
+        "opening": {
+            "type": "ARRAY",
+            "items": {
+                "type": "OBJECT",
+                "properties": {"version": {"type": "STRING"}, "clear": {"type": "BOOLEAN"}, "issue": {"type": "STRING"}},
+                "required": ["version", "clear", "issue"],
+            },
+        },
     },
-    "required": ["frames"],
+    "required": ["frames", "opening"],
 }
+OPENING_SEC = 8.0  # 始まりの確認に見せる範囲（秒）
+OPENING_FRAMES = (1.0, 4.0, 7.0)  # その中で見せるコマの時刻
+
+
+def opening_text(rep: dict) -> str:
+    """最初の8秒の読み上げと左の文字（つかみ＋beat 1）"""
+    sv = rep.get("script_v3") or {}
+    hook, beats = sv.get("hook") or {}, sv.get("beats") or []
+    b1 = beats[0] if beats else {}
+    return (f"読み上げ「{hook.get('speech', '')}」→「{b1.get('speech', '')}」 / 左の文字「{hook.get('text', '')}」→「{hook.get('payoff', '')}」"
+            f"→ 見出し「{b1.get('label', '')}」キーワード「{b1.get('keyword', '')}」")
 
 
 def vision_system() -> str:
@@ -3685,6 +3716,10 @@ def vision_system() -> str:
 3. coherent: 左のキーワード・数字と、その場面の読み上げ（下に書く）と、選択した文（英語なら訳）が、同じことを言っているか。別の話なら false。
 
 細かい好みではなく、見る人が「ずれている」「切れている」「話が合わない」と感じるものだけを false にする。
+
+さらに版ごとに opening を判定する（最後に付ける「始まり」のコマと、最初の8秒の読み上げ・左の文字を見る）:
+4. clear: このニュースに詳しくない人が、最初の8秒で「何のニュースで、なぜ大事か」が分かり、記事を読みたくなるか。
+   問いかけだけ・説明の無い数字（例: 左に「99.9%」だけ）・説明の無い専門用語で始まる・何の話か分からない → false（issue に直し方）。
 false のときは issue に、何がどうだめかを短く日本語で書く（true のときは空文字）。すべてのコマについて index 順に答える。"""
 
 
@@ -3747,7 +3782,19 @@ def vision_review(versions: dict[str, dict]) -> tuple[dict[str, list[str]], str]
         images.append(keyframe_jpeg(Path(versions[ver]["mp4"]), float(g.get("t_peak", 0))))
         ja = f" / 訳: {g.get('ja')}" if g.get("ja") else ""
         lines.append(f"[{k}] {'短い版' if ver == 'short' else '全部の版'}・{_scene_name(g, n)}: 読み上げ「{g.get('speech', '')}」 / 左のキーワード「{g.get('keyword', '')}」補足「{g.get('sub', '')}」 / 選択した文「{g.get('target', '')}」{ja}")
-    prompt = "コマは上の画像の順（index 0 から）。各コマの場面の情報:\n" + "\n".join(lines) + "\n\n判定を JSON で返してください。"
+    opening_lines = []
+    for ver, rep in versions.items():
+        mp4 = Path(rep.get("mp4") or "")
+        if not mp4.exists():
+            continue
+        ks = []
+        for t in OPENING_FRAMES:
+            if t < float(rep.get("total") or OPENING_SEC):
+                images.append(keyframe_jpeg(mp4, t))
+                ks.append(str(len(images) - 1))
+        opening_lines.append(f"- version={ver}（{'短い版' if ver == 'short' else '全部の版'}）: 始まりのコマ index {'・'.join(ks)}（frames では判定しない） / {opening_text(rep)}")
+    prompt = ("コマは上の画像の順（index 0 から）。各コマの場面の情報:\n" + "\n".join(lines)
+              + "\n\n# 始まり（最初の8秒）の確認（opening に version ごとに答える）\n" + "\n".join(opening_lines) + "\n\n判定を JSON で返してください。")
     try:
         verdict, _ = llm.generate_json_images(vision_system(), prompt, images, VISION_SCHEMA, purpose="video_review")
     except Exception as error:  # noqa: BLE001 - 確認できない＝合格にしない
@@ -3762,6 +3809,13 @@ def vision_review(versions: dict[str, dict]) -> tuple[dict[str, list[str]], str]
         bad = [name for key, name in (("highlight_ok", "選択の青"), ("framing_ok", "画面の切れ"), ("coherent", "話の食い違い")) if not f.get(key)]
         if bad:
             issues[ver].append(f"{_scene_name(g, n)}（{'・'.join(bad)}）: {str(f.get('issue', ''))[:80]}")
+    opening = {str(o.get("version", "")): o for o in verdict.get("opening") or []}
+    for ver in {m[0] for m in metas}:
+        o = opening.get(ver)
+        if o is None:
+            issues[ver].append("始まり（最初の8秒）: 判定が無い")
+        elif not o.get("clear"):
+            issues[ver].append(f"始まり（最初の8秒で何のニュースか分からない）: {str(o.get('issue', ''))[:100]}")
     return issues, ""
 
 

@@ -233,7 +233,8 @@ class RenderQATest(unittest.TestCase):
             self.assertEqual(kw.get("purpose"), "video_review")
             frames = [{"index": i, "highlight_ok": i != bad_index, "framing_ok": True, "coherent": True, "issue": "行の終わりの「これま」だけ" if i == bad_index else ""}
                       for i in range(len(images))]
-            return {"frames": frames}, "fake"
+            # 2026-11-04: 版ごとの始まり（最初の8秒で何のニュースか分かるか）も必ず答える
+            return {"frames": frames, "opening": [{"version": v, "clear": True, "issue": ""} for v in ("full", "short")]}, "fake"
 
         return run, calls
 
@@ -246,6 +247,21 @@ class RenderQATest(unittest.TestCase):
         for r in out.values():
             self.assertEqual(r["gate"]["qa"], {"geometry": True, "vision": True, "version": v3.QA_VERSION})
             self.assertTrue(r["gate"]["ok"])
+
+    def test_unclear_opening_fails_vision(self):
+        """2026-11-04 オーナー: 最初の8秒で何のニュースか分からない動画は出さない（目視の確認の問い）"""
+        def run(system, prompt, images, schema, **kw):
+            self.assertIn("最初の8秒", prompt)
+            self.assertIn("始まり", system + prompt)
+            frames = [{"index": i, "highlight_ok": True, "framing_ok": True, "coherent": True, "issue": ""} for i in range(len(images))]
+            return {"frames": frames, "opening": [{"version": "full", "clear": True, "issue": ""},
+                                                  {"version": "short", "clear": False, "issue": "左に数字だけで何の話か分からない"}]}, "fake"  # fmt: skip
+
+        with mock.patch("llm.generate_json_images", run):
+            out = v3.qa_versions("fixture-ai-plan", self.versions(), regen=None)
+        self.assertTrue(out["full"]["gate"]["qa"]["vision"])
+        self.assertFalse(out["short"]["gate"]["qa"]["vision"])
+        self.assertTrue(any("最初の8秒で何のニュースか分からない" in x for x in out["short"]["gate"]["reasons"]))
 
     def test_vision_fail_regenerates_once(self):
         run, calls = self.fake_vision(bad_index=1)

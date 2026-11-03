@@ -82,18 +82,18 @@ def beat(label, keyword, sub, speech, block, target, ja):
 
 
 GOOD = {
-    "hook": {"text": "止まった学習、69秒で気づける？", "payoff": "69秒", "speech": "止まった学習、69秒で気づけますか？", "block": "1-3",
+    "hook": {"text": "Fixtureが学習の自動復旧ツールを公開", "payoff": "止まった学習を自動で再開", "speech": "フィクスチャーが、止まった学習を自動で再開するツールを公開しました。", "block": "1-3",
              "target": "Fixture Recovery detects anomalies in 69 seconds on average.", "ja": "Fixture Recoveryは平均69秒で異常を検知します。"},
     "beats": [
-        beat("答え", "自動で復旧", "人の代わりに", "答えは、ツールが自動で復旧することです。異常を見つけて、保存した地点から再開させます。",
+        beat("人の代わりに直す", "自動で復旧", "人の代わりに", "答えは、ツールが自動で復旧することです。異常を見つけて、保存した地点から再開させます。",
              "1-2", "Manual recovery becomes unsustainable when jobs run on thousands of GPUs.", "数千台のGPUで学習を回すと、手作業の復旧は追いつきません。"),
-        beat("前と比べると", "検知まで69秒", "異常の検知の平均", "異常の検知までの平均は69秒でした。夜中でも、人を待たずに動き出します。",
+        beat("異常にすぐ気づく", "検知まで69秒", "異常の検知の平均", "異常の検知までの平均は69秒でした。夜中でも、人を待たずに動き出します。",
              "1-3", "Fixture Recovery detects anomalies in 69 seconds on average.", "Fixture Recoveryは平均69秒で異常を検知します。"),
-        beat("必要な人", "数千台のGPU", "学習を回す担当", "数千台のGPUで学習を回す担当者に向いています。夜の障害対応を、ツールに任せられます。",
+        beat("大きな学習の担当に効く", "数千台のGPU", "学習を回す担当", "数千台のGPUで学習を回す担当者に向いています。夜の障害対応を、ツールに任せられます。",
              "1-2", "Manual recovery becomes unsustainable when jobs run on thousands of GPUs.", "数千台のGPUで学習を回すと、手作業の復旧は追いつきません。"),
-        beat("使う前の注意", "最初は監視モード", "勝手に操作しない", "最初は監視モードで始まり、勝手に操作することはありません。安心して試せます。",
+        beat("最初は見るだけで動く", "最初は監視モード", "勝手に操作しない", "最初は監視モードで始まり、勝手に操作することはありません。安心して試せます。",
              "1-4", "It starts in observe-only mode by default.", "最初は監視モードで始まります。"),
-        beat("確かめ方", "GitHubで公開", "ソースコード", "ソースコードはギットハブで公開されています。まずは中身を読んでみてください。",
+        beat("中身はだれでも読める", "GitHubで公開", "ソースコード", "ソースコードはギットハブで公開されています。まずは中身を読んでみてください。",
              "1-5", "The source code is available on GitHub.", "ソースコードはGitHubで公開されています。"),
     ],
     "compare": {"beat": 0, "base": "", "subject": "", "ratio": ""},
@@ -312,7 +312,7 @@ class ScriptSelfCorrectTest(unittest.TestCase):
 
     def test_style_only_script_used_when_time_runs_out(self):
         s = good()
-        s["hook"]["speech"] = "エーアイ学習が止まったとき、いったい誰がどうやって直しますか？"  # 長い（読みの注意だけ）
+        s["hook"]["speech"] = "フィクスチャーが、止まった学習を自動で再開するツールを公開しました。夜中に止まっても、朝までに人の手を借りずに続きから動きます。"  # 長い（読みの注意だけ）
         clock = FakeClock()
         fake = FakeLLM([s], clock=clock, call_sec=200.0)
         data, _ = self.run_write(fake, clock=clock, cap=480.0)

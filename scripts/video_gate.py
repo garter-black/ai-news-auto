@@ -766,6 +766,55 @@ def point_ok(text: str, speech: str) -> bool:
     return key_fact_ok(text, "", speech)
 
 
+# 決まった問い・役目の名前の見出し（2026-11-04 オーナー「答えは？は不自然」→ 場面の中身から作った見出しにする）
+TEMPLATE_LABELS = {"答え", "答えは", "結論", "結論から", "何ができる", "どんなもの", "前と何が違う", "前と比べると", "誰に効く", "誰に必要", "どう試す", "どう直す",
+                   "どれくらい速い", "確かめ方", "使い方", "必要な人", "要らない人", "注意", "比較", "たとえると", "プランの比較", "次の一歩", "何が変わった",
+                   "使いどころ", "知っておきたい", "何の発表", "どんな発表", "要約すると"}  # fmt: skip
+NUMBER_UNITS = r"[約超以上未満最大最小月年日時間分秒台件人社倍円ドル米%％万億兆個回点位]"
+
+
+def number_only(text: str) -> bool:
+    """数字（と単位）だけか: 「99.9%」「月200ドル」「約8,550件」は数字だけ。「止まった学習を自動で再開」は違う"""
+    t = re.sub(r"[\s　,，.．]", "", norm(text or ""))
+    if not re.search(r"\d", t):
+        return False
+    rest = re.sub(NUMBER_UNITS, "", re.sub(r"\d+", "", t))
+    return len(rest) <= 1
+
+
+def _subject_terms(article: dict) -> list[str]:
+    """主役の名前の候補: 題の英字の語（3文字以上）と「」の中の言葉"""
+    title = (article or {}).get("title", "")
+    terms = [t for t in re.findall(r"[A-Za-z][A-Za-z0-9.+\-]{2,}", title) if t not in LATIN_OK]
+    terms += re.findall(r"「([^」]{2,20})」", title)
+    m = re.match(r"^([^、「」　]{2,20})[、が]", title)  # 題の頭の会社名（「Salesforce、」「トヨタが」）
+    if m:
+        terms.append(m.group(1))
+    return list(dict.fromkeys(terms))
+
+
+def opening_problems(script_v3: dict, article: dict | None = None) -> list[str]:
+    """最初の5〜8秒（つかみ）で、詳しくない人にも何のニュースか・なぜ大事かが分かるか（2026-11-04 オーナー）:
+    つかみの文字に説明の無い数字が無い・左に数字だけを出さない・読み上げは主役の名前と何が起きたかを言う（25字以上）"""
+    hook = (script_v3 or {}).get("hook") or {}
+    text, payoff, speech = hook.get("text", ""), hook.get("payoff", ""), hook.get("speech", "")
+    out = []
+    if not text and not speech:
+        return out
+    if re.search(r"\d", norm(text)):
+        out.append(f"つかみの見出し「{text}」に数字がある（数字は意味の分かる場面で、説明と一緒に出す）")
+    if payoff and (number_only(payoff) or bare_phrase(payoff)):
+        out.append(f"つかみの左の言葉「{payoff}」が数字だけ・名詞1つだけ（ニュースの中身の言い回しに。例: 止まった学習を自動で再開）")
+    if len(speech) < 20:
+        out.append(f"つかみの読み上げ「{speech}」が短い（何が起きたか・なぜ大事かを25〜45字で）")
+    if re.search(r"[？?]\s*$", text) and re.search(r"[？?]\s*$", speech):
+        out.append("つかみが問いかけだけ（まず何のニュースかを言う）")
+    terms = _subject_terms(article or {})
+    if terms and not any(t.lower() in f"{text} {speech}".lower() for t in terms):
+        out.append(f"つかみに主役の名前（{'・'.join(terms[:3])}）が無い（何のニュースか分かるように）")
+    return out
+
+
 def label_problems(script_v3: dict) -> list[str]:
     """左の列の見出し（label）とキーワード（keyword）: 場面ごとに違い、名詞1つだけではない（2026-11-04）。
     さらに、左の言葉は**その場面の読み上げと同じ話**（キーワード・補足の数字や言葉が読み上げにある）で、キーワードは選択する証拠の文
@@ -796,7 +845,9 @@ def label_problems(script_v3: dict) -> list[str]:
             else:
                 seen[key] = i
             if bare_phrase(text):
-                out.append(f"beat{i} の{name}「{text}」が名詞1つだけ（意味の分かる言い回しに。例: 何ができる？・検知まで平均69秒）")
+                out.append(f"beat{i} の{name}「{text}」が名詞1つだけ（意味の分かる言い回しに。例: 止まった学習を自動で再開・検知まで平均69秒）")
+            if field_name == "label" and (key in {norm(x).lower() for x in TEMPLATE_LABELS} or re.search(r"[？?]\s*$", text)):
+                out.append(f"beat{i} の見出し「{text}」が決まった問い・役目の名前（場面の中身から作った自然な見出しに。例: 故障は台数が増えるほど起きる）")
     return out
 
 
@@ -1021,8 +1072,8 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
     m["qa_geometry"] = not geo
     for p in geo:
         result.reasons.append(f"v3: {p}")
-    # 左の列の見出し・キーワード（同じ言葉の繰り返し・名詞1つだけは不合格。2026-11-04）
-    for p in label_problems(sv3):
+    # 左の列の見出し・キーワード（同じ言葉の繰り返し・名詞1つだけは不合格。2026-11-04）と、最初の5〜8秒で何のニュースか分かるか
+    for p in label_problems(sv3) + opening_problems(sv3, article):
         result.reasons.append(f"v3: {p}")
     fonts = report.get("fonts") or []
     if not fonts or len(set(fonts)) > V3_MAX_FONTS:
