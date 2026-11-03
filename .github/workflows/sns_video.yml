@@ -39,6 +39,9 @@ on:
       queue_fix:
         description: "（直す）Buffer の予約中の動画なし・古い形の投稿: plan＝一覧だけ／apply＝下書きに戻して動画つきで出し直す。空なら何もしない"
         default: ""
+      requeue:
+        description: "（直す）下書きに戻した X・Facebook の投稿を動画つきで出し直す（例 slug:facebook）。空なら何もしない"
+        default: ""
       today_report:
         description: "（確認）今日の Threads の投稿ごとに、動画が付いたか・理由を読むだけ（true）"
         default: "false"
@@ -110,6 +113,10 @@ jobs:
             SNS_VIDEO_POST=live python scripts/sns_video_followup.py --queue-fix "${{ github.event.inputs.queue_fix }}"
             exit $?
           fi
+          if [ -n "${{ github.event.inputs.requeue }}" ]; then
+            SNS_VIDEO_POST=live python scripts/sns_video_followup.py --requeue "${{ github.event.inputs.requeue }}"
+            exit $?
+          fi
           if [ "${{ github.event.inputs.today_report }}" = "true" ]; then
             python scripts/sns_video_followup.py --today
             exit $?
@@ -145,7 +152,7 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
       - name: 記録を main に残す（動画の記録・Claude API の使用量・記事の video）
-        if: ${{ always() && (github.event.inputs.plan_only != 'true' || github.event.inputs.queue_fix == 'apply') }}
+        if: ${{ always() && (github.event.inputs.plan_only != 'true' || github.event.inputs.queue_fix == 'apply' || github.event.inputs.requeue != '') }}
         continue-on-error: true
         run: |
           files="state/sns_video.json state/claude_api_usage_video.json state/buffer_calls/video.json"

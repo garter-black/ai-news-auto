@@ -707,17 +707,9 @@ def queue_fix(apply: bool = False, now: datetime | None = None, api_key: str | N
         if not all(v["ok"] for v in paused.values()):
             missing_issue(slug, f"予約中の写真の投稿を下書きに戻せませんでした（Buffer で手で止めてください）: {paused}")
             continue
-        article = json.loads((ARTICLES / f"{slug}.json").read_text("utf-8"))
         slot = min(_parse(v["dueAt"]) or now for v in paused.values())
-        classic = tp.compose(article, [], use_llm=True)
-        link = f"{SITE}/articles/{slug}"
-        services = {"threads": "threads", "twitter": "twitter", "facebook": "facebook"}
-        use = {k: chans[k] for k in services if k in paused and k in chans}
-        if "threads" not in use:
-            use = {"threads": chans["threads"], **use}  # 入力を作るのに要る（Threads は送らない）
-        pending = tp.queue_for_video(key, use, tp.with_link(classic, article, "threads", "classic"), classic, link, article, slot, fb_text=classic)["pending"]
-        pending["inputs"] = {k: v for k, v in pending["inputs"].items() if k in paused}
-        state.setdefault("converted", {})[slug] = {"at": now.isoformat(timespec="seconds"), "paused": paused, "pending": pending,
+        state.setdefault("converted", {})[slug] = {"at": now.isoformat(timespec="seconds"), "paused": paused,
+                                                   "pending": requeue_inputs(key, chans, slug, list(paused), slot),
                                                    "threadsSent": "threads" not in paused}
     apply_converted(state, posted)
     f = flags()
@@ -769,6 +761,47 @@ def publish_extra_queued(state: dict, now: datetime, f: dict, creator=None, issu
             item["status"] = "created"
         out.append({"slug": slug, "extra": True, "status": item.get("status"), "channels": created})
     return out
+
+
+def requeue_inputs(api_key: str, chans: dict, slug: str, services: list[str], slot: datetime) -> dict:
+    """出し直す SNS の分だけ、新しい形の文面で Buffer の入力を作る（Buffer は呼ばない）。文面は門番で確かめる（動画は後で）。
+    出し直す分は前の予約を下書きに戻したので「もう投稿済み」とは数えない（history=False）"""
+    import sns_rules
+    import threads_post as tp
+
+    article = json.loads((ARTICLES / f"{slug}.json").read_text("utf-8"))
+    classic = tp.compose(article, [], use_llm=True)
+    link = f"{SITE}/articles/{slug}"
+    inputs = {}
+    if "threads" in services:
+        inputs["threads"] = tp.publish_via_buffer(api_key, chans["threads"]["id"], tp.with_link(classic, article, "threads", "classic"), link, article, slot,
+                                                  build_only=True)["input"]
+    extra = {k: chans[k] for k in ("twitter", "facebook") if k in services and k in chans}
+    inputs.update(tp.publish_extra_channels(api_key, extra, classic, link, article, slot, fb_text=classic, build_only=True))
+    for service, inp in inputs.items():
+        sns_rules.enforce_buffer(service, {k: v for k, v in inp.items() if not k.startswith("_")}, article,
+                                 source="sns_video_followup.requeue_inputs", pending_video=True, history=False)
+    return {"inputs": inputs, "slot": slot.isoformat(timespec="seconds"), "fmt": "classic"}
+
+
+def requeue(slug: str, services: list[str], slot: datetime | None = None, api_key: str | None = None) -> dict:
+    """（手で）下書きに戻した投稿を、新しい形・動画つきで出し直す予約に入れる（Threads が出ている記事の X・Facebook など）"""
+    import threads_post as tp
+
+    key = api_key if api_key is not None else os.environ.get("BUFFER_API_KEY", "")
+    now = datetime.now(timezone.utc)
+    state = load_json(STATE, {"videos": {}})
+    posted = load_json(POSTED, {"posted": {}})
+    old = ((posted.get("posted") or {}).get(slug) or {}).get("channels") or {}
+    pending = requeue_inputs(key, tp.buffer_channels(key), slug, services, slot or now)
+    # 下書きに戻した投稿として記録し、投稿の記録からその SNS の ID を外す（pausedIds に残す）→ 門番が「もう投稿済み」と数えない
+    state.setdefault("converted", {})[slug] = {"at": now.isoformat(timespec="seconds"), "pending": pending, "threadsSent": True,
+                                               "paused": {k: {"id": old.get(k, ""), "ok": True} for k in services}}
+    apply_converted(state, posted)
+    POSTED.write_text(json.dumps(posted, ensure_ascii=False, indent=2) + "\n", "utf-8")
+    out = publish_extra_queued(state, now, flags())
+    save_state(state)
+    return {"slug": slug, "services": services, "result": out}
 
 
 def apply_converted(state: dict, posted: dict) -> int:
@@ -1250,7 +1283,15 @@ def main() -> None:
     parser.add_argument("--today", action="store_true", help="今日の Threads の投稿ごとに、動画が付いたか・理由（読むだけ）")
     parser.add_argument("--sync-posted", action="store_true", help="動画つきで送った記録を state/threads_posted.json に写す（Buffer は呼ばない）")
     parser.add_argument("--queue-fix", choices=("plan", "apply"), help="予約中の動画なし・古い形の投稿を一覧（plan）／下書きに戻して動画待ちにする（apply）")
+    parser.add_argument("--requeue", metavar="SLUG:SNS[,SNS]", help="下書きに戻した投稿を、新しい形・動画つきで出し直す（例 slug:facebook）")
     args = parser.parse_args()
+    if args.requeue:
+        import llm
+
+        llm._load_env_local()
+        slug, _, svc = args.requeue.partition(":")
+        print(json.dumps(requeue(slug, [x for x in svc.split(",") if x in ("twitter", "facebook")]), ensure_ascii=False))
+        return
     if args.queue_fix:
         import llm
 
