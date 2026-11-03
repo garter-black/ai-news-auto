@@ -6250,6 +6250,12 @@
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/047898/"
     },
+    "4d836f21a02fa461": {
+      "at": "2026-11-03T07:11:12.740799+00:00",
+      "reason": "dedupe: 固有名詞＋見出しが類似（agentic / 0.31）: aws-nvidia-nemotron-35-super-vl",
+      "skipped": true,
+      "url": "https://blogs.nvidia.com/blog/cities-physical-agentic-ai-applications/"
+    },
     "4de73cebe8f8701c": {
       "at": "2026-10-29T05:35:07.037628+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -13070,6 +13076,13 @@
       "slug": "amazon-bedrock-cost-management-playbook",
       "url": "https://aws.amazon.com/blogs/machine-learning/managing-amazon-bedrock-costs-end-to-end-a-playbook-for-finops-and-platform-teams/"
     },
+    "fec0e46ceba430b8": {
+      "at": "2026-11-03T07:14:43.405052+00:00",
+      "model": "anthropic-api:claude-opus-5-5",
+      "reason": "quality: サイソクが自分で試したように読める書き方がある（「筆者」）。サイソクは試していない。元記事の書き手が試した結果なら「〇〇（媒体名）の記者が試したところ」と誰が試したかを書く",
+      "skipped": true,
+      "url": "https://huggingface.co/blog/transformers-mic"
+    },
     "fede0c2a6931a1c0": {
       "at": "2026-10-28T22:12:59.409781+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13126,48 +13139,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-01T01:11:05.150676+00:00",
-      "attempt": 0,
-      "id": "2b2f487795f0e5d2",
-      "kind": "ai",
-      "model": "",
-      "problems": [
-        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（63.6→63.6字）"
-      ],
-      "readability": {
-        "avg_paragraph": 113.5,
-        "avg_sentence": 63.6,
-        "long_share": 0.52,
-        "max_paragraph": 238,
-        "paragraphs": 14,
-        "sentences": 25
-      },
-      "score": 100,
-      "source": "meta-engineering",
-      "title": "Catching Bugs Before They Land: JiTTesting’s Human-on-the-Loop Approach at Full "
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-01T01:15:43.101371+00:00",
-      "attempt": 1,
-      "id": "543af653b59f437d",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 57.2,
-        "avg_sentence": 27.7,
-        "long_share": 0.0,
-        "max_paragraph": 121,
-        "paragraphs": 32,
-        "sentences": 66
-      },
-      "score": 95,
-      "source": "figma-blog",
-      "title": "The TL;DR on Figma Weave: Make your creative process repeatable"
-    },
     {
       "accepted": false,
       "at": "2026-11-01T01:41:12.114210+00:00",
@@ -19569,6 +19540,56 @@
       "title": "Advancing research and partnering with universities in Singapore",
       "warnings": [
         "見出しが47字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T07:13:04.420438+00:00",
+      "attempt": 1,
+      "id": "fec0e46ceba430b8",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "元記事の文をそのまま書き写している（2文。例「pip install \"transformers-mic[runtime]\" \"hf-doc-bu」）。自分の言葉で要約する"
+      ],
+      "readability": {
+        "avg_paragraph": 70.9,
+        "avg_sentence": 37.0,
+        "long_share": 0.133,
+        "max_paragraph": 137,
+        "paragraphs": 47,
+        "sentences": 90
+      },
+      "score": null,
+      "source": "hugging-face-blog",
+      "title": "Transformers Model Integration Contracts",
+      "warnings": [
+        "見出しが49字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T07:14:43.404953+00:00",
+      "attempt": 2,
+      "id": "fec0e46ceba430b8",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "サイソクが自分で試したように読める書き方がある（「筆者」）。サイソクは試していない。元記事の書き手が試した結果なら「〇〇（媒体名）の記者が試したところ」と誰が試したかを書く"
+      ],
+      "readability": {
+        "avg_paragraph": 75.0,
+        "avg_sentence": 36.3,
+        "long_share": 0.093,
+        "max_paragraph": 188,
+        "paragraphs": 47,
+        "sentences": 97
+      },
+      "score": null,
+      "source": "hugging-face-blog",
+      "title": "Transformers Model Integration Contracts",
+      "warnings": [
+        "見出しが44字（目安40字以内）。一覧・カードでは前半だけを出す"
       ]
     }
   ],

@@ -1,12 +1,12 @@
 {
   "2026-11-02": {
     "articles": {
-      "anthropic-api:claude-opus-5-5": 11,
+      "anthropic-api:claude-opus-5-5": 13,
       "anthropic-api:claude-sonnet-5-5": 10
     },
     "images": {
-      "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 3,
-      "cloudflare:@cf/openai/gpt-oss-120b": 143
+      "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 4,
+      "cloudflare:@cf/openai/gpt-oss-120b": 152
     },
     "products": {
       "gemini-3.5-flash-lite": 1,
