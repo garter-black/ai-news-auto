@@ -196,5 +196,58 @@ class GeneratedPostsPassGate(unittest.TestCase):
             self.assertEqual(sns_rules.check_post("x", x, [], article, reply_text=reply), [], f"{slug} x\n{x}")
 
 
+class PoliteSummaryTest(unittest.TestCase):
+    """要約は やさしい です・ます の短い文・主語つき（2026-11-03 オーナー指示。sns_rules のルール7）"""
+
+    def test_plain_endings_become_polite(self):
+        cases = {
+            "公的年金制度の普及や啓発活動を展開する。": "公的年金制度の呼びかけや呼びかけ",
+            "ポスター掲示などを実施する。": "ポスター掲示などを行います。",
+            "52カ月連続である。": "52カ月連続です。",
+            "累計は前年を超えた。": "累計は前年を超えました。",
+            "トヨタが新型車を発表": "トヨタが新型車を発表しました。",
+            "料金は月500ドル。": "料金は月500ドルです。",
+            "生活設計を考えることを呼びかける。": "生活設計を考えることを呼びかけます。",
+            "日本ではまだ使えない。": "日本ではまだ使えません。",
+            "価格は未発表です。": "価格は未発表です。",
+        }
+        for plain, want in cases.items():
+            got = tp.polite_sentence(plain)
+            self.assertTrue(sns_rules.POLITE_END.search(got), (plain, got))
+            if want.endswith("。"):
+                self.assertEqual(got, want)
+        self.assertIsNone(sns_rules.HARD_WORDS.search(tp.polite_sentence("市区町村と協働し、記録検索機能の周知などを実施する。")))
+
+    def test_subject_is_added(self):
+        article = {"title": "厚生労働省、「年金の日」・「ねんきん月間」を11月に実施", "sourceName": "厚生労働省"}
+        self.assertEqual(tp.subject_of(article), "厚生労働省")
+        self.assertTrue(tp.with_subject("毎年11月30日を「年金の日」とします。", article).startswith("厚生労働省が、"))
+        self.assertEqual(tp.with_subject("Hondaが公開しました。", {"title": "Hondaが公開"}), "Hondaが公開しました。")
+        self.assertEqual(tp.subject_of({"title": "マイナビニュース、調査", "sourceName": "マイナビニュース"}), "")
+
+    def test_gate_rejects_stiff_summary(self):
+        art = {"slug": "acme-tool", "title": "Acme が新しいAIツールを公開", "genreSlug": "ai", "_virtual": True}
+        stiff = ("会議のメモを取っている人、これは要チェックです。\n\n"
+                 "要約すると、毎年11月30日を「年金の日」として普及や啓発活動を展開する。\nポスター掲示などを実施する。\n\n"
+                 "あなたの職場では、会議の議事録を誰が書いていますか？\n\n詳しくはこちら👇\n"
+                 "https://ai-tech-express.jp/articles/acme-tool?utm_source=threads&utm_medium=social&utm_campaign=classic")
+        out = [v for v in sns_rules.check_post("threads", stiff, [], art) if "ルール7" in v]
+        self.assertTrue(any("です・ます" in v for v in out), out)
+        self.assertTrue(any("硬い言葉" in v for v in out), out)
+
+    def test_real_article_summary_is_polite_without_llm(self):
+        path = Path(__file__).resolve().parents[1] / "content" / "articles" / "nenkin-no-hi-2026-mhlw.json"
+        if not path.exists():
+            self.skipTest("記事のファイルが無い")
+        article = json.loads(path.read_text("utf-8"))
+        with patch.object(tp, "recent_openers", MagicMock(return_value=[])):
+            text = tp.compose(article, [])
+        summary = tp.post_blocks_of(text)[1]
+        self.assertEqual(sns_rules.impolite_sentences(summary), [], summary)
+        self.assertIsNone(sns_rules.HARD_WORDS.search(summary), summary)
+        self.assertIn("厚生労働省", summary)
+        self.assertEqual(sns_rules.check_post("threads", tp.with_link(text, article, "threads", "classic"), [], article), [])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -16,6 +16,8 @@
      （画像の「速報」と同じ決まり: article.breaking か、公式発表から60分以内に載せた記事）。
      「先に言うと、〜できない／対象外」「発表からN分で掲載」の書き出しは使わない。
      問いかけは、記事を読まなくても答えられる「読者自身の好み・経験」を聞く（「この機能、使ってみたい？」は×）。
+  7. （2026-11-03 オーナー指示）要約の文は、やさしい「です・ます」の短い文。記事の硬い文（「〜する。」「〜である。」
+     「〜した。」の言い切りや、「〜を発表。」で終わる文）をそのまま使わない。だれが（主語）を書く。
 
 違反したら: 投稿しない・ログに出す・GitHub の issue（ラベル sns-rule-violation）を立てるか、開いているものにコメントを足す。
 新しく Buffer / Bluesky / Threads の投稿 API を呼ぶ所を作るときは、必ずこの enforce を直前に呼ぶ（tests/test_sns_rules.py が確かめる）。
@@ -92,6 +94,26 @@ ARTICLE_BOUND_QUESTION = re.compile(
     r"いちばん気になった|どの発表|発表(?:の中|で)|新機能|新モデル|新サービス|使ってみ(?:たい|ます)|試してみ(?:たい|ます)|試したい|試しますか|導入されたら|"
     r"どう思い|気になり|注目して|知っていました|もう試し|の件"
 )
+
+
+# ルール7: 要約の文の終わりは「です・ます」（です／ます／でした／ました／ません／でしょう＋ね・よ）
+POLITE_END = re.compile(r"(?:です|ます|でした|ました|ません|ませんでした|でしょう)(?:ね|よ)?[。！!]?[」』）)]?$")
+
+
+# ルール7: 要約に使わない硬い言葉（役所・報道の言い回し）。やさしい言葉に言い換える（threads_post.EASY_WORDS）
+HARD_WORDS = re.compile(r"普及・?啓発|啓発|協働|周知|を図る|を図り|に資する|に鑑み|に係る|所要の|講じ|推進する|推進します|展開する|展開します|実施する|実施します|等の|等を|等で")
+SUMMARY_SENTENCE_MAX = 70
+
+
+def summary_sentences(summary: str) -> list[str]:
+    """要約のかたまりの文（「要約すると、」を除き、改行と句点で分ける）"""
+    body = str(summary or "").strip().removeprefix(SUMMARY)
+    return [x.strip() for line in body.splitlines() for x in re.split(r"(?<=[。！!])", line) if x.strip()]
+
+
+def impolite_sentences(summary: str) -> list[str]:
+    """「です・ます」で終わっていない要約の文（ルール7）"""
+    return [x for x in summary_sentences(summary) if not POLITE_END.search(x)]
 
 
 def is_fast_news(article: dict | None) -> bool:
@@ -349,6 +371,12 @@ def check_structure(platform: str, content: str) -> list[str]:
         sentences = [s for s in re.split(r"(?<=[。！!])", summary[0].removeprefix(SUMMARY)) if s.strip()]
         if not 1 <= len(sentences) <= 3:
             out.append(f"[ルール1] 要約の文が{len(sentences)}つ（短い事実の文を2つ）")
+        for bad in impolite_sentences(summary[0]):
+            out.append(f"[ルール7] 要約の文が「です・ます」になっていない（「…{bad[-16:]}」）。やさしい です・ます の文にする")
+        if m := HARD_WORDS.search(summary[0]):
+            out.append(f"[ルール7] 要約に硬い言葉（「{m.group(0)}」）。やさしい言葉に言い換える")
+        for long in [x for x in summary_sentences(summary[0]) if len(x) > SUMMARY_SENTENCE_MAX]:
+            out.append(f"[ルール7] 要約の文が長すぎる（{len(long)}字 / {SUMMARY_SENTENCE_MAX}字まで）")
     if platform != "x" and (len(blocks) < 3 or blocks[0].startswith(SUMMARY)):
         out.append("[ルール1] 最初に書き出しの行がない")
     question = blocks[-1] if blocks else ""

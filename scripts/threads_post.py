@@ -217,12 +217,133 @@ def clean_sentence(sentence: str) -> str:
     return s
 
 
+# ---- 要約の文を、やさしい「です・ます」にする（2026-11-03 オーナー指示。sns_rules のルール7） ----
+# 記事の要点は「〜する。」「〜である。」の硬い言い切りが多いので、そのまま SNS に出さず、文の終わりを直す。
+# 直せない文（「〜へ。」など）は使わない。主語（だれが）が無い文には、記事の主役（官庁・会社）を足す
+_GODAN_I = {"う": "い", "く": "き", "ぐ": "ぎ", "す": "し", "つ": "ち", "ぬ": "に", "ぶ": "び", "む": "み", "る": "り"}
+_GODAN_NEG = {"わ": "い", "か": "き", "が": "ぎ", "さ": "し", "た": "ち", "な": "に", "ば": "び", "ま": "み", "ら": "り"}
+_E_I_ROW = set("えけげせぜてでねへべぺめれいきぎしじちぢにひびぴみり")
+_GODAN_RU = ("入る", "帰る", "走る", "知る", "限る", "切る", "要る", "減る", "握る", "参る", "焦る", "蹴る", "照る", "散る", "茂る")
+_PAST_TTA = {"なった": "なりました", "あった": "ありました", "行った": "行いました", "言った": "言いました", "持った": "持ちました",
+             "作った": "作りました", "使った": "使いました", "買った": "買いました", "立った": "立ちました", "上回った": "上回りました",
+             "下回った": "下回りました", "伴った": "伴いました", "従った": "従いました", "至った": "至りました", "競った": "競いました"}
+_PAST_NDA = {"選んだ": "選びました", "呼んだ": "呼びました", "結んだ": "結びました", "並んだ": "並びました", "進んだ": "進みました",
+             "読んだ": "読みました", "組んだ": "組みました", "含んだ": "含みました", "望んだ": "望みました", "頼んだ": "頼みました", "及んだ": "及びました"}
+_NOUN_END = re.compile(r"[一-龥ァ-ヶーA-Za-z0-9０-９%％」』）)]$")
+_SURU_NOUN_END = re.compile(r"[をにがへ][一-龥ァ-ヶー]{2,}$")
+_MEDIA_NAME = re.compile(r"ニュース|新聞|TIMES|Times|Watch|ITmedia|Impress|マイナビ|日経|ブログ|Blog|blog|通信|プレス|PR")
+
+
+# 硬い言葉 → やさしい言葉（sns_rules.HARD_WORDS と対で使う。上から順に置き換える）
+EASY_WORDS = [
+    ("の普及・啓発活動", "を知ってもらう取り組み"), ("の普及啓発活動", "を知ってもらう取り組み"), ("の普及・啓発", "の呼びかけ"),
+    ("普及・啓発活動", "知ってもらう取り組み"), ("普及啓発活動", "知ってもらう取り組み"), ("普及・啓発", "呼びかけ"), ("普及啓発", "呼びかけ"),
+    ("啓発活動", "呼びかけ"), ("啓発", "呼びかけ"), ("と協働して", "と一緒に"), ("と協働し", "と一緒に"), ("協働", "協力"),
+    ("の周知", "のお知らせ"), ("周知", "お知らせ"), ("を図ります", "を目指します"), ("を図る", "を目指す"), ("を図り", "を目指し"),
+    ("に資する", "に役立つ"), ("に鑑み", "をふまえ"), ("に係る", "に関する"), ("所要の", "必要な"), ("講じます", "取ります"), ("講じる", "取る"),
+    ("推進します", "進めます"), ("推進する", "進める"), ("展開します", "進めます"), ("展開する", "進める"),
+    ("実施します", "行います"), ("実施する", "行う"), ("等の", "などの"), ("等を", "などを"), ("等で", "などで"),
+]
+
+
+def easy_words(sentence: str) -> str:
+    out = str(sentence or "")
+    for hard, easy in EASY_WORDS:
+        out = out.replace(hard, easy)
+    return out
+
+
+def polite_sentence(sentence: str) -> str:
+    """文の終わりを「です・ます」にし、硬い言葉をやさしく言い換える。直せなければ空"""
+    s = easy_words(str(sentence or "").strip())
+    if not s:
+        return ""
+    if sns_rules.POLITE_END.search(s):
+        return s
+    body = re.sub(r"[。！!]+$", "", s)
+    rules = [
+        (r"ではない$", "ではありません"), (r"(?:が|は|も)ない$", lambda m: m.group(0)[0] + "ありません"),
+        (r"ていない$", "ていません"), (r"できない$", "できません"),
+        (r"であった$", "でした"), (r"だった$", "でした"), (r"である$", "です"), (r"(?<=[^ん])だ$", "です"),
+        (r"ていた$", "ていました"), (r"ている$", "ています"), (r"てある$", "てあります"), (r"ておく$", "ておきます"),
+        (r"した$", "しました"), (r"できた$", "できました"), (r"する$", "します"), (r"できる$", "できます"),
+        (r"なる$", "なります"), (r"ある$", "あります"), (r"(?<=[てで])いる$", "います"),
+    ]
+    for pattern, repl in rules:
+        if re.search(pattern, body):
+            return re.sub(pattern, repl, body) + "。"
+    for table in (_PAST_TTA, _PAST_NDA):
+        for plain, pol in table.items():
+            if body.endswith(plain):
+                return body[: -len(plain)] + pol + "。"
+    if body.endswith("いた") and len(body) >= 3 and re.match(r"[一-龥]", body[-3]):
+        return body[:-2] + "きました。"  # 書いた・開いた・届いた（く の過去）
+    if body.endswith("いだ") and len(body) >= 3 and re.match(r"[一-龥]", body[-3]):
+        return body[:-2] + "ぎました。"
+    if body.endswith("た") and len(body) >= 2 and body[-2] in _E_I_ROW:
+        return body[:-1] + "ました。"  # 始めた・見た（一段の過去）
+    if body.endswith("ない") and len(body) >= 3:
+        prev = body[-3]
+        if prev in _E_I_ROW:
+            return body[:-2] + "ません。"
+        if prev in _GODAN_NEG:
+            return body[:-3] + _GODAN_NEG[prev] + "ません。"
+        return body + "です。"  # 少ない など（形容詞）
+    if body.endswith("い") and len(body) >= 2 and not body.endswith(("ない", "たい")):
+        return body + "です。"  # 高い・多い（形容詞）
+    if body.endswith("る") and len(body) >= 2:
+        if body[-2] in _E_I_ROW and not body.endswith(_GODAN_RU):
+            return body[:-1] + "ます。"
+        return body[:-1] + "ります。"
+    if body[-1] in _GODAN_I and len(body) >= 2:
+        return body[:-1] + _GODAN_I[body[-1]] + "ます。"
+    if _SURU_NOUN_END.search(body):
+        return body + "しました。"  # 「〜を発表」「〜に参入」
+    if _NOUN_END.search(body):
+        return body + "です。"  # 「〜は500ドル」「52カ月連続」
+    return ""
+
+
+def subject_of(article: dict) -> str:
+    """記事の主役（だれが）。見出しの頭（「厚生労働省、」「Hondaが」）→ 出典の名前（報道機関の名前は使わない）"""
+    title = str(article.get("title") or "")
+    m = re.match(r"^([^、，,「」『』\s　]{2,14}?)(?:が|は|、|，)", title)
+    if m and not _MEDIA_NAME.search(m.group(1)):
+        return m.group(1)
+    name = str(article.get("sourceName") or "").strip()
+    return name if 2 <= len(name) <= 14 and not _MEDIA_NAME.search(name) else ""
+
+
+def has_subject(sentence: str, subject: str = "") -> bool:
+    head = str(sentence or "")[:24]
+    return bool((subject and subject in head) or re.search(r"[^でに]が|は、|は[^、。]{0,3}", head))
+
+
+def with_subject(sentence: str, article: dict) -> str:
+    """主語の無い文に、記事の主役を足す（「厚生労働省が、毎年11月30日を…」）"""
+    subject = subject_of(article)
+    if not subject or has_subject(sentence, subject):
+        return sentence
+    return f"{subject}が、{sentence}"
+
+
+def polite_summary(summary: str, article: dict) -> str:
+    """「要約すると、」のかたまりの各文を です・ます にし、1文目に主語を足す。直せない文があれば空"""
+    lines = [x for x in sns_rules.summary_sentences(summary)]
+    fixed = [polite_sentence(x) for x in lines]
+    if not fixed or not all(fixed):
+        return ""
+    fixed[0] = with_subject(fixed[0], article)
+    return f"{persona.SUMMARY_OPENER}、" + "\n".join(fixed)
+
+
 def fact_pool(article: dict, title: str, hook: str = "", max_len: int = SENTENCE_MAX) -> list[str]:
     """要約に使える事実の文。生成時に作った紹介文（話し言葉）→ 要点 → 説明文の順。数字は記事のまま"""
     raw: list[str] = []
     post = article.get("threadsPost", "")
     blocks = post_blocks_of(post) if int(article.get("threadsStyle") or 1) >= 3 else [post]
     if len(blocks) > 1:  # 新しい形の紹介文は、要約のかたまりだけを材料にする（書き出し・問いかけは事実ではない）
+        blocks = [re.sub(r"^要点まとめ[：:]\s*", f"{persona.SUMMARY_OPENER}、", b) for b in blocks]
         blocks = [b for b in blocks if b.startswith(persona.SUMMARY_OPENER)]
     for block in blocks:
         sentences = [x for line in clean_lines(block) for x in split_sentences(line.removeprefix(f"{persona.SUMMARY_OPENER}、"))]
@@ -234,8 +355,9 @@ def fact_pool(article: dict, title: str, hook: str = "", max_len: int = SENTENCE
     raw += split_sentences(article.get("description", ""))
     found: list[str] = []
     for sentence in raw:
-        s = clean_sentence(sentence)
-        if not 8 <= len(s) <= max_len or s.endswith(QUESTION_END) or (hook and (s in hook or hook in s)):
+        # 文の終わりを です・ます に（直せない文は使わない。sns_rules のルール7）
+        s = polite_sentence(clean_sentence(sentence))
+        if not s or not 8 <= len(s) <= max_len or s.endswith(QUESTION_END) or (hook and (s in hook or hook in s)):
             continue
         if META_RE.search(s) or NUDGE_RE.search(s) or TEASER_RE.search(s) or CLICKBAIT_RE.search(s):
             continue
@@ -267,8 +389,13 @@ def summary_block(article: dict, title: str, hook: str, budget: int) -> str:
     if best is None:
         fallback = clean_sentence(str(article.get("description") or title))
         fallback = split_sentences(fallback)[0] if split_sentences(fallback) else title
+        fallback = with_subject(polite_sentence(fallback) or fallback, article)
         return opener + fallback[: max(10, budget - len(opener))]
-    return opener + "\n".join(best[1])
+    chosen = list(best[1])
+    first = with_subject(chosen[0], article)
+    if len(opener) + len(first) + sum(len(x) + 1 for x in chosen[1:]) <= budget + 8:
+        chosen[0] = first
+    return opener + "\n".join(chosen)
 
 
 HOOK_EXAMPLES = {e for hook in threads_hooks.HOOKS for e in hook["examples"]}
@@ -364,10 +491,15 @@ def compose(
             and not persona.STIFF_RE.search(candidate) and not persona.ADVICE_RE.search(candidate)
             and not any(repeats_title(line, title) for line in lines)
         ):
-            summary = candidate
+            # 硬い言い切り（「〜する。」）が混ざっていれば です・ます に直す。直せなければ組み立て直す（ルール7）
+            fixable = sns_rules.impolite_sentences(candidate) or sns_rules.HARD_WORDS.search(candidate)
+            summary = polite_summary(candidate, article) if fixable else candidate
     budget = POST_MAX_CHARS - len(hook) - len(question) - 4
     if not summary or len(summary) > budget:
-        summary = summary_block(article, title, hook, min(budget, POST_TARGET_CHARS - len(hook) - len(question) - 4 + 20))
+        rebuilt = summary_block(article, title, hook, min(budget, POST_TARGET_CHARS - len(hook) - len(question) - 4 + 20))
+        # 記事の文を組み立て直した要約は、使えるなら軽いモデルでやさしい言葉に書き直す（数字は記事のまま）
+        rewritten = llm_summary(article, title, rebuilt, budget) if use_llm else ""
+        summary = rewritten or rebuilt
     text = "\n\n".join(b for b in (hook, summary, question) if b)
     article["_question"] = question
     return ensure_question(text, article, recent_questions)
@@ -382,6 +514,44 @@ def question_ok(question: str, title: str = "", limit: int = voice.QUESTION_LIMI
         and not re.search(r"https?://|#\S", q) and not repeats_title(q, title)
         and not sns_rules.question_needs_article(q)
     )
+
+
+def llm_summary(article: dict, title: str, draft: str, budget: int) -> str:
+    """記事の文から組み立てた要約を、やさしい です・ます の短い2文に書き直す（主語・専門用語の言い換えつき）。失敗したら空。
+    GEMINI_API_KEY があるときだけ。SNS_LLM_SUMMARY=0 で止める。数字は記事にあるものだけ（無い数字が出たら使わない）"""
+    if not os.environ.get("GEMINI_API_KEY") or os.environ.get("SNS_LLM_SUMMARY", "1").strip() == "0":
+        return ""
+    source = " ".join([title, str(article.get("description") or ""), " ".join(str(h) for h in article.get("highlights") or []), str(article.get("threadsPost") or "")])
+    prompt = (
+        "次のニュースの要約を、SNS の読者向けに2文で書き直す。\n"
+        f"読者: {persona.PERSONA['who']}\n"
+        "- やさしい「です・ます」の短い文（1文は全角40字くらいまで）。硬い言い切り（〜する。〜である。）は使わない。\n"
+        "- 1文目に、だれが（官庁・会社の名前）何をしたかを書く。2文目は読者に関係する一番具体的な事実。\n"
+        "- 専門用語は使わないか、ふつうの言葉で言い換える。数字・日付・名前は元の文のとおり。新しい事実や推測は書かない。\n"
+        "- 「要約すると、」は付けない。文ごとに改行する。\n\n"
+        f"見出し: {title}\n元の要約: {draft.removeprefix(persona.SUMMARY_OPENER + '、')}\n要点: {' / '.join(str(h) for h in article.get('highlights') or [])}"
+    )
+    schema = {"type": "OBJECT", "properties": {"summary": {"type": "STRING"}}, "required": ["summary"]}
+    try:
+        import llm  # noqa: PLC0415
+
+        data, _ = llm.generate_json("あなたはニュースサイトのSNS担当の編集者です。", prompt, schema, tier="bulk", max_output_tokens=512)
+        text = EMOJI_RE.sub("", str(data.get("summary") or "")).strip().removeprefix(f"{persona.SUMMARY_OPENER}、")
+    except Exception as error:  # noqa: BLE001
+        log(f"  [summary] LLM で書き直せませんでした: {str(error)[:120]}")
+        return ""
+    lines = [x for line in text.splitlines() for x in split_sentences(line)]
+    candidate = f"{persona.SUMMARY_OPENER}、" + "\n".join(lines)
+    digits = re.findall(r"\d[\d,.]*", candidate)
+    if (
+        not 1 <= len(lines) <= 2 or len(candidate) > budget or sns_rules.impolite_sentences(candidate) or sns_rules.HARD_WORDS.search(candidate)
+        or any(len(x) > sns_rules.SUMMARY_SENTENCE_MAX for x in lines)
+        or persona.STIFF_RE.search(candidate) or persona.ADVICE_RE.search(candidate) or any(repeats_title(x, title) for x in lines)
+        or any(d.rstrip(".,") not in source for d in digits)
+    ):
+        log(f"  [summary] LLM の要約がチェックを通りません: {candidate[:80]}")
+        return ""
+    return candidate
 
 
 def llm_question(article: dict, title: str) -> str:
