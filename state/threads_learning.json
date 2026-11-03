@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-11-03T17:19:59+00:00",
+  "updatedAt": "2026-11-03T20:23:49+00:00",
   "metricsFetchedAt": "2026-11-03T13:24:45+00:00",
-  "visitsFetchedAt": "2026-11-03T17:19:59+00:00",
+  "visitsFetchedAt": "2026-11-03T20:23:46+00:00",
   "target": "visits",
   "visitRate": 0.02,
   "postsWithVisits": 0,
-  "freshSkipped": 6,
+  "freshSkipped": 7,
   "posts": 81,
   "axes": {
     "hook": {
