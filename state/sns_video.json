@@ -860,6 +860,208 @@
       "variant": "short",
       "bufferId": "6aea3af35fa3d509fa3d0ef9",
       "postedAt": "2026-11-04T09:45:00+09:00"
+    },
+    "github-copilot-jetbrains-air": {
+      "at": "2026-11-03T19:56:46+00:00",
+      "status": "attached",
+      "tries": 1,
+      "textAt": "2026-11-04T12:15:00+09:00",
+      "textId": "",
+      "breaking": false,
+      "scheduled": true,
+      "versions": {
+        "full": {
+          "ok": true,
+          "seconds": 36.952,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1,
+            "how": "ladder",
+            "vision_how": "deterministic-L4（レビューなし: RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+          },
+          "template": "ladder-L4",
+          "level": "L4",
+          "post": {
+            "title": "GitHubがJetBrainsの「Air」にCopilotを提供 クラウド実…",
+            "url": "https://ai-tech-express.jp/articles/github-copilot-jetbrains-air",
+            "total": 36.952,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "level": "L4",
+            "script_v3": {
+              "hook": {
+                "text": "GitHubがJetBrainsの「Air」にCopilotを提供"
+              },
+              "summary": "要約すると、JetBrainsの「Air」でGitHub Copilotを選べるようになりました。"
+            }
+          }
+        },
+        "short": {
+          "ok": true,
+          "seconds": 20.993,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1,
+            "how": "ladder",
+            "vision_how": "deterministic-L4（レビューなし: RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+          },
+          "template": "ladder-L4",
+          "level": "L4",
+          "post": {
+            "title": "GitHubがJetBrainsの「Air」にCopilotを提供 クラウド実…",
+            "url": "https://ai-tech-express.jp/articles/github-copilot-jetbrains-air",
+            "total": 20.993,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "level": "L4",
+            "script_v3": {
+              "hook": {
+                "text": "GitHubがJetBrainsの「Air」にCopilotを提供"
+              },
+              "summary": "要約すると、JetBrainsの「Air」でGitHub Copilotを選べるようになりました。"
+            }
+          }
+        }
+      },
+      "timings": {
+        "full": {
+          "tts": 9.4,
+          "render": 10.6,
+          "gate": 1.2,
+          "total": 21.4,
+          "ladder_total": 382.1
+        },
+        "short": {
+          "tts": 1.1,
+          "render": 6.6,
+          "gate": 0.7,
+          "total": 8.5,
+          "ladder_total": 382.1
+        }
+      },
+      "level": "L4",
+      "ladder": {
+        "full": [
+          {
+            "level": "L1",
+            "ok": false,
+            "reasons": [
+              "full: 台本を作れない: 台本を作れませんでした（LLM 9回・94秒）: hook.text は10〜22字のニュースの見出し（今は27字）。; hook.speech は25〜45字（何が起きたか＋なぜ大事か）。",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 9回・94秒）: hook.text は10〜22字のニュースの見出し（今は27字）。; hook.speech は25〜45字（何が起きたか＋なぜ大事か）。"
+            ],
+            "seconds": 305.0,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L2",
+            "ok": false,
+            "skipped": true,
+            "reasons": [
+              "時間が足りない（残り 415秒）"
+            ],
+            "seconds": 0.0,
+            "variants": {}
+          },
+          {
+            "level": "L3",
+            "ok": false,
+            "reasons": [
+              "full: 描画: RuntimeError: 公式の画像を取れない（L3 は写真・図が要る）",
+              "short: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+            ],
+            "seconds": 46.6,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L4",
+            "ok": true,
+            "reasons": [],
+            "seconds": 30.5,
+            "variants": {
+              "full": true,
+              "short": true
+            }
+          }
+        ],
+        "short": [
+          {
+            "level": "L1",
+            "ok": false,
+            "reasons": [
+              "full: 台本を作れない: 台本を作れませんでした（LLM 9回・94秒）: hook.text は10〜22字のニュースの見出し（今は27字）。; hook.speech は25〜45字（何が起きたか＋なぜ大事か）。",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 9回・94秒）: hook.text は10〜22字のニュースの見出し（今は27字）。; hook.speech は25〜45字（何が起きたか＋なぜ大事か）。"
+            ],
+            "seconds": 305.0,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L2",
+            "ok": false,
+            "skipped": true,
+            "reasons": [
+              "時間が足りない（残り 415秒）"
+            ],
+            "seconds": 0.0,
+            "variants": {}
+          },
+          {
+            "level": "L3",
+            "ok": false,
+            "reasons": [
+              "full: 描画: RuntimeError: 公式の画像を取れない（L3 は写真・図が要る）",
+              "short: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+            ],
+            "seconds": 46.6,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L4",
+            "ok": true,
+            "reasons": [],
+            "seconds": 30.5,
+            "variants": {
+              "full": true,
+              "short": true
+            }
+          }
+        ]
+      },
+      "ok": true,
+      "reason": "",
+      "pages": [],
+      "urls": {
+        "full": "https://ai-tech-express.jp/video/github-copilot-jetbrains-air-70a607ed83.mp4",
+        "short": "https://ai-tech-express.jp/video/github-copilot-jetbrains-air-da086cbfaf.mp4",
+        "poster": "https://ai-tech-express.jp/video/github-copilot-jetbrains-air-8dbe982a05.jpg"
+      },
+      "embedded": true,
+      "variant": "full",
+      "bufferId": "6aea3e03b3ec15847385f6a7",
+      "postedAt": "2026-11-04T12:15:00+09:00"
     }
   },
   "queued": {
@@ -877,9 +1079,18 @@
       "delayedMin": 0
     },
     "github-copilot-jetbrains-air": {
-      "status": "waiting",
+      "status": "created",
       "why": "動画を作っている途中・順番待ち",
-      "checkedAt": "2026-11-03T19:50:08+00:00"
+      "checkedAt": "2026-11-03T19:50:08+00:00",
+      "channels": {
+        "threads": "6aea3e03b3ec15847385f6a7",
+        "twitter": "6aea3e065a7c19a37cd11efb",
+        "facebook": "6aea3e0a5a7c19a37cd127e4"
+      },
+      "id": "6aea3e03b3ec15847385f6a7",
+      "dueAt": "2026-11-04T12:15:00+09:00",
+      "variant": "full",
+      "delayedMin": 0
     }
   },
   "converted": {

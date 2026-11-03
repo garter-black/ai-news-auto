@@ -736,6 +736,31 @@
           "sns": 1
         },
         "usd": 0.002474
+      },
+      "gh-41707864734-1": {
+        "by": {
+          "video_review|2": {
+            "n": 2,
+            "usd": 0.047965
+          },
+          "video|2": {
+            "n": 14,
+            "usd": 0.568543
+          }
+        },
+        "cache_read": 68083,
+        "cache_write": 28843,
+        "calls": {
+          "video": 14,
+          "video_review": 2
+        },
+        "in": 119808,
+        "out": 29117,
+        "req": {
+          "video": 14,
+          "video_review": 2
+        },
+        "usd": 0.616507
       }
     }
   }

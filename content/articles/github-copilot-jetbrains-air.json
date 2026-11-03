@@ -147,5 +147,12 @@
     ],
     "ar": 1.7778,
     "src": "https://ai-tech-express.jp/img/github-copilot-jetbrains-air-772c38bb.jpg"
+  },
+  "video": {
+    "src": "https://ai-tech-express.jp/video/github-copilot-jetbrains-air-70a607ed83.mp4",
+    "poster": "https://ai-tech-express.jp/video/github-copilot-jetbrains-air-8dbe982a05.jpg",
+    "seconds": 37.0,
+    "title": "GitHubがJetBrainsの「Air」にCopilotを提供 クラウド実…",
+    "credit": "VOICEVOX:九州そら"
   }
 }
