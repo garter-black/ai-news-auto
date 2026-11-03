@@ -2162,7 +2162,7 @@ def main() -> int:
         try:
             page = page or feeds.fetch_article_text(item["url"])
         except Exception as error:  # noqa: BLE001
-            log(f"   [warn] 本文の取得に失敗（{str(error)[:80]}）。フィードの本文を使います")
+            log(f"   [warn] 本文の取得に失敗（{str(error)[:240]}）。フィードの本文を使います")
             page = {"text": "", "image": None}
         text = max([page.get("text") or "", item.get("content") or ""], key=len)
         if cap_with_page_date(item, page):

@@ -17,8 +17,10 @@ import json
 import os
 import re
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
+import urllib.robotparser
 import xml.etree.ElementTree as ET
 import zlib
 from concurrent.futures import ThreadPoolExecutor
@@ -696,9 +698,75 @@ def _decode(data: bytes) -> str:
     return data.decode("utf-8", "ignore")
 
 
+# --------------------------------------------------------------------------- #
+# 直接読めないページ（GitHub Actions から openai.com などは 403）を、正規の経路で読む
+#   1. 記事ページを直接 → 2. 読み取りサービス r.jina.ai（鍵 → 鍵が残高切れ・無効なら鍵なしの無料枠）
+#   → 3. Claude API のサーバー側 web fetch（Haiku・予算は llm.py の帳簿で管理）→ 呼び出し側でフィードの本文
+#   ボット除けをすり抜ける細工（UA の偽装・CAPTCHA の突破）はしない。2・3 は robots.txt が許すときだけ。
+# 2026-11-03: JINA_API_KEY の残高切れで鍵付きは 402。鍵付きで失敗した時点で諦めていたため OpenAI 公式ブログを落としていた
+# --------------------------------------------------------------------------- #
+
+JINA_READER = "https://r.jina.ai/"
+_jina_key_dead: str | None = None          # この実行で鍵が使えないと分かった理由（以後は鍵なしで読む）
+_robots_cache: dict[str, urllib.robotparser.RobotFileParser | None] = {}
+API_FETCH_MAX_PER_RUN = 8                  # Claude API の web fetch はこの実行で何回まで
+API_FETCH_TOOL = "web_fetch_20260318"
+_api_fetch_used = 0
+_api_fetch_blocked_hosts: set[str] = set()  # API でも読めなかったホスト（この実行ではもう試さない）
+
+
+def robots_allows(url: str) -> bool:
+    """robots.txt（RFC 9309）が一般のクローラー（*）にこの URL を許しているか。ホストごとに1回だけ読む。
+    4xx（ファイルなし・ボット除けで読めない）は「制限なし」、5xx・通信の失敗は「全部禁止」として扱う（RFC 9309 2.3.1）"""
+    parts = urllib.parse.urlsplit(url)
+    origin = f"{parts.scheme}://{parts.netloc}"
+    if origin not in _robots_cache:
+        parser: urllib.robotparser.RobotFileParser | None = urllib.robotparser.RobotFileParser()
+        try:
+            data, _ = fetch(origin + "/robots.txt", timeout=10, accept="text/plain,*/*;q=0.5")
+            parser.parse(_decode(data[:500_000]).splitlines())
+        except urllib.error.HTTPError as error:
+            if 400 <= error.code < 500:
+                parser = None  # 制限なし
+            else:
+                parser.disallow_all = True
+        except Exception:  # noqa: BLE001
+            parser.disallow_all = True
+        _robots_cache[origin] = parser
+    parser = _robots_cache[origin]
+    return parser is None or parser.can_fetch("*", url)
+
+
+def fetch_jina(url: str, timeout: int = 25, accept: str = "text/plain", check_robots: bool = True) -> tuple[bytes, str]:
+    """読み取りサービス（r.jina.ai）経由で取る。鍵（JINA_API_KEY）が残高切れ（402）・無効（401）なら、
+    この実行の残りは鍵なし（無料枠。回数制限は厳しめ）で読む。robots.txt が禁じるページは読まない"""
+    global _jina_key_dead
+    if check_robots and not robots_allows(url):
+        raise RuntimeError(f"robots.txt が許していない: {url}")
+    key = os.environ.get("JINA_API_KEY", "")
+    if key and not _jina_key_dead:
+        try:
+            return fetch(JINA_READER + url, timeout=timeout, accept=accept, token=key)
+        except urllib.error.HTTPError as error:
+            if error.code not in (401, 402):
+                raise
+            _jina_key_dead = f"HTTP {error.code}"
+            note = "残高切れ" if error.code == 402 else "鍵が無効"
+            print(f"[jina] JINA_API_KEY が使えない（{_jina_key_dead}: {note}）。この実行は鍵なし（無料枠）で読みます", flush=True)
+    return fetch(JINA_READER + url, timeout=timeout, accept=accept)
+
+
+def _clean_markdown(body: str, url: str) -> tuple[str, list[dict]]:
+    """読み取りサービス・web fetch のマークダウンから、画像とリンクの記法を外した本文とリンクを返す"""
+    body = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", body)
+    links = [{"href": href, "text": text, "main": True} for text, href in re.findall(r"\[([^\]]{1,120})\]\((https?://[^)\s]+)", body)]
+    body = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", body)
+    return _collapse([body]), _abs_links(links, url)
+
+
 def _fetch_via_reader(url: str) -> dict:
-    """ボット除けで弾かれるページ（openai.com など）を、無料の読み取りサービス（r.jina.ai）経由で取る"""
-    data, _ = fetch("https://r.jina.ai/" + url, accept="text/plain", token=os.environ.get("JINA_API_KEY", ""))
+    """ボット除けで弾かれるページ（openai.com など）を、読み取りサービス（r.jina.ai）経由で取る"""
+    data, _ = fetch_jina(url)
     body = _decode(data)
     title = ""
     m = re.search(r"^Title:\s*(.+)$", body, re.M)
@@ -708,37 +776,102 @@ def _fetch_via_reader(url: str) -> dict:
     published = m.group(1).strip() if m else ""
     if "Markdown Content:" in body:
         body = body.split("Markdown Content:", 1)[1]
-    # 画像・リンクの記法を外して読みやすい本文にする（リンクは先に取っておく）
-    body = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", body)
-    links = [{"href": href, "text": text, "main": True} for text, href in re.findall(r"\[([^\]]{1,120})\]\((https?://[^)\s]+)", body)]
-    body = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", body)
-    text = _collapse(body)
+    text, links = _clean_markdown(body, url)
     return {"text": text[:TEXT_CAP], "image": None, "title": title, "description": "", "final_url": url, "published": published,
-            "links": _abs_links(links, url)}
+            "links": links}
+
+
+def _fetch_via_api(url: str) -> dict:
+    """Claude API のサーバー側 web fetch（Anthropic の取得器。robots.txt を守る）で本文を取る。
+    Haiku で1回だけ取得させ、取得結果のブロックの本文をそのまま使う（モデルの要約は使わない）。
+    予算・回数は llm.py の帳簿（段 helper）で管理する。読めなければ例外"""
+    global _api_fetch_used
+    host = urllib.parse.urlsplit(url).netloc.lower()
+    if os.environ.get("WEB_FETCH_API_DISABLE") == "1":
+        raise RuntimeError("WEB_FETCH_API_DISABLE=1")
+    if host in _api_fetch_blocked_hosts:
+        raise RuntimeError(f"{host} は API でも読めなかった（この実行）")
+    if _api_fetch_used >= API_FETCH_MAX_PER_RUN:
+        raise RuntimeError(f"API の web fetch はこの実行の上限 {API_FETCH_MAX_PER_RUN} 回に到達")
+    if not robots_allows(url):
+        raise RuntimeError(f"robots.txt が許していない: {url}")
+    import llm  # noqa: PLC0415 - 使うときだけ読み込む（feeds.py は標準ライブラリだけで動かす）
+
+    model, why = llm.api_choose("helper")
+    if not model:
+        raise RuntimeError(f"Claude API を使わない（{why}）")
+    _api_fetch_used += 1
+    try:
+        message = llm._get_api_client().messages.create(  # noqa: SLF001 - llm.py の API クライアントを共有する
+            model=model,
+            max_tokens=512,
+            tools=[{"type": API_FETCH_TOOL, "name": "web_fetch", "max_uses": 1, "max_content_tokens": 8000,
+                    "allowed_domains": [host]}],
+            messages=[{"role": "user", "content": f"Use web_fetch exactly once to fetch this URL, then reply only DONE.\n{url}"}],
+        )
+    except ImportError as error:
+        raise RuntimeError("anthropic パッケージが無い") from error
+    except Exception as error:  # noqa: BLE001
+        detail = f"{type(error).__name__}: {str(error)[:120]}"
+        if llm._api_error_kind(error) == "exhausted":  # noqa: SLF001
+            llm.mark_api_exhausted(detail)
+        raise RuntimeError(f"web fetch に失敗（{detail}）") from error
+    llm.record_api_usage("helper", model, message.usage)
+    for block in message.content:
+        if getattr(block, "type", "") != "web_fetch_tool_result":
+            continue
+        result = block.content
+        if getattr(result, "type", "") != "web_fetch_result":
+            code = getattr(result, "error_code", "?")
+            if code in ("url_not_accessible", "url_not_allowed"):
+                _api_fetch_blocked_hosts.add(host)
+            raise RuntimeError(f"web fetch: {code}")
+        document = result.content
+        source = getattr(document, "source", None)
+        if getattr(source, "type", "") != "text":
+            raise RuntimeError(f"web fetch: 文字でない中身（{getattr(source, 'type', '?')}）")
+        text, links = _clean_markdown(str(getattr(source, "data", "") or ""), url)
+        return {"text": text[:TEXT_CAP], "image": None, "title": str(getattr(document, "title", "") or ""), "description": "",
+                "final_url": getattr(result, "url", "") or url, "published": "", "links": links}
+    raise RuntimeError("web fetch: 取得結果が無い")
+
+
+def _short_error(error: Exception) -> str:
+    if isinstance(error, urllib.error.HTTPError):
+        return f"HTTP {error.code}"
+    return f"{type(error).__name__}: {str(error)[:60]}" if not isinstance(error, RuntimeError) else str(error)[:80]
 
 
 def fetch_article_text(url: str) -> dict:
     """{"text", "image", "title", "description", "final_url", "published"}。取得失敗時は例外。
-    直接取れない・中身が薄いときは読み取りサービス経由で取り直す（一次情報を落とさないため）。"""
+    直接取れない・中身が薄いときは読み取りサービス → Claude API の web fetch の順で取り直す（一次情報を落とさないため）。
+    例外の文言は理由を先に書く（ログで URL が切れても理由が読めるように）"""
+    reasons: list[str] = []
     try:
         direct = _fetch_direct(url)
-    except Exception:  # noqa: BLE001
+    except Exception as error:  # noqa: BLE001
         direct = None
+        reasons.append(f"直接 {_short_error(error)}")
     if direct and len(direct["text"]) >= 600:
         return direct
-    try:
-        via = _fetch_via_reader(url)
-        if len(via["text"]) > len(direct["text"] if direct else ""):
+    best = direct
+    for name, route in (("読み取り", _fetch_via_reader), ("API", _fetch_via_api)):
+        try:
+            via = route(url)
+        except Exception as error:  # noqa: BLE001
+            reasons.append(f"{name} {_short_error(error)}")
+            continue
+        if len(via["text"]) > len(best["text"] if best else ""):
             if direct:
                 via["image"] = direct.get("image")
                 via["description"] = direct.get("description", "")
                 via["published"] = via.get("published") or direct.get("published", "")
-            return via
-    except Exception:  # noqa: BLE001
-        pass
-    if direct:
-        return direct
-    raise RuntimeError(f"本文を取得できません: {url}")
+            best = via
+        if len(best["text"]) >= 600:
+            return best
+    if best:
+        return best
+    raise RuntimeError(f"本文を取得できません（{' / '.join(reasons)}）: {url}")
 
 
 def _fetch_direct(url: str) -> dict:

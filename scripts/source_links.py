@@ -12,7 +12,6 @@
 
 from __future__ import annotations
 
-import os
 import re
 import sys
 import time
@@ -193,8 +192,7 @@ def excerpt(text: str, title: str, keywords: set[str] | None = None, cap: int = 
 def _fetch_page(url: str, timeout: int) -> dict:
     """1ページ取る（HTML は直接。PDF は読み取りサービス経由）"""
     if re.search(r"\.pdf(?:$|\?)", url, re.I):
-        data, _ = feeds.fetch("https://r.jina.ai/" + url, timeout=PDF_TIMEOUT, accept="text/plain",
-                              token=os.environ.get("JINA_API_KEY", ""))
+        data, _ = feeds.fetch_jina(url, timeout=PDF_TIMEOUT)  # 鍵が残高切れなら鍵なしで読む（feeds.py）
         body = feeds._decode(data)
         m = re.search(r"^Title:\s*(.+)$", body, re.M)
         title = m.group(1) if m else ""

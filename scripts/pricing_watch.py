@@ -79,9 +79,10 @@ def fetch(source: dict) -> str:
     """ページの本文。how=html はそのままの HTML、md はマークダウン、jina は読み取りサービス経由のマークダウン"""
     how = source.get("fetch", "html")
     if how == "jina":
-        token = os.environ.get("JINA_API_KEY", "")
-        body = _http("https://r.jina.ai/" + source["url"], accept="text/plain", timeout=90,
-                     headers={"Authorization": f"Bearer {token}"} if token else None)
+        import feeds  # noqa: PLC0415 - 鍵が残高切れ（402）なら鍵なしの無料枠で読む（feeds.fetch_jina）
+
+        data, _ = feeds.fetch_jina(source["url"], timeout=90)
+        body = data.decode("utf-8", "replace")
         if "Markdown Content:" in body:
             body = body.split("Markdown Content:", 1)[1]
         body = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", body)

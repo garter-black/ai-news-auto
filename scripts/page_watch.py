@@ -24,7 +24,6 @@ import argparse
 import hashlib
 import html
 import json
-import os
 import re
 import sys
 import urllib.parse
@@ -138,7 +137,7 @@ def fetch_page(watch: dict) -> str:
     """ページの本文（マークダウン）。fetch=jina は読み取りサービス経由（ボット除けのあるページ）"""
     url = watch["url"]
     if watch.get("fetch") == "jina":
-        data, _ = feeds.fetch("https://r.jina.ai/" + url, accept="text/plain", token=os.environ.get("JINA_API_KEY", ""), timeout=60)
+        data, _ = feeds.fetch_jina(url, timeout=60)  # 鍵が残高切れなら鍵なしで読む（feeds.py）
         body = feeds._decode(data[:MAX_PAGE])  # noqa: SLF001
         if "Markdown Content:" in body:
             body = body.split("Markdown Content:", 1)[1]
