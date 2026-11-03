@@ -901,9 +901,59 @@
       },
       "embedded": true,
       "why": "動画ができる前に投稿の時刻が来た（写真で出た）"
+    },
+    "github-copilot-jetbrains-air": {
+      "at": "2026-11-03T17:20:55+00:00",
+      "status": "gate_failed",
+      "tries": 1,
+      "textAt": "2026-11-04T00:45:00+00:00",
+      "textId": "",
+      "breaking": false,
+      "scheduled": true,
+      "versions": {
+        "full": {
+          "ok": false,
+          "seconds": null,
+          "reasons": [
+            "台本を作れない: 台本を作れませんでした（LLM 9回・84秒）: beat3.sub は14字以内。; 数字カード「既存の契約」が記事の表記どおりではない; speech に英単語 Air, JetBrains が残っています。カタカナにしてください。"
+          ],
+          "qa": {
+            "geometry": false,
+            "vision": false,
+            "version": 1
+          },
+          "template": ""
+        },
+        "short": {
+          "ok": false,
+          "seconds": null,
+          "reasons": [
+            "台本を作れない: 台本を作れませんでした（LLM 9回・84秒）: beat3.sub は14字以内。; 数字カード「既存の契約」が記事の表記どおりではない; speech に英単語 Air, JetBrains が残っています。カタカナにしてください。"
+          ],
+          "qa": {
+            "geometry": false,
+            "vision": false,
+            "version": 1
+          },
+          "template": ""
+        }
+      },
+      "timings": {
+        "full": null,
+        "short": null
+      },
+      "ok": false,
+      "reason": "full: 台本を作れない: 台本を作れませんでした（LLM 9回・84秒）: beat3.sub は14字以内。; 数字カード「既存の契約」が記事の表記どおりではない; speech に英単語 Air, JetBrains が残っています。カタカナにしてください。 / short: 台本を作れない: 台本を作れませんでした（LLM 9回・84秒）: beat3.sub は14字以内。; 数字カード「既存の契約」が記事の表記どおりではない; speech に英単語 Air, JetBrains が残っています。カタカナにしてください。",
+      "pages": []
     }
   },
-  "queued": {},
+  "queued": {
+    "github-copilot-jetbrains-air": {
+      "status": "waiting",
+      "why": "動画を作っている途中・順番待ち",
+      "checkedAt": "2026-11-03T17:20:55+00:00"
+    }
+  },
   "converted": {
     "google-pixel-11-pro-food-photography": {
       "at": "2026-11-03T15:07:52+00:00",
