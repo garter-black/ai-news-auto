@@ -511,6 +511,15 @@ def choose_beats(beats: list[Beat], hook: str, ending: str, rng: tuple, variant:
     return [b for b in beats if b in chosen]
 
 
+def hook_title(article: dict) -> str:
+    """つかみに出す題: 36字までなら題の全体、長ければ題の前半（全角の空白の前。記事の題そのまま）"""
+    title = clean_sentence(article.get("title", ""))
+    if len(plain(title)) <= 36:
+        return title
+    first = clean_sentence(next((p for p in TITLE_SPLIT.split(str(article.get("title") or "")) if p.strip()), ""))
+    return first if len(plain(first)) >= 8 else title
+
+
 def summary_of(article: dict) -> str:
     """投稿文の要約（threadsPost の「要約すると、」の行があればそれ。無ければリードの最初の文）"""
     for line in str(article.get("threadsPost") or "").splitlines():
@@ -552,7 +561,7 @@ def build_plan(article: dict, level: str, variant: str, images: list[dict] | Non
         b.image = (i + 1) % len(imgs) if imgs and level == "L3" and len(imgs) > 1 else (0 if imgs else -1)
     return SimplePlan(
         level=level, variant=variant, slug=article.get("slug", ""), title=clean_sentence(article.get("title", "")),
-        hook_speech=hook, hook_text=clean_sentence(article.get("title", "")), beats=chosen,
+        hook_speech=hook, hook_text=hook_title(article), beats=chosen,
         ending_text=ENDING_TEXT, ending_speech=ending, cta=CTA[variant], images=imgs,
         subject=subject_of(article), source_name=clean_sentence(article.get("sourceName", "")),
         summary=summary_of(article), length_range=rng, script_from=origin,
@@ -1006,7 +1015,7 @@ def load_picture(path: str, size: tuple[int, int], kind: str = "photo"):
     return np.asarray(canvas)
 
 
-def brand_card(size: tuple[int, int], big: str, small: str, boxes: list | None = None):
+def brand_card(size: tuple[int, int], big: str, small: str, boxes: list | None = None, big_max: int = 96):
     """写真が無いときの右の枠: 紺のグラデーションに、主役の名前（大）と出典（小）。線・帯・枠は描かない。
     boxes に (文字, 画面での枠, 大きさ) を足す（文字の面積の検査用。寄ったときの最大 1.05 倍で数える）"""
     import numpy as np
@@ -1016,7 +1025,7 @@ def brand_card(size: tuple[int, int], big: str, small: str, boxes: list | None =
     t = np.linspace(0, 1, h)[:, None, None]
     grad = (np.array(NAVY_TOP)[None, None, :] * (1 - t) + np.array(NAVY_BOTTOM)[None, None, :] * t).repeat(w, axis=1)
     img = Image.fromarray(grad.astype(np.uint8), "RGB").convert("RGBA")
-    got = fit(big, "black", range(96, 48, -4), int(w * 0.78), 2) if big else None
+    got = fit(big, "black", range(big_max, 40, -4), int(w * 0.78), 2) if big else None
     y_mid = h // 2
     if got:
         spr = render_lines(got[1], "black", got[0], WHITE, gap=1.2, align="center")
@@ -1034,6 +1043,23 @@ def brand_card(size: tuple[int, int], big: str, small: str, boxes: list | None =
                 bx = [cx + (x0 - w / 2) * k, cy + (yy - h / 2) * k, cx + (x0 + sp.shape[1] - w / 2) * k, cy + (yy + sp.shape[0] - h / 2) * k]
                 boxes.append((text, bx, sz))
     return np.asarray(img.convert("RGB"))
+
+
+def card_for(plan: "SimplePlan", tl: "Timeline"):
+    """写真なしのときのブランドのカード。文字の面積が上限に近ければ、カードの文字を小さく・出典の行を外す（tl.card に文字の枠を入れる）"""
+    import video_gate as gate
+
+    size = (IMG[2] - IMG[0], IMG[3] - IMG[1])
+    big = plan.subject or plan.source_name
+    small = f"出典：{plan.source_name}" if plan.subject and plan.source_name else ""
+    card = None
+    for big_max, keep_small in ((96, True), (64, True), (56, False)):
+        boxes: list = []
+        card = brand_card(size, big, small if keep_small else "", boxes, big_max=big_max)
+        tl.card = boxes
+        if gate.text_ratio_max(text_records(tl), tl.total, (W, H))[0] <= TEXT_RATIO_MAX - 0.005:
+            break
+    return card
 
 
 def blend(dst, src, x: int, y: int, alpha: float = 1.0) -> None:
@@ -1480,10 +1506,7 @@ def make_simple(slug: str, level: str, variant: str, out_dir: Path, article: dic
             tl = build_timeline(plan, times, total, credits)
             audio, audio_info = build_audio(samples, total, work)
             size = (IMG[2] - IMG[0], IMG[3] - IMG[1])
-            card_boxes: list = []
-            pics = [load_picture(g["path"], size, g.get("kind", "photo")) for g in got] or [
-                brand_card(size, plan.subject or plan.source_name, f"出典：{plan.source_name}" if plan.subject and plan.source_name else "", card_boxes)]
-            tl.card = card_boxes
+            pics = [load_picture(g["path"], size, g.get("kind", "photo")) for g in got] or [card_for(plan, tl)]
             encode(Renderer(plan, tl, pics), audio, mp4, fps=fps, out_scale=out_scale, workers=workers)
         report["audio"] = audio_info
         report.update(report_fields(plan, tl, voice, article))

@@ -241,6 +241,35 @@ class PlanTest(unittest.TestCase):
                     with self.subTest(slug=slug, variant=v, level="L3"):
                         self.assertEqual(vl.plan_problems(plan, a), [])
 
+    def test_layout_checks_pass_before_render_for_recent_articles(self):
+        """描く前に分かる位置の検査（安全領域・枠・文字の面積・かぶり・豆腐・字幕=読み上げ）を、直近の記事で全部の割り付けに"""
+        import re
+
+        import shorts
+
+        def fake_times(lines):
+            t, out = vl.LEAD, []
+            for line in lines:
+                d = len(re.sub(r"[\s、。！？「」]", "", line)) / vl.CPS + 0.25
+                out.append((t, t + d))
+                t += d + vl.GAP
+            return out, out[-1][1] + vl.END_HOLD
+
+        for slug in vl.recent_slugs(20):
+            a = shorts.load_article(slug)
+            for level, v, imgs in (("L4", "short", None), ("L4", "full", None), ("L4", "short", []), ("L4", "full", []), ("L3", "short", None)):
+                if level == "L3" and not vl.official_images(a):
+                    continue
+                plan = vl.build_plan(a, level, v, images=imgs)
+                times, total = fake_times(plan.lines())
+                tl = vl.build_timeline(plan, times, total, {"voice": "VOICEVOX:九州そら", "image": plan.images[0]["credit"] if plan.images else ""})
+                if not plan.images:
+                    vl.card_for(plan, tl)
+                rep = {"texts": vl.text_records(tl), "total": total, "units": tl.units, "speech_lines": plan.lines()}
+                with self.subTest(slug=slug, level=level, variant=v, image=bool(plan.images)):
+                    self.assertEqual(vl.layout_problems(rep), [])
+                    self.assertEqual([t["text"] for t in rep["texts"] if t["missing"]], [])
+
     def test_l4_plan_without_polite_sentences(self):
         a = article()
         a.update({"lede": "テスト用の記事。", "faq": [], "workMoney": {}, "body": "## 概要\n\n新プランを発表した。", "threadsPost": ""})
