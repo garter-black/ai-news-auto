@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-03T08:54:51.295422+09:00",
+  "updated": "2026-11-03T15:57:10.422030+09:00",
   "items": [
     {
       "id": "4846a74cece39cf74bcd7402342e1290bb651f86",
@@ -35,41 +35,6 @@
       ],
       "traffic": 100,
       "queued_at": "2026-11-03T02:11:09.120334+09:00"
-    },
-    {
-      "id": "2b6e779ca763ccab689b4a5956d7ee40b8a853d2",
-      "kind": "trend",
-      "url": "https://news.yahoo.co.jp/articles/7441d7eeff28ae198403f247e3810f802289f716",
-      "title": "柿谷曜一朗",
-      "summary": "Googleトレンド急上昇（約500件の検索）。関連報道: 峯岸みなみ「SNSは承認欲求警察だらけ」と警鐘 押切もえ、丸高愛実らアスリート妻たちがSNS発信の難しさを告白＜秘密のママ園3＞（WEBザテレビジョン） / 『秘密のママ園3』より（C）AbemaTV,Inc. / 押切もえ・丸高愛実ら、アスリート妻たちのSNS事情を告白！峯岸みなみ「SNSは承認欲求警察だらけ」と警鐘 丸高愛実、夫・柿谷曜一朗に求めたねぎらいの一言とは！？W杯の裏側で奮闘した育児エピソードを告白",
-      "published_at": "2026-11-01T22:30:00+09:00",
-      "source_name": "Googleトレンド",
-      "source_slug": "trends",
-      "lang": "ja",
-      "image": null,
-      "genre": "real-estate",
-      "sources": [
-        {
-          "title": "峯岸みなみ「SNSは承認欲求警察だらけ」と警鐘 押切もえ、丸高愛実らアスリート妻たちがSNS発信の難しさを告白＜秘密のママ園3＞（WEBザテレビジョン）",
-          "url": "https://news.yahoo.co.jp/articles/7441d7eeff28ae198403f247e3810f802289f716",
-          "source": "Yahoo!ニュース",
-          "published": "2026-11-01T22:30:00+09:00"
-        },
-        {
-          "title": "『秘密のママ園3』より（C）AbemaTV,Inc.",
-          "url": "https://www.sankei.com/article/20261101-EZWGG6D4SVOZPP7ONJYP4JSBTM/photo/QLGRX7UBGNLRNNKERCWPYN5JBA/",
-          "source": "産経ニュース",
-          "published": "2026-11-01T22:30:00+09:00"
-        },
-        {
-          "title": "押切もえ・丸高愛実ら、アスリート妻たちのSNS事情を告白！峯岸みなみ「SNSは承認欲求警察だらけ」と警鐘 丸高愛実、夫・柿谷曜一朗に求めたねぎらいの一言とは！？W杯の裏側で奮闘した育児エピソードを告白",
-          "url": "https://prtimes.jp/main/html/rd/p/000004183.000064643.html",
-          "source": "PR TIMES",
-          "published": "2026-11-01T22:30:00+09:00"
-        }
-      ],
-      "traffic": 500,
-      "queued_at": "2026-11-01T23:20:22.293248+09:00"
     }
   ]
 }
