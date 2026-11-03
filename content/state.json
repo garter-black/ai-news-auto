@@ -89,13 +89,13 @@
       "tries": 1,
       "url": "https://lifull.com/news/50881/"
     },
-    "6e8810a5139499c0": {
-      "first": "2026-11-03T14:05:53.826377+00:00",
-      "next": "2026-11-03T17:05:53.826377+00:00",
-      "reason": "「同時公開の報告書」「Googleが同日公開した報告書」→ 元記事は報告書を同日公開したとは書いておらず、リンク先PDFが11/3確認というだけで同日公開は裏付けがない。; 「K-12（幼稚園から高校3年までの学年区分）」→ 元記事に定義がなく、「（編集部注）」の表示もない。; 「大学生の80%が…学習に良い成果があったと回答」→ 報告書の抜粋は「80% of university student",
-      "title": "AI in the learning era",
+    "7f05432d1620715c": {
+      "first": "2026-11-03T17:45:37.679713+00:00",
+      "next": "2026-11-03T20:45:37.679713+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "Learn the rules: The hacker mindset",
       "tries": 1,
-      "url": "https://blog.google/products-and-platforms/products/education/ai-learning-era-2026/"
+      "url": "https://www.microsoft.com/en-us/research/podcast/learn-the-rules-the-hacker-mindset/"
     },
     "9824d9cb50fa7b55": {
       "first": "2026-11-03T14:46:44.535250+00:00",
@@ -113,6 +113,14 @@
       "tries": 1,
       "url": "https://blog.google/products-and-platforms/products/education/google-ai-educator-series-global-expansion-november-2026/"
     },
+    "a55665cf48953af7": {
+      "first": "2026-11-03T17:37:41.235291+00:00",
+      "next": "2026-11-03T20:37:41.235291+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "StateBench: Testing how language models track state changes over long documents",
+      "tries": 1,
+      "url": "https://huggingface.co/blog/allenai/statebench"
+    },
     "ce9b39562dd42cfe": {
       "first": "2026-11-03T13:43:44.204259+00:00",
       "next": "2026-11-03T16:43:44.204259+00:00",
@@ -120,6 +128,14 @@
       "title": "Where Did the Saved Bytes Go? Compact Object Headers in IntelliJ IDEA",
       "tries": 1,
       "url": "https://blog.jetbrains.com/idea/2026/11/where-did-the-saved-bytes-go-compact-object-headers-in-intellij-idea/"
+    },
+    "de5d8c3372c230d4": {
+      "first": "2026-11-03T17:33:22.187893+00:00",
+      "next": "2026-11-03T20:33:22.187893+00:00",
+      "reason": "「かんたん版」判定の「価格=API従量課金」→ 元記事に価格体系の記述はなく、Jev自体の料金も未発表のため根拠のない記載。; 「Jev自体の日本での提供や料金はまだ発表されていません」→ 元記事は日本での提供・料金に触れておらず、「発表されていない」と断定すると言い過ぎ（「元記事では言及なし」が正確）。; 「提供状況=available」→ 元記事にJevの提供状況の記載はなく、日本で使える根拠",
+      "title": "Cost per task: Using cheap classifiers to route across Gemini models and thinking levels",
+      "tries": 1,
+      "url": "https://developers.googleblog.com/cost-per-task-using-cheap-classifiers-to-route-across-gemini-models-and-thinking-levels/"
     }
   },
   "major_tries": {},
@@ -7596,6 +7612,14 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000005967.000054842.html"
     },
+    "6e8810a5139499c0": {
+      "at": "2026-11-03T17:46:40.529081+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 93,
+      "section": "ai",
+      "slug": "google-ai-learning-era-guided-learning",
+      "url": "https://blog.google/products-and-platforms/products/education/ai-learning-era-2026/"
+    },
     "6f129da4644f27ae": {
       "at": "2026-10-27T03:04:42.977123+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（受賞）",
@@ -13329,183 +13353,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-02T01:41:16.530598+00:00",
-      "attempt": 0,
-      "id": "1e833fbe344a0242",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 63.6,
-        "avg_sentence": 35.0,
-        "long_share": 0.0,
-        "max_paragraph": 110,
-        "paragraphs": 27,
-        "sentences": 49
-      },
-      "score": 100,
-      "source": "sakana-ai",
-      "title": "【開催レポート】Sakana AIシンポジウム：Jürgen Schmidhuberが語るAIのこれまでとこれから、日本から挑む言語モデル・世界モデル・Phys"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T01:41:31.558031+00:00",
-      "attempt": 1,
-      "id": "954ac10d46d53a6b",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 56.3字・60字超の文が 33% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 144.9字・最長 203字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 144.9,
-        "avg_sentence": 56.3,
-        "long_share": 0.333,
-        "max_paragraph": 203,
-        "paragraphs": 7,
-        "sentences": 18
-      },
-      "score": 100,
-      "source": "riken",
-      "title": "生きた細胞内の成分を三次元動画で捉える顕微鏡を開発"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T01:41:34.403285+00:00",
-      "attempt": 0,
-      "id": "954ac10d46d53a6b",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 70.3,
-        "avg_sentence": 29.8,
-        "long_share": 0.0,
-        "max_paragraph": 96,
-        "paragraphs": 14,
-        "sentences": 33
-      },
-      "score": 100,
-      "source": "riken",
-      "title": "生きた細胞内の成分を三次元動画で捉える顕微鏡を開発"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T01:45:38.804079+00:00",
-      "attempt": 1,
-      "id": "e1a0a06cf111f8c7",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 128.4,
-        "avg_sentence": 46.7,
-        "long_share": 0.136,
-        "max_paragraph": 192,
-        "paragraphs": 8,
-        "sentences": 22
-      },
-      "score": null,
-      "source": "mext",
-      "title": "「諸外国の教育情報」令和8（2026）年版 を公表しました。"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T01:45:44.799752+00:00",
-      "attempt": 2,
-      "id": "e1a0a06cf111f8c7",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 54.1字・60字超の文が 38% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 96.1,
-        "avg_sentence": 54.1,
-        "long_share": 0.375,
-        "max_paragraph": 154,
-        "paragraphs": 9,
-        "sentences": 16
-      },
-      "score": 100,
-      "source": "mext",
-      "title": "「諸外国の教育情報」令和8（2026）年版 を公表しました。"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T01:45:47.966310+00:00",
-      "attempt": 0,
-      "id": "e1a0a06cf111f8c7",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 94.7,
-        "avg_sentence": 25.6,
-        "long_share": 0.027,
-        "max_paragraph": 148,
-        "paragraphs": 10,
-        "sentences": 37
-      },
-      "score": 100,
-      "source": "mext",
-      "title": "「諸外国の教育情報」令和8（2026）年版 を公表しました。"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T02:11:04.155375+00:00",
-      "attempt": 1,
-      "id": "19f0f388752a1ed5",
-      "kind": "update",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "かんたん版: 価格は今年末までの発売記念価格として 19,9000円（税込）から -> 「19,9000」という不自然な桁数のカンマ区切り（199,900円の誤記）になっている。"
-      ],
-      "score": 90,
-      "source": "google-japan-blog",
-      "title": "XREAL AURA：動画から、ゲーム、仕事まで、どこでも楽しめる有線 XR グラス"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T02:11:11.121089+00:00",
-      "attempt": 1,
-      "id": "00b5fd966277fe4f",
-      "kind": "update",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "続報の長さが不適切（190字 / 400〜900字）"
-      ],
-      "score": null,
-      "source": "jfa",
-      "title": "フットサル日本代表 選手変更 国際親善試合 フットサルモロッコ代表戦（11.6/11.8 大分／クラサス武道スポーツセンター） #jfa #daihyo"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T02:11:24.662807+00:00",
-      "attempt": 1,
-      "id": "dcd22a091147f4a3",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 52.0字・60字超の文が 21% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 104.0,
-        "avg_sentence": 52.0,
-        "long_share": 0.214,
-        "max_paragraph": 133,
-        "paragraphs": 7,
-        "sentences": 14
-      },
-      "score": 100,
-      "source": "docomo-service",
-      "title": "dバリューパスに「薬屋のひとりごと」が新たに追加されました"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T02:11:27.375339+00:00",
@@ -19864,6 +19711,195 @@
         "見出しが46字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（DAG）"
       ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:32:16.520748+00:00",
+      "attempt": 1,
+      "id": "de5d8c3372c230d4",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "題名で料金・価格を約束しているのに、本文に金額（円・ドル・無料など）が無い。元記事の金額を書くか、題名から料金の話を外す"
+      ],
+      "readability": {
+        "avg_paragraph": 109.8,
+        "avg_sentence": 39.6,
+        "long_share": 0.049,
+        "max_paragraph": 200,
+        "paragraphs": 22,
+        "sentences": 61
+      },
+      "score": null,
+      "source": "google-developers-blog",
+      "title": "Cost per task: Using cheap classifiers to route across Gemini models and thinkin",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（VM・LOW）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:32:56.435253+00:00",
+      "attempt": 2,
+      "id": "de5d8c3372c230d4",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "「かんたん版」判定の「価格=API従量課金」→ 元記事に価格体系の記述はなく、Jev自体の料金も未発表のため根拠のない記載。",
+        "「Jev自体の日本での提供や料金はまだ発表されていません」→ 元記事は日本での提供・料金に触れておらず、「発表されていない」と断定すると言い過ぎ（「元記事では言及なし」が正確）。",
+        "「提供状況=available」→ 元記事にJevの提供状況の記載はなく、日本で使える根拠もないため断定は言い過ぎ。",
+        "「難しい25問のうち7問が壊れ、うち6問は…無回答」を「難問25問のうち7問が失敗」と要約 → 元記事の数字と矛盾しないが、Jev判定のSIMPLE27問・HARD25問の合計が52になる点を説明せず読者が混乱しうる。"
+      ],
+      "readability": {
+        "avg_paragraph": 82.6,
+        "avg_sentence": 41.3,
+        "long_share": 0.141,
+        "max_paragraph": 163,
+        "paragraphs": 32,
+        "sentences": 64
+      },
+      "score": 80,
+      "source": "google-developers-blog",
+      "title": "Cost per task: Using cheap classifiers to route across Gemini models and thinkin",
+      "warnings": [
+        "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（LOW）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:36:20.383874+00:00",
+      "attempt": 1,
+      "id": "a55665cf48953af7",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "かんたん版に幼い言い方（「すごい」）。落ち着いた大人の言葉にする",
+        "かんたん版に決まった型の見出し（「何がすごいの？」）。中身の言葉にするか見出しを消す",
+        "題名で「日本で使えるか」を約束しているのに、本文に日本での提供・使い方の説明が無い。答えるか、題名から外す",
+        "元記事・確認済みの事実の束・計算済みの数字のどれにも無い数字がある（「はほぼ全モデルが高精度(90 %」）。元記事か束の数字に直すか、その文を削る。割合・差・換算などを自分で計算しない（計算済みの数字の欄にあるものだけ使う）"
+      ],
+      "readability": {
+        "avg_paragraph": 98.2,
+        "avg_sentence": 49.1,
+        "long_share": 0.278,
+        "max_paragraph": 171,
+        "paragraphs": 9,
+        "sentences": 18
+      },
+      "score": null,
+      "source": "hugging-face-blog",
+      "title": "StateBench: Testing how language models track state changes over long documents",
+      "warnings": [
+        "見出しが51字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（CSV）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:37:41.235235+00:00",
+      "attempt": 2,
+      "id": "a55665cf48953af7",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "hugging-face-blog",
+      "title": "StateBench: Testing how language models track state changes over long documents"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:41:39.522016+00:00",
+      "attempt": 1,
+      "id": "7f05432d1620715c",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "microsoft-research-blog",
+      "title": "Learn the rules: The hacker mindset"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:45:37.679660+00:00",
+      "attempt": 2,
+      "id": "7f05432d1620715c",
+      "kind": "ai",
+      "model": "gemini-3.1-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "microsoft-research-blog",
+      "title": "Learn the rules: The hacker mindset"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:46:02.227037+00:00",
+      "attempt": 1,
+      "id": "6e8810a5139499c0",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "google-blog-all",
+      "title": "AI in the learning era"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:46:25.838719+00:00",
+      "attempt": 2,
+      "id": "6e8810a5139499c0",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "文が長い（1文の平均 47.2字・60字超の文が 14% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 110.1,
+        "avg_sentence": 47.2,
+        "long_share": 0.143,
+        "max_paragraph": 219,
+        "paragraphs": 12,
+        "sentences": 28
+      },
+      "score": 93,
+      "source": "google-blog-all",
+      "title": "AI in the learning era",
+      "warnings": [
+        "見出しが50字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T17:46:40.519205+00:00",
+      "attempt": 0,
+      "id": "6e8810a5139499c0",
+      "kind": "ai",
+      "model": "",
+      "problems": [
+        "読みやすさ基準外のまま受理: 見出しの数・階層が変わった（3→4個）"
+      ],
+      "readability": {
+        "avg_paragraph": 110.1,
+        "avg_sentence": 47.2,
+        "long_share": 0.143,
+        "max_paragraph": 219,
+        "paragraphs": 12,
+        "sentences": 28
+      },
+      "score": 93,
+      "source": "google-blog-all",
+      "title": "AI in the learning era",
+      "warnings": [
+        "見出しが50字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
     }
   ],
   "short_text_retry": {
@@ -19878,7 +19914,6 @@
       "0e6a065233b2d932": "baseline",
       "323f247c66dac3b7": "baseline",
       "39cd6fa98e8c0f6f": "baseline",
-      "454358741d5d990e": "baseline",
       "5242b0a9a92ab49c": "baseline",
       "536f539d104eb80e": "baseline",
       "63e8e09612a89820": "baseline",
@@ -19891,6 +19926,7 @@
       "b0d16b78d77a4b37": "baseline",
       "d20e41732b48ac19": "baseline",
       "d56ce964f320141c": "baseline",
+      "de5d8c3372c230d4": "2026-11-03T17:31:24.877334+00:00",
       "e86d15bb7cc7c06c": "baseline",
       "ebb357b735760a11": "baseline",
       "f515afb7dcdd940d": "baseline"

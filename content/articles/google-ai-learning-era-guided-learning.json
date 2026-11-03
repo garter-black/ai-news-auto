@@ -1,0 +1,139 @@
+{
+  "slug": "google-ai-learning-era-guided-learning",
+  "sourceType": "web",
+  "sourceUrl": "https://blog.google/products-and-platforms/products/education/ai-learning-era-2026/",
+  "sourceName": "Google公式ブログ",
+  "title": "Google、学習支援「Guided Learning」をClassroomで世界提供　検索にも搭載",
+  "seoTitle": "Guided Learningとは？Classroom・検索での使い方",
+  "threadsPost": "教育現場でAIを使う先生や保護者の皆さん、知っておいてほしい話です。\n\n要約すると、GoogleがGuided LearningをClassroomで世界提供します。\n検索にも機能を搭載し、K-12生徒のAI管理も見直します。\n\nお子さんの学習にAIを使うとしたら、何を重視しますか？",
+  "threadsHook": "callout",
+  "threadsStyle": 3,
+  "writingVoice": "explainer",
+  "lede": "Googleは11月3日、学習支援機能「Guided Learning」をGoogle Classroomで世界に提供すると発表しました。検索にも同機能を取り入れ、K-12の生徒アカウントではGeminiなどの管理方針も更新します。Google公式ブログが明らかにしました。",
+  "description": "Googleが学習支援「Guided Learning」をClassroomで世界提供し、検索にも搭載すると発表。K-12生徒向けGeminiなどの管理方針も更新し、教育者向けAI研修も拡大します。",
+  "keywords": [
+    "Guided Learning",
+    "Google Classroom",
+    "Gemini 教育",
+    "Google 検索 学習",
+    "K-12 生徒アカウント",
+    "教育AI",
+    "Google.org 助成",
+    "教員 AI研修"
+  ],
+  "tags": [
+    "生成AI",
+    "Gemini",
+    "Google Classroom",
+    "教育"
+  ],
+  "highlights": [
+    "Guided LearningがClassroomで世界提供となり、検索にも同機能が入る",
+    "K-12生徒アカウントのGemini、Gemini Notebook、Classroom内Gemini、検索の管理方針を更新",
+    "新しい研究とGoogle.orgの資金提供、教育者向けAI研修の拡大も同時に発表"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "limited",
+    "japan": "unknown",
+    "price": "価格は未発表",
+    "free": null,
+    "audience": "教員・学校",
+    "take": "学校や教育関係者は、公式ブログと報告書で対象範囲と管理設定を確認するとよいでしょう。",
+    "judgedAt": "2026-11-03T17:46:23.673450+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "教員や学校のIT担当者は、生徒アカウントのAI管理方針が更新される点を確認するとよいでしょう。",
+      "教育者向けAI研修が拡大されるため、学校や教育関係の仕事をする人は公式の案内を見る価値があります。"
+    ]
+  },
+  "body": "Guided Learningは、AIが答えをそのまま示すのではなく、学ぶ人の理解を進める形で支える学習機能です。Google Classroomは、教員が課題の配布や管理を行う学校向けのサービスです。今回の発表は、AIを学習の場で使うための道具と管理の両方をそろえる内容です。\n\nGoogle公式ブログ「AI in the learning era」によると、発表の柱は3つあります。1つ目はGuided LearningをGoogle Classroomに世界規模で提供することです。2つ目は、Guided Learningの機能をGoogle検索に取り入れることです。3つ目は、K-12の生徒アカウントに対するGemini、Gemini Notebook、Classroom内のGemini、Google検索の管理方法の更新です。\n\n## 検索にも学習の仕組みが入る\n\nこれまでGuided LearningはGeminiの中の機能として紹介されてきました。今回はClassroomで世界提供となり、検索にも機能が入ります。学校の授業で使うサービスと、生徒が調べものをする検索が、同じ学習の考え方でつながります。\n\nサイソクの過去記事によると、検索への搭載は米国の学校で試験が始まっています（[Googleが「Guided Learning」をClassroomで世界提供](/articles/google-guided-learning-classroom-search)、サイソクの過去記事、11/3）。Classroomでの世界提供と検索の提供範囲は別の話なので、分けて見る必要があります。\n\n**K-12生徒のAI利用は管理者の設定が前提に**\n\nGoogleは、K-12の生徒アカウントに対する管理の方針を更新すると説明しています。対象はGemini、Gemini Notebook、Classroom内のGemini、Google検索の4つです。サイソクの過去記事では、これらはK-12の生徒について、管理者が有効にするまでオフになると報じています（サイソクの過去記事、11/3）。\n\n学校の管理者にとっては、生徒にAIをいつ、どの範囲で使わせるかを決める役割が重くなります。個人が自由に使う一般向けのGeminiとは違い、学校では管理者と教員が判断する前提です。\n\n**研究、資金提供、教員研修も同時に**\n\nGoogleは、新しい研究、Google.orgによる新たな資金提供、教育者向けAI研修の拡大も発表しました。詳しい考え方は「AI in Education」報告書にまとめられているとしています。\n\n報告書の抜粋には、学習面のデータや課題への言及があります。たとえば、AIを使う学生が自分の考えを手放してしまう懸念や、指導上の安全策で学習が保たれる可能性などです。ただ、抜粋だけでは数字の条件が分からないため、個々の数値は報告書の原文で確認する必要があります。\n\n## 日本での利用は分けて確認\n\nGeminiアプリは日本で使えます。対応国に日本、対応言語に日本語があります（Google公式ヘルプ、サイソク確認11/3）。NotebookLM（Gemini Notebook）も日本で使えます（Google公式ヘルプ、サイソク確認10/30）。\n\nただし、今回のClassroomでの世界提供や学校向けの管理方針が、日本の学校でいつ、どの形で使えるかはまだ発表されていません。\n\n## まだ分からないこと\n\n- Guided Learningの価格や、Classroomで使えるプランの条件はまだ発表されていません。\n- Classroomでの提供開始日と、日本の学校での提供時期はまだ発表されていません。\n- 検索への搭載が米国以外にいつ広がるかはまだ発表されていません。",
+  "easy": "## ひとことで言うと\n\nGoogleが、AIで学びを助ける機能「Guided Learning」を、学校向けの「Google Classroom」で世界に提供すると発表しました。検索にもこの機能が入ります。\n\n## 子どもが使うときの管理も変わります\n\nK-12（学校に通う年代）の生徒アカウントでは、Geminiなどの管理の考え方を更新します。対象はGemini、Gemini Notebook、Classroom内のGemini、検索です。\n\nGoogleは新しい研究や、Google.orgによる資金提供、教育者向けのAI研修の拡大も発表しました。価格や日本での提供時期は、まだ発表されていません。",
+  "channel": "Google公式ブログ",
+  "channelId": "",
+  "channelSlug": "google-blog-all",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "AI in the learning era",
+  "publishedAt": "2026-11-03T14:00:00+00:00",
+  "generatedAt": "2026-11-03T17:46:23.673437+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/google-ai-learning-era-guided-learning-7ac0c2b5.jpg",
+  "model": "anthropic-api:claude-sonnet-5-5",
+  "affiliates": [],
+  "newsType": "product",
+  "faq": [
+    {
+      "q": "Guided Learningは何が発表されたの？",
+      "a": "Googleは、Guided LearningをGoogle Classroomで世界に提供すると発表しました。あわせてGoogle検索にも同機能を取り入れ、K-12生徒向けの管理方針を更新します。"
+    },
+    {
+      "q": "K-12生徒のAI管理はどう変わる？",
+      "a": "Gemini、Gemini Notebook、Classroom内のGemini、Google検索の管理方針を更新します。サイソクの過去記事では、管理者が有効にするまでオフになると報じています。"
+    },
+    {
+      "q": "Geminiは日本で使える？",
+      "a": "Geminiアプリは日本で使えます。対応国に日本、対応言語に日本語があります（当サイト確認11/3）。今回の学校向け機能の日本提供は未発表です。"
+    },
+    {
+      "q": "Guided Learningの価格はいくら？",
+      "a": "価格はまだ発表されていません。Classroomでの利用条件も、公式ブログの抜粋では示されていません。"
+    }
+  ],
+  "todayActions": [
+    "Google公式ブログの発表ページで、Classroomと検索の提供範囲を確認する",
+    "学校のIT担当者は、生徒アカウントのAI管理設定を管理者画面で確認する",
+    "公式の「AI in Education」報告書を、学校や社内で共有する"
+  ],
+  "relatedSlugs": [
+    "google-guided-learning-classroom-search"
+  ],
+  "qualityScore": 93,
+  "factSources": [
+    {
+      "label": "過去記事",
+      "name": "サイソクの過去記事",
+      "url": "",
+      "checkedAt": "2026-11-03"
+    }
+  ],
+  "sourcePublishedAt": "2026-11-03T14:00:00+00:00",
+  "detectedAt": "2026-11-03T17:31:12+00:00",
+  "sectionsPolishedAt": "2026-11-03T17:47:08+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/google-ai-learning-era-guided-learning-fig1-2e28b6a6.jpg",
+      "width": 1080,
+      "height": 337,
+      "kind": "photo",
+      "credit": "Google",
+      "sourceUrl": "https://blog.google/products-and-platforms/products/education/ai-learning-era-2026/",
+      "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/AILE_collection_hero.max-1080x338.format-webp.webp"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/google-ai-learning-era-guided-learning-fig2-c76edff8.jpg",
+      "width": 998,
+      "height": 312,
+      "kind": "photo",
+      "credit": "Google",
+      "sourceUrl": "https://blog.google/products-and-platforms/products/education/ai-learning-era-2026/",
+      "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/AILE_collection_hero.max-1000x312.format-webp.webp"
+    }
+  ],
+  "imageCredit": {
+    "kind": "official",
+    "org": "Google",
+    "provider": "Google公式ブログ",
+    "sourceUrl": "https://blog.google/products-and-platforms/products/education/ai-learning-era-2026/",
+    "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/AILE_collection_hero.max-1440x810.png",
+    "width": 1200,
+    "height": 375,
+    "at": "2026-11-03T17:47:17+00:00"
+  },
+  "duplicateOf": "google-guided-learning-classroom-search",
+  "duplicateReason": "同じ発信元が同時に出した同じ話題（classroom・guided）"
+}
