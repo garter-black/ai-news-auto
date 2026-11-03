@@ -521,7 +521,7 @@ def summary_of(article: dict) -> str:
     return ("要約すると、" + lede[0]) if lede else ""
 
 
-def build_plan(article: dict, level: str, variant: str, images: list[dict] | None = None, script: dict | None = None) -> SimplePlan:
+def build_plan(article: dict, level: str, variant: str, images: list[dict] | None = None, script: dict | None = None, fewer: bool = False) -> SimplePlan:
     """L3/L4 の計画（描画しない）。images=None なら記事の公式の画像（L4 は1枚まで）。script は L1/L2 が書いた台本（L3 で使う）"""
     rng = RANGES[(level, variant)]
     imgs = official_images(article) if images is None else list(images)
@@ -542,6 +542,8 @@ def build_plan(article: dict, level: str, variant: str, images: list[dict] | Non
     if not beats:
         beats = [b for b in title_beats(article) if not beat_problems(b, article, nums, mat)][:1]
     chosen = choose_beats(beats, hook, ending, rng, variant)
+    if fewer and len(chosen) > 1:  # 作り直し: 場面を半分に（文字が少ないほど見落としが減る）
+        chosen = chosen[: max(1, len(chosen) // 2)]
     if variant == "short" and est_seconds([hook] + [b.speech for b in chosen] + [ending]) > rng[1] - 1.5:
         ending = ENDING_COMPACT  # 最初の場面が長いときは、締めを短く
     if est_seconds([hook] + [b.speech for b in chosen] + [ending]) < rng[0] + 1.5 and origin == "article":
@@ -935,7 +937,7 @@ def build_timeline(plan: SimplePlan, line_times: list[tuple[float, float]], tota
             spr = render_lines(lines, "bold", size, INK, gap=1.3, align="center")
             x = int((SUB[0] + SUB[2] - spr.shape[1]) / 2)
             y = int((SUB[1] + SUB[3] - spr.shape[0]) / 2)
-            items.append(Item("subtitle", c, spr, x, y, c0v, c1, SUB, size, INK, fade=0.1))
+            items.append(Item("subtitle", c, spr, x, y, c0v, c1, SUB, size, INK, fade=0.06 if k else 0.12))
             recs.append({"text": c, "start": round(c0v, 3), "end": round(c1, 3)})
         units.append({"kind": kinds[li], "line": li, "caption": captions[li], "start": round(s, 3), "end": round(e, 3), "chunks": recs})
     # クレジット: 画像の出典は画像を出している間ずっと。最後の場面で声・画像・サイトの1行
@@ -951,7 +953,11 @@ def build_timeline(plan: SimplePlan, line_times: list[tuple[float, float]], tota
     segments = [(seg_t[0], seg_t[1], 0 if plan.images else -1)]
     segments += [(seg_t[i], seg_t[i + 1], plan.beats[i - 1].image) for i in range(1, n + 1)]
     segments += [(end_t0, total, segments[-1][2])]
-    keyframes = [(round((a + b) / 2 + 0.3, 2), sp, cap) for (a, b, _), sp, cap in zip(segments, plan.lines(), captions)]
+    # 見せるコマ: 場面ごとに、いちばん長く出ている字幕の真ん中（字幕の切り替わり・文字の入り途中を避ける）
+    keyframes = []
+    for (a, _b, _), u, sp, cap in zip(segments, units, plan.lines(), captions):
+        c = max(u["chunks"], key=lambda x: x["end"] - x["start"])
+        keyframes.append((round(max((c["start"] + c["end"]) / 2, a + 0.6), 2), sp, cap))
     return Timeline(total, line_times, items, segments, units, list(dict.fromkeys(shown)), keyframes)
 
 
@@ -1124,7 +1130,8 @@ class Renderer:
             if not (it.t0 - 1e-6 <= t < it.t1):
                 continue
             a_in = 1.0 if it.fade <= 0 else ease((t - it.t0) / it.fade)
-            a_out = 1.0 if it.fade <= 0 or it.role in ("logo",) else ease((it.t1 - t) / 0.2)
+            # 字幕は消えるときにうすくしない（次の字幕へそのまま替える。うすい文字のコマを作らない）
+            a_out = 1.0 if it.fade <= 0 or it.role in ("logo", "subtitle") else ease((it.t1 - t) / 0.2)
             alpha = min(a_in, a_out)
             dx = int(-it.slide * (1 - a_in))
             blend(out, it.sprite, it.x + dx, it.y, alpha)
@@ -1439,7 +1446,7 @@ def finish_gate(mp4: Path, report: dict, article: dict, profile: str) -> dict:
 
 def make_simple(slug: str, level: str, variant: str, out_dir: Path, article: dict, tts="voicevox", profile: str | None = None,
                 images: list[dict] | None = None, script: dict | None = None, fps: int = FPS, out_scale: float = 1.0,
-                pictures: dict | None = None, workers: int | None = None) -> tuple[dict, "Timeline | None", "SimplePlan"]:
+                pictures: dict | None = None, workers: int | None = None, fewer: bool = False) -> tuple[dict, "Timeline | None", "SimplePlan"]:
     """L3/L4 の1本: 計画 → 検査 → 声 → 描画 → ゲート（vision はあとで）。例外は投げず report に残す。
     pictures: {url: 手元のパス}（テスト用。無ければダウンロード）"""
     t_start = time.time()
@@ -1447,7 +1454,7 @@ def make_simple(slug: str, level: str, variant: str, out_dir: Path, article: dic
     name = f"{slug}__v3" + ("short" if variant == "short" else "")
     mp4 = out_dir / f"{name}.mp4"
     mp4.unlink(missing_ok=True)
-    plan = build_plan(article, level, variant, images=images, script=script)
+    plan = build_plan(article, level, variant, images=images, script=script, fewer=fewer)
     report: dict = {"slug": slug, "version": f"ladder-{level}", "design": f"ladder-{level}", "level": level, "variant": variant,
                     "design_name": "公式の画像と字幕" if level == "L3" else "要点と声", "errors": [], "pages": [], "frame": [W, H],
                     "layout": "landscape", "safe": list(SAFE), "fonts": [FONT_FAMILY, LOGO_FAMILY], "length_range": list(plan.length_range)}  # fmt: skip
@@ -1460,7 +1467,7 @@ def make_simple(slug: str, level: str, variant: str, out_dir: Path, article: dic
             if path:
                 got.append({**img, "path": path})
         if len(got) != len(plan.images):
-            plan = build_plan(article, level, variant, images=[{k: v for k, v in g.items() if k != "path"} for g in got], script=script)
+            plan = build_plan(article, level, variant, images=[{k: v for k, v in g.items() if k != "path"} for g in got], script=script, fewer=fewer)
         if level == "L3" and not got:
             raise RuntimeError("公式の画像を取れない（L3 は写真・図が要る）")
         report["plan_problems"] = plan_problems(plan, article)
@@ -1568,11 +1575,11 @@ def review_versions(level: str, made: dict, article: dict, work: Path, reviewer=
 
 
 def run_simple(level: str, slug: str, out_dir: Path, need: list[str], article: dict, tts="voicevox", profile: str | None = None,
-               script: dict | None = None, reviewer=None, text_only: bool = False, **kw) -> dict:
-    """L3/L4 を版ごとに作って検査する。戻り値 {版: report}"""
+               script: dict | None = None, reviewer=None, text_only: bool = False, fewer: bool = False, **kw) -> dict:
+    """L3/L4 を版ごとに作って検査する。戻り値 {版: report}。fewer: 場面を減らした作り直し（L4 の2回目）"""
     made = {}
     for v in need:
-        rep, tl, plan = make_simple(slug, level, v, out_dir, article, tts=tts, profile=profile, images=[] if text_only else None, script=script, **kw)
+        rep, tl, plan = make_simple(slug, level, v, out_dir, article, tts=tts, profile=profile, images=[] if text_only else None, script=script, fewer=fewer, **kw)
         rep["_mp4"] = str(out_dir / f"{slug}__v3{'short' if v == 'short' else ''}.mp4")
         made[v] = (rep, tl, plan)
     review_versions(level, made, article, out_dir / "_frames", reviewer=reviewer)
@@ -1777,7 +1784,7 @@ def make_versions(slug: str, out_dir: Path, deadline_s: float = DEADLINE_S, tts:
         if level == "L4":
             # L4 の写真つきが落ちた版は、写真なし（文字とブランドのカード）でもう1回
             need2 = [v for v in need if not got.get(v)]
-            if need2 and official_images(a) and (runners is None or "L4text" in runners):
+            if need2 and (runners is None or "L4text" in runners):
                 st = clock()
                 dir2 = root / "L4text"
                 dir2.mkdir(parents=True, exist_ok=True)
@@ -1791,7 +1798,7 @@ def make_versions(slug: str, out_dir: Path, deadline_s: float = DEADLINE_S, tts:
                         last[v] = rep
                     if got2[v]:
                         chosen[v] = ("L4", rep, mp4)
-                ladder.append({"level": "L4", "mode": "text", "ok": all(got2.values()), "seconds": round(clock() - st, 1), "variants": got2,
+                ladder.append({"level": "L4", "mode": "text" if official_images(a) else "fewer", "ok": all(got2.values()), "seconds": round(clock() - st, 1), "variants": got2,
                                "reasons": ([err2] if err2 else []) + [f"{v}: {x}" for v in need2 if not got2.get(v) for x in ((last.get(v) or {}).get("gate") or {}).get("reasons", [])[:3]]})  # fmt: skip
     out = {}
     total_s = round(clock() - t0, 1)
@@ -1842,6 +1849,8 @@ def run_level(level: str, slug: str, level_dir: Path, need: list[str], a: dict, 
         if level == "L3":
             script = latest_script([root / "L2", root / "L1"], slug)
             return run_simple("L3", slug, level_dir, need, a, tts=tts, profile=profile, script=script, reviewer=reviewer, **kw), ""
+        if level == "L4text" and not official_images(a):  # 写真がもともと無い: 同じ割り付けで、場面を少なくしてもう1回
+            return run_simple("L4", slug, level_dir, need, a, tts=tts, profile=profile, reviewer=reviewer, text_only=True, fewer=True, **kw), ""
         return run_simple("L4", slug, level_dir, need, a, tts=tts, profile=profile, reviewer=reviewer, text_only=(level == "L4text"), **kw), ""
     except Exception as error:  # noqa: BLE001
         return None, f"{type(error).__name__}: {error}"

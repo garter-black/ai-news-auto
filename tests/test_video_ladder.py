@@ -198,6 +198,16 @@ class LadderOrderTest(unittest.TestCase):
         self.assertIn("キーワード「5倍」", seen["note"])
         self.assertIs(v3.write_script, orig)
 
+    def test_l4_is_retried_once_when_it_fails(self):
+        self.a["imageCredit"] = {"kind": "ai"}  # 写真なし → 同じ割り付けで場面を減らしてもう1回
+        calls: list = []
+        runners = {k: fake_runner(k, {}, calls) for k in vl.LEVELS}
+        runners["L4text"] = fake_runner("L4text", {"full": True}, calls)
+        out = self.run_ladder(runners)
+        self.assertEqual([c[0] for c in calls], ["L1", "L2", "L4", "L4text"])
+        self.assertEqual(out["full"]["level"], "L4")
+        self.assertEqual(out["full"]["ladder"][-1]["mode"], "fewer")
+
     def test_all_levels_fail_returns_failure_report(self):
         calls: list = []
         runners = {k: fake_runner(k, {}, calls) for k in vl.LEVELS}
