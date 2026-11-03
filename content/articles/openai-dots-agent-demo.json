@@ -1,6 +1,6 @@
 {
   "slug": "openai-dots-agent-demo",
-  "title": "OpenAI、自律型AIエージェント「dots」のデモ動画を公開。旅行予約からSlack連携、不具合分析までマルチタスクを実演",
+  "title": "OpenAI、AIエージェント「dots」の再デモ動画を公開　旅行予約やSlack連携を実演",
   "lede": "OpenAIは、常に稼働してユーザーの業務を自律的に代行する新しいAIエージェント「dots（ドッツ）」の実機デモ動画を公開しました。前日の発表デモのトラブルを受け、編集やフィルターなしの「テイク2」として公開された本動画では、フライトやホテルの手配といったプライベートなタスクから、SlackやGitHub、Linearと連携した高度なソフトウェア開発のフィードバック分析まで、dotsがシームレスにマルチタスクをこなす様子が実演されています。",
   "description": "OpenAIが公開した自律型AIエージェント「dots」の実機デモ動画を徹底解説。音声通話による旅行予約、LAの渋滞予測から導く最適なフライト提案、SlackやGitHubと連携した不具合分析ワークフローの自動構築など、実用的なエージェント機能の全貌を明らかにします。",
   "keywords": [
@@ -92,7 +92,7 @@
   "thumbnail": "https://i.ytimg.com/vi/fHEIw5CcN5U/maxresdefault.jpg",
   "model": "gemini-3.5-flash",
   "affiliates": [],
-  "seoTitle": "OpenAI「dots」デモ｜旅行予約からSlack連携までマルチタスク",
+  "seoTitle": "OpenAI「dots」デモ　旅行予約からSlack連携まで実演",
   "verdict": {
     "status": "limited",
     "japan": "unknown",
@@ -103,5 +103,7 @@
     "judgedAt": "2026-10-31T03:40:00+00:00"
   },
   "easy": "## ひとことで言うと\nOpenAIのdotは、頼んだ仕事を進めるAIです。動画では、旅行の段取りや仕事の情報整理を実演しています。\n\n## 動画で何をした？\n- 出張先への到着時刻や会社のルールを考えながら、フライトやホテルの候補を調べました。\n- Slackなどの仕事の情報を整理し、不具合の報告をまとめました。\n\nこれは実演の紹介です。実際に使える連携先や操作は、契約や地域によって異なります。\n\n## 今は使える？\nOpenAIの公式ヘルプによると、対象地域の18歳以上のChatGPT Pro利用者や対象のBusiness Premium利用者に段階的に提供されています。Enterpriseなどでは管理者による設定が必要です。最初の1体は対象プランに含まれ、深い作業には利用枠があります。\n\nChatGPTのアプリやデスクトップ版で案内を確認してください。購入や連絡を任せる場合は、実行前の確認設定を確かめましょう。\n\n[OpenAI公式の利用条件と設定方法](https://help.openai.com/en/articles/20001530-getting-started-with-your-dot)（2026年10月31日確認）",
-  "updatedAt": "2026-10-31T03:40:00+00:00"
+  "updatedAt": "2026-10-31T03:40:00+00:00",
+  "originalTitle": "OpenAI、自律型AIエージェント「dots」のデモ動画を公開。旅行予約からSlack連携、不具合分析までマルチタスクを実演",
+  "titleStyle": "2026-11-03"
 }

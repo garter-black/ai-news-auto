@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://corp.rakuten.co.jp/news/press/2026/1102_02.html",
   "sourceName": "楽天グループ プレスリリース",
-  "title": "楽天証券の総合口座が1,500万を突破、国内単体で最多に",
-  "seoTitle": "楽天証券、総合口座数1,500万口座を突破",
+  "title": "楽天証券、総合口座数が1,500万を突破　国内証券会社の単体で最多",
+  "seoTitle": "楽天証券、総合口座数1,500万口座を突破　約7カ月で100万増",
   "threadsPost": "楽天証券の総合口座数が、国内単体で最多となる1,500万口座を突破しました。\n2026年4月の1,400万口座到達から、約7カ月で100万口座増となっています。\n記念のXキャンペーンも2026年11月20日まで実施中です。",
   "threadsHook": "number",
   "threadsStyle": 2,
@@ -118,5 +118,7 @@
         "url": "https://corp.rakuten.co.jp/news/press/2026/1102_02.html"
       }
     }
-  ]
+  ],
+  "originalTitle": "楽天証券の総合口座が1,500万を突破、国内単体で最多に",
+  "titleStyle": "2026-11-03"
 }

@@ -1,7 +1,7 @@
 {
   "slug": "openai-refutes-exponential-time-hypothesis",
-  "title": "OpenAIが計算機科学の常識を覆す論文を発表　指数時間仮説を否定か",
-  "seoTitle": "OpenAIの指数時間仮説否定とは？3-SAT問題と計算機科学の進展",
+  "title": "OpenAI、指数時間仮説を否定する論文を公開　3-SAT問題の高速解法を提示",
+  "seoTitle": "OpenAIの指数時間仮説否定論文：3-SAT問題の高速化とは",
   "threadsPost": "「計算に何京年もかかる」と諦められていた数学の超難問に、大きな展開がありました。\n\nChatGPTのOpenAIが、計算機科学の根幹である「指数時間仮説」を否定する論文を公開したんです。\n\nこれが本当なら、物流や薬学などの最適化問題が劇的に速く解ける未来が来るかもしれません。",
   "threadsHook": "contrarian",
   "threadsStyle": 2,
@@ -98,5 +98,6 @@
     "ar": 1.7778,
     "src": "https://i.ytimg.com/vi/CWdTBLsbaQs/maxresdefault.jpg"
   },
-  "originalTitle": "ChatGPTのOpenAIが計算機科学の常識を覆す論文を発表　指数時間仮説を否定か"
+  "originalTitle": "ChatGPTのOpenAIが計算機科学の常識を覆す論文を発表　指数時間仮説を否定か",
+  "titleStyle": "2026-11-03"
 }

@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://jp.toyota-racing-newsroom.com/blog/wec/artikel/6-hours-of-monza-preview/text",
   "sourceName": "トヨタ自動車 グローバルニュースルーム",
-  "title": "トヨタのWECチーム、モンツァ6時間レースで2026年最終戦へ　両チャンピオン獲得に挑む",
-  "seoTitle": "トヨタWECチーム、モンツァ6時間レースで最終戦へ　2026",
+  "title": "トヨタのWECチーム、11月8日のモンツァ6時間で最終戦　ドライバーズ王座を争う",
+  "seoTitle": "トヨタWECチーム、モンツァ6時間で最終戦　2026年王座の行方",
   "threadsPost": "【速報】トヨタのWECチームが、11月8日のモンツァ6時間レースで2026年シーズンの最終戦を迎えます。すでにマニュファクチャラーズチャンピオンシップ獲得を決めており、8号車と7号車のどちらがドライバーズタイトルを手にするのか注目が集まります。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -70,5 +70,7 @@
     "provider": "Cloudflare Workers AI",
     "noProduct": true,
     "at": "2026-11-03T08:25:03+00:00"
-  }
+  },
+  "originalTitle": "トヨタのWECチーム、モンツァ6時間レースで2026年最終戦へ　両チャンピオン獲得に挑む",
+  "titleStyle": "2026-11-03"
 }

@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://openai.com/index/updated-model-spec",
   "sourceName": "OpenAI公式ブログ",
-  "title": "OpenAIがAIの行動指針「モデルスペック」を全面改定　行動理念を5つの価値観に整理",
-  "seoTitle": "OpenAIモデルスペック改定とは？新しい5つの価値観と背景",
+  "title": "OpenAI、AIの行動指針「モデルスペック」を全面改定　5つの価値観を軸に再整理",
+  "seoTitle": "OpenAIモデルスペック改定とは？5つの価値観と変更点",
   "threadsPost": "OpenAIが、AIの行動指針である「モデルスペック」を公開から大きく更新しました。人間の意図への忠実さや危害の最小化など、5つのコアな価値観にガイドラインを再整理し、詳細なスタイル指定を廃止して柔軟な対応を重視する方針へ舵を切っています。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -68,5 +68,6 @@
     "provider": "Cloudflare Workers AI",
     "at": "2026-10-29T18:19:32+00:00"
   },
-  "originalTitle": "ChatGPTのOpenAIがAIの行動指針「モデルスペック」を全面改定　行動理念を5つの価値観に整理"
+  "originalTitle": "ChatGPTのOpenAIがAIの行動指針「モデルスペック」を全面改定　行動理念を5つの価値観に整理",
+  "titleStyle": "2026-11-03"
 }

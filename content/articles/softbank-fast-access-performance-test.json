@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.softbank.jp/sbnews/entry/20261027_01",
   "sourceName": "ソフトバンクニュース",
-  "title": "ソフトバンクの「Fast Access」は混雑エリアで本当に速い？実測で検証",
-  "seoTitle": "ソフトバンクFast Access｜混雑時の通信速度を検証",
+  "title": "ソフトバンク、混雑時の通信サービス「Fast Access」を実測検証　アプリDLは20秒短縮",
+  "seoTitle": "ソフトバンクFast Access　混雑時の通信速度を検証",
   "threadsPost": "混雑した場所でスマホが繋がりにくい、そんな経験ありませんか？ソフトバンクの「Fast Access」は、混雑エリアでも優先的に電波を割り当てるサービスです。実際に人混みで使ってみた結果、動画のアップロードなどで明確な差が出ました。✅ 混雑時でも動画アップロードが19秒短縮✅ 追加料金なしで対象プランなら自動適用。混雑時の通信に悩む人は要チェックです。詳細は記事で👇",
   "threadsHook": "empathy",
   "writingVoice": "explainer",
@@ -66,5 +66,7 @@
     "width": 1200,
     "height": 800,
     "at": "2026-11-02T03:54:56+00:00"
-  }
+  },
+  "originalTitle": "ソフトバンクの「Fast Access」は混雑エリアで本当に速い？実測で検証",
+  "titleStyle": "2026-11-03"
 }

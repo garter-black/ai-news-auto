@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://openai.com/index/lifeval",
   "sourceName": "OpenAI公式ブログ",
-  "title": "OpenAIが生活の用事をこなす力を測る新テスト「LifeVal」を公開",
-  "seoTitle": "LifeValとは？OpenAIの日常タスク評価　日本で使える？",
+  "title": "OpenAI、日常の用事をこなす力を測る評価「LifeVal」を公開",
+  "seoTitle": "LifeValとは？OpenAIが公開した日常タスク評価の中身",
   "threadsPost": "AIのテスト問題が、勉強から生活に変わりました。\n\n要約すると、ChatGPTのOpenAIが日常の用事を測る評価「LifeVal」を公開しました。\n幼稚園選びなど5例のスコアは、90.4%から100%です。\n\nあなたがAIに任せたい生活の用事は何ですか？",
   "threadsHook": "contrarian",
   "threadsStyle": 3,
@@ -115,5 +115,6 @@
     "ar": 1.3433,
     "src": "https://ai-tech-express.jp/img/openai-lifeval-everyday-tasks-d10e2fc5.jpg"
   },
-  "originalTitle": "ChatGPTのOpenAIが生活の用事をこなす力を測る新テスト「LifeVal」を公開"
+  "originalTitle": "ChatGPTのOpenAIが生活の用事をこなす力を測る新テスト「LifeVal」を公開",
+  "titleStyle": "2026-11-03"
 }

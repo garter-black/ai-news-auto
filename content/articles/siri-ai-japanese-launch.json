@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/siri-ai-is-available-today-in-more-languages/",
   "sourceName": "Apple Newsroom（日本）",
-  "title": "iPhoneのSiriが生まれ変わる「Siri AI」　日本語でも提供開始、画面や写真も理解",
+  "title": "Apple、新しい「Siri AI」を日本語で提供開始　画面や写真の内容も理解",
   "seoTitle": "Siri AIとは？日本語対応の使い方と提供状況",
   "threadsPost": "先に言うと、Siriの新バージョンが日本語で使えます。\nAppleが作り直した「Siri AI」が、27.2のアップデートで日本語にも対応しました。\nメールや写真から探したり、画面を見て予定を入れたり。\nただしベータ版で、1日の使用回数に制限があります。",
   "threadsHook": "conclusion",
@@ -81,5 +81,7 @@
     "query": "スマートフォン",
     "original": "https://www.apple.com/newsroom/images/2026/10/siri-ai-is-available-today-in-more-languages/article/Apple-Siri-AI-rich-conversations-with-Siri-JP_big.jpg.small_2x.jpg",
     "at": "2026-10-28T05:37:49+00:00"
-  }
+  },
+  "originalTitle": "iPhoneのSiriが生まれ変わる「Siri AI」　日本語でも提供開始、画面や写真も理解",
+  "titleStyle": "2026-11-03"
 }

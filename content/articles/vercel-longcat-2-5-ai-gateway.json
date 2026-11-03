@@ -4,7 +4,7 @@
   "sourceUrl": "https://vercel.com/changelog/longcat-2-5-now-available-on-ai-gateway",
   "sourceName": "Vercel Changelog",
   "title": "VercelがMeituanのLongCat 2.5をAI Gatewayで提供開始　画像入力対応",
-  "seoTitle": "LongCat 2.5とは？AI Gatewayで使える・料金",
+  "seoTitle": "LongCat 2.5がAI Gatewayで利用可能に　料金と対応機能",
   "threadsPost": "AI活用、料金だけは要確認です。\n\n要約すると、\nVercelがMeituanのLongCat 2.5をAI Gatewayで提供開始しました。\n画像入力と1Mトークンのコンテキストが利用可能です。\n\n自社の開発フローに画像対応AIを入れますか？",
   "threadsHook": "caution",
   "threadsStyle": 3,
@@ -134,5 +134,6 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/vercel-longcat-2-5-ai-gateway-99384b12.jpg"
-  }
+  },
+  "titleStyle": "2026-11-03"
 }

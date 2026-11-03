@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://news.mynavi.jp/techplus/article/20261103-5248905/",
   "sourceName": "マイナビニュース",
-  "title": "法人向けオンライン保存「セキュアSAMBA」、Mac用アプリ提供開始　Finderで直接編集",
-  "seoTitle": "セキュアSAMBAのMac向けアプリとは？料金と始め方",
+  "title": "kubell、法人向けストレージ「セキュアSAMBA」にMac用アプリ　Finderから直接編集",
+  "seoTitle": "セキュアSAMBAのMac向けアプリ　Finderで直接編集、追加料金なし",
   "threadsPost": "Macだけ毎回ダウンロードし直す手間、地味に面倒でした。\n\n要約すると、法人向けの国産クラウド保存「セキュアSAMBA」がMac用アプリを出しました。\nFinderで開いて保存すれば、自動でクラウドに反映されます。\n\nあなたの職場、WindowsとMacが混在していますか？",
   "threadsHook": "empathy",
   "threadsStyle": 3,
@@ -132,5 +132,7 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/secure-samba-mac-drive-app-a620cc14.jpg"
-  }
+  },
+  "originalTitle": "法人向けオンライン保存「セキュアSAMBA」、Mac用アプリ提供開始　Finderで直接編集",
+  "titleStyle": "2026-11-03"
 }

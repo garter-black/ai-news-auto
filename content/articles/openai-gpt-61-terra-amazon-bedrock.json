@@ -4,7 +4,7 @@
   "sourceUrl": "https://aws.amazon.com/jp/blogs/news/weekly-genai-20261026/",
   "sourceName": "AWS ブログ（日本）",
   "title": "OpenAIの新AIモデル「GPT-6.1 Terra」Amazon Bedrockで提供開始　料金は半分、パソコン操作も得意に",
-  "seoTitle": "GPT-6.1 Terraとは？料金や使い方と日本での提供状況",
+  "seoTitle": "GPT-6.1 Terraとは？Bedrockでの料金と特徴を解説",
   "threadsPost": "OpenAIの新しいAIモデル「GPT-6.1 Terra」がAmazon Bedrockで一般提供となりました。料金は前モデルより50%以上安くなり、視覚推論やパソコン操作の能力が向上しています。日常的な業務効率化に活用できるモデルです。",
   "threadsHook": "number",
   "threadsStyle": 2,
@@ -80,5 +80,6 @@
     ],
     "ar": 1.9048,
     "src": "https://ai-tech-express.jp/img/openai-gpt-61-terra-amazon-bedrock-d9060bb8.jpg"
-  }
+  },
+  "titleStyle": "2026-11-03"
 }

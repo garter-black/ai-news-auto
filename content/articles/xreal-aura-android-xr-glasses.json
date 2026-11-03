@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://blog.google/products-and-platforms/platforms/android/xreal-aura/",
   "sourceName": "Google公式ブログ（Gemini）",
-  "title": "GoogleのAndroid XR搭載メガネ「XREAL AURA」登場　空間コンピューティングが身近に",
-  "seoTitle": "XREAL AURAとは？日本発売日と価格　Android XR搭載メガネ",
+  "title": "XREAL、Android XR搭載メガネ「XREAL AURA」を11月27日に発売　22万9800円から",
+  "seoTitle": "XREAL AURAの発売日と価格　Android XR搭載メガネ",
   "threadsPost": "ついに来た。GoogleのAndroid XRを初めて搭載したメガネ型端末『XREAL AURA』が発表されました。\n重さは約95gと軽量で、米国や韓国などで本日注文受付開始。日本でも11月2日に発売されます。\n価格は1099米ドルからとなっています。",
   "threadsHook": "finally",
   "threadsStyle": 2,
@@ -126,5 +126,7 @@
     ],
     "ar": 1.7778,
     "src": "https://ai-tech-express.jp/img/xreal-aura-android-xr-glasses-a30cb9e7.jpg"
-  }
+  },
+  "originalTitle": "GoogleのAndroid XR搭載メガネ「XREAL AURA」登場　空間コンピューティングが身近に",
+  "titleStyle": "2026-11-03"
 }

@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102903",
   "sourceName": "東京都",
-  "title": "東京都、地域中小企業の事業変革を後押しする4つの企業グループを決定　令和10年1月まで専門家が伴走支援",
-  "seoTitle": "東京都地域企業グループチャレンジ促進事業、4グループ決定",
+  "title": "東京都、地域企業グループチャレンジ促進事業で4グループを決定　令和10年1月まで伴走支援",
+  "seoTitle": "東京都の地域企業グループチャレンジ促進事業　4グループ決定",
   "threadsPost": "東京都が、地域の中小企業が連携して新規事業に挑む「地域企業グループチャレンジ促進事業」で4つのグループを決定しました。\n令和10年1月頃までコンサルタントが専門的にサポートし、製造業の課題解決提案への転換や手術器械の国産化などを目指します。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -68,5 +68,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.metro.tokyo.lg.jp/documents/45925314/275047626/20261029_09_06.png/fd9d6519-e645-a091-6b2e-9cb3e50ad2b0?version=1.0&t=1793237715354&imagePreview=1",
     "at": "2026-10-29T18:18:27+00:00"
-  }
+  },
+  "originalTitle": "東京都、地域中小企業の事業変革を後押しする4つの企業グループを決定　令和10年1月まで専門家が伴走支援",
+  "titleStyle": "2026-11-03"
 }

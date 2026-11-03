@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.salesforce.com/jp/news/stories/japan-claudeforce-and-slackforce-domo/",
   "sourceName": "Salesforce ニュース（日本）",
-  "title": "Salesforceが「AIforce」発表　ClaudeやSlackから業務アプリを直接操作へ",
-  "seoTitle": "Salesforce AIforceとは？ClaudeやSlackからの使い方と日本での提供状況",
+  "title": "Salesforce、新基盤「AIforce」を発表　ClaudeやSlackから業務アプリを直接操作",
+  "seoTitle": "Salesforce AIforceとは？ClaudeやSlackからの使い方",
   "threadsPost": "結論：Salesforceを開かなくても、いつも使うClaudeやSlackから業務を進められる「AIforce」が発表されました。新しい権限設定や面倒な開発は不要で、管理者がつなげば初日からチームで使えます。",
   "threadsHook": "conclusion",
   "threadsStyle": 2,
@@ -71,5 +71,7 @@
     "width": 1200,
     "height": 675,
     "at": "2026-11-02T03:53:02+00:00"
-  }
+  },
+  "originalTitle": "Salesforceが「AIforce」発表　ClaudeやSlackから業務アプリを直接操作へ",
+  "titleStyle": "2026-11-03"
 }

@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.tsr-net.co.jp/data/detail/1203379_1527.html",
   "sourceName": "東京商工リサーチ",
-  "title": "医薬品卸売業の売上17兆円目前、大手29社で8割超のシェアを占める二極化が加速",
-  "seoTitle": "医薬品卸売業の業績調査　売上17兆円目前で二極化が加速",
+  "title": "医薬品卸の2025年度売上は16.8兆円　大手29社が売上の83.5％を占める",
+  "seoTitle": "医薬品卸売業の業績調査：売上16.8兆円と二極化の実態",
   "threadsPost": "医薬品卸売業の売上が17兆円に迫っています。大手29社で市場の8割以上を占めており、規模の大きな企業への集約がさらに進んでいる状況です。一方で中小規模の企業は採算が悪化しており、業界内での二極化が鮮明になっています。",
   "threadsHook": "number",
   "threadsStyle": 2,
@@ -61,5 +61,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.tsr-net.co.jp/data/detail/__icsFiles/afieldfile/2026/10/27/johoserviceperformance1.png",
     "at": "2026-10-28T04:12:23+00:00"
-  }
+  },
+  "originalTitle": "医薬品卸売業の売上17兆円目前、大手29社で8割超のシェアを占める二極化が加速",
+  "titleStyle": "2026-11-03"
 }

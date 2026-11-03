@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://openai.com/index/openai-servicenow-partnership-expansion",
   "sourceName": "OpenAI公式ブログ",
-  "title": "OpenAIがServiceNowと提携拡大　業務プロセスの自動化を強化",
-  "seoTitle": "OpenAIとServiceNow提携拡大とは？ChatGPT連携機能と提供時期",
+  "title": "OpenAIとServiceNowが提携拡大　ChatGPTから業務ワークフローを直接操作",
+  "seoTitle": "OpenAIとServiceNowの提携拡大　ChatGPT連携の内容",
   "threadsPost": "【速報】OpenAIがServiceNowとのパートナーシップ拡大を発表。ChatGPT上でITインシデントの調査や業務データの更新が直接行えるようになり、企業向けワークフローの自動化が進みます。MCPプラグインは本日から利用可能に。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -74,5 +74,6 @@
     "query": "office workspace",
     "at": "2026-10-28T20:33:22+00:00"
   },
-  "originalTitle": "ChatGPTのOpenAIがServiceNowと提携拡大　業務プロセスの自動化を強化"
+  "originalTitle": "ChatGPTのOpenAIがServiceNowと提携拡大　業務プロセスの自動化を強化",
+  "titleStyle": "2026-11-03"
 }

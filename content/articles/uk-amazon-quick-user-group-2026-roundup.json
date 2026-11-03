@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/blogs/machine-learning/how-the-uk-amazon-quick-user-group-grew-in-2026/",
   "sourceName": "AWS Machine Learning Blog",
-  "title": "AWSの対話型AI「Amazon Quick」英国ユーザー会、1年間の軌跡と自動化の成果を公開",
-  "seoTitle": "Amazon Quick英国ユーザー会2026年まとめ　自動化とAI活用の成果",
+  "title": "AWS「Amazon Quick」の英国ユーザー会が年間まとめを公開　3回の会合に150人超が参加",
+  "seoTitle": "Amazon Quick英国ユーザー会の2026年まとめ　自動化の成果",
   "threadsPost": "【速報】AWSの対話型AI『Amazon Quick』の英国ユーザーグループが、2026年の年間まとめを発表しました。3回のミートアップを通じ、ノーコードでのエージェント作成や業務自動化の事例が共有され、参加者の実践的なつながりが強まっています。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -71,5 +71,7 @@
     "width": 1200,
     "height": 900,
     "at": "2026-11-02T03:46:57+00:00"
-  }
+  },
+  "originalTitle": "AWSの対話型AI「Amazon Quick」英国ユーザー会、1年間の軌跡と自動化の成果を公開",
+  "titleStyle": "2026-11-03"
 }

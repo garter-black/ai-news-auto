@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://global.toyota/jp/company/profile/production-sales-figures/202609.html",
   "sourceName": "トヨタ自動車 グローバルニュースルーム",
-  "title": "トヨタ自動車、2026年度上半期の販売・生産・輸出実績を発表　グローバルでの動向を整理",
-  "seoTitle": "トヨタ自動車：2026年度上半期の販売・生産・輸出実績まとめ",
+  "title": "トヨタ、2026年度上半期の販売・生産・輸出実績を発表　ダイハツ含むグループ全体",
+  "seoTitle": "トヨタ2026年度上半期の販売・生産・輸出実績",
   "threadsPost": "トヨタ自動車が2026年度上半期の販売・生産・輸出実績を発表しました。グローバルでの販売状況や生産台数など、最新の数字をまとめています。トヨタの現在の動きを把握しておきたい方は、ぜひチェックしてみてください。",
   "threadsHook": "future",
   "threadsStyle": 2,
@@ -65,5 +65,7 @@
     "query": "shipping containers",
     "original": "https://global.toyota/pages/_system/image/tmb_corporate.png",
     "at": "2026-10-29T05:13:33+00:00"
-  }
+  },
+  "originalTitle": "トヨタ自動車、2026年度上半期の販売・生産・輸出実績を発表　グローバルでの動向を整理",
+  "titleStyle": "2026-11-03"
 }

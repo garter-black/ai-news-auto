@@ -1,7 +1,7 @@
 {
   "slug": "openai-legora-legal-ai-agent",
-  "title": "OpenAIが紹介する法律AI「Legora」とは？　契約業務90%削減の実力",
-  "seoTitle": "Legoraとは？使い方と料金　OpenAI活用の法律AI",
+  "title": "OpenAI、法務AI「Legora」の導入事例を公開　契約締結の所要時間を90%削減",
+  "seoTitle": "Legoraとは？OpenAI活用の法務AIと導入効果",
   "threadsPost": "契約書の確認、1本ずつ手作業でやっていませんか？\n\nChatGPTのOpenAIが、法律AI「Legora」の活用事例を公開しました。\n\n大企業で契約にかかる時間を90%削減し、弁護士1人あたり週9.5時間を創出。法律業務の働き方が大きく変わりそうです。",
   "threadsHook": "question",
   "threadsStyle": 2,
@@ -91,5 +91,6 @@
   "thumbnail": "https://i.ytimg.com/vi/UOfmD1fY-i8/maxresdefault.jpg",
   "model": "gemini-3.6-flash",
   "affiliates": [],
-  "originalTitle": "ChatGPTのOpenAIが紹介する法律AI「Legora」とは？　契約業務90%削減の実力"
+  "originalTitle": "ChatGPTのOpenAIが紹介する法律AI「Legora」とは？　契約業務90%削減の実力",
+  "titleStyle": "2026-11-03"
 }

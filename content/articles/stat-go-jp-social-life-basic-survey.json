@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.stat.go.jp/info/today/pdf/210.pdf",
   "sourceName": "総務省統計局",
-  "title": "総務省の社会生活基本調査から紐解く、日本人の時間の使い方と生活の変化",
-  "seoTitle": "総務省統計局　社会生活基本調査から分かること解説",
+  "title": "総務省統計局が「統計Today」第210号を公開　社会生活基本調査の読み方を解説",
+  "seoTitle": "社会生活基本調査とは？日本人の時間の使い方を総務省が解説",
   "threadsPost": "【速報】総務省統計局が「社会生活基本調査から分かること」を公表。日本人の時間の使い方や生活スタイルの変化が明らかに。ふだんの暮らしや仕事との向き合い方を見直すきっかけに。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -64,5 +64,7 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Commuting_-_Sony_A7R_(12791580764).jpg",
     "query": "commuting train japan",
     "at": "2026-10-30T05:16:19+00:00"
-  }
+  },
+  "originalTitle": "総務省の社会生活基本調査から紐解く、日本人の時間の使い方と生活の変化",
+  "titleStyle": "2026-11-03"
 }

@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://news.samsung.com/global/video-inside-the-tech-samsung-micro-rgb-tv",
   "sourceName": "Samsung Newsroom（グローバル）",
-  "title": "サムスンのMicro RGB TVが登場　100µm以下のLEDで色精度向上とAI映像最適化",
+  "title": "サムスン、100µm未満のLEDを使う「Micro RGB TV」を発表　AIが映像を自動で最適化",
   "seoTitle": "サムスンMicro RGB TVとは？特徴と日本での提供状況",
   "threadsPost": "リビングのテレビ、画質で不満ありませんか？\n\n要約すると、サムスンがMicro RGB TVを発表しました。\n微細LEDとAIで映像がより鮮やかに。\n\nあなたのリビングで、映像体験を変えてみませんか？",
   "threadsHook": "question",
@@ -117,5 +117,7 @@
     ],
     "ar": 1.7786,
     "src": "https://ai-tech-express.jp/img/samsung-micro-rgb-tv-announcement-a7cb5a52.jpg"
-  }
+  },
+  "originalTitle": "サムスンのMicro RGB TVが登場　100µm以下のLEDで色精度向上とAI映像最適化",
+  "titleStyle": "2026-11-03"
 }

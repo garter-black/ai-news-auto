@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://openai.com/index/qodo-codex-plugin",
   "sourceName": "OpenAI公式ブログ",
-  "title": "AIコード点検のQodoがCodex向けプラグイン　書いた直後にバグを指摘",
+  "title": "Qodo、AIコーディングツール「Codex」向けプラグインを公開　書き終えた直後にコードを点検",
   "seoTitle": "Qodo Codexプラグインとは？AIコード点検の仕組み",
   "threadsPost": "コード、AIに書かせたあとが本番です。\n\n要約すると、AIのコード点検を手がけるQodoが、OpenAIのCodex向けプラグインを出しました。\n書いた直後に別のAIが点検し、結果を同じ画面に返します。\n\nあなたのチームでは、AIが書いたコードを誰が確認していますか？",
   "threadsHook": "caution",
@@ -116,5 +116,7 @@
     ],
     "ar": 1.7778,
     "src": "https://ai-tech-express.jp/img/qodo-codex-plugin-code-review-d2d803df.jpg"
-  }
+  },
+  "originalTitle": "AIコード点検のQodoがCodex向けプラグイン　書いた直後にバグを指摘",
+  "titleStyle": "2026-11-03"
 }

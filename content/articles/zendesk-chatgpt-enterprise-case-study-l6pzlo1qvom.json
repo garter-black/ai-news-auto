@@ -1,6 +1,6 @@
 {
   "slug": "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom",
-  "title": "カスタマーサポート大手のZendeskがChatGPT Enterpriseを全社導入　社内で600のAIアプリを自作し営業効率化",
+  "title": "Zendesk、ChatGPT Enterpriseを全社導入　社員が約600のAIアプリを開発",
   "seoTitle": "ZendeskのChatGPT Enterprise活用法　社内600アプリの事例",
   "threadsPost": "社内でのAI活用を進めたい担当者の方、参考にしたい実践例です。\n\nZendesk社では全社にChatGPT Enterpriseを導入し、社員がすでに600もの専用AIアプリを自作しています。\n\n特に営業向けAIアプリは毎日1,000人が使い、解約防止や提案活動に貢献。AI導入は「待つより動く」成果が出ています。",
   "threadsHook": "callout",
@@ -90,5 +90,7 @@
     ],
     "ar": 1.7778,
     "src": "https://i.ytimg.com/vi/L6pzlo1QvoM/maxresdefault.jpg"
-  }
+  },
+  "originalTitle": "カスタマーサポート大手のZendeskがChatGPT Enterpriseを全社導入　社内で600のAIアプリを自作し営業効率化",
+  "titleStyle": "2026-11-03"
 }

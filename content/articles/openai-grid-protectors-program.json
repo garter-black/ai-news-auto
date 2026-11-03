@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://openai.com/index/grid-protectors-program",
   "sourceName": "OpenAI公式ブログ",
-  "title": "OpenAIが電力対策「Grid Protectors」　AI施設が電力逼迫時に使用量を減らす",
-  "seoTitle": "Grid Protectorsとは？OpenAIの電力対策",
+  "title": "OpenAI、電力対策「Grid Protectors」を発表　AI施設が電力逼迫時に使用量を削減",
+  "seoTitle": "Grid Protectorsとは？OpenAIのAI施設向け電力対策",
   "threadsPost": "【速報】ChatGPTのOpenAIが、電力が足りないときに使用量を減らす取り組みを始めました。\n\n要約すると、新設するAI用の大型施設に、電気の使用を抑える仕組みを入れます。\n第1弾の米ジョージア州では、最大1,000メガワット分を抑える合意があります。\n\nAIの電気代が自分の電気料金に響くか、気になりますか？",
   "threadsHook": "breaking",
   "threadsStyle": 3,
@@ -103,5 +103,6 @@
     "title": "OpenAIがGrid Protectors発表 電力逼迫時にAI施設が使用量…",
     "credit": "VOICEVOX:九州そら"
   },
-  "originalTitle": "ChatGPTのOpenAIが電力対策「Grid Protectors」　AI施設が電力逼迫時に使用量を減らす"
+  "originalTitle": "ChatGPTのOpenAIが電力対策「Grid Protectors」　AI施設が電力逼迫時に使用量を減らす",
+  "titleStyle": "2026-11-03"
 }

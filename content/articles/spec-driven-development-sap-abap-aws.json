@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://aws.amazon.com/jp/blogs/news/spec-driven-development-for-sap-abap/",
   "sourceName": "AWS ブログ（日本）",
-  "title": "AWSがSAP ABAP向けの「スペック駆動開発」を発表　AI任せの開発でコードが散らかる問題を防ぐ",
+  "title": "AWS、SAP ABAP向けにスペック駆動開発のワークフローを公開　AIコーディングの仕様を残す",
   "seoTitle": "SAP ABAPのスペック駆動開発とは？AWSが新手法を発表",
   "threadsPost": "コードを書く人には、今週いちばん大きいニュースかも。\nAWSがSAP ABAPの開発で、AIに丸投げしてコードが散らかるのを防ぐ「スペック駆動開発」を発表しました。\nコードを生成する前に要件をしっかり文章化し、チームの標準を自動で反映させる仕組みです。無料で試せますよ。",
   "threadsHook": "callout",
@@ -68,5 +68,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://d2908q01vomqb2.cloudfront.net/17ba0791499db908433b80f37c5fbc89b870084b/2026/10/22/SDD-workflow-diagram-v2-1024x481.png",
     "at": "2026-10-28T04:32:20+00:00"
-  }
+  },
+  "originalTitle": "AWSがSAP ABAP向けの「スペック駆動開発」を発表　AI任せの開発でコードが散らかる問題を防ぐ",
+  "titleStyle": "2026-11-03"
 }

@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://openai.com/index/introducing-gpt-6-1-terra",
   "sourceName": "OpenAI公式ブログ",
-  "title": "OpenAIが新AIモデル「GPT-6.1 Terra」 料金は半分、パソコン操作も得意に",
+  "title": "OpenAI、新AIモデル「GPT-6.1 Terra」を発表　API料金は半分、速度は3倍以上に",
   "seoTitle": "GPT-6.1 Terraとは？料金と使い方・性能を解説",
   "threadsPost": "【速報】OpenAIがGPT-6.1 Terraを発表。\n旧モデル比でコスト50%削減、処理速度は3倍以上に高速化しました。\nPCの画面操作や画像理解を低コストで回したい開発者や実務者に直結するアップデートです。\n記事で👇",
   "threadsHook": "breaking",
@@ -70,5 +70,6 @@
     "original": "https://cdn.openai.com/mdx-assets/71f084db-a08b-48c5-b96e-5fbdc21a1a00/terra-art-card-16x9.0394724b.png",
     "at": "2026-10-28T04:33:59+00:00"
   },
-  "originalTitle": "ChatGPTのOpenAIが新AIモデル「GPT-6.1 Terra」 料金は半分、パソコン操作も得意に"
+  "originalTitle": "ChatGPTのOpenAIが新AIモデル「GPT-6.1 Terra」 料金は半分、パソコン操作も得意に",
+  "titleStyle": "2026-11-03"
 }

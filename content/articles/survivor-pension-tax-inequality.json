@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://www.nli-research.co.jp/topics_detail1/id=87229?site=nli",
   "sourceName": "ニッセイ基礎研究所",
-  "title": "ニッセイ基礎研究所が指摘、遺族年金と老齢年金の課税不均衡と医療介護への影響",
-  "seoTitle": "遺族年金と老齢年金の課税不均衡　ニッセイ基礎研究所",
+  "title": "ニッセイ基礎研、遺族年金と老齢年金の課税差を指摘　医療・介護の自己負担にも影響",
+  "seoTitle": "遺族年金と老齢年金の課税の違い　医療・介護負担への影響",
   "threadsPost": "夫と死別した女性の老後を支えてきた遺族年金ですが、老齢年金と違って税金がかかりません。この不均衡が医療や介護の自己負担にも影響しているとニッセイ基礎研究所が指摘しています。",
   "threadsHook": "question",
   "threadsStyle": 2,
@@ -60,5 +60,7 @@
     "provider": "Cloudflare Workers AI",
     "original": "https://www.nli-research.co.jp/files/topics/87229_ext_03_0.jpg",
     "at": "2026-10-30T01:26:58+00:00"
-  }
+  },
+  "originalTitle": "ニッセイ基礎研究所が指摘、遺族年金と老齢年金の課税不均衡と医療介護への影響",
+  "titleStyle": "2026-11-03"
 }

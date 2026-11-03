@@ -3,8 +3,8 @@
   "sourceType": "web",
   "sourceUrl": "https://global.toyota/jp/newsroom/corporate/44960910.html",
   "sourceName": "トヨタ自動車 グローバルニュースルーム",
-  "title": "トヨタ自動車とWaymo、自動運転タクシーの運行を2027年に日本で開始",
-  "seoTitle": "トヨタとWaymo 自動運転タクシー2027年開始",
+  "title": "トヨタとWaymoが「bZ4X」の自動運転タクシーを2027年に日本で運行へ",
+  "seoTitle": "トヨタとWaymo、自動運転タクシーを2027年に日本で運行",
   "threadsPost": "トヨタが米Waymoと協業を拡大し、自動運転タクシーに使用するトヨタの「bZ4X」の運行を2027年に日本で開始すると発表しました。国内生産の量産車を使った日本初の完全自動運転タクシーを目指すとしています。数年にわたり英国など他の市場へも順次導入される予定です。",
   "threadsHook": "breaking",
   "threadsStyle": 2,
@@ -63,5 +63,7 @@
     "width": 1200,
     "height": 630,
     "at": "2026-11-02T03:46:01+00:00"
-  }
+  },
+  "originalTitle": "トヨタ自動車とWaymo、自動運転タクシーの運行を2027年に日本で開始",
+  "titleStyle": "2026-11-03"
 }

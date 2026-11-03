@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://www.nli-research.co.jp/topics_detail1/id=87173?site=nli",
   "sourceName": "ニッセイ基礎研究所",
-  "title": "医療レセプト審査の支払基金が大幅改組、医療DX推進の基盤へ役割拡大",
+  "title": "支払基金が「医療DX機構」に改組　レセプト審査に加え医療情報基盤の整備を担う",
   "seoTitle": "支払基金が医療DX機構へ改組：医療情報の活用を強化",
   "threadsPost": "【速報】医療費の支払いを担う「社会保険診療報酬支払基金」が、10月に「医療DX機構」へ大きく生まれ変わりました。\n\n今後はレセプト審査だけでなく、マイナンバーカードによる資格確認や電子処方箋など、医療DXの中核的な役割を担うことになります。\n医療現場のデジタル化がさらに加速しそうです。",
   "threadsHook": "breaking",
@@ -65,5 +65,7 @@
     "query": "server room",
     "original": "https://www.nli-research.co.jp/files/topics/87173_ext_03_0.jpg",
     "at": "2026-10-28T03:57:16+00:00"
-  }
+  },
+  "originalTitle": "医療レセプト審査の支払基金が大幅改組、医療DX推進の基盤へ役割拡大",
+  "titleStyle": "2026-11-03"
 }
