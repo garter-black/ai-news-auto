@@ -4478,6 +4478,12 @@
       "skipped": true,
       "url": "https://kyodonewsprwire.jp/release/202610268700"
     },
+    "21431aa1f3598f83": {
+      "at": "2026-11-03T00:31:17.566554+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（懇談会）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110211"
+    },
     "216653679cdb3aef": {
       "at": "2026-10-27T03:05:10.758191+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（講座）",
@@ -5945,6 +5951,12 @@
       "slug": "suntory-non-aru-sakaba-new-release",
       "url": "https://www.suntory.co.jp/news/article/2026/15160.html?rss=0000000029"
     },
+    "48064ae4f793b381": {
+      "at": "2026-11-03T00:34:53.612508+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（職員）",
+      "skipped": true,
+      "url": "https://www.mext.go.jp/b_menu/saiyou/hijyoukin/1423086_00180.htm"
+    },
     "4829bde7b09d4e37": {
       "at": "2026-10-27T01:31:25.544382+00:00",
       "reason": "prefilter: 告知・お知らせ系",
@@ -6762,6 +6774,12 @@
       "reason": "quality: easy_markdown が短い（396字 / 基準 400字以上）",
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026103009"
+    },
+    "5feb45d9615ab3e6": {
+      "at": "2026-11-03T00:31:19.170852+00:00",
+      "reason": "short text 271",
+      "skipped": true,
+      "url": "https://www.kantei.go.jp/jp/105/actions/202611/02daijin_nimei.html"
     },
     "5ffbb0f8c3ab7480": {
       "at": "2026-10-27T00:29:17.163979+00:00",
@@ -8604,6 +8622,12 @@
       "slug": "design-industry-bankruptcies-record",
       "url": "https://www.tsr-net.co.jp/data/detail/1203387_1527.html"
     },
+    "90327149489cf2ce": {
+      "at": "2026-11-03T00:31:18.340916+00:00",
+      "reason": "short text 497",
+      "skipped": true,
+      "url": "https://www.gov-online.go.jp/press_conferences/minister_of_state/202611/video-326953.html"
+    },
     "90b31744ef4440aa": {
       "at": "2026-10-26T14:10:58.214509+00:00",
       "reason": "prefilter: 告知・お知らせ系",
@@ -9353,6 +9377,13 @@
       "reason": "quality: 本文が短い（2147字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://jp.newsroom.ibm.com/2026-10-28-ibm-introduces-identity-and-control-for-ai-agents,-securing-frontier-intelligence-for-the-enterprise"
+    },
+    "a343e882fa87e60d": {
+      "at": "2026-11-03T00:34:53.218258+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: 過去に大谷翔平や香川真司といった選手が同年代で活躍しています。 → 元記事に無い記述であり、事実確認ができない。",
+      "skipped": true,
+      "url": "https://www.jfa.jp/news/00036970/"
     },
     "a36d3c4140ba175e": {
       "at": "2026-10-30T08:13:03.243765+00:00",
@@ -10443,6 +10474,14 @@
       "reason": "quality: 本文が短い（2133字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://blogs.windows.com/japan/2026/10/30/transform-your-storytelling-with-interactive-slides-in-powerpoint-4564287/"
+    },
+    "c246a0edd354bc64": {
+      "at": "2026-11-03T00:36:28.378270+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "score": 95,
+      "section": "public",
+      "slug": "disaster-agency-launch-nov2026",
+      "url": "https://www.gov-online.go.jp/article/202611/radio-3782.html"
     },
     "c26b1cc50c1438d4": {
       "at": "2026-10-27T17:57:42.414958+00:00",
@@ -12815,99 +12854,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-30T22:01:18.151704+00:00",
-      "attempt": 1,
-      "id": "6263ebc41abd08ca",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1628字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（368字 / 基準 400字以上）",
-        "easy_markdown が「## ひとことで言うと」から始まっていない",
-        "独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に具体的に）のどれかを入れる"
-      ],
-      "readability": {
-        "avg_paragraph": 127.5,
-        "avg_sentence": 47.2,
-        "long_share": 0.185,
-        "max_paragraph": 205,
-        "paragraphs": 10,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "tsr",
-      "title": "改正保険業法のポイント、「実態に即した契約書の修正がカギ」～ 法律事務所あかつき・岡本大毅弁護士インタビュー ～"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T22:01:25.538477+00:00",
-      "attempt": 2,
-      "id": "6263ebc41abd08ca",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 58.4字・60字超の文が 41% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 188.2字・最長 237字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 188.2,
-        "avg_sentence": 58.4,
-        "long_share": 0.414,
-        "max_paragraph": 237,
-        "paragraphs": 9,
-        "sentences": 29
-      },
-      "score": 100,
-      "source": "tsr",
-      "title": "改正保険業法のポイント、「実態に即した契約書の修正がカギ」～ 法律事務所あかつき・岡本大毅弁護士インタビュー ～"
-    },
-    {
-      "accepted": true,
-      "at": "2026-10-30T22:01:29.490870+00:00",
-      "attempt": 0,
-      "id": "6263ebc41abd08ca",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 165.3字・最長 242字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 165.3,
-        "avg_sentence": 39.4,
-        "long_share": 0.119,
-        "max_paragraph": 242,
-        "paragraphs": 10,
-        "sentences": 42
-      },
-      "score": 100,
-      "source": "tsr",
-      "title": "改正保険業法のポイント、「実態に即した契約書の修正がカギ」～ 法律事務所あかつき・岡本大毅弁護士インタビュー ～"
-    },
-    {
-      "accepted": false,
-      "at": "2026-10-30T22:51:05.143542+00:00",
-      "attempt": 1,
-      "id": "feb912e225e8e3aa",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1815字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（398字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 135.3,
-        "avg_sentence": 62.0,
-        "long_share": 0.625,
-        "max_paragraph": 191,
-        "paragraphs": 11,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "aws-ml-blog",
-      "title": "Managing Amazon Bedrock costs end to end: A playbook for FinOps and platform tea"
-    },
     {
       "accepted": false,
       "at": "2026-10-30T22:51:14.462882+00:00",
@@ -19236,6 +19182,94 @@
       "score": 100,
       "source": "kantei",
       "title": "高市総理は防災庁発足式に出席しました"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T00:32:52.446358+00:00",
+      "attempt": 1,
+      "id": "a343e882fa87e60d",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "トレーニングと試合スケジュール → 11月19日から27日までグループステージ3試合。とあるが、グループステージ第1戦は11月21日、第2戦は24日、第3戦は27日であり、19日・20日はAM/PMトレーニングとなっているため記述が不正確。"
+      ],
+      "readability": {
+        "avg_paragraph": 130.0,
+        "avg_sentence": 37.1,
+        "long_share": 0.071,
+        "max_paragraph": 240,
+        "paragraphs": 4,
+        "sentences": 14
+      },
+      "score": 60,
+      "source": "jfa",
+      "title": "U-17日本代表 メンバー・スケジュール FIFA U-17ワールドカップカタール2026（11.11-12.13 カタール） #jfa #daihyo"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T00:34:53.218223+00:00",
+      "attempt": 2,
+      "id": "a343e882fa87e60d",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "過去に大谷翔平や香川真司といった選手が同年代で活躍しています。 → 元記事に無い記述であり、事実確認ができない。"
+      ],
+      "readability": {
+        "avg_paragraph": 135.0,
+        "avg_sentence": 47.6,
+        "long_share": 0.294,
+        "max_paragraph": 295,
+        "paragraphs": 6,
+        "sentences": 17
+      },
+      "score": 85,
+      "source": "jfa",
+      "title": "U-17日本代表 メンバー・スケジュール FIFA U-17ワールドカップカタール2026（11.11-12.13 カタール） #jfa #daihyo"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T00:36:24.144589+00:00",
+      "attempt": 1,
+      "id": "c246a0edd354bc64",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "段落が長い（平均 120.3字・最長 275字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 120.3,
+        "avg_sentence": 40.1,
+        "long_share": 0.0,
+        "max_paragraph": 275,
+        "paragraphs": 10,
+        "sentences": 30
+      },
+      "score": 95,
+      "source": "gov-online",
+      "title": "防災庁発足! みんなでつくる、災害に強い社会"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T00:36:28.376725+00:00",
+      "attempt": 0,
+      "id": "c246a0edd354bc64",
+      "kind": "broad",
+      "model": "",
+      "problems": [
+        "読みやすさ基準外のまま受理: 書き直し後の確認に不合格: 窓口欄のURL（https://www.bousai.go.jp） → 元記事内にURLの記載がないため不正確または創作。; 千葉の大雨 → 元記事では「千葉県をはじめ各地で大雨による水害」であり、表現の一部省略や位置づけの微妙な違いがある。"
+      ],
+      "readability": {
+        "avg_paragraph": 120.3,
+        "avg_sentence": 40.1,
+        "long_share": 0.0,
+        "max_paragraph": 275,
+        "paragraphs": 10,
+        "sentences": 30
+      },
+      "score": 95,
+      "source": "gov-online",
+      "title": "防災庁発足! みんなでつくる、災害に強い社会"
     }
   ],
   "short_text_retry": {
