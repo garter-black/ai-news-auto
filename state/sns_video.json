@@ -814,17 +814,72 @@
       },
       "embedded": true,
       "why": "動画ができる前に投稿の時刻が来た（写真で出た）"
+    },
+    "nvidia-recovery-automated-training-recovery": {
+      "at": "2026-11-03T19:50:05+00:00",
+      "status": "attached",
+      "tries": 1,
+      "ok": true,
+      "adopted": "/home/runner/work/_temp/adopt",
+      "versions": {
+        "short": {
+          "ok": true,
+          "seconds": 34.545,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1
+          },
+          "template": "launch",
+          "level": "L1",
+          "post": {
+            "title": "NVIDIAがAI学習の自動復旧ソフト「NVIDIA Recovery」を無料…",
+            "url": "https://ai-tech-express.jp/articles/nvidia-recovery-automated-training-recovery",
+            "total": 34.545,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "level": null,
+            "script_v3": {
+              "hook": {
+                "text": "NVIDIAがAI学習の自動復旧ソフトを公開"
+              },
+              "summary": "要約すると、NVIDIAがオープンソースの「NVIDIA Recovery」を公開しました。止まった分散AI学習を検知し、問題のノードを除外して再開させます。検知は平均69秒で、導入は監視モードから始められます。"
+            }
+          }
+        }
+      },
+      "urls": {
+        "short": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-9d71489616.mp4"
+      },
+      "level": "L1",
+      "variant": "short",
+      "bufferId": "6aea3af35fa3d509fa3d0ef9",
+      "postedAt": "2026-11-04T09:45:00+09:00"
     }
   },
   "queued": {
     "nvidia-recovery-automated-training-recovery": {
-      "status": "waiting",
-      "why": "オーナーに見せた動画を置くのを待っている"
+      "status": "created",
+      "why": "オーナーに見せた動画を置くのを待っている",
+      "channels": {
+        "threads": "6aea3af35fa3d509fa3d0ef9",
+        "twitter": "6aea3af452391758e2e63135",
+        "facebook": "6aea3af45fa3d509fa3d103d"
+      },
+      "id": "6aea3af35fa3d509fa3d0ef9",
+      "dueAt": "2026-11-04T09:45:00+09:00",
+      "variant": "short",
+      "delayedMin": 0
     },
     "github-copilot-jetbrains-air": {
       "status": "waiting",
       "why": "動画を作っている途中・順番待ち",
-      "checkedAt": "2026-11-03T19:24:57+00:00"
+      "checkedAt": "2026-11-03T19:50:08+00:00"
     }
   },
   "converted": {
