@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  issues: write  # SNS ルールの門番（scripts/sns_rules.py）が止めた投稿の issue（ラベル sns-rule-violation）
 
 concurrency:
   group: breaking-post
@@ -47,6 +48,7 @@ jobs:
           THREADS_MODE: ${{ vars.THREADS_MODE }}
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BREAKING_PER_DAY: ${{ vars.BREAKING_PER_DAY }}
+          GH_TOKEN: ${{ github.token }}  # 門番が止めた投稿の issue を立てる
         run: python scripts/breaking_post.py --wait 480
       # Bluesky にもすぐ出す（AT Protocol を直接。失敗しても止めない）
       - name: Post to Bluesky
@@ -55,6 +57,7 @@ jobs:
           THREADS_MODE: ${{ vars.THREADS_MODE }}
           BLUESKY_HANDLE: ${{ vars.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          GH_TOKEN: ${{ github.token }}  # 門番が止めた投稿の issue を立てる
         run: python scripts/bluesky_post.py
       # 待っている間に main が進んでいても衝突しないよう、最新の state に投稿記録だけを足して push する
       - name: Commit history

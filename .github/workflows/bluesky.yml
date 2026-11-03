@@ -19,6 +19,7 @@ on:
 
 permissions:
   contents: write
+  issues: write  # SNS ルールの門番（scripts/sns_rules.py）が止めた投稿の issue（ラベル sns-rule-violation）
 
 concurrency:
   group: bluesky-post
@@ -43,6 +44,7 @@ jobs:
           THREADS_MODE: ${{ vars.THREADS_MODE }}
           BLUESKY_HANDLE: ${{ vars.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          GH_TOKEN: ${{ github.token }}  # 門番が止めた投稿の issue を立てる
         run: python scripts/bluesky_post.py --fill ${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}
       - name: Commit history
         run: |

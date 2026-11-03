@@ -35,65 +35,18 @@ def utc(value: str | None) -> datetime | None:
         return None
 
 
-_TYPES: dict[str, tuple] = {}
-
-
-def type_fields(key: str, name: str) -> tuple[dict[str, dict], list[str]]:
-    """GraphQL の型のフィールド（名前 → 型の情報。引数の要るフィールドは除く）と、union の中身"""
-    if name in _TYPES:
-        return _TYPES[name]
-    data = buffer_graphql(key, "query($n: String!) { __type(name: $n) { name kind fields { name args { name } type { name kind ofType { name kind ofType { name kind ofType { name kind } } } } } possibleTypes { name } } }", {"n": name})
-    t = data.get("__type") or {}
-    _TYPES[name] = ({f["name"]: f["type"] for f in (t.get("fields") or []) if not f.get("args")}, [p["name"] for p in (t.get("possibleTypes") or [])])
-    return _TYPES[name]
-
-
-def base_type(t: dict) -> str:
-    while t and not t.get("name"):
-        t = t.get("ofType") or {}
-    return (t or {}).get("name") or ""
-
-
-def scalar_selection(key: str, type_name: str, depth: int = 0) -> str:
-    """型のスカラーのフィールドを全部、オブジェクトは1段だけ（Asset の画像の幅・高さなどを取りこぼさない）"""
-    fields, possible = type_fields(key, type_name)
-    parts = []
-    if possible:
-        parts.append("__typename")
-        for p in possible:
-            inner = scalar_selection(key, p, depth + 1) if depth < 2 else ""
-            if inner:
-                parts.append(f"... on {p} {{ {inner} }}")
-        return " ".join(parts)
-    for name, t in fields.items():
-        bt = base_type(t)
-        kind = t.get("kind") if t.get("name") else ((t.get("ofType") or {}).get("kind") or "")
-        inner_t = t
-        while inner_t and not inner_t.get("name"):
-            inner_t = inner_t.get("ofType") or {}
-        inner_kind = (inner_t or {}).get("kind")
-        if inner_kind in ("SCALAR", "ENUM"):
-            parts.append(name)
-        elif depth < 2 and inner_kind in ("OBJECT", "UNION", "INTERFACE") and bt and not bt.startswith("__"):
-            sub = scalar_selection(key, bt, depth + 1)
-            if sub:
-                parts.append(f"{name} {{ {sub} }}")
-        del kind
-    return " ".join(parts)
+# 読むフィールドは決め打ち（型の問い合わせは Buffer の回数制限を食うのでしない）。
+# scripts/buffer_delivery_monitor.py と scripts/sns_video_followup.py で使えることを確かめたものだけ
+POST_FIELDS = (
+    "id text status channelId createdAt dueAt sentAt externalLink error { message } assets { type source mimeType } "
+    "metadata { __typename ... on ThreadsPostMetadata { thread { text assets { type source mimeType } } } "
+    "... on TwitterPostMetadata { thread { text assets { type source mimeType } } } }"
+)
 
 
 def post_fields(key: str) -> str:
-    fields, _ = type_fields(key, "Post")
-    wanted = []
-    for name in ("id", "text", "status", "channelId", "channelService", "createdAt", "dueAt", "sentAt", "externalLink", "via"):
-        if name in fields:
-            wanted.append(name)
-    for name in ("assets", "metadata", "error"):
-        if name in fields:
-            sub = scalar_selection(key, base_type(fields[name]))
-            if sub:
-                wanted.append(f"{name} {{ {sub} }}")
-    return " ".join(wanted)
+    del key
+    return POST_FIELDS
 
 
 def buffer_posts(key: str, since: datetime) -> list[dict]:

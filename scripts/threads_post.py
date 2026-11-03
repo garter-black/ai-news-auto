@@ -37,6 +37,7 @@ from threads_token import API_BASE, load_token, refresh_if_needed  # noqa: E402
 import threads_voice as voice  # noqa: E402
 import persona  # noqa: E402
 import threads_hooks  # noqa: E402
+import sns_rules  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
@@ -336,7 +337,9 @@ def compose(
     summary = ""
     generated = next((b for b in blocks if b.startswith(f"{persona.SUMMARY_OPENER}、")), "")
     if generated:
+        # 生成時に「要約すると、」を各行の頭に重ねて書いた紹介文（2026-11-03 の実例）は、2行目以降の重複を落とす
         lines = clean_lines(generated)
+        lines = lines[:1] + [line.removeprefix(f"{persona.SUMMARY_OPENER}、") for line in lines[1:]]
         candidate = "\n".join(lines)
         sentences = split_sentences(candidate.removeprefix(f"{persona.SUMMARY_OPENER}、"))
         if (
@@ -636,7 +639,7 @@ def candidates(state: dict, hours: int) -> list[dict]:
     articles = []
     for path in ARTICLES_DIR.glob("*.json"):
         article = json.loads(path.read_text("utf-8"))
-        if article.get("genreSlug") != "ai" or article["slug"] in posted:
+        if article.get("genreSlug") != "ai" or article["slug"] in posted or article["slug"] in (state.get("ruleBlocked") or {}):
             continue
         if datetime.fromisoformat(article["generatedAt"]) < since:
             continue
@@ -783,7 +786,9 @@ def api(method: str, path: str, params: dict) -> dict:
         raise RuntimeError(f"Threads API {error.code}: {error.read().decode()[:300]}") from error
 
 
-def publish(token: dict, text: str, link: str) -> dict:
+def publish(token: dict, text: str, link: str, article: dict | None = None) -> dict:
+    """Threads 公式 API で出す（Buffer が無いときの予備）。出す直前にルールの門番を通す"""
+    sns_rules.enforce("threads", text, [], article, source="threads_post.publish")
     user_id, access_token = token["user_id"], token["access_token"]
     container = api("POST", f"{user_id}/threads", {
         "media_type": "TEXT",
@@ -811,7 +816,13 @@ def publish(token: dict, text: str, link: str) -> dict:
     return {"id": result["id"], "permalink": detail.get("permalink", "")}
 
 
-def buffer_graphql(api_key: str, query: str, variables: dict | None = None) -> dict:
+# 投稿の中身を作る・変える Buffer の操作。sns_rules を通した所（create_post など）だけが gated=True で呼べる
+POSTING_MUTATION_RE = re.compile(r"\b(?:createPost|editPost|updatePost|createIdea)\s*\(")
+
+
+def buffer_graphql(api_key: str, query: str, variables: dict | None = None, gated: bool = False) -> dict:
+    if POSTING_MUTATION_RE.search(query) and not gated:
+        raise sns_rules.SnsRuleViolation(["投稿を作る・変える Buffer の操作は sns_rules を通した所からだけ呼べる"], "buffer", "buffer_graphql")
     body = json.dumps({"query": query, "variables": variables or {}}).encode()
     request = urllib.request.Request(
         BUFFER_API,
@@ -897,13 +908,14 @@ def compose_x(article: dict, root_text: str) -> str:
     tags = " ".join(t for t in ["#AI", tag] if t) if not article.get("disaster") else "#地震" if "地震" in text_src else ""
     blocks = post_blocks_of(root_text)
     if len(blocks) == 3 and blocks[1].startswith(persona.SUMMARY_OPENER) and blocks[2].endswith(QUESTION_END):
-        # 新しい形（書き出し／要約2文／問いかけ）。入らなければ 書き出し → 2文目 → 問いかけ の順に削る。【速報】の行は残す
+        # 新しい形（書き出し／要約2文／問いかけ）。入らなければ 書き出し → 2文目 の順に削る。【速報】の行は残す
+        # 要約と問いかけはルール（sns_rules）で必須なので削らない（入らなければ門番が X への投稿を止める）
         hook, summary, question = blocks
         first = summary.split("\n")[0] if "\n" in summary else summary
         if hook.startswith("【速報】"):
-            options = [[hook, summary, question], [hook, first, question], [hook, summary], [hook, first]]
+            options = [[hook, summary, question], [hook, first, question], [first, question]]
         else:
-            options = [[hook, summary, question], [summary, question], [hook, first, question], [first, question], [summary], [first]]
+            options = [[hook, summary, question], [summary, question], [hook, first, question], [first, question]]
         for option in options:
             candidate = "\n\n".join(option)
             if x_weight(candidate) + x_weight(tags) + 2 <= X_LIMIT:
@@ -958,15 +970,9 @@ def choose_format(state: dict, article: dict, breaking: bool, offset: int = 0, n
 
     A/B 中は速報・通常それぞれで交互にする（速報は閲覧数の桁が違うので、別々に数えて偏りを防ぐ）
     """
-    forced = os.environ.get("SNS_FORMAT", "").strip()
-    if forced in FORMATS:
-        return forced
-    if article.get("disaster"):
-        return "classic"
-    if (now or datetime.now(timezone.utc)) < AB_UNTIL:
-        same = [p for p in state["posted"].values() if p.get("format") in FORMATS and bool(p.get("breaking")) == breaking]
-        return FORMATS[(len(same) + offset) % 2]
-    return ab_winner()
+    # 2026-11-03: hook_thread は止める。記事のリンクを返信に置き（ルール1: X 以外はリンクを本文）、画像に見出し入りのカバー
+    # （ルール2: 写真だけのカード）を使うため。A/B も classic の勝ちで終わっている。sns_rules の門番も hook_thread の形は止める
+    return "classic"
 
 
 def normal_index(state: dict) -> int:
@@ -1162,11 +1168,11 @@ def publish_extra_channels(
     fmt=hook_thread なら X は「書き出し＋画像」→「詳細＋リンク」のスレッド。Facebook は形式を問わず完結型（fb_text）＋リンク
     """
     results: dict[str, str] = {}
-    cover = f"{site_url()}/cover/{article['slug']}"
     card = card_url(article)
     title = article.get("seoTitle") or article["title"]
     fb_link = utm_link(link, "facebook", fmt)
-    link_card = {"url": fb_link, "title": title, "description": article.get("description", "")[:120], "thumbnail": {"url": cover}}
+    # Facebook のリンクカードの画像も写真だけのカード（16:9）。見出し入りのカバーは使わない（ルール2）
+    link_card = {"url": fb_link, "title": title, "description": article.get("description", "")[:120], "thumbnail": {"url": card}}
     plans = []
     if "twitter" in channels:
         x_link = utm_link(link, "x", fmt)
@@ -1188,7 +1194,8 @@ def publish_extra_channels(
             "metadata": {"twitter": {"thread": thread}},
         }))
     if "facebook" in channels:
-        fb_text = "\n\n".join([(fb_text or text).strip(), link_reply_text(article).replace("👇", "：")])
+        # 2026-11-03 ルール1: Facebook も記事のリンクを本文に入れる（リンクカードだけにしない）
+        fb_text = with_link((fb_text or text).strip(), article, "facebook", fmt)
         plans.append(("facebook", offsets[1], {
             "text": fb_text,
             "assets": [],
@@ -1206,14 +1213,16 @@ def publish_extra_channels(
             post_input["mode"] = "shareNow"
         try:
             try:
-                results[service] = create_post(api_key, post_input)
+                results[service] = create_post(api_key, post_input, service=service, article=article, source="threads_post.publish_extra_channels")
+            except sns_rules.SnsRuleViolation:
+                raise
             except RuntimeError as error:
                 if post_input["mode"] != "shareNow":
                     raise
                 log(f"  [{service}] いますぐの投稿が通らないため、{offset}分後の予約にします: {error}")
                 post_input["mode"] = "customScheduled"
                 post_input["dueAt"] = utc_z(datetime.now(timezone.utc) + timedelta(minutes=max(offset, 1)))
-                results[service] = create_post(api_key, post_input)
+                results[service] = create_post(api_key, post_input, service=service, article=article, source="threads_post.publish_extra_channels")
             log(f"  [{service}] 予約しました: {results[service]}")
         except Exception as error:  # 1つのSNSの失敗で、ほかのSNSの投稿を止めない
             log(f"  [{service}] 失敗: {error}")
@@ -1224,8 +1233,9 @@ def utc_z(when: datetime) -> str:
     return when.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
-def create_post(api_key: str, post_input: dict) -> str:
-    """Buffer に投稿を1件作り、投稿IDを返す"""
+def create_post(api_key: str, post_input: dict, *, service: str, article: dict | None, source: str, kind: str = "article") -> str:
+    """Buffer に投稿を1件作り、投稿IDを返す。作る直前に SNS ルールの門番（sns_rules）を通す。違反なら SnsRuleViolation"""
+    sns_rules.enforce_buffer(service, post_input, article, source=source, kind=kind)
     data = buffer_graphql(
         api_key,
         """mutation($input: CreatePostInput!) {
@@ -1235,6 +1245,7 @@ def create_post(api_key: str, post_input: dict) -> str:
           }
         }""",
         {"input": post_input},
+        gated=True,
     )
     result = data["createPost"]
     if "message" in result:
@@ -1300,7 +1311,7 @@ def publish_via_buffer(
         post_input["dueAt"] = due_at.isoformat(timespec="seconds").replace("+00:00", "Z")
     else:
         post_input["mode"] = "shareNow"
-    return {"id": create_post(api_key, post_input), "via": "buffer", "permalink": ""}
+    return {"id": create_post(api_key, post_input, service="threads", article=article, source="threads_post.publish_via_buffer"), "via": "buffer", "permalink": ""}
 
 
 def share_now(
@@ -1318,6 +1329,8 @@ def share_now(
     due: datetime | None = None
     try:
         result = publish_via_buffer(api_key, channels["threads"]["id"], threads_text or text, link, article, fmt=fmt)
+    except sns_rules.SnsRuleViolation:
+        raise
     except RuntimeError as error:
         log(f"  [threads] いますぐの投稿が通らないため、1分後の予約にします: {error}")
         due = now + timedelta(minutes=1)
@@ -1328,6 +1341,16 @@ def share_now(
     )
     result["dueAt"] = (due or now).isoformat(timespec="seconds")
     return result
+
+
+def block_article(state: dict, slug: str, error: Exception) -> None:
+    """SNS ルールの門番（sns_rules）が止めた記事を記録する（候補から外す。投稿履歴 posted には入れない）"""
+    log(f"  [rules] ルール違反のため出しません: {error}")
+    state.setdefault("ruleBlocked", {})[slug] = {
+        "at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "violations": list(getattr(error, "violations", []) or [str(error)])[:5],
+    }
+    save_state(state)
 
 
 def write_summary(lines: list[str]) -> None:
@@ -1382,8 +1405,7 @@ def main() -> int:
             log("[test] 確認に使える記事がありません")
             return 1
         # 確かめる形式は SNS_FORMAT（未設定なら新しい hook_thread）
-        test_fmt = os.environ.get("SNS_FORMAT", "").strip()
-        test_fmt = test_fmt if test_fmt in FORMATS else "hook_thread"
+        test_fmt = "classic"  # hook_thread は 2026-11-03 に止めた（choose_format）
         test_text = compose_hook(sample) if test_fmt == "hook_thread" else compose(sample)
         log(f"[test] 形式: {test_fmt}")
         # classic は本文だけで完結（問いかけ入り）。hook_thread は編集部の一言と問いかけも入れた形で確かめる
@@ -1531,7 +1553,11 @@ def main() -> int:
                         buffer_key, extra_channels, text, link, article, due_at, fmt=fmt, fb_text=classic_text
                     )
             else:
-                result = publish(token, threads_text, link)
+                result = publish(token, threads_text, link, article)
+        except sns_rules.SnsRuleViolation as error:
+            # ルールの門番が止めた記事は、次の回で同じ違反を繰り返さないよう記録して選ばない（直したら ruleBlocked から消す）
+            block_article(state, article["slug"], error)
+            continue
         except RuntimeError as error:
             # 1本の失敗でパイプライン全体を止めない。未投稿のまま次回再挑戦する
             log(f"  [error] {error}")

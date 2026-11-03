@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  issues: write  # SNS ルールの門番（scripts/sns_rules.py）が止めた投稿の issue（ラベル sns-rule-violation）
 
 concurrency:
   group: auto-article-pipeline
@@ -38,6 +39,7 @@ jobs:
           SNS_PER_DAY: ${{ steps.ramp.outputs.sns_per_day }}
           BREAKING_PER_DAY: ${{ vars.BREAKING_PER_DAY }}
           SNS_DIGEST: ${{ vars.SNS_DIGEST }}
+          GH_TOKEN: ${{ github.token }}  # 門番が止めた投稿の issue を立てる
         run: |
           cp state/threads_posted.json "$RUNNER_TEMP/sns-before.json"
           python3 scripts/threads_post.py --max 2

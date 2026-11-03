@@ -83,7 +83,7 @@
 | `auto_run.yml` | 記事の生成（通常＋速報）、画像付け、公開判定 |
 | `deploy_cloudflare.yml` | サイトの公開 |
 | `breaking_post.yml` | 速報のSNS即時投稿＋プッシュ通知 |
-| `sns_extra.yml` | 朝7:30のまとめ投稿、火・金の問いかけ投稿 |
+| `sns_extra.yml` | 朝7:30のまとめ投稿（火・金の問いかけ投稿は 2026-11-03 に停止） |
 | `bluesky.yml` | Bluesky への投稿（Threads の写し＋直近の良い記事。1日24本まで・40分以上あける。記事の自動処理の後にも動く） |
 | `evergreen.yml` | 「使い方・料金」解説記事を1日4本 |
 | `missed_check.yml` | 毎朝8:30、取りこぼした大ニュースがないか確認 |
@@ -192,6 +192,7 @@
 - SNS 動画 v3「画面で見せる型」（試作・未投稿・スケジュール無し）: `docs/sns-video-v3-20261102.md`。公式ページを本物のブラウザで撮って数字へズーム、文字はキーワードだけ、締めのカード無し。`scripts/shorts_v3.py`・追加ゲート `video_gate.check_v3`・手動の `shorts_v3.yml`。CI で約2〜3分。
 - SNS 動画 v2（試作・未投稿・スケジュール無し）: `docs/sns-video-v2-20261102.md`。3デザイン（報道テロップ/大きな文字/公式ページ）、品質ゲート `scripts/video_gate.py`、失敗時は動画なしで今までどおり投稿する約束 `scripts/sns_video.py`（既定は無効）。投稿用の声は VOICEVOX のみ。
 
+- **SNS 投稿のルールの門番（2026-11-03）**: 投稿する経路はすべて、Buffer / Bluesky / Threads 公式 API を呼ぶ直前に `scripts/sns_rules.py` の `enforce` を通す（記事がある・リンクの位置と utm・要約すると＋問いかけ・16:9 の写真だけの画像・決まり文句なし・日本語・長さ・1記事1投稿）。違反は投稿せず、issue（ラベル `sns-rule-violation`）に残す。新しい投稿経路は `tests/test_sns_rules.py`（`sns_rules.yml`）が門番を通っているか検査する。実際の投稿の点検は読むだけの `sns_audit.yml`。
 - 朝のまとめ「今朝のAIニュース3本」の号ページ `/digest/<YYYYMMDD>`（noindex）とシェア画像 `share.png`（1200×630）・`card.png`（1080×1350）。デザインは `lib/digest-design.ts` の `DIGEST_DESIGN`（A/B/C）1か所で切替、`?design=` で見比べ。号のデータは `scripts/digest_page.py` が `content/digests` と KV（デプロイ前の朝用）に置く。見出しは会社名だけにしない（`short_headline`）。要約の見出しは「要約すると」。
 
 - Claude の使いどころ（2026-11-03 オーナー決定・改訂）: Claude API のクレジットは**月の予算いっぱいまで**段ごとのモデルで使う。速報・動画の台本=Opus 5.5（削らない）、SNS に出しそうな記事・読者像の中心の記事=Sonnet 5.5、ほかの記事・小さな補助（事実確認の手直し・FAQ・問いかけ）=Haiku 5.5、無料モデルは予備。予算（GitHub の変数 `CLAUDE_API_MONTHLY_BUDGET_USD`、既定 $95・期間は毎月4日〜3日）に合わせて自動で上げ下げする（足りない: その他→無料、中心→Haiku、SNS→Haiku の順。余る: SNS→Opus、中心→Opus、その他→Sonnet）。Claude CLI（サブスクリプション）は速報・SNS・動画だけ。呼び出しは `llm.generate_json(..., purpose="breaking"|"video"|"video_review"|"sns"|"core"|"rest"|"helper")`。使用額は `state/claude_api_usage*.json`、仕組みは `scripts/llm.py` の冒頭。

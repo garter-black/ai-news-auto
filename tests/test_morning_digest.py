@@ -95,7 +95,7 @@ class DeliveryTests(unittest.TestCase):
         self.save_patch.start(); self.list_patch.start(); self.create_mock = self.create_patch.start()
         self.addCleanup(self.save_patch.stop); self.addCleanup(self.list_patch.stop); self.addCleanup(self.create_patch.stop)
 
-    def create(self, key, payload):
+    def create(self, key, payload, **gate):
         channel = payload['channelId']
         self.created.append(copy.deepcopy(payload))
         if channel in self.fail:
@@ -387,7 +387,10 @@ class DigestPageTest(unittest.TestCase):
         p = digest_post()
         self.assertEqual(p['link'], 'https://ai-tech-express.jp/digest/20261030')
         self.assertEqual(p['image'], f'https://ai-tech-express.jp/digest/20261030/share.png?v={md.dp.image_rev()}')
-        self.assertIn('https://ai-tech-express.jp/digest/20261030?utm_source=x&utm_medium=social&utm_campaign=digest', p['x_text'])
+        # 2026-11-03 ルール1: X の本文にはリンクを入れない（号のページのリンクは返信。x_input）
+        self.assertNotIn('https://', p['x_text'])
+        reply = md.x_input('x', p, {'mode': 'shareNow'})['metadata']['twitter']['thread'][1]['text']
+        self.assertIn('https://ai-tech-express.jp/digest/20261030?utm_source=x&utm_medium=social&utm_campaign=digest', reply)
         self.assertIn('・Google DeepMind、新AI「Genie 4」を発表', p['text'])
         self.assertEqual(p['edition']['id'], '20261030')
         self.assertEqual([i['headline'] for i in p['edition']['items']], ['AI半導体のNVIDIAが医療向けAI発表', 'Google DeepMind、新AI「Genie 4」を発表'])
@@ -398,9 +401,10 @@ class DigestPageTest(unittest.TestCase):
         data = md.threads_input('ch', p, {'mode': 'shareNow'})
         thread = data['metadata']['threads']['thread']
         self.assertEqual(thread[0]['assets'], [{'image': {'url': p['image']}}])
-        card = thread[1]['metadata']['threads']['linkAttachment']
-        self.assertEqual(card['url'], 'https://ai-tech-express.jp/digest/20261030?utm_source=threads&utm_medium=social&utm_campaign=digest')
-        self.assertEqual(card['thumbnail']['url'], f'https://ai-tech-express.jp/digest/20261030/share.png?v={md.dp.image_rev()}')
+        # 2026-11-03 ルール1: Threads は本文の最後に号のページのリンク。返信は作らない
+        self.assertEqual(len(thread), 1)
+        self.assertIn('https://ai-tech-express.jp/digest/20261030?utm_source=threads&utm_medium=social&utm_campaign=digest', thread[0]['text'])
+        self.assertEqual(data['text'], thread[0]['text'])
         self.assertEqual(md.x_input('x', p, {'mode': 'shareNow'})['assets'], [{'image': {'url': p['image']}}])
 
     def test_prepare_falls_back_to_news_without_image(self):
@@ -414,11 +418,13 @@ class DigestPageTest(unittest.TestCase):
         wait.assert_not_called()
         self.assertEqual(ready['link'], 'https://ai-tech-express.jp/news')
         self.assertEqual(ready['image'], '')
-        self.assertIn('https://ai-tech-express.jp/news?utm_source=x&utm_medium=social&utm_campaign=digest', ready['x_text'])
         self.assertNotIn('/digest/', ready['x_text'])
         thread = md.threads_input('ch', ready, {'mode': 'shareNow'})['metadata']['threads']['thread']
         self.assertEqual(thread[0]['assets'], [])
-        self.assertTrue(thread[1]['metadata']['threads']['linkAttachment']['thumbnail']['url'].endswith('/logo.png'))
+        # /news へのリンクは記事ではないので、門番（sns_rules）が投稿を止める（号のページを出せない日は朝のまとめを出さない）
+        import sns_rules
+        out = sns_rules.check_post('threads', thread[0]['text'], [], md.gate_article(ready), kind='digest')
+        self.assertTrue(any('号のページ' in v for v in out))
 
     def test_prepare_keeps_edition_when_live(self):
         p = digest_post()

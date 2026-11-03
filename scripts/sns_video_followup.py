@@ -464,13 +464,18 @@ def read_post(api_key: str, post_id: str) -> dict | None:
         return None
 
 
-def edit_post(api_key: str, inp: dict) -> None:
+def edit_post(api_key: str, inp: dict, article: dict | None = None) -> None:
+    """Buffer の editPost。本文・画像を変えるときは、変える直前に SNS ルールの門番（sns_rules）を通す（予約の時刻だけ戻すときは通さない）"""
+    import sns_rules
     import threads_post
 
+    if "text" in inp or "metadata" in inp or "assets" in inp:
+        sns_rules.enforce_buffer("threads", inp, article, source="sns_video_followup.edit_post", history=False)
     data = threads_post.buffer_graphql(
         api_key,
         """mutation($input: EditPostInput!) { editPost(input: $input) { __typename ... on PostActionSuccess { post { id } } ... on MutationError { message } } }""",
         {"input": inp},
+        gated=True,
     )
     res = data.get("editPost") or {}
     if res.get("message") or res.get("__typename") not in ("PostActionSuccess", None):
@@ -481,6 +486,15 @@ def _has_video(post: dict | None) -> bool:
     thread = ((post or {}).get("metadata") or {}).get("thread") or []
     assets = (thread[0].get("assets") if thread else None) or (post or {}).get("assets") or []
     return any(str(a.get("mimeType", "")).startswith("video") for a in assets)
+
+
+def article_of(report: dict) -> dict | None:
+    """動画の記録（report の url）から記事の JSON を読む。読めなければ None（門番が「記事のない投稿」として止める）"""
+    m = re.search(r"/articles/([^/?#]+)", str(report.get("url") or ""))
+    try:
+        return json.loads((ARTICLES / f"{m.group(1)}.json").read_text("utf-8")) if m else None
+    except (OSError, ValueError):
+        return None
 
 
 def edit_scheduled(post_id: str, report: dict, variant: str, video_url: str, now: datetime | None = None, api_key: str | None = None, allow_draft: bool = False) -> dict:
@@ -508,7 +522,7 @@ def edit_scheduled(post_id: str, report: dict, variant: str, video_url: str, now
     inp = {"id": post_id, "text": text, "assets": [], "metadata": {"threads": threads_meta}}
     error = ""
     try:
-        edit_post(key, inp)
+        edit_post(key, inp, article_of(report))
     except Exception as err:  # noqa: BLE001 - 断られたら写真のまま（再挑戦しない）
         error = str(err)[:300]
     after = read_post(key, post_id) or {}
@@ -600,7 +614,10 @@ def post_video(slug: str, body: str, video_url: str) -> dict:
         channel = threads_post.buffer_threads_channel(api_key)
         if not channel:
             raise RuntimeError("Buffer に Threads のチャンネルが無い")
-        post_id = threads_post.create_post(api_key, buffer_input(channel["id"], body, video_url, threads_post.topic_of(shorts.load_article(slug))))
+        # 動画だけの2本目はルール5（1記事1投稿）に反するので、門番が kind="video_followup" を止める（SNS_VIDEO_BREAKING_FOLLOWUP はオーナー判断待ち）
+        article = shorts.load_article(slug)
+        post_id = threads_post.create_post(api_key, buffer_input(channel["id"], body, video_url, threads_post.topic_of(article)),
+                                           service="threads", article=article, source="sns_video_followup.post_video", kind="video_followup")
         return {"status": "posted", "bufferId": post_id, "postedAt": datetime.now(timezone.utc).isoformat(timespec="seconds")}
     except Exception as error:  # noqa: BLE001 - 受理されたか分からない失敗も含め、再送しない
         return {"status": "post_failed", "error": str(error)[:300], "postedAt": datetime.now(timezone.utc).isoformat(timespec="seconds")}
@@ -679,7 +696,7 @@ def draft_test(report_path: Path, video_url: str, yes: bool = False, variant: st
     if not channel:
         raise RuntimeError("Buffer に Threads のチャンネルが無い")
     inp["channelId"] = channel["id"]
-    draft_id = threads_post.create_post(api_key, inp)
+    draft_id = threads_post.create_post(api_key, inp, service="threads", article=article_of(report), source="sns_video_followup.draft_test", kind="video_followup")
     return {"input": inp, "sent": True, "draftId": draft_id, "check": read_draft(api_key, channel["id"], draft_id)}
 
 

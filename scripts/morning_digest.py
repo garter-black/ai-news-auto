@@ -101,13 +101,15 @@ def compose(items: list[dict], now: datetime | None = None) -> str:
     return "\n".join([head, "", *(f"・{one_line(a)}" for a in items)])
 
 
-def compose_x(items: list[dict], link: str, now: datetime | None = None) -> str:
-    """X は1本で（全角2・URL 23 の280字）。入らなければ後ろの項目から落とす"""
+def compose_x(items: list[dict], link: str = "", now: datetime | None = None) -> str:
+    """X の本文（全角2の280字）。入らなければ後ろの項目から落とす。
+    号のページのリンクは本文に入れず返信に置く（2026-11-03 ルール1。x_input が返信を作る）。link は使わない（以前の呼び方のため残す）"""
+    del link
     for n in range(len(items), 0, -1):
-        text = f"{compose(items[:n], now)}\n\n{link}\n#AI"
+        text = f"{compose(items[:n], now)}\n\n#AI"
         if tp.x_weight_url(text) <= tp.X_LIMIT:
             return text
-    return f"{compose([], now).splitlines()[0].replace('0本', '')}\n{link}"
+    return compose([], now).splitlines()[0].replace("0本", "")
 
 
 ASSISTANTS = ["ChatGPT", "Gemini", "Claude", "Copilot"]
@@ -316,7 +318,23 @@ def link_card(post: dict) -> dict:
 
 
 def x_input(channel_id: str, post: dict, when: dict) -> dict:
-    return {"channelId": channel_id, "text": post["x_text"], "schedulingType": "automatic", "assets": image_assets(post), **when}
+    """X は本文＋画像、記事（号のページ）のリンクは返信に置く（2026-11-03 ルール1: X だけリンクは返信）"""
+    link = tp.utm_link(post["link"], "x", "digest") if post.get("link") else ""
+    body = post["x_text"]
+    thread = [{"text": body, "assets": image_assets(post)}]
+    if link:
+        thread.append({"text": f"{post.get('reply') or REPLY_LINES[0]}\n{link}", "assets": []})
+    return {"channelId": channel_id, "text": body, "schedulingType": "automatic", "assets": image_assets(post), **when,
+            "metadata": {"twitter": {"thread": thread}}}
+
+
+def gate_article(post: dict) -> dict:
+    """ルールの門番（sns_rules）に渡す朝のまとめの中身（号のページと記事）"""
+    return {"link": post.get("link") or "", "items": list(post.get("items") or [])}
+
+
+def gate_service(payload: dict) -> str:
+    return "twitter" if "twitter" in (payload.get("metadata") or {}) else "threads"
 
 
 def without_images(payload: dict) -> dict:
@@ -330,24 +348,25 @@ def without_images(payload: dict) -> dict:
 
 def create_with_fallback(api_key: str, payload: dict) -> str:
     """画像付きで作る。Buffer がはっきり拒否した（MutationError）ときだけ、画像なしで1回作り直す"""
+    gate = {"service": gate_service(payload), "article": payload.pop("_gate", None), "source": "morning_digest", "kind": "digest"}
     try:
-        return tp.create_post(api_key, payload)
+        return tp.create_post(api_key, payload, **gate)
     except RuntimeError as error:
         plain = without_images(payload)
         if not str(error).startswith("Buffer: ") or plain == payload:
             raise
         log("[digest] 画像付きの予約が拒否されたため、画像なしで作り直します")
-        return tp.create_post(api_key, plain)
+        return tp.create_post(api_key, plain, **gate)
 
 
 def threads_input(channel_id: str, post: dict, when: dict) -> dict:
-    thread = [{"text": post["text"], "assets": image_assets(post)}]
-    if post["reply"]:
-        thread.append({"text": post["reply"], "assets": [], "metadata": {"threads": {"linkAttachment": {
-            "url": tp.utm_link(post["link"], "threads", "digest"), **link_card(post),
-        }}}})
+    """Threads は本文の最後に号のページのリンク（2026-11-03 ルール1: X 以外はリンクを本文に。返信は作らない）"""
+    text = post["text"]
+    if post.get("link"):
+        text = f"{text.rstrip()}\n\n{post.get('reply') or REPLY_LINES[0]}\n{tp.utm_link(post['link'], 'threads', 'digest')}"
+    thread = [{"text": text, "assets": image_assets(post)}]
     return {
-        "channelId": channel_id, "text": post["text"], "schedulingType": "automatic", "assets": [], **when,
+        "channelId": channel_id, "text": text, "schedulingType": "automatic", "assets": [], **when,
         "metadata": {"threads": {"topic": TOPIC, "thread": thread}},
     }
 
@@ -557,6 +576,7 @@ def deliver(api_key: str, channels: dict, state: dict, post: dict, kind: str, no
         media_due = due + timedelta(minutes=2) if due and service == "twitter" else due
         when = {"mode": "customScheduled", "dueAt": tp.utc_z(media_due)} if media_due else {"mode": "shareNow"}
         payload = threads_input(channels[service]["id"], post, when) if service == "threads" else x_input(channels[service]["id"], post, when)
+        payload["_gate"] = gate_article(post)
         entry.setdefault("delivery", {})[service] = {"status": "attempting", "updatedAt": now.isoformat(timespec="seconds")}
         store_entry(state, key, entry)  # 通信前にも記録。クラッシュ後は照合なしに再作成しない。
         try:
@@ -623,6 +643,11 @@ def main() -> int:
         except Exception as error:
             log(f"[verify] 照合に失敗しました ({type(error).__name__})")
             return 1
+    if args.kind == "poll":
+        # 2026-11-03 停止（オーナー判断）: 記事のない定型の問いかけ（「番号でコメント」など）は SNS ルール1・3に反する。
+        # 決まった型の文面で狙いが分からず、AI らしさが強い。sns_rules の門番も記事のない投稿を止める。再開はオーナーの承認が要る
+        log("[poll] 問いかけ投稿は停止しています（記事のない定型の投稿は出さない。SNS ルール1・3）")
+        return 0
     if not tp.DIGEST_ON:
         log("[digest] SNS_DIGEST=0 のため出しません")
         return 0
@@ -658,8 +683,9 @@ def main() -> int:
             draft = {"mode": "addToQueue", "saveToDraft": True}
             created = []
             try:
-                created.append(tp.create_post(api_key, threads_input(channels["threads"]["id"], post, draft)))
-                created.append(tp.create_post(api_key, x_input(channels["twitter"]["id"], post, draft)))
+                gate = {"article": gate_article(post), "source": "morning_digest.test", "kind": "digest"}
+                created.append(tp.create_post(api_key, threads_input(channels["threads"]["id"], post, draft), service="threads", **gate))
+                created.append(tp.create_post(api_key, x_input(channels["twitter"]["id"], post, draft), service="twitter", **gate))
                 log(f"[test] 下書きを作りました: {created}")
             finally:
                 for post_id in created:

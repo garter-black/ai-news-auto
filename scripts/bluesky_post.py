@@ -27,6 +27,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import threads_post as tp  # noqa: E402
+import sns_rules  # noqa: E402
 
 PDS = "https://bsky.social/xrpc"
 DELAY_MIN = 20
@@ -90,8 +91,8 @@ def shrink(data: bytes) -> bytes | None:
     return None
 
 
-def upload_thumb(session: dict, urls: list[str]) -> dict | None:
-    """1MB 以下の画像をアップロードして blob を返す。どれも無理なら None（カードは画像なし）"""
+def upload_thumb(session: dict, urls: list[str], used: list[str] | None = None) -> dict | None:
+    """1MB 以下の画像をアップロードして blob を返す。どれも無理なら None（カードは画像なし）。使った URL は used に足す"""
     for url in urls:
         try:
             data, ctype = fetch(url, 8 * 1024 * 1024)
@@ -102,7 +103,10 @@ def upload_thumb(session: dict, urls: list[str]) -> dict | None:
                 ctype = "image/jpeg"
                 if not data:
                     continue
-            return xrpc("com.atproto.repo.uploadBlob", data, session["accessJwt"], ctype)["blob"]
+            blob = xrpc("com.atproto.repo.uploadBlob", data, session["accessJwt"], ctype)["blob"]
+            if used is not None:
+                used.append(url)
+            return blob
         except Exception as error:  # noqa: BLE001
             log(f"  [bluesky] 画像を使えません {url}: {error}")
     return None
@@ -133,6 +137,13 @@ def build_record(text: str, link: str, title: str, desc: str, thumb: dict | None
     }
 
 
+def create_record(session: dict, record: dict, p: dict, media: list[dict]) -> dict:
+    """Bluesky に1件出す。出す直前に SNS ルールの門番（sns_rules）を通す。違反なら SnsRuleViolation（出さない）"""
+    sns_rules.enforce("bluesky", record["text"], media, p.get("gate"), source="bluesky_post", kind=p.get("kind", "article"), links=[p["link"]])
+    return xrpc("com.atproto.repo.createRecord",
+                {"repo": session["did"], "collection": "app.bsky.feed.post", "record": record}, session["accessJwt"])
+
+
 def plan(key: str, entry: dict) -> dict | None:
     """投稿の中身（本文・リンク・カード）。出せないもの（アンケートなど）は None"""
     style = entry.get("style")
@@ -153,14 +164,15 @@ def plan(key: str, entry: dict) -> dict | None:
             text = md.compose(items, datetime.fromisoformat(recorded_at.replace("Z", "+00:00")))
         # リンク先はその日の号のページ（/digest/<YYYYMMDD>。カードの画像も号のシェア画像）。古い記録・号を出せなかった日は /news
         page = str((entry.get("postPlan") or {}).get("link") or "")
-        covers = [f"{tp.site_url()}/cover/{items[0]['slug']}"] if items else []
+        covers = [tp.card_url(items[0])] if items else []  # 写真だけのカード（見出し入りのカバーは使わない。ルール2）
         if "/digest/" in page:
             return {"text": text, "link": tp.utm_link(page, "bluesky", "digest"),
                     "title": f"{text.splitlines()[0]}｜サイソクニュース", "desc": "直近のAIニュースを3本だけ。写真と要約つき。",
-                    "images": [f"{page.rstrip('/')}/share.png?v={md.dp.image_rev()}", *covers]}
+                    "images": [f"{page.rstrip('/')}/share.png?v={md.dp.image_rev()}", *covers],
+                    "kind": "digest", "gate": {"link": page, "items": items}}
         link = tp.utm_link(f"{tp.site_url()}/news", "bluesky", "digest")
         return {"text": text, "link": link, "title": "AIニュースまとめ｜サイソクニュース",
-                "desc": "直近のAIニュースを1分で。", "images": covers}
+                "desc": "直近のAIニュースを1分で。", "images": covers, "kind": "digest", "gate": {"link": link, "items": items}}
     path = tp.ARTICLES_DIR / f"{key}.json"
     if not path.exists():
         return None
@@ -169,11 +181,11 @@ def plan(key: str, entry: dict) -> dict | None:
     text = tp.compose(article, [], breaking=bool(entry.get("breaking")), fixed_question=str(entry.get("questionText") or ""))
     text = re.sub(r"\s*👇\s*$", "", text)
     link = tp.utm_link(f"{tp.site_url()}/articles/{key}", "bluesky", entry.get("format") or "classic")
-    thumb = str(article.get("thumbnail") or "")
     return {
         "text": text, "link": link, "title": article.get("seoTitle") or article["title"],
         "desc": article.get("description", ""),
-        "images": [f"{tp.site_url()}/cover/{key}"] + ([thumb] if thumb.startswith("https://") else []),
+        # 写真だけのカード（16:9）だけを使う。見出し入りのカバー・縦横の分からない元の写真は使わない（ルール2）
+        "images": [tp.card_url(article)], "gate": article,
     }
 
 
@@ -350,11 +362,10 @@ def choose(state: dict, extra: dict, now: datetime, fill: bool, articles: list[d
 def plan_fill(article: dict) -> dict:
     key = article["slug"]
     text = re.sub(r"\s*👇\s*$", "", tp.compose(article, [], breaking=False))
-    thumb = str(article.get("thumbnail") or "")
     return {
         "text": text, "link": tp.utm_link(f"{tp.site_url()}/articles/{key}", "bluesky", "fill"),
         "title": article.get("seoTitle") or article["title"], "desc": article.get("description", ""),
-        "images": [f"{tp.site_url()}/cover/{key}"] + ([thumb] if thumb.startswith("https://") else []),
+        "images": [tp.card_url(article)], "gate": article,
     }
 
 
@@ -440,13 +451,16 @@ def main() -> int:
             if not p:
                 entry["blueskyFailed"] = "skip"
                 continue
-            thumb = upload_thumb(session, p["images"]) if session and (live or args.slug) else None
+            used: list[str] = []
+            thumb = upload_thumb(session, p["images"], used) if session and (live or args.slug) else None
             record = build_record(p["text"], p["link"], p["title"], p["desc"], thumb)
             if not live:
                 log(f"--- {key} ({kind})\n{json.dumps(record, ensure_ascii=False, indent=1)}")
+                for v in sns_rules.check_post("bluesky", record["text"], [{"type": "image", "url": u} for u in used], p.get("gate"),
+                                              kind=p.get("kind", "article"), links=[p["link"]]):
+                    log(f"  [check] {v}")
                 continue
-            res = xrpc("com.atproto.repo.createRecord",
-                       {"repo": session["did"], "collection": "app.bsky.feed.post", "record": record}, session["accessJwt"])
+            res = create_record(session, record, p, [{"type": "image", "url": u} for u in used])
             at = datetime.now(timezone.utc).isoformat(timespec="seconds")
             if kind == "fill":
                 extra[key] = {"uri": res["uri"], "at": at, "title": entry["article"].get("title", "")}

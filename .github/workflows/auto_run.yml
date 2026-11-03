@@ -400,6 +400,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
           LLM_DEFAULT_PURPOSE: helper
+          GH_TOKEN: ${{ github.token }}  # 門番が止めた投稿の issue を立てる
         run: |
           # 投稿ごとの反応を取り込んで「勝ちパターン」を学び直してから、次の投稿を選ぶ
           # 反応の学習は1日1回（Buffer の数値も1日1回更新）

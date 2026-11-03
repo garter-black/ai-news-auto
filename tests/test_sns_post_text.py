@@ -294,7 +294,7 @@ class LinkInBodyTest(unittest.TestCase):
 
     def test_buffer_threads_classic_has_no_reply(self):
         sent = []
-        with patch.object(tp, "create_post", side_effect=lambda key, body: sent.append(body) or "id1"):
+        with patch.object(tp, "create_post", side_effect=lambda key, body, **kw: sent.append(body) or "id1"):
             tp.publish_via_buffer("k", "ch", "本文\nhttps://example", "https://ai-tech-express.jp/articles/a", dict(OLD), draft=True)
             tp.publish_via_buffer("k", "ch", "本文", "https://ai-tech-express.jp/articles/a", dict(OLD), draft=True, fmt="hook_thread")
         classic, hook = (b["metadata"]["threads"]["thread"] for b in sent)
@@ -305,7 +305,7 @@ class LinkInBodyTest(unittest.TestCase):
     def test_x_keeps_link_in_reply_and_facebook_has_no_reply(self):
         sent = []
         channels = {"twitter": {"id": "t"}, "facebook": {"id": "f"}}
-        with patch.object(tp, "create_post", side_effect=lambda key, body: sent.append(body) or "id"):
+        with patch.object(tp, "create_post", side_effect=lambda key, body, **kw: sent.append(body) or "id"):
             tp.publish_extra_channels("k", channels, "本文？", "https://ai-tech-express.jp/articles/a", dict(OLD), None, draft=True)
         x, fb = sent
         thread = x["metadata"]["twitter"]["thread"]

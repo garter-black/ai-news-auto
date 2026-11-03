@@ -49,7 +49,7 @@ def targets(state: dict, now: datetime) -> list[dict]:
     found = []
     for path in tp.ARTICLES_DIR.glob("*.json"):
         article = json.loads(path.read_text("utf-8"))
-        if not article.get("breaking") or article["slug"] in state["posted"]:
+        if not article.get("breaking") or article["slug"] in state["posted"] or article["slug"] in (state.get("ruleBlocked") or {}):
             continue
         age = now - datetime.fromisoformat(article["generatedAt"])
         if age <= timedelta(minutes=tp.BREAKING_MAX_AGE_MIN) or tp.queued_for_morning(article, now):
@@ -173,6 +173,9 @@ def main() -> int:
             continue
         try:
             result = tp.share_now(key, article, text, fmt=fmt, fb_text=classic_text, threads_text=threads_text)
+        except tp.sns_rules.SnsRuleViolation as error:
+            tp.block_article(state, article["slug"], error)  # ルールの門番が止めた（投稿していない）。同じ記事は選び直さない
+            continue
         except Exception as error:  # noqa: BLE001  失敗しても次の記事・通常の予約は止めない
             log(f"  [error] {error}")
             continue

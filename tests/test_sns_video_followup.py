@@ -345,7 +345,7 @@ class MergeTest(unittest.TestCase):
         sent = []
         import threads_post
         orig = threads_post.buffer_graphql
-        def fake(key, query, variables=None):
+        def fake(key, query, variables=None, **kw):
             if "editPost" in query:
                 inp = variables["input"]
                 sent.append(inp)
@@ -355,8 +355,14 @@ class MergeTest(unittest.TestCase):
                 return {"editPost": {"__typename": "PostActionSuccess", "post": {"id": "p"}}}
             return {"post": dict(store)}
         threads_post.buffer_graphql = fake
+        from unittest import mock
+        import sns_rules
         try:
-            res = fu.edit_scheduled("p", REPORT, "short", "https://ai-tech-express.jp/video/x.mp4", NOW, api_key="k")
+            # 差し替える直前に SNS ルールの門番を通す（本文・動画・記事を渡す）
+            with mock.patch.object(sns_rules, "enforce_buffer") as gate:
+                res = fu.edit_scheduled("p", REPORT, "short", "https://ai-tech-express.jp/video/x.mp4", NOW, api_key="k")
+            self.assertEqual(gate.call_count, 1)
+            self.assertEqual(gate.call_args.args[0], "threads")
         finally:
             threads_post.buffer_graphql = orig
         self.assertEqual(res["status"], "attached")

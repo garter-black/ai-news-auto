@@ -41,7 +41,8 @@ def main() -> int:
 
     channels = tp.buffer_channels(key)
     due = datetime.now(timezone.utc) + timedelta(minutes=2)
-    result = tp.publish_via_buffer(key, channels["threads"]["id"], text, link, article, due_at=due)
+    # 2026-11-03 ルール1: Threads も本文の最後に記事のリンク。中身はルールの門番（sns_rules）が投稿の直前に確かめる
+    result = tp.publish_via_buffer(key, channels["threads"]["id"], tp.with_link(text, article, "threads", "classic"), link, article, due_at=due)
     extra = tp.publish_extra_channels(key, channels, text, link, article, due_at=due)
 
     state = tp.load_state()

@@ -1,0 +1,35 @@
+name: SNS rules check
+
+# SNS 投稿のルールの門番（scripts/sns_rules.py）のテスト。
+# 投稿 API（Buffer の createPost・editPost、Bluesky の createRecord、Threads 公式 API）を呼ぶ所がすべて
+# sns_rules.enforce を通っているかを検査する（新しい経路が門番を飛ばしていたら失敗する）。何も投稿しない。
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - "tests/**"
+      - "lib/**"
+      - "app/**"
+      - "cloudflare/**"
+      - "ops/**"
+      - ".github/workflows/sns_rules.yml"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Gate and call-site check (nothing is posted)
+        env:
+          SNS_RULES_NO_ISSUE: "1"
+        run: python -m unittest tests.test_sns_rules tests.test_morning_digest tests.test_sns_post_text tests.test_bluesky_post tests.test_sns_video_followup -v

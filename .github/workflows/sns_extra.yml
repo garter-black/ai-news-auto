@@ -1,6 +1,6 @@
 name: SNS extra posts
 
-# 朝のまとめ「今朝のAIニュース3本」（毎朝 7:30 JST）と、週2回の問いかけ投稿（火・金 12:15 JST）。
+# 朝のまとめ「今朝のAIニュース3本」（毎朝 7:30 JST）。週2回の問いかけ投稿（火・金）は 2026-11-03 に停止（記事のない定型の投稿。SNS ルール1・3）。
 # 少し早めに起動し、Buffer で枠の時刻に予約する。別系統のCloudflare見張り番も未完了分を回収する。
 # 同じconcurrencyで直列化し、最新mainとBufferの既存投稿を照合してから不足媒体だけを送る。
 # 朝の回は、自分の投稿に付いたコメントの一覧（scripts/threads_inbox.py → state/threads_inbox.json）も更新する。自動返信はしない。
@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       kind:
-        description: "digest / poll / inbox"
+        description: "digest / inbox（poll は停止中）"
         required: false
         default: "inbox"
       test:
@@ -30,6 +30,7 @@ on:
 
 permissions:
   contents: write
+  issues: write  # SNS ルールの門番（scripts/sns_rules.py）が止めた投稿の issue（ラベル sns-rule-violation）
 
 concurrency:
   group: sns-extra
@@ -60,14 +61,13 @@ jobs:
           CF_KV_TOKEN: ${{ secrets.CF_DEPLOY_TOKEN }}
         run: |
           # 日次企画の修正検証では対象企画だけを確認し、不要なAPI消費を避ける。
-          if [ "$KIND" = "digest" ] || [ "$KIND" = "poll" ]; then
+          if [ "$KIND" = "digest" ]; then
             python scripts/morning_digest.py --kind "$KIND" --test-draft --force
             exit 0
           fi
-          SNS_FORMAT=hook_thread python scripts/threads_post.py --test-draft
-          SNS_FORMAT=classic python scripts/threads_post.py --test-draft
+          # hook_thread と問いかけ投稿（poll）は 2026-11-03 に停止（SNS ルール1〜3）。確かめるのは今の形だけ
+          python scripts/threads_post.py --test-draft
           python scripts/morning_digest.py --test-draft --force
-          python scripts/morning_digest.py --kind poll --test-draft --force
           python scripts/threads_inbox.py --no-save > "$RUNNER_TEMP/inbox.txt"
           grep -c '"url"' "$RUNNER_TEMP/inbox.txt" || true
           cat "$RUNNER_TEMP/inbox.txt"
@@ -81,7 +81,8 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CF_KV_TOKEN: ${{ secrets.CF_DEPLOY_TOKEN }}
-          KIND: ${{ github.event.schedule == '45 2 * * 2,5' && 'poll' || inputs.kind || 'digest' }}
+          GH_TOKEN: ${{ github.token }}  # 門番が止めた投稿の issue を立てる
+          KIND: ${{ inputs.kind || 'digest' }}
           TARGET_DATE: ${{ inputs.date }}
         run: |
           ARGS=(--kind "$KIND")

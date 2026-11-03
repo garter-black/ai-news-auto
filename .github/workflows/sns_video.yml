@@ -39,6 +39,7 @@ on:
 
 permissions:
   contents: write  # state/sns_video.json と Claude API の使用量を main に残すため
+  issues: write  # SNS ルールの門番（scripts/sns_rules.py）が止めた差し替えの issue
 
 concurrency:
   group: sns-video-followup
@@ -90,6 +91,7 @@ jobs:
           SNS_VIDEO_AB_UNTIL: ${{ vars.SNS_VIDEO_AB_UNTIL }}
           SNS_VIDEO_AFTER_AB: ${{ vars.SNS_VIDEO_AFTER_AB || 'short' }}
           SNS_VIDEO_STORE: ${{ vars.SNS_VIDEO_STORE || 'kv' }}
+          GH_TOKEN: ${{ github.token }}  # 門番が止めた投稿の issue を立てる
           SNS_VIDEO_BREAKING_FOLLOWUP: ${{ vars.SNS_VIDEO_BREAKING_FOLLOWUP || 'off' }}
         run: |
           if [ "${{ github.event.inputs.today_report }}" = "true" ]; then
