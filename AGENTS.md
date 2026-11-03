@@ -130,7 +130,7 @@
 
 ## 8. 主な秘密・設定の名前（値はここに書かない）
 
-- GitHub Secrets: `ANTHROPIC_API_KEY`（Claude API のクレジット。速報・SNS向け記事・動画の台本だけ）, `CF_DEPLOY_TOKEN`, `BUFFER_API_KEY`, `RESEND_API_KEY`, `JINA_API_KEY`, `BLUESKY_APP_PASSWORD`, `VAPID_PRIVATE_KEY`, `PUSH_SEND_TOKEN`, `AFF_STATS_TOKEN` ほか
+- GitHub Secrets: `ANTHROPIC_API_KEY`（Claude API のクレジット。記事・動画の台本を段ごとのモデルで）, `CF_DEPLOY_TOKEN`, `BUFFER_API_KEY`, `RESEND_API_KEY`, `JINA_API_KEY`, `BLUESKY_APP_PASSWORD`, `VAPID_PRIVATE_KEY`, `PUSH_SEND_TOKEN`, `AFF_STATS_TOKEN` ほか
 - GitHub Variables: `WEB_DAILY_CAP`（通常記事の1日上限）, `THREADS_MODE`, `BLUESKY_HANDLE`, `EVERGREEN_DAILY_CAP`, `SNS_FORMAT`, `SNS_DIGEST`
 - Cloudflare: アカウント `51e37d82e15d397b9666dc3d09bd5b92`、KV（記事キャッシュ・画像・メルマガ・プッシュ・クリック計測）
 
@@ -194,7 +194,7 @@
 
 - 朝のまとめ「今朝のAIニュース3本」の号ページ `/digest/<YYYYMMDD>`（noindex）とシェア画像 `share.png`（1200×630）・`card.png`（1080×1350）。デザインは `lib/digest-design.ts` の `DIGEST_DESIGN`（A/B/C）1か所で切替、`?design=` で見比べ。号のデータは `scripts/digest_page.py` が `content/digests` と KV（デプロイ前の朝用）に置く。見出しは会社名だけにしない（`short_headline`）。要約の見出しは「要約すると」。
 
-- Claude の使いどころ（2026-11-03 オーナー決定）: Claude（API のクレジットも CLI のサブスクリプションも）は**速報・SNS に出しそうな記事・動画の台本だけ**。順番は Claude API → Claude CLI → 無料モデル。ほかの記事・品質チェック・画像などは無料モデルだけ。呼び出しは `llm.generate_json(..., visibility="high", purpose="breaking"|"sns"|"video"|"video_review")`。API は月 $95（補充日 毎月4日で区切る）・1日の目安・purpose ごとの回数上限を `state/claude_api_usage*.json` で守り、クレジット切れは次の補充日まで自動で使わない。仕組みは `scripts/llm.py` の冒頭。
+- Claude の使いどころ（2026-11-03 オーナー決定・改訂）: Claude API のクレジットは**月の予算いっぱいまで**段ごとのモデルで使う。速報・動画の台本=Opus 5.5（削らない）、SNS に出しそうな記事・読者像の中心の記事=Sonnet 5.5、ほかの記事・小さな補助（事実確認の手直し・FAQ・問いかけ）=Haiku 5.5、無料モデルは予備。予算（GitHub の変数 `CLAUDE_API_MONTHLY_BUDGET_USD`、既定 $95・期間は毎月4日〜3日）に合わせて自動で上げ下げする（足りない: その他→無料、中心→Haiku、SNS→Haiku の順。余る: SNS→Opus、中心→Opus、その他→Sonnet）。Claude CLI（サブスクリプション）は速報・SNS・動画だけ。呼び出しは `llm.generate_json(..., purpose="breaking"|"video"|"video_review"|"sns"|"core"|"rest"|"helper")`。使用額は `state/claude_api_usage*.json`、仕組みは `scripts/llm.py` の冒頭。
 
 - 記事の「すぐできること」（2026-11-03 の比較調査 `out/記事の比較調査_2026-11-03.md` の6章）: 日本での提供の表 `content/japan_availability.json`（人が確かめて更新。出典と確認日つき。確かめられないものは unknown）を `scripts/japan_availability.py` が生成・事実確認・判定に使う（一般提供中の製品だけ unknown を直す）。料金・使い方ガイドへの固定リンクは `lib/guide-links.ts`。判定カードはジャンル別（`lib/verdict.ts` の `verdictKind`）。FAQ・今日やることは合うジャンルだけ。サイソクが自分で試したように読める書き方（「筆者」など）と、題名の約束に本文が答えていない記事は品質ゲートで落とす。公開済みの記事の機械的な手直しは `python3 scripts/article_quickfix.py [--apply]`。
 

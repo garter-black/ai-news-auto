@@ -1306,7 +1306,9 @@ def surgical_fix(record: dict, source_text: str, kind: str, problems: list[str],
         work_money=" / ".join((record.get("workMoney") or {}).get("points") or []) or "（なし）",
         body=body, easy=record.get("easy", ""),
     )
-    data, model = llm.generate_json(SURGICAL_SYSTEM, prompt, SURGICAL_SCHEMA, temperature=0.2, max_output_tokens=16384, tier=CHECK_TIER)
+    # 事実確認の指摘の手直しは小さいが質が大事な段: Claude API の Haiku（予算の範囲。だめなら無料モデル）
+    data, model = llm.generate_json(SURGICAL_SYSTEM, prompt, SURGICAL_SCHEMA, temperature=0.2, max_output_tokens=16384, tier=CHECK_TIER,
+                                    purpose="helper")
     new_body = re.sub(r"^(#{1,6}) +(?:#{1,6} +)+", r"\1 ", str(data.get("body_markdown") or "").strip(), flags=re.M)
     heads_old, heads_new = _HEADING_RE.findall(body), _HEADING_RE.findall(new_body)
     if [_norm(h) for h in heads_old] != [_norm(h) for h in heads_new]:

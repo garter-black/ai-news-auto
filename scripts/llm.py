@@ -9,15 +9,16 @@
                   速報用に少し残す）→ Cloudflare / Groq の gpt-oss-120b → OpenRouter の無料モデル → 最後に軽量モデル（flash-lite → Gemma）。
                   軽量モデルは事実確認・文の手直しなど小さな作業（bulk）に回す
 - tier="bulk"   : 無料枠の大きい軽量モデル（flash-lite → Gemma）→ quality → 外部無料API（キーがあれば）→ Codex（ローカルのみ）
-- Claude は「目立つもの」だけに使う（2026-11-03 オーナー決定）。visibility="high" を付けた呼び出しだけが
-  Claude API（クレジット）→ Claude CLI（サブスクリプション）→ 上の無料モデル の順で試す。
-  それ以外（通常の記事・品質チェック・画像・まとめ など）は Claude を一切使わず無料モデルだけ。
-    data, model = generate_json(system, prompt, schema, tier="quality", visibility="high", purpose="breaking")
-  purpose: "breaking"（速報・大きなニュース）/ "sns"（SNS に出しそうな記事）/ "video"（動画の台本）/
-           "video_review"（台本の編集者レビュー。軽いモデル）。purpose ごとに1日の API 呼び出し回数の上限がある。
-- Claude API: ANTHROPIC_API_KEY があるときだけ。月の予算（既定 $95、クレジットの補充日〔既定 毎月4日〕で区切る）を
-  state/claude_api_usage*.json に記録し、1日の目安（残り予算÷残り日数）と purpose ごとの回数上限を守る。
-  「クレジット不足」などの課金エラーは次の補充日まで使わない印を付け、すぐ次の経路へ。API の失敗で処理は止めない。
+- Claude API（クレジット）は月の予算いっぱいまで、段（purpose）ごとにモデルを分けて使う（2026-11-03 オーナー決定）:
+    data, model = generate_json(system, prompt, schema, tier="write", purpose="core")
+    Opus 5.5  : "breaking"（速報・大きなニュース）/ "video"（動画の台本）        … 予算が苦しくても下げない
+    Sonnet 5.5: "sns"（SNS に出しそうな記事）/ "core"（読者像の中心の話題の記事）/ "video_review"（台本のレビュー）
+    Haiku 5.5 : "rest"（ほかの記事）/ "helper"（事実確認の指摘の手直し・FAQ の書き足し・SNS の問いかけ）
+  予算は CLAUDE_API_MONTHLY_BUDGET_USD（既定 $95。期間はクレジットの補充日 4日〜翌月3日）。毎回、今日の目安額
+  （残り予算÷残り日数）の残りを見込み回数で配り（api_plan）、足りなければ その他→無料、中心→Haiku、SNS→Haiku の順に下げ、
+  余れば SNS→Opus、中心→Opus、その他→Sonnet の順に上げる（割合で混ぜる）。使用額は state/claude_api_usage*.json に
+  段ごとに記録し、実行ログに1行の要約を出す。クレジット切れは次の補充日まで使わず、API の失敗で処理は止めない。
+  API が使えない・失敗したときは、速報・SNS・動画だけ Claude CLI、それ以外は無料モデル。purpose なしは無料モデルだけ。
 - Claude CLI は Claude Code CLI（`claude -p`）をサブスクリプションの枠で呼ぶ。使えるのは
   `claude` が PATH にあり、かつ CLAUDE_CODE_OAUTH_TOKEN（GitHub Actions。`claude setup-token` で発行）
   または LLM_USE_LOCAL_CLAUDE=1（手元の Mac）のときだけ。CLAUDE_MODEL でモデルを変更（既定 sonnet）。
@@ -603,7 +604,7 @@ def _call_codex(model: str, system_instruction: str, prompt: str, schema: dict) 
 
 
 # --------------------------------------------------------------------------- #
-# Claude API（Claude Platform のクレジット）。目立つもの（visibility="high"）だけに使う
+# Claude API（Claude Platform のクレジット）。月の予算いっぱいまで、段（tier）ごとにモデルを分けて使う
 # --------------------------------------------------------------------------- #
 
 API_PREFIX = "anthropic-api:"
@@ -616,17 +617,39 @@ API_PRICES = {
     "claude-haiku-5-5": (0.10, 0.50, 0.01),
 }
 API_CACHE_WRITE_MULT = 1.25
-API_DEFAULT_MODEL = "claude-opus-5-5"     # 速報の記事・動画の台本
-API_DEFAULT_SNS_MODEL = "claude-sonnet-5-5"  # SNS に出しそうな記事（本数が多く、実際に出るのは半分ほどなので）
-API_DEFAULT_LIGHT_MODEL = "claude-sonnet-5-5"  # 台本の編集者レビューなど軽い段
-API_LIGHT_PURPOSES = {"video_review", "review"}
-# purpose → 1日の回数上限を数える区分
-API_CLASS_OF = {"breaking": "breaking", "sns": "sns", "video": "video", "video_review": "video"}
-# 1日（日本時間）の API 呼び出し回数の上限（作り直しも1回と数える）。環境変数 CLAUDE_API_DAILY_CALLS_<区分> で変更
-API_DAILY_CALLS = {"breaking": 10, "sns": 10, "video": 12}
-API_MONTHLY_BUDGET_DEFAULT = 95.0
-API_BREAKING_RESERVE = 0.25  # 1日の目安額のうち、速報のために残しておく割合（sns・video はここで止まる）
-API_REFILL_DAY_DEFAULT = 4   # クレジットが補充される日（毎月）
+# モデルの段: 0=無料モデル（API を使わない）/ 1=Haiku / 2=Sonnet / 3=Opus。環境変数 CLAUDE_API_MODEL_<LOW|MID|TOP> で変更
+API_LEVEL_NAMES = ("free", "low", "mid", "top")
+API_LEVEL_LABELS = ("無料", "Haiku", "Sonnet", "Opus")
+API_LEVEL_DEFAULTS = {1: "claude-haiku-5-5", 2: "claude-sonnet-5-5", 3: "claude-opus-5-5"}
+# purpose（段）: (いつもの段, 下げられる下限, 上げられる上限, 守る段か, 表示名)
+#   守る段（速報・動画・補助）は予算が苦しくても下げない（月の予算＋予備 API_PROTECTED_MARGIN まで使う）
+API_TIERS = {
+    "breaking": (3, 3, 3, True, "速報"),
+    "video": (3, 3, 3, True, "動画"),
+    "video_review": (2, 2, 2, True, "動画レビュー"),
+    "helper": (1, 1, 1, True, "補助"),        # 事実確認の指摘の手直し・FAQ の書き足し・SNS の問いかけ など小さな段
+    "sns": (2, 1, 3, False, "SNS"),          # SNS に出しそうな記事
+    "core": (2, 1, 3, False, "中心"),         # 読者像の中心の話題（AI・仕事とお金・ビジネス・投資・税金・補助金・起業）
+    "rest": (1, 0, 2, False, "その他"),       # ほかの記事（スポーツ・暮らし・エンタメ・科学など）
+}
+# Claude CLI（サブスクリプション）も使ってよい段（2026-11-03 オーナー決定: 速報・SNS・動画だけ）
+API_CLI_PURPOSES = {"breaking", "sns", "video", "video_review"}
+# 予算の配り方（優先順）。下の段ほど後回し＝予算が足りないと先に削られる:
+#   削る順 = その他 Haiku→無料 → 中心 Sonnet→Haiku → SNS Sonnet→Haiku（速報・動画は削らない）
+#   余るとき = さらに SNS→Opus → 中心→Opus → その他→Sonnet と上げる（CLAUDE_API_UPGRADES=0 で上げない）
+API_STEPS = [("sns", 1, 2), ("core", 1, 2), ("rest", 0, 1)]
+API_UPGRADE_STEPS = [("sns", 2, 3), ("core", 2, 3), ("rest", 1, 2)]
+# 1日の呼び出し回数の見込み（実績が2日分たまるまでの仮の値。作り直しも1回と数える）
+API_DEMAND_DEFAULT = {"breaking": 7, "video": 5, "video_review": 5, "helper": 40, "sns": 13, "core": 27, "rest": 21}
+# 1回あたりの料金の見込み（Sonnet で書いたとき。実績が3回分たまったらその平均を使う）。ほかのモデルは料金の比で換算
+# 2026-11-03 の実績: 速報 Opus 平均 $0.25/回・SNS Sonnet $0.09/回・動画 Opus $0.11/回（入力 約1.5万・出力 約0.5〜0.9万トークン）
+API_COST_MID_DEFAULT = {"breaking": 0.125, "video": 0.055, "video_review": 0.02, "helper": 0.04, "sns": 0.09, "core": 0.09, "rest": 0.09}
+API_LEVEL_COST_RATIO = {1: 0.05, 2: 1.0, 3: 2.0}
+# 1日の回数の安全上限（暴走よけ。環境変数 CLAUDE_API_DAILY_CALLS_<段> で変更）
+API_DAILY_CALLS = {"breaking": 20, "video": 20, "video_review": 20, "helper": 150, "sns": 30, "core": 60, "rest": 80}
+API_MONTHLY_BUDGET_DEFAULT = 95.0  # CLAUDE_API_MONTHLY_BUDGET_USD（Ultra なら 190 くらい）
+API_PROTECTED_MARGIN = 4.0          # 守る段だけが予算を超えて使ってよい額（クレジット $100 との差の中）
+API_REFILL_DAY_DEFAULT = 4           # クレジットが補充される日（毎月）。期間は 4日〜翌月3日
 API_TIMEOUT = 180
 _EXHAUSTED_PATTERNS = (
     "credit balance", "billing", "insufficient credit", "usage limit", "spend limit", "regain access",
@@ -637,6 +660,7 @@ _api_client = None
 _api_off: str | None = None   # この実行ではもう API を使わない理由
 _api_transient_failures = 0
 _local_run_key: str | None = None
+_api_summary_logged: set[str] = set()
 
 
 def _env_float(name: str, default: float) -> float:
@@ -653,17 +677,15 @@ def _env_int(name: str, default: int) -> int:
         return default
 
 
-def api_model_for(purpose: str) -> str:
-    if purpose in API_LIGHT_PURPOSES:
-        return os.environ.get("CLAUDE_API_MODEL_LIGHT") or API_DEFAULT_LIGHT_MODEL
-    if purpose == "sns":
-        return os.environ.get("CLAUDE_API_MODEL_SNS") or API_DEFAULT_SNS_MODEL
-    return os.environ.get("CLAUDE_API_MODEL") or API_DEFAULT_MODEL
+def api_level_model(level: int) -> str | None:
+    if level <= 0:
+        return None
+    return os.environ.get(f"CLAUDE_API_MODEL_{API_LEVEL_NAMES[level].upper()}") or API_LEVEL_DEFAULTS[level]
 
 
 def api_cost(model: str, usage) -> float:
     """usage（input_tokens / output_tokens / cache_*）から米ドルを見積もる。知らないモデルは Opus の値で多めに数える"""
-    price_in, price_out, price_read = API_PRICES.get(model, API_PRICES[API_DEFAULT_MODEL])
+    price_in, price_out, price_read = API_PRICES.get(model, API_PRICES["claude-opus-5-5"])
 
     def n(name: str) -> int:
         value = usage.get(name) if isinstance(usage, dict) else getattr(usage, name, 0)
@@ -723,27 +745,50 @@ def _run_key() -> str:
     return _local_run_key
 
 
+def _monthly_budget() -> float:
+    return _env_float("CLAUDE_API_MONTHLY_BUDGET_USD", API_MONTHLY_BUDGET_DEFAULT)
+
+
 def api_ledger_summary(now: datetime | None = None) -> dict:
     """state/claude_api_usage*.json（記事の回・動画の回など書き手ごとのファイル）を合計した、今の期間の状況"""
     now = now or _now()
     start, end = _period_bounds(now)
     first_day = start.astimezone(JST).strftime("%Y-%m-%d")
+    prev_first = _period_bounds(start - timedelta(days=1))[0].astimezone(JST).strftime("%Y-%m-%d")
     today = _jst_day(now)
     spent = spent_today = 0.0
     calls_today: dict[str, int] = {}
+    req_today: dict[str, int] = {}
+    tier_today: dict[str, float] = {}
+    req_by_day: dict[str, dict[str, int]] = {}
+    cost_stats: dict[str, list[float]] = {}  # "段|モデルの段" → [回数, 米ドル]（今と前の期間）
     exhausted_until, reason = None, ""
     for path in sorted(API_STATE_DIR.glob("claude_api_usage*.json")):
         data = _read_json(path)
         for day, runs in (data.get("runs") or {}).items():
-            if day < first_day or not isinstance(runs, dict):
+            if not isinstance(runs, dict) or day < prev_first:
                 continue
             for entry in runs.values():
+                for key, stat in (entry.get("by") or {}).items():
+                    acc = cost_stats.setdefault(key, [0, 0.0])
+                    acc[0] += int(stat.get("n") or 0)
+                    acc[1] += float(stat.get("usd") or 0)
+                if day != today:
+                    for tier, count in (entry.get("req") or {}).items():
+                        req_by_day.setdefault(day, {})[tier] = req_by_day.setdefault(day, {}).get(tier, 0) + int(count or 0)
+                if day < first_day:
+                    continue
                 usd = float(entry.get("usd") or 0)
                 spent += usd
                 if day == today:
                     spent_today += usd
-                    for cls, count in (entry.get("calls") or {}).items():
-                        calls_today[cls] = calls_today.get(cls, 0) + int(count or 0)
+                    for tier, count in (entry.get("calls") or {}).items():
+                        calls_today[tier] = calls_today.get(tier, 0) + int(count or 0)
+                    for tier, count in (entry.get("req") or {}).items():
+                        req_today[tier] = req_today.get(tier, 0) + int(count or 0)
+                    for key, stat in (entry.get("by") or {}).items():
+                        tier = key.split("|", 1)[0]
+                        tier_today[tier] = tier_today.get(tier, 0) + float(stat.get("usd") or 0)
         until = data.get("exhausted_until")
         if until:
             try:
@@ -752,45 +797,135 @@ def api_ledger_summary(now: datetime | None = None) -> dict:
                 continue
             if when > now and (exhausted_until is None or when > exhausted_until):
                 exhausted_until, reason = when, str(data.get("exhausted_reason") or "")
-    budget = _env_float("CLAUDE_API_MONTHLY_BUDGET_USD", API_MONTHLY_BUDGET_DEFAULT)
+    budget = _monthly_budget()
     days_left = max(1, (end.astimezone(JST).date() - now.astimezone(JST).date()).days)
     daily = os.environ.get("CLAUDE_API_DAILY_BUDGET_USD")
     daily_limit = _env_float("CLAUDE_API_DAILY_BUDGET_USD", 0) if daily else max(0.0, (budget - (spent - spent_today)) / days_left)
+    # 1日の呼び出し回数の見込み: 直近7日（今日を除く）の実績の平均。2日分たまるまでは仮の値
+    recent = sorted(req_by_day)[-7:]
+    demand = dict(API_DEMAND_DEFAULT)
+    if len(recent) >= 2:
+        for tier in API_TIERS:
+            demand[tier] = sum(req_by_day[d].get(tier, 0) for d in recent) / len(recent)
     return {
         "period_start": start.strftime("%Y-%m-%d"), "period_end": end.strftime("%Y-%m-%d"),
         "budget": budget, "spent": round(spent, 4), "spent_today": round(spent_today, 4),
-        "daily_limit": round(daily_limit, 4), "calls_today": calls_today, "days_left": days_left,
+        "daily_limit": round(daily_limit, 4), "calls_today": calls_today, "req_today": req_today,
+        "tier_today": {k: round(v, 4) for k, v in tier_today.items()}, "days_left": days_left,
+        "demand": demand, "cost_stats": cost_stats,
         "exhausted_until": exhausted_until.isoformat() if exhausted_until else None, "exhausted_reason": reason,
     }
 
 
-def _daily_calls_cap(cls: str) -> int:
-    return max(0, _env_int(f"CLAUDE_API_DAILY_CALLS_{cls.upper()}", API_DAILY_CALLS.get(cls, 0)))
+def api_call_cost(tier: str, level: int, summary: dict | None = None) -> float:
+    """その段をそのモデルで1回書く料金の見込み（実績が3回以上あれば平均）"""
+    if level <= 0:
+        return 0.0
+    stat = (summary or {}).get("cost_stats", {}).get(f"{tier}|{level}")
+    if stat and stat[0] >= 3:
+        return stat[1] / stat[0]
+    return API_COST_MID_DEFAULT.get(tier, 0.10) * API_LEVEL_COST_RATIO[level]
 
 
-def api_block_reason(purpose: str, now: datetime | None = None) -> str | None:
-    """この purpose で、いま Claude API を使えない理由（使えるなら None）"""
+def api_plan(now: datetime | None = None, summary: dict | None = None) -> dict:
+    """今日のこれからの呼び出しを、どの段をどのモデルで書くかの配分。
+
+    今日の目安額（残り予算÷残り日数）の残りを、今日の残り時間ぶんの見込み回数で配る:
+    まず守る段（速報・動画・補助）と、下げられる段の下限（SNS・中心=Haiku、その他=無料）を確保し、
+    残りを API_STEPS の順（SNS→Sonnet、中心→Sonnet、その他→Haiku）、さらに余れば API_UPGRADE_STEPS の順に配る。
+    1つの段で足りなくなったら、そこで割合（例: 中心の4割だけ Sonnet）にして止める。
+    戻り値の levels は段ごとの小数（例: 1.4 = 4割を1つ上のモデルで）"""
+    now = now or _now()
+    s = summary or api_ledger_summary(now)
+    local = now.astimezone(JST)
+    left = max(1 / 24, 1 - (local.hour * 60 + local.minute) / 1440)  # 今日の残り時間の割合
+    levels = {tier: float(spec[1]) for tier, spec in API_TIERS.items()}
+    room = s["daily_limit"] - s["spent_today"]
+    room -= sum(s["demand"].get(t, 0) * api_call_cost(t, int(levels[t]), s) for t in API_TIERS) * left
+    steps = API_STEPS + ([] if os.environ.get("CLAUDE_API_UPGRADES") == "0" else API_UPGRADE_STEPS)
+    if s["spent"] >= s["budget"]:
+        steps = []
+    for tier, low, high in steps:
+        need = s["demand"].get(tier, 0) * (api_call_cost(tier, high, s) - api_call_cost(tier, low, s)) * left
+        share = 1.0 if need <= 0 else max(0.0, min(1.0, room / need))
+        levels[tier] = low + share
+        room -= share * need
+        if share < 1.0:
+            break
+    if s["spent"] >= s["budget"]:  # 今月の予算に到達: 下げられる段は API を使わない（守る段だけ予備の範囲で続ける）
+        for tier, spec in API_TIERS.items():
+            if not spec[3]:
+                levels[tier] = 0.0
+    return {"levels": levels, "room": round(room, 4), "summary": s}
+
+
+def api_summary_line(now: datetime | None = None) -> str:
+    """実行ログに出す1行の要約（今日の段ごとの使用額と配分）"""
+    plan = api_plan(now)
+    s = plan["summary"]
+    spent = " / ".join(f"{API_TIERS[t][4]} ${s['tier_today'].get(t, 0):.2f}" for t in API_TIERS if s["tier_today"].get(t))
+    mix = []
+    for tier in ("sns", "core", "rest"):
+        v = plan["levels"][tier]
+        k = int(v)
+        r = v - k
+        mix.append(f"{API_TIERS[tier][4]} {API_LEVEL_LABELS[k]}" + (f"→{API_LEVEL_LABELS[k + 1]} {r:.0%}" if r > 0.005 and k < 3 else ""))
+    return (
+        f"[llm] Claude API {_jst_day(now)}: 期間 {s['period_start']}〜 ${s['spent']:.2f}/${s['budget']:.0f}（残り{s['days_left']}日）"
+        f" / 今日 ${s['spent_today']:.2f}（目安 ${s['daily_limit']:.2f}）{(' = ' + spent) if spent else ''}"
+        f" / 配分: {' ・ '.join(mix)}{' / クレジット切れ ' + s['exhausted_until'][:16] if s['exhausted_until'] else ''}"
+    )
+
+
+def _daily_calls_cap(tier: str) -> int:
+    return max(0, _env_int(f"CLAUDE_API_DAILY_CALLS_{tier.upper()}", API_DAILY_CALLS.get(tier, 0)))
+
+
+def api_block_reason(purpose: str, now: datetime | None = None, summary: dict | None = None) -> str | None:
+    """この段で、いま Claude API を使えない理由（モデルの配分の前の確認。使えるなら None）"""
     if os.environ.get("CLAUDE_API_DISABLE") == "1":
         return "CLAUDE_API_DISABLE=1"
     if not os.environ.get("ANTHROPIC_API_KEY"):
         return "ANTHROPIC_API_KEY が未設定"
     if _api_off:
         return _api_off
-    cls = API_CLASS_OF.get(purpose)
-    if not cls:
+    spec = API_TIERS.get(purpose)
+    if not spec:
         return f"purpose={purpose!r} は API の対象外"
-    s = api_ledger_summary(now)
+    s = summary or api_ledger_summary(now)
     if s["exhausted_until"]:
         return f"クレジット切れの印（{s['exhausted_until'][:16]} まで: {s['exhausted_reason'][:60]}）"
-    if s["spent"] >= s["budget"]:
-        return f"今月の予算 ${s['budget']:.0f} に到達（${s['spent']:.2f}）"
-    limit = s["daily_limit"] * (1 if cls == "breaking" else 1 - API_BREAKING_RESERVE)
-    if s["spent_today"] >= limit:
-        return f"今日の目安 ${limit:.2f} に到達（${s['spent_today']:.2f}）"
-    cap = _daily_calls_cap(cls)
-    if s["calls_today"].get(cls, 0) >= cap:
-        return f"{cls} の今日の上限 {cap} 回に到達"
+    limit = s["budget"] + (_env_float("CLAUDE_API_PROTECTED_MARGIN_USD", API_PROTECTED_MARGIN) if spec[3] else 0)
+    if s["spent"] >= limit:
+        return f"今月の予算 ${limit:.0f} に到達（${s['spent']:.2f}）"
+    cap = _daily_calls_cap(purpose)
+    if s["calls_today"].get(purpose, 0) >= cap:
+        return f"{purpose} の今日の安全上限 {cap} 回に到達"
     return None
+
+
+def api_choose(purpose: str, now: datetime | None = None, record: bool = True) -> tuple[str | None, str]:
+    """この1回を API のどのモデルで書くか（None なら API を使わない）と、その理由。
+    配分が小数（例: 中心 1.4）なら、今日のその段の何回目かで均等に上のモデルを混ぜる（4割なら10回に4回）"""
+    s = api_ledger_summary(now)
+    why = api_block_reason(purpose, now, s)
+    if why:
+        return None, why
+    if record:
+        _record_request(purpose, now)
+        day = _jst_day(now)
+        if day not in _api_summary_logged:
+            _api_summary_logged.add(day)
+            log(api_summary_line(now))
+    level_value = api_plan(now, s)["levels"][purpose]
+    base = int(level_value)
+    share = level_value - base
+    n = s["req_today"].get(purpose, 0)  # 今日すでに来た回数（この回を含まない）
+    level = base + 1 if share > 0 and int((n + 1) * share + 1e-9) > int(n * share + 1e-9) else base
+    model = api_level_model(min(level, 3))
+    if not model:
+        return None, f"{API_TIERS[purpose][4]}は今は無料モデル（予算の配分）"
+    return model, ""
 
 
 def _save_ledger(data: dict) -> None:
@@ -813,14 +948,35 @@ def _prune_ledger(data: dict, now: datetime | None = None) -> dict:
     return data
 
 
+def _ledger_entry(data: dict, now: datetime | None = None) -> dict:
+    return data.setdefault("runs", {}).setdefault(_jst_day(now), {}).setdefault(_run_key(), {})
+
+
+def _record_request(purpose: str, now: datetime | None = None) -> None:
+    """来た回数（API を使ったかどうかに関係なく）。翌日以降の「1日の見込み回数」に使う"""
+    data = _read_json(_ledger_path())
+    entry = _ledger_entry(data, now)
+    entry.setdefault("req", {})[purpose] = entry.get("req", {}).get(purpose, 0) + 1
+    _save_ledger(_prune_ledger(data, now))
+
+
+def _model_level(model: str) -> int:
+    for level in (1, 2, 3):
+        if api_level_model(level) == model:
+            return level
+    return {"claude-haiku-5-5": 1, "claude-sonnet-5-5": 2}.get(model, 3)
+
+
 def record_api_usage(purpose: str, model: str, usage, now: datetime | None = None) -> float:
-    """1回の呼び出しの使用量を自分の実行の欄に足す。戻り値はその回の米ドル"""
+    """1回の呼び出しの使用量を自分の実行の欄に足す（合計・段ごと・段×モデルごと）。戻り値はその回の米ドル"""
     usd = api_cost(model, usage)
     data = _read_json(_ledger_path())
-    entry = data.setdefault("runs", {}).setdefault(_jst_day(now), {}).setdefault(_run_key(), {})
+    entry = _ledger_entry(data, now)
     entry["usd"] = round(float(entry.get("usd") or 0) + usd, 6)
-    cls = API_CLASS_OF.get(purpose, purpose)
-    entry.setdefault("calls", {})[cls] = entry.get("calls", {}).get(cls, 0) + 1
+    entry.setdefault("calls", {})[purpose] = entry.get("calls", {}).get(purpose, 0) + 1
+    stat = entry.setdefault("by", {}).setdefault(f"{purpose}|{_model_level(model)}", {"n": 0, "usd": 0.0})
+    stat["n"] += 1
+    stat["usd"] = round(stat["usd"] + usd, 6)
 
     def n(name: str) -> int:
         value = usage.get(name) if isinstance(usage, dict) else getattr(usage, name, 0)
@@ -848,10 +1004,14 @@ def merge_api_usage(mine: dict, dest: dict) -> dict:
     """同じ実行（run）の欄は大きい方、ほかは足し合わせる。クレジット切れの印は遅い方"""
     out = json.loads(json.dumps(dest)) if dest else {}
     runs = out.setdefault("runs", {})
+
+    def size(entry: dict) -> tuple:
+        return (float(entry.get("usd") or 0), sum((entry.get("req") or {}).values()))
+
     for day, entries in (mine.get("runs") or {}).items():
         target = runs.setdefault(day, {})
         for key, entry in entries.items():
-            if float(entry.get("usd") or 0) >= float((target.get(key) or {}).get("usd") or 0):
+            if size(entry) >= size(target.get(key) or {}):
                 target[key] = entry
     for month, usd in (mine.get("history") or {}).items():
         out.setdefault("history", {})[month] = max(float(usd or 0), float(out.get("history", {}).get(month) or 0))
@@ -935,11 +1095,12 @@ def _api_request(model: str, system_instruction: str, prompt: str, schema: dict,
 def _try_anthropic_api(system_instruction: str, prompt: str, schema: dict, max_output_tokens: int, purpose: str) -> tuple[dict, str] | None:
     """Claude API で1回作る。使えない・失敗したら None（呼び出し側が今までの経路へ進む）。例外は外に出さない"""
     global _api_off, _api_transient_failures
-    why = api_block_reason(purpose)
-    if why:
-        log(f"   [llm] Claude API を使わない（{why}） -> 今までの経路へ")
+    model, why = api_choose(purpose)
+    if not model:
+        if (purpose, why) not in _limit_logged:  # 同じ理由は1回だけ表示
+            _limit_logged.add((purpose, why))
+            log(f"   [llm] Claude API を使わない（{why}） -> 今までの経路へ")
         return None
-    model = api_model_for(purpose)
     name = f"{API_PREFIX}{model}"
     # 考える分（adaptive thinking）も max_tokens に入るので余裕を持たせる（料金は実際に使った分だけ）
     max_tokens = min(64000, max(16000, max_output_tokens + 16000))
@@ -997,7 +1158,10 @@ def _try_anthropic_api(system_instruction: str, prompt: str, schema: dict, max_o
 
 
 def api_available(purpose: str) -> bool:
-    return api_block_reason(purpose) is None
+    """この段で API を使える見込みがあるか（配分で無料モデルになっている段は False。回数は記録しない）"""
+    if api_block_reason(purpose) is not None:
+        return False
+    return api_plan()["levels"].get(purpose, 0) > 0
 
 
 def generate_json(
@@ -1013,19 +1177,20 @@ def generate_json(
 ) -> tuple[dict, str]:
     """候補モデルを順に試し、必須キーがそろった JSON を返す。(データ, 使ったモデル名)
 
-    visibility="high"（速報・SNS に出す記事・動画の台本）のときだけ Claude を使う:
-      Claude API（クレジット。purpose ごとの上限・月の予算の範囲）→ Claude CLI（サブスクリプション）→ tier の無料モデル。
-    それ以外は tier の無料モデルだけ（Claude は使わない）。
-    環境変数 LLM_DEFAULT_VISIBILITY / LLM_DEFAULT_PURPOSE で、引数を省いた呼び出しの既定を変えられる（動画のジョブ用）。
+    purpose（API_TIERS の段）を付けると、まず Claude API を予算の配分に従ったモデルで試す（api_choose）。
+    だめなら、速報・SNS・動画（API_CLI_PURPOSES か visibility="high"）は Claude CLI、そのあと tier の無料モデル。
+    purpose なしは tier の無料モデルだけ（Claude は使わない）。
+    環境変数 LLM_DEFAULT_VISIBILITY / LLM_DEFAULT_PURPOSE で、引数を省いた呼び出しの既定を変えられる（動画・SNS のジョブ用）。
     """
     visibility = visibility or os.environ.get("LLM_DEFAULT_VISIBILITY") or None
     purpose = purpose or os.environ.get("LLM_DEFAULT_PURPOSE") or ""
-    high = visibility == "high"
-    if high:
+    if purpose:
         got = _try_anthropic_api(system_instruction, prompt, schema, max_output_tokens, purpose)
         if got:
             return got
-    candidates = (_claude_models() if high else []) + [m for m in models_for(tier) if not m.startswith("claude:")]
+    # Claude CLI（サブスクリプション）は速報・SNS・動画だけ（API が使えない・失敗したときの次の手）
+    cli = visibility == "high" or purpose in API_CLI_PURPOSES
+    candidates = (_claude_models() if cli else []) + [m for m in models_for(tier) if not m.startswith("claude:")]
     last_error: Exception | None = None
     used = usage_today()
     for model in candidates:
@@ -1124,7 +1289,7 @@ def generate_json(
 def all_exhausted(tier: str, visibility: str | None = None, purpose: str = "breaking") -> bool:
     """tier の無料モデルがすべて尽きたか。visibility="high" なら Claude API・CLI が使えるうちは尽きていない扱い"""
     if visibility == "high":
-        if api_available(purpose) or any(m not in _exhausted for m in _claude_models()):
+        if api_available(purpose) or (purpose in API_CLI_PURPOSES and any(m not in _exhausted for m in _claude_models())):
             return False
     return all(m in _exhausted for m in models_for(tier))
 
@@ -1183,10 +1348,8 @@ if __name__ == "__main__":
         models_for(tier_name)
     log(f"[llm] 今日の使用回数: {usage_today()}")
     log(f"[llm] Claude CLI: {'有効' if claude_enabled() else '無効'}（visibility=high のみ。今日 {claude_calls_today()} 回 / 上限 {_claude_daily_max()}）")
-    s_api = api_ledger_summary()
-    log(f"[llm] Claude API: {'キーあり' if os.environ.get('ANTHROPIC_API_KEY') else 'キーなし'} / 期間 {s_api['period_start']}〜{s_api['period_end']}"
-        f" / 使用 ${s_api['spent']:.2f} / 予算 ${s_api['budget']:.0f} / 今日 ${s_api['spent_today']:.2f}（目安 ${s_api['daily_limit']:.2f}）"
-        f" / 今日の回数 {s_api['calls_today']}{' / クレジット切れ ' + s_api['exhausted_until'] if s_api['exhausted_until'] else ''}")
+    log(f"[llm] Claude API: {'キーあり' if os.environ.get('ANTHROPIC_API_KEY') else 'キーなし'}")
+    log(api_summary_line())
     if "--ping" in sys.argv:
         demo_schema = {"type": "OBJECT", "properties": {"answer": {"type": "STRING"}, "n": {"type": "INTEGER"}}, "required": ["answer", "n"]}
         result, used = generate_json("日本語で簡潔に答える。", "1+1は？ answer に一言の説明、n に数値。", demo_schema, tier=os.environ.get("LLM_PING_TIER", "bulk"), max_output_tokens=256)

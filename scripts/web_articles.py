@@ -228,6 +228,17 @@ def sns_likely(item: dict) -> bool:
     return bool(tp.BROAD.search(text)) and not tp.NICHE.search(text)
 
 
+def article_purpose(item: dict, lane: str, major: bool = False) -> str:
+    """Claude API のどの段で書くか（llm.API_TIERS）。速報=Opus、SNS・読者像の中心=Sonnet、ほか=Haiku（予算で上下する）"""
+    if major:
+        return "breaking"
+    if lane == "ai" and sns_likely(item):
+        return "sns"
+    if lane == "ai" or persona.is_persona_topic({"genreSlug": lane, "title": item.get("title", "")}):
+        return "core"
+    return "rest"
+
+
 def rank_bucket(item: dict) -> int:
     """レーン内の並べ替え用。公式 → 官公庁・企業 → 他社の対応告知 → 配信"""
     return {0: 0, 1: 0, 2: 1, 3: 2}.get(feeds.source_rank(item), 3)
@@ -636,7 +647,8 @@ def fill_faq_actions(record: dict, source_text: str = "", context: str = "") -> 
         f"# 元記事（抜粋）\n<<<\n{(source_text or '')[:6000]}\n>>>"
         + (f"\n\n# 当サイトで確認済み\n{context[:3000]}" if context.strip() else "")
     )
-    data, model = llm.generate_json(FILL_SYSTEM, prompt, FILL_SCHEMA, temperature=0.3, max_output_tokens=4096, tier=quality.CHECK_TIER)
+    data, model = llm.generate_json(FILL_SYSTEM, prompt, FILL_SCHEMA, temperature=0.3, max_output_tokens=4096, tier=quality.CHECK_TIER,
+                                    purpose="helper")
     added = []
     if "faq" in need and (faq := clean_faq(data.get("faq"))):
         record["faq"] = faq
@@ -1927,10 +1939,10 @@ def main() -> int:
         return "bulk" if fast_mode and llm.all_exhausted("quality", visibility="high") else "quality"
 
     def generate(system: str, prompt: str, schema: dict, item_id: str, tier: str, purpose: str | None = None):
-        # purpose があるもの（速報・SNS に出しそうな記事）だけ Claude（API → CLI）を先に試す。ほかは無料モデルだけ
+        # Claude API（段ごとのモデル・予算の配分）→ 速報・SNS だけ Claude CLI → 無料モデル
         try:
             return llm.generate_json(system, prompt, schema, temperature=0.6, max_output_tokens=32768, tier=write_tier(tier),
-                                     visibility="high" if purpose else None, purpose=purpose)
+                                     purpose=purpose)
         except Exception as error:  # noqa: BLE001
             log(f"   [NG] {str(error)[:200]}")
             state["failed_web"][item_id] = state["failed_web"].get(item_id, 0) + 1
@@ -2202,10 +2214,8 @@ def main() -> int:
         # 事実確認には発信元・公開日時も渡す（記事に書いた「〇〇によると」「10月26日に発表」を創作と誤判定させない）。
         # 大きなニュースは長さの基準を緩め、細かい指摘は外科的に直して公開する（quality.MAJOR）
         quality.MAJOR = bool(major)
-        # Claude を使うのは目立つ記事だけ: 大きなニュース（速報）と、SNS に出しそうな AI の記事
-        purpose = "breaking" if major else ("sns" if is_ai and sns_likely(item) else None)
-        if purpose:
-            log(f"   [llm] 目立つ記事（{purpose}）: Claude API → Claude CLI → 無料モデルの順")
+        purpose = article_purpose(item, lane, major)
+        log(f"   [llm] 段: {purpose}（Claude API の配分 → {'Claude CLI → ' if purpose in llm.API_CLI_PURPOSES else ''}無料モデル）")
         try:
             status, record, model_name, info = gated(
                 item, kind, system, prompt, schema, f"{source_header(item)}\n\n{text}", build, check_context,
@@ -2338,6 +2348,7 @@ def main() -> int:
                     build_trend_record(q, fetched, data, model, voice_key), data, related
                 ),
                 check_context_for(q["title"], source_text, related),
+                purpose=article_purpose(q, genre.slug),
             )
             if status == "fail":
                 if state["failed_web"].get(q["id"], 0) >= MAX_FAILURES:

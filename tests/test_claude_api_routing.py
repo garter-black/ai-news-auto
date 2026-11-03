@@ -1,5 +1,5 @@
-"""Claude API（クレジット）の経路: 目立つものだけ API → CLI → 無料、ほかは無料だけ。予算・クレジット切れ・料金の記録。
-実際の API には一切つながない（_api_request をモックする）。"""
+"""Claude API（クレジット）の経路: 段ごとのモデル（Opus/Sonnet/Haiku）、予算に合わせた上げ下げ、CLI は速報・SNS・動画だけ、
+クレジット切れ・料金の記録。実際の API には一切つながない（_api_request をモックする）。"""
 
 import json
 import os
@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 import llm  # noqa: E402
 
 SCHEMA = {"type": "OBJECT", "properties": {"answer": {"type": "STRING"}}, "required": ["answer"]}
-NOW = datetime(2026, 11, 10, 3, 0, tzinfo=timezone.utc)  # 期間 11/4〜12/4 の途中（日本時間 11/10）
+NOW = datetime(2026, 11, 9, 15, 0, tzinfo=timezone.utc)  # 日本時間 11/10 0:00（期間 11/4〜12/4 の途中・残り24日・今日まるごと残り）
 
 
 def fake_message(text='{"answer": "api"}', stop="end_turn", inp=1000, out=500, read=0, write=0):
@@ -48,6 +48,8 @@ class Base(unittest.TestCase):
         llm._api_off = None
         llm._api_transient_failures = 0
         llm._exhausted.clear()
+        llm._limit_logged.clear()
+        llm._api_summary_logged.clear()
 
     def tearDown(self):
         for p in self.patches:
@@ -62,55 +64,68 @@ class Base(unittest.TestCase):
         (llm.API_STATE_DIR / name).write_text(json.dumps(data), "utf-8")
 
 
+def levels(plan):
+    return {t: round(v, 4) for t, v in plan["levels"].items() if t in ("sns", "core", "rest")}
+
+
 class RoutingTests(Base):
-    def test_high_visibility_uses_api_first(self):
+    def test_breaking_uses_opus_api_first(self):
         with patch.object(llm, "_api_request", return_value=fake_message()) as api, \
              patch.object(llm, "models_for") as old_route, patch.object(llm, "_call_claude") as cli:
             data, model = llm.generate_json("sys", "prompt", SCHEMA, visibility="high", purpose="breaking")
-        self.assertEqual(data, {"answer": "api"})
-        self.assertEqual(model, "anthropic-api:claude-opus-5-5")
-        self.assertEqual(api.call_args.args[0], "claude-opus-5-5")
+        self.assertEqual((data, model), ({"answer": "api"}, "anthropic-api:claude-opus-5-5"))
         old_route.assert_not_called()
         cli.assert_not_called()
 
-    def test_models_per_purpose(self):
-        self.assertEqual(llm.api_model_for("breaking"), "claude-opus-5-5")
-        self.assertEqual(llm.api_model_for("video"), "claude-opus-5-5")
-        self.assertEqual(llm.api_model_for("sns"), "claude-sonnet-5-5")
-        self.assertEqual(llm.api_model_for("video_review"), "claude-sonnet-5-5")
-        with patch.dict(os.environ, {"CLAUDE_API_MODEL_SNS": "claude-opus-5-5"}):
-            self.assertEqual(llm.api_model_for("sns"), "claude-opus-5-5")
+    def test_tier_models_at_baseline(self):
+        with patch.dict(os.environ, {"CLAUDE_API_UPGRADES": "0", "CLAUDE_API_DAILY_BUDGET_USD": "50"}):
+            got = {t: llm.api_choose(t, record=False)[0] for t in llm.API_TIERS}
+        self.assertEqual(got, {
+            "breaking": "claude-opus-5-5", "video": "claude-opus-5-5", "video_review": "claude-sonnet-5-5",
+            "helper": "claude-haiku-5-5", "sns": "claude-sonnet-5-5", "core": "claude-sonnet-5-5", "rest": "claude-haiku-5-5",
+        })
+        with patch.dict(os.environ, {"CLAUDE_API_UPGRADES": "0", "CLAUDE_API_DAILY_BUDGET_USD": "50", "CLAUDE_API_MODEL_LOW": "claude-x"}):
+            self.assertEqual(llm.api_choose("rest", record=False)[0], "claude-x")
 
-    def test_normal_items_never_use_api_or_cli(self):
+    def test_no_purpose_never_uses_api_or_cli(self):
         with patch.object(llm, "_api_request") as api, \
              patch.object(llm, "_claude_models", return_value=["claude:sonnet"]), \
              patch.object(llm, "_call_claude") as cli, \
              patch.object(llm, "models_for", return_value=["claude:sonnet", "gemini-test"]), \
              patch.object(llm, "_call_gemini", return_value='{"answer": "free"}'):
-            data, model = llm.generate_json("sys", "prompt", SCHEMA, tier="quality")
-        self.assertEqual((data, model), ({"answer": "free"}, "gemini-test"))
+            self.assertEqual(llm.generate_json("sys", "prompt", SCHEMA, tier="quality")[1], "gemini-test")
         api.assert_not_called()
         cli.assert_not_called()
 
-    def test_high_visibility_falls_back_to_cli_then_free(self):
-        os.environ.pop("ANTHROPIC_API_KEY")  # API が使えない → CLI
-        with patch.object(llm, "_claude_models", return_value=["claude:sonnet"]), \
-             patch.object(llm, "_call_claude", return_value='{"answer": "cli"}'), \
-             patch.object(llm, "models_for", return_value=["gemini-test"]):
-            self.assertEqual(llm.generate_json("s", "p", SCHEMA, visibility="high", purpose="sns")[1], "claude:sonnet")
-        with patch.object(llm, "_claude_models", return_value=["claude:sonnet"]), \
-             patch.object(llm, "_call_claude", side_effect=llm.CliQuotaError("usage limit")), \
+    def test_rest_on_haiku_and_free_when_degraded(self):
+        with patch.dict(os.environ, {"CLAUDE_API_DAILY_BUDGET_USD": "50", "CLAUDE_API_UPGRADES": "0"}), \
+             patch.object(llm, "_api_request", return_value=fake_message()) as api:
+            self.assertEqual(llm.generate_json("s", "p", SCHEMA, purpose="rest")[1], "anthropic-api:claude-haiku-5-5")
+        with patch.dict(os.environ, {"CLAUDE_API_DAILY_BUDGET_USD": "0.5"}), \
+             patch.object(llm, "_api_request") as api, \
+             patch.object(llm, "_claude_models", return_value=["claude:sonnet"]), patch.object(llm, "_call_claude") as cli, \
              patch.object(llm, "models_for", return_value=["gemini-test"]), \
              patch.object(llm, "_call_gemini", return_value='{"answer": "free"}'):
-            self.assertEqual(llm.generate_json("s", "p", SCHEMA, visibility="high", purpose="sns")[1], "gemini-test")
+            self.assertEqual(llm.generate_json("s", "p", SCHEMA, purpose="rest")[1], "gemini-test")
+        api.assert_not_called()
+        cli.assert_not_called()  # その他・中心は Claude CLI を使わない
+
+    def test_cli_only_for_breaking_sns_video(self):
+        os.environ.pop("ANTHROPIC_API_KEY")
+        for purpose, expected in (("sns", "claude:sonnet"), ("video", "claude:sonnet"), ("core", "gemini-test"), ("helper", "gemini-test")):
+            with patch.object(llm, "_claude_models", return_value=["claude:sonnet"]), \
+                 patch.object(llm, "_call_claude", return_value='{"answer": "cli"}'), \
+                 patch.object(llm, "models_for", return_value=["gemini-test"]), \
+                 patch.object(llm, "_call_gemini", return_value='{"answer": "free"}'):
+                self.assertEqual(llm.generate_json("s", "p", SCHEMA, purpose=purpose)[1], expected, purpose)
 
     def test_api_failure_falls_back_without_raising(self):
         with patch.object(llm, "_api_request", side_effect=ApiError("overloaded", 529)), \
              patch.object(llm, "_claude_models", return_value=[]), \
              patch.object(llm, "models_for", return_value=["gemini-test"]), \
              patch.object(llm, "_call_gemini", return_value='{"answer": "free"}'):
-            self.assertEqual(llm.generate_json("s", "p", SCHEMA, visibility="high", purpose="breaking")[1], "gemini-test")
-            llm.generate_json("s", "p", SCHEMA, visibility="high", purpose="breaking")
+            self.assertEqual(llm.generate_json("s", "p", SCHEMA, purpose="breaking")[1], "gemini-test")
+            llm.generate_json("s", "p", SCHEMA, purpose="breaking")
         self.assertIsNotNone(llm._api_off)  # 一時的なエラーが2回続いたら、この実行では使わない
 
     def test_refusal_bad_json_and_missing_keys_fall_back(self):
@@ -119,7 +134,7 @@ class RoutingTests(Base):
                  patch.object(llm, "_claude_models", return_value=[]), \
                  patch.object(llm, "models_for", return_value=["gemini-test"]), \
                  patch.object(llm, "_call_gemini", return_value='{"answer": "free"}'):
-                self.assertEqual(llm.generate_json("s", "p", SCHEMA, visibility="high", purpose="video")[1], "gemini-test")
+                self.assertEqual(llm.generate_json("s", "p", SCHEMA, purpose="video")[1], "gemini-test")
         self.assertEqual(llm.api_ledger_summary()["calls_today"]["video"], 4)  # 返事があった分の料金は数える
 
     def test_invalid_schema_retries_once_without_structured_output(self):
@@ -131,11 +146,11 @@ class RoutingTests(Base):
     def test_unknown_purpose_does_not_use_api(self):
         self.assertIn("対象外", llm.api_block_reason("article"))
 
-    def test_env_default_visibility_for_video_job(self):
-        with patch.dict(os.environ, {"LLM_DEFAULT_VISIBILITY": "high", "LLM_DEFAULT_PURPOSE": "video"}), \
+    def test_env_default_purpose(self):
+        with patch.dict(os.environ, {"LLM_DEFAULT_PURPOSE": "helper"}), \
              patch.object(llm, "_api_request", return_value=fake_message()):
-            self.assertEqual(llm.generate("s", "p", SCHEMA)[1], "anthropic-api:claude-opus-5-5")
-        self.assertEqual(llm.api_ledger_summary()["calls_today"], {"video": 1})
+            self.assertEqual(llm.generate("s", "p", SCHEMA)[1], "anthropic-api:claude-haiku-5-5")
+        self.assertEqual(llm.api_ledger_summary()["calls_today"], {"helper": 1})
 
     def test_all_exhausted_counts_claude_only_for_high(self):
         llm._exhausted.update({"gemini-test"})
@@ -150,51 +165,131 @@ class RoutingTests(Base):
         try:
             with patch.object(llm, "available_models", return_value={"gemini-3.5-flash"}), \
                  patch.object(llm, "_claude_models", return_value=["claude:sonnet"]):
-                self.assertEqual(llm.models_for("quality"), ["gemini-3.5-flash"])
+                self.assertNotIn("claude:sonnet", llm.models_for("quality"))
                 self.assertNotIn("claude:sonnet", llm.models_for("bulk"))
         finally:
             llm._tiers.clear()
 
 
-class BudgetTests(Base):
-    def ledger(self, day, usd, calls=None, key="gh-1-1"):
-        return {"runs": {day: {key: {"usd": usd, "calls": calls or {}}}}}
+class AdaptiveBudgetTests(Base):
+    """予算に合わせた上げ下げ（仮の見込み: 1日 速報7・動画5+5・補助40・SNS13・中心27・その他21 回。
+    1回の料金はこのテスト用に固定: Sonnet で 速報0.11・動画0.05・レビュー0.02・補助0.04・記事0.10。Opus=2倍・Haiku=0.05倍）"""
 
-    def test_monthly_budget_stops_api(self):
-        self.write_ledger("claude_api_usage.json", self.ledger("2026-11-05", 60.0))
-        self.write_ledger("claude_api_usage_video.json", self.ledger("2026-11-06", 35.5))
-        self.assertIn("予算", llm.api_block_reason("breaking"))
-        with patch.object(llm, "_api_request") as api, patch.object(llm, "_claude_models", return_value=[]), \
-             patch.object(llm, "models_for", return_value=["gemini-test"]), \
-             patch.object(llm, "_call_gemini", return_value='{"answer": "free"}'):
-            self.assertEqual(llm.generate_json("s", "p", SCHEMA, visibility="high", purpose="breaking")[1], "gemini-test")
-        api.assert_not_called()
+    def setUp(self):
+        super().setUp()
+        costs = patch.dict(llm.API_COST_MID_DEFAULT, {"breaking": 0.11, "video": 0.05, "video_review": 0.02, "helper": 0.04,
+                                                      "sns": 0.10, "core": 0.10, "rest": 0.10})
+        costs.start()
+        self.addCleanup(costs.stop)
 
-    def test_previous_period_does_not_count(self):
-        self.write_ledger("claude_api_usage.json", self.ledger("2026-11-03", 94.0))
-        self.assertIsNone(llm.api_block_reason("breaking"))
+    def plan(self, daily, **env):
+        with patch.dict(os.environ, {"CLAUDE_API_DAILY_BUDGET_USD": str(daily), **env}):
+            return llm.api_plan()
 
-    def test_daily_pacing_and_breaking_reserve(self):
-        # 期間の残り 24日（11/10〜12/3）。前日までに $11 使用 → 今日の目安 (95-11)/24 = $3.5
-        self.write_ledger("claude_api_usage.json", {"runs": {"2026-11-05": {"a": {"usd": 11.0}}, "2026-11-10": {"b": {"usd": 2.9}}}})
+    def test_95_dollars_sns_partly_sonnet_core_haiku_rest_free(self):
+        # 守る段 $2.22 + SNS・中心の Haiku $0.20 = $2.42。残り $0.75 で SNS の約6割を Sonnet に
+        got = levels(self.plan(95 / 30))
+        self.assertAlmostEqual(got["sns"], 1 + (95 / 30 - 2.42) / 1.235, places=3)
+        self.assertEqual((got["core"], got["rest"]), (1.0, 0.0))
+
+    def test_190_dollars_full_baseline(self):
+        got = levels(self.plan(190 / 30))
+        self.assertEqual((got["core"], got["rest"]), (2.0, 1.0))
+        self.assertGreaterEqual(got["sns"], 2.0)
+
+    def test_degrade_order_rest_then_core_then_sns(self):
+        full = 2.42 + 1.235 + 2.565 + 0.105  # SNS・中心 Sonnet、その他 Haiku までの1日の額
+        self.assertEqual(levels(self.plan(full, CLAUDE_API_UPGRADES="0")), {"sns": 2.0, "core": 2.0, "rest": 1.0})
+        got = levels(self.plan(full - 0.05))           # 少し足りない → その他から削る
+        self.assertEqual((got["sns"], got["core"]), (2.0, 2.0))
+        self.assertTrue(0 < got["rest"] < 1)
+        got = levels(self.plan(2.42 + 1.235 + 1.0))    # もっと足りない → その他は無料、中心の一部だけ Sonnet
+        self.assertEqual((got["sns"], got["rest"]), (2.0, 0.0))
+        self.assertTrue(1 < got["core"] < 2)
+        got = levels(self.plan(2.42 + 0.5))            # さらに → 中心は Haiku、SNS の一部だけ Sonnet
+        self.assertEqual((got["core"], got["rest"]), (1.0, 0.0))
+        self.assertTrue(1 < got["sns"] < 2)
+        self.assertEqual(levels(self.plan(1.0)), {"sns": 1.0, "core": 1.0, "rest": 0.0})  # 足りなくても SNS・中心は Haiku
+
+    def test_breaking_and_video_never_degrade(self):
+        with patch.dict(os.environ, {"CLAUDE_API_DAILY_BUDGET_USD": "0.01"}):
+            self.assertEqual(llm.api_choose("breaking", record=False)[0], "claude-opus-5-5")
+            self.assertEqual(llm.api_choose("video", record=False)[0], "claude-opus-5-5")
+            self.assertEqual(llm.api_choose("video_review", record=False)[0], "claude-sonnet-5-5")
+            self.assertEqual(llm.api_choose("sns", record=False)[0], "claude-haiku-5-5")
+            self.assertIsNone(llm.api_choose("rest", record=False)[0])
+
+    def test_underspend_upgrades_next_tiers(self):
+        self.assertEqual(levels(self.plan(20)), {"sns": 3.0, "core": 3.0, "rest": 2.0})
+        got = levels(self.plan(2.42 + 1.235 + 2.565 + 0.105 + 0.65))  # 余り $0.65 → SNS の半分を Opus に
+        self.assertAlmostEqual(got["sns"], 2.5, places=2)
+        self.assertEqual((got["core"], got["rest"]), (2.0, 1.0))
+        self.assertEqual(levels(self.plan(20, CLAUDE_API_UPGRADES="0")), {"sns": 2.0, "core": 2.0, "rest": 1.0})
+
+    def test_allowance_from_remaining_budget_and_days(self):
+        # 前日までに $11 使用・残り24日 → 今日の目安 (95-11)/24 = $3.5。使いすぎた日は翌日の目安が下がる
+        self.write_ledger("claude_api_usage.json", {"runs": {"2026-11-05": {"a": {"usd": 11.0}}}})
         s = llm.api_ledger_summary()
         self.assertEqual(s["days_left"], 24)
         self.assertAlmostEqual(s["daily_limit"], 3.5, places=3)
-        self.assertIsNone(llm.api_block_reason("breaking"))       # 速報は目安いっぱいまで
-        self.assertIn("目安", llm.api_block_reason("sns"))         # sns・video は 75% ($2.625) で止まる
-        self.assertIn("目安", llm.api_block_reason("video"))
+        with patch.dict(os.environ, {"CLAUDE_API_MONTHLY_BUDGET_USD": "190"}):
+            self.assertAlmostEqual(llm.api_ledger_summary()["daily_limit"], (190 - 11) / 24, places=3)
 
-    def test_daily_call_caps_per_class(self):
-        self.write_ledger("claude_api_usage.json", self.ledger("2026-11-10", 0.5, {"sns": 10, "breaking": 3}))
-        self.assertIn("上限", llm.api_block_reason("sns"))
+    def test_overspent_today_degrades_for_rest_of_day(self):
+        self.write_ledger("claude_api_usage.json", {"runs": {"2026-11-10": {"a": {"usd": 5.0}}}})
+        with patch.dict(os.environ, {"CLAUDE_API_DAILY_BUDGET_USD": "4"}):
+            self.assertEqual(levels(llm.api_plan()), {"sns": 1.0, "core": 1.0, "rest": 0.0})
+
+    def test_less_of_day_left_needs_less_room(self):
+        evening = datetime(2026, 11, 10, 9, 0, tzinfo=timezone.utc)  # 日本時間 18:00（残り 1/4 日）
+        with patch.object(llm, "_now", return_value=evening):
+            got = levels(self.plan(2.0))  # 残りの見込みは $0.6 ほど → 余りで上げられる
+        self.assertGreater(got["sns"], 2.0)
+
+    def test_monthly_budget_reached_only_protected_continue(self):
+        self.write_ledger("claude_api_usage.json", {"runs": {"2026-11-05": {"a": {"usd": 60.0}}}})
+        self.write_ledger("claude_api_usage_video.json", {"runs": {"2026-11-06": {"b": {"usd": 35.5}}}})
+        self.assertIsNone(llm.api_choose("core", record=False)[0])
+        self.assertEqual(llm.api_choose("breaking", record=False)[0], "claude-opus-5-5")  # 予備 $4 の範囲
+        self.write_ledger("claude_api_usage_video.json", {"runs": {"2026-11-06": {"b": {"usd": 39.5}}}})
+        self.assertIn("予算", llm.api_choose("breaking", record=False)[1])
+
+    def test_previous_period_does_not_count(self):
+        self.write_ledger("claude_api_usage.json", {"runs": {"2026-11-03": {"a": {"usd": 94.0}}}})
+        self.assertEqual(llm.api_ledger_summary()["spent"], 0)
+
+    def test_fractional_level_mixes_models_evenly(self):
+        llm._api_summary_logged.add("2026-11-10")  # 要約の1行はこのテストでは出さない
+        with patch.object(llm, "api_plan", return_value={"levels": {"core": 1.5}}):
+            got = [llm.api_choose("core")[0] for _ in range(4)]
+        self.assertEqual(got, ["claude-haiku-5-5", "claude-sonnet-5-5"] * 2)
+        self.assertEqual(llm.api_ledger_summary()["req_today"], {"core": 4})
+
+    def test_demand_and_cost_learned_from_history(self):
+        by = {"core|2": {"n": 4, "usd": 0.6}}
+        self.write_ledger("claude_api_usage.json", {"runs": {
+            "2026-11-08": {"a": {"req": {"core": 10, "rest": 4}, "by": by}},
+            "2026-11-09": {"b": {"req": {"core": 20}}},
+        }})
+        s = llm.api_ledger_summary()
+        self.assertEqual((s["demand"]["core"], s["demand"]["rest"], s["demand"]["breaking"]), (15, 2, 0))
+        self.assertAlmostEqual(llm.api_call_cost("core", 2, s), 0.15)
+        self.assertAlmostEqual(llm.api_call_cost("core", 1, s), 0.005)  # 実績が無いモデルは仮の値
+
+    def test_daily_safety_caps(self):
+        self.write_ledger("claude_api_usage.json", {"runs": {"2026-11-10": {"a": {"usd": 0.5, "calls": {"sns": 30}}}}})
+        self.assertIn("安全上限", llm.api_block_reason("sns"))
         self.assertIsNone(llm.api_block_reason("breaking"))
-        with patch.dict(os.environ, {"CLAUDE_API_DAILY_CALLS_SNS": "12"}):
+        with patch.dict(os.environ, {"CLAUDE_API_DAILY_CALLS_SNS": "40"}):
             self.assertIsNone(llm.api_block_reason("sns"))
 
-    def test_env_budget_override(self):
-        self.write_ledger("claude_api_usage.json", self.ledger("2026-11-05", 30.0))
-        with patch.dict(os.environ, {"CLAUDE_API_MONTHLY_BUDGET_USD": "25"}):
-            self.assertIn("予算", llm.api_block_reason("breaking"))
+    def test_summary_line_shows_tier_spend_and_mix(self):
+        llm.record_api_usage("breaking", "claude-opus-5-5", {"output_tokens": 10_000})
+        llm.record_api_usage("core", "claude-sonnet-5-5", {"output_tokens": 10_000})
+        line = llm.api_summary_line()
+        self.assertIn("速報 $0.20", line)
+        self.assertIn("中心 $0.10", line)
+        self.assertIn("配分: SNS", line)
 
 
 class ExhaustedTests(Base):
@@ -232,7 +327,8 @@ class ExhaustedTests(Base):
         with patch.object(llm, "_api_request", side_effect=ApiError("invalid x-api-key", 401)):
             self.assertIsNone(llm._try_anthropic_api("s", "p", SCHEMA, 1024, "breaking"))
         self.assertIn("認証", llm.api_block_reason("breaking"))
-        self.assertFalse((llm.API_STATE_DIR / "claude_api_usage.json").exists())
+        saved = json.loads((llm.API_STATE_DIR / "claude_api_usage.json").read_text())
+        self.assertNotIn("exhausted_until", saved)  # 次の実行ではまた試す（キーを直せば使える）
 
 
 class CostTests(Base):
@@ -245,13 +341,15 @@ class CostTests(Base):
         self.assertAlmostEqual(llm.api_cost("unknown-model", {"output_tokens": 1_000_000}), 20.0)  # 知らないモデルは多めに
 
     def test_record_accumulates_per_run_and_day(self):
-        with patch.dict(os.environ, {"GITHUB_RUN_ID": "77", "GITHUB_RUN_ATTEMPT": "1"}):
+        with patch.dict(os.environ, {"GITHUB_RUN_ID": "77", "GITHUB_RUN_ATTEMPT": "1", "CLAUDE_API_UPGRADES": "0", "CLAUDE_API_DAILY_BUDGET_USD": "50"}):
             with patch.object(llm, "_api_request", return_value=fake_message(inp=10_000, out=5_000)):
                 llm._try_anthropic_api("s", "p", SCHEMA, 1024, "breaking")
                 llm._try_anthropic_api("s", "p", SCHEMA, 1024, "sns")
         entry = json.loads((llm.API_STATE_DIR / "claude_api_usage.json").read_text())["runs"]["2026-11-10"]["gh-77-1"]
         self.assertAlmostEqual(entry["usd"], 0.14 + 0.07, places=6)  # Opus $0.14 + Sonnet $0.07
         self.assertEqual(entry["calls"], {"breaking": 1, "sns": 1})
+        self.assertEqual(entry["req"], {"breaking": 1, "sns": 1})
+        self.assertEqual(set(entry["by"]), {"breaking|3", "sns|2"})  # 段×モデルごとの使用額
         self.assertEqual((entry["in"], entry["out"]), (20_000, 10_000))
         self.assertEqual(json.loads(llm.USAGE_PATH.read_text())[llm._today()]["anthropic-api:claude-opus-5-5"], 1)
 
