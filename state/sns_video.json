@@ -824,7 +824,7 @@
     "github-copilot-jetbrains-air": {
       "status": "waiting",
       "why": "動画を作っている途中・順番待ち",
-      "checkedAt": "2026-11-03T19:23:37+00:00"
+      "checkedAt": "2026-11-03T19:24:57+00:00"
     }
   },
   "converted": {
@@ -976,7 +976,7 @@
       "applied": true
     },
     "github-copilot-jetbrains-air": {
-      "at": "2026-11-03T19:23:33+00:00",
+      "at": "2026-11-03T19:24:53+00:00",
       "pending": {
         "inputs": {
           "threads": {
