@@ -740,7 +740,7 @@ def script_system() -> str:
   label: 左上に小さく出す見出し（4〜14字）。**その場面の中身から作った、自然な日本語の見出し**（例: 止まった学習を自動で再開・故障は台数が増えるほど起きる）。
   場面ごとに必ず違う言葉にする。決まった問いの見出し（答えは？・何ができる？・前と何が違う？・誰に効く？・どう試す？）・問いの形（？で終わる）・
   役目の名前（答え・注意・比較・確かめ方）・英語の製品名だけ・名詞1つだけ（実績・Recovery）にしない。label と keyword は同じ言葉にしない。
-  keyword: 画面に大きく出す言葉。2〜10字（短いほどよい）。文にしない。句読点を付けない。**意味の分かる短い言い回し**にする（例: 学習を自動で再開・検知まで平均69秒・人手から自動へ）。
+  keyword: 画面に大きく出す言葉。2〜14字（短いほどよい。長いと2行になる）。文にしない。句読点を付けない。**意味の分かる短い言い回し**にする（例: 学習を自動で再開・検知まで平均69秒・人手から自動へ）。
   名詞1つだけ（クラスター）・英語の製品名だけ（Recovery）にしない。場面ごとに違う言葉にする（同じ keyword を2回使わない）。
   **keyword と sub はその場面の speech と同じ話**にする（keyword・sub の数字と言葉は、その場面の speech にも入れる。別の場面の数字を出さない）。sub: 補足（14字以内。不要なら空）。
   speech: 読み上げ。短い文で1〜3文・60字以内。keyword の数字・名前を必ず含める。
@@ -1028,8 +1028,8 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
         out.append("conclusion.text は16字以内。")
     for i, b in enumerate(beats, 1):
         kw = b.get("keyword", "")
-        if not (2 <= len(kw) <= 12) or re.search(r"[、。！？]", kw):
-            out.append(f"beat{i}.keyword は2〜10字で句読点なし（{kw}）。")
+        if not (2 <= len(kw) <= 16) or re.search(r"[、。！？]", kw):  # 2026-11-04: 自然な言い回しは長め（16字まで・2行に折り返す）
+            out.append(f"beat{i}.keyword は2〜14字で句読点なし（{kw}）。")
         if len(b.get("sub", "")) > 16:
             out.append(f"beat{i}.sub は14字以内。")
         if len(b.get("speech", "")) > 66:
@@ -1351,6 +1351,17 @@ def self_correct(data: dict, article: dict, pages: list[Page], problems: list[st
             cand_problems = script_problems(cand, article, pages)
             if _better(cand_problems, problems):
                 log(f"   [v3] 読み上げを {speech_total(data)}字 → {speech_total(cand)}字に削った")
+                data, problems = cand, cand_problems
+    if any("hook の左の言葉" in p for p in problems):
+        # つかみの左の言葉が読み上げに無い → つかみの見出し（読み上げと同じ話・数字なし）を左にも出す（言葉は作らない。2026-11-04）
+        text = ((data.get("hook") or {}).get("text") or "").strip()
+        if 6 <= len(text) <= 17:
+            cand = json.loads(json.dumps(data, ensure_ascii=False))
+            cand["hook"]["payoff"] = text
+            cand.setdefault("_repairs", []).append(f"hook の左の言葉をつかみの見出しにした: {text}")
+            cand_problems = script_problems(cand, article, pages)
+            if _better(cand_problems, problems):
+                log(f"   [v3] つかみの左の言葉を見出しにした: {text}")
                 data, problems = cand, cand_problems
     if any(EVIDENCE_PROBLEM.search(p) for p in problems):
         cand = repair_evidence(data, article, pages)
@@ -2747,9 +2758,9 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         t_in, t_out = line.start - 0.1, lines[i + 1].start - 0.06
         label = (beat.get("label") or EYEBROWS[min(i, len(EYEBROWS)) - 1]).strip()
         brow = fit_line(label, "bold", range(28, 20, -2), COL_W, color=BLUE, accent=False, tracking=0.08)
-        try:
-            kw = fit_line(beat["keyword"], "black", range(132, 56, -4), COL_W)
-        except RuntimeError:  # 長い場面のキーワードは2行に（文節で折り返す）
+        # 1行で 60px 以上に入らなければ2行に（文節で折り返す）。fit_line は 24px まで縮めるので使わない（36px でゲートに落ちた。2026-11-04）
+        kw = next((spr for size in range(132, 59, -4) if (spr := render_text(accent_segments(beat["keyword"], "black"), size)).shape[1] <= COL_W), None)
+        if kw is None:
             kw = wrapped(beat["keyword"], "black", range(76, 46, -2), COL_W, 2)
         parts = [("eyebrow", brow, 0), ("keyword", kw, 18)]
         if beat.get("sub"):

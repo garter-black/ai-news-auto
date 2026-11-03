@@ -222,6 +222,17 @@ class ScriptSelfCorrectTest(unittest.TestCase):
         self.assertEqual(fixed["beats"][0]["target"], s["beats"][0]["target"])  # 証拠と訳はそのまま
         self.assertFalse([p for p in self.problems(fixed) if v3.EVIDENCE_PROBLEM.search(p)])
 
+    def test_hook_payoff_not_in_speech_uses_headline(self):
+        """2026-11-04: 左の言葉がつかみの読み上げに無い（「追加料金なし」）→ LLM に戻さず、つかみの見出しを左にも出す"""
+        s = good()
+        s["hook"]["text"] = "Fixtureが復旧ツールを公開"
+        s["hook"]["payoff"] = "追加料金なし"
+        probs = self.problems(s)
+        self.assertTrue(any("hook の左の言葉「追加料金なし」" in p for p in probs), probs)
+        data, probs2 = v3.self_correct(s, ARTICLE, self.pages, probs)
+        self.assertEqual(data["hook"]["payoff"], "Fixtureが復旧ツールを公開")
+        self.assertFalse(any("hook の左の言葉" in p for p in probs2), probs2)
+
     def test_repick_line_with_keyword_number(self):
         s = good()
         s["beats"][1]["target"] = "It starts in observe-only mode by default."  # 69 の無い行

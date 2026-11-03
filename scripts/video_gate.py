@@ -824,7 +824,7 @@ def label_problems(script_v3: dict) -> list[str]:
     beats = [b for b in sv.get("beats") or [] if isinstance(b, dict)]
     hook = sv.get("hook") or {}
     if hook.get("payoff") and not point_ok(hook["payoff"], f"{hook.get('text', '')} {hook.get('speech', '')}"):
-        out.append(f"hook の数字「{hook['payoff']}」がつかみの読み上げ・文字に無い（つかみで言う数字を出す）")
+        out.append(f"hook の左の言葉「{hook['payoff']}」がつかみの読み上げ・文字に無い（payoff の言葉を hook.speech にそのまま入れる）")
     for i, b in enumerate(beats, 1):
         kw, sub, speech = b.get("keyword", ""), b.get("sub", ""), b.get("speech", "")
         if kw and not point_ok(kw, speech):

@@ -244,7 +244,7 @@ class LabelTest(unittest.TestCase):
                        {"label": "どれくらい？", "keyword": "作例は1万件", "sub": "2026年から", "speech": "作例は1万件あります。",
                         "target": "作例は10,000件", "ja": ""}]}  # fmt: skip
         joined = " ".join(self.gate.label_problems(s))
-        self.assertIn("hook の数字「1,000件以上」がつかみの読み上げ", joined)
+        self.assertIn("hook の左の言葉「1,000件以上」がつかみの読み上げ", joined)
         self.assertIn("beat1 のキーワード「1,000件以上」がその場面の読み上げに無い", joined)
         self.assertNotIn("beat2 のキーワード", joined)  # 1万＝10000 は同じ数字
         self.assertIn("beat2 の補足「2026年から」の数字がその場面の読み上げに無い", joined)
