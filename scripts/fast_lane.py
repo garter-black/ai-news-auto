@@ -17,6 +17,7 @@
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import os
 import re
@@ -300,7 +301,23 @@ def parse_meta(raw: str) -> list[dict]:
         return []
     if isinstance(data, dict):
         data = [data]
-    return [d for d in data if isinstance(d, dict) and isinstance(d.get("url"), str)]
+    items = [d for d in data if isinstance(d, dict) and isinstance(d.get("url"), str)]
+    for d in items:
+        # Worker の古い版が戻しそこねた実体参照（&#8211; など）が見出しに残らないように
+        for key in ("title", "sourceName"):
+            if isinstance(d.get(key), str):
+                d[key] = _unescape(d[key])
+    return items
+
+
+def _unescape(value: str) -> str:
+    out = value
+    for _ in range(3):
+        nxt = html.unescape(out)
+        if nxt == out:
+            break
+        out = nxt
+    return out
 
 
 def parse_time(value) -> datetime | None:

@@ -424,10 +424,21 @@ def _parse_date(value: str) -> datetime | None:
     return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
 
 
+def unescape_text(value: str) -> str:
+    """二重に書かれた実体参照（&amp;#8211; など）も戻す。最大3回まで"""
+    out = value or ""
+    for _ in range(3):
+        nxt = html.unescape(out)
+        if nxt == out:
+            break
+        out = nxt
+    return out
+
+
 def strip_html(value: str) -> str:
     value = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", value or "")
     value = re.sub(r"(?s)<[^>]+>", " ", value)
-    return re.sub(r"\s+", " ", html.unescape(value)).strip()
+    return re.sub(r"\s+", " ", unescape_text(value)).strip()
 
 
 def parse_feed(feed: dict) -> list[dict]:

@@ -187,10 +187,21 @@ export function decode(s) {
   });
 }
 
+/** 二重に書かれた実体参照（&amp;#8211; など）も戻す。文字として残った「&#8211;」が見出しに出ないように、最大3回まで */
+export function decodeText(s) {
+  let out = String(s);
+  for (let i = 0; i < 3; i += 1) {
+    const next = decode(out);
+    if (next === out) break;
+    out = next;
+  }
+  return out;
+}
+
 /** CDATA を外し、タグを除いてから実体参照を戻す（Python の feeds.strip_html と同じ順） */
 export function textOf(s) {
   const raw = String(s || "").replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1");
-  return decode(raw.replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+  return decodeText(raw.replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
 }
 
 function tag(block, name) {

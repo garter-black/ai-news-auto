@@ -7,7 +7,7 @@ import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
 import {
-  compile, fastLane, htmlToText, itemId, metaContent, normalizeUrl, parseFeed, parseHtmlList, relevant, RUN_PREFIX,
+  compile, decodeText, fastLane, htmlToText, itemId, metaContent, normalizeUrl, parseFeed, parseHtmlList, relevant, RUN_PREFIX,
 } from "../src/fastlane.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
@@ -465,4 +465,12 @@ test("取得に失敗した発信元は既読の記録を消さない", async ()
   assert.equal(log.errors["openai-news"], 404);
   assert.deepEqual(h.state().sources["openai-news"].seen, seen);
   assert.equal(h.calls.dispatches.length, 0);
+});
+
+test("二重に書かれた実体参照も見出しから消える（&amp;#8211; → –）", () => {
+  const xml = `<rss><channel><item><title>アプリの提供を開始 &amp;#8211; 共有を効率化</title><link>https://example.com/a</link></item></channel></rss>`;
+  const [item] = parseFeed(xml);
+  assert.equal(item.title, "アプリの提供を開始 – 共有を効率化");
+  assert.equal(decodeText("A &amp;amp; B"), "A & B");
+  assert.equal(decodeText("そのまま"), "そのまま");
 });
