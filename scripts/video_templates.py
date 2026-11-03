@@ -65,7 +65,7 @@ CARD_MODES = ("image", "specs", "checklist", "timeline", "figures", "versus")
 
 def enabled(env: dict | None = None) -> bool:
     """新しい型を本番で使うか（2026-11-04 オーナー承認で既定 on。SNS_VIDEO_TEMPLATES=off で今までの1つの型に戻せる）"""
-    return str((env if env is not None else os.environ).get(ENV, "off")).strip().lower() in ("on", "1", "true", "yes")
+    return str((env if env is not None else os.environ).get(ENV, "on")).strip().lower() not in ("off", "0", "false", "no")
 
 
 # --------------------------------------------------------------------------- #

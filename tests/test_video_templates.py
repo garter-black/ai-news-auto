@@ -128,28 +128,32 @@ class ClassifierTest(unittest.TestCase):
 
 
 class SwitchTest(unittest.TestCase):
-    def test_default_is_off(self):
-        self.assertFalse(vt.enabled({}))
-        self.assertFalse(vt.enabled({"SNS_VIDEO_TEMPLATES": "off"}))
+    def test_default_is_on(self):
+        """2026-11-04 オーナー承認: 既定で中身に合わせた型を使う。off にすると今までの1つの型"""
+        self.assertTrue(vt.enabled({}))
         self.assertTrue(vt.enabled({"SNS_VIDEO_TEMPLATES": "on"}))
+        self.assertFalse(vt.enabled({"SNS_VIDEO_TEMPLATES": "off"}))
         self.assertEqual(vt.APPROVED, "default")
+        yml = (ROOT / ".github" / "workflows" / "sns_video.yml").read_text("utf-8")
+        self.assertIn("vars.SNS_VIDEO_TEMPLATES || 'on'", yml)
 
     @unittest.skipUnless(READY, "numpy / Pillow / budoux / ffmpeg が必要")
-    def test_make_versions_default_is_current_template(self):
-        """スイッチが無い・off のときは、記事が速報・セキュリティでも今の承認済みの型（型の処理を通らない）"""
-        calls = []
-        with mock.patch.dict(os.environ, {"SNS_VIDEO_TEMPLATES": ""}), \
-             mock.patch.object(v3.shorts, "load_article", return_value=dict(SECURITY, slug="s")), \
-             mock.patch.object(v3, "prepare_versions", side_effect=lambda *a, **k: calls.append(("prepare", k)) or ([], None, "テスト")), \
-             mock.patch.object(vt, "make_versions", side_effect=lambda *a, **k: self.fail("既定で型を使ってはいけない")):  # fmt: skip
-            out = v3.make_versions("s", Path(tempfile.mkdtemp()))
-        self.assertEqual(calls, [("prepare", {})])  # 今までと同じ呼び方（型の一言も台本の別ファイルも無し）
-        self.assertEqual(out["full"]["failReason"], "テスト")
-        with mock.patch.dict(os.environ, {"SNS_VIDEO_TEMPLATES": "on"}), \
+    def test_make_versions_switch(self):
+        """既定（変数なし）は記事から型を選ぶ。off は型の処理を通らず、今までの1つの型（2026-11-03 までと同じ呼び方）"""
+        with mock.patch.dict(os.environ, {}, clear=False), \
              mock.patch.object(v3.shorts, "load_article", return_value=dict(SECURITY, slug="s")), \
              mock.patch.object(vt, "make_versions", return_value={"full": {"t": 1}, "short": {"t": 1}}) as tm:  # fmt: skip
+            os.environ.pop("SNS_VIDEO_TEMPLATES", None)
             v3.make_versions("s", Path(tempfile.mkdtemp()))
         self.assertEqual(tm.call_args.args[2], "security")
+        calls = []
+        with mock.patch.dict(os.environ, {"SNS_VIDEO_TEMPLATES": "off"}), \
+             mock.patch.object(v3.shorts, "load_article", return_value=dict(SECURITY, slug="s")), \
+             mock.patch.object(v3, "prepare_versions", side_effect=lambda *a, **k: calls.append(("prepare", k)) or ([], None, "テスト")), \
+             mock.patch.object(vt, "make_versions", side_effect=lambda *a, **k: self.fail("off で型を使ってはいけない")):  # fmt: skip
+            out = v3.make_versions("s", Path(tempfile.mkdtemp()))
+        self.assertEqual(calls, [("prepare", {})])
+        self.assertEqual(out["full"]["failReason"], "テスト")
 
 
 class ScriptTest(unittest.TestCase):

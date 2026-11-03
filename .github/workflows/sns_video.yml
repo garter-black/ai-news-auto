@@ -12,7 +12,7 @@ name: SNS video follow-up (flagged, default off)
 #   SNS_VIDEO_EMBED=on     … 記事 JSON に video を書く（次のデプロイで記事ページに動画が出る）
 #   SNS_VIDEO_POST=live    … Buffer の予約中の Threads の投稿の写真を動画に差し替える（予約の時刻は変えない）
 #   SNS_VIDEO_BREAKING_FOLLOWUP=on … 速報の記事だけ、あとから動画の投稿を別に出す（既定 off・オーナーの判断待ち）
-#   SNS_VIDEO_TEMPLATES=on … 記事の中身に合わせた動画の型を使う（scripts/video_templates.py。既定 off・オーナーの承認待ち）
+#   SNS_VIDEO_TEMPLATES=off … 記事の中身に合わせた動画の型（scripts/video_templates.py）を使わない（既定 on・2026-11-04 オーナー承認）
 #   SNS_VIDEO_AB_UNTIL=YYYY-MM-DD … この日まで投稿ごとに short / full を交互（記事のリンクに utm_content=short|full）
 # 手動実行（workflow_dispatch）は投稿しない（作る・置く・記事に載せるは Variables に従う）。
 on:
@@ -108,8 +108,8 @@ jobs:
           SNS_VIDEO_STORE: ${{ vars.SNS_VIDEO_STORE || 'kv' }}
           GH_TOKEN: ${{ github.token }}  # 門番が止めた投稿の issue を立てる
           SNS_VIDEO_BREAKING_FOLLOWUP: ${{ vars.SNS_VIDEO_BREAKING_FOLLOWUP || 'off' }}
-          # 中身に合わせた動画の型（scripts/video_templates.py）。オーナーの承認待ちなので既定 off＝今の承認済みの型のまま
-          SNS_VIDEO_TEMPLATES: ${{ vars.SNS_VIDEO_TEMPLATES || 'off' }}
+          # 中身に合わせた動画の型（scripts/video_templates.py）。2026-11-04 オーナー承認で既定 on（off で今までの1つの型）
+          SNS_VIDEO_TEMPLATES: ${{ vars.SNS_VIDEO_TEMPLATES || 'on' }}
         run: |
           if [ -n "${{ github.event.inputs.queue_fix }}" ]; then
             # 予約中の写真の投稿を下書きに戻し、新しい形の文面・動画つきで同じ枠に出し直す（apply のときだけ。投稿は門番を通る）
