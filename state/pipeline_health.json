@@ -1,8 +1,8 @@
 {
-  "candidates": 10,
-  "consecutive_zero": 0,
-  "last_zero_at": "2026-11-03T14:46:44+00:00",
-  "reason": "",
+  "candidates": 6,
+  "consecutive_zero": 1,
+  "last_zero_at": "2026-11-03T19:55:16+00:00",
+  "reason": "品質ゲート不合格: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
   "recovered_at": "2026-11-03T14:52:33+00:00",
   "status": "ok"
 }

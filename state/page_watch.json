@@ -426,10 +426,6 @@
     "English United States"
    ],
    "ok": "2026-11-04",
-   "pending": {
-    "at": "2026-11-03T19:11:16+00:00",
-    "hash": "7f77f9fe346ec3cc"
-   },
    "since": "2026-11-02T18:41:16+00:00"
   },
   "chatgpt-release-notes": {
@@ -865,7 +861,6 @@
    "since": "2026-11-02T04:41:50+00:00"
   },
   "gemini-release-notes": {
-   "error": "TimeoutError: The read operation timed out",
    "last_date": "2026-10-13",
    "ok": "2026-11-04"
   },

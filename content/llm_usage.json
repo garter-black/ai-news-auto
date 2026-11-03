@@ -55,14 +55,14 @@
   "2026-11-03": {
     "anthropic-api:claude-haiku-5-5": 31,
     "anthropic-api:claude-opus-5-5": 15,
-    "anthropic-api:claude-sonnet-5-5": 75,
+    "anthropic-api:claude-sonnet-5-5": 76,
     "cf-image:flux-1-schnell": 3,
     "cf-image:flux-2-klein-4b": 13,
-    "cloudflare:@cf/openai/gpt-oss-120b": 33,
+    "cloudflare:@cf/openai/gpt-oss-120b": 37,
     "gemini-3.1-flash-lite": 3,
     "gemini-3.5-flash": 2,
-    "gemini-3.5-flash-lite": 72,
+    "gemini-3.5-flash-lite": 74,
     "gemini-flash-lite-latest": 1,
-    "openrouter:nvidia/nemotron-3.5-super-vl:free": 8
+    "openrouter:nvidia/nemotron-3.5-super-vl:free": 12
   }
 }

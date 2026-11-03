@@ -3763,6 +3763,13 @@
       "skipped": true,
       "url": "https://cloud.google.com/blog/topics/training-certifications/new-gemini-courses-for-financial-services-and-legal-teams/"
     },
+    "0e7b16327df7de13": {
+      "at": "2026-11-03T19:40:51.152248+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://github.blog/open-source/maintainers/arnis-turns-any-place-on-earth-into-a-minecraft-world/"
+    },
     "0eeaf12b012d820c37d58d0e46c509208d7e2569": {
       "at": "2026-10-29T06:12:29.214614+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -7901,6 +7908,12 @@
       "slug": "microsoft-ui-reactor-winui-csharp-mvu",
       "url": "https://devblogs.microsoft.com/ifdef-windows/microsoft-ui-reactor-a-c-first-way-to-build-winui-apps/"
     },
+    "74c9b2e03867b173": {
+      "at": "2026-11-03T19:51:15.184960+00:00",
+      "reason": "dedupe: 固有名詞が一致（agentcore・bedrock）: ServiceNow on-behalf-of token exchange w",
+      "skipped": true,
+      "url": "https://aws.amazon.com/blogs/machine-learning/how-gen-digital-built-norton-revamps-ai-curated-news-engine-with-amazon-bedrock-agentcore-web-search/"
+    },
     "74ff1aa266d81f91": {
       "at": "2026-10-27T03:05:10.758136+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（億米ドル）",
@@ -8395,6 +8408,13 @@
       "slug": "discord-public-server-google-search",
       "url": "https://www.itmedia.co.jp/news/article/2610/28/2000002656/"
     },
+    "81baaaf3b2d16a22": {
+      "at": "2026-11-03T19:37:51.089666+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://aws.amazon.com/blogs/machine-learning/bring-structured-and-unstructured-data-together-with-amazon-quick/"
+    },
     "81c99a3c49073f9f": {
       "at": "2026-10-26T15:34:23.254431+00:00",
       "reason": "prefilter: 告知・お知らせ系",
@@ -8496,6 +8516,13 @@
       "reason": "quality: 本文が短い（1752字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）; easy_markdown が短い（376字 / 基準 400字以上）; body_markdown に「## 自分に関係ある？」の章がない（構成どおりの見出しを使う）",
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026103008"
+    },
+    "841c3ce16d85bb46": {
+      "at": "2026-11-03T19:51:14.544671+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "quality: 題名で使い方・手順を約束しているのに、本文に手順（番号つきの手順や「使い方」の章）が無い。手順を書くか、題名から外す",
+      "skipped": true,
+      "url": "https://aws.amazon.com/blogs/machine-learning/servicenow-on-behalf-of-token-exchange-with-bedrock-agentcore-gateway/"
     },
     "843669dfabc08285": {
       "at": "2026-11-01T01:41:15.293425+00:00",
@@ -12333,6 +12360,13 @@
       "slug": "mof-onchain-government-bonds-study",
       "url": "https://www.mof.go.jp/about_mof/councils/study_on_chain/index.html"
     },
+    "e466f624af7d1128": {
+      "at": "2026-11-03T19:55:16.917860+00:00",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://aws.amazon.com/blogs/machine-learning/building-ultra-low-latency-voice-ai-applications-on-aws/"
+    },
     "e47f8d7709d9d6e7": {
       "at": "2026-10-27T03:05:10.758101+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（CAGR）",
@@ -12731,6 +12765,12 @@
       "reason": "元記事のPDFデータがバイナリ形式の残骸のみであり、金融政策運営に関する具体的な数値や本文のテキストを読み取ることができないため。",
       "skipped": true,
       "url": "https://www.boj.or.jp/mopo/mpmdeci/mpr_2026/k261030a.pdf"
+    },
+    "ef509d7a4530fbcf": {
+      "at": "2026-11-03T19:51:15.185068+00:00",
+      "reason": "dedupe: 固有名詞が一致（agentcore・bedrock）: ServiceNow on-behalf-of token exchange w",
+      "skipped": true,
+      "url": "https://aws.amazon.com/blogs/machine-learning/build-a-semantic-layer-for-agentic-ai-with-edb-postgres-ai-and-amazon-bedrock-agentcore/"
     },
     "ef6b9dae255757d6": {
       "at": "2026-10-29T19:32:12.803294+00:00",
@@ -13439,175 +13479,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-02T04:32:09.569038+00:00",
-      "attempt": 0,
-      "id": "b5bd2734bcbd8d3c",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 94.7,
-        "avg_sentence": 30.5,
-        "long_share": 0.017,
-        "max_paragraph": 176,
-        "paragraphs": 19,
-        "sentences": 59
-      },
-      "score": 100,
-      "source": "nvidia-developer-blog",
-      "title": "Build Specialized Agents on a Stack You Control with NVIDIA NemoClaw"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T04:51:18.038947+00:00",
-      "attempt": 1,
-      "id": "ba722fd9106868dc",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 62.4字・60字超の文が 64% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 105.6,
-        "avg_sentence": 62.4,
-        "long_share": 0.636,
-        "max_paragraph": 152,
-        "paragraphs": 13,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "google-cloud-blog",
-      "title": "What’s new in AI infrastructure and orchestration in October"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T04:51:22.506181+00:00",
-      "attempt": 0,
-      "id": "ba722fd9106868dc",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 70.4,
-        "avg_sentence": 30.4,
-        "long_share": 0.0,
-        "max_paragraph": 113,
-        "paragraphs": 22,
-        "sentences": 51
-      },
-      "score": 100,
-      "source": "google-cloud-blog",
-      "title": "What’s new in AI infrastructure and orchestration in October"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T04:51:29.246758+00:00",
-      "attempt": 1,
-      "id": "bcdf43741b494410",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 56.7字・60字超の文が 35% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 141.8字・最長 192字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 141.8,
-        "avg_sentence": 56.7,
-        "long_share": 0.35,
-        "max_paragraph": 192,
-        "paragraphs": 8,
-        "sentences": 20
-      },
-      "score": 100,
-      "source": "toyota",
-      "title": "ランドクルーザー“FJ”に丸目ヘッドランプとアドベンチャーバンパーを外装オプションとして新規設定"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T04:51:32.466450+00:00",
-      "attempt": 0,
-      "id": "bcdf43741b494410",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 154.6字・最長 216字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 154.6,
-        "avg_sentence": 28.8,
-        "long_share": 0.023,
-        "max_paragraph": 216,
-        "paragraphs": 8,
-        "sentences": 43
-      },
-      "score": 100,
-      "source": "toyota",
-      "title": "ランドクルーザー“FJ”に丸目ヘッドランプとアドベンチャーバンパーを外装オプションとして新規設定"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T04:55:51.991697+00:00",
-      "attempt": 1,
-      "id": "8e5047be2ea6e246",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 67.1,
-        "avg_sentence": 29.1,
-        "long_share": 0.0,
-        "max_paragraph": 116,
-        "paragraphs": 26,
-        "sentences": 60
-      },
-      "score": 86,
-      "source": "radar-official",
-      "title": "What is the Ultra plan? | Claude Help Center"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T05:03:21.510496+00:00",
-      "attempt": 1,
-      "id": "85c82f0a957177ca",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 57.7,
-        "avg_sentence": 30.0,
-        "long_share": 0.06,
-        "max_paragraph": 137,
-        "paragraphs": 26,
-        "sentences": 50
-      },
-      "score": 95,
-      "source": "radar-official",
-      "title": "ChatGPTの「Chat」と「Work」を統合、利用枠はCodexと共通に"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T05:31:36.073860+00:00",
-      "attempt": 1,
-      "id": "191056a627871c9b",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 56.3字・60字超の文が 43% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 98.5,
-        "avg_sentence": 56.3,
-        "long_share": 0.429,
-        "max_paragraph": 171,
-        "paragraphs": 16,
-        "sentences": 28
-      },
-      "score": 100,
-      "source": "aws-japan-blog",
-      "title": "AI ガードレールによるコンタクトセンターでの責任ある AI の実装"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T05:31:51.218877+00:00",
@@ -20005,6 +19876,166 @@
         "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（CAD・CGR）"
       ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T19:36:24.529817+00:00",
+      "attempt": 1,
+      "id": "81baaaf3b2d16a22",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "確認済みの事実の束（関連ページ：AWS Machine Learning Blog「Amazon Quick の料金」）の数字を使っているのに、出典が書かれていない。使った文の直後に「（AWS Machine Learning Blog「Amazon Quick の料金」、確認日）」のように書く"
+      ],
+      "readability": {
+        "avg_paragraph": 83.1,
+        "avg_sentence": 36.6,
+        "long_share": 0.04,
+        "max_paragraph": 145,
+        "paragraphs": 11,
+        "sentences": 25
+      },
+      "score": null,
+      "source": "aws-ml-blog",
+      "title": "Bring structured and unstructured data together with Amazon Quick",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（CSV・SPICE・SQL）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T19:37:51.089610+00:00",
+      "attempt": 2,
+      "id": "81baaaf3b2d16a22",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "aws-ml-blog",
+      "title": "Bring structured and unstructured data together with Amazon Quick"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T19:38:50.408203+00:00",
+      "attempt": 1,
+      "id": "0e7b16327df7de13",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "github-blog",
+      "title": "Arnis turns any place on Earth into a Minecraft world"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T19:40:51.152181+00:00",
+      "attempt": 2,
+      "id": "0e7b16327df7de13",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "github-blog",
+      "title": "Arnis turns any place on Earth into a Minecraft world"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T19:47:55.475365+00:00",
+      "attempt": 1,
+      "id": "841c3ce16d85bb46",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "title の長さが不適切（77字 / 18〜64字）"
+      ],
+      "readability": {
+        "avg_paragraph": 171.7,
+        "avg_sentence": 85.9,
+        "long_share": 1.0,
+        "max_paragraph": 230,
+        "paragraphs": 7,
+        "sentences": 14
+      },
+      "score": null,
+      "source": "aws-ml-blog",
+      "title": "ServiceNow on-behalf-of token exchange with Bedrock AgentCore Gateway",
+      "warnings": [
+        "見出しが77字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（LLM・OBO・JSON）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T19:51:14.544610+00:00",
+      "attempt": 2,
+      "id": "841c3ce16d85bb46",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "題名で使い方・手順を約束しているのに、本文に手順（番号つきの手順や「使い方」の章）が無い。手順を書くか、題名から外す"
+      ],
+      "readability": {
+        "avg_paragraph": 124.9,
+        "avg_sentence": 69.4,
+        "long_share": 0.667,
+        "max_paragraph": 238,
+        "paragraphs": 10,
+        "sentences": 18
+      },
+      "score": null,
+      "source": "aws-ml-blog",
+      "title": "ServiceNow on-behalf-of token exchange with Bedrock AgentCore Gateway",
+      "warnings": [
+        "見出しが54字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（LLM・OBO・REST）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T19:53:10.253306+00:00",
+      "attempt": 1,
+      "id": "e466f624af7d1128",
+      "kind": "ai",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "problems": [
+        "本文の最初の文がリードのくり返し。本文はリードに無い新しい事実から始める",
+        "題名で料金・価格を約束しているのに、本文に金額（円・ドル・無料など）が無い。元記事の金額を書くか、題名から料金の話を外す"
+      ],
+      "readability": {
+        "avg_paragraph": 118.8,
+        "avg_sentence": 49.8,
+        "long_share": 0.226,
+        "max_paragraph": 260,
+        "paragraphs": 13,
+        "sentences": 31
+      },
+      "score": null,
+      "source": "aws-ml-blog",
+      "title": "Building ultra-low-latency voice AI applications on AWS",
+      "warnings": [
+        "見出しが43字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（SSM・VPC・IAM）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T19:55:16.917808+00:00",
+      "attempt": 2,
+      "id": "e466f624af7d1128",
+      "kind": "ai",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "aws-ml-blog",
+      "title": "Building ultra-low-latency voice AI applications on AWS"
     }
   ],
   "short_text_retry": {
