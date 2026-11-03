@@ -40,7 +40,10 @@ on:
         description: "（直す）Buffer の予約中の動画なし・古い形の投稿: plan＝一覧だけ／apply＝下書きに戻して動画つきで出し直す。空なら何もしない"
         default: ""
       repost:
-        description: "（オーナー承認の出し直し）この記事を content/sns_reposts の文面・動画つきで次のふつうの枠に出す。空なら何もしない"
+        description: "（出し直し）slug[,slug]（承認済みの文面は content/sns_reposts）・動画つきで次のふつうの枠に。枠を決めるなら slug@2026-11-04T09:45+09:00。空なら何もしない"
+        default: ""
+      adopt_video:
+        description: "（出し直し）検査に合格した保存済みの動画を使う: slug:実行ID（その実行の成果物から <slug>__v3*.mp4 と report を探す）。空なら作り直す"
         default: ""
       requeue:
         description: "（直す）下書きに戻した X・Facebook の投稿を動画つきで出し直す（例 slug:facebook）。空なら何もしない"
@@ -50,6 +53,7 @@ on:
         default: "false"
 
 permissions:
+  actions: read  # 出し直しで、検査に合格した保存済みの動画（ほかの実行の成果物）を読む
   contents: write  # state/sns_video.json と Claude API の使用量を main に残すため
   issues: write  # SNS ルールの門番（scripts/sns_rules.py）が止めた差し替えの issue
 
@@ -116,8 +120,20 @@ jobs:
             SNS_VIDEO_POST=live python scripts/sns_video_followup.py --queue-fix "${{ github.event.inputs.queue_fix }}"
             exit $?
           fi
-          if [ -n "${{ github.event.inputs.repost }}" ]; then
-            python scripts/sns_video_followup.py --repost "${{ github.event.inputs.repost }}"
+          if [ -n "${{ github.event.inputs.repost }}${{ github.event.inputs.adopt_video }}" ]; then
+            args=()
+            rp="${{ github.event.inputs.repost }}"
+            if [ -n "$rp" ]; then
+              slugs="${rp%%@*}"; args+=(--repost "$slugs")
+              [ "$rp" != "$slugs" ] && args+=(--slot "${rp#*@}")
+            fi
+            av="${{ github.event.inputs.adopt_video }}"
+            if [ -n "$av" ]; then
+              mkdir -p "$RUNNER_TEMP/adopt"
+              gh run download "${av#*:}" -D "$RUNNER_TEMP/adopt"
+              args+=(--adopt-video "${av%%:*}" "$RUNNER_TEMP/adopt")
+            fi
+            SNS_VIDEO_POST=live python scripts/sns_video_followup.py "${args[@]}" --publish
             exit $?
           fi
           if [ -n "${{ github.event.inputs.requeue }}" ]; then
@@ -159,7 +175,7 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
       - name: 記録を main に残す（動画の記録・Claude API の使用量・記事の video）
-        if: ${{ always() && (github.event.inputs.plan_only != 'true' || github.event.inputs.queue_fix == 'apply' || github.event.inputs.requeue != '' || github.event.inputs.repost != '') }}
+        if: ${{ always() && (github.event.inputs.plan_only != 'true' || github.event.inputs.queue_fix == 'apply' || github.event.inputs.requeue != '' || github.event.inputs.repost != '' || github.event.inputs.adopt_video != '') }}
         continue-on-error: true
         run: |
           files="state/sns_video.json state/claude_api_usage_video.json state/buffer_calls/video.json"

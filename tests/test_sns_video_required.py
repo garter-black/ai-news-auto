@@ -356,6 +356,31 @@ class RepostTest(unittest.TestCase):
             self.assertIn("slot", out)
 
 
+class AdoptVideoTest(unittest.TestCase):
+    def test_adopt_only_versions_that_passed_qa(self):
+        import json
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            src = d / "art" / "launch"
+            src.mkdir(parents=True)
+            good = {"total": 36.5, "template": "launch", "url": "https://ai-tech-express.jp/articles/a", "gate": {"ok": True, "qa": {"geometry": True, "vision": True}}}
+            bad = {"total": 57.0, "template": "launch", "gate": {"ok": True, "qa": {"geometry": True, "vision": False}}}
+            (src / "a__v3short.mp4").write_bytes(b"x")
+            (src / "a__v3short.report.json").write_text(json.dumps(good))
+            (src / "a__v3.mp4").write_bytes(b"y")
+            (src / "a__v3.report.json").write_text(json.dumps(bad))
+            (d / "video.json").write_text(json.dumps({"videos": {"a": {"status": "gate_failed"}}}))
+            with patch.object(fu, "STATE", d / "video.json"), patch.object(fu, "poster_of", lambda mp4: mp4):
+                out = fu.adopt_video("a", d / "art", now=NOW, upload=lambda path, slug, ext="mp4": f"https://ai-tech-express.jp/video/{path.name}")
+            state = json.loads((d / "video.json").read_text())
+            self.assertEqual(sorted(out["versions"]), ["short"])  # 目視の確認に通っていない全部の版は使わない
+            v = state["videos"]["a"]
+            self.assertEqual((v["status"], sorted(v["urls"])), ("ready", ["short"]))
+            self.assertTrue(fu.qa_ok(v["versions"]["short"], env={}))
+
+
 class OwnerAuditTest(unittest.TestCase):
     def test_audit_flags_post_without_video(self):
         import owner_rules_audit as audit

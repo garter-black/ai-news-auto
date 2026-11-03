@@ -852,18 +852,23 @@ def next_normal_slot(posted: dict, now: datetime, lead_min: int = 90) -> datetim
     raise RuntimeError("3日以内に空いている枠がありません")
 
 
-def repost(slug: str, api_key: str | None = None, now: datetime | None = None) -> dict:
+def repost(slug: str, api_key: str | None = None, now: datetime | None = None, slot: datetime | None = None) -> dict:
     """（オーナー承認の出し直し）写真で出て消した投稿を、content/sns_reposts/<slug>.json の文面・動画つきで、次のふつうの枠に出す。
     動画は作り直す（いまのコードで）。動画ができたら publish_queued が枠の時刻に Threads・X・Facebook へ、Bluesky はそのあと出す"""
     import threads_post as tp
 
     key = api_key if api_key is not None else os.environ.get("BUFFER_API_KEY", "")
     now = now or datetime.now(timezone.utc)
-    spec = json.loads((REPOSTS / f"{slug}.json").read_text("utf-8"))
+    spec_path = REPOSTS / f"{slug}.json"
+    # 承認済みの文面があればそれを使う。無ければ（動画が作れず見送った投稿の出し直しなど）今の決まりで文面を作り直す
+    spec = json.loads(spec_path.read_text("utf-8")) if spec_path.exists() else {}
     state = load_json(STATE, {"videos": {}})
     posted = load_json(POSTED, {"posted": {}})
     rec = (posted.get("posted") or {}).get(slug) or {}
-    slot = next_normal_slot(posted, now)
+    others = {"posted": {k: v for k, v in (posted.get("posted") or {}).items() if k != slug}}
+    original = _parse(rec.get("dueAt") or "")
+    if slot is None:
+        slot = original if original and original - now >= timedelta(minutes=90) and rec.get("status") == "skipped_no_video" else next_normal_slot(others, now)
     services = spec.get("services") or ["threads", "twitter", "facebook"]
     pending = requeue_inputs(key, tp.buffer_channels(key), slug, services, slot, classic=spec.get("classic", ""))
     if spec.get("variant"):
@@ -880,6 +885,39 @@ def repost(slug: str, api_key: str | None = None, now: datetime | None = None) -
     drop_bluesky_extra(state)
     save_state(state)
     return {"slug": slug, "slot": slot.astimezone(JST).isoformat(timespec="minutes"), "services": services, "variant": spec.get("variant")}
+
+
+def adopt_video(slug: str, src: Path, now: datetime | None = None, upload=None) -> dict:
+    """検査に合格して保存した動画（見本のワークフローの成果物など。<slug>__v3.mp4 / __v3short.mp4 と .report.json）を、
+    この記事の SNS 用の動画として置く（作り直さない）。検査（gate.ok・geometry・vision）に通っていない版は使わない"""
+    now = now or datetime.now(timezone.utc)
+    upload = upload or upload_kv
+    state = load_json(STATE, {"videos": {}})
+    versions, urls = {}, {}
+    for variant, stem in (("full", f"{slug}__v3"), ("short", f"{slug}__v3short")):
+        mp4 = next(iter(sorted(Path(src).rglob(f"{stem}.mp4"))), None)
+        rep = next(iter(sorted(Path(src).rglob(f"{stem}.report.json"))), None)
+        if not mp4 or not rep:
+            continue
+        report = json.loads(rep.read_text("utf-8"))
+        gate = report.get("gate") or {}
+        version = {"ok": bool(gate.get("ok")), "seconds": report.get("total"), "reasons": (gate.get("reasons") or [])[:3], "qa": gate.get("qa") or {},
+                   "template": report.get("template", ""), "level": report.get("level") or "L1", "post": post_report(report)}
+        if not (version["ok"] and qa_ok(version)):
+            log(f"[video-followup] {stem} は検査に通っていないので使いません: {version['reasons']}")
+            continue
+        urls[variant] = upload(mp4, slug)
+        versions[variant] = version
+        if variant == "full":
+            urls["poster"] = upload(poster_of(mp4), slug, "jpg")
+    if not versions:
+        raise RuntimeError(f"{slug}: 使える動画（検査に合格した版）が {src} にありません")
+    if slug in (state.get("videos") or {}):
+        state.setdefault("videosArchive", {})[f"{slug}@{now:%Y%m%d%H%M}"] = state["videos"].pop(slug)
+    state.setdefault("videos", {})[slug] = {"at": now.isoformat(timespec="seconds"), "status": "ready", "tries": 1, "ok": True, "adopted": str(src),
+                                            "versions": versions, "urls": urls, "level": max(v["level"] for v in versions.values())}
+    save_state(state)
+    return {"slug": slug, "versions": {k: {"seconds": v["seconds"], "qa": v["qa"], "template": v["template"]} for k, v in versions.items()}, "urls": urls}
 
 
 def drop_bluesky_extra(state: dict) -> int:
@@ -1380,13 +1418,27 @@ def main() -> None:
     parser.add_argument("--sync-posted", action="store_true", help="動画つきで送った記録を state/threads_posted.json に写す（Buffer は呼ばない）")
     parser.add_argument("--queue-fix", choices=("plan", "apply"), help="予約中の動画なし・古い形の投稿を一覧（plan）／下書きに戻して動画待ちにする（apply）")
     parser.add_argument("--requeue", metavar="SLUG:SNS[,SNS]", help="下書きに戻した投稿を、新しい形・動画つきで出し直す（例 slug:facebook）")
-    parser.add_argument("--repost", metavar="SLUG", help="オーナー承認の出し直し（content/sns_reposts/<slug>.json の文面・動画つきで次のふつうの枠に）")
+    parser.add_argument("--repost", metavar="SLUG", help="出し直し（content/sns_reposts/<slug>.json の承認済みの文面か今の決まりの文面・動画つきで次のふつうの枠に）")
+    parser.add_argument("--slot", default="", help="--repost の枠（ISO 8601。省略すると次のふつうの枠）")
+    parser.add_argument("--adopt-video", nargs=2, metavar=("SLUG", "DIR"), help="検査に合格して保存した動画を、この記事の SNS 用に置く（作り直さない）")
+    parser.add_argument("--publish", action="store_true", help="--repost / --adopt-video のあと、動画を待っている投稿を枠の順に予約する")
     args = parser.parse_args()
-    if args.repost:
+    if args.repost or args.adopt_video:
         import llm
 
         llm._load_env_local()
-        print(json.dumps(repost(args.repost), ensure_ascii=False))
+        if args.repost:
+            for slug in args.repost.split(","):
+                print(json.dumps(repost(slug.strip(), slot=_parse(args.slot) if args.slot else None), ensure_ascii=False))
+        if args.adopt_video:
+            print(json.dumps(adopt_video(args.adopt_video[0], Path(args.adopt_video[1])), ensure_ascii=False))
+        if args.publish:
+            state, posted = load_json(STATE, {"videos": {}}), load_json(POSTED, {"posted": {}})
+            apply_converted(state, posted)
+            POSTED.write_text(json.dumps(posted, ensure_ascii=False, indent=2) + "\n", "utf-8")
+            for row in publish_queued(state, posted, datetime.now(timezone.utc), flags()):
+                print(json.dumps(row, ensure_ascii=False))
+            save_state(state)
         return
     if args.requeue:
         import llm
