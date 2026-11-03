@@ -1,0 +1,10 @@
+{
+  "2026-11-02": {
+    "articles": {
+      "anthropic-api:claude-opus-5-5": 1
+    },
+    "images": {
+      "cloudflare:@cf/openai/gpt-oss-120b": 18
+    }
+  }
+}

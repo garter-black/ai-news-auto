@@ -3811,6 +3811,13 @@
       "skipped": true,
       "url": "https://www.jfa.jp/news/00036956/"
     },
+    "12359b882a77cc91": {
+      "at": "2026-11-03T03:38:12.315101+00:00",
+      "model": "anthropic-api:claude-opus-5-5",
+      "reason": "Microsoftが費用を出したWIREDの広告記事（Azure公式ブログにも転載）です。新製品、新機能、料金、提供開始日などの発表はありません。中身は、エージェント型AIには計算・保存・通信を一体で設計した基盤が必要だという一般論と、Azureの宣伝です。具体的な事実はLevi Strauss & Co.の事例（1,000以上のエージェントを束ねる構想）に限られます。技術的な新規性に乏しい宣伝記",
+      "skipped": true,
+      "url": "https://www.wired.com/sponsored/story/the-platform-behind-the-next-ai-breakthrough/"
+    },
     "1239889136d7ce56": {
       "at": "2026-10-28T22:31:25.191323+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（部会）",

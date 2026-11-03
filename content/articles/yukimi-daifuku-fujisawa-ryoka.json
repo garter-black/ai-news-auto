@@ -52,7 +52,7 @@
   "videoTitle": "雪見だいふく",
   "publishedAt": "2026-11-02T14:50:00+00:00",
   "generatedAt": "2026-11-02T18:24:07.007191+00:00",
-  "thumbnail": "https://newsatcl-pctr.c.yimg.jp/t/amd-img/20261102-00000013-mnet-000-1-view.jpg?exp=10800",
+  "thumbnail": "https://ai-tech-express.jp/img/yukimi-daifuku-fujisawa-ryoka-f3a3aa52.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "trendKeyword": "雪見だいふく",
@@ -77,15 +77,28 @@
   "sourcePublishedAt": "2026-11-02T14:50:00+00:00",
   "detectedAt": "2026-11-02T18:23:34+00:00",
   "imageFocus": {
-    "x": 0.509,
+    "x": 0.479,
     "y": 0.5,
     "box": [
-      0.019,
+      0.128,
       0.0,
-      1.0,
+      0.831,
       1.0
     ],
-    "ar": 1.7789,
-    "src": "https://newsatcl-pctr.c.yimg.jp/t/amd-img/20261102-00000013-mnet-000-1-view.jpg?exp=10800"
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/yukimi-daifuku-fujisawa-ryoka-f3a3aa52.jpg"
+  },
+  "imageCredit": {
+    "kind": "stock",
+    "title": "Strawberry Daifuku 01",
+    "creator": "Douglas Perkins",
+    "creatorUrl": "",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "provider": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Strawberry_Daifuku_01.jpg",
+    "query": "mochi dessert",
+    "original": "https://newsatcl-pctr.c.yimg.jp/t/amd-img/20261102-00000013-mnet-000-1-view.jpg?exp=10800",
+    "at": "2026-11-03T03:42:28+00:00"
   }
 }
