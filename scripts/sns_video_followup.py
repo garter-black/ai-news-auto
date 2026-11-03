@@ -223,6 +223,8 @@ def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_a
         if slug in done or not at:
             continue
         queued = state.get("queued", {}).get(slug) or {}
+        if awaiting(rec) and (rec.get("pending") or {}).get("hold"):
+            continue  # オーナーに見せた動画を置くのを待っている（作らない）
         if awaiting(rec) and queued.get("status") not in ("created", "skipped"):
             group = 0  # 動画を待っている投稿（動画が無いと出せない）は、枠が過ぎていても最優先・枠の順
         elif at > now:
@@ -573,6 +575,10 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
         q = queue.setdefault(slug, {"status": "waiting"})
         v = videos.get(slug) or {}
         urls = v.get("urls") or {}
+        if (rec.get("pending") or {}).get("hold") and not v.get("adopted"):
+            q.update({"status": "waiting", "why": "オーナーに見せた動画を置くのを待っている"})
+            out.append({"slug": slug, **q})
+            continue  # ほかの投稿の順番は止めない
         if not urls or v.get("status") in ("started", "upload_failed"):  # 置いた動画があれば使う（前に記事ページだけにした動画も）
             failed = bool(v) and v.get("status") in ("gate_failed", "upload_failed", "dry_run") and not will_retry(v)
             late = now - slot > timedelta(hours=QUEUE_GIVE_UP_H)
@@ -873,6 +879,8 @@ def repost(slug: str, api_key: str | None = None, now: datetime | None = None, s
     pending = requeue_inputs(key, tp.buffer_channels(key), slug, services, slot, classic=spec.get("classic", ""))
     if spec.get("variant"):
         pending["forceVariant"] = spec["variant"]
+    if spec.get("adopt"):
+        pending["hold"] = True  # オーナーに見せた動画を置くまで、ここでは動画を作らない（adopt_video で置く）
     old_ids = {"threads": rec.get("id", ""), **{k: v for k, v in (rec.get("channels") or {}).items() if k in ("twitter", "facebook", "bluesky")}}
     if slug in (state.get("videos") or {}):
         state.setdefault("videosArchive", {})[slug] = state["videos"].pop(slug)  # 動画はいまのコードで作り直す

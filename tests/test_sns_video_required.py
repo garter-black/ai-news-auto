@@ -264,6 +264,18 @@ class PublishQueuedTest(unittest.TestCase):
         self.assertFalse(fu.qa_ok({"ok": True}, env={}))
         self.assertTrue(fu.qa_ok({"qa": {"geometry": True, "vision": True}}, env={}))
 
+    def test_held_repost_waits_for_adopted_video_without_blocking_others(self):
+        slot = NOW + timedelta(hours=1)
+        held = queued_rec(slot)
+        held["pending"]["hold"] = True
+        later = queued_rec(slot + timedelta(hours=2))
+        state, sent, issues, _ = self.run_queue({"held": held, "b": later}, {"held": ready_video("held"), "b": ready_video("b")})
+        self.assertEqual(state["queued"]["held"]["status"], "waiting")  # 作った動画ではなく、置いた動画を待つ
+        self.assertEqual(state["queued"]["b"]["status"], "created")  # ほかは止めない
+        adopted = ready_video("held") | {"adopted": "/tmp/x"}
+        state, sent, issues, _ = self.run_queue({"held": held}, {"held": adopted})
+        self.assertEqual(state["queued"]["held"]["status"], "created")
+
     def test_retryable_failure_waits(self):
         slot = NOW + timedelta(hours=1)
         retry = {"status": "gate_failed", "tries": 1, "reason": "full: 台本を作れない"}
