@@ -15,21 +15,20 @@ export default function RoundupSources({ sources }: { sources: RoundupSource[] }
         この記事が統合した {sources.length} 本の個別記事
       </h2>
       <p className="mt-2 text-desc leading-relaxed text-ink-soft">
-        それぞれの発表を単独で詳しく読みたい場合はこちらから。
+        {sources.some((source) => source.slug)
+          ? "それぞれの発表を単独で詳しく読みたい場合はこちらから。"
+          : "個別の記事は、この記事に統合して取り下げました。"}
       </p>
 
       <ol className="mt-5 divide-y divide-line border-t border-line">
-        {sources.map((source, index) => (
-          <li key={source.slug}>
-            <Link
-              href={`/articles/${source.slug}`}
-              className="group flex items-start gap-4 py-3.5"
-            >
+        {sources.map((source, index) => {
+          const inner = (
+            <>
               <span className="index-num mt-0.5 shrink-0 text-meta font-bold text-accent">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block text-desc font-medium leading-relaxed text-ink-soft group-hover:text-accent">
+                <span className={`block text-desc font-medium leading-relaxed text-ink-soft${source.slug ? " group-hover:text-accent" : ""}`}>
                   {source.title}
                 </span>
                 <span className="mt-1 block text-meta text-muted">
@@ -37,9 +36,21 @@ export default function RoundupSources({ sources }: { sources: RoundupSource[] }
                   {source.publishedAt && ` / ${formatDate(source.publishedAt)}`}
                 </span>
               </span>
-            </Link>
-          </li>
-        ))}
+            </>
+          );
+          // 取り下げてこの記事に統合した元記事は slug が空（scripts/retire_articles.py）。リンクにしない
+          return (
+            <li key={source.slug || `source-${index}`}>
+              {source.slug ? (
+                <Link href={`/articles/${source.slug}`} className="group flex items-start gap-4 py-3.5">
+                  {inner}
+                </Link>
+              ) : (
+                <div className="flex items-start gap-4 py-3.5">{inner}</div>
+              )}
+            </li>
+          );
+        })}
       </ol>
     </section>
   );

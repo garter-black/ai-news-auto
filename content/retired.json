@@ -1,5 +1,19 @@
 {
  "articles": {
+  "abema-mahoyo-special-channel-2026": {
+   "channel": "cyberagent",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.cyberagent.co.jp/news/detail/id=33955",
+   "title": "ABEMAが劇場アニメ『魔法使いの夜』公開記念で専門チャンネルを開設　空の境界やFateシリーズを毎日無料放送"
+  },
+  "acnh-zelda-collaboration-mydesign-2026": {
+   "channel": "nintendo-topics",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.nintendo.com/jp/topics/article/72628ca2-91a6-42e6-8041-82df388b3f0c",
+   "title": "任天堂、『あつまれ どうぶつの森』で「ゼルダの伝説」40周年コラボのマイデザインを配布開始"
+  },
   "agata-rag-ai-chatbot-new-services": {
    "channel": "prtimes",
    "reason": "wire",
@@ -196,6 +210,13 @@
    "sourceUrl": "https://www.atpress.ne.jp/news/644497",
    "title": "屋根裏から見つかった祖母のジュエリーコレクション、英国のオークションで約1億円の高値"
   },
+  "attosecond-xray-laser-riken-2026": {
+   "channel": "riken",
+   "reason": "no-japan-value",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.riken.jp/press/2026/20261027_2/index.html",
+   "title": "理研などの国際共同研究グループ、アト秒X線レーザーの生成に成功"
+  },
   "awaji-hello-kitty-apple-land-autumn-food": {
    "channel": "atpress",
    "reason": "wire",
@@ -252,6 +273,13 @@
    "sourceUrl": "http://www.boj.or.jp/statistics/boj/fm/juqf/juqf10.xlsx",
    "title": "日本銀行が10月の日銀当座預金増減要因を発表、金融調節の動向を示す"
   },
+  "boj-etf-sales-pace-review-2026": {
+   "channel": "boj",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.boj.or.jp/mopo/mpmdeci/mpr_2026/k261030c.pdf",
+   "title": "日本銀行がETFの売却ペース見直しを決定、2026年10月の決定会合で発表"
+  },
   "boj-interest-rate-raise-impact": {
    "channel": "liberal-arts",
    "reason": "creator-video",
@@ -287,6 +315,20 @@
    "title": "文京区の在留外国人54%が中国人、名門公立小「3S1K」学区で起きている不動産爆買いの実態",
    "videoUrl": "https://www.youtube.com/watch?v=mXuYgqN2PyI"
   },
+  "caa-consumer-safety-report-oct2026": {
+   "channel": "caa",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.caa.go.jp/notice/entry/047971/",
+   "title": "消費者庁が重大事故の発生状況を公表、生命・身体被害に関わる事案は113件"
+  },
+  "caa-recall-accident-report-202610": {
+   "channel": "caa",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.caa.go.jp/notice/entry/047930/",
+   "title": "消費者庁がリコール製品の重大事故を発表、電気シェーバーと充電式マッサージ器で火災など11件"
+  },
   "can-investment-bring-true-happiness": {
    "channel": "rakumachi",
    "reason": "creator-video",
@@ -301,6 +343,20 @@
    "title": "自動車保険料の値上げ対策。車両保険のタイプ変更や運転者の年齢制限を見直して家計負担を抑える方法",
    "videoUrl": "https://www.youtube.com/watch?v=541mgSAJAb0"
   },
+  "carbon-electrode-degradation-water-network": {
+   "channel": "jst",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.jst.go.jp/pr/announce/20261028-3/index.html",
+   "title": "炭素電極の劣化を防ぐ新手法　大阪大学など、水分子のつながりで解明"
+  },
+  "career-consultant-exam-schedule-mhlw": {
+   "channel": "mhlw",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/jinzaikaihatsu/career_consultant01.html",
+   "title": "キャリアコンサルタント試験、受験料や令和8・9年度の日程を厚生労働省が公開"
+  },
   "cash-only-professional-turns-real-estate-investor": {
    "channel": "rakumachi",
    "reason": "creator-video",
@@ -314,6 +370,14 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000083.000041726.html",
    "title": "日本語で探せるAgent Skillsマーケット「cccskills」公開、約9.5万件を網羅"
+  },
+  "chatgpt-gpt-6-1-terra-plans-guide": {
+   "channel": "openai-news",
+   "reason": "duplicate",
+   "redirect": "openai-gpt-6-1-terra-announcement",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://openai.com/index/introducing-gpt-6-1-terra/",
+   "title": "ChatGPTの新しいAI「GPT-6.1 Terra」は誰が使える？プラン別に整理"
   },
   "china-ai-kimi-k3-semiconductor-smuggling": {
    "channel": "rakumachi",
@@ -399,6 +463,13 @@
    "title": "老後資金を確保して投資を止める「コーストFIRE」とは？新NISA時代の資産形成術",
    "videoUrl": "https://www.youtube.com/watch?v=K20SU5PHEI4"
   },
+  "cod-modern-warfare-4-kill-block": {
+   "channel": "xbox-wire-jp",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://news.xbox.com/ja-jp/2026/10/29/call-of-duty-modern-warfare-4-kill-block-must-play-multiplayer/",
+   "title": "Call of Duty: Modern Warfare 4が発売　毎回マップが変わる新モードを徹底解説"
+  },
   "commute-time-opportunity-cost-libe": {
    "channel": "liberal-arts",
    "reason": "creator-video",
@@ -420,12 +491,33 @@
    "sourceUrl": "https://www.tsr-net.co.jp/data/detail/1203394_1527.html",
    "title": "新型コロナ関連の倒産、10月は125件で一進一退続く　累計は1万4825件に"
   },
+  "craft-boss-croissant-latte": {
+   "channel": "suntory",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.suntory.co.jp/softdrink/news/pr/article/2026/SBF1747.html?rss=0000000029",
+   "title": "サントリーの「クラフトボス クロワッサンラテ」新発売　11月10日より期間限定"
+  },
+  "crimson-desert-enhanced-charting-the-unknown": {
+   "channel": "xbox-wire-jp",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://news.xbox.com/ja-jp/2026/11/02/crimson-desert-charting-the-unknown/",
+   "title": "『紅の砂漠 Enhanced』が新DLC「未知なる旅路」を配信開始　海の探索やハウジング機能も追加"
+  },
   "currency-intervention-limit-and-structural-yen-depreciation": {
    "channel": "rakumachi",
    "reason": "creator-video",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "為替介入の限界と円安の背景を解説。日銀の利上げが招く欧州国債の暴落リスクとは",
    "videoUrl": "https://www.youtube.com/watch?v=J607iRf5r5s"
+  },
+  "damaraland-mole-rat-cancer-resistance": {
+   "channel": "jst",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.jst.go.jp/pr/announce/20261026-2/index.html",
+   "title": "九州大学などが解明、長寿動物ダマラランドデバネズミが持つ強力な発がん耐性の仕組み"
   },
   "deepseek-ocr-optical-compression": {
    "channel": "two-minute-papers",
@@ -482,6 +574,77 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "衆院議員の資産公開制度に5つの抜け穴　預金や株が除外され実態が反映されない現状",
    "videoUrl": "https://www.youtube.com/watch?v=ReVTw7qH33I"
+  },
+  "digital-agency-disaster-prevention-dx": {
+   "channel": "digital-agency",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.digital.go.jp/policies/disaster_prevention",
+   "title": "デジタル庁が防災DXを本格化　避難所情報の共有やアプリ調達支援で住民の命を守る"
+  },
+  "digital-agency-gbiz-id-dashboard-update": {
+   "channel": "digital-agency",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.digital.go.jp/resources/govdashboard/gbiz-id",
+   "title": "デジタル庁、GビズIDの利用状況ダッシュボードを更新　法人割合や発行数の推移を公開"
+  },
+  "digital-agency-mynumber-dashboard-update": {
+   "channel": "digital-agency",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.digital.go.jp/resources/govdashboard/mynumber_card_penetration_usage",
+   "title": "デジタル庁がマイナンバーカードの普及・利活用ダッシュボードを更新　公開データの中身を整理"
+  },
+  "digital-agency-national-qualifications-online": {
+   "channel": "digital-agency",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.digital.go.jp/policies/government-certification",
+   "title": "デジタル庁、医師や薬剤師の国家資格申請をオンライン化　マイナポータルで手続き簡略へ"
+  },
+  "digital-agency-pmh-medical-subsidy": {
+   "channel": "digital-agency",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.digital.go.jp/policies/health/public-medical-hub",
+   "title": "マイナンバーカードで医療費助成がもっと便利に　デジタル庁のPMH、全自治体導入へ加速"
+  },
+  "digital-agency-updates-card-record-list": {
+   "channel": "digital-agency",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.digital.go.jp/policies/mynumber/mynumbercard-mdoc/private-usecase-list",
+   "title": "カード代替電磁的記録利用サービス一覧更新　NTTドコモとソニー銀行が追加"
+  },
+  "digital-dfft-oecd-meeting-2026": {
+   "channel": "digital-agency",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.digital.go.jp/press/664c482f-3164-48d2-a3ee-5f1cf415cd78",
+   "title": "デジタル庁、OECDの「DFFT」対面会合に出席　国際ルール作りへ議論"
+  },
+  "disaster-agency-launch-2026": {
+   "channel": "kantei",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.kantei.go.jp/jp/105/actions/202611/02hossokushiki.html",
+   "title": "防災庁が発足　高市総理が訓示　国民の命と暮らしを守る新体制"
+  },
+  "disaster-agency-launch-nov2026": {
+   "channel": "gov-online",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.gov-online.go.jp/article/202611/radio-3782.html",
+   "title": "防災庁が11月2日発足　災害対応の司令塔と「ふるさと防災職員」"
+  },
+  "docomo-d-valuepass-kusuriya": {
+   "channel": "docomo-service",
+   "reason": "thin",
+   "redirect": "docomo-d-value-pass-uber-luup-2026",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.docomo.ne.jp/service/dvaluepass/contents_list/character.html",
+   "title": "NTTドコモの「dバリューパス」に小説「薬屋のひとりごと」の読み放題など新コンテンツが追加"
   },
   "durable-skill-product-engineering-2026": {
    "channel": "microsoft-developer",
@@ -540,6 +703,20 @@
    "sourceUrl": "https://www.nli-research.co.jp/topics_detail1/id=87234?site=nli",
    "title": "ユーロ圏GDP（2026年7-9月期）は前期比0.4%増、主要4か国で伸び率が低下"
   },
+  "fage-suntory-skincare-2026-nov": {
+   "channel": "suntory",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.suntory.co.jp/news/article/2026/15164.html?rss=0000000029",
+   "title": "サントリーの60代向けスキンケア「F.A.G.E.」、さらりとした化粧水と泡洗顔料が11月2日新発売"
+  },
+  "fallout-collab-cafe-tower-records": {
+   "channel": "xbox-wire-jp",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://news.xbox.com/ja-jp/2026/10/30/fallout-collab-cafe-tower-records-omotesando/",
+   "title": "「Fallout」の世界を楽しめるコラボカフェが表参道にオープン、ゲームのメニューを実食"
+  },
   "financial-assets-10m-regret-and-scam": {
    "channel": "liberal-arts",
    "reason": "creator-video",
@@ -554,12 +731,26 @@
    "title": "元野村証券キャバ嬢の「最大の後悔」に学ぶ、会社員の与信と不動産ローン活用の重要性",
    "videoUrl": "https://www.youtube.com/watch?v=IJYdvSD8JdI"
   },
+  "fire-disaster-research-grants-2026": {
+   "channel": "soumu",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.soumu.go.jp/menu_news/s-news/01shoubo01_02001300.html",
+   "title": "消防庁、災害対応を強化する研究課題を採択　令和8年度の緊急枠で実施"
+  },
   "first-step-to-financial-freedom-saving-power": {
    "channel": "liberal-arts",
    "reason": "creator-video",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "経済的自立を目指すなら「貯める力」が最優先。リベ大が教える貯蓄の目安と仕組み",
    "videoUrl": "https://www.youtube.com/watch?v=IYAUTjJu6ck"
+  },
+  "fish-dha-food-web-riken": {
+   "channel": "riken",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.riken.jp/press/2026/20261027_3/index.html",
+   "title": "理化学研究所など、魚にDHAが多い理由を解明　原生生物の食物連鎖ルートを発見"
   },
   "five-financial-skills-for-building-wealth": {
    "channel": "liberal-arts",
@@ -581,6 +772,13 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "5大商社の最新戦略。資源からAI・流通へ、事業投資で稼ぐ仕組みを解説",
    "videoUrl": "https://www.youtube.com/watch?v=IOj5LGEq8CE"
+  },
+  "food-bank-gov-online-overview": {
+   "channel": "gov-online",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.gov-online.go.jp/article/202610/entry-11733.html",
+   "title": "フードバンクが提供する未利用食品、食品ロスの削減と生活困窮者支援の仕組みを政府広報が解説"
   },
   "food-tax-reduction-interest-rate-risk": {
    "channel": "uraken-fudosan",
@@ -617,6 +815,13 @@
    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000141.000017750.html",
    "title": "FPTがServiceNow Service Providerに正式認定、日本市場でのDX支援を強化"
   },
+  "fsa-comment-letter-efrag-esrs40a": {
+   "channel": "fsa",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.fsa.go.jp/inter/etc/20261030-3/20261030-3.html",
+   "title": "金融庁、EUの非EU企業向けサステナビリティ報告基準案に意見発出　ISSB基準との整合や負担軽減を求める"
+  },
   "fsa-fatf-statement-2026-10": {
    "channel": "fsa",
    "reason": "thin",
@@ -630,6 +835,13 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "金融庁がNISA枠の年内再利用を要望、リベ大両学長が語る「Claude Fable 5.1」と高利回り商品のリスク",
    "videoUrl": "https://www.youtube.com/watch?v=qPRy2lkNWac"
+  },
+  "fsa-personal-info-leak-consultation": {
+   "channel": "fsa",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.fsa.go.jp/receipt/soudansitu/index.html#kojinjouhou",
+   "title": "金融庁、個人情報流出の被害や不安に関する相談窓口を開設　2026年10月の発表と利用方法"
   },
   "fuchu-wooden-apartment-investment-case-study": {
    "channel": "rakumachi",
@@ -863,12 +1075,35 @@
    "title": "GoogleのAI「Gemini Live」で植物が自律移動　日光を探して会話するロボット「Sprout」開発",
    "videoUrl": "https://www.youtube.com/watch?v=cv8tEbKtEvk"
   },
+  "government-food-loss-reduction-guide": {
+   "channel": "gov-online",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.gov-online.go.jp/article/201303/entry-7526.html",
+   "title": "消費者庁、食品ロスの減らし方と「5か条」を公表　年間461万トンの削減へ"
+  },
   "goyokiki-doctor-online-consultation-survey": {
    "channel": "prtimes-all",
    "reason": "wire",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000071.000049934.html",
    "title": "オンライン診療の悩み1位は不眠、全体の35%超を占める iput調べ"
+  },
+  "gpt-6-1-terra-github-copilot-guide": {
+   "channel": "openai-news",
+   "reason": "duplicate",
+   "redirect": "openai-gpt-6-1-terra-announcement",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://openai.com/index/introducing-gpt-6-1-terra/",
+   "title": "GitHub Copilotで新AI「GPT-6.1 Terra」が利用可能に。使い方を解説"
+  },
+  "gpt-6-1-terra-sol-astra-comparison": {
+   "channel": "openai-news",
+   "reason": "duplicate",
+   "redirect": "openai-gpt-6-1-terra-announcement",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://openai.com/index/introducing-gpt-6-1-terra/",
+   "title": "OpenAIの新AI「GPT-6.1 Terra」は何が違う？SolやAstraと料金・性能を比較"
   },
   "gpt-6-astra-autonomous-design-iteration": {
    "channel": "openai",
@@ -899,6 +1134,13 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "個人向けAI「GrokBot」で何ができる？メールや家電を自動化する活用術",
    "videoUrl": "https://www.youtube.com/watch?v=BsNHg6cNjZE"
+  },
+  "haneda-innov-city-awai-2026": {
+   "channel": "nomura-re",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.nomura-re-hd.co.jp/news/005027.html",
+   "title": "羽田みらい開発、「あわい -awai2026-」を2026年11月に開催へ　大田区の大型施設で"
   },
   "hatoyama-kaikan-real-estate-regulation": {
    "channel": "rakumachi",
@@ -941,6 +1183,34 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "資産10億円の投資家が教える高配当株戦略　AI相場でも安定した銘柄の選び方",
    "videoUrl": "https://www.youtube.com/watch?v=7iMpBdBMZM0"
+  },
+  "hiroshima-u-ai-home-visit-nursing": {
+   "channel": "hiroshima-u",
+   "reason": "no-japan-value",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.hiroshima-u.ac.jp/news/100962",
+   "title": "広島大学などの研究チームが訪問看護師向けAIの実験成果を発表、心不全の診療ガイドライン学習で精神的努力が低減"
+  },
+  "hiroshima-u-baseball-umpire-bayesian-model": {
+   "channel": "hiroshima-u",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.hiroshima-u.ac.jp/news/100883",
+   "title": "広島大学が解明、野球の3ボールでストライクゾーンが広がる理由　脳の予測システムで説明"
+  },
+  "hiroshima-u-glioblastoma-mri-ai": {
+   "channel": "hiroshima-u",
+   "reason": "no-japan-value",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.hiroshima-u.ac.jp/news/100822",
+   "title": "広島大学が膠芽腫のMRI画像解析手法を開発、AIで予後予測と免疫状態を特定へ"
+  },
+  "hiroshima-u-lung-cancer-ai-ct": {
+   "channel": "hiroshima-u",
+   "reason": "no-japan-value",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.hiroshima-u.ac.jp/news/100805",
+   "title": "広島大学が肺がんのCT画像から治りにくさを予測するAI基盤を開発"
   },
   "hokuriku-electric-hokulink-leak": {
    "channel": "trends",
@@ -1040,6 +1310,13 @@
    "title": "岩手県での不動産投資をプロが解説、雪国特有の駐車場や除雪の注意点",
    "videoUrl": "https://www.youtube.com/watch?v=Bo0FcwhKwE4"
   },
+  "japan-6g-fund-preliminary-survey": {
+   "channel": "soumu",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.soumu.go.jp/menu_news/s-news/01tsushin03_02000476.html",
+   "title": "総務省が6G基金事業の予備調査開始、応募締切は11月末　NICTへ提出・詳細は公式サイトへ"
+  },
   "japan-ai-infrastructure-software-market": {
    "channel": "dreamnews",
    "reason": "wire",
@@ -1131,6 +1408,20 @@
    "title": "テキストを生成しないAIモデルJevとは何か　LLMと制御ソフトの溝を埋める新構造",
    "videoUrl": "https://www.youtube.com/watch?v=OxD4MtEmP-k"
   },
+  "jfa-beach-soccer-asia-cup-2026": {
+   "channel": "jfa",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.jfa.jp/news/00036969/",
+   "title": "ビーチサッカー日本代表、AFCアジアカップ2026メンバーと日程を発表"
+  },
+  "jfa-storz-medical-japan-partner": {
+   "channel": "jfa",
+   "reason": "no-japan-value",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.jfa.jp/news/00036960/",
+   "title": "JFAがストルツメディカル・ジャパンとサポーター契約　選手の傷害予防とコンディショニングを支援"
+  },
   "jgb-portfolio-transition-strategy-matome": {
    "channel": "bank-academy",
    "reason": "creator-roundup",
@@ -1144,6 +1435,13 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "個人向け国債と窓販国債の違いとは、FIREの4%ルール最新動向を解説",
    "videoUrl": "https://www.youtube.com/watch?v=QPevjyPPLak"
+  },
+  "jhfc-green-bond-gov-guarantee": {
+   "channel": "mof",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.mof.go.jp/jgbs/topics/gov_guaranteed_bonds/hu2032.htm",
+   "title": "住宅金融支援機構のグリーンボンドに政府保証、表面利率3.210％で150億円を発行"
   },
   "jinen-zzz-inc-oshikatsu-community-business": {
    "channel": "prtimes-all",
@@ -1214,6 +1512,27 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "半導体大手のキオクシアが好決算、AI向けデータ保存用チップの需要が急拡大",
    "videoUrl": "https://www.youtube.com/watch?v=XZymuStDLXw"
+  },
+  "kirin-good-ale-limited-message-can": {
+   "channel": "kirin",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.kirinholdings.com/jp/newsroom/release/2026/1027_01.html",
+   "title": "キリンビール、「グッドエール限定メッセージ缶」を11月24日より全国で期間限定発売"
+  },
+  "kirin-holdings-kirink-media-launch": {
+   "channel": "kirin",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.kirinholdings.com/jp/newsroom/release/2026/1028_02.html",
+   "title": "キリンHDが新オウンドメディア「KIRINK」を10月28日公開、企業の未来を伝える挑戦とは"
+  },
+  "kirin-hyoketsu-gobobi-sparkling": {
+   "channel": "kirin",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.kirinholdings.com/jp/newsroom/release/2026/1029_01.html",
+   "title": "キリンビール、冬限定「氷結® ご褒美スパークリング」Appleと洋梨を12月1日より全国新発売"
   },
   "klang-japan-usage-data-2026": {
    "channel": "prtimes",
@@ -1363,6 +1682,27 @@
    "title": "インフレと金利上昇期の不動産投資、専門家が解説する資産防衛の戦略",
    "videoUrl": "https://www.youtube.com/watch?v=WaBK_Rz4MOA"
   },
+  "maff-bangladesh-cooperation-mou": {
+   "channel": "maff",
+   "reason": "no-japan-value",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.maff.go.jp/j/press/y_kokusai/kokkyo/261027_1.html",
+   "title": "農林水産省とバングラデシュが農業協力の覚書に署名　貿易や投資の拡大へ"
+  },
+  "maff-food-culture-support-2026": {
+   "channel": "maff",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.maff.go.jp/j/press/shokuhin/kikaku/261030.html",
+   "title": "農林水産省、日本食の海外展開やインバウンド拡大を支援する外食事業者15社と地方公共団体2社を決定"
+  },
+  "maff-washoku-health-symposium-2026": {
+   "channel": "maff",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.maff.go.jp/j/press/shokuhin/wasyoku/261026_1.html",
+   "title": "農林水産省が11月にシンポジウム開催、和食が健康に与える効果を議論"
+  },
   "maison-crivelli-tobacco-carnaval": {
    "channel": "prtimes-all",
    "reason": "wire",
@@ -1405,6 +1745,55 @@
    "title": "米Metaの新AIアプリ「Muse」発表、買い物や返金交渉をAIが代行",
    "videoUrl": "https://www.youtube.com/watch?v=OODvXcQJyVo"
   },
+  "mext-foreign-education-data-2026": {
+   "channel": "mext",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.mext.go.jp/b_menu/toukei/data/syogaikoku/1415074_00025.htm",
+   "title": "文部科学省、「諸外国の教育情報」2026年版を公表　主要6カ国の学校統計データを一括掲載"
+  },
+  "mhlw-cybersecurity-alert-2026": {
+   "channel": "mhlw",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.mhlw.go.jp/stf/kinkyu/20261030.html",
+   "title": "厚生労働省、不正アクセスによる情報漏えい対策を要請　多要素認証や脆弱性対応の徹底を呼びかけ"
+  },
+  "mhlw-designated-drugs-2026-10": {
+   "channel": "mhlw",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.mhlw.go.jp/stf/houdou/0000212707_00057.html",
+   "title": "厚生労働省、危険ドラッグの成分3物質を指定薬物に追加　11月6日施行へ"
+  },
+  "mhlw-exam-schedule-2027": {
+   "channel": "mhlw",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.mhlw.go.jp/kouseiroudoushou/shikaku_shiken/index.html",
+   "title": "厚労省、令和9年医政局所管国家試験の日程を公表　医師・看護師などの実施日まとめ"
+  },
+  "mhlw-job-openings-september-2026": {
+   "channel": "mhlw",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.mhlw.go.jp/stf/newpage_76960.html",
+   "title": "厚生労働省が令和8年9月の有効求人倍率を発表　前月比0.01ポイント上昇の1.19倍"
+  },
+  "mhlw-sanitary-administrative-report-2025": {
+   "channel": "mhlw",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.mhlw.go.jp/toukei/saikin/hw/eisei_houkoku/25/",
+   "title": "2025年度の衛生行政報告、厚生労働省が概況を公開　精神保健や薬事などの統計結果を整理"
+  },
+  "mhlw-war-dead-memorial-nov2026": {
+   "channel": "mhlw",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.mhlw.go.jp/stf/newpage_77136.html",
+   "title": "厚生労働省、戦没者慰霊事業　2026年11月実施分を発表　遺骨収集と慰霊巡拝のスケジュール"
+  },
   "microsoft-copilot-harness-agent-scaling": {
    "channel": "microsoft-developer",
    "reason": "duplicate",
@@ -1413,12 +1802,27 @@
    "title": "Microsoftが新機能発表　インフラ構築なしでAIエージェントを自動拡張「Copilot Harness」",
    "videoUrl": "https://www.youtube.com/watch?v=AMxLLFeUyRM"
   },
+  "minecraft-nintendo-switch-2-launch": {
+   "channel": "nintendo-topics",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.nintendo.com/jp/topics/article/c8c6ed2b-cff7-4ff5-8953-32bd770e2537",
+   "title": "任天堂の新型機Nintendo Switch 2版『Minecraft』発売、グラフィック強化でより鮮やかに"
+  },
   "mistral-large-4-le-chonk-preview": {
    "channel": "matthew-berman",
    "reason": "creator-video",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "欧州Mistral AIの高性能AIモデル「Mistral Large 4」が公開",
    "videoUrl": "https://www.youtube.com/watch?v=Hu1JOK6aXsI"
+  },
+  "mistral-large-4-open-cyber-frontier": {
+   "channel": "hugging-face",
+   "reason": "duplicate",
+   "redirect": "mistral-large-4-preview",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "title": "仏AIのミストラルが新AIモデル「Mistral Large 4」を公開　サイバー防衛に強み",
+   "videoUrl": "https://www.youtube.com/watch?v=FczbSauVvjw"
   },
   "mlit-autumn-2026-decoration": {
    "channel": "mlit-press",
@@ -1442,6 +1846,13 @@
    "sourceUrl": "https://www.mof.go.jp/about_mof/councils/meeting_of_jgbsp/press_release/261102.html",
    "title": "財務省、国債市場特別参加者会合の第121回を開催へ　11月26日に最近の市場状況を議論"
   },
+  "mof-tax-stamp-revenue-sep-2026": {
+   "channel": "mof",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.mof.go.jp/tax_policy/reference/taxes_and_stamp_revenues/202609.pdf",
+   "title": "財務省、令和8年度9月末の租税及び印紙収入の収入額調を公表"
+  },
   "morinaga-cocoa-bowel-movement-study": {
    "channel": "morinaga",
    "reason": "thin",
@@ -1456,6 +1867,13 @@
    "title": "永世名人・森内俊之九段の「鉄板流」投資哲学、トルコリラ急落の教訓とAI時代を生き抜くメンタル術",
    "videoUrl": "https://www.youtube.com/watch?v=owQKUyt7Ntg"
   },
+  "mosquito-mating-gene-discovery": {
+   "channel": "jst",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.jst.go.jp/pr/announce/20261028/index.html",
+   "title": "蚊のオスがメスの羽音に惹かれる理由を解明、繁殖を抑える新たな防除法に期待"
+  },
   "muon-optimizer-llm-training-adamw-deepseek": {
    "channel": "bycloud",
    "reason": "creator-video",
@@ -1469,6 +1887,20 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "南海トラフ巨大地震、1分以上の揺れで即避難が必要な理由を専門家が解説",
    "videoUrl": "https://www.youtube.com/watch?v=IV-lWEDGzSQ"
+  },
+  "nao-honma-shijuhosho-2026": {
+   "channel": "naoj",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.nao.ac.jp/news/topics/2026/20261102-honma.html",
+   "title": "国立天文台の本間希樹教授が紫綬褒章を受章　ブラックホールの撮影などに貢献"
+  },
+  "nemuri-antimicrobial-peptides-discovery": {
+   "channel": "jst",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.jst.go.jp/pr/announce/20261029-2/index.html",
+   "title": "ショウジョウバエの睡眠たんぱく質から新抗菌ペプチドを発見　筑波大など"
   },
   "neoclouds-ai-infrastructure-winners-and-risks": {
    "channel": "bycloud",
@@ -1582,6 +2014,13 @@
    "title": "新NISAでS&P500に960万円投資した運用実績、一括と積立の成績を比較",
    "videoUrl": "https://www.youtube.com/watch?v=Eb2nCexdrzw"
   },
+  "nisa-spacex-spacetech-index-fund": {
+   "channel": "rakuten-sec",
+   "reason": "no-japan-value",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "title": "新NISAで買える宇宙関連の投資信託が登場。スペースX株を約2割組み入れ",
+   "videoUrl": "https://www.youtube.com/watch?v=lB-jTiWRZtU"
+  },
   "nishinari-poverty-business-welfare-apartment-risks": {
    "channel": "rakumachi",
    "reason": "creator-video",
@@ -1653,6 +2092,13 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "NVIDIA次世代「Rubin」がもたらすデータセンター価格破壊、大和証券・木野内氏が読み解く「次に潤うAI銘柄」",
    "videoUrl": "https://www.youtube.com/watch?v=UTBe_Zy6lIk"
+  },
+  "ocean-acidification-foraminifera-alkalinity": {
+   "channel": "jst",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.jst.go.jp/pr/announce/20261029-5/index.html",
+   "title": "福井県立大学などの研究グループが解明した、恐竜時代の海が海洋酸性化の悪影響を軽減する仕組み"
   },
   "oh-my-teeth-interview-impression-survey": {
    "channel": "prtimes-all",
@@ -1810,6 +2256,13 @@
    "sourceUrl": "https://www.atpress.ne.jp/news/639000",
    "title": "ペット用品のペピーが天然木のキャットタワー2種を発売、愛猫の成長に合わせて選べる"
   },
+  "pharmacist-license-online-application": {
+   "channel": "mhlw",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.mhlw.go.jp/bunya/iyakuhin/yakuzaishi/menkyo.html",
+   "title": "薬剤師免許の新規登録がオンライン化、令和8年10月からマイナポータルで手続き可能に"
+  },
   "php-security-extension-php2shell-fix": {
    "channel": "atpress",
    "reason": "wire",
@@ -1817,12 +2270,48 @@
    "sourceUrl": "https://www.atpress.ne.jp/news/644147",
    "title": "PHPの延長保守サービスが脆弱性「PHP2Shell」を修正、旧バージョン向けに緊急パッチ"
   },
+  "php-vulnerabilities-jpcert-alert-2026": {
+   "channel": "jpcert",
+   "reason": "no-japan-value",
+   "redirect": "jpcert-weekly-report-20261028-vulnerabilities",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.jpcert.or.jp/at/2026/at260033.html",
+   "title": "PHP脆弱性の対象バージョン・修正版一覧｜JPCERT/CCの注意喚起"
+  },
   "physical-ai-nvidia-yaskawa-honda-robotics": {
    "channel": "nikkei",
    "reason": "creator-video",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "フィジカルAIの最前線、NVIDIA一強に挑む日本勢と「手」の技術革新",
    "videoUrl": "https://www.youtube.com/watch?v=ANznyofWD7c"
+  },
+  "piggparty-tougen-anki-collab": {
+   "channel": "cyberagent",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.cyberagent.co.jp/news/detail/id=33965",
+   "title": "アバターSNS『ピグパーティ』がTVアニメ『桃源暗鬼』とコラボ　11月2日より開催"
+  },
+  "pikmin-4-switch-2-edition-demo": {
+   "channel": "nintendo-topics",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.nintendo.com/jp/topics/article/8a0fad53-c589-4304-98b2-f86bd3d5764f",
+   "title": "任天堂、『ピクミン4 Nintendo Switch 2 Edition』などの体験版を配信開始"
+  },
+  "playstation-blog-nov-2026-games": {
+   "channel": "playstation-blog-jp",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://blog.ja.playstation.com/2026/11/02/20261102-monthly-picks-s/",
+   "title": "PlayStation.Blogが11月発売のPS5/PS4注目作を発表、『崩落の国』や『プリニーすごろく』など7タイトル"
+  },
+  "playstation-partner-awards-2026-announcement": {
+   "channel": "playstation-blog-jp",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://blog.ja.playstation.com/2026/10/29/20261029-pspawards-event-announcement-s/",
+   "title": "プレイステーションの年間表彰「PS Partner Awards 2026」12月3日開催決定、本日よりユーザー投票も開始"
   },
   "police-recommended-scam-protection-app": {
    "channel": "liberal-arts",
@@ -1838,12 +2327,26 @@
    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000047.000074383.html",
    "title": "30代・40代の不動産投資意識調査、見送り理由は「しつこい営業」と「会社の信頼性」"
   },
+  "ps5-marvels-wolverine-photo-mode-guide": {
+   "channel": "playstation-blog-jp",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://blog.ja.playstation.com/2026/10/26/20261026-marvels-wolverine-photo-mode-o/",
+   "title": "PS5用ゲーム『Marvel’s Wolverine』のフォトモード活用術、撮影のコツを解説"
+  },
   "publica-dentsu-djib-ctv-partnership": {
    "channel": "prtimes-all",
    "reason": "wire",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000146.000014440.html",
    "title": "Publicaと電通DJIB、コネクテッドTV広告の透明性向上へ向け提携"
+  },
+  "qst-hyperpolarized-mri-liver-pon": {
+   "channel": "qst",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.qst.go.jp/site/press/20261030.html",
+   "title": "量子科学技術研究開発機構など、肝臓の酵素活性を体外から捉える超偏極MRI技術を開発"
   },
   "rakuten-bank-sec-card-combo-guide": {
    "channel": "bank-academy",
@@ -1865,6 +2368,50 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "楽天証券とカード・銀行を連携して資産を増やす必須の設定手順7選",
    "videoUrl": "https://www.youtube.com/watch?v=hR4mCW2Ej0M"
+  },
+  "rakuten-sec-cross-trade-genwatashi": {
+   "channel": "rakuten-sec",
+   "reason": "no-japan-value",
+   "redirect": "gyakuhibu-cross-trade-complete-guide-matome",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "title": "楽天証券の株主優待つなぎ売りで重要な現渡の仕組みと自動化の手法",
+   "videoUrl": "https://www.youtube.com/watch?v=NLzbOcdmHmg"
+  },
+  "rakuten-sec-cross-trade-margin-category": {
+   "channel": "rakuten-sec",
+   "reason": "no-japan-value",
+   "redirect": "gyakuhibu-cross-trade-complete-guide-matome",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "title": "楽天証券のつなぎ売りで使う一般信用と制度信用の違いと選び方",
+   "videoUrl": "https://www.youtube.com/watch?v=KaMBccXV8A4"
+  },
+  "rakuten-sec-fx-economy-academy-sapporo": {
+   "channel": "rakuten-sec",
+   "reason": "no-japan-value",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "title": "楽天証券セミナーで学ぶ円安の背景と投資信託の選び方・リスク管理",
+   "videoUrl": "https://www.youtube.com/watch?v=4KQz9ka7PXQ"
+  },
+  "rakuten-sec-gold-silver-platinum-saving": {
+   "channel": "rakuten-sec",
+   "reason": "no-japan-value",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "title": "楽天証券で金・銀・プラチナを積立投資する方法とポイント還元設定",
+   "videoUrl": "https://www.youtube.com/watch?v=5wt4WBr1Dyo"
+  },
+  "rakuten-sec-kids-nisa-seminar": {
+   "channel": "rakuten-sec",
+   "reason": "no-japan-value",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "title": "楽天証券が教えるこどもNISAの仕組みと親子で学ぶお金の教育法",
+   "videoUrl": "https://www.youtube.com/watch?v=MnZRyqQpEyc"
+  },
+  "rakuten-sec-marketspeed2-orderboost-fukunaga": {
+   "channel": "rakuten-sec",
+   "reason": "no-japan-value",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "title": "楽天証券マーケットスピードII新機能「OrderBoost」の活用法を福永博之氏が解説",
+   "videoUrl": "https://www.youtube.com/watch?v=a6hJ21NTgnU"
   },
   "rakuten-securities-essential-settings": {
    "channel": "bank-academy",
@@ -1908,6 +2455,13 @@
    "sourceUrl": "https://www.soumu.go.jp/menu_news/s-news/01shoubo01_02001279.html",
    "title": "令和8年秋の褒章、消防関係の受章者は110名に決定　紅綬や藍綬の内訳を整理"
   },
+  "reiwa-8-culture-merit-recipients": {
+   "channel": "mext",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.mext.go.jp/b_menu/houdou/2026/1422024_00002.htm",
+   "title": "令和8年度の文化功労者と文化勲章受章者が決定、文部科学省が発表"
+  },
   "rent-increase-rejection-and-index-fund-tax-efficiency": {
    "channel": "liberal-arts",
    "reason": "creator-video",
@@ -1921,6 +2475,13 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "りそな銀行が中小企業向け新サービス開始、AI審査で最短即日の資金調達が可能に",
    "videoUrl": "https://www.youtube.com/watch?v=7G2FJ16uBlU"
+  },
+  "respirator-mask-ring-recall-2026": {
+   "channel": "mhlw",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.mhlw.go.jp/stf/newpage_77145.html",
+   "title": "厚生労働省が注意喚起　防毒マスクの締め付けリング不具合と回収対応（2026年11月2日）"
   },
   "retirement-money-investment-guide-50s-60s": {
    "channel": "bank-academy",
@@ -1936,6 +2497,13 @@
    "title": "50代・60代の退職金運用は「半年待つ」が鉄則、BANK ACADEMYが説く4つの財布の黄金比率",
    "videoUrl": "https://www.youtube.com/watch?v=VfkGlRgY-9c"
   },
+  "rice-market-trends-september-2026": {
+   "channel": "maff",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.maff.go.jp/j/press/nousan/kikaku/261030.html",
+   "title": "令和8年産米の集荷・在庫状況が発表　民間在庫は前年より58万トン増加"
+  },
   "richi-slimy-pot-jelly-candy-magic-lab": {
    "channel": "atpress",
    "reason": "wire",
@@ -1943,12 +2511,47 @@
    "sourceUrl": "https://www.atpress.ne.jp/news/640099",
    "title": "人気インフルエンサーりち監修の「りちスライミーポットゼリー」が10月26日発売"
   },
+  "riken-cellular-chirality-spiral": {
+   "channel": "riken",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.riken.jp/press/2026/20261026_1/index.html",
+   "title": "理化学研究所などが解明、細胞のわずかな傾きかららせん構造ができる仕組み"
+  },
+  "riken-gibberellin-root-growth-2026": {
+   "channel": "riken",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.riken.jp/press/2026/20261029_2/index.html",
+   "title": "理化学研究所など、植物ホルモンが根の成長を操る仕組みを解明"
+  },
+  "riken-keystone-species-analysis": {
+   "channel": "riken",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.riken.jp/press/2026/20261029_1/index.html",
+   "title": "理研などの研究グループが森林地下の微生物ネットワークから「キーストーン種」を統計的に絞り込む新手法を開発"
+  },
+  "riken-quantum-state-smoothing": {
+   "channel": "riken",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.riken.jp/press/2026/20261030_2/index.html",
+   "title": "理研と東大、「未来」の観測記録で光の量子状態を正確に推定することに成功"
+  },
   "riken-utokyo-3d-live-cell-microscope": {
    "channel": "riken",
    "reason": "thin",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "sourceUrl": "https://www.riken.jp/press/2026/20261102_1/index.html",
    "title": "理化学研究所と東大、生きた細胞内の成分を三次元動画で捉える顕微鏡を開発"
+  },
+  "riken-xray-laser-terahertz-wave": {
+   "channel": "riken",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.riken.jp/press/2026/20261028_1/index.html",
+   "title": "理化学研究所など、世界で初めてX線レーザー照射による固体からのテラヘルツ波放射を観測"
   },
   "ryo-gakucho-live-rolex-housing": {
    "channel": "liberal-arts",
@@ -1977,6 +2580,13 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "sourceUrl": "https://www.atpress.ne.jp/news/644526",
    "title": "真田ナオキが浅草公会堂でディスコ風ライブを開催、テレビ初放送や配信も決定"
+  },
+  "saros-boss-development": {
+   "channel": "playstation-blog-jp",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://blog.ja.playstation.com/2026/11/03/20261103-saros-boss-deep-dive-feature-o/",
+   "title": "『SAROS』のボス制作裏話と新モード情報　PS5アクションシューティングがさらに深まる"
   },
   "sbi-shinsei-kids-deposit-and-enzyme-bath-business": {
    "channel": "liberal-arts",
@@ -2020,6 +2630,27 @@
    "title": "50代孤独死の現実と賃貸経営のリスク、見守りサービス「まもりこ」が果たす役割",
    "videoUrl": "https://www.youtube.com/watch?v=CoIqBpEaR18"
   },
+  "soumu-local-allocation-tax-nov-2026": {
+   "channel": "soumu",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.soumu.go.jp/menu_news/s-news/01zaisei04_02000191.html",
+   "title": "総務省の令和8年度普通交付税11月交付、全国の自治体に向け11月5日に実施"
+  },
+  "soumu-missile-evacuation-drills-2026": {
+   "channel": "soumu",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.soumu.go.jp/menu_news/s-news/01shoubo01_02001285.html",
+   "title": "総務省が弾道ミサイル想定避難訓練を発表　山形県米沢市など今年度20件を実施"
+  },
+  "soumu-vice-capital-cabinet-order": {
+   "channel": "soumu",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.soumu.go.jp/menu_news/kaiken/01koho01_02001586.html",
+   "title": "総務省、副首都の指定要件を定める政令を閣議決定　人口1.2％・経済2.1％の基準へ"
+  },
   "south-korea-young-investors-leverage-risk": {
    "channel": "rakumachi",
    "reason": "creator-video",
@@ -2048,6 +2679,20 @@
    "title": "300兆円規模に成長する宇宙産業、黒字化へ向かう関連株の投資戦略",
    "videoUrl": "https://www.youtube.com/watch?v=crOgcVmfcF8"
   },
+  "starbucks-chilled-cup-merry-berry-chocolate-latte": {
+   "channel": "suntory",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.suntory.co.jp/softdrink/news/pr/article/2026/SBF1745.html?rss=0000000029",
+   "title": "サントリーのスタバチルドカップ新作「メリーベリーチョコレートラテ」11月3日発売"
+  },
+  "state-street-gold-market-update-2026": {
+   "channel": "rakuten-sec",
+   "reason": "no-japan-value",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "title": "金価格が一時下落、専門家が解説する今後の投資判断と強気材料",
+   "videoUrl": "https://www.youtube.com/watch?v=cLDX2nOKLNc"
+  },
   "station-distance-land-price-analysis": {
    "channel": "ienomikata",
    "reason": "creator-video",
@@ -2068,6 +2713,34 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "サブリース解約はなぜ困難なのか、弁護士が明かす「正当事由」の壁と売却価格下落の真相",
    "videoUrl": "https://www.youtube.com/watch?v=-hNG-i6vu54"
+  },
+  "suntory-196-mutou-limited-winter-2026": {
+   "channel": "suntory",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.suntory.co.jp/news/article/2026/15159.html?rss=0000000029",
+   "title": "サントリーの缶チューハイ「-196無糖」にピーチ＆マンゴー＆Appleと贅沢赤ぶどう＆白ぶどうが期間限定で新登場"
+  },
+  "suntory-non-aru-sakaba-new-release": {
+   "channel": "suntory",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.suntory.co.jp/news/article/2026/15160.html?rss=0000000029",
+   "title": "サントリー「のんある酒場」にグレフルサワー新登場　定番5種もリニューアル"
+  },
+  "suntory-nope-dragon-quest-collaboration": {
+   "channel": "suntory",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.suntory.co.jp/softdrink/news/pr/article/2026/SBF1742.html?rss=0000000029",
+   "title": "サントリー「ギルティ炭酸 NOPE」がドラクエモンスターズとコラボ、全4種の限定ラベルで11月下旬発売"
+  },
+  "suntory-yakuzen-koujitsu-chai-release": {
+   "channel": "suntory",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.suntory.co.jp/softdrink/news/pr/article/2026/SBF1744.html?rss=0000000029",
+   "title": "サントリーの薬膳ブランド「薬膳好日」から「薬膳チャイ」が新登場　11月3日発売"
   },
   "tama-giant-housing-complexes-60-years-after": {
    "channel": "ienomikata",
@@ -2132,6 +2805,13 @@
    "sourceUrl": "https://j-net21.smrj.go.jp/news/bt5puv00000105io.html",
    "title": "東北経済産業局、仙台でアトツギ交流会を開催　家業の強み活かした新規事業へ挑戦"
   },
+  "tokyo-anti-illegal-lending-november-2026": {
+   "channel": "tokyo-metro",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110204",
+   "title": "東京、11月はヤミ金融被害防止強化月間　無料相談や啓発イベント実施"
+  },
   "tokyo-apartment-insulation-subsidy": {
    "channel": "rakumachi",
    "reason": "creator-video",
@@ -2139,12 +2819,33 @@
    "title": "賃貸アパートの断熱改修で熱中症対策。東京都の補助金活用で物件価値も向上",
    "videoUrl": "https://www.youtube.com/watch?v=9XFYvqVAMsE"
   },
+  "tokyo-disaster-prevention-app-underpass-warning": {
+   "channel": "tokyo-metro",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110203",
+   "title": "東京都が「東京都防災アプリ」に新機能　大雨時のアンダーパス冠水注意箇所153か所をマップ表示"
+  },
   "tokyo-earthquake-risk-100-trillion": {
    "channel": "rakumachi",
    "reason": "creator-video",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "首都直下地震の経済被害は100兆円、東日本大震災の5倍に。鎌田浩毅氏が警告する「19の地震の巣」と不動産のリスク管理",
    "videoUrl": "https://www.youtube.com/watch?v=7ClLfvFRIC8"
+  },
+  "tokyo-elderly-living-survey-2025": {
+   "channel": "tokyo-metro",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102916",
+   "title": "東京都、高齢者の生活実態調査結果を公表　ひとり暮らしが約3割に増加"
+  },
+  "tokyo-email-leak-incident": {
+   "channel": "tokyo-metro",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102713",
+   "title": "東京都の消費者モニター調査でメール誤送信　個人情報漏えいの経緯と再発防止策"
   },
   "tokyo-grade-a-office-market-2026-q3": {
    "channel": "kyodo-prwire",
@@ -2167,12 +2868,82 @@
    "title": "東京の中古マンション「平均1億円突破」と「2割暴落」の真相、平均値に潜むカラクリを専門記者が解説",
    "videoUrl": "https://www.youtube.com/watch?v=j85qAfHtnLU"
   },
+  "tokyo-naphtha-alternative-support": {
+   "channel": "tokyo-metro",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102913",
+   "title": "東京都がナフサ代替素材の開発を支援　石油に頼らない技術へ最大3億円"
+  },
   "tokyo-real-estate-valuation-and-infrastructure": {
    "channel": "rakumachi",
    "reason": "creator-video",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "東京の不動産は本当に高いのか。為替がもたらす「4割安」の実態と都心プレミアムがつかない構造的要因",
    "videoUrl": "https://www.youtube.com/watch?v=8srH7wGT0z0"
+  },
+  "tokyo-real-estate-videos-2026": {
+   "channel": "tokyo-metro",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110215",
+   "title": "東京都、不動産取引の注意点や法改正がわかる動画8本を公開　トラブル防止へ"
+  },
+  "tokyo-sayama-tamako-event-2026": {
+   "channel": "tokyo-metro",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.waterworks.metro.tokyo.lg.jp/information/press/r8/10/2026102801",
+   "title": "東京都、狭山丘陵と多摩湖で秋のイベント開催　モノレール延伸に向けた将来像を体験"
+  },
+  "tokyo-tax-council-meeting-2026": {
+   "channel": "tokyo-metro",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110201",
+   "title": "東京都税制調査会、11月9日に第3回総会を開催　知事への報告手交の予定を発表"
+  },
+  "tokyo-utility-pole-removal-ordinance-2026": {
+   "channel": "tokyo-metro",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026103014",
+   "title": "東京都、宅地開発の無電柱化を義務化する条例を令和8年10月施行　手続とガイドラインを策定"
+  },
+  "tokyo-waste-management-dx-tool": {
+   "channel": "tokyo-metro",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102711",
+   "title": "東京都、廃棄物データ管理のDXツールを導入　プラスチックリサイクル高度化へ11月から実験"
+  },
+  "tokyo-water-smart-meter-power-network": {
+   "channel": "tokyo-metro",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.waterworks.metro.tokyo.lg.jp/information/press/r8/10/2026102901",
+   "title": "東京都水道局、スマートメータに電力通信網を導入　2027年3月から開始"
+  },
+  "tokyo-winter-air-pollution-control-2026": {
+   "channel": "tokyo-metro",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102814",
+   "title": "東京都が11月から「冬季大気汚染対策」を推進、PM2.5の原因物質削減へ"
+  },
+  "tokyo-world-diabetes-day-2026": {
+   "channel": "tokyo-metro",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102914",
+   "title": "東京都が11月7日から糖尿病予防のブルーライトアップを実施、ガイドブックも公開"
+  },
+  "tomb-raider-thirty-years-lara-croft": {
+   "channel": "xbox-wire-jp",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://news.xbox.com/ja-jp/2026/10/29/thirty-years-of-lara-croft/",
+   "title": "名作アクション『トゥームレイダー』30周年、初代を新たな解釈で描く新作が2027年2月に登場"
   },
   "touhou-lostword-asatsuyu-tomiko-bana": {
    "channel": "value-press",
@@ -2195,6 +2966,13 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000026.000182292.html",
    "title": "トゥルーテンパースポーツ、JGTOツアーでDynamic Goldが今季2勝目"
+  },
+  "tsuruhachi-labeling-violation-maff": {
+   "channel": "maff",
+   "reason": "off-focus",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.maff.go.jp/j/press/syouan/kansa/261027.html",
+   "title": "釣八の塩さばフィーレに原産地表示違反　対象商品と農水省の指示"
   },
   "twst-lilia-racing-star-pv-2026": {
    "channel": "atpress",
@@ -2245,6 +3023,14 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "sourceUrl": "https://kyodonewsprwire.jp/release/202610268708",
    "title": "奈良県宇陀市で「うだ産フェスタ2026」開催、名産品や車展示が登場"
+  },
+  "understanding-gyakuhibu-margin-trading-risks": {
+   "channel": "rakuten-sec",
+   "reason": "no-japan-value",
+   "redirect": "gyakuhibu-cross-trade-complete-guide-matome",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "title": "楽天証券が解説、株主優待のつなぎ売りで発生する追加コスト「逆日歩」の仕組みとリスクを避ける方法",
+   "videoUrl": "https://www.youtube.com/watch?v=_irS11nJOuw"
   },
   "us-china-ai-bubble-geopolitics-japan-windfall": {
    "channel": "rakumachi",
@@ -2365,6 +3151,13 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "Windowsレジストリは現代なら不要か、Azure CTOマーク・ルシノビッチ氏が語るOS設計の最適解",
    "videoUrl": "https://www.youtube.com/watch?v=ZhJsMKliqE8"
+  },
+  "womens-futsal-japan-camp-oct-2026": {
+   "channel": "jfa",
+   "reason": "no-japan-value",
+   "retiredAt": "2026-11-03T18:55:45+09:00",
+   "sourceUrl": "https://www.jfa.jp/news/00036957/",
+   "title": "フットサル日本女子代表、千葉で国内トレーニングキャンプを開催へ（10月31日〜11月3日）"
   },
   "wti-crude-oil-90-iran-us-negotiation": {
    "channel": "rakumachi",

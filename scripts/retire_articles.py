@@ -19,6 +19,18 @@
   python3 scripts/retire_articles.py                 # 対象を数えるだけ（何も変えない）
   python3 scripts/retire_articles.py --report out.md # 対象の一覧を Markdown に書く
   python3 scripts/retire_articles.py --apply         # 取り下げる
+
+追加の取り下げ（2026-11-03 オーナー承認）: --noindex で、検索に出していない（noindex の）記事をすべて取り下げる。
+  区分は scripts/indexnow.py の noindex_reason（off-focus 主題外 / no-japan-value 日本の読者に役立つ情報がない / thin 薄い /
+  duplicate 重複 / creator-video 他人の動画の要約 / wire 配信の言い換え）。
+  残すもの: 直近7日に SNS（Threads・Bluesky・SNS 動画）に出した記事、地震・津波の速報（disaster。短いのは設計どおり）、
+  手で「検索に出さない」と決めた記事（indexable: false）。
+  転送: 重複は代表の記事へ。それ以外は REPRESENTATIVES（手で確かめた、はっきり近い記事）があれば 301、無ければ 410。
+  まとめ記事の元記事がすべて取り下げになり、そのまとめ自身が転送先なら、まとめは残して元記事の一覧をリンクなしにする。
+
+  python3 scripts/retire_articles.py --noindex                 # 数えるだけ
+  python3 scripts/retire_articles.py --noindex --apply         # 取り下げる
+  python3 scripts/retire_articles.py --noindex --append out.md # 一覧を Markdown の末尾に足す
 """
 
 from __future__ import annotations
@@ -37,6 +49,8 @@ ROOT = Path(__file__).resolve().parent.parent
 ARTICLES = ROOT / "content" / "articles"
 RETIRED = ROOT / "content" / "retired.json"
 THREADS = ROOT / "state" / "threads_posted.json"
+BLUESKY = ROOT / "state" / "bluesky_extra.json"
+SNS_VIDEO = ROOT / "state" / "sns_video.json"
 JST = timezone(timedelta(hours=9))
 CATEGORIES = ("creator-video", "creator-roundup", "wire", "thin", "duplicate")
 LABELS = {
@@ -45,6 +59,27 @@ LABELS = {
     "wire": "プレスリリースの言い換え",
     "thin": "薄い記事（1,500字未満・表やよくある質問なし）",
     "duplicate": "同じ発表の重複（代表の記事へ転送）",
+    "off-focus": "サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+    "no-japan-value": "日本の読者に役立つ情報がない（使えるかの判定・料金・使い方などの章がない）",
+}
+NOINDEX_CATEGORIES = ("off-focus", "no-japan-value", "thin", "duplicate", "creator-video", "wire")
+NOINDEX_LABELS = {
+    **LABELS,
+    "thin": f"薄い記事（本文{indexnow.THIN_BODY:,}字未満）",
+    "creator-video": "他人の動画の要約",
+    "wire": "プレスリリースの言い換え",
+    "roundup-of-retired": "元記事がすべて取り下げになったまとめ",
+}
+# 重複ではないが、はっきり近い記事があるもの（2026-11-03 に題名・本文を見て決めた）。転送先が残っていなければ 410
+REPRESENTATIVES = {
+    # JPCERT/CC の週報が PHP の脆弱性の注意喚起を含む
+    "php-vulnerabilities-jpcert-alert-2026": "jpcert-weekly-report-20261028-vulnerabilities",
+    # 同じ「dバリューパス」の特典追加の記事
+    "docomo-d-valuepass-kusuriya": "docomo-d-value-pass-uber-luup-2026",
+    # 楽天証券のつなぎ売りの解説3本 → その3本を1本にまとめた記事
+    "rakuten-sec-cross-trade-genwatashi": "gyakuhibu-cross-trade-complete-guide-matome",
+    "understanding-gyakuhibu-margin-trading-risks": "gyakuhibu-cross-trade-complete-guide-matome",
+    "rakuten-sec-cross-trade-margin-category": "gyakuhibu-cross-trade-complete-guide-matome",
 }
 SNS_KEEP_DAYS = 7
 # 参照を書き換えるデータ（記事以外）。状態の記録（content/state.json・llm_usage など）は画面に出ないので触らない
@@ -67,17 +102,32 @@ def load_articles() -> list[dict]:
     return out
 
 
-def recent_sns(now: datetime) -> set[str]:
+def _read(path: Path) -> dict:
     try:
-        posted = json.loads(THREADS.read_text(encoding="utf-8")).get("posted", {})
+        data = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
-        return set()
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def recent_sns(now: datetime, everywhere: bool = False) -> set[str]:
+    """直近 SNS_KEEP_DAYS 日に SNS へ出した記事。everywhere なら Threads に加えて Bluesky・SNS 動画も見る"""
+    rows = [(slug, item.get("postedAt")) for slug, item in (_read(THREADS).get("posted") or {}).items() if isinstance(item, dict)]
+    if everywhere:
+        rows += [(slug, item.get("at")) for slug, item in _read(BLUESKY).items() if isinstance(item, dict)]
+        rows += [
+            (slug, item.get("postedAt"))
+            for slug, item in (_read(SNS_VIDEO).get("videos") or {}).items()
+            if isinstance(item, dict) and item.get("status") == "posted"
+        ]
     keep = set()
-    for slug, item in posted.items():
+    for slug, value in rows:
         try:
-            at = datetime.fromisoformat(str(item.get("postedAt", "")).replace("Z", "+00:00"))
+            at = datetime.fromisoformat(str(value or "").replace("Z", "+00:00"))
         except ValueError:
             continue
+        if at.tzinfo is None:
+            at = at.replace(tzinfo=timezone.utc)
         if now - at < timedelta(days=SNS_KEEP_DAYS):
             keep.add(slug)
     return keep
@@ -150,6 +200,67 @@ def plan(articles: list[dict], now: datetime) -> tuple[dict[str, dict], list[dic
     return picked, kept
 
 
+def duplicate_keeper(article: dict, articles: list[dict], removed: set[str]) -> str:
+    """重複記事の代表（duplicateOf、無ければ同じ出典URL・同じ題名の残る記事のうち本文が最も長いもの）"""
+    target = article.get("duplicateOf")
+    if target and target != article["slug"]:
+        return target
+    url = indexnow._url_key(article.get("sourceUrl", ""))
+    title = indexnow.TITLE_NOISE.sub("", article.get("title", "")).lower()
+    same = [
+        a for a in articles
+        if a["slug"] != article["slug"] and a["slug"] not in removed and a.get("type") != "roundup"
+        and ((url and indexnow._url_key(a.get("sourceUrl", "")) == url) or indexnow.TITLE_NOISE.sub("", a.get("title", "")).lower() == title)
+    ]
+    same.sort(key=lambda a: (-len(a.get("body", "")), a.get("generatedAt", "")))
+    return same[0]["slug"] if same else ""
+
+
+def plan_noindex(articles: list[dict], now: datetime) -> tuple[dict[str, dict], list[dict]]:
+    """検索に出していない記事をすべて取り下げる計画 {slug: {reason, title, redirect?}} と、残す記事 [{slug, title, reason, why}]"""
+    by_slug = {a["slug"]: a for a in articles}
+    dups = indexnow.duplicate_slugs(articles)
+    sns = recent_sns(now, everywhere=True)
+    reasons = {a["slug"]: indexnow.noindex_reason(a, dups) for a in articles}
+    picked: dict[str, dict] = {}
+    kept: list[dict] = []
+    for a in articles:
+        reason = reasons[a["slug"]]
+        if not reason or reason == "manual":
+            continue
+        if a.get("disaster"):
+            kept.append({"slug": a["slug"], "title": a.get("title", ""), "reason": reason, "why": "地震・津波の速報（短いのは設計どおり）"})
+            continue
+        if a["slug"] in sns:
+            kept.append({"slug": a["slug"], "title": a.get("title", ""), "reason": reason, "why": f"直近{SNS_KEEP_DAYS}日に SNS に出した"})
+            continue
+        entry = {"reason": reason, "title": a.get("title", ""), "channel": a.get("channelSlug", "")}
+        for key in ("sourceUrl", "videoUrl"):
+            if a.get(key):
+                entry[key] = a[key]
+        picked[a["slug"]] = entry
+    removed = set(picked)
+    for slug, entry in picked.items():
+        a = by_slug[slug]
+        target = duplicate_keeper(a, articles, removed) if entry["reason"] == "duplicate" else REPRESENTATIVES.get(slug, "")
+        if target and target in by_slug and target not in removed:
+            entry["redirect"] = target
+
+    # まとめ記事: 元記事（転送で付け替えられるものを含む。自分自身は数えない）が2本未満になるなら一緒に取り下げる。
+    # ただし、取り下げた元記事の転送先がそのまとめ自身なら残す（元記事の一覧はリンクなしで残す）
+    for a in articles:
+        if a.get("type") != "roundup" or a["slug"] in removed:
+            continue
+        sources = [s.get("slug") for s in a.get("sources") or [] if isinstance(s, dict) and s.get("slug")]
+        if not any(s in picked for s in sources):
+            continue
+        targets = {s if s not in picked else picked[s].get("redirect", "") for s in sources}
+        alive = targets - {"", a["slug"]}
+        if len(alive) < 2 and a["slug"] not in targets and a["slug"] not in sns:
+            picked[a["slug"]] = {"reason": "roundup-of-retired", "title": a.get("title", ""), "channel": a.get("channelSlug", "")}
+    return picked, kept
+
+
 # ---- 参照の付け替え ----------------------------------------------------------------
 
 
@@ -157,6 +268,7 @@ class Rewriter:
     def __init__(self, retired: dict[str, dict]):
         self.retired = retired
         self.changed = 0
+        self.self_slug = ""  # いま書き換えている記事（転送先が自分自身になるリンクは外す）
         names = sorted(retired, key=len, reverse=True)
         self.link = (
             re.compile(r"\[([^\]]*)\]\((?:https://ai-tech-express\.jp)?/articles/(" + "|".join(map(re.escape, names)) + r")/?(#[^)\s]*)?\)")
@@ -173,7 +285,8 @@ class Rewriter:
         """転送先（無ければ None。取り下げでない slug はそのまま）"""
         if slug not in self.retired:
             return slug
-        return self.retired[slug].get("redirect") or None
+        to = self.retired[slug].get("redirect") or None
+        return None if to and to == self.self_slug else to
 
     def text(self, value: str) -> str:
         if not self.link or "/articles/" not in value:
@@ -271,6 +384,17 @@ def apply(retired: dict[str, dict], now: datetime) -> dict:
     for slug, entry in retired.items():
         store["articles"][slug] = {**entry, "retiredAt": stamp}
     all_retired = store["articles"]
+    # 前に取り下げた記事の転送先が今回取り下げになったら、その先をたどる（たどれなければ 410）
+    for slug, entry in all_retired.items():
+        seen = {slug}
+        target = entry.get("redirect", "")
+        while target in all_retired and target not in seen:
+            seen.add(target)
+            target = all_retired[target].get("redirect", "")
+        if target and target not in all_retired and (ARTICLES / f"{target}.json").exists():
+            entry["redirect"] = target
+        else:
+            entry.pop("redirect", None)
     rw = Rewriter(all_retired)
     stats = {"deleted": 0, "articles_rewritten": 0, "data_rewritten": 0, "products_removed": []}
 
@@ -284,6 +408,12 @@ def apply(retired: dict[str, dict], now: datetime) -> dict:
         raw = path.read_text(encoding="utf-8")
         data = json.loads(raw)
         rw.changed = 0
+        rw.self_slug = data.get("slug", "")
+        # まとめ記事の元記事が、取り下げて自分自身へ転送されるなら、一覧には題名だけ残す（リンクなし）
+        for source in data.get("sources") or []:
+            if isinstance(source, dict) and source.get("slug") in all_retired and all_retired[source["slug"]].get("redirect") == rw.self_slug:
+                source["slug"] = ""
+                rw.changed += 1
         new = rw.walk(data)
         if rw.changed:
             path.write_text(json.dumps(new, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -295,6 +425,7 @@ def apply(retired: dict[str, dict], now: datetime) -> dict:
             continue
         data = json.loads(path.read_text(encoding="utf-8"))
         rw.changed = 0
+        rw.self_slug = ""
         new = rw.walk(data)
         if path.parent.name == "products":
             fixed = fix_product(new)
@@ -347,17 +478,72 @@ def report(retired: dict[str, dict], kept: list[dict], remaining: int, path: Pat
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def report_append(retired: dict[str, dict], kept: list[dict], before: int, after: int, indexable: int, path: Path) -> None:
+    """追加の取り下げ（noindex の記事）の一覧を、既存の Markdown の末尾に足す"""
+    redirects = sum(1 for e in retired.values() if e.get("redirect"))
+    lines = [
+        "",
+        "## 追加の取り下げ（noindex の記事）",
+        "",
+        "### 結論",
+        "",
+        f"- 検索に出していなかった（noindex の）記事を **{len(retired)}本** 取り下げました。記事は {before}本 → **{after}本**。",
+        f"- 残った記事のうち検索に出す記事は **{indexable}本（{indexable / max(after, 1):.0%}）** です。",
+        f"- はっきり近い記事がある {redirects}本は、その記事へ自動で転送します（301）。ほかは「取り下げました」と返します（410 Gone）。",
+        "- これからは、同じ種類の記事（主題外・日本の読者に役立つ情報がない・薄い）は公開前に止めます（scripts/indexnow.py の公開前の門）。",
+        "",
+        "### 区分ごとの本数",
+        "",
+        "| 区分 | 本数 |",
+        "|---|---|",
+    ]
+    cats = [c for c in (*NOINDEX_CATEGORIES, "roundup-of-retired") if any(e["reason"] == c for e in retired.values())]
+    lines += [f"| {NOINDEX_LABELS[c]} | {sum(1 for e in retired.values() if e['reason'] == c)} |" for c in cats]
+    lines += ["", "### 残した noindex の記事", ""]
+    if kept:
+        lines += ["| slug | 題名 | 区分 | 残した理由 |", "|---|---|---|---|"]
+        lines += [f"| {k['slug']} | {k['title'].replace('|', '｜')} | {NOINDEX_LABELS.get(k['reason'], k['reason'])} | {k['why']} |" for k in kept]
+    else:
+        lines.append("なし")
+    lines += ["", "### 取り下げた記事の一覧", "", "| slug | 題名 | 理由 | 転送先 |", "|---|---|---|---|"]
+    for cat in cats:
+        for slug, e in sorted((s, e) for s, e in retired.items() if e["reason"] == cat):
+            lines.append(f"| {slug} | {e['title'].replace('|', '｜')} | {NOINDEX_LABELS[cat]} | {e.get('redirect', '—（410）')} |")
+    with path.open("a", encoding="utf-8") as out:
+        out.write("\n".join(lines) + "\n")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--apply", action="store_true", help="取り下げる（指定しなければ数えるだけ）")
     parser.add_argument("--report", type=Path, help="対象の一覧を Markdown に書く")
     parser.add_argument("--refs", action="store_true", help="取り下げ済みの記事への参照だけを付け替える（新しく取り下げない）")
+    parser.add_argument("--noindex", action="store_true", help="検索に出していない（noindex の）記事をすべて取り下げる")
+    parser.add_argument("--append", type=Path, help="--noindex の一覧を Markdown の末尾に足す")
     args = parser.parse_args()
     now = datetime.now(timezone.utc)
     if args.refs:
         print(f"[retire] 参照の付け替え: {json.dumps(apply({}, now), ensure_ascii=False)}")
         return 0
     articles = load_articles()
+    if args.noindex:
+        retired, kept = plan_noindex(articles, now)
+        counts = {c: sum(1 for e in retired.values() if e["reason"] == c) for c in (*NOINDEX_CATEGORIES, "roundup-of-retired")}
+        print(f"[retire] 全 {len(articles)} 本のうち noindex の取り下げ {len(retired)} 本（転送 {sum(1 for e in retired.values() if e.get('redirect'))}）: "
+              + "・".join(f"{c} {n}" for c, n in counts.items() if n))
+        print("[retire] 残す: " + ", ".join(f"{k['slug']}（{k['why']}）" for k in kept))
+        if args.apply:
+            stats = apply(retired, now)
+            again = apply({}, now)
+            stats["second_pass"] = again["articles_rewritten"] + again["data_rewritten"]
+            print(f"[retire] 実行: {json.dumps(stats, ensure_ascii=False)}")
+        if args.append:
+            rest = load_articles() if args.apply else [a for a in articles if a["slug"] not in retired]
+            dups = indexnow.duplicate_slugs(rest)
+            indexable = sum(1 for a in rest if indexnow.noindex_reason(a, dups) is None)
+            report_append(retired, kept, len(articles), len(rest), indexable, args.append)
+            print(f"[retire] 一覧 → {args.append}")
+        return 0
     retired, kept = plan(articles, now)
     counts = {cat: sum(1 for e in retired.values() if e["reason"] == cat) for cat in CATEGORIES}
     print(f"[retire] 全 {len(articles)} 本のうち取り下げ {len(retired)} 本: " + "・".join(f"{LABELS[c]} {n}" for c, n in counts.items()))

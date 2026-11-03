@@ -8,7 +8,6 @@
   "overview": {
     "text": "Mistral Large 4は、フランスのMistral AIが開発した1兆パラメータ規模の最新AIモデルです。2026年10月に発表されました。",
     "sources": [
-      "mistral-large-4-open-cyber-frontier",
       "mistral-large-4-preview"
     ]
   },
@@ -17,7 +16,7 @@
       "label": "料金",
       "value": "モデル重みは無料",
       "sources": [
-        "mistral-large-4-open-cyber-frontier"
+        "mistral-large-4-preview"
       ]
     },
     {
@@ -31,21 +30,20 @@
       "label": "日本での提供",
       "value": "日本から利用できる",
       "sources": [
-        "mistral-large-4-open-cyber-frontier"
+        "mistral-large-4-preview"
       ]
     },
     {
       "label": "使える場所",
       "value": "Hugging Faceなど",
       "sources": [
-        "mistral-large-4-open-cyber-frontier"
+        "mistral-large-4-preview"
       ]
     },
     {
       "label": "向いている人",
       "value": "開発者やセキュリティ担当者",
       "sources": [
-        "mistral-large-4-open-cyber-frontier",
         "mistral-large-4-preview"
       ]
     }
@@ -54,13 +52,12 @@
     {
       "text": "サイバー防衛ベンチマークのCybenchで93%の課題をクリアしています。",
       "sources": [
-        "mistral-large-4-open-cyber-frontier"
+        "mistral-large-4-preview"
       ]
     },
     {
       "text": "テキストだけでなく画像も理解できるネイティブなマルチモーダル機能を備えています。",
       "sources": [
-        "mistral-large-4-open-cyber-frontier",
         "mistral-large-4-preview"
       ]
     },
@@ -75,13 +72,13 @@
     {
       "text": "Hugging Face Hubなどからのモデル重みのダウンロードは無料です。",
       "sources": [
-        "mistral-large-4-open-cyber-frontier"
+        "mistral-large-4-preview"
       ]
     },
     {
       "text": "Mistral AI公式APIのLa Plateformeは従量課金制です。",
       "sources": [
-        "mistral-large-4-open-cyber-frontier"
+        "mistral-large-4-preview"
       ]
     }
   ],
@@ -89,13 +86,13 @@
     {
       "text": "日本から問題なく利用可能です。",
       "sources": [
-        "mistral-large-4-open-cyber-frontier"
+        "mistral-large-4-preview"
       ]
     },
     {
       "text": "専門的なセキュリティ用語は英語での入力と出力が最も高精度です。",
       "sources": [
-        "mistral-large-4-open-cyber-frontier"
+        "mistral-large-4-preview"
       ]
     }
   ],
@@ -103,13 +100,13 @@
     {
       "text": "Hugging Face Hubからモデル重みをダウンロードして自社サーバーで実行できます。",
       "sources": [
-        "mistral-large-4-open-cyber-frontier"
+        "mistral-large-4-preview"
       ]
     },
     {
       "text": "Mistral AIのLa Plateforme経由でAPIを利用できます。",
       "sources": [
-        "mistral-large-4-open-cyber-frontier"
+        "mistral-large-4-preview"
       ]
     }
   ],
@@ -117,7 +114,7 @@
     {
       "text": "総パラメータ数が前世代の約6000億から約1兆へと拡大しました。",
       "sources": [
-        "mistral-large-4-open-cyber-frontier"
+        "mistral-large-4-preview"
       ]
     }
   ],
@@ -126,7 +123,7 @@
       "q": "モデルの重みはどこからダウンロードできますか？",
       "a": "Hugging Face Hubなどから自由に入手できます。",
       "sources": [
-        "mistral-large-4-open-cyber-frontier"
+        "mistral-large-4-preview"
       ]
     },
     {
@@ -140,7 +137,6 @@
       "q": "どのような分野のタスクに強いですか？",
       "a": "プログラミングやサイバーセキュリティの防衛作業で威력을発揮します。",
       "sources": [
-        "mistral-large-4-open-cyber-frontier",
         "mistral-large-4-preview"
       ]
     },
@@ -157,20 +153,13 @@
       "date": "2026-10-06",
       "slug": "mistral-large-4-preview",
       "event": "Mistral Large 4のパブリックプレビューを開始"
-    },
-    {
-      "date": "2026-10-30",
-      "slug": "mistral-large-4-open-cyber-frontier",
-      "event": "Mistral Large 4の一般提供と重み公開を発表"
     }
   ],
   "related": [],
   "articles": [
-    "mistral-large-4-open-cyber-frontier",
     "mistral-large-4-preview"
   ],
   "linkFrom": [
-    "mistral-large-4-open-cyber-frontier",
     "mistral-large-4-preview"
   ],
   "signature": "1955a735c2264ee1",

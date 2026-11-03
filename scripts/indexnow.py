@@ -215,6 +215,45 @@ def noindex_reason(article: dict, dups: set[str] | frozenset = frozenset()) -> s
     return None
 
 
+# ---- 公開前の門（2026-11-03 オーナー承認。AdSense「有用性の低いコンテンツ」への対策） -------------------
+# 検索に出せない記事（主題外・日本の読者に役立つ情報がない・薄い・配信の言い換え・他人の動画の要約）は、作っても取り下げるだけなので公開しない。
+# 重複（duplicate）は公開後に scripts/story.py が付けて代表へ canonical を向けるので、ここでは止めない。地震・津波の速報（disaster）は短くても出す。
+PUBLISH_BLOCK = ("wire", "creator-video", "off-focus", "no-japan-value", "thin")
+# 作り直せば直る見込みのあるもの（品質ゲートと同じく、問題点を伝えて作り直す）。それ以外は見送りで確定する
+PUBLISH_RETRYABLE = ("thin", "no-japan-value")
+PUBLISH_FEEDBACK = {
+    "wire": "プレスリリース配信の言い換えは公開しません",
+    "creator-video": "個人・他媒体の動画の要約は公開しません",
+    "off-focus": "サイトの主題（AI・テック／お金・投資・不動産・起業／制度のお金の話／日本のスポーツ）から外れた話題は公開しません",
+    "no-japan-value": (
+        "日本の読者に役立つ情報が足りません。「## 日本で使える？」や「## 料金」「## 使い方」「## 始め方」など、"
+        "日本の読者が自分に関係あるか判断できる章（見出しに 日本・無料・料金・使い方・始め方・使える のどれかを含める）を、元記事にある事実だけで書いてください"
+    ),
+    "thin": f"本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を{THIN_BODY}字以上にしてください",
+}
+
+
+def publish_block_reason(article: dict) -> str | None:
+    """公開しない理由（公開してよいなら None）。判定は noindex_reason と同じ（サイトの noindex と食い違わない）"""
+    if article.get("disaster") or article.get("type") == "roundup" or isinstance(article.get("indexable"), bool):
+        return None
+    reason = noindex_reason(article)
+    return reason if reason in PUBLISH_BLOCK else None
+
+
+def candidate_off_focus(lane: str, title: str, summary: str = "") -> bool:
+    """生成の前に、幅広い話題の候補がサイトの主題外と分かるか（LLM を使わずに見送る。迷うものは通して公開前の門で見る）。
+    レーン（フィードの分野）がジャンルの目安。AI の話題・読者像のジャンル・お金/制度の話題・スポーツ（別の足切りあり）・分野不明は通す"""
+    if not lane or lane.startswith("_") or lane in FOCUS_GENRES or lane in SPORTS_GENRES or lane in persona.PERSONA_GENRES:
+        return False
+    text = f"{title} {summary[:300]}"
+    if AI_TOPIC.search(text):
+        return False
+    if lane in persona.PERSONA_EXTRA_GENRES and persona.PRIORITY_TOPIC_RE.search(text):
+        return False
+    return True
+
+
 # サイト側（lib/indexing.ts）が読む判定の材料。正本はこのファイルと scripts/persona.py で、
 # 変えたら `python3 scripts/indexnow.py --export-rules` で書き出す（tests/test_index_rules.py がずれを検出する）
 RULES_PATH = ROOT / "lib" / "index-rules.json"

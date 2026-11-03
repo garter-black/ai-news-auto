@@ -1100,6 +1100,17 @@ def main() -> int:
             state["failed"][video_id] = state["failed"].get(video_id, 0) + 1
             continue
 
+        import indexnow  # 遅延 import。検索に出せない記事は公開しない（公開前の門。2026-11-03 オーナー承認）
+        blocked = None if os.environ.get("PUBLISH_GATE", "1") == "0" else indexnow.publish_block_reason(record)
+        if blocked:
+            log(f"   [skip] 公開前の門: {indexnow.PUBLISH_FEEDBACK[blocked]}")
+            state["processed"][video_id] = {
+                "skipped": True,
+                "reason": f"publish-gate: {blocked}",
+                "at": datetime.now(timezone.utc).isoformat(),
+            }
+            continue
+
         if (datetime.now(timezone.utc) - entry["published_at"]).total_seconds() > NEWS_MAX_AGE_HOURS * 3600:
             record["late"] = True  # 投稿から48時間を超えた動画（解説チャンネル）。ニュース用サイトマップに載せない
         path = write_article(record)

@@ -57,6 +57,7 @@ import pipeline_health  # noqa: E402
 import feeds  # noqa: E402
 import followup  # noqa: E402
 import glossary  # noqa: E402
+import indexnow  # noqa: E402  検索に出せない記事は公開しない（公開前の門）
 import japan_availability  # noqa: E402
 import llm  # noqa: E402
 import main as m  # noqa: E402
@@ -462,6 +463,14 @@ def build_broad_prompt(item: dict, text: str, genre, context: str = "", outline:
             + "\n\n" + m.threads_hooks.prompt_block())
 
 
+def publish_blocked(record: dict) -> str | None:
+    """公開しない理由（scripts/indexnow.py の publish_block_reason。検索に出せない記事は作っても取り下げるだけ）。
+    2026-11-03 オーナー承認。PUBLISH_GATE=0 で止められる（緊急時だけ）"""
+    if os.environ.get("PUBLISH_GATE", "1") == "0":
+        return None
+    return indexnow.publish_block_reason(record)
+
+
 def broad_prefilter(item: dict) -> str | None:
     """幅広い話題の安い足切り。除外理由（文字列）か None"""
     title = item["title"]
@@ -479,6 +488,9 @@ def broad_prefilter(item: dict) -> str | None:
         ok, why = persona.sports_scope(f"{title} {item.get('summary', '')[:300]}", japanese_source=not feed.get("foreign"))
         if not ok:
             return f"スポーツの対象外（{why}）"
+    if indexnow.candidate_off_focus(item.get("section", ""), title, item.get("summary", "")):
+        # 作っても検索に出せず取り下げるだけ（2026-11-03 オーナー承認。scripts/indexnow.py の公開前の門）
+        return "サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）"
     return None
 
 
@@ -1985,6 +1997,9 @@ def main() -> int:
         log_quality(state, item, kind, info, 0, True, str(info.get("polished_by") or ""))
         return polished, info
 
+    def gate_verdict(blocked: str) -> dict:
+        return {"ok": False, "score": None, "problems": [f"公開前の門: {indexnow.PUBLISH_FEEDBACK[blocked]}"]}
+
     def gated(item: dict, kind: str, system: str, prompt: str, schema: dict, source_text: str, build, context: str = "",
               tier: str | None = None, attempts: int = 2, purpose: str | None = None):
         """生成 → 品質ゲート →（不合格なら問題点を添えて作り直し。通常は計2回、大きなニュースは計3回）。
@@ -2005,7 +2020,14 @@ def main() -> int:
                 verdict = {"ok": False, "score": None, "problems": [f"形式が不正: {error}"]}
             else:
                 pre_gate(record, source_text, context)
-                verdict = quality.evaluate(record, source_text, kind, context, check_facts=not args.no_gate)
+                blocked = publish_blocked(record)
+                if blocked and blocked not in indexnow.PUBLISH_RETRYABLE:
+                    return "skip", None, model_name, f"公開前の門: {indexnow.PUBLISH_FEEDBACK[blocked]}"
+                if blocked:
+                    # 薄い・日本の読者向けの情報がない: 事実確認の前に、問題点を伝えて作り直す（LLM の確認を無駄に使わない）
+                    verdict = gate_verdict(blocked)
+                else:
+                    verdict = quality.evaluate(record, source_text, kind, context, check_facts=not args.no_gate)
                 tag = "合格" if verdict["ok"] else ("読みやすさのみ基準外" if verdict.get("soft") else "不合格")
                 r = verdict.get("readability") or {}
                 log(f"   [gate] {tag} score={verdict.get('score')} 試行{attempt}/{attempts}"
@@ -2013,7 +2035,7 @@ def main() -> int:
                     f" {('/ ' + ' | '.join(verdict['problems'][:3])[:300]) if verdict['problems'] else ''}"
                     f"{(' / 注意: ' + ' | '.join(verdict['warnings'])) if verdict.get('warnings') else ''}")
                 log_quality(state, item, kind, verdict, attempt, verdict["ok"], model_name or "")
-                if not verdict["ok"] and not verdict.get("soft") and quality.MAJOR and quality.surgical_ok(verdict):
+                if not verdict["ok"] and not verdict.get("soft") and not blocked and quality.MAJOR and quality.surgical_ok(verdict):
                     # 大きなニュース: 致命的でない細かい指摘（言い過ぎ・訳語・補足の程度）は、作り直さず指摘された文だけ直す
                     try:
                         fixed, info = quality.surgical_fix(record, source_text, kind, verdict.get("problems") or [], context,
@@ -2031,8 +2053,16 @@ def main() -> int:
                 if verdict.get("soft"):
                     record, verdict = polish_or_keep(item, kind, record, verdict, source_text, context)
                 if verdict["ok"] or verdict.get("soft"):
-                    record["qualityScore"] = verdict.get("score")
-                    return "ok", record, model_name, verdict
+                    # 書き直し（読みやすさ・指摘の箇所の修正）で短くなっていないか、公開前の門をもう一度通す
+                    blocked = publish_blocked(record)
+                    if blocked:
+                        if blocked not in indexnow.PUBLISH_RETRYABLE:
+                            return "skip", None, model_name, f"公開前の門: {indexnow.PUBLISH_FEEDBACK[blocked]}"
+                        verdict = gate_verdict(blocked)
+                        log(f"   [gate] 公開前の門で不合格（{blocked}）")
+                    else:
+                        record["qualityScore"] = verdict.get("score")
+                        return "ok", record, model_name, verdict
             if attempt < attempts and not verdict.get("unavailable") and time_left() > EST_SEC_PER_ARTICLE:
                 prompt = prompt + quality.feedback_block(verdict.get("problems") or [])
                 log(f"   [gate] 問題点を伝えて作り直します（{tier}）")

@@ -92,6 +92,9 @@ def main() -> int:
                 print(f"[read] {verdict.get('readability')} → {info.get('readability') if polished else info}")
                 if polished is not None:
                     record, verdict = polished, info
+            blocked = w.publish_blocked(record)  # 検索に出せない記事は公開しない（公開前の門）
+            if blocked:
+                verdict = {"ok": False, "problems": [f"公開前の門: {w.indexnow.PUBLISH_FEEDBACK[blocked]}"]}
             if verdict.get("ok") or verdict.get("soft"):
                 record["qualityScore"] = verdict.get("score")
                 path = m.write_article(record)

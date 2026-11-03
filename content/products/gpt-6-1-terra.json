@@ -8,8 +8,7 @@
   "overview": {
     "text": "GPT-6.1 Terraは、OpenAIが開発したAIモデルです。速度、能力、コストのバランスに優れ、日常的な業務に向いています。2026年10月26日に発表されました。",
     "sources": [
-      "openai-gpt-6-1-terra-announcement",
-      "gpt-6-1-terra-sol-astra-comparison"
+      "openai-gpt-6-1-terra-announcement"
     ]
   },
   "facts": [
@@ -17,7 +16,6 @@
       "label": "料金",
       "value": "入力100万トークン1ドル",
       "sources": [
-        "chatgpt-gpt-6-1-terra-plans-guide",
         "openai-gpt-6-1-terra-announcement"
       ]
     },
@@ -25,8 +23,7 @@
       "label": "提供開始",
       "value": "2026年10月26日",
       "sources": [
-        "openai-gpt-6-1-terra-announcement",
-        "gpt-6-1-terra-sol-astra-comparison"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
@@ -34,7 +31,7 @@
       "value": "日本国内からも利用可能",
       "sources": [
         "openai-gpt-61-terra-amazon-bedrock",
-        "chatgpt-gpt-6-1-terra-plans-guide"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
@@ -42,8 +39,7 @@
       "value": "ChatGPTやAPI、Bedrock等",
       "sources": [
         "openai-gpt-61-terra-amazon-bedrock",
-        "chatgpt-gpt-6-1-terra-plans-guide",
-        "gpt-6-1-terra-github-copilot-guide"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
@@ -96,7 +92,7 @@
     {
       "text": "有料プランを利用中の場合は、追加料金なしで利用できます。",
       "sources": [
-        "chatgpt-gpt-6-1-terra-plans-guide"
+        "openai-gpt-6-1-terra-announcement"
       ]
     }
   ],
@@ -105,7 +101,7 @@
       "text": "日本国内からも利用可能です。",
       "sources": [
         "openai-gpt-61-terra-amazon-bedrock",
-        "chatgpt-gpt-6-1-terra-plans-guide"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
@@ -119,19 +115,19 @@
     {
       "text": "ChatGPTの会話画面上部のモデル選択メニューから選択できます。",
       "sources": [
-        "chatgpt-gpt-6-1-terra-plans-guide"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
       "text": "開発者はOpenAI APIでモデル名に指定して呼び出せます。",
       "sources": [
-        "gpt-6-1-terra-sol-astra-comparison"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
       "text": "GitHub Copilotのモデル選択画面から選べます。",
       "sources": [
-        "gpt-6-1-terra-github-copilot-guide"
+        "openai-gpt-6-1-terra-announcement"
       ]
     }
   ],
@@ -139,8 +135,7 @@
     {
       "text": "標準API価格が従来の半額に設定されています。",
       "sources": [
-        "openai-gpt-6-1-terra-announcement",
-        "gpt-6-1-terra-sol-astra-comparison"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
@@ -152,7 +147,7 @@
     {
       "text": "同じプラン枠内でこれまでより多くのタスクをこなせます。",
       "sources": [
-        "chatgpt-gpt-6-1-terra-plans-guide"
+        "openai-gpt-6-1-terra-announcement"
       ]
     }
   ],
@@ -161,22 +156,21 @@
       "q": "いつから使える？",
       "a": "発表当日から一般提供が始まっており、すぐ使えます。",
       "sources": [
-        "openai-gpt-6-1-terra-announcement",
-        "gpt-6-1-terra-sol-astra-comparison"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
       "q": "無料プランでも使える？",
       "a": "無料版のユーザーへの提供については言及がありません。",
       "sources": [
-        "chatgpt-gpt-6-1-terra-plans-guide"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
       "q": "誰に向いている？",
       "a": "日常的な事務作業やパソコン操作を大量にこなしたい方に向いています。",
       "sources": [
-        "gpt-6-1-terra-sol-astra-comparison"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
@@ -208,16 +202,11 @@
   "articles": [
     "openai-gpt-61-terra-amazon-bedrock",
     "chatgpt-pro-business-api-credits-benefit",
-    "gpt-6-1-terra-github-copilot-guide",
-    "openai-gpt-6-1-terra-announcement",
-    "gpt-6-1-terra-sol-astra-comparison",
-    "chatgpt-gpt-6-1-terra-plans-guide"
+    "openai-gpt-6-1-terra-announcement"
   ],
   "linkFrom": [
     "openai-gpt-61-terra-amazon-bedrock",
-    "openai-gpt-6-1-terra-announcement",
-    "gpt-6-1-terra-sol-astra-comparison",
-    "chatgpt-gpt-6-1-terra-plans-guide"
+    "openai-gpt-6-1-terra-announcement"
   ],
   "signature": "6cfd1c0b359fa1c3",
   "primarySignature": "fdd8fd52e9595132",

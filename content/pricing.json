@@ -251,7 +251,7 @@
       "status": "available",
       "free": false,
       "source": {
-        "slug": "gpt-6-1-terra-github-copilot-guide",
+        "slug": "openai-gpt-6-1-terra-announcement",
         "title": "GPT-6.1 TerraのCopilotでの使い方とプラン",
         "publishedAt": "2026-10-26T00:00:00+00:00",
         "quote": "参考までに、OpenAIのAPI標準価格は、入力100万トークンあたり1ドル、キャッシュ入力は0.05ドル、出力は5ドルです。これはOpenAI APIの価格で、Copilot上の請求は上記の仕組みに従います。"
@@ -476,7 +476,7 @@
       "status": "available",
       "free": null,
       "source": {
-        "slug": "chatgpt-gpt-6-1-terra-plans-guide",
+        "slug": "openai-gpt-6-1-terra-announcement",
         "title": "ChatGPTでGPT-6.1 Terraは使える？プランと料金",
         "publishedAt": "2026-10-26T00:00:00+00:00",
         "quote": "- **対象プラン**: ChatGPT Plus(月額20ドル)、Pro、Enterprise、Edu"

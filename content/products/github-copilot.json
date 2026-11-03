@@ -48,7 +48,7 @@
       "sources": [
         "github-copilot-app-projects-computer-use",
         "github-copilot-plugin-controls-ga",
-        "gpt-6-1-terra-github-copilot-guide"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
@@ -82,7 +82,7 @@
     {
       "text": "GPT-6.1 Terraなどの複数のAIモデルをモデルピッカーから切り替えて選ぶことができます。",
       "sources": [
-        "gpt-6-1-terra-github-copilot-guide",
+        "openai-gpt-6-1-terra-announcement",
         "github-copilot-kimi-k3-multi-agent"
       ]
     }
@@ -116,7 +116,7 @@
     {
       "text": "VS Codeなどの対応エディタから利用できます。",
       "sources": [
-        "gpt-6-1-terra-github-copilot-guide"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
@@ -166,7 +166,7 @@
       "q": "どのようなモデルが使える？",
       "a": "GPT-6.1 TerraやKimi K3などのフロンティア級モデルが追加されています。",
       "sources": [
-        "gpt-6-1-terra-github-copilot-guide",
+        "openai-gpt-6-1-terra-announcement",
         "github-copilot-kimi-k3-multi-agent"
       ]
     }
@@ -184,7 +184,7 @@
     },
     {
       "date": "2026-10-26",
-      "slug": "gpt-6-1-terra-github-copilot-guide",
+      "slug": "openai-gpt-6-1-terra-announcement",
       "event": "GPT-6.1 Terraが利用可能に"
     },
     {
@@ -215,7 +215,7 @@
     "github-copilot-security-extension",
     "github-copilot-plugin-controls-ga",
     "github-agentic-workflows-generally-available",
-    "gpt-6-1-terra-github-copilot-guide",
+    "openai-gpt-6-1-terra-announcement",
     "azure-sql-ai-agent-skills-guide",
     "azure-cosmos-db-ai-assisted-development",
     "microsoft-copilot-work-iq-dev-tools",
@@ -236,7 +236,7 @@
     "github-enterprise-includes-copilot",
     "github-copilot-security-extension",
     "github-copilot-plugin-controls-ga",
-    "gpt-6-1-terra-github-copilot-guide",
+    "openai-gpt-6-1-terra-announcement",
     "github-copilot-native-app-released",
     "dotnet-aspire-github-copilot-integration",
     "github-copilot-reusable-agent-skills-guide",
