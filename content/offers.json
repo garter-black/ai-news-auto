@@ -1510,7 +1510,7 @@
     "real-estate": "re-home"
   },
   "articleFallback": {
-    "_README": "記事に合う話題が基準点に届かないときの、ジャンルごとの広告（読者＝20〜50代の働く男性向けに幅広く役立つもの）。どの記事にも広告枠を1つは出す（オーナー指示 2026-11-02）。関連の高い順で選べた記事には使わない。",
+    "_README": "記事に合う話題が基準点に届かないときの、ジャンルごとの広告（読者＝20〜50代の働く男性向けに幅広く役立つもの）。どの記事にも広告枠を1つは出す（オーナー指示 2026-11-02）。関連の高い順で選べた記事には使わない。 製品・趣味の記事は、この前に lib/keyword-products.ts のカテゴリで楽天・Amazonの検索リンクを出す。開業届・会社設立は既定の広告に入れず、独立・起業・税金の話題（startup・tax-filing）に当たった記事だけに出す。公共の記事は見出しがお金の話題（moneyMatch）のときだけ tax、それ以外は byGenreIfNotMoney。",
     "byGenre": {
       "ai": "ai",
       "science": "ai",
@@ -1523,7 +1523,7 @@
       "entertainment": "life",
       "lifestyle": "life"
     },
-    "default": "work",
+    "default": "ai",
     "sets": {
       "ai": {
         "eyebrow": "AIを仕事に活かすなら",
@@ -1541,15 +1541,13 @@
       },
       "work": {
         "eyebrow": "仕事の幅を広げるなら",
-        "headline": "独立・副業・スキルアップの第一歩",
-        "lead": "開業届や会社設立の手続き、得意を売る、スキルを学ぶ。小さく始められる選択肢です。料金や条件はリンク先で確認してください。",
+        "headline": "仕事の幅を広げる、副業とスキルの第一歩",
+        "lead": "得意を売る、スキルを学ぶ、自分のサイトを持つ。小さく始められる選択肢です。料金や条件はリンク先で確認してください。",
         "partners": [
-          "yayoi-kaigyou",
-          "mf-setsuritsu",
           "coconala",
           "skillhacks",
-          "xserver",
-          "mf-kakutei"
+          "doraverse",
+          "xserver"
         ]
       },
       "money": {
@@ -1622,6 +1620,13 @@
           "business"
         ]
       }
+    },
+    "moneyMatch": "お金|マネー|家計|節約|資産|投資|NISA|iDeCo|証券|年金|老後|税|確定申告|インボイス|金利|ローン|物価|値上げ|円安|円高|給付|補助金|助成金|支援金|賃金|給与|給料|ボーナス|手取り|ふるさと納税|日銀|日本銀行|国債",
+    "byGenreIfNotMoney": {
+      "public": "ai"
+    },
+    "byGenreIfMoney": {
+      "business": "money"
     }
   },
   "b2b": {

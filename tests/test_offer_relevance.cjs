@@ -40,8 +40,8 @@ const keys = (offer) => (offer?.items ?? []).map((item) => item.key);
 
 test("関係のない記事（スポーツ・芸能）も広告枠は出す（ジャンルの既定の広告）。関係のないガイドは出さない", () => {
   for (const item of [
-    article({ title: "フットサル日本代表、強豪モロッコと対戦", genreSlug: "sports", genre: "スポーツ", tags: ["サッカー"] }),
-    article({ title: "任天堂、新作ゲームの体験版を配信", genreSlug: "entertainment", genre: "エンタメ", tags: ["ゲーム"] }),
+    article({ title: "トヨタのWECチーム、モンツァ6時間レースで最終戦へ", genreSlug: "sports", genre: "スポーツ", tags: ["モータースポーツ"] }),
+    article({ title: "アバターSNSがTVアニメとコラボ", genreSlug: "entertainment", genre: "エンタメ", tags: ["アニメ"] }),
   ]) {
     const plan = offerPlanForArticle(item);
     assert.equal(plan.offer.fallback, true);
@@ -53,7 +53,7 @@ test("関係のない記事（スポーツ・芸能）も広告枠は出す（�
 });
 
 test("全ジャンルの記事に広告を1つ以上出し、右側と本文中で重ならない", () => {
-  const expected = { ai: "fallback-ai", science: "fallback-ai", business: "fallback-work", "tech-gadget": "fallback-gadget", investment: "fallback-money", "real-estate": "fallback-money", public: "fallback-tax", sports: "fallback-life", entertainment: "fallback-life", lifestyle: "fallback-life", other: "fallback-work" };
+  const expected = { ai: "fallback-ai", science: "fallback-ai", business: "fallback-work", "tech-gadget": "fallback-gadget", investment: "fallback-money", "real-estate": "fallback-money", public: "fallback-ai", sports: "fallback-life", entertainment: "fallback-life", lifestyle: "fallback-life", other: "fallback-ai" };
   for (const [genreSlug, topic] of Object.entries(expected)) {
     const plan = offerPlanForArticle(article({ title: "褒章の受章者が決定", genreSlug }));
     assert.equal(plan.offer.topic, topic, genreSlug);
@@ -143,10 +143,17 @@ test("税金・ふるさと納税・開業の記事は会計ソフト・ふる�
   assert.equal(tax.offer.topic, "tax-filing");
   assert.ok(["mf-kakutei", "yayoi-kakutei"].includes(keys(tax.rail)[0]));
   assert.equal(offerPlanForArticle(article({ title: "ふるさと納税の新ルール", genreSlug: "public" })).rail.items[0].key, "aupay-furusato");
-  const pub = keys(offerPlanForArticle(article({ title: "褒章の受章者が決定", genreSlug: "public" })).offer);
+  const pub = keys(offerPlanForArticle(article({ title: "遺族年金の受給者調査を実施", genreSlug: "public" })).offer);
   assert.ok(pub.indexOf("mf-kakutei") < pub.indexOf("matsui"));
+  // お金の話題でない公共の記事に会計ソフトは出さない
+  assert.ok(!keys(offerPlanForArticle(article({ title: "褒章の受章者が決定", genreSlug: "public" })).offer).includes("mf-kakutei"));
   assert.equal(keys(offerPlanForArticle(article({ title: "個人事業主から法人化する手順", genreSlug: "business" })).rail)[0], "yayoi-kaigyou");
-  assert.equal(keys(offerPlanForArticle(article({ title: "日銀の展望レポート", genreSlug: "business" })).rail)[0], "yayoi-kaigyou");
+  // 開業届・会社設立は独立・起業・税金の記事だけ。日銀の記事は証券、無関係なビジネス記事にも出さない
+  assert.equal(keys(offerPlanForArticle(article({ title: "日銀の展望レポート", genreSlug: "business" })).rail)[0], "matsui");
+  for (const title of ["Hondaが電動アシストマウンテンバイクを公開", "地ビールの出荷量が2年連続増加", "トヨタが水素の取り組みを発表"]) {
+    const all = keys(offerPlanForArticle(article({ title, genreSlug: "business" })).offer);
+    assert.ok(!all.some((key) => ["yayoi-kaigyou", "mf-setsuritsu", "yayoi-setsuritsu"].includes(key)), title);
+  }
 });
 
 test("新しいA8案件はリンクと表示計測が同じ素材（a8mat）の組で、PR枠で出す", () => {
@@ -256,4 +263,26 @@ test("枠の見出しは、その枠に並ぶ商品の話題から作る（Gemin
     assert.ok(keys(p.inline).every((key) => !rail.has(key)), real.slug);
     if (p.inline) assert.ok(p.inline.items.length >= 2, real.slug);
   }
+});
+
+test("製品・趣味の記事は、カテゴリの語で楽天（A8）とAmazonの検索リンクを出す（価格なし・PR枠）", () => {
+  const cases = [
+    [{ title: "Hondaが初の高級電動アシストマウンテンバイク「RN0」を公開", genreSlug: "business", tags: ["自転車"] }, "電動アシスト マウンテンバイク"],
+    [{ title: "サムスンの折りたたみスマホ「Galaxy Z Fold8」の使い心地", genreSlug: "tech-gadget" }, "折りたたみスマホ"],
+    [{ title: "任天堂、『ピクミン4 Nintendo Switch 2 Edition』の体験版を配信", genreSlug: "entertainment" }, "Nintendo Switch 2 ソフト"],
+    [{ title: "日本卓球協会の全日本社会人選手権が閉幕", genreSlug: "sports" }, "卓球 ラケット"],
+  ];
+  for (const [fields, query] of cases) {
+    const plan = offerPlanForArticle(article(fields));
+    assert.equal(plan.offer.topic, "fallback-product", fields.title);
+    assert.match(plan.rail.headline, /^この記事に関連する商品：/);
+    const [rakuten, amazon] = plan.rail.items;
+    assert.ok(rakuten.url.startsWith("https://rpx.a8.net/svt/ejp?a8mat=4BELTP+50ED2Q+2HOM+BWGDT&rakuten=y&a8ejpredirect="), rakuten.url);
+    assert.ok(decodeURIComponent(decodeURIComponent(decodeURIComponent(rakuten.url))).includes(`search.rakuten.co.jp/search/mall/${query}/`), rakuten.url);
+    assert.equal(amazon.url, `https://www.amazon.co.jp/s?k=${encodeURIComponent(query)}&tag=saisokuai-22`);
+    assert.ok(plan.rail.items.every((item) => item.price == null && !item.priceText));
+    assert.ok(plan.offer.pixels.includes("https://www15.a8.net/0.gif?a8mat=4BELTP+50ED2Q+2HOM+BWGDT"));
+  }
+  // 決算・株価などの記事は製品の記事として扱わない
+  assert.notEqual(offerPlanForArticle(article({ title: "任天堂の決算、Switch 2が好調", genreSlug: "business" })).offer.topic, "fallback-product");
 });

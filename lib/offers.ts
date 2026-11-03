@@ -1,6 +1,8 @@
 import fs from "@/lib/content-fs";
 import path from "node:path";
 import type { ArticleSummary } from "@/lib/articles";
+import { amazonUrl, rakutenSearchUrl } from "@/lib/amazon";
+import { productCategoryForArticle } from "@/lib/keyword-products";
 
 /**
  * 記事の広告枠（右側の1〜3位・本文中の4〜6位）。
@@ -97,7 +99,16 @@ type B2BConfig = {
 
 type OffersFile = {
   /** 合う話題が無い記事に出す、ジャンルごとの広告（読者全体に役立つもの） */
-  articleFallback?: { byGenre: Record<string, string>; default: string; sets: Record<string, FallbackSet> };
+  articleFallback?: {
+    byGenre: Record<string, string>;
+    /** 見出しがお金の話題（moneyMatch）でないときに使う組（例: 公共の褒章の記事に会計ソフトを出さない） */
+    byGenreIfNotMoney?: Record<string, string>;
+    /** 見出しがお金の話題のときに使う組（例: ビジネスの日銀・物価の記事は証券・お金の本） */
+    byGenreIfMoney?: Record<string, string>;
+    moneyMatch?: string;
+    default: string;
+    sets: Record<string, FallbackSet>;
+  };
   topics: Topic[];
   audience: Record<string, string>;
   fallback: string;
@@ -456,7 +467,9 @@ export function fallbackOfferForArticle(article: ArticleSummary, maxItems = 12):
   const text = articleText(article);
   // 法人・企業向けの記事は、個人向けの副業・家の回線ではなく AIツール・スキル・仕事の効率化（offers.json の b2b）
   const b2bSet = isB2BArticle(article, text) ? offers.b2b?.fallbackSet : undefined;
-  const key = b2bSet && config.sets[b2bSet] ? b2bSet : config.byGenre[article.genreSlug] ?? config.default;
+  const moneyTitle = regex(config.moneyMatch)?.test(text.title) ?? false;
+  const genreKey = (moneyTitle ? config.byGenreIfMoney?.[article.genreSlug] : config.byGenreIfNotMoney?.[article.genreSlug]) ?? config.byGenre[article.genreSlug] ?? config.default;
+  const key = b2bSet && config.sets[b2bSet] ? b2bSet : genreKey;
   const set = config.sets[key] ?? config.sets[config.default];
   if (!set) return undefined;
   const hosting = blocksHosting(article, text) ? new Set(offers.b2b?.hostingPartners ?? []) : new Set<string>();
@@ -480,10 +493,60 @@ export function fallbackOfferForArticle(article: ArticleSummary, maxItems = 12):
   return finishOffer(topic, built.slice(0, maxItems), { relevance: 0, fallback: true });
 }
 
-/** 記事ページの広告枠の割り当て。右側と本文中で同じ商品を出さない。合う話題が無ければジャンルの既定の広告 */
+/**
+ * 製品・趣味の記事（自転車・端末・ゲーム・スポーツ用品など）で、記事に合う話題が無いときの「この記事に関連する商品」。
+ * 製品カテゴリの語（lib/keyword-products.ts の表だけで決める）で、楽天市場（A8 の楽天アフィリエイト。lib/amazon.ts と同じ形）
+ * と Amazon（アソシエイト）の検索結果へ案内する。価格・宣伝文句は出さない。
+ */
+export function keywordProductOffer(article: ArticleSummary): Offer | undefined {
+  const category = productCategoryForArticle(article);
+  if (!category) return undefined;
+  const { products } = load();
+  const topicKey = "fallback-product";
+  const note = `記事で扱った${category.name}に関連する商品を、検索結果で比べられます。特定の商品をすすめるものではありません。`;
+  const caution = "価格・在庫・仕様は各ショップのページで確認してください。";
+  const shops = [
+    { id: "rakuten", shop: "楽天市場", badge: "RAKUTEN", url: rakutenSearchUrl(category.query), pixel: validPixel(products?.pixel) },
+    { id: "amazon", shop: "Amazon", badge: "AMAZON", url: amazonUrl({ query: category.query }), pixel: undefined },
+  ];
+  const built: Built[] = shops
+    .filter((shop) => isValidAffiliateUrl(shop.url))
+    .map((shop) => ({
+      item: {
+        key: `${shop.id}-search:${category.query}`,
+        kind: "partner" as const,
+        name: `「${category.query}」を${shop.shop}で探す`,
+        label: `${shop.shop}の検索結果`,
+        badge: shop.badge,
+        note,
+        caution,
+        image: null,
+        url: shop.url,
+        shop: shop.shop,
+        cta: `${shop.shop}で探す`,
+        relevance: 0,
+        topic: topicKey,
+      },
+      pixel: shop.pixel,
+    }));
+  const topic: Topic = {
+    key: topicKey,
+    match: "",
+    eyebrow: "この記事に関連する商品",
+    headline: `この記事に関連する商品：${category.name}`,
+    lead: "記事で扱った製品のカテゴリで、通販サイトの検索結果を案内します。",
+    partners: [],
+  };
+  return finishOffer(topic, built, { relevance: 0, fallback: true });
+}
+
+/**
+ * 記事ページの広告枠の割り当て。右側と本文中で同じ商品を出さない。
+ * 1. 記事に合う話題の広告（関連の高い順） 2. 製品・趣味の記事ならそのカテゴリの商品検索 3. ジャンルの既定の広告
+ */
 export function offerPlanForArticle(article: ArticleSummary): OfferPlan {
   const scored = articleScored(article);
-  const full = (scored.length > 0 ? buildArticleOffer(article, scored, 12) : undefined) ?? fallbackOfferForArticle(article, 12);
+  const full = (scored.length > 0 ? buildArticleOffer(article, scored, 12) : undefined) ?? keywordProductOffer(article) ?? fallbackOfferForArticle(article, 12);
   if (!full) return {};
   const base = scored[0]?.topic ?? topicOfFallback(full);
   const pool = full.items;

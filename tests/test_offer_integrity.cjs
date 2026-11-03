@@ -7,7 +7,7 @@ const ts = require('typescript');
 const root = path.resolve(__dirname, '..');
 const sourcePath = path.join(root, 'lib/offers.ts');
 const compiled = ts.transpileModule(fs.readFileSync(sourcePath, 'utf8'), {compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,esModuleInterop:true}}).outputText;
-const mod = new Module(sourcePath, module);mod.filename=sourcePath;mod.paths=Module._nodeModulePaths(path.dirname(sourcePath));const original=mod.require.bind(mod);mod.require=(name)=>name==='@/lib/content-fs'?fs:original(name);mod._compile(compiled,sourcePath);
+const mod = new Module(sourcePath, module);mod.filename=sourcePath;mod.paths=Module._nodeModulePaths(path.dirname(sourcePath));const original=mod.require.bind(mod);const libs={};const loadLib=(name)=>{if(libs[name])return libs[name].exports;const file=path.join(root,'lib',name.slice(6)+'.ts');const m=new Module(file,module);m.filename=file;m.paths=mod.paths;libs[name]=m;m.require=mod.require;m._compile(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,esModuleInterop:true}}).outputText,file);return m.exports;};mod.require=(name)=>name==='@/lib/content-fs'?fs:name.startsWith('@/lib/')&&name!=='@/lib/articles'?loadLib(name):original(name);mod._compile(compiled,sourcePath);
 const {offerForArticle,partnerItem}=mod.exports;
 const offers=JSON.parse(fs.readFileSync(path.join(root,'content/offers.json'),'utf8'));
 const links=JSON.parse(fs.readFileSync(path.join(root,'affiliate_links.json'),'utf8'));
@@ -63,7 +63,7 @@ test('記事の関連書籍は話題に合うタイトルだけ選ぶ',()=>{
 // 未設定（YOUR_ID など）や計測IDの無いリンクは、どの枠にも出さない
 const {isValidAffiliateUrl,offerPlanForArticle,fallbackOfferForArticle}=mod.exports;
 function freshOffers(dir){
- const m=new Module(sourcePath,module);m.filename=sourcePath;m.paths=Module._nodeModulePaths(path.dirname(sourcePath));const req=m.require.bind(m);m.require=(name)=>name==='@/lib/content-fs'?fs:req(name);m._compile(compiled,sourcePath);
+ const m=new Module(sourcePath,module);m.filename=sourcePath;m.paths=Module._nodeModulePaths(path.dirname(sourcePath));const req=m.require.bind(m);m.require=(name)=>name==='@/lib/content-fs'?fs:name.startsWith('@/lib/')&&name!=='@/lib/articles'?loadLib(name):req(name);m._compile(compiled,sourcePath);
  const cwd=process.cwd();
  return (fn)=>{process.chdir(dir);try{return fn(m.exports);}finally{process.chdir(cwd);}};
 }
