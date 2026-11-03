@@ -1270,6 +1270,214 @@
       "variant": "short",
       "bufferId": "6aea4d279da2f6a2e96e839f",
       "postedAt": "2026-11-03T21:08:13+00:00"
+    },
+    "openai-security-sprint-bug-bounty": {
+      "at": "2026-11-03T22:43:28+00:00",
+      "status": "attached",
+      "tries": 1,
+      "textAt": "2026-11-04T06:30:00+00:00",
+      "textId": "",
+      "breaking": false,
+      "scheduled": true,
+      "versions": {
+        "full": {
+          "ok": true,
+          "seconds": 49.312,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1,
+            "how": "ladder",
+            "vision_how": "deterministic-L4（レビューなし: RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+          },
+          "template": "ladder-L4",
+          "level": "L4",
+          "post": {
+            "title": "OpenAI、AIで自社の弱点を探す取り組みを強化 バグ報奨金は4倍超、防御側…",
+            "url": "https://ai-tech-express.jp/articles/openai-security-sprint-bug-bounty",
+            "total": 49.312,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "level": "L4",
+            "script_v3": {
+              "hook": {
+                "text": "OpenAI、AIで自社の弱点を探す取り組みを強化"
+              },
+              "summary": "要約すると、ChatGPTのOpenAIが、自社AIで弱点を探す次の取り組みを準備中です。"
+            }
+          }
+        },
+        "short": {
+          "ok": true,
+          "seconds": 21.794,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1,
+            "how": "ladder",
+            "vision_how": "deterministic-L4（レビューなし: RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+          },
+          "template": "ladder-L4",
+          "level": "L4",
+          "post": {
+            "title": "OpenAI、AIで自社の弱点を探す取り組みを強化 バグ報奨金は4倍超、防御側…",
+            "url": "https://ai-tech-express.jp/articles/openai-security-sprint-bug-bounty",
+            "total": 21.794,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "level": "L4",
+            "script_v3": {
+              "hook": {
+                "text": "OpenAI、AIで自社の弱点を探す取り組みを強化"
+              },
+              "summary": "要約すると、ChatGPTのOpenAIが、自社AIで弱点を探す次の取り組みを準備中です。"
+            }
+          }
+        }
+      },
+      "timings": {
+        "full": {
+          "tts": 0.0,
+          "render": 20.5,
+          "gate": 2.3,
+          "total": 23.0,
+          "ladder_total": 157.3
+        },
+        "short": {
+          "tts": 0.0,
+          "render": 9.3,
+          "gate": 1.1,
+          "total": 10.5,
+          "ladder_total": 157.3
+        }
+      },
+      "level": "L4",
+      "ladder": {
+        "full": [
+          {
+            "level": "L1",
+            "ok": false,
+            "reasons": [
+              "full: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
+            ],
+            "seconds": 20.1,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L2",
+            "ok": false,
+            "reasons": [
+              "full: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
+            ],
+            "seconds": 20.4,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L3",
+            "ok": false,
+            "reasons": [
+              "full: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））",
+              "short: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+            ],
+            "seconds": 82.4,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L4",
+            "ok": true,
+            "reasons": [],
+            "seconds": 34.3,
+            "variants": {
+              "full": true,
+              "short": true
+            }
+          }
+        ],
+        "short": [
+          {
+            "level": "L1",
+            "ok": false,
+            "reasons": [
+              "full: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
+            ],
+            "seconds": 20.1,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L2",
+            "ok": false,
+            "reasons": [
+              "full: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 6回・1秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
+            ],
+            "seconds": 20.4,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L3",
+            "ok": false,
+            "reasons": [
+              "full: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））",
+              "short: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+            ],
+            "seconds": 82.4,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L4",
+            "ok": true,
+            "reasons": [],
+            "seconds": 34.3,
+            "variants": {
+              "full": true,
+              "short": true
+            }
+          }
+        ]
+      },
+      "ok": true,
+      "reason": "",
+      "pages": [],
+      "urls": {
+        "full": "https://ai-tech-express.jp/video/openai-security-sprint-bug-bounty-385aedd7c4.mp4",
+        "short": "https://ai-tech-express.jp/video/openai-security-sprint-bug-bounty-b77706e2ba.mp4",
+        "poster": "https://ai-tech-express.jp/video/openai-security-sprint-bug-bounty-4adeaeb2af.jpg"
+      },
+      "embedded": true,
+      "variant": "full",
+      "bufferId": "6aea6433f93f03bf7d9b137b",
+      "postedAt": "2026-11-04T06:30:00+00:00"
     }
   },
   "queued": {
@@ -1311,6 +1519,18 @@
       "dueAt": "2026-11-03T21:08:13+00:00",
       "variant": "short",
       "delayedMin": 7
+    },
+    "openai-security-sprint-bug-bounty": {
+      "status": "created",
+      "channels": {
+        "threads": "6aea6433f93f03bf7d9b137b",
+        "twitter": "6aea6435a54767472d49adf3",
+        "facebook": "6aea64368204b43ff371cd1b"
+      },
+      "id": "6aea6433f93f03bf7d9b137b",
+      "dueAt": "2026-11-04T06:30:00+00:00",
+      "variant": "full",
+      "delayedMin": 0
     }
   },
   "converted": {

@@ -153,5 +153,12 @@
       "使ってみるには": "利用枠と報奨金、誰がどう使えるか"
     }
   },
-  "sectionsPolishedAt": "2026-11-03T12:10:19+00:00"
+  "sectionsPolishedAt": "2026-11-03T12:10:19+00:00",
+  "video": {
+    "src": "https://ai-tech-express.jp/video/openai-security-sprint-bug-bounty-385aedd7c4.mp4",
+    "poster": "https://ai-tech-express.jp/video/openai-security-sprint-bug-bounty-4adeaeb2af.jpg",
+    "seconds": 49.3,
+    "title": "OpenAI、AIで自社の弱点を探す取り組みを強化 バグ報奨金は4倍超、防御側…",
+    "credit": "VOICEVOX:九州そら"
+  }
 }

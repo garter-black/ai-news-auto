@@ -3710,105 +3710,28 @@
       "blueskyAt": "2026-11-03T22:43:03+00:00"
     },
     "openai-security-sprint-bug-bounty": {
-      "id": "",
+      "id": "6aea6433f93f03bf7d9b137b",
       "via": "buffer",
       "permalink": "",
-      "status": "awaiting_video",
-      "pending": {
-        "inputs": {
-          "threads": {
-            "channelId": "6ad942f3778b240e2f82f180",
-            "text": "会社のセキュリティ担当の人に、知っておいてほしい話です。\n\n要約すると、OpenAIが自社のAIの弱点を探す次の取り組みを準備しています。\n重大な弱点を見つけた人への報奨金も、4倍超に引き上げます。\n\nあなたの会社では、AIをセキュリティ対策に使っていますか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/openai-security-sprint-bug-bounty?utm_source=threads&utm_medium=social&utm_campaign=classic",
-            "schedulingType": "automatic",
-            "assets": [],
-            "metadata": {
-              "threads": {
-                "topic": "ChatGPT",
-                "thread": [
-                  {
-                    "text": "会社のセキュリティ担当の人に、知っておいてほしい話です。\n\n要約すると、OpenAIが自社のAIの弱点を探す次の取り組みを準備しています。\n重大な弱点を見つけた人への報奨金も、4倍超に引き上げます。\n\nあなたの会社では、AIをセキュリティ対策に使っていますか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/openai-security-sprint-bug-bounty?utm_source=threads&utm_medium=social&utm_campaign=classic",
-                    "assets": [
-                      {
-                        "image": {
-                          "url": "https://ai-tech-express.jp/card/openai-security-sprint-bug-bounty"
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            },
-            "mode": "customScheduled",
-            "dueAt": "2026-11-04T06:30:00Z"
-          },
-          "twitter": {
-            "channelId": "6ade35f52f1f5ed648cb07cf",
-            "schedulingType": "automatic",
-            "text": "会社のセキュリティ担当の人に、知っておいてほしい話です。\n\n要約すると、OpenAIが自社のAIの弱点を探す次の取り組みを準備しています。\n重大な弱点を見つけた人への報奨金も、4倍超に引き上げます。\n\nあなたの会社では、AIをセキュリティ対策に使っていますか？\n\n#AI #ChatGPT",
-            "assets": [],
-            "metadata": {
-              "twitter": {
-                "thread": [
-                  {
-                    "text": "会社のセキュリティ担当の人に、知っておいてほしい話です。\n\n要約すると、OpenAIが自社のAIの弱点を探す次の取り組みを準備しています。\n重大な弱点を見つけた人への報奨金も、4倍超に引き上げます。\n\nあなたの会社では、AIをセキュリティ対策に使っていますか？\n\n#AI #ChatGPT",
-                    "assets": [
-                      {
-                        "image": {
-                          "url": "https://ai-tech-express.jp/card/openai-security-sprint-bug-bounty"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "text": "詳しくはこちら👇\n（専門用語なしの「かんたん版」もあります）\nhttps://ai-tech-express.jp/articles/openai-security-sprint-bug-bounty?utm_source=x&utm_medium=social&utm_campaign=classic",
-                    "assets": []
-                  }
-                ]
-              }
-            },
-            "mode": "customScheduled",
-            "dueAt": "2026-11-04T06:42:00Z",
-            "_offsetMin": 12
-          },
-          "facebook": {
-            "channelId": "6ade3ad12f1f5ed648cb6936",
-            "schedulingType": "automatic",
-            "text": "会社のセキュリティ担当の人に、知っておいてほしい話です。\n\n要約すると、OpenAIが自社のAIの弱点を探す次の取り組みを準備しています。\n重大な弱点を見つけた人への報奨金も、4倍超に引き上げます。\n\nあなたの会社では、AIをセキュリティ対策に使っていますか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/openai-security-sprint-bug-bounty?utm_source=facebook&utm_medium=social&utm_campaign=classic",
-            "assets": [],
-            "metadata": {
-              "facebook": {
-                "type": "post",
-                "linkAttachment": {
-                  "url": "https://ai-tech-express.jp/articles/openai-security-sprint-bug-bounty?utm_source=facebook&utm_medium=social&utm_campaign=classic",
-                  "title": "OpenAIのバグ報奨金4倍超とは？セキュリティ強化策を解説",
-                  "description": "OpenAIが次のセキュリティスプリントを準備。外部のCathedralと組み、重大な脆弱性の報奨金を4倍超に。重要インフラの防御担当者には6カ月で10億ドル分の補助付き利用枠を用意します。",
-                  "thumbnail": {
-                    "url": "https://ai-tech-express.jp/card/openai-security-sprint-bug-bounty"
-                  }
-                }
-              }
-            },
-            "mode": "customScheduled",
-            "dueAt": "2026-11-04T06:57:00Z",
-            "_offsetMin": 27
-          }
-        },
-        "slot": "2026-11-04T06:30:00+00:00",
-        "fmt": "classic"
-      },
+      "status": "scheduled",
       "hook": "callout",
       "opener": "know",
       "slotTest": "ai",
       "genre": "ai",
       "score": 3,
       "style": "standalone",
-      "image": "card",
+      "image": "video",
       "format": "classic",
       "topic": "ChatGPT",
       "question": true,
       "questionText": "あなたの会社では、AIをセキュリティ対策に使っていますか？",
       "dueAt": "2026-11-04T06:30:00+00:00",
-      "postedAt": "2026-11-03T22:42:43+00:00"
+      "postedAt": "2026-11-03T22:42:43+00:00",
+      "channels": {
+        "twitter": "6aea6435a54767472d49adf3",
+        "facebook": "6aea64368204b43ff371cd1b"
+      },
+      "videoVariant": "full"
     }
   },
   "extraPending": {}
