@@ -3254,6 +3254,12 @@
       "slug": "amagasaki-takumi-championship-2026",
       "url": "https://kyodonewsprwire.jp/release/202610268686"
     },
+    "0245b2330014ed62": {
+      "at": "2026-11-03T01:26:21.538480+00:00",
+      "reason": "prefilter: タイトルが短すぎる（一覧リンク等）",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/menu_news/s-news/01kanbo01_02001183.html"
+    },
     "028731ad3c7f2237": {
       "at": "2026-10-27T03:04:42.978261+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（メンテナンス）",
@@ -3695,6 +3701,12 @@
       "reason": "quality: 本文が短い（1748字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026103006"
+    },
+    "1058cf50d66022c9": {
+      "at": "2026-11-03T01:27:34.744445+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（審議会）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/newpage_76669.html"
     },
     "10659eb70d41a8da": {
       "at": "2026-10-27T17:37:49.739746+00:00",
@@ -4987,6 +4999,15 @@
       "skipped": true,
       "url": "https://openai.com/index/ropes-gray-ai-diligence"
     },
+    "2db4bb2e8898dc52": {
+      "at": "2026-11-03T01:27:34.111397+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "offPersona": true,
+      "score": 100,
+      "section": "public",
+      "slug": "tokyo-anti-illegal-lending-november-2026",
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110204"
+    },
     "2dc52d226a3057d6": {
       "at": "2026-10-27T03:05:10.759044+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（億米ドル）",
@@ -5121,6 +5142,12 @@
       "reason": "quality: 本文が短い（1679字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）; easy_markdown が「## ひとことで言うと」から始まっていない",
       "skipped": true,
       "url": "https://www.morinaga.co.jp/company/newsrelease/detail.php?no=3225"
+    },
+    "31239c46ad6a8bb6": {
+      "at": "2026-11-03T01:27:34.744422+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（審議会）",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/main_sosiki/joho_tsusin/policyreports/joho_tsusin/kaisai/02tsushin10_04000740.html"
     },
     "31317bfb9b6a32d8": {
       "at": "2026-10-27T00:02:14.132711+00:00",
@@ -6145,6 +6172,12 @@
       "slug": "futsal-japan-morocco-oita-2026",
       "url": "https://www.jfa.jp/news/00036963/"
     },
+    "4c3f60ee2f3441d9": {
+      "at": "2026-11-03T01:26:55.382918+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（表彰）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/newpage_77016.html"
+    },
     "4c4b5e3ad9bf29d0": {
       "at": "2026-11-02T07:11:29.084445+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -6183,6 +6216,13 @@
       "slug": "elevenlabs-sfx-v3-sound-effects",
       "url": "https://elevenlabs.io/blog/sfx-v3-for-developers"
     },
+    "4d4613f8ec2ff904": {
+      "at": "2026-11-03T01:26:55.382797+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "本記事は消防関係の叙勲受章者名簿の公表であり、読者が直接利用・申し込みできる制度やサービスではないため、実務的な活用ができない情報です。",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/menu_news/s-news/01shoubo01_02001280.html"
+    },
     "4d78e0e5799d82d8": {
       "at": "2026-10-26T14:11:39.308976+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（データベース届出情報の更新）",
@@ -6217,6 +6257,12 @@
       "reason": "quality: 元記事の文をそのまま書き写している（2文。例「- リーガル リサーチ: Bloomberg Law、Trellis、Descrybe Legal 」）。自分の言葉で要約する",
       "skipped": true,
       "url": "https://blogs.windows.com/japan/2026/10/30/introducing-microsoft-copilot-for-legal/"
+    },
+    "4e454402c70fe4c7": {
+      "at": "2026-11-03T01:26:55.382886+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（委員会）",
+      "skipped": true,
+      "url": "https://www.mext.go.jp/b_menu/shingi/gijyutu/gijyutu2/1421690_00022.html"
     },
     "4e9ce8cacf873c06": {
       "at": "2026-10-26T18:33:08.905293+00:00",
@@ -7792,6 +7838,13 @@
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102905"
     },
+    "7b72718fd57b6bd9": {
+      "at": "2026-11-03T01:26:19.222023+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "行政の方針や進捗報告で、制度・給付等の新規情報がなく、読者の暮らしやお金に直接関わる具体的な制度ではないため。",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/menu_news/kaiken/01koho01_02001589.html"
+    },
     "7b7a9b09c0599cf2": {
       "at": "2026-10-27T17:12:19.208475+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -8846,6 +8899,12 @@
       "skipped": true,
       "url": "https://www.soumu.go.jp/menu_news/s-news/01zeimu02_02000477.html"
     },
+    "93f85c63fdfb62ec": {
+      "at": "2026-11-03T01:26:21.538578+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（審議会）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110209"
+    },
     "9401fe00400266b3": {
       "at": "2026-10-27T15:57:44.143309+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9634,6 +9693,12 @@
       "skipped": true,
       "url": "https://engineering.fb.com/2026/10/27/developer-tools/python-typing-survey-2026-ai-tools-checker-landscape/"
     },
+    "a825e5f9254162ea": {
+      "at": "2026-11-03T01:26:21.538415+00:00",
+      "reason": "short text 403",
+      "skipped": true,
+      "url": "https://www.gov-online.go.jp/press_conferences/chief_cabinet_secretary/202611/video-327005.html"
+    },
     "a830b0664237f855": {
       "at": "2026-10-28T21:12:14.735873+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9939,6 +10004,12 @@
       "section": "business",
       "slug": "ntt-docomo-kumamoto-earthquake-volunteer",
       "url": "https://www.docomosolutions.co.jp/news/pr26102701.html"
+    },
+    "b1cffaec825b32e7": {
+      "at": "2026-11-03T01:26:21.538512+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（開催について）",
+      "skipped": true,
+      "url": "https://www.kantei.go.jp/jp/tyoukanpress/202611/2_p.html"
     },
     "b21238f8afcf5915": {
       "at": "2026-10-27T03:04:42.979118+00:00",
@@ -10633,6 +10704,12 @@
       "section": "lifestyle",
       "slug": "kirin-holdings-kirink-media-launch",
       "url": "https://www.kirinholdings.com/jp/newsroom/release/2026/1028_02.html"
+    },
+    "c39de0152eab23c6": {
+      "at": "2026-11-03T01:26:21.538561+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（審議会）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/newpage_77043.html"
     },
     "c39fc6a231d46dae": {
       "at": "2026-10-27T16:14:12.036496+00:00",
@@ -11723,6 +11800,13 @@
       "skipped": true,
       "url": "https://www.boj.or.jp/statistics/set/kess/release/2026/kess2609.pdf"
     },
+    "e121e6dca46a827f": {
+      "at": "2026-11-03T01:25:05.195300+00:00",
+      "model": "gemini-3.5-flash",
+      "reason": "東京都建設局による『神田川・環状七号線地下調節池インフラツアー』の参加者募集のお知らせであり、制度・手続き・給付・規制等の発表ではなく、単なるイベントの参加者募集に該当するため。",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110202"
+    },
     "e12e0370f6709ae3": {
       "at": "2026-10-30T05:53:17.494067+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（キャンペーン）",
@@ -12096,6 +12180,12 @@
       "reason": "stale: 発表から68時間（48時間を超えた発表は通常の記事にしない）",
       "skipped": true,
       "url": "https://deepmind.google/blog/speeding-up-planning-decisions-with-ai/"
+    },
+    "eab8e36a2cb72f91": {
+      "at": "2026-11-03T01:26:21.538539+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（委員会）",
+      "skipped": true,
+      "url": "https://www.mext.go.jp/unesco/001/2014/1347530_00013.htm"
     },
     "ead87d51915fe418": {
       "at": "2026-10-28T22:30:42.874883+00:00",
@@ -12965,29 +13055,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-10-31T03:31:11.688669+00:00",
-      "attempt": 1,
-      "id": "fb3444ec170407ee",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "本文が短い（1621字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
-        "easy_markdown が短い（368字 / 基準 400字以上）"
-      ],
-      "readability": {
-        "avg_paragraph": 149.5,
-        "avg_sentence": 57.0,
-        "long_share": 0.429,
-        "max_paragraph": 199,
-        "paragraphs": 8,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "cyberagent",
-      "title": "「ちいかわクリスマスマーケット」限定オリジナルグッズ公開！"
-    },
     {
       "accepted": false,
       "at": "2026-10-31T03:31:18.916678+00:00",
@@ -19373,6 +19440,26 @@
       "score": 100,
       "source": "samsung-global",
       "title": "[Video] Inside the Tech: Samsung Micro RGB TV"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T01:27:34.106968+00:00",
+      "attempt": 1,
+      "id": "2db4bb2e8898dc52",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 111.5,
+        "avg_sentence": 29.3,
+        "long_share": 0.026,
+        "max_paragraph": 203,
+        "paragraphs": 10,
+        "sentences": 38
+      },
+      "score": 100,
+      "source": "tokyo-metro",
+      "title": "11月は「ヤミ金融被害防止強化月間」です 金融トラブルにご注意ください"
     }
   ],
   "short_text_retry": {
