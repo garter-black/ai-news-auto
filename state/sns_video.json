@@ -903,9 +903,9 @@
       "why": "動画ができる前に投稿の時刻が来た（写真で出た）"
     },
     "github-copilot-jetbrains-air": {
-      "at": "2026-11-03T17:20:55+00:00",
+      "at": "2026-11-03T17:48:29+00:00",
       "status": "gate_failed",
-      "tries": 1,
+      "tries": 2,
       "textAt": "2026-11-04T00:45:00+00:00",
       "textId": "",
       "breaking": false,
@@ -913,12 +913,14 @@
       "versions": {
         "full": {
           "ok": false,
-          "seconds": null,
+          "seconds": 57.476,
           "reasons": [
-            "台本を作れない: 台本を作れませんでした（LLM 9回・84秒）: beat3.sub は14字以内。; 数字カード「既存の契約」が記事の表記どおりではない; speech に英単語 Air, JetBrains が残っています。カタカナにしてください。"
+            "v3: QA(目視): つかみ（選択の青）: 右画面に選択の青が見当たらない（文に青が付いていない）。",
+            "v3: QA(目視): 場面1（選択の青）: 選択文「You can now delegate…」に選択の青が付いておらず、文が吹き出しにも一部隠れている。",
+            "v3: QA(目視): 場面2（選択の青）: 選択文に選択の青がはっきり見えず、文の途中が吹き出しで隠れている。"
           ],
           "qa": {
-            "geometry": false,
+            "geometry": true,
             "vision": false,
             "version": 1
           },
@@ -926,12 +928,14 @@
         },
         "short": {
           "ok": false,
-          "seconds": null,
+          "seconds": 34.66,
           "reasons": [
-            "台本を作れない: 台本を作れませんでした（LLM 9回・84秒）: beat3.sub は14字以内。; 数字カード「既存の契約」が記事の表記どおりではない; speech に英単語 Air, JetBrains が残っています。カタカナにしてください。"
+            "v3: QA(目視): つかみ（選択の青）: 右画面に選択の青が見当たらない（文に青が付いていない）。",
+            "v3: QA(目視): 場面1（選択の青）: 選択文に選択の青が付いておらず、文が吹き出しにも一部隠れている。",
+            "v3: QA(目視): 場面2（選択の青）: 選択文に選択の青がはっきり見えず、文の途中が吹き出しで隠れている。"
           ],
           "qa": {
-            "geometry": false,
+            "geometry": true,
             "vision": false,
             "version": 1
           },
@@ -939,19 +943,38 @@
         }
       },
       "timings": {
-        "full": null,
-        "short": null
+        "full": {
+          "script": 0.0,
+          "tts": 19.65,
+          "plan_audio": 4.18,
+          "render": 36.71,
+          "gate": 4.37,
+          "sheet": 1.99,
+          "total": 67.1
+        },
+        "short": {
+          "script": 0.0,
+          "tts": 11.78,
+          "plan_audio": 1.81,
+          "render": 21.82,
+          "gate": 2.95,
+          "sheet": 1.23,
+          "total": 39.7
+        }
       },
       "ok": false,
-      "reason": "full: 台本を作れない: 台本を作れませんでした（LLM 9回・84秒）: beat3.sub は14字以内。; 数字カード「既存の契約」が記事の表記どおりではない; speech に英単語 Air, JetBrains が残っています。カタカナにしてください。 / short: 台本を作れない: 台本を作れませんでした（LLM 9回・84秒）: beat3.sub は14字以内。; 数字カード「既存の契約」が記事の表記どおりではない; speech に英単語 Air, JetBrains が残っています。カタカナにしてください。",
-      "pages": []
+      "reason": "full: v3: QA(目視): つかみ（選択の青）: 右画面に選択の青が見当たらない（文に青が付いていない）。・v3: QA(目視): 場面1（選択の青）: 選択文「You can now delegate…」に選択の青が付いておらず、文が吹き出しにも一部隠れている。 / short: v3: QA(目視): つかみ（選択の青）: 右画面に選択の青が見当たらない（文に青が付いていない）。・v3: QA(目視): 場面1（選択の青）: 選択文に選択の青が付いておらず、文が吹き出しにも一部隠れている。",
+      "pages": [
+        "github.blog"
+      ]
     }
   },
   "queued": {
     "github-copilot-jetbrains-air": {
-      "status": "waiting",
-      "why": "動画を作っている途中・順番待ち",
-      "checkedAt": "2026-11-03T17:20:55+00:00"
+      "status": "skipped",
+      "why": "動画を作れなかった（gate_failed: full: v3: QA(目視): つかみ（選択の青）: 右画面に選択の青が見当たらない（文に青が付いていない）。・v3: QA(目視): 場面1（選択の青）: 選択文「You can now delegate…」に選択の青が付いておらず、文が吹き出しにも一部隠れている。 / short: v3: QA(目視): つか）",
+      "checkedAt": "2026-11-03T17:20:55+00:00",
+      "at": "2026-11-03T17:48:29+00:00"
     }
   },
   "converted": {
