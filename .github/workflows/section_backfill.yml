@@ -1,7 +1,7 @@
 name: Section headings backfill
 
 # 既存の記事の章の見出しを記事ごとの言葉にし、水増しの文を締める（scripts/section_polish.py。2026-11-03 オーナー指摘）。
-# まだの記事（sectionsPolishedAt が無い記事）だけを1回40本まで。全部終わったら何もしないで終わる。
+# まだの記事（sectionsPolishedAt が無い記事）だけを、新しい記事から1回40本まで。全部終わったら何もしないで終わる。
 # Haiku（purpose=helper。月の予算の配分の中で。llm.api_plan）→ だめなら無料モデル。SNS には何も出さない
 on:
   schedule:
@@ -12,6 +12,10 @@ on:
         description: "1回で直す記事の数"
         required: false
         default: "40"
+      slugs:
+        description: "この記事だけ（カンマ区切り。空なら、まだの記事を新しい順に）"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -49,7 +53,13 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           MAX: ${{ inputs.max || '40' }}
-        run: timeout 1800 python -u scripts/section_polish.py --all --apply --max "$MAX" --purpose helper
+          SLUGS: ${{ inputs.slugs }}
+        run: |
+          if [ -n "$SLUGS" ]; then
+            timeout 1800 python -u scripts/section_polish.py --slug "$SLUGS" --apply --purpose helper
+          else
+            timeout 1800 python -u scripts/section_polish.py --all --apply --max "$MAX" --purpose helper
+          fi
       - name: Commit and deploy
         if: ${{ !cancelled() }}
         env:

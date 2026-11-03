@@ -407,7 +407,16 @@ def targets(args) -> list[Path]:
     if args.shard:
         k, n = (int(x) for x in args.shard.split("/"))
         paths = [p for i, p in enumerate(paths) if i % n == k]
-    return paths
+
+    # 新しい記事から（読まれやすく、検索・審査の目にも先に触れるため）
+    def stamp(p: Path) -> str:
+        try:
+            r = json.loads(p.read_text("utf-8"))
+        except ValueError:
+            return ""
+        return str(r.get("generatedAt") or r.get("publishedAt") or "")
+
+    return sorted(paths, key=stamp, reverse=True)
 
 
 def main(argv: list[str] | None = None) -> int:
