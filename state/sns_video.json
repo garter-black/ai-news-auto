@@ -848,5 +848,82 @@
       "why": "動画ができる前に投稿の時刻が来た（写真で出た）"
     }
   },
-  "queued": {}
+  "queued": {},
+  "converted": {
+    "google-pixel-11-pro-food-photography": {
+      "at": "2026-11-03T15:07:52+00:00",
+      "pending": {
+        "inputs": {
+          "facebook": {
+            "channelId": "6ade3ad12f1f5ed648cb6936",
+            "schedulingType": "automatic",
+            "text": "【速報】Androidスマホを使っている人、これは要チェックです。\n\n要約すると、ソフトバンクが、Google Pixel 11 Proを使った料理写真の撮り方を公開しました。\n撮影後にAIで背景を足したり、食べかけを元に戻したりできます。\n\nスマホやタブレット、いちばん使うのは仕事と私用のどっちですか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/google-pixel-11-pro-food-photography?utm_source=facebook&utm_medium=social&utm_campaign=classic",
+            "assets": [],
+            "metadata": {
+              "facebook": {
+                "type": "post",
+                "linkAttachment": {
+                  "url": "https://ai-tech-express.jp/articles/google-pixel-11-pro-food-photography?utm_source=facebook&utm_medium=social&utm_campaign=classic",
+                  "title": "Google Pixel 11 Proの料理撮影術とAI編集の使い方",
+                  "description": "ソフトバンクニュースで公開された最新スマホ「Google Pixel 11 Pro」を使った料理撮影・編集術を解説。マジックキャプチャーやAIによる背景追加でシズル感あふれる写真を残すコツを紹介します。",
+                  "thumbnail": {
+                    "url": "https://ai-tech-express.jp/card/google-pixel-11-pro-food-photography"
+                  }
+                }
+              }
+            },
+            "mode": "customScheduled",
+            "dueAt": "2026-11-03T15:34:52Z",
+            "_offsetMin": 27
+          }
+        },
+        "slot": "2026-11-03T15:07:52+00:00",
+        "fmt": "classic"
+      },
+      "threadsSent": true,
+      "paused": {
+        "facebook": {
+          "id": "6ae9e0ae1e1aeba3c6bb1f7e",
+          "ok": true
+        }
+      },
+      "applied": true
+    }
+  },
+  "extraQueued": {
+    "google-pixel-11-pro-food-photography": {
+      "pending": {
+        "inputs": {
+          "facebook": {
+            "channelId": "6ade3ad12f1f5ed648cb6936",
+            "schedulingType": "automatic",
+            "text": "【速報】Androidスマホを使っている人、これは要チェックです。\n\n要約すると、ソフトバンクが、Google Pixel 11 Proを使った料理写真の撮り方を公開しました。\n撮影後にAIで背景を足したり、食べかけを元に戻したりできます。\n\nスマホやタブレット、いちばん使うのは仕事と私用のどっちですか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/google-pixel-11-pro-food-photography?utm_source=facebook&utm_medium=social&utm_campaign=classic",
+            "assets": [],
+            "metadata": {
+              "facebook": {
+                "type": "post",
+                "linkAttachment": {
+                  "url": "https://ai-tech-express.jp/articles/google-pixel-11-pro-food-photography?utm_source=facebook&utm_medium=social&utm_campaign=classic",
+                  "title": "Google Pixel 11 Proの料理撮影術とAI編集の使い方",
+                  "description": "ソフトバンクニュースで公開された最新スマホ「Google Pixel 11 Pro」を使った料理撮影・編集術を解説。マジックキャプチャーやAIによる背景追加でシズル感あふれる写真を残すコツを紹介します。",
+                  "thumbnail": {
+                    "url": "https://ai-tech-express.jp/card/google-pixel-11-pro-food-photography"
+                  }
+                }
+              }
+            },
+            "mode": "customScheduled",
+            "dueAt": "2026-11-03T15:34:52Z",
+            "_offsetMin": 27
+          }
+        },
+        "slot": "2026-11-03T15:07:52+00:00",
+        "fmt": "classic"
+      },
+      "status": "created",
+      "channels": {
+        "facebook": "6ae9f8d7985f73e582538372"
+      }
+    }
+  }
 }
