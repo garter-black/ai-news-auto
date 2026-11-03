@@ -293,7 +293,11 @@ class Page:
         return self.img.shape[0]
 
     def bg(self) -> tuple:
-        patch = self.img[: min(40, self.height), : min(40, self.width)].reshape(-1, 3)
+        """ページの地の色: 左右の端の細い帯（ページ全体の高さ）の中央値。2026-11-04: 左上の角だけを見ると、
+        黒い見出しの帯があるページ（developer.nvidia.com）で地が黒になり、画面の左右に黒い帯が出ていた"""
+        k = max(2, min(24, self.width // 40))
+        step = max(1, self.height // 2000)
+        patch = np.concatenate([self.img[::step, :k], self.img[::step, -k:]], axis=1).reshape(-1, 3)
         return tuple(int(x) for x in np.median(patch, axis=0))
 
 
@@ -3504,7 +3508,8 @@ def geometry_records(plan: Plan, step: float = 0.1) -> list[dict]:
                 continue
             v = cam_view(cam)
             views.append([t, round(cam.s, 5), *[round(x, 1) for x in v]])
-            if peak is None or cam.s > peak[1]:
+            # 目視の確認のコマは、選択が消える直前（最後の 0.2秒）を避ける（コマの取り出しが次のフレームになり、選択の無い絵を見せていた）
+            if t <= t1 - 0.2 and (peak is None or cam.s > peak[1]):
                 peak = (t, cam.s)
         tgt = q["target"]
         phrase = clause_ok(tgt, q["block_text"]) if is_english(tgt) else ja_phrase_ok(tgt, q["block_text"])
