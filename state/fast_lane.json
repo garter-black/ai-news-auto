@@ -672,6 +672,19 @@
       "title": "Apple unveils groundbreaking MacBook Pro with PROLED XDR Display",
       "url": "https://www.apple.com/newsroom/2026/10/apple-unveils-groundbreaking-macbook-pro-with-proled-xdr-display/"
     },
+    "d94c9f77ddafc83a": {
+      "detectedAt": "2026-11-03T21:13:24+00:00",
+      "finishedAt": "2026-11-03T21:15:42+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41719973522",
+      "slug": "anthropic-flashprove-provable-inference",
+      "source": "anthropic-news",
+      "sourcePublishedAt": "2026-11-03T21:13:24+00:00",
+      "startedAt": "2026-11-03T21:15:05+00:00",
+      "title": "Progress on provable inference for large language models",
+      "url": "https://www.anthropic.com/research/provable-inference"
+    },
     "dbbcec2a746cb5b2": {
       "detectedAt": "2026-10-31T14:16:20+00:00",
       "finishedAt": "2026-10-31T14:16:58+00:00",

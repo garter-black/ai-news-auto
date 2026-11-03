@@ -1,0 +1,134 @@
+{
+  "slug": "anthropic-flashprove-provable-inference",
+  "sourceType": "web",
+  "sourceUrl": "https://www.anthropic.com/research/provable-inference",
+  "sourceName": "Anthropic公式ニュース",
+  "title": "Anthropic、AI応答の出所を証明する「FlashProve」公開　400B級モデルで毎秒約110トークン",
+  "seoTitle": "FlashProveとは？AI応答を証明する技術",
+  "threadsPost": "AIの安全性やセキュリティに関わる皆さん、押さえておきたい話です。\n\n要約すると、AnthropicがAIの回答の出所を暗号で証明する「FlashProve」を公開しました。\nH100 1枚で毎秒約110トークンの証明を作れます。\n\n使っているAIが本物かを自分で確かめる手段、必要だと思いますか？",
+  "threadsHook": "callout",
+  "threadsStyle": 3,
+  "writingVoice": "senpai",
+  "lede": "Anthropicは11月2日、AIの回答が申告どおりのモデルから出たことを暗号で証明する試作システム「FlashProve」をオープンソースで公開しました。400B級モデルでH100 GPU 1枚が毎秒約110トークンの証明を作り、1,024トークンの依頼あたりの証明は約19MBです。",
+  "description": "Anthropicが、AIの回答が指定モデルから出たことを暗号で証明する「FlashProve」を公開。400B級モデルでH100 1枚が毎秒約110トークンの証明を生成。コードはApache 2.0で公開。",
+  "keywords": [
+    "FlashProve",
+    "証明可能な推論",
+    "provable inference",
+    "zkSNARK",
+    "Anthropic 研究",
+    "AI 改ざん検知",
+    "ゼロ知識証明 AI",
+    "Llama 4 Maverick",
+    "Lean 形式検証",
+    "AI規制 監査"
+  ],
+  "tags": [
+    "生成AI",
+    "LLM",
+    "Anthropic",
+    "AIセキュリティ",
+    "暗号"
+  ],
+  "highlights": [
+    "Llama 4 Maverick（400B）を4ビット量子化し、H100 1枚で毎秒約110トークンの証明を生成",
+    "証明は1,024トークンの依頼あたり約19MB。GPU時間はvLLMでの推論の約70〜95倍",
+    "コード・Lean証明・仕様書などをApache 2.0で公開。中間成果で改良を呼びかけ"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "demo",
+    "japan": "unknown",
+    "price": "オープンソース",
+    "free": true,
+    "audience": "研究者・開発者",
+    "take": "試作段階の研究成果です。AIの監査や検証に関わる人は、公開コードと技術報告書を確認するとよいでしょう。",
+    "judgedAt": "2026-11-03T21:15:39.753725+00:00"
+  },
+  "workMoney": {
+    "relevance": "low",
+    "points": [
+      "一般の利用者への直接の影響は小さい研究です。AI基盤やセキュリティ、監査を担当する人は技術報告書を確認するとよいでしょう。"
+    ]
+  },
+  "body": "Anthropicが公開した「FlashProve」は、そのための試作システムです。AIの提供側が回答に短い証明書を付け、利用者や監査する側が手元で確かめる仕組みを目指しています。\n\nAnthropicの公式ブログによると、公開は2026年11月2日です。研究は同社のFrontier Red Teamが、EPFL（スイス連邦工科大学ローザンヌ校）やMITの研究者らと進めました。\n\n**回答の出所を確かめる手段がない問題**\n\nAIを使う人は、返ってきた回答が指定したモデルから出たのかを確かめられません。Anthropicは、ルーティングサービス（依頼をモデルに振り分ける仲介業者）がコスト削減のために別のモデルへ差し替える場合を挙げています。攻撃者がトークンの流れを改ざんする場合も同じです。回答の質が高くても、出力だけでは見分けられません。\n\n重みが非公開のモデルが多く、仮に重みがあっても確認にはモデルの再実行が必要です。これは一般の利用者や評価者には重い負担です。\n\nそこで研究されているのが「証明可能な推論」（Provable Inference、PI）です。計算資源が乏しく、重みも知らない利用者が、回答が指定のモデルから出たことを確かめられるようにする技術です。\n\n**zkSNARKという暗号技術を使う**\n\nFlashProveは、zkSNARK（ゼロ知識で、短く素早く検証できる証明）を使います。証明する側が短い証明書で「この計算は正しく実行された」と検証する側に納得させる仕組みです。証明書は、計算が正しいこと以外の情報を明かしません。検証にかかる時間は、元の計算より大幅に短くなります。\n\nAnthropicの想定では、証明は数メガバイトで、利用者はCPUで数秒のうちに検証できます。回答が指定モデルとずれていれば、検証は失敗します。モデルの重みは証明から読み取れません。ただし、モデルの構造を隠すことは、このシステムの目標に入っていません。\n\n**400B級モデルで毎秒約110トークン、約19MB**\n\n性能の数字は次のとおりです。条件は、Llama 4 Maverick（400Bパラメーターのミクスチャー・オブ・エキスパーツ型）を4ビット量子化し、prefill（入力文を読み込む段階）で整数演算を使うものです。\n\n- 使用GPU：NVIDIA H100 1枚\n- 証明の生成速度：毎秒約110トークン\n- 証明の大きさ：1,024トークンの依頼あたり約19MB\n- GPU時間：オープンソースのライブラリvLLMで同じ長さの入力を処理する場合の約70〜95倍\n\nAnthropicは、従来のオープンソースの手法は桁違いに遅いと説明しています。比較の詳細は技術報告書の第6節にあります。なお、証明の生成に元の推論の約70〜95倍のGPU時間がかかる点は、実運用に向けた課題として残ります。\n\n**Claudeが最適化し、Leanで保証を監査する**\n\n今回の改良の多くは、Claudeが行いました。暗号とセキュリティの分野の最新ツールを新しい形で応用しつつ、確立された設計原則に従ったといいます。\n\n一方でAnthropicは、Claudeが大規模で複雑なシステムでは評価しにくい判断もすると認めています。その対策として、主張する安全性の保証を、最上位の命題としてLean（形式検証用の言語）で書きました。第三者が監査しやすくするためです。\n\n**公開された5点と想定される使い道**\n\n公開物は5点で、コード、Leanの証明、文書はApache 2.0ライセンスです。\n\n- 公式ブログ記事\n- 技術報告書\n- Claudeが書いたプロトコル仕様書\n- 実行可能なコード（証明器、C++の高速な検証器、Leanで正しさを保証した検証器）\n- 最上位の数学的命題のLean証明と、監査用の対話型ビジュアライザー\n\nAnthropicはこれを完成した研究計画ではなく中間成果と位置づけ、他の研究者が改良することを期待しています。\n\n使い道として、3つの課題が挙げられています。\n\n- 開発ペースの管理：規制当局が、提供側のハードウェアが推論に使われているかを証明書で確認する。ただし、裏で学習していないことまでは証明できません。\n- 改ざんの検知：サーバーが侵害されたり、別のモデルが成り代わったりしても、期待する重みの証明は作れないため見抜ける。\n- 文章の出所証明：「このソフトは先端モデルで脆弱性検査を受けた」といった主張を検証できる。\n\nAnthropicは「フロンティア安全ロードマップ」で、2026年9月30日までに推論の出力を特定のモデルの重みに結びつけて署名する技術の試作を作る目標を掲げていました。同社はRSP（責任あるスケーリング方針）の更新で、この目標を別の関連プロジェクトで達成したと説明しています。それは推論トラフィックに署名し、信頼できるサーバーで再計算する方式で、今回は同じ目的を別の方法で追うものです。\n\nAnthropicはAIが自らの脆弱性を見つける取り組みも進めています（[Anthropic、未公開AIでChromeやSafariなどの深刻な脆弱性を発見](/articles/claude-finds-critical-vulnerabilities)）。\n\n**日本の読者への影響**\n\nコードはオープンソースで、日本からも入手できる形です。ただし、日本での利用に関する条件はまだ発表されていません。一般の利用者がすぐ使える製品ではありません。AI基盤、セキュリティ、監査を担当する人が、仕様と検証の仕組みを調べる材料になります。\n\n## まだ分からないこと\n\n- 実際のサービスへの組み込みや、Claudeの提供への導入時期はまだ発表されていません。\n- 証明生成のGPU時間が約70〜95倍かかる点を、どこまで減らせるかはまだ発表されていません。",
+  "easy": "## ひとことで言うと\n\nAnthropicが、AIの回答が本当に指定したモデルから出たかを、暗号の技術で証明する試作システム「FlashProve」を公開しました。コードは誰でも使えるオープンソースです。\n\n## 何を解決しようとしているのか\n\nいまAIを使う人は、返ってきた回答が申告どおりのモデルから出たのか、確かめる手段がほとんどありません。安いモデルにこっそり差し替えられていても、回答だけでは見抜けません。攻撃者が回答を書き換えた場合も同じです。\n\nそこで、AIの提供側が「この回答はこのモデルが作った」という証明書を付ける方法を研究しています。証明書からモデルの中身（重み）は分かりません。\n\n## 現在の性能\n\n大きなモデルのLlama 4 Maverick（パラメーター数400B）では、H100 GPU 1枚で毎秒約110トークンの証明を作れます。証明の大きさは、1,024トークンの依頼で約19MBです。\n\nただし、証明を作る計算量はモデルを動かすだけの場合の約70〜95倍です。Anthropicは、これは完成した成果ではなく途中経過だと説明しています。",
+  "channel": "Anthropic公式ニュース",
+  "channelId": "",
+  "channelSlug": "anthropic-news",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Progress on provable inference for large language models",
+  "publishedAt": "2026-11-03T21:13:24.629000+00:00",
+  "generatedAt": "2026-11-03T21:15:39.753715+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/anthropic-flashprove-provable-inference-f7f73da5.jpg",
+  "model": "anthropic-api:claude-sonnet-5-5",
+  "affiliates": [],
+  "newsType": "general",
+  "faq": [
+    {
+      "q": "FlashProveとは何ですか？",
+      "a": "AIの回答が申告どおりのモデルから出たことを、zkSNARKという暗号技術で証明する試作システムです。Anthropicが2026年11月2日にオープンソースで公開しました。"
+    },
+    {
+      "q": "FlashProveの性能はどのくらいですか？",
+      "a": "Llama 4 Maverick（400B、4ビット量子化）で、H100 1枚が毎秒約110トークンの証明を作ります。1,024トークンの依頼あたり約19MBです。"
+    },
+    {
+      "q": "FlashProveは無料で使えますか？",
+      "a": "コード、Lean証明、文書はApache 2.0ライセンスで公開されています。ただし研究の中間成果で、すぐ使える製品ではありません。"
+    },
+    {
+      "q": "証明すると、モデルの重みは見えてしまいますか？",
+      "a": "見えません。証明はゼロ知識で、計算が正しいこと以外の情報を明かさないとされています。なお、モデルの構造を隠すことは目標に入っていません。"
+    }
+  ],
+  "todayActions": [
+    "Anthropic公式ブログで技術報告書を読み、自社のAI運用に関わる点を確かめる",
+    "AI基盤やセキュリティ担当者と、モデル差し替えの検知手段の有無を共有する",
+    "公開されたコードとLean証明の中身を、開発チームで確認する"
+  ],
+  "relatedSlugs": [
+    "claude-finds-critical-vulnerabilities"
+  ],
+  "qualityScore": 93,
+  "detectedAt": "2026-11-03T21:13:24+00:00",
+  "fastLane": true,
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/anthropic-flashprove-provable-inference-fig1-998293e0.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "hero",
+      "credit": "Anthropic",
+      "sourceUrl": "https://www.anthropic.com/research/provable-inference",
+      "original": "https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F2eba335a28661a8253187053fa36add230af728b-2000x1125.jpg&w=1920&q=75"
+    }
+  ],
+  "imageCredit": {
+    "kind": "official",
+    "org": "Anthropic",
+    "provider": "Anthropic公式ニュース",
+    "sourceUrl": "https://www.anthropic.com/research/provable-inference",
+    "original": "https://www-cdn.anthropic.com/images/4zrzovbb/website/2eba335a28661a8253187053fa36add230af728b-2000x1125.jpg",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-03T21:15:49+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.497,
+    "y": 0.511,
+    "box": [
+      0.0,
+      0.022,
+      0.994,
+      1.0
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/anthropic-flashprove-provable-inference-f7f73da5.jpg"
+  }
+}

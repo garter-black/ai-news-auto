@@ -11942,6 +11942,15 @@
       "slug": "google-gemini-college-student-features",
       "url": "https://blog.google/products-and-platforms/products/gemini/college-student-favorite-features/"
     },
+    "d94c9f77ddafc83a": {
+      "at": "2026-11-03T21:15:42.755801+00:00",
+      "major": true,
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 93,
+      "section": "ai",
+      "slug": "anthropic-flashprove-provable-inference",
+      "url": "https://www.anthropic.com/research/provable-inference"
+    },
     "d9632e08d55c4552": {
       "at": "2026-10-26T18:12:46.804433+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13503,28 +13512,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T05:48:49.868513+00:00",
-      "attempt": 1,
-      "id": "c733105af322c5af",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 48.6字・60字超の文が 14% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 113.3,
-        "avg_sentence": 48.6,
-        "long_share": 0.143,
-        "max_paragraph": 155,
-        "paragraphs": 9,
-        "sentences": 21
-      },
-      "score": 100,
-      "source": "boj",
-      "title": "経済・物価情勢の展望（10月、全文）"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T05:48:53.822351+00:00",
@@ -20078,6 +20065,30 @@
       "warnings": [
         "見出しが59字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（CNBC）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T21:15:42.749597+00:00",
+      "attempt": 1,
+      "id": "d94c9f77ddafc83a",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 78.3,
+        "avg_sentence": 38.3,
+        "long_share": 0.085,
+        "max_paragraph": 194,
+        "paragraphs": 23,
+        "sentences": 47
+      },
+      "score": 93,
+      "source": "anthropic-news",
+      "title": "Progress on provable inference for large language models",
+      "warnings": [
+        "見出しが56字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（MIT・PI）"
       ]
     }
   ],
