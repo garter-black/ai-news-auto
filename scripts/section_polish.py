@@ -16,6 +16,7 @@
   python3 scripts/section_polish.py --slug toyota-land-cruiser-fj-options --apply  # 書き込む
   python3 scripts/section_polish.py --all --apply --shard 0/4                      # 全記事（4つに分けた0番目）
   python3 scripts/section_polish.py --recent-hours 6 --apply                       # 新しい記事（見出しがまだの記事だけ）
+  python3 scripts/section_polish.py --all --apply --max 40 --purpose helper        # まだの記事を古い順に（.github/workflows/section_backfill.yml）
 
 LLM は無料枠の軽いモデル（llm.py の bulk 系。記事を書く段で使う gemini-3.5-flash-lite は後ろに回す）。
 """
@@ -273,7 +274,7 @@ def build_request(record: dict) -> tuple[str, dict]:
     return prompt, items
 
 
-def polish(record: dict, log=print) -> tuple[dict, dict]:
+def polish(record: dict, log=print, purpose: str | None = None) -> tuple[dict, dict]:
     """(新しい記事, 報告)。LLM に1回だけ頼み、確かめて合うものだけ反映する"""
     import llm  # noqa: PLC0415
 
@@ -284,7 +285,8 @@ def polish(record: dict, log=print) -> tuple[dict, dict]:
     prompt, items = build_request(record)
     if not items:
         return record, {"titles": 0, "rewrites": 0, "rejected": [], "model": None}
-    data, model = llm.generate_json(SYSTEM, prompt, SCHEMA, temperature=0.3, max_output_tokens=12000, tier="sections")
+    # purpose="helper" なら Claude API の Haiku（月の予算の配分の中で。llm.api_plan）→ だめなら無料モデル
+    data, model = llm.generate_json(SYSTEM, prompt, SCHEMA, temperature=0.3, max_output_tokens=12000, tier="sections", purpose=purpose)
     article_text = f"{record.get('title', '')}\n{record.get('lede', '')}\n{record.get('body', '')}\n{record.get('easy', '')}"
     report = {"titles": 0, "rewrites": 0, "rejected": [], "model": model}
     new = dict(record)
@@ -383,6 +385,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--redo", action="store_true", help="済みの記事もやり直す")
     ap.add_argument("--max", type=int, default=0)
     ap.add_argument("--log")
+    ap.add_argument("--purpose", help="Claude API の段（helper = Haiku）。省くと無料モデルだけ")
     args = ap.parse_args(argv)
     if not (args.slug or args.all or args.recent_hours):
         ap.print_help()
@@ -397,7 +400,7 @@ def main(argv: list[str] | None = None) -> int:
         if record.get("sectionsPolishedAt") and not args.redo and not args.slug:
             continue
         try:
-            new, report = polish(record)
+            new, report = polish(record, purpose=args.purpose)
         except Exception as error:  # noqa: BLE001 - 1本の失敗で止めない
             print(f"[NG] {path.stem}: {str(error)[:160]}", flush=True)
             if logf:

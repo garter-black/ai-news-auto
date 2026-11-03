@@ -1,0 +1,73 @@
+name: Section headings backfill
+
+# 既存の記事の章の見出しを記事ごとの言葉にし、水増しの文を締める（scripts/section_polish.py。2026-11-03 オーナー指摘）。
+# まだの記事（sectionsPolishedAt が無い記事）だけを1回40本まで。全部終わったら何もしないで終わる。
+# Haiku（purpose=helper。月の予算の配分の中で。llm.api_plan）→ だめなら無料モデル。SNS には何も出さない
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+    inputs:
+      max:
+        description: "1回で直す記事の数"
+        required: false
+        default: "40"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: section-backfill
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Polish section headings and padded sentences
+        id: polish
+        continue-on-error: true
+        env:
+          LLM_WORKFLOW: products
+          # API の使用額はこのジョブ専用のファイルに記録（ほかのジョブと書き込みがぶつからない。予算はファイルの合計で見る）
+          CLAUDE_API_LEDGER: sections
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          MAX: ${{ inputs.max || '40' }}
+        run: timeout 1800 python -u scripts/section_polish.py --all --apply --max "$MAX" --purpose helper
+      - name: Commit and deploy
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add content/articles
+          if [ -f state/claude_api_usage_sections.json ]; then git add state/claude_api_usage_sections.json; fi
+          if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(content): 章の見出しを記事ごとの言葉に・水増しの文を締める（既存記事の続き）"
+          for i in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              gh workflow run deploy_cloudflare.yml --ref main
+              exit 0
+            fi
+            # 記事の同じ所を別の処理が直していたら、こちらの分は捨てる（次の回でやり直す）
+            if [ -n "$(git diff --name-only --diff-filter=U)" ]; then git rebase --abort; exit 1; fi
+            sleep 10
+          done
+          exit 1
