@@ -4,6 +4,7 @@ import AssetShell, { Crumbs } from "@/components/assets/AssetShell";
 import { Calculator, CALC_NOTES } from "@/components/calc/CalculatorBox";
 import { CALCULATORS, type CalculatorKind } from "@/lib/calculators";
 import { siteConfig } from "@/site.config";
+import { Phrases } from "@/lib/highlight";
 
 /** 計算機の単独ページ（/tools/*）の共通の枠 */
 export default function ToolPage({ kind, lead, children }: { kind: CalculatorKind; lead: string; children?: ReactNode }) {
@@ -38,7 +39,7 @@ export default function ToolPage({ kind, lead, children }: { kind: CalculatorKin
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Crumbs items={[{ href: "/", label: "ホーム" }, { href: "/tools", label: "計算ツール" }, { label: meta.title }]} />
       <header className="mt-5">
-        <h1 className="t-h1 text-ink">{meta.title}</h1>
+        <h1 className="t-h1 text-ink"><Phrases text={meta.title} /></h1>
         <p className="t-lead mt-3">{lead}</p>
       </header>
       <section aria-label="計算" className="mt-7 rounded-2xl border border-line-strong p-5 sm:p-6">

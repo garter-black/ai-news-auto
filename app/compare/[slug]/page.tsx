@@ -17,6 +17,7 @@ import VariantA from "@/components/compare/VariantA";
 import { buildGuideView } from "@/components/compare/view";
 import { siteConfig } from "@/site.config";
 import { publisherJsonLd } from "@/lib/publisher";
+import { Phrases } from "@/lib/highlight";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -134,12 +135,11 @@ export default async function ComparePage({ params }: Props) {
         </span>
       </div>
 
-      <h1 className="t-h1 headline mt-3">{guide.title}</h1>
+      <h1 className="t-h1 mt-3"><Phrases text={guide.title} /></h1>
 
       <p className="mt-5 rounded-xl bg-surface px-4 py-3 text-note leading-[1.8] text-ink-soft">
         <span className="font-bold text-ink">この記事は{asOf}時点の公式情報をもとに作成しています。</span>
-        編集部が実際に購入・使用して評価したものではありません。本ページはプロモーション（アフィリエイト広告）を含み、
-        掲載している商品はすべて当サイトが提携している広告主のもので、リンク経由の申し込みで当サイトに紹介料が入ることがあります。
+        編集部が実際に購入・使用して評価したものではありません。本ページはプロモーション（アフィリエイト広告）を含み、掲載している商品はすべて当サイトが提携している広告主のもので、リンク経由の申し込みで当サイトに紹介料が入ることがあります。
       </p>
 
       <p className="mt-6 text-desc leading-[1.95] text-ink-soft">{guide.intro}</p>
@@ -148,8 +148,7 @@ export default async function ComparePage({ params }: Props) {
         <aside aria-label="Difyとn8nの導入条件" className="mt-6 rounded-xl border border-line bg-surface p-5">
           <h2 className="t-h2">料金を比べる前に、動かすアプリの要件を確認</h2>
           <p className="mt-3 text-desc leading-[1.9] text-ink-soft">
-            2026年10月30日に確認したDify公式の最低条件はCPU 2コア・メモリ4GiBです。XServerのDifyアプリイメージも4GB以上のプランが対象です。
-            下のVPS全体の開始価格が、そのままDify対応プランの価格とは限りません。n8nは処理するデータ量や同時実行などで必要メモリが変わります。
+            2026年10月30日に確認したDify公式の最低条件はCPU 2コア・メモリ4GiBです。XServerのDifyアプリイメージも4GB以上のプランが対象です。下のVPS全体の開始価格が、そのままDify対応プランの価格とは限りません。n8nは処理するデータ量や同時実行などで必要メモリが変わります。
           </p>
           <p className="mt-3 text-note leading-[1.8] text-ink-soft">
             根拠：<a href="https://docs.dify.ai/en/self-host/deploy/quick-start/docker-compose" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Dify公式導入要件</a>
@@ -328,8 +327,7 @@ export default async function ComparePage({ params }: Props) {
       )}
 
       <p className="mt-12 rounded-2xl bg-surface px-5 py-4 text-note leading-relaxed text-muted">
-        このガイドは、各社の公式サイトに{asOf}時点で掲載されていた情報と価格、サイソクの関連記事をもとに、AIで下書きし事実確認をしたうえで公開しています。
-        価格・仕様・キャンペーンは変わることがあります。申し込み前に必ず各公式サイトで最新情報をご確認ください。
+        このガイドは、各社の公式サイトに{asOf}時点で掲載されていた情報と価格、サイソクの関連記事をもとに、AIで下書きし事実確認をしたうえで公開しています。価格・仕様・キャンペーンは変わることがあります。申し込み前に必ず各公式サイトで最新情報をご確認ください。
         制作方法は<Link href="/editorial-policy" className="mx-1 text-accent underline">編集方針</Link>、
         誤りのご指摘は<Link href="/contact" className="mx-1 text-accent underline">お問い合わせ</Link>から受け付けています。
       </p>

@@ -37,10 +37,14 @@ export default function Thumb({ source, cover, ...props }: ImageProps & { source
   const empty = typeof original === "string" && original.trim() === "";
   const [stage, setStage] = useState<Stage>(empty ? "failed" : "original");
 
+  // 画面の点検（scripts/ui_check.mjs）が「写真が読めず代わりの図版になった」を見分けるしるし。画像欄が空の記事（empty）は正常
+  const failedMark = empty ? "empty" : "error";
+
   if (stage === "failed" && source) {
     return (
       <span
         aria-hidden
+        data-thumb-failed={failedMark}
         // 写真の代わりの図版。文字の大きさ・コントラストのルールの対象外（docs/typography.md）
         data-decorative=""
         className="@container absolute inset-0 overflow-hidden"
@@ -64,7 +68,7 @@ export default function Thumb({ source, cover, ...props }: ImageProps & { source
 
   if (stage === "failed") {
     return (
-      <span aria-hidden data-decorative="" className="absolute inset-0 grid place-items-center bg-surface-2">
+      <span aria-hidden data-decorative="" data-thumb-failed={failedMark} className="absolute inset-0 grid place-items-center bg-surface-2">
         <span className="font-display text-lg text-line-strong">サイソク</span>
       </span>
     );
@@ -72,7 +76,7 @@ export default function Thumb({ source, cover, ...props }: ImageProps & { source
 
   const coverSrc = cover && cover !== original ? cover : null;
   if (stage === "cover" && coverSrc) {
-    return <Image {...props} src={coverSrc} data-thumb="" onError={() => setStage("failed")} />;
+    return <Image {...props} src={coverSrc} data-thumb="" data-thumb-stage="cover" onError={() => setStage("failed")} />;
   }
 
   const webp = typeof original === "string" ? ytWebp(original) : original;
@@ -106,7 +110,7 @@ export default function Thumb({ source, cover, ...props }: ImageProps & { source
     );
   }
 
-  return <Image {...props} src={src} data-thumb="" onError={onError} />;
+  return <Image {...props} src={src} data-thumb="" data-thumb-stage={stage} onError={onError} />;
 }
 
 /** srcset 付きの <img>。React が動き出す前に失敗していたら、描いた直後に onFail を呼ぶ */

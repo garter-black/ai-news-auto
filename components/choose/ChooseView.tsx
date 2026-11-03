@@ -8,6 +8,7 @@ import { formatDate, type ArticleSummary } from "@/lib/articles";
 import { AFFILIATE_REL } from "@/lib/affiliate";
 import type { ChooseGuide, Cell } from "@/lib/choose-data";
 import type { ResolvedService } from "@/lib/choose";
+import { Phrases } from "@/lib/highlight";
 
 /**
  * 選び方ガイドの本体。見た目は早見表（/ai-pricing）と同じ型にそろえ、広告らしい飾りは付けない。
@@ -40,7 +41,7 @@ export default function ChooseView({ guide, services, related, others, jsonLd }:
       <Crumbs items={[{ href: "/", label: "ホーム" }, { label: "選び方ガイド" }]} />
 
       <header className="mt-5 max-w-[880px]">
-        <h1 className="t-h1 text-balance text-ink">{guide.h1}</h1>
+        <h1 className="t-h1 text-balance text-ink"><Phrases text={guide.h1} /></h1>
         <p className="t-lead mt-3">{guide.lead}</p>
         <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-meta text-muted">
           <span>

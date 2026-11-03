@@ -3,6 +3,7 @@ import {
   STATUS_LABEL_BY_KIND,
   VERDICT_HEADING,
   usability,
+  isUnknownValue,
   verdictFacts,
   type Verdict,
   type VerdictKind,
@@ -35,7 +36,12 @@ export default function VerdictCard({
   cardKind?: VerdictKind;
 }) {
   const kind = usability(verdict);
-  const facts = verdictFacts(verdict, cardKind);
+  // 「記載なし」「不明」の欄は出さない（並ぶと壊れて見える）。残った欄の数で並びを決める
+  // スポーツ・制度の「観戦・参加できる？」は上の札と同じ言葉なので重ねない
+  const facts = verdictFacts(verdict, cardKind).filter(
+    (fact) => !isUnknownValue(fact.value) && fact.value !== STATUS_LABEL_BY_KIND[cardKind][verdict.status],
+  );
+  const cols = facts.length >= 4 ? "sm:grid-cols-4" : facts.length === 3 ? "sm:grid-cols-3" : "";
   const japanSource = cardKind === "product" ? verdict.japanSource : undefined;
 
   return (
@@ -53,21 +59,27 @@ export default function VerdictCard({
         </div>
       </div>
 
-      <dl className="grid grid-cols-2 border-t border-line sm:grid-cols-4">
-        {facts.map((fact, index) => (
-          <div
-            key={fact.label}
-            className={`px-5 py-3.5 sm:px-6 ${index % 2 === 1 ? "border-l border-line" : ""} ${
-              index >= 2 ? "border-t border-line sm:border-t-0" : ""
-            } ${index === 2 ? "sm:border-l" : ""}`}
-          >
-            <dt className="text-meta text-muted">{fact.label}</dt>
-            <dd className={`mt-0.5 text-note font-bold leading-snug ${fact.muted ? "text-muted" : "text-ink"}`}>
-              {fact.value}
-            </dd>
-          </div>
-        ))}
-      </dl>
+      {facts.length > 0 && (
+        <dl className={`grid grid-cols-2 border-t border-line ${cols}`}>
+          {facts.map((fact, index) => {
+            // スマホは2列。奇数個の最後の欄は横いっぱいにして、空いた枠を作らない
+            const last = index === facts.length - 1 && facts.length % 2 === 1;
+            return (
+              <div
+                key={fact.label}
+                className={`px-5 py-3.5 sm:px-6 ${last ? "col-span-2 sm:col-span-1" : ""} ${index % 2 === 1 ? "border-l border-line" : ""} ${
+                  index >= 2 ? "border-t border-line sm:border-t-0" : ""
+                } ${index >= 2 && index % 2 === 0 ? "sm:border-l" : ""}`}
+              >
+                <dt className="text-meta text-muted">{fact.label}</dt>
+                <dd className={`mt-0.5 text-note font-bold leading-snug ${fact.muted ? "text-muted" : "text-ink"}`}>
+                  {fact.value}
+                </dd>
+              </div>
+            );
+          })}
+        </dl>
+      )}
 
       <p className="border-t border-line bg-surface px-5 py-2 text-note text-muted sm:px-6">
         {dateFormat.format(Date.parse(judgedAt))}時点の判定。発表内容から編集部AIが判定しています。最新の提供状況は公式情報をご確認ください。

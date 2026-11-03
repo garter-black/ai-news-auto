@@ -55,8 +55,7 @@ export default function CompanyView({ slug, page }: { slug: string; page: number
           {name}の最新ニュース{pageSuffix(page)}
         </h1>
         <p className="t-lead mt-3">
-          {name}の公式発表や解説動画を映像・音声ごと解析し、新しい順に並べています。
-          各記事の「要点」だけ読めば、いま何が起きているかがつかめます。
+          {name}の公式発表や解説動画を映像・音声ごと解析し、新しい順に並べています。各記事の「要点」だけ読めば、いま何が起きているかがつかめます。
         </p>
         {/* この企業の製品まとめ（「〇〇とは」を知りたい人の入口）。1ページ目だけ */}
         {page === 1 && products.length > 0 && (

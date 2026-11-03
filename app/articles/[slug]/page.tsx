@@ -28,7 +28,7 @@ import { getProduct, productForArticle } from "@/lib/products";
 import { buyingGuideForTopic, guideShortName } from "@/lib/buying-guides";
 import { chooseGuideForArticle } from "@/lib/choose";
 import type { ChooseGuide } from "@/lib/choose-data";
-import { STATUS_LABEL, freeLabel, japanLabel, verdictKind, verdictOf } from "@/lib/verdict";
+import { STATUS_LABEL, freeLabel, isUnknownValue, japanLabel, verdictKind, verdictOf } from "@/lib/verdict";
 import { guideLinksForArticle, insertAfterPricingSection } from "@/lib/guide-links";
 import ArticleFaq from "@/components/ArticleFaq";
 import TodayActions from "@/components/TodayActions";
@@ -264,7 +264,7 @@ export default async function ArticlePage({ params }: Props) {
         { q: `${name}は無料で試せる？`, a: freeLabel(verdict.free) },
         ...(verdict.audience ? [{ q: `${name}は誰に向いている？`, a: verdict.audience }] : []),
         // 答えが「記載なし」「不明」の問いは載せない（答えになっていない Q&A は検索・AI の引用で逆効果）
-      ].filter((row) => row.a && !/^(記載なし|不明|未定)/.test(row.a))
+      ].filter((row) => row.a && !/^(記載なし|不明|未定)/.test(row.a) && !isUnknownValue(row.a))
     : [];
 
   // パンくず。企業が決まらない記事（ビジネス・お金の記事の多く）に「その他」を出さず、ジャンルを先に置く
@@ -392,14 +392,12 @@ export default async function ArticlePage({ params }: Props) {
                 {speedLabel(article)}
               </span>
             )}
-            <span className="text-muted">
-              {/* 表示後に「3時間前」「昨日 13:55」などへ置き換わる。新しい記事は置き換え後の幅を先に取っておき、
-                  行の折り返しが変わって下の要点が押し下げられる（CLS）のを防ぐ */}
-              <RelTime
-                iso={article.publishedAt}
-                className={`index-num font-semibold text-ink ${isRecent(article.publishedAt) ? "inline-block min-w-[6.5em]" : ""}`}
-              />
-              <span className="index-num ml-1.5">（{formatDate(article.publishedAt)}）</span>
+            {/* 表示後に「3時間前」「昨日 13:55」などへ置き換わる。新しい記事は置き換え後の幅を先に取っておき、行の折り返しが変わって下の要点が押し下げられる（CLS）のを防ぐ。
+                幅は全体（発表＋経過時間＋日付）で取る。経過時間だけに取ると「12時間前　　（11/03）」と間が空いて見えた（2026-11-03 の画面の点検）。
+                「発表」と付けるのは、すぐ右の「掲載:」（サイソクに載せた時刻）と取り違えないため */}
+            <span className={`text-muted ${isRecent(article.publishedAt) ? "inline-block min-w-[17em]" : ""}`}>
+              発表 <RelTime iso={article.publishedAt} className="index-num font-semibold text-ink" />
+              <span className="index-num">（{formatDate(article.publishedAt)}）</span>
             </span>
             {article.generatedAt && formatDateTime(article.generatedAt) && (
               <span className="index-num text-muted">
@@ -583,8 +581,7 @@ export default async function ArticlePage({ params }: Props) {
                     className="group relative block aspect-video bg-surface-2"
                     aria-label={`出典「${article.videoTitle}」を${sourceName}で読む`}
                   >
-                    {/* 写真は要点・判定カードの下（スマホで約1,700px、PCで約1,350px下）にあり、最初の画面の LCP は見出しの文字。
-                        先読み・高優先度にすると見出しの表示に要る CSS・JS と回線を取り合うので、近づいてから読む */}
+                    {/* 写真は要点・判定カードの下（スマホで約1,700px、PCで約1,350px下）にあり、最初の画面の LCP は見出しの文字。先読み・高優先度にすると見出しの表示に要る CSS・JS と回線を取り合うので、近づいてから読む */}
                     <Thumb
                       src={article.thumbnail}
                       source={thumbSource(article)}
@@ -715,8 +712,7 @@ export default async function ArticlePage({ params }: Props) {
             <ArticleProse className="prose max-w-[40em]" html={bodyMid} slot={calcInline ? calcBox : undefined} priceSlot={priceBox} />
           )}
 
-          {/* 本文に馴染ませる収益導線。関連ツールは本文の途中（読者がまだ読んでいる位置）に置く。
-              記事末だけだと、ページの4分の3より下まで読んだ人にしか見えなかった */}
+          {/* 本文に馴染ませる収益導線。関連ツールは本文の途中（読者がまだ読んでいる位置）に置く。記事末だけだと、ページの4分の3より下まで読んだ人にしか見えなかった */}
           {bodyTail && chooseGuide && <ChooseGuideNote guide={chooseGuide} className="my-10" />}
 
           {bodyTail && inlineOffer && (

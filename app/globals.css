@@ -427,6 +427,24 @@ mark {
   }
 }
 
+/*
+ * 見出しは語の途中で折らない（2026-11-03 の画面の点検で「参｜加」「モデ｜ル」「日｜本対応」などが見つかった。
+ * text-wrap: balance で行をそろえると語の途中で折れやすい）。
+ * Chrome・Edge・Android は文節で折る（word-break: auto-phrase）。未対応の Safari は「、」「・」・空白で折り（keep-all）、
+ * 1行に入らないときだけ端で折る（break-word）。文節ごとに <wbr> を入れた .headline（lib/highlight.tsx）はそちらが優先
+ */
+@layer base {
+  :where(h1, h2, h3, h4) {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+  @supports (word-break: auto-phrase) {
+    :where(h1, h2, h3, h4) {
+      word-break: auto-phrase;
+    }
+  }
+}
+
 .prose :where(h2) {
   scroll-margin-top: 5rem;
   font-size: 1.4375rem;
@@ -471,7 +489,8 @@ mark {
 .prose .guide-link-note {
   border-left: 3px solid var(--accent);
   padding: 0.5em 0.9em;
-  font-size: 0.9375em;
+  /* 本文と同じ大きさ（小さくすると本文の文字の下限 16/17px を割る。docs/typography.md・2026-11-03 の点検） */
+  font-size: 1em;
   font-weight: 700;
 }
 

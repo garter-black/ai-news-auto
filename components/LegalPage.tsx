@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Phrases } from "@/lib/highlight";
 
 /** 運営者情報・規約系ページの共通レイアウト */
 export default function LegalPage({
@@ -17,7 +18,7 @@ export default function LegalPage({
   return (
     <div className="mx-auto max-w-3xl px-5 py-14 sm:px-8">
       <p className="eyebrow">{eyebrow}</p>
-      <h1 className="t-h1 mt-2">{title}</h1>
+      <h1 className="t-h1 mt-2"><Phrases text={title} /></h1>
       {lead && (
         <p className="mt-5 border-l-[3px] border-accent pl-4 text-desc leading-[1.9] text-ink-soft">
           {lead}

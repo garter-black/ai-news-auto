@@ -8,7 +8,7 @@ import VerdictBadge from "@/components/VerdictBadge";
 import type { ArticleSummary } from "@/lib/articles";
 import { companyOf, thumbSource } from "@/lib/companies";
 import { Highlight } from "@/lib/highlight";
-import { usability, verdictOf } from "@/lib/verdict";
+import { isUnknownValue, usability, verdictOf } from "@/lib/verdict";
 import { displayHeadline } from "@/lib/headline";
 
 /** 48時間以内に続報を足した記事（並び順は作成日時のまま、印だけ付ける） */
@@ -48,7 +48,7 @@ export default function Timeline({
     <div className="grid gap-9">
       {days.map(({ day, items }) => (
         <section key={day} aria-label={day}>
-          <h3 className="sticky top-16 z-10 -mx-1 flex items-baseline justify-between bg-paper/95 px-1 py-2 text-[1.0625rem] font-bold backdrop-blur">
+          <h3 className="sticky top-14 z-10 -mx-1 flex items-baseline justify-between bg-paper/95 px-1 py-2 text-[1.0625rem] font-bold backdrop-blur">
             <DayLabel day={day} />
             <span className="index-num text-meta font-normal text-muted">{items.length}本</span>
           </h3>
@@ -120,7 +120,7 @@ function TimelineRow({ article }: { article: ArticleSummary }) {
 
           {verdict && (
             <p className="mt-1 text-note text-muted">
-              {[verdict.price !== "不明" ? verdict.price : "", verdict.japan === "ok" ? "日本から利用可" : verdict.japan === "no" && kind !== "wait" ? "日本では未提供" : "", verdict.audience ? `${verdict.audience}向け` : ""]
+              {[!isUnknownValue(verdict.price) ? verdict.price : "", verdict.japan === "ok" ? "日本から利用可" : verdict.japan === "no" && kind !== "wait" ? "日本では未提供" : "", !isUnknownValue(verdict.audience) ? `${verdict.audience}向け` : ""]
                 .filter(Boolean)
                 .join(" ・ ")}
             </p>

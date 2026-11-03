@@ -12,6 +12,7 @@ import { difyDecisionHref } from "@/lib/a8-attribution";
 import DifyCreditEstimator from "@/components/DifyCreditEstimator";
 import WorkMoneyCard from "@/components/WorkMoneyCard";
 import { workMoneyOf } from "@/lib/work-money";
+import { Phrases } from "@/lib/highlight";
 
 /** 使い方ガイド（/guides/<slug>）。結論 → 手順 → 料金・無料の範囲 → 日本で使える？ → よくある質問 */
 export default function HowtoGuideView({ guide }: { guide: HowtoGuide }) {
@@ -100,7 +101,7 @@ export default function HowtoGuideView({ guide }: { guide: HowtoGuide }) {
           <strong>PR</strong>　{guide.disclosure}
         </p>
       )}
-      <h1 className="t-h1 headline mt-3">{guide.title}</h1>
+      <h1 className="t-h1 mt-3"><Phrases text={guide.title} /></h1>
 
       <section aria-labelledby="conclusion-heading" className="mt-6 rounded-2xl border-l-4 border-ink bg-surface p-5 sm:p-6">
         <h2 id="conclusion-heading" className="t-h3">結論</h2>

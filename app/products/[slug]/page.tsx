@@ -363,8 +363,7 @@ export default async function ProductPage({ params }: Props) {
       )}
 
       <p className="mt-14 border-t border-line pt-5 text-note leading-[1.9] text-muted">
-        このページは、サイソクが公開した{articles.length}本の関連記事をもとに情報を整理しています。
-        各記事の出典と確認日をご覧ください。料金や提供条件は変わることがあるため、最新の情報は公式発表をご確認ください。
+        このページは、サイソクが公開した{articles.length}本の関連記事をもとに情報を整理しています。各記事の出典と確認日をご覧ください。料金や提供条件は変わることがあるため、最新の情報は公式発表をご確認ください。
         <Link href="/editorial-policy" className="ml-1 text-accent underline">
           編集方針
         </Link>

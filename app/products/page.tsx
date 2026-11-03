@@ -37,8 +37,7 @@ export default function ProductsPage() {
     <div className="mx-auto max-w-[860px] px-4 py-10 sm:px-8 sm:py-14">
       <h1 className="t-h1">AIサービス図鑑</h1>
       <p className="t-lead mt-3">
-        記事に出てきたAIモデル・アプリ・ガジェットを、製品ごとに1ページにまとめています。
-        できることや提供状況、関連記事を調べられます。料金や利用条件は必ず公式情報もご確認ください。
+        記事に出てきたAIモデル・アプリ・ガジェットを、製品ごとに1ページにまとめています。できることや提供状況、関連記事を調べられます。料金や利用条件は必ず公式情報もご確認ください。
       </p>
 
       <div className="mt-10 grid gap-12">

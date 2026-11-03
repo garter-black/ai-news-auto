@@ -517,13 +517,19 @@ export function getChannelsByGenre(genreSlug: string): Facet[] {
   return [...map.values()].sort((a, b) => b.count - a.count);
 }
 
+/** まとめ記事の channel は「38本の記事から編集部が統合」（scripts/roundup.py）。発信元の名前ではないので一覧の名前には使わない */
+export const ROUNDUP_CHANNEL = /本の(記事|発表)から編集部が統合$/;
+
 export function getAllChannels(): Facet[] {
   const map = new Map<string, Facet>();
   for (const article of getAllArticles()) {
     if (!article.channelSlug) continue;
     const found = map.get(article.channelSlug);
-    if (found) found.count += 1;
-    else
+    if (found) {
+      found.count += 1;
+      // 先に見つかったのがまとめ記事なら、発信元の本当の名前に置き換える（フッターの SOURCES に内部の言葉が出ていた）
+      if (ROUNDUP_CHANNEL.test(found.label) && article.channel && !ROUNDUP_CHANNEL.test(article.channel)) found.label = article.channel;
+    } else
       map.set(article.channelSlug, {
         slug: article.channelSlug,
         label: article.channel,

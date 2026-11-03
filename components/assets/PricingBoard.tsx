@@ -558,7 +558,7 @@ function SectionHead({ id, children, note }: { id: string; children: React.React
 
 /** 会社の目印。企業の色は小さな四角だけに使い、文字は載せない（白い文字が企業の色の上で読めないため） */
 function Chip({ row }: { row: PriceRow }) {
-  return <span aria-hidden data-decorative="" className="inline-block size-2.5 shrink-0 rounded-[2px]" style={{ background: row.color }} />;
+  return <span aria-hidden data-decorative="" className="inline-block size-2.5 shrink-0 rounded-[2px] ring-1 ring-line-strong" style={{ background: row.color }} />;
 }
 
 /** 数字を数え上げて表示する（動きを減らす設定では、すぐ最終の値） */

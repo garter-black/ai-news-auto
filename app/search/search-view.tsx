@@ -160,6 +160,9 @@ export default function SearchView({ chunks, version, genres, genreOrder, sugges
         </label>
       </form>
 
+      {/* 結果は索引を読んでから出る（URL の ?q= も表示後に読む）ので、下の場所を先に取っておく。
+          後からフッターが押し下げられるずれ（CLS）を防ぐ。2026-11-03 の画面の点検で 0.44 だった */}
+      <div className="min-h-[70vh]">
       {!q && (
         <div className="mt-6">
           <p className="text-meta font-bold text-muted">よく探される言葉</p>
@@ -180,10 +183,16 @@ export default function SearchView({ chunks, version, genres, genreOrder, sugges
       )}
 
       {q && (
-        <>
+        <div>
           <p className="mt-5 text-note text-muted" aria-live="polite">
-            「<span className="font-bold text-ink">{q}</span>」の記事 <span className="index-num font-bold text-ink">{results.length}</span>本
-            {loading && "（読み込み中…）"}
+            {loading && results.length === 0 ? (
+              <>「<span className="font-bold text-ink">{q}</span>」の記事を探しています…</>
+            ) : (
+              <>
+                「<span className="font-bold text-ink">{q}</span>」の記事 <span className="index-num font-bold text-ink">{results.length}</span>本
+                {loading && "（読み込み中…）"}
+              </>
+            )}
             {failed && "（索引の一部を読めませんでした）"}
           </p>
 
@@ -234,8 +243,9 @@ export default function SearchView({ chunks, version, genres, genreOrder, sugges
               もっと見る（残り{results.length - limit}本）
             </button>
           )}
-        </>
+        </div>
       )}
+      </div>
     </div>
   );
 }

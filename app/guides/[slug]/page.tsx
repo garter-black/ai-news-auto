@@ -241,8 +241,7 @@ export default async function GuidePage({ params }: Props) {
       </Section>
 
       <p className="mt-12 rounded-2xl bg-surface px-5 py-4 text-note leading-relaxed text-muted">
-        このガイドは、サイソクが公開した関連記事（各社の公式発表や解説動画をAIが解析したもの）をもとに編集部がまとめたものです。
-        最新の仕様・料金は各社の公式発表をご確認ください。
+        このガイドは、サイソクが公開した関連記事（各社の公式発表や解説動画をAIが解析したもの）をもとに編集部がまとめたものです。最新の仕様・料金は各社の公式発表をご確認ください。
       </p>
     </div>
   );

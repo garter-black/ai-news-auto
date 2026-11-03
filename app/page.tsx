@@ -135,10 +135,11 @@ export default function HomePage() {
                   <li key={company.slug}>
                     <Link
                       href={`/companies/${company.slug}`}
-                      className="flex items-center gap-2 rounded-xl border border-line px-3 py-2.5 text-meta font-bold text-ink transition-colors hover:border-ink"
+                      className="flex h-full items-center gap-2 rounded-xl border border-line px-3 py-2.5 text-meta font-bold text-ink transition-colors hover:border-ink"
                     >
                       <CompanyMark company={company} size={18} />
-                      <span className="min-w-0 truncate">{company.name}</span>
+                      {/* 狭い右の列で「Huggin…」「Anthro…」と切れていたので、切らずに2行まで折り返す（2026-11-03 の画面の点検） */}
+                      <span className="line-clamp-2 min-w-0 leading-tight">{company.name}</span>
                       <span className="index-num ml-auto text-meta font-normal text-muted">{count}</span>
                     </Link>
                   </li>
@@ -169,8 +170,7 @@ export default function HomePage() {
 
         <footer className="mt-20 grid gap-3 border-t border-line pt-8">
           <p className="max-w-[70ch] text-desc leading-relaxed text-ink-soft">
-            <strong>{siteConfig.siteName}（{siteConfig.nickname}）</strong>は、公式発表をもとにAI・ビジネス・お金・投資・不動産の新しい動きを最速で伝えるニュースメディアです。
-            要点を3行で整理し、仕事やお金にどう活かせるか、明日から何ができるかまで書きます。
+            <strong>{siteConfig.siteName}（{siteConfig.nickname}）</strong>は、公式発表をもとにAI・ビジネス・お金・投資・不動産の新しい動きを最速で伝えるニュースメディアです。要点を3行で整理し、仕事やお金にどう活かせるか、明日から何ができるかまで書きます。
           </p>
           <p className="flex flex-wrap gap-x-6 gap-y-2 text-note leading-relaxed text-ink-soft">
             <Link href="/about" className="underline decoration-line-strong underline-offset-4 hover:text-accent">サイソクについて・運営者情報</Link>

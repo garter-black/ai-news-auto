@@ -14,6 +14,7 @@ import {
   VerdictMark,
 } from "./parts";
 import type { GuideView } from "./view";
+import { Phrases } from "@/lib/highlight";
 
 /**
  * A：報道テロップ型。墨の帯と青の札で見出しを立て、判定は○△×の判子、表は密に。
@@ -34,7 +35,7 @@ export default function VariantA({ view }: { view: GuideView }) {
             <span className="index-num ml-2 font-normal opacity-75">{products.length}件を比較</span>
           </span>
         </div>
-        <h1 className="t-h1 headline mt-4">{guide.title}</h1>
+        <h1 className="t-h1 mt-4"><Phrases text={guide.title} /></h1>
         <p className="index-num mt-3 border-y border-ink py-2 text-meta text-ink">
           <span className="font-semibold">{view.checkedLabel}</span>
           <span className="mx-2 text-line-strong">|</span>提携{products.filter((p) => p.sponsored).length}・提携なし

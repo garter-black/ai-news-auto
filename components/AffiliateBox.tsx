@@ -56,8 +56,7 @@ export default function AffiliateBox({ links, compact }: Props) {
       </ul>
 
       <p className="mt-4 text-note leading-relaxed text-muted">
-        ※ 上記リンクはアフィリエイトリンクを含みます。リンク経由で申し込まれた場合、
-        当サイトに紹介料が支払われることがあります。価格・提供条件は各公式サイトをご確認ください。
+        ※ 上記リンクはアフィリエイトリンクを含みます。リンク経由で申し込まれた場合、当サイトに紹介料が支払われることがあります。価格・提供条件は各公式サイトをご確認ください。
       </p>
     </section>
   );

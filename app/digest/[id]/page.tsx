@@ -16,6 +16,7 @@ import {
   type DigestStory,
 } from "@/lib/digest";
 import { siteConfig } from "@/site.config";
+import { Phrases } from "@/lib/highlight";
 
 /**
  * 朝のまとめ「今朝のAIニュース3本」の1号（SNS の朝の投稿のリンク先）。
@@ -64,7 +65,7 @@ export default async function DigestPage({ params }: Props) {
 
       <header className="mt-5">
         <p className="text-meta font-bold text-muted">毎朝7時30分 ・ 昨夜から今朝までのAIニュース</p>
-        <h1 className="t-h1 headline mt-2">{title}</h1>
+        <h1 className="t-h1 mt-2"><Phrases text={title} /></h1>
         <p className="mt-3 text-desc leading-[1.85] text-ink-soft">
           忙しい朝でも押さえておきたいAIのニュースを{digest.stories.length}本だけ選びました。気になった1本から読めます。
         </p>

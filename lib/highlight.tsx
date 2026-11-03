@@ -20,6 +20,17 @@ const QUOTED = /「([^」]{2,24})」/;
 const FIGURE = /\d[\d,.]*(?:万|億|兆)?(?:行|ドル|円|%|％|倍|人|時間|パラメータ)/;
 const SPACE = /(　|\s+)/;
 
+/**
+ * BudouX は「AFCアジアカップ2026メンバーと」のような英数字とカタカナの続きを1つの文節にすることがある。
+ * 1行に入らないと overflow-wrap: anywhere で「202｜6」のように数字の途中で折れてしまう（2026-11-03 の画面の点検）。
+ * 長い文節だけ、英数字とカタカナの境目にも切れ目を足す（「第2回」「2026年」のような漢字との境目は切らない）。
+ */
+const LATIN_KATAKANA = /(?<=[A-Za-z0-9])(?=[\u30a1-\u30fa])|(?<=[\u30a1-\u30fa\u30fc])(?=[A-Za-z0-9])/;
+export function splitLongChunk(chunk: string): string[] {
+  if (chunk.length <= 6) return [chunk];
+  return chunk.split(LATIN_KATAKANA).filter(Boolean);
+}
+
 function phrases(text: string, keyPrefix: string): ReactNode[] {
   const nodes: ReactNode[] = [];
   text.split(SPACE).forEach((part, i) => {
@@ -29,7 +40,7 @@ function phrases(text: string, keyPrefix: string): ReactNode[] {
       nodes.push(part);
       return;
     }
-    parser.parse(part).forEach((chunk, j) => {
+    parser.parse(part).flatMap(splitLongChunk).forEach((chunk, j) => {
       if (j > 0) nodes.push(<wbr key={`${keyPrefix}-${i}-${j}`} />);
       nodes.push(chunk);
     });

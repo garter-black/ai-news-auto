@@ -1,7 +1,7 @@
 import { isWeb, sourceHref, sourceLabel, type FullArticle } from "@/lib/articles";
 import { COMPANIES, OTHER, companyOf, type Company } from "@/lib/companies";
 import { renderMarkdown, slugifyHeading } from "@/lib/markdown";
-import { STATUS_LABEL, japanLabel, verdictOf } from "@/lib/verdict";
+import { STATUS_LABEL, isUnknownValue, japanLabel, verdictOf } from "@/lib/verdict";
 import { questionFor } from "./questions";
 
 /**
@@ -144,10 +144,10 @@ export async function buildConceptView(article: FullArticle): Promise<ConceptVie
 
   const fitParts: string[] = [];
   if (verdict) {
-    if (verdict.audience) fitParts.push(`${verdict.audience}向け`);
+    if (!isUnknownValue(verdict.audience)) fitParts.push(`${verdict.audience}向け`);
     const japan = japanLabel(verdict);
     fitParts.push(verdict.japan === "ok" && verdict.status === "available" ? `${STATUS_LABEL[verdict.status]}（日本から利用可）` : `${STATUS_LABEL[verdict.status]}・${japan}`);
-    if (verdict.price && !/言及なし|記載なし|不明/.test(verdict.price)) fitParts.push(verdict.price);
+    if (!isUnknownValue(verdict.price)) fitParts.push(verdict.price);
   }
 
   // 1分版：かんたん版。無ければリード文と本文の「ひとことで言うと」

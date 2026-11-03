@@ -62,9 +62,20 @@ export const VERDICT_HEADING: Record<VerdictKind, string> = {
   public: "申し込みの判断",
 };
 
+/**
+ * 「記載なし」「不明」など、答えになっていない値か。
+ * 判定カード・一覧の1行に「記載なし」が3つも並ぶと読者には壊れて見えるので、出さずに欄ごと省く（2026-11-03 の画面の点検）。
+ * 「参加費の記載なし」「料金は元記事では言及なし」のような言い回しも含める。
+ */
+export function isUnknownValue(value?: string | null): boolean {
+  const v = (value ?? "").trim();
+  if (!v || /^[—―\-–ー・?？]+$/.test(v)) return true;
+  return /^(不明|未定|記載なし|言及なし|情報なし|元記事では言及なし|未確認)$/.test(v) || /(の)?(記載|言及|情報)(が)?(なし|ない|ありません)$/.test(v) || /^.{0,12}は不明$/.test(v);
+}
+
 /** 判定カードの4つの欄（種類ごとに問いを変える） */
 export function verdictFacts(verdict: Verdict, kind: VerdictKind): { label: string; value: string; muted?: boolean }[] {
-  const unknown = (value?: string) => !value || /^(不明|記載なし|言及なし|元記事では言及なし)$/.test(value.trim());
+  const unknown = (value?: string) => isUnknownValue(value);
   if (kind === "sports") {
     return [
       { label: "観戦・参加できる？", value: STATUS_LABEL_BY_KIND.sports[verdict.status], muted: verdict.status !== "available" },

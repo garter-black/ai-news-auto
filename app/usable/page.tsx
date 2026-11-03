@@ -8,7 +8,7 @@ import RailRanking from "@/components/rail/RailRanking";
 import { getAllArticles, type ArticleSummary } from "@/lib/articles";
 import { companyOf } from "@/lib/companies";
 import { offerForTopic } from "@/lib/offers";
-import { usability, verdictOf } from "@/lib/verdict";
+import { isUnknownValue, usability, verdictOf } from "@/lib/verdict";
 import { siteConfig } from "@/site.config";
 
 const TITLE = "今すぐ使える最新AIツール・新機能まとめ【毎日更新】";
@@ -171,7 +171,7 @@ function RailList({ id, title, note, articles }: { id: string; title: string; no
               <Link href={`/articles/${article.slug}`} className="group block">
                 <span className="flex items-center gap-2 text-meta text-muted">
                   <ArticleMark company={companyOf(article)} genre={article.genre} size={14} />
-                  {verdict?.price && verdict.price !== "不明" && <span>・{verdict.price}</span>}
+                  {verdict?.price && !isUnknownValue(verdict.price) && <span>・{verdict.price}</span>}
                 </span>
                 <span className="mt-1 line-clamp-2 block text-[15px] font-bold leading-snug text-ink group-hover:underline">
                   {article.seoTitle || article.title}

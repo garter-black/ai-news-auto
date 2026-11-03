@@ -2,7 +2,7 @@ import Link from "next/link";
 import CompanyMark from "@/components/CompanyMark";
 import NewsletterSignup from "@/components/NewsletterSignup";
 import DifyDecisionLink from "@/components/DifyDecisionLink";
-import { getAllArticles, getAllChannels, getAllTags } from "@/lib/articles";
+import { ROUNDUP_CHANNEL, getAllArticles, getAllChannels, getAllTags } from "@/lib/articles";
 import { companyCounts } from "@/lib/companies";
 import { hasActiveAffiliate } from "@/lib/monetization";
 import { genreNav } from "@/lib/nav";
@@ -36,7 +36,8 @@ const REFERENCE_LINKS = [
 export default function Footer() {
   const ai = getAllArticles().filter((a) => a.genreSlug === "ai");
   // 発信元はジャンルを問わず記事の多い順（AIだけに絞らない）。足元が伸びないよう上限を設ける
-  const channels = getAllChannels().slice(0, 24);
+  // まとめ記事しかない発信元（名前が「◯本の記事から編集部が統合」のまま）は出さない
+  const channels = getAllChannels().filter((c) => !ROUNDUP_CHANNEL.test(c.label)).slice(0, 24);
   const genres = genreNav();
   const companies = companyCounts(ai).slice(0, 8);
   const tags = getAllTags(true).slice(0, 16);
@@ -61,8 +62,7 @@ export default function Footer() {
             </div>
 
             <p className="mt-8 max-w-md text-note leading-[1.8] text-muted">
-              当サイトはA8.netなどのアフィリエイトプログラムに参加しており、
-              記事内に広告（プロモーション）を含む場合があります。
+              当サイトはA8.netなどのアフィリエイトプログラムに参加しており、記事内に広告（プロモーション）を含む場合があります。
               <span className="mt-1 block">Amazonのアソシエイトとして、{siteConfig.siteName}は適格販売により収入を得ています。</span>
             </p>
 
@@ -177,8 +177,7 @@ export default function Footer() {
       <div className="border-t border-line">
         <div className="mx-auto max-w-[1240px] px-5 py-6 sm:px-8">
           <p className="text-note leading-[1.9] text-muted">
-            本サイトの記事は、公開されている動画や公式発表・報道を生成AIが解析・要約して自動生成したものです（出典は各記事に記載）。
-            誤りが含まれる可能性があるため、重要な判断の際は必ず出典および各社の公式発表をご確認ください。
+            本サイトの記事は、公開されている動画や公式発表・報道を生成AIが解析・要約して自動生成したものです（出典は各記事に記載）。誤りが含まれる可能性があるため、重要な判断の際は必ず出典および各社の公式発表をご確認ください。
             {hasActiveAffiliate() &&
               "当サイトは広告およびアフィリエイトプログラムによる収益を得ています。"}
           </p>

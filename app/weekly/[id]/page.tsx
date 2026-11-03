@@ -9,6 +9,7 @@ import { getAllEvents, localDateRange } from "@/lib/events";
 import { getAllWeeks, getWeek, neighborWeeks, weekPublishedAt, weekRangeLabel, type WeeklyItem } from "@/lib/weekly";
 import { siteConfig } from "@/site.config";
 import { publisherJsonLd } from "@/lib/publisher";
+import { Phrases } from "@/lib/highlight";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -110,7 +111,7 @@ export default async function WeeklyPage({ params }: Props) {
         <p className="text-meta font-bold text-muted">
           毎週月曜 7時更新 ・ <span className="tabular-nums">{week.id.replace("-", "年 第")}週</span>
         </p>
-        <h1 className="t-h1 headline mt-2">{week.title}</h1>
+        <h1 className="t-h1 mt-2"><Phrases text={week.title} /></h1>
         <div className="mt-4 grid gap-1.5 text-desc leading-[1.85] text-ink-soft">
           {week.lede.map((line) => (
             <p key={line}>{line}</p>

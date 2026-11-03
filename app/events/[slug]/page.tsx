@@ -19,6 +19,7 @@ import {
   type TechEvent,
 } from "@/lib/events";
 import { siteConfig } from "@/site.config";
+import { Phrases } from "@/lib/highlight";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -129,7 +130,7 @@ export default async function EventPage({ params }: Props) {
 
       <header className="mt-5">
         <StatusLine event={event} />
-        <h1 className="t-h1 headline mt-2">{titleOf(event)}</h1>
+        <h1 className="t-h1 mt-2"><Phrases text={titleOf(event)} /></h1>
         <p className="mt-3 text-desc leading-[1.85] text-ink-soft">{event.summary}</p>
       </header>
 
