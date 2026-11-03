@@ -57,7 +57,7 @@ AUDIT_RULES = (
     "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11",
     "I2", "I4", "I5",
     "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23",
-    "W3", "W5", "W6", "W10", "W11", "W12", "W13",
+    "W3", "W5", "W6", "W10", "W11", "W12", "W13", "W17", "W18",
 )
 
 # ---- 記事の言葉 ----------------------------------------------------------------
@@ -342,6 +342,47 @@ def static_page_problems(path: str, html: str) -> list[str]:
     return out
 
 
+# ---- 発信元のページ・選び方ガイド（2026-11-03 オーナー決定 2・9） ----
+
+# W17: 報道機関の発信元ページ（/channels/radar-<報道機関>）を「公式発表」と呼ばない・検索に出さない（lib/news-outlets.ts と同じ判定）
+OUTLET_OFFICIAL = re.compile(r"公式発表|公式ブログ|プレスリリース|公式サイトを見る")
+# W18: 選び方ガイドに別の種類の決まり文句（回線の「速度は公称値」）・「〜しましょう。」の締め
+CHOOSE_PAGES = {"/choose/ai-career": re.compile(r"公称値|規格上の最大値|通信速度"), "/choose/dify-hosting": re.compile(r"公称値|規格上の最大値|求人")}
+CALL_OUT = re.compile(r"ましょう[。！]")
+
+
+def outlet_channel(slug: str) -> bool:
+    """報道機関の発信元か（lib/news-outlets.ts の isNewsOutletChannel と同じ）"""
+    return slug == "trends" or (slug.startswith("radar-") and slug != "radar-official")
+
+
+def source_page_problems(path: str, html: str) -> list[str]:
+    """W17: 報道機関・各社が混ざった発信元ページ"""
+    out = []
+    if not NOINDEX.search(html):
+        out.append(f"[W17] 報道機関の発信元ページ {path} が検索に出る設定（noindex にする）")
+    main = html.split("<main", 1)[-1].split("</main>", 1)[0] if "<main" in html else html
+    visible = "".join(parse(main).text)
+    if path != "/channels/radar-official" and (m := OUTLET_OFFICIAL.search(visible)):
+        out.append(f"[W17] 報道機関の発信元ページ {path} が「{m.group(0)}」と名乗っている（「{_snippet(visible, m)}」）")
+    desc = re.search(r'<meta[^>]+name="description"[^>]+content="([^"]*)"', html)
+    if path != "/channels/radar-official" and desc and OUTLET_OFFICIAL.search(desc.group(1)):
+        out.append(f"[W17] 報道機関の発信元ページ {path} の説明文が「公式」と名乗っている")
+    return out
+
+
+def choose_page_problems(path: str, html: str) -> list[str]:
+    """W18: 選び方ガイド"""
+    out = []
+    visible = "".join(parse(html).text)
+    bad = CHOOSE_PAGES.get(path)
+    if bad and (m := bad.search(visible)):
+        out.append(f"[W18] {path} に別の種類のガイドの決まり文句（「{_snippet(visible, m)}」）")
+    if m := CALL_OUT.search(visible):
+        out.append(f"[W18] {path} の文が「〜しましょう」で締まっている（「{_snippet(visible, m)}」）")
+    return out
+
+
 # ---- 図鑑・ハブのページ（2026-11-03 オーナー「内容がすごく薄い」「このページもいらない」） ----
 
 # W13: 図鑑に記事の写真・フリー素材・AI 画像を出さない（Codex に関係のない記事の写真、ChatGPT Work に素材のノートPCが出ていた）
@@ -522,6 +563,20 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
         v = [f"[W3] ページが開けない（HTTP {status}）"] if status != 200 else static_page_problems(path, html)
         if v:
             found[path] = v
+    # W17: 報道機関の発信元ページ（記事にあるものから最大3つ）と、各社が混ざった radar-official。W18: 選び方ガイド
+    outlets = sorted({str(a.get("channelSlug") or "") for a in load_articles() if outlet_channel(str(a.get("channelSlug") or ""))})[:3]
+    source_paths = [f"/channels/{s}" for s in outlets] + ["/channels/radar-official"]
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        extra = dict(zip(source_paths + list(CHOOSE_PAGES), pool.map(lambda p: fetch(base + p), source_paths + list(CHOOSE_PAGES))))
+    for path, (status, html) in extra.items():
+        if status == 404 and path in source_paths:
+            continue  # 記事が取り下げられて発信元ページが無くなった
+        if status != 200:
+            v = [f"[W3] ページが開けない（HTTP {status}）"]
+        else:
+            v = source_page_problems(path, html) if path in source_paths else choose_page_problems(path, html)
+        if v:
+            found.setdefault(path, []).extend(v)
     # W12・W13: 図鑑・ハブのページ
     hubs = ["/products", "/guides", "/ai-pricing"]
     with ThreadPoolExecutor(max_workers=4) as pool:

@@ -21,6 +21,7 @@ import { getPricing } from "@/lib/pricing";
 import { listedProducts, supersedesGuide } from "@/lib/products";
 import { getAllWeeks, weekPublishedAt } from "@/lib/weekly";
 import { isBroadGenre } from "@/lib/sections";
+import { isThinSourceChannel } from "@/lib/news-outlets";
 import { siteConfig } from "@/site.config";
 
 export type SitemapEntry = {
@@ -96,7 +97,8 @@ export function sitemapEntries(): SitemapEntry[] {
       priority: 0.9,
     })),
     ...getAllChannels()
-      .filter((channel) => liveChannels.has(channel.slug) && aiChannels.has(channel.slug) && isListingIndexable(getArticlesByChannel(channel.slug)))
+      // 報道機関の発信元・各社が混ざった radar-official は薄いページなので入れない（台帳 W12。ページ側も noindex）
+      .filter((channel) => !isThinSourceChannel(channel.slug) && liveChannels.has(channel.slug) && aiChannels.has(channel.slug) && isListingIndexable(getArticlesByChannel(channel.slug)))
       .map((channel) => ({
       url: `${base}/channels/${channel.slug}`,
       lastModified,

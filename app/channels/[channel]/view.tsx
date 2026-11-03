@@ -4,21 +4,28 @@ import ArticleCard from "@/components/ArticleCard";
 import Pagination from "@/components/Pagination";
 import { getAllChannels, getArticlesByChannel, isWeb } from "@/lib/articles";
 import { isListingIndexable } from "@/lib/indexing";
+import {
+  channelDescription as describe,
+  channelDisplayLabel,
+  channelTitleTail as titleTail,
+  isNewsOutletChannel,
+  isThinSourceChannel,
+  RADAR_OFFICIAL,
+} from "@/lib/news-outlets";
 import { pageHref, pageSuffix, paginate } from "@/lib/paginate";
 
 /** チャンネル一覧の metadata（1ページ目と2ページ目以降で共通） */
 export function channelMetadata(channel: string, page: number): Metadata {
-  const label = getAllChannels().find((c) => c.slug === channel)?.label ?? channel;
+  const label = channelLabel(channel);
   const items = getArticlesByChannel(channel);
   const count = items.length;
-  // AI記事が無い・検索対象の記事が少ないチャンネルは検索対象から外す
-  const indexable = items.some((a) => a.genreSlug === "ai") && isListingIndexable(items);
-  // 公式ブログ・プレスリリースの発信元は「YouTube動画」と書かない
-  const what = items[0] && isWeb(items[0]) ? "公式発表" : "YouTube動画";
+  // AI記事が無い・検索対象の記事が少ないチャンネルは検索対象から外す。
+  // 報道機関の発信元（radar-<報道機関>）と、各社が混ざった radar-official は薄いページなので検索に出さない（台帳 W12）
+  const indexable = !isThinSourceChannel(channel) && items.some((a) => a.genreSlug === "ai") && isListingIndexable(items);
 
   return {
-    title: `${label} の最新発表まとめ${pageSuffix(page)}`,
-    description: `${label} の${what}をAIが解析した日本語解説記事 ${count} 本。要点・数字・注意点まで最速でチェックできます。`,
+    title: `${label}${titleTail(channel)}${pageSuffix(page)}`,
+    description: describe(channel, label, items[0] && isWeb(items[0]), count),
     alternates: { canonical: pageHref(`/channels/${channel}`, page) },
     ...(indexable ? {} : { robots: { index: false, follow: true } }),
   };
@@ -30,27 +37,32 @@ export default function ChannelView({ channel, page }: { channel: string; page: 
   const paged = paginate(articles, page);
   if (page > paged.totalPages) notFound();
 
-  const label = getAllChannels().find((c) => c.slug === channel)?.label ?? channel;
+  const label = channelLabel(channel);
   const latest = articles[0];
   const web = isWeb(latest);
-  // web の発信元はサイトのトップ、動画はチャンネルへリンクする
-  const home = web ? siteOrigin(latest.sourceUrl) : `https://www.youtube.com/channel/${latest.channelId}`;
+  const outlet = isNewsOutletChannel(channel);
+  // web の発信元はサイトのトップ、動画はチャンネルへリンクする。各社が混ざる radar-official と話題のまとめはリンクしない
+  const home =
+    channel === RADAR_OFFICIAL || channel === "trends"
+      ? ""
+      : web
+        ? siteOrigin(latest.sourceUrl)
+        : `https://www.youtube.com/channel/${latest.channelId}`;
+  const homeLabel = outlet ? `${label}のサイトを見る` : web ? "公式サイトを見る" : "公式チャンネルを見る";
 
   return (
     <div className="mx-auto max-w-[1240px] px-5 py-12 sm:px-8">
-      <p className="text-meta font-bold tracking-widest text-accent">CHANNEL</p>
+      <p className="text-meta font-bold tracking-widest text-accent">発信元</p>
       <h1 className="t-h1 mt-2">
-        {label} の最新発表まとめ{pageSuffix(page)}
+        {label}
+        {titleTail(channel)}
+        {pageSuffix(page)}
       </h1>
       <p className="t-lead mt-3">
-        {label}{" "}
-        {web
-          ? "で公開された公式ブログ・プレスリリースをAIが解析し、日本語の解説記事として"
-          : "のYouTubeチャンネルで公開された動画をAIが映像・音声ごと解析し、日本語の解説記事として"}
-        {articles.length} 本公開中。
+        {describe(channel, label, web, articles.length)}
         {home && (
           <a href={home} target="_blank" rel="noopener noreferrer nofollow" className="ml-1 text-accent underline">
-            {web ? "公式サイトを見る" : "公式チャンネルを見る"}
+            {homeLabel}
           </a>
         )}
       </p>
@@ -68,6 +80,11 @@ export default function ChannelView({ channel, page }: { channel: string; page: 
       <Pagination base={`/channels/${channel}`} page={page} totalPages={paged.totalPages} />
     </div>
   );
+}
+
+/** 発信元ページの名前（radar-official・話題のまとめは実態どおりの名前） */
+function channelLabel(channel: string): string {
+  return channelDisplayLabel(channel, getAllChannels().find((c) => c.slug === channel)?.label ?? channel);
 }
 
 /** URL のサイトトップ（不正な URL なら空） */

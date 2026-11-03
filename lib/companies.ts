@@ -1,4 +1,5 @@
 import type { ArticleSummary } from "@/lib/articles";
+import { isNewsOutletChannel, TRENDS } from "@/lib/news-outlets";
 
 // クライアント部品からも読めるよう、articles.ts（fs を使う）は型だけ読み込む
 const isWeb = (a: ArticleSummary) => a.sourceType === "web";
@@ -179,7 +180,7 @@ export function companyCounts(articles: ArticleSummary[]): { company: Company; c
 }
 
 /** サムネイルが無いときの代替表示に使う、発信元名と企業色 */
-export type ThumbSource = { label: string; color: string; mark: string };
+export type ThumbSource = { label: string; color: string; mark: string; /** 札の言葉（報道機関の記事は「報道」。台帳 W12） */ badge?: string };
 
 /** web 記事だけ発信元入りの代替表示にする（動画記事は従来どおり undefined） */
 export function thumbSource(article: ArticleSummary): ThumbSource | undefined {
@@ -190,5 +191,15 @@ export function thumbSource(article: ArticleSummary): ThumbSource | undefined {
     label: article.sourceName || article.channel,
     color: isOther ? "#1d1d22" : company.color,
     mark: isOther ? "" : company.mark,
+    badge: sourceBadge(article),
   };
+}
+
+/**
+ * 出典の種類の札。報道機関の記事（lib/news-outlets.ts）を「公式発表」と呼ばない（台帳 W12）。
+ * 話題のまとめ（trends）は報道と公式が混ざるので「公開情報」
+ */
+export function sourceBadge(article: Pick<ArticleSummary, "channelSlug">): string {
+  if (article.channelSlug === TRENDS) return "公開情報";
+  return isNewsOutletChannel(article.channelSlug) ? "報道" : "公式発表";
 }

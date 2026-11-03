@@ -3,6 +3,7 @@ import path from "node:path";
 import { getArticleSummary, type ArticleSummary } from "@/lib/articles";
 import { partnerItem, type OfferItem } from "@/lib/offers";
 import { withoutNoData, withoutNoDataList } from "@/lib/no-data";
+import { politeDeep } from "@/lib/polite-text";
 
 /**
  * 比較ガイド（content/buying-guides/*.json）。scripts/buying_guides.py が作る。
@@ -125,7 +126,8 @@ export function getAllBuyingGuides(): BuyingGuide[] {
     .filter((file) => file.endsWith(".json"))
     .flatMap((file) => {
       try {
-        return [withoutNoDataGuide(JSON.parse(fs.readFileSync(path.join(DIR, file), "utf8")) as BuyingGuide)];
+        // 文末の「〜しましょう」は落ち着いた言い方にして出す（台帳 W13。lib/polite-text.ts）
+        return [politeDeep(withoutNoDataGuide(JSON.parse(fs.readFileSync(path.join(DIR, file), "utf8")) as BuyingGuide))];
       } catch {
         return [];
       }

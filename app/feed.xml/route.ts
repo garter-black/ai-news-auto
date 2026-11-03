@@ -1,5 +1,6 @@
 import { getAllArticles } from "@/lib/articles";
 import { getAllWeeks, weekPublishedAt } from "@/lib/weekly";
+import { isNewsOutletChannel } from "@/lib/news-outlets";
 import { siteConfig } from "@/site.config";
 
 export const dynamic = "force-static";
@@ -26,8 +27,7 @@ export function GET() {
       <guid isPermaLink="true">${siteConfig.url}/articles/${article.slug}</guid>
       <description>${escapeXml(article.description)}</description>
       <category>${escapeXml(article.genre)}</category>
-      <category>${escapeXml(article.channel)}</category>
-      <pubDate>${new Date(postedAt(article)).toUTCString()}</pubDate>
+${isNewsOutletChannel(article.channelSlug) ? "" : `      <category>${escapeXml(article.channel)}</category>\n`}      <pubDate>${new Date(postedAt(article)).toUTCString()}</pubDate>
     </item>`,
   }));
   // 週まとめ（直近4週）も同じフィードに流す

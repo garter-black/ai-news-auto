@@ -185,5 +185,33 @@ class ProductHubTest(unittest.TestCase):
         self.assertIn("W12", ids(audit.hub_page_problems("/guides", '<a href="/tools/usd-jpy">円換算</a>')))
         self.assertIn("/tools/usd-jpy", audit.RETIRED_TOOL_PAGES)
 
+
+class SourcePageTest(unittest.TestCase):
+    """W17・W18（2026-11-03 オーナー決定 2・9）: 報道機関の発信元ページを「公式発表」と呼ばない・検索に出さない。選び方ガイドに別の種類の決まり文句・「〜しましょう」を出さない"""
+
+    NOINDEX = '<meta name="robots" content="noindex, follow">'
+
+    def test_outlet_channel(self):
+        self.assertTrue(audit.outlet_channel("radar-itmedia.co.jp"))
+        self.assertTrue(audit.outlet_channel("trends"))
+        self.assertFalse(audit.outlet_channel("radar-official"))
+        self.assertFalse(audit.outlet_channel("openai"))
+
+    def test_source_page(self):
+        bad = '<meta name="description" content="ITmedia の公式発表をAIが解析"><main><p>ITmedia で公開された公式ブログ・プレスリリース</p></main>'
+        self.assertEqual({"W17"}, ids(audit.source_page_problems("/channels/radar-itmedia.co.jp", bad)))
+        self.assertEqual(3, len(audit.source_page_problems("/channels/radar-itmedia.co.jp", bad)))
+        ok = f'{self.NOINDEX}<meta name="description" content="ITmediaの報道をもとにした記事"><main><p>ITmediaの報道をもとにした記事 3 本です。</p></main>'
+        self.assertEqual([], audit.source_page_problems("/channels/radar-itmedia.co.jp", ok))
+        # 各社の公式発表が混ざる radar-official は「公式発表」と書いてよいが、noindex にする
+        self.assertEqual([], audit.source_page_problems("/channels/radar-official", f"{self.NOINDEX}<main><p>公式発表</p></main>"))
+        self.assertIn("W17", ids(audit.source_page_problems("/channels/radar-official", "<main><p>公式発表</p></main>")))
+
+    def test_choose_page(self):
+        self.assertIn("W18", ids(audit.choose_page_problems("/choose/ai-career", "<p>速度はすべて公称値（規格上の最大値）です。</p>")))
+        self.assertIn("W18", ids(audit.choose_page_problems("/choose/ai-career", "<p>登録前に確認しましょう。</p>")))
+        self.assertEqual([], audit.choose_page_problems("/choose/ai-career", "<p>登録前に確認しておくと安心です。</p>"))
+
+
 if __name__ == "__main__":
     unittest.main()

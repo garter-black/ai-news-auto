@@ -58,7 +58,7 @@ export default function Thumb({ source, cover, ...props }: ImageProps & { source
         <span className="absolute left-[6cqw] top-[5.5cqw] font-display text-white/75 text-[max(9px,4.6cqw)]">サイソク</span>
         <span className="absolute inset-x-[6cqw] bottom-[6cqw] flex flex-col gap-[1.6cqw]">
           <span className="w-fit rounded-full bg-white/90 px-[2.4cqw] py-[0.6cqw] font-bold text-ink text-[max(8px,3.4cqw)]">
-            公式発表
+            {source.badge ?? "公式発表"}
           </span>
           <span className="line-clamp-2 font-bold leading-[1.3] text-white text-[max(11px,7.4cqw)]">{source.label}</span>
         </span>

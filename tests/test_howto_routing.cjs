@@ -18,6 +18,8 @@ const requireOriginal = loaded.require.bind(loaded);
 loaded.require = (name) => {
   if (name === "@/lib/content-fs") return fs;
   if (name === "@/lib/articles") return { getAllArticles: () => [] };
+  // 文末の言い換え（lib/polite-text.ts）は振り分けに関係しない
+  if (name === "@/lib/polite-text") return { politeDeep: (value) => value };
   return requireOriginal(name);
 };
 loaded._compile(compiled, sourcePath);
