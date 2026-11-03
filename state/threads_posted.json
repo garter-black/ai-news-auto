@@ -3577,7 +3577,8 @@
       "question": true,
       "questionText": "スマホの写真、いちばん撮るのは料理と仕事の書類どっちですか？",
       "dueAt": "2026-11-03T14:40:00+00:00",
-      "postedAt": "2026-11-03T13:25:02+00:00"
+      "postedAt": "2026-11-03T13:25:02+00:00",
+      "blueskyFailed": "Bluesky の動画の処理に失敗しました: {'did': '', 'error': 'unconfirmed_email', 'jobId': '', 'state': ''}"
     }
   },
   "extraPending": {}
