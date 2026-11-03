@@ -5633,6 +5633,14 @@
       "skipped": true,
       "url": "https://www.soumu.go.jp/menu_news/s-news/01gyosei01_02000379.html"
     },
+    "3bafb79045335714": {
+      "at": "2026-11-03T16:14:38.640072+00:00",
+      "model": "anthropic-api:claude-opus-5-5",
+      "score": 88,
+      "section": "ai",
+      "slug": "nvidia-ai-semiconductor-fab-cases",
+      "url": "https://blogs.nvidia.com/blog/ai-semiconductor-fabs/"
+    },
     "3c1945dc02193cc9": {
       "at": "2026-11-02T04:31:23.929763+00:00",
       "reason": "prefilter: タイトルが短すぎる（一覧リンク等）",
@@ -8100,6 +8108,12 @@
       "section": "ai",
       "slug": "reddit-for-you-following-feed",
       "url": "https://techcrunch.com/2026/10/28/reddit-is-the-latest-platform-to-embrace-the-for-you-feed/"
+    },
+    "7da9fc739690622b": {
+      "at": "2026-11-03T16:14:39.240613+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.riken.jp/press/2026/20261104_1/index.html"
     },
     "7de3a8e3b1290bff": {
       "at": "2026-10-30T01:12:00.752733+00:00",
@@ -13277,46 +13291,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-01T22:40:16.868805+00:00",
-      "attempt": 1,
-      "id": "96882ab7e78168fa",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 58.5,
-        "avg_sentence": 35.9,
-        "long_share": 0.053,
-        "max_paragraph": 125,
-        "paragraphs": 35,
-        "sentences": 57
-      },
-      "score": 88,
-      "source": "radar-itmedia.co.jp",
-      "title": "オラクルの機能がChatGPTで利用可能に 複数システムをまたぐ業務をAIで自動化"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-01T23:39:24.680039+00:00",
-      "attempt": 1,
-      "id": "1393d0e0f8bb9b8a",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 67.2,
-        "avg_sentence": 36.1,
-        "long_share": 0.074,
-        "max_paragraph": 129,
-        "paragraphs": 29,
-        "sentences": 54
-      },
-      "score": 90,
-      "source": "radar-news.mynavi.jp",
-      "title": "Windows 11の右クリックメニュー刷新、不要項目を非表示にする機能の提供開始"
-    },
     {
       "accepted": false,
       "at": "2026-11-02T00:02:46.010023+00:00",
@@ -19757,6 +19731,57 @@
       "score": 88,
       "source": "aja",
       "title": "「アニメ産業レポート2026」刊行のお知らせ・2025年のアニメ産業市場規模 速報値 発表"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T16:12:59.630761+00:00",
+      "attempt": 1,
+      "id": "3bafb79045335714",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [
+        "「提供状況=demo」→ 元記事に提供状況の記載がなく、デモ段階という判定の根拠が確認できない。",
+        "「Advantest（編集部注：日本の半導体試験装置メーカー）」→ 元記事にない具体的な企業情報で、確認済みの文脈にも書かれていない。",
+        "「Applied Materials：…計算を最大35倍高速に」「Siemensは回路を焼き付ける工程の計算を最大17倍…速くした」（かんたん版）→ Siemensは統合中で「達成」ではなく、「速くした」と実績のように書いている。",
+        "「NVIDIA自身も、高速化で検討できる選択肢の数が変わると説明しています」→ 元記事の「より多くの案を試せる」という趣旨の言い換えで、おおむね妥当だが断定がやや強い。"
+      ],
+      "readability": {
+        "avg_paragraph": 99.6,
+        "avg_sentence": 37.9,
+        "long_share": 0.071,
+        "max_paragraph": 143,
+        "paragraphs": 16,
+        "sentences": 42
+      },
+      "score": 80,
+      "source": "nvidia-blog",
+      "title": "AI Is Changing How Semiconductor Fabs Work — and Engineers Are Moving Faster Bec",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（COMSOL・ACE）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T16:14:38.629810+00:00",
+      "attempt": 2,
+      "id": "3bafb79045335714",
+      "kind": "ai",
+      "model": "anthropic-api:claude-opus-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 96.3,
+        "avg_sentence": 36.9,
+        "long_share": 0.128,
+        "max_paragraph": 185,
+        "paragraphs": 18,
+        "sentences": 47
+      },
+      "score": 88,
+      "source": "nvidia-blog",
+      "title": "AI Is Changing How Semiconductor Fabs Work — and Engineers Are Moving Faster Bec",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（COMSOL・ACE）"
+      ]
     }
   ],
   "short_text_retry": {

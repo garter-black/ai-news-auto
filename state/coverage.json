@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "nvidia-ai-semiconductor-fab-cases",
+   "at": "2026-11-03T16:14:34.878501+00:00",
+   "title": "NVIDIA、半導体工場のAI活用事例を紹介　プラズマ予測は数日から数ミリ秒に",
+   "head": "NVIDIA、半導体工場のAI活用事例を紹介　プラズマ予測は数日から数ミリ秒に | AI Is Changing How Semiconductor Fabs Work — and Engineers Are Moving Faster Because of It",
+   "text": "NVIDIA、半導体工場のAI活用事例を紹介　プラズマ予測は数日から数ミリ秒に | AI Is Changing How Semiconductor Fabs Work — and Engineers Are Moving Faster Because of It | AI定義型ファブ / NVIDIA 半導体 / 半導体製造 AI / デジタルツイン 工場 / PhysicsNeMo / cuLitho / cuDSS / Omniverse / Advantest AIエージェント / Lam Research プラズマ / NVIDIA / 半導体 / 製造業 / デジタルツイン / AIエージェント / シミュレーション",
+   "urls": [
+    "https://blogs.nvidia.com/blog/ai-semiconductor-fabs/"
+   ]
+  },
+  {
    "slug": "aja-anime-industry-report-2026",
    "at": "2026-11-03T14:52:29.622689+00:00",
    "title": "日本動画協会が「アニメ産業レポート2026」を12月刊行　価格は22,000円",
@@ -933,16 +943,6 @@
    "text": "Google、宇宙の試作衛星でAI応答に成功　「Gemma 4」で詩を生成 | We’ve received our first response from the Project Suncatcher prototype satellite. | Google / Project Suncatcher / 宇宙AI / Gemma 4 / TPU / 衛星 / データセンター / 宇宙開発 / AI / Google / ハードウェア / 研究",
    "urls": [
     "https://blog.google/innovation-and-ai/models-and-research/google-research/project-suncatcher-satellite-response/"
-   ]
-  },
-  {
-   "slug": "nvidia-agentic-ai-extraterrestrial-search",
-   "at": "2026-10-30T15:21:12.552456+00:00",
-   "title": "NVIDIA、地球外生命体の探索に自律型AIを投入　米アレン・テレスコープ・アレイで運用開始",
-   "head": "NVIDIA、地球外生命体の探索に自律型AIを投入　米アレン・テレスコープ・アレイで運用開始 | Things That Go Beep in the Night: Agentic AI Joins the Search for Extraterrestrial Signals",
-   "text": "NVIDIA、地球外生命体の探索に自律型AIを投入　米アレン・テレスコープ・アレイで運用開始 | Things That Go Beep in the Night: Agentic AI Joins the Search for Extraterrestrial Signals | NVIDIA / 自律型AI / AIエージェント / 地球外生命体探索 / SETI / アレン・テレスコープ・アレイ / Holoscan / CUDA-X / 人工知能 / NVIDIA Holoscan / Nemotron / ハードウェア / 科学",
-   "urls": [
-    "https://blogs.nvidia.com/blog/ai-joins-the-search-for-extraterrestrial-signals/"
    ]
   }
  ]
