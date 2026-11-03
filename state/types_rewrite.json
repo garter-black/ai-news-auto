@@ -1,0 +1,47 @@
+{
+ "amazon-bedrock-cost-management-playbook": {
+  "at": "2026-11-03T16:00:00+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "deepseek-super-agent-coding-prototype": {
+  "at": "2026-11-03T16:00:00+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "github-copilot-app-projects-computer-use": {
+  "at": "2026-11-03T16:00:00+00:00",
+  "failed": 2,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "hugging-face-any-speech-decision-apple": {
+  "at": "2026-11-03T16:00:00+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "kddi-iret-ai-use-cases-113": {
+  "at": "2026-11-03T16:00:00+00:00",
+  "failed": 2,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "nvidia-fox-factory-agents-europe": {
+  "at": "2026-11-03T16:00:00+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "openai-gpt-61-terra-amazon-bedrock": {
+  "at": "2026-11-03T16:00:00+00:00",
+  "failed": 2,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "rakuten-mobile-ipad-sale-nov6": {
+  "at": "2026-11-03T16:00:00+00:00",
+  "failed": 1,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ },
+ "samsung-galaxy-buds-on-cuff-earbuds": {
+  "at": "2026-11-03T16:00:00+00:00",
+  "failed": 2,
+  "why": "品質ゲートに合格しなかった（今の版のまま）"
+ }
+}

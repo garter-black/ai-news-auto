@@ -44,6 +44,21 @@ RETIRED_PATH = ROOT / "content" / "retired.json"
 REPLACE = ("lede", "description", "highlights", "body", "easy", "faq", "todayActions", "workMoney", "verdict", "newsType",
            "affiliates", "qualityScore", "model", "writingVoice", "factSources", "charts", "pricingProduct", "pricingCompare", "relatedSlugs")
 WRITE_MODEL = os.environ.get("REWRITE_MODEL", "claude-sonnet-5-5")
+# 品質ゲートに合格しなかった回数（2回落ちた記事は、順番の対象から外す。同じ記事に何度も費用を使わない）
+TRIES_PATH = ROOT / "state" / "types_rewrite.json"
+MAX_TRIES = 2
+
+
+def load_tries() -> dict:
+    try:
+        return json.loads(TRIES_PATH.read_text("utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def save_tries(data: dict) -> None:
+    TRIES_PATH.parent.mkdir(parents=True, exist_ok=True)
+    TRIES_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=1, sort_keys=True) + "\n", "utf-8")
 UPDATE_HEADING_RE = re.compile(r"^##\s+続報")
 
 
@@ -104,6 +119,7 @@ def readership() -> dict[str, float]:
 
 def ranked() -> list[tuple[float, dict]]:
     retired = _retired()
+    tries = load_tries()
     reads = readership()
     rows = []
     for p in ARTICLES_DIR.glob("*.json"):
@@ -111,7 +127,7 @@ def ranked() -> list[tuple[float, dict]]:
             a = json.loads(p.read_text("utf-8"))
         except (OSError, ValueError):
             continue
-        if not eligible(a, retired):
+        if not eligible(a, retired) or int((tries.get(a.get("slug")) or {}).get("failed", 0)) >= MAX_TRIES:
             continue
         # 読まれ方が同じなら新しい記事を先に（検索から来る見込みが高い）
         age_days = max(0.0, (datetime.now(timezone.utc) - datetime.fromisoformat(a["generatedAt"].replace("Z", "+00:00"))).days)
@@ -280,6 +296,13 @@ def main() -> int:
             new, rep = None, {"slug": slug, "why": f"失敗: {str(error)[:200]}"}
         if new is None:
             log(f"   [keep] 今の版のまま: {rep.get('why')}")
+            if args.apply and "Sonnet が使えなかった" not in str(rep.get("why")):
+                tries = load_tries()
+                row = tries.setdefault(slug, {"failed": 0})
+                row["failed"] = int(row.get("failed", 0)) + 1
+                row["why"] = str(rep.get("why"))[:120]
+                row["at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+                save_tries(tries)
         elif args.apply:
             (ARTICLES_DIR / f"{slug}.json").write_text(json.dumps(new, ensure_ascii=False, indent=2) + "\n", "utf-8")
             done += 1

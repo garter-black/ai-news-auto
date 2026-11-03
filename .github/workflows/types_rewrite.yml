@@ -70,6 +70,7 @@ jobs:
         run: |
           git add content/articles
           if [ -f state/claude_api_usage_types.json ]; then git add state/claude_api_usage_types.json; fi
+          if [ -f state/types_rewrite.json ]; then git add state/types_rewrite.json; fi
           if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
           N=$(git diff --cached --name-only -- 'content/articles/*.json' | wc -l | tr -d ' ')
           git config user.name "github-actions[bot]"
