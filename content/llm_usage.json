@@ -53,9 +53,9 @@
     "gemma-4-31b-it": 1
   },
   "2026-11-03": {
-    "anthropic-api:claude-haiku-5-5": 29,
+    "anthropic-api:claude-haiku-5-5": 30,
     "anthropic-api:claude-opus-5-5": 15,
-    "anthropic-api:claude-sonnet-5-5": 64,
+    "anthropic-api:claude-sonnet-5-5": 72,
     "cf-image:flux-1-schnell": 3,
     "cf-image:flux-2-klein-4b": 12,
     "cloudflare:@cf/openai/gpt-oss-120b": 32,

@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "google-ple-physical-engineering-benchmark",
+   "at": "2026-11-03T18:53:50.990347+00:00",
+   "title": "Google、物理エンジニアリング向けAI評価「PLE」公開　主要モデルは全て5割未満",
+   "head": "Google、物理エンジニアリング向けAI評価「PLE」公開　主要モデルは全て5割未満 | Introducing Physical-Engineering’s Last Exam for agents",
+   "text": "Google、物理エンジニアリング向けAI評価「PLE」公開　主要モデルは全て5割未満 | Introducing Physical-Engineering’s Last Exam for agents | PLE / Physical-Engineering's Last Exam / AIエージェント 評価 / ベンチマーク / 物理エンジニアリング AI / Google Mercor / 建築設計 AI / 構造設計 AI / 電気設計 AI / Google Cloud / 生成AI / AIエージェント / ベンチマーク / Google / エンジニアリング",
+   "urls": [
+    "https://cloud.google.com/blog/products/ai-machine-learning/introducing-physical-engineerings-last-exam-for-agents/"
+   ]
+  },
+  {
    "slug": "supabase-mcp-claude-issued-auth",
    "at": "2026-11-03T18:44:08.698463+00:00",
    "title": "Supabase、MCPサーバーの企業向け認証でClaudeが本人確認の証明を発行　Okta以外のIdPでも利用可能に",

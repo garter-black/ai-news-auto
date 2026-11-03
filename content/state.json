@@ -153,6 +153,14 @@
       "title": "Cost per task: Using cheap classifiers to route across Gemini models and thinking levels",
       "tries": 1,
       "url": "https://developers.googleblog.com/cost-per-task-using-cheap-classifiers-to-route-across-gemini-models-and-thinking-levels/"
+    },
+    "f5a0d7153ecc99c8": {
+      "first": "2026-11-03T18:52:56.353169+00:00",
+      "next": "2026-11-03T21:52:56.353169+00:00",
+      "reason": "サイソクが自分で試したように読める書き方がある（「筆者」）。サイソクは試していない。元記事の書き手が試した結果なら「〇〇（媒体名）の記者が試したところ」と誰が試したかを書く",
+      "title": "Five rules for evaluating agent skills before they bloat your context window",
+      "tries": 1,
+      "url": "https://cloud.google.com/blog/topics/developers-practitioners/evaluate-agent-skills-before-they-bloat-your-context-window/"
     }
   },
   "major_tries": {},
@@ -7982,6 +7990,14 @@
       "skipped": true,
       "url": "https://www.dazn.com/ja-JP/news/%E3%82%B5%E3%83%83%E3%82%AB%E3%83%BC/fleetwood-town-column/1quzs1xw6nfvd1vcf5ue16gob4"
     },
+    "78a1dbd86988d2bb": {
+      "at": "2026-11-03T18:54:10.576716+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 93,
+      "section": "ai",
+      "slug": "google-ple-physical-engineering-benchmark",
+      "url": "https://cloud.google.com/blog/products/ai-machine-learning/introducing-physical-engineerings-last-exam-for-agents/"
+    },
     "78daac96537db2d4": {
       "at": "2026-10-30T10:32:10.074011+00:00",
       "reason": "prefilter: 扱わない話題（事件事故・ゴシップ・選挙・医療効果・噂）",
@@ -13415,114 +13431,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-02T04:11:30.177566+00:00",
-      "attempt": 1,
-      "id": "f61a06ff1934df84",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 114.9,
-        "avg_sentence": 43.8,
-        "long_share": 0.095,
-        "max_paragraph": 166,
-        "paragraphs": 8,
-        "sentences": 21
-      },
-      "score": 100,
-      "source": "boj",
-      "title": "日銀当座預金増減要因と金融調節（10月実績）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T04:31:19.106706+00:00",
-      "attempt": 1,
-      "id": "641f763280ab5ea8",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "訳されていない英文が残っている（「Deliberate Decisions: How Grounded Leade…」）"
-      ],
-      "readability": {
-        "avg_paragraph": 94.2,
-        "avg_sentence": 52.3,
-        "long_share": 0.259,
-        "max_paragraph": 155,
-        "paragraphs": 15,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "databricks-blog",
-      "title": "Deliberate decisions and enterprise AI value"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T04:31:23.929690+00:00",
-      "attempt": 2,
-      "id": "641f763280ab5ea8",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "訳されていない英文が残っている（「Deliberate Decisions: How Grounded Leade…」）"
-      ],
-      "readability": {
-        "avg_paragraph": 136.2,
-        "avg_sentence": 45.4,
-        "long_share": 0.133,
-        "max_paragraph": 191,
-        "paragraphs": 5,
-        "sentences": 15
-      },
-      "score": null,
-      "source": "databricks-blog",
-      "title": "Deliberate decisions and enterprise AI value"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T04:31:40.935490+00:00",
-      "attempt": 1,
-      "id": "f84d356daf49fd2f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 146.6,
-        "avg_sentence": 51.3,
-        "long_share": 0.25,
-        "max_paragraph": 244,
-        "paragraphs": 7,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "suntory",
-      "title": "エイジングスキンケアブランド「F.A.G.E.（エファージュ）」2アイテム新発売"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T04:31:48.013449+00:00",
-      "attempt": 2,
-      "id": "f84d356daf49fd2f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 54.8字・60字超の文が 29% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 116.5,
-        "avg_sentence": 54.8,
-        "long_share": 0.294,
-        "max_paragraph": 194,
-        "paragraphs": 8,
-        "sentences": 17
-      },
-      "score": 100,
-      "source": "suntory",
-      "title": "エイジングスキンケアブランド「F.A.G.E.（エファージュ）」2アイテム新発売"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T04:31:52.304135+00:00",
@@ -19952,6 +19860,130 @@
       "warnings": [
         "見出しが59字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（MCP・SSO・JWT）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:52:19.912906+00:00",
+      "attempt": 1,
+      "id": "f5a0d7153ecc99c8",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "「評価ツール「skill-reach」はオープンソースで提供されています」「判定: …価格=ツールは無料公開」→ 元記事は「open-sourced」とだけ述べており、価格や無料公開の記述はなく、価格の断定になっている。",
+        "「エージェントが採点を欺く例が多く見つかりました」→ 元記事は「surprisingly common pattern」と述べるだけで、「多く見つかった」とは書いていない。件数を示す言い方がやや強い。",
+        "「かんたん版」の「混ぜると、AIが答えのファイルを直接読むなどの不正で高得点を取ります」→ 元記事で不正が起きたのは正しさと効率を1つの点数に混ぜた最適化ループの場合に限られる。「混ぜると必ず起きる」ような一般化は言い過ぎ。",
+        "「NVIDIAのオープンソース評価ツールには、KubernetesとGeminiの機能を提供した」→ 元記事は「Gemini platform」の機能を上流に提供したとしており、「Gemini」だけに略すと意味が変わる。",
+        "「Claude Sonnet 5を…動かしています」→ 元記事は「Claude Sonnet 5 on Gemini platform」であり、プラットフォームの情報が抜けている。",
+        "「Claudeは日本で使えます。当サイトの確認：11/3」→ 日本での提供状況は確認済みの文脈にあり、問題ない。"
+      ],
+      "readability": {
+        "avg_paragraph": 82.2,
+        "avg_sentence": 40.4,
+        "long_share": 0.115,
+        "max_paragraph": 159,
+        "paragraphs": 30,
+        "sentences": 61
+      },
+      "score": 72,
+      "source": "google-cloud-blog",
+      "title": "Five rules for evaluating agent skills before they bloat your context window",
+      "warnings": [
+        "見出しが43字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（SKILL・MCP・GKE）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:52:56.353111+00:00",
+      "attempt": 2,
+      "id": "f5a0d7153ecc99c8",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "サイソクが自分で試したように読める書き方がある（「筆者」）。サイソクは試していない。元記事の書き手が試した結果なら「〇〇（媒体名）の記者が試したところ」と誰が試したかを書く"
+      ],
+      "readability": {
+        "avg_paragraph": 80.1,
+        "avg_sentence": 38.8,
+        "long_share": 0.129,
+        "max_paragraph": 141,
+        "paragraphs": 30,
+        "sentences": 62
+      },
+      "score": null,
+      "source": "google-cloud-blog",
+      "title": "Five rules for evaluating agent skills before they bloat your context window",
+      "warnings": [
+        "見出しが55字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（SKILL・GKE・YAML）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:53:22.466385+00:00",
+      "attempt": 1,
+      "id": "78a1dbd86988d2bb",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "新製品・新サービス・機能の記事に必要な「発売日・提供開始日」が資料にあるのに本文にありません（日付と、段階的な提供ならその順番）。資料の表記どおりに入れてください"
+      ],
+      "score": null,
+      "source": "google-cloud-blog",
+      "title": "Introducing Physical-Engineering’s Last Exam for agents"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:53:54.392865+00:00",
+      "attempt": 2,
+      "id": "78a1dbd86988d2bb",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "かんたん版「開発者は29個の公開課題を無料で入手できます」→ 元記事に課題が無料とは書かれていない（GitHubからダウンロードできるとあるだけ）。",
+        "判定「提供状況=limited」→ 元記事に基づく区分ではなく、公開課題と非公開テスト課題の提供状況の扱いが曖昧。",
+        "「Googleは…ple-bench.comで公開しました」→ 元記事ではGitHubの公開課題・採点スクリプトとple-bench.comの順位表は別。公開課題がple-bench.comで公開されたと読める書き方は不正確。",
+        "「編集部の見方では…「下書きの支援」にとどまり」→ 元記事に「下書き支援」という位置づけは無く、解釈が踏み込みすぎ。"
+      ],
+      "readability": {
+        "avg_paragraph": 69.3,
+        "avg_sentence": 38.1,
+        "long_share": 0.175,
+        "max_paragraph": 147,
+        "paragraphs": 22,
+        "sentences": 40
+      },
+      "score": 88,
+      "source": "google-cloud-blog",
+      "title": "Introducing Physical-Engineering’s Last Exam for agents",
+      "warnings": [
+        "見出しが43字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（PLE・CAD・BIM）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T18:54:10.566483+00:00",
+      "attempt": 2,
+      "id": "78a1dbd86988d2bb",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 68.8,
+        "avg_sentence": 37.9,
+        "long_share": 0.15,
+        "max_paragraph": 147,
+        "paragraphs": 22,
+        "sentences": 40
+      },
+      "score": 93,
+      "source": "google-cloud-blog",
+      "title": "Introducing Physical-Engineering’s Last Exam for agents",
+      "warnings": [
+        "見出しが43字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（PLE・CAD・BIM）"
       ]
     }
   ],

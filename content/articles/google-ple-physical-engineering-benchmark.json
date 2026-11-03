@@ -1,0 +1,144 @@
+{
+  "slug": "google-ple-physical-engineering-benchmark",
+  "sourceType": "web",
+  "sourceUrl": "https://cloud.google.com/blog/products/ai-machine-learning/introducing-physical-engineerings-last-exam-for-agents/",
+  "sourceName": "Google Cloud公式ブログ",
+  "title": "Google、物理エンジニアリング向けAI評価「PLE」公開　主要モデルは全て5割未満",
+  "seoTitle": "PLEとは？Googleの物理エンジニアリングAI評価",
+  "threadsPost": "建築・設備・機械設計に関わる皆さん、知っておいてほしい話です。\n\n要約すると、GoogleがMercorと共同で、AIの設計業務を測る評価「PLE」を公開しました。\n主要モデルの最高スコアは48.3%で、全モデルが50%を下回りました。\n\nAIに設計の下書きを任せるなら、どこまでなら安心できますか？",
+  "threadsHook": "callout",
+  "threadsStyle": 3,
+  "writingVoice": "senpai",
+  "lede": "Googleは11月3日、機械・電気・土木・構造の設計業務をAIエージェントがこなせるかを測る評価「PLE」を、Mercorと共同で公開しました。14の主要モデルを試した結果、最高の平均スコアは48.3%で、全モデルが50%を下回りました。Google Cloud公式ブログが発表しています。",
+  "description": "GoogleがMercorと共同で、AIエージェントの物理エンジニアリング能力を測る評価「PLE」を公開。85課題を用意し、主要14モデルの最高スコアは48.3%。公開課題29件と競技の概要を解説します。",
+  "keywords": [
+    "PLE",
+    "Physical-Engineering's Last Exam",
+    "AIエージェント 評価",
+    "ベンチマーク",
+    "物理エンジニアリング AI",
+    "Google Mercor",
+    "建築設計 AI",
+    "構造設計 AI",
+    "電気設計 AI",
+    "Google Cloud"
+  ],
+  "tags": [
+    "生成AI",
+    "AIエージェント",
+    "ベンチマーク",
+    "Google",
+    "エンジニアリング"
+  ],
+  "highlights": [
+    "課題は85件で、機械30・電気27・土木18・構造10の4分野に分かれます",
+    "課題1件に平均61ファイル、全体では5,170ファイルが含まれます",
+    "最高構成でも、安全・実現性の全関門を通った成果物は41.3%でした"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "limited",
+    "japan": "unknown",
+    "price": "公開課題は無料",
+    "free": true,
+    "audience": "AI開発者",
+    "take": "設計分野でAIを使う予定があるなら、公開29課題で自社のエージェントの実力を試すとよいでしょう。",
+    "judgedAt": "2026-11-03T18:53:50.990358+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "設計業務にAIを入れたい開発者は、公開29課題と採点ツールで自社エージェントを試せます。",
+      "現状は全モデルが5割未満で、設計成果物は有資格者の確認が前提になります。"
+    ]
+  },
+  "body": "AIエージェント（自分で手順を進めるAI）が、設計の現場の仕事をどこまでこなせるか。それを測る新しい評価が「Physical-Engineering's Last Exam（PLE）」です。ベンチマーク（性能テスト）の一種で、開発者や研究者がAIの実力を比べるために使います。\n\nGoogle Cloud公式ブログによると、Googleの「AI & Infrastructure」チームがMercorと共同で開発しました。\n\n**既存の試験は教科書問題が中心**\n\nGoogleは、すでに「Humanity's Last Exam」が一般知識を測り、「Agents' Last Exam」がデジタル上の専門業務を測っていると説明しています。PLEは、建物や送電網、半導体など物理的なものを作る仕事の能力を測る位置づけです。\n\n発表では、最先端の言語モデルが多くの学術的な評価で90%を超えると述べています。ただ、それらは教科書的な問題や単発のツール呼び出し、小さな設計問題が中心だといいます。有資格の技術者による確認のもとで、安全で、法規に合い、費用面でも妥当な設計を出せるかは、既存の評価では分からないという立場です。\n\n**85課題、1課題に平均61ファイル**\n\nPLEには、長い手順を要する課題が85件あります。内訳は次のとおりです。\n\n- 機械工学：30件\n- 電気工学：27件\n- 土木工学：18件\n- 構造工学：10件\n\nAIは1つの質問に答えるのではなく、コンテナ（独立した実行環境）化されたプロジェクトフォルダの中で作業します。環境はMercorの「Archipelago」を基に作られています。\n\n1課題あたり平均61ファイルで、全体では5,170ファイルです。PDF、表計算、メール、2D CAD図面、3D BIMモデル、文書の改訂版などが含まれます。AIは、これらを読み解いて適用される建築基準や物理的な限界を見つけ、計算し、有資格の審査者が確認する水準の成果物を作ります。\n\n課題の作り方は2通りです。\n\n- 専門家が作成：44件。現役の技術者が、実際の業務に基づいてフォルダ、指示文、採点基準を作成\n- 共同作成：41件。技術者が最初の課題を設計し、エージェントのパイプラインが、ライセンス可能な技術標準から環境と採点ツールを組み立て。技術者がすべてを検証し、難しくした\n\n**最高スコアは48.3%、安全関門を通ったのは41.3%**\n\nGoogleは14の主要モデルを、公開されている7つのエージェント実行基盤（ハーネス）で試しました。対象は、Antigravity、Claude Code、Codex、Hermes、OpenCode、OpenHands、Piです。\n\nPLEは法規への適合とコスト効率の両方を見ます。そのため、まず安全に関わる必須の検査をすべて通った設計だけが得点を得られます。\n\n結果は次のとおりです。\n\n- 非公開のテスト用課題で、全モデルが50%未満。最高は、モデル本来のハーネスで平均48.3%\n- 最高構成は、共同作成課題の個々の制約の91%を満たした\n- ただし、安全性と実現性の必須検査をすべて通した成果物は41.3%にとどまった\n\nつまり、個々の条件はおおむね満たせても、1つでも安全条件を落とせば設計としては使えません。この差が現状の課題です。\n\n**差を生むのはモデルで、ハーネスは実行コストに響く**\n\nモデルの選択がハーネスの選択よりも成績を大きく左右することも分かりました。モデル間の差は最大50ポイントでした。同じモデルでハーネスだけを変えた場合の差は、中央値で3ポイントです。ただし、ハーネスは実行コストには大きく影響するとしています。\n\n**課題の入手と参加方法**\n\nGoogleは29件の公開課題と採点ツールを公開し、公開の順位表はple-bench.comで公開しています。参加の手順は次のとおりです。\n\n- 技術的な詳細は、arXivの論文で確認する\n- 29件の公開課題、採点スクリプト、評価用コンテナをGitHubのリポジトリから入手する\n- 自前のエージェント構成を、ple-bench.comで非公開のテスト用課題にかけて評価を受ける\n\n評価では、Google提供の13モデルがGoogleのサーバーで無料で動かせます。賞品の詳細は後日発表されます。\n\nサイソクが報じた別の話題では、GoogleがAI学習ノート「Gemini Notebook」に無料教科書を追加しました（[GoogleがAI学習ノート「Gemini Notebook」に無料教科書を数百冊追加](/articles/gemini-notebook-free-textbooks)）。AIを学習や専門業務に使う動きは、広がっています。\n\n今回の数字は、全モデルが5割未満で、設計成果物には有資格者の確認が欠かせない段階にあることを示しています。\n\n## まだ分からないこと\n\n- 競技の賞品の詳細は、まだ発表されていません\n- 日本からの参加条件や日本語での提供は、まだ発表されていません",
+  "easy": "## ひとことで言うと\n\nGoogleが、AIが建物や電気設備、機械の設計仕事をどこまでこなせるかを測る新しいテストを公開しました。現時点では、どのAIも半分の得点に届いていません。\n\n## テストの中身\n\nこのテストは「PLE」と呼ばれます。実際の設計現場と同じように、図面や表計算、メールなど平均61個のファイルが入ったフォルダが渡されます。\n\nAIはそこから守るべき建築基準を探し、計算し、提出できる形の成果物を作ります。課題は全部で85件です。\n\n## 結果と試し方\n\n14の主要AIモデルを試したところ、最高でも平均48.3%でした。安全面の条件をすべて満たした成果物は、最も良い構成でも41.3%でした。\n\n開発者は29個の公開課題を、GitHubからダウンロードできます。自分のAIを、公式サイトで非公開の課題にかけることもできます。",
+  "channel": "Google Cloud公式ブログ",
+  "channelId": "",
+  "channelSlug": "google-cloud-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Introducing Physical-Engineering’s Last Exam for agents",
+  "publishedAt": "2026-11-03T08:00:00+00:00",
+  "generatedAt": "2026-11-03T18:53:50.990347+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/google-ple-physical-engineering-benchmark-8a3921f6.jpg",
+  "model": "anthropic-api:claude-sonnet-5-5",
+  "affiliates": [],
+  "newsType": "product",
+  "faq": [
+    {
+      "q": "PLE（Physical-Engineering's Last Exam）とは何ですか？",
+      "a": "機械・電気・土木・構造の設計業務を、AIエージェントがこなせるかを測る評価です。GoogleがMercorと共同で開発し、85課題を用意しています。"
+    },
+    {
+      "q": "PLEで主要AIモデルの成績はどうでしたか？",
+      "a": "14の主要モデルがすべて50%未満でした。最高は平均48.3%です。安全関門を全て通った成果物は、最高構成でも41.3%でした。"
+    },
+    {
+      "q": "PLEの課題は誰でも入手できますか？",
+      "a": "29件の公開課題、採点スクリプト、評価用コンテナをGitHubリポジトリから入手できます。順位表はple-bench.comにあります。"
+    },
+    {
+      "q": "自分のAIをPLEで評価してもらえますか？",
+      "a": "自前のエージェント構成を、ple-bench.comで非公開のテスト用課題にかけられます。Google提供の13モデルは、Googleのサーバーで無料で動かせます。"
+    }
+  ],
+  "todayActions": [
+    "PLEの論文と公開29課題を確認し、自社の設計分野に近い課題を探す",
+    "自社のAIエージェントを、公開課題と採点ツールで試すか検討する",
+    "ple-bench.comの順位表を見て、モデル選びの参考にする"
+  ],
+  "relatedSlugs": [
+    "gemini-notebook-free-textbooks"
+  ],
+  "qualityScore": 93,
+  "sourcePublishedAt": "2026-11-03T08:00:00+00:00",
+  "detectedAt": "2026-11-03T18:51:07+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/google-ple-physical-engineering-benchmark-fig1-bdbb6ece.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "dense",
+      "credit": "Google Cloud",
+      "sourceUrl": "https://cloud.google.com/blog/products/ai-machine-learning/introducing-physical-engineerings-last-exam-for-agents/",
+      "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/PLE_Kaggle_-_ple_disciplines_description.max-1600x1600.png"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/google-ple-physical-engineering-benchmark-fig2-5f5c1cb0.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "dense",
+      "credit": "Google Cloud",
+      "sourceUrl": "https://cloud.google.com/blog/products/ai-machine-learning/introducing-physical-engineerings-last-exam-for-agents/",
+      "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/ple_frontier_private_x.max-2200x2200.png"
+    }
+  ],
+  "imageCredit": {
+    "kind": "official",
+    "org": "Google Cloud",
+    "provider": "Google Cloud公式ブログ",
+    "sourceUrl": "https://cloud.google.com/blog/products/ai-machine-learning/introducing-physical-engineerings-last-exam-for-agents/",
+    "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/AI__ML.max-2500x2500.jpg",
+    "width": 1200,
+    "height": 591,
+    "at": "2026-11-03T18:54:22+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.562,
+    "y": 0.573,
+    "box": [
+      0.125,
+      0.146,
+      1.0,
+      1.0
+    ],
+    "ar": 2.0305,
+    "src": "https://ai-tech-express.jp/img/google-ple-physical-engineering-benchmark-8a3921f6.jpg"
+  }
+}
