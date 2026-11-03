@@ -35,7 +35,7 @@
   "timetable": [],
   "verdict": {
     "status": "available",
-    "japan": "unknown",
+    "japan": "ok",
     "price": "API従量課金",
     "free": false,
     "audience": "開発者・業務担当",

@@ -60,6 +60,16 @@ def save_tries(data: dict) -> None:
     TRIES_PATH.parent.mkdir(parents=True, exist_ok=True)
     TRIES_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=1, sort_keys=True) + "\n", "utf-8")
 UPDATE_HEADING_RE = re.compile(r"^##\s+続報")
+# 編集部の訂正の注記（「**編集部訂正（2026年10月31日）**：…」）。訂正した記事は人が確かめた記事なので、書き直しの対象にしない
+CORRECTION_RE = re.compile(r"編集部訂正|【訂正】|訂正（\d{4}年")
+CORRECTIONS_PATH = ROOT / "content" / "corrections.json"
+
+
+def corrected_slugs() -> set[str]:
+    try:
+        return {str(x.get("slug")) for x in json.loads(CORRECTIONS_PATH.read_text("utf-8")) if isinstance(x, dict)}
+    except (OSError, ValueError):
+        return set()
 
 
 def log(msg: str) -> None:
@@ -85,6 +95,9 @@ def eligible(a: dict, retired: set[str]) -> bool:
     if a.get("newsType") or a.get("typesRewrittenAt") or a.get("disaster") or a.get("trendKeyword") or a.get("angleOf"):
         return False
     if not a.get("sourceUrl") or a.get("secondary"):
+        return False
+    # 訂正した記事（content/corrections.json・本文の「編集部訂正」）は書き直さない（人が確かめた中身を LLM で作り直さない）
+    if a.get("slug") in corrected_slugs() or CORRECTION_RE.search(a.get("body") or "") or a.get("refreshMode") == "editorial":
         return False
     return indexnow.noindex_reason(a) is None
 
@@ -163,6 +176,8 @@ def _sections(body: str) -> list[tuple[str, str]]:
 def keep_sections(old_body: str, new_body: str) -> str:
     """今の本文の「続報」の章（先頭側）と、他社との比較表の章（rivals。公式ページの数字で作ったもの）を新しい本文に戻す"""
     updates = [f"{h}\n{t.strip()}" for h, t in _sections(old_body) if UPDATE_HEADING_RE.match(h)]
+    # 訂正の注記の段落は、一字も変えずに先頭へ（2026-11-03: Muse の記事で消えて、訂正の表示と公開前のテストが壊れた）
+    notes = [p.strip() for p in re.split(r"\n\s*\n", old_body or "") if CORRECTION_RE.search(p) and not p.lstrip().startswith("#")]
     rival = [f"{h}\n{t.strip()}" for h, t in _sections(old_body) if h.strip() == f"## {rivals.HEADING}"]
     body = new_body.strip()
     if updates:
@@ -170,7 +185,22 @@ def keep_sections(old_body: str, new_body: str) -> str:
     if rival and f"## {rivals.HEADING}" not in body:
         parts = body.split("\n## まだ分からないこと", 1)
         body = parts[0].rstrip() + "\n\n" + rival[0] + ("\n\n## まだ分からないこと" + parts[1] if len(parts) > 1 else "")
+    if notes:
+        body = "\n\n".join(n for n in notes if n not in body) + ("\n\n" if any(n not in body for n in notes) else "") + body
     return body
+
+
+def keep_verified(old: dict, new: dict) -> None:
+    """確かめた欄を書き直しで変えない: 日本で使えるか（verdict.japan）は、日本での提供の表（japanSource つき）か、前の値を使う。
+    LLM の新しい見立てで変えない（2026-11-03: Muse の記事で ok が unknown になった）"""
+    ov, nv = old.get("verdict") or {}, new.get("verdict")
+    if not isinstance(nv, dict) or not isinstance(ov, dict) or not ov.get("japan"):
+        return
+    if nv.get("japanSource") and nv.get("japan") not in (None, "unknown"):
+        return  # 日本での提供の表（content/japan_availability.json）で決まった値
+    nv["japan"] = ov["japan"]
+    if ov.get("japanSource"):
+        nv["japanSource"] = ov["japanSource"]
 
 
 def _write_with(model: str):
@@ -253,6 +283,7 @@ def rewrite(slug: str, attempts: int = 2) -> tuple[dict | None, dict]:
         elif key in ("verdict", "faq", "todayActions", "charts", "pricingProduct", "pricingCompare"):
             new.pop(key, None)  # 種類に合わない判定カード・材料の無い欄は消す
     new["body"] = keep_sections(old.get("body") or "", record["body"])
+    keep_verified(old, new)
     new.pop("sectionTitles", None)  # 見出しが変わったので、表示用の言い換えは使わない
     new["sectionsPolishedAt"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     new["typesRewrittenAt"] = datetime.now(timezone.utc).isoformat(timespec="seconds")

@@ -36,7 +36,7 @@
   "timetable": [],
   "verdict": {
     "status": "demo",
-    "japan": "unknown",
+    "japan": "ok",
     "price": "無料（OSS）",
     "free": true,
     "audience": "WinUI開発者",

@@ -63,8 +63,17 @@ jobs:
           name: rewrite-report
           path: rewrite_report.json
           if-no-files-found: ignore
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # 公開と同じテスト（deploy_cloudflare.yml の unittest と node の行）を、push の前に通す。1つでも落ちたら push しない
+      - name: Deploy tests before push
+        id: tests
+        run: python3 scripts/deploy_tests.py
       - name: Commit and deploy
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.tests.outcome == 'success' }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
