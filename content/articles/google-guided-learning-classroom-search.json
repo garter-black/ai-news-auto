@@ -1,0 +1,141 @@
+{
+  "slug": "google-guided-learning-classroom-search",
+  "sourceType": "web",
+  "sourceUrl": "https://blog.google/products-and-platforms/products/education/ai-learning-era-updates-2026/",
+  "sourceName": "Google公式ブログ",
+  "title": "Googleが「Guided Learning」をClassroomで世界提供　生徒のAI利用は学校の許可制に",
+  "seoTitle": "Guided Learningとは？Classroomで使える学習AIを解説",
+  "threadsPost": "子どもの宿題とAIの関係が気になる親御さん、知っておいてほしい話です。\n\n要約すると、GoogleがAIで答えを見せず考え方を導く学習機能をClassroomで提供し始めました。\n生徒のGeminiなどの利用は、学校が許可するまでオフにする方針です。\n\nあなたは子どもの勉強に、AIを使わせたいほうですか？",
+  "threadsHook": "callout",
+  "threadsStyle": 3,
+  "writingVoice": "explainer",
+  "lede": "AIが答えを示さずに考え方を導く学習機能「Guided Learning」が、11月3日から「Google Classroom」で世界向けに使えるようになりました。Google公式ブログによると、Google検索への搭載も今月中に米国の一部の学校で試験を始めます。小中高（K-12）の生徒アカウントでは、GeminiなどのAI製品を学校の管理者が有効にするまでオフにする方針も示しました。",
+  "description": "Googleが学習機能「Guided Learning」をGoogle Classroomで世界提供。検索への搭載は米国の学校で試験開始。K-12の生徒アカウントではGeminiなどを管理者が有効にするまでオフにします。",
+  "keywords": [
+    "Guided Learning",
+    "Google Classroom",
+    "Gemini 教育",
+    "Google検索 学習",
+    "AI 宿題",
+    "生成AI 学校",
+    "LearnLM",
+    "Gemini Notebook",
+    "K-12 AI 管理",
+    "Google 教育 AI"
+  ],
+  "tags": [
+    "生成AI",
+    "Gemini",
+    "Google Classroom",
+    "教育",
+    "EdTech"
+  ],
+  "highlights": [
+    "Classroom版は教師が課題として配る形で、授業の教材に沿って生徒を導き、教師はつまずきをリアルタイムで把握",
+    "検索版は物理の問題や読書感想文の相談に、答えではなく考える手がかりを順に示す。米国の一部学校で試験",
+    "Gemini、Gemini Notebook、Classroom内のGemini、検索の4つは、K-12生徒では管理者が有効化するまでオフに"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "unknown",
+    "price": "価格は未発表",
+    "free": null,
+    "audience": "教育関係者",
+    "take": "Classroomを使う学校や塾は、管理画面で新機能の扱いと生徒向けAI設定を確認するとよいでしょう。",
+    "judgedAt": "2026-11-03T14:07:03.907031+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "学校や塾で教える人は、Classroomの課題としてAIの個別指導を配り、生徒のつまずきをリアルタイムで把握できます。",
+      "子どもを持つ人は、学校の生徒アカウントでAI製品が初期設定でオフになる方針を知っておくと、家庭での使い方を考えやすくなります。"
+    ]
+  },
+  "body": "今回の発表は、Googleで教育部門を率いるクリス・フィリップス氏（VP兼ゼネラルマネージャー）がGoogle公式ブログで公表しました。同氏は冒頭で、AIを使う生徒が「本当に学んでいるのか、近道を探しているだけか」という問いを挙げています。今回の3つの変更は、どれもこの問いへの答えとして説明されています。\n\n土台にあるのは、Googleが「productive struggle（生産的な苦労）」と呼ぶ考え方です。生徒があきらめるほど追い込まず、それでいて自分の頭で取り組む負荷は残す、という設計を指します。\n\nGuided Learning自体は前からある機能です。Geminiアプリの中で、問いかけと段階的な分解によって問題の解き方を導く学習モードとして提供されてきました。Googleは、学習向けにファインチューニング（追加学習）したモデル群「LearnLM」の成果をGeminiに組み込み、この機能を作ったと説明しています（Google公式ブログ「Guided Learning in Gemini」、11/3確認）。今回新しいのは、これをClassroomと検索という、生徒が日常的に使う場所へ広げる点です。\n\n## Classroom版は世界で今日から使える\n\nGoogle Classroomは、教師と生徒が課題の配布や提出、連絡をまとめて行う学校向けのサービスです。Guided Learningは11月3日から、このClassroomで世界向けに提供されています。使い方は、教師が「Guided Learningの活動」を課題として出す形です。生徒がそれを始めると、AIが1対1の学習相手として振る舞います。AIの対話は授業の教材に結びつけられているため、話が課題から外れにくい仕組みです。クラスのどこで追加の支援が必要かを、リアルタイムで見られるようになります。Googleは、公開前に学校や教育者と一緒に試験を重ね、その意見を反映したとしています。Gemini アプリ自体は日本でも使えます（当サイトの確認：11/3）。ただし、Classroom版のGuided Learningが日本語で動くかどうかは、まだ発表されていません。\n\n## 検索は11月中に米国の一部学校で試験\n\nGoogle検索では、生徒アカウントを対象にGuided Learningの機能を組み込みます。システムが「宿題の手助けを求めている」と判断すると、答えに直行せず、テーマや問題を一歩ずつ案内します。\n\nGoogleが挙げた例は2つです。生徒が複雑な物理の問題を貼り付けた場合と、読書感想文の書き方を尋ねた場合です。どちらも、批判的に考えるための問いかけが表示され、概念を順に理解していく流れになります。\n\n提供の順番は次のとおりです。\n\n- 11月中：米国の一部の学校で試験導入を始め、教育者の意見を集める\n- 今後数カ月：意見を反映したうえで、ほかの学区へ広げる\n\n効果について、Googleは「測定可能な学習の伸びにつながる」と自社の研究を根拠に説明しています。関連して、Googleは10月29日に英国での研究結果も公表しました。12〜15歳の生徒1,100人超を対象に、10週間の比較試験を行ったものです。\n\nこの試験では、AIによる個別指導で日々の課題や小テストの成績は伸びました。一方で、同じ期間の標準テスト（STAR）の点数には差が出ませんでした。1回あたりに解いた問題数は、AI指導で平均約14問、従来のヒント方式で19問です。Googleは、丁寧に導く分だけ1問に時間がかかり、扱える範囲が狭くなったためと分析しています（Google公式ブログ「How Gemini is helping students and teachers in the classroom」、11/3確認）。\n\n編集部の見方では、「答えを出さない」設計は理解を深める代わりに進度を遅らせる面があり、Googleもその課題を自ら示しています。1学年を通した追加の試験も検討中とされています。\n\n## K-12の生徒アカウントはAIが初期設定でオフに\n\n3つ目の変更は、学校向けの管理設定です。対象はGemini、Gemini Notebook、Classroom内のGemini、Google検索の4つです。K-12（日本の小中高にあたる学年）の生徒アカウントでは、これらへのアクセスが完全にオフになります。学校の管理者がはっきり有効にしない限り、生徒は使えません。\n\nGoogleは、学校や教師、研究者、政策担当者の声を聞いたうえでの判断だとしています。切り替えの前に、今後数カ月で詳細を学校に伝え、移行の準備期間を設ける方針です。目標は、学校のリーダーが自分たちの判断でAIを教室に入れられるようにすることだと説明しています。\n\n日本の学校にも同じ設定が適用されるかは、今回の発表からは読み取れません。Gemini Notebook自体は日本でも提供されています（当サイトの確認：10/30）。\n\n## まだ分からないこと\n\n- Classroom版Guided Learningの料金と、利用に必要なプランはまだ発表されていません。\n- Classroom版と検索版の日本語対応はまだ発表されていません。\n- 検索版を米国以外へ広げる時期はまだ発表されていません。\n- 管理設定の変更が始まる日付と、日本の学校への適用はまだ発表されていません。",
+  "easy": "## ひとことで言うと\n\nGoogleが、AIが答えをそのまま見せずに考え方を順に導く学習機能を、学校向けのGoogle Classroomで使えるようにしました。あわせて、小中高の生徒がGeminiなどのAIを使えるかどうかは、学校が決める形に変えます。\n\n## 答えを出さないAIを、授業と検索に\n\nこの機能は「Guided Learning」といいます。もともとはAIアシスタントのGeminiに入っていた学習モードです。\n\nGoogle Classroomでは、先生が課題として配ります。AIは授業の教材に沿って、生徒一人ひとりに問いかけながら進めます。先生は、クラスのどこでつまずいているかをその場で確かめられます。Classroom版は11月3日から世界で提供が始まりました。\n\nGoogle検索にも同じ考え方を入れます。たとえば生徒が難しい物理の問題を貼り付けると、答えではなく考えるための手がかりが表示されます。こちらはまず11月中に米国の一部の学校で試し、その後ほかの学区へ広げる予定です。\n\n## 生徒のAI利用は学校の許可制に\n\nGemini、Gemini Notebook、Classroom内のGemini、Google検索の4つは、小中高の生徒アカウントでは学校の管理者が有効にするまで使えなくなります。詳しい内容は、切り替えの前に数カ月かけて学校へ知らせるとしています。\n\nなお、料金と、日本語で使えるかどうかはまだ発表されていません。",
+  "channel": "Google公式ブログ",
+  "channelId": "",
+  "channelSlug": "google-blog-all",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Designing responsible AI for learning",
+  "publishedAt": "2026-11-03T14:00:00+00:00",
+  "generatedAt": "2026-11-03T14:07:03.907017+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/google-guided-learning-classroom-search-2496b2aa.jpg",
+  "model": "anthropic-api:claude-opus-5-5",
+  "affiliates": [],
+  "newsType": "product",
+  "faq": [
+    {
+      "q": "Google ClassroomのGuided Learningはいつから使える？",
+      "a": "2026年11月3日から、Google Classroomで世界に向けて提供が始まっています。教師が課題として配り、生徒が取り組む形です。"
+    },
+    {
+      "q": "Google検索のGuided Learningは日本で使える？",
+      "a": "検索版は、11月中に米国の一部の学校で試験を始める段階です。その後数カ月でほかの学区へ広げる予定ですが、日本での提供はまだ発表されていません。"
+    },
+    {
+      "q": "Guided Learningは前と何が違う？",
+      "a": "これまではGeminiアプリの学習モードでした。今回、Google ClassroomとGoogle検索にも組み込まれ、Classroomでは教師が生徒のつまずきをリアルタイムで把握できます。"
+    },
+    {
+      "q": "生徒のGemini利用はどう変わる？",
+      "a": "K-12の生徒アカウントでは、Gemini、Gemini Notebook、Classroom内のGemini、Google検索へのアクセスが、学校の管理者が有効にするまでオフになります。詳細は今後数カ月で学校へ伝えられます。"
+    }
+  ],
+  "todayActions": [
+    "学校や塾でClassroomを使っているなら、管理者にGuided Learningの提供状況を確認する",
+    "Geminiアプリで、Guided Learningの学習モードがどう問いかけるかを確かめる",
+    "子どもの学校がGoogleの生徒アカウントを使っているか、家庭で確認しておく"
+  ],
+  "qualityScore": 93,
+  "factSources": [
+    {
+      "label": "関連ページ",
+      "name": "Google公式ブログ「How Gemini is helping students and teachers in the classroom」",
+      "url": "https://blog.google/products-and-platforms/products/education/impact-studies-uk-italy/",
+      "checkedAt": "2026-11-03"
+    }
+  ],
+  "sourcePublishedAt": "2026-11-03T14:00:00+00:00",
+  "detectedAt": "2026-11-03T14:00:46+00:00",
+  "speedMinutes": 11,
+  "sectionsPolishedAt": "2026-11-03T14:09:59+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/google-guided-learning-classroom-search-fig1-d83bf947.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "photo",
+      "credit": "Google",
+      "sourceUrl": "https://blog.google/products-and-platforms/products/education/ai-learning-era-updates-2026/",
+      "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Designing_responsible_AI_for_lea.width-2200.format-webp.webp"
+    }
+  ],
+  "imageCredit": {
+    "kind": "official",
+    "org": "Google",
+    "provider": "Google公式ブログ",
+    "sourceUrl": "https://blog.google/products-and-platforms/products/education/ai-learning-era-updates-2026/",
+    "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Designing_responsible_AI_for_learning_hero.width-1300.png",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-03T14:10:07+00:00"
+  },
+  "imageFocus": {
+    "x": 0.422,
+    "y": 0.558,
+    "box": [
+      0.022,
+      0.117,
+      0.822,
+      1.0
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/google-guided-learning-classroom-search-2496b2aa.jpg"
+  }
+}

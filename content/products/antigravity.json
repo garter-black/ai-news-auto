@@ -132,7 +132,7 @@
     "gemini-4-argon",
     "google-ai-studio",
     "project-suncatcher",
-    "google-kubernetes-engine"
+    "gemini-notebook"
   ],
   "articles": [
     "antigravity-google-cloud-developer-plugin",

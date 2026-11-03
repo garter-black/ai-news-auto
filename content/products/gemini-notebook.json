@@ -1,0 +1,159 @@
+{
+  "slug": "gemini-notebook",
+  "name": "Gemini Notebook",
+  "aliases": [],
+  "company": "google",
+  "companyName": "Google",
+  "category": "アプリ・サービス",
+  "overview": {
+    "text": "Gemini Notebookは、Googleが提供する学習や資料分析向けのAIノートツールです。2026年7月にNotebookLMから名称が変更されました。",
+    "sources": [
+      "gemini-notebook-free-textbooks"
+    ]
+  },
+  "facts": [
+    {
+      "label": "料金",
+      "value": "無料の教科書を追加可能",
+      "sources": [
+        "gemini-notebook-free-textbooks"
+      ]
+    },
+    {
+      "label": "日本での提供",
+      "value": "日本でも提供されている",
+      "sources": [
+        "gemini-notebook-free-textbooks"
+      ]
+    },
+    {
+      "label": "使える場所",
+      "value": "ノート内で利用可能",
+      "sources": [
+        "gemini-notebook-free-textbooks"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "text": "OpenStaxなど数百冊の無料教科書をノートに追加してAIに質問できます。",
+      "sources": [
+        "gemini-notebook-free-textbooks"
+      ]
+    },
+    {
+      "text": "追加した教科書の内容だけを根拠に、出典リンク付きで回答が得られます。",
+      "sources": [
+        "gemini-notebook-free-textbooks"
+      ]
+    },
+    {
+      "text": "教科書から要点をまとめた学習ガイドや練習クイズ、フラッシュカードを作れます。",
+      "sources": [
+        "gemini-notebook-free-textbooks"
+      ]
+    },
+    {
+      "text": "論文のPDFや関連メディアを読み込ませて高度なデータ分析に活用できます。",
+      "sources": [
+        "google-labs-eric-topol-ai-healthcare-prevention"
+      ]
+    },
+    {
+      "text": "稟議データのチェック支援などに活用する事例が公開されています。",
+      "sources": [
+        "kddi-iret-ai-use-cases-113"
+      ]
+    }
+  ],
+  "pricing": [
+    {
+      "text": "教科書の追加は無料で行えます。",
+      "sources": [
+        "gemini-notebook-free-textbooks"
+      ]
+    }
+  ],
+  "japan": [
+    {
+      "text": "NotebookLM（Gemini Notebook）は日本でも提供されています。",
+      "sources": [
+        "gemini-notebook-free-textbooks"
+      ]
+    }
+  ],
+  "howto": [
+    {
+      "text": "ノートの中でAdd sourcesを選び、Textbooksを選ぶことで教科書を追加できます。",
+      "sources": [
+        "gemini-notebook-free-textbooks"
+      ]
+    }
+  ],
+  "differences": [
+    {
+      "text": "Google Play Booksの電子書籍に加え、授業用の教科書も追加できるようになりました。",
+      "sources": [
+        "gemini-notebook-free-textbooks"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "以前の名前は何ですか？",
+      "a": "以前はNotebookLMと呼ばれていました。",
+      "sources": [
+        "gemini-notebook-free-textbooks"
+      ]
+    },
+    {
+      "q": "どんな本を追加できますか？",
+      "a": "OpenStaxなどの教科書を数百冊追加できます。",
+      "sources": [
+        "gemini-notebook-free-textbooks"
+      ]
+    },
+    {
+      "q": "どのような機能が作れますか？",
+      "a": "学習ガイドや練習クイズ、フラッシュカードを作れます。",
+      "sources": [
+        "gemini-notebook-free-textbooks"
+      ]
+    },
+    {
+      "q": "どのような用途に使われていますか？",
+      "a": "論文の解析や社内の稟議データチェック支援などに使われています。",
+      "sources": [
+        "google-labs-eric-topol-ai-healthcare-prevention",
+        "kddi-iret-ai-use-cases-113"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2026-10-30",
+      "slug": "gemini-notebook-free-textbooks",
+      "event": "Gemini Notebookに無料の教科書が数百冊追加された"
+    }
+  ],
+  "related": [
+    "gemini-live",
+    "antigravity",
+    "google-ai-studio",
+    "project-suncatcher"
+  ],
+  "articles": [
+    "google-guided-learning-classroom-search",
+    "gemini-notebook-free-textbooks",
+    "kddi-iret-ai-use-cases-113",
+    "google-labs-eric-topol-ai-healthcare-prevention"
+  ],
+  "linkFrom": [
+    "gemini-notebook-free-textbooks"
+  ],
+  "signature": "fc57e71797c20365",
+  "primarySignature": "bfad4428b265da93",
+  "model": "gemini-3.5-flash-lite",
+  "createdAt": "2026-11-03T14:09:47+00:00",
+  "updatedAt": "2026-11-03T14:09:47+00:00"
+}
