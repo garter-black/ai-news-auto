@@ -3649,7 +3649,8 @@
       ],
       "via": "buffer",
       "channels": {
-        "twitter": "6aea5347ca28ab6c31781a62"
+        "twitter": "6aea5347ca28ab6c31781a62",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzgvy4thyo2q"
       },
       "permalink": "",
       "dueAt": "2026-11-03T22:30:00+00:00",
@@ -3705,7 +3706,8 @@
           "updatedAt": "2026-11-03T21:33:50+00:00"
         }
       },
-      "id": "6aea5346402e0fe50f14b70e"
+      "id": "6aea5346402e0fe50f14b70e",
+      "blueskyAt": "2026-11-03T22:43:03+00:00"
     },
     "openai-security-sprint-bug-bounty": {
       "id": "",
