@@ -9,6 +9,7 @@ on:
       - "scripts/shorts*.py"
       - "scripts/video_*.py"
       - "tests/test_shorts_v3.py"
+      - "tests/test_shorts_v3_script.py"
       - "tests/test_video_templates.py"
       - "tests/fixtures/video/**"
       - ".github/workflows/video_tests.yml"
@@ -17,6 +18,7 @@ on:
       - "scripts/shorts*.py"
       - "scripts/video_*.py"
       - "tests/test_shorts_v3.py"
+      - "tests/test_shorts_v3_script.py"
       - "tests/test_video_templates.py"
   workflow_dispatch:
 
@@ -38,4 +40,4 @@ jobs:
           which ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg)
           pip install -r requirements.txt numpy pillow budoux opencv-python-headless
       - name: 動画のテスト（投稿しない）
-        run: python -m unittest -v tests.test_video_templates tests.test_shorts_v3
+        run: python -m unittest -v tests.test_video_templates tests.test_shorts_v3 tests.test_shorts_v3_script

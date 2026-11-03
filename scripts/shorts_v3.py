@@ -980,120 +980,121 @@ def review_script(data: dict, article: dict, pages: list[Page], tier: str) -> di
         return None
 
 
-def write_script(article: dict, pages: list[Page], note: str = "") -> tuple[dict, str]:
-    import llm
+SCRIPT_TIME_CAP = float(os.environ.get("V3_SCRIPT_TIME_CAP", "480"))  # 台本の段の上限（秒）。CI は1回3本×(台本＋描画2本)を50分の枠に収める
+SCRIPT_MAIN_ATTEMPTS = int(os.environ.get("V3_SCRIPT_ATTEMPTS", "5"))  # ふつうの書き直しの回数（このあと strict / simple の立て直しが最大4回）
+FALLBACK_ROUNDS = ("strict", "simple", "strict", "simple")
+CALL_GUESS = 70.0  # LLM の1回の目安（秒）。実測が出たら実測の平均を使う
 
-    system = script_system() + note  # note は型の一言（video_templates.NOTES）。空なら今までと同じ
 
-    prompt = f"# 資料\n{script_material(article, pages)}\n\n上の資料だけを使って、決まりどおりの台本を JSON で書いてください。"
-    feedback, last = "", ""
-    tier = os.environ.get("V3_LLM_TIER", "quality")
-    reviews = 0
-    best = None  # 事実の検査に通った最後の台本（レビューの書き直しが通らなかったときに使う）
-    for attempt in range(1, 5):  # 2026-11-03: LLM の枠を食いすぎないよう、書き直しは4回まで（レビュー1回・立て直し2回は別）
-        try:
-            data, model = llm.generate_json(system, prompt + feedback, SCRIPT_SCHEMA, temperature=0.5, max_output_tokens=8192, tier=tier, visibility="high", purpose="video")
-        except RuntimeError:
-            if tier == "bulk":
-                raise
-            tier = "bulk"  # 上位モデルの枠が尽きたら軽いモデルへ（事実の照合は同じ）
-            log("   [v3] 台本: quality の枠が無いので bulk で書く")
-            continue
-        data["beats"] = [b for b in data.get("beats") or [] if isinstance(b, dict)][:BEATS_MAX]
-        latin_names(data)
-        problems = script_problems(data, article, pages)
-        if problems and any(EVIDENCE_PROBLEM.search(p) for p in problems):  # 証拠の行だけの問題は、画面の文字から付け替えて試す
-            fixed = repair_evidence(data, article, pages)
-            if fixed is not None:
-                fixed_problems = script_problems(fixed, article, pages)
-                if len(fixed_problems) < len(problems):
-                    data, problems = fixed, fixed_problems
-        style = [p for p in problems if p.startswith(STYLE_PREFIXES)]
-        if attempt >= 3 and len(style) == len(problems):
-            # 英文の区切りが直らない beat は、訳の吹き出しを出さない（ja を空に）。途中で切れた文の訳は出さない
-            for p in problems:
-                if m := re.match(r"target の区切り: (beat(\d)|hook)\.", p):
-                    item = data["hook"] if m.group(1) == "hook" else data["beats"][int(m.group(2)) - 1]
-                    item["ja"] = ""
-        if not problems or (attempt >= 3 and len(style) == len(problems)):
-            best = (json.loads(json.dumps(data, ensure_ascii=False)), model, list(problems))
-            # 自己レビュー: 問いに具体的な数字・比較で答えているか、当たり前・空の文が無いか（2回まで書き直す）
-            if reviews < 1 and attempt < 4:
-                reviews += 1
-                verdict = review_script(data, article, pages, tier)
-                if verdict and not verdict.get("ok") and verdict.get("issues"):
-                    issues = [str(x) for x in verdict["issues"]][:8]
-                    log(f"   [v3] 台本のレビュー（{reviews}）: 書き直し {issues}")
-                    feedback = "\n\n# 編集長のレビュー（すべて直す。資料に無い数字は足さない）\n" + "\n".join(f"- {p}" for p in issues) + "\n\n# 前回の台本\n" + json.dumps(data, ensure_ascii=False)
+def _better(new: list[str], old: list[str]) -> bool:
+    """問題が減ったか（事実・証拠の問題の数 → 全体の数の順に比べる）"""
+    def key(ps: list[str]) -> tuple[int, int]:
+        return (sum(1 for p in ps if not p.startswith(STYLE_PREFIXES)), len(ps))
+
+    return key(new) < key(old)
+
+
+def _sentences(text: str) -> list[str]:
+    return [s for s in re.findall(r"[^。！？!?]+[。！？!?]*", text or "") if s.strip()]
+
+
+def speech_total(data: dict) -> int:
+    return sum(len(x.get("speech", "")) for x in [data.get("hook") or {}, data.get("conclusion") or {}] + list(data.get("beats") or []))
+
+
+def shorten_speech(data: dict, limit: int = SPEECH_TOTAL_MAX, floor: int = 200, beat_floor: int = 18) -> dict | None:
+    """読み上げの合計が長すぎるとき、いちばん大事でない文を1つずつ落として limit 字以内にする（LLM を呼ばない・言葉は足さない）。
+    落とさない文: 画面のキーワード・補足の数字や言葉を含む文（読み上げと画面がずれる）・グラフの倍率や料金の段階の数字を含む文・各場面の最後の1文。
+    落とす順: 数字の無い文 → 数字のある文。同じなら長い場面の後ろの文から。つかみと締めは触らない。落とせないときは None"""
+    out = json.loads(json.dumps(data, ensure_ascii=False))
+    beats = out.get("beats") or []
+    total = speech_total(out)
+    if total <= limit:
+        return None
+    protect_by_beat: dict[int, set] = {}
+    comp = out.get("compare") or {}
+    if comp.get("beat"):
+        protect_by_beat.setdefault(int(comp["beat"]), set()).update(_digits(comp.get("ratio", "")))
+    lad = out.get("ladder") or {}
+    if lad.get("beat"):
+        protect_by_beat.setdefault(int(lad["beat"]), set()).update(d for r in lad.get("rows") or [] for d in _digits(f"{r.get('price', '')} {r.get('mult', '')}"))
+    uni = out.get("units") or {}
+    if uni.get("beat"):
+        protect_by_beat.setdefault(int(uni["beat"]), set()).update(str(r.get("count", "")) for r in uni.get("rows") or [])
+    while total > limit:
+        cands = []
+        for i, b in enumerate(beats, 1):
+            sents = _sentences(b.get("speech", ""))
+            if len(sents) < 2:
+                continue
+            caption = f"{b.get('keyword', '')} {b.get('sub', '')}"
+            protect = set(_digits(caption)) | protect_by_beat.get(i, set())
+            terms = [t for t in gate._TERM.findall(caption) if t not in gate.LATIN_OK]
+            for j, s in enumerate(sents):
+                rest = "".join(sents[:j] + sents[j + 1 :])
+                if len(rest) < beat_floor:
                     continue
-                log(f"   [v3] 台本のレビュー（{reviews}）: 合格")
-            if problems:  # 読み・長さだけは最後に妥協する（事実・証拠の問題は必ず直す。入らない文字は描画で止まる）
-                log(f"   [v3] 読み・長さの注意を残して採用: {problems}")
-                data["_notes"] = problems
-            data["_reviews"] = reviews
-            return data, model
-        last = "; ".join(problems)
-        log(f"   [v3] 台本の書き直し（{attempt}）: {last[:300]}")
-        feedback = "\n\n# 前回の台本の問題（すべて直す）\n" + "\n".join(f"- {p}" for p in problems) + "\n\n# 前回の台本\n" + json.dumps(data, ensure_ascii=False)
-    if best:  # レビューのあとの書き直しが検査に通らなかった → 検査に通った前の台本を使う
-        data, model, problems = best
-        log(f"   [v3] レビュー後の書き直しが通らないので、検査に通った前の台本を使う（{last[:200]}）")
-        if problems:
-            data["_notes"] = problems
-        data["_reviews"] = reviews
-        return data, model
-    # まだ通らない: ①証拠の行だけで書き直す（温度を下げる）×2 → ②記事の要点と確かめた数字だけの簡単な台本 ×2（あきらめない）
-    for phase, note in (("strict", STRICT_NOTE), ("simple", SIMPLE_NOTE)):
-        try:
-            data, model = llm.generate_json(system + note, prompt + feedback, SCRIPT_SCHEMA, temperature=0.2, max_output_tokens=8192, tier=tier, visibility="high", purpose="video")
-        except RuntimeError as error:
-            last = f"{last}; {error}"
+                if set(_digits(s)) & protect:
+                    continue
+                if any(gate._term_in(t, s) and not gate._term_in(t, rest) for t in terms):
+                    continue
+                cands.append(((1 if _digits(s) else 0, 1 if j == 0 else 0, -len(b.get("speech", "")), -j), i, j, s))
+        if not cands:
+            return None
+        _, i, j, s = min(cands, key=lambda c: c[0])
+        sents = _sentences(beats[i - 1]["speech"])
+        beats[i - 1]["speech"] = "".join(sents[:j] + sents[j + 1 :]).strip()
+        total -= len(s)
+        out.setdefault("_repairs", []).append(f"beat{i} の読み上げの文を削った: {s.strip()[:40]}")
+    if total < floor:
+        return None
+    return out
+
+
+GENERIC_TERMS = {"ドル", "時間", "毎週", "毎月", "月額", "プラン", "場合", "以上", "以下", "可能", "必要", "利用", "提供", "公開", "発表", "対応"}
+
+
+def keyword_candidates(beat: dict, article: dict, others: list[str] | None = None) -> list[str]:
+    """証拠の文（英語なら訳）にある言葉のうち、記事にも書かれているもの（キーワードの付け替え候補。言葉は作らない）。
+    元のキーワードと文字が重なる語 → ほかの場面のキーワードと重ならない語 → 読み上げにある語 → 長い語 の順"""
+    tgt, ja = beat.get("target", ""), (beat.get("ja") or "").strip()
+    src = ja if is_english(tgt) and ja else tgt
+    mat = gate.norm(gate.material_text(article)).lower()
+    old = beat.get("keyword", "")
+    speech = beat.get("speech", "")
+    seen, out = set(), []
+    for t in gate._TERM.findall(gate.norm(src)):
+        t = t.strip(".-+")
+        if t in seen or t in gate.LATIN_OK or t in GENERIC_TERMS or not (2 <= len(t) <= 10):
             continue
-        data["beats"] = [b for b in data.get("beats") or [] if isinstance(b, dict)][:BEATS_MAX]
-        latin_names(data)
-        problems = script_problems(data, article, pages)
-        if problems and any(EVIDENCE_PROBLEM.search(p) for p in problems):  # 証拠の行だけの問題は、画面の文字から付け替えて試す
-            fixed = repair_evidence(data, article, pages)
-            if fixed is not None:
-                fixed_problems = script_problems(fixed, article, pages)
-                if len(fixed_problems) < len(problems):
-                    data, problems = fixed, fixed_problems
-        style = [p for p in problems if p.startswith(STYLE_PREFIXES)]
-        for p in style:  # 区切りの直らない訳は出さない（上と同じ）
-            if m := re.match(r"target の区切り: (beat(\d)|hook)\.", p):
-                item = data["hook"] if m.group(1) == "hook" else data["beats"][int(m.group(2)) - 1]
-                item["ja"] = ""
-        if len(style) == len(problems):
-            log(f"   [v3] {phase} の台本で採用（{'・'.join(problems)[:200] or '問題なし'}）")
-            data["_mode"] = phase
-            if problems:
-                data["_notes"] = problems
-            return data, model
-        last = "; ".join(problems)
-        log(f"   [v3] {phase} の台本も書き直し: {last[:300]}")
-        feedback = (
-            "\n\n# 前回の台本で、資料・画面の文字に無かった主張（すべて消すか、資料の文どおりに直す）\n" + "\n".join(f"- {p}" for p in problems)
-            + "\n\n# 前回の台本\n" + json.dumps(data, ensure_ascii=False)
-        )  # fmt: skip
-        repaired = repair_evidence(data, article, pages)
-        if repaired is not None:
-            problems = script_problems(repaired, article, pages)
-            style = [p for p in problems if p.startswith(STYLE_PREFIXES)]
-            if len(style) == len(problems):
-                log(f"   [v3] 証拠の行を直して採用（{phase}）")
-                repaired["_mode"] = f"{phase}+repair"
-                return repaired, model
-    raise RuntimeError(f"台本を作れませんでした: {last[:400]}")
+        seen.add(t)
+        if t.lower() not in mat:
+            continue
+        if not gate.key_fact_ok(t, beat.get("sub", ""), tgt, ja):
+            continue
+        overlap = any(t[k : k + 2] in old for k in range(len(t) - 1)) or t.lower() in old.lower()
+        dup = any(t.lower() in o.lower() for o in others or [])
+        out.append(((0 if overlap else 1, 1 if dup else 0, 0 if gate._term_in(t, speech) else 1, -len(t)), t))
+    return [t for _, t in sorted(out)]
 
 
-EVIDENCE_PROBLEM = re.compile(r"の数字・言葉がありません|が証拠の行 \[|が画面の文字にありません")
+def _evidence_ok(pages: list[Page], item: dict) -> bool:
+    tgt = find_target(pages, item.get("target", ""), item.get("block", ""), keyword=item.get("keyword", ""))
+    if not tgt or not gate.key_fact_ok(item.get("keyword", ""), item.get("sub", ""), item.get("target", ""), item.get("ja", "")):
+        return False
+    have = {float(x) for x in _digits(tgt.block.text)}
+    return all(float(d) in have for d in _digits(item.get("keyword", "")))
 
 
 def repair_evidence(data: dict, article: dict, pages: list[Page]) -> dict | None:
-    """証拠の文にキーワードの数字・言葉が無い beat は、画面の文字からそれを含む文を探して付け替える（LLM を呼ばない）。
-    付け替えた英語の文は訳が無いので ja は空にする（吹き出しは出さない）"""
+    """証拠の文にキーワードの数字・言葉が無い場面を、LLM を呼ばずに直す。場面ごとに次の順で試す:
+    ①画面の文字から、キーワードの数字・言葉を含む日本語の文を選び直す（訳が要らない）
+    ②今の証拠の文（英語なら訳）にある、記事にも書かれた言葉をキーワードにする（証拠と訳はそのまま。言葉は作らない）
+    ③キーワードを含む英語の文を選び直す（訳が無いので ja は空。訳は次の書き直しで LLM に頼む）
+    どれもだめな場面はそのまま残す（他の場面は直す）。何も変わらなければ None"""
     out = json.loads(json.dumps(data, ensure_ascii=False))
     changed = False
+    repairs = out.setdefault("_repairs", [])
     hook = out.get("hook") or {}
     digits = _digits(hook.get("payoff", ""))
     htg = find_target(pages, hook.get("target", ""), hook.get("block", ""), keyword=hook.get("payoff", "")) if hook else None
@@ -1102,26 +1103,225 @@ def repair_evidence(data: dict, article: dict, pages: list[Page]) -> dict | None
             hit = next((blk for blk in sorted(p.blocks, key=lambda b: -b.font_px) if all(float(d) in {float(x) for x in _digits(blk.text)} for d in digits) and len(blk.text) <= 200), None)
             if hit:
                 hook.update({"block": hit.id, "target": hit.text, "ja": ""})
+                repairs.append(f"hook の証拠を選び直した: {hit.text[:40]}")
                 changed = True
                 break
-    for b in out.get("beats") or []:
-        tgt = find_target(pages, b.get("target", ""), b.get("block", ""), keyword=b.get("keyword", ""))
-        if tgt and gate.key_fact_ok(b.get("keyword", ""), b.get("sub", ""), b.get("target", ""), b.get("ja", "")):
+    for i, b in enumerate(out.get("beats") or [], 1):
+        if _evidence_ok(pages, b):
             continue
-        best = None
+        picks = []
         for p in pages:
             for blk in p.blocks:
                 for sent in re.split(r"(?<=[。！？.!?])\s*", blk.text):
                     sent = sent.strip()
                     if 4 <= len(sent) <= 140 and gate.key_fact_ok(b.get("keyword", ""), b.get("sub", ""), sent):
-                        score = (0 if not p.own else 1, len(sent))
-                        if best is None or score < best[0]:
-                            best = (score, blk.id, sent)
-        if best is None:
-            return None
-        b.update({"block": best[1], "target": best[2], "ja": "" if is_english(best[2]) else ""})
-        changed = True
+                        picks.append(((1 if is_english(sent) else 0, 1 if p.own else 0, len(sent)), blk.id, sent))
+        picks.sort(key=lambda x: x[0])
+        ja_pick = next((x for x in picks if not is_english(x[2]) and find_target(pages, x[2], x[1])), None)
+        if ja_pick:  # ①
+            b.update({"block": ja_pick[1], "target": ja_pick[2], "ja": ""})
+            repairs.append(f"beat{i} の証拠を選び直した: {ja_pick[2][:40]}")
+            changed = True
+            continue
+        if find_target(pages, b.get("target", ""), b.get("block", "")):  # ②
+            others = [x.get("keyword", "") for k, x in enumerate(out.get("beats") or [], 1) if k != i]
+            for kw in keyword_candidates(b, article, others):
+                trial = dict(b, keyword=kw)
+                if _evidence_ok(pages, trial):
+                    repairs.append(f"beat{i} のキーワードを証拠の文にある言葉にした: {b.get('keyword', '')} → {kw}")
+                    b["keyword"] = kw
+                    changed = True
+                    break
+            else:
+                kw = None
+            if kw:
+                continue
+        en_pick = next((x for x in picks if find_target(pages, x[2], x[1])), None)
+        if en_pick:  # ③
+            b.update({"block": en_pick[1], "target": en_pick[2], "ja": ""})
+            repairs.append(f"beat{i} の証拠を英語の文に選び直した（訳は次の書き直しで）: {en_pick[2][:40]}")
+            changed = True
+    if not repairs:
+        out.pop("_repairs", None)
     return out if changed else None
+
+
+def self_correct(data: dict, article: dict, pages: list[Page], problems: list[str] | None = None) -> tuple[dict, list[str]]:
+    """LLM に戻す前に、機械で直せる問題を直して検査し直す（読み上げの長さ・証拠の行）。問題が減ったときだけ採用"""
+    problems = script_problems(data, article, pages) if problems is None else problems
+    if any(p.startswith("読み上げの合計が長すぎ") for p in problems):
+        cand = shorten_speech(data)
+        if cand is not None:
+            cand_problems = script_problems(cand, article, pages)
+            if _better(cand_problems, problems):
+                log(f"   [v3] 読み上げを {speech_total(data)}字 → {speech_total(cand)}字に削った")
+                data, problems = cand, cand_problems
+    if any(EVIDENCE_PROBLEM.search(p) for p in problems):
+        cand = repair_evidence(data, article, pages)
+        if cand is not None:
+            cand_problems = script_problems(cand, article, pages)
+            if _better(cand_problems, problems):
+                log(f"   [v3] 証拠の行・キーワードを直した: {(cand.get('_repairs') or [])[-3:]}")
+                data, problems = cand, cand_problems
+    return data, problems
+
+
+def feedback_for(problems: list[str], data: dict, article: dict, pages: list[Page]) -> str:
+    """次の書き直しに渡す具体的な直し方（問題の一覧＋字数の予算＋キーワードの候補）＋前回の台本"""
+    lines = [f"- {p}" for p in problems]
+    total = speech_total(data)
+    if total > SPEECH_TOTAL_MAX:
+        goal = SPEECH_TOTAL_MAX - 30
+        longest = sorted(((len(b.get("speech", "")), i) for i, b in enumerate(data.get("beats") or [], 1)), reverse=True)[:3]
+        lines.append(
+            f"- 字数の予算: 読み上げ（hook・beats・conclusion の speech）の合計を{goal}字以内に（今は{total}字。{total - goal}字以上削る）。"
+            + "長い speech: " + "・".join(f"beat{i} {n}字" for n, i in longest) + "。言い換えより、1場面1〜2文に減らす。"
+        )
+    for m in re.finditer(r"(beat(\d+))\.target「[^」]*」に、キーワード", "\n".join(problems)):
+        k = int(m.group(2))
+        beats = data.get("beats") or []
+        if 1 <= k <= len(beats):
+            cands = keyword_candidates(beats[k - 1], article, [x.get("keyword", "") for j, x in enumerate(beats, 1) if j != k])[:4]
+            if cands:
+                lines.append(f"- {m.group(1)}: 証拠の文をそのまま使うなら、keyword を証拠の文（訳）にある言葉に（候補: {'・'.join(cands)}）。")
+    return "\n\n# 前回の台本の問題（すべて直す）\n" + "\n".join(lines) + "\n\n# 前回の台本\n" + json.dumps({k: v for k, v in data.items() if not k.startswith("_")}, ensure_ascii=False)
+
+
+def _clear_broken_ja(data: dict, problems: list[str]) -> None:
+    """英文の区切りが直らない場面は、訳の吹き出しを出さない（ja を空に）。途中で切れた文の訳は出さない"""
+    for p in problems:
+        if m := re.match(r"target の区切り: (beat(\d+)|hook)\.", p):
+            beats = data.get("beats") or []
+            if m.group(1) == "hook":
+                data["hook"]["ja"] = ""
+            elif 1 <= int(m.group(2)) <= len(beats):
+                beats[int(m.group(2)) - 1]["ja"] = ""
+
+
+def write_script(article: dict, pages: list[Page], note: str = "") -> tuple[dict, str]:
+    """台本を書く。LLM の答えを検査し、機械で直せるもの（長さ・証拠の行）は直してから、残りの問題を具体的に返して書き直させる。
+    ふつうの書き直し SCRIPT_MAIN_ATTEMPTS 回（途中で編集長のレビュー1回）→ strict / simple の立て直し（最大4回）。
+    全体を SCRIPT_TIME_CAP 秒に収める（LLM の1回の実測の平均で、次の1回が間に合うかを見る）"""
+    import llm
+
+    system = script_system() + note  # note は型の一言（video_templates.NOTES）。空なら今までと同じ
+    prompt = f"# 資料\n{script_material(article, pages)}\n\n上の資料だけを使って、決まりどおりの台本を JSON で書いてください。"
+    feedback, last = "", ""
+    tier = os.environ.get("V3_LLM_TIER", "quality")
+    reviews = 0
+    best = None  # 事実の検査に通った最後の台本（レビューの書き直しが通らなかったときに使う）
+    tolerable = None  # 読み・長さの注意だけが残った台本（時間切れのときに使う）
+    t_start = time.time()
+    deadline = t_start + SCRIPT_TIME_CAP
+    call_secs: list[float] = []
+    calls = 0
+
+    def guess() -> float:
+        return sum(call_secs) / len(call_secs) if call_secs else CALL_GUESS
+
+    def ask(sys_text: str, temperature: float) -> tuple[dict, str]:
+        nonlocal tier, calls
+        while True:
+            t = time.time()
+            calls += 1
+            try:
+                got = llm.generate_json(sys_text, prompt + feedback, SCRIPT_SCHEMA, temperature=temperature, max_output_tokens=8192, tier=tier, visibility="high", purpose="video")
+                call_secs.append(time.time() - t)
+                return got
+            except RuntimeError as error:
+                call_secs.append(max(time.time() - t, 1.0))
+                if tier == "bulk" or deadline - time.time() < guess() * 0.8:
+                    raise
+                tier = "bulk"  # 上位モデルの枠が尽きたら軽いモデルへ（事実の照合は同じ）
+                log(f"   [v3] 台本: quality で書けない（{str(error)[:120]}）ので bulk で書く")
+
+    def finish(data: dict, model: str, problems: list[str], mode: str = "") -> tuple[dict, str]:
+        if problems:  # 読み・長さだけは最後に妥協する（事実・証拠の問題は必ず直す。入らない文字は描画で止まる）
+            log(f"   [v3] 読み・長さの注意を残して採用: {problems}")
+            data["_notes"] = problems
+        if mode:
+            data["_mode"] = mode
+        data["_reviews"] = reviews
+        data["_attempts"] = calls
+        data["_script_seconds"] = round(time.time() - t_start, 1)
+        return data, model
+
+    def prepare(data: dict) -> tuple[dict, list[str]]:
+        data["beats"] = [b for b in data.get("beats") or [] if isinstance(b, dict)][:BEATS_MAX]
+        latin_names(data)
+        return self_correct(data, article, pages)
+
+    # ① ふつうの書き直し（途中で編集長のレビュー1回）
+    for attempt in range(1, SCRIPT_MAIN_ATTEMPTS + 1):
+        left = deadline - time.time()
+        if attempt > 1 and left < guess() * 2.2:  # 立て直し（simple）の1回分を残す
+            log(f"   [v3] 台本: 残り{left:.0f}秒なので立て直しへ")
+            break
+        try:
+            data, model = ask(system, 0.5)
+        except RuntimeError as error:
+            last = f"{last}; {error}"
+            break
+        data, problems = prepare(data)
+        style = [p for p in problems if p.startswith(STYLE_PREFIXES)]
+        if attempt >= 3 and problems and len(style) == len(problems):
+            _clear_broken_ja(data, problems)
+        if not problems or (attempt >= 3 and len(style) == len(problems)):
+            best = (json.loads(json.dumps(data, ensure_ascii=False)), model, list(problems))
+            # 自己レビュー: 問いに具体的な数字・比較で答えているか、当たり前・空の文が無いか（1回だけ書き直す）
+            if reviews < 1 and attempt < SCRIPT_MAIN_ATTEMPTS and deadline - time.time() > guess() * 2.5:
+                reviews += 1
+                verdict = review_script(data, article, pages, tier)
+                if verdict and not verdict.get("ok") and verdict.get("issues"):
+                    issues = [str(x) for x in verdict["issues"]][:8]
+                    log(f"   [v3] 台本のレビュー（{reviews}）: 書き直し {issues}")
+                    feedback = "\n\n# 編集長のレビュー（すべて直す。資料に無い数字は足さない）\n" + "\n".join(f"- {p}" for p in issues) + "\n\n# 前回の台本\n" + json.dumps({k: v for k, v in data.items() if not k.startswith("_")}, ensure_ascii=False)
+                    continue
+                log(f"   [v3] 台本のレビュー（{reviews}）: 合格")
+            return finish(data, model, problems)
+        if len(style) == len(problems):
+            tolerable = (json.loads(json.dumps(data, ensure_ascii=False)), model, list(problems))
+        last = "; ".join(problems)
+        log(f"   [v3] 台本の書き直し（{attempt}・{time.time() - t_start:.0f}秒）: {last[:300]}")
+        feedback = feedback_for(problems, data, article, pages)
+    if best:  # レビューのあとの書き直しが検査に通らなかった → 検査に通った前の台本を使う
+        data, model, problems = best
+        log(f"   [v3] レビュー後の書き直しが通らないので、検査に通った前の台本を使う（{last[:200]}）")
+        return finish(data, model, problems)
+    # ② 立て直し: strict（証拠の行だけで・温度を下げる）と simple（記事の要点と確かめた数字だけ）を交互に。時間の許す限り
+    for k, phase in enumerate(FALLBACK_ROUNDS):
+        left = deadline - time.time()
+        if left < guess() * 0.9:
+            log(f"   [v3] 台本: 時間切れ（{time.time() - t_start:.0f}秒・LLM {calls}回）")
+            break
+        if phase == "strict" and left < guess() * 2.0 and "simple" in FALLBACK_ROUNDS[k + 1 :]:
+            continue  # 残りが少ないときは、通りやすい simple を先に
+        note_text = STRICT_NOTE if phase == "strict" else SIMPLE_NOTE
+        try:
+            data, model = ask(system + note_text, 0.2)
+        except RuntimeError as error:
+            last = f"{last}; {error}"
+            log(f"   [v3] {phase} の台本: LLM が答えない（{str(error)[:160]}）")
+            continue
+        data, problems = prepare(data)
+        style = [p for p in problems if p.startswith(STYLE_PREFIXES)]
+        _clear_broken_ja(data, style)
+        if len(style) == len(problems):
+            log(f"   [v3] {phase} の台本で採用（{'・'.join(problems)[:200] or '問題なし'}）")
+            return finish(data, model, problems, phase)
+        last = "; ".join(problems)
+        log(f"   [v3] {phase} の台本も書き直し（{time.time() - t_start:.0f}秒）: {last[:300]}")
+        feedback = feedback_for(problems, data, article, pages).replace(
+            "# 前回の台本の問題（すべて直す）", "# 前回の台本の問題（資料・画面の文字に無い主張はすべて消すか、資料の文どおりに直す）"
+        )
+    if tolerable:  # 時間切れ: 読み・長さの注意だけが残った台本を使う
+        data, model, problems = tolerable
+        _clear_broken_ja(data, problems)
+        return finish(data, model, problems, "tolerable")
+    raise RuntimeError(f"台本を作れませんでした（LLM {calls}回・{time.time() - t_start:.0f}秒）: {last.lstrip('; ')[:400]}")
+
+
+EVIDENCE_PROBLEM = re.compile(r"の数字・言葉がありません|が証拠の行 \[|が画面の文字にありません")
 
 
 STRICT_NOTE = """
@@ -1129,6 +1329,7 @@ STRICT_NOTE = """
 # いちばん大事（前回までの台本が事実の検査に通らなかった）
 - 数字・名前・事実は「資料」の文と「画面の文字」の行に書かれているものだけ。行の文字を言い換えるときも数字は変えない。
 - 証拠（block / target）は、その場面で言う数字や名前が**その行に書かれている**ものだけを選ぶ。合う行が無い主張は台本から消す。
+- keyword は証拠の文（英語なら ja の訳）にある言葉か数字にする。
 - 数字は減らしてよい。迷う数字は書かない。"""
 
 SIMPLE_NOTE = """
@@ -1136,7 +1337,8 @@ SIMPLE_NOTE = """
 # 簡単な台本にする（事実の検査に通ることを最優先）
 - 記事の「要点」と「判定」に書かれた事実と数字だけを使う。比べる表（ladder・units・compare）は使わない（beat=0・rows は空）。
 - beats はちょうど5つ: 答え → 何が変わった → 必要な人（具体的な仕事の場面）→ 注意・条件 → 確かめ方。読み上げの合計は200〜280字。
-- 証拠は、その場面の言葉や数字がそのまま書かれた「画面の文字」の行（記事の要点・表の行など）。英語の行なら ja に訳を。"""
+- 証拠は、その場面の言葉や数字がそのまま書かれた「画面の文字」の行（記事の要点・表の行など）。英語の行なら ja に訳を。
+- keyword は証拠の文（英語なら ja の訳）にある言葉か数字にする。"""
 
 
 # --------------------------------------------------------------------------- #
