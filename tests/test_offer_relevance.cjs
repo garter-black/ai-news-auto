@@ -286,3 +286,28 @@ test("製品・趣味の記事は、カテゴリの語で楽天（A8）とAmazon
   // 決算・株価などの記事は製品の記事として扱わない
   assert.notEqual(offerPlanForArticle(article({ title: "任天堂の決算、Switch 2が好調", genreSlug: "business" })).offer.topic, "fallback-product");
 });
+
+test("まとめ記事は脇の話題の1語でセキュリティソフトを出さず、AIツール・スキルの広告にする。デザインアプリの記事に VPS を出さない（2026-11-03 の画面の点検 D）", () => {
+  const roundup = article({
+    title: "GoogleのAI「Gemini 4」など10月の新発表まとめ　詐欺対策や偽画像の判別も",
+    seoTitle: "Google AI 10月発表まとめ　Gemini 4とは？",
+    tags: ["Gemini", "生成AI", "Google", "LLM", "セキュリティ", "量子コンピューター"],
+    lede: "Googleが10月のAIの発表をまとめました。詐欺対策やセキュリティの新機能、偽画像の判別も入っています。",
+  });
+  const plan = offerPlanForArticle(roundup);
+  assert.equal(plan.offer.topic, "gemini");
+  const all = [...keys(plan.rail), ...keys(plan.inline)];
+  assert.ok(all.length >= 1, "広告枠は必ず出す");
+  for (const key of all) assert.ok(!/norton|eset|virusbuster|kaspersky|mcafee|nordvpn/.test(key), key);
+  // 同じ語でも、まとめでない記事ではセキュリティの話題を選べる
+  const single = article({ title: "Googleが詐欺対策の新機能、偽画像を判別", tags: ["セキュリティ"] });
+  assert.ok(offerPlanForArticle(single).offer.items.some((item) => item.topic === "security"));
+
+  const canva = article({
+    title: "Canvaがデザインアプリ「Affinity」iPad版を公開　描く・写真編集・ページ制作が1本に",
+    tags: ["Affinity", "Canva", "iPad", "デザインアプリ", "写真編集"],
+  });
+  const canvaPlan = offerPlanForArticle(canva);
+  assert.ok(canvaPlan.rail.items.length >= 1, "広告枠は必ず出す");
+  for (const key of [...keys(canvaPlan.rail), ...keys(canvaPlan.inline)]) assert.ok(!/xserver|conoha|sakura|lolipop/.test(key), key);
+});

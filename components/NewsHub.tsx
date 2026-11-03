@@ -5,6 +5,7 @@ import { smallThumb } from "@/lib/thumb-url";
 import type { ArticleSummary } from "@/lib/articles";
 import { thumbSource } from "@/lib/companies";
 import { displayHeadline } from "@/lib/headline";
+import { coverPath } from "@/lib/cover-path";
 
 type GenreChip = { slug: string; label: string; count: number };
 
@@ -71,7 +72,7 @@ function NewsItem({ article, priority }: { article: ArticleSummary; priority: bo
         <Thumb
           src={smallThumb(article.thumbnail)}
           source={thumbSource(article)}
-          cover={`/cover/${article.slug}`}
+          cover={coverPath(article)}
           alt=""
           fill
           priority={priority}

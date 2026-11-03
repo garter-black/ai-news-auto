@@ -97,6 +97,19 @@ type B2BConfig = {
   fallbackSet?: string;
 };
 
+/**
+ * まとめ記事（「10月のAI発表まとめ」など、多くの発表を1本にまとめた記事）の広告の決まり（2026-11-03 の画面の点検 D）。
+ * まとめ記事は見出し・要約・タグに脇の話題の語（例: 「詐欺対策も」）が出るので、関係の薄い商品（セキュリティソフトなど）が当たりやすい。
+ * preferTopics（AIツール・スキル・仕事・お金の話題）だけを選ぶ。合う話題が無ければ製品カテゴリの検索・ジャンルの既定の広告に回る
+ */
+type RoundupConfig = {
+  _README?: string;
+  /** 見出しがまとめ記事かどうか（type: "roundup" の記事は常にまとめ記事） */
+  match: string;
+  /** まとめ記事で選んでよい話題（AIツール・スキル・仕事・お金） */
+  preferTopics: string[];
+};
+
 type OffersFile = {
   /** 合う話題が無い記事に出す、ジャンルごとの広告（読者全体に役立つもの） */
   articleFallback?: {
@@ -106,9 +119,12 @@ type OffersFile = {
     /** 見出しがお金の話題のときに使う組（例: ビジネスの日銀・物価の記事は証券・お金の本） */
     byGenreIfMoney?: Record<string, string>;
     moneyMatch?: string;
+    /** 既定の広告のサーバー・VPS（b2b.hostingPartners）は、記事にこの語（開発・API など）があるときだけ出す（デザインアプリの記事に VPS を出さない） */
+    hostingNeeds?: string;
     default: string;
     sets: Record<string, FallbackSet>;
   };
+  roundup?: RoundupConfig;
   topics: Topic[];
   audience: Record<string, string>;
   fallback: string;
@@ -334,11 +350,14 @@ export function scoreTopics(article: ArticleSummary): TopicScore[] {
   const { offers } = load();
   const text = articleText(article);
   const b2b = isB2BArticle(article, text) ? offers.b2b : undefined;
+  const roundup = isRoundupArticle(article, text) ? offers.roundup : undefined;
   const scored: TopicScore[] = [];
   for (const topic of offers.topics) {
     // ジャンルの違う話題（スポーツ記事に回線、AI記事に投資の本など）は出さない
     if (!genresOf(topic).includes(article.genreSlug)) continue;
     if (regex(topic.articleExclude)?.test(text.title)) continue;
+    // まとめ記事: AIツール・スキル・仕事・お金の話題だけ（「詐欺対策も」のような脇の1語でセキュリティソフトなどを出さない）
+    if (roundup && !roundup.preferTopics.includes(topic.key)) continue;
     let score = relevanceScore(topic.alsoMatch ? `${topic.match}|${topic.alsoMatch}` : topic.match, article, text);
     // 発表元だけでは当てない（話題の語が記事に出てくるときの裏付けとして使う）
     if (score > 0 && regex(topic.companies)?.test(text.company)) score += 1;
@@ -350,6 +369,12 @@ export function scoreTopics(article: ArticleSummary): TopicScore[] {
   }
   // 同点は offers.json の並び（具体的な話題が上）のまま
   return scored.sort((a, b) => b.score - a.score);
+}
+
+/** まとめ記事か（type: "roundup"、または見出しが「10月の発表まとめ」「最新動向」など。offers.json の roundup.match） */
+export function isRoundupArticle(article: ArticleSummary, text: ArticleText = articleText(article)): boolean {
+  if (article.type === "roundup") return true;
+  return regex(load().offers.roundup?.match)?.test(text.title) ?? false;
 }
 
 function escapeRegex(text: string): string {
@@ -472,7 +497,9 @@ export function fallbackOfferForArticle(article: ArticleSummary, maxItems = 12):
   const key = b2bSet && config.sets[b2bSet] ? b2bSet : genreKey;
   const set = config.sets[key] ?? config.sets[config.default];
   if (!set) return undefined;
-  const hosting = blocksHosting(article, text) ? new Set(offers.b2b?.hostingPartners ?? []) : new Set<string>();
+  // サーバー・VPS は法人向けの記事では出さない。ほかの記事でも、開発・API などの語が無ければ出さない（Canva のアプリの記事に VPS が出ていた。2026-11-03）
+  const needsHosting = !config.hostingNeeds || (regex(config.hostingNeeds)?.test(`${text.title} ${text.meta} ${text.summary}`) ?? false);
+  const hosting = blocksHosting(article, text) || !needsHosting ? new Set(offers.b2b?.hostingPartners ?? []) : new Set<string>();
   const topicKey = `fallback-${key}`;
   const built: Built[] = [];
   for (const partner of set.partners) {

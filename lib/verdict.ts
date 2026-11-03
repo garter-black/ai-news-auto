@@ -154,8 +154,39 @@ export function freeLabel(free: boolean | null): string {
   return "記載なし";
 }
 
-/** まとめ記事や判定のない古い記事には出さない */
-export function verdictOf(article: ArticleSummary): Verdict | undefined {
-  if (article.type === "roundup") return undefined;
-  return article.verdict ?? undefined;
+/**
+ * 製品・サービスの発表ではないニュース（事故・情報流出・攻撃、買収・上場・人事などの会社の動き、表彰、統計・業績）。
+ * 「使える／提供前」の判定は製品・サービスが使えるかの答えなので、これらには出さない（2026-11-03 の画面の点検 A。
+ * 北陸電力のメールアドレス流出に「使える・無料」と出ていた）。
+ * 記事を作る側（scripts/web_articles.py の NON_PRODUCT_RE）と同じ文字列。変えたら両方を直す（tests/test_verdict_scope.py が照らし合わせる）
+ */
+export const NON_PRODUCT_PATTERN =
+  "流出(?!を防|対策)|(?:漏えい|漏洩)(?:し|が|の(?:可能性|恐れ|疑い))|不正アクセス(?!を防|対策)|不正利用(?!を防|対策)|サイバー攻撃(?:を受け|で|被害)|ランサムウェア被害|悪用を確認|悪用され|" +
+  "障害が発生|大規模障害|で通信障害|通信障害が|に脆弱性|脆弱性が見つか|欠陥を発見|欠陥が見つか|インシデント|事件|逮捕|書類送検|訴訟|提訴|行政処分|業務改善命令|リコール|" +
+  "買収|合併|経営統合|持株会社|分社|上場申請|新規上場|株式上場|資金調達|出資|子会社化|就任|退任|社長交代|人事異動|企業再編|連携協定|協定を締結|業務提携|資本提携|" +
+  "表彰|受賞|選出|アワード|Awards?|" +
+  "統計(?!的)|倒産|件数|調査結果|決算|業績|自社株買い|株主還元|配当|物価|雇用統計|失業率|景気|口座数|契約数|販売台数|出荷台数|上方修正|下方修正|前年同月比|前年比|突破|有効求人倍率|短観";
+const NON_PRODUCT_RE = new RegExp(NON_PRODUCT_PATTERN);
+
+/** 製品・サービスが使えるかを答える記事か（見出しとタグで見る） */
+export function isProductNews(article: { title: string; tags?: string[] }): boolean {
+  return !NON_PRODUCT_RE.test(`${article.title} ${(article.tags ?? []).join(" ")}`);
+}
+
+/** まとめ記事・判定のない古い記事・製品の発表でないニュースには出さない */
+export function verdictOf(article: Pick<ArticleSummary, "type" | "verdict" | "genreSlug" | "title" | "tags">): Verdict | undefined {
+  if (article.type === "roundup" || !article.verdict) return undefined;
+  // 制度の記事でも、統計・事件・表彰などは「申し込める？」の答えにならない。スポーツ（「代表に選出」など）は観戦の判定なので残す
+  if (verdictKind(article) !== "sports" && !isProductNews(article)) return undefined;
+  return article.verdict;
+}
+
+/**
+ * 一覧の札（使える／一部／まだ）。製品・サービスの記事だけ。
+ * スポーツ・制度は判定カード（観戦できる？・申し込める？）を記事ページに出すが、一覧の札は付けない（製品の言い方になるため）
+ */
+export function listUsability(article: Pick<ArticleSummary, "type" | "verdict" | "genreSlug" | "title" | "tags">): Usability | undefined {
+  const verdict = verdictOf(article);
+  if (!verdict || verdictKind(article) !== "product") return undefined;
+  return usability(verdict);
 }

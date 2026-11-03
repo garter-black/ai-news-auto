@@ -4,7 +4,7 @@ import { COMPANIES, companyOf } from "@/lib/companies";
 import { easyGist } from "@/lib/general";
 import { BROAD_SECTIONS } from "@/lib/sections";
 import { byTierThenNewest, STORY_WINDOW_MS } from "@/lib/story-window";
-import { freeLabel, japanLabel, usability, USABILITY_LABEL } from "@/lib/verdict";
+import { freeLabel, japanLabel, listUsability, usability, USABILITY_LABEL, verdictOf } from "@/lib/verdict";
 
 /*
  * 丸に入れるのは直近24時間の記事だけ。
@@ -74,7 +74,8 @@ export function newsTime(a: ArticleSummary): number {
 function toItem(a: ArticleSummary, at: number): StoryItem {
   const ai = a.genreSlug === "ai";
   const c = companyOf(a);
-  const v = a.verdict ?? null;
+  // 札（使える／一部／まだ）は製品・サービスの記事だけ（lib/verdict.ts の listUsability）
+  const v = listUsability(a) ? verdictOf(a) ?? null : null;
   return {
     slug: a.slug,
     title: a.title,
@@ -164,13 +165,13 @@ export function getStoryBundles(now: number = Date.now()): Bundle[] {
       key: "go",
       label: "今使えるAI新機能",
       items: aiWhere(
-        (a) => !!a.verdict && usability(a.verdict) === "go" && forPeople(a) && !NOT_FEATURE.test(a.title) && !INFRA.test(a.title),
+        (a) => listUsability(a) === "go" && forPeople(a) && !NOT_FEATURE.test(a.title) && !INFRA.test(a.title),
       ),
     },
     {
       key: "free",
       label: "無料で試せるAI",
-      items: aiWhere((a) => a.verdict?.free === true && a.verdict.status === "available" && forPeople(a) && !INFRA.test(a.title)),
+      items: aiWhere((a) => !!listUsability(a) && a.verdict?.free === true && a.verdict.status === "available" && forPeople(a) && !INFRA.test(a.title)),
     },
     { key: "work", label: "仕事を助けるAI", items: aiWhere((a) => WORK.test(a.title) && forPeople(a)) },
     { key: "study", label: "勉強に使えるAI", items: aiWhere((a) => STUDY.test(a.title) && forPeople(a)) },

@@ -14,7 +14,7 @@ const mocks={
  '@/lib/general':{easyGist:(a)=>a.lede},
  '@/lib/sections':{BROAD_SECTIONS:[{slug:'business',label:'ビジネス・経済'}]},
  '@/lib/story-window':win.exports,
- '@/lib/verdict':{freeLabel:()=>'',japanLabel:()=>'',usability:(v)=>v.status==='available'?'go':'wait',USABILITY_LABEL:{go:'使える',wait:'まだ'}}
+ '@/lib/verdict':{freeLabel:()=>'',japanLabel:()=>'',usability:(v)=>v.status==='available'?'go':'wait',listUsability:(a)=>a.verdict?(a.verdict.status==='available'?'go':'wait'):undefined,verdictOf:(a)=>a.verdict??undefined,USABILITY_LABEL:{go:'使える',wait:'まだ'}}
 };
 const source=ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
 const m=new Module(file,module);m.filename=file;m.paths=Module._nodeModulePaths(path.dirname(file));const orig=m.require.bind(m);m.require=(name)=>mocks[name]||orig(name);m._compile(source,file);

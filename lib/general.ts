@@ -1,5 +1,5 @@
 import type { ArticleSummary } from "@/lib/articles";
-import { usability } from "@/lib/verdict";
+import { listUsability } from "@/lib/verdict";
 
 /**
  * 「一般の人に関係あるか」の目安。トップやストーリーで、企業向け・開発者向けの話より
@@ -17,10 +17,10 @@ export function generalScore(article: ArticleSummary): number {
   if (ENTERPRISE.test(text)) score -= 3;
   if (/一般|誰でも|ユーザー/.test(article.verdict?.audience ?? "")) score += 2;
   if (/開発者|エンジニア|企業|法人|IT管理/.test(article.verdict?.audience ?? "")) score -= 2;
-  if (article.verdict) {
-    const u = usability(article.verdict);
+  const u = listUsability(article);
+  if (u) {
     score += u === "go" ? 2 : u === "partial" ? 0 : -1;
-    if (article.verdict.free) score += 1;
+    if (article.verdict?.free) score += 1;
   }
   if (!article.hasEasy) score -= 5;
   return score;

@@ -4,7 +4,7 @@ import Thumb from "@/components/Thumb";
 import VerdictBadge from "@/components/VerdictBadge";
 import { coverPath, type NextRead as NextReadItem } from "@/lib/articles";
 import { thumbSource } from "@/lib/companies";
-import { usability, verdictOf } from "@/lib/verdict";
+import { listUsability } from "@/lib/verdict";
 import { displayHeadline } from "@/lib/headline";
 
 /**
@@ -65,11 +65,11 @@ export default function NextRead({ items }: { items: NextReadItem[] }) {
 }
 
 function Meta({ item }: { item: NextReadItem }) {
-  const verdict = verdictOf(item.article);
+  const usable = listUsability(item.article);
   return (
     <span className="flex flex-wrap items-center gap-1.5">
       <span className="rounded-sm bg-ink px-2 py-[2px] text-badge font-bold text-paper">{item.reason}</span>
-      {verdict && <VerdictBadge kind={usability(verdict)} />}
+      {usable && <VerdictBadge kind={usable} />}
     </span>
   );
 }
@@ -81,7 +81,7 @@ function Cover({ item, sizes, small = false }: { item: NextReadItem; sizes: stri
       {cover ? (
         <Image src={cover} alt="" fill sizes={sizes} className="object-contain" />
       ) : (
-        <Thumb src={item.article.thumbnail} source={thumbSource(item.article)} cover={`/cover/${item.article.slug}`} alt="" fill sizes={sizes} className="object-contain" />
+        <Thumb src={item.article.thumbnail} source={thumbSource(item.article)} cover={coverPath(item.article)} alt="" fill sizes={sizes} className="object-contain" />
       )}
     </span>
   );

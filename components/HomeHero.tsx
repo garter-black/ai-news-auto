@@ -8,6 +8,7 @@ import { companyOf, thumbSource } from "@/lib/companies";
 import { Highlight } from "@/lib/highlight";
 import { officialCreditText } from "@/lib/image-credit";
 import ImageCredit from "@/components/ImageCredit";
+import { coverPath } from "@/lib/cover-path";
 
 /**
  * トップの主役。
@@ -37,7 +38,7 @@ export default function HomeHero({ lead }: { lead: ArticleSummary }) {
             <Thumb
               src={lead.thumbnail}
               source={thumbSource(lead)}
-              cover={`/cover/${lead.slug}`}
+              cover={coverPath(lead)}
               alt=""
               fill
               // トップの LCP。他の画像より先に最優先で読む

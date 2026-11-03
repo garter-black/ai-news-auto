@@ -1054,6 +1054,32 @@ def product_launch(article: dict) -> bool:
     return bool(tags & PRODUCT_TAGS) and ("新製品" in tags or (article.get("genreSlug") == "tech-gadget" and "発売" in title))
 
 
+# 実物の見た目が大事な記事（2026-11-03 の画面の点検 C）。製品の発表（product_launch）に加えて、
+# レース（トヨタの WEC の記事に AI が別の赤いスーパーカーを描いた）・発売・リコール・デザインの一新・形のある製品の話題も、
+# AI 画像で製品（車・端末・商品）を描かない。公式の写真が無ければ、製品の無い場面（会場・道・光）にする。
+# sns_rules.py は product_launch（製品の発表）だけを見る。こちらは画像を選ぶときだけに使う
+MOTORSPORT = re.compile(r"(WEC|F1|フォーミュラ|スーパーフォーミュラ|SUPER GT|スーパーGT|ラリー|WRC|ル・マン|耐久レース|モータースポーツ|MotoGP|鈴鹿8耐|レーシング|レースカー|ハイパーカー)", re.I)
+REAL_OBJECT_TITLE = re.compile(
+    r"(新発売|発売|リコール|(?:アイコン|ロゴ|デザイン|外観)[^、。　]{0,12}(?:一新|刷新)|車いす|車椅子|化粧水|スキンケア|飲料|ボトル|缶コーヒー)"
+)
+
+
+def real_object_article(article: dict) -> bool:
+    """AI 画像で描いてはいけない実物（製品・車・端末・商品）が主役の記事か。製品の発表・レース・発売・リコール・デザインの一新など"""
+    if article.get("type") == "roundup" or article.get("noPhoto"):
+        return False
+    if product_launch(article):
+        return True
+    title = " ".join(str(article.get(k) or "") for k in ("title", "seoTitle"))
+    tags = " ".join(str(t) for t in (article.get("tags") or []))
+    if MOTORSPORT.search(f"{title} {tags}"):
+        return True
+    # 制度の記事（「自転車の補助金」など）は製品そのものの話ではない
+    if article.get("genreSlug") == "public":
+        return False
+    return bool(REAL_OBJECT_TITLE.search(title) or PRODUCT_NOUN.search(CORPORATE.sub("", title)))
+
+
 def pick_official(article: dict, repeats: Counter, fast: bool = False) -> dict:
     """公式の発表の中から、いちばん良い画像を選ぶ。
     {"best": {"kind", "url", "image", "rank", "where"} or None, "reasons": [使わなかった理由]}"""
@@ -1063,7 +1089,7 @@ def pick_official(article: dict, repeats: Counter, fast: bool = False) -> dict:
     found: list[dict] = []
     # 速報の回（fast）も同じ探し方をする（2026-11-03: 速報の回だけ動画・プレスキットを見ずに AI にしていた）。fast は AI のモデル選びだけに使う
     fast = False
-    product = product_launch(article)
+    product = real_object_article(article)
     parsed = parse_page(page) if page else None
     if not parsed:
         return {"best": None, "reasons": ["元記事を開けない" if page else "元記事なし"]}
@@ -2079,9 +2105,9 @@ def process(path: Path, article: dict, ctx: dict) -> str:
     log(f"[img] {slug} | {title}")
 
     previous = article.get("imageCredit") or ctx.get("previous_credit", {}).get(slug) or {}
-    product = product_launch(article)
+    product = real_object_article(article)
     if product:
-        log("   [img] 製品の発表の記事: 公式の製品写真を最優先。AI・素材は製品を描かない場面だけ")
+        log("   [img] 実物（製品・車・商品）が主役の記事: 公式の写真を最優先。AI・素材は製品を描かない場面だけ")
     # 自前の画像（まとめ記事・別の切り口の記事が元記事の画像を引き継いだ）なら出典も引き継ぐ
     if is_ours(thumb) and not ctx.get("retry_ai") and not ctx.get("repick"):
         credit = ctx["credit_by_thumb"].get(thumb)
@@ -2404,7 +2430,7 @@ def main() -> int:
         targets = [
             (p, a)
             for p, a in ordered
-            if age_hours(a) <= args.product_repick_days * 24 and (a.get("imageCredit") or {}).get("kind") in ("stock", "ai") and product_launch(a)
+            if age_hours(a) <= args.product_repick_days * 24 and (a.get("imageCredit") or {}).get("kind") in ("stock", "ai") and real_object_article(a)
         ]
         for p, a in targets:
             log(f"[img] 製品の発表で AI・素材の画像: {a.get('slug')}")
@@ -2471,7 +2497,7 @@ def main() -> int:
         if not article.get("imageCredit") and before and article.get("thumbnail") == ctx["previous_thumb"].get(slug):
             # 選び直せなかった（AI の上限・素材なし・失敗）ときは前の画像の出典を戻す（消したまま保存すると、AI の画像に注記が出なくなる）
             article["imageCredit"] = before
-            if args.product_repick_days and before.get("kind") == "ai" and not before.get("noProduct") and product_launch(article):
+            if args.product_repick_days and before.get("kind") == "ai" and not before.get("noProduct") and real_object_article(article):
                 # 製品の発表で、製品を描いたかもしれない前の AI 画像は残さない（写真なしのカバーにする）
                 log("   [img] 製品を描いたかもしれない前の AI 画像を外す（写真なしのカバー）")
                 article["thumbnail"] = ""

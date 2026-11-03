@@ -8,8 +8,9 @@ import VerdictBadge from "@/components/VerdictBadge";
 import type { ArticleSummary } from "@/lib/articles";
 import { companyOf, thumbSource } from "@/lib/companies";
 import { Highlight } from "@/lib/highlight";
-import { isUnknownValue, usability, verdictOf } from "@/lib/verdict";
+import { isUnknownValue, listUsability, verdictKind, verdictOf } from "@/lib/verdict";
 import { displayHeadline } from "@/lib/headline";
+import { coverPath } from "@/lib/cover-path";
 
 /** 48時間以内に続報を足した記事（並び順は作成日時のまま、印だけ付ける） */
 const updatedRecently = (article: ArticleSummary) =>
@@ -64,7 +65,7 @@ export default function Timeline({
   );
 
   // 判定のある記事が一覧に無ければ、スイッチを出しても意味がない
-  const hasVerdict = articles.some((article) => verdictOf(article));
+  const hasVerdict = articles.some((article) => listUsability(article));
   return filterable && hasVerdict ? <UsableFilter>{list}</UsableFilter> : list;
 }
 
@@ -76,7 +77,9 @@ function TimelineRow({ article }: { article: ArticleSummary }) {
   const postedAt = article.generatedAt || article.publishedAt;
   const time = clock.format(Date.parse(postedAt));
   const verdict = verdictOf(article);
-  const kind = verdict ? usability(verdict) : undefined;
+  // 一覧の札（使える／一部／まだ）は製品・サービスの記事だけ。スポーツ・制度・製品でないニュースには付けない
+  const kind = listUsability(article);
+  const verdictKindOf = verdict ? verdictKind(article) : undefined;
 
   return (
     <li className="tl-row border-b border-line" data-usable={kind}>
@@ -118,11 +121,17 @@ function TimelineRow({ article }: { article: ArticleSummary }) {
             <Highlight text={displayHeadline(article.title)} />
           </h4>
 
-          {verdict && (
+          {verdict && verdictKindOf === "product" && (
             <p className="mt-1 text-note text-muted">
               {[!isUnknownValue(verdict.price) ? verdict.price : "", verdict.japan === "ok" ? "日本から利用可" : verdict.japan === "no" && kind !== "wait" ? "日本では未提供" : "", !isUnknownValue(verdict.audience) ? `${verdict.audience}向け` : ""]
                 .filter(Boolean)
                 .join(" ・ ")}
+            </p>
+          )}
+          {/* スポーツ・制度は「日本から利用可」のような製品の言い方をせず、日時と金額だけ */}
+          {verdict && verdictKindOf !== "product" && [verdict.when, verdict.price].some((v) => !isUnknownValue(v)) && (
+            <p className="mt-1 text-note text-muted">
+              {[verdict.when, verdict.price].filter((v) => !isUnknownValue(v)).join(" ・ ")}
             </p>
           )}
 
@@ -142,7 +151,7 @@ function TimelineRow({ article }: { article: ArticleSummary }) {
             // 一覧の小さな枠には軽い画像（480px）を使う。最高画質（1280px）は記事ページだけ
             src={smallThumb(article.thumbnail)}
             source={thumbSource(article)}
-            cover={`/cover/${article.slug}`}
+            cover={coverPath(article)}
             alt=""
             fill
             sizes="184px"

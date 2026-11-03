@@ -1621,6 +1621,7 @@
         ]
       }
     },
+    "hostingNeeds": "開発|エンジニア|プログラ|API|SDK|サーバー|クラウド|Kubernetes|Docker|オープンソース|GitHub|デプロイ|セルフホスト|Dify|n8n|LLM|自作|ノーコード",
     "moneyMatch": "お金|マネー|家計|節約|資産|投資|NISA|iDeCo|証券|年金|老後|税|確定申告|インボイス|金利|ローン|物価|値上げ|円安|円高|給付|補助金|助成金|支援金|賃金|給与|給料|ボーナス|手取り|ふるさと納税|日銀|日本銀行|国債",
     "byGenreIfNotMoney": {
       "public": "ai"
@@ -1628,6 +1629,37 @@
     "byGenreIfMoney": {
       "business": "money"
     }
+  },
+  "roundup": {
+    "_README": "まとめ記事（10月のAI発表まとめなど）は見出し・要約・タグに脇の話題の語（「詐欺対策も」など）が出るので、関係の薄い商品（セキュリティソフトなど）が当たりやすい。preferTopics（AIツール・スキル・仕事・お金の話題）だけを選ぶ。合う話題が無ければ製品カテゴリの検索・ジャンルの既定の広告（どの記事にも広告枠を1つ出す決まりは変えない）。判定は lib/offers.ts の isRoundupArticle（2026-11-03 の画面の点検 D）。",
+    "match": "まとめ|総まとめ|振り返り|月の(?:新)?(?:発表|動向|アップデート|新機能)|月(?:の)?(?:AI)?ニュース|最新動向|動向[:：]|[0-9０-９]+選|Recap|Roundup",
+    "preferTopics": [
+      "chatgpt",
+      "claude",
+      "gemini",
+      "agent",
+      "coding",
+      "writing",
+      "image",
+      "video",
+      "voice",
+      "english",
+      "local",
+      "llm",
+      "business",
+      "career-skill",
+      "side-biz",
+      "kids",
+      "invest-nisa",
+      "invest-stocks",
+      "invest",
+      "re-invest",
+      "re-home",
+      "money-biz",
+      "tax-filing",
+      "furusato",
+      "startup"
+    ]
   },
   "b2b": {
     "_README": "法人・企業向けの記事（ネットワーク・基幹システム・エンタープライズ向けAIなど）では、個人向けのレンタルサーバー・VPSを出さない（記事の話題がサーバー・セルフホストのときだけ出す）。合う話題が無いときは sets.b2b（AIツール・スキル・仕事の効率化）を出す。consumerTopics は個人向けの話題で、見出しにはっきり出ている記事でないと選ばない（点数を penalty だけ下げる）。preferTopics は仕事・AIツール・スキルの話題で、基準点を超えたときだけ bonus を足して順位を上げる。判定は lib/offers.ts の isB2BArticle。",

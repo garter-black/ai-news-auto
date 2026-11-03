@@ -6,6 +6,7 @@ import sharp from "sharp";
 import type { FullArticle } from "@/lib/articles";
 import { companyOf } from "@/lib/companies";
 import { fetchPhoto } from "@/lib/cover";
+import { isFastNews } from "@/lib/cover-path";
 import { headOf } from "@/lib/headline";
 import { officialCreditText } from "@/lib/image-credit";
 import { containRect, coverFit, cornerRect, DEFAULT_AR, focusOf, freeCorner as freeCornerOf, NOTE, NOTE_SMALL, overlap, photoOnlyLayout, TAG, TAG_SMALL, type Box, type Corner, type Rect } from "@/lib/card-geometry";
@@ -231,7 +232,7 @@ function Logo({ size, color }: { size: number; color: string }) {
 
 function labelOf(article: FullArticle): string {
   if (article.type === "roundup") return "まとめ";
-  if (article.breaking) return "速報";
+  if (isFastNews(article)) return "速報";
   return "ニュース";
 }
 
@@ -266,8 +267,20 @@ async function photoBox(url: string, width: number, height: number, centre = fal
 }
 
 let sharpOk: Promise<boolean> | null = null;
+/**
+ * sharp が使えるか。Workers の代役（lib/sharp-cf.ts）は呼んだ瞬間に例外を投げる（Promise の失敗ではない）ので、
+ * try で包んで false を返す。包んでいなかったため、実行時に描く /card/<slug>（ビルド時に作らなかった記事）が
+ * Workers では毎回失敗し、カバー画像に転送されていた（2026-11-03 の画面の点検 E。honda-rn0-emtb-eicma-2026 など）
+ */
 function sharpWorks(): Promise<boolean> {
-  sharpOk ??= sharp({ create: { width: 1, height: 1, channels: 3, background: "#fff" } }).png().toBuffer().then(() => true, () => false);
+  sharpOk ??= (async () => {
+    try {
+      await sharp({ create: { width: 1, height: 1, channels: 3, background: "#fff" } }).png().toBuffer();
+      return true;
+    } catch {
+      return false;
+    }
+  })();
   return sharpOk;
 }
 

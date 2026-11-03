@@ -1,5 +1,5 @@
 import { isDistributionEligible } from "@/lib/indexing";
-import { getAllArticles, getArticle, sourceHref, sourceLabel, type ArticleSummary, type FullArticle } from "@/lib/articles";
+import { coverPath, getAllArticles, getArticle, sourceHref, sourceLabel, type ArticleSummary, type FullArticle } from "@/lib/articles";
 import { renderMarkdown } from "@/lib/markdown";
 import { isAffiliateUrl } from "@/lib/affiliate";
 import { siteConfig } from "@/site.config";
@@ -23,7 +23,7 @@ export const rfc822 = (iso: string) => new Date(iso).toUTCString().replace(/GMT$
 export const publishedOf = (a: ArticleSummary) => a.generatedAt || a.publishedAt;
 
 export const articleUrl = (a: ArticleSummary) => `${siteConfig.url}/articles/${a.slug}`;
-export const coverUrl = (a: ArticleSummary) => `${siteConfig.url}/cover/${a.slug}`;
+export const coverUrl = (a: ArticleSummary) => `${siteConfig.url}${coverPath(a)}`;
 
 /** <a> を外して中の文字だけ残す */
 const unwrap = (html: string, keep: (href: string) => boolean) =>

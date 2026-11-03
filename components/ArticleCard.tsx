@@ -45,7 +45,7 @@ export default function ArticleCard({ article, priority, morph = false, quickIma
               <Thumb
                 src={article.thumbnail}
                 source={thumbSource(article)}
-                cover={`/cover/${article.slug}`}
+                cover={coverPath(article)}
                 alt=""
                 fill
                 priority={priority}

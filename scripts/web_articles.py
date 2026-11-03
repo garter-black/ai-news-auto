@@ -536,6 +536,16 @@ DATA_TOPIC_RE = re.compile(
     r"口座数|契約数|販売台数|出荷台数|上方修正|下方修正|前年同月比|前年比|月例経済|日銀短観|短観|有効求人倍率"
 )
 DATA_GENRES = {"business", "investment", "science", "real-estate"}
+# 製品・サービスの発表ではないニュース（事故・情報流出・攻撃、買収・上場・人事などの会社の動き、表彰、統計・業績）。
+# 「使える／提供前」の判定は出さない（2026-11-03 の画面の点検 A。北陸電力のメールアドレス流出に「使える・無料」と出ていた）。
+# サイトの lib/verdict.ts の NON_PRODUCT_PATTERN と同じ文字列（tests/test_verdict_scope.py が照らし合わせる）。スポーツには使わない
+NON_PRODUCT_RE = re.compile(
+    r"流出(?!を防|対策)|(?:漏えい|漏洩)(?:し|が|の(?:可能性|恐れ|疑い))|不正アクセス(?!を防|対策)|不正利用(?!を防|対策)|サイバー攻撃(?:を受け|で|被害)|ランサムウェア被害|悪用を確認|悪用され|"
+    r"障害が発生|大規模障害|で通信障害|通信障害が|に脆弱性|脆弱性が見つか|欠陥を発見|欠陥が見つか|インシデント|事件|逮捕|書類送検|訴訟|提訴|行政処分|業務改善命令|リコール|"
+    r"買収|合併|経営統合|持株会社|分社|上場申請|新規上場|株式上場|資金調達|出資|子会社化|就任|退任|社長交代|人事異動|企業再編|連携協定|協定を締結|業務提携|資本提携|"
+    r"表彰|受賞|選出|アワード|Awards?|"
+    r"統計(?!的)|倒産|件数|調査結果|決算|業績|自社株買い|株主還元|配当|物価|雇用統計|失業率|景気|口座数|契約数|販売台数|出荷台数|上方修正|下方修正|前年同月比|前年比|突破|有効求人倍率|短観"
+)
 
 FAQ_TODAY_FIELD = """# faq と today_actions（記事ページの「よくある質問」「今日やること」欄。このジャンルでは必須）
 - faq: 読者が検索しそうな疑問を必ず3〜5個（q と a）。質問は次の候補から、**この記事に答えがあるものだけ**選ぶ:
@@ -567,6 +577,9 @@ VERDICT_PUBLIC = """# verdict（制度の判定カード）
   - price: 費用・金額（給付額・手数料など）。audience: 対象者（例「個人事業主」）"""
 VERDICT_DATA = """# verdict（数字の話題）
 - 統計・業績・決算・倒産件数・口座数・自社株買い・相場など、読者が使う・買う・申し込むものが無い話題では verdict は **null** にする。"""
+VERDICT_NON_PRODUCT = """# verdict（製品・サービスの発表でない話題）
+- 事故・情報流出・サイバー攻撃・障害、買収・上場・出資・人事などの会社の動き、表彰・受賞、統計・調査結果のニュースでは verdict は **null** にする
+  （「使える」「提供予定」は製品・サービスが使えるかの答え。これらの記事には当てはまらない）。"""
 
 
 def extra_fields_block(genre_slug: str) -> str:
@@ -578,6 +591,8 @@ def extra_fields_block(genre_slug: str) -> str:
         parts.append(VERDICT_PUBLIC)
     if genre_slug in DATA_GENRES:
         parts.append(VERDICT_DATA)
+    if genre_slug != "sports":
+        parts.append(VERDICT_NON_PRODUCT)
     return "\n\n" + "\n\n".join(parts)
 
 
@@ -588,7 +603,7 @@ def verdict_kind(genre_slug: str) -> str:
 
 def genre_verdict(raw: object, genre_slug: str, record: dict) -> dict | None:
     """生成された判定をジャンルに合わせて整える。
-    数字の話題（統計・業績など）は判定カードを出さない。スポーツ・制度は種類（kind）と「いつ」「放送・配信」を残す。
+    数字の話題（統計・業績など）と、製品・サービスの発表でない話題（流出・買収・表彰など。NON_PRODUCT_RE）は判定カードを出さない。スポーツ・制度は種類（kind）と「いつ」「放送・配信」を残す。
     製品の判定で japan が unknown のままなら、日本での提供の表（content/japan_availability.json）で直す（一般提供中のときだけ）"""
     verdict = m.clean_verdict(raw)
     if not verdict:
@@ -597,6 +612,9 @@ def genre_verdict(raw: object, genre_slug: str, record: dict) -> dict | None:
     if genre_slug in DATA_GENRES and DATA_TOPIC_RE.search(text):
         return None
     kind = verdict_kind(genre_slug)
+    # 製品・サービスの発表でない話題（流出・買収・表彰・統計など）は判定を付けない。見出しとタグで見る（サイトの verdictOf と同じ）
+    if kind != "sports" and NON_PRODUCT_RE.search(f"{record.get('title', '')} {' '.join(record.get('tags') or [])}"):
+        return None
     if kind != "product":
         verdict["kind"] = kind
         verdict["japan"] = "ok"  # 日本の大会・制度。カードには出さない

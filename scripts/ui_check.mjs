@@ -666,7 +666,7 @@ function imageSize(buf) {
 
 async function checkImagesAndFeed(pages, report) {
   const slugs = pages.filter((p) => p.kind === "article").slice(0, 5).map((p) => p.article?.slug || decodeURIComponent(p.path.replace(/^\/articles\//, "").split(/[?#]/)[0]));
-  // /card は lib/card-designs.tsx の CARD_SIZES（いまは写真だけの p1 = 1200×675）。描けないと /cover に転送される
+  // /card は lib/card-designs.tsx の CARD_SIZES（いまは写真だけの p1 = 1200×675）。描けないと /cover に転送される（エラーとして数える）
   const expect = { card: null, cover: [1200, 630] };
   for (const slug of slugs) {
     for (const kind of ["card", "cover"]) {
@@ -676,7 +676,8 @@ async function checkImagesAndFeed(pages, report) {
         const buf = Buffer.from(await res.arrayBuffer());
         const size = imageSize(buf);
         const item = { page: `/${kind}/${slug}`, label: `${kind} 画像`, viewport: "-", theme: "-", errors: [], warnings: [] };
-        if (res.redirected) item.warnings.push({ check: "画像", detail: `${kind} が描けず ${new URL(res.url).pathname} に転送された（SNS の画像がカバーに変わる）` });
+        // 描けずに転送されたら崩れとして数える（2026-11-03 の点検 E。Workers で sharp の代役が同期で例外を投げ、実行時に描くカードが全部転送されていた）
+        if (res.redirected) item.errors.push({ check: "画像", detail: `${kind} が描けず ${new URL(res.url).pathname} に転送された（SNS の画像がカバーに変わる）` });
         if (res.status !== 200 || !/^image\//.test(res.headers.get("content-type") || "")) item.errors.push({ check: "画像", detail: `状態 ${res.status} ${res.headers.get("content-type")}` });
         else if (!size) item.errors.push({ check: "画像", detail: "画像として読めない" });
         else {

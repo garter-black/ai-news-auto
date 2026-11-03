@@ -194,6 +194,26 @@ class ProductLaunchTest(unittest.TestCase):
         self.assertFalse(images.product_launch({"title": "新型自転車の補助金を発表", "genreSlug": "public", "tags": ["新製品"]}))
         self.assertFalse(images.product_launch({"title": "ホンダの決算、二輪が好調", "genreSlug": "business", "tags": ["自動車・二輪"]}))
 
+    def test_real_object_article(self):
+        """実物（車・端末・商品）が主役の記事は AI 画像で製品を描かない（2026-11-03 の画面の点検 C。トヨタの WEC の記事に別の車）"""
+        yes = [
+            {"title": "トヨタのWECチーム、モンツァ6時間レースで2026年最終戦へ", "genreSlug": "sports", "tags": ["モータースポーツ"]},
+            {"title": "サントリーの「クラフトボス クロワッサンラテ」新発売　11月10日より期間限定", "genreSlug": "lifestyle", "tags": ["食品"]},
+            {"title": "Androidのメッセージアプリ「Google Messages」、アイコンがグラデーションに一新", "genreSlug": "ai", "tags": ["Android"]},
+            {"title": "KDDIとWingがドローン配送で提携", "genreSlug": "tech-gadget", "tags": []},
+            {"title": "Googleが新型スマホ「Pixel 11」を発表", "genreSlug": "tech-gadget", "tags": []},
+        ]
+        for article in yes:
+            self.assertTrue(images.real_object_article(article), article["title"])
+        no = [
+            {"title": "OpenAIが新しいAIモデルを公開", "genreSlug": "ai", "tags": ["生成AI"]},
+            {"title": "東京都、防災アプリに冠水の警告", "genreSlug": "public", "tags": ["防災"]},
+            {"title": "新型自転車の補助金を発表", "genreSlug": "public", "tags": ["新製品"]},
+            {"title": "なでしこジャパン、W杯予選のメンバーを発表", "genreSlug": "sports", "tags": ["サッカー"]},
+        ]
+        for article in no:
+            self.assertFalse(images.real_object_article(article), article["title"])
+
     def test_ai_prompt_forbids_product(self):
         plan = {"scene": "An empty forest trail at dawn.", "productLaunch": True}
         prompt = images.ai_prompt(plan, {})

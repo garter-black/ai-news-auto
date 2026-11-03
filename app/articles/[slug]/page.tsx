@@ -588,7 +588,7 @@ export default async function ArticlePage({ params }: Props) {
                     <Thumb
                       src={article.thumbnail}
                       source={thumbSource(article)}
-                      cover={`/cover/${article.slug}`}
+                      cover={coverPath(article)}
                       alt=""
                       fill
                       sizes="(max-width: 639px) calc(100vw - 40px), (max-width: 1023px) calc(100vw - 64px), 820px"
@@ -643,7 +643,7 @@ export default async function ArticlePage({ params }: Props) {
                   {/* 上の写真と同じく最初の画面の外なので、近づいてから読む */}
                   <Thumb
                     src={article.thumbnail}
-                    cover={`/cover/${article.slug}`}
+                    cover={coverPath(article)}
                     alt=""
                     fill
                     sizes="(max-width: 639px) calc(100vw - 40px), (max-width: 1023px) calc(100vw - 64px), 820px"

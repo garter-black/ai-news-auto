@@ -569,14 +569,7 @@ export function formatDate(iso: string): string {
   }).format(date);
 }
 
-/**
- * 独自カバー画像（/cover/[slug]）のパス。AI記事だけ生成する（不動産・投資は検索対象外のため）。
- * 生成対象外なら null を返すので、元動画のサムネイルにフォールバックする。
- */
-export function coverPath(article: ArticleSummary): string | null {
-  // 全ジャンルを検索対象にしたので、共有用の画像も全記事で作る
-  return `/cover/${article.slug}`;
-}
+export { COVER_VERSION, coverPath } from "@/lib/cover-path";
 
 export type NextRead = { article: ArticleSummary; reason: string };
 const COMPANY_TAGS = ["OpenAI", "Microsoft", "Google", "NVIDIA", "Meta", "Anthropic", "Hugging Face", "DeepSeek", "ChatGPT", "Gemini", "Claude"];

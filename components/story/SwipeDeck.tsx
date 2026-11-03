@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { liveBundles } from "@/lib/story-window";
+import { coverPath } from "@/lib/cover-path";
 
 // 開いたときのデッキ（components/story/StoryDeck.tsx）は丸の表示に要らないので、後から読み込む。
 // 丸に指が触れたとき・ブラウザが空いたときに先読みして、開くのを待たせない
@@ -176,7 +177,7 @@ export default function StoryRail({ bundles: built }: { bundles: RailBundle[] })
               {/* LCP（下の大きな写真）と取り合わないよう低優先度。画面外の丸は近づいてから読む。
                   読めなければ1本目の記事の独自カバーに替える（app/layout.tsx の画像の受け皿） */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={covers[i]} alt="" width={76} height={76} decoding="async" fetchPriority="low" loading={i < 6 ? undefined : "lazy"} data-fallback={b.items[0] ? `/cover/${b.items[0].slug}` : undefined} />
+              <img src={covers[i]} alt="" width={76} height={76} decoding="async" fetchPriority="low" loading={i < 6 ? undefined : "lazy"} data-fallback={b.items[0] ? coverPath(b.items[0]) : undefined} />
               {/* 件数は丸の右下の小さな札（スマホは文字の行を減らして横に5個近く並べる） */}
               <span className="sr-n" data-allow-small="" aria-hidden>{b.items.length}</span>
             </span>

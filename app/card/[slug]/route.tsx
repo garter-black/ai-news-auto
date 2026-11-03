@@ -4,6 +4,7 @@ import { loadDefaultJapaneseParser } from "budoux";
 import { ImageResponse } from "next/og";
 import sharp from "sharp";
 import { getAllArticles, getArticle, type FullArticle } from "@/lib/articles";
+import { coverPath } from "@/lib/cover-path";
 import { companyOf } from "@/lib/companies";
 import { fetchPhoto } from "@/lib/cover";
 import { renderCardDesign, type CardDesign } from "@/lib/card-designs";
@@ -158,7 +159,11 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     console.error(`[card] fallback: ${slug}`, error);
     // 転送先はサイトの URL で組む（request.url だとビルド時の事前生成で http://localhost:3000 になり、
     // それが1週間キャッシュされて Buffer が画像を取れなかった。2026-11-03 の「Image could not be read from its URL」）
-    return Response.redirect(new URL(`/cover/${slug}`, siteConfig.url), 302);
+    // 転送は短いキャッシュにする（1週間残ると、直したあとも SNS の画像がカバーのままになる。2026-11-03 の点検 E）
+    return new Response(null, {
+      status: 302,
+      headers: { Location: new URL(coverPath({ slug }), siteConfig.url).toString(), "Cache-Control": "public, max-age=300, s-maxage=300" },
+    });
   }
 }
 

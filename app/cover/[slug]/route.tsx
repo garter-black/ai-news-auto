@@ -5,6 +5,7 @@ import { ImageResponse } from "next/og";
 import sharp from "sharp";
 import { coverPath, getAllArticles, getArticle, PRERENDER_LIMIT, type FullArticle } from "@/lib/articles";
 import { companyOf } from "@/lib/companies";
+import { isFastNews } from "@/lib/cover-path";
 import { officialCreditText } from "@/lib/image-credit";
 import { siteConfig } from "@/site.config";
 import {
@@ -26,7 +27,7 @@ import {
  * 外部の画像生成APIは使わないので費用はかからない。
  *
  * デザインは報道テロップ型：写真は加工せず、下だけ自然に暗くして白い極太の見出しを載せる。
- * 左に発表元の企業色の縦線、見出しの上に赤い「速報」ラベル。
+ * 左に発表元の企業色の縦線、見出しの上にラベル（速報の記事だけ赤い「速報」、ほかは紺の「ニュース」）。
  */
 export const dynamic = "force-static";
 export const dynamicParams = true;
@@ -209,7 +210,10 @@ async function renderCover(article: FullArticle): Promise<ImageResponse> {
   const isOther = company.slug === "other";
   // 公式ブログ・プレスリリース記事で企業が判別できないときは、発信元名を出す
   const sourceName = article.sourceType === "web" ? article.sourceName || article.channel : "";
-  const label = article.type === "roundup" ? `${article.sources?.length ?? 0}本の発表を統合` : "速報";
+  // 赤い「速報」は速報の記事（lib/cover-path.ts の isFastNews）だけ。ほかは紺の「ニュース」（2026-11-03 の画面の点検 B。
+  // 以前は全部の記事に「速報」が付いていた）。文言を変えたら lib/cover-path.ts の COVER_VERSION を上げる
+  const label = article.type === "roundup" ? `${article.sources?.length ?? 0}本の発表を統合` : isFastNews(article) ? "速報" : "ニュース";
+  const labelColor = isFastNews(article) ? "#d92d20" : "#1d4a8f";
   const title = article.seoTitle || article.title;
   const parts = splitTitle(title);
 
@@ -321,7 +325,7 @@ async function renderCover(article: FullArticle): Promise<ImageResponse> {
           <div style={{ width: BAR, borderRadius: BAR / 2, background: isOther ? "#d92d20" : company.color }} />
           <div style={{ width: TEXT_WIDTH, display: "flex", flexDirection: "column", gap: 10 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 23, fontWeight: 700, color: "#fff" }}>
-              <div style={{ display: "flex", padding: "3px 13px", borderRadius: 4, background: "#d92d20" }}>{label}</div>
+              <div style={{ display: "flex", padding: "3px 13px", borderRadius: 4, background: labelColor }}>{label}</div>
               {(!isOther || sourceName) && (
                 <div style={{ display: "flex", textShadow: SHADOW }}>{isOther ? sourceName : company.name}</div>
               )}
