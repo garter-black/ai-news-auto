@@ -2051,6 +2051,14 @@ def line_box(tg: "Target") -> tuple:
     return _union(row_extents(tg))
 
 
+def view_box(tg: "Target") -> tuple:
+    """カメラに入れる所: 証拠の文の行（縦）× 同じ段落の幅いっぱい（横）。2026-11-04 の目視の確認: 選択した文は入っていても、
+    同じ段落の前後の行が右端で切れて（「applicati」「determined」）続きが読めない、と落ちた → 段落の横幅は必ず入れる"""
+    lb = line_box(tg)
+    br = tg.block.rect
+    return (min(lb[0], br[0]), lb[1], max(lb[2], br[2]), lb[3])
+
+
 def zoom_box(tg: "Target") -> tuple:
     """寄るときに必ず入れる所: 最初の行の頭 〜 証拠の文の終わり（行の頭は切らない）"""
     rows = tg.rows or [tg.match or tg.rect]
@@ -2529,7 +2537,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         first = frame_rect(p0, t0.page, hero.rect, 0.96, 1.4)
     # 数字に寄るときは大きく、見出し（数字なし）は全体が入る程度に寄る（見出しの途中で切らない）
     # 2026-11-04: 数字だけに寄って行の頭や文の続きを切らない。証拠の文（行の頭から）がまるごと入る所まで寄る
-    hook_close = frame_box(p0, t0.page, line_box(t0), ZOOM_MAX)
+    hook_close = frame_box(p0, t0.page, view_box(t0), ZOOM_MAX)
     moves.append(Move(0.18, 0.8, hook_close))
     ev(0.18, "move", "つかみ: 数字へ寄る")
     # つかみの訳は、同じ英文を beat でも訳すなら出さない（同じ訳が2回続かないように）
@@ -2582,7 +2590,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         sel = tg.rows if found[i] else [tg.match]
         line_rect = (tg.block.rect[0], span[1], tg.block.rect[2], span[3]) if wide_block else span
         # 行へ: 証拠の文が触れている行を、行の頭から終わりまでまるごと（余白つき・真ん中）
-        block_cam = frame_box(page, tg.page, line_box(tg), 1.6) if found[i] else frame_rect(page, tg.page, line_rect, 0.96, 1.6, zmin=1.25 if wide_block else ZOOM_BLOCK)
+        block_cam = frame_box(page, tg.page, view_box(tg), 1.6) if found[i] else frame_rect(page, tg.page, line_rect, 0.96, 1.6, zmin=1.25 if wide_block else ZOOM_BLOCK)
         chart_beat = i in lad_map or i in flow_map or i == uni_beat or i == comp_beat or i in card_map
         if i in lad_map:  # 料金の段階: 証拠は主役のプランの価格の行（表の行を順に回らない）
             lad = lad_map[i]
@@ -2591,7 +2599,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
             if rt is not None:
                 tg, page = rt, pages[rt.page]
                 span, sel = rt.span, list(rt.rows or [rt.match])
-                block_cam = frame_box(page, rt.page, line_box(rt), 1.9)
+                block_cam = frame_box(page, rt.page, view_box(rt), 1.9)
                 cut = rt.page != moves[-1].cam.page
         move_dur = MOVE if nxt - line.start >= 4.0 else 0.6  # 短い場面は少し速く（選択を見せる時間を残す）
         if not add_move(a_t, block_cam, f"beat{i}: 行へ", i, cut=cut, dur=move_dur):
@@ -2679,7 +2687,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         if nxt - zoom_t >= 0.9 + HOLD:
             # 寄る: 最初の行の頭〜証拠の文の終わりがまるごと入る所まで。行へ着いたときより1割以上寄れないなら動かさない
             # 2026-11-04（AI の目視の確認）: 行の終わりを切っても「続きが見えない」になる → 寄りも行の全体（短い行・表の欄のときだけ寄れる）
-            cam_z = frame_box(page, tg.page, line_box(tg), ZOOM_MAX) if found[i] else block_cam
+            cam_z = frame_box(page, tg.page, view_box(tg), ZOOM_MAX) if found[i] else block_cam
             if cam_z.s >= block_cam.s * 1.1 and add_move(zoom_t, cam_z, f"beat{i}: 証拠に寄る", i):
                 clicks.append(Click(zoom_t + 0.6, tg.page, *click_point(tg)))
                 ev(zoom_t + 0.6, "click")
