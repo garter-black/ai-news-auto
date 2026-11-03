@@ -234,6 +234,39 @@ class PublishQueuedTest(unittest.TestCase):
         self.assertEqual(fu.sync_posted(state, posted), 0)  # 何度写しても同じ
 
 
+class QueueFixTest(unittest.TestCase):
+    """予約中の写真の投稿を直す（下書きに戻した分を動画待ちにする）。Buffer は呼ばない"""
+
+    def test_node_problems_finds_static_and_old_format(self):
+        old = {"service": "threads", "text": "AI半導体のNVIDIAが、AI学習の自動復旧ツールを公開。\n\n" + body("threads"),
+               "metadata": {"thread": [{"text": "AI半導体のNVIDIAが、AI学習の自動復旧ツールを公開。", "assets": [{"mimeType": "image/png", "source": CARD[0]["url"]}]}]}}
+        slug, video, problems = fu.node_problems(old)
+        self.assertEqual((slug, video), ("acme-tool", False))
+        self.assertTrue(problems)
+
+    def test_converted_post_waits_for_video_then_goes_out_with_video(self):
+        slot = NOW + timedelta(hours=1)
+        rec = queued_rec(slot)
+        conv = {"paused": {"threads": {"id": "old-t", "ok": True}, "twitter": {"id": "old-x", "ok": True}}, "pending": rec["pending"], "threadsSent": False}
+        posted = {"posted": {"a": {"id": "old-t", "channels": {"twitter": "old-x", "bluesky": "at://b"}, "image": "card"}}}
+        state = {"converted": {"a": conv}, "videos": {"a": ready_video("a")}}
+        self.assertEqual(fu.apply_converted(state, posted), 1)
+        a = posted["posted"]["a"]
+        self.assertEqual((a["id"], a["status"], a["channels"], a["pausedIds"]["threads"]), ("", "awaiting_video", {"bluesky": "at://b"}, "old-t"))
+        self.assertEqual(fu.apply_converted(state, posted), 0)
+
+    def test_extra_only_requeue_uses_video(self):
+        rec = queued_rec(NOW - timedelta(minutes=5))
+        state = {"extraQueued": {"a": {"pending": {"slot": rec["pending"]["slot"], "inputs": {"facebook": rec["pending"]["inputs"]["facebook"]}}}},
+                 "videos": {"a": ready_video("a") | {"status": "attached", "variant": "short"}}}
+        sent = []
+        with patch.object(fu, "article_of", lambda report: ART):
+            fu.publish_extra_queued(state, NOW, FLAGS, creator=lambda svc, inp, art: sent.append((svc, inp)) or "id")
+        self.assertEqual([s for s, _ in sent], ["facebook"])
+        self.assertTrue(r.has_video(r.buffer_parts("facebook", sent[0][1])[2]))
+        self.assertEqual(state["extraQueued"]["a"]["status"], "created")
+
+
 class OwnerAuditTest(unittest.TestCase):
     def test_audit_flags_post_without_video(self):
         import owner_rules_audit as audit

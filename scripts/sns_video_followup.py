@@ -396,7 +396,9 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
         results.append({"slug": slug, **rec})
     results += attach_ready(state, posted, now, f, editor or edit_scheduled)
     save_state(state)
+    apply_converted(state, posted)
     results += publish_queued(state, posted, now, f, creator=creator)
+    results += publish_extra_queued(state, now, f, creator=creator)
     save_state(state)
     if f["post"] and f["breaking_followup"]:
         out = post_one(state, now, f, poster or post_video, only_breaking=True)
@@ -550,7 +552,7 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
         q = queue.setdefault(slug, {"status": "waiting"})
         v = videos.get(slug) or {}
         urls = v.get("urls") or {}
-        if v.get("status") not in ("ready",) or not urls:
+        if not urls or v.get("status") in ("started", "upload_failed"):  # 置いた動画があれば使う（前に記事ページだけにした動画も）
             failed = bool(v) and v.get("status") in ("gate_failed", "upload_failed", "dry_run") and not will_retry(v)
             late = now - slot > timedelta(hours=QUEUE_GIVE_UP_H)
             unfit = not v and not eligible(slug)
@@ -621,9 +623,191 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
     return out
 
 
+def scheduled_nodes(api_key: str, hours: float = 48) -> list[dict]:
+    """Buffer に予約中（scheduled）の Threads・X・Facebook の投稿（これから hours 時間）。組織ごとに1回だけ読む"""
+    import sns_audit
+    import threads_post as tp
+
+    now = datetime.now(timezone.utc)
+    chans = tp.buffer_channels(api_key)
+    by_id = {c["id"]: k for k, c in chans.items() if k in ("threads", "twitter", "facebook")}
+    out = []
+    for org_id in tp.buffer_org_ids(api_key):
+        flt = (f"status: [scheduled], channelIds: {json.dumps(list(by_id))}, "
+               f"startDate: {json.dumps(_iso(now - timedelta(minutes=5)))}, endDate: {json.dumps(_iso(now + timedelta(hours=hours)))}")
+        query = f"query {{ posts(first: 100, input: {{ organizationId: {json.dumps(org_id)}, filter: {{ {flt} }} }}) {{ edges {{ node {{ {sns_audit.POST_FIELDS} }} }} }} }}"
+        for edge in tp.buffer_graphql(api_key, query)["posts"]["edges"]:
+            node = edge["node"]
+            node["service"] = by_id.get(node.get("channelId"), "")
+            out.append(node)
+    return out
+
+
+def node_problems(node: dict) -> tuple[str, bool, list[str]]:
+    """予約中の投稿1件の (slug, 動画が付いているか, 文面の違反)。文面は今の門番で確かめる（動画の決まりは別に見る）"""
+    import sns_rules
+
+    thread = ((node.get("metadata") or {}).get("thread")) or []
+    texts = [node.get("text") or ""] + [t.get("text") or "" for t in thread]
+    m = re.search(r"/articles/([A-Za-z0-9_-]+)", " ".join(texts))
+    slug = m.group(1) if m else ""
+    assets = list(node.get("assets") or []) + [a for t in thread[:1] for a in (t.get("assets") or [])]
+    video = any(str(a.get("mimeType") or a.get("type") or "").startswith("video") for a in assets)
+    article = None
+    if slug:
+        try:
+            article = json.loads((ARTICLES / f"{slug}.json").read_text("utf-8"))
+        except (OSError, ValueError):
+            article = None
+    service = node.get("service", "")
+    text = (thread[0].get("text") if thread else "") or node.get("text") or ""
+    reply = "\n".join(t.get("text") or "" for t in thread[1:]) if service == "twitter" else ""
+    links = [] if service != "facebook" else [node.get("externalLink") or ""]
+    problems = sns_rules.check_post({"twitter": "x"}.get(service, service), text, [], article, reply_text=reply, links=[x for x in links if x],
+                                    pending_video=True) if service else ["SNS が分からない"]
+    return slug, video, problems
+
+
+def queue_fix(apply: bool = False, now: datetime | None = None, api_key: str | None = None) -> list[dict]:
+    """（2026-11-03 オーナー指示）Buffer に予約中の、動画の無い投稿・古い形の投稿（無理な説明・呼びかけなし・使わない書き出し）を直す。
+    直し方: 古い予約は**下書きに戻す**（公開しない。消さない）→ 同じ記事を新しい形の文面で「動画待ち」にし、動画ができしだい
+    同じ枠の時刻（過ぎていれば順番を保って直後）に動画つきで出す（publish_queued）。apply=False なら一覧だけ（Buffer は読むだけ）"""
+    import threads_post as tp
+
+    now = now or datetime.now(timezone.utc)
+    key = api_key if api_key is not None else os.environ.get("BUFFER_API_KEY", "")
+    state = load_json(STATE, {"videos": {}})
+    posted = load_json(POSTED, {"posted": {}})
+    rows, by_slug = [], {}
+    for node in scheduled_nodes(key):
+        slug, video, problems = node_problems(node)
+        bad = (not video) or bool(problems)
+        rows.append({"id": node["id"], "service": node.get("service"), "dueAt": node.get("dueAt"), "slug": slug, "video": video,
+                     "problems": problems[:4], "fix": bad})
+        if bad and slug and not slug.startswith(("digest-", "poll-")):
+            by_slug.setdefault(slug, []).append(node)
+    if not apply:
+        return rows
+    chans = tp.buffer_channels(key)
+    for slug, nodes in by_slug.items():
+        paused = {}
+        for node in nodes:
+            how = "draft"
+            try:
+                after = edit_post(key, {"id": node["id"], "saveToDraft": True})
+                ok = (after.get("status") or "") == "draft"
+            except Exception as error:  # noqa: BLE001
+                if _buffer_unavailable(error):
+                    raise
+                ok, after = False, {"error": str(error)[:200]}
+            if not ok:
+                # 下書きに戻せないときは、写真のまま出ないよう2週間先へずらす（消さない。issue で手で止めてもらう）
+                try:
+                    after = edit_post(key, {"id": node["id"], "mode": "customScheduled", "dueAt": _iso(now + timedelta(days=14)), "saveToDraft": False})
+                    ok, how = (_parse(after.get("dueAt") or "") or now) > now + timedelta(days=13), "pushed"
+                except Exception as error:  # noqa: BLE001
+                    if _buffer_unavailable(error):
+                        raise
+                    after = {"error": str(error)[:200]}
+            paused[node["service"]] = {"id": node["id"], "ok": ok, "how": how, "dueAt": node.get("dueAt"), "status": after.get("status") or after.get("error")}
+            if ok and how == "pushed":
+                missing_issue(slug, f"写真の予約（{node['service']}・{node['id']}）を下書きに戻せなかったので2週間先にずらしました。Buffer で消すか下書きにしてください")
+            log(f"[queue-fix] {slug}/{node['service']} を下書きに戻す: {paused[node['service']]}")
+        for row in rows:
+            if row["slug"] == slug:
+                row["paused"] = paused.get(row["service"])
+        if not all(v["ok"] for v in paused.values()):
+            missing_issue(slug, f"予約中の写真の投稿を下書きに戻せませんでした（Buffer で手で止めてください）: {paused}")
+            continue
+        article = json.loads((ARTICLES / f"{slug}.json").read_text("utf-8"))
+        slot = min(_parse(v["dueAt"]) or now for v in paused.values())
+        classic = tp.compose(article, [], use_llm=True)
+        link = f"{SITE}/articles/{slug}"
+        services = {"threads": "threads", "twitter": "twitter", "facebook": "facebook"}
+        use = {k: chans[k] for k in services if k in paused and k in chans}
+        if "threads" not in use:
+            use = {"threads": chans["threads"], **use}  # 入力を作るのに要る（Threads は送らない）
+        pending = tp.queue_for_video(key, use, tp.with_link(classic, article, "threads", "classic"), classic, link, article, slot, fb_text=classic)["pending"]
+        pending["inputs"] = {k: v for k, v in pending["inputs"].items() if k in paused}
+        state.setdefault("converted", {})[slug] = {"at": now.isoformat(timespec="seconds"), "paused": paused, "pending": pending,
+                                                   "threadsSent": "threads" not in paused}
+    apply_converted(state, posted)
+    f = flags()
+    rows += publish_queued(state, posted, now, f)
+    rows += publish_extra_queued(state, now, f)
+    save_state(state)
+    POSTED.write_text(json.dumps(posted, ensure_ascii=False, indent=2) + "\n", "utf-8")
+    return rows
+
+
+def publish_extra_queued(state: dict, now: datetime, f: dict, creator=None, issue=None) -> list[dict]:
+    """Threads はもう出ていて、X・Facebook だけ写真の予約を下書きに戻した記事を、動画つきで出す（動画ができしだい・元の時刻より後）"""
+    out: list[dict] = []
+    if not f.get("post"):
+        return out
+    creator = creator or create_queued
+    issue = issue or missing_issue
+    for slug, item in (state.get("extraQueued") or {}).items():
+        if item.get("status") in ("created", "skipped"):
+            continue
+        v = (state.get("videos") or {}).get(slug) or {}
+        urls = v.get("urls") or {}
+        slot = _parse((item.get("pending") or {}).get("slot") or "") or now
+        if not urls:
+            if (v and not will_retry(v) and v.get("status") not in ("started",)) or now - slot > timedelta(hours=QUEUE_GIVE_UP_H):
+                item.update({"status": "skipped", "why": "動画が無い"})
+                issue(slug, "X・Facebook の投稿を動画つきで出せませんでした（動画が無い）")
+            out.append({"slug": slug, "extra": True, **{k: item.get(k) for k in ("status", "why")}})
+            continue
+        variant = v.get("variant") if v.get("variant") in urls else next((k for k in ("short", "full") if k in urls), "")
+        report = ((v.get("versions") or {}).get(variant) or {}).get("post") or {}
+        base = max(slot, now + timedelta(minutes=QUEUE_LEAD_MIN))
+        created = dict(item.get("channels") or {})
+        for service, inp0 in ((item.get("pending") or {}).get("inputs") or {}).items():
+            if created.get(service):
+                continue
+            inp = video_input(service, inp0, report, variant, urls[variant])
+            inp.update({"mode": "customScheduled", "dueAt": _iso(base + timedelta(minutes=int(inp0.get("_offsetMin") or 0)))})
+            inp.pop("saveToDraft", None)
+            try:
+                created[service] = creator(service, inp, article_of(report))
+            except Exception as error:  # noqa: BLE001
+                if _buffer_unavailable(error):
+                    break
+                created[service] = ""
+                item.setdefault("errors", {})[service] = str(error)[:200]
+        item["channels"] = created
+        if created and all(created.values()):
+            item["status"] = "created"
+        out.append({"slug": slug, "extra": True, "status": item.get("status"), "channels": created})
+    return out
+
+
+def apply_converted(state: dict, posted: dict) -> int:
+    """queue_fix で下書きに戻した投稿を、投稿の記録で「動画待ち」にする（何度当てても同じ）。
+    Threads がもう出ている記事は、X・Facebook の分だけを state の queued に残す（publish_queued が送る）"""
+    n = 0
+    for slug, conv in (state.get("converted") or {}).items():
+        rec = (posted.get("posted") or {}).setdefault(slug, {"via": "buffer"})
+        if conv.get("applied") and (rec.get("status") in ("awaiting_video", "scheduled", "skipped_no_video") or conv.get("threadsSent")):
+            continue
+        paused = conv.get("paused") or {}
+        rec.setdefault("pausedIds", {}).update({k: v.get("id") for k, v in paused.items()})
+        channels = {k: v for k, v in (rec.get("channels") or {}).items() if k not in paused}
+        rec["channels"] = channels
+        if conv.get("threadsSent"):
+            # Threads は出ている（動画つき）。X・Facebook だけを動画待ちにする
+            state.setdefault("extraQueued", {})[slug] = {"pending": conv["pending"], "status": "waiting"}
+        else:
+            rec.update({"id": "", "status": "awaiting_video", "pending": conv["pending"], "dueAt": conv["pending"]["slot"], "image": "video"})
+        conv["applied"] = True
+        n += 1
+    return n
+
+
 def sync_posted(state: dict, posted: dict) -> int:
     """sns_video.json の queued（動画つきで送った・出さなかった）を threads_posted.json の記録に写す（ワークフローが main に残す前に呼ぶ）"""
-    changed = 0
+    changed = apply_converted(state, posted)
     for slug, q in (state.get("queued") or {}).items():
         rec = (posted.get("posted") or {}).get(slug)
         if not rec or not awaiting(rec):
@@ -1044,7 +1228,15 @@ def main() -> None:
     parser.add_argument("--merge-draft-test", metavar="SLUG", help="写真の下書きを1本作り、動画に差し替えて読み直す（--yes が無ければ表示だけ。公開しない）")
     parser.add_argument("--today", action="store_true", help="今日の Threads の投稿ごとに、動画が付いたか・理由（読むだけ）")
     parser.add_argument("--sync-posted", action="store_true", help="動画つきで送った記録を state/threads_posted.json に写す（Buffer は呼ばない）")
+    parser.add_argument("--queue-fix", choices=("plan", "apply"), help="予約中の動画なし・古い形の投稿を一覧（plan）／下書きに戻して動画待ちにする（apply）")
     args = parser.parse_args()
+    if args.queue_fix:
+        import llm
+
+        llm._load_env_local()
+        for row in queue_fix(apply=args.queue_fix == "apply"):
+            print(json.dumps(row, ensure_ascii=False))
+        return
     if args.sync_posted:
         posted = load_json(POSTED, {"posted": {}})
         n = sync_posted(load_json(STATE, {"videos": {}}), posted)

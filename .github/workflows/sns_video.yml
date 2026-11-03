@@ -36,6 +36,9 @@ on:
       merge_draft_slug:
         description: "（テスト）この記事の写真の下書きを1本作り、動画に差し替えて読み直す（下書きなので公開しない）。空なら何もしない"
         default: ""
+      queue_fix:
+        description: "（直す）Buffer の予約中の動画なし・古い形の投稿: plan＝一覧だけ／apply＝下書きに戻して動画つきで出し直す。空なら何もしない"
+        default: ""
       today_report:
         description: "（確認）今日の Threads の投稿ごとに、動画が付いたか・理由を読むだけ（true）"
         default: "false"
@@ -102,6 +105,11 @@ jobs:
           # 中身に合わせた動画の型（scripts/video_templates.py）。オーナーの承認待ちなので既定 off＝今の承認済みの型のまま
           SNS_VIDEO_TEMPLATES: ${{ vars.SNS_VIDEO_TEMPLATES || 'off' }}
         run: |
+          if [ -n "${{ github.event.inputs.queue_fix }}" ]; then
+            # 予約中の写真の投稿を下書きに戻し、新しい形の文面・動画つきで同じ枠に出し直す（apply のときだけ。投稿は門番を通る）
+            SNS_VIDEO_POST=live python scripts/sns_video_followup.py --queue-fix "${{ github.event.inputs.queue_fix }}"
+            exit $?
+          fi
           if [ "${{ github.event.inputs.today_report }}" = "true" ]; then
             python scripts/sns_video_followup.py --today
             exit $?
@@ -137,7 +145,7 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
       - name: 記録を main に残す（動画の記録・Claude API の使用量・記事の video）
-        if: ${{ always() && github.event.inputs.plan_only != 'true' }}
+        if: ${{ always() && (github.event.inputs.plan_only != 'true' || github.event.inputs.queue_fix == 'apply') }}
         continue-on-error: true
         run: |
           files="state/sns_video.json state/claude_api_usage_video.json state/buffer_calls/video.json"
