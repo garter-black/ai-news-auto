@@ -65,7 +65,7 @@
   "videoTitle": "Rewarding defenders with bigger bug bounties",
   "publishedAt": "2026-11-02T18:00:00+00:00",
   "generatedAt": "2026-11-03T05:15:31.394200+00:00",
-  "thumbnail": "",
+  "thumbnail": "https://ai-tech-express.jp/img/openai-bigger-bug-bounties-4ec0e48b.jpg",
   "model": "anthropic-api:claude-opus-5-5",
   "affiliates": [],
   "pricingProduct": "chatgpt",
@@ -146,5 +146,28 @@
     }
   ],
   "sourcePublishedAt": "2026-11-02T18:00:00+00:00",
-  "detectedAt": "2026-11-03T05:10:52+00:00"
+  "detectedAt": "2026-11-03T05:10:52+00:00",
+  "imageCredit": {
+    "kind": "official",
+    "org": "OpenAI",
+    "provider": "OpenAI公式ブログ",
+    "sourceUrl": "https://openai.com/index/rewarding-defenders-with-bigger-bug-bounties",
+    "original": "https://images.ctfassets.net/kftzwdyauwt9/6YGqAlQzlUWYvYNTeDnfcM/e5455b9d34b33916246eadda9c1b0959/rewarding-defenders-with-bigger-bug-bounties-social.png?w=1600&h=900&fit=fill",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-03T06:13:13+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.426,
+    "y": 0.664,
+    "box": [
+      0.0,
+      0.328,
+      0.853,
+      1.0
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/openai-bigger-bug-bounties-4ec0e48b.jpg"
+  }
 }

@@ -65,7 +65,7 @@
   "videoTitle": "Preparing our next security sprint to harden OpenAI",
   "publishedAt": "2026-11-02T18:00:00+00:00",
   "generatedAt": "2026-11-03T05:32:30.731355+00:00",
-  "thumbnail": "",
+  "thumbnail": "https://ai-tech-express.jp/img/openai-security-sprint-bug-bounty-81224adf.jpg",
   "model": "anthropic-api:claude-opus-5-5",
   "affiliates": [],
   "faq": [
@@ -110,5 +110,28 @@
     }
   ],
   "sourcePublishedAt": "2026-11-02T18:00:00+00:00",
-  "detectedAt": "2026-11-03T05:30:53+00:00"
+  "detectedAt": "2026-11-03T05:30:53+00:00",
+  "imageCredit": {
+    "kind": "official",
+    "org": "OpenAI",
+    "provider": "OpenAI公式ブログ",
+    "sourceUrl": "https://openai.com/index/preparing-our-next-security-sprint-to-harden-openai",
+    "original": "https://images.ctfassets.net/kftzwdyauwt9/3I6XNOAyDMl6T0tummrXmo/b10602bfeb5ca42409706b86011ceacb/preparing-our-next-security-sprint-to-harden-openai-social.png?w=1600&h=900&fit=fill",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-03T06:13:09+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.553,
+    "y": 0.414,
+    "box": [
+      0.106,
+      0.0,
+      1.0,
+      0.828
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/openai-security-sprint-bug-bounty-81224adf.jpg"
+  }
 }
