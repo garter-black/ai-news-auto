@@ -201,6 +201,7 @@
 - 重複記事の統合（duplicateOf・noindex・canonical）、古い発表の作り直し停止とニュース用サイトマップの48時間ルール、料金・リリースノートの見張り、他社との突き合わせ: `docs/parity-fixes-20261102.md`。重複の判定は `scripts/story.py` だけで行い、サイトは JSON の duplicateOf を読む。
 - 改名（サイソクニュース）と読者像（ペルソナ）、記事の「仕事・お金にどう活かせる？」欄、SNSの活用型・お金インパクト型、幅広い話題の優先順位・スポーツの範囲と1日上限: `docs/persona-20261102.md`。読者像の文面は `scripts/persona.py` だけで直す。
 - SNS 動画 v3「画面で見せる型」（試作・未投稿・スケジュール無し）: `docs/sns-video-v3-20261102.md`。公式ページを本物のブラウザで撮って数字へズーム、文字はキーワードだけ、締めのカード無し。`scripts/shorts_v3.py`・追加ゲート `video_gate.check_v3`・手動の `shorts_v3.yml`。CI で約2〜3分。
+- SNS 動画の「中身に合わせた型」（2026-11-03・**オーナーの承認待ち**）: `scripts/video_templates.py`。記事 JSON だけで型を選ぶ（発表・料金・比較・セキュリティ・お金と制度・決算・速報・今の型）。右の画面にカード（公式の写真・料金の段階・比較・チェックリスト・誰が/いつ/いくら・主な数字）を足し、声・吹き出し・選択の青・締めは今のまま。本番は環境変数 `SNS_VIDEO_TEMPLATES=on` のときだけ（既定 off＝今の承認済みの型）。見本は手動の `video_template_samples.yml`、テストは `tests/test_video_templates.py`（`video_tests.yml`）。
 - SNS 動画 v2（試作・未投稿・スケジュール無し）: `docs/sns-video-v2-20261102.md`。3デザイン（報道テロップ/大きな文字/公式ページ）、品質ゲート `scripts/video_gate.py`、失敗時は動画なしで今までどおり投稿する約束 `scripts/sns_video.py`（既定は無効）。投稿用の声は VOICEVOX のみ。
 
 - **SNS 投稿のルールの門番（2026-11-03）**: 投稿する経路はすべて、Buffer / Bluesky / Threads 公式 API を呼ぶ直前に `scripts/sns_rules.py` の `enforce` を通す（記事がある・リンクの位置と utm・要約すると＋問いかけ・16:9 の写真だけの画像・決まり文句なし・日本語・長さ・1記事1投稿）。違反は投稿せず、issue（ラベル `sns-rule-violation`）に残す。新しい投稿経路は `tests/test_sns_rules.py`（`sns_rules.yml`）が門番を通っているか検査する。実際の投稿の点検は読むだけの `sns_audit.yml`。

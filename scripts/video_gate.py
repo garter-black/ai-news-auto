@@ -808,8 +808,11 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
     segs = [(a, b) for a, b in zip(bounds, bounds[1:]) if b - a > 0.05]
     avg = (end / len(segs)) if segs else 99
     m.update({"v3_changes": len(changes), "v3_avg_segment": round(avg, 2), "v3_max_segment": round(max((b - a for a, b in segs), default=99), 2)})
-    if len(changes) < V3_MIN_CHANGES:
-        result.reasons.append(f"v3: 画面の変化が少ない（{len(changes)}回 < {V3_MIN_CHANGES}回）")
+    # 変化の回数の下限。速報の型（15〜25秒・video_templates）は場面が1〜2つしか無いので report の min_changes（6回）。
+    # 間の長さ（1場面の平均・何も変わらない最長）の基準は同じなので、テンポは今の型と変わらない
+    min_changes = int(report.get("min_changes") or V3_MIN_CHANGES) if report.get("template") == "breaking" else V3_MIN_CHANGES
+    if len(changes) < min_changes:
+        result.reasons.append(f"v3: 画面の変化が少ない（{len(changes)}回 < {min_changes}回）")
     if not (avg_rng[0] <= avg <= avg_rng[1]):
         result.reasons.append(f"v3: 1場面の平均が {avg_rng[0]}〜{avg_rng[1]}秒の外（{avg:.2f}秒）")
     if m["v3_max_segment"] > max_seg:
@@ -882,10 +885,12 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
     fonts = report.get("fonts") or []
     if not fonts or len(set(fonts)) > V3_MAX_FONTS:
         result.reasons.append(f"v3: 書体は{V3_MAX_FONTS}つまで（{fonts}）")
-    # 描画のソースに線・帯・枠が無い
+    # 描画のソースに線・帯・枠が無い（型のカードを使った動画は、カードを描く video_templates.py も）
     renderer = renderer or Path(__file__).resolve().parent / "shorts_v3.py"
-    for p in lint_renderer(renderer):
-        result.reasons.append(f"v3: 飾りの線・帯: {p}")
+    renderers = [renderer] + ([Path(__file__).resolve().parent / "video_templates.py"] if report.get("template") not in (None, "", "default") else [])
+    for path in renderers:
+        for p in lint_renderer(path):
+            result.reasons.append(f"v3: 飾りの線・帯: {p}")
 
 
 _MONTHS = {m: i for i, m in enumerate(["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], 1)}
@@ -911,6 +916,18 @@ def with_official(article: dict, text: str) -> dict:
     return aug
 
 
+def article_data_text(article: dict) -> str:
+    """型のカード（video_templates）が使う、記事 JSON の本文以外の事実: 比較データ（charts の rivals。A7 で公式ページの
+    引用を確かめた数字）と「今すること」（todayActions）。本文と同じく記事の一部なので、描いた数字の出どころとして認める"""
+    out = []
+    for ch in article.get("charts") or []:
+        if isinstance(ch, dict) and ch.get("kind") == "rivals":
+            for g in ch.get("groups") or []:
+                out.append(" / ".join(f"{g.get('label', '')} {it.get('label', '')} {it.get('display', '')}" for it in g.get("items") or []))
+    out += [str(x) for x in article.get("todayActions") or []]
+    return "\n".join(x for x in out if x)
+
+
 def derived_counts(script_v3: dict) -> str:
     """グラフの行の数（例: 料金の段階が3行 →「3段階・3つ」）。公式の行を数えた数なので、数字の出どころとして認める"""
     out = []
@@ -925,7 +942,8 @@ def derived_counts(script_v3: dict) -> str:
 def check_video(mp4: Path, report: dict, article: dict, profile: str = "production") -> GateResult:
     """動画を投稿に付けてよいか。例外は投げず、問題はすべて reasons に入れる"""
     result = GateResult(ok=False)
-    article = with_official(article, "\n".join(x for x in [report.get("official_text") or "", derived_counts(report.get("script_v3") or {})] if x))
+    extra = article_data_text(article) if report.get("template") not in (None, "", "default") else ""  # 既定の型は今までと同じ資料
+    article = with_official(article, "\n".join(x for x in [report.get("official_text") or "", derived_counts(report.get("script_v3") or {}), extra] if x))
     prof = PROFILES[profile]
     try:
         mp4 = Path(mp4)

@@ -1,0 +1,101 @@
+name: SNS video template samples (manual)
+
+# 中身に合わせた動画の型（scripts/video_templates.py）の見本を、本番の声（VOICEVOX）で書き出して Artifacts に置くだけ。
+# オーナーが見比べて承認するための手動実行（スケジュールなし）。投稿しない・KV にも Buffer にも置かない・記事 JSON に video を書かない。
+on:
+  workflow_dispatch:
+    inputs:
+      pairs:
+        description: "slug:型 をスペース区切り（例: apple-reports-q4-2026-results:earnings）。型は launch/pricing/comparison/security/policy_money/earnings/breaking/default"
+        required: true
+
+permissions:
+  contents: write  # Claude API の使用量（state/claude_api_usage_video.json）を main に残すため（shorts_v3.yml と同じ）
+
+concurrency:
+  group: video-template-samples-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: VOICEVOX を裏で起動（以降の準備と並行）
+        run: |
+          echo "JOB_T0=$(date +%s)" >> "$GITHUB_ENV"
+          nohup sh -c 'docker run -d --rm --name voicevox -p 50021:50021 voicevox/voicevox_engine:cpu-latest' > /tmp/voicevox.log 2>&1 &
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: 準備（Python・Claude CLI・日本語フォント）
+        run: |
+          npm i -g @anthropic-ai/claude-code > /tmp/claude-install.log 2>&1 &
+          pip install -r requirements.txt numpy pillow budoux opencv-python-headless playwright imageio-ffmpeg
+          mkdir -p ~/.local/share/fonts && cp assets/fonts/NotoSansJP-*.otf ~/.local/share/fonts/ && fc-cache -f > /dev/null
+          which ffmpeg || echo "ffmpeg はランナーに無いので imageio-ffmpeg を使う"
+          google-chrome --version
+          wait
+      - name: 書き出し（投稿しない）
+        env:
+          LLM_WORKFLOW: video
+          # 動画の台本は無料の LLM を使わない（shorts_v3.yml と同じ。Claude API → CLI だけ）
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          CLAUDE_DAILY_MAX: ${{ vars.CLAUDE_DAILY_MAX || '40' }}
+          CLAUDE_MODEL: opus
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          LLM_DEFAULT_VISIBILITY: high
+          LLM_DEFAULT_PURPOSE: video
+          CLAUDE_API_LEDGER: video
+          CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
+          CLAUDE_API_DAILY_CALLS_VIDEO: ${{ vars.CLAUDE_API_DAILY_CALLS_VIDEO }}
+          PAIRS: ${{ github.event.inputs.pairs }}
+        run: |
+          set +e
+          for pair in $PAIRS; do
+            slug="${pair%%:*}"; tpl="${pair##*:}"
+            t=$(date +%s)
+            python scripts/video_templates.py "$slug" --render --template "$tpl" --tts voicevox --out "out/video_templates/$tpl" --profile production
+            echo "時間: $slug $tpl $(( $(date +%s) - t ))秒"
+          done
+          python - <<'PY'
+          import json, glob
+          for p in sorted(glob.glob("out/video_templates/*/*.report.json")):
+              r = json.load(open(p))
+              g = r.get("gate", {})
+              print(p, r.get("template"), "合格" if g.get("ok") else "不合格", r.get("total"), g.get("reasons"))
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: video-template-samples-${{ github.run_number }}
+          path: |
+            out/video_templates/*/*.mp4
+            out/video_templates/*/*.png
+            out/video_templates/*/*.json
+          retention-days: 7
+      - name: Claude API の使用量を記録
+        if: always()
+        continue-on-error: true
+        run: |
+          f=state/claude_api_usage_video.json
+          u=state/llm_usage_video.json
+          if [ -z "$(git status --porcelain "$f" "$u" 2>/dev/null)" ]; then exit 0; fi
+          cp "$f" "$RUNNER_TEMP/api_usage_mine.json" 2>/dev/null || echo '{}' > "$RUNNER_TEMP/api_usage_mine.json"
+          cp "$u" "$RUNNER_TEMP/llm_usage_mine.json" 2>/dev/null || echo '{}' > "$RUNNER_TEMP/llm_usage_mine.json"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for i in 1 2 3; do
+            git fetch --depth 1 origin main && git reset --hard origin/main
+            python scripts/llm.py --merge-api-usage "$RUNNER_TEMP/api_usage_mine.json" "$f"
+            python scripts/llm.py --merge-usage-counts "$RUNNER_TEMP/llm_usage_mine.json" "$u"
+            git add "$f" "$u"
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "chore(llm): Claude API の使用量を記録（動画の型の見本）"
+            git push origin HEAD:main && exit 0
+            sleep 5
+          done

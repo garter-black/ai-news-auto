@@ -980,8 +980,10 @@ def review_script(data: dict, article: dict, pages: list[Page], tier: str) -> di
         return None
 
 
-def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
+def write_script(article: dict, pages: list[Page], note: str = "") -> tuple[dict, str]:
     import llm
+
+    system = script_system() + note  # note は型の一言（video_templates.NOTES）。空なら今までと同じ
 
     prompt = f"# 資料\n{script_material(article, pages)}\n\n上の資料だけを使って、決まりどおりの台本を JSON で書いてください。"
     feedback, last = "", ""
@@ -990,7 +992,7 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
     best = None  # 事実の検査に通った最後の台本（レビューの書き直しが通らなかったときに使う）
     for attempt in range(1, 5):  # 2026-11-03: LLM の枠を食いすぎないよう、書き直しは4回まで（レビュー1回・立て直し2回は別）
         try:
-            data, model = llm.generate_json(script_system(), prompt + feedback, SCRIPT_SCHEMA, temperature=0.5, max_output_tokens=8192, tier=tier, visibility="high", purpose="video")
+            data, model = llm.generate_json(system, prompt + feedback, SCRIPT_SCHEMA, temperature=0.5, max_output_tokens=8192, tier=tier, visibility="high", purpose="video")
         except RuntimeError:
             if tier == "bulk":
                 raise
@@ -1043,7 +1045,7 @@ def write_script(article: dict, pages: list[Page]) -> tuple[dict, str]:
     # まだ通らない: ①証拠の行だけで書き直す（温度を下げる）×2 → ②記事の要点と確かめた数字だけの簡単な台本 ×2（あきらめない）
     for phase, note in (("strict", STRICT_NOTE), ("simple", SIMPLE_NOTE)):
         try:
-            data, model = llm.generate_json(script_system() + note, prompt + feedback, SCRIPT_SCHEMA, temperature=0.2, max_output_tokens=8192, tier=tier, visibility="high", purpose="video")
+            data, model = llm.generate_json(system + note, prompt + feedback, SCRIPT_SCHEMA, temperature=0.2, max_output_tokens=8192, tier=tier, visibility="high", purpose="video")
         except RuntimeError as error:
             last = f"{last}; {error}"
             continue
@@ -1211,6 +1213,9 @@ SHORT_RANGE = (20.0, 45.0)  # SNS 用の短い版（30〜40秒が目安）
 
 def length_targets(script: dict) -> tuple[float, float, tuple[float, float]]:
     """(読み直しの下限, 上限, ゲートの範囲)。短い版・承認済みの台本・ふだんで変える"""
+    if script.get("_length_range"):  # 型（video_templates の速報 15〜25秒）が決めた範囲
+        lo, hi = (float(x) for x in script["_length_range"])
+        return lo + 1.5, hi - 1.5, (lo, hi)
     if script.get("_variant") == "short":
         return 24.0, 42.0, SHORT_RANGE
     if script.get("_approved"):
@@ -1655,6 +1660,7 @@ class Ladder:
     title: str = ""  # グラフの見出し（空なら既定）
     source: str = ""  # 見出しの横の出どころ（空なら既定）
     tour: float = 0.0  # >0 なら、強調の行を上から順にこの秒数ずつ移す（読み上げが長い場面）
+    extra: dict = field(default_factory=dict)  # 型のカード（video_templates）の追加の情報（写真の場所など）
 
 
 @dataclass
@@ -2002,6 +2008,8 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         comp_beat = 0  # 同じ場面に2つのグラフは出さない
     # 手順の絵（flows）: 作業の流れ・たとえの手順を箱と矢印で
     flow_map = {int(f.get("beat") or 0): f for f in (script.get("flows") or []) if int(f.get("beat") or 0) and len(f.get("steps") or []) >= 2}
+    # 型のカード（video_templates.decorate が足す。既定の型の台本には無い＝今までと同じ）
+    card_map = {int(c.get("beat") or 0): c for c in (script.get("cards") or []) if int(c.get("beat") or 0) and (c.get("rows") or c.get("mode") == "image")}
     n_beats = len(beats)
     ladders: list[Ladder] = []
     uni = script.get("units") or {}
@@ -2072,7 +2080,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         sel = tg.rows if found[i] else [tg.match]
         line_rect = (tg.block.rect[0], span[1], tg.block.rect[2], span[3]) if wide_block else span
         block_cam = frame_rect(page, tg.page, line_rect, 0.96, 1.6, zmin=1.25 if wide_block else ZOOM_BLOCK)
-        chart_beat = i in lad_map or i in flow_map or i == uni_beat or i == comp_beat
+        chart_beat = i in lad_map or i in flow_map or i == uni_beat or i == comp_beat or i in card_map
         if i in lad_map:  # 料金の段階: 証拠は主役のプランの価格の行（表の行を順に回らない）
             lad = lad_map[i]
             sub_row = next((r for r in lad["rows"] if r.get("name", "").lower() == lad.get("subject", "").lower()), lad["rows"][-1])
@@ -2125,6 +2133,24 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
                 ladders.append(Ladder(chart_t, t_end, [{"name": x} for x in steps], "", 0.7, "flow", flow_map[i].get("note", ""), flow_map[i].get("title", ""), ""))
                 ev(chart_t, "chart", "手順の絵")
                 ev(t_hi, "pop", "手順: まとめ")
+            elif i in card_map and not (i == uni_beat or i == comp_beat):
+                cd = card_map[i]
+                rows_c = list(cd.get("rows") or [])
+                reveal = 0.5 if cd["mode"] != "image" else 0.0
+                t_hi = chart_t + 0.3 + reveal * len(rows_c) + 0.3
+                tour = cd["mode"] in ("specs", "checklist", "timeline") and nxt - t_hi > 1.6 * len(rows_c) + 0.6
+                hold = 1.6 * len(rows_c) + 0.4 if tour else (4.2 if cd["mode"] == "image" else 2.4)
+                t_end = min(nxt - 0.06, t_hi + hold)
+                L_new = Ladder(chart_t, t_end, rows_c, cd.get("subject", ""), reveal, cd["mode"], cd.get("note", ""), cd.get("title", ""), cd.get("source", ""),
+                               extra={k: cd[k] for k in ("image", "focus") if k in cd})  # fmt: skip
+                L_new.tour = 1.6 if tour else 0.0
+                ladders.append(L_new)
+                ev(chart_t, "chart", f"型のカード: {cd['mode']}")
+                if tour:
+                    for k in range(len(rows_c)):
+                        ev(t_hi + 1.6 * k, "pop", f"カード: {k + 1}行目")
+                else:
+                    ev(t_hi, "pop", "カード: 強調")
             elif i == uni_beat:
                 t_hi = chart_t + 0.3 + 0.5 * len(uni_rows) + 0.3
                 t_end = min(nxt - 0.06, t_hi + 2.2)
@@ -2261,6 +2287,8 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     spr = stack(rows, 8)
     texts.append(TextItem("credit", credit, spr, COL[0], SOURCE_Y - spr.shape[0] + rows[0].shape[0], credit_t, narr.total + 1, anim="rise"))
     credits = [credit]
+    if script.get("_image_credit") and any(L.mode == "image" for L in ladders):  # 公式の写真を出したら、その出どころもクレジットに
+        credits.append(script["_image_credit"])
 
     # 日本語字幕（英語の文に寄っている間）: 画面の下に中央そろえ
     subtitles: list[Subtitle] = []
@@ -2420,6 +2448,9 @@ def data_bars(card: Image.Image, rows: list[tuple[int, int, int, tuple]], height
                 d.rounded_rectangle((x, y, x + max(length, int(height * 1.4)), y + height), radius=height // 2, fill=color)
 
 
+TEMPLATE_CARD_MODES = ("image", "specs", "checklist", "timeline", "figures", "versus")  # video_templates.CARD_MODES と同じ
+
+
 class Renderer:
     def __init__(self, plan: Plan):
         self.plan = plan
@@ -2485,6 +2516,10 @@ class Renderer:
 
     def _ladder_base(self, L: "Ladder") -> dict:
         """料金の段階のカード: 見出し・各行（プラン名・価格・使える量）の文字を先に作る。棒は毎フレーム描く"""
+        if L.mode in TEMPLATE_CARD_MODES:  # 型のカード（video_templates）
+            import video_templates
+
+            return video_templates.card_base(self, L)
         if L.mode == "flow":
             n = len(L.rows)
             arrow = render_text([("→", "black", BLUE)], 60)
@@ -2607,6 +2642,10 @@ class Renderer:
     def ladder_frame(self, idx: int, t: float) -> np.ndarray:
         info = self.ladder_cards[idx]
         L: Ladder = self.plan.ladders[idx]
+        if L.mode in TEMPLATE_CARD_MODES:
+            import video_templates
+
+            return video_templates.card_frame(self, info, L, t)
         if L.mode == "units":
             return self.units_frame(info, L, t)
         if L.mode == "flow":
@@ -3005,7 +3044,7 @@ def units_for_gate(plan: Plan) -> list[dict]:
     return units
 
 
-def make_meta(a: dict, script: dict, voice: dict, pages: list[Page]) -> dict:
+def make_meta(a: dict, script: dict, voice: dict, pages: list[Page], image_credit: str = "") -> dict:
     url = f"https://{SITE}/articles/{a['slug']}"
     title = re.sub(r"\s+", " ", script["title"]).strip()
     title = title if len(title) <= 40 else title[:39] + "…"
@@ -3024,6 +3063,8 @@ def make_meta(a: dict, script: dict, voice: dict, pages: list[Page]) -> dict:
         lines.append(f"画面：{p.host}（本記事） {p.url}" if p.own else f"画面：{p.host}（公式ページ） {p.url}")
     if any(p.own for p in pages) and a.get("sourceUrl"):
         lines.append(f"出典：{a['sourceUrl']}")
+    if image_credit:  # 型のカードで公式発表の写真を出したとき
+        lines.append(image_credit)
     lines.append("BGM・効果音：サイソクニュース自作")
     lines.append(SITE)
     lines += ["", " ".join(tags)]
@@ -3055,11 +3096,12 @@ def contact_sheet(mp4: Path, plan: Plan, out: Path, every: float = 2.0) -> None:
     sheet.save(out)
 
 
-def load_script(slug: str, article: dict, pages: list[Page], out_dir: Path, reuse: bool) -> dict:
-    path = out_dir / f"{slug}.v3script.json"
+def load_script(slug: str, article: dict, pages: list[Page], out_dir: Path, reuse: bool, note: str = "", cache: str = "") -> dict:
+    """note: 型（video_templates）の一言を台本の決まりに足す（空なら今までと同じ）。cache: 台本を置くファイル名"""
+    path = out_dir / (cache or f"{slug}.v3script.json")
     if reuse and path.exists():
         return latin_names(json.loads(path.read_text("utf-8")))
-    script, model = write_script(article, pages)
+    script, model = write_script(article, pages, note) if note else write_script(article, pages)
     script["_model"] = model
     path.write_text(json.dumps(script, ensure_ascii=False, indent=2), "utf-8")
     return script
@@ -3141,7 +3183,9 @@ def make_video(
                 "texts": text_records(plan),
                 "credits_shown": plan.credits,
                 "voice": plan.narr.voice,
-                "image_credit": "",
+                "image_credit": plan.credits[1] if len(plan.credits) > 1 else "",
+                **({"template": plan.script["_template"]} if plan.script.get("_template") else {}),
+                **({"min_changes": int(plan.script["_min_changes"])} if plan.script.get("_min_changes") else {}),
                 "safe": list(SAFE_V3),
                 "frame": [W, H],
                 "layout": LAYOUT,
@@ -3161,7 +3205,7 @@ def make_video(
                 "variant": plan.script.get("_variant", "full"),
                 "panel": list(PANEL),
                 "targets": [{"page": t.page + 1, "block": t.block.id, "text": t.text, "block_text": t.block.text[:160]} if t else None for t in plan.targets],
-                **make_meta(a, plan.script, plan.narr.voice, plan.pages),
+                **make_meta(a, plan.script, plan.narr.voice, plan.pages, plan.credits[1] if len(plan.credits) > 1 else ""),
             }
         )
     t = time.time()
@@ -3183,10 +3227,8 @@ def make_video(
     return report
 
 
-def make_versions(slug: str, out_dir: Path, tts: str = "voicevox", reuse: bool = False, extra_pages: list[str] | None = None, **kw) -> dict:
-    """同じ台本から2本: サイト用（全部）と SNS 用（短い版）。ページの撮影と台本は1回だけ。
-    戻り値 {"full": report, "short": report}。どちらも例外は投げず report に残す"""
-    a = shorts.load_article(slug)
+def prepare_versions(slug: str, a: dict, out_dir: Path, reuse: bool = False, extra_pages: list[str] | None = None, note: str = "", cache: str = "") -> tuple[list, dict | None, str]:
+    """2本（サイト用・SNS 用）に共通の準備: ページの撮影と台本（1回だけ）。戻り値 (pages, script, 失敗の理由)"""
     out_dir.mkdir(parents=True, exist_ok=True)
     CAPTURE_FAILS.clear()
     reason = ""
@@ -3206,13 +3248,32 @@ def make_versions(slug: str, out_dir: Path, tts: str = "voicevox", reuse: bool =
         if not pages:
             reason = "撮れるページが無い（" + "・".join(CAPTURE_FAILS[:3]) + "）"
         else:
-            script = latin_names(load_script(slug, a, pages, out_dir, reuse))
+            script = latin_names(load_script(slug, a, pages, out_dir, reuse, note, cache) if (note or cache) else load_script(slug, a, pages, out_dir, reuse))
     except Exception as error:  # noqa: BLE001
         reason = reason or f"台本を作れない: {str(error)[:200]}"
         log(f"[v3] {slug}: {reason}")
         script = None
     if not pages or not script:
         reason = reason or "台本を作れない"
+    return pages, script, reason
+
+
+def make_versions(slug: str, out_dir: Path, tts: str = "voicevox", reuse: bool = False, extra_pages: list[str] | None = None, template: str | None = None, **kw) -> dict:
+    """同じ台本から2本: サイト用（全部）と SNS 用（短い版）。ページの撮影と台本は1回だけ。
+    戻り値 {"full": report, "short": report}。どちらも例外は投げず report に残す。
+    template: 中身に合わせた型（video_templates）。None のときは SNS_VIDEO_TEMPLATES=on の間だけ記事から選ぶ。
+    既定（off）は今の承認済みの型そのまま（下の処理は 2026-11-03 までと同じ）"""
+    a = shorts.load_article(slug)
+    if template is None:
+        import video_templates
+
+        template = video_templates.template_for(a) if video_templates.enabled() else video_templates.APPROVED
+    if template != "default":
+        import video_templates
+
+        return video_templates.make_versions(slug, out_dir, template, tts=tts, reuse=reuse, extra_pages=extra_pages, **kw)
+    pages, script, reason = prepare_versions(slug, a, out_dir, reuse, extra_pages)
+    if not pages or not script:
         empty = {"slug": slug, "errors": [reason], "gate": {"ok": False, "reasons": [reason]}, "failReason": reason, "captureFails": list(CAPTURE_FAILS)}
         return {"full": empty, "short": empty}
     full = make_video(slug, out_dir, tts, profile=kw.get("profile"), article=a, pages=pages, script=json.loads(json.dumps(script, ensure_ascii=False)))
@@ -3230,12 +3291,17 @@ def main() -> None:
     parser.add_argument("--no-bgm", action="store_true")
     parser.add_argument("--pages", nargs="*", default=[], help="足して撮る公式ページ（他社の料金表など）")
     parser.add_argument("--short", action="store_true", help="同じ台本から SNS 用の短い版を作る（--reuse-script と一緒に）")
+    parser.add_argument("--template", help="中身に合わせた型で2本（サイト用・SNS 用）を作る見本（video_templates.TEMPLATES。投稿しない）")
     args = parser.parse_args()
     import llm
 
     llm._load_env_local()
     failed = 0
     for slug in args.slugs:
+        if args.template:  # 見本: 型を決めて2本（オーナーの承認前の確認用）
+            out = make_versions(slug, Path(args.out), args.tts, args.reuse_script, args.pages, template=args.template, profile=args.profile)
+            failed += sum(0 if r["gate"]["ok"] else 1 for r in out.values())
+            continue
         if args.short:
             path = Path(args.out) / f"{slug}.v3script.json"
             base = latin_names(json.loads(path.read_text("utf-8")))
