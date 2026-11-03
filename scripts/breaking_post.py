@@ -51,7 +51,7 @@ def targets(state: dict, now: datetime) -> list[dict]:
         article = json.loads(path.read_text("utf-8"))
         if not article.get("breaking") or article["slug"] in state["posted"] or article["slug"] in (state.get("ruleBlocked") or {}):
             continue
-        if not tp.video_possible(article):
+        if not tp.sns_rules.is_urgent(article) and not tp.video_possible(article):
             continue  # 動画を作れない記事は SNS に出さない（sns_rules ルール8: 記事の投稿は動画つきだけ）
         age = now - datetime.fromisoformat(article["generatedAt"])
         if age <= timedelta(minutes=tp.BREAKING_MAX_AGE_MIN) or tp.queued_for_morning(article, now):

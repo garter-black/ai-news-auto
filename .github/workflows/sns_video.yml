@@ -39,6 +39,9 @@ on:
       queue_fix:
         description: "（直す）Buffer の予約中の動画なし・古い形の投稿: plan＝一覧だけ／apply＝下書きに戻して動画つきで出し直す。空なら何もしない"
         default: ""
+      repost:
+        description: "（オーナー承認の出し直し）この記事を content/sns_reposts の文面・動画つきで次のふつうの枠に出す。空なら何もしない"
+        default: ""
       requeue:
         description: "（直す）下書きに戻した X・Facebook の投稿を動画つきで出し直す（例 slug:facebook）。空なら何もしない"
         default: ""
@@ -113,6 +116,10 @@ jobs:
             SNS_VIDEO_POST=live python scripts/sns_video_followup.py --queue-fix "${{ github.event.inputs.queue_fix }}"
             exit $?
           fi
+          if [ -n "${{ github.event.inputs.repost }}" ]; then
+            python scripts/sns_video_followup.py --repost "${{ github.event.inputs.repost }}"
+            exit $?
+          fi
           if [ -n "${{ github.event.inputs.requeue }}" ]; then
             SNS_VIDEO_POST=live python scripts/sns_video_followup.py --requeue "${{ github.event.inputs.requeue }}"
             exit $?
@@ -152,12 +159,12 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
       - name: 記録を main に残す（動画の記録・Claude API の使用量・記事の video）
-        if: ${{ always() && (github.event.inputs.plan_only != 'true' || github.event.inputs.queue_fix == 'apply' || github.event.inputs.requeue != '') }}
+        if: ${{ always() && (github.event.inputs.plan_only != 'true' || github.event.inputs.queue_fix == 'apply' || github.event.inputs.requeue != '' || github.event.inputs.repost != '') }}
         continue-on-error: true
         run: |
           files="state/sns_video.json state/claude_api_usage_video.json state/buffer_calls/video.json"
           python scripts/sns_video_followup.py --sync-posted || true
-          [ -n "$(git status --porcelain state/threads_posted.json)" ] && changed_posted=1 || changed_posted=""
+          [ -n "$(git status --porcelain state/threads_posted.json state/bluesky_extra.json)" ] && changed_posted=1 || changed_posted=""
           changed=""; for f in $files; do [ -f "$f" ] && [ -n "$(git status --porcelain "$f")" ] && changed="$changed $f"; done
           embeds=$(git status --porcelain content/articles | awk '{print $2}')
           [ -z "$changed$embeds$changed_posted" ] && exit 0
@@ -172,7 +179,7 @@ jobs:
             [ -f "$RUNNER_TEMP/claude_api_usage_video.json" ] && python scripts/llm.py --merge-api-usage "$RUNNER_TEMP/claude_api_usage_video.json" state/claude_api_usage_video.json
             # 動画つきで送った・出さなかった記録を、最新の投稿履歴（threads_posted.json）に写す（何度写しても同じ）
             python scripts/sns_video_followup.py --sync-posted || true
-            git add state/threads_posted.json 2>/dev/null
+            git add state/threads_posted.json state/bluesky_extra.json 2>/dev/null
             # 記事の video だけを最新の記事 JSON に書き戻す（ほかの項目は main のまま）
             for f in "$RUNNER_TEMP"/embeds/*.json; do [ -f "$f" ] || continue
               python - "$f" "content/articles/$(basename "$f")" <<'PY'

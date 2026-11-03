@@ -569,7 +569,7 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
             log(f"[video-followup] {slug} は動画待ち。あとの枠の投稿も順番を保って待たせます")
             out.append({"slug": slug, **q})
             break
-        variant = pick_variant(state, now, f["ab_until"], f["after_ab"])
+        variant = (rec.get("pending") or {}).get("forceVariant") or pick_variant(state, now, f["ab_until"], f["after_ab"])
         versions = v.get("versions") or {}
         if not (versions.get(variant) or {}).get("ok") or variant not in urls:
             variant = next((k for k in ("short", "full") if (versions.get(k) or {}).get("ok") and k in urls), "")
@@ -763,14 +763,14 @@ def publish_extra_queued(state: dict, now: datetime, f: dict, creator=None, issu
     return out
 
 
-def requeue_inputs(api_key: str, chans: dict, slug: str, services: list[str], slot: datetime) -> dict:
+def requeue_inputs(api_key: str, chans: dict, slug: str, services: list[str], slot: datetime, classic: str = "") -> dict:
     """出し直す SNS の分だけ、新しい形の文面で Buffer の入力を作る（Buffer は呼ばない）。文面は門番で確かめる（動画は後で）。
     出し直す分は前の予約を下書きに戻したので「もう投稿済み」とは数えない（history=False）"""
     import sns_rules
     import threads_post as tp
 
     article = json.loads((ARTICLES / f"{slug}.json").read_text("utf-8"))
-    classic = tp.compose(article, [], use_llm=True)
+    classic = classic or tp.compose(article, [], use_llm=True)
     link = f"{SITE}/articles/{slug}"
     inputs = {}
     if "threads" in services:
@@ -804,6 +804,68 @@ def requeue(slug: str, services: list[str], slot: datetime | None = None, api_ke
     return {"slug": slug, "services": services, "result": out}
 
 
+REPOSTS = ROOT / "content" / "sns_reposts"
+BLUESKY_EXTRA = ROOT / "state" / "bluesky_extra.json"
+
+
+def next_normal_slot(posted: dict, now: datetime, lead_min: int = 90) -> datetime:
+    """次のふつうの投稿枠（朝のまとめの枠を除く・予約済みの投稿と90分以上あく・動画を作る時間 lead_min 分より先）"""
+    import threads_post as tp
+
+    taken = [t for t in (_parse(r.get("dueAt") or "") for r in (posted.get("posted") or {}).values()) if t]
+    base = now.astimezone(JST).replace(second=0, microsecond=0)
+    for day in range(3):
+        for hour, minute in tp.SLOTS_JST:
+            if tp.DIGEST_ON and (hour, minute) == tp.DIGEST_SLOT_JST:
+                continue
+            slot = (base + timedelta(days=day)).replace(hour=hour, minute=minute)
+            if slot >= base + timedelta(minutes=lead_min) and all(abs((slot - t).total_seconds()) >= 90 * 60 for t in taken):
+                return slot.astimezone(timezone.utc)
+    raise RuntimeError("3日以内に空いている枠がありません")
+
+
+def repost(slug: str, api_key: str | None = None, now: datetime | None = None) -> dict:
+    """（オーナー承認の出し直し）写真で出て消した投稿を、content/sns_reposts/<slug>.json の文面・動画つきで、次のふつうの枠に出す。
+    動画は作り直す（いまのコードで）。動画ができたら publish_queued が枠の時刻に Threads・X・Facebook へ、Bluesky はそのあと出す"""
+    import threads_post as tp
+
+    key = api_key if api_key is not None else os.environ.get("BUFFER_API_KEY", "")
+    now = now or datetime.now(timezone.utc)
+    spec = json.loads((REPOSTS / f"{slug}.json").read_text("utf-8"))
+    state = load_json(STATE, {"videos": {}})
+    posted = load_json(POSTED, {"posted": {}})
+    rec = (posted.get("posted") or {}).get(slug) or {}
+    slot = next_normal_slot(posted, now)
+    services = spec.get("services") or ["threads", "twitter", "facebook"]
+    pending = requeue_inputs(key, tp.buffer_channels(key), slug, services, slot, classic=spec.get("classic", ""))
+    if spec.get("variant"):
+        pending["forceVariant"] = spec["variant"]
+    old_ids = {"threads": rec.get("id", ""), **{k: v for k, v in (rec.get("channels") or {}).items() if k in ("twitter", "facebook", "bluesky")}}
+    if slug in (state.get("videos") or {}):
+        state.setdefault("videosArchive", {})[slug] = state["videos"].pop(slug)  # 動画はいまのコードで作り直す
+    (state.get("queued") or {}).pop(slug, None)
+    state.setdefault("converted", {})[slug] = {"at": now.isoformat(timespec="seconds"), "pending": pending, "threadsSent": False, "repost": True,
+                                               "paused": {k: {"id": v, "ok": True, "deleted": True} for k, v in old_ids.items() if v},
+                                               "dropBlueskyExtra": bool(spec.get("bluesky"))}
+    apply_converted(state, posted)
+    POSTED.write_text(json.dumps(posted, ensure_ascii=False, indent=2) + "\n", "utf-8")
+    drop_bluesky_extra(state)
+    save_state(state)
+    return {"slug": slug, "slot": slot.astimezone(JST).isoformat(timespec="minutes"), "services": services, "variant": spec.get("variant")}
+
+
+def drop_bluesky_extra(state: dict) -> int:
+    """出し直す記事を Bluesky の埋め合わせの記録から外す（外さないと Bluesky が「もう出した」として出さない）。何度やっても同じ"""
+    keys = [s for s, c in (state.get("converted") or {}).items() if c.get("dropBlueskyExtra")]
+    extra = load_json(BLUESKY_EXTRA, {})
+    gone = [k for k in keys if k in extra]
+    for k in gone:
+        state.setdefault("blueskyArchive", {})[k] = extra.pop(k)
+    if gone:
+        BLUESKY_EXTRA.write_text(json.dumps(extra, ensure_ascii=False, indent=2) + "\n", "utf-8")
+    return len(gone)
+
+
 def apply_converted(state: dict, posted: dict) -> int:
     """queue_fix で下書きに戻した投稿を、投稿の記録で「動画待ち」にする（何度当てても同じ）。
     Threads がもう出ている記事は、X・Facebook の分だけを state の queued に残す（publish_queued が送る）"""
@@ -815,6 +877,9 @@ def apply_converted(state: dict, posted: dict) -> int:
         paused = conv.get("paused") or {}
         rec.setdefault("pausedIds", {}).update({k: v.get("id") for k, v in paused.items()})
         channels = {k: v for k, v in (rec.get("channels") or {}).items() if k not in paused}
+        if conv.get("repost"):
+            for k in ("blueskyAt", "blueskyFailed", "sentAt", "permalink"):
+                rec.pop(k, None)
         rec["channels"] = channels
         if conv.get("threadsSent"):
             # Threads は出ている（動画つき）。X・Facebook だけを動画待ちにする
@@ -829,6 +894,7 @@ def apply_converted(state: dict, posted: dict) -> int:
 def sync_posted(state: dict, posted: dict) -> int:
     """sns_video.json の queued（動画つきで送った・出さなかった）を threads_posted.json の記録に写す（ワークフローが main に残す前に呼ぶ）"""
     changed = apply_converted(state, posted)
+    drop_bluesky_extra(state)
     for slug, q in (state.get("queued") or {}).items():
         rec = (posted.get("posted") or {}).get(slug)
         if not rec or not awaiting(rec):
@@ -1284,7 +1350,14 @@ def main() -> None:
     parser.add_argument("--sync-posted", action="store_true", help="動画つきで送った記録を state/threads_posted.json に写す（Buffer は呼ばない）")
     parser.add_argument("--queue-fix", choices=("plan", "apply"), help="予約中の動画なし・古い形の投稿を一覧（plan）／下書きに戻して動画待ちにする（apply）")
     parser.add_argument("--requeue", metavar="SLUG:SNS[,SNS]", help="下書きに戻した投稿を、新しい形・動画つきで出し直す（例 slug:facebook）")
+    parser.add_argument("--repost", metavar="SLUG", help="オーナー承認の出し直し（content/sns_reposts/<slug>.json の文面・動画つきで次のふつうの枠に）")
     args = parser.parse_args()
+    if args.repost:
+        import llm
+
+        llm._load_env_local()
+        print(json.dumps(repost(args.repost), ensure_ascii=False))
+        return
     if args.requeue:
         import llm
 

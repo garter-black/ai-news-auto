@@ -981,8 +981,8 @@ def candidates(state: dict, hours: int, genres: set[str] | None = None) -> list[
         # 速報として出す記事は scripts/breaking_post.py に任せる（二重投稿を防ぐ）
         if reserved_for_breaking(article, state):
             continue
-        if not video_possible(article):
-            continue  # 動画を作れない記事は SNS に出さない（ルール8: 記事の投稿は動画つきだけ）
+        if not sns_rules.is_urgent(article) and not video_possible(article):
+            continue  # 動画を作れない記事は SNS に出さない（ルール8: 記事の投稿は動画つきだけ。急ぎの安全の知らせは例外）
         articles.append(article)
 
     # まとめ記事に統合済みの個別記事は、まとめ側を出せば十分なので重ねて流さない
@@ -1774,10 +1774,34 @@ def share_now(
     if "threads" not in channels:
         raise RuntimeError("Buffer に Threads のチャンネルが見つかりません")
     now = datetime.now(timezone.utc)
-    due: datetime | None = None
+    if sns_rules.is_urgent(article):
+        # 災害・警報など遅れると読者に害がある知らせ（2026-11-03 オーナー承認）: 動画を待たず、写真のカードでいますぐ出す
+        return share_now_direct(api_key, channels, article, text, link, fmt=fmt, fb_text=fb_text, threads_text=threads_text)
     # 速報も動画つきだけ（ルール8）。動画ができしだい sns_video_followup がすぐ出す（写真では出さない）
     result = queue_for_video(api_key, channels, threads_text or text, text, link, article, None, fmt=fmt, fb_text=fb_text, offsets=(1, 2))
     result["dueAt"] = now.isoformat(timespec="seconds")
+    return result
+
+
+def share_now_direct(api_key: str, channels: dict, article: dict, text: str, link: str, fmt: str = "classic",
+                     fb_text: str | None = None, threads_text: str | None = None) -> dict:
+    """（急ぎの安全の知らせだけ）Threads・X・Facebook にいますぐ写真のカードで出す。shareNow が通らなければ1分後の予約"""
+    now = datetime.now(timezone.utc)
+    due: datetime | None = None
+    try:
+        result = publish_via_buffer(api_key, channels["threads"]["id"], threads_text or text, link, article, fmt=fmt)
+    except sns_rules.SnsRuleViolation:
+        raise
+    except RuntimeError as error:
+        if is_buffer_unavailable(error):
+            raise
+        log(f"  [threads] いますぐの投稿が通らないため、1分後の予約にします: {error}")
+        due = now + timedelta(minutes=1)
+        result = publish_via_buffer(api_key, channels["threads"]["id"], threads_text or text, link, article, due_at=due, fmt=fmt)
+    extra = {k: v for k, v in channels.items() if k in ("twitter", "facebook")}
+    result["channels"] = publish_extra_channels(api_key, extra, text, link, article, due_at=due, offsets=(1, 2), fmt=fmt, fb_text=fb_text)
+    result["dueAt"] = (due or now).isoformat(timespec="seconds")
+    result["urgent"] = True
     return result
 
 
@@ -2066,7 +2090,13 @@ def main() -> int:
             log(f"  [skip] 記事がまだ公開されていません。次回に回します: {link}")
             continue
         try:
-            if buffer_channel:
+            if buffer_channel and sns_rules.is_urgent(article):
+                # 災害・警報など急ぎの安全の知らせ（2026-11-03 オーナー承認）: 動画を待たずに写真のカードで予約する
+                result = publish_via_buffer(buffer_key, buffer_channel["id"], threads_text, link, article, due_at, fmt=fmt)
+                if extra_channels:
+                    result["channels"] = publish_extra_channels(buffer_key, extra_channels, text, link, article, due_at, fmt=fmt, fb_text=classic_text)
+                result["urgent"] = True
+            elif buffer_channel:
                 # 記事の投稿は動画つきだけ（ルール8）。ここでは予約せず「動画待ち」にする（動画ができたら sns_video_followup が予約する）
                 result = queue_for_video(buffer_key, {"threads": buffer_channel, **extra_channels}, threads_text, text, link, article, due_at,
                                          fmt=fmt, fb_text=classic_text)

@@ -19,7 +19,8 @@
   7. （2026-11-03 オーナー指示）要約の文は、やさしい「です・ます」の短い文。記事の硬い文（「〜する。」「〜である。」
      「〜した。」の言い切りや、「〜を発表。」で終わる文）をそのまま使わない。だれが（主語）を書く。
   8. （2026-11-03 オーナー指示「SNS の投稿は動画のはず」・繰り返しの違反）記事の投稿は**必ず動画つき**。写真・カードだけの投稿は出さない。
-     例外は朝のまとめ（kind="digest"。号のシェア画像 share.png）だけ。動画が間に合わなければ投稿を遅らせ（枠の順番は保つ）、
+     例外は朝のまとめ（kind="digest"。号のシェア画像 share.png）と、（2026-11-03 オーナー承認）災害（地震・津波・噴火・大雨・台風の警報など）や
+     遅れると読者に害がある知らせ（is_urgent。記事の disaster / urgent / safetyAlert）。これらは写真のカードですぐ出してよい。動画が間に合わなければ投稿を遅らせ（枠の順番は保つ）、
      作れなければ issue を立てて出さない（scripts/sns_video_followup.py の publish_queued）。下書き（saveToDraft）だけは公開されないので通す。
   9. （2026-11-03 オーナー指摘「可能しました」）壊れた日本語を出さない（な形容詞＋しました・です／ますの重なりなど。GRAMMAR_BREAKS）。
      よく知られた会社に無理な説明を付けない（「AI半導体のNVIDIAが」。headline_normalize と同じ判定）。
@@ -139,6 +140,22 @@ def descriptor_problems(text: str) -> list[str]:
         for m in hn._descriptor_matches(line.removeprefix(SUMMARY)):
             out.append(f"[ルール9] よく知られた会社に無理な説明（「{(m.group(2) + 'の' + m.group(3))[:24]}」）。会社名だけにする")
     return out
+
+
+# 遅れると読者に害がある知らせ（2026-11-03 オーナー承認: 動画を待たずに写真のカードですぐ出してよい）
+URGENT_RE = re.compile(
+    r"緊急地震速報|震度[1-7１-７５６]|津波(?:警報|注意報|情報)?|噴火(?:警報|警戒|速報)?|火山(?:警報|情報)|大雨(?:特別)?警報|特別警報|"
+    r"土砂災害警戒|線状降水帯|記録的短時間大雨|台風\d*号|暴風(?:雨)?警報|高潮警報|避難指示|緊急安全確保|避難勧告"
+)
+
+
+def is_urgent(article: dict | None) -> bool:
+    """動画を待たずに出してよい、急ぎの安全の知らせか（災害・警報・遅れると読者に害があるもの）。
+    記事の disaster / urgent / safetyAlert、または見出しに地震・津波・噴火・大雨・台風の警報などの言葉がある"""
+    article = article or {}
+    if article.get("disaster") or article.get("urgent") or article.get("safetyAlert"):
+        return True
+    return bool(URGENT_RE.search(f"{article.get('title', '')} {article.get('seoTitle', '')}"))
 
 
 def has_video(media: list[dict] | None) -> bool:
@@ -628,7 +645,7 @@ def check_post(
     if kind != "digest":
         out += descriptor_problems(content)
     # ルール8: 記事の投稿は動画つきだけ（朝のまとめだけ画像）。写真・カードだけの投稿は出さない
-    if kind != "digest" and not draft and not pending_video and not has_video(media):
+    if kind not in ("digest", "disaster") and not is_urgent(article) and not draft and not pending_video and not has_video(media):
         out.append("[ルール8] 動画が付いていない（記事の投稿は必ず動画つき。写真・カードだけでは出さない。動画が間に合わなければ遅らせる）")
     out += check_media(platform, media or [], article, kind, measurer)
     out += check_length(platform, text, reply_text)

@@ -59,8 +59,7 @@ class VideoRequiredGateTest(unittest.TestCase):
         digest = {"link": "https://ai-tech-express.jp/digest/20261104", "items": [{"slug": "a"}, {"slug": "b"}]}
         share = [{"type": "image", "url": "https://ai-tech-express.jp/digest/20261104/share.png", "width": 1200, "height": 630}]
         self.assertEqual(rule8(r.check_post("threads", "今朝のAIニュース3本\n・x", share, digest, kind="digest")), [])
-        # 地震・津波・速報・動画だけの別投稿も例外にしない
-        self.assertTrue(rule8(r.check_post("threads", body("threads"), CARD, {**ART, "disaster": True})))
+        # 速報は例外にしない（地震・津波などの急ぎの安全の知らせだけ例外。UrgentExceptionTest）
         self.assertTrue(rule8(r.check_post("threads", body("threads"), CARD, {**ART, "breaking": True})))
 
     def test_draft_and_text_preview_are_not_published_so_they_pass(self):
@@ -81,6 +80,38 @@ class VideoRequiredGateTest(unittest.TestCase):
     def test_audit_flags_real_post_without_video(self):
         post = {"platform": "threads", "text": body("threads"), "media": CARD}
         self.assertTrue(rule8(r.audit_post(post)))
+
+
+class UrgentExceptionTest(unittest.TestCase):
+    """（2026-11-03 オーナー承認・台帳 S15）災害・警報など遅れると読者に害がある知らせは、動画を待たずに写真のカードで出してよい"""
+
+    def test_urgent_safety_news_may_post_with_card(self):
+        for art in ({**ART, "disaster": True}, {**ART, "urgent": True}, {**ART, "title": "気象庁、大雨特別警報を発表 静岡県に"},
+                    {**ART, "title": "台風12号が接近 関東は暴風警報"}, {**ART, "title": "鹿児島で震度5強 津波の心配なし"}):
+            self.assertTrue(r.is_urgent(art), art["title"])
+            self.assertEqual(rule8(r.check_post("threads", body("threads"), CARD, art)), [], art["title"])
+
+    def test_ordinary_news_mentioning_weather_still_needs_video(self):
+        for title in ("地震保険の保険料が来年から上がる", "Acme が新しいAIツールを公開", "台風の時期に備える家電の選び方"):
+            art = {**ART, "title": title}
+            self.assertFalse(r.is_urgent(art), title)
+            self.assertTrue(rule8(r.check_post("threads", body("threads"), CARD, art)), title)
+
+    def test_urgent_breaking_posts_now_without_queue(self):
+        article = {**ART, "description": "d", "seoTitle": ART["title"], "disaster": True}
+        channels = {"threads": {"id": "t"}}
+        with patch.object(tp, "buffer_channels", return_value=channels), \
+                patch.object(tp, "publish_via_buffer", return_value={"id": "T", "via": "buffer", "permalink": ""}) as direct, \
+                patch.object(tp, "queue_for_video", side_effect=AssertionError("急ぎの知らせは動画を待たない")):
+            res = tp.share_now("k", article, GOOD)
+        self.assertTrue(direct.called)
+        self.assertEqual((res["id"], res["urgent"]), ("T", True))
+
+    def test_bluesky_does_not_wait_for_video_on_urgent(self):
+        import bluesky_post as bp
+
+        self.assertFalse(bp.needs_video({"style": "standalone", "urgent": True}))
+        self.assertTrue(bp.needs_video({"style": "standalone"}))
 
 
 class GrammarGateTest(unittest.TestCase):
@@ -135,7 +166,10 @@ class QueueForVideoTest(unittest.TestCase):
         tree = ast.parse((ROOT / "scripts" / "threads_post.py").read_text("utf-8"))
         for fn in (n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef) and n.name in ("main", "share_now")):
             calls = [c for c in ast.walk(fn) if isinstance(c, ast.Call) and getattr(c.func, "id", "") in ("publish_via_buffer", "publish_extra_channels")]
-            live = [c for c in calls if not any(k.arg in ("draft", "build_only") for k in c.keywords)]
+            # 急ぎの安全の知らせ（is_urgent の分岐の中）だけは写真で直接予約してよい（S15）
+            urgent = {id(c) for node in ast.walk(fn) if isinstance(node, ast.If) and "is_urgent" in ast.unparse(node.test)
+                      for stmt in node.body for c in ast.walk(stmt)}
+            live = [c for c in calls if id(c) not in urgent and not any(k.arg in ("draft", "build_only") for k in c.keywords)]
             self.assertEqual(live, [], f"{fn.name} が写真の予約を直接作っている")
             self.assertTrue(any(getattr(c.func, "id", "") == "queue_for_video" for c in ast.walk(fn) if isinstance(c, ast.Call)), fn.name)
 
@@ -276,6 +310,38 @@ class QueueFixTest(unittest.TestCase):
         self.assertEqual(state["extraQueued"]["a"]["status"], "created")
 
 
+class RepostTest(unittest.TestCase):
+    def test_repost_queues_approved_text_at_next_normal_slot_and_rerenders_video(self):
+        import json
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            (d / "reposts").mkdir()
+            (d / "reposts" / "a.json").write_text(json.dumps({"classic": GOOD, "variant": "short", "services": ["threads", "twitter"], "bluesky": True}), "utf-8")
+            (d / "posted.json").write_text(json.dumps({"posted": {"a": {"id": "T0", "channels": {"twitter": "X0"}, "dueAt": "2026-11-03T12:00:00+00:00", "image": "card"}}}), "utf-8")
+            (d / "video.json").write_text(json.dumps({"videos": {"a": {"status": "gate_failed", "tries": 2}}}), "utf-8")
+            (d / "extra.json").write_text(json.dumps({"a": {"uri": "at://x"}}), "utf-8")
+            seen = {}
+
+            def fake_inputs(key, chans, slug, services, slot, classic=""):
+                seen.update(services=services, classic=classic, slot=slot)
+                return {"inputs": {s: {"text": classic} for s in services}, "slot": slot.isoformat()}
+
+            with patch.object(fu, "REPOSTS", d / "reposts"), patch.object(fu, "POSTED", d / "posted.json"), patch.object(fu, "STATE", d / "video.json"), \
+                    patch.object(fu, "BLUESKY_EXTRA", d / "extra.json"), patch.object(fu, "requeue_inputs", fake_inputs), \
+                    patch.object(tp, "buffer_channels", return_value={}):
+                out = fu.repost("a", api_key="k", now=NOW)
+            posted = json.loads((d / "posted.json").read_text())["posted"]["a"]
+            state = json.loads((d / "video.json").read_text())
+            self.assertEqual(seen["classic"], GOOD)
+            self.assertEqual((posted["status"], posted["id"], posted["pending"]["forceVariant"]), ("awaiting_video", "", "short"))
+            self.assertNotIn("a", state["videos"])  # 動画は作り直す
+            self.assertEqual(json.loads((d / "extra.json").read_text()), {})  # Bluesky も出し直す
+            self.assertGreaterEqual(seen["slot"], NOW + timedelta(minutes=90))
+            self.assertIn("slot", out)
+
+
 class OwnerAuditTest(unittest.TestCase):
     def test_audit_flags_post_without_video(self):
         import owner_rules_audit as audit
@@ -286,6 +352,7 @@ class OwnerAuditTest(unittest.TestCase):
             "video": {"id": "2", "dueAt": sent, "image": "video"},
             "digest-20261104": {"id": "3", "dueAt": sent, "style": "digest"},
             "waiting": {"id": "", "dueAt": sent, "status": "awaiting_video"},
+            "quake": {"id": "4", "dueAt": sent, "image": "card", "urgent": True},
         }}  # fmt: skip
         out = audit.video_record_problems(posted, {}, {}, NOW)
         self.assertEqual(len(out), 1)

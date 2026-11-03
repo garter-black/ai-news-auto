@@ -140,8 +140,8 @@ def video_of(slug: str, videos: dict | None = None) -> dict:
 
 
 def needs_video(entry: dict) -> bool:
-    """動画が要る記録か（朝のまとめ・問いかけ以外の記事の投稿）"""
-    return entry.get("style") not in ("digest", "poll")
+    """動画が要る記録か（朝のまとめ・問いかけ・急ぎの安全の知らせ（災害・警報。2026-11-03 オーナー承認）以外の記事の投稿）"""
+    return entry.get("style") not in ("digest", "poll") and not entry.get("urgent")
 
 
 def upload_video(session: dict, url: str) -> dict:
@@ -242,6 +242,9 @@ def plan(key: str, entry: dict) -> dict | None:
     article = json.loads(path.read_text("utf-8"))
     # 問いかけは Threads に出したものと同じにする（記録が無ければ話題・主役から作る）
     text = tp.compose(article, [], breaking=bool(entry.get("breaking")), fixed_question=str(entry.get("questionText") or ""))
+    spec = tp.ROOT / "content" / "sns_reposts" / f"{key}.json"
+    if spec.exists():  # オーナーに見せて承認をもらった出し直しの文面（Threads と同じ）
+        text = json.loads(spec.read_text("utf-8")).get("classic") or text
     text = re.sub(r"\s*👇\s*$", "", text)
     link = tp.utm_link(f"{tp.site_url()}/articles/{key}", "bluesky", entry.get("format") or "classic")
     return {
@@ -521,7 +524,7 @@ def main() -> int:
             used: list[str] = []
             media: list[dict] = []
             blob = None
-            if p.get("kind", "article") != "digest":
+            if p.get("kind", "article") != "digest" and not sns_rules.is_urgent(p.get("gate")):
                 vid = video_of(key)
                 if not vid:
                     log(f"  [bluesky] {key} は動画がまだ無いので出しません（写真のカードでは出さない）")
@@ -543,7 +546,7 @@ def main() -> int:
                                               kind=p.get("kind", "article"), links=[p["link"]]):
                     log(f"  [check] {v}")
                 continue
-            if p.get("kind", "article") != "digest" and not blob:
+            if p.get("kind", "article") != "digest" and not sns_rules.is_urgent(p.get("gate")) and not blob:
                 raise RuntimeError("動画を Bluesky に上げられませんでした（写真では出しません）")
             res = create_record(session, record, p, media)
             at = datetime.now(timezone.utc).isoformat(timespec="seconds")

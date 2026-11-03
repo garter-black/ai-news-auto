@@ -723,6 +723,8 @@ def video_record_problems(posted: dict, videos: dict, queued: dict, now: datetim
             continue
         if when < max(VIDEO_RULE_SINCE, now - timedelta(days=days)) or when > now:
             continue  # まだ出ていない（予約中・動画待ち）か、決まりの前・古い投稿
+        if rec.get("urgent"):
+            continue  # 災害・警報など急ぎの安全の知らせは写真でよい（2026-11-03 オーナー承認）
         if rec.get("status") in ("awaiting_video", "skipped_no_video") or not rec.get("id"):
             continue  # 出していない
         v = videos.get(slug) or {}
