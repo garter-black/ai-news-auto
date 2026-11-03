@@ -18,7 +18,13 @@ export default function ImageCredit({ credit, className = "" }: { credit?: Credi
     return text ? <p className={base}>{text}</p> : null;
   }
   if (credit.kind === "ai") {
-    return <p className={base}>画像はイメージ（AI生成）です。記事の内容を写したものではありません。</p>;
+    // 2026-11-03: AI の画像を本物の製品と受け取られたため、小さいまま「AI生成」の札を付けて見落とされないようにする
+    return (
+      <p className={`${base} flex items-start gap-2`}>
+        <span className="mt-px shrink-0 rounded-sm border border-current px-1.5 text-badge font-bold leading-5">AI生成</span>
+        <span>画像はイメージです。記事で紹介している製品・人物・場所を写したものではありません。</span>
+      </p>
+    );
   }
   const link = "underline decoration-line-strong underline-offset-2 hover:text-ink";
   return (

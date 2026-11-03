@@ -8,7 +8,9 @@
      ほかの報道機関・通信社（ロイター・AP・Getty・日経・ITmedia など）の写真、他人の SNS の画像、関連記事のカード・メニュー・
      古い宣伝画像は使わない。ほかのニュースサイト・ブログ・不明な発信元の記事では元記事の画像を使わない
   2. AI 生成: Cloudflare Workers AI（flux-2-klein-4b → flux-1-schnell）。前からの写真風のプロンプト。話題を問わない。
-     文字・ロゴ・実在の人物なし。1日 IMAGE_AI_DAILY_MAX 枚まで
+     文字・ロゴ・実在の人物なし。1日 IMAGE_AI_DAILY_MAX 枚まで。
+     製品の発表の記事（product_launch。2026-11-03）は製品そのもの・見間違える物を描かない（使う場面・会場の雰囲気・抽象）。
+     描いてしまったら作り直し、だめなら AI 画像は使わない。前に付けた公式の写真は、選び直しで AI・素材に替えない
   3. フリー素材: Wikimedia Commons と Openverse（CC0・パブリックドメイン・CC BY だけ）。AI が使えないとき。関係の確認は厳しめ
   4. 公式のロゴ・文字の多い図・バナー（どれも無ければ今までどおり写真なしのカバー）
 
@@ -23,6 +25,7 @@ YouTube のサムネイルはそのまま使う。
   python3 scripts/images.py --slug <slug> --dry-run
   python3 scripts/images.py --recheck-source        # 元記事の写真を採用した記事を今の基準で見直す
   python3 scripts/images.py --repick-hours 72 --max 60  # 新しい記事の素材・AI の画像を今の基準で選び直す
+  python3 scripts/images.py --product-repick-days 7     # 製品の発表の記事の AI・素材の画像を選び直す（公式の製品写真→製品を描かない場面）
   python3 scripts/images.py --retry-ai --max 30     # AI 生成にした記事でフリー素材を探し直す（Commons が落ちていた日の後に）
   python3 scripts/images.py --cache-official --max 100  # 外部の写真を直リンクしている記事を直す（公式は自前に保存、それ以外は 2・3）
   python3 scripts/images.py --variants --max 400        # 前からある自前の写真に幅ごとの WebP を足す
@@ -459,7 +462,7 @@ def wire_org(article: dict) -> str:
 # 写真の種類の順位（小さいほど良い）。数字の図（figure）と素材（stock）は process() で間に入る。
 # generic はサイト共通の共有画像のうち写真・キービジュアルのもの（本社ビルなど。その発表だけの写真ではない）
 OFFICIAL_RANK = {"photo": 0, "video": 1, "youtube": 1, "kit": 2, "hero": 3, "banner": 4, "dense": 5, "generic": 6, "logo": 7}
-MIN_PHOTO_WIDTH = 600  # 元記事の写真（実写）。755px の発表写真（日産の調印式など）を落とさない
+MIN_PHOTO_WIDTH = 560  # 元記事の写真（実写）。755px の発表写真（日産の調印式など）や 600px の製品写真を落とさない（拡大はしない）
 MIN_GRAPHIC_WIDTH = 700  # 見出し画像・キービジュアル
 MIN_DENSE_WIDTH = 800  # 文字の多い図（小さいと読めない）
 MIN_LOGO_WIDTH = 150
@@ -483,7 +486,17 @@ NOT_BODY = re.compile(
 BODY_HINT = re.compile(r"(article|entry|post|content|body|release|press|detail|main|story|text|news-?detail|hero|featured|kv|mv)", re.I)
 VOID_TAGS = {"img", "br", "meta", "link", "input", "hr", "source", "area", "wbr", "col", "embed", "param", "track", "base"}
 YOUTUBE_ID = re.compile(r"(?:youtube(?:-nocookie)?\.com/(?:embed/|watch\?(?:[^\"'#]*&)?v=|live/)|youtu\.be/)([\w-]{11})")
-KIT_TEXT = re.compile(r"(プレスキット|報道用素材|報道関係者向け素材|画像素材|写真素材|画像ダウンロード|写真ダウンロード|素材ダウンロード|press ?kit|media ?kit|image gallery|photo gallery|media assets)", re.I)
+KIT_TEXT = re.compile(
+    r"(プレスキット|報道用素材|報道関係者向け素材|画像素材|写真素材|画像ダウンロード|写真ダウンロード|素材ダウンロード|画像・動画ダウンロード|"
+    r"press ?kit|media ?kit|image gallery|photo gallery|media assets|image[_-]?download|media[_-]?download|photo[_-]?download|download[_-]?images?|press[_-]?images?)",
+    re.I,
+)
+# 製品のページ（製品の発表の記事だけ、本文から張られた同じ会社のサイトの製品ページの写真も見る）
+PRODUCT_LINK = re.compile(
+    r"(製品(情報|サイト|ページ|詳細|紹介)|商品(情報|サイト|ページ|詳細|紹介)|特設サイト|スペシャルサイト|ブランドサイト|モデル(サイト|紹介)|"
+    r"詳しくは|詳細はこちら|product ?(page|site|details?)|/products?/|/lineup/|/models?/)",
+    re.I,
+)
 
 
 def safe_url(url: str) -> str:
@@ -505,7 +518,7 @@ class _PageCollector(HTMLParser):
         self.images: list[dict] = []
         self.youtube: list[str] = []
         self.videos: list[str] = []  # 会社が自分で置いている動画ファイル（mp4・webm）
-        self.links: list[tuple[str, str]] = []
+        self.links: list[tuple[str, str, bool]] = []  # (リンク先, 文字, 本文ではない場所か)
         self.stack: list[tuple[str, bool, bool]] = []  # (tag, 本文か, 本文ではない場所か)
         self.order = 0
         self._link: list | None = None
@@ -550,7 +563,8 @@ class _PageCollector(HTMLParser):
             _, bad, _ = self._state()
             if match and not bad:
                 self.youtube.append(match.group(1))
-            self._link = [href, ""] if href and not bad else None
+            # 本文ではない場所（横の欄の「画像・動画 ダウンロード」など）のリンクも、プレスキットを探すために印を付けて集める
+            self._link = [href, "", bad] if href else None
             self._a_href = href
             return
         if tag == "lite-youtube" or a.get("data-youtube-id") or a.get("videoid"):
@@ -611,7 +625,7 @@ class _PageCollector(HTMLParser):
         if tag == "a":
             self._a_href = ""
         if tag == "a" and self._link is not None:
-            self.links.append((self._link[0], self._link[1]))
+            self.links.append((self._link[0], self._link[1], self._link[2]))
             self._link = None
         if tag in VOID_TAGS:
             return
@@ -693,6 +707,25 @@ def _stale(url: str, article: dict | None) -> bool:
     return (made - when).days > 60
 
 
+def release_token(page_url: str) -> str:
+    """発表のページに固有の名前（https://global.honda/jp/news/2026/2261103e.html → 2261103e）。
+    数字を含む5文字以上か、12文字以上の名前だけ（news・index などの共通の名前は空）"""
+    parts = [x for x in urllib.parse.urlparse(page_url or "").path.split("/") if x]
+    for part in reversed(parts[-2:]):
+        stem = re.sub(r"\.(s?html?|php|aspx?)$", "", part, flags=re.I)
+        if stem.lower() in {"index", "default", "main", "detail", "news", "release", "press", "article"}:
+            continue
+        if (len(stem) >= 5 and re.search(r"\d", stem)) or len(stem) >= 12:
+            return stem
+        break
+    return ""
+
+
+def own_release_image(url: str, token: str) -> bool:
+    """画像の場所（パス）に、その発表のページに固有の名前が入っている＝その発表のために置かれた画像"""
+    return bool(token) and token.lower() in urllib.parse.urlparse(url).path.lower()
+
+
 def page_candidates(parser: _PageCollector, final: str, known: str = "", article: dict | None = None) -> list[dict]:
     """元記事の画像候補を良さそうな順に: og:image → 本文の図（figure）→ 本文の画像 → 本文の外（関連記事などを除く）"""
     out: list[dict] = []
@@ -701,6 +734,12 @@ def page_candidates(parser: _PageCollector, final: str, known: str = "", article
     for key in ("og:image", "og:image:secure_url", "og:image:url", "twitter:image", "twitter:image:src", "image_src"):
         if parser.meta.get(key):
             out.append({"url": parser.meta[key], "where": "og"})
+    # その発表のために置かれた画像（パスに発表のページの名前が入っている）は、囲みの名前（Honda の本文の写真は
+    # class="p-related22__thumbnail"）が関連記事のように見えても本文の写真として扱う（2026-11-03 Honda RN0 の取りこぼし）
+    token = release_token((article or {}).get("sourceUrl") or final)
+    for item in parser.images:
+        if own_release_image(urllib.parse.urljoin(final, item["url"]), token) and item["bad"] and (item["figure"] or item["body"]):
+            item["bad"], item["body"] = False, True
     usable = [
         i for i in parser.images
         if not i["bad"] and not _links_elsewhere(i, final) and not _stale(urllib.parse.urljoin(final, i["url"]), article)
@@ -875,6 +914,27 @@ def classify_official(image) -> str:
     return "photo"
 
 
+def trim_flat_border(image):
+    """左右（または上下）に無地の帯を付けて共有画像の形（1200×630）にした写真から、帯を切り落とす。
+    写真が上下（左右）の端まで続いていて、両側に幅 2% 以上の同じ色の帯があるときだけ切る（白地の製品写真は切らない）"""
+    if ImageChops is None:
+        return image
+    rgb = image.convert("RGB")
+    w, h = rgb.size
+    corner = rgb.getpixel((0, 0))
+    bbox = ImageChops.difference(rgb, Image.new("RGB", rgb.size, corner)).convert("L").point(lambda v: 255 if v > 24 else 0).getbbox()
+    if not bbox:
+        return image
+    x0, y0, x1, y1 = bbox
+    pillar = x0 >= w * 0.02 and (w - x1) >= w * 0.02 and y0 <= h * 0.01 and y1 >= h * 0.99
+    letter = y0 >= h * 0.02 and (h - y1) >= h * 0.02 and x0 <= w * 0.01 and x1 >= w * 0.99
+    if pillar and abs(x0 - (w - x1)) <= w * 0.03:
+        return image.crop((x0, 0, x1, h))
+    if letter and abs(y0 - (h - y1)) <= h * 0.03:
+        return image.crop((0, y0, w, y1))
+    return image
+
+
 def size_ok(kind: str, w: int, h: int) -> str | None:
     """種類ごとの大きさ・縦横比の条件（だめなら理由）。SNS カードは 3:1 に切り抜くので横長は 3.3 まで通す"""
     ratio = w / max(h, 1)
@@ -909,14 +969,36 @@ def kit_pages(parser: _PageCollector, final: str) -> list[str]:
     host = urllib.parse.urlparse(final).netloc.lower()
     root = ".".join(host.split(".")[-3:]) if host.endswith(".jp") else ".".join(host.split(".")[-2:])
     out = []
-    for href, text in parser.links:
-        if not KIT_TEXT.search(f"{text} {href}"):
+    for href, text, bad in parser.links:
+        # 本文の外（横の欄など）のリンクは、リンク先の名前でプレスキットと分かるものだけ（image_download.html など）
+        if not KIT_TEXT.search(href if bad else f"{text} {href}"):
             continue
         full = urllib.parse.urljoin(final, href)
         target = urllib.parse.urlparse(full)
         if target.scheme.startswith("http") and (target.netloc.lower() == host or target.netloc.lower().endswith("." + root)) and not re.search(r"\.(zip|pdf)$", target.path, re.I):
             if full not in out:
                 out.append(full)
+    return out[:1]
+
+
+def product_pages(parser: _PageCollector, final: str) -> list[str]:
+    """本文から張られた、同じ会社のサイトの製品ページ（製品の発表の記事だけ見る・1つだけ）"""
+    host = urllib.parse.urlparse(final).netloc.lower()
+    root = ".".join(host.split(".")[-3:]) if host.endswith(".jp") and host.count(".") >= 2 and host.split(".")[-2] in {"co", "or", "ne", "ac", "go"} else ".".join(host.split(".")[-2:])
+    here = final.split("#")[0].rstrip("/")
+    out = []
+    for href, text, bad in parser.links:
+        if bad or not PRODUCT_LINK.search(f"{text} {href}"):
+            continue
+        full = urllib.parse.urljoin(final, href).split("#")[0]
+        target = urllib.parse.urlparse(full)
+        same_org = target.netloc.lower() == host or target.netloc.lower().endswith("." + root) or target.netloc.lower() == root
+        if not target.scheme.startswith("http") or not same_org or full.rstrip("/") == here:
+            continue
+        if re.search(r"\.(zip|pdf|jpe?g|png|webp)$", target.path, re.I) or re.search(r"/(news|press|release|newsroom)/", target.path, re.I):
+            continue
+        if full not in out:
+            out.append(full)
     return out[:1]
 
 
@@ -931,6 +1013,48 @@ def related_to(image, article: dict) -> bool | None:
     return True if low.startswith("yes") else False if low.startswith("no") else None
 
 
+# --------------------------------------------------------------------------- #
+# 製品の発表の記事（2026-11-03 オーナー決定）
+# --------------------------------------------------------------------------- #
+# 特定の製品（端末・乗り物・ガジェット・機械）の発表では、AI が作った「それらしい製品」の画像を読者が本物と受け取る
+# （Honda RN0 の記事で、AI の電動自転車の画像を見て製品を評価された）。製品の発表では公式の製品写真を最優先し、
+# 無いときも製品そのもの・製品と見間違える物は描かず、使う場面・会場の雰囲気・抽象的な背景にする。
+LAUNCH_VERB = re.compile(r"(発表|公開|発売|披露|お披露目|初公開|投入|登場|予約開始|受注開始|販売開始|一部改良|unveil|launch|announce|debut)", re.I)
+# 形のある製品だけを指す言葉（「AI半導体のNVIDIA」「Apple端末向けツール」のような、会社や対象の説明にも使う言葉は入れない）
+PRODUCT_NOUN = re.compile(
+    r"(スマートフォン|iPhone ?\d|iPad|Pixel ?\d|Galaxy|Xperia|タブレット|ノートPC|ノートパソコン|パソコン|MacBook|iMac|Mac mini|Mac Studio|"
+    r"イヤホン|イヤフォン|ヘッドホン|ヘッドフォン|AirPods|スピーカー|カメラ|スマートウォッチ|腕時計|スマートリング|スマートグラス|メガネ|ゴーグル|"
+    r"ヘッドセット|Vision Pro|ゲーム機|新型機|コントローラー|ディスプレイ|モニター|テレビ|プロジェクター|ルーター|キーボード|"
+    r"ドローン|新型車|自動車|電気自動車|\bEV\b|SUV|セダン|ミニバン|軽自動車|トラック|バイク|二輪車|スクーター|自転車|マウンテンバイク|e-?MTB|e-?bike|電動アシスト|"
+    r"キックボード|冷蔵庫|洗濯機|エアコン|掃除機|炊飯器|電子レンジ|ドライヤー|充電器|モバイルバッテリー|家電)",
+    re.I,
+)
+# 形の無いもの（アプリ・機能・更新・ゲームの題名・使い方）や、業績の話は製品の発表として扱わない
+NOT_PRODUCT = re.compile(r"(アプリ|ツール|ソフト|機能|アップデート|更新|iOS|OS\b|基盤|フレームワーク|手法|体験版|版『|版「|ゲーム|新作|撮影術|活用法|使い方|決算|業績|実績|販売台数|値上げ|値下げ)")
+CORPORATE = re.compile(r"(トヨタ自動車|日産自動車|三菱自動車|いすゞ自動車|本田技研工業|ヤマハ発動機|川崎重工)")
+PRODUCT_TAGS = {"自動車・二輪", "ガジェット", "家電", "スマートフォン", "ウェアラブル", "ハードウェア"}
+
+
+def product_launch(article: dict) -> bool:
+    """特定の製品（端末・乗り物・ガジェット・機械）の発表の記事か。
+    題名に「発表／公開／発売など＋形のある製品の言葉」があり、アプリ・機能・業績の話ではないもの。
+    ジャンル（スポーツ・制度は除く）と判定カード（kind）、札（自動車・二輪・ガジェットなど）も見る"""
+    if article.get("type") == "roundup" or article.get("noPhoto"):
+        return False
+    verdict = article.get("verdict") if isinstance(article.get("verdict"), dict) else {}
+    if article.get("genreSlug") in ("sports", "public") or verdict.get("kind") in ("sports", "public"):
+        return False
+    title = CORPORATE.sub("", " ".join(str(article.get(k) or "") for k in ("title", "seoTitle")))
+    # 形の無いもの・業績の話かは本来の題名だけで見る（検索用の題名には「料金も」などの決まり文句が付く）
+    if not LAUNCH_VERB.search(title) or NOT_PRODUCT.search(CORPORATE.sub("", str(article.get("title") or ""))):
+        return False
+    if PRODUCT_NOUN.search(title):
+        return True
+    # 題名に製品の言葉が無くても、製品の札（自動車・二輪・ガジェットなど）＋「新製品」の札か、ガジェットのジャンルで「発売」なら製品の発表
+    tags = set(article.get("tags") or [])
+    return bool(tags & PRODUCT_TAGS) and ("新製品" in tags or (article.get("genreSlug") == "tech-gadget" and "発売" in title))
+
+
 def pick_official(article: dict, repeats: Counter, fast: bool = False) -> dict:
     """公式の発表の中から、いちばん良い画像を選ぶ。
     {"best": {"kind", "url", "image", "rank", "where"} or None, "reasons": [使わなかった理由]}"""
@@ -938,6 +1062,9 @@ def pick_official(article: dict, repeats: Counter, fast: bool = False) -> dict:
     page = article.get("sourceUrl", "") if article.get("sourceType") == "web" else ""
     reasons: list[str] = []
     found: list[dict] = []
+    # 速報の回（fast）も同じ探し方をする（2026-11-03: 速報の回だけ動画・プレスキットを見ずに AI にしていた）。fast は AI のモデル選びだけに使う
+    fast = False
+    product = product_launch(article)
     parsed = parse_page(page) if page else None
     if not parsed:
         return {"best": None, "reasons": ["元記事を開けない" if page else "元記事なし"]}
@@ -946,6 +1073,7 @@ def pick_official(article: dict, repeats: Counter, fast: bool = False) -> dict:
     candidates = page_candidates(parser, final, known, article)
     vision_budget = 4 if fast else 7
     fetches = 0
+    token = release_token(page)
 
     def consider(item: dict, forced_kind: str = "") -> dict | None:
         nonlocal vision_budget, fetches
@@ -953,6 +1081,10 @@ def pick_official(article: dict, repeats: Counter, fast: bool = False) -> dict:
         framed = forced_kind in ("youtube", "video")  # 動画のコマ（画像と種類は呼び出し側で決めてある）
         problem = url_problem(url, 0) if not framed else None
         site_default = False
+        if problem == "サイト共通の既定画像（ファイル名）" and own_release_image(url, token):
+            # 「…_og.jpg」が「/content/dam/site/」の下にあっても、パスに発表のページの名前（2261103e など）が入っていれば
+            # その発表のための画像（2026-11-03 Honda RN0 の og:image がサイト共通の画像として扱われた）
+            problem = None
         if problem and problem.startswith("サイト共通"):
             site_default = True  # サイト共通の既定画像（多くはロゴ）。ロゴとしてだけ使える
             problem = None
@@ -978,7 +1110,7 @@ def pick_official(article: dict, repeats: Counter, fast: bool = False) -> dict:
                 if ctype and not ctype.startswith("image/") and "octet-stream" not in ctype:
                     reasons.append("画像ではない")
                     return None
-                image = open_image(data)
+                image = trim_flat_border(open_image(data))
         except Exception as error:  # noqa: BLE001
             reasons.append(f"読めない（{str(error)[:40]}）")
             return None
@@ -1067,9 +1199,9 @@ def pick_official(article: dict, repeats: Counter, fast: bool = False) -> dict:
             hit = consider({"url": f"https://www.youtube.com/watch?v={vid}", "image": image, "where": f"youtube {name}", "rank": 1 if seen == "photo" else 3.5}, forced_kind="youtube")
             if hit and hit["rank"] < 2:
                 break
-    # 3. プレスキット・報道用素材のページ
+    # 3. プレスキット・報道用素材のページ（製品の発表なら、本文から張られた製品ページも）
     if not fast and not any(f["rank"] < 2 for f in found):
-        for kit in kit_pages(parser, final):
+        for kit in kit_pages(parser, final) + (product_pages(parser, final) if product else []):
             sub = parse_page(kit)
             if not sub:
                 continue
@@ -1146,7 +1278,17 @@ QUERY_SYSTEM = (
 )
 
 
-def visual_plan(article: dict) -> dict:
+PRODUCT_PLAN_RULE = """
+IMPORTANT: this article announces a specific product (a device, vehicle, gadget or machine).
+Readers must never mistake an illustration for the real product. So:
+- "product": the generic English name of the product category (1-3 words, e.g. "electric mountain bike", "smartphone", "electric car").
+- "scene" and "queries" must NOT depict the announced product or any similar device, vehicle, machine or gadget
+  (no bikes for a bike, no phones for a phone, no cars for a car, not even partly or in the distance).
+  Show instead the usage context without the product (e.g. an empty forest trail at dawn), the mood of the event venue
+  (e.g. an exhibition hall with blurred stage lights and no exhibits), or the category in the abstract (light, motion, texture)."""
+
+
+def visual_plan(article: dict, product: bool = False) -> dict:
     prompt = f"""Article (Japanese):
 title: {article.get('title', '')}
 summary: {article.get('description', '')}
@@ -1164,7 +1306,10 @@ Return:
 - "scene": one English sentence describing a neutral, photorealistic editorial news photo for this article
   (subject, setting, light). No text, no signs, no logos, no brand names, no identifiable real people
   (people only from behind, as hands, or out of focus)."""
-    data, model = llm.generate_json(QUERY_SYSTEM, prompt, QUERY_SCHEMA, tier=llm_tier(), temperature=0.3, max_output_tokens=2048)
+    if product:
+        prompt += PRODUCT_PLAN_RULE
+    schema = {**QUERY_SCHEMA, "properties": {**QUERY_SCHEMA["properties"], "product": {"type": "STRING"}}} if product else QUERY_SCHEMA
+    data, model = llm.generate_json(QUERY_SYSTEM, prompt, schema, tier=llm_tier(), temperature=0.3, max_output_tokens=2048)
     queries = []
     for q in data.get("queries") or []:
         q = re.sub(r"[^\w\s'-]", " ", str(q)).strip()
@@ -1176,6 +1321,8 @@ Return:
         "query_ja": str(data.get("query_ja") or "").strip()[:20],
         "scene": str(data.get("scene") or "").strip()[:400],
         "model": model,
+        "product": re.sub(r"[^\w\s-]", " ", str(data.get("product") or "")).strip()[:40] if product else "",
+        "productLaunch": product,
     }
 
 
@@ -1667,14 +1814,34 @@ def ai_used_today() -> int:
     return sum(n for model, n in llm.usage_today().items() if model.startswith("cf-image:"))
 
 
+# 製品の発表の記事で AI に必ず足す決まり（製品の名前・種類は書かない。書くと描かれやすい）
+NO_PRODUCT_RULE = (
+    "Do not depict the announced product or any similar device, vehicle, machine or gadget, not even partly or in the background; "
+    "show only the setting, light and atmosphere."
+)
+# 製品を描いてしまったときの、製品の無い場面（会場の雰囲気）
+NO_PRODUCT_SCENE = "A softly lit, empty exhibition hall with blurred stage lights and warm bokeh, polished floor, no exhibits, no products and no people in view."
+
+
 def ai_prompt(plan: dict, article: dict) -> str:
     scene = plan.get("scene") or ", ".join(plan.get("queries") or []) or article.get("genre", "")
+    rule = f" {NO_PRODUCT_RULE}" if plan.get("productLaunch") else ""
     return (
         f"Photorealistic editorial news photograph. {scene} "
         "Natural muted colors, soft natural light, documentary style, shot on a full-frame camera with a 35mm lens, "
         "wide landscape composition with empty space in the lower third. "
-        "No text, no letters, no numbers, no signs, no logos, no watermark, no brand names, no identifiable faces."
+        f"No text, no letters, no numbers, no signs, no logos, no watermark, no brand names, no identifiable faces.{rule}"
     )
+
+
+def depicts_product(image, product: str) -> bool:
+    """製品の発表の記事で、画像に製品（の種類の物）や見間違える物が写っているか。判定できないときは写っている側に倒す"""
+    noun = product or "the kind of product announced (a device, vehicle, machine or gadget)"
+    text = cf_vision(image, f"Does this image show a {noun}, or any device, vehicle or machine that could be mistaken for one (even partly or in the background)? Answer yes or no.", max_tokens=5)
+    low = (text or "").strip().lower()
+    if low.startswith("no"):
+        return False
+    return True
 
 
 def _cf_ai(model: str, prompt: str, timeout: int) -> bytes:
@@ -1907,7 +2074,10 @@ def process(path: Path, article: dict, ctx: dict) -> str:
     thumb = article.get("thumbnail", "") or ""
     log(f"[img] {slug} | {title}")
 
-    previous = article.get("imageCredit") or {}
+    previous = article.get("imageCredit") or ctx.get("previous_credit", {}).get(slug) or {}
+    product = product_launch(article)
+    if product:
+        log("   [img] 製品の発表の記事: 公式の製品写真を最優先。AI・素材は製品を描かない場面だけ")
     # 自前の画像（まとめ記事・別の切り口の記事が元記事の画像を引き継いだ）なら出典も引き継ぐ
     if is_ours(thumb) and not ctx.get("retry_ai") and not ctx.get("repick"):
         credit = ctx["credit_by_thumb"].get(thumb)
@@ -1930,12 +2100,23 @@ def process(path: Path, article: dict, ctx: dict) -> str:
             log(f"   [img] 公式の画像: {best['kind']}（{best['where']}）{best['url'][:90]}")
         else:
             log(f"   [img] 公式の画像は使わない: {' / '.join(result['reasons'])[:200]}")
-        if best and best["rank"] <= OFFICIAL_RANK["hero"]:
+        # 製品の発表は、製品が写った公式のバナーも AI の作り物より良い
+        if best and best["rank"] <= OFFICIAL_RANK["banner" if product else "hero"]:
             return use_official(path, article, ctx, best, official)
+
+    # 選び直し（--slug・--repick-hours など）で、前に付けた公式の写真を AI・素材・写真なしに替えない
+    # （その回だけ元記事が開けない・判定が落ちた、で公式の写真を失わない）
+    if previous.get("kind") == "official" and is_ours(previous_thumb := (ctx.get("previous_thumb", {}).get(slug) or thumb)):
+        article["thumbnail"] = previous_thumb
+        article["imageCredit"] = previous
+        log("   [img] 前の公式の写真をそのまま使う（公式の写真を AI・素材に替えない）")
+        if not ctx["dry_run"]:
+            save(path, article)
+        return "kept-official"
 
     # ここから先は、公式の写真・見出し画像が無い記事
     try:
-        plan = visual_plan(article)
+        plan = visual_plan(article, product=product)
     except Exception as error:  # noqa: BLE001
         log(f"   [img] 検索語を作れない: {str(error)[:100]}")
         if best:
@@ -1950,9 +2131,12 @@ def process(path: Path, article: dict, ctx: dict) -> str:
     # 2. AI 生成（前からの写真風のプロンプト。話題を問わない。実在の人物は描かない。1日 IMAGE_AI_DAILY_MAX 枚まで）
     if not ctx.get("retry_ai"):
         made = None
+        drew_product = False
         for attempt in range(3):
             # 2回とも顔・文字が出たら、最後は「人を描かない・物だけ」の場面で1回だけ作る
             use = plan if attempt < 2 else {**plan, "scene": objects_only_scene(plan, article)}
+            if drew_product:
+                use = {**plan, "scene": NO_PRODUCT_SCENE}  # 製品を描いてしまったら、製品の無い会場の雰囲気にする
             if attempt == 2:
                 log("   [img] 人を描かない場面で作り直す")
             made = generate_ai(use, article, fast=ctx.get("fast", False))
@@ -1961,14 +2145,27 @@ def process(path: Path, article: dict, ctx: dict) -> str:
                 log("   [img] AI 画像に人の顔か文字が写ったので作り直す")
                 made = None
                 continue
+            # 製品の発表で、製品や見間違える物を描いた画像は使わない（作り物を本物の製品と受け取られる）
+            if made and product and depicts_product(made[0], plan.get("product", "")):
+                log("   [img] AI 画像に製品か似た物が写ったので、製品の無い場面で作り直す")
+                made = None
+                drew_product = True
+                continue
+            if made and product:
+                plan = use
             break
         if made:
             image, model = made
             credit = {"kind": "ai", "model": model, "prompt": plan.get("scene", "")[:300], "provider": "Cloudflare Workers AI"}
+            if product:
+                credit["noProduct"] = True  # 製品の発表: 製品を描かない場面で作り、写っていないことを確かめた
             log(f"   [img] AI 生成: {model}")
     # 3. フリー素材（AI が使えないとき。記事と関係がはっきりしたものだけ）
     if image is None and not ctx.get("ai_only"):
         pick, image = find_stock(article, plan, ctx["used_stock"])
+        if pick and image is not None and product and depicts_product(image, plan.get("product", "")):
+            log(f"   [img] 素材に製品か似た物が写っているので使わない: {pick['title'][:60]}")
+            pick, image = None, None
         if pick and image is not None:
             credit = {
                 "kind": "stock",
@@ -2093,6 +2290,7 @@ def main() -> int:
     parser.add_argument("--ai-only", action="store_true", help="素材を探さず AI 生成だけ（確認用）")
     parser.add_argument("--recheck-source", action="store_true", help="元記事の写真を採用した記事を今の基準で見直す")
     parser.add_argument("--repick-hours", type=float, default=0, help="この時間以内の記事で、フリー素材・AI 生成・数字の図にした画像を今の基準で選び直す")
+    parser.add_argument("--product-repick-days", type=float, default=0, help="この日数以内の製品の発表の記事で、AI 生成・素材の画像を選び直す（公式の製品写真→製品を描かない場面）")
     parser.add_argument("--scene", help="AI 生成の場面（英語）をこの文にする（--slug で1本だけ直すとき用）")
     parser.add_argument("--report", help="記事ごとの結果（JSON Lines）をこのファイルに書く（確認用）")
     parser.add_argument("--retry-ai", action="store_true", help="AI 生成の画像の記事でフリー素材を探し直す（見つからなければそのまま）")
@@ -2134,8 +2332,11 @@ def main() -> int:
         "ai_only": args.ai_only,
         "defer_hours": args.defer_hours,
         "retry_ai": args.retry_ai,
-        "repick": bool(args.slug or args.repick_hours),
+        "repick": bool(args.slug or args.repick_hours or args.product_repick_days),
         "scene": args.scene or "",
+        # 選び直しの前の画像（公式の写真を AI・素材に替えないため。下で imageCredit を消す前に覚えておく）
+        "previous_credit": {a.get("slug") or p.stem: a["imageCredit"] for p, a in articles.items() if isinstance(a.get("imageCredit"), dict)},
+        "previous_thumb": {a.get("slug") or p.stem: a.get("thumbnail") or "" for p, a in articles.items()},
     }
 
     if args.variants:
@@ -2156,6 +2357,16 @@ def main() -> int:
             if age_hours(a) <= args.repick_hours and (a.get("imageCredit") or {}).get("kind") in ("stock", "ai", "figure")
         ]
         for _, a in targets:
+            a.pop("imageCredit", None)
+    elif args.product_repick_days:
+        # 製品の発表の記事で、AI 生成・素材の画像にしたもの（製品の作り物・別の製品の写真を本物と受け取られる）
+        targets = [
+            (p, a)
+            for p, a in ordered
+            if age_hours(a) <= args.product_repick_days * 24 and (a.get("imageCredit") or {}).get("kind") in ("stock", "ai") and product_launch(a)
+        ]
+        for p, a in targets:
+            log(f"[img] 製品の発表で AI・素材の画像: {a.get('slug')}")
             a.pop("imageCredit", None)
     elif args.recheck_source:
         # 元記事の写真を採用した記事を、今の基準（文字・図が主役の画像は不採用）で見直す

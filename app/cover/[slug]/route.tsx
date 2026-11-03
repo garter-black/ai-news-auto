@@ -280,8 +280,11 @@ async function renderCover(article: FullArticle): Promise<ImageResponse> {
               display: "flex",
               fontSize: 17,
               fontWeight: 700,
-              color: "rgba(255,255,255,0.86)",
-              textShadow: "0 1px 8px rgba(0,0,0,0.6)",
+              color: "#ffffff",
+              padding: "4px 10px",
+              borderRadius: 6,
+              background: "rgba(6,14,32,0.8)",
+              border: "1px solid rgba(255,255,255,0.35)",
             }}
           >
             {credit}

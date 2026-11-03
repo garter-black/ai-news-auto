@@ -125,3 +125,77 @@ class AiImageTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class HondaReleaseTest(unittest.TestCase):
+    """2026-11-03 Honda RN0: 本文の写真の囲みが class="p-related22__thumbnail"、og:image が /content/dam/site/…_og.jpg で、
+    どちらも使われず AI の作り物の自転車になった。発表のページに固有の名前（2261103e）が入った画像は本文の写真として扱う"""
+
+    PAGE = "https://global.honda/jp/news/2026/2261103e.html"
+    HTML = """<html><head><meta property="og:image" content="https://global.honda/content/dam/site/global-jp/news-new/cq_img/2026/11/2261103e/2261103e_og.jpg"></head><body>
+    <main><div class="p-post22__text"><p>本文</p></div>
+    <figure class="p-image23 p-related22__thumbnail"><picture><img src="/content/dam/site/global-jp/news-new/cq_img/2026/11/2261103e/2261103e_01.jpg" alt="RN0"></picture></figure>
+    <figure class="p-image23 p-related22__thumbnail"><a href="/jp/news/2026/2261103a.html"><img src="/content/dam/site/global-jp/news-new/cq_img/2026/11/2261103e/2261103e_link01.jpg"></a></figure>
+    <aside class="p-sidebar22"><a href="https://global.honda/jp/news/2026/2261103e/image_download.html?from=newslink_media"><img src="/content/dam/x/2261103e/web/2261103e_001L.jpg"></a>
+    <a href="https://global.honda/jp/news/2026/2261103e/image_download.html" class="c-button22">ダウンロード</a></aside>
+    <div class="related"><img src="/content/dam/other/old.jpg"></div>
+    </main></body></html>"""
+
+    def parsed(self):
+        parser = images._PageCollector()
+        parser.feed(self.HTML)
+        return parser
+
+    def test_release_token(self):
+        self.assertEqual(images.release_token(self.PAGE), "2261103e")
+        self.assertEqual(images.release_token("https://example.com/news/index.html"), "")
+        self.assertEqual(images.release_token("https://example.com/news/"), "")
+
+    def test_own_release_body_photo_is_candidate(self):
+        urls = [c["url"] for c in images.page_candidates(self.parsed(), self.PAGE, article={"sourceUrl": self.PAGE})]
+        self.assertIn("https://global.honda/content/dam/site/global-jp/news-new/cq_img/2026/11/2261103e/2261103e_01.jpg", urls)
+        self.assertFalse(any("link01" in u for u in urls))  # 別の発表へのリンクのカードは使わない
+        self.assertFalse(any("old.jpg" in u for u in urls))  # 関連記事の画像は今までどおり使わない
+
+    def test_press_kit_in_sidebar(self):
+        self.assertEqual(images.kit_pages(self.parsed(), self.PAGE), ["https://global.honda/jp/news/2026/2261103e/image_download.html?from=newslink_media"])
+
+    def test_og_under_site_dir_is_own_release(self):
+        og = "https://global.honda/content/dam/site/global-jp/news-new/cq_img/2026/11/2261103e/2261103e_og.jpg"
+        self.assertEqual(images.url_problem(og, 0), "サイト共通の既定画像（ファイル名）")
+        self.assertTrue(images.own_release_image(og, "2261103e"))
+
+    @unittest.skipIf(images.Image is None, "Pillow が無い")
+    def test_trim_white_pillarbox(self):
+        canvas = images.Image.new("RGB", (1200, 630), (255, 255, 255))
+        photo = images.Image.effect_noise((946, 630), 60).convert("RGB")
+        canvas.paste(photo, (127, 0))
+        self.assertEqual(images.trim_flat_border(canvas).size, (946, 630))
+        # 白地の製品写真（上下も白い）は切らない
+        studio = images.Image.new("RGB", (1200, 630), (255, 255, 255))
+        studio.paste(images.Image.effect_noise((600, 400), 60).convert("RGB"), (300, 115))
+        self.assertEqual(images.trim_flat_border(studio).size, (1200, 630))
+
+
+class ProductLaunchTest(unittest.TestCase):
+    def test_honda_rn0_is_product_launch(self):
+        article = {
+            "title": "Hondaが初の高級電動アシストマウンテンバイク「RN0」を公開、独ROTWILDと共同開発",
+            "genreSlug": "business", "tags": ["自動車・二輪", "電動化", "新製品"], "keywords": ["e-MTB"], "verdict": None,
+        }
+        self.assertTrue(images.product_launch(article))
+
+    def test_gadget_launch(self):
+        self.assertTrue(images.product_launch({"title": "Googleが新型スマホ「Pixel 11」を発表", "genreSlug": "tech-gadget", "tags": []}))
+
+    def test_not_product_launch(self):
+        self.assertFalse(images.product_launch({"title": "OpenAIが新しいAIモデルを公開", "genreSlug": "ai", "tags": ["生成AI"]}))
+        self.assertFalse(images.product_launch({"title": "日銀が金利を発表", "genreSlug": "investment", "tags": []}))
+        self.assertFalse(images.product_launch({"title": "新型自転車の補助金を発表", "genreSlug": "public", "tags": ["新製品"]}))
+        self.assertFalse(images.product_launch({"title": "ホンダの決算、二輪が好調", "genreSlug": "business", "tags": ["自動車・二輪"]}))
+
+    def test_ai_prompt_forbids_product(self):
+        plan = {"scene": "An empty forest trail at dawn.", "productLaunch": True}
+        prompt = images.ai_prompt(plan, {})
+        self.assertIn("Do not depict the announced product or any similar device", prompt)
+        self.assertNotIn("Do not depict", images.ai_prompt({"scene": "A rice paddy."}, {}))

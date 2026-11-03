@@ -478,7 +478,8 @@ function CornerNote({ text, corner, small = false }: { text: string; corner: Cor
   const right = corner[1] === "r";
   return (
     <div style={{ position: "absolute", left: r.x, top: r.y, width: r.w, height: r.h, display: "flex", alignItems: corner[0] === "t" ? "flex-start" : "flex-end", justifyContent: right ? "flex-end" : "flex-start" }}>
-      <div style={{ display: "flex", padding: small ? "2px 7px" : "4px 10px", borderRadius: 6, background: small ? "rgba(6,14,32,0.45)" : "rgba(6,14,32,0.62)", color: "rgba(255,255,255,0.92)", fontSize: small ? 13 : 17, fontWeight: 700, maxWidth: r.w, overflow: "hidden", whiteSpace: "nowrap" }}>{text}</div>
+      {/* 小さくても読めるよう、濃い地（不透明度 0.8）＋白い文字＋細い縁（2026-11-03。以前は 13px・地 0.45 で読みにくかった） */}
+      <div style={{ display: "flex", padding: small ? "3px 8px" : "5px 11px", borderRadius: 6, background: "rgba(6,14,32,0.8)", border: "1px solid rgba(255,255,255,0.35)", color: "#ffffff", fontSize: small ? 15 : 18, fontWeight: 700, lineHeight: 1.2, maxWidth: r.w, overflow: "hidden", whiteSpace: "nowrap" }}>{text}</div>
     </div>
   );
 }
