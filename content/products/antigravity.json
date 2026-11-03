@@ -131,8 +131,8 @@
   "related": [
     "gemini-4-argon",
     "google-ai-studio",
-    "gemini-robotics-2",
-    "gemma-4"
+    "project-suncatcher",
+    "google-kubernetes-engine"
   ],
   "articles": [
     "antigravity-google-cloud-developer-plugin",

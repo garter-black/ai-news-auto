@@ -186,10 +186,10 @@
     }
   ],
   "related": [
-    "google-ai-studio",
-    "gemini-4-argon",
     "antigravity",
-    "gemma-4"
+    "google-ai-studio",
+    "project-suncatcher",
+    "gemini-4-argon"
   ],
   "articles": [
     "google-deepmind-gemini-robotics-2-apollo",

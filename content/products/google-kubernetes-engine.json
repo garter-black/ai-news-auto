@@ -179,9 +179,9 @@
   ],
   "related": [
     "project-suncatcher",
-    "gemini-robotics-2",
-    "gemini-4-argon",
-    "antigravity"
+    "antigravity",
+    "google-ai-studio",
+    "gemini-4-argon"
   ],
   "articles": [
     "google-agent-compute-engine-governance",

@@ -10,9 +10,10 @@
   "companyName": "Microsoft",
   "category": "開発ツール",
   "overview": {
-    "text": "GitHub Copilotは、プログラムの開発を支援するAIアシスタントです。GitHubが提供し、WindowsやMac向けの専用アプリやエディタの拡張機能として利用できます。2026年9月にネイティブアプリの一般提供が開始されました。",
+    "text": "GitHub Copilotは、開発を支援するAIアシスタントです。GitHubとMicrosoftが開発し、アプリ版やエディタ拡張として提供されています。",
     "sources": [
-      "github-copilot-native-app-released"
+      "github-copilot-native-app-released",
+      "github-copilot-kimi-k3-multi-agent"
     ]
   },
   "facts": [
@@ -36,63 +37,65 @@
       "value": "日本からも利用できます",
       "sources": [
         "microsoft-foundry-agent-framework-customization",
-        "microsoft-copilot-harness-foundry-agent-builder",
         "github-enterprise-includes-copilot",
         "github-copilot-security-extension",
+        "github-copilot-plugin-controls-ga"
+      ]
+    },
+    {
+      "label": "使える場所",
+      "value": "VS Code、アプリ、CLIなど",
+      "sources": [
+        "github-copilot-app-projects-computer-use",
         "github-copilot-plugin-controls-ga",
-        "github-copilot-kimi-k3-multi-agent"
+        "gpt-6-1-terra-github-copilot-guide"
       ]
     },
     {
       "label": "向いている人",
-      "value": "開発者および管理者",
+      "value": "開発者や企業の担当者",
       "sources": [
         "microsoft-foundry-agent-framework-customization",
-        "microsoft-copilot-harness-foundry-agent-builder",
-        "github-enterprise-includes-copilot",
-        "github-copilot-security-extension",
-        "github-copilot-plugin-controls-ga",
-        "gpt-6-1-terra-github-copilot-guide",
-        "github-copilot-native-app-released",
-        "github-copilot-kimi-k3-multi-agent"
+        "github-copilot-native-app-released"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "AIが独立したワークツリーを作成し、作業中のコードと衝突させずにIssuesやPRを自動処理します。",
-      "sources": [
-        "github-copilot-native-app-released"
-      ]
-    },
-    {
-      "text": "複数のリポジトリや資料をまとめてAIに裏での作業を任せる「プロジェクト」機能が使えます。",
-      "sources": [
-        "github-copilot-app-projects-computer-use"
-      ]
-    },
-    {
-      "text": "macOSやWindowsで、AIが画面を見てアプリを操作する「コンピューター使用」機能を利用できます。",
-      "sources": [
-        "github-copilot-app-projects-computer-use"
-      ]
-    },
-    {
-      "text": "コードスキャンアラートを重要度順に閲覧し、アプリ内から直接説明や修正を依頼できます。",
+      "text": "チャットや専用画面からセキュリティの脆弱性を確認し、説明や修正を依頼できます。",
       "sources": [
         "github-copilot-security-extension"
+      ]
+    },
+    {
+      "text": "複数のリポジトリやデザイン資料を「プロジェクト」にまとめて、AIに裏で作業を進めさせることができます。",
+      "sources": [
+        "github-copilot-app-projects-computer-use"
+      ]
+    },
+    {
+      "text": "パソコンのアプリの画面をAIが見て、クリックや文字入力を操作する「コンピューター使用」が使えます。",
+      "sources": [
+        "github-copilot-app-projects-computer-use"
+      ]
+    },
+    {
+      "text": "GPT-6.1 Terraなどの複数のAIモデルをモデルピッカーから切り替えて選ぶことができます。",
+      "sources": [
+        "gpt-6-1-terra-github-copilot-guide",
+        "github-copilot-kimi-k3-multi-agent"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "スタンドアロン版は月額10ドルで利用できます。",
+      "text": "GitHub EnterpriseプランにAI機能が標準で内包され、ライセンスを持つ全ユーザーが利用できます。",
       "sources": [
         "github-enterprise-includes-copilot"
       ]
     },
     {
-      "text": "法人プラン「GitHub Enterprise」にはGitHub Copilotが標準で内包されます。",
+      "text": "Enterpriseライセンスを持たないユーザー向けには、スタンドアロン版が月額10ドルで提供されます。",
       "sources": [
         "github-enterprise-includes-copilot"
       ]
@@ -100,26 +103,24 @@
   ],
   "japan": [
     {
-      "text": "日本国内のユーザーでも、対象のプランやエディションを契約していれば利用できます。",
+      "text": "日本からも利用できます。",
       "sources": [
         "microsoft-foundry-agent-framework-customization",
-        "microsoft-copilot-harness-foundry-agent-builder",
         "github-enterprise-includes-copilot",
         "github-copilot-security-extension",
-        "github-copilot-plugin-controls-ga",
-        "github-copilot-kimi-k3-multi-agent"
+        "github-copilot-plugin-controls-ga"
       ]
     }
   ],
   "howto": [
     {
-      "text": "公式サイトからお使いのOSに対応するインストーラーをダウンロードします。",
+      "text": "VS Codeなどの対応エディタから利用できます。",
       "sources": [
-        "github-copilot-native-app-released"
+        "gpt-6-1-terra-github-copilot-guide"
       ]
     },
     {
-      "text": "アプリを起動し、有効なサブスクリプションが紐づいているアカウントでログインします。",
+      "text": "有効なサブスクリプションが紐づいたアカウントでログインして始められます。",
       "sources": [
         "github-copilot-native-app-released"
       ]
@@ -127,7 +128,13 @@
   ],
   "differences": [
     {
-      "text": "従来のIDEの拡張機能としての提供から、OS上で直接動作するスタンドアロン型のネイティブアプリケーションになりました。",
+      "text": "従来のIDEの拡張機能から、OS上で直接動作するスタンドアロン型のネイティブアプリになりました。",
+      "sources": [
+        "github-copilot-native-app-released"
+      ]
+    },
+    {
+      "text": "独立したワークツリーを使い、作業中のコードと衝突させずにAIがタスクを自動処理できます。",
       "sources": [
         "github-copilot-native-app-released"
       ]
@@ -135,47 +142,32 @@
   ],
   "faq": [
     {
-      "q": "無料で使える？",
-      "a": "有料のサブスクリプション契約や対応するEnterpriseライセンスが必要です。スタンドアロン版は月額10ドルです。",
+      "q": "いつから使える？",
+      "a": "WindowsおよびmacOS向けのアプリ版が一般提供されています。",
       "sources": [
-        "github-enterprise-includes-copilot",
         "github-copilot-native-app-released"
       ]
     },
     {
-      "q": "どのモデルが使える？",
-      "a": "Kimi K3やGPT-6.1 Terraなど、複数のモデルをモデルピッカーから選択して利用できます。",
-      "sources": [
-        "gpt-6-1-terra-github-copilot-guide",
-        "github-copilot-kimi-k3-multi-agent"
-      ]
-    },
-    {
-      "q": "セキュリティ機能はある？",
-      "a": "アプリ内でコードスキャンアラートを確認し、直接修正を依頼できるセキュリティ拡張機能が使えます。",
+      "q": "セキュリティ拡張機能の費用は？",
+      "a": "任意のCopilotプランに含まれており、追加料金はかかりません。",
       "sources": [
         "github-copilot-security-extension"
       ]
     },
     {
-      "q": "誰に向いている？",
-      "a": "開発者や企業の管理者をはじめ、コードの自動化やセキュリティ修正を行いたい方に向いています。",
+      "q": "企業向けの管理機能はある？",
+      "a": "企業管理者がプラグインの強制やブロックを行える機能が提供されています。",
       "sources": [
-        "microsoft-foundry-agent-framework-customization",
-        "microsoft-copilot-harness-foundry-agent-builder",
-        "github-enterprise-includes-copilot",
-        "github-copilot-security-extension",
-        "github-copilot-plugin-controls-ga",
-        "gpt-6-1-terra-github-copilot-guide",
-        "github-copilot-native-app-released",
-        "github-copilot-kimi-k3-multi-agent"
+        "github-copilot-plugin-controls-ga"
       ]
     },
     {
-      "q": "プラグインの管理はできる？",
-      "a": "企業管理者がプラグインの強制やブロック、承認済みマーケットプレイスの制限を行えます。",
+      "q": "どのようなモデルが使える？",
+      "a": "GPT-6.1 TerraやKimi K3などのフロンティア級モデルが追加されています。",
       "sources": [
-        "github-copilot-plugin-controls-ga"
+        "gpt-6-1-terra-github-copilot-guide",
+        "github-copilot-kimi-k3-multi-agent"
       ]
     }
   ],
@@ -183,27 +175,27 @@
     {
       "date": "2026-08-15",
       "slug": "github-copilot-kimi-k3-multi-agent",
-      "event": "GitHub CopilotにKimi K3を追加"
+      "event": "Kimi K3を追加"
     },
     {
       "date": "2026-09-12",
       "slug": "github-copilot-native-app-released",
-      "event": "Windows・Mac向けCopilotアプリを一般提供"
+      "event": "Copilotアプリを一般提供"
     },
     {
       "date": "2026-10-26",
       "slug": "gpt-6-1-terra-github-copilot-guide",
-      "event": "GPT-6.1 Terraを一般提供"
+      "event": "GPT-6.1 Terraが利用可能に"
     },
     {
       "date": "2026-10-29",
       "slug": "github-copilot-app-projects-computer-use",
-      "event": "プロジェクトとコンピューター使用を追加"
+      "event": "新機能プロジェクトを追加"
     },
     {
       "date": "2026-10-29",
-      "slug": "github-copilot-plugin-controls-ga",
-      "event": "プラグイン管理機能が一般提供へ"
+      "slug": "github-enterprise-includes-copilot",
+      "event": "Enterpriseプランに標準内包へ"
     }
   ],
   "related": [
@@ -250,9 +242,9 @@
     "github-copilot-reusable-agent-skills-guide",
     "github-copilot-kimi-k3-multi-agent"
   ],
-  "signature": "e1826b6a4a594621",
-  "primarySignature": "5014e5f0beeb3e9f",
+  "signature": "888d1533e34ad64e",
+  "primarySignature": "61cf0746a623b655",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:43:48+00:00",
-  "updatedAt": "2026-11-02T13:21:48+00:00"
+  "updatedAt": "2026-11-03T09:21:19+00:00"
 }

@@ -117,8 +117,8 @@
     }
   ],
   "related": [
-    "gemini-4-argon",
     "gemini-4",
+    "gemini-4-argon",
     "genie-4",
     "gemma-4"
   ],

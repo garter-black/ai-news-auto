@@ -162,5 +162,7 @@
         "url": "https://www.youtube.com/watch?v=FczbSauVvjw"
       }
     }
-  ]
+  ],
+  "duplicateOf": "mistral-large-4-preview",
+  "duplicateReason": "製品名が一致（large4・mistrallarge4）"
 }

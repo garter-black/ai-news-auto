@@ -228,8 +228,8 @@
     "gpt-6-1-terra"
   ],
   "articles": [
-    "openai-security-sprint-bug-bounty",
     "openai-bigger-bug-bounties",
+    "openai-security-sprint-bug-bounty",
     "chatgpt-codex-shared-usage-limits",
     "qodo-codex-plugin-code-review",
     "oracle-ai-workspace-chatgpt",
@@ -251,7 +251,6 @@
     "openai-gpt-6-astra-comprehensive-guide-matome",
     "openai-gpt6-astra-ultrafast-release",
     "openai-astra-developer-demo-practice",
-    "openai-gpt6-astra-jump-trading-agents",
     "openai-launches-agents-api",
     "chatgpt-work-for-sales-comprehensive-summary-matome",
     "openai-chatgpt-voice-gpt56-integration-matome",

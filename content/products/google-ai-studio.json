@@ -125,8 +125,8 @@
   "timeline": [],
   "related": [
     "antigravity",
-    "gemini-robotics-2",
     "gemini-live",
+    "project-suncatcher",
     "gemini-4-argon"
   ],
   "articles": [
@@ -134,8 +134,7 @@
     "building-digital-synth-with-google-gemini",
     "operating-real-hardware-with-gemini-ai",
     "gemini-remote-robotics-low-latency-control",
-    "google-gemini-journal-receipts-iot",
-    "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
+    "google-gemini-journal-receipts-iot"
   ],
   "linkFrom": [],
   "signature": "4daff4585ed461d0",

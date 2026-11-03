@@ -6,68 +6,66 @@
   "companyName": "NVIDIA",
   "category": "半導体・インフラ",
   "overview": {
-    "text": "Vera Rubinは、NVIDIAが開発した次世代のAI基盤およびGPUアーキテクチャです。AIの学習と推論の性能向上を目的としており、2026年10月に開催されたGTC 2026などで発表されました。",
+    "text": "Vera Rubinは、NVIDIAが開発した次世代のGPUアーキテクチャおよびAI計算基盤です。",
     "sources": [
-      "nvidia-ai-cluster-runtime-dynamo",
-      "nvidia-gtc-berlin-2026-keynote-highlights",
-      "nvidia-gtc-berlin-2026-vera-rubin-openshell"
+      "nvidia-gtc-berlin-2026-vera-rubin-openshell",
+      "nvidia-vera-rubin-performance-coreweave"
     ]
   },
   "facts": [
     {
       "label": "提供開始",
-      "value": "一部で提供中",
-      "sources": [
-        "nvidia-ai-cluster-runtime-dynamo",
-        "nvidia-meta-muse-partnership-expansion"
-      ]
-    },
-    {
-      "label": "日本での提供",
-      "value": "利用できる",
-      "sources": [
-        "nvidia-meta-muse-partnership-expansion"
-      ]
-    },
-    {
-      "label": "向いている人",
-      "value": "インフラエンジニア、開発者",
-      "sources": [
-        "nvidia-ai-cluster-runtime-dynamo",
-        "nvidia-meta-muse-partnership-expansion"
-      ]
-    }
-  ],
-  "capabilities": [
-    {
-      "text": "次世代のVera Rubin NVL72の検証でバス帯域幅744.71 GB/sを達成しました。",
-      "sources": [
-        "nvidia-ai-cluster-runtime-dynamo"
-      ]
-    },
-    {
-      "text": "Vera CPUは、x86プロセッサと比較して最大1.8倍の処理性能を達成します。",
+      "value": "フル生産フェーズに移行済み",
       "sources": [
         "nvidia-vera-rubin-performance-coreweave"
       ]
     },
     {
-      "text": "モジュール設計により、1モジュールあたりの組み立てが5分未満で完了します。",
+      "label": "日本での提供",
+      "value": "発表の時点では案内はありません",
       "sources": [
-        "nvidia-gtc-berlin-2026-vera-rubin-openshell"
+        "nvidia-meta-muse-partnership-expansion"
+      ]
+    },
+    {
+      "label": "使える場所",
+      "value": "クラウドプロバイダー等の環境",
+      "sources": [
+        "nvidia-vera-rubin-performance-coreweave"
+      ]
+    },
+    {
+      "label": "向いている人",
+      "value": "企業のIT部門や研究者",
+      "sources": [
+        "nvidia-dgx-10-years-history-vera-rubin"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "text": "Blackwell世代と比較して電力効率が向上し、生成できるトークン数が大幅に増加します。",
+      "sources": [
+        "nvidia-vera-rubin-performance-coreweave"
+      ]
+    },
+    {
+      "text": "次世代のVera CPUは、x86プロセッサと比較してコア単体で処理性能を向上させています。",
+      "sources": [
+        "nvidia-vera-rubin-performance-coreweave"
+      ]
+    },
+    {
+      "text": "第6世代のNVLinkスイッチの採用により、LLMのデコードスループットが向上します。",
+      "sources": [
+        "nvidia-vera-rubin-performance-coreweave"
       ]
     }
   ],
   "pricing": [],
   "japan": [
     {
-      "text": "ハードウェア基盤そのものは英国現地の研究者向けであり日本から直接利用できません。",
-      "sources": [
-        "nvidia-uk-ai-factories-robotics"
-      ]
-    },
-    {
-      "text": "Vera Rubinの導入を進めるMetaのMuseは日本から利用できます。",
+      "text": "Vera Rubinのハードウェア基盤そのものについて、日本での提供についての案内はありません。",
       "sources": [
         "nvidia-meta-muse-partnership-expansion"
       ]
@@ -76,46 +74,40 @@
   "howto": [],
   "differences": [
     {
-      "text": "R615.23オープンカーネルモジュールドライバが検証されています。",
+      "text": "前世代のBlackwell世代と比較して、同等条件でのAI処理性能や電力効率が大幅に向上しています。",
       "sources": [
-        "nvidia-ai-cluster-runtime-dynamo"
+        "nvidia-gtc-berlin-2026-vera-rubin-openshell",
+        "nvidia-vera-rubin-performance-coreweave"
       ]
     },
     {
-      "text": "ネットワークがConnectX-9 SuperNIC等へ置き換わっています。",
+      "text": "配線を排した100%液体冷却仕様のモジュール設計により、1ノードの組み立て時間が大幅に短縮されています。",
       "sources": [
-        "nvidia-ai-cluster-runtime-dynamo"
+        "nvidia-gtc-berlin-2026-vera-rubin-openshell"
       ]
     }
   ],
   "faq": [
     {
+      "q": "Vera Rubinはいつから使える？",
+      "a": "すでにフル生産のフェーズに移行しており、実機を用いた測定データが公開されています。",
+      "sources": [
+        "nvidia-vera-rubin-performance-coreweave"
+      ]
+    },
+    {
+      "q": "前モデルとの違いは？",
+      "a": "Blackwell世代と比べて電力効率が向上し、モジュール設計により組み立て時間も短縮されています。",
+      "sources": [
+        "nvidia-gtc-berlin-2026-vera-rubin-openshell",
+        "nvidia-vera-rubin-performance-coreweave"
+      ]
+    },
+    {
       "q": "誰に向いている？",
-      "a": "インフラ部門のエンジニアや開発者に向いています。",
+      "a": "企業のIT部門や大規模なAIインフラを構築する研究者向けとなっています。",
       "sources": [
-        "nvidia-ai-cluster-runtime-dynamo",
-        "nvidia-meta-muse-partnership-expansion"
-      ]
-    },
-    {
-      "q": "電力効率はどのくらい違う？",
-      "a": "Blackwell世代のGB200 NVL72と比較して10倍に向上しています。",
-      "sources": [
-        "nvidia-vera-rubin-performance-coreweave"
-      ]
-    },
-    {
-      "q": "Vera CPUの特徴は？",
-      "a": "従来のx86プロセッサと比較して最大1.8倍の処理性能を達成します。",
-      "sources": [
-        "nvidia-vera-rubin-performance-coreweave"
-      ]
-    },
-    {
-      "q": "組み立て時間はどう変わった？",
-      "a": "配線を排したモジュール設計により5分未満で完了します。",
-      "sources": [
-        "nvidia-gtc-berlin-2026-vera-rubin-openshell"
+        "nvidia-dgx-10-years-history-vera-rubin"
       ]
     }
   ],
@@ -123,22 +115,22 @@
     {
       "date": "2026-08-20",
       "slug": "nvidia-vera-rubin-performance-coreweave",
-      "event": "次世代Vera Rubinの実機測定データを公開"
+      "event": "Vera Rubinの実機測定データを公開"
     },
     {
       "date": "2026-09-25",
       "slug": "nvidia-dgx-10-years-history-vera-rubin",
-      "event": "NVIDIA DGXの10年史を発表"
+      "event": "Vera Rubinラック規模での効果を発表"
     },
     {
       "date": "2026-10-23",
       "slug": "nvidia-gtc-berlin-2026-vera-rubin-openshell",
-      "event": "GTC Berlin 2026で次世代Vera Rubinを発表"
+      "event": "次世代GPUアーキテクチャVera Rubinを発表"
     },
     {
-      "date": "2026-11-03",
-      "slug": "nvidia-ai-cluster-runtime-dynamo",
-      "event": "Vera Rubin向けのKubernetes実行基盤レシピを公開"
+      "date": "2026-10-26",
+      "slug": "nvidia-gtc-berlin-2026-keynote-highlights",
+      "event": "Vera Rubin NVL72 DSX PODを発表"
     }
   ],
   "related": [
@@ -148,7 +140,6 @@
     "meta-muse"
   ],
   "articles": [
-    "nvidia-ai-cluster-runtime-dynamo",
     "nvidia-meta-muse-partnership-expansion",
     "nvidia-uk-ai-factories-robotics",
     "nvidia-gtc-berlin-2026-keynote-highlights",
@@ -157,14 +148,13 @@
     "nvidia-vera-rubin-performance-coreweave"
   ],
   "linkFrom": [
-    "nvidia-ai-cluster-runtime-dynamo",
     "nvidia-gtc-berlin-2026-vera-rubin-openshell",
     "nvidia-dgx-10-years-history-vera-rubin",
     "nvidia-vera-rubin-performance-coreweave"
   ],
-  "signature": "54039a07bfddb637",
-  "primarySignature": "b53a205a5fa35524",
+  "signature": "d5531fcec4749593",
+  "primarySignature": "f10c49d582dc6c19",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:50:52+00:00",
-  "updatedAt": "2026-11-02T18:51:25+00:00"
+  "updatedAt": "2026-11-03T09:21:34+00:00"
 }

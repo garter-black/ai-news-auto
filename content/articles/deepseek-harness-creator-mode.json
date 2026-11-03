@@ -65,7 +65,7 @@
   "videoTitle": "DeepSeek releases a \"creator mode\" that allows users of DeepSeek Harness to create custom plugins, like a 3D model renderer and a video editing workbench",
   "publishedAt": "2026-11-02T17:41:24.629000+00:00",
   "generatedAt": "2026-11-02T17:44:35.562626+00:00",
-  "thumbnail": "",
+  "thumbnail": "https://ai-tech-express.jp/img/deepseek-harness-creator-mode-fa4daa82.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "faq": [
@@ -95,5 +95,24 @@
   ],
   "qualityScore": 100,
   "detectedAt": "2026-11-02T17:41:24+00:00",
-  "fastLane": true
+  "fastLane": true,
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A pair of hands typing on a laptop with a monitor displaying a rotating 3D model, set in a softly lit modern office space.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-03T09:21:56+00:00"
+  },
+  "imageFocus": {
+    "x": 0.428,
+    "y": 0.447,
+    "box": [
+      0.0,
+      0.0,
+      0.856,
+      0.893
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/deepseek-harness-creator-mode-fa4daa82.jpg"
+  }
 }

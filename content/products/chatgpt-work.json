@@ -147,10 +147,10 @@
     }
   ],
   "related": [
-    "chatgpt-work-for-sales",
     "codex",
     "gpt-6-astra",
-    "gpt-6"
+    "gpt-6",
+    "chatgpt-work-for-sales"
   ],
   "articles": [
     "chatgpt-codex-shared-usage-limits",
