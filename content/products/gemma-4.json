@@ -18,7 +18,7 @@
       "label": "料金",
       "value": "オープンモデル",
       "sources": [
-        "gemma-4-per-layer-embeddings-explained"
+        "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
@@ -32,21 +32,21 @@
       "label": "日本での提供",
       "value": "利用できる",
       "sources": [
-        "gemma-4-per-layer-embeddings-explained"
+        "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
       "label": "使える場所",
       "value": "Hugging FaceやGitHub",
       "sources": [
-        "gemma-4-per-layer-embeddings-explained"
+        "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
       "label": "向いている人",
       "value": "開発者",
       "sources": [
-        "gemma-4-per-layer-embeddings-explained"
+        "google-deepmind-gemma-4-family-explained"
       ]
     }
   ],
@@ -54,13 +54,13 @@
     {
       "text": "E2BやE4Bモデルでは、レイヤー別埋め込み技術によりメモリ消費を抑えられます。",
       "sources": [
-        "gemma-4-per-layer-embeddings-explained"
+        "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
       "text": "12Bモデルでは専用エンコーダーを廃し、音声や画像を直接LLMに投影します。",
       "sources": [
-        "gemma-4-12b-encoder-free-explained"
+        "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
@@ -80,7 +80,7 @@
     {
       "text": "オープンソースとして公開されています。",
       "sources": [
-        "gemma-4-per-layer-embeddings-explained"
+        "google-deepmind-gemma-4-family-explained"
       ]
     }
   ],
@@ -88,7 +88,7 @@
     {
       "text": "発表の時点では、日本でも利用できるオープンモデルとして提供されています。",
       "sources": [
-        "gemma-4-per-layer-embeddings-explained"
+        "google-deepmind-gemma-4-family-explained"
       ]
     }
   ],
@@ -96,7 +96,7 @@
     {
       "text": "Hugging FaceやGitHubを通じて入手できます。",
       "sources": [
-        "gemma-4-per-layer-embeddings-explained"
+        "google-deepmind-gemma-4-family-explained"
       ]
     }
   ],
@@ -106,12 +106,6 @@
       "sources": [
         "google-deepmind-gemma-4-family-explained"
       ]
-    },
-    {
-      "text": "レイヤー別埋め込みやエンコーダーフリーなどの新アーキテクチャが導入されました。",
-      "sources": [
-        "gemma-4-ple-architecture-explained-matome"
-      ]
     }
   ],
   "faq": [
@@ -119,7 +113,7 @@
       "q": "無料で使えますか？",
       "a": "オープンモデルとして提供されており、開発者が利用できます。",
       "sources": [
-        "gemma-4-per-layer-embeddings-explained"
+        "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
@@ -133,14 +127,14 @@
       "q": "エンコーダーフリーとは何ですか？",
       "a": "画像や音声の専用エンコーダーを廃止し、直接LLMに投影する構造のことです。",
       "sources": [
-        "gemma-4-12b-encoder-free-explained"
+        "google-deepmind-gemma-4-family-explained"
       ]
     },
     {
       "q": "PLE技術とは何ですか？",
       "a": "レイヤーごとに異なるベクトル表現を割り当て、フラッシュストレージを活用する技術です。",
       "sources": [
-        "gemma-4-per-layer-embeddings-explained"
+        "google-deepmind-gemma-4-family-explained"
       ]
     }
   ],
@@ -149,21 +143,6 @@
       "date": "2026-09-22",
       "slug": "google-deepmind-gemma-4-family-explained",
       "event": "Gemma 4を公開"
-    },
-    {
-      "date": "2026-09-23",
-      "slug": "gemma-4-12b-encoder-free-explained",
-      "event": "Gemma 4 12Bの構造を解説"
-    },
-    {
-      "date": "2026-09-26",
-      "slug": "gemma-4-per-layer-embeddings-explained",
-      "event": "PLEの技術仕様を公開"
-    },
-    {
-      "date": "2026-09-26",
-      "slug": "gemma-4-ple-architecture-explained-matome",
-      "event": "Gemma 4ファミリー徹底解説"
     }
   ],
   "related": [
@@ -174,15 +153,9 @@
   ],
   "articles": [
     "google-project-suncatcher-satellite-response",
-    "gemma-4-per-layer-embeddings-explained",
-    "gemma-4-ple-architecture-explained-matome",
-    "gemma-4-12b-encoder-free-explained",
     "google-deepmind-gemma-4-family-explained"
   ],
   "linkFrom": [
-    "gemma-4-per-layer-embeddings-explained",
-    "gemma-4-ple-architecture-explained-matome",
-    "gemma-4-12b-encoder-free-explained",
     "google-deepmind-gemma-4-family-explained"
   ],
   "signature": "be6aafb0f9bc22a6",

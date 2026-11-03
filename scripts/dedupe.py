@@ -21,6 +21,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
+RETIRED_PATH = ROOT / "content" / "retired.json"
 
 JACCARD_DUP = 0.5
 JACCARD_WITH_ENTITY = 0.3
@@ -177,6 +178,15 @@ def load_recent(days: int = 4, skip_roundups: bool = False) -> Index:
         # 元記事の見出し（英語ソースなら英語）でも当たるようにする
         if data.get("videoTitle") and data.get("videoTitle") != data.get("title"):
             index.add(str(data["videoTitle"]), "", None, label=path.stem)
+    # 取り下げた記事（content/retired.json）の出典からは作り直さない（label の無い「同じ出典URL」として当てる）
+    try:
+        retired = json.loads(RETIRED_PATH.read_text(encoding="utf-8")).get("articles", {})
+    except (OSError, json.JSONDecodeError):
+        retired = {}
+    for entry in retired.values():
+        for key in ("sourceUrl", "videoUrl"):
+            if isinstance(entry, dict) and entry.get(key):
+                index.urls.add(_norm_url(str(entry[key])))
     return index
 
 

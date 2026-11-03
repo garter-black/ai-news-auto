@@ -44,8 +44,7 @@
       "label": "向いている人",
       "value": "営業職、営業責任者",
       "sources": [
-        "chatgpt-work-sales-workflow",
-        "openai-chatgpt-work-for-sales-pipeline-forecasting"
+        "chatgpt-work-sales-workflow"
       ]
     }
   ],
@@ -71,13 +70,13 @@
     {
       "text": "プロンプトから対話型のWebダッシュボードを数秒間で構築します。",
       "sources": [
-        "openai-chatgpt-work-for-sales-pipeline-forecasting"
+        "chatgpt-work-sales-workflow"
       ]
     },
     {
       "text": "Slackの新規チャンネル開設やメンバーのアサインを自律実行します。",
       "sources": [
-        "openai-chatgpt-work-for-sales-pipeline-forecasting"
+        "chatgpt-work-sales-workflow"
       ]
     }
   ],
@@ -130,8 +129,7 @@
       "q": "誰に向いている製品ですか？",
       "a": "営業職や営業責任者向けのソリューションとして設計されています。",
       "sources": [
-        "chatgpt-work-sales-workflow",
-        "openai-chatgpt-work-for-sales-pipeline-forecasting"
+        "chatgpt-work-sales-workflow"
       ]
     },
     {
@@ -156,11 +154,6 @@
       "event": "営業支援ワークフローを公開"
     },
     {
-      "date": "2026-07-28",
-      "slug": "openai-chatgpt-work-for-sales-demo",
-      "event": "デモ動画を公開"
-    },
-    {
       "date": "2026-09-08",
       "slug": "chatgpt-work-for-sales-comprehensive-summary-matome",
       "event": "ChatGPT Work for Salesを発表"
@@ -174,15 +167,11 @@
   ],
   "articles": [
     "chatgpt-work-for-sales-comprehensive-summary-matome",
-    "chatgpt-work-sales-workflow",
-    "openai-chatgpt-work-for-sales-demo",
-    "openai-chatgpt-work-for-sales-pipeline-forecasting"
+    "chatgpt-work-sales-workflow"
   ],
   "linkFrom": [
     "chatgpt-work-for-sales-comprehensive-summary-matome",
-    "chatgpt-work-sales-workflow",
-    "openai-chatgpt-work-for-sales-demo",
-    "openai-chatgpt-work-for-sales-pipeline-forecasting"
+    "chatgpt-work-sales-workflow"
   ],
   "signature": "d95dc39b471aac30",
   "primarySignature": "d95dc39b471aac30",

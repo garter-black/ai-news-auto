@@ -9,7 +9,7 @@
     "text": "GPT-5.6は、OpenAIが開発した最新のAIモデルファミリーです。2026年7月の中旬から下旬にかけて順次発表されました。",
     "sources": [
       "openai-chatgpt-voice-gpt56-integration-matome",
-      "openai-gpt-56-sol-ultrafast-mode-preview",
+      "model-ml-gpt-5-6-sol-finance-agent",
       "openai-chatgpt-for-academic-researchers-gpt5-6",
       "openai-build-hour-gpt56-valuemaxxing"
     ]
@@ -60,7 +60,7 @@
       "text": "Ultrafast modeにより毎秒750トークンの超高速出力を実現しています。",
       "sources": [
         "openai-chatgpt-voice-gpt56-integration-matome",
-        "openai-gpt-56-sol-ultrafast-mode-preview"
+        "model-ml-gpt-5-6-sol-finance-agent"
       ]
     },
     {
@@ -81,7 +81,7 @@
     {
       "text": "APIなどの料金やプランの詳細はモデルや利用環境により異なります。",
       "sources": [
-        "openai-gpt-56-sol-ultrafast-mode-preview",
+        "model-ml-gpt-5-6-sol-finance-agent",
         "openai-build-hour-gpt56-valuemaxxing"
       ]
     }
@@ -100,7 +100,7 @@
       "text": "開発者向けのAPIや、V7 Goなどの統合プラットフォームを通じて利用できます。",
       "sources": [
         "v7-go-gpt-5-6-integration-context-graph",
-        "openai-gpt-56-sol-ultrafast-mode-preview",
+        "model-ml-gpt-5-6-sol-finance-agent",
         "openai-build-hour-gpt56-valuemaxxing"
       ]
     },
@@ -148,7 +148,7 @@
       "a": "2026年7月の中旬から下旬にかけて順次提供やプレビュー公開が開始されています。",
       "sources": [
         "openai-chatgpt-voice-gpt56-integration-matome",
-        "openai-gpt-56-sol-ultrafast-mode-preview",
+        "model-ml-gpt-5-6-sol-finance-agent",
         "openai-chatgpt-for-academic-researchers-gpt5-6",
         "openai-build-hour-gpt56-valuemaxxing"
       ]
@@ -193,7 +193,7 @@
     "v7-go-gpt-5-6-integration-context-graph",
     "chatgpt-work-for-sales-comprehensive-summary-matome",
     "openai-chatgpt-voice-gpt56-integration-matome",
-    "openai-gpt-56-sol-ultrafast-mode-preview",
+    "model-ml-gpt-5-6-sol-finance-agent",
     "openai-chatgpt-for-academic-researchers-gpt5-6",
     "openai-build-hour-gpt56-valuemaxxing"
   ],

@@ -264,6 +264,8 @@ export default async function ProductPage({ params }: Props) {
         <Section id="history" title="これまでの流れ">
           <ol className="border-l border-line-strong pl-5">
             {product.timeline.map((item, index) => {
+              // 取り下げた記事（content/retired.json）はリンクにしない
+              const linked = Boolean(getArticleSummary(item.slug));
               const sameDay = index > 0 && product.timeline[index - 1].date === item.date;
               return (
                 <li key={item.slug} className={`relative ${sameDay ? "mt-2" : index > 0 ? "mt-5" : ""}`}>
@@ -273,12 +275,16 @@ export default async function ProductPage({ params }: Props) {
                       <span className="index-num block text-meta text-muted">{item.date.replaceAll("-", "/")}</span>
                     </>
                   )}
-                  <Link
-                    href={`/articles/${item.slug}`}
-                    className="mt-0.5 block text-desc leading-[1.75] text-ink underline decoration-line-strong underline-offset-4 hover:text-accent hover:decoration-accent"
-                  >
-                    {item.event}
-                  </Link>
+                  {linked ? (
+                    <Link
+                      href={`/articles/${item.slug}`}
+                      className="mt-0.5 block text-desc leading-[1.75] text-ink underline decoration-line-strong underline-offset-4 hover:text-accent hover:decoration-accent"
+                    >
+                      {item.event}
+                    </Link>
+                  ) : (
+                    <span className="mt-0.5 block text-desc leading-[1.75] text-ink">{item.event}</span>
+                  )}
                 </li>
               );
             })}

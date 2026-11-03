@@ -8,8 +8,7 @@
   "overview": {
     "text": "Google AI Studioは、Googleが提供する開発者向けのAIプラットフォームです。APIキーを発行してGeminiや画像生成モデルを利用したアプリケーション開発が行えます。",
     "sources": [
-      "google-ai-studio-nano-banana-2-1",
-      "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+      "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
     ]
   },
   "facts": [
@@ -17,8 +16,7 @@
       "label": "料金",
       "value": "無料利用枠あり、従量課金",
       "sources": [
-        "google-gemini-live-sprout-plant-robot",
-        "google-ai-studio-nano-banana-2-1"
+        "google-gemini-live-sprout-plant-robot"
       ]
     },
     {
@@ -33,8 +31,7 @@
       "label": "向いている人",
       "value": "開発者、エンジニア",
       "sources": [
-        "google-gemini-live-sprout-plant-robot",
-        "google-ai-studio-nano-banana-2-1"
+        "google-gemini-live-sprout-plant-robot"
       ]
     }
   ],
@@ -46,12 +43,6 @@
       ]
     },
     {
-      "text": "新型画像生成モデル「Nano Banana 2.1」を用いた高品質な画像生成や編集を行えます。",
-      "sources": [
-        "google-ai-studio-nano-banana-2-1"
-      ]
-    },
-    {
       "text": "Geminiのコード生成能力を活用し、ハードウェアセンサーと連動するWebアプリケーションを構築できます。",
       "sources": [
         "building-digital-synth-with-google-gemini"
@@ -60,7 +51,7 @@
     {
       "text": "Gemini Robotics 2の身体性推理モデルを利用したロボット制御の仕組みを開発できます。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     }
   ],
@@ -75,12 +66,6 @@
       "text": "無料枠を超えた分は、トークン数に応じた従量課金となります。",
       "sources": [
         "google-gemini-live-sprout-plant-robot"
-      ]
-    },
-    {
-      "text": "Nano Banana 2.1などの有料モデルでは、インプットやアウトプットの種類に応じた料金設定があります。",
-      "sources": [
-        "google-ai-studio-nano-banana-2-1"
       ]
     }
   ],
@@ -103,15 +88,13 @@
     {
       "text": "Google AI Studioのサイトにアクセスし、Googleアカウントでログインします。",
       "sources": [
-        "google-gemini-live-sprout-plant-robot",
-        "google-ai-studio-nano-banana-2-1"
+        "google-gemini-live-sprout-plant-robot"
       ]
     },
     {
       "text": "APIキーを発行し、必要なモデルや機能を選択して利用を開始します。",
       "sources": [
-        "google-gemini-live-sprout-plant-robot",
-        "google-ai-studio-nano-banana-2-1"
+        "google-gemini-live-sprout-plant-robot"
       ]
     }
   ],
@@ -135,25 +118,11 @@
       "q": "誰に向いている？",
       "a": "AIを活用したアプリケーションやシステムを開発する開発者やエンジニアに向いています。",
       "sources": [
-        "google-gemini-live-sprout-plant-robot",
-        "google-ai-studio-nano-banana-2-1"
-      ]
-    },
-    {
-      "q": "画像生成モデルは使える？",
-      "a": "新型画像生成モデル「Nano Banana 2.1」がモデルセレクターのImagesタブから選択できます。",
-      "sources": [
-        "google-ai-studio-nano-banana-2-1"
+        "google-gemini-live-sprout-plant-robot"
       ]
     }
   ],
-  "timeline": [
-    {
-      "date": "2026-10-08",
-      "slug": "google-ai-studio-nano-banana-2-1",
-      "event": "Nano Banana 2.1の提供を開始"
-    }
-  ],
+  "timeline": [],
   "related": [
     "antigravity",
     "gemini-robotics-2",
@@ -165,13 +134,10 @@
     "building-digital-synth-with-google-gemini",
     "operating-real-hardware-with-gemini-ai",
     "gemini-remote-robotics-low-latency-control",
-    "google-ai-studio-nano-banana-2-1",
     "google-gemini-journal-receipts-iot",
-    "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+    "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
   ],
-  "linkFrom": [
-    "google-ai-studio-nano-banana-2-1"
-  ],
+  "linkFrom": [],
   "signature": "4daff4585ed461d0",
   "primarySignature": "004e8decda591039",
   "model": "gemini-3.5-flash-lite",

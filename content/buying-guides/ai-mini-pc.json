@@ -108,7 +108,6 @@
   "relatedArticleSlugs": [
     "llama-app-mac-local-ai-hugging-face",
     "m5-ultra-vs-rtx-5090-local-llm-benchmark",
-    "nvidia-pair-local-ai-router",
     "run-local-models-in-pi-llama-cpp"
   ],
   "sources": [

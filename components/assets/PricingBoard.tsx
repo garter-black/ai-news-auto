@@ -604,6 +604,15 @@ function Usd({ value }: { value: number | null }) {
 
 /** 出典の記事（いつの記事で確かめた数字か） */
 function SourceLink({ row }: { row: PriceRow }) {
+  // 出典の記事を取り下げたとき（scripts/retire_articles.py が slug を空にする）は、日付だけを出す
+  if (!row.source.slug) {
+    return (
+      <span title={`記事の記載:「${row.source.quote}」`}>
+        {day.format(Date.parse(row.source.publishedAt))}の記事で確認
+        {row.confirmedIn > 1 && <span>（{row.confirmedIn}本で一致）</span>}
+      </span>
+    );
+  }
   return (
     <>
       <Link

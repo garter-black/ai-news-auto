@@ -165,11 +165,6 @@
       "date": "2026-08-15",
       "slug": "github-copilot-kimi-k3-multi-agent",
       "event": "GitHub CopilotにKimi K3を追加"
-    },
-    {
-      "date": "2026-09-11",
-      "slug": "china-ai-kimi-k3-semiconductor-smuggling",
-      "event": "半導体密輸疑惑が浮上"
     }
   ],
   "related": [
@@ -177,14 +172,12 @@
     "microsoft-foundry"
   ],
   "articles": [
-    "china-ai-kimi-k3-semiconductor-smuggling",
     "agent-plugins-one-zero-comprehensive-guide-matome",
     "microsoft-ai-ecosystem-kimi-k3-mcp-matome",
     "github-copilot-kimi-k3-multi-agent",
     "kimi-k3-open-frontier-intelligence-technical-report"
   ],
   "linkFrom": [
-    "china-ai-kimi-k3-semiconductor-smuggling",
     "microsoft-ai-ecosystem-kimi-k3-mcp-matome",
     "kimi-k3-open-frontier-intelligence-technical-report"
   ],

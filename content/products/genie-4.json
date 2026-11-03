@@ -8,8 +8,6 @@
   "overview": {
     "text": "Genie 4は、映像と音声のリアルタイム生成や対話に対応したGoogle DeepMindの最新世界モデルです。2026年10月に発表されました。",
     "sources": [
-      "google-deepmind-genie-4-world-model",
-      "google-deepmind-genie-4-world-model-sffpkujd_jk",
       "google-genie-4-world-model"
     ]
   },
@@ -18,8 +16,6 @@
       "label": "提供開始",
       "value": "一部の信頼できるテスター向けに提供中",
       "sources": [
-        "google-deepmind-genie-4-world-model",
-        "google-deepmind-genie-4-world-model-sffpkujd_jk",
         "google-genie-4-world-model"
       ]
     },
@@ -27,7 +23,6 @@
       "label": "使える場所",
       "value": "Google AI Ultraなどの予定",
       "sources": [
-        "google-deepmind-genie-4-world-model-sffpkujd_jk",
         "google-genie-4-world-model"
       ]
     },
@@ -35,8 +30,6 @@
       "label": "向いている人",
       "value": "研究者、開発者、クリエイター",
       "sources": [
-        "google-deepmind-genie-4-world-model",
-        "google-deepmind-genie-4-world-model-sffpkujd_jk",
         "google-genie-4-world-model"
       ]
     }
@@ -45,34 +38,31 @@
     {
       "text": "映像と音声の同時生成に対応し、効果音や会話音声をリアルタイムで作ることができます。",
       "sources": [
-        "google-deepmind-genie-4-world-model"
+        "google-genie-4-world-model"
       ]
     },
     {
       "text": "キーボードのWASDキーや矢印キーを使って、一人称視点で生成された空間内を自由に歩き回れます。",
       "sources": [
-        "google-deepmind-genie-4-world-model",
-        "google-deepmind-genie-4-world-model-sffpkujd_jk"
+        "google-genie-4-world-model"
       ]
     },
     {
       "text": "テキスト入力やマイクを通じた音声対話により、登場人物と会話したり世界を変化させたりできます。",
       "sources": [
-        "google-deepmind-genie-4-world-model",
-        "google-deepmind-genie-4-world-model-sffpkujd_jk"
+        "google-genie-4-world-model"
       ]
     },
     {
       "text": "1枚の平面画像や絵画を、移動して探索できる立体的な3D世界に変換することが可能です。",
       "sources": [
-        "google-deepmind-genie-4-world-model-sffpkujd_jk"
+        "google-genie-4-world-model"
       ]
     },
     {
       "text": "ロボットアームの動作訓練用シミュレーション環境として活用できます。",
       "sources": [
-        "google-deepmind-genie-4-world-model",
-        "google-deepmind-genie-4-world-model-sffpkujd_jk"
+        "google-genie-4-world-model"
       ]
     }
   ],
@@ -80,8 +70,6 @@
     {
       "text": "価格や料金プランに関する具体的な数値の提示はありません。",
       "sources": [
-        "google-deepmind-genie-4-world-model",
-        "google-deepmind-genie-4-world-model-sffpkujd_jk",
         "google-genie-4-world-model"
       ]
     }
@@ -90,7 +78,6 @@
     {
       "text": "発表の時点では、日本での提供について案内はありません。",
       "sources": [
-        "google-deepmind-genie-4-world-model",
         "google-genie-4-world-model"
       ]
     }
@@ -99,14 +86,12 @@
     {
       "text": "Project GenieのウェイティングリストやGoogle AI Ultraを通じて提供される予定です。",
       "sources": [
-        "google-deepmind-genie-4-world-model-sffpkujd_jk",
         "google-genie-4-world-model"
       ]
     },
     {
       "text": "開発者向けには、Gemini APIおよびGoogle AI Studioの早期アクセスパートナー向けに提供予定です。",
       "sources": [
-        "google-deepmind-genie-4-world-model-sffpkujd_jk",
         "google-genie-4-world-model"
       ]
     }
@@ -115,7 +100,7 @@
     {
       "text": "Genie 3までは映像のみの出力でしたが、Genie 4では映像と音声を同時に予測・出力する構造に進化しました。",
       "sources": [
-        "google-deepmind-genie-4-world-model"
+        "google-genie-4-world-model"
       ]
     }
   ],
@@ -124,7 +109,6 @@
       "q": "いつから使える？",
       "a": "現在は信頼できる限られたテスター向けに提供中です。今後はGoogle AI UltraやAPIを通じて順次提供されます。",
       "sources": [
-        "google-deepmind-genie-4-world-model-sffpkujd_jk",
         "google-genie-4-world-model"
       ]
     },
@@ -132,15 +116,13 @@
       "q": "Soraなどの動画AIと何が違う？",
       "a": "Soraが動画ファイルを出力するのに対し、Genie 4はその場でキーボード操作できる空間を作ります。",
       "sources": [
-        "google-deepmind-genie-4-world-model",
-        "google-deepmind-genie-4-world-model-sffpkujd_jk"
+        "google-genie-4-world-model"
       ]
     },
     {
       "q": "音声も一緒に作れる？",
       "a": "環境音や音楽、対話型の会話音声をその場で自動生成することができます。",
       "sources": [
-        "google-deepmind-genie-4-world-model",
         "google-genie-4-world-model"
       ]
     },
@@ -148,7 +130,7 @@
       "q": "安全性はどう確保されている？",
       "a": "AIモデルの安全性確保にはSynthIDによる電子水脈技術が組み込まれています。",
       "sources": [
-        "google-deepmind-genie-4-world-model"
+        "google-genie-4-world-model"
       ]
     }
   ],
@@ -157,11 +139,6 @@
       "date": "2026-10-27",
       "slug": "google-genie-4-world-model",
       "event": "2026年10月27日にGenie 4を発表"
-    },
-    {
-      "date": "2026-10-28",
-      "slug": "google-deepmind-genie-4-world-model",
-      "event": "Google DeepMindがGenie 4を発表"
     }
   ],
   "related": [
@@ -172,13 +149,9 @@
   ],
   "articles": [
     "google-ai-news-october-2026",
-    "google-deepmind-genie-4-world-model",
-    "google-deepmind-genie-4-world-model-sffpkujd_jk",
     "google-genie-4-world-model"
   ],
   "linkFrom": [
-    "google-deepmind-genie-4-world-model",
-    "google-deepmind-genie-4-world-model-sffpkujd_jk",
     "google-genie-4-world-model"
   ],
   "signature": "80e07496b7773b1e",

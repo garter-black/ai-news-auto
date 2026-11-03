@@ -8,7 +8,7 @@
   "overview": {
     "text": "Vera Rubinは、NVIDIAが開発した次世代のAI基盤およびGPUアーキテクチャです。AIの学習と推論の性能向上を目的としており、2026年10月に開催されたGTC 2026などで発表されました。",
     "sources": [
-      "nvidia-aicr-vera-rubin-kubernetes",
+      "nvidia-ai-cluster-runtime-dynamo",
       "nvidia-gtc-berlin-2026-keynote-highlights",
       "nvidia-gtc-berlin-2026-vera-rubin-openshell"
     ]
@@ -18,7 +18,7 @@
       "label": "提供開始",
       "value": "一部で提供中",
       "sources": [
-        "nvidia-aicr-vera-rubin-kubernetes",
+        "nvidia-ai-cluster-runtime-dynamo",
         "nvidia-meta-muse-partnership-expansion"
       ]
     },
@@ -33,7 +33,7 @@
       "label": "向いている人",
       "value": "インフラエンジニア、開発者",
       "sources": [
-        "nvidia-aicr-vera-rubin-kubernetes",
+        "nvidia-ai-cluster-runtime-dynamo",
         "nvidia-meta-muse-partnership-expansion"
       ]
     }
@@ -42,7 +42,7 @@
     {
       "text": "次世代のVera Rubin NVL72の検証でバス帯域幅744.71 GB/sを達成しました。",
       "sources": [
-        "nvidia-aicr-vera-rubin-kubernetes"
+        "nvidia-ai-cluster-runtime-dynamo"
       ]
     },
     {
@@ -78,13 +78,13 @@
     {
       "text": "R615.23オープンカーネルモジュールドライバが検証されています。",
       "sources": [
-        "nvidia-aicr-vera-rubin-kubernetes"
+        "nvidia-ai-cluster-runtime-dynamo"
       ]
     },
     {
       "text": "ネットワークがConnectX-9 SuperNIC等へ置き換わっています。",
       "sources": [
-        "nvidia-aicr-vera-rubin-kubernetes"
+        "nvidia-ai-cluster-runtime-dynamo"
       ]
     }
   ],
@@ -93,7 +93,7 @@
       "q": "誰に向いている？",
       "a": "インフラ部門のエンジニアや開発者に向いています。",
       "sources": [
-        "nvidia-aicr-vera-rubin-kubernetes",
+        "nvidia-ai-cluster-runtime-dynamo",
         "nvidia-meta-muse-partnership-expansion"
       ]
     },
@@ -137,7 +137,7 @@
     },
     {
       "date": "2026-11-03",
-      "slug": "nvidia-aicr-vera-rubin-kubernetes",
+      "slug": "nvidia-ai-cluster-runtime-dynamo",
       "event": "Vera Rubin向けのKubernetes実行基盤レシピを公開"
     }
   ],
@@ -148,7 +148,7 @@
     "meta-muse"
   ],
   "articles": [
-    "nvidia-aicr-vera-rubin-kubernetes",
+    "nvidia-ai-cluster-runtime-dynamo",
     "nvidia-meta-muse-partnership-expansion",
     "nvidia-uk-ai-factories-robotics",
     "nvidia-gtc-berlin-2026-keynote-highlights",
@@ -157,7 +157,7 @@
     "nvidia-vera-rubin-performance-coreweave"
   ],
   "linkFrom": [
-    "nvidia-aicr-vera-rubin-kubernetes",
+    "nvidia-ai-cluster-runtime-dynamo",
     "nvidia-gtc-berlin-2026-vera-rubin-openshell",
     "nvidia-dgx-10-years-history-vera-rubin",
     "nvidia-vera-rubin-performance-coreweave"

@@ -132,7 +132,7 @@
     {
       "text": "サーバーやコンテナの構築を一切行わずにAIエージェントの機能を拡張できるようになりました。",
       "sources": [
-        "microsoft-copilot-harness-agent-scaling"
+        "microsoft-copilot-harness-foundry-agent-builder"
       ]
     }
   ],
@@ -201,7 +201,6 @@
   "articles": [
     "microsoft-foundry-agent-framework-customization",
     "microsoft-copilot-harness-foundry-agent-builder",
-    "microsoft-copilot-harness-agent-scaling",
     "microsoft-copilot-harness-foundry",
     "dotnet-11-rc2-python-arm64-foundry-browser-automation",
     "microsoft-foundry-agent-guardrails-security",

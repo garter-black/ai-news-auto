@@ -9,7 +9,6 @@
     "text": "Mistral Large 4は、フランスのMistral AIが開発した1兆パラメータ規模の最新AIモデルです。2026年10月に発表されました。",
     "sources": [
       "mistral-large-4-open-cyber-frontier",
-      "mistral-large-4-le-chonk-preview",
       "mistral-large-4-preview"
     ]
   },
@@ -39,8 +38,7 @@
       "label": "使える場所",
       "value": "Hugging Faceなど",
       "sources": [
-        "mistral-large-4-open-cyber-frontier",
-        "mistral-large-4-le-chonk-preview"
+        "mistral-large-4-open-cyber-frontier"
       ]
     },
     {
@@ -150,7 +148,6 @@
       "q": "学習にはどのようなハードウェアが使われましたか？",
       "a": "NVIDIA Grace Blackwell GPU 3,800基が使用されました。",
       "sources": [
-        "mistral-large-4-le-chonk-preview",
         "mistral-large-4-preview"
       ]
     }
@@ -170,12 +167,10 @@
   "related": [],
   "articles": [
     "mistral-large-4-open-cyber-frontier",
-    "mistral-large-4-le-chonk-preview",
     "mistral-large-4-preview"
   ],
   "linkFrom": [
     "mistral-large-4-open-cyber-frontier",
-    "mistral-large-4-le-chonk-preview",
     "mistral-large-4-preview"
   ],
   "signature": "1955a735c2264ee1",

@@ -16,9 +16,7 @@ const DEFAULT_SLUG = "openai-gpt-6-1-terra-announcement";
 /** 確認用：性格の違う記事（続報あり・AI以外・判定なし） */
 const SAMPLES: { slug: string; label: string }[] = [
   { slug: DEFAULT_SLUG, label: "GPT-6.1 Terra（写真なし）" },
-  { slug: "cccskills-ai-agent-skills-market", label: "cccskills（続報あり）" },
   { slug: "iphone-duo-arrives-at-apple-store", label: "iPhone Duo（ガジェット・続報あり）" },
-  { slug: "amakusa-vacant-house-migration", label: "天草の空き家（不動産・判定なし）" },
 ];
 
 type Props = { searchParams: Promise<{ slug?: string }> };

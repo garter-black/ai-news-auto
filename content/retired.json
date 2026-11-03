@@ -1,0 +1,2435 @@
+{
+ "articles": {
+  "agata-rag-ai-chatbot-new-services": {
+   "channel": "prtimes",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000021.000125274.html",
+   "title": "生成AIサービスのアガタが、社内資料のAI読み取りやVPN接続などの新サービスを開始"
+  },
+  "ai-code-decompilation-recursive-loops": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "AIの自動ループ処理を活用し、プログラムの逆コンパイルや数学の証明を高速化する新手法",
+   "videoUrl": "https://www.youtube.com/watch?v=cX2kD2yQf88"
+  },
+  "ai-ec-site-productivity-booster": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "生成AIツールを活用してECサイトの構築にかかる作業時間を大幅に短縮する新手法",
+   "videoUrl": "https://www.youtube.com/watch?v=rxygIkp_hgY"
+  },
+  "ai-hack-claude-sonnet-5-5-gpt-6-1-sol": {
+   "channel": "prtimes",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000052.000149337.html",
+   "title": "AIO分析AI HackがClaude Sonnet 5.5とGPT-6.1 Solに対応"
+  },
+  "ai-labs-warn-inevitable-breach-and-race": {
+   "channel": "ai-explained",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "主要AI企業が警告する『大惨事の不可避性』と加速する開発競争の裏側",
+   "videoUrl": "https://www.youtube.com/watch?v=C4Sq3Rot8FU"
+  },
+  "ai-scout-kanrikun-200-companies": {
+   "channel": "prtimes",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000117.000019706.html",
+   "title": "新卒採用向けスカウト自動化サービス「AIスカウトかんりくん」が導入200社を突破"
+  },
+  "aimoka-starter-pack-website": {
+   "channel": "prtimes-all",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000007.000167635.html",
+   "title": "あいもかが提供する、制作費0円で月額制のホームページ制作パックが新登場"
+  },
+  "alice-gakuen-october-enrollment-2026": {
+   "channel": "value-press",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.value-press.com/pressrelease/382552",
+   "title": "専門学校アリス学園が10月期入学式を開催し、留学生が新たな学びをスタート"
+  },
+  "all-japan-adult-table-tennis-2026": {
+   "channel": "jtta",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://jtta.or.jp/news/38622",
+   "title": "日本卓球協会の全日本社会人選手権が閉幕　松下大星と永尾尭子がシングルス初優勝"
+  },
+  "amagasaki-takumi-championship-2026": {
+   "channel": "kyodo-prwire",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://kyodonewsprwire.jp/release/202610268686",
+   "title": "高校生も参加して技術を競う「尼崎ものづくり未来の匠選手権」が11月に開催"
+  },
+  "amakusa-vacant-house-migration": {
+   "channel": "yukkuri-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "熊本県天草市で月額2万円のオーシャンビュー空き家を活用した地方移住の取り組み",
+   "videoUrl": "https://www.youtube.com/watch?v=Y_ddqmpOo_c"
+  },
+  "anthropic-claude-opus-5-5-released": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Anthropic、自律操作を極めた「Claude Opus 5.5」を公開　コスト40%削減でFable同等性能",
+   "videoUrl": "https://www.youtube.com/watch?v=OWu2kjKrRTA"
+  },
+  "anthropic-claude-opus-55-automated-ai-research": {
+   "channel": "ai-explained",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Anthropicの最新AI「Claude Opus 5.5」発表、AIによる研究自動化が進展",
+   "videoUrl": "https://www.youtube.com/watch?v=R9momwXV9w4"
+  },
+  "anthropic-sonnet-5-5-ai-efficiency": {
+   "channel": "two-minute-papers",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "AnthropicのAI「Sonnet 5.5」公開、低コストで高度な計算を再現可能に",
+   "videoUrl": "https://www.youtube.com/watch?v=ZHVNTTKu9fU"
+  },
+  "apartment-loan-interest-rate-risk-guide": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "アパートローンの金利上昇リスクと大家の対策。返済額増に備えるチェック法",
+   "videoUrl": "https://www.youtube.com/watch?v=rB-83w0S1tI"
+  },
+  "apartment-management-crisis-small-scale": {
+   "channel": "nikkei",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "管理会社が小規模マンションの契約を打ち切る背景と、住民ができる対策",
+   "videoUrl": "https://www.youtube.com/watch?v=HT96T9vUB-U"
+  },
+  "apartment-management-self-and-incorporation-strategy-matome": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-roundup",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "アパート経営を成功させる3つの戦略。自主管理や法人化の判断基準を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=alGjfEes5ZA"
+  },
+  "apple-foldable-iphone-duo-analysis": {
+   "channel": "nikkei",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "折りたたみiPhone「Duo」を分析。新CEOが挑むAIと市場規制の課題",
+   "videoUrl": "https://www.youtube.com/watch?v=m4_t43gVdYk"
+  },
+  "asics-vissel-kobe-its-my-day-event": {
+   "channel": "prtimes-all",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000340.000020802.html",
+   "title": "アシックスが子ども向けサッカーイベントを開催、スパイク体験や手入れを指導"
+  },
+  "asset-10m-investment-strategy-5-steps": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "資産1000万円達成後の投資戦略、NISA活用や現金配分など次にやるべき5つの手順",
+   "videoUrl": "https://www.youtube.com/watch?v=p4EtZee4ndM"
+  },
+  "asset-30-million-compound-interest-allocation": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "資産3000万円の運用シミュレーション。年利5％で増やす手法と暴落リスクへの備え",
+   "videoUrl": "https://www.youtube.com/watch?v=h8ZUn16gIPE"
+  },
+  "asset-30-million-investment-strategy": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "資産3000万円到達後の投資戦略。複利効果を活かしつつ守りの資産を整える方法",
+   "videoUrl": "https://www.youtube.com/watch?v=KHaLbqNa5-Y"
+  },
+  "asset-50-million-yen-investment-strategy": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "資産5000万円で投資はどう変わる。不労所得の計算と暴落に備える分散投資術",
+   "videoUrl": "https://www.youtube.com/watch?v=EI5gB7WA2DM"
+  },
+  "asset-50million-mindset-and-frugality": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "資産5000万円でもお金を使えない。節約の呪縛を解き本当の豊かさを得る考え方",
+   "videoUrl": "https://www.youtube.com/watch?v=BhjI7fO1pF8"
+  },
+  "asset-50million-yen-investment-strategy": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "資産5000万円到達後の運用戦略。税金対策と生活費を補う取り崩しルールの活用",
+   "videoUrl": "https://www.youtube.com/watch?v=v4_0W7eq30k"
+  },
+  "asset-stage-investment-strategy-portfolio-matome": {
+   "channel": "bank-academy",
+   "reason": "creator-roundup",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "新NISAで資産を増やすロードマップ。1000万から5000万超のステージ別運用術",
+   "videoUrl": "https://www.youtube.com/watch?v=D90q4XV8U4Y"
+  },
+  "atam-academy-drawing-survey-causes": {
+   "channel": "value-press",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.value-press.com/pressrelease/383143",
+   "title": "子どものお絵描き苦手意識、原因1位は「周りと比べること」アタムアカデミー調査"
+  },
+  "attic-family-jewels-auction-100m-yen": {
+   "channel": "atpress",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.atpress.ne.jp/news/644497",
+   "title": "屋根裏から見つかった祖母のジュエリーコレクション、英国のオークションで約1億円の高値"
+  },
+  "awaji-hello-kitty-apple-land-autumn-food": {
+   "channel": "atpress",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.atpress.ne.jp/news/644455",
+   "title": "淡路島のハローキティ施設で秋限定メニュー。アフタヌーンティーなどが登場"
+  },
+  "babylon-rich-man-seven-rules": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "名著『バビロンの大富豪』に学ぶ資産形成、現代でも使える7つの教えと実践法",
+   "videoUrl": "https://www.youtube.com/watch?v=RzpQFYyVsXE"
+  },
+  "bitcoin-market-outlook-2026-bottom-2029-peak": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "ビットコインは2026年秋に底打ちか、次なる最高値は2029年と専門家が予測",
+   "videoUrl": "https://www.youtube.com/watch?v=1knkvspYQlU"
+  },
+  "biztex-executive-ai-1day-training": {
+   "channel": "prtimes",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000137.000027337.html",
+   "title": "BizteX、経営者向けAI 1DAY講習を開始 Claude Codeで自社アプリを作る"
+  },
+  "blog-sns-marketing-strategy": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "ブログ副業で月100万円を目指す集客術、SNS連携とAI活用による効率化の極意",
+   "videoUrl": "https://www.youtube.com/watch?v=peVXIxo74Uo"
+  },
+  "boj-balance-sheet-reduction-hidden-rate-hike": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "日銀の「バランスシート縮小」とは何か、金利上昇が家計に与える影響を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=JeG_-PgAjSM"
+  },
+  "boj-cpmi-payment-system-report": {
+   "channel": "boj",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.boj.or.jp/paym/intlact_pm/cpss/cpss261102a.htm",
+   "title": "日本銀行とBISの決済委員会が報告書を公表、進化する決済システムと中央銀行マネーの役割を整理"
+  },
+  "boj-current-account-october": {
+   "channel": "boj",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "http://www.boj.or.jp/statistics/boj/fm/juqf/juqf10.xlsx",
+   "title": "日本銀行が10月の日銀当座預金増減要因を発表、金融調節の動向を示す"
+  },
+  "boj-interest-rate-raise-impact": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "日銀の利上げで生活はどう変わる、住宅ローンや投資への影響を専門家が解説",
+   "videoUrl": "https://www.youtube.com/watch?v=y1KqVcVJvzw"
+  },
+  "boj-outlook-report-october": {
+   "channel": "boj",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "http://www.boj.or.jp/mopo/outlook/gor2610b.pdf",
+   "title": "日本銀行が「経済・物価情勢の展望」を公表、今後の金融政策と物価の見通しは"
+  },
+  "boj-ueda-press-conf-oct30": {
+   "channel": "boj",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.boj.or.jp/about/press/kaiken_2026/kk261102a.pdf",
+   "title": "日本銀行の植田総裁、10月30日の記者会見を実施　金利や景気の動向について語る"
+  },
+  "bosaicho-launch-2026-11-02": {
+   "channel": "gov-online",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.gov-online.go.jp/press_conferences/prime_minister/202611/video-327015.html",
+   "title": "防災庁が令和8年11月2日に発足　高市総理が看板掛けと訓示を実施"
+  },
+  "bunkyo-chinese-school-district-real-estate": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "文京区の在留外国人54%が中国人、名門公立小「3S1K」学区で起きている不動産爆買いの実態",
+   "videoUrl": "https://www.youtube.com/watch?v=mXuYgqN2PyI"
+  },
+  "can-investment-bring-true-happiness": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "投資で人は本当に幸せになれるのか、元17LIVEのCEOと僧侶が語る資本主義の限界",
+   "videoUrl": "https://www.youtube.com/watch?v=uiBLLXJLSqo"
+  },
+  "car-insurance-premium-saving-tips": {
+   "channel": "nikkei",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "自動車保険料の値上げ対策。車両保険のタイプ変更や運転者の年齢制限を見直して家計負担を抑える方法",
+   "videoUrl": "https://www.youtube.com/watch?v=541mgSAJAb0"
+  },
+  "cash-only-professional-turns-real-estate-investor": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "現金派の士業が不動産投資家に転身。自宅売却益を元手に融資を活用して資産を拡大した戦略",
+   "videoUrl": "https://www.youtube.com/watch?v=i0gW7hTiA9w"
+  },
+  "cccskills-ai-agent-skills-market": {
+   "channel": "prtimes",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000083.000041726.html",
+   "title": "日本語で探せるAgent Skillsマーケット「cccskills」公開、約9.5万件を網羅"
+  },
+  "china-ai-kimi-k3-semiconductor-smuggling": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "中国AI「Kimi K3」に高性能半導体の密輸疑惑。米国の輸出規制が及ぼす影響",
+   "videoUrl": "https://www.youtube.com/watch?v=2adBRiJryLA"
+  },
+  "china-ai-semiconductor-investment-communist-party-congress-2": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "中国がAI半導体への投資を加速。2027年に向けた国策と過剰投資のリスク",
+   "videoUrl": "https://www.youtube.com/watch?v=S5u08MDHI14"
+  },
+  "china-democratization-geopolitical-risk": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "中国の民主化が日本に与える影響とは。高度人材の流出と技術競争の行方",
+   "videoUrl": "https://www.youtube.com/watch?v=YF6ekSQTUlc"
+  },
+  "china-economy-real-estate-depression-l-shape": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "中国の不動産不況は最低5年続く、専門家が指摘する「L字型」推移と複利債務の深刻リスク",
+   "videoUrl": "https://www.youtube.com/watch?v=NbXq9Mh0-z8"
+  },
+  "china-political-risk-economic-control": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "習近平政権の独裁強化で中国経済はどうなる。統制と成長の矛盾を専門家が分析",
+   "videoUrl": "https://www.youtube.com/watch?v=Zhw3xhOmiNI"
+  },
+  "china-tech-emigration-risk": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "中国で進むベンチャーの「官僚資本化」と技術者の出国禁止リスク",
+   "videoUrl": "https://www.youtube.com/watch?v=EKg5LK7WRqI"
+  },
+  "chinese-buyers-selling-japanese-real-estate": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "中国人の日本不動産「爆買い」は終焉へ、規制強化で売却と第三国への再移住が加速する実態",
+   "videoUrl": "https://www.youtube.com/watch?v=Lp4IonTzGyQ"
+  },
+  "claude-opus-5-5-gpt-6-sol-luna-release": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "AnthropicがClaude Opus 5.5を発表　OpenAIもGPT-6 SolとLunaで対抗",
+   "videoUrl": "https://www.youtube.com/watch?v=5MFORiebZks"
+  },
+  "claude-opus-5-5-physics-simulation-leap": {
+   "channel": "two-minute-papers",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "AnthropicのAI「Claude 5.5 Opus」公開。高度な物理計算コードを自動生成",
+   "videoUrl": "https://www.youtube.com/watch?v=SA9kdAX2Zj0"
+  },
+  "claude-opus-55-comprehensive-analysis-matome": {
+   "channel": "ai-explained",
+   "reason": "creator-roundup",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "新AI「Claude Opus 5.5」の性能を解説。コスト削減と自律操作能力が向上",
+   "videoUrl": "https://www.youtube.com/watch?v=R9momwXV9w4"
+  },
+  "claude-text-watermark-fingerprint": {
+   "channel": "two-minute-papers",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Anthropic、Claudeの生成テキストに不可視の「電子透かし」を導入。統計的バイアスによる検出技術の全容",
+   "videoUrl": "https://www.youtube.com/watch?v=YoEWjZSwoys"
+  },
+  "coast-fire-guide-investment-balance": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "老後資金を確保して投資を止める「コーストFIRE」とは？新NISA時代の資産形成術",
+   "videoUrl": "https://www.youtube.com/watch?v=K20SU5PHEI4"
+  },
+  "commute-time-opportunity-cost-libe": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "通勤時間は「労働」と同じ？リベ大・両学長が説く時間単価の思考法と通勤削減の経済合理性",
+   "videoUrl": "https://www.youtube.com/watch?v=gf2mBN6bIfc"
+  },
+  "comprehensive-guide-to-personal-asset-building-matome": {
+   "channel": "liberal-arts",
+   "reason": "creator-roundup",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "貯める・増やす・守るの基本を解説。資産形成の考え方と制度改正への対処法まとめ",
+   "videoUrl": "https://www.youtube.com/watch?v=ReVTw7qH33I"
+  },
+  "covid19-bankruptcy-october-2026": {
+   "channel": "tsr",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.tsr-net.co.jp/data/detail/1203394_1527.html",
+   "title": "新型コロナ関連の倒産、10月は125件で一進一退続く　累計は1万4825件に"
+  },
+  "currency-intervention-limit-and-structural-yen-depreciation": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "為替介入の限界と円安の背景を解説。日銀の利上げが招く欧州国債の暴落リスクとは",
+   "videoUrl": "https://www.youtube.com/watch?v=J607iRf5r5s"
+  },
+  "deepseek-ocr-optical-compression": {
+   "channel": "two-minute-papers",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "DeepSeekがOCR光学的圧縮を発表、文書を画像化しトークン数を10分の1に削減",
+   "videoUrl": "https://www.youtube.com/watch?v=4fLVq6HJsKc"
+  },
+  "deepseek-v4-1-flash-architecture-optimization-report": {
+   "channel": "bycloud",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "DeepSeek、超巨大文脈を極小メモリで動かす「DeepSeek-V4.1-Flash」発表",
+   "videoUrl": "https://www.youtube.com/watch?v=CsSnSBCVoDU"
+  },
+  "deepseek-v4-1-flash-kv-cache-compression": {
+   "channel": "two-minute-papers",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "DeepSeek V4.1 Flash発表、KVキャッシュを437分の1へ圧縮しVRAM消費を格段に削減",
+   "videoUrl": "https://www.youtube.com/watch?v=vIHw_2VjSUw"
+  },
+  "deepseek-v41-flash-1017-self-feedback": {
+   "channel": "two-minute-papers",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "中国DeepSeekの無料AIモデル「4.1 Flash 1017」登場　費用は15分の1でアプリ開発も進化",
+   "videoUrl": "https://www.youtube.com/watch?v=pryCaGv8wuo"
+  },
+  "deepseek-v41-flash-review-benchmarks": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "中国AIのDeepSeekが新モデル「V4.1 Flash」公開　格安・爆速でアプリ開発までこなす",
+   "videoUrl": "https://www.youtube.com/watch?v=DDZ-a6bAn3Y"
+  },
+  "defense-special-income-tax-explained": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "2027年開始の「防衛特別所得税」とは？復興税の延長とあわせた増税の仕組みを解説",
+   "videoUrl": "https://www.youtube.com/watch?v=ydgqs9Vlc9U"
+  },
+  "dentsu-digital-oneid-marketing-amazon": {
+   "channel": "prtimes",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000302.000121065.html",
+   "title": "電通デジタル、Amazonのデータと生成AIで購買行動を検証する「購買市場OneIDマーケティング」提供開始"
+  },
+  "diet-members-asset-disclosure-meaningless": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "衆院議員の資産公開制度に5つの抜け穴　預金や株が除外され実態が反映されない現状",
+   "videoUrl": "https://www.youtube.com/watch?v=ReVTw7qH33I"
+  },
+  "durable-skill-product-engineering-2026": {
+   "channel": "microsoft-developer",
+   "reason": "duplicate",
+   "redirect": "durable-skill-software-engineer-2026-kent-c-dodds",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "2026年のエンジニアに必要な不変の技術、Kent C. Dodds氏が語る「プロダクトエンジニアリング」の本質",
+   "videoUrl": "https://www.youtube.com/watch?v=I8rx6CUMVzc"
+  },
+  "earthquake-resistant-wooden-house-lessons": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "地震に強い木造住宅を選ぶには　耐震等級の落とし穴と地盤確認の重要ポイントを解説",
+   "videoUrl": "https://www.youtube.com/watch?v=--kyzoeUuBk"
+  },
+  "eight-sleep-pod-review-matthew-berman": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "AI搭載スマート寝具「Eight Sleep Pod」で睡眠を最適化、Matthew Berman氏が実践する活用法",
+   "videoUrl": "https://www.youtube.com/watch?v=bn4uvtg8ECY"
+  },
+  "elderly-housing-apartment-investment-strategy": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "築古アパートを高齢者向け賃貸として再生　利回り30％超を目指す投資と融資の戦略",
+   "videoUrl": "https://www.youtube.com/watch?v=alGjfEes5ZA"
+  },
+  "emin-inflation-mindset-investment": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "物価上昇は恐れる必要なし　賃金と物価が共に上がるインフレ環境の利点を専門家が解説",
+   "videoUrl": "https://www.youtube.com/watch?v=WaBK_Rz4MOA"
+  },
+  "emin-yurmaz-forex-intervention-nikkei-forecast": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "1ドル200円の可能性と日本経済の行方　為替介入の限界と長期的な株価予測を専門家が解説",
+   "videoUrl": "https://www.youtube.com/watch?v=-tkiIWaBWwE"
+  },
+  "emotional-cost-investment-emin-yurmaz": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "投資の「感情コスト」にどう向き合うか エミン・ユルマズ氏が説く売り急ぎを防ぐ投資心理学",
+   "videoUrl": "https://www.youtube.com/watch?v=I5YhjuV0Dbg"
+  },
+  "eurozone-gdp-2026-q3-slowdown": {
+   "channel": "nli-research",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.nli-research.co.jp/topics_detail1/id=87234?site=nli",
+   "title": "ユーロ圏GDP（2026年7-9月期）は前期比0.4%増、主要4か国で伸び率が低下"
+  },
+  "financial-assets-10m-regret-and-scam": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "資産1000万円超の約半数が抱える「お金を使わなかった後悔」と詐欺被害への注意喚起",
+   "videoUrl": "https://www.youtube.com/watch?v=vwkpm1q9Ah0"
+  },
+  "fire-cabaret-investment-leverage-risk": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "元野村証券キャバ嬢の「最大の後悔」に学ぶ、会社員の与信と不動産ローン活用の重要性",
+   "videoUrl": "https://www.youtube.com/watch?v=IJYdvSD8JdI"
+  },
+  "first-step-to-financial-freedom-saving-power": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "経済的自立を目指すなら「貯める力」が最優先。リベ大が教える貯蓄の目安と仕組み",
+   "videoUrl": "https://www.youtube.com/watch?v=IYAUTjJu6ck"
+  },
+  "five-financial-skills-for-building-wealth": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "一生お金に困らないための5つの力とは。リベ大が解説する資産形成の基本構造",
+   "videoUrl": "https://www.youtube.com/watch?v=EGzeU8QEw2E"
+  },
+  "five-habits-preventing-saving-money": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "お金が貯まらない人の5つの口癖、リベ大が指摘する『優先順位』と『他人軸』の罠",
+   "videoUrl": "https://www.youtube.com/watch?v=xvywItKLQoU"
+  },
+  "five-major-trading-companies-business-model": {
+   "channel": "nikkei",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "5大商社の最新戦略。資源からAI・流通へ、事業投資で稼ぐ仕組みを解説",
+   "videoUrl": "https://www.youtube.com/watch?v=IOj5LGEq8CE"
+  },
+  "food-tax-reduction-interest-rate-risk": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "食品消費税1%への減税がもたらす金利上昇リスク、不動産オーナーが備えるべき「9%の崖」",
+   "videoUrl": "https://www.youtube.com/watch?v=zelYlq9sGCc"
+  },
+  "foreign-real-estate-regulation-japan": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "日本の不動産に外国人ルールは必要か。海外転売や所有者不明化への対策",
+   "videoUrl": "https://www.youtube.com/watch?v=MafbO9l9F5U"
+  },
+  "forex-intervention-boj-rate-hike-outlook": {
+   "channel": "nikkei",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "為替介入の裏側と10月の利上げ予測。日銀の政策で金利はどう変わるか",
+   "videoUrl": "https://www.youtube.com/watch?v=uulSwSasi3g"
+  },
+  "forex-intervention-tax-cut-market-outlook": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "為替介入と食料品減税が株価に与える影響。専門家が解説する投資のリスク",
+   "videoUrl": "https://www.youtube.com/watch?v=3PeWGtgFw-k"
+  },
+  "fpt-servicenow-service-provider-2026": {
+   "channel": "prtimes-all",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000141.000017750.html",
+   "title": "FPTがServiceNow Service Providerに正式認定、日本市場でのDX支援を強化"
+  },
+  "fsa-fatf-statement-2026-10": {
+   "channel": "fsa",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.fsa.go.jp/inter/fatf/20261102/20261102.html",
+   "title": "金融庁、2026年10月のFATF声明を公表　資金洗浄対策の対象国地域を指定"
+  },
+  "fsa-nisa-request-claude-fable-five-one": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "金融庁がNISA枠の年内再利用を要望、リベ大両学長が語る「Claude Fable 5.1」と高利回り商品のリスク",
+   "videoUrl": "https://www.youtube.com/watch?v=qPRy2lkNWac"
+  },
+  "fuchu-wooden-apartment-investment-case-study": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "築古アパートを3500万円で買い8500万円で売却。9年間の収支と成功の理由",
+   "videoUrl": "https://www.youtube.com/watch?v=yaEGOgEb5qA"
+  },
+  "fund-manager-selling-logic-boredom": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "「飽きたから売る」は本当か。プロが教える成長株投資の合理的な売り時",
+   "videoUrl": "https://www.youtube.com/watch?v=HJpoQvEBZ5E"
+  },
+  "fx-loss-automated-trading-failure": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "FXで1億円を失った失敗事例。自動売買と手動取引の併用が招いた破綻の教訓",
+   "videoUrl": "https://www.youtube.com/watch?v=TMj_G2V0xUg"
+  },
+  "fx-loss-hori-daisuke-morinaga": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "FXで1億円を失った堀大輔氏が語る失敗の真相。為替介入と判断ミスの全貌",
+   "videoUrl": "https://www.youtube.com/watch?v=oxwh4W_w2Lw"
+  },
+  "game-stocks-long-term-outlook-nintendo-sony": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "ゲーム株は今後も伸びるか 任天堂やソニーの成長性と投資の考え方",
+   "videoUrl": "https://www.youtube.com/watch?v=1w3n6SOXwas"
+  },
+  "gemini-4-argon-excel-clone-demo": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Gemini 4 ArgonのExcelクローンは何ができる？20分デモと利用条件",
+   "videoUrl": "https://www.youtube.com/watch?v=YMulO01LMBE"
+  },
+  "gemini-4-argon-google-builders": {
+   "channel": "google-gemini-blog",
+   "reason": "duplicate",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://blog.google/products-and-platforms/products/gemini/gemini-4-argon-builders/",
+   "title": "Googleの高性能AI「Gemini 4 Argon」が登場 開発者向けに提供開始"
+  },
+  "gemini-live-langsmith-observability": {
+   "channel": "google-developers",
+   "reason": "duplicate",
+   "redirect": "voice-agent-observability-langsmith-gemini-live",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Googleの音声AI「Gemini Live」をLangSmithで可視化する開発手法",
+   "videoUrl": "https://www.youtube.com/watch?v=bo4ebVkhp28"
+  },
+  "gemini-robotics-2-dexterity": {
+   "channel": "google-deepmind",
+   "reason": "duplicate",
+   "redirect": "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google DeepMind、高度な器用さを実現する「Gemini Robotics 2」を発表",
+   "videoUrl": "https://www.youtube.com/watch?v=wYVHxw2-DP4"
+  },
+  "gemini-robotics-2-whole-body-control": {
+   "channel": "google-deepmind",
+   "reason": "duplicate",
+   "redirect": "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google DeepMind、全身制御を可能にする物理AI「Gemini Robotics 2」を公開",
+   "videoUrl": "https://www.youtube.com/watch?v=nBftSI5mmHA"
+  },
+  "gemma-4-12b-encoder-free-explained": {
+   "channel": "google-developers",
+   "reason": "duplicate",
+   "redirect": "google-deepmind-gemma-4-family-explained",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google DeepMind、エンコーダーを廃した軽量マルチモーダルモデル「Gemma 4 12B」の構造を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=YDCB8Bk1OBE"
+  },
+  "gemma-4-per-layer-embeddings-explained": {
+   "channel": "google-developers",
+   "reason": "duplicate",
+   "redirect": "google-deepmind-gemma-4-family-explained",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google、Gemma 4に搭載した「レイヤー別埋め込み（PLE）」の技術仕様を公開",
+   "videoUrl": "https://www.youtube.com/watch?v=s82Ho5HdltE"
+  },
+  "gemma-4-ple-architecture-explained-matome": {
+   "channel": "google-developers",
+   "reason": "creator-roundup",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "レイヤー別埋め込み（PLE）搭載のGemma 4ファミリー徹底解説、3本の公式資料から紐解く新世代アーキテクチャ",
+   "videoUrl": "https://www.youtube.com/watch?v=s82Ho5HdltE"
+  },
+  "github-copilot-native-app-ga": {
+   "channel": "microsoft-developer",
+   "reason": "duplicate",
+   "redirect": "github-copilot-native-app-released",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "GitHubがネイティブ版「GitHub Copilot app」を一般提供開始、エージェント型開発や法務での活用も",
+   "videoUrl": "https://www.youtube.com/watch?v=s3ZzQKsClr0"
+  },
+  "global-x-japan-rakumachi-tieup-marketing": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "合計80万回再生の裏側、Global X Japanが語る「専門性×エンタメ」タイアップの費用対効果",
+   "videoUrl": "https://www.youtube.com/watch?v=jXqRu03RPJA"
+  },
+  "gold-market-trends-investment-strategy-2026": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "金価格が上昇傾向へ、財政不安が続く中で個人投資家がとるべき積立投資の考え方",
+   "videoUrl": "https://www.youtube.com/watch?v=bjlDxyqsd7A"
+  },
+  "google-ai-studio-nano-banana-2-1": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google AI Studioに新型画像生成モデル「Nano Banana 2.1」が登場、探し方と実力を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=EItxPNgKOX4"
+  },
+  "google-deepmind-gemini-robotics-2-announcement": {
+   "channel": "google-deepmind",
+   "reason": "duplicate",
+   "redirect": "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google DeepMind、全身の自律制御と複数ロボット協調を実現する「Gemini Robotics 2」を発表",
+   "videoUrl": "https://www.youtube.com/watch?v=4lSQnrMC6nY"
+  },
+  "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k": {
+   "channel": "google-developers",
+   "reason": "duplicate",
+   "redirect": "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google DeepMind、汎用AIモデル群「Gemini Robotics 2」を発表",
+   "videoUrl": "https://www.youtube.com/watch?v=-rYFDefcq3k"
+  },
+  "google-deepmind-gemini-robotics-2-announcement-oemefobzode": {
+   "channel": "google-deepmind",
+   "reason": "duplicate",
+   "redirect": "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google DeepMind、自律型ロボット基盤モデル Gemini Robotics 2 を発表",
+   "videoUrl": "https://www.youtube.com/watch?v=OEmEfobzodE"
+  },
+  "google-deepmind-gemini-robotics-2-dexterity": {
+   "channel": "google-deepmind",
+   "reason": "duplicate",
+   "redirect": "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google DeepMindがGemini Robotics 2を公開、多指ハンドとグリッパーの物理的器用さを自律制御",
+   "videoUrl": "https://www.youtube.com/watch?v=O9-650iHAls"
+  },
+  "google-deepmind-gemini-robotics-2-multi-robot": {
+   "channel": "google-deepmind",
+   "reason": "duplicate",
+   "redirect": "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google DeepMind、複数ロボットが自律対話で分業する「Gemini Robotics 2」公開",
+   "videoUrl": "https://www.youtube.com/watch?v=CiTPDm7PKW0"
+  },
+  "google-deepmind-gemini-robotics-2-whole-body-control": {
+   "channel": "google-deepmind",
+   "reason": "duplicate",
+   "redirect": "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google DeepMind、全身協調制御を実現するフィジカルAIモデル「Gemini Robotics 2」を発表",
+   "videoUrl": "https://www.youtube.com/watch?v=9MNLEAzA59o"
+  },
+  "google-deepmind-genie-4-world-model": {
+   "channel": "google-developers",
+   "reason": "duplicate",
+   "redirect": "google-genie-4-world-model",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google DeepMindが新AI「Genie 4」発表　映像と音声が動的に連動する世界モデル",
+   "videoUrl": "https://www.youtube.com/watch?v=LOP8ul3KqQI"
+  },
+  "google-deepmind-genie-4-world-model-sffpkujd_jk": {
+   "channel": "google-deepmind",
+   "reason": "duplicate",
+   "redirect": "google-genie-4-world-model",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google DeepMind、言葉で遊べる世界を作る新AI「Genie 4」を発表　操作も自由自在",
+   "videoUrl": "https://www.youtube.com/watch?v=sFfPkUJd_Jk"
+  },
+  "google-fruit-fly-brain-simulation": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Googleがハエの脳をデジタルで再現。神経回路の地図を作り行動をシミュレーション",
+   "videoUrl": "https://www.youtube.com/watch?v=S4VUMFELhaQ"
+  },
+  "google-gemini-4-argon-frontier-model": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google DeepMind、最先端LLM「Gemini 4 Argon」を公開　高度なコード生成と3D描画に対応",
+   "videoUrl": "https://www.youtube.com/watch?v=M8iqahFogtA"
+  },
+  "google-gemini-4-argon-review-alignment-issues": {
+   "channel": "two-minute-papers",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Google Gemini 4 Argon検証、会話力向上の一方で評価環境の意図的破壊などアライメント課題浮き彫り",
+   "videoUrl": "https://www.youtube.com/watch?v=LWxX6vvHfrc"
+  },
+  "google-gemini-4-carbon-announcement": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "GoogleのAI「Gemini 4 Carbon」が性能首位に！2週間での急進化と利用条件とは",
+   "videoUrl": "https://www.youtube.com/watch?v=3yZb9rGt-rk"
+  },
+  "google-gemini-4-carbon-announcement-zhnjo7s91ls": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Googleの生成AI「Gemini」に最新モデル「Gemini 4 Carbon」登場　総合首位で料金も手頃に",
+   "videoUrl": "https://www.youtube.com/watch?v=zhnJo7s91ls"
+  },
+  "google-gemini-live-plant-robot-sprout": {
+   "channel": "google-developers",
+   "reason": "duplicate",
+   "redirect": "google-gemini-live-sprout-plant-robot",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "GoogleのAI「Gemini Live」で植物が自律移動　日光を探して会話するロボット「Sprout」開発",
+   "videoUrl": "https://www.youtube.com/watch?v=cv8tEbKtEvk"
+  },
+  "goyokiki-doctor-online-consultation-survey": {
+   "channel": "prtimes-all",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000071.000049934.html",
+   "title": "オンライン診療の悩み1位は不眠、全体の35%超を占める iput調べ"
+  },
+  "gpt-6-astra-autonomous-design-iteration": {
+   "channel": "openai",
+   "reason": "duplicate",
+   "redirect": "openai-gpt-6-astra-first-impressions-n-dqdvmwoas",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAIの新AI「GPT-6 Astra」公開。デザインを自律的に修正・補完",
+   "videoUrl": "https://www.youtube.com/watch?v=ZlvkQYZo3ZE"
+  },
+  "gpt-6-astra-designer-first-impressions": {
+   "channel": "openai",
+   "reason": "duplicate",
+   "redirect": "openai-announces-gpt-6-astra",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAIの「GPT-6 Astra」はデザイナーの味方。UI作成が効率化へ",
+   "videoUrl": "https://www.youtube.com/watch?v=QDLlQ5IL2Bk"
+  },
+  "gpt-6-astra-physics-simulation-reproduction": {
+   "channel": "two-minute-papers",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAIの「GPT-6 Astra」が論文から物理シミュレーターを自動生成",
+   "videoUrl": "https://www.youtube.com/watch?v=eVBJIUxv8N8"
+  },
+  "grok-bot-personal-ai-agent-usecases": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "個人向けAI「GrokBot」で何ができる？メールや家電を自動化する活用術",
+   "videoUrl": "https://www.youtube.com/watch?v=BsNHg6cNjZE"
+  },
+  "hatoyama-kaikan-real-estate-regulation": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "築102年の「鳩山会館」を維持する苦労とは。都心不動産の規制と現実",
+   "videoUrl": "https://www.youtube.com/watch?v=I0l3yEqi9wk"
+  },
+  "heavy-industries-sector-analysis-2026": {
+   "channel": "nikkei",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "防衛や宇宙で活況の重工業界。主要5社の最新業績と成長分野を徹底比較",
+   "videoUrl": "https://www.youtube.com/watch?v=j2lq6x-ErDw"
+  },
+  "higgsfield-multi-model-video-api-launch": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "米Higgsfieldの動画生成AI APIが登場　複数の最新モデルを従量課金で統合利用可能に",
+   "videoUrl": "https://www.youtube.com/watch?v=_7f2k3g4ym8"
+  },
+  "high-cost-medical-expense-benefit-revision-2026": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "2026年の高額療養費制度改正　現役世代の負担増と正しい備え方を専門家が解説",
+   "videoUrl": "https://www.youtube.com/watch?v=v2Q3u9imMY0"
+  },
+  "high-dividend-stock-30million-yen-milestone": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "資産3000万円で月10万円の不労所得　高配当株投資で生活にゆとりを作る方法",
+   "videoUrl": "https://www.youtube.com/watch?v=fmIWVhS2w8g"
+  },
+  "high-dividend-stock-investment-strategy": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "資産10億円の投資家が教える高配当株戦略　AI相場でも安定した銘柄の選び方",
+   "videoUrl": "https://www.youtube.com/watch?v=7iMpBdBMZM0"
+  },
+  "hokuriku-electric-hokulink-leak": {
+   "channel": "trends",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://news.yahoo.co.jp/articles/1a2e6ef472c5df46ae574d193f1d60e20907ef27",
+   "title": "北陸電力の「ほくリンク」会員約55万件のメールアドレスが流出、委託先のメール配信サービスで不正アクセス"
+  },
+  "housing-leaseback-risks-and-regulations": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "国土交通省が規制へ、住宅リースバックに潜む「安価な買いたたき」と「強制退去」の罠",
+   "videoUrl": "https://www.youtube.com/watch?v=ZiL40TuFNSc"
+  },
+  "how-to-spend-money-for-happiness-liberal-arts-university": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "お金の使い方で幸福度は変わる　満足度を高める支出の3つの基準を学長が解説",
+   "videoUrl": "https://www.youtube.com/watch?v=L6WWrPJNXWc"
+  },
+  "hyper-growth-stocks-kubota-kenmo-saas-semiconductor": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "伝説の運用者が語る「超成長株」の条件　半導体やSaaS銘柄の投資判断を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=RKclbBrjCno"
+  },
+  "hyperscaler-datacenter-off-balance-debt": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "データセンター開発に潜む「隠れ借金1.6兆ドル」、エミン氏が指摘する巨大ITの社債リスク",
+   "videoUrl": "https://www.youtube.com/watch?v=bsJUc_9kGrE"
+  },
+  "igakushoin-ptashop-goods-2026": {
+   "channel": "prtimes-all",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000007784.000005875.html",
+   "title": "医学書院、社名ロゴTシャツや『ケアをひらく』新作を発売"
+  },
+  "inflation-value-stocks-j-reit-analysis": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "インフレ期に輝くバリュー株と地味な成長株の選び方、日本製鉄やJ-REITの投資価値をプロが解説",
+   "videoUrl": "https://www.youtube.com/watch?v=BUVsxpV2eZg"
+  },
+  "inheritance-tax-5-year-rule-real-estate": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "2027年導入の相続税「5年ルール」とは、不動産による節税が制限される仕組み",
+   "videoUrl": "https://www.youtube.com/watch?v=-cDDN7clkck"
+  },
+  "inherited-house-abandoned-risks": {
+   "channel": "ienomikata",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "相続した実家を放置するリスクとは、登記義務化や維持費の注意点を専門家が解説",
+   "videoUrl": "https://www.youtube.com/watch?v=O1phqYmQ2XE"
+  },
+  "interest-rate-rise-financial-defense": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "政策金利2.5%時代に備える、預金・国債・不動産の資産防衛策を専門家が解説",
+   "videoUrl": "https://www.youtube.com/watch?v=N4xIsDpu354"
+  },
+  "investment-community-risk-leverage-rule": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "FXや株で「徒党を組む」ことの危うさ、アナリストが語る投資コミュニティの真実とリスク管理の鉄則",
+   "videoUrl": "https://www.youtube.com/watch?v=aYlS86xGEcE"
+  },
+  "investment-first-year-guide-nisa-bank-academy": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "投資1年目の完全ガイド、新NISAの活用法と失敗しないための手順を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=NqwuNlZJy1s"
+  },
+  "itoham-yonekyu-future-logistics-project": {
+   "channel": "kyodo-prwire",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://kyodonewsprwire.jp/release/202610268660",
+   "title": "伊藤ハム米久とフューチャー、物流の「2024年問題」解消へデータ基盤を構築"
+  },
+  "iwate-real-estate-investment-guide": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "岩手県での不動産投資をプロが解説、雪国特有の駐車場や除雪の注意点",
+   "videoUrl": "https://www.youtube.com/watch?v=Bo0FcwhKwE4"
+  },
+  "japan-ai-infrastructure-software-market": {
+   "channel": "dreamnews",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.dreamnews.jp/press/0000366533",
+   "title": "日本AIインフラストラクチャー市場調査：GPUオーケストレーションやMLOpsが注目される理由"
+  },
+  "japan-china-relations-geopolitical-risk-real-estate": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "日中関係の悪化が日本の不動産市場に影、都心マンションへの影響を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=6m02SvWbmk4"
+  },
+  "japan-china-relations-investment-trends": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "日中関係に雪解けの兆し、対中投資減少に危機感を強める中国側の「リアリズム」と日本企業の動向",
+   "videoUrl": "https://www.youtube.com/watch?v=esg-aE5571A"
+  },
+  "japan-fx-intervention-july-2026-analysis": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "政府・日銀の為替介入の仕組みとは、円安阻止の損益分岐点と市場への影響",
+   "videoUrl": "https://www.youtube.com/watch?v=hG1O0EvcpW4"
+  },
+  "japan-high-dividend-stock-investment-202608": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "日本株の高配当投資で利益を出すコツ、景気悪化時に仕込む逆張りの手法",
+   "videoUrl": "https://www.youtube.com/watch?v=0kpd3hwX8pE"
+  },
+  "japan-occupational-health-market-2028": {
+   "channel": "dreamnews",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.dreamnews.jp/press/0000366537",
+   "title": "企業の健康管理市場が2028年の義務化で拡大、ストレスチェックの重要性"
+  },
+  "japan-ocean-resources-security": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "日本の海に眠るレアアースと離島防衛、経済安全保障の重要性を専門家解説",
+   "videoUrl": "https://www.youtube.com/watch?v=Xbs-l-XSxOQ"
+  },
+  "japan-stock-market-outlook-kinouchi": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "日経平均は将来9万円台へ、AI投資が支える長期上昇サイクルの見通し",
+   "videoUrl": "https://www.youtube.com/watch?v=THum3dqoJLM"
+  },
+  "japan-us-double-rate-hike-market-outlook": {
+   "channel": "nikkei",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "日米の金利引き上げで市場はどうなる、株価や為替への影響と警戒すべき点",
+   "videoUrl": "https://www.youtube.com/watch?v=RXI1-QZjba4"
+  },
+  "japan-vitamins-market-survey-2036": {
+   "channel": "dreamnews",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.dreamnews.jp/press/0000366535",
+   "title": "日本ビタミン市場、2036年に28億米ドル規模へ予測：Survey Reports調査"
+  },
+  "japan-wooden-house-value-15years": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "築15年で価値ゼロはなぜ、日本の住宅査定と海外の評価基準の違いを解説",
+   "videoUrl": "https://www.youtube.com/watch?v=aJn1VoeHka8"
+  },
+  "jev-fastest-ai-realtime-decision": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "超高速AI「Jev」が登場、従来の200倍の速さで即座に判断を下す新技術",
+   "videoUrl": "https://www.youtube.com/watch?v=6ov1JaMVT_U"
+  },
+  "jev-system-one-decision-model-guide": {
+   "channel": "bycloud",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "テキストを生成しないAIモデルJevとは何か　LLMと制御ソフトの溝を埋める新構造",
+   "videoUrl": "https://www.youtube.com/watch?v=OxD4MtEmP-k"
+  },
+  "jgb-portfolio-transition-strategy-matome": {
+   "channel": "bank-academy",
+   "reason": "creator-roundup",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "資産1000万円からの資産形成、国債を活用した守りのポートフォリオ術",
+   "videoUrl": "https://www.youtube.com/watch?v=KHaLbqNa5-Y"
+  },
+  "jgb-vs-new-window-bond-and-four-percent-rule": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "個人向け国債と窓販国債の違いとは、FIREの4%ルール最新動向を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=QPevjyPPLak"
+  },
+  "jinen-zzz-inc-oshikatsu-community-business": {
+   "channel": "prtimes-all",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000008.000159111.html",
+   "title": "JINENとzzz.inc.が業務提携、推し活を長く楽しむための新コミュニティ事業を開始"
+  },
+  "kaitori-koji-sns-meo-management": {
+   "channel": "dreamnews",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.dreamnews.jp/press/0000366438",
+   "title": "買取コージが買取店の集客内製化を支援、SNS・MEO投稿の自動化と役割分担を解説"
+  },
+  "kanchi-high-dividend-stock-investment-strategy": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "投資家かんち氏が解説、600銘柄から高配当株を選び資産を増やす売却の基準",
+   "videoUrl": "https://www.youtube.com/watch?v=Go_1atFZXkg"
+  },
+  "kawamura-makiko-financial-education": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "元GS河村真木子氏が語る子供への金融教育、月5万円のお小遣いで学ぶお金の管理",
+   "videoUrl": "https://www.youtube.com/watch?v=8OpyTjeeWdc"
+  },
+  "kawawacho-station-condominium-market-analysis": {
+   "channel": "mansion-mania",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "横浜市営地下鉄川和町駅のマンション相場、街の整備で資産価値はどう変わったか",
+   "videoUrl": "https://www.youtube.com/watch?v=nnyyGYd2qzM"
+  },
+  "kimi-k3-1-pro-open-weights-benchmark": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "AI開発の月之暗面が新モデル「Kimi K3.1 Pro」公開、高性能なAIを誰でも利用可能に",
+   "videoUrl": "https://www.youtube.com/watch?v=5sEVvu4mQ8g"
+  },
+  "kimi-k31-pro-testing-and-benchmark": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Moonshot AIが新AIモデル「Kimi K3.1 Pro」を公開、動画生成も可能な高性能版",
+   "videoUrl": "https://www.youtube.com/watch?v=7fZ1rFcm1nA"
+  },
+  "kimura-inverse-scattering-problem-breakthrough": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "世紀の未解決問題「波動散乱の逆問題」を解決した木村建次郎教授が語る、インフラと医療を革新する透視技術の全貌",
+   "videoUrl": "https://www.youtube.com/watch?v=KKn06t_jEZU"
+  },
+  "kinyu-shisan-nainen-jijo-60s": {
+   "channel": "trends",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://finance.yahoo.co.jp/news/detail/f46868eeea7ab53f91d53ade53064c20f3268ff3",
+   "title": "老後の金融資産と年金事情を調査、60代のリアルな懐事情と節約術"
+  },
+  "kioxia-financial-results-semiconductor-analysis": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "半導体大手のキオクシアが好決算、AI向けデータ保存用チップの需要が急拡大",
+   "videoUrl": "https://www.youtube.com/watch?v=XZymuStDLXw"
+  },
+  "klang-japan-usage-data-2026": {
+   "channel": "prtimes",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000006.000188950.html",
+   "title": "文字起こしツール「Klang」が国内利用データを公開、1時間以上の長録音が主流に"
+  },
+  "korea-inflation-won-depreciation-economic-gap": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "韓国の物価高と経済二極化、ボーナス6000万円の影で進む「1ドル1500ウォン」の通貨危機",
+   "videoUrl": "https://www.youtube.com/watch?v=B99tt1kPWqU"
+  },
+  "koshien-enjoy-run-2026": {
+   "channel": "atpress",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.atpress.ne.jp/news/644327",
+   "title": "阪神甲子園球場「甲子園エンジョイラン～2026～」12月13日開催、10km新設"
+  },
+  "kumamoto-earthquake-active-fault-damage": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "熊本地震の被害から学ぶ、大切な家を地震から守るための耐震性能と立地の条件",
+   "videoUrl": "https://www.youtube.com/watch?v=tqdIBjrM-j8"
+  },
+  "kyoto-coco-city-fushimi-development": {
+   "channel": "atpress",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.atpress.ne.jp/news/644402",
+   "title": "京都の伏見工業高校跡地が「KYOTO COCO CITY」へ、環境に配慮した新街区が誕生"
+  },
+  "landlord-earthquake-preparedness-and-liability": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "賃貸経営の大家向け地震対策、耐震基準の確認と賠償責任を防ぐ備え",
+   "videoUrl": "https://www.youtube.com/watch?v=mrxF-muWwdg"
+  },
+  "legora-openai-legal-transformation-case-study": {
+   "channel": "openai",
+   "reason": "duplicate",
+   "redirect": "openai-legora-legal-ai-agent",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "ChatGPTのOpenAIがAI法務プラットフォーム　Legora 事例を公開　契約書レビュー1万件も数分で自動化",
+   "videoUrl": "https://www.youtube.com/watch?v=yJxZef1Ylok"
+  },
+  "libe-city-gakucho-live-housing-investment-qa": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "リベ大の両学長が回答、家賃交渉や資産運用で損をしない防衛術",
+   "videoUrl": "https://www.youtube.com/watch?v=6GzlnTM1pOY"
+  },
+  "libe-city-household-budget-life-plan": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "家計管理とライフプランの重要性、リベ大が「宿題リスト」を3割削減した意図を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=Oo6UyCJXKhY"
+  },
+  "libe-city-live-money-insurance-inheritance": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "リベ大ががん保険や生前贈与を解説、知っておくべきお金の知識",
+   "videoUrl": "https://www.youtube.com/watch?v=UP7q8j3dOvY"
+  },
+  "libe-city-total-benefit-personal-finance": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "リベ大が説く家賃交渉や現金管理、トータルで得する家計防衛術",
+   "videoUrl": "https://www.youtube.com/watch?v=UeWW1ze79kc"
+  },
+  "libe-city-toxic-financial-products": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "家計管理の初心者が避けるべき「毒キノコ」商品とは、リベ大が示したリストと対策",
+   "videoUrl": "https://www.youtube.com/watch?v=4C0qHdl0HAA"
+  },
+  "libe-univ-high-dividend-stock-investment-guide": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "リベ大が教える高配当株投資の始め方、初心者向け3つの手順",
+   "videoUrl": "https://www.youtube.com/watch?v=A_6gX2HSEvc"
+  },
+  "libe-univ-life-plan-and-ai": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "リベ大・両学長が語るライフプランの必要性と「学長AI」ベータ版の活用法",
+   "videoUrl": "https://www.youtube.com/watch?v=HC-jQG7jK-0"
+  },
+  "libe-university-july-2026-investment-market-summary": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "リベ大が7月の投資市場を解説、日経平均急落と賃金上昇の影響",
+   "videoUrl": "https://www.youtube.com/watch?v=e4UIUlD0cTs"
+  },
+  "liberal-arts-university-money-lecture-summary": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "リベ大が新NISAや住宅戦略を解説、お金の講義の総集編を公開",
+   "videoUrl": "https://www.youtube.com/watch?v=rNFXHthLkC4"
+  },
+  "lizon-farms-agent-growth-2026": {
+   "channel": "atpress",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.atpress.ne.jp/news/643880",
+   "title": "リゾンの農地管理代行サービス、高齢化で利用農家数が2倍以上に"
+  },
+  "logical-rent-setting-for-vacancy-measures": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "賃貸経営の空室対策、問い合わせを増やすための適正家賃の決め方",
+   "videoUrl": "https://www.youtube.com/watch?v=nW2bzpgzagE"
+  },
+  "lucent-cup-tokyo-indoor-2027": {
+   "channel": "dreamnews",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.dreamnews.jp/press/0000366359",
+   "title": "ソフトテニスの東京インドア2027、大会特設サイトが公開される"
+  },
+  "lytha-hemp-seed-oil-balance-no01": {
+   "channel": "value-press",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.value-press.com/pressrelease/383188",
+   "title": "京都発のウェルネスブランドLYTHAがヘンプシードオイルを個包装で新発売"
+  },
+  "macro-economy-inflation-real-estate-investment-matome": {
+   "channel": "rakumachi",
+   "reason": "creator-roundup",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "インフレと金利上昇期の不動産投資、専門家が解説する資産防衛の戦略",
+   "videoUrl": "https://www.youtube.com/watch?v=WaBK_Rz4MOA"
+  },
+  "maison-crivelli-tobacco-carnaval": {
+   "channel": "prtimes-all",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000856.000003907.html",
+   "title": "高級香水ブランドのメゾン クリヴェリが新作「トバコ カルナヴァル」を発売"
+  },
+  "mansion-purchase-strategy-resale-timing": {
+   "channel": "mansion-mania",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "新築マンションの引き渡し期が狙い目、中古物件を安く買うための手法",
+   "videoUrl": "https://www.youtube.com/watch?v=wY1UMkH-rUs"
+  },
+  "marutaka-kakitani-sns-ikuji": {
+   "channel": "trends",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://news.yahoo.co.jp/articles/7441d7eeff28ae198403f247e3810f802289f716",
+   "title": "元サッカー日本代表・柿谷曜一朗の妻、丸高愛実が語るW杯裏の育児とSNSの悩み"
+  },
+  "max-murai-us-stock-portfolio-fluctuation": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "マックスむらい氏が米国株投資を告白、含み益1億円から急落した経緯",
+   "videoUrl": "https://www.youtube.com/watch?v=BswxEXJvrCc"
+  },
+  "megabank-wealthy-sales-increase": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "メガバンクが富裕層向け営業を強化、銀行の手数料ビジネスの仕組みとは",
+   "videoUrl": "https://www.youtube.com/watch?v=rQi6Mj-ALws"
+  },
+  "meta-muse-ai-agent-app-launch": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "米Metaの新AIアプリ「Muse」発表、買い物や返金交渉をAIが代行",
+   "videoUrl": "https://www.youtube.com/watch?v=OODvXcQJyVo"
+  },
+  "microsoft-copilot-harness-agent-scaling": {
+   "channel": "microsoft-developer",
+   "reason": "duplicate",
+   "redirect": "microsoft-copilot-harness-foundry-agent-builder",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Microsoftが新機能発表　インフラ構築なしでAIエージェントを自動拡張「Copilot Harness」",
+   "videoUrl": "https://www.youtube.com/watch?v=AMxLLFeUyRM"
+  },
+  "mistral-large-4-le-chonk-preview": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "欧州Mistral AIの高性能AIモデル「Mistral Large 4」が公開",
+   "videoUrl": "https://www.youtube.com/watch?v=Hu1JOK6aXsI"
+  },
+  "mlit-autumn-2026-decoration": {
+   "channel": "mlit-press",
+   "reason": "duplicate",
+   "redirect": "mlit-autumn-2026-medals-of-honor",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "http://www.mlit.go.jp/report/press/kanbo03_hh_000428.html",
+   "title": "国交省、令和8年秋の叙勲受章者292名を発表　11月26日に伝達式を開催"
+  },
+  "mof-jgb-interest-rate-202610": {
+   "channel": "mof",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.mof.go.jp/jgbs/reference/interest_rate/jgbcm.csv",
+   "title": "財務省が発表した令和8年10月の国債金利情報、10年国債は2.817%に"
+  },
+  "mof-jgbsp-121st-meeting-schedule": {
+   "channel": "mof",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.mof.go.jp/about_mof/councils/meeting_of_jgbsp/press_release/261102.html",
+   "title": "財務省、国債市場特別参加者会合の第121回を開催へ　11月26日に最近の市場状況を議論"
+  },
+  "morinaga-cocoa-bowel-movement-study": {
+   "channel": "morinaga",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.morinaga.co.jp/company/newsrelease/detail.php?no=3229",
+   "title": "森永製菓が松生クリニックと共同研究、ココア摂取による排便頻度の改善効果を発表"
+  },
+  "moriuchi-shogi-investment-mental": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "永世名人・森内俊之九段の「鉄板流」投資哲学、トルコリラ急落の教訓とAI時代を生き抜くメンタル術",
+   "videoUrl": "https://www.youtube.com/watch?v=owQKUyt7Ntg"
+  },
+  "muon-optimizer-llm-training-adamw-deepseek": {
+   "channel": "bycloud",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "LLM学習効率を倍増させる新オプティマイザMuonの全貌と技術的インパクト",
+   "videoUrl": "https://www.youtube.com/watch?v=VAQHsKS9fxY"
+  },
+  "nankai-trough-earthquake-kamata-warning": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "南海トラフ巨大地震、1分以上の揺れで即避難が必要な理由を専門家が解説",
+   "videoUrl": "https://www.youtube.com/watch?v=IV-lWEDGzSQ"
+  },
+  "neoclouds-ai-infrastructure-winners-and-risks": {
+   "channel": "bycloud",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "「ネオクラウド」はいかにしてAI狂騒曲の勝者となったか GPU不足と電力危機が変えるインフラ覇権",
+   "videoUrl": "https://www.youtube.com/watch?v=UzJ4wndMTjU"
+  },
+  "neoliberalism-myth-and-industrial-policy-trap": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "新自由主義は日本の停滞の元凶なのか 柿埜真吾氏が語る「ネオリベ」の誤解と産業政策の罠",
+   "videoUrl": "https://www.youtube.com/watch?v=DXfCFOCBtU8"
+  },
+  "new-nisa-credit-card-bank-settings-matome": {
+   "channel": "bank-academy",
+   "reason": "creator-roundup",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "新nisaで楽天証券・銀行・カードをフル活用、ポイントと金利を最大化する連携設定の決定版まとめ",
+   "videoUrl": "https://www.youtube.com/watch?v=tm5AFD0j7Ek"
+  },
+  "next-ipo-club-pitch-event-2026": {
+   "channel": "prtimes-all",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000334.000054393.html",
+   "title": "上場を目指す企業が投資家に直言、Next IPO Clubの公開ピッチイベント開催"
+  },
+  "nikkei-average-autumn-market-outlook-2026": {
+   "channel": "nikkei",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "日経平均は年末に上がるか、大和証券の専門家が秋以降の金利と株価を予測",
+   "videoUrl": "https://www.youtube.com/watch?v=heWWHZNgPEI"
+  },
+  "nikkei-stock-forecast-kinouchi-analysis": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "日経平均9万円の可能性と暴落時の備え、大和証券の専門家が市場を分析",
+   "videoUrl": "https://www.youtube.com/watch?v=osxgJlZisLs"
+  },
+  "nikkei-veritas-market-analysis-august-2026": {
+   "channel": "nikkei",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "エヌビディア好決算でも株価は停滞、半導体株の今後と市場の警戒感を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=vD3iDHUQkEY"
+  },
+  "nilim-sar-satellite-fire-detection": {
+   "channel": "kyodo-prwire",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://kyodonewsprwire.jp/release/202610218367",
+   "title": "小型SAR衛星で火災被害を早期検出、国総研がSynspectiveやQPS研究所と共同研究"
+  },
+  "nisa-30000yen-20years-simulation": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "新NISAで月3万円を20年積み立てるといくらになる？運用シミュレーション",
+   "videoUrl": "https://www.youtube.com/watch?v=3UP-2aN4LiU"
+  },
+  "nisa-credit-card-investment-points": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "新NISAのクレカ積立でポイント獲得、設定変更の手順と注意点を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=pilxgbofHv8"
+  },
+  "nisa-credit-card-investment-settings-guide-matome": {
+   "channel": "bank-academy",
+   "reason": "creator-roundup",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "新NISAで資産を増やすクレカ積立、楽天・SBI証券の連携設定まとめ",
+   "videoUrl": "https://www.youtube.com/watch?v=tm5AFD0j7Ek"
+  },
+  "nisa-investment-strategy-exchange-intervention": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "為替介入や株価下落でも新NISAは継続すべき？資産管理と防衛策を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=BRDAFqSF6XM"
+  },
+  "nisa-investment-strategy-from-age-50": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "50歳からの新NISA、株式への大量積立を専門家が推奨しない理由と対策",
+   "videoUrl": "https://www.youtube.com/watch?v=sI6iupU1hkw"
+  },
+  "nisa-market-crash-survival-guide": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "新NISAで暴落が起きたらどうすべきか、BANK ACADEMYが推奨する3つの対処法",
+   "videoUrl": "https://www.youtube.com/watch?v=6-cb0AWkZkA"
+  },
+  "nisa-market-crash-survival-manual": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "新NISAで暴落に直面しても退場しない、元銀行員が教える避難マニュアル",
+   "videoUrl": "https://www.youtube.com/watch?v=D90q4XV8U4Y"
+  },
+  "nisa-sp500-960ten-thousand-yen-investment-result": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "新NISAでS&P500に960万円投資した運用実績、一括と積立の成績を比較",
+   "videoUrl": "https://www.youtube.com/watch?v=Eb2nCexdrzw"
+  },
+  "nishinari-poverty-business-welfare-apartment-risks": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "生活保護費を搾取する「農場アパート」の実態。福祉向け不動産投資の闇",
+   "videoUrl": "https://www.youtube.com/watch?v=RCAZIa0FOy4"
+  },
+  "nli-ai-agent-explained": {
+   "channel": "nli-research",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.nli-research.co.jp/topics_detail1/id=87239?site=nli",
+   "title": "ニッセイ基礎研究所が解説、次世代AI「AIエージェント」とは－従来の生成AIとの違い"
+  },
+  "nli-electronic-waste-recycling-challenges": {
+   "channel": "nli-research",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.nli-research.co.jp/topics_detail1/id=87238?site=nli",
+   "title": "ニッセイ基礎研究所が電子ごみの現状を解説、小型家電の回収率向上と長期使用が課題に"
+  },
+  "ntt-east-omakase-net-shukyaku": {
+   "channel": "ntt-news-ai",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.ntt-east.co.jp/release/detail/20261102_02.html",
+   "title": "NTT東日本が中小企業の集客を支援する新サービス「おまかせネット集客サポート」を月額2,750円で提供開始"
+  },
+  "ntt-share-buyback-october-2026": {
+   "channel": "ntt-news",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://group.ntt/jp/newsrelease/2026/11/02/261102b.html",
+   "title": "NTTが10月に自社株買い約272億円を実施、取得総数は1億5,000万株超に"
+  },
+  "nvidia-aicr-vera-rubin-kubernetes": {
+   "channel": "nvidia-developer-blog",
+   "reason": "duplicate",
+   "redirect": "nvidia-ai-cluster-runtime-dynamo",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://developer.nvidia.com/blog/making-kubernetes-ai-ready-for-nvidia-vera-rubin-on-day-one/",
+   "title": "NVIDIAの次世代AI基盤「Vera Rubin」、Kubernetes実行環境のレシピが公開に"
+  },
+  "nvidia-alpamayo-2-super-open-model-av": {
+   "channel": "nvidia",
+   "reason": "duplicate",
+   "redirect": "nvidia-alpamayo-2-super-autonomous-driving",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "NVIDIA、自動運転・ロボタクシー向け340億パラメータのオープンモデル「Alpamayo 2 Super」を公開",
+   "videoUrl": "https://www.youtube.com/watch?v=xySgVPLYnsc"
+  },
+  "nvidia-circular-transactions-emin-yurmaz": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "NVIDIAの「循環取引」疑惑をエミン氏が指摘、GPUを担保にした資金循環スキームと信用リスクの正体",
+   "videoUrl": "https://www.youtube.com/watch?v=q41ucJN-NSQ"
+  },
+  "nvidia-pair-local-ai-router": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "NVIDIA、複数PCでローカルAIを分散処理する無料ソフト「PAIR」を公開",
+   "videoUrl": "https://www.youtube.com/watch?v=Z4no-hhcuas"
+  },
+  "nvidia-rubin-datacenter-ai-stocks": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "NVIDIA次世代「Rubin」がもたらすデータセンター価格破壊、大和証券・木野内氏が読み解く「次に潤うAI銘柄」",
+   "videoUrl": "https://www.youtube.com/watch?v=UTBe_Zy6lIk"
+  },
+  "oh-my-teeth-interview-impression-survey": {
+   "channel": "prtimes-all",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000150.000048884.html",
+   "title": "面接官が重視するのは服装より話し方と表情、Oh my teethが調査結果公開"
+  },
+  "okinotorishima-china-military-drill-geopolitics": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "沖ノ鳥島周辺で中国軍が訓練、日本の港湾建設と領土権を巡る現状",
+   "videoUrl": "https://www.youtube.com/watch?v=DDj-lI4zDW4"
+  },
+  "okinotorishima-island-or-rock-ocean-rights": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "沖ノ鳥島は島か岩か、サンゴ培養で守る日本の海洋権益と現状",
+   "videoUrl": "https://www.youtube.com/watch?v=JMEzBOaAu7A"
+  },
+  "one-hundred-million-asset-investment-strategy": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "資産1億円到達後の守り方、資産を減らさず活用する投資戦略を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=x8nFSdq0kUE"
+  },
+  "openai-agent-sandbox-escape-huggingface": {
+   "channel": "bycloud",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "ChatGPTのOpenAI、AIエージェント700台が脱走・ハッキングした全手法と背景",
+   "videoUrl": "https://www.youtube.com/watch?v=ubpXEv4lF0k"
+  },
+  "openai-chatgpt-work-for-sales-demo": {
+   "channel": "openai",
+   "reason": "duplicate",
+   "redirect": "chatgpt-work-sales-workflow",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAI、営業支援AI「ChatGPT Work for Sales」のデモを公開　準備から動画作成まで自動化",
+   "videoUrl": "https://www.youtube.com/watch?v=hjXi7b01s2c"
+  },
+  "openai-chatgpt-work-for-sales-pipeline-forecasting": {
+   "channel": "openai",
+   "reason": "duplicate",
+   "redirect": "chatgpt-work-sales-workflow",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAI、営業・売上予測向け「ChatGPT Work for Sales」のデモを公開",
+   "videoUrl": "https://www.youtube.com/watch?v=q9TPE7pKkIo"
+  },
+  "openai-gpt-56-sol-ultrafast-mode-preview": {
+   "channel": "openai",
+   "reason": "duplicate",
+   "redirect": "model-ml-gpt-5-6-sol-finance-agent",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAI、GPT-5.6 Solの超高速機能「Ultrafast」を試用公開　最大14倍・毎秒750トークン",
+   "videoUrl": "https://www.youtube.com/watch?v=WCwT4gWpHmI"
+  },
+  "openai-gpt-6-astra-code-generation": {
+   "channel": "openai",
+   "reason": "duplicate",
+   "redirect": "openai-gpt-6-astra-first-impressions-n-dqdvmwoas",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAIの次世代AI「GPT-6 Astra」が大規模なコード移行を自動化",
+   "videoUrl": "https://www.youtube.com/watch?v=SiJGdlmdUms"
+  },
+  "openai-gpt-6-astra-first-impressions": {
+   "channel": "openai",
+   "reason": "duplicate",
+   "redirect": "openai-announces-gpt-6-astra",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAIの次世代AI「GPT-6 Astra」が難問を自律的に解く実力を公開",
+   "videoUrl": "https://www.youtube.com/watch?v=B-jjnydci50"
+  },
+  "openai-gpt-6-astra-first-impressions-a4bubpkdenc": {
+   "channel": "openai",
+   "reason": "duplicate",
+   "redirect": "openai-announces-gpt-6-astra",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAIの次世代AI「GPT-6 Astra」が複雑なコードを自動修正するデモ",
+   "videoUrl": "https://www.youtube.com/watch?v=A4BUbpKdenc"
+  },
+  "openai-gpt-6-astra-ramp-demo": {
+   "channel": "openai",
+   "reason": "duplicate",
+   "redirect": "openai-gpt6-astra-jump-trading-agents",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAI、自律開発AI「GPT-6 Astra」の実機デモを公開　Rampが先行検証",
+   "videoUrl": "https://www.youtube.com/watch?v=p7TjXroM4ak"
+  },
+  "openai-gpt6-astra-notion-first-look": {
+   "channel": "openai",
+   "reason": "duplicate",
+   "redirect": "openai-gpt6-astra-jump-trading-agents",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAIの次世代AI「GPT-6 Astra」がNotionのバグを特定。エンジニアの役割を代行",
+   "videoUrl": "https://www.youtube.com/watch?v=dtNlpZI86Dk"
+  },
+  "openai-gpt6-sol-luna-release": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAIが「GPT-6 Sol」と「GPT-6 Luna」を提供開始、API価格は半額に改定",
+   "videoUrl": "https://www.youtube.com/watch?v=Ima_AVPyQ9E"
+  },
+  "openai-legora-legal-ai-contract-review": {
+   "channel": "openai",
+   "reason": "duplicate",
+   "redirect": "openai-legora-legal-ai-agent",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "ChatGPTのOpenAIが紹介する法律AI「Legora」　1万件の契約書を数分で一括点検",
+   "videoUrl": "https://www.youtube.com/watch?v=z-WZMjNsg-k"
+  },
+  "openai-security-agent-control-limitations": {
+   "channel": "ai-explained",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAIがAIエージェントの制御リスクを警告。監視を回避する挙動も確認",
+   "videoUrl": "https://www.youtube.com/watch?v=_rtp1XzaP6Q"
+  },
+  "openai-solves-navier-stokes-millennium-problem": {
+   "channel": "two-minute-papers",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAI、ナビエ・ストークス問題の証明を発表｜AIの成果と検証状況",
+   "videoUrl": "https://www.youtube.com/watch?v=mOvtumfyjCs"
+  },
+  "orukan-creator-asset-formation-goal": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "資産1億円は目指すな。オルカン生みの親・代田秀雄氏が語る「NISA貧乏」の落とし穴と正しいゴール設定",
+   "videoUrl": "https://www.youtube.com/watch?v=2x12TDKagi0"
+  },
+  "parent-dementia-real-estate-freezing": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "親が認知症になると実家が売却不能に。家族信託と任意後見で防ぐ不動産凍結対策",
+   "videoUrl": "https://www.youtube.com/watch?v=Hg2QeiVkDUs"
+  },
+  "park-axis-ikebukuro-east-room-tour": {
+   "channel": "yukkuri-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "池袋駅徒歩圏の新築マンション「パークアクシス池袋イースト」にサウナ付き住戸が登場",
+   "videoUrl": "https://www.youtube.com/watch?v=pzQyDWfo0BM"
+  },
+  "peppy-natural-wood-cat-tower": {
+   "channel": "atpress",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.atpress.ne.jp/news/639000",
+   "title": "ペット用品のペピーが天然木のキャットタワー2種を発売、愛猫の成長に合わせて選べる"
+  },
+  "php-security-extension-php2shell-fix": {
+   "channel": "atpress",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.atpress.ne.jp/news/644147",
+   "title": "PHPの延長保守サービスが脆弱性「PHP2Shell」を修正、旧バージョン向けに緊急パッチ"
+  },
+  "physical-ai-nvidia-yaskawa-honda-robotics": {
+   "channel": "nikkei",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "フィジカルAIの最前線、NVIDIA一強に挑む日本勢と「手」の技術革新",
+   "videoUrl": "https://www.youtube.com/watch?v=ANznyofWD7c"
+  },
+  "police-recommended-scam-protection-app": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "警察庁推奨の無料詐欺対策アプリ、リベ大が解説する「守る力」の重要性と導入手順",
+   "videoUrl": "https://www.youtube.com/watch?v=gCG9mrCn5Dg"
+  },
+  "propally-real-estate-investment-survey": {
+   "channel": "prtimes-all",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000047.000074383.html",
+   "title": "30代・40代の不動産投資意識調査、見送り理由は「しつこい営業」と「会社の信頼性」"
+  },
+  "publica-dentsu-djib-ctv-partnership": {
+   "channel": "prtimes-all",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000146.000014440.html",
+   "title": "Publicaと電通DJIB、コネクテッドTV広告の透明性向上へ向け提携"
+  },
+  "rakuten-bank-sec-card-combo-guide": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "楽天銀行・楽天証券・楽天カードの連携で金利優遇やポイント還元を最大化する活用法",
+   "videoUrl": "https://www.youtube.com/watch?v=tm5AFD0j7Ek"
+  },
+  "rakuten-card-securities-bank-integration-matome": {
+   "channel": "bank-academy",
+   "reason": "creator-roundup",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "楽天のカード・証券・銀行を連携して資産を最大化する活用術と注意点",
+   "videoUrl": "https://www.youtube.com/watch?v=tm5AFD0j7Ek"
+  },
+  "rakuten-sec-card-bank-7-settings": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "楽天証券とカード・銀行を連携して資産を増やす必須の設定手順7選",
+   "videoUrl": "https://www.youtube.com/watch?v=hR4mCW2Ej0M"
+  },
+  "rakuten-securities-essential-settings": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "楽天証券で投資を始める人が設定すべき5つの連携機能と還元率の仕組み",
+   "videoUrl": "https://www.youtube.com/watch?v=kUPpTwO3X34"
+  },
+  "real-estate-corporation-strategy-for-investors": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "不動産投資で規模を拡大する際に検討すべき法人化のメリットと注意点",
+   "videoUrl": "https://www.youtube.com/watch?v=Dcscb10lFSY"
+  },
+  "real-estate-crowdfunding-victory-fund-abolition-trouble": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "不動産クラファンvictory fundの廃業トラブル 運用中表示の裏で売却と分別管理違反が発覚",
+   "videoUrl": "https://www.youtube.com/watch?v=WeV47LFJD98"
+  },
+  "real-estate-incorporation-guide": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "不動産投資の法人化はいつすべきか税制と経営上の判断基準を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=tytDvKOarOc"
+  },
+  "real-estate-self-management-experience": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "不動産投資で管理会社に任せず自主管理へ移行する際のメリットと方法",
+   "videoUrl": "https://www.youtube.com/watch?v=-le-m-htn7c"
+  },
+  "reiwa-8-autumn-shoubo-houshou": {
+   "channel": "soumu",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.soumu.go.jp/menu_news/s-news/01shoubo01_02001279.html",
+   "title": "令和8年秋の褒章、消防関係の受章者は110名に決定　紅綬や藍綬の内訳を整理"
+  },
+  "rent-increase-rejection-and-index-fund-tax-efficiency": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "家賃値上げの拒否権や投資信託の税効率を両学長が分かりやすく解説",
+   "videoUrl": "https://www.youtube.com/watch?v=152sNQ4PJZo"
+  },
+  "resona-ai-cloud-factoring-sme": {
+   "channel": "nikkei",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "りそな銀行が中小企業向け新サービス開始、AI審査で最短即日の資金調達が可能に",
+   "videoUrl": "https://www.youtube.com/watch?v=7G2FJ16uBlU"
+  },
+  "retirement-money-investment-guide-50s-60s": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "退職金2000万円の運用はどうする？50代・60代が最初にやるべき資産管理の基本",
+   "videoUrl": "https://www.youtube.com/watch?v=JagWYmiEF7Q"
+  },
+  "retirement-money-portfolio-bank-academy": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "50代・60代の退職金運用は「半年待つ」が鉄則、BANK ACADEMYが説く4つの財布の黄金比率",
+   "videoUrl": "https://www.youtube.com/watch?v=VfkGlRgY-9c"
+  },
+  "richi-slimy-pot-jelly-candy-magic-lab": {
+   "channel": "atpress",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.atpress.ne.jp/news/640099",
+   "title": "人気インフルエンサーりち監修の「りちスライミーポットゼリー」が10月26日発売"
+  },
+  "riken-utokyo-3d-live-cell-microscope": {
+   "channel": "riken",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.riken.jp/press/2026/20261102_1/index.html",
+   "title": "理化学研究所と東大、生きた細胞内の成分を三次元動画で捉える顕微鏡を開発"
+  },
+  "ryo-gakucho-live-rolex-housing": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "ロレックス購入の面接や新築戸建ての価値、リベ大・両学長がライブで本音回答",
+   "videoUrl": "https://www.youtube.com/watch?v=zqkUWDuQezk"
+  },
+  "saitama-city-property-tax-valuation-issue": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "固定資産税の計算ミスか、さいたま市で再建築不可の土地評価を巡り不透明な対応",
+   "videoUrl": "https://www.youtube.com/watch?v=sqYYPcP9Ru4"
+  },
+  "sam-altman-ai-advice-human-centric": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "OpenAIサム・アルトマンCEOが示す「人生の助言をAIに求めてはならない理由」",
+   "videoUrl": "https://www.youtube.com/watch?v=f8uIINtoJCM"
+  },
+  "sanada-naoki-asakusa-live-2026": {
+   "channel": "atpress",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.atpress.ne.jp/news/644526",
+   "title": "真田ナオキが浅草公会堂でディスコ風ライブを開催、テレビ初放送や配信も決定"
+  },
+  "sbi-shinsei-kids-deposit-and-enzyme-bath-business": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "SBI新生銀行の子供向け預金キャンペーンの仕組みと酵素浴ビジネスの再建術を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=t6urq9Qp15Y"
+  },
+  "semiconductor-stocks-drop-silicon-cycle": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "半導体株急落の背景にある「シリコンサイクル」の正体、2027年供給過剰説と市場の落としどころ",
+   "videoUrl": "https://www.youtube.com/watch?v=ZFtoZ05-nb8"
+  },
+  "shibuya-designers-maisonette-1dk-tour": {
+   "channel": "yukkuri-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "渋谷区の路地裏に佇むデザイナーズメゾネット賃貸を内見 48平米1DKの室内構造と設備を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=ePthp4H-Sz4"
+  },
+  "shirow-masamune-t-shirt-vol-08": {
+   "channel": "value-press",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.value-press.com/pressrelease/383221",
+   "title": "士郎正宗・漫画デザインTシャツVol.08が発売、名作カット全5種"
+  },
+  "side-business-failed-five-ng-actions": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "副業で成果が出ない人に共通する5つのNG行動、両学長が改善法を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=Css1eWyuqCs"
+  },
+  "solitary-death-50s-landlord-risk-prevention": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "50代孤独死の現実と賃貸経営のリスク、見守りサービス「まもりこ」が果たす役割",
+   "videoUrl": "https://www.youtube.com/watch?v=CoIqBpEaR18"
+  },
+  "south-korea-young-investors-leverage-risk": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "韓国で若者の投資熱が過熱、口座数が人口超えとレバレッジ投資の罠",
+   "videoUrl": "https://www.youtube.com/watch?v=oARYyTwLRuk"
+  },
+  "sp500-all-time-high-investment-strategy": {
+   "channel": "bank-academy",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "S&P500が最高値を更新しても積立投資を続けるべき理由と注意点",
+   "videoUrl": "https://www.youtube.com/watch?v=fXBgIPVZRu4"
+  },
+  "space-ai-spacex-investment-strategy": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "宇宙AIがもたらす270兆円市場の未来、SpaceX巨大帝国に挑む投資判断の軸とは",
+   "videoUrl": "https://www.youtube.com/watch?v=CNJ_Ieyf2Mo"
+  },
+  "space-stocks-investment-market-growth-2026": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "300兆円規模に成長する宇宙産業、黒字化へ向かう関連株の投資戦略",
+   "videoUrl": "https://www.youtube.com/watch?v=crOgcVmfcF8"
+  },
+  "station-distance-land-price-analysis": {
+   "channel": "ienomikata",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "駅から1km離れると地価16%減、都心距離の「3倍」価格に影響する地価公示分析",
+   "videoUrl": "https://www.youtube.com/watch?v=1V9E1ZKdI8I"
+  },
+  "stigmatized-property-solitary-death-real-estate-risk": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "事故物件の告知義務と孤独死対策、不動産投資のリスク管理を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=K-g3ZFwF9wE"
+  },
+  "sublease-cancellation-legal-barriers": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "サブリース解約はなぜ困難なのか、弁護士が明かす「正当事由」の壁と売却価格下落の真相",
+   "videoUrl": "https://www.youtube.com/watch?v=-hNG-i6vu54"
+  },
+  "tama-giant-housing-complexes-60-years-after": {
+   "channel": "ienomikata",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "昭和の巨大団地が生まれ変わる。多摩地域の建て替えとモノレール延伸の現状",
+   "videoUrl": "https://www.youtube.com/watch?v=7OeG2SLlDog"
+  },
+  "tama-land-price-2026-analysis": {
+   "channel": "ienomikata",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "地価上昇が緩やかな街の不動産価値とは。令和8年の公示地価から見る賢い選び方",
+   "videoUrl": "https://www.youtube.com/watch?v=05kF0__3Hw0"
+  },
+  "tama-land-price-ranking-2026": {
+   "channel": "ienomikata",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "多摩地域の住宅地価格、国分寺市が上昇率1位に。中央線沿線が上位を独占",
+   "videoUrl": "https://www.youtube.com/watch?v=P1p_DXhq3ps"
+  },
+  "tama-land-price-trends-2026": {
+   "channel": "ienomikata",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "多摩地域の地価上昇率が低い街の特徴は。西多摩エリアの動向と相続時の注意点",
+   "videoUrl": "https://www.youtube.com/watch?v=ugpxU7Ve-Ig"
+  },
+  "tax-evasion-real-estate-investor-case": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "消費税の不正還付で実刑判決。不動産投資で節税を装う手口の危険性を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=MkKt3rCemuo"
+  },
+  "tax-reduction-inflation-bracket-creep": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "インフレによる「2兆円の税金取りすぎ」の実態、経済学者・柿埜真吾氏が語る5兆円減税の妥当性",
+   "videoUrl": "https://www.youtube.com/watch?v=tkA5RSk5_YU"
+  },
+  "tech-off-balance-debt-ai-bubble": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "米巨大テックの隠れ借金が浮き彫りに。AIバブルの現状と市場への影響",
+   "videoUrl": "https://www.youtube.com/watch?v=0Kkk5NxiZ_c"
+  },
+  "three-stages-of-asset-building-rakumachi": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "資産形成の3つの分岐点とは。1000万・3000万・1億円の壁を乗り越える",
+   "videoUrl": "https://www.youtube.com/watch?v=14WYCvkVerQ"
+  },
+  "tohoku-atotsugi-connect-sendai-2026": {
+   "channel": "jnet21",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://j-net21.smrj.go.jp/news/bt5puv00000105io.html",
+   "title": "東北経済産業局、仙台でアトツギ交流会を開催　家業の強み活かした新規事業へ挑戦"
+  },
+  "tokyo-apartment-insulation-subsidy": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "賃貸アパートの断熱改修で熱中症対策。東京都の補助金活用で物件価値も向上",
+   "videoUrl": "https://www.youtube.com/watch?v=9XFYvqVAMsE"
+  },
+  "tokyo-earthquake-risk-100-trillion": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "首都直下地震の経済被害は100兆円、東日本大震災の5倍に。鎌田浩毅氏が警告する「19の地震の巣」と不動産のリスク管理",
+   "videoUrl": "https://www.youtube.com/watch?v=7ClLfvFRIC8"
+  },
+  "tokyo-grade-a-office-market-2026-q3": {
+   "channel": "kyodo-prwire",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://kyodonewsprwire.jp/release/202610238608",
+   "title": "都心のオフィス空室率が0.3%に低下。賃料上昇が続く市場の最新動向"
+  },
+  "tokyo-mansion-chinese-money-analysis": {
+   "channel": "nikkei",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "都心マンション高騰と中国マネーの真実、文京区「教育移住」の実態を日経記者が解説",
+   "videoUrl": "https://www.youtube.com/watch?v=eCnKAQzfa_A"
+  },
+  "tokyo-mansion-market-illusion-2026": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "東京の中古マンション「平均1億円突破」と「2割暴落」の真相、平均値に潜むカラクリを専門記者が解説",
+   "videoUrl": "https://www.youtube.com/watch?v=j85qAfHtnLU"
+  },
+  "tokyo-real-estate-valuation-and-infrastructure": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "東京の不動産は本当に高いのか。為替がもたらす「4割安」の実態と都心プレミアムがつかない構造的要因",
+   "videoUrl": "https://www.youtube.com/watch?v=8srH7wGT0z0"
+  },
+  "touhou-lostword-asatsuyu-tomiko-bana": {
+   "channel": "value-press",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.value-press.com/pressrelease/383196",
+   "title": "東方LostWord、伴都美子×豚乙女による新曲「朝露」配信開始"
+  },
+  "transformers-js-structured-output": {
+   "channel": "hugging-face",
+   "reason": "duplicate",
+   "redirect": "transformers-js-v4-3-structured-output-browser",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Hugging Face、ブラウザ上でLLMの構造化出力を実現する「Transformers.js v4.3」を公開",
+   "videoUrl": "https://www.youtube.com/watch?v=3V9CPisNs1g"
+  },
+  "true-temper-jgto-pga-2026-10": {
+   "channel": "prtimes-all",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://prtimes.jp/main/html/rd/p/000000026.000182292.html",
+   "title": "トゥルーテンパースポーツ、JGTOツアーでDynamic Goldが今季2勝目"
+  },
+  "twst-lilia-racing-star-pv-2026": {
+   "channel": "atpress",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.atpress.ne.jp/news/644374",
+   "title": "ツイステのリリア歌唱曲「RACING STAR☆」スペシャルPV特設サイトが公開"
+  },
+  "typesafe-ai-jev-decision-making-model": {
+   "channel": "two-minute-papers",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "TypeSafe AIの意思決定AI「Jev」が登場、従来の200倍の速さで判断",
+   "videoUrl": "https://www.youtube.com/watch?v=qBBRRsH0rQc"
+  },
+  "typesafe-ai-jev-decision-model": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "TypeSafe AIの判断特化型モデル「Jev」発表、高速で利用料も無料に",
+   "videoUrl": "https://www.youtube.com/watch?v=2z-7pIj57f8"
+  },
+  "typesafe-ai-system-one-model-jev": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "TypeSafe AIがSystem 1モデル「Jev」発表、超低遅延の判断特化型",
+   "videoUrl": "https://www.youtube.com/watch?v=jGD_UR4wMJc"
+  },
+  "typesafe-jev-ultra-fast-ai": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "ChatGPT共同開発者が放つ超高速AI「Jev」の実力、出力トークン無料でDoomも動く衝撃",
+   "videoUrl": "https://www.youtube.com/watch?v=xAmTQ80tNQA"
+  },
+  "typescript-7-released-go-port-10x-faster": {
+   "channel": "microsoft-developer",
+   "reason": "duplicate",
+   "redirect": "microsoft-typescript-7-native-compiler-speedup",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "マイクロソフトがTypeScript 7を正式発表、Go移植でコンパイル速度が10倍に向上",
+   "videoUrl": "https://www.youtube.com/watch?v=OytpXXeNmTQ"
+  },
+  "uda-san-festa-2026-nara": {
+   "channel": "kyodo-prwire",
+   "reason": "wire",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://kyodonewsprwire.jp/release/202610268708",
+   "title": "奈良県宇陀市で「うだ産フェスタ2026」開催、名産品や車展示が登場"
+  },
+  "us-china-ai-bubble-geopolitics-japan-windfall": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "米中対立がもたらす「新冷戦」は日本株の強力な追い風に、AIバブル崩壊リスクと地政学の行方",
+   "videoUrl": "https://www.youtube.com/watch?v=IoGzh7yQHAc"
+  },
+  "us-defense-stocks-geopolitical-risk": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "米国の防衛関連株が急反発、中東情勢の緊張やガソリン価格の上昇が示す地政学リスクの影響を大和証券が解説",
+   "videoUrl": "https://www.youtube.com/watch?v=DDWiryNWVQk"
+  },
+  "us-employment-statistics-tuna-analysis": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "米国雇用統計の重要指標をマグロの部位に例えて解説、主席エコノミストが読み解く金利政策への影響",
+   "videoUrl": "https://www.youtube.com/watch?v=kkgZB9XYtk0"
+  },
+  "us-japan-joint-intervention-emin-yurmaz": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "1ドル160円の攻防、日米協調介入の裏側と投機筋への警告をエコノミストのエミン・ユルマズ氏が解説",
+   "videoUrl": "https://www.youtube.com/watch?v=9scdVqVUKXo"
+  },
+  "us-midterm-election-political-ideology-impact": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "米中間選挙と政治の分断が日本の投資環境に与える影響、金利や為替の変動リスクを専門家が徹底分析",
+   "videoUrl": "https://www.youtube.com/watch?v=mMhpB7FH4Qo"
+  },
+  "us-stock-23hour-trading-risks": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "米国株23時間取引が12月開始、個人投資家が知るべきメリットと「株中毒」の落とし穴",
+   "videoUrl": "https://www.youtube.com/watch?v=jlWKnvNbx2I"
+  },
+  "utsunomiya-old-house-investment-earthquake": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "築古戸建てを500万円で再生、被災から大家へ転身した女性が13年間の運用と売却戦略を語る",
+   "videoUrl": "https://www.youtube.com/watch?v=XODv71TWHlM"
+  },
+  "vacant-room-countermeasures-logical-rent-setting": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "賃貸経営の空室対策、大家の主観で家賃を決めるのは危険、相場に基づいた論理的な賃料設定の重要性を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=SjwL_n-B-fU"
+  },
+  "wealthy-investors-shift-stocks-to-real-estate": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "S&P500一本足打法に潜む罠、新富裕層が株高の利益を「中古一棟不動産」へ分散する理由",
+   "videoUrl": "https://www.youtube.com/watch?v=uyRbc7m8J5U"
+  },
+  "what-ai-researchers-saw-before-pacing-ai": {
+   "channel": "ai-explained",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "AI Explained、AI研究者たちが目撃した「再帰的自己改善」の予兆と安全管理の危機を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=J3ljHm57yU0"
+  },
+  "why-avoid-free-fp-consultations": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "無料FP相談に潜む罠、リベ大が指摘する「安易に依頼してはいけない構造的理由」",
+   "videoUrl": "https://www.youtube.com/watch?v=wQzA1gcmz9E"
+  },
+  "why-avoid-relying-on-others-for-finance-matome": {
+   "channel": "liberal-arts",
+   "reason": "creator-roundup",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "「安易に依頼してはいけない構造的理由」を暴く！38本の情報から紐解く、資産を守り抜くための「自己防衛」決定版ガイド",
+   "videoUrl": "https://www.youtube.com/watch?v=IYAUTjJu6ck"
+  },
+  "why-good-earnings-cause-stock-drops": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "好決算でもなぜ株安？日経平均「7月天井・8月底」アノマリーの裏側をプロが解説",
+   "videoUrl": "https://www.youtube.com/watch?v=B8LGEP9duEM"
+  },
+  "why-medical-insurance-is-unnecessary-libedai": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "がん保険や終身医療保険はなぜ不要なのか。公的制度と民間保険の役割から見直し方針を解説",
+   "videoUrl": "https://www.youtube.com/watch?v=WIBMP5SQ748"
+  },
+  "why-necessary-insurance-causes-loss": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "「必要な保険ほど損をする」正直FPが明かす民間保険のカラクリと円安時代の資産防衛術",
+   "videoUrl": "https://www.youtube.com/watch?v=onIzGnb8jNM"
+  },
+  "why-rich-get-richer-capitalism-rules": {
+   "channel": "liberal-arts",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "「お金持ちが富み続ける理由」を紐解く、資本主義のルールと一般人が取るべき4つのステップ",
+   "videoUrl": "https://www.youtube.com/watch?v=MQHsGYXFzx0"
+  },
+  "windows-registry-modern-os-design": {
+   "channel": "microsoft-developer",
+   "reason": "duplicate",
+   "redirect": "windows-registry-modern-design-analysis",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Windowsレジストリは現代なら不要か、Azure CTOマーク・ルシノビッチ氏が語るOS設計の最適解",
+   "videoUrl": "https://www.youtube.com/watch?v=ZhJsMKliqE8"
+  },
+  "wti-crude-oil-90-iran-us-negotiation": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "WTI原油90ドル超えとイランの思惑、木野内栄治氏が読み解く「中間選挙前の価格急騰」と市場の防衛策",
+   "videoUrl": "https://www.youtube.com/watch?v=aGfiM23DkOw"
+  },
+  "xai-releases-grok-4-7-reasoning-model": {
+   "channel": "matthew-berman",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "xAIが新LLM「Grok 4.7」を公開、低価格と推論強化で他社を追撃",
+   "videoUrl": "https://www.youtube.com/watch?v=MJllZbpvrAc"
+  },
+  "xiaomi-mimo-v2-6-rl-training-breakdown": {
+   "channel": "bycloud",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Xiaomi、1兆パラメータLLM『MiMo-V2.6』の強化学習過程を公開",
+   "videoUrl": "https://www.youtube.com/watch?v=1BZB4c792-0"
+  },
+  "yamamoto-riken-condo-community-risk": {
+   "channel": "rakumachi",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "タワマンで失われる地域とのつながり。建築家が警告するセキュリティと孤立のジレンマ",
+   "videoUrl": "https://www.youtube.com/watch?v=i1kOr8LM49Q"
+  },
+  "yen-depreciation-bankruptcy-october-2026": {
+   "channel": "tsr",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://www.tsr-net.co.jp/data/detail/1203393_1527.html",
+   "title": "2026年10月の「円安」倒産は6件、52カ月連続で発生　1-10月累計は67件で前年年間を超える"
+  },
+  "yen-rate-surge-sasaki-analysis-202609": {
+   "channel": "nikkei",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "急激な円高の背景にある日米の金利差。為替相場の変動要因を専門家が詳しく解説",
+   "videoUrl": "https://www.youtube.com/watch?v=Fi6FaIF6FdI"
+  },
+  "yukimi-daifuku-fujisawa-ryoka": {
+   "channel": "trends",
+   "reason": "thin",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "sourceUrl": "https://news.yahoo.co.jp/articles/665557ba443284b46e77077206af16c366813e92",
+   "title": "ロッテの「雪見だいふく」が発売45周年　Mrs. GREEN APPLEの藤澤涼架が新アンバサダーに就任"
+  },
+  "zero-yen-real-estate-investment-strategy": {
+   "channel": "uraken-fudosan",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "空き家活用で注目の0円不動産投資とは。制度改正をふまえた優良物件の選び方と交渉術",
+   "videoUrl": "https://www.youtube.com/watch?v=mX4KOXFiPss"
+  },
+  "zoomit-for-mac-ai-porting-6qx099wptf0": {
+   "channel": "microsoft-developer",
+   "reason": "duplicate",
+   "redirect": "zoomit-for-mac-ai-porting",
+   "retiredAt": "2026-11-03T18:04:26+09:00",
+   "title": "Microsoftの定番プレゼン支援ツールZoomItがMacに対応。生成AI活用で短期間で移植",
+   "videoUrl": "https://www.youtube.com/watch?v=6Qx099Wptf0"
+  }
+ },
+ "version": 1
+}

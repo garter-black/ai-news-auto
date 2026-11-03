@@ -10,8 +10,7 @@
   "overview": {
     "text": "Meta Museは、買い物や旅行の計画を自律的に代行する個人向けのAIエージェントです。Metaによって開発され、2026年10月に発表されました。",
     "sources": [
-      "nvidia-meta-muse-partnership-expansion",
-      "meta-muse-ai-agent-app-launch"
+      "nvidia-meta-muse-partnership-expansion"
     ]
   },
   "facts": [
@@ -41,24 +40,6 @@
     }
   ],
   "capabilities": [
-    {
-      "text": "冷蔵庫の写真を解析して献立の提案や買い物リストを作成できます。",
-      "sources": [
-        "meta-muse-ai-agent-app-launch"
-      ]
-    },
-    {
-      "text": "商品の破損に関する返金要求メールの下書きや交渉を代行します。",
-      "sources": [
-        "meta-muse-ai-agent-app-launch"
-      ]
-    },
-    {
-      "text": "メール履歴から不要なサブスクリプションを整理して解約を指示できます。",
-      "sources": [
-        "meta-muse-ai-agent-app-launch"
-      ]
-    },
     {
       "text": "ShopeeやGrabなどの現地サービスと連携して買い物を手伝います。",
       "sources": [
@@ -119,8 +100,7 @@
       "a": "2026年10月に発表され、日本でもすでに提供が開始されています。",
       "sources": [
         "nvidia-meta-muse-partnership-expansion",
-        "meta-muse-singapore-launch",
-        "meta-muse-ai-agent-app-launch"
+        "meta-muse-singapore-launch"
       ]
     },
     {
@@ -135,17 +115,11 @@
       "q": "どのような連携機能がある？",
       "a": "買い物や旅行のサービスなど、現地の各種サービスと連携してタスクをこなします。",
       "sources": [
-        "meta-muse-singapore-launch",
-        "meta-muse-ai-agent-app-launch"
+        "meta-muse-singapore-launch"
       ]
     }
   ],
   "timeline": [
-    {
-      "date": "2026-10-02",
-      "slug": "meta-muse-ai-agent-app-launch",
-      "event": "Metaが自律型AIエージェントアプリ「Muse」を発表"
-    },
     {
       "date": "2026-10-28",
       "slug": "nvidia-meta-muse-partnership-expansion",
@@ -163,13 +137,11 @@
   "articles": [
     "meta-waddle-world-ai-pet",
     "nvidia-meta-muse-partnership-expansion",
-    "meta-muse-singapore-launch",
-    "meta-muse-ai-agent-app-launch"
+    "meta-muse-singapore-launch"
   ],
   "linkFrom": [
     "nvidia-meta-muse-partnership-expansion",
-    "meta-muse-singapore-launch",
-    "meta-muse-ai-agent-app-launch"
+    "meta-muse-singapore-launch"
   ],
   "signature": "3ea9a2eecc1c0d88",
   "primarySignature": "ba923d21467fa5e6",

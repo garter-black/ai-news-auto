@@ -1,632 +1,631 @@
 {
- "note": "日程・会場・基調講演・確定情報は公式サイト等で確認したものだけを入れる（推測で足さない）。startUtc/status/articleSlugs/recap は scripts/events.py が更新する。",
- "events": [
-  {
-   "slug": "github-universe-2026",
-   "name": "GitHub Universe 2026",
-   "nameJa": "GitHub Universe 2026",
-   "organizer": "GitHub",
-   "companySlug": "microsoft",
-   "startDate": "2026-10-28",
-   "endDate": "2026-10-29",
-   "location": "San Francisco, Fort Mason Center",
-   "timezone": "America/Los_Angeles",
-   "keynotes": [
+  "note": "日程・会場・基調講演・確定情報は公式サイト等で確認したものだけを入れる（推測で足さない）。startUtc/status/articleSlugs/recap は scripts/events.py が更新する。",
+  "events": [
     {
-     "title": "Opening Keynote",
-     "speaker": null,
-     "startLocal": "2026-10-28T09:00",
-     "startUtc": "2026-10-28T16:00:00Z"
+      "slug": "github-universe-2026",
+      "name": "GitHub Universe 2026",
+      "nameJa": "GitHub Universe 2026",
+      "organizer": "GitHub",
+      "companySlug": "microsoft",
+      "startDate": "2026-10-28",
+      "endDate": "2026-10-29",
+      "location": "San Francisco, Fort Mason Center",
+      "timezone": "America/Los_Angeles",
+      "keynotes": [
+        {
+          "title": "Opening Keynote",
+          "speaker": null,
+          "startLocal": "2026-10-28T09:00",
+          "startUtc": "2026-10-28T16:00:00Z"
+        },
+        {
+          "title": "Closing keynote",
+          "speaker": null,
+          "startLocal": "2026-10-29T14:00",
+          "startUtc": "2026-10-29T21:00:00Z"
+        }
+      ],
+      "officialUrl": "https://githubuniverse.com/",
+      "sources": [
+        {
+          "title": "GitHub Universe 2026 (official)",
+          "url": "https://githubuniverse.com/"
+        },
+        {
+          "title": "Your guide to GitHub Universe 2026 is here (GitHub Blog)",
+          "url": "https://github.blog/news-insights/company-news/your-guide-to-github-universe-2026-is-here-the-schedule-just-launched/"
+        }
+      ],
+      "confirmed": [
+        "会期は10月28〜29日、会場はサンフランシスコのFort Mason Center",
+        "基調講演は10月28日9時、クロージング基調講演は29日14時",
+        "オンライン参加は無料で、基調講演をライブ配信",
+        "会場参加チケットは完売",
+        "10月27日は招待者限定のプログラム",
+        "10月30日にGitHub本社で学習イベント（別チケット）",
+        "AnthropicとOpenAIの担当者が登壇するパネルあり"
+      ],
+      "livestream": "https://githubuniverse.com/",
+      "confidence": "official",
+      "summary": "GitHubの年次開発者イベント。サンフランシスコで2日間開かれ、基調講演はオンラインで無料配信されます。",
+      "match": "GitHub|Copilot",
+      "verifiedAt": "2026-10-27",
+      "startUtc": "2026-10-28T07:00:00Z",
+      "endUtc": "2026-10-30T06:59:59Z",
+      "status": "ended",
+      "articleSlugs": [
+        "microsoft-fabric-database-agent-preview",
+        "microsoft-foundry-agent-framework-customization",
+        "intelligent-terminal-local-120b-llm",
+        "automation-vs-physical-ai-microsoft-azure",
+        "github-copilot-plugin-controls-ga",
+        "microsoft-copilot-harness-foundry-agent-builder",
+        "microsoft-azure-physical-ai-iot",
+        "github-agentic-workflows-generally-available",
+        "github-copilot-security-extension",
+        "github-enterprise-includes-copilot",
+        "github-copilot-fusion-release",
+        "microsoft-copilot-harness-foundry",
+        "github-copilot-app-projects-computer-use",
+        "microsoft-copilot-cowork-new-skills",
+        "copilot-code-microsoft-coding-for-everyone",
+        "copilot-in-sharepoint-october-2026",
+        "microsoft-scale-one-ai-agent-across-sites"
+      ],
+      "recap": [
+        {
+          "text": "GitHub EnterpriseにGitHub Copilotを標準内包",
+          "slug": "github-enterprise-includes-copilot"
+        },
+        {
+          "text": "GitHub Agentic Workflowsが一般提供を開始",
+          "slug": "github-agentic-workflows-generally-available"
+        },
+        {
+          "text": "GitHub Copilotのプラグイン管理機能が一般提供",
+          "slug": "github-copilot-plugin-controls-ga"
+        },
+        {
+          "text": "GitHub Copilotセキュリティ拡張がパブリックプレビュー",
+          "slug": "github-copilot-security-extension"
+        },
+        {
+          "text": "Copilotアプリのプロジェクト機能とコンピューター使用が公開プレビュー",
+          "slug": "github-copilot-app-projects-computer-use"
+        },
+        {
+          "text": "GitHub製の実行基盤Copilot harnessがMicrosoft Foundryで利用可能に",
+          "slug": "microsoft-copilot-harness-foundry"
+        }
+      ],
+      "recapKey": "6be65c3e09a9",
+      "recapAt": "2026-11-01T22:24:44Z"
     },
     {
-     "title": "Closing keynote",
-     "speaker": null,
-     "startLocal": "2026-10-29T14:00",
-     "startUtc": "2026-10-29T21:00:00Z"
+      "slug": "gartner-it-symposium-xpo-japan-2026",
+      "name": "Gartner IT Symposium/Xpo 2026 (Japan)",
+      "nameJa": "Gartner IT Symposium/Xpo 2026",
+      "organizer": "Gartner Japan",
+      "companySlug": "other",
+      "startDate": "2026-11-04",
+      "endDate": "2026-11-06",
+      "location": "Yokohama, Pacifico Yokohama North",
+      "timezone": "Asia/Tokyo",
+      "keynotes": [],
+      "officialUrl": "https://www.gartner.com/jp/symposium",
+      "sources": [
+        {
+          "title": "Gartner、11月4~6日に横浜で開催するGartner IT Symposium/Xpoでの基調講演のスピーカーが決定（ガートナージャパン発表）",
+          "url": "https://digitalpr.jp/r/145790"
+        }
+      ],
+      "confirmed": [
+        "会期は11月4〜6日、会場はパシフィコ横浜ノース",
+        "オープニング基調講演は初日の11月4日",
+        "ゲスト基調講演にオードリー・タン氏と落合陽一氏",
+        "クロージング基調講演のテーマは「インテリジェンスを解き放て」"
+      ],
+      "livestream": null,
+      "confidence": "official",
+      "summary": "ガートナージャパンが横浜で開くIT戦略の会議。基調講演にオードリー・タン氏と落合陽一氏が登壇します。",
+      "match": "Gartner|ガートナー",
+      "verifiedAt": "2026-10-27",
+      "startUtc": "2026-11-03T15:00:00Z",
+      "endUtc": "2026-11-06T14:59:59Z",
+      "status": "upcoming",
+      "articleSlugs": []
+    },
+    {
+      "slug": "web-summit-2026",
+      "name": "Web Summit 2026",
+      "nameJa": "Web Summit 2026（ウェブサミット）",
+      "organizer": "Web Summit",
+      "companySlug": "other",
+      "startDate": "2026-11-09",
+      "endDate": "2026-11-12",
+      "location": "Lisbon, Portugal",
+      "timezone": "Europe/Lisbon",
+      "keynotes": [],
+      "officialUrl": "https://websummit.com/",
+      "sources": [
+        {
+          "title": "Web Summit (official)",
+          "url": "https://websummit.com/"
+        }
+      ],
+      "confirmed": [
+        "会期は11月9〜12日、開催地はポルトガル・リスボン",
+        "Manus AI、Unitree、Replit、MiniMax等の登壇者を発表"
+      ],
+      "livestream": null,
+      "confidence": "official",
+      "summary": "ポルトガル・リスボンで4日間開かれるテック会議。Manus AIやReplitなどの登壇が発表されています。",
+      "match": "Web Summit|ウェブサミット",
+      "verifiedAt": "2026-10-27",
+      "startUtc": "2026-11-09T00:00:00Z",
+      "endUtc": "2026-11-12T23:59:59Z",
+      "status": "upcoming",
+      "articleSlugs": []
+    },
+    {
+      "slug": "adobe-max-2026",
+      "name": "Adobe MAX 2026 – The Creativity Conference",
+      "nameJa": "Adobe MAX 2026",
+      "organizer": "Adobe",
+      "companySlug": "other",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-12",
+      "location": "Miami Beach, Miami Beach Convention Center",
+      "timezone": "America/New_York",
+      "keynotes": [],
+      "officialUrl": "https://max.adobe.com/",
+      "sources": [
+        {
+          "title": "Adobe MAX 2026 (official)",
+          "url": "https://max.adobe.com/"
+        },
+        {
+          "title": "Adobe MAX 2026 FAQ (official)",
+          "url": "https://max.adobe.com/faq/"
+        }
+      ],
+      "confirmed": [
+        "会期は11月10〜12日、会場はマイアミビーチ・コンベンションセンター",
+        "基調講演は11月10日と11日の2日間",
+        "MAX Sneaksは11月11日",
+        "オンライン版は11月10〜11日、基調講演などを無料で視聴可",
+        "プレカンファレンスは11月8〜9日（会場参加のみ）",
+        "Jonathan Anderson氏、Terry Crews氏らが登壇予定"
+      ],
+      "livestream": "https://max.adobe.com/",
+      "confidence": "official",
+      "summary": "Adobeのクリエイター向け年次イベント。マイアミビーチで開かれ、基調講演はオンラインで無料視聴できます。",
+      "match": "Adobe|アドビ|Firefly|Photoshop|Premiere|Illustrator",
+      "verifiedAt": "2026-10-27",
+      "startUtc": "2026-11-10T05:00:00Z",
+      "endUtc": "2026-11-13T04:59:59Z",
+      "status": "upcoming",
+      "articleSlugs": []
+    },
+    {
+      "slug": "nextech-week-autumn-2026",
+      "name": "NexTech Week 2026 Autumn (AI EXPO Autumn)",
+      "nameJa": "NexTech Week 2026【秋】（AI・人工知能EXPO【秋】）",
+      "organizer": "RX Japan",
+      "companySlug": "other",
+      "startDate": "2026-11-11",
+      "endDate": "2026-11-13",
+      "location": "Chiba, Makuhari Messe Halls 1-3",
+      "timezone": "Asia/Tokyo",
+      "keynotes": [],
+      "officialUrl": "https://www.nextech-week.jp/autumn/ja-jp.html",
+      "sources": [
+        {
+          "title": "NexTech Week【秋】公式サイト",
+          "url": "https://www.nextech-week.jp/autumn/ja-jp.html"
+        }
+      ],
+      "confirmed": [
+        "会期は11月11〜13日、会場は幕張メッセ1〜3ホール",
+        "AI・人工知能EXPO【秋】など7展で構成",
+        "11月10日まで来場登録無料、以降は11,000円（税込）"
+      ],
+      "livestream": null,
+      "confidence": "official",
+      "summary": "幕張メッセで3日間開かれる展示会。AI・人工知能EXPO【秋】など7展で構成されます。",
+      "match": "AI・人工知能EXPO|NexTech Week|AI EXPO",
+      "verifiedAt": "2026-10-27",
+      "startUtc": "2026-11-10T15:00:00Z",
+      "endUtc": "2026-11-13T14:59:59Z",
+      "status": "upcoming",
+      "articleSlugs": []
+    },
+    {
+      "slug": "sc26",
+      "name": "SC26 – International Conference for High Performance Computing, Networking, Storage, and Analysis",
+      "nameJa": "SC26（スーパーコンピューティング国際会議）",
+      "organizer": "ACM / IEEE Computer Society",
+      "companySlug": "other",
+      "startDate": "2026-11-15",
+      "endDate": "2026-11-20",
+      "location": "Chicago, McCormick Place",
+      "timezone": "America/Chicago",
+      "keynotes": [],
+      "officialUrl": "https://sc26.supercomputing.org/",
+      "sources": [
+        {
+          "title": "SC26 (official)",
+          "url": "https://sc26.supercomputing.org/"
+        },
+        {
+          "title": "SC26 Dates & Deadlines",
+          "url": "https://sc26.supercomputing.org/all-dates-deadlines/"
+        },
+        {
+          "title": "SC26 Keynote",
+          "url": "https://sc26.supercomputing.org/program/keynote/"
+        }
+      ],
+      "confirmed": [
+        "会期は11月15〜20日、会場はシカゴのMcCormick Place",
+        "展示会場は11月17〜19日",
+        "基調講演は11月17日、Anima Anandkumar氏（Caltech）",
+        "オンライン参加の「Digital Experience」あり"
+      ],
+      "livestream": null,
+      "confidence": "official",
+      "summary": "スーパーコンピューターの国際会議。シカゴで開かれ、基調講演はCaltechのAnima Anandkumar氏です。",
+      "match": "SC26|スーパーコンピュータ|スパコン|TOP500|HPC",
+      "verifiedAt": "2026-10-27",
+      "startUtc": "2026-11-15T06:00:00Z",
+      "endUtc": "2026-11-21T05:59:59Z",
+      "status": "upcoming",
+      "articleSlugs": []
+    },
+    {
+      "slug": "microsoft-ignite-2026",
+      "name": "Microsoft Ignite 2026",
+      "nameJa": "Microsoft Ignite 2026",
+      "organizer": "Microsoft",
+      "companySlug": "microsoft",
+      "startDate": "2026-11-17",
+      "endDate": "2026-11-20",
+      "location": "San Francisco, Moscone Center (opening keynote at Chase Center)",
+      "timezone": "America/Los_Angeles",
+      "keynotes": [
+        {
+          "title": "Microsoft Ignite opening keynote (KEY01)",
+          "speaker": "Satya Nadella, Judson Althoff",
+          "startLocal": "2026-11-17T10:00",
+          "startUtc": "2026-11-17T18:00:00Z"
+        },
+        {
+          "title": "Ignite Frontier Transformation (KEY02)",
+          "speaker": "Judson Althoff, Mala Anand, Stephen Boyle, Nicole Dezen, Ralph Haupter",
+          "startLocal": "2026-11-18T09:00",
+          "startUtc": "2026-11-18T17:00:00Z"
+        }
+      ],
+      "officialUrl": "https://ignite.microsoft.com/",
+      "sources": [
+        {
+          "title": "Microsoft Ignite (official home / FAQ)",
+          "url": "https://ignite.microsoft.com/en-US/home"
+        },
+        {
+          "title": "Microsoft Ignite session catalog (KEY01/KEY02)",
+          "url": "https://ignite.microsoft.com/api/session/all/en-US"
+        }
+      ],
+      "confirmed": [
+        "会期は11月17〜20日、会場はサンフランシスコのMoscone Center",
+        "オープニング基調講演はSatya Nadella氏とJudson Althoff氏",
+        "オープニング基調講演の会場はChase Center",
+        "オンライン参加（Digital pass）は無料",
+        "オンライン開催は11月17〜19日",
+        "会場参加のConference passは2,325ドル",
+        "11月16日にオプションのプレデイあり"
+      ],
+      "livestream": "https://ignite.microsoft.com/",
+      "confidence": "official",
+      "summary": "Microsoftの年次技術イベント。サンフランシスコで開かれ、オープニング基調講演にサティア・ナデラCEOが登壇します。",
+      "match": "Ignite|Microsoft|マイクロソフト|Azure|Copilot|Foundry|Work IQ",
+      "verifiedAt": "2026-10-27",
+      "startUtc": "2026-11-17T08:00:00Z",
+      "endUtc": "2026-11-21T07:59:59Z",
+      "status": "upcoming",
+      "articleSlugs": []
+    },
+    {
+      "slug": "ntt-rd-forum-2026",
+      "name": "NTT R&D FORUM 2026",
+      "nameJa": "NTT R&D FORUM 2026",
+      "organizer": "NTT",
+      "companySlug": "other",
+      "startDate": "2026-11-18",
+      "endDate": "2026-11-25",
+      "location": "Tokyo (Musashino), NTT Musashino R&D Center",
+      "timezone": "Asia/Tokyo",
+      "keynotes": [
+        {
+          "title": "基調講演01（日本語）",
+          "speaker": "島田明（NTT代表取締役社長）",
+          "startLocal": "2026-11-18T10:30",
+          "startUtc": "2026-11-18T01:30:00Z"
+        },
+        {
+          "title": "基調講演02（日本語）",
+          "speaker": "木下真吾（NTT執行役員 研究企画部門長）",
+          "startLocal": "2026-11-18T13:30",
+          "startUtc": "2026-11-18T04:30:00Z"
+        },
+        {
+          "title": "基調講演01（英語）",
+          "speaker": "島田明（NTT代表取締役社長）",
+          "startLocal": "2026-11-19T10:30",
+          "startUtc": "2026-11-19T01:30:00Z"
+        },
+        {
+          "title": "基調講演02（日本語）",
+          "speaker": "木下真吾（NTT執行役員 研究企画部門長）",
+          "startLocal": "2026-11-20T10:30",
+          "startUtc": "2026-11-20T01:30:00Z"
+        }
+      ],
+      "officialUrl": "https://www.rd.ntt/forum/2026/",
+      "sources": [
+        {
+          "title": "NTT R&D FORUM 2026 公式サイト",
+          "url": "https://www.rd.ntt/forum/2026/"
+        }
+      ],
+      "confirmed": [
+        "会期は11月18〜20日と24〜25日、NTT武蔵野研究開発センタ",
+        "NTTグループ関係者による招待制、入場無料",
+        "テーマは「Mehr Licht! More Photonics for Intelligence」",
+        "展示はAIOWN、tsuzumi、フィジカルAIなど",
+        "オンラインのライブ配信なし、後日YouTubeで公開"
+      ],
+      "livestream": null,
+      "confidence": "official",
+      "summary": "NTTの研究開発の展示会。招待制で、AIOWNやtsuzumi、フィジカルAIなどが展示されます。",
+      "match": "NTT|tsuzumi|IOWN",
+      "verifiedAt": "2026-10-27",
+      "startUtc": "2026-11-17T15:00:00Z",
+      "endUtc": "2026-11-25T14:59:59Z",
+      "status": "upcoming",
+      "articleSlugs": []
+    },
+    {
+      "slug": "nvidia-gtc-dc-2026",
+      "name": "NVIDIA GTC Washington, D.C. 2026",
+      "nameJa": "NVIDIA GTC DC 2026（GTCワシントンD.C.）",
+      "organizer": "NVIDIA",
+      "companySlug": "nvidia",
+      "startDate": "2026-11-30",
+      "endDate": "2026-12-03",
+      "location": "Washington, D.C., Ronald Reagan Building and International Trade Center (and other venues)",
+      "timezone": "America/New_York",
+      "keynotes": [
+        {
+          "title": "GTC Washington, D.C. Keynote",
+          "speaker": "Jensen Huang (NVIDIA CEO)",
+          "startLocal": "2026-12-01T14:00",
+          "startUtc": "2026-12-01T19:00:00Z"
+        }
+      ],
+      "officialUrl": "https://www.nvidia.com/en-us/gtc-dc/",
+      "sources": [
+        {
+          "title": "NVIDIA GTC Washington, D.C. (official)",
+          "url": "https://www.nvidia.com/en-us/gtc-dc/"
+        },
+        {
+          "title": "GTC DC Keynote (official)",
+          "url": "https://www.nvidia.com/en-us/gtc-dc/keynote/"
+        }
+      ],
+      "confirmed": [
+        "会期は11月30日〜12月3日、ワシントンD.C.で開催",
+        "主会場はRonald Reagan Building",
+        "基調講演は12月1日14時（米東部）、Jensen Huang CEO",
+        "基調講演の前にプレショー「GTC Live」",
+        "11月30日はワークショップ、12月1〜3日が本会議と展示"
+      ],
+      "livestream": null,
+      "confidence": "official",
+      "summary": "NVIDIAがワシントンD.C.で開く技術会議。12月1日にジェンスン・フアンCEOが基調講演を行います。",
+      "match": "GTC|NVIDIA|エヌビディア|Jensen Huang|ジェンスン",
+      "verifiedAt": "2026-10-27",
+      "startUtc": "2026-11-30T05:00:00Z",
+      "endUtc": "2026-12-04T04:59:59Z",
+      "status": "upcoming",
+      "articleSlugs": []
+    },
+    {
+      "slug": "aws-reinvent-2026",
+      "name": "AWS re:Invent 2026",
+      "nameJa": "AWS re:Invent 2026",
+      "organizer": "Amazon Web Services",
+      "companySlug": "other",
+      "startDate": "2026-11-30",
+      "endDate": "2026-12-04",
+      "location": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "keynotes": [],
+      "officialUrl": "https://aws.amazon.com/events/reinvent",
+      "sources": [
+        {
+          "title": "AWS re:Invent 2026 (official)",
+          "url": "https://aws.amazon.com/events/reinvent"
+        },
+        {
+          "title": "AWS re:Invent 2026 Keynotes (official)",
+          "url": "https://aws.amazon.com/events/reinvent/sessions/keynotes/"
+        },
+        {
+          "title": "AWS re:Invent Livestream (official)",
+          "url": "https://aws.amazon.com/events/reinvent/livestream/"
+        }
+      ],
+      "confirmed": [
+        "会期は11月30日〜12月4日、米ラスベガスで開催",
+        "基調講演の日程・登壇者は「近日発表」（10/27時点）",
+        "基調講演などの無料ライブ配信あり（要登録）",
+        "ライブ配信の登録受付は11月9日開始",
+        "フルパスは2,499ドル"
+      ],
+      "livestream": "https://aws.amazon.com/events/reinvent/livestream/",
+      "confidence": "official",
+      "summary": "AWSの年次カンファレンス。ラスベガスで5日間開かれます。基調講演の日程は10月27日時点で未発表です。",
+      "match": "re:Invent|AWS|Amazon Bedrock|Amazon Nova|Amazon Q|Trainium|Kiro",
+      "verifiedAt": "2026-10-27",
+      "startUtc": "2026-11-30T08:00:00Z",
+      "endUtc": "2026-12-05T07:59:59Z",
+      "status": "upcoming",
+      "articleSlugs": []
+    },
+    {
+      "slug": "neurips-2026",
+      "name": "NeurIPS 2026 (Fortieth Annual Conference on Neural Information Processing Systems)",
+      "nameJa": "NeurIPS 2026",
+      "organizer": "NeurIPS Foundation",
+      "companySlug": "other",
+      "startDate": "2026-12-06",
+      "endDate": "2026-12-13",
+      "location": "Sydney (main), Atlanta and Paris (satellites)",
+      "timezone": "Australia/Sydney",
+      "keynotes": [],
+      "officialUrl": "https://neurips.cc/",
+      "sources": [
+        {
+          "title": "NeurIPS 2026 (official home)",
+          "url": "https://neurips.cc/"
+        },
+        {
+          "title": "NeurIPS 2026 Dates and Deadlines (official)",
+          "url": "https://neurips.cc/Conferences/2026/Dates"
+        }
+      ],
+      "confirmed": [
+        "第40回。メイン会場はシドニー（12月6〜12日）",
+        "アトランタとパリでサテライト開催（12月9〜13日）",
+        "シドニーの本会議は12月8〜10日",
+        "早期登録の締め切りは10月30日（AoE）"
+      ],
+      "livestream": null,
+      "confidence": "official",
+      "summary": "機械学習の国際学会。第40回はシドニーをメイン会場に、アトランタとパリでも開かれます。",
+      "match": "NeurIPS",
+      "verifiedAt": "2026-10-27",
+      "startUtc": "2026-12-05T13:00:00Z",
+      "endUtc": "2026-12-13T12:59:59Z",
+      "status": "upcoming",
+      "articleSlugs": []
+    },
+    {
+      "slug": "semicon-japan-2026",
+      "name": "SEMICON Japan 2026",
+      "nameJa": "SEMICON Japan 2026（セミコン・ジャパン）",
+      "organizer": "SEMI",
+      "companySlug": "other",
+      "startDate": "2026-12-09",
+      "endDate": "2026-12-11",
+      "location": "Tokyo, Tokyo Big Sight (and nearby venues)",
+      "timezone": "Asia/Tokyo",
+      "keynotes": [],
+      "officialUrl": "https://www.semiconjapan.org/jp",
+      "sources": [
+        {
+          "title": "SEMICON Japan 公式サイト",
+          "url": "https://www.semiconjapan.org/jp"
+        }
+      ],
+      "confirmed": [
+        "会期は12月9〜11日、会場は東京ビッグサイトほか",
+        "主催はSEMI、今回で第50回",
+        "来場登録を受付中",
+        "東京エレクトロン、Rapidus、NVIDIAの幹部らが講演"
+      ],
+      "livestream": null,
+      "confidence": "official",
+      "summary": "半導体の国際展示会。東京ビッグサイトで開かれ、東京エレクトロンやRapidusの幹部が講演します。",
+      "match": "SEMICON|セミコン|Rapidus|ラピダス|東京エレクトロン",
+      "verifiedAt": "2026-10-27",
+      "startUtc": "2026-12-08T15:00:00Z",
+      "endUtc": "2026-12-11T14:59:59Z",
+      "status": "upcoming",
+      "articleSlugs": []
+    },
+    {
+      "slug": "ces-2027",
+      "name": "CES 2027",
+      "nameJa": "CES 2027",
+      "organizer": "Consumer Technology Association (CTA)",
+      "companySlug": "other",
+      "startDate": "2027-01-06",
+      "endDate": "2027-01-09",
+      "location": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "keynotes": [
+        {
+          "title": "Waymo keynote (Palazzo Ballroom, Venetian)",
+          "speaker": "Tekedra Mawakana (Waymo co-CEO)",
+          "startLocal": "2027-01-05T18:30",
+          "startUtc": "2027-01-06T02:30:00Z"
+        },
+        {
+          "title": "CTA State of the Industry Address, followed by Stellantis keynote (Palazzo Ballroom)",
+          "speaker": "Antonio Filosa (Stellantis CEO) – after the CTA address",
+          "startLocal": "2027-01-06T08:30",
+          "startUtc": "2027-01-06T16:30:00Z"
+        },
+        {
+          "title": "Lenovo Tech World @ CES (Sphere)",
+          "speaker": "Yuanqing Yang (Lenovo Chairman & CEO)",
+          "startLocal": "2027-01-06T17:00",
+          "startUtc": "2027-01-07T01:00:00Z"
+        }
+      ],
+      "officialUrl": "https://www.ces.tech/",
+      "sources": [
+        {
+          "title": "CES (official)",
+          "url": "https://www.ces.tech/"
+        },
+        {
+          "title": "CES 2027 Keynotes (official)",
+          "url": "https://www.ces.tech/keynotes"
+        },
+        {
+          "title": "Lenovo Takes CES 2027 Keynote to New Heights with Immersive Experience at Sphere (CTA)",
+          "url": "https://www.ces.tech/press-releases/lenovo-takes-ces-2027-keynote-to-new-heights-with-immersive-experience-at-sphere"
+        },
+        {
+          "title": "Stellantis to Bring Human-Centered Mobility Vision to CES 2027 Keynote (CTA)",
+          "url": "https://www.ces.tech/press-releases/stellantis-to-bring-human-centered-mobility-vision-to-ces-2027-keynote"
+        },
+        {
+          "title": "Waymo Co-CEO Tekedra Mawakana to Keynote at CES 2027 (CTA)",
+          "url": "https://www.ces.tech/press-releases/waymo-co-ceo-tekedra-mawakana-to-keynote-at-ces-2027"
+        }
+      ],
+      "confirmed": [
+        "会期は2027年1月6〜9日、米ラスベガスで開催",
+        "Lenovoは1月6日17時にSphereで基調講演",
+        "Waymo共同CEOの基調講演は1月5日18時30分",
+        "Stellantis CEOが初日の1月6日に基調講演"
+      ],
+      "livestream": null,
+      "confidence": "official",
+      "summary": "米ラスベガスで開かれる家電・テックの見本市。LenovoやWaymoなどが基調講演を行います。",
+      "match": "\\bCES\\b",
+      "verifiedAt": "2026-10-27",
+      "startUtc": "2027-01-06T08:00:00Z",
+      "endUtc": "2027-01-10T07:59:59Z",
+      "status": "upcoming",
+      "articleSlugs": []
     }
-   ],
-   "officialUrl": "https://githubuniverse.com/",
-   "sources": [
-    {
-     "title": "GitHub Universe 2026 (official)",
-     "url": "https://githubuniverse.com/"
-    },
-    {
-     "title": "Your guide to GitHub Universe 2026 is here (GitHub Blog)",
-     "url": "https://github.blog/news-insights/company-news/your-guide-to-github-universe-2026-is-here-the-schedule-just-launched/"
-    }
-   ],
-   "confirmed": [
-    "会期は10月28〜29日、会場はサンフランシスコのFort Mason Center",
-    "基調講演は10月28日9時、クロージング基調講演は29日14時",
-    "オンライン参加は無料で、基調講演をライブ配信",
-    "会場参加チケットは完売",
-    "10月27日は招待者限定のプログラム",
-    "10月30日にGitHub本社で学習イベント（別チケット）",
-    "AnthropicとOpenAIの担当者が登壇するパネルあり"
-   ],
-   "livestream": "https://githubuniverse.com/",
-   "confidence": "official",
-   "summary": "GitHubの年次開発者イベント。サンフランシスコで2日間開かれ、基調講演はオンラインで無料配信されます。",
-   "match": "GitHub|Copilot",
-   "verifiedAt": "2026-10-27",
-   "startUtc": "2026-10-28T07:00:00Z",
-   "endUtc": "2026-10-30T06:59:59Z",
-   "status": "ended",
-   "articleSlugs": [
-    "microsoft-fabric-database-agent-preview",
-    "microsoft-foundry-agent-framework-customization",
-    "intelligent-terminal-local-120b-llm",
-    "automation-vs-physical-ai-microsoft-azure",
-    "github-copilot-plugin-controls-ga",
-    "microsoft-copilot-harness-agent-scaling",
-    "microsoft-copilot-harness-foundry-agent-builder",
-    "microsoft-azure-physical-ai-iot",
-    "github-agentic-workflows-generally-available",
-    "github-copilot-security-extension",
-    "github-enterprise-includes-copilot",
-    "github-copilot-fusion-release",
-    "microsoft-copilot-harness-foundry",
-    "github-copilot-app-projects-computer-use",
-    "microsoft-copilot-cowork-new-skills",
-    "copilot-code-microsoft-coding-for-everyone",
-    "copilot-in-sharepoint-october-2026",
-    "microsoft-scale-one-ai-agent-across-sites"
-   ],
-   "recap": [
-    {
-     "text": "GitHub EnterpriseにGitHub Copilotを標準内包",
-     "slug": "github-enterprise-includes-copilot"
-    },
-    {
-     "text": "GitHub Agentic Workflowsが一般提供を開始",
-     "slug": "github-agentic-workflows-generally-available"
-    },
-    {
-     "text": "GitHub Copilotのプラグイン管理機能が一般提供",
-     "slug": "github-copilot-plugin-controls-ga"
-    },
-    {
-     "text": "GitHub Copilotセキュリティ拡張がパブリックプレビュー",
-     "slug": "github-copilot-security-extension"
-    },
-    {
-     "text": "Copilotアプリのプロジェクト機能とコンピューター使用が公開プレビュー",
-     "slug": "github-copilot-app-projects-computer-use"
-    },
-    {
-     "text": "GitHub製の実行基盤Copilot harnessがMicrosoft Foundryで利用可能に",
-     "slug": "microsoft-copilot-harness-foundry"
-    }
-   ],
-   "recapKey": "6be65c3e09a9",
-   "recapAt": "2026-11-01T22:24:44Z"
-  },
-  {
-   "slug": "gartner-it-symposium-xpo-japan-2026",
-   "name": "Gartner IT Symposium/Xpo 2026 (Japan)",
-   "nameJa": "Gartner IT Symposium/Xpo 2026",
-   "organizer": "Gartner Japan",
-   "companySlug": "other",
-   "startDate": "2026-11-04",
-   "endDate": "2026-11-06",
-   "location": "Yokohama, Pacifico Yokohama North",
-   "timezone": "Asia/Tokyo",
-   "keynotes": [],
-   "officialUrl": "https://www.gartner.com/jp/symposium",
-   "sources": [
-    {
-     "title": "Gartner、11月4~6日に横浜で開催するGartner IT Symposium/Xpoでの基調講演のスピーカーが決定（ガートナージャパン発表）",
-     "url": "https://digitalpr.jp/r/145790"
-    }
-   ],
-   "confirmed": [
-    "会期は11月4〜6日、会場はパシフィコ横浜ノース",
-    "オープニング基調講演は初日の11月4日",
-    "ゲスト基調講演にオードリー・タン氏と落合陽一氏",
-    "クロージング基調講演のテーマは「インテリジェンスを解き放て」"
-   ],
-   "livestream": null,
-   "confidence": "official",
-   "summary": "ガートナージャパンが横浜で開くIT戦略の会議。基調講演にオードリー・タン氏と落合陽一氏が登壇します。",
-   "match": "Gartner|ガートナー",
-   "verifiedAt": "2026-10-27",
-   "startUtc": "2026-11-03T15:00:00Z",
-   "endUtc": "2026-11-06T14:59:59Z",
-   "status": "upcoming",
-   "articleSlugs": []
-  },
-  {
-   "slug": "web-summit-2026",
-   "name": "Web Summit 2026",
-   "nameJa": "Web Summit 2026（ウェブサミット）",
-   "organizer": "Web Summit",
-   "companySlug": "other",
-   "startDate": "2026-11-09",
-   "endDate": "2026-11-12",
-   "location": "Lisbon, Portugal",
-   "timezone": "Europe/Lisbon",
-   "keynotes": [],
-   "officialUrl": "https://websummit.com/",
-   "sources": [
-    {
-     "title": "Web Summit (official)",
-     "url": "https://websummit.com/"
-    }
-   ],
-   "confirmed": [
-    "会期は11月9〜12日、開催地はポルトガル・リスボン",
-    "Manus AI、Unitree、Replit、MiniMax等の登壇者を発表"
-   ],
-   "livestream": null,
-   "confidence": "official",
-   "summary": "ポルトガル・リスボンで4日間開かれるテック会議。Manus AIやReplitなどの登壇が発表されています。",
-   "match": "Web Summit|ウェブサミット",
-   "verifiedAt": "2026-10-27",
-   "startUtc": "2026-11-09T00:00:00Z",
-   "endUtc": "2026-11-12T23:59:59Z",
-   "status": "upcoming",
-   "articleSlugs": []
-  },
-  {
-   "slug": "adobe-max-2026",
-   "name": "Adobe MAX 2026 – The Creativity Conference",
-   "nameJa": "Adobe MAX 2026",
-   "organizer": "Adobe",
-   "companySlug": "other",
-   "startDate": "2026-11-10",
-   "endDate": "2026-11-12",
-   "location": "Miami Beach, Miami Beach Convention Center",
-   "timezone": "America/New_York",
-   "keynotes": [],
-   "officialUrl": "https://max.adobe.com/",
-   "sources": [
-    {
-     "title": "Adobe MAX 2026 (official)",
-     "url": "https://max.adobe.com/"
-    },
-    {
-     "title": "Adobe MAX 2026 FAQ (official)",
-     "url": "https://max.adobe.com/faq/"
-    }
-   ],
-   "confirmed": [
-    "会期は11月10〜12日、会場はマイアミビーチ・コンベンションセンター",
-    "基調講演は11月10日と11日の2日間",
-    "MAX Sneaksは11月11日",
-    "オンライン版は11月10〜11日、基調講演などを無料で視聴可",
-    "プレカンファレンスは11月8〜9日（会場参加のみ）",
-    "Jonathan Anderson氏、Terry Crews氏らが登壇予定"
-   ],
-   "livestream": "https://max.adobe.com/",
-   "confidence": "official",
-   "summary": "Adobeのクリエイター向け年次イベント。マイアミビーチで開かれ、基調講演はオンラインで無料視聴できます。",
-   "match": "Adobe|アドビ|Firefly|Photoshop|Premiere|Illustrator",
-   "verifiedAt": "2026-10-27",
-   "startUtc": "2026-11-10T05:00:00Z",
-   "endUtc": "2026-11-13T04:59:59Z",
-   "status": "upcoming",
-   "articleSlugs": []
-  },
-  {
-   "slug": "nextech-week-autumn-2026",
-   "name": "NexTech Week 2026 Autumn (AI EXPO Autumn)",
-   "nameJa": "NexTech Week 2026【秋】（AI・人工知能EXPO【秋】）",
-   "organizer": "RX Japan",
-   "companySlug": "other",
-   "startDate": "2026-11-11",
-   "endDate": "2026-11-13",
-   "location": "Chiba, Makuhari Messe Halls 1-3",
-   "timezone": "Asia/Tokyo",
-   "keynotes": [],
-   "officialUrl": "https://www.nextech-week.jp/autumn/ja-jp.html",
-   "sources": [
-    {
-     "title": "NexTech Week【秋】公式サイト",
-     "url": "https://www.nextech-week.jp/autumn/ja-jp.html"
-    }
-   ],
-   "confirmed": [
-    "会期は11月11〜13日、会場は幕張メッセ1〜3ホール",
-    "AI・人工知能EXPO【秋】など7展で構成",
-    "11月10日まで来場登録無料、以降は11,000円（税込）"
-   ],
-   "livestream": null,
-   "confidence": "official",
-   "summary": "幕張メッセで3日間開かれる展示会。AI・人工知能EXPO【秋】など7展で構成されます。",
-   "match": "AI・人工知能EXPO|NexTech Week|AI EXPO",
-   "verifiedAt": "2026-10-27",
-   "startUtc": "2026-11-10T15:00:00Z",
-   "endUtc": "2026-11-13T14:59:59Z",
-   "status": "upcoming",
-   "articleSlugs": []
-  },
-  {
-   "slug": "sc26",
-   "name": "SC26 – International Conference for High Performance Computing, Networking, Storage, and Analysis",
-   "nameJa": "SC26（スーパーコンピューティング国際会議）",
-   "organizer": "ACM / IEEE Computer Society",
-   "companySlug": "other",
-   "startDate": "2026-11-15",
-   "endDate": "2026-11-20",
-   "location": "Chicago, McCormick Place",
-   "timezone": "America/Chicago",
-   "keynotes": [],
-   "officialUrl": "https://sc26.supercomputing.org/",
-   "sources": [
-    {
-     "title": "SC26 (official)",
-     "url": "https://sc26.supercomputing.org/"
-    },
-    {
-     "title": "SC26 Dates & Deadlines",
-     "url": "https://sc26.supercomputing.org/all-dates-deadlines/"
-    },
-    {
-     "title": "SC26 Keynote",
-     "url": "https://sc26.supercomputing.org/program/keynote/"
-    }
-   ],
-   "confirmed": [
-    "会期は11月15〜20日、会場はシカゴのMcCormick Place",
-    "展示会場は11月17〜19日",
-    "基調講演は11月17日、Anima Anandkumar氏（Caltech）",
-    "オンライン参加の「Digital Experience」あり"
-   ],
-   "livestream": null,
-   "confidence": "official",
-   "summary": "スーパーコンピューターの国際会議。シカゴで開かれ、基調講演はCaltechのAnima Anandkumar氏です。",
-   "match": "SC26|スーパーコンピュータ|スパコン|TOP500|HPC",
-   "verifiedAt": "2026-10-27",
-   "startUtc": "2026-11-15T06:00:00Z",
-   "endUtc": "2026-11-21T05:59:59Z",
-   "status": "upcoming",
-   "articleSlugs": []
-  },
-  {
-   "slug": "microsoft-ignite-2026",
-   "name": "Microsoft Ignite 2026",
-   "nameJa": "Microsoft Ignite 2026",
-   "organizer": "Microsoft",
-   "companySlug": "microsoft",
-   "startDate": "2026-11-17",
-   "endDate": "2026-11-20",
-   "location": "San Francisco, Moscone Center (opening keynote at Chase Center)",
-   "timezone": "America/Los_Angeles",
-   "keynotes": [
-    {
-     "title": "Microsoft Ignite opening keynote (KEY01)",
-     "speaker": "Satya Nadella, Judson Althoff",
-     "startLocal": "2026-11-17T10:00",
-     "startUtc": "2026-11-17T18:00:00Z"
-    },
-    {
-     "title": "Ignite Frontier Transformation (KEY02)",
-     "speaker": "Judson Althoff, Mala Anand, Stephen Boyle, Nicole Dezen, Ralph Haupter",
-     "startLocal": "2026-11-18T09:00",
-     "startUtc": "2026-11-18T17:00:00Z"
-    }
-   ],
-   "officialUrl": "https://ignite.microsoft.com/",
-   "sources": [
-    {
-     "title": "Microsoft Ignite (official home / FAQ)",
-     "url": "https://ignite.microsoft.com/en-US/home"
-    },
-    {
-     "title": "Microsoft Ignite session catalog (KEY01/KEY02)",
-     "url": "https://ignite.microsoft.com/api/session/all/en-US"
-    }
-   ],
-   "confirmed": [
-    "会期は11月17〜20日、会場はサンフランシスコのMoscone Center",
-    "オープニング基調講演はSatya Nadella氏とJudson Althoff氏",
-    "オープニング基調講演の会場はChase Center",
-    "オンライン参加（Digital pass）は無料",
-    "オンライン開催は11月17〜19日",
-    "会場参加のConference passは2,325ドル",
-    "11月16日にオプションのプレデイあり"
-   ],
-   "livestream": "https://ignite.microsoft.com/",
-   "confidence": "official",
-   "summary": "Microsoftの年次技術イベント。サンフランシスコで開かれ、オープニング基調講演にサティア・ナデラCEOが登壇します。",
-   "match": "Ignite|Microsoft|マイクロソフト|Azure|Copilot|Foundry|Work IQ",
-   "verifiedAt": "2026-10-27",
-   "startUtc": "2026-11-17T08:00:00Z",
-   "endUtc": "2026-11-21T07:59:59Z",
-   "status": "upcoming",
-   "articleSlugs": []
-  },
-  {
-   "slug": "ntt-rd-forum-2026",
-   "name": "NTT R&D FORUM 2026",
-   "nameJa": "NTT R&D FORUM 2026",
-   "organizer": "NTT",
-   "companySlug": "other",
-   "startDate": "2026-11-18",
-   "endDate": "2026-11-25",
-   "location": "Tokyo (Musashino), NTT Musashino R&D Center",
-   "timezone": "Asia/Tokyo",
-   "keynotes": [
-    {
-     "title": "基調講演01（日本語）",
-     "speaker": "島田明（NTT代表取締役社長）",
-     "startLocal": "2026-11-18T10:30",
-     "startUtc": "2026-11-18T01:30:00Z"
-    },
-    {
-     "title": "基調講演02（日本語）",
-     "speaker": "木下真吾（NTT執行役員 研究企画部門長）",
-     "startLocal": "2026-11-18T13:30",
-     "startUtc": "2026-11-18T04:30:00Z"
-    },
-    {
-     "title": "基調講演01（英語）",
-     "speaker": "島田明（NTT代表取締役社長）",
-     "startLocal": "2026-11-19T10:30",
-     "startUtc": "2026-11-19T01:30:00Z"
-    },
-    {
-     "title": "基調講演02（日本語）",
-     "speaker": "木下真吾（NTT執行役員 研究企画部門長）",
-     "startLocal": "2026-11-20T10:30",
-     "startUtc": "2026-11-20T01:30:00Z"
-    }
-   ],
-   "officialUrl": "https://www.rd.ntt/forum/2026/",
-   "sources": [
-    {
-     "title": "NTT R&D FORUM 2026 公式サイト",
-     "url": "https://www.rd.ntt/forum/2026/"
-    }
-   ],
-   "confirmed": [
-    "会期は11月18〜20日と24〜25日、NTT武蔵野研究開発センタ",
-    "NTTグループ関係者による招待制、入場無料",
-    "テーマは「Mehr Licht! More Photonics for Intelligence」",
-    "展示はAIOWN、tsuzumi、フィジカルAIなど",
-    "オンラインのライブ配信なし、後日YouTubeで公開"
-   ],
-   "livestream": null,
-   "confidence": "official",
-   "summary": "NTTの研究開発の展示会。招待制で、AIOWNやtsuzumi、フィジカルAIなどが展示されます。",
-   "match": "NTT|tsuzumi|IOWN",
-   "verifiedAt": "2026-10-27",
-   "startUtc": "2026-11-17T15:00:00Z",
-   "endUtc": "2026-11-25T14:59:59Z",
-   "status": "upcoming",
-   "articleSlugs": []
-  },
-  {
-   "slug": "nvidia-gtc-dc-2026",
-   "name": "NVIDIA GTC Washington, D.C. 2026",
-   "nameJa": "NVIDIA GTC DC 2026（GTCワシントンD.C.）",
-   "organizer": "NVIDIA",
-   "companySlug": "nvidia",
-   "startDate": "2026-11-30",
-   "endDate": "2026-12-03",
-   "location": "Washington, D.C., Ronald Reagan Building and International Trade Center (and other venues)",
-   "timezone": "America/New_York",
-   "keynotes": [
-    {
-     "title": "GTC Washington, D.C. Keynote",
-     "speaker": "Jensen Huang (NVIDIA CEO)",
-     "startLocal": "2026-12-01T14:00",
-     "startUtc": "2026-12-01T19:00:00Z"
-    }
-   ],
-   "officialUrl": "https://www.nvidia.com/en-us/gtc-dc/",
-   "sources": [
-    {
-     "title": "NVIDIA GTC Washington, D.C. (official)",
-     "url": "https://www.nvidia.com/en-us/gtc-dc/"
-    },
-    {
-     "title": "GTC DC Keynote (official)",
-     "url": "https://www.nvidia.com/en-us/gtc-dc/keynote/"
-    }
-   ],
-   "confirmed": [
-    "会期は11月30日〜12月3日、ワシントンD.C.で開催",
-    "主会場はRonald Reagan Building",
-    "基調講演は12月1日14時（米東部）、Jensen Huang CEO",
-    "基調講演の前にプレショー「GTC Live」",
-    "11月30日はワークショップ、12月1〜3日が本会議と展示"
-   ],
-   "livestream": null,
-   "confidence": "official",
-   "summary": "NVIDIAがワシントンD.C.で開く技術会議。12月1日にジェンスン・フアンCEOが基調講演を行います。",
-   "match": "GTC|NVIDIA|エヌビディア|Jensen Huang|ジェンスン",
-   "verifiedAt": "2026-10-27",
-   "startUtc": "2026-11-30T05:00:00Z",
-   "endUtc": "2026-12-04T04:59:59Z",
-   "status": "upcoming",
-   "articleSlugs": []
-  },
-  {
-   "slug": "aws-reinvent-2026",
-   "name": "AWS re:Invent 2026",
-   "nameJa": "AWS re:Invent 2026",
-   "organizer": "Amazon Web Services",
-   "companySlug": "other",
-   "startDate": "2026-11-30",
-   "endDate": "2026-12-04",
-   "location": "Las Vegas, NV",
-   "timezone": "America/Los_Angeles",
-   "keynotes": [],
-   "officialUrl": "https://aws.amazon.com/events/reinvent",
-   "sources": [
-    {
-     "title": "AWS re:Invent 2026 (official)",
-     "url": "https://aws.amazon.com/events/reinvent"
-    },
-    {
-     "title": "AWS re:Invent 2026 Keynotes (official)",
-     "url": "https://aws.amazon.com/events/reinvent/sessions/keynotes/"
-    },
-    {
-     "title": "AWS re:Invent Livestream (official)",
-     "url": "https://aws.amazon.com/events/reinvent/livestream/"
-    }
-   ],
-   "confirmed": [
-    "会期は11月30日〜12月4日、米ラスベガスで開催",
-    "基調講演の日程・登壇者は「近日発表」（10/27時点）",
-    "基調講演などの無料ライブ配信あり（要登録）",
-    "ライブ配信の登録受付は11月9日開始",
-    "フルパスは2,499ドル"
-   ],
-   "livestream": "https://aws.amazon.com/events/reinvent/livestream/",
-   "confidence": "official",
-   "summary": "AWSの年次カンファレンス。ラスベガスで5日間開かれます。基調講演の日程は10月27日時点で未発表です。",
-   "match": "re:Invent|AWS|Amazon Bedrock|Amazon Nova|Amazon Q|Trainium|Kiro",
-   "verifiedAt": "2026-10-27",
-   "startUtc": "2026-11-30T08:00:00Z",
-   "endUtc": "2026-12-05T07:59:59Z",
-   "status": "upcoming",
-   "articleSlugs": []
-  },
-  {
-   "slug": "neurips-2026",
-   "name": "NeurIPS 2026 (Fortieth Annual Conference on Neural Information Processing Systems)",
-   "nameJa": "NeurIPS 2026",
-   "organizer": "NeurIPS Foundation",
-   "companySlug": "other",
-   "startDate": "2026-12-06",
-   "endDate": "2026-12-13",
-   "location": "Sydney (main), Atlanta and Paris (satellites)",
-   "timezone": "Australia/Sydney",
-   "keynotes": [],
-   "officialUrl": "https://neurips.cc/",
-   "sources": [
-    {
-     "title": "NeurIPS 2026 (official home)",
-     "url": "https://neurips.cc/"
-    },
-    {
-     "title": "NeurIPS 2026 Dates and Deadlines (official)",
-     "url": "https://neurips.cc/Conferences/2026/Dates"
-    }
-   ],
-   "confirmed": [
-    "第40回。メイン会場はシドニー（12月6〜12日）",
-    "アトランタとパリでサテライト開催（12月9〜13日）",
-    "シドニーの本会議は12月8〜10日",
-    "早期登録の締め切りは10月30日（AoE）"
-   ],
-   "livestream": null,
-   "confidence": "official",
-   "summary": "機械学習の国際学会。第40回はシドニーをメイン会場に、アトランタとパリでも開かれます。",
-   "match": "NeurIPS",
-   "verifiedAt": "2026-10-27",
-   "startUtc": "2026-12-05T13:00:00Z",
-   "endUtc": "2026-12-13T12:59:59Z",
-   "status": "upcoming",
-   "articleSlugs": []
-  },
-  {
-   "slug": "semicon-japan-2026",
-   "name": "SEMICON Japan 2026",
-   "nameJa": "SEMICON Japan 2026（セミコン・ジャパン）",
-   "organizer": "SEMI",
-   "companySlug": "other",
-   "startDate": "2026-12-09",
-   "endDate": "2026-12-11",
-   "location": "Tokyo, Tokyo Big Sight (and nearby venues)",
-   "timezone": "Asia/Tokyo",
-   "keynotes": [],
-   "officialUrl": "https://www.semiconjapan.org/jp",
-   "sources": [
-    {
-     "title": "SEMICON Japan 公式サイト",
-     "url": "https://www.semiconjapan.org/jp"
-    }
-   ],
-   "confirmed": [
-    "会期は12月9〜11日、会場は東京ビッグサイトほか",
-    "主催はSEMI、今回で第50回",
-    "来場登録を受付中",
-    "東京エレクトロン、Rapidus、NVIDIAの幹部らが講演"
-   ],
-   "livestream": null,
-   "confidence": "official",
-   "summary": "半導体の国際展示会。東京ビッグサイトで開かれ、東京エレクトロンやRapidusの幹部が講演します。",
-   "match": "SEMICON|セミコン|Rapidus|ラピダス|東京エレクトロン",
-   "verifiedAt": "2026-10-27",
-   "startUtc": "2026-12-08T15:00:00Z",
-   "endUtc": "2026-12-11T14:59:59Z",
-   "status": "upcoming",
-   "articleSlugs": []
-  },
-  {
-   "slug": "ces-2027",
-   "name": "CES 2027",
-   "nameJa": "CES 2027",
-   "organizer": "Consumer Technology Association (CTA)",
-   "companySlug": "other",
-   "startDate": "2027-01-06",
-   "endDate": "2027-01-09",
-   "location": "Las Vegas, NV",
-   "timezone": "America/Los_Angeles",
-   "keynotes": [
-    {
-     "title": "Waymo keynote (Palazzo Ballroom, Venetian)",
-     "speaker": "Tekedra Mawakana (Waymo co-CEO)",
-     "startLocal": "2027-01-05T18:30",
-     "startUtc": "2027-01-06T02:30:00Z"
-    },
-    {
-     "title": "CTA State of the Industry Address, followed by Stellantis keynote (Palazzo Ballroom)",
-     "speaker": "Antonio Filosa (Stellantis CEO) – after the CTA address",
-     "startLocal": "2027-01-06T08:30",
-     "startUtc": "2027-01-06T16:30:00Z"
-    },
-    {
-     "title": "Lenovo Tech World @ CES (Sphere)",
-     "speaker": "Yuanqing Yang (Lenovo Chairman & CEO)",
-     "startLocal": "2027-01-06T17:00",
-     "startUtc": "2027-01-07T01:00:00Z"
-    }
-   ],
-   "officialUrl": "https://www.ces.tech/",
-   "sources": [
-    {
-     "title": "CES (official)",
-     "url": "https://www.ces.tech/"
-    },
-    {
-     "title": "CES 2027 Keynotes (official)",
-     "url": "https://www.ces.tech/keynotes"
-    },
-    {
-     "title": "Lenovo Takes CES 2027 Keynote to New Heights with Immersive Experience at Sphere (CTA)",
-     "url": "https://www.ces.tech/press-releases/lenovo-takes-ces-2027-keynote-to-new-heights-with-immersive-experience-at-sphere"
-    },
-    {
-     "title": "Stellantis to Bring Human-Centered Mobility Vision to CES 2027 Keynote (CTA)",
-     "url": "https://www.ces.tech/press-releases/stellantis-to-bring-human-centered-mobility-vision-to-ces-2027-keynote"
-    },
-    {
-     "title": "Waymo Co-CEO Tekedra Mawakana to Keynote at CES 2027 (CTA)",
-     "url": "https://www.ces.tech/press-releases/waymo-co-ceo-tekedra-mawakana-to-keynote-at-ces-2027"
-    }
-   ],
-   "confirmed": [
-    "会期は2027年1月6〜9日、米ラスベガスで開催",
-    "Lenovoは1月6日17時にSphereで基調講演",
-    "Waymo共同CEOの基調講演は1月5日18時30分",
-    "Stellantis CEOが初日の1月6日に基調講演"
-   ],
-   "livestream": null,
-   "confidence": "official",
-   "summary": "米ラスベガスで開かれる家電・テックの見本市。LenovoやWaymoなどが基調講演を行います。",
-   "match": "\\bCES\\b",
-   "verifiedAt": "2026-10-27",
-   "startUtc": "2027-01-06T08:00:00Z",
-   "endUtc": "2027-01-10T07:59:59Z",
-   "status": "upcoming",
-   "articleSlugs": []
-  }
- ],
- "refreshedAt": "2026-11-01T22:24:44Z"
+  ],
+  "refreshedAt": "2026-11-01T22:24:44Z"
 }

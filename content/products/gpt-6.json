@@ -8,8 +8,7 @@
   "overview": {
     "text": "GPT-6は、OpenAIが開発した新型の大規模言語モデルです。2026年9月から10月にかけて発表され、ChatGPTやAPIで提供されています。",
     "sources": [
-      "openai-announces-gpt6-with-intelligent-ui",
-      "openai-gpt6-sol-luna-release"
+      "openai-announces-gpt6-with-intelligent-ui"
     ]
   },
   "facts": [
@@ -24,8 +23,7 @@
       "label": "提供開始",
       "value": "2026年9月〜10月",
       "sources": [
-        "openai-announces-gpt6-with-intelligent-ui",
-        "openai-gpt6-sol-luna-release"
+        "openai-announces-gpt6-with-intelligent-ui"
       ]
     },
     {
@@ -76,7 +74,7 @@
       "text": "15万行の大規模コード移行や、自然言語からのプレゼン用スライド自動生成が可能です。",
       "sources": [
         "openai-chatgpt-admin-console-insights-outcomes",
-        "openai-gpt-6-astra-code-generation"
+        "openai-gpt-6-astra-first-impressions-n-dqdvmwoas"
       ]
     }
   ],
@@ -84,8 +82,7 @@
     {
       "text": "API価格は前世代比で50%削減され、標準モデルなどが提供されています。",
       "sources": [
-        "openai-gpt-6-1-terra-announcement",
-        "openai-gpt6-sol-luna-release"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
@@ -117,8 +114,7 @@
     {
       "text": "前世代と比較してAPI価格が50%値下げされ、処理速度が3倍以上に向上しました。",
       "sources": [
-        "openai-gpt-6-1-terra-announcement",
-        "openai-gpt6-sol-luna-release"
+        "openai-gpt-6-1-terra-announcement"
       ]
     },
     {
@@ -181,15 +177,10 @@
     "openai-announces-gpt6-with-intelligent-ui",
     "openai-gpt-6-astra-comprehensive-guide-matome",
     "openai-astra-developer-demo-practice",
-    "claude-opus-55-comprehensive-analysis-matome",
-    "openai-gpt6-sol-luna-release",
     "openai-chatgpt-voice-update-gpt6-astra",
     "openai-chatgpt-admin-console-insights-outcomes",
-    "openai-gpt-6-astra-code-generation",
-    "gpt-6-astra-autonomous-design-iteration",
     "openai-gpt-6-astra-first-impressions-n-dqdvmwoas",
     "chatgpt-work-for-sales-comprehensive-summary-matome",
-    "openai-gpt-6-astra-first-impressions-a4bubpkdenc",
     "openai-announces-gpt-6-astra"
   ],
   "linkFrom": [

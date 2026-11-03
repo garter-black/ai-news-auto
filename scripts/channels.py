@@ -83,18 +83,22 @@ CHANNELS: list[Channel] = [
         channel_id="UCHlNU7kIZhRgSbhHvFoy72w",
         base_tags=("Hugging Face", "オープンソース"),
     ),
-    # ---- 海外のAI専門解説チャンネル（日本語で読める形にするのが差別化点） ----
+    # ---- 海外のAI専門解説チャンネル ----
+    # 2026-11-03 停止（オーナー承認）: 他人の動画の要約は独自の価値が出しにくく、AdSense「有用性の低いコンテンツ」の原因になるため。
+    # 既存の要約記事は取り下げ済み（content/retired.json）。scripts/indexnow.py の CREATOR_CHANNELS は active にしない（tests/test_retired_sources.py）
     Channel(
         slug="ai-explained",
         name="AI Explained",
         channel_id="UCNJ1Ymd5yFuUPtn21xtRbbw",
         base_tags=("AI解説", "論文"),
+        active=False,
     ),
     Channel(
         slug="two-minute-papers",
         name="Two Minute Papers",
         channel_id="UCbfYPyITQ-7l4upoX8nvctg",
         base_tags=("AI研究", "論文"),
+        active=False,
     ),
     Channel(
         slug="microsoft-research",
@@ -107,12 +111,14 @@ CHANNELS: list[Channel] = [
         name="bycloud",
         channel_id="UCgfe2ooZD3VJPB6aJAnuQng",
         base_tags=("AI解説", "LLM"),
+        active=False,
     ),
     Channel(
         slug="matthew-berman",
         name="Matthew Berman",
         channel_id="UCawZsQWqfGSbCI5yjkdVkTA",
         base_tags=("AIツール", "検証"),
+        active=False,
     ),
     # ---------------------------------------------------------------- #
     # 不動産（すべて RSS 疎通・稼働を確認済み）

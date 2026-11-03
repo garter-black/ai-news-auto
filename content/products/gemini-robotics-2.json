@@ -8,8 +8,7 @@
   "overview": {
     "text": "Gemini Robotics 2は、Google DeepMindが開発したロボット制御用のAIモデル群です。物理世界でロボットを完全自律動作させるシステムとして、2026年7月30日に発表されました。視覚認識と運動制御を統合し、全身の協調動作や複数ロボットの連携を実現します。",
     "sources": [
-      "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k",
-      "google-deepmind-gemini-robotics-2-announcement",
+      "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
       "gemini-robotics-2-comprehensive-summary-matome"
     ]
   },
@@ -18,35 +17,35 @@
       "label": "料金",
       "value": "API従量課金（一部無料枠あり）",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
       "label": "提供開始",
       "value": "ERモデルはGoogle AI Studioで公開中",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
       "label": "日本での提供",
       "value": "ERモデルはGoogle AI Studioから利用可能",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
       "label": "使える場所",
       "value": "Google AI Studio、Vertex AI",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
       "label": "向いている人",
       "value": "ロボット開発者や研究者",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k",
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
         "google-deepmind-gemini-robotics-2-apollo"
       ]
     }
@@ -55,14 +54,13 @@
     {
       "text": "20自由度を超える多指ハンドを制御し、薄いゴミ袋の紐結びや電球の取り外しといった精密な操作を行えます。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k",
-        "gemini-robotics-2-dexterity"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
       "text": "全身制御により、膝を曲げて重心のバランスを保ちながら、床に置かれた物を自律回収できます。",
       "sources": [
-        "gemini-robotics-2-whole-body-control",
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
         "gemini-robotics-2-comprehensive-summary-matome"
       ]
     },
@@ -76,8 +74,7 @@
     {
       "text": "障害物による妨害や対象物の位置のずれに対し、視覚フィードバックを用いてリアルタイムに動作を補正します。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement",
-        "google-deepmind-gemini-robotics-2-announcement-oemefobzode"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     }
   ],
@@ -85,13 +82,13 @@
     {
       "text": "Embodied Reasoningモデルは従量課金制の標準API料金で提供されます。一部の無料枠も用意されています。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
       "text": "ロボットの関節等を制御するActionモデルの料金は明らかにされていません。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     }
   ],
@@ -99,13 +96,13 @@
     {
       "text": "Embodied ReasoningモデルはGoogle AI Studio経由で日本からも利用できます。日本語による指示や空間問合せにも対応しています。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
       "text": "実機に適用するActionモデルは「Trusted Tester Program」への事前申請が必要です。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     }
   ],
@@ -113,13 +110,13 @@
     {
       "text": "Googleアカウントを用意し、Google AI Studioのコンソールにログインします。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
       "text": "APIキーを発行し、モデルエンドポイントを指定して画像やプロンプトを送信します。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     }
   ],
@@ -127,14 +124,13 @@
     {
       "text": "従来のGemini Robotics 1.5と比べて、時系列動画の進行状況を正確に認識できます。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
       "text": "前世代モデルが主に上半身の制御だったのに対し、脚部を含めた全身の協調制御に対応しました。",
       "sources": [
-        "gemini-robotics-2-whole-body-control",
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     }
   ],
@@ -143,7 +139,7 @@
       "q": "無料で試せますか？",
       "a": "Google AI Studioのモデルには一部無料枠が用意されています。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
@@ -158,8 +154,7 @@
       "q": "人間が遠隔操作していますか？",
       "a": "遠隔操作は行われず、ロボット自身が状況を認識して完全自律で動作します。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement-oemefobzode",
-        "google-deepmind-gemini-robotics-2-announcement"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
@@ -167,32 +162,22 @@
       "a": "人型ロボットのApolloや多関節ハンド、作業用アームなど多様な機種に対応します。",
       "sources": [
         "gemini-robotics-2-comprehensive-summary-matome",
-        "google-deepmind-gemini-robotics-2-announcement-oemefobzode"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     },
     {
       "q": "どのような安全機能がありますか？",
       "a": "指示が曖昧な際に確認質問を行う機能や、オープンソース評価基盤ASIMOV Agenticを備えます。",
       "sources": [
-        "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k"
+        "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
       ]
     }
   ],
   "timeline": [
     {
       "date": "2026-07-30",
-      "slug": "google-deepmind-gemini-robotics-2-announcement",
-      "event": "Gemini Robotics 2を発表"
-    },
-    {
-      "date": "2026-07-30",
       "slug": "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
-      "event": "複数ロボット自律連携技術を公開"
-    },
-    {
-      "date": "2026-08-01",
-      "slug": "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k",
-      "event": "AIモデル群を発表しAPI公開"
+      "event": "Gemini Robotics 2を発表"
     },
     {
       "date": "2026-08-07",
@@ -209,28 +194,12 @@
   "articles": [
     "google-deepmind-gemini-robotics-2-apollo",
     "gemini-robotics-2-comprehensive-summary-matome",
-    "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k",
-    "google-deepmind-gemini-robotics-2-announcement-oemefobzode",
-    "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
-    "gemini-robotics-2-whole-body-control",
-    "gemini-robotics-2-dexterity",
-    "google-deepmind-gemini-robotics-2-whole-body-control",
-    "google-deepmind-gemini-robotics-2-multi-robot",
-    "google-deepmind-gemini-robotics-2-dexterity",
-    "google-deepmind-gemini-robotics-2-announcement"
+    "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
   ],
   "linkFrom": [
     "google-deepmind-gemini-robotics-2-apollo",
     "gemini-robotics-2-comprehensive-summary-matome",
-    "google-deepmind-gemini-robotics-2-announcement--ryfdefcq3k",
-    "google-deepmind-gemini-robotics-2-announcement-oemefobzode",
-    "google-deepmind-gemini-robotics-2-multi-robot-collaboration",
-    "gemini-robotics-2-whole-body-control",
-    "gemini-robotics-2-dexterity",
-    "google-deepmind-gemini-robotics-2-whole-body-control",
-    "google-deepmind-gemini-robotics-2-multi-robot",
-    "google-deepmind-gemini-robotics-2-dexterity",
-    "google-deepmind-gemini-robotics-2-announcement"
+    "google-deepmind-gemini-robotics-2-multi-robot-collaboration"
   ],
   "signature": "2050f6a22b72934b",
   "primarySignature": "2050f6a22b72934b",

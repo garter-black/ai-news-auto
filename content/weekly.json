@@ -1,194 +1,186 @@
 {
- "weeks": [
-  {
-   "id": "2026-44",
-   "start": "2026-10-26",
-   "end": "2026-11-01",
-   "title": "今週のAIニュースまとめ（10月26日〜11月1日）",
-   "lede": [
-    "高性能モデルの発表が続き、サイバー防御の話題も目立った週でした。",
-    "日本語のSiri AIやGeminiのファイル編集など、すぐ使えるものもあります。"
-   ],
-   "items": [
+  "weeks": [
     {
-     "slug": "gemini-4-carbon-cybersecurity-model",
-     "title": "Gemini 4 Carbonとは？日本で使える？料金と提供状況",
-     "company": "Google",
-     "publishedAt": "2026-10-28T17:02:33.184251+00:00",
-     "what": "GoogleがGemini 4 Carbonを防御担当者向けに限定提供します。",
-     "why": "一般公開は時期未定ですが、料金はArgonと同額なので試算は先にできます。"
+      "id": "2026-44",
+      "start": "2026-10-26",
+      "end": "2026-11-01",
+      "title": "今週のAIニュースまとめ（10月26日〜11月1日）",
+      "lede": [
+        "高性能モデルの発表が続き、サイバー防御の話題も目立った週でした。",
+        "日本語のSiri AIやGeminiのファイル編集など、すぐ使えるものもあります。"
+      ],
+      "items": [
+        {
+          "slug": "gemini-4-carbon-cybersecurity-model",
+          "title": "Gemini 4 Carbonとは？日本で使える？料金と提供状況",
+          "company": "Google",
+          "publishedAt": "2026-10-28T17:02:33.184251+00:00",
+          "what": "GoogleがGemini 4 Carbonを防御担当者向けに限定提供します。",
+          "why": "一般公開は時期未定ですが、料金はArgonと同額なので試算は先にできます。"
+        },
+        {
+          "slug": "mistral-large-4-preview",
+          "title": "Mistral Large 4とは？日本で使える？料金も",
+          "company": "Mistral AI",
+          "publishedAt": "2026-10-29T14:36:40.099122+00:00",
+          "what": "Mistral AIがMistral Large 4のモデルウェイトを公開しました。",
+          "why": "稼働時は490億パラメータのMoEで、自社環境での検証候補になります。"
+        },
+        {
+          "slug": "google-genie-4-world-model",
+          "title": "Genie 4とは？日本で使える？料金も",
+          "company": "Google",
+          "publishedAt": "2026-10-28T01:06:33.575134+00:00",
+          "what": "Googleが世界モデルGenie 4を限定テスター向けに出しました。",
+          "why": "AI UltraとGemini APIにも近日提供予定で、試せる時期が近づきます。"
+        },
+        {
+          "slug": "microsoft-ui-reactor-winui-csharp-mvu",
+          "title": "Microsoft.UI.Reactorとは？使い方と料金｜日本での提供状況",
+          "company": "Microsoft",
+          "publishedAt": "2026-10-28T04:51:44.489807+00:00",
+          "what": "MicrosoftがMicrosoft.UI.ReactorをOSSで公開しました。",
+          "why": "C#だけでWinUIの画面を作れ、MITライセンスで無料で試せます。"
+        },
+        {
+          "slug": "meta-muse-singapore-launch",
+          "title": "Museとは？シンガポール提供開始と日本での使い方",
+          "company": "Meta",
+          "publishedAt": "2026-10-28T00:50:27.206802+00:00",
+          "what": "Metaの個人向けAI「Muse」がシンガポールで始まりました。",
+          "why": "iOS・Android・muse.aiで提供され、ほとんどの用途は無料です。"
+        },
+        {
+          "slug": "gemini-edit-files-directly",
+          "title": "Geminiアプリのファイル編集とは？使い方と対応形式",
+          "company": "Google",
+          "publishedAt": "2026-10-29T16:19:04.424322+00:00",
+          "what": "GoogleがGeminiアプリにファイル編集機能を加えました。",
+          "why": "全ユーザーが対象で、選んだ部分だけ直す作業を任せられます。"
+        },
+        {
+          "slug": "claude-finds-critical-vulnerabilities",
+          "title": "Claudeの脆弱性発見とは？Chromeなど5例と日本での使い方",
+          "company": "Anthropic",
+          "publishedAt": "2026-10-30T02:09:26.097227+00:00",
+          "what": "Anthropicの社内AIがChromeで62件のCVEを発見しました。",
+          "why": "PR時点でのスキャンが推奨され、開発の流れに検査を組み込めます。"
+        },
+        {
+          "slug": "apple-creator-studio-new-ai-features",
+          "title": "Apple Creator Studioとは？新AI機能・料金・日本対応",
+          "company": "Google",
+          "publishedAt": "2026-10-28T02:28:27.358387+00:00",
+          "what": "Apple Creator Studioが11月に提供開始、AI機能が加わります。",
+          "why": "Logic Pro・Keynote・Pages・NumbersにAIアシスタントがベータ版で登場。"
+        },
+        {
+          "slug": "siri-ai-japanese-launch",
+          "title": "Siri AIとは？日本語対応の使い方と提供状況",
+          "company": "",
+          "publishedAt": "2026-10-28T01:52:48.257203+00:00",
+          "what": "Siri AIが27.2で日本語を含む5言語に対応しました。",
+          "why": "ベータ版で、サーバ処理の機能は1日の使用回数に制限があります。"
+        },
+        {
+          "slug": "anthropic-s1-sec-ipo-filing",
+          "title": "Anthropic上場とは？S-1提出とANTの買い方",
+          "company": "Anthropic",
+          "publishedAt": "2026-10-28T01:43:43.510935+00:00",
+          "what": "AnthropicがSECにForm S-1を提出し、上場準備に入りました。",
+          "why": "銘柄名はANTの予定ですが、登録が有効になるまで売買できません。"
+        }
+      ],
+      "articleCount": 139,
+      "generatedAt": "2026-11-02T01:10:44+00:00",
+      "model": "claude:sonnet"
     },
     {
-     "slug": "mistral-large-4-preview",
-     "title": "Mistral Large 4とは？日本で使える？料金も",
-     "company": "Mistral AI",
-     "publishedAt": "2026-10-29T14:36:40.099122+00:00",
-     "what": "Mistral AIがMistral Large 4のモデルウェイトを公開しました。",
-     "why": "稼働時は490億パラメータのMoEで、自社環境での検証候補になります。"
-    },
-    {
-     "slug": "google-genie-4-world-model",
-     "title": "Genie 4とは？日本で使える？料金も",
-     "company": "Google",
-     "publishedAt": "2026-10-28T01:06:33.575134+00:00",
-     "what": "Googleが世界モデルGenie 4を限定テスター向けに出しました。",
-     "why": "AI UltraとGemini APIにも近日提供予定で、試せる時期が近づきます。"
-    },
-    {
-     "slug": "microsoft-ui-reactor-winui-csharp-mvu",
-     "title": "Microsoft.UI.Reactorとは？使い方と料金｜日本での提供状況",
-     "company": "Microsoft",
-     "publishedAt": "2026-10-28T04:51:44.489807+00:00",
-     "what": "MicrosoftがMicrosoft.UI.ReactorをOSSで公開しました。",
-     "why": "C#だけでWinUIの画面を作れ、MITライセンスで無料で試せます。"
-    },
-    {
-     "slug": "meta-muse-singapore-launch",
-     "title": "Museとは？シンガポール提供開始と日本での使い方",
-     "company": "Meta",
-     "publishedAt": "2026-10-28T00:50:27.206802+00:00",
-     "what": "Metaの個人向けAI「Muse」がシンガポールで始まりました。",
-     "why": "iOS・Android・muse.aiで提供され、ほとんどの用途は無料です。"
-    },
-    {
-     "slug": "gemini-edit-files-directly",
-     "title": "Geminiアプリのファイル編集とは？使い方と対応形式",
-     "company": "Google",
-     "publishedAt": "2026-10-29T16:19:04.424322+00:00",
-     "what": "GoogleがGeminiアプリにファイル編集機能を加えました。",
-     "why": "全ユーザーが対象で、選んだ部分だけ直す作業を任せられます。"
-    },
-    {
-     "slug": "claude-finds-critical-vulnerabilities",
-     "title": "Claudeの脆弱性発見とは？Chromeなど5例と日本での使い方",
-     "company": "Anthropic",
-     "publishedAt": "2026-10-30T02:09:26.097227+00:00",
-     "what": "Anthropicの社内AIがChromeで62件のCVEを発見しました。",
-     "why": "PR時点でのスキャンが推奨され、開発の流れに検査を組み込めます。"
-    },
-    {
-     "slug": "apple-creator-studio-new-ai-features",
-     "title": "Apple Creator Studioとは？新AI機能・料金・日本対応",
-     "company": "Google",
-     "publishedAt": "2026-10-28T02:28:27.358387+00:00",
-     "what": "Apple Creator Studioが11月に提供開始、AI機能が加わります。",
-     "why": "Logic Pro・Keynote・Pages・NumbersにAIアシスタントがベータ版で登場。"
-    },
-    {
-     "slug": "siri-ai-japanese-launch",
-     "title": "Siri AIとは？日本語対応の使い方と提供状況",
-     "company": "",
-     "publishedAt": "2026-10-28T01:52:48.257203+00:00",
-     "what": "Siri AIが27.2で日本語を含む5言語に対応しました。",
-     "why": "ベータ版で、サーバ処理の機能は1日の使用回数に制限があります。"
-    },
-    {
-     "slug": "anthropic-s1-sec-ipo-filing",
-     "title": "Anthropic上場とは？S-1提出とANTの買い方",
-     "company": "Anthropic",
-     "publishedAt": "2026-10-28T01:43:43.510935+00:00",
-     "what": "AnthropicがSECにForm S-1を提出し、上場準備に入りました。",
-     "why": "銘柄名はANTの予定ですが、登録が有効になるまで売買できません。"
+      "id": "2026-43",
+      "start": "2026-10-19",
+      "end": "2026-10-25",
+      "title": "今週のAIニュースまとめ（10月19日〜10月25日）",
+      "lede": [
+        "NVIDIAが次世代GPUアーキテクチャやロボット開発基盤を発表しました。",
+        "AIエージェントの最適化ツールやオープンウェイトモデルの展開も進んでいます。"
+      ],
+      "items": [
+        {
+          "slug": "nvidia-gtc-berlin-2026-vera-rubin-openshell",
+          "title": "NVIDIA Vera Rubin発表｜AI工場DSX PODとOpenShell",
+          "company": "NVIDIA",
+          "publishedAt": "2026-10-23T10:49:07.233750+00:00",
+          "what": "NVIDIAが次世代GPUアーキテクチャVera Rubinを発表しました。",
+          "why": "液冷モジュール構造とDSX PODによりデータセンター構築期間を大幅に短縮できます。"
+        },
+        {
+          "slug": "nvidia-isaac-gpt6-astra-robotics-agile-one",
+          "title": "NVIDIA Isaac×Astraでロボット開発を自動化：Jetson Thor搭載",
+          "company": "NVIDIA",
+          "publishedAt": "2026-10-24T20:01:47.839822+00:00",
+          "what": "NVIDIAがGPT-6 AstraとIsaacの統合によるロボット開発自動化を発表しました。",
+          "why": "プロンプト指示からシミュレーションを経て実環境へのスキル移植が可能になります。"
+        },
+        {
+          "slug": "nvidia-rtx-spark-announcement",
+          "title": "RTX Sparkとは：MediaTek製CPUとBlackwell GPUを搭載",
+          "company": "NVIDIA",
+          "publishedAt": "2026-10-19T02:08:36.507370+00:00",
+          "what": "NVIDIAがBlackwell GPUとMediaTek製CPUを搭載するRTX Sparkを発表しました。",
+          "why": "モバイル機でのローカルAIモデル学習と4Kレンダリングの同時処理を実現します。"
+        },
+        {
+          "slug": "v7-go-gpt-5-6-integration-context-graph",
+          "title": "V7 GoがGPT-5.6統合｜エラー率0.2%とハルシネーション38%削減",
+          "company": "OpenAI",
+          "publishedAt": "2026-10-22T10:51:04.297372+00:00",
+          "what": "OpenAIのGPT-5.6を統合したV7 Goがツール呼び出しエラー率を低減しました。",
+          "why": "100ページ超の指示書に基づく長期間の複合ワークフロー処理を高速化します。"
+        },
+        {
+          "slug": "microsoft-foundry-ai-agent-cost-optimization",
+          "title": "Microsoft FoundryでAIエージェントのコストを自動最適化",
+          "company": "Microsoft",
+          "publishedAt": "2026-10-20T10:32:58.146539+00:00",
+          "what": "MicrosoftがFoundryでAIエージェントのコストを自動最適化する機能を発表しました。",
+          "why": "Model Routerが要求精度に応じた最適なLLMを動的に選択し費用対効果を高めます。"
+        },
+        {
+          "slug": "openai-retail-shopping-agent-demo",
+          "title": "OpenAIのECエージェント：音声と画像で接客から注文変更まで自動化",
+          "company": "OpenAI",
+          "publishedAt": "2026-10-21T10:54:53.505457+00:00",
+          "what": "OpenAIが音声と画像で接客から注文変更まで自動化するECエージェントのデモを公開しました。",
+          "why": "部屋の写真から家具を即座に生成し音声指示で商品の差し替えや配送変更が行えます。"
+        },
+        {
+          "slug": "chatgpt-work-realpage-ai-training",
+          "title": "ChatGPT Work事例｜RealPageのAI研修自動化",
+          "company": "OpenAI",
+          "publishedAt": "2026-10-23T20:45:15.467680+00:00",
+          "what": "OpenAIがChatGPT Workを活用したRealPageの社内AI研修資料自動化事例を公開しました。",
+          "why": "単一プロンプトから講義ガイドやスライドを同時出力し教材の量産を実現しています。"
+        },
+        {
+          "slug": "llama-app-mac-local-ai-hugging-face",
+          "title": "Mac用ローカルAI「Llama」とは：ワンクリック導入とOpenAI互換API",
+          "company": "Hugging Face",
+          "publishedAt": "2026-10-23T10:51:48.984538+00:00",
+          "what": "Hugging FaceがMacのメニューバーで常駐するローカルAIアプリLlamaをリリースしました。",
+          "why": "完全にオフラインで動作しOpenAI互換のAPIエンドポイントを提供します。"
+        },
+        {
+          "slug": "azure-cosmos-db-ai-assisted-development",
+          "title": "Azure Cosmos DB AI支援開発入門｜ローカルでAIアプリ構築",
+          "company": "Microsoft",
+          "publishedAt": "2026-10-22T16:15:15.420812+00:00",
+          "what": "MicrosoftがDocker環境を用いたAzure Cosmos DBのAI支援開発機能を発表しました。",
+          "why": "自然言語からベクタークエリを出力しローカルでのAIアプリ構築を効率化します。"
+        }
+      ],
+      "articleCount": 29,
+      "generatedAt": "2026-10-27T11:02:11+00:00",
+      "model": "gemini-3.5-flash-lite"
     }
-   ],
-   "articleCount": 139,
-   "generatedAt": "2026-11-02T01:10:44+00:00",
-   "model": "claude:sonnet"
-  },
-  {
-   "id": "2026-43",
-   "start": "2026-10-19",
-   "end": "2026-10-25",
-   "title": "今週のAIニュースまとめ（10月19日〜10月25日）",
-   "lede": [
-    "NVIDIAが次世代GPUアーキテクチャやロボット開発基盤を発表しました。",
-    "AIエージェントの最適化ツールやオープンウェイトモデルの展開も進んでいます。"
-   ],
-   "items": [
-    {
-     "slug": "nvidia-gtc-berlin-2026-vera-rubin-openshell",
-     "title": "NVIDIA Vera Rubin発表｜AI工場DSX PODとOpenShell",
-     "company": "NVIDIA",
-     "publishedAt": "2026-10-23T10:49:07.233750+00:00",
-     "what": "NVIDIAが次世代GPUアーキテクチャVera Rubinを発表しました。",
-     "why": "液冷モジュール構造とDSX PODによりデータセンター構築期間を大幅に短縮できます。"
-    },
-    {
-     "slug": "nvidia-isaac-gpt6-astra-robotics-agile-one",
-     "title": "NVIDIA Isaac×Astraでロボット開発を自動化：Jetson Thor搭載",
-     "company": "NVIDIA",
-     "publishedAt": "2026-10-24T20:01:47.839822+00:00",
-     "what": "NVIDIAがGPT-6 AstraとIsaacの統合によるロボット開発自動化を発表しました。",
-     "why": "プロンプト指示からシミュレーションを経て実環境へのスキル移植が可能になります。"
-    },
-    {
-     "slug": "nvidia-rtx-spark-announcement",
-     "title": "RTX Sparkとは：MediaTek製CPUとBlackwell GPUを搭載",
-     "company": "NVIDIA",
-     "publishedAt": "2026-10-19T02:08:36.507370+00:00",
-     "what": "NVIDIAがBlackwell GPUとMediaTek製CPUを搭載するRTX Sparkを発表しました。",
-     "why": "モバイル機でのローカルAIモデル学習と4Kレンダリングの同時処理を実現します。"
-    },
-    {
-     "slug": "v7-go-gpt-5-6-integration-context-graph",
-     "title": "V7 GoがGPT-5.6統合｜エラー率0.2%とハルシネーション38%削減",
-     "company": "OpenAI",
-     "publishedAt": "2026-10-22T10:51:04.297372+00:00",
-     "what": "OpenAIのGPT-5.6を統合したV7 Goがツール呼び出しエラー率を低減しました。",
-     "why": "100ページ超の指示書に基づく長期間の複合ワークフロー処理を高速化します。"
-    },
-    {
-     "slug": "microsoft-foundry-ai-agent-cost-optimization",
-     "title": "Microsoft FoundryでAIエージェントのコストを自動最適化",
-     "company": "Microsoft",
-     "publishedAt": "2026-10-20T10:32:58.146539+00:00",
-     "what": "MicrosoftがFoundryでAIエージェントのコストを自動最適化する機能を発表しました。",
-     "why": "Model Routerが要求精度に応じた最適なLLMを動的に選択し費用対効果を高めます。"
-    },
-    {
-     "slug": "openai-retail-shopping-agent-demo",
-     "title": "OpenAIのECエージェント：音声と画像で接客から注文変更まで自動化",
-     "company": "OpenAI",
-     "publishedAt": "2026-10-21T10:54:53.505457+00:00",
-     "what": "OpenAIが音声と画像で接客から注文変更まで自動化するECエージェントのデモを公開しました。",
-     "why": "部屋の写真から家具を即座に生成し音声指示で商品の差し替えや配送変更が行えます。"
-    },
-    {
-     "slug": "chatgpt-work-realpage-ai-training",
-     "title": "ChatGPT Work事例｜RealPageのAI研修自動化",
-     "company": "OpenAI",
-     "publishedAt": "2026-10-23T20:45:15.467680+00:00",
-     "what": "OpenAIがChatGPT Workを活用したRealPageの社内AI研修資料自動化事例を公開しました。",
-     "why": "単一プロンプトから講義ガイドやスライドを同時出力し教材の量産を実現しています。"
-    },
-    {
-     "slug": "llama-app-mac-local-ai-hugging-face",
-     "title": "Mac用ローカルAI「Llama」とは：ワンクリック導入とOpenAI互換API",
-     "company": "Hugging Face",
-     "publishedAt": "2026-10-23T10:51:48.984538+00:00",
-     "what": "Hugging FaceがMacのメニューバーで常駐するローカルAIアプリLlamaをリリースしました。",
-     "why": "完全にオフラインで動作しOpenAI互換のAPIエンドポイントを提供します。"
-    },
-    {
-     "slug": "azure-cosmos-db-ai-assisted-development",
-     "title": "Azure Cosmos DB AI支援開発入門｜ローカルでAIアプリ構築",
-     "company": "Microsoft",
-     "publishedAt": "2026-10-22T16:15:15.420812+00:00",
-     "what": "MicrosoftがDocker環境を用いたAzure Cosmos DBのAI支援開発機能を発表しました。",
-     "why": "自然言語からベクタークエリを出力しローカルでのAIアプリ構築を効率化します。"
-    },
-    {
-     "slug": "kimi-k3-1-pro-open-weights-benchmark",
-     "title": "Kimi K3.1 Proとは：3兆パラメータオープンモデルの実力",
-     "company": "Moonshot AI",
-     "publishedAt": "2026-10-24T10:02:08.217968+00:00",
-     "what": "Moonshot AIが総パラメーター数2.8兆のオープンウェイトモデルKimi K3.1 Proを公開しました。",
-     "why": "単一プロンプトでのゲーム構築など高い知能指数を示しAPIで利用できます。"
-    }
-   ],
-   "articleCount": 29,
-   "generatedAt": "2026-10-27T11:02:11+00:00",
-   "model": "gemini-3.5-flash-lite"
-  }
- ]
+  ]
 }

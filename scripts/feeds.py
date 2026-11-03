@@ -261,6 +261,14 @@ for _feed in BROAD_FEEDS:
     _feed.setdefault("lang", "ja")
 FEEDS_BY_SLUG.update({f["slug"]: f for f in BROAD_FEEDS})
 
+# プレスリリース配信サービス（scripts/indexnow.py の WIRE_SOURCES）からは記事を作らない（2026-10-27 に外し、2026-11-03 に
+# 既存の言い換え記事を取り下げた）。誤って足されても取り込まないよう、ここで必ず外す（tests/test_retired_sources.py）
+WIRE_FEED_SLUGS = {"prtimes", "prtimes-all", "atpress", "value-press", "kyodo-prwire", "dreamnews"}
+FEEDS[:] = [f for f in FEEDS if f["slug"] not in WIRE_FEED_SLUGS]
+BROAD_FEEDS[:] = [f for f in BROAD_FEEDS if f["slug"] not in WIRE_FEED_SLUGS]
+for _slug in WIRE_FEED_SLUGS:
+    FEEDS_BY_SLUG.pop(_slug, None)
+
 # 一次情報の順位付け。kind: official（企業の公式ブログ）/ derivative（他社製品の対応・提供の告知）/ wire（配信）
 #   primary_for … その企業の発表の「本家」。同じ話題が複数のフィードに来たら本家を残す
 ENTITY_RES: dict[str, re.Pattern] = {

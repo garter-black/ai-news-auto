@@ -16,6 +16,10 @@ class MuseCorrection(unittest.TestCase):
     def test_corrected_news_carries_visible_primary_source_and_status(self):
         for name in ('meta-muse-singapore-launch','meta-muse-ai-agent-app-launch','nvidia-meta-muse-partnership-expansion'):
             with self.subTest(name=name):
+                # 取り下げた記事（content/retired.json。他人の動画の要約など）は確かめない
+                if not (ROOT/f'content/articles/{name}.json').exists():
+                    self.assertIn(name, load('content/retired.json')['articles'])
+                    continue
                 a=load(f'content/articles/{name}.json')
                 self.assertEqual(a['verdict']['japan'],'ok')
                 self.assertIn(META,a['body'])

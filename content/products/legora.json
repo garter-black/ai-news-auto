@@ -17,32 +17,28 @@
       "label": "料金",
       "value": "個別見積もり",
       "sources": [
-        "openai-legora-legal-ai-agent",
-        "openai-legora-legal-ai-contract-review"
+        "openai-legora-legal-ai-agent"
       ]
     },
     {
       "label": "日本での提供",
       "value": "条件付きで利用可能",
       "sources": [
-        "openai-legora-legal-ai-agent",
-        "openai-legora-legal-ai-contract-review"
+        "openai-legora-legal-ai-agent"
       ]
     },
     {
       "label": "使える場所",
       "value": "グローバルWebサービス",
       "sources": [
-        "openai-legora-legal-ai-agent",
-        "openai-legora-legal-ai-contract-review"
+        "openai-legora-legal-ai-agent"
       ]
     },
     {
       "label": "向いている人",
       "value": "法務担当・弁護士",
       "sources": [
-        "openai-legora-legal-ai-agent",
-        "openai-legora-legal-ai-contract-review"
+        "openai-legora-legal-ai-agent"
       ]
     }
   ],
@@ -50,7 +46,7 @@
     {
       "text": "1万件の契約書ファイルに対する条件抽出と分析を数分で一括処理できます。",
       "sources": [
-        "openai-legora-legal-ai-contract-review"
+        "openai-legora-legal-ai-agent"
       ]
     },
     {
@@ -68,7 +64,7 @@
     {
       "text": "AIの回答画面から元文書の該当段落へ直接リンクし、ハイライト表示で検証できます。",
       "sources": [
-        "openai-legora-legal-ai-contract-review"
+        "openai-legora-legal-ai-agent"
       ]
     }
   ],
@@ -76,8 +72,7 @@
     {
       "text": "具体的な価格設定についての言及はありません。",
       "sources": [
-        "openai-legora-legal-ai-agent",
-        "openai-legora-legal-ai-contract-review"
+        "openai-legora-legal-ai-agent"
       ]
     },
     {
@@ -91,15 +86,13 @@
     {
       "text": "システムはグローバルに展開されていますが、主に英語圏の英米法に最適化されています。",
       "sources": [
-        "openai-legora-legal-ai-agent",
-        "openai-legora-legal-ai-contract-review"
+        "openai-legora-legal-ai-agent"
       ]
     },
     {
       "text": "日本での導入時は、公式サイトからのデモ申し込みや個別問い合わせが必要です。",
       "sources": [
-        "openai-legora-legal-ai-agent",
-        "openai-legora-legal-ai-contract-review"
+        "openai-legora-legal-ai-agent"
       ]
     }
   ],
@@ -107,8 +100,7 @@
     {
       "text": "公式サイトからデモを申し込み、法人向け契約を行います。",
       "sources": [
-        "openai-legora-legal-ai-agent",
-        "openai-legora-legal-ai-contract-review"
+        "openai-legora-legal-ai-agent"
       ]
     }
   ],
@@ -122,7 +114,7 @@
     {
       "text": "従来は時間不足で上位10%しか見られなかった契約書を、全件チェックできるようになりました。",
       "sources": [
-        "openai-legora-legal-ai-contract-review"
+        "openai-legora-legal-ai-agent"
       ]
     },
     {
@@ -137,8 +129,7 @@
       "q": "誰向けのサービスですか？",
       "a": "法律事務所や企業の法務部門を対象とした法人向けのプラットフォームです。",
       "sources": [
-        "openai-legora-legal-ai-agent",
-        "openai-legora-legal-ai-contract-review"
+        "openai-legora-legal-ai-agent"
       ]
     },
     {
@@ -153,14 +144,14 @@
       "q": "ハルシネーション対策はありますか？",
       "a": "精度向上と根拠追跡のためのレイヤーを何重にも重ねて嘘を防ぐ設計になっています。",
       "sources": [
-        "openai-legora-legal-ai-contract-review"
+        "openai-legora-legal-ai-agent"
       ]
     },
     {
       "q": "根拠資料の確認はどのように行いますか？",
       "a": "回答画面から元文書の該当段落へ1クリックでジャンプして目視確認できます。",
       "sources": [
-        "openai-legora-legal-ai-contract-review"
+        "openai-legora-legal-ai-agent"
       ]
     }
   ],
@@ -179,14 +170,10 @@
   "related": [],
   "articles": [
     "openai-legora-legal-ai-agent",
-    "openai-legora-legal-ai-contract-review",
-    "legora-openai-legal-transformation-case-study",
     "openai-legora-legal-ai-transformation"
   ],
   "linkFrom": [
     "openai-legora-legal-ai-agent",
-    "openai-legora-legal-ai-contract-review",
-    "legora-openai-legal-transformation-case-study",
     "openai-legora-legal-ai-transformation"
   ],
   "signature": "c3c385d50783b0ca",

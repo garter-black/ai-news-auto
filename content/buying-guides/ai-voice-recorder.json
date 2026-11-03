@@ -12,41 +12,79 @@
     "AIボイスレコーダー おすすめ",
     "議事録 自動作成 無料"
   ],
-  "topics": ["voice"],
+  "topics": [
+    "voice"
+  ],
   "checkedLabel": "10月27日時点・公式サイトより",
   "intro": "録音した会議や商談を、AIで文字起こしして要約まで作る方法は、専用のレコーダーを買う・アプリを契約する・手持ちのスマホやWeb会議の機能を使う、の3通りあります。このガイドでは代表的な6つを、各社の公式サイトに載っている価格と仕様だけで並べました。編集部が実際に使って評価したものではありません。",
   "personas": [
     {
       "who": "対面の会議も、電話も、まとめて記録したい人",
-      "picks": ["plaud-note-pro"],
+      "picks": [
+        "plaud-note-pro"
+      ],
       "why": "通話と対面の録音を自動で切り替え、連続録音は最大50時間と公式に記載。"
     },
     {
       "who": "立ち話や外回りで、手を空けたまま録りたい人",
-      "picks": ["plaud-notepin-s"],
+      "picks": [
+        "plaud-notepin-s"
+      ],
       "why": "重さ17.4g。クリップ・ピン・ネックストラップ・リストバンドの4通りで身につけられる。"
     },
     {
       "who": "まず無料で、Web会議の議事録から試したい人",
-      "picks": ["notta"],
+      "picks": [
+        "notta"
+      ],
       "why": "無料で月120分。Zoom・Teams・Google Meet・Webexの文字起こしに対応と記載。"
     },
     {
       "who": "お金をかけず、手持ちのスマホで済ませたい人",
-      "picks": ["iphone-voice-memos", "pixel-recorder"],
+      "picks": [
+        "iphone-voice-memos",
+        "pixel-recorder"
+      ],
       "why": "iPhone 12以降のボイスメモ、Pixelのレコーダーは追加料金なしで日本語の文字起こしに対応。"
     }
   ],
   "rows": [
-    { "key": "price", "label": "価格（導入時）" },
-    { "key": "billing", "label": "月額／買い切り" },
-    { "key": "language", "label": "文字起こし言語・日本語の公式記載" },
-    { "key": "summary", "label": "AI要約" },
-    { "key": "mode", "label": "録音できる場面（対面／通話／Web会議）" },
-    { "key": "device", "label": "バッテリー・対応端末" },
-    { "key": "free", "label": "無料枠" },
-    { "key": "limit", "label": "1回・1日の上限" },
-    { "key": "privacy", "label": "データ保存・プライバシーの記載" }
+    {
+      "key": "price",
+      "label": "価格（導入時）"
+    },
+    {
+      "key": "billing",
+      "label": "月額／買い切り"
+    },
+    {
+      "key": "language",
+      "label": "文字起こし言語・日本語の公式記載"
+    },
+    {
+      "key": "summary",
+      "label": "AI要約"
+    },
+    {
+      "key": "mode",
+      "label": "録音できる場面（対面／通話／Web会議）"
+    },
+    {
+      "key": "device",
+      "label": "バッテリー・対応端末"
+    },
+    {
+      "key": "free",
+      "label": "無料枠"
+    },
+    {
+      "key": "limit",
+      "label": "1回・1日の上限"
+    },
+    {
+      "key": "privacy",
+      "label": "データ保存・プライバシーの記載"
+    }
   ],
   "decisionPoints": [
     {
@@ -75,28 +113,58 @@
       "key": "use",
       "label": "いちばん録りたいのは？",
       "options": [
-        { "value": "inperson", "label": "対面の会議・商談" },
-        { "value": "call", "label": "電話・通話" },
-        { "value": "online", "label": "Web会議" },
-        { "value": "walking", "label": "立ち話・外出先" }
+        {
+          "value": "inperson",
+          "label": "対面の会議・商談"
+        },
+        {
+          "value": "call",
+          "label": "電話・通話"
+        },
+        {
+          "value": "online",
+          "label": "Web会議"
+        },
+        {
+          "value": "walking",
+          "label": "立ち話・外出先"
+        }
       ]
     },
     {
       "key": "budget",
       "label": "予算は？",
       "options": [
-        { "value": "free", "label": "0円で済ませたい" },
-        { "value": "monthly", "label": "月額なら払える" },
-        { "value": "device", "label": "本体を買ってもいい" }
+        {
+          "value": "free",
+          "label": "0円で済ませたい"
+        },
+        {
+          "value": "monthly",
+          "label": "月額なら払える"
+        },
+        {
+          "value": "device",
+          "label": "本体を買ってもいい"
+        }
       ]
     },
     {
       "key": "platform",
       "label": "ふだん使う端末は？",
       "options": [
-        { "value": "iphone", "label": "iPhone" },
-        { "value": "android", "label": "Android（Pixel）" },
-        { "value": "pc", "label": "パソコン中心" }
+        {
+          "value": "iphone",
+          "label": "iPhone"
+        },
+        {
+          "value": "android",
+          "label": "Android（Pixel）"
+        },
+        {
+          "value": "pc",
+          "label": "パソコン中心"
+        }
       ]
     }
   ],
@@ -117,7 +185,11 @@
       "category": "AIボイスレコーダー（カード型）",
       "price": "30,800円",
       "priceNote": "税込・本体価格",
-      "priceSource": { "type": "official", "url": "https://jp.plaud.ai/products/plaud-note-pro", "checkedAt": "2026-10-27T12:00:00+09:00" },
+      "priceSource": {
+        "type": "official",
+        "url": "https://jp.plaud.ai/products/plaud-note-pro",
+        "checkedAt": "2026-10-27T12:00:00+09:00"
+      },
       "officialUrl": "https://jp.plaud.ai/products/plaud-note-pro",
       "summary": "クレジットカードサイズ（薄さ2.99mm・30g）のAIボイスレコーダー。4基のマイクで最大5m先の声を収録し、通話か対面かを自動で判別して録音します。文字起こしと要約はPlaudのアプリで行います。",
       "bestFor": "対面の会議と電話を、1台でまとめて記録したい人",
@@ -134,8 +206,14 @@
       ],
       "specs": [],
       "verdict": {
-        "japan": { "level": "yes", "text": "日本の公式ストアで販売" },
-        "freeTrial": { "level": "partial", "text": "本体購入後、毎月300分まで無料" },
+        "japan": {
+          "level": "yes",
+          "text": "日本の公式ストアで販売"
+        },
+        "freeTrial": {
+          "level": "partial",
+          "text": "本体購入後、毎月300分まで無料"
+        },
         "cost": "本体30,800円＋必要なら月額プラン",
         "bestFor": "会議も電話も1台で録りたい人"
       },
@@ -150,8 +228,27 @@
         "limit": "文字起こしは1日最大24時間（Unlimitedプランの場合）",
         "privacy": "ISO 27001/27701・SOC 2・HIPAA・GDPR・EN 18031に準拠と記載。同意しない限りAIの学習には使わない"
       },
-      "fit": { "use": ["inperson", "call", "online"], "budget": ["device"], "platform": ["iphone", "android", "pc"] },
-      "sources": [{ "label": "PLAUD NOTE Pro 製品ページ（料金プラン表を含む）", "url": "https://jp.plaud.ai/products/plaud-note-pro" }]
+      "fit": {
+        "use": [
+          "inperson",
+          "call",
+          "online"
+        ],
+        "budget": [
+          "device"
+        ],
+        "platform": [
+          "iphone",
+          "android",
+          "pc"
+        ]
+      },
+      "sources": [
+        {
+          "label": "PLAUD NOTE Pro 製品ページ（料金プラン表を含む）",
+          "url": "https://jp.plaud.ai/products/plaud-note-pro"
+        }
+      ]
     },
     {
       "id": "plaud-notepin-s",
@@ -161,7 +258,11 @@
       "category": "AIボイスレコーダー（ウェアラブル）",
       "price": "28,600円",
       "priceNote": "税込・本体価格",
-      "priceSource": { "type": "official", "url": "https://jp.plaud.ai/products/plaud-notepin-s", "checkedAt": "2026-10-27T12:00:00+09:00" },
+      "priceSource": {
+        "type": "official",
+        "url": "https://jp.plaud.ai/products/plaud-notepin-s",
+        "checkedAt": "2026-10-27T12:00:00+09:00"
+      },
       "officialUrl": "https://jp.plaud.ai/products/plaud-notepin-s",
       "summary": "重さ17.4gの身につけるタイプのAIボイスレコーダー。長押しで録音、短押しでその瞬間をハイライトとして記録します。クリップ・ピン・ネックストラップ・リストバンドの4種類の装着アクセサリーが付属します。",
       "bestFor": "立ち話や外出先で、手を空けたまま録りたい人",
@@ -178,8 +279,14 @@
       ],
       "specs": [],
       "verdict": {
-        "japan": { "level": "yes", "text": "日本の公式ストアで販売" },
-        "freeTrial": { "level": "partial", "text": "本体購入後、毎月300分まで無料" },
+        "japan": {
+          "level": "yes",
+          "text": "日本の公式ストアで販売"
+        },
+        "freeTrial": {
+          "level": "partial",
+          "text": "本体購入後、毎月300分まで無料"
+        },
         "cost": "本体28,600円＋必要なら月額プラン",
         "bestFor": "外回り・立ち話をハンズフリーで録りたい人"
       },
@@ -194,8 +301,27 @@
         "limit": "文字起こしは1日最大24時間（Unlimitedプランの場合）",
         "privacy": "ISO 27001/27701・SOC 2・HIPAA・GDPR・EN 18031に準拠と記載。同意しない限りAIの学習には使わない"
       },
-      "fit": { "use": ["inperson", "walking", "online"], "budget": ["device"], "platform": ["iphone", "android", "pc"] },
-      "sources": [{ "label": "PLAUD NotePin S 製品ページ（FAQ・料金プラン表を含む）", "url": "https://jp.plaud.ai/products/plaud-notepin-s" }]
+      "fit": {
+        "use": [
+          "inperson",
+          "walking",
+          "online"
+        ],
+        "budget": [
+          "device"
+        ],
+        "platform": [
+          "iphone",
+          "android",
+          "pc"
+        ]
+      },
+      "sources": [
+        {
+          "label": "PLAUD NotePin S 製品ページ（FAQ・料金プラン表を含む）",
+          "url": "https://jp.plaud.ai/products/plaud-notepin-s"
+        }
+      ]
     },
     {
       "id": "notta",
@@ -204,7 +330,11 @@
       "category": "文字起こしアプリ・Webサービス",
       "price": "0円から",
       "priceNote": "フリープラン。有料は年間プランで月1,185円から（税込）",
-      "priceSource": { "type": "official", "url": "https://www.notta.ai/pricing", "checkedAt": "2026-10-27T12:00:00+09:00" },
+      "priceSource": {
+        "type": "official",
+        "url": "https://www.notta.ai/pricing",
+        "checkedAt": "2026-10-27T12:00:00+09:00"
+      },
       "officialUrl": "https://www.notta.ai/",
       "summary": "Web版・スマホアプリ・デスクトップ版・Chrome拡張で使える文字起こしサービス。Web会議、対面、電話、音声ファイルをテキストにし、AIで要約します。公式サイトでは「日本語特化AIと58言語対応」とうたっています。",
       "bestFor": "まず無料で、Web会議の議事録から試したい人",
@@ -221,8 +351,14 @@
       ],
       "specs": [],
       "verdict": {
-        "japan": { "level": "yes", "text": "日本語特化AI・データは国内保管と記載" },
-        "freeTrial": { "level": "yes", "text": "無料で月120分（1回3分まで）" },
+        "japan": {
+          "level": "yes",
+          "text": "日本語特化AI・データは国内保管と記載"
+        },
+        "freeTrial": {
+          "level": "yes",
+          "text": "無料で月120分（1回3分まで）"
+        },
         "cost": "月1,185円〜（年間プランの場合）",
         "bestFor": "Web会議の議事録を手早く作りたい人"
       },
@@ -237,10 +373,31 @@
         "limit": "有料プランは1回5時間まで",
         "privacy": "データは日本国内に保管、多重暗号化。SOC 2報告書・ISO 27001を取得と記載"
       },
-      "fit": { "use": ["online", "inperson", "call"], "budget": ["free", "monthly"], "platform": ["iphone", "android", "pc"] },
+      "fit": {
+        "use": [
+          "online",
+          "inperson",
+          "call"
+        ],
+        "budget": [
+          "free",
+          "monthly"
+        ],
+        "platform": [
+          "iphone",
+          "android",
+          "pc"
+        ]
+      },
       "sources": [
-        { "label": "Notta 料金プラン", "url": "https://www.notta.ai/pricing" },
-        { "label": "Notta 公式サイト（FAQ・セキュリティ）", "url": "https://www.notta.ai/" }
+        {
+          "label": "Notta 料金プラン",
+          "url": "https://www.notta.ai/pricing"
+        },
+        {
+          "label": "Notta 公式サイト（FAQ・セキュリティ）",
+          "url": "https://www.notta.ai/"
+        }
       ]
     },
     {
@@ -250,7 +407,11 @@
       "category": "iPhone標準アプリ",
       "price": "0円",
       "priceNote": "iPhoneの標準アプリ（iPhone 12以降）",
-      "priceSource": { "type": "official", "url": "https://support.apple.com/ja-jp/guide/iphone/iph00953a982/ios", "checkedAt": "2026-10-27T12:00:00+09:00" },
+      "priceSource": {
+        "type": "official",
+        "url": "https://support.apple.com/ja-jp/guide/iphone/iph00953a982/ios",
+        "checkedAt": "2026-10-27T12:00:00+09:00"
+      },
       "officialUrl": "https://support.apple.com/ja-jp/guide/iphone/iph00953a982/ios",
       "summary": "iPhoneに最初から入っている録音アプリ。iPhone 12以降では、録音中・録音後に日本語を含む10言語で文字起こしを表示できます。Apple Intelligenceの対応機種では、作文ツールで文章を要約できます。",
       "bestFor": "iPhoneを持っていて、まず0円で試したい人",
@@ -266,8 +427,14 @@
       ],
       "specs": [],
       "verdict": {
-        "japan": { "level": "yes", "text": "日本語の文字起こしに対応" },
-        "freeTrial": { "level": "yes", "text": "追加料金なし" },
+        "japan": {
+          "level": "yes",
+          "text": "日本語の文字起こしに対応"
+        },
+        "freeTrial": {
+          "level": "yes",
+          "text": "追加料金なし"
+        },
         "cost": "0円（iPhone 12以降が必要）",
         "bestFor": "iPhoneで手軽に始めたい人"
       },
@@ -282,10 +449,27 @@
         "limit": "公式サイトで確認",
         "privacy": "公式サイトで確認"
       },
-      "fit": { "use": ["inperson", "walking"], "budget": ["free"], "platform": ["iphone"] },
+      "fit": {
+        "use": [
+          "inperson",
+          "walking"
+        ],
+        "budget": [
+          "free"
+        ],
+        "platform": [
+          "iphone"
+        ]
+      },
       "sources": [
-        { "label": "Appleサポート「iPhoneでボイスメモの文字起こしを表示する」", "url": "https://support.apple.com/ja-jp/guide/iphone/iph00953a982/ios" },
-        { "label": "Apple Intelligence（対応機種・言語）", "url": "https://www.apple.com/jp/apple-intelligence/" }
+        {
+          "label": "Appleサポート「iPhoneでボイスメモの文字起こしを表示する」",
+          "url": "https://support.apple.com/ja-jp/guide/iphone/iph00953a982/ios"
+        },
+        {
+          "label": "Apple Intelligence（対応機種・言語）",
+          "url": "https://www.apple.com/jp/apple-intelligence/"
+        }
       ]
     },
     {
@@ -295,7 +479,11 @@
       "category": "Pixel標準アプリ",
       "price": "0円",
       "priceNote": "Google Pixelの標準アプリ（Pixel 3以降）",
-      "priceSource": { "type": "official", "url": "https://support.google.com/pixelphone/answer/16267698?hl=ja", "checkedAt": "2026-10-27T12:00:00+09:00" },
+      "priceSource": {
+        "type": "official",
+        "url": "https://support.google.com/pixelphone/answer/16267698?hl=ja",
+        "checkedAt": "2026-10-27T12:00:00+09:00"
+      },
       "officialUrl": "https://support.google.com/pixelphone/answer/16267698?hl=ja",
       "summary": "Google Pixelに入っている録音アプリ。日本語のリアルタイム文字起こしに対応し、Pixel 8以降では文字起こしした録音を日本語で要約できます。",
       "bestFor": "Pixelを持っていて、まず0円で試したい人",
@@ -312,8 +500,14 @@
       ],
       "specs": [],
       "verdict": {
-        "japan": { "level": "yes", "text": "日本語の文字起こし・要約に対応" },
-        "freeTrial": { "level": "yes", "text": "追加料金なし" },
+        "japan": {
+          "level": "yes",
+          "text": "日本語の文字起こし・要約に対応"
+        },
+        "freeTrial": {
+          "level": "yes",
+          "text": "追加料金なし"
+        },
         "cost": "0円（Google Pixelが必要）",
         "bestFor": "Pixelで手軽に始めたい人"
       },
@@ -328,11 +522,31 @@
         "limit": "1回の録音は最大18時間",
         "privacy": "アカウントなしなら録音は端末内に保存。要約はクラウドの隔離環境で実行と記載"
       },
-      "fit": { "use": ["inperson", "walking"], "budget": ["free"], "platform": ["android"] },
+      "fit": {
+        "use": [
+          "inperson",
+          "walking"
+        ],
+        "budget": [
+          "free"
+        ],
+        "platform": [
+          "android"
+        ]
+      },
       "sources": [
-        { "label": "Pixelヘルプ「文字起こしを作成、編集、管理する」", "url": "https://support.google.com/pixelphone/answer/16267698?hl=ja" },
-        { "label": "Pixelヘルプ「録音を作成、編集、削除する」", "url": "https://support.google.com/pixelphone/answer/16267367?hl=ja" },
-        { "label": "Pixelヘルプ「スピーカー ラベルを使用する」", "url": "https://support.google.com/pixelphone/answer/16269004?hl=ja" }
+        {
+          "label": "Pixelヘルプ「文字起こしを作成、編集、管理する」",
+          "url": "https://support.google.com/pixelphone/answer/16267698?hl=ja"
+        },
+        {
+          "label": "Pixelヘルプ「録音を作成、編集、削除する」",
+          "url": "https://support.google.com/pixelphone/answer/16267367?hl=ja"
+        },
+        {
+          "label": "Pixelヘルプ「スピーカー ラベルを使用する」",
+          "url": "https://support.google.com/pixelphone/answer/16269004?hl=ja"
+        }
       ]
     },
     {
@@ -342,7 +556,11 @@
       "category": "Web会議のAI機能",
       "price": "月1,600円から",
       "priceNote": "Google Workspace Business Standard・1ユーザーあたり（税別）",
-      "priceSource": { "type": "official", "url": "https://workspace.google.com/intl/ja/pricing", "checkedAt": "2026-10-27T12:00:00+09:00" },
+      "priceSource": {
+        "type": "official",
+        "url": "https://workspace.google.com/intl/ja/pricing",
+        "checkedAt": "2026-10-27T12:00:00+09:00"
+      },
       "officialUrl": "https://support.google.com/meet/answer/14754931?hl=ja",
       "summary": "Google MeetのGeminiによる機能で、会議のメモをGoogleドキュメントに自動で作ります。途中から参加しても「ここまでの要約」で内容を追えます。日本語の会議に対応しています。",
       "bestFor": "社内の会議がGoogle Meet中心の会社",
@@ -358,8 +576,14 @@
       ],
       "specs": [],
       "verdict": {
-        "japan": { "level": "yes", "text": "日本語の会議に対応" },
-        "freeTrial": { "level": "no", "text": "無料の個人アカウントは対象外" },
+        "japan": {
+          "level": "yes",
+          "text": "日本語の会議に対応"
+        },
+        "freeTrial": {
+          "level": "no",
+          "text": "無料の個人アカウントは対象外"
+        },
         "cost": "1ユーザー月1,600円（税別）〜",
         "bestFor": "Google Meetで会議をする会社"
       },
@@ -374,10 +598,26 @@
         "limit": "15分〜8時間の会議が対象",
         "privacy": "管理者は参加者に同意を求める設定ができる"
       },
-      "fit": { "use": ["online"], "budget": ["monthly"], "platform": ["pc"] },
+      "fit": {
+        "use": [
+          "online"
+        ],
+        "budget": [
+          "monthly"
+        ],
+        "platform": [
+          "pc"
+        ]
+      },
       "sources": [
-        { "label": "Google Meetヘルプ「自動メモ生成」", "url": "https://support.google.com/meet/answer/14754931?hl=ja" },
-        { "label": "Google Workspace 料金", "url": "https://workspace.google.com/intl/ja/pricing" }
+        {
+          "label": "Google Meetヘルプ「自動メモ生成」",
+          "url": "https://support.google.com/meet/answer/14754931?hl=ja"
+        },
+        {
+          "label": "Google Workspace 料金",
+          "url": "https://workspace.google.com/intl/ja/pricing"
+        }
       ]
     }
   ],
@@ -406,7 +646,6 @@
   ],
   "howWeMade": "2026年10月27日に、各社の公式サイト・公式ヘルプのページを取得し、そこに書かれている価格・仕様・条件だけをもとに作りました。編集部は製品を購入・試用しておらず、点数やランキングはつけていません。「サイソク判定」は公式の記載を4つの観点に整理したものです。PLAUDの2製品は当サイトの提携先（PR）で、リンク経由の購入で紹介料が入ることがあります。そのほかの4つは提携していません。",
   "relatedArticleSlugs": [
-    "klang-japan-usage-data-2026",
     "openai-gpt-transcribe-live-launch",
     "openai-chatgpt-voice-desktop-gpt-live",
     "openai-chatgpt-voice-update-gpt6-astra",
@@ -414,8 +653,20 @@
     "gemini-live-api-updates-async-proactive-audio"
   ],
   "sources": [
-    { "partner": "plaud-note-pro", "urls": ["https://jp.plaud.ai/products/plaud-note-pro"], "fetchedAt": "2026-10-27T12:00:00+09:00" },
-    { "partner": "plaud-notepin-s", "urls": ["https://jp.plaud.ai/products/plaud-notepin-s"], "fetchedAt": "2026-10-27T12:00:00+09:00" }
+    {
+      "partner": "plaud-note-pro",
+      "urls": [
+        "https://jp.plaud.ai/products/plaud-note-pro"
+      ],
+      "fetchedAt": "2026-10-27T12:00:00+09:00"
+    },
+    {
+      "partner": "plaud-notepin-s",
+      "urls": [
+        "https://jp.plaud.ai/products/plaud-notepin-s"
+      ],
+      "fetchedAt": "2026-10-27T12:00:00+09:00"
+    }
   ],
   "publishedAt": "2026-10-27T02:08:30+09:00",
   "updatedAt": "2026-10-27T12:00:00+09:00",

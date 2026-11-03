@@ -3,6 +3,7 @@ import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
 import LegalPage from "@/components/LegalPage";
 import corrections from "@/content/corrections.json";
+import { getArticleSummary } from "@/lib/articles";
 import { siteConfig } from "@/site.config";
 
 export const metadata: Metadata = withPageShare("corrections", "/corrections", {
@@ -53,7 +54,8 @@ export default function CorrectionsPage() {
         {items.map((c) => (
           <li key={`${c.date}-${c.slug}`}>
             <time dateTime={c.date}>{c.date.replaceAll("-", "/")}</time>{" "}
-            <Link href={`/articles/${c.slug}`}>{c.title}</Link>
+            {/* 取り下げた記事（content/retired.json）はリンクにせず、訂正の記録だけ残す */}
+            {getArticleSummary(c.slug) ? <Link href={`/articles/${c.slug}`}>{c.title}</Link> : <>{c.title}（記事は取り下げました）</>}
             <br />
             {c.summary}
           </li>

@@ -10,8 +10,7 @@
   "overview": {
     "text": "Claude Fable 5.1は、Anthropicが開発した最上位のAIモデルです。複雑な仕事や開発、科学研究の自動化を目的として、2026年9月1日に発表されました。",
     "sources": [
-      "anthropic-releases-claude-fable-5-1",
-      "fsa-nisa-request-claude-fable-five-one"
+      "anthropic-releases-claude-fable-5-1"
     ]
   },
   "facts": [
@@ -20,20 +19,6 @@
       "value": "2026年9月1日",
       "sources": [
         "anthropic-releases-claude-fable-5-1"
-      ]
-    },
-    {
-      "label": "日本での提供",
-      "value": "利用できる",
-      "sources": [
-        "anthropic-sonnet-5-5-ai-efficiency"
-      ]
-    },
-    {
-      "label": "向いている人",
-      "value": "開発者",
-      "sources": [
-        "anthropic-sonnet-5-5-ai-efficiency"
       ]
     }
   ],
@@ -71,29 +56,9 @@
       ]
     }
   ],
-  "japan": [
-    {
-      "text": "発表の時点では、日本からの利用に対応しています。",
-      "sources": [
-        "anthropic-sonnet-5-5-ai-efficiency"
-      ]
-    }
-  ],
+  "japan": [],
   "howto": [],
-  "differences": [
-    {
-      "text": "自律的な科学研究能力を測定するスコアが、前モデルから大幅に向上しています。",
-      "sources": [
-        "fsa-nisa-request-claude-fable-five-one"
-      ]
-    },
-    {
-      "text": "自律的なコーディング能力やビジネスワークフローの処理能力が従来モデルから進化しています。",
-      "sources": [
-        "fsa-nisa-request-claude-fable-five-one"
-      ]
-    }
-  ],
+  "differences": [],
   "faq": [
     {
       "q": "いつから使える？",
@@ -135,12 +100,9 @@
     "claude-opus-5-5"
   ],
   "articles": [
-    "anthropic-sonnet-5-5-ai-efficiency",
-    "fsa-nisa-request-claude-fable-five-one",
     "anthropic-releases-claude-fable-5-1"
   ],
   "linkFrom": [
-    "fsa-nisa-request-claude-fable-five-one",
     "anthropic-releases-claude-fable-5-1"
   ],
   "signature": "b34645f6e09954e4",
