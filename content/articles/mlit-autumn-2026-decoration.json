@@ -53,7 +53,7 @@
   "videoTitle": "令和８年秋の叙勲について",
   "publishedAt": "2026-11-02T20:00:00+00:00",
   "generatedAt": "2026-11-02T20:12:06.836180+00:00",
-  "thumbnail": "",
+  "thumbnail": "https://ai-tech-express.jp/img/mlit-autumn-2026-decoration-b6dcd2a1.jpg",
   "model": "gemini-3.5-flash-lite",
   "affiliates": [],
   "qualityScore": 100,
@@ -61,5 +61,24 @@
   "detectedAt": "2026-11-02T20:10:50+00:00",
   "speedMinutes": 16,
   "duplicateOf": "mlit-autumn-2026-medals-of-honor",
-  "duplicateReason": "同じ発信元の似た発表（題名 0.33・キーワード 0.33）"
+  "duplicateReason": "同じ発信元の似た発表（題名 0.33・キーワード 0.33）",
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A well-lit conference hall with a wooden podium, a Japanese flag behind it, and a row of medals displayed on a velvet cushion while officials in suits stand with their backs to the camera.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-03T08:12:21+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.515,
+    "box": [
+      0.0,
+      0.03,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/mlit-autumn-2026-decoration-b6dcd2a1.jpg"
+  }
 }

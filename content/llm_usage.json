@@ -1,17 +1,4 @@
 {
-  "2026-10-27": {
-    "cf-image:flux-1-schnell": 1,
-    "cf-image:flux-2-klein-4b": 16,
-    "claude:sonnet": 81,
-    "cloudflare:@cf/openai/gpt-oss-120b": 1,
-    "gemini-3.1-flash-lite": 299,
-    "gemini-3.5-flash": 1,
-    "gemini-3.5-flash-lite": 221,
-    "gemini-flash-latest": 1,
-    "gemini-flash-lite-latest": 2,
-    "gemma-4-26b-a4b-it": 1,
-    "openrouter:nvidia/nemotron-3.5-super-vl:free": 1
-  },
   "2026-10-28": {
     "cf-image:flux-1-schnell": 5,
     "cf-image:flux-2-klein-4b": 29,
@@ -64,5 +51,9 @@
     "gemini-3.5-flash": 11,
     "gemini-3.5-flash-lite": 325,
     "gemma-4-31b-it": 1
+  },
+  "2026-11-03": {
+    "cf-image:flux-2-klein-4b": 5,
+    "cloudflare:@cf/openai/gpt-oss-120b": 3
   }
 }

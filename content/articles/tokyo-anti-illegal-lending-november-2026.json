@@ -56,7 +56,7 @@
   "videoTitle": "11月は「ヤミ金融被害防止強化月間」です 金融トラブルにご注意ください",
   "publishedAt": "2026-11-01T15:00:00+00:00",
   "generatedAt": "2026-11-03T01:27:33.210272+00:00",
-  "thumbnail": "",
+  "thumbnail": "https://ai-tech-express.jp/img/tokyo-anti-illegal-lending-november-2026-e2b45a02.jpg",
   "model": "cloudflare:@cf/openai/gpt-oss-120b",
   "affiliates": [],
   "faq": [
@@ -88,5 +88,24 @@
   ],
   "qualityScore": 100,
   "sourcePublishedAt": "2026-11-01T15:00:00+00:00",
-  "detectedAt": "2026-11-03T01:24:16+00:00"
+  "detectedAt": "2026-11-03T01:24:16+00:00",
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A counselor seated at a table in a modest community center, handing informational leaflets about illegal lending to a small group of adults, soft indoor lighting.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-03T08:11:48+00:00"
+  },
+  "imageFocus": {
+    "x": 0.489,
+    "y": 0.402,
+    "box": [
+      0.0,
+      0.0,
+      0.978,
+      0.804
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/tokyo-anti-illegal-lending-november-2026-e2b45a02.jpg"
+  }
 }

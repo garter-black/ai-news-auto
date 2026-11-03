@@ -12,5 +12,11 @@
       "gemini-3.5-flash-lite": 1,
       "gemma-4-31b-it": 1
     }
+  },
+  "2026-11-03": {
+    "images": {
+      "cf-image:flux-2-klein-4b": 5,
+      "cloudflare:@cf/openai/gpt-oss-120b": 3
+    }
   }
 }

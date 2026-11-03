@@ -71,7 +71,7 @@
   "videoTitle": "「Affinity for iPad」公開 スケッチから写真編集・ページ制作まで1つのアプリで",
   "publishedAt": "2026-11-02T22:32:17+00:00",
   "generatedAt": "2026-11-02T22:43:29.788820+00:00",
-  "thumbnail": "",
+  "thumbnail": "https://ai-tech-express.jp/img/affinity-for-ipad-canva-release-a29dc722.jpg",
   "model": "claude:sonnet",
   "affiliates": [],
   "pricingProduct": "gemini-api",
@@ -121,5 +121,24 @@
   "sourcePublishedAt": "2026-11-02T22:32:17+00:00",
   "detectedAt": "2026-11-02T22:33:24+00:00",
   "fastLane": true,
-  "speedMinutes": 15
+  "speedMinutes": 15,
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A close-up of a hand holding a stylus as it draws on a tablet screen, with a bright, softly lit workspace in the background.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-03T08:12:02+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.587,
+    "box": [
+      0.0,
+      0.173,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/affinity-for-ipad-canva-release-a29dc722.jpg"
+  }
 }
