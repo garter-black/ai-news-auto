@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "google-ai-educator-series-expansion",
+   "at": "2026-11-03T17:52:48.564959+00:00",
+   "title": "Google、教員向けAI研修を5地域に拡大　スペインやブラジルなどで無料提供へ",
+   "head": "Google、教員向けAI研修を5地域に拡大　スペインやブラジルなどで無料提供へ | Expanding AI educator training to new countries",
+   "text": "Google、教員向けAI研修を5地域に拡大　スペインやブラジルなどで無料提供へ | Expanding AI educator training to new countries | Google AI Educator Series / 教員向けAI研修 / Gemini 教育 / Gemini Notebook / GES 無料 / 教員 生成AI 研修 / マイクロクレデンシャル / train-the-trainer / AI リテラシー 教員 / Google for Education / 生成AI / Gemini / 教育 / Google / AI研修",
+   "urls": [
+    "https://blog.google/products-and-platforms/products/education/google-ai-educator-series-global-expansion-november-2026/"
+   ]
+  },
+  {
    "slug": "google-ai-learning-era-guided-learning",
    "at": "2026-11-03T17:46:23.673437+00:00",
    "title": "Google、学習支援「Guided Learning」をClassroomで世界提供　検索にも搭載",
@@ -958,22 +968,6 @@
    "urls": [
     "https://huggingface.co/blog/nvidia/nemotron-halloween"
    ]
-  },
-  {
-   "slug": "automation-vs-physical-ai-microsoft-azure",
-   "at": "2026-10-30T18:02:02.171378+00:00",
-   "title": "Microsoft幹部、フィジカルAIと従来の自動化の違いを解説　作業のたびに学習",
-   "head": "Microsoft幹部、フィジカルAIと従来の自動化の違いを解説　作業のたびに学習 | Automation vs Physical AI",
-   "text": "Microsoft幹部、フィジカルAIと従来の自動化の違いを解説　作業のたびに学習 | Automation vs Physical AI | フィジカルAI / Physical AI / 産業自動化 / Microsoft / Azure IoT / ロボティクス / 学習ループ / デジタルオペレーション / Microsoft / Copilot / AI / フィジカルAI / Azure / ロボティクス",
-   "urls": []
-  },
-  {
-   "slug": "openai-refutes-exponential-time-hypothesis",
-   "at": "2026-10-30T18:01:27.328138+00:00",
-   "title": "OpenAI、指数時間仮説を否定する論文を公開　3-SAT問題の高速解法を提示",
-   "head": "OpenAI、指数時間仮説を否定する論文を公開　3-SAT問題の高速解法を提示 | OpenAI Claims It Just Did The Impossible",
-   "text": "OpenAI、指数時間仮説を否定する論文を公開　3-SAT問題の高速解法を提示 | OpenAI Claims It Just Did The Impossible | OpenAI / 指数時間仮説 / ETH / 3-SAT / NP困難 / アルゴリズム / 計算機科学 / 最適化問題 / AI研究 / 論文 / OpenAI / AI論文 / 計算機科学 / アルゴリズム",
-   "urls": []
   }
  ]
 }

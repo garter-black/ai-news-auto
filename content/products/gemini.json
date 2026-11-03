@@ -14,7 +14,7 @@
     "antigravity",
     "google-ai-studio",
     "gemini-4-argon",
-    "gemini-4"
+    "gemini-notebook"
   ],
   "linkFrom": [
     "gemini-edit-files-directly",
@@ -92,6 +92,7 @@
     }
   ],
   "articles": [
+    "google-ai-educator-series-expansion",
     "google-guided-learning-classroom-search",
     "google-ai-learning-era-guided-learning",
     "google-ai-news-october-2026",

@@ -1,0 +1,125 @@
+{
+  "slug": "google-ai-educator-series-expansion",
+  "sourceType": "web",
+  "sourceUrl": "https://blog.google/products-and-platforms/products/education/google-ai-educator-series-global-expansion-november-2026/",
+  "sourceName": "Google公式ブログ",
+  "title": "Google、教員向けAI研修を5地域に拡大　スペインやブラジルなどで無料提供へ",
+  "seoTitle": "Google AI Educator Seriesとは？無料の教員向けAI研修",
+  "threadsPost": "学校の先生や教育関係の皆さん、知っておいてほしい話です。\n\n要約すると、Googleが教員向けの無料AI研修「GES」を5地域に広げます。\nスペイン、ブラジル、メキシコ、豪州、サハラ以南のアフリカです。\n\n授業の準備にAIを使ったことはありますか？",
+  "threadsHook": "callout",
+  "threadsStyle": 3,
+  "writingVoice": "explainer",
+  "lede": "GoogleはGoogle AI Educator Series（GES）を、スペイン、ブラジル、メキシコ、オーストラリア、サハラ以南のアフリカの5地域に広げると発表しました。GESは教員向けの無料のオンデマンド研修で、Google公式ブログによると、提供は今後数カ月のうちに始まります。",
+  "description": "Googleが教員向けの無料AI研修「Google AI Educator Series」を、スペイン、ブラジル、メキシコ、豪州、サハラ以南のアフリカへ拡大。各国の活用例と11月の新教材を解説します。",
+  "keywords": [
+    "Google AI Educator Series",
+    "教員向けAI研修",
+    "Gemini 教育",
+    "Gemini Notebook",
+    "GES 無料",
+    "教員 生成AI 研修",
+    "マイクロクレデンシャル",
+    "train-the-trainer",
+    "AI リテラシー 教員",
+    "Google for Education"
+  ],
+  "tags": [
+    "生成AI",
+    "Gemini",
+    "教育",
+    "Google",
+    "AI研修"
+  ],
+  "highlights": [
+    "インドでは9月の研修で8万人の教員が受講し、全教員向けにオンライン教材を提供",
+    "マレーシアの教員は1テーマの準備で3〜5時間を節約できたと報告",
+    "11月の新教材は米国で11月4日に公開され、小テスト作成などを扱う"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "limited",
+    "japan": "unknown",
+    "price": "無料",
+    "free": true,
+    "audience": "教員・教育関係者",
+    "take": "日本での提供は未発表です。Geminiの教育活用に関心がある人は、公式ブログの続報を確認するとよいでしょう。",
+    "judgedAt": "2026-11-03T17:52:48.564977+00:00"
+  },
+  "workMoney": {
+    "relevance": "low",
+    "points": [
+      "日本での提供は発表されておらず、直接の影響は小さい状況です。海外の教育機関と関わる人が確認する内容です。",
+      "研修は無料で、受講後にバッジが得られます。教育分野で働く人は、公式ブログで対象や形式を確認できます。"
+    ]
+  },
+  "body": "Google AI Educator Series（GES）は、教員がAIを授業や事務作業に使えるようにするための研修プログラムです。Googleによると、無料で、好きな時間に受けられる形式です。忙しい教員の予定に合わせて、すぐ使える技能を身につけられるよう設計されています。\n\nGoogleの公式ブログによると、GESは今年、まず米国で始まりました。その後、インド、韓国、マレーシア、フィリピン、英国とアイルランドに広がっています。今回、ブラジル、メキシコ、スペイン、オーストラリア、サハラ以南のアフリカが加わります。提供は今後数カ月のうちに始まります。\n\n日本での提供は発表されていません。なお、研修で使われるGeminiとGemini Notebookは、日本で使えます（当サイトの確認：Geminiアプリは11/3、NotebookLM／Gemini Notebookは10/30）。\n\n## インドは8万人が受講、全教員向けの教材へ\n\nインドでは、9月の研修で8万人の教員が学びました。Googleは今後、インドのすべての教員に、自分のペースで進められるオンライン教材を提供するとしています。\n\nこの研修は、同国の国家教育政策2020に沿った内容です。対応言語は英語に加え、ヒンディー語、マラーティー語、テルグ語、アッサム語、オディア語、パンジャブ語の6言語です。言語は来年さらに増える予定です。\n\n教員は、GeminiとGemini Notebookを使い、難しい題材を漫画、ポッドキャスト、インフォグラフィック（図解）にしているといいます。\n\n## フィリピンは100万人超が対象、マレーシアは準備時間が減少\n\nフィリピンでは、教員がGeminiで経済の授業の市場シナリオを模擬しています。目的は、生徒への直接指導に使う時間を空けることです。\n\nGoogleは、フィリピンの教育省、高等教育委員会、技術教育技能開発庁と組みました。国内100万人を超える教員にAI研修を届ける計画です。教育省は最近、教職員全員に向けてGESを推奨する公式の通達を出しました。\n\nマレーシアは、BETT Asiaでの正式な開始のあと、教員が成果を報告しています。カリキュラム、評価、視覚教材の準備で、1つのテーマにつき3〜5時間を節約できたと報告しています。\n\n次の段階では、現地のパートナーとともに「train-the-trainer」（指導者を育てる）合宿を開きます。対象は私立学校の教員、教員養成課程の学生、大学の教員です。\n\n**英国は65万人が対象、韓国はソウル教育大と連携**\n\n英国では、Gemini Notebookで創作文の指導力を伸ばしたり、授業計画や図を作ったりする使い方が出ています。英国とアイルランドの教員65万人全員が、オンラインまたは対面の催しに参加して、デジタル活用の研修を受けられます。11月には、ロンドンのGoogleオフィスで指導者育成のワークショップも開きます。\n\n韓国では、ソウル教育大学校（SNUE）と組みました。2022年改訂教育課程と、教育部の教員向けAI・デジタル教育能力の枠組みに沿った内容です。教員はGeminiとGemini Notebookで、探究型の授業や評価を設計しています。保護者への連絡やデータ分析といった事務の効率化にも使っています。\n\n**11月の新教材は米国で11月4日に公開**\n\nGoogleは、教員からの意見をもとに、教材を毎月更新したり追加したりしています。11月の教材は、米国で11月4日に公開されます。Googleは、教員が最も必要とする場面で時間を節約できる内容だと説明しています。\n\n新しい内容は3つです。\n\n- **インタラクティブな評価の作成**：Geminiで練習問題や、ウェブ上の小テストを作ります。誤答には即時のフィードバックやヒントが出ます。州の試験などの準備に使えます。\n- **ゲーム形式の学習の指導**：データの正確さ、モデルの性能、人による監督の重要性を体験できる学習を進めます。\n- **課題の見直し**：Geminiを使い、近道的な回答を招きやすい問いを見つけます。生徒の批判的思考を促す課題づくりに役立てます。\n\nGoogleは、GESの修了者にバッジを出し、教員のコミュニティに参加できるとしています。\n\nなお、Googleは同じ教育分野で、Google Classroomの学習機能も提供しています（[GoogleがClassroomで学習機能を世界提供](/articles/google-guided-learning-classroom-search)）。\n\n## まだ分からないこと\n\n- 日本でのGESの提供はまだ発表されていません。\n- 新しい5地域それぞれの具体的な開始日と対応言語はまだ発表されていません。",
+  "easy": "## ひとことで言うと\n\nGoogleが、教員向けの無料AI研修「GES」を5つの地域に広げます。対象はスペイン、ブラジル、メキシコ、オーストラリア、サハラ以南のアフリカです。\n\n**どんな研修か**\n\nGESは、先生がAIを授業や事務作業にすぐ使えるようにするための研修です。好きな時間に受けられ、料金はかかりません。\n\n**すでに始まっている国**\n\nGoogleは今年、まず米国で始めました。その後、インド、韓国、マレーシア、フィリピン、英国とアイルランドに広げています。\n\nマレーシアの先生は、1つのテーマの準備にかかる時間が3〜5時間減ったと報告しています。\n\n**11月の新しい内容**\n\n米国では11月4日に新しい教材が公開されます。AIで小テストを作る方法や、ゲーム形式の学習の進め方などを扱います。\n\n日本での提供は、まだ発表されていません。",
+  "channel": "Google公式ブログ",
+  "channelId": "",
+  "channelSlug": "google-blog-all",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Expanding AI educator training to new countries",
+  "publishedAt": "2026-11-03T14:00:00+00:00",
+  "generatedAt": "2026-11-03T17:52:48.564959+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/google-ai-educator-series-expansion-675577f0.jpg",
+  "model": "anthropic-api:claude-sonnet-5-5",
+  "affiliates": [],
+  "newsType": "product",
+  "faq": [
+    {
+      "q": "Google AI Educator Seriesは何が発表された？",
+      "a": "Googleは教員向けの無料AI研修GESを、スペイン、ブラジル、メキシコ、オーストラリア、サハラ以南のアフリカに広げると発表しました。提供は今後数カ月のうちに始まります。"
+    },
+    {
+      "q": "Google AI Educator Seriesは無料で使える？",
+      "a": "Googleは、GESを無料のオンデマンド研修と説明しています。教員がAIの実践的な技能をすぐ使えるよう、忙しい予定に合わせて受けられる形式です。"
+    },
+    {
+      "q": "Google AI Educator Seriesはすでにどの国で始まっている？",
+      "a": "米国で始まり、その後インド、韓国、マレーシア、フィリピン、英国とアイルランドに広がりました。日本での提供はまだ発表されていません。"
+    },
+    {
+      "q": "11月の新教材は何を扱う？",
+      "a": "Geminiで小テストを作る方法、ゲーム形式の学習の進め方、課題の見直しの3つです。米国では11月4日に公開されます。"
+    }
+  ],
+  "todayActions": [
+    "Googleの公式ブログで、GESの対象国と提供形式を確認する",
+    "勤務先や学校で、教員向けAI研修の導入を検討している人と共有する",
+    "GeminiやGemini Notebookで、授業準備の一部を試す"
+  ],
+  "relatedSlugs": [
+    "google-guided-learning-classroom-search"
+  ],
+  "qualityScore": 93,
+  "sourcePublishedAt": "2026-11-03T14:00:00+00:00",
+  "detectedAt": "2026-11-03T17:51:04+00:00",
+  "sectionsPolishedAt": "2026-11-03T18:02:28+00:00",
+  "imageCredit": {
+    "kind": "official",
+    "org": "Google",
+    "provider": "Google公式ブログ",
+    "sourceUrl": "https://blog.google/products-and-platforms/products/education/google-ai-educator-series-global-expansion-november-2026/",
+    "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Regional_Blog_Header_Option_1.width-1300.jpg",
+    "width": 1200,
+    "height": 669,
+    "at": "2026-11-03T18:02:33+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.431,
+    "y": 0.604,
+    "box": [
+      0.0,
+      0.208,
+      0.863,
+      1.0
+    ],
+    "ar": 1.7937,
+    "src": "https://ai-tech-express.jp/img/google-ai-educator-series-expansion-675577f0.jpg"
+  }
+}

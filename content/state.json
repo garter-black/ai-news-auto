@@ -75,18 +75,18 @@
     },
     "4f3b7c9dffa0995a": {
       "first": "2026-11-03T14:37:59.464761+00:00",
-      "next": "2026-11-03T17:37:59.464761+00:00",
+      "next": "2026-11-03T20:57:11.222183+00:00",
       "reason": "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルのまま」「日本の売上は1%減」）",
       "title": "映画『ストリートファイター／ザ・ムービー』が、全米週間興行収入ランキング1位を獲得！～ 映画化を通じ、IPのグローバルな認知拡大と価値向上に寄与 ～",
-      "tries": 1,
+      "tries": 2,
       "url": "https://www.capcom.co.jp/ir/news/html/261102.html"
     },
     "63cd61900c41a18d": {
       "first": "2026-11-03T14:36:42.320928+00:00",
-      "next": "2026-11-03T17:36:42.320928+00:00",
+      "next": "2026-11-03T20:56:16.925080+00:00",
       "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
       "title": "LIFULL Investmentが利用するクラウドサービスにおける不正アクセスに関するお知らせ",
-      "tries": 1,
+      "tries": 2,
       "url": "https://lifull.com/news/50881/"
     },
     "7f05432d1620715c": {
@@ -104,14 +104,6 @@
       "title": "マンション内を“顔だけ”で移動できる暮らしを実現 ルジェンテシリーズ初導入！顔認証セキュリティサービス「FreeiD」を標準装備した「ルジェンテ新宿」が竣工 ～新宿御苑の緑に近接する、全邸角住戸の資産価値～",
       "tries": 1,
       "url": "https://www.tokyu-fudosan-hd.co.jp/news/companies/pdf/c63f39dc2efcf88691dcd42fe07a304905d1074a.pdf"
-    },
-    "9aef92b29b8064d2": {
-      "first": "2026-11-03T14:24:40.899481+00:00",
-      "next": "2026-11-03T17:24:40.899481+00:00",
-      "reason": "「教員が「いちばん時間を減らしたい」と挙げた作業に絞っています」→ 元記事は「教員が最も必要とする場面で時間を節約できるよう」とあるだけで、「いちばん減らしたい」作業に絞ったとまでは言っていない（やや言い過ぎ）。; 「3つ目は、生成AIの普及で宿題をAIに丸投げされる心配に向き合う内容です。AIを使わせない方向ではなく…」→ 元記事に無い背景・方針の解釈で、事実として断定している。; 「英国では、",
-      "title": "Expanding AI educator training to new countries",
-      "tries": 1,
-      "url": "https://blog.google/products-and-platforms/products/education/google-ai-educator-series-global-expansion-november-2026/"
     },
     "a55665cf48953af7": {
       "first": "2026-11-03T17:37:41.235291+00:00",
@@ -9315,6 +9307,13 @@
       "skipped": true,
       "url": "https://www.gov-online.go.jp/press_conferences/minister_of_state/202610/video-326814.html"
     },
+    "9824d9cb50fa7b55": {
+      "at": "2026-11-03T18:01:56.252856+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "個別のマンションの宣伝であり、読者にとって実質的な新商品・サービスではないため。",
+      "skipped": true,
+      "url": "https://www.tokyu-fudosan-hd.co.jp/news/companies/pdf/c63f39dc2efcf88691dcd42fe07a304905d1074a.pdf"
+    },
     "983901472b072637": {
       "at": "2026-10-29T18:34:23.669773+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9419,6 +9418,14 @@
       "section": "ai",
       "slug": "google-guided-learning-classroom-search",
       "url": "https://blog.google/products-and-platforms/products/education/ai-learning-era-updates-2026/"
+    },
+    "9aef92b29b8064d2": {
+      "at": "2026-11-03T17:53:08.207484+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 93,
+      "section": "ai",
+      "slug": "google-ai-educator-series-expansion",
+      "url": "https://blog.google/products-and-platforms/products/education/google-ai-educator-series-global-expansion-november-2026/"
     },
     "9b04d2d292e06216": {
       "at": "2026-10-30T05:53:17.494025+00:00",
@@ -13353,182 +13360,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-02T02:11:27.375339+00:00",
-      "attempt": 0,
-      "id": "dcd22a091147f4a3",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 48.7字・60字超の文が 20% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 104.4,
-        "avg_sentence": 48.7,
-        "long_share": 0.2,
-        "max_paragraph": 133,
-        "paragraphs": 7,
-        "sentences": 15
-      },
-      "score": 100,
-      "source": "docomo-service",
-      "title": "dバリューパスに「薬屋のひとりごと」が新たに追加されました"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T02:31:15.563770+00:00",
-      "attempt": 1,
-      "id": "9c7a77eecf318472",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 47.0字・60字超の文が 21% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 99.2,
-        "avg_sentence": 47.0,
-        "long_share": 0.211,
-        "max_paragraph": 128,
-        "paragraphs": 9,
-        "sentences": 19
-      },
-      "score": 100,
-      "source": "morinaga",
-      "title": "松生クリニック 松生恒夫先生との共同研究 ココアによる排便頻度の改善および一部の腸内細菌の割合への影響について 第59回 日本栄養食糧学会 中国・四国支部大会で"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T02:31:18.216507+00:00",
-      "attempt": 0,
-      "id": "9c7a77eecf318472",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 100.4,
-        "avg_sentence": 36.2,
-        "long_share": 0.04,
-        "max_paragraph": 128,
-        "paragraphs": 9,
-        "sentences": 25
-      },
-      "score": 100,
-      "source": "morinaga",
-      "title": "松生クリニック 松生恒夫先生との共同研究 ココアによる排便頻度の改善および一部の腸内細菌の割合への影響について 第59回 日本栄養食糧学会 中国・四国支部大会で"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T02:51:20.381545+00:00",
-      "attempt": 1,
-      "id": "ae8372a9c3c19778",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 64.5字・60字超の文が 58% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 129.1字・最長 319字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 129.1,
-        "avg_sentence": 64.5,
-        "long_share": 0.583,
-        "max_paragraph": 319,
-        "paragraphs": 12,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "nvidia-developer-blog",
-      "title": "Build a Validated Kubernetes Runtime for NVIDIA Dynamo"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T02:51:24.657201+00:00",
-      "attempt": 0,
-      "id": "ae8372a9c3c19778",
-      "kind": "ai",
-      "model": "",
-      "problems": [
-        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（64.5→64.5字）"
-      ],
-      "readability": {
-        "avg_paragraph": 129.1,
-        "avg_sentence": 64.5,
-        "long_share": 0.583,
-        "max_paragraph": 319,
-        "paragraphs": 12,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "nvidia-developer-blog",
-      "title": "Build a Validated Kubernetes Runtime for NVIDIA Dynamo"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T02:51:32.113584+00:00",
-      "attempt": 1,
-      "id": "c94fa0fe456c6e41",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 48.0,
-        "avg_sentence": 48.0,
-        "long_share": 0.217,
-        "max_paragraph": 106,
-        "paragraphs": 23,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "ipa",
-      "title": "DX認定制度 認定事業者の公表（2026年11月1日認定適用）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T02:51:38.716000+00:00",
-      "attempt": 2,
-      "id": "c94fa0fe456c6e41",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 52.6字・60字超の文が 30% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 134.4字・最長 196字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 134.4,
-        "avg_sentence": 52.6,
-        "long_share": 0.304,
-        "max_paragraph": 196,
-        "paragraphs": 9,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "ipa",
-      "title": "DX認定制度 認定事業者の公表（2026年11月1日認定適用）"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T02:51:42.284171+00:00",
-      "attempt": 0,
-      "id": "c94fa0fe456c6e41",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 125.6字・最長 220字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 125.6,
-        "avg_sentence": 30.6,
-        "long_share": 0.0,
-        "max_paragraph": 220,
-        "paragraphs": 10,
-        "sentences": 41
-      },
-      "score": 100,
-      "source": "ipa",
-      "title": "DX認定制度 認定事業者の公表（2026年11月1日認定適用）"
-    },
     {
       "accepted": false,
       "at": "2026-11-02T03:11:10.844019+00:00",
@@ -19900,6 +19731,174 @@
       "warnings": [
         "見出しが50字（目安40字以内）。一覧・カードでは前半だけを出す"
       ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:52:00.412897+00:00",
+      "attempt": 1,
+      "id": "9aef92b29b8064d2",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "リード「すでに米国、インドなど6つの国・地域で始まっています」→元記事は米国、インド、韓国、マレーシア、フィリピン、英国とアイルランドで、数え方次第で6〜7になり「6つ」は元記事に明記がない。",
+        "「Googleは、先行する5つの国・地域の使い方を紹介しています」→元記事が紹介するのはインド、フィリピン、マレーシア、英国、韓国の5か国で米国は含まれない。5つの国・地域という数え方は元記事にない。",
+        "「開始日や料金、使える言語はまだ発表されていません」→料金は無料と公式ブログに書かれており、直後の文と矛盾する書き方。",
+        "「650,000人の教員が、オンラインまたは対面の催しで研修を受けられます」→元記事は「all 650,000 teachers can receive」で、受講可能という点はほぼ一致するが、対象は英国とアイルランドの教員で、元記事の対象範囲の記述が曖昧。",
+        "FAQ「Q. インドではどんな形で提供されますか？」→「今後は全教員に提供」は元記事で「bringing GES to all Indian educators」と述べているが、提供済みか予定かの区別が曖昧。"
+      ],
+      "readability": {
+        "avg_paragraph": 58.3,
+        "avg_sentence": 35.0,
+        "long_share": 0.133,
+        "max_paragraph": 158,
+        "paragraphs": 27,
+        "sentences": 45
+      },
+      "score": 80,
+      "source": "google-blog-all",
+      "title": "Expanding AI educator training to new countries",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（GES・BETT・ISTE）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:52:53.517859+00:00",
+      "attempt": 2,
+      "id": "9aef92b29b8064d2",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "「Googleによると、無料で、好きな時間に受けられる形式です」→ 元記事は「on-demand」としており、「好きな時間に」は言い換えの範囲だが、問題は軽微。",
+        "「提供は今後数カ月のうちに始まります」→ 元記事は「In the coming months」で一致。問題なし。",
+        "「GESは、GESの修了者にバッジを出し」→ 元記事は「Earn your badge today」とあり、関連ページでもバッジの記述があるため問題なし。",
+        "「教員は、Geminiで経済の授業の市場シナリオを模擬しています」→ 元記事と一致。",
+        "「判定: 提供状況=limited」→ 5地域は今後数カ月で提供予定であり、日本未発表との表記は妥当。",
+        "「カリキュラム、評価、視覚教材の準備で…節約できた」→ 元記事は「teachers report saving」で、「できたと報告」は一致。"
+      ],
+      "readability": {
+        "avg_paragraph": 86.4,
+        "avg_sentence": 39.9,
+        "long_share": 0.103,
+        "max_paragraph": 154,
+        "paragraphs": 18,
+        "sentences": 39
+      },
+      "score": 80,
+      "source": "google-blog-all",
+      "title": "Expanding AI educator training to new countries",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（GES・BETT・SNUE）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-03T17:53:08.196403+00:00",
+      "attempt": 2,
+      "id": "9aef92b29b8064d2",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 86.6,
+        "avg_sentence": 39.9,
+        "long_share": 0.103,
+        "max_paragraph": 154,
+        "paragraphs": 18,
+        "sentences": 39
+      },
+      "score": 93,
+      "source": "google-blog-all",
+      "title": "Expanding AI educator training to new countries",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（GES・BETT・SNUE）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:55:28.385426+00:00",
+      "attempt": 1,
+      "id": "63cd61900c41a18d",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "lifull",
+      "title": "LIFULL Investmentが利用するクラウドサービスにおける不正アクセスに関するお知らせ"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:56:16.925038+00:00",
+      "attempt": 2,
+      "id": "63cd61900c41a18d",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "lifull",
+      "title": "LIFULL Investmentが利用するクラウドサービスにおける不正アクセスに関するお知らせ"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:56:51.105706+00:00",
+      "attempt": 1,
+      "id": "4f3b7c9dffa0995a",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "「モンスターハンター」シリーズは13,100万本→確認済みの文脈の表では13,100(万本)と読めるが、ゲーム別の紐付けが不明瞭で、元記事にない数字の使い方に近く、日付表示も「2026年6月30日時点」と「9月末現在」が混在しており断定に注意が必要",
+        "「カプコンが7月28日に開いた第1四半期の決算説明」→文脈では7月28日発表とあるが、年間販売本数6,500万本の目標や映画への言及を第2四半期資料の質疑と区別せず引用しており、出典の取り違えの恐れがある",
+        "「日米でプレミア上映を行い…日本の映画館で見られる作品として」→元記事に日本での上映館や公開状況の詳細はなく、「公開当初から身近な作品だった」は言い過ぎ",
+        "「リード：全米は約3,834万ドル…いずれも公開から10月22日までの速報値」→元記事は週間興行収入の数値であり、「初週」とタイトルで言い切るのは公開日からの1週間という解釈を加えている（軽微）",
+        "「映画で作品を知った人が…遊びやすさの工夫が働く可能性」→編集部の見方と明記されており許容範囲だが、推測の色が強い"
+      ],
+      "readability": {
+        "avg_paragraph": 85.0,
+        "avg_sentence": 39.7,
+        "long_share": 0.089,
+        "max_paragraph": 169,
+        "paragraphs": 21,
+        "sentences": 45
+      },
+      "score": 72,
+      "source": "capcom-ir",
+      "title": "映画『ストリートファイター／ザ・ムービー』が、全米週間興行収入ランキング1位を獲得！～ 映画化を通じ、IPのグローバルな認知拡大と価値向上に寄与 ～",
+      "warnings": [
+        "見出しが45字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（IR）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T17:57:11.222133+00:00",
+      "attempt": 2,
+      "id": "4f3b7c9dffa0995a",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "capcom-ir",
+      "title": "映画『ストリートファイター／ザ・ムービー』が、全米週間興行収入ランキング1位を獲得！～ 映画化を通じ、IPのグローバルな認知拡大と価値向上に寄与 ～"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-03T18:01:14.042194+00:00",
+      "attempt": 1,
+      "id": "9824d9cb50fa7b55",
+      "kind": "broad",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "tokyu-fudosan",
+      "title": "マンション内を“顔だけ”で移動できる暮らしを実現 ルジェンテシリーズ初導入！顔認証セキュリティサービス「FreeiD」を標準装備した「ルジェンテ新宿」が竣工 ～"
     }
   ],
   "short_text_retry": {
