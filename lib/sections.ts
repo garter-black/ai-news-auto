@@ -1,8 +1,9 @@
 import { getAllArticles, type ArticleSummary } from "@/lib/articles";
 
 /**
- * AI以外の幅広い話題（scripts/genres.py の BROAD_GENRES と同じ slug）。
- * サイトの主役はAIのまま、トップの下段と /news にまとめて出す。
+ * AI以外の幅広い話題（scripts/genres.py の BROAD_GENRES と同じ slug ＋ 投資・マネー／不動産）。
+ * トップの下段と /news にまとめて出す。投資・マネーと不動産は読者像の中心（AGENTS.md「0. 読者」）なので
+ * 2026-11-03 に足した（それまではトップに「過去に扱っていた分野」と出ており、運営者情報の説明と食い違っていた）。
  * label は記事に名前が無いときの予備。表示は記事の genre を優先する。
  */
 export const BROAD_SECTIONS: { slug: string; label: string; description: string }[] = [
@@ -11,6 +12,18 @@ export const BROAD_SECTIONS: { slug: string; label: string; description: string 
     label: "ビジネス・経済",
     description:
       "企業のプレスリリースや日本銀行・各種統計の発表を一次情報から読み解き、業界の動きや景気の数字が働く人と家計にどう関わるかを解説します。",
+  },
+  {
+    slug: "investment",
+    label: "投資・マネー",
+    description:
+      "証券・銀行・日本銀行・金融庁などの公式発表をもとに、NISA・金利・為替・家計にかかわる新しい動きを、自分のお金にどう関係するかまで整理します。特定の銘柄の売買はすすめません。",
+  },
+  {
+    slug: "real-estate",
+    label: "不動産",
+    description:
+      "国や自治体、不動産会社・住宅メーカーの公式発表をもとに、地価・住宅ローン・家賃・再開発など住まいと資産にかかわる動きを、数字と時期を中心にまとめます。特定の物件の売買はすすめません。",
   },
   {
     slug: "tech-gadget",

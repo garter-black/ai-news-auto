@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { siteConfig } from "@/site.config";
 
 /**
  * 一覧・ツールなどの固定ページのシェア用の情報（og:title・og:description・og:image）。2026-11-03
@@ -48,7 +49,7 @@ export function pageShareMetadata(
 ): Pick<Metadata, "openGraph" | "twitter"> {
   const image = { url: pageShareImage(key), width: 1200, height: 630, alt: title };
   return {
-    openGraph: { type: "website", url, title, description, images: [image] },
+    openGraph: { type: "website", siteName: siteConfig.siteName, locale: siteConfig.locale, url, title, description, images: [image] },
     twitter: { card: "summary_large_image", title, description, images: [image.url] },
   };
 }

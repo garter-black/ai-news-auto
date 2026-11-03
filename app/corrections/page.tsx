@@ -27,7 +27,7 @@ export default function CorrectionsPage() {
       <ul>
         {items.map((c) => (
           <li key={`${c.date}-${c.slug}`}>
-            <time dateTime={c.date}>{c.date}</time>{" "}
+            <time dateTime={c.date}>{c.date.replaceAll("-", "/")}</time>{" "}
             <Link href={`/articles/${c.slug}`}>{c.title}</Link>
             <br />
             {c.summary}

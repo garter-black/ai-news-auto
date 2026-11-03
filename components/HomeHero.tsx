@@ -1,7 +1,7 @@
 import Thumb from "@/components/Thumb";
 import Link from "next/link";
 import Morph from "@/components/Morph";
-import CompanyMark from "@/components/CompanyMark";
+import { ArticleMark } from "@/components/CompanyMark";
 import RelTime from "@/components/RelTime";
 import type { ArticleSummary } from "@/lib/articles";
 import { companyOf, thumbSource } from "@/lib/companies";
@@ -62,7 +62,7 @@ export default function HomeHero({ lead }: { lead: ArticleSummary }) {
           <span className="rounded-sm bg-live px-2.5 py-0.5 text-badge font-bold tracking-wider text-live-ink">
             {isRoundup ? "まとめ" : "最新"}
           </span>
-          <CompanyMark company={companyOf(lead)} size={18} withName />
+          <ArticleMark company={companyOf(lead)} genre={lead.genre} size={18} />
           <RelTime iso={lead.publishedAt} className="index-num font-semibold text-muted" />
         </div>
 

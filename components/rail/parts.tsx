@@ -83,7 +83,7 @@ export function ProductImage({
       ) : (
         // 写真の無いサービス（ConoHa AI Canvas など）は、名前と一言を文字で見せる
         <span className="flex size-full flex-col items-center justify-center gap-2 bg-[linear-gradient(135deg,#eef6fb,#ffffff_55%,#f3f0fb)] px-4 text-center">
-          <span className="text-badge font-bold tracking-[0.2em] text-[#0a6fa0]">{item.badge ?? "WEB SERVICE"}</span>
+          <span className="text-badge font-bold tracking-[0.2em] text-[#1d4a8f]">{item.badge ?? "WEB SERVICE"}</span>
           <span className="text-[17px] font-bold leading-tight text-[#111111] text-balance">{item.name}</span>
           {item.label && (
             <span className="rounded-sm bg-[#111111] px-2.5 py-1 text-badge font-bold text-white">{item.label}</span>

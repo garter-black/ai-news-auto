@@ -16,8 +16,10 @@ function escapeXml(value: string): string {
 export function GET() {
   const articles = getAllArticles().slice(0, 50);
 
+  // 公開日はサイソクに載せた時刻（記事の構造化データ datePublished と同じ）。元の発表の時刻ではない
+  const postedAt = (article: (typeof articles)[number]) => article.generatedAt || article.publishedAt;
   const articleItems = articles.map((article) => ({
-    at: Date.parse(article.publishedAt),
+    at: Date.parse(postedAt(article)),
     xml: `    <item>
       <title>${escapeXml(article.title)}</title>
       <link>${siteConfig.url}/articles/${article.slug}</link>
@@ -25,7 +27,7 @@ export function GET() {
       <description>${escapeXml(article.description)}</description>
       <category>${escapeXml(article.genre)}</category>
       <category>${escapeXml(article.channel)}</category>
-      <pubDate>${new Date(article.publishedAt).toUTCString()}</pubDate>
+      <pubDate>${new Date(postedAt(article)).toUTCString()}</pubDate>
     </item>`,
   }));
   // 週まとめ（直近4週）も同じフィードに流す

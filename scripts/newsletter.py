@@ -188,27 +188,27 @@ def render(digest: dict, unsubscribe_url: str) -> tuple[str, str]:
 
     esc = html.escape
     rows = "".join(
-        f"""<tr><td style="padding:18px 0;border-top:1px solid #e4e4de">
-<p style="margin:0;font-size:12px;color:#62625d;font-family:Menlo,Consolas,monospace">{i:02d}</p>
+        f"""<tr><td style="padding:18px 0;border-top:1px solid #dce2eb">
+<p style="margin:0;font-size:12px;color:#465268;font-family:Menlo,Consolas,monospace">{i:02d}</p>
 <a href="{esc(item['url'])}" style="display:block;margin-top:4px;font-size:16px;line-height:1.55;font-weight:700;color:#111;text-decoration:none">{esc(item['title'])}</a>
-{''.join(f'<p style="margin:6px 0 0;font-size:14px;line-height:1.75;color:#3b3b37">{esc(line)}</p>' for line in item['lines'])}
-<a href="{esc(item['url'])}" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:700;color:#0a6fa0;text-decoration:none">記事を読む →</a>
+{''.join(f'<p style="margin:6px 0 0;font-size:14px;line-height:1.75;color:#2b3954">{esc(line)}</p>' for line in item['lines'])}
+<a href="{esc(item['url'])}" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:700;color:#1d4a8f;text-decoration:none">記事を読む →</a>
 </td></tr>"""
         for i, item in enumerate(digest["items"], 1)
     )
     body = f"""<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>{esc(digest['subject'])}</title></head>
-<body style="margin:0;padding:0;background:#f4f4f1">
+<body style="margin:0;padding:0;background:#f3f5f8">
 <div style="display:none;max-height:0;overflow:hidden">{esc(digest['items'][0]['title'])}</div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f1"><tr><td align="center" style="padding:24px 12px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f5f8"><tr><td align="center" style="padding:24px 12px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#fff;border-top:3px solid #111;font-family:'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',Meiryo,sans-serif;color:#111">
 <tr><td style="padding:24px 24px 6px">
-<p style="margin:0;font-size:12px;font-weight:700;letter-spacing:.08em;color:#62625d">サイソクニュース 朝刊 ・ {esc(digest['date'])}</p>
-<p style="margin:8px 0 0;font-size:15px;line-height:1.8;color:#3b3b37">昨日のAIニュースから、押さえておきたい5本です。</p>
+<p style="margin:0;font-size:12px;font-weight:700;letter-spacing:.08em;color:#465268">サイソクニュース 朝刊 ・ {esc(digest['date'])}</p>
+<p style="margin:8px 0 0;font-size:15px;line-height:1.8;color:#2b3954">昨日のAIニュースから、押さえておきたい5本です。</p>
 </td></tr>
 <tr><td style="padding:0 24px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">{rows}</table></td></tr>
-<tr><td style="padding:18px 24px 26px;border-top:1px solid #e4e4de">
-<p style="margin:0;font-size:12px;line-height:1.8;color:#62625d">記事はAIが一次情報（公式発表など）を解析して作成しています。重要な判断の際は公式発表をご確認ください。</p>
-<p style="margin:8px 0 0;font-size:12px;line-height:1.8;color:#62625d"><a href="{site_url()}/?utm_source=newsletter&utm_medium=email" style="color:#62625d">サイトを開く</a> ・ <a href="{esc(unsubscribe_url)}" style="color:#62625d">配信を解除する</a></p>
+<tr><td style="padding:18px 24px 26px;border-top:1px solid #dce2eb">
+<p style="margin:0;font-size:12px;line-height:1.8;color:#465268">記事はAIが一次情報（公式発表など）を解析して作成しています。重要な判断の際は公式発表をご確認ください。</p>
+<p style="margin:8px 0 0;font-size:12px;line-height:1.8;color:#465268"><a href="{site_url()}/?utm_source=newsletter&utm_medium=email" style="color:#465268">サイトを開く</a> ・ <a href="{esc(unsubscribe_url)}" style="color:#465268">配信を解除する</a></p>
 </td></tr></table></td></tr></table></body></html>"""
     return body, text
 
@@ -224,8 +224,8 @@ def confirm_mail(sub_id: str, token: str) -> tuple[str, str, str]:
     body = (
         '<!doctype html><html lang="ja"><body style="font-family:sans-serif;color:#111;line-height:1.9">'
         "<p>サイソクニュースのメール配信にご登録いただき、ありがとうございます。</p>"
-        f'<p><a href="{html.escape(url)}" style="display:inline-block;background:#0a6fa0;color:#fff;padding:12px 22px;text-decoration:none;font-weight:700">登録を完了する</a></p>'
-        '<p style="font-size:12px;color:#62625d">お心当たりがない場合は、このメールを破棄してください。登録はされません。</p></body></html>'
+        f'<p><a href="{html.escape(url)}" style="display:inline-block;background:#1d4a8f;color:#fff;padding:12px 22px;text-decoration:none;font-weight:700">登録を完了する</a></p>'
+        '<p style="font-size:12px;color:#465268">お心当たりがない場合は、このメールを破棄してください。登録はされません。</p></body></html>'
     )
     return subject, body, text
 

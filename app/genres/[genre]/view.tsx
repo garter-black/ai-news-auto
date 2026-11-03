@@ -14,9 +14,8 @@ import { pageHref, pageSuffix, paginate } from "@/lib/paginate";
 import { broadGenresWithArticles, broadSection } from "@/lib/sections";
 
 const GENRE_COPY: Record<string, string> = {
-  ai: "OpenAI・Google DeepMind・Anthropic など世界のAI企業の公式発表動画を、AIが映像と音声ごと解析して日本語で速報解説します。新機能・ベンチマーク・料金・日本からの使い方までまとめています。",
-  "real-estate":
-    "不動産投資・住宅購入・マンション選びの専門YouTubeチャンネルの解説動画を、AIが映像と音声ごと解析して記事化。物件条件・利回り・金利・税制・リスクを数字で整理しています。",
+  ai: "OpenAI・Google・Anthropic など世界のAI企業の公式ブログ・発表動画を、公開から最短数分で日本語にまとめます。新機能・料金・日本で使えるか・仕事にどう活かせるかまで整理しています。",
+  // 投資・マネーと不動産の説明は lib/sections.ts の BROAD_SECTIONS（/news・トップと同じ文）
 };
 
 /** ジャンル名。記事の genre を優先し、無ければ幅広い話題の静的な名前 */

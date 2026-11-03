@@ -179,7 +179,7 @@ export default function HomePage() {
           </p>
           {otherGenres.length > 0 && (
             <p className="text-meta text-muted">
-              過去に扱っていた分野：
+              そのほかの分野：
               {otherGenres.map((genre, index) => (
                 <span key={genre.slug}>
                   {index > 0 && "、"}

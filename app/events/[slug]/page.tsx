@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: titleOf(event),
     description,
     alternates: { canonical: `/events/${event.slug}` },
-    openGraph: { type: "article", url: `/events/${event.slug}`, title: titleOf(event), description },
+    openGraph: { siteName: siteConfig.siteName, locale: siteConfig.locale, type: "article", url: `/events/${event.slug}`, title: titleOf(event), description },
   };
 }
 
@@ -62,7 +62,7 @@ export default async function EventPage({ params }: Props) {
 
   const status = eventStatus(event);
   const company = getCompany(event.companySlug);
-  const color = company && company.slug !== OTHER.slug ? company.color : "#3b3b37";
+  const color = company && company.slug !== OTHER.slug ? company.color : OTHER.color;
   const articles = eventArticles(event);
   const leadUp = status === "upcoming" ? eventLeadUp(event) : [];
   const recap = (event.recap ?? []).filter((row) => articles.some((a) => a.slug === row.slug));

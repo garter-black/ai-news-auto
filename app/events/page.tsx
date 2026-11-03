@@ -20,7 +20,7 @@ export function generateMetadata(): Metadata {
     title,
     description: DESCRIPTION,
     alternates: { canonical: "/events" },
-    openGraph: { type: "website", url: "/events", title: "AI・テックイベントの日程（日本時間）", description: DESCRIPTION },
+    openGraph: { siteName: siteConfig.siteName, locale: siteConfig.locale, type: "website", url: "/events", title: "AI・テックイベントの日程（日本時間）", description: DESCRIPTION },
   };
 }
 
@@ -91,7 +91,7 @@ export default function EventsPage() {
 function EventRow({ event }: { event: TechEvent }) {
   const status = eventStatus(event);
   const company = getCompany(event.companySlug);
-  const color = company && company.slug !== OTHER.slug ? company.color : "#3b3b37";
+  const color = company && company.slug !== OTHER.slug ? company.color : OTHER.color;
   const keynote = event.keynotes.find((k) => k.startUtc);
   const count = eventArticles(event).length;
   return (

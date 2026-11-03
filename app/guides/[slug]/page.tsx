@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: howto.seoTitle,
       description: howto.description,
       alternates: { canonical: `/guides/${howto.slug}` },
-      openGraph: { type: "article", url: `/guides/${howto.slug}`, title: howto.title, description: howto.description },
+      openGraph: { siteName: siteConfig.siteName, locale: siteConfig.locale, type: "article", url: `/guides/${howto.slug}`, title: howto.title, description: howto.description },
     };
   }
   const guide = getGuide(slug);
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: guide.seoTitle,
     description: guide.description,
     alternates: { canonical: `/guides/${guide.slug}` },
-    openGraph: {
+    openGraph: { siteName: siteConfig.siteName, locale: siteConfig.locale,
       type: "article",
       url: `/guides/${guide.slug}`,
       title: guide.title,

@@ -37,7 +37,7 @@ export default function HomeAssets() {
         ))}
       </ul>
       <p className="mt-3 text-note text-muted">
-        記事は企業・官公庁の公式発表だけをもとに作り、出典と自動照合してから公開しています。
+        記事は企業・官公庁の公式発表などの一次情報をもとに作り、出典と自動照合してから公開しています。
         <Link href="/editorial-policy" className="ml-1 underline underline-offset-4 hover:text-ink">
           制作と確認の方法
         </Link>

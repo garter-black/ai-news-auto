@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     alternates: { canonical: digestPath(digest.id) },
     robots: { index: false, follow: true },
-    openGraph: { type: "article", url: digestPath(digest.id), title, description, publishedTime: digest.createdAt, images: [image] },
+    openGraph: { siteName: siteConfig.siteName, locale: siteConfig.locale, type: "article", url: digestPath(digest.id), title, description, publishedTime: digest.createdAt, images: [image] },
     twitter: { card: "summary_large_image", title, description, images: [image.url] },
   };
 }

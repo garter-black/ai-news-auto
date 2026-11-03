@@ -107,7 +107,7 @@ export const OTHER: Company = {
   slug: "other",
   name: "その他",
   mark: "・",
-  color: "#62625d",
+  color: "#465268",
   pattern: /$^/,
 };
 

@@ -15,6 +15,8 @@ import { freeLabel, japanLabel, usability, USABILITY_LABEL } from "@/lib/verdict
 /** 幅広い話題の丸の名前（丸の下は短くないと切れる） */
 const GENRE_LABEL: Record<string, string> = {
   business: "ビジネス",
+  investment: "投資・マネー",
+  "real-estate": "不動産",
   "tech-gadget": "ガジェット",
   lifestyle: "暮らし",
   entertainment: "エンタメ",
@@ -82,7 +84,7 @@ function toItem(a: ArticleSummary, at: number): StoryItem {
     image: a.thumbnail || coverPath(a) || "",
     // AI以外の話題は企業ではなくジャンル名を出す
     company: ai ? c.name : GENRE_LABEL[a.genreSlug] ?? a.genre,
-    color: ai ? c.color : "#62625d",
+    color: ai ? c.color : "#465268",
     // 丸の24時間はこの時刻で数える（続報の丸は続報の時刻）
     at: new Date(at).toISOString(),
     usable: v ? usability(v) : null,

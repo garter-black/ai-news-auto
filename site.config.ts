@@ -41,6 +41,7 @@ export const siteConfig = {
   social: [
     { label: "X", url: "https://x.com/saisoku_ai" },
     { label: "Threads", url: "https://www.threads.com/@saisoku637" },
+    { label: "Bluesky", url: "https://bsky.app/profile/ai-tech-express.jp" },
   ],
 
   // トップに出す記事件数

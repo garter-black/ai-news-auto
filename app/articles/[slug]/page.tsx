@@ -8,7 +8,7 @@ import AdSlot from "@/components/AdSlot";
 import MobilePrBar from "@/components/rail/MobilePrBarLazy";
 import RailRanking from "@/components/rail/RailRanking";
 import ArticleCard from "@/components/ArticleCard";
-import CompanyMark from "@/components/CompanyMark";
+import CompanyMark, { ArticleMark } from "@/components/CompanyMark";
 import CtaBanner from "@/components/CtaBanner";
 import RelTime from "@/components/RelTime";
 import NextRead from "@/components/NextRead";
@@ -21,7 +21,7 @@ import WorkMoneyCard from "@/components/WorkMoneyCard";
 import { workMoneyOf } from "@/lib/work-money";
 import AssetLinks from "@/components/assets/AssetLinks";
 import SourceRecord from "@/components/SourceRecord";
-import { companyOf, thumbSource } from "@/lib/companies";
+import { OTHER, companyOf, thumbSource } from "@/lib/companies";
 import { guideForArticle } from "@/lib/guides";
 import { howtoForArticle } from "@/lib/howto";
 import { getProduct, productForArticle } from "@/lib/products";
@@ -112,7 +112,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     // 薄くなりやすい記事はサイトでは読めるが、検索には出さない（lib/indexing.ts）
     ...(isIndexable({ ...article, duplicate: getArticleSummary(article.slug)?.duplicate }) ? {} : { robots: { index: false, follow: true } }),
-    openGraph: {
+    openGraph: { siteName: siteConfig.siteName, locale: siteConfig.locale,
       type: "article",
       url,
       title: article.title,
@@ -266,6 +266,12 @@ export default async function ArticlePage({ params }: Props) {
       ].filter((row) => row.a && !/^(記載なし|不明|未定)/.test(row.a))
     : [];
 
+  // パンくず。企業が決まらない記事（ビジネス・お金の記事の多く）に「その他」を出さず、ジャンルを先に置く
+  const crumbs = [
+    ...(article.genreSlug && article.genre ? [{ href: `/genres/${article.genreSlug}`, label: article.genre }] : []),
+    ...(company.slug !== OTHER.slug ? [{ href: `/companies/${company.slug}`, label: company.name }] : []),
+    { href: `/channels/${article.channelSlug}`, label: article.channel },
+  ];
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -329,16 +335,12 @@ export default async function ArticlePage({ params }: Props) {
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
+      // 画面のパンくず（下の nav）と同じ並び: ホーム → ジャンル → 企業（決まった企業のときだけ）→ 発信元 → 記事
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "ホーム", item: siteConfig.url },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: article.channel,
-          item: `${siteConfig.url}/channels/${article.channelSlug}`,
-        },
-        { "@type": "ListItem", position: 3, name: article.title },
-      ],
+        { name: "ホーム", item: siteConfig.url },
+        ...crumbs.map((c) => ({ name: c.label, item: `${siteConfig.url}${c.href}` })),
+        { name: article.title },
+      ].map((entry, i) => ({ "@type": "ListItem", position: i + 1, ...entry })),
     },
     ...(faq.length > 0
       ? [
@@ -369,18 +371,18 @@ export default async function ArticlePage({ params }: Props) {
             <Link href="/" className="hover:text-accent">
               ホーム
             </Link>
-            <span aria-hidden>/</span>
-            <Link href={`/companies/${company.slug}`} className="hover:text-accent">
-              {company.name}
-            </Link>
-            <span aria-hidden>/</span>
-            <Link href={`/channels/${article.channelSlug}`} className="hover:text-accent">
-              {article.channel}
-            </Link>
+            {crumbs.map((c) => (
+              <span key={c.href} className="contents">
+                <span aria-hidden>/</span>
+                <Link href={c.href} className="hover:text-accent">
+                  {c.label}
+                </Link>
+              </span>
+            ))}
           </nav>
 
           <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-meta">
-            <CompanyMark company={company} size={20} withName />
+            <ArticleMark company={company} genre={article.genre} size={20} />
             <span className="rounded-sm border border-line-strong px-2 py-[1px] text-badge font-bold text-ink-soft">
               {isRoundup ? `まとめ ${article.sources?.length ?? 0}本` : video ? "動画紹介" : "公開情報"}
             </span>

@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: productSeoTitle(product),
     description,
     alternates: { canonical: `/products/${product.slug}` },
-    openGraph: {
+    openGraph: { siteName: siteConfig.siteName, locale: siteConfig.locale,
       type: "article",
       url: `/products/${product.slug}`,
       title: productHeading(product),

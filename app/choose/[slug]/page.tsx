@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: guide.description,
     keywords: guide.keywords,
     alternates: { canonical: url },
-    openGraph: {
+    openGraph: { siteName: siteConfig.siteName, locale: siteConfig.locale,
       type: "article",
       url,
       title: guide.h1,

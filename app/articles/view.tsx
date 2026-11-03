@@ -9,7 +9,7 @@ export function articlesMetadata(page: number): Metadata {
   return {
     title: `ニュース・解説記事一覧${pageSuffix(page)}`,
     description:
-      "公式発表や公開動画をもとに、AI・テクノロジーを中心としたニュースと解説を掲載。新しい記事を時系列で探せます。",
+      "公式発表や公開動画をもとに、AI・ビジネス・お金・投資・不動産などのニュースと解説を掲載。新しい記事を時系列で探せます。",
     alternates: { canonical: pageHref("/articles", page) },
   };
 }

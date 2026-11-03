@@ -1,5 +1,5 @@
 import Link from "next/link";
-import CompanyMark from "@/components/CompanyMark";
+import { ArticleMark } from "@/components/CompanyMark";
 import DayLabel from "@/components/DayLabel";
 import Thumb from "@/components/Thumb";
 import { smallThumb } from "@/lib/thumb-url";
@@ -102,7 +102,7 @@ function TimelineRow({ article }: { article: ArticleSummary }) {
               </span>
             )}
             <span className="index-num font-semibold text-muted sm:hidden">{time}</span>
-            <CompanyMark company={company} size={16} withName />
+            <ArticleMark company={company} genre={article.genre} size={16} />
             {isRoundup && (
               <span className="rounded-sm bg-ink px-2 py-[1px] text-badge font-bold text-paper">
                 まとめ {article.sourceCount}本

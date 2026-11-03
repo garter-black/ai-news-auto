@@ -42,3 +42,14 @@ export default function CompanyMark({ company, size = 20, withName, className = 
     </span>
   );
 }
+
+/**
+ * 記事の「発信元の企業」ラベル。決まった企業（OpenAI など）に当たらない記事は「その他」ではなく
+ * ジャンル名（投資・マネー、社会・行政 など）を出す。ビジネス・お金の記事の半分近くが「その他」と出ていたため（2026-11-03）。
+ */
+export function ArticleMark({ company, genre, size = 20, className = "" }: { company: Company; genre?: string; size?: number; className?: string }) {
+  if (company.slug === "other" && genre) {
+    return <span className={`font-bold text-ink ${className}`}>{genre}</span>;
+  }
+  return <CompanyMark company={company} size={size} withName className={className} />;
+}

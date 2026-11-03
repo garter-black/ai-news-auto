@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { withPageShare } from "@/lib/page-share";
 import Link from "next/link";
-import CompanyMark from "@/components/CompanyMark";
+import CompanyMark, { ArticleMark } from "@/components/CompanyMark";
 import Timeline from "@/components/Timeline";
 import VerdictBadge from "@/components/VerdictBadge";
 import RailRanking from "@/components/rail/RailRanking";
@@ -170,7 +170,7 @@ function RailList({ id, title, note, articles }: { id: string; title: string; no
             <li key={article.slug}>
               <Link href={`/articles/${article.slug}`} className="group block">
                 <span className="flex items-center gap-2 text-meta text-muted">
-                  <CompanyMark company={companyOf(article)} size={14} withName />
+                  <ArticleMark company={companyOf(article)} genre={article.genre} size={14} />
                   {verdict?.price && verdict.price !== "不明" && <span>・{verdict.price}</span>}
                 </span>
                 <span className="mt-1 line-clamp-2 block text-[15px] font-bold leading-snug text-ink group-hover:underline">

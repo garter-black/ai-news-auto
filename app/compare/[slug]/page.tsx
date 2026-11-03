@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     keywords: guide.targetQueries,
     alternates: { canonical: url },
     ...(COMPARE_PUBLIC ? {} : { robots: { index: false, follow: true } }),
-    openGraph: {
+    openGraph: { siteName: siteConfig.siteName, locale: siteConfig.locale,
       type: "article",
       url,
       title: guide.title,
