@@ -125,10 +125,10 @@
     },
     "cba8f769dd5b673e": {
       "first": "2026-11-04T01:17:44.264654+00:00",
-      "next": "2026-11-04T04:17:44.264654+00:00",
-      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "next": "2026-11-04T10:24:36.166335+00:00",
+      "reason": "元記事・確認済みの事実の束・計算済みの数字のどれにも無い数字がある（「社員の83%」、「botを使い、営業担当の90%」）。元記事か束の数字に直すか、その文を削る。割合・差・換算などを自分で計算しない（計算済みの数字の欄にあるものだけ使う）",
       "title": "Half of Slack Messages Are No Longer From People. Here’s Slack by the Numbers.",
-      "tries": 1,
+      "tries": 2,
       "url": "https://www.salesforce.com/news/stories/slack-stats/"
     },
     "e2654f5d2f822277": {
@@ -9889,6 +9889,12 @@
       "slug": "github-copilot-jetbrains-air",
       "url": "https://github.blog/changelog/2026-11-03-github-copilot-is-now-available-in-jetbrains-air"
     },
+    "9c5664d4a65f8bd4": {
+      "at": "2026-11-04T07:24:39.551889+00:00",
+      "reason": "stale: 発表から4352時間（記事ページの日付）",
+      "skipped": true,
+      "url": "https://www.mof.go.jp/about_mof/councils/fiscal_system_council/sub-of_fiscal_system/proceedings/material/20261104zaiseia.html"
+    },
     "9c7a77eecf318472": {
       "at": "2026-11-02T02:31:18.217044+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12746,6 +12752,14 @@
       "slug": "japan-occupational-health-market-2028",
       "url": "https://www.dreamnews.jp/press/0000366537"
     },
+    "e34c16449eb87ea4": {
+      "at": "2026-11-04T07:26:29.601692+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "score": 92,
+      "section": "business",
+      "slug": "renova-biomass-third-party-verification",
+      "url": "https://www.ntt-ae.co.jp/news/%e3%83%90%e3%82%a4%e3%82%aa%e3%83%9e%e3%82%b9%e7%99%ba%e9%9b%bb%e3%81%ae%e6%8c%81%e7%b6%9a%e5%8f%af%e8%83%bd%e6%80%a7%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e7%ac%ac%e4%b8%89%e8%80%85%e6%a4%9c%e8%a8%bc-2/"
+    },
     "e3592a534946ca55": {
       "at": "2026-10-28T21:55:28.165152+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（寄贈）",
@@ -13965,92 +13979,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T16:11:58.664599+00:00",
-      "attempt": 2,
-      "id": "695b25dcb4295c45",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 56.3字・60字超の文が 23% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 103.2,
-        "avg_sentence": 56.3,
-        "long_share": 0.227,
-        "max_paragraph": 169,
-        "paragraphs": 12,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "ユーロ圏失業率（2026年9月）－失業率は横ばい、若年失業率は上昇"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T16:12:02.743011+00:00",
-      "attempt": 0,
-      "id": "695b25dcb4295c45",
-      "kind": "broad",
-      "model": "",
-      "problems": [
-        "読みやすさ基準外のまま受理: 書き直し後の確認に不合格: デジタル版の表「前」列の値「若年失業者数 240.0万人（8月推計等）」 → 元記事に8月の若年失業者数の数値（240.0万人）の記載はないため（8月の若年失業率は15.1％とあるが人数は本文中未記載）。"
-      ],
-      "readability": {
-        "avg_paragraph": 103.2,
-        "avg_sentence": 56.3,
-        "long_share": 0.227,
-        "max_paragraph": 169,
-        "paragraphs": 12,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "ユーロ圏失業率（2026年9月）－失業率は横ばい、若年失業率は上昇"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T16:31:24.935146+00:00",
-      "attempt": 1,
-      "id": "4d1f48989ead4059",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 52.6字・60字超の文が 30% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 100.8,
-        "avg_sentence": 52.6,
-        "long_share": 0.304,
-        "max_paragraph": 150,
-        "paragraphs": 12,
-        "sentences": 23
-      },
-      "score": 95,
-      "source": "elevenlabs-blog",
-      "title": "Introducing SFX v3 for developers"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T16:31:28.974762+00:00",
-      "attempt": 0,
-      "id": "4d1f48989ead4059",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 115.2,
-        "avg_sentence": 26.6,
-        "long_share": 0.019,
-        "max_paragraph": 179,
-        "paragraphs": 12,
-        "sentences": 52
-      },
-      "score": 100,
-      "source": "elevenlabs-blog",
-      "title": "Introducing SFX v3 for developers"
-    },
     {
       "accepted": false,
       "at": "2026-11-02T16:31:36.007167+00:00",
@@ -20347,6 +20275,107 @@
       "score": 93,
       "source": "jnet21",
       "title": "賃上げ後に業績が悪化した場合、賃金を元の水準に戻せますか。賃下げの注意点と進め方を教えてください。"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T07:22:59.847251+00:00",
+      "attempt": 1,
+      "id": "cba8f769dd5b673e",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "訳されていない英文が残っている（「Slack helps us remove those obstacles th…」）",
+        "元記事・確認済みの事実の束・計算済みの数字のどれにも無い数字がある（「- 社員の83%」、「- 営業担当の90%」）。元記事か束の数字に直すか、その文を削る。割合・差・換算などを自分で計算しない（計算済みの数字の欄にあるものだけ使う）"
+      ],
+      "readability": {
+        "avg_paragraph": 109.7,
+        "avg_sentence": 48.4,
+        "long_share": 0.265,
+        "max_paragraph": 241,
+        "paragraphs": 15,
+        "sentences": 34
+      },
+      "score": null,
+      "source": "salesforce-news",
+      "title": "Half of Slack Messages Are No Longer From People. Here’s Slack by the Numbers.",
+      "warnings": [
+        "見出しが41字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（MCP）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T07:24:36.166263+00:00",
+      "attempt": 2,
+      "id": "cba8f769dd5b673e",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "元記事・確認済みの事実の束・計算済みの数字のどれにも無い数字がある（「社員の83%」、「botを使い、営業担当の90%」）。元記事か束の数字に直すか、その文を削る。割合・差・換算などを自分で計算しない（計算済みの数字の欄にあるものだけ使う）"
+      ],
+      "readability": {
+        "avg_paragraph": 120.2,
+        "avg_sentence": 48.8,
+        "long_share": 0.219,
+        "max_paragraph": 180,
+        "paragraphs": 13,
+        "sentences": 32
+      },
+      "score": null,
+      "source": "salesforce-news",
+      "title": "Half of Slack Messages Are No Longer From People. Here’s Slack by the Numbers.",
+      "warnings": [
+        "見出しが43字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（MCP）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T07:26:05.672270+00:00",
+      "attempt": 1,
+      "id": "e34c16449eb87ea4",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "文が長い（1文の平均 46.9字・60字超の文が 22% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 84.4,
+        "avg_sentence": 46.9,
+        "long_share": 0.222,
+        "max_paragraph": 123,
+        "paragraphs": 15,
+        "sentences": 27
+      },
+      "score": 88,
+      "source": "ntt-news",
+      "title": "バイオマス発電の持続可能性に関する第三者検証を完了 ～RE100の技術要件への適合性の説明に必要な、持続可能性の根拠を示し、需要家の環境報告を支援～",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（RE・MW）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T07:26:29.596114+00:00",
+      "attempt": 0,
+      "id": "e34c16449eb87ea4",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 78.6,
+        "avg_sentence": 39.3,
+        "long_share": 0.031,
+        "max_paragraph": 133,
+        "paragraphs": 16,
+        "sentences": 32
+      },
+      "score": 92,
+      "source": "ntt-news",
+      "title": "バイオマス発電の持続可能性に関する第三者検証を完了 ～RE100の技術要件への適合性の説明に必要な、持続可能性の根拠を示し、需要家の環境報告を支援～",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（RE・MW）"
+      ]
     }
   ],
   "short_text_retry": {
