@@ -488,6 +488,7 @@ def attach_ready(state: dict, posted: dict, now: datetime, f: dict, editor) -> l
 
 
 QUEUE_GIVE_UP_H = 6  # 枠の時刻からこれだけ過ぎても動画ができなければ、出さない（issue を立てる）
+ORDER_HOLD_MIN = 60  # 前の投稿の動画待ちで、あとの投稿を待たせるのは枠からこの分まで（投稿の流れを止めない）
 QUEUE_LEAD_MIN = 3  # 枠が過ぎた（または今すぐの）投稿は、送ってからこれだけ先に予約する（shareNow は使わない＝時刻を記録できる）
 MISSING_LABEL = "sns-video-missing"
 
@@ -616,8 +617,12 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
                 out.append({"slug": slug, **q})
                 continue
             q.update({"status": "waiting", "why": "動画を作っている途中・順番待ち", "checkedAt": now.isoformat(timespec="seconds")})
-            log(f"[video-followup] {slug} は動画待ち。あとの枠の投稿も順番を保って待たせます")
             out.append({"slug": slug, **q})
+            if now - slot > timedelta(minutes=ORDER_HOLD_MIN):
+                # 1本の動画の遅れで、ほかの投稿まで止めない（2026-11-04 オーナー「投稿を止めない」）。枠から60分を過ぎたら、あとの投稿は先に出す
+                log(f"[video-followup] {slug} は動画待ち（枠から{ORDER_HOLD_MIN}分を過ぎたので、あとの投稿は待たせない）")
+                continue
+            log(f"[video-followup] {slug} は動画待ち。あとの枠の投稿も順番を保って待たせます（枠から{ORDER_HOLD_MIN}分まで）")
             break
         variant = (rec.get("pending") or {}).get("forceVariant") or pick_variant(state, now, f["ab_until"], f["after_ab"])
         versions = v.get("versions") or {}

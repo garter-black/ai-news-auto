@@ -538,3 +538,27 @@ class OneQualityBarTest(unittest.TestCase):
         self.assertFalse(fu.qa_ok({"level": "L3", "qa": good}, env={}))
         self.assertFalse(fu.qa_ok({"level": "L4", "qa": good}, env={}))
         self.assertFalse(fu.qa_ok({"level": "L1", "qa": {**good, "vision_how": "deterministic-L4"}}, env={}))
+
+
+class KeepPostingTest(unittest.TestCase):
+    """（2026-11-04 オーナー「投稿を止めない」）1本の動画が作れなくても、ほかの投稿は出る（遅れるのはその投稿だけ）"""
+
+    def test_one_stuck_video_does_not_stop_later_posts_for_long(self):
+        stuck_slot = NOW - timedelta(minutes=fu.ORDER_HOLD_MIN + 5)
+        posted = {"stuck": queued_rec(stuck_slot), "next": queued_rec(NOW + timedelta(minutes=20))}
+        videos = {"stuck": {"status": "gate_failed", "tries": 1, "reason": "full: 台本を作れない"}, "next": ready_video("next")}
+        state = {"videos": videos}
+        sent = []
+        with patch.object(fu, "article_of", lambda report: ART):
+            fu.publish_queued(state, {"posted": posted}, NOW, FLAGS, creator=lambda svc, inp, art: sent.append(svc) or f"id-{svc}",
+                              issue=lambda s, w: None, eligible=lambda s: True, remote=lambda s: {})
+        self.assertEqual(state["queued"]["stuck"]["status"], "waiting")  # 遅れているのはこの投稿だけ（作り直しを続ける）
+        self.assertEqual(state["queued"]["next"]["status"], "created")
+        self.assertEqual(sent, ["threads", "twitter", "facebook"])
+
+    def test_breaking_and_scheduled_posts_are_queued_without_waiting_for_video(self):
+        article = {**ART, "description": "d", "seoTitle": ART["title"]}
+        with patch.object(tp, "buffer_channels", return_value={"threads": {"id": "t"}}), patch.object(r, "enforce_buffer"), \
+                patch.object(tp, "create_post", side_effect=AssertionError("動画の前に作らない")):
+            res = tp.share_now("k", article, GOOD)
+        self.assertEqual(res["status"], "awaiting_video")  # 速報も止まらず「動画待ち」に入る（記事づくりは続く）
