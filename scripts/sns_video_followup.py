@@ -931,6 +931,9 @@ def repost(slug: str, api_key: str | None = None, now: datetime | None = None, s
         pending["allowDuplicateOf"] = ids
         log(f"[video-followup] オーナー承認の出し直し（{spec['ownerApprovedDeleteRepost']}）: 消した前の投稿 {ids} は重複と数えない")
     old_ids = {"threads": rec.get("id", ""), **{k: v for k, v in (rec.get("channels") or {}).items() if k in ("twitter", "facebook", "bluesky")}}
+    if spec.get("ownerApprovedDeleteRepost"):
+        deleted = {x for v in (spec.get("deletedBufferIds") or {}).values() for x in v}
+        old_ids = {k: v for k, v in old_ids.items() if v in deleted or k == "bluesky"}  # 消した投稿だけを「止めた」と記録する
     if slug in (state.get("videos") or {}):
         state.setdefault("videosArchive", {})[slug] = state["videos"].pop(slug)  # 動画はいまのコードで作り直す
     (state.get("queued") or {}).pop(slug, None)
