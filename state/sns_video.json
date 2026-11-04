@@ -1887,9 +1887,9 @@
       "postedAt": "2026-11-04T17:00:00+09:00"
     },
     "openai-acquire-pierre-computer-codex": {
-      "at": "2026-11-04T15:21:44+00:00",
-      "status": "gate_failed",
-      "tries": 2,
+      "at": "2026-11-04T16:16:52+00:00",
+      "status": "ready",
+      "tries": 3,
       "textAt": "2026-11-04T14:44:34+00:00",
       "textId": "",
       "breaking": true,
@@ -1913,56 +1913,152 @@
           "base_layout": "screen-left-headline"
         },
         "short": {
-          "ok": false,
-          "seconds": 32.551,
-          "reasons": [
-            "v3: QA(目視): つかみ（話の食い違い）: 右の選択は公式ページの見出し「Changelog」だけで、左の「Codexを使っている開発者」や読み上げの呼びかけと内容が結びつかない。",
-            "v3: QA(目視): 始まり（最初の8秒で何のニュースか分からない）: 冒頭の読み上げが「知っておいてほしい話です」という呼びかけだけで、OpenAIがPierreを買収するという中身が8秒の間に出てこない。左に「OpenAI、開発ツール企業Pierreを買収へ」と出るの"
-          ],
+          "ok": true,
+          "seconds": 23.131,
+          "reasons": [],
           "qa": {
             "geometry": true,
-            "vision": false,
+            "vision": true,
             "version": 1,
-            "v3": false
+            "v3": true
           },
-          "template": "",
-          "level": null,
-          "base_layout": "screen-left-headline"
+          "template": "breaking",
+          "level": "L1",
+          "base_layout": "screen-left-headline",
+          "post": {
+            "title": "OpenAI、Codexの確認画面の部品を作った開発ツール企業Pierreを買…",
+            "url": "https://ai-tech-express.jp/articles/openai-acquire-pierre-computer-codex",
+            "total": 23.131,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）・役目ごとの速さと間",
+              "speed": 1.48,
+              "roles": true
+            },
+            "level": "L1",
+            "script_v3": {
+              "hook": {
+                "text": "OpenAIがCodexの部品を作る会社を買収へ"
+              },
+              "summary": "要約すると、OpenAIがCode Storageを運営するPierre Computer Companyを買収することになりました。Codexで使われるファイル閲覧のTreesと差分表示のDiffsはPierre製で、オープンソースのまま残ります。買収額と完了時期は未発表で、規制当局の承認などが条件です。"
+            }
+          }
         }
       },
       "timings": {
         "full": {
           "script": 0.0,
-          "tts": 23.96,
-          "plan_audio": 3.63,
-          "render": 43.89,
-          "gate": 5.28,
-          "sheet": 2.42,
-          "total": 79.2,
-          "ladder_total": 582.5
+          "tts": 10.47,
+          "plan_audio": 2.12,
+          "render": 28.09,
+          "gate": 3.78,
+          "sheet": 1.81,
+          "total": 46.3,
+          "ladder_total": 525.4
         },
         "short": {
           "script": 0.0,
-          "tts": 13.16,
-          "plan_audio": 2.0,
-          "render": 24.88,
-          "gate": 3.25,
-          "sheet": 1.37,
-          "total": 44.7,
-          "ladder_total": 582.5
+          "tts": 8.51,
+          "plan_audio": 0.88,
+          "render": 12.69,
+          "gate": 1.86,
+          "sheet": 0.82,
+          "total": 24.8,
+          "ladder_total": 525.4
         }
       },
-      "ok": false,
-      "reason": "full: どの段でも合格しなかった（あとの回で作り直す）: full: 描いた位置・画像のレビューの検査（qa）が無い・不合格・承認の形でない / 時間が足りない（残り 410秒） / full: v3: QA(b): 場面5の40.1秒で証拠の文が画面の端で切れている・余白が無い / short: どの段でも合格しなかった（あとの回で作り直す）: full: 描いた位置・画像のレビューの検査（qa）が無い・不合格・承認の形でない / 時間が足りない（残り 410秒） / full: v3: QA(b): 場面5の40.1秒で証拠の文が画面の端で切れている・余白が無い",
+      "level": "L1",
+      "ladder": {
+        "full": [
+          {
+            "level": "L1",
+            "ok": false,
+            "reasons": [
+              "full: 描いた位置・画像のレビューの検査（qa）が無い・不合格・承認の形でない"
+            ],
+            "seconds": 152.8,
+            "variants": {
+              "full": false,
+              "short": true
+            }
+          },
+          {
+            "level": "L2",
+            "ok": false,
+            "reasons": [
+              "full: v3: QA(目視): 始まり（最初の8秒で何のニュースか分からない）: 「Codexの確認画面は他社製」と言われても、Codexが何か知らない人には何の話か分かりにくい。読み上げが「買収します」の事実の羅列で硬く、なぜ大事かも出ない。例:「あなたが使うAIコーディングの画"
+            ],
+            "seconds": 308.9,
+            "variants": {
+              "full": false
+            }
+          },
+          {
+            "level": "L3A",
+            "ok": false,
+            "reasons": [
+              "full: v3: QA(b): 場面5の40.1秒で証拠の文が画面の端で切れている・余白が無い",
+              "full: v3: QA(a): 場面5の選択の青が画面の外にある"
+            ],
+            "seconds": 63.7,
+            "variants": {
+              "full": false
+            }
+          }
+        ],
+        "short": [
+          {
+            "level": "L1",
+            "ok": false,
+            "reasons": [
+              "full: 描いた位置・画像のレビューの検査（qa）が無い・不合格・承認の形でない"
+            ],
+            "seconds": 152.8,
+            "variants": {
+              "full": false,
+              "short": true
+            }
+          },
+          {
+            "level": "L2",
+            "ok": false,
+            "reasons": [
+              "full: v3: QA(目視): 始まり（最初の8秒で何のニュースか分からない）: 「Codexの確認画面は他社製」と言われても、Codexが何か知らない人には何の話か分かりにくい。読み上げが「買収します」の事実の羅列で硬く、なぜ大事かも出ない。例:「あなたが使うAIコーディングの画"
+            ],
+            "seconds": 308.9,
+            "variants": {
+              "full": false
+            }
+          },
+          {
+            "level": "L3A",
+            "ok": false,
+            "reasons": [
+              "full: v3: QA(b): 場面5の40.1秒で証拠の文が画面の端で切れている・余白が無い",
+              "full: v3: QA(a): 場面5の選択の青が画面の外にある"
+            ],
+            "seconds": 63.7,
+            "variants": {
+              "full": false
+            }
+          }
+        ]
+      },
+      "ok": true,
+      "reason": "full: どの段でも合格しなかった（あとの回で作り直す）: full: 描いた位置・画像のレビューの検査（qa）が無い・不合格・承認の形でない / full: v3: QA(目視): 始まり（最初の8秒で何のニュースか分からない）: 「Codexの確認画面は他社製」と言われても、Codexが何か知らない人には何の話か分かりにくい",
       "pages": [
         "ai-tech-express.jp",
         "developers.openai.com"
-      ]
+      ],
+      "urls": {
+        "short": "https://ai-tech-express.jp/video/openai-acquire-pierre-computer-codex-b5e5b6f5ca.mp4"
+      }
     },
     "gpt-56-cyber-aws-govcloud": {
-      "at": "2026-11-04T15:21:44+00:00",
+      "at": "2026-11-04T16:16:52+00:00",
       "status": "gate_failed",
-      "tries": 1,
+      "tries": 2,
       "textAt": "2026-11-04T15:17:40+00:00",
       "textId": "",
       "breaking": true,
@@ -2001,10 +2097,10 @@
       },
       "timings": {
         "full": {
-          "ladder_total": 551.8
+          "ladder_total": 609.6
         },
         "short": {
-          "ladder_total": 551.8
+          "ladder_total": 609.6
         }
       },
       "ok": false,
@@ -2104,7 +2200,9 @@
     "openai-acquire-pierre-computer-codex": {
       "status": "waiting",
       "why": "動画が検査に落ちたので、あとの回で作り直す（この投稿だけ遅らせる）",
-      "checkedAt": "2026-11-04T15:21:44+00:00"
+      "checkedAt": "2026-11-04T15:21:44+00:00",
+      "deferred": "Buffer API 429 RATE_LIMIT_EXCEEDED: 2026-11-11T16:35+00:00 まで呼び出しを止めます",
+      "channels": {}
     },
     "gpt-56-cyber-aws-govcloud": {
       "status": "waiting",
