@@ -1453,7 +1453,7 @@ def main() -> None:
     parser.add_argument("--merge-draft-test", metavar="SLUG", help="写真の下書きを1本作り、動画に差し替えて読み直す（--yes が無ければ表示だけ。公開しない）")
     parser.add_argument("--today", action="store_true", help="今日の Threads の投稿ごとに、動画が付いたか・理由（読むだけ）")
     parser.add_argument("--sync-posted", action="store_true", help="動画つきで送った記録を state/threads_posted.json に写す（Buffer は呼ばない）")
-    parser.add_argument("--queue-fix", choices=("plan", "apply"), help="予約中の動画なし・古い形の投稿を一覧（plan）／下書きに戻して動画待ちにする（apply）")
+    parser.add_argument("--queue-fix", help="plan（一覧）／apply（下書きに戻して動画待ちにする）／pause:ID,ID（その予約だけ下書きに戻す）")
     parser.add_argument("--requeue", metavar="SLUG:SNS[,SNS]", help="下書きに戻した投稿を、新しい形・動画つきで出し直す（例 slug:facebook）")
     parser.add_argument("--repost", metavar="SLUG", help="出し直し（content/sns_reposts/<slug>.json の承認済みの文面か今の決まりの文面・動画つきで次のふつうの枠に）")
     parser.add_argument("--slot", default="", help="--repost の枠（ISO 8601。省略すると次のふつうの枠）")
@@ -1483,6 +1483,15 @@ def main() -> None:
         llm._load_env_local()
         slug, _, svc = args.requeue.partition(":")
         print(json.dumps(requeue(slug, [x for x in svc.split(",") if x in ("twitter", "facebook")]), ensure_ascii=False))
+        return
+    if args.queue_fix and args.queue_fix.startswith("pause:"):
+        # 予約中の投稿のうち、この ID だけを下書きに戻す（公開しない・消さない。二重に入った予約を止めるとき）
+        ids = {x.strip() for x in args.queue_fix[len("pause:"):].split(",") if x.strip()}
+        key = os.environ.get("BUFFER_API_KEY", "")
+        for node in scheduled_nodes(key):
+            if node["id"] in ids:
+                after = pause_post(key, node)
+                print(json.dumps({"id": node["id"], "service": node.get("service"), "status": after.get("status")}, ensure_ascii=False))
         return
     if args.queue_fix:
         import llm
