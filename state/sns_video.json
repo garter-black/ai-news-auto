@@ -1988,9 +1988,9 @@
       "why": "速報（文面の投稿はすぐ出した）"
     },
     "copilot-cowork-build-lessons-rust": {
-      "at": "2026-11-04T05:49:25+00:00",
+      "at": "2026-11-04T06:04:17+00:00",
       "status": "gate_failed",
-      "tries": 1,
+      "tries": 2,
       "textAt": "2026-11-04T13:45:00+00:00",
       "textId": "",
       "breaking": false,
@@ -2029,10 +2029,10 @@
       },
       "timings": {
         "full": {
-          "ladder_total": 584.2
+          "ladder_total": 614.5
         },
         "short": {
-          "ladder_total": 584.2
+          "ladder_total": 614.5
         }
       },
       "ok": false,
@@ -2128,7 +2128,7 @@
     "copilot-cowork-build-lessons-rust": {
       "status": "waiting",
       "why": "動画が検査に落ちたので、あとの回で作り直す（この投稿だけ遅らせる）",
-      "checkedAt": "2026-11-04T05:49:25+00:00"
+      "checkedAt": "2026-11-04T06:04:17+00:00"
     }
   },
   "converted": {
