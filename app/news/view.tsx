@@ -8,7 +8,7 @@ import { regularGenres } from "@/lib/coverage";
 import { siteConfig } from "@/site.config";
 
 /** 1ページあたりの件数（4列で割り切れる数） */
-const PER_PAGE = 48;
+export const PER_PAGE = 48;
 
 export function newsMetadata(page: number): Metadata {
   // 名前を出すジャンルは、直近30日に5本以上の記事があるものだけ（台帳 W14。決め打ちだと、1〜3本しかない暮らし・科学・エンタメまで並んでいた。2026-11-04 の点検）

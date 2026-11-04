@@ -68,6 +68,9 @@ jobs:
       - name: Verify official AI pricing with one FX rate, the 410 page layout and the breaking ticker (W21-W23)
         run: node --test tests/test_pricing_fx.cjs tests/test_gone_page.cjs tests/test_live_line.cjs
 
+      - name: Verify every crawlable page is built ahead (no first-hit rendering after deploy, W29)
+        run: python3 -m unittest tests/test_cold_check.py
+
       - name: Build
         run: npm run cf:build
         env:
@@ -76,6 +79,12 @@ jobs:
           NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_TOP: ${{ vars.ADSENSE_SLOT_ARTICLE_TOP }}
           NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_MIDDLE: ${{ vars.ADSENSE_SLOT_ARTICLE_MIDDLE }}
           NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR: ${{ vars.ADSENSE_SLOT_SIDEBAR }}
+
+      # 下の「デプロイ直後の1回目の表示」の確かめで、新しい版に切り替わったかを見分けるため、今の版を控える
+      - name: Remember the live version
+        id: before
+        continue-on-error: true
+        run: echo "version=$(python3 scripts/cold_check.py version)" >> "$GITHUB_OUTPUT"
 
       - name: Deploy
         env:
@@ -110,3 +119,9 @@ jobs:
             sleep 5
           done
           echo "::warning::公開時刻を push できませんでした（速さの集計から抜けるだけ）"
+
+      # デプロイ直後の1回目の表示の速さ（台帳 W29。オーナー「デプロイ直後でもすぐ開けること」）。
+      # サイトマップから選んだページをエッジのキャッシュに無い URL で開き、アクセスが来てから作ったページ（MISS）・
+      # 2秒を超えたページ・開けないページがあれば赤にする（デプロイ自体は終わっている。知らせのため）
+      - name: Check first hits right after deploy
+        run: python3 scripts/cold_check.py check --previous "${{ steps.before.outputs.version }}" --n 30

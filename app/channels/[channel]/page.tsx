@@ -4,14 +4,12 @@ import ChannelView, { channelMetadata } from "./view";
 
 type Props = { params: Promise<{ channel: string }> };
 
-// 記事の多いチャンネルだけビルド時に静的化し、残りは初回アクセス時に生成（ISR）。無いチャンネルは 404
+// チャンネル（発信元）はすべてビルド時に静的化する（台帳 W29。100件弱で軽い）。無いチャンネルは 404
 export const dynamicParams = true;
 export const revalidate = 86400;
 
 export function generateStaticParams() {
-  return getAllChannels()
-    .slice(0, 50)
-    .map((channel) => ({ channel: channel.slug }));
+  return getAllChannels().map((channel) => ({ channel: channel.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

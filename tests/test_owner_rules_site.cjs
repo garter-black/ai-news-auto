@@ -138,3 +138,26 @@ test('[W28] 関連記事の無い製品ガイドは、一覧・サイトマッ�
   for (const rel of ['app/guides/page.tsx', 'lib/sitemap.ts', 'app/llms.txt/route.ts']) assert.match(read(rel), /!isThinGuide\(/, rel);
   assert.match(read('app/guides/[slug]/page.tsx'), /isThinGuide\(guide\) \? \{ robots: \{ index: false/);
 });
+
+test('[W29] サイトマップに載るページと一覧の2ページ目以降は、すべてビルド時に作る（デプロイ直後の初回アクセスで描かない。2026-11-04: まとめ記事の1回目が約53秒）', () => {
+  // 記事: 本数で区切らない（以前は新しい150本だけで、古い記事はデプロイのたびに初回アクセスで描いていた）
+  const article = read('app/articles/[slug]/page.tsx');
+  const params = article.slice(article.indexOf('export function generateStaticParams'), article.indexOf('export async function generateMetadata'));
+  assert.match(params, /getAllArticles\(\)\.map\(/);
+  assert.doesNotMatch(params, /slice|PRERENDER_LIMIT|filter/);
+  // タグ: サイトマップに載るタグ（2本以上）はすべて
+  assert.match(read('app/tags/[tag]/page.tsx'), /tag\.count >= 2/);
+  // チャンネル: すべて
+  assert.doesNotMatch(read('app/channels/[channel]/page.tsx'), /\.slice\(/);
+  // 一覧の2ページ目以降: 空のリストで逃げない
+  for (const rel of ['app/articles/page/[n]/page.tsx', 'app/news/page/[n]/page.tsx', 'app/genres/[genre]/page/[n]/page.tsx', 'app/tags/[tag]/page/[n]/page.tsx', 'app/channels/[channel]/page/[n]/page.tsx', 'app/companies/[company]/page/[n]/page.tsx']) {
+    const src = read(rel);
+    assert.doesNotMatch(src, /generateStaticParams\(\) \{\s*return \[\];/, rel);
+    assert.match(src, /laterPages\(/, rel);
+  }
+  const { laterPages } = load('lib/paginate.ts');
+  assert.deepEqual(laterPages(60), []);
+  assert.deepEqual(laterPages(61), ['2']);
+  assert.deepEqual(laterPages(475), ['2', '3', '4', '5', '6', '7', '8']);
+  assert.deepEqual(laterPages(130, 48), ['2', '3']);
+});

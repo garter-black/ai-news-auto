@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { parsePage } from "@/lib/paginate";
-import CompanyView, { companyMetadata } from "../../view";
+import { laterPages, parsePage } from "@/lib/paginate";
+import { companyCounts, companyOf } from "@/lib/companies";
+import CompanyView, { aiArticles, companyMetadata } from "../../view";
 
 type Props = { params: Promise<{ company: string; n: string }> };
 
-// 2ページ目以降はアクセス時に生成してキャッシュする
+// 2ページ目以降もビルド時に静的化する（デプロイ直後の初回アクセスで作らない。台帳 W29）
 export const dynamicParams = true;
 export const revalidate = 86400;
 
 export function generateStaticParams() {
-  return [];
+  const all = aiArticles();
+  return companyCounts(all).flatMap(({ company }) =>
+    laterPages(all.filter((a) => companyOf(a).slug === company.slug).length, 100).map((n) => ({ company: company.slug, n })),
+  );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

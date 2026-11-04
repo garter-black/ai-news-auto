@@ -58,7 +58,6 @@ import {
   isVideo,
   isWeb,
   lastModifiedOf,
-  PRERENDER_LIMIT,
   reviewedDateLabel,
   sourceHref,
   sourceLabel,
@@ -85,15 +84,16 @@ import { authorJsonLd, publisherJsonLd } from "@/lib/publisher";
 
 type Props = { params: Promise<{ slug: string }> };
 
-// 新しい記事だけビルド時に静的化し、残りは初回アクセス時に生成してキャッシュする（ISR）。
-// 記事が無い slug は notFound() で 404
+// 公開中の記事はすべてビルド時に静的化する（台帳 W29）。
+// 以前は新しい150本だけで、残りはデプロイのたびに初回アクセスで作り直していた。ISR のキャッシュはビルドごとに空になるため、
+// 古い記事はほぼ毎回「作りながら返す」状態で、ロボットや画面の点検がまとめて開くと 1 つの isolate に描画が積み上がり、
+// 1ページ 30〜90 秒待たされた（2026-11-03 17:55〜18:03 UTC、Workers の wall 時間 p99.9 が 30〜90 秒・CPU は数百 ms）。
+// 記事が無い slug は notFound() で 404。デプロイなしで積んだ新しい記事は次のデプロイで出る
 export const dynamicParams = true;
 export const revalidate = 86400;
 
 export function generateStaticParams() {
-  return getAllArticles()
-    .slice(0, PRERENDER_LIMIT)
-    .map((article) => ({ slug: article.slug }));
+  return getAllArticles().map((article) => ({ slug: article.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

@@ -13,6 +13,15 @@ export function paginate<T>(items: T[], page: number, perPage = PER_PAGE): Paged
   };
 }
 
+/**
+ * ビルド時に静的化する「2ページ目以降」の番号（generateStaticParams 用）。
+ * デプロイ直後の初回アクセスでページを作らないよう、ある分はすべてビルドで作る（台帳 W29）
+ */
+export function laterPages(total: number, perPage = PER_PAGE): string[] {
+  const totalPages = Math.max(1, Math.ceil(total / perPage));
+  return Array.from({ length: totalPages - 1 }, (_, i) => String(i + 2));
+}
+
 /** URL の「/page/2」の数字。2以上の整数だけ受け付ける（1ページ目は元のURL） */
 export function parsePage(raw: string): number | null {
   return /^[1-9]\d*$/.test(raw) && Number(raw) >= 2 ? Number(raw) : null;

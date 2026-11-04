@@ -386,7 +386,7 @@ function readOne(slug: string): FullArticle | undefined {
   }
 }
 
-/** ビルド時に静的化する記事の数（新しい順）。残りは初回アクセス時に生成してキャッシュする */
+/** カバー画像・カード画像（/cover・/card）をビルド時に作る記事の数（新しい順）。記事ページはすべてビルド時に作る（台帳 W29） */
 export const PRERENDER_LIMIT = 150;
 
 /** 最終更新日時（続報があれば updatedAt。サイトマップ・構造化データ用） */
