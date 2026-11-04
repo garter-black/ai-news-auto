@@ -47,9 +47,9 @@
   },
   "2026-11-04": {
     "articles": {
-      "anthropic-api:claude-haiku-5-5": 39,
+      "anthropic-api:claude-haiku-5-5": 53,
       "anthropic-api:claude-sonnet-5-5": 3,
-      "claude:sonnet": 2,
+      "claude:sonnet": 4,
       "gemini-3.5-flash-lite": 2
     },
     "breaking": {

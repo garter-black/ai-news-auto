@@ -83,12 +83,20 @@
       "tries": 1,
       "url": "https://toyotagazooracing.com/jp/pressrelease/2026/1103-01/"
     },
+    "2c8a2ca0b2585148": {
+      "first": "2026-11-04T11:24:41.330982+00:00",
+      "next": "2026-11-04T14:24:41.330982+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "リコールの届出について（ロータス エリーゼ SPORT/SPRINT 220 他）",
+      "tries": 1,
+      "url": "http://www.mlit.go.jp/report/press/jidosha08_hh_005881.html"
+    },
     "2e3f3ef33d8db967": {
       "first": "2026-11-04T08:05:46.530387+00:00",
-      "next": "2026-11-04T11:05:46.530387+00:00",
+      "next": "2026-11-04T14:25:07.613591+00:00",
       "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
       "title": "【研究成果】脳波の計測からAI解析までを学ぶ動画教材を公開 ― TNI Academy第1弾「EEG × AI」の提供を開始 ―",
-      "tries": 1,
+      "tries": 2,
       "url": "https://www.hiroshima-u.ac.jp/news/101101"
     },
     "52567fa092b78f28": {
@@ -4322,6 +4330,13 @@
       "slug": "pharmacist-license-online-application",
       "url": "https://www.mhlw.go.jp/bunya/iyakuhin/yakuzaishi/menkyo.html"
     },
+    "17a357c5e54aa313": {
+      "at": "2026-11-04T11:22:17.962152+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "reason": "WRC（世界ラリー選手権）へのチーム体制とドライバーの顔ぶれを発表したもので、働く人や家計に関係する経済の一次情報には当たらないため。",
+      "skipped": true,
+      "url": "https://toyotagazooracing.com/jp/pressrelease/2026/1103-01/"
+    },
     "17afb76fbd6d3e2b": {
       "at": "2026-10-27T18:31:29.945936+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（講座）",
@@ -6709,6 +6724,12 @@
       "skipped": true,
       "url": "https://blogs.windows.com/japan/2026/10/30/introducing-microsoft-copilot-for-legal/"
     },
+    "4e354f5ed3bf8fbd": {
+      "at": "2026-11-04T11:22:17.963670+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（委員会）",
+      "skipped": true,
+      "url": "http://www.mlit.go.jp/report/press/tetsudo01_hh_000265.html"
+    },
     "4e3d51136129d961": {
       "at": "2026-11-04T08:04:12.535821+00:00",
       "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
@@ -7270,6 +7291,12 @@
       "skipped": true,
       "url": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000149274_00001.html"
     },
+    "5be242801f0e44f7": {
+      "at": "2026-11-04T11:21:21.283114+00:00",
+      "reason": "dedupe: 固有名詞が一致（bedrock・gpt-6.1・terra）: openai-gpt-61-terra-amazon-bedrock",
+      "skipped": true,
+      "url": "https://aws.amazon.com/jp/blogs/news/aws-weekly-roundup-gpt-6-1-terra-on-bedrock-step-functions-as-agent-tools-and-more-november-2-2026/"
+    },
     "5be4ac9924a0293a": {
       "at": "2026-10-27T03:04:42.978014+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（周年）",
@@ -7563,6 +7590,13 @@
       "slug": "toyota-crown-estate-minor-change",
       "url": "https://global.toyota/jp/newsroom/toyota/44936557.html"
     },
+    "626ce1433a1ab2e9": {
+      "at": "2026-11-04T11:22:07.606308+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://cloud.google.com/blog/ja/products/databases/cloud-sql-blue-green-deployments/"
+    },
     "62a23b09751441ec": {
       "at": "2026-10-26T20:01:09.893173+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（採用）",
@@ -7795,6 +7829,12 @@
       "reason": "prefilter: 価値の薄いお知らせ（を開催）",
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102919"
+    },
+    "67e7e19ee66bdc39": {
+      "at": "2026-11-04T11:22:17.963643+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（委員会）",
+      "skipped": true,
+      "url": "https://www.cao.go.jp/consumer/iinkai/2026/502/kaisai/index.html"
     },
     "67fdd4b11bd82e4e": {
       "at": "2026-10-28T03:52:34.628750+00:00",
@@ -10017,6 +10057,13 @@
       "slug": "aws-php-to-java-migration-engine-kiro",
       "url": "https://aws.amazon.com/blogs/machine-learning/build-a-repeatable-php-to-java-migration-engine-with-kiro/"
     },
+    "9846c51911c44f70": {
+      "at": "2026-11-04T11:25:33.483207+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "reason": "JFA第14回全日本O-40サッカー大会の結果報告で、出場チームの結果と選手コメントが中心です。読者が仕事・お金に関わって動ける情報がなく、小さなお知らせに当たると判断しました。",
+      "skipped": true,
+      "url": "https://www.jfa.jp/news/00036973/"
+    },
     "986b8e56080b2b21": {
       "at": "2026-10-27T19:15:57.800333+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -10736,6 +10783,12 @@
       "skipped": true,
       "url": "https://www.boj.or.jp/statistics/boj/fm/juqf/juqf10.xlsx"
     },
+    "a9ba99b8846683ac": {
+      "at": "2026-11-04T11:22:08.295559+00:00",
+      "reason": "prefilter: お知らせ・統計の転載（statistics）",
+      "skipped": true,
+      "url": "http://www.boj.or.jp/statistics/boj/other/acmai/release/2026/ac261031.htm"
+    },
     "a9e0107a2985dd78": {
       "at": "2026-11-02T14:31:32.651599+00:00",
       "reason": "stale: 発表から142時間（記事ページの日付）",
@@ -10806,6 +10859,12 @@
       "reason": "prefilter: 価値の薄いお知らせ（人事）",
       "skipped": true,
       "url": "https://www.mof.go.jp/about_mof/introduction/personnel/transfers/2026.11.1.pdf"
+    },
+    "ac56a512dd320df7": {
+      "at": "2026-11-04T11:24:42.037003+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（受賞）",
+      "skipped": true,
+      "url": "https://www.nttud.co.jp/news_pdf/news_261104_001.pdf"
     },
     "ac89431bd48894ec": {
       "at": "2026-10-30T18:52:28.071340+00:00",
@@ -11674,6 +11733,13 @@
       "skipped": true,
       "url": "https://www.maff.go.jp/j/press/kanbo/bunsyo/saigai/261030.html"
     },
+    "c18a8814adc5263f": {
+      "at": "2026-11-04T11:25:18.229210+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "reason": "コンサルティング会社による企業の開示状況の調査レポートで、統計の数字を並べただけの発表です。金融商品・制度・手数料の変更、市場を動かすニュースに当たらず、読者が今日動ける材料も少ないため対象外としました。",
+      "skipped": true,
+      "url": "https://www.fortience.com/company/newsroom/20261104/"
+    },
     "c19bf4dd8bc349cd": {
       "at": "2026-10-27T03:05:10.759098+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（出演）",
@@ -11872,6 +11938,12 @@
       "reason": "quality: easy_markdown が短い（352字 / 基準 400字以上）",
       "skipped": true,
       "url": "https://www.jfa.jp/news/00036964/"
+    },
+    "c5edde0cbfcab1d5": {
+      "at": "2026-11-04T11:22:08.295625+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（を開催）",
+      "skipped": true,
+      "url": "http://www.mlit.go.jp/report/press/house04_hh_001371.html"
     },
     "c664ceeed1b18caf": {
       "at": "2026-11-04T00:40:45.175194+00:00",
@@ -13386,6 +13458,14 @@
       "updated": "xreal-aura-android-xr-glasses",
       "url": "https://www.docomo.ne.jp/info/news_release/2026/11/02_00.html"
     },
+    "e8bf7ce908c452b6": {
+      "at": "2026-11-04T11:27:34.503332+00:00",
+      "model": "claude:sonnet",
+      "score": 92,
+      "section": "ai",
+      "slug": "google-tpu-oracle-cloud-infrastructure",
+      "url": "https://cloud.google.com/blog/ja/products/infrastructure/bringing-google-tpus-to-oracle-cloud-infrastructure/"
+    },
     "e8df7bb1949b3e4c": {
       "at": "2026-10-28T23:12:45.343512+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（委員会）",
@@ -14410,196 +14490,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T17:58:11.408182+00:00",
-      "attempt": 1,
-      "id": "1802721ebc5f02c3",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [
-        "題名で「日本で使えるか」を約束しているのに、本文の「日本で使える？」が「分からない」で始まっている。「当サイトで確認済み」の欄に答えがあればそれで答え、無ければ題名から日本の話を外す"
-      ],
-      "readability": {
-        "avg_paragraph": 66.9,
-        "avg_sentence": 32.1,
-        "long_share": 0.053,
-        "max_paragraph": 132,
-        "paragraphs": 36,
-        "sentences": 75
-      },
-      "score": null,
-      "source": "google-blog-all",
-      "title": "The latest AI news we announced in October 2026"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T18:00:41.823121+00:00",
-      "attempt": 2,
-      "id": "1802721ebc5f02c3",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 67.0,
-        "avg_sentence": 33.0,
-        "long_share": 0.031,
-        "max_paragraph": 148,
-        "paragraphs": 32,
-        "sentences": 65
-      },
-      "score": 100,
-      "source": "google-blog-all",
-      "title": "The latest AI news we announced in October 2026"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T18:24:22.810730+00:00",
-      "attempt": 1,
-      "id": "13515cec206f1d26f0abe56daf90242f82455be2",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 52.3字・60字超の文が 33% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 134.6字・最長 216字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 134.6,
-        "avg_sentence": 52.3,
-        "long_share": 0.333,
-        "max_paragraph": 216,
-        "paragraphs": 7,
-        "sentences": 18
-      },
-      "score": 100,
-      "source": "trends",
-      "title": "雪見だいふく"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T18:24:25.919978+00:00",
-      "attempt": 0,
-      "id": "13515cec206f1d26f0abe56daf90242f82455be2",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 116.4字・最長 223字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 116.4,
-        "avg_sentence": 42.3,
-        "long_share": 0.136,
-        "max_paragraph": 223,
-        "paragraphs": 8,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "trends",
-      "title": "雪見だいふく"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T18:26:06.280147+00:00",
-      "attempt": 1,
-      "id": "ed4b58253682640f",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 66.6,
-        "avg_sentence": 32.7,
-        "long_share": 0.036,
-        "max_paragraph": 117,
-        "paragraphs": 27,
-        "sentences": 55
-      },
-      "score": 100,
-      "source": "openai-news",
-      "title": "LifeVal"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T18:26:17.965580+00:00",
-      "attempt": 1,
-      "id": "76c6d2d9da855dff",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 54.6,
-        "avg_sentence": 41.0,
-        "long_share": 0.083,
-        "max_paragraph": 128,
-        "paragraphs": 18,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "tokyo-metro",
-      "title": "不動産取引に役立つ動画を公開！"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T18:43:51.654391+00:00",
-      "attempt": 1,
-      "id": "8852e4123fc0ef20",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 66.2,
-        "avg_sentence": 34.1,
-        "long_share": 0.076,
-        "max_paragraph": 116,
-        "paragraphs": 34,
-        "sentences": 66
-      },
-      "score": 100,
-      "source": "watch-chatgpt-pricing",
-      "title": "ChatGPTが更新: Up to $500 in monthly API credits to build your own apps and agents."
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T18:44:02.656961+00:00",
-      "attempt": 1,
-      "id": "de3657a54534136e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 60.5字・60字超の文が 57% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 121.0字・最長 185字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 121.0,
-        "avg_sentence": 60.5,
-        "long_share": 0.567,
-        "max_paragraph": 185,
-        "paragraphs": 15,
-        "sentences": 30
-      },
-      "score": 100,
-      "source": "microsoft-source",
-      "title": "Lumen and Microsoft expand collaboration to co-sell enterprise AI-ready networks"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T18:44:08.097121+00:00",
-      "attempt": 0,
-      "id": "de3657a54534136e",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 101.5,
-        "avg_sentence": 36.2,
-        "long_share": 0.071,
-        "max_paragraph": 174,
-        "paragraphs": 20,
-        "sentences": 56
-      },
-      "score": 100,
-      "source": "microsoft-source",
-      "title": "Lumen and Microsoft expand collaboration to co-sell enterprise AI-ready networks"
-    },
     {
       "accepted": false,
       "at": "2026-11-02T18:44:17.012688+00:00",
@@ -20809,6 +20699,185 @@
       "title": "国内初、SON技術を活用し、混雑状況に応じた通信量の自動調整を実証 -合計280MHzの帯域幅を活用し、大規模イベントの混雑時間帯にも安定した通信を確認-",
       "warnings": [
         "初めて出たところで言い換えていない略語（SON・TM）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T11:21:53.895911+00:00",
+      "attempt": 1,
+      "id": "626ce1433a1ab2e9",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "title の長さが不適切（67字 / 18〜64字）"
+      ],
+      "readability": {
+        "avg_paragraph": 79.9,
+        "avg_sentence": 38.7,
+        "long_share": 0.152,
+        "max_paragraph": 179,
+        "paragraphs": 16,
+        "sentences": 33
+      },
+      "score": null,
+      "source": "google-cloud-blog-ja",
+      "title": "アップグレード時のダウンタイムをほぼゼロに: Cloud SQL for MySQL 向けの Blue/Green デプロイを発表",
+      "warnings": [
+        "見出しが67字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（SQL・IP・CLI）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T11:22:07.606235+00:00",
+      "attempt": 2,
+      "id": "626ce1433a1ab2e9",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "google-cloud-blog-ja",
+      "title": "アップグレード時のダウンタイムをほぼゼロに: Cloud SQL for MySQL 向けの Blue/Green デプロイを発表"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T11:23:35.855928+00:00",
+      "attempt": 1,
+      "id": "2c8a2ca0b2585148",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "mlit-press",
+      "title": "リコールの届出について（ロータス エリーゼ SPORT/SPRINT 220 他）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T11:24:41.330927+00:00",
+      "attempt": 2,
+      "id": "2c8a2ca0b2585148",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "mlit-press",
+      "title": "リコールの届出について（ロータス エリーゼ SPORT/SPRINT 220 他）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T11:24:56.829283+00:00",
+      "attempt": 1,
+      "id": "2e3f3ef33d8db967",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "hiroshima-u",
+      "title": "【研究成果】脳波の計測からAI解析までを学ぶ動画教材を公開 ― TNI Academy第1弾「EEG × AI」の提供を開始 ―"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T11:25:07.613545+00:00",
+      "attempt": 2,
+      "id": "2e3f3ef33d8db967",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "hiroshima-u",
+      "title": "【研究成果】脳波の計測からAI解析までを学ぶ動画教材を公開 ― TNI Academy第1弾「EEG × AI」の提供を開始 ―"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T11:26:18.685688+00:00",
+      "attempt": 1,
+      "id": "e8bf7ce908c452b6",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "「投稿者はOracleのKaran Batta氏とGoogle CloudのGurmeet Goindi氏です」→ 元記事はGoindi氏の所属をGoogle Cloudと明記しておらず、所属の断定は元記事に無い",
+        "「Oracle Accelerationと呼ばれるSmartNIC」→ 製品名の誤記。元記事は Oracle Acceleron で、本文末尾で訂正しているが、本文中の表記が矛盾している",
+        "「AI基盤を担当する人は、PyTorchのコードを書き直さずに、TPUとGPUのどちらに載せるかを比べられるようになります」→ 元記事は「まもなく」割り当て可能になると述べるのみで、現時点で可能と読める書き方は言い過ぎ",
+        "「データを別のクラウドへ移す費用を抑えられる」→ 元記事の趣旨の言い換えとして概ね妥当だが、節約の効果は示されていない"
+      ],
+      "readability": {
+        "avg_paragraph": 79.1,
+        "avg_sentence": 43.4,
+        "long_share": 0.194,
+        "max_paragraph": 208,
+        "paragraphs": 17,
+        "sentences": 31
+      },
+      "score": 72,
+      "source": "google-cloud-blog-ja",
+      "title": "Google TPU を Oracle Cloud Infrastructure に導入",
+      "warnings": [
+        "見出しの書き方: 記号: かっこの直前に「、」",
+        "見出しの書き方: 区切りの全角空白が2つ以上（補足は1つだけ）",
+        "見出しが51字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T11:26:57.739340+00:00",
+      "attempt": 2,
+      "id": "e8bf7ce908c452b6",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "文が長い（1文の平均 46.1字・60字超の文が 22% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 115.2字・最長 231字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 115.2,
+        "avg_sentence": 46.1,
+        "long_share": 0.222,
+        "max_paragraph": 231,
+        "paragraphs": 18,
+        "sentences": 45
+      },
+      "score": 90,
+      "source": "google-cloud-blog-ja",
+      "title": "Google TPU を Oracle Cloud Infrastructure に導入",
+      "warnings": [
+        "見出しの書き方: 区切りの全角空白が2つ以上（補足は1つだけ）",
+        "見出しが51字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（OCI・PFLOPS・FP）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T11:27:29.376778+00:00",
+      "attempt": 0,
+      "id": "e8bf7ce908c452b6",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 95.6,
+        "avg_sentence": 42.1,
+        "long_share": 0.12,
+        "max_paragraph": 181,
+        "paragraphs": 22,
+        "sentences": 50
+      },
+      "score": 92,
+      "source": "google-cloud-blog-ja",
+      "title": "Google TPU を Oracle Cloud Infrastructure に導入",
+      "warnings": [
+        "見出しの書き方: 区切りの全角空白が2つ以上（補足は1つだけ）",
+        "見出しが51字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（OCI・PFLOPS・FP）"
       ]
     }
   ],

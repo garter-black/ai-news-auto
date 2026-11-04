@@ -1,0 +1,137 @@
+{
+  "slug": "google-tpu-oracle-cloud-infrastructure",
+  "sourceType": "web",
+  "sourceUrl": "https://cloud.google.com/blog/ja/products/infrastructure/bringing-google-tpus-to-oracle-cloud-infrastructure/",
+  "sourceName": "Google Cloud 公式ブログ（日本）",
+  "title": "Google Cloudと　Oracle、OCIでGoogle TPUを提供へ　2027年から導入開始",
+  "seoTitle": "OCIのGoogle TPUとは？2027年から提供",
+  "threadsPost": "AI基盤のコストを見ている開発者の皆さん、押さえておきたい話です。\n\n要約すると、OracleのクラウドOCIでGoogleのAI専用チップTPUが使えるようになります。\nGoogle以外のハイパースケーラーでは初で、導入開始は2027年です。\n\nAIの処理を載せるチップは、何を重視して選びますか？",
+  "threadsHook": "callout",
+  "threadsQuestions": [
+    {
+      "pattern": "expert",
+      "question": "AIの処理を載せるチップは、何を重視して選びますか？"
+    },
+    {
+      "pattern": "tradeoff",
+      "question": "データの近くで処理するのと、安いチップを探すの、どちらを優先しますか？"
+    }
+  ],
+  "threadsStyle": 3,
+  "writingVoice": "honest",
+  "lede": "Oracle と Google Cloud は、Google の AI 専用チップ「TPU」を Oracle Cloud Infrastructure（OCI）で提供するパートナーシップを結びました。Google Cloud の公式ブログによると、OCI は Google 以外で TPU を提供する初のハイパースケーラーになります。TPU キャパシティの導入開始は 2027 年の予定です。",
+  "description": "Google Cloud公式ブログによると、OracleのOCIでGoogle TPUが提供されます。Google以外で初のハイパースケーラーとなり、2027年から導入を開始する予定です。価格は未発表です。",
+  "keywords": [
+    "Google TPU",
+    "Oracle Cloud Infrastructure",
+    "OCI",
+    "TPU 提供",
+    "TorchTPU",
+    "Oracle Acceleron",
+    "AIインフラ",
+    "ハイパースケーラー",
+    "第8世代TPU",
+    "PyTorch"
+  ],
+  "tags": [
+    "Google TPU",
+    "Oracle Cloud Infrastructure",
+    "AIインフラ",
+    "Google Cloud",
+    "PyTorch"
+  ],
+  "highlights": [
+    "OracleのOCIでGoogle TPUを提供へ。Google以外で初のハイパースケーラーに",
+    "TPUはOCIで2027年から導入開始の予定。価格や提供地域は未発表",
+    "TorchTPUがオープンソース公開。PyTorchのコードを書き直さず使える狙い"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "soon",
+    "japan": "unknown",
+    "price": "未発表",
+    "free": null,
+    "audience": "AI基盤担当",
+    "take": "2027年の導入開始まで時間があります。まずTorchTPUを確認し、自社のAI処理の置き場所を整理しておくとよいでしょう。",
+    "judgedAt": "2026-11-04T11:26:49.626263+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "Oracle Databaseを使う企業のAI担当者は、データの近くでファインチューニングや推論を行う選択肢が増えます。",
+      "価格は未発表です。TorchTPUの公開内容を確認し、GPUとTPUの比較の準備を進められます。"
+    ]
+  },
+  "body": "TPU（Tensor Processing Unit）は、Google が AI の計算のために設計したチップです。AI のモデルを学習させる作業と、学習済みモデルに答えを出させる作業の両方に使われます。今回の提携で、その提供先が Google Cloud の外にも広がります。\n\nGoogle Cloud の公式ブログによると、Oracle と Google Cloud は TPU を OCI に導入します。両社は 2027 年から、OCI 上で TPU キャパシティ（使える計算資源）の導入を始める予定です。価格や提供地域はまだ発表されていません。\n\n投稿者は OCI のシニア バイス プレジデントの Karan Batta 氏と、プロダクト管理担当シニア ディレクターの Gurmeet Goindi 氏です。この投稿は、米国時間 2026 年 10 月 28 日に Google Cloud blog に掲載されたものの抄訳です。\n\n## 第8世代TPUは1チップで最大12.6 PFLOPS\n\n公式ブログは、TPU の特徴をチップ単体ではなく、システム全体の設計に置いています。カスタムのチップを、光ネットワーキング、電力供給、液体冷却、コンパイラ ソフトウェアとともに設計するという考え方です。\n\n主な数字は次のとおりです。\n\n- 初代の TPU v1 は、当時のプロセッサと比べて 30 倍のワットあたりスループット\n- 第 8 世代は、チップあたり最大 12.6 PFLOPS のネイティブ FP4 演算\n- 第 8 世代は、前世代より最大 2 倍高いワットあたりパフォーマンス\n- TPU v1 は 92 TFLOPS で、第 8 世代はその 100 倍以上\n\nただしブログは、演算性能の数字だけでは費用対効果は決まらないとも述べています。学習で重要なのはグッドプット（クラスタが有効な計算に使った時間の割合）です。推論（学習済み AI に答えを出させる処理）では、応答の速さとトークンあたりのコストが重要になります。\n\nグッドプットを支えるのが、チップ間をつなぐ ICI（Inter-Chip Interconnect）のルーティングと、光サーキット スイッチング（OCS）です。ハードウェアやリンクの劣化を検出すると、ジョブを再起動せずに、光の通り道を動的に切り替えて障害を避けます。公式ブログは、大規模な学習で数千チップにわたって 97% 以上のグッドプットを維持できると説明しています。\n\n低レイテンシ（応答の速い）サービングでは、オンチップ SRAM と HBM の容量を増やしています。こうして 1 ドルあたりのパフォーマンスは最大 80% 向上するとのことです。これらは Google 側の説明で、測定条件の詳細は示されていません。\n\nさらに、ネットワーク ホップを 50% 以上減らす新しいトポロジを採用しました。\n\n## TorchTPUで、PyTorchのコードを書き直さず使う\n\nソフトウェア面では、PyTorch Conference での発表が背景にあります。Google TPU 向けのネイティブ PyTorch スタック「TorchTPU」が、GitHub でオープンソースとして公開されました。\n\nvLLM、SGLang、llm-d、TorchTitan、Ray、TorchRec、Hugging Face、LiteRT といった既存のツールがあります。これらのツールで、TPU を使って学習、サービング、デプロイができるとしています。\n\n公式ブログは、このポータビリティ（移しやすさ）を強調しています。これにより、チームはモデルコードを書き直さずに、各処理を最適な装置へ割り当てられます。ただし、Google Cloud か Oracle のインフラ上の TPU に割り当てられるようになるのは「まもなく」です。現時点で OCI 上の TPU を使えるわけではありません。\n\nGoogle Cloud は 10 月にも、TPU 向けの技術を含む AI 基盤の更新を発表していました（[Google Cloud、AI基盤の10月更新を発表](/articles/google-cloud-ai-infrastructure-october-updates)）。\n\n## OCIで得られる4つのメリット\n\n公式ブログは、TPU を OCI で提供する利点として 4 点を挙げています。\n\n1つ目は、データセンターです。TPU システムはラック規模の直接液冷を前提に設計されています。OCI の次世代データセンターもその仕様で構築されているといいます。\n\nフロンティア モデルの学習と本番環境の推論を、需要に合わせて切り替えられる点も強調しています。\n\n2つ目は、ネットワークです。TPU のチップ間は ICI と OCS が担当します。TPU キャパシティを OCI のほかの部分につなぐのが、Oracle Acceleron です。\n\nその SmartNIC（ネットワーク処理を担う専用カード）は、ハードウェア レベルのテナント分離を備えます。高パフォーマンス ファブリックとゼロトラスト パケット ルーティングも備えます。これにより、Oracle データベース、ストレージ、TPU クラスタ間で高スループットかつ低レイテンシのデータ転送ができるとしています。\n\n3つ目は、企業データとの近さです。Oracle データベースは、多くの企業でシステム オブ レコード（業務データの正本）の役割を果たしています。\n\nOCI 内に TPU があれば、費用のかかるクロスクラウド転送をせずに済みます。既存データの近くでファインチューニング（追加学習）と推論ができるとしています。節約額などの数字は示されていません。\n\n4つ目は、選択肢の広さです。OCI は GPU とともに TPU を提供するため、AI の各段階を費用対効果の高い装置へ割り当てやすくなります。\n\n編集部の見方では、Oracle データベースに業務データを置く企業が、最も影響を受けます。ただし、料金や対応する TPU の世代が分かっていないため、導入判断は発表を待つ段階です。\n\n## まだ分からないこと\n\n- OCI 上の TPU の料金はまだ発表されていません。\n- 提供する地域や、日本のリージョンで使えるかはまだ発表されていません。\n- OCI で提供する TPU の世代や、規模の詳細はまだ発表されていません。",
+  "easy": "## ひとことで言うと\n\nOracleのクラウドでGoogleのAI専用チップ「TPU」が使えるようになります。導入開始は2027年の予定です。\n\n## 何が変わるのか\n\nTPUは、GoogleがAIの計算のために作ったチップです。これまでは主にGoogle Cloudで使うものでした。\n\n今回、OracleのクラウドであるOCIでも提供されます。Google以外でTPUを提供するのは、OCIが初めてです。\n\n企業の大切なデータをOracleのデータベースに置いている場合、データの近くでAIの追加学習や推論ができます。別のクラウドへデータを移す手間を減らす狙いです。\n\n## 使えるのはいつか\n\n導入開始は2027年の予定です。価格や提供する地域はまだ発表されていません。\n\nGoogleは、TPU向けのPyTorch環境「TorchTPU」をオープンソースで公開しました。モデルのコードを書き直さずに使えるようにするためのものです。",
+  "channel": "Google Cloud 公式ブログ（日本）",
+  "channelId": "",
+  "channelSlug": "google-cloud-blog-ja",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Google TPU を Oracle Cloud Infrastructure に導入",
+  "publishedAt": "2026-11-04T02:30:00+00:00",
+  "generatedAt": "2026-11-04T11:26:49.626252+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/google-tpu-oracle-cloud-infrastructure-87d3844a.jpg",
+  "model": "claude:sonnet",
+  "affiliates": [],
+  "newsType": "product",
+  "faq": [
+    {
+      "q": "OCIのGoogle TPUはいつから使える？",
+      "a": "両社は2027年からOCI上でTPUキャパシティの導入を始める予定です。まもなくGoogle CloudかOracleのTPUに処理を割り当てられるとも説明していますが、具体的な開始日は未発表です。"
+    },
+    {
+      "q": "OCIでGoogle TPUが使える料金はいくら？",
+      "a": "料金はまだ発表されていません。Google Cloudの公式ブログは、導入開始が2027年の予定であることを示しています。"
+    },
+    {
+      "q": "今回の発表で何が新しい？",
+      "a": "OracleのOCIがGoogle以外で初めてTPUを提供するハイパースケーラーになります。GPUとともにTPUを選べる点が特徴です。"
+    },
+    {
+      "q": "TorchTPUとは何？",
+      "a": "Google TPU向けのネイティブPyTorchスタックです。GitHubでオープンソースとして公開され、vLLMやHugging Faceなど既存のツールで使えるとされています。"
+    },
+    {
+      "q": "OCIのTPUは誰に関係する？",
+      "a": "Oracleデータベースに業務データを置く企業のAI担当者に関係します。データの近くでファインチューニングや推論ができ、クロスクラウド転送を避けられるとされています。"
+    }
+  ],
+  "todayActions": [
+    "Google Cloud公式ブログの原文で、2027年の導入開始の条件を確認する",
+    "GitHubで公開されたTorchTPUの内容を、社内のAI担当者と共有する",
+    "自社の業務データがOracleデータベースにあるか、AI処理の置き場所とあわせて確認する"
+  ],
+  "relatedSlugs": [
+    "google-cloud-ai-infrastructure-october-updates"
+  ],
+  "qualityScore": 92,
+  "sourcePublishedAt": "2026-11-04T02:30:00+00:00",
+  "detectedAt": "2026-11-04T11:20:58+00:00",
+  "imageCredit": {
+    "kind": "official",
+    "org": "Google Cloud",
+    "provider": "Google Cloud 公式ブログ（日本）",
+    "sourceUrl": "https://cloud.google.com/blog/ja/products/infrastructure/bringing-google-tpus-to-oracle-cloud-infrastructure/",
+    "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/Blog_Headers_-_Cloudstyle_3.0_2.max-2500x2500.png",
+    "width": 1200,
+    "height": 591,
+    "at": "2026-11-04T11:27:45+00:00"
+  },
+  "imageFocus": {
+    "x": 0.55,
+    "y": 0.586,
+    "box": [
+      0.103,
+      0.171,
+      0.997,
+      1.0
+    ],
+    "ar": 2.0305,
+    "src": "https://ai-tech-express.jp/img/google-tpu-oracle-cloud-infrastructure-87d3844a.jpg"
+  }
+}

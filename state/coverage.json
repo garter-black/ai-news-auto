@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "google-tpu-oracle-cloud-infrastructure",
+   "at": "2026-11-04T11:26:49.626252+00:00",
+   "title": "Google Cloudと　Oracle、OCIでGoogle TPUを提供へ　2027年から導入開始",
+   "head": "Google Cloudと　Oracle、OCIでGoogle TPUを提供へ　2027年から導入開始 | Google TPU を Oracle Cloud Infrastructure に導入",
+   "text": "Google Cloudと　Oracle、OCIでGoogle TPUを提供へ　2027年から導入開始 | Google TPU を Oracle Cloud Infrastructure に導入 | Google TPU / Oracle Cloud Infrastructure / OCI / TPU 提供 / TorchTPU / Oracle Acceleron / AIインフラ / ハイパースケーラー / 第8世代TPU / PyTorch / Google TPU / Oracle Cloud Infrastructure / AIインフラ / Google Cloud / PyTorch",
+   "urls": [
+    "https://cloud.google.com/blog/ja/products/infrastructure/bringing-google-tpus-to-oracle-cloud-infrastructure/"
+   ]
+  },
+  {
    "slug": "docomo-son-mlb-fireworks-traffic",
    "at": "2026-11-04T11:05:55.845104+00:00",
    "title": "NTTドコモ、花火大会で通信量を自動調整　国内初の実証で速度を確認",
