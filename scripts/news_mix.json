@@ -1,0 +1,127 @@
+{
+  "_doc": "1日の記事の配分のめやす（2026-11-04 オーナー承認のピボット。out/ピボット_ビューが取れるニュース_2026-11-04.md）。scripts/news_mix.py が読む。share は1日の割合、daily_basis はその割合をかける1日の本数のめやす。cap=true の種類は share×daily_basis（切り上げ）を1日の上限にする（大きなニュースは上限の外）。order_by_mix=true なら、各レーンの中で今日まだ足りない種類の候補を先にする。種類の判定の語は patterns・sources で変えられる",
+  "daily_basis": 30,
+  "order_by_mix": true,
+  "categories": {
+    "alert": {
+      "label": "障害・情報流出・サポート終了・注意喚起",
+      "share": 0.15
+    },
+    "money": {
+      "label": "料金・制度・お金の変更",
+      "share": 0.2
+    },
+    "brand": {
+      "label": "有名ブランドの新製品・日本の発売",
+      "share": 0.25
+    },
+    "ai_consumer": {
+      "label": "一般向けの大きな AI の動き",
+      "share": 0.2
+    },
+    "jp_corp": {
+      "label": "日本の大手企業の決算・提携",
+      "share": 0.1
+    },
+    "quirky": {
+      "label": "目を引く技術・研究",
+      "share": 0.05
+    },
+    "enterprise_dev": {
+      "label": "企業向け・開発者向けの海外の発表",
+      "share": 0.05,
+      "cap": true
+    },
+    "other": {
+      "label": "そのほか",
+      "share": 0.0
+    }
+  },
+  "patterns": {
+    "alert": "障害|不具合|つながりにくい|サービス停止|緊急メンテナンス|サポート終了|提供終了|サービス終了|延長サポート|注意喚起|ゼロデイ|悪用が確認|緊急(?:の)?(?:更新|アップデート|パッチ)|outage|end of (?:support|life)",
+    "money": "料金|値上げ|値下げ|価格改定|ポイント|手数料|プラン|月額|無料化|有料化|税|年金|保険料|補助金|助成金|給付|NISA|iDeCo|金利|最低賃金|マイナ|ふるさと納税|キャッシュレス",
+    "brand": "(?<![A-Za-z])(?:Apple|iPhone|iPad|AirPods|Apple Watch|Mac|MacBook|Sony|PlayStation|PS5|Xperia|Nintendo|Switch 2|Toyota|Honda|Nissan|Samsung|Galaxy|Pixel|Xbox|docomo|au|Amazon|YouTube|Netflix|LINE|PayPay)(?![A-Za-z])|ソニー|任天堂|トヨタ|ホンダ|日産|マツダ|スバル|サムスン|ドコモ|ソフトバンク|楽天モバイル|ユニクロ|サントリー|キリン|明治|森永|アマゾン|楽天",
+    "brand_event": "発売|新製品|新モデル|登場|発表|予約|日本で|国内で|提供開始|配信開始|新色|値下げ|新型",
+    "ai_consumer": "(?<![A-Za-z])(?:ChatGPT|Gemini|Claude|Copilot|Sora|Siri|Apple Intelligence|NotebookLM|Grok|Perplexity)(?![A-Za-z])|画像生成|動画生成|AIアシスタント|AI 機能|AI機能|無料で|日本語(?:に|で)?対応",
+    "jp_corp": "決算|業績|上方修正|下方修正|業績予想|提携|資本|買収|経営統合|出資|子会社化|TOB",
+    "jp_corp_names": "(?<![A-Za-z])(?:NTT|KDDI|au|NEC|JR|ANA|JAL|PayPay)(?![A-Za-z])|ドコモ|ソフトバンク|楽天|ゆうちょ|日本郵政|トヨタ|ホンダ|日産|ソニー|任天堂|パナソニック|日立|富士通|三菱|三井|住友|みずほ|りそな|セブン|イオン|ファーストリテイリング|ユニクロ|サントリー|キリン|アサヒ|メルカリ|LINEヤフー|リクルート|サイバーエージェント|カプコン|バンダイ|スクウェア",
+    "quirky": "研究成果|世界初|発見|解明|宇宙|ロケット|衛星|探査|ロボット|恐竜|化石|量子|新種",
+    "enterprise_dev": "(?<![A-Za-z])(?:API|SDK|CLI|IDE|DevOps|Kubernetes|Terraform|Bedrock|SageMaker|Vertex|BigQuery|Azure|AWS|Snowflake|Databricks|Postgres|PostgreSQL|MySQL|Redis|GPU クラスタ|MCP)(?![A-Za-z])|開発者|デベロッパー|エンタープライズ|企業向け|法人向け|データベース|データ基盤|ワークフロー|オブザーバビリティ|developer|enterprise|open[- ]source model|fine-tun|benchmark|agentic workflow|業務|harness|ハーネス|基盤|エージェント構築|Agent SDK|MLflow|OpenTelemetry"
+  },
+  "sources": {
+    "enterprise_dev": [
+      "aws-ml-blog",
+      "aws-news-blog",
+      "aws-japan-blog",
+      "azure-blog",
+      "google-cloud-blog",
+      "google-cloud-blog-ja",
+      "google-developers-blog",
+      "google-research-blog",
+      "microsoft-research-blog",
+      "nvidia-developer-blog",
+      "github-blog",
+      "github-changelog-copilot",
+      "atlassian-blog",
+      "databricks-blog",
+      "docker-blog",
+      "vercel-changelog",
+      "redhat-blog",
+      "cloudflare-blog",
+      "figma-blog",
+      "meta-engineering",
+      "cyberagent-developers",
+      "salesforce-jp",
+      "salesforce-news",
+      "ibm-newsroom-jp",
+      "ibm-announcements",
+      "hugging-face-blog",
+      "jetbrains-blog",
+      "supabase-blog",
+      "together-blog",
+      "replit-blog",
+      "lovable-blog",
+      "vscode-blog",
+      "netflix-tech",
+      "brainpad-news",
+      "stockmark-news",
+      "dropbox-blog",
+      "zoom-blog",
+      "arm-newsroom",
+      "amd-newsroom",
+      "apple-ml",
+      "nvidia-newsroom",
+      "microsoft-developer"
+    ],
+    "brand": [
+      "apple-newsroom-jp",
+      "apple-newsroom-jp-all",
+      "sony-jp",
+      "nintendo-topics",
+      "playstation-blog-jp",
+      "xbox-wire-jp",
+      "samsung-jp",
+      "samsung-global",
+      "toyota",
+      "nissan",
+      "docomo-product",
+      "docomo-service",
+      "au-topics",
+      "uniqlo",
+      "suntory",
+      "kirin",
+      "meiji",
+      "morinaga"
+    ],
+    "quirky": [
+      "jaxa",
+      "riken",
+      "naoj",
+      "jst",
+      "nict",
+      "nii",
+      "qst",
+      "hiroshima-u"
+    ]
+  }
+}

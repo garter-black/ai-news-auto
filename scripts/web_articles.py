@@ -69,6 +69,7 @@ import source_links  # noqa: E402
 import headline_normalize  # noqa: E402
 import pacing  # noqa: E402  1日の上限の数え方（公開中だけ）と時刻ごとの配分
 import public_interest  # noqa: E402  多くの人が読む公共性の高いニュース（台帳 A39・A40）
+import news_mix  # noqa: E402  1日の記事の配分（ピボット・台帳 A41）
 import page_watch  # noqa: E402
 import persona  # noqa: E402
 import quality  # noqa: E402
@@ -1975,10 +1976,14 @@ def main() -> int:
     lanes = build_lanes(
         [i for i in ai_items if i["id"] not in major_ids], [i for i in broad_items if i["id"] not in major_ids], args.section
     )
-    # レーン内は 公式・官公庁 → 他社の対応告知 → 配信 の順（同じ順位の中は collect() の順を保つ）
-    # 同じ順位の中では、読者像で優先する話題（お金・投資・不動産・起業/副業・税や補助金）を先にする
+    # 1日の配分（scripts/news_mix.py・news_mix.json。2026-11-04 オーナー承認のピボット・台帳 A41）:
+    # レーン内は 今日まだ足りない種類 → 公式・官公庁 → 他社の対応告知 → 配信 の順。企業向け・開発者向けの海外の発表は最後で、1日の上限あり
+    mix_counts = news_mix.today_counts(state)
     for lane in lanes:
-        lanes[lane].sort(key=lambda i: (rank_bucket(i), 0 if lane == "ai" else persona_rank(i)))
+        for i in lanes[lane]:
+            i["_mix"] = news_mix.classify(i)
+        lanes[lane].sort(key=lambda i: (news_mix.order_key(i, mix_counts), rank_bucket(i), 0 if lane == "ai" else persona_rank(i)))
+    log(f"[mix] 今日の配分（作った/めやす）: {news_mix.summary(mix_counts)}")
     log(
         f"[info] 大きなニュース {len(majors)} 件（上限 {args.max_major} 本・tier quality）/ "
         f"候補 AI {len(ai_items)} 件（上限 {ai_limit} 本）/ 幅広い話題 {len(broad_items)} 件（上限 {broad_limit} 本）"
@@ -2285,6 +2290,8 @@ def main() -> int:
                 return "drop", None
             if not is_ai and per_feed.get(cand["source_slug"], 0) >= args.per_feed:
                 return "next", None  # 次の実行に回す
+            if news_mix.over_cap(cand, mix_counts):
+                return "next", None  # 企業向け・開発者向けの海外の発表は今日の上限まで（見送りの印は付けない。台帳 A41）
             if not is_ai and cand.get("section") == "sports" and sports_today(state) >= persona.SPORTS_DAILY_CAP:
                 return "next", None  # スポーツは1日の上限まで（集客の入口。大きなものだけ）
             if is_wire(cand) and wire_attempts[0] >= args.max_wire:
@@ -2494,7 +2501,10 @@ def main() -> int:
         mark(state, item, slug=record["slug"], model=model_name, section=lane, score=record.get("qualityScore"),
              **({"offPersona": True} if item.get("_off_persona") else {}),
              **({"major": True} if major else {}), **({"breaking": True} if record.get("breaking") else {}),
-             **({"publicInterest": item["_public_interest"]} if item.get("_public_interest") else {}))
+             **({"publicInterest": item["_public_interest"]} if item.get("_public_interest") else {}),
+             mix=item.get("_mix") or news_mix.classify(item))
+        mix_key = item.get("_mix") or news_mix.classify(item)
+        mix_counts[mix_key] = mix_counts.get(mix_key, 0) + 1
         state["major_tries"].pop(item["id"], None)
         (state.get("gate_retry") or {}).pop(item["id"], None)
         if item.get("_off_persona") and not major:
