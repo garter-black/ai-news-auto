@@ -191,6 +191,9 @@ def qa_ok(version: dict | None, env: dict | None = None) -> bool:
     # 画像のレビューができなかった（決まりだけで通した）動画は出さない。「確かめられない」は不合格
     if (version or {}).get("level") in ("L3", "L4") or str(qa.get("vision_how") or qa.get("how") or "").startswith("deterministic"):
         return False
+    # 2026-11-04 オーナー「このクオリティを下回らないように」: v3 の形（カードを2種類以上・止まったページなし・要点の見出し）に合格した動画だけ
+    if env.get("SNS_VIDEO_REQUIRE_V3", "on") != "off" and qa.get("v3") is not True:
+        return False
     return bool(qa.get("geometry")) and bool(qa.get("vision")) is True
 
 
@@ -976,7 +979,9 @@ def repost(slug: str, api_key: str | None = None, now: datetime | None = None, s
     (state.get("queued") or {}).pop(slug, None)
     state.setdefault("converted", {})[slug] = {"at": now.isoformat(timespec="seconds"), "pending": pending, "threadsSent": False, "repost": True,
                                                "paused": {k: {"id": v, "ok": True, "deleted": True} for k, v in old_ids.items() if v},
-                                               "dropBlueskyExtra": bool(spec.get("bluesky"))}
+                                               "dropBlueskyExtra": bool(spec.get("bluesky")), "clearHold": bool(spec.get("ownerApprovedDeleteRepost"))}
+    if spec.get("ownerApprovedDeleteRepost"):
+        rec.pop("ownerHold", None)  # オーナーが出し直しを承認した
     apply_converted(state, posted)
     POSTED.write_text(json.dumps(posted, ensure_ascii=False, indent=2) + "\n", "utf-8")
     drop_bluesky_extra(state)
@@ -1038,6 +1043,8 @@ def apply_converted(state: dict, posted: dict) -> int:
         if rec.get("convertedAt") == (conv.get("at") or "-") or (conv.get("threadsSent") and conv.get("applied")):
             continue  # この出し直しはもう写した（何度当てても同じ）
         paused = conv.get("paused") or {}
+        if conv.get("clearHold"):
+            rec.pop("ownerHold", None)  # オーナーが出し直しを承認した
         rec.setdefault("pausedIds", {}).update({k: v.get("id") for k, v in paused.items()})
         channels = {k: v for k, v in (rec.get("channels") or {}).items() if k not in paused}
         if conv.get("repost"):

@@ -190,7 +190,7 @@ def queued_rec(slot: datetime) -> dict:
 def ready_video(slug: str) -> dict:
     post = {"title": "t", "url": f"https://ai-tech-express.jp/articles/{slug}", "total": 34.6, "voice": {"credit": "VOICEVOX:九州そら"},
             "script_v3": {"hook": {"text": "h"}, "summary": "s"}}
-    qa = {"geometry": True, "vision": True, "version": 1}
+    qa = {"geometry": True, "vision": True, "v3": True, "version": 1}
     return {"status": "ready", "tries": 1, "versions": {"short": {"ok": True, "post": post, "qa": qa}, "full": {"ok": True, "post": post, "qa": qa}},
             "urls": {"short": f"https://ai-tech-express.jp/video/{slug}-s.mp4", "full": f"https://ai-tech-express.jp/video/{slug}-f.mp4"}}
 
@@ -263,7 +263,7 @@ class PublishQueuedTest(unittest.TestCase):
         self.assertIn("a", state["videosArchive"])
         self.assertEqual(state["queued"]["a"]["status"], "waiting")
         self.assertFalse(fu.qa_ok({"ok": True}, env={}))
-        self.assertTrue(fu.qa_ok({"qa": {"geometry": True, "vision": True}}, env={}))
+        self.assertTrue(fu.qa_ok({"qa": {"geometry": True, "vision": True, "v3": True}}, env={}))
 
     def test_held_repost_waits_for_adopted_video_without_blocking_others(self):
         slot = NOW + timedelta(hours=1)
@@ -388,7 +388,7 @@ class AdoptVideoTest(unittest.TestCase):
             d = Path(d)
             src = d / "art" / "launch"
             src.mkdir(parents=True)
-            good = {"total": 36.5, "template": "launch", "url": "https://ai-tech-express.jp/articles/a", "gate": {"ok": True, "qa": {"geometry": True, "vision": True}}}
+            good = {"total": 36.5, "template": "launch", "url": "https://ai-tech-express.jp/articles/a", "gate": {"ok": True, "qa": {"geometry": True, "vision": True, "v3": True}}}
             bad = {"total": 57.0, "template": "launch", "gate": {"ok": True, "qa": {"geometry": True, "vision": False}}}
             (src / "a__v3short.mp4").write_bytes(b"x")
             (src / "a__v3short.report.json").write_text(json.dumps(good))
@@ -532,7 +532,8 @@ class OwnerApprovedRepostTest(unittest.TestCase):
 
 class OneQualityBarTest(unittest.TestCase):
     def test_l3_l4_and_unreviewed_videos_are_never_posted(self):
-        good = {"geometry": True, "vision": True}
+        good = {"geometry": True, "vision": True, "v3": True}
+        self.assertFalse(fu.qa_ok({"level": "L1", "qa": {"geometry": True, "vision": True}}, env={}))  # v3 の形に合格していない
         self.assertTrue(fu.qa_ok({"level": "L1", "qa": good}, env={}))
         self.assertTrue(fu.qa_ok({"level": "L2", "qa": good}, env={}))
         self.assertFalse(fu.qa_ok({"level": "L3", "qa": good}, env={}))

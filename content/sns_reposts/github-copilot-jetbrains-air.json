@@ -1,0 +1,23 @@
+{
+  "note": "2026-11-04 オーナー承認: 作り直した動画（v3 の形・新しい声）で消して出し直す。前の投稿は調整役が消した",
+  "variant": "short",
+  "services": [
+    "threads",
+    "twitter",
+    "facebook"
+  ],
+  "bluesky": true,
+  "adopt": true,
+  "ownerApprovedDeleteRepost": "2026-11-04 オーナー承認（GitHub Copilot を v3 の動画で出し直す）",
+  "deletedBufferIds": {
+    "threads": [
+      "6aea40275a7c19a37cd1e45f"
+    ],
+    "twitter": [
+      "6aea40285a7c19a37cd1e523"
+    ],
+    "facebook": [
+      "6aea402a52391758e2e82f0b"
+    ]
+  }
+}
