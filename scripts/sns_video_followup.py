@@ -918,7 +918,9 @@ def repost(slug: str, api_key: str | None = None, now: datetime | None = None, s
     if spec.get("ownerApprovedDeleteRepost"):
         # オーナーが「消して出し直す」を承認し、前の投稿を SNS から消した: その Buffer の投稿だけ重複の確かめで数えない
         prev = (state.get("queued") or {}).get(slug) or {}
-        ids = {k: [v] for k, v in (prev.get("channels") or {}).items() if v}
+        # main の記録の ID のうち、承認済みの消した投稿（deletedBufferIds）だけを数えない。それ以外（新しく作った投稿）は数える
+        deleted = {x for v in (spec.get("deletedBufferIds") or {}).values() for x in v}
+        ids = {k: [v] for k, v in (prev.get("channels") or {}).items() if v and v in deleted}
         for k, v in (spec.get("deletedBufferIds") or {}).items():
             ids.setdefault(k, []).extend(x for x in v if x not in ids.get(k, []))
         pending["allowDuplicateOf"] = ids
