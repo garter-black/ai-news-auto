@@ -631,8 +631,9 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
             continue
         theirs = remote(slug)
         allowed = {x for ids in ((rec.get("pending") or {}).get("allowDuplicateOf") or {}).values() for x in ids}
-        if theirs and allowed and {v for v in (theirs.get("channels") or {}).values() if v} <= allowed:
-            log(f"[video-followup] {slug}: main の記録はオーナー承認で消した前の投稿だけなので、出し直す")
+        if theirs and allowed and (theirs.get("channels") or {}).get("threads", theirs.get("id")) in allowed:
+            # main の記録の Threads の投稿はオーナー承認で消したもの → 出し直す（SNS ごとの重複は Buffer の確かめが止める）
+            log(f"[video-followup] {slug}: main の記録はオーナー承認で消した前の投稿なので、出し直す（SNS ごとに Buffer で確かめる）")
             theirs = {}
         if theirs:
             # ほかの実行（同時に動いた回）がもう送った。作らずに、その記録を写す（1記事1投稿）
