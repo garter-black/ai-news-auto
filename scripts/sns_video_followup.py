@@ -630,6 +630,10 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
             out.append({"slug": slug, **q})
             continue
         theirs = remote(slug)
+        allowed = {x for ids in ((rec.get("pending") or {}).get("allowDuplicateOf") or {}).values() for x in ids}
+        if theirs and allowed and {v for v in (theirs.get("channels") or {}).values() if v} <= allowed:
+            log(f"[video-followup] {slug}: main の記録はオーナー承認で消した前の投稿だけなので、出し直す")
+            theirs = {}
         if theirs:
             # ほかの実行（同時に動いた回）がもう送った。作らずに、その記録を写す（1記事1投稿）
             q.update({**{k: theirs.get(k) for k in ("status", "id", "dueAt", "variant", "channels") if theirs.get(k)}, "status": "created", "why": "ほかの実行が先に送った"})

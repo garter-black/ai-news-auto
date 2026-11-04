@@ -516,3 +516,15 @@ class OwnerApprovedRepostTest(unittest.TestCase):
         with self.assertRaises(tp.DuplicatePost):
             tp.ensure_not_duplicate("k", {"channelId": "c"}, "threads", ART, "article")  # ふだんは止める
         tp._BUFFER_RECENT.clear()
+
+
+    def test_remote_record_of_deleted_posts_does_not_block_owner_approved_repost(self):
+        state = {"videos": {"acme-tool": ready_video("acme-tool")}}
+        rec = queued_rec(NOW + timedelta(minutes=30))
+        rec["pending"]["allowDuplicateOf"] = {"threads": ["OLD-T"], "twitter": ["OLD-X"], "facebook": ["OLD-F"]}
+        sent = []
+        with patch.object(fu, "article_of", lambda report: ART):
+            fu.publish_queued(state, {"posted": {"acme-tool": rec}}, NOW, FLAGS, creator=lambda svc, inp, art: sent.append((svc, inp.get("_allowDuplicateOf"))) or f"N-{svc}",
+                              issue=lambda s, w: None, eligible=lambda s: True,
+                              remote=lambda s: {"status": "created", "channels": {"threads": "OLD-T", "twitter": "OLD-X", "facebook": "OLD-F"}})
+        self.assertEqual(sent, [("threads", ["OLD-T"]), ("twitter", ["OLD-X"]), ("facebook", ["OLD-F"])])
