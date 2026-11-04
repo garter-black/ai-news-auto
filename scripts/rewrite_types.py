@@ -257,6 +257,10 @@ def rewrite(slug: str, attempts: int = 2) -> tuple[dict | None, dict]:
     report: dict = {"slug": slug, "history": []}
     page = feeds.fetch_article_text(item["url"])
     text = max([page.get("text") or ""], key=len)
+    # 元の資料の見出しは、取り直したページの題名にする（記事の今の題名を「元の資料の見出し」として渡すと、出典を公式に
+    # 差し替えた記事で、前の報道にしかない事実〔価格・日付〕が資料の事実として通ってしまう。2026-11-04 Galaxy Buds On の書き直し）
+    if str(page.get("title") or "").strip():
+        item["title"] = str(page["title"]).strip()
     if len(text) < w.MIN_TEXT_CHARS:
         return None, {**report, "why": f"元の資料が読めない・短い（{len(text)}字）"}
     related = [r for r in archive.Archive().related(item["title"], text, item["url"], lane) if r.get("slug") != slug]

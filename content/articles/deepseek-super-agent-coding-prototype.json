@@ -3,7 +3,7 @@
   "sourceType": "web",
   "sourceUrl": "https://github.com/deepseek-ai/dsh-superagent-prototype",
   "sourceName": "DeepSeek公式（GitHub）",
-  "title": "DeepSeek、プログラミング支援AI「Super-Agent」の試作版を公開　呼ばれなくても提案",
+  "title": "DeepSeek、GitHubリポジトリ向けの自律型コーディングAI「dsh-superagent」の試作コードを公開",
   "seoTitle": "Super-Agentとは？DeepSeekの先回りコーディングAI",
   "threadsPost": "呼ばれる前に、AIが先に口を出す時代かも。\n中国のAI企業DeepSeekが、開発者のグループチャットを見守って、困りごとに自分から解決策を出すプログラミングAIの試作版を公開しました。\n名前は「Super-Agent」で、オープンソースです。\n料金や日本での使い方は、報道では確認できていません。",
   "threadsHook": "future",

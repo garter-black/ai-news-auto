@@ -182,5 +182,31 @@ class IrDocumentsTest(unittest.TestCase):
         self.assertTrue(re.search(r"^pypdf", (ROOT / "requirements.txt").read_text("utf-8"), re.M))
 
 
+class RewriteUsesOfficialPageTitleTest(unittest.TestCase):
+    def test_source_header_title_comes_from_the_fetched_official_page(self):
+        """W31 の書き直し: 記事の今の題名（前の報道の事実入り）を元の資料の見出しとして渡さない"""
+        import json  # noqa: PLC0415
+        from unittest import mock  # noqa: PLC0415
+        import rewrite_types  # noqa: PLC0415
+
+        seen = {}
+
+        def fake_compose(item, text, lane, related, voice, page):
+            seen["title"] = item["title"]
+            raise RuntimeError("stop")
+
+        old = {"slug": "x", "title": "サムスン、新イヤホン　229ドルで11月6日発売", "sourceUrl": "https://news.samsung.com/global/x",
+               "publishedAt": "2026-10-27T00:00:00+00:00", "body": ""}
+        page = {"text": "Samsung Electronics has launched Galaxy Buds On. " * 30, "title": "A Day With Galaxy Buds On"}
+        with mock.patch.object(rewrite_types.Path, "read_text", return_value=json.dumps(old)), \
+                mock.patch.object(rewrite_types.feeds, "fetch_article_text", return_value=page), \
+                mock.patch.object(rewrite_types.archive.Archive, "related", return_value=[]), \
+                mock.patch.object(rewrite_types, "corrected_slugs", return_value=set()), \
+                mock.patch.object(rewrite_types.w, "compose_with_facts", side_effect=fake_compose):
+            with self.assertRaises(RuntimeError):
+                rewrite_types.rewrite("x")
+        self.assertEqual(seen["title"], "A Day With Galaxy Buds On")
+
+
 if __name__ == "__main__":
     unittest.main()
