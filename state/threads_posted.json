@@ -3540,7 +3540,8 @@
       },
       "status": "scheduled",
       "convertedAt": "2026-11-03T19:19:23+00:00",
-      "videoVariant": "short"
+      "videoVariant": "short",
+      "blueskyFailed": "Bluesky のアカウントのメールアドレスが未確認のため、動画を上げられません（Bluesky の設定でメールを確認すると出せるようになります）"
     },
     "chatgpt-pro-monthly-api-credits": {
       "id": "6ae9e0a01e1aeba3c6bb1c77",
