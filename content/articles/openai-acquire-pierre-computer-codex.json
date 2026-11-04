@@ -1,0 +1,129 @@
+{
+  "slug": "openai-acquire-pierre-computer-codex",
+  "sourceType": "web",
+  "sourceUrl": "https://openai.com/index/openai-to-acquire-pierre",
+  "sourceName": "OpenAI公式ブログ",
+  "title": "OpenAI、開発ツール企業Pierreを買収へ　Codexのコード確認機能を支える",
+  "seoTitle": "OpenAIのPierre買収とは？Codexへの影響",
+  "threadsPost": "Codexを使っている開発者の皆さん、知っておいてほしい話です。\n\n要約すると、OpenAIが開発ツール企業のPierreを買収すると発表しました。\nCodexのファイルやDiffの表示は、Pierreのライブラリが支えています。\n\nコードのレビュー、ふだんどんな道具で進めていますか？",
+  "threadsHook": "callout",
+  "threadsQuestions": [
+    {
+      "pattern": "expert",
+      "question": "コードのレビュー、ふだんどんな道具で進めていますか？"
+    },
+    {
+      "pattern": "line",
+      "question": "AIが書いたコードのレビュー、どこまで人が見るべきだと考えますか？"
+    }
+  ],
+  "threadsStyle": 3,
+  "writingVoice": "senpai",
+  "lede": "OpenAIが、コード保管サービス「Code Storage」を運営する米Pierre Computer Company, Inc.を買収することになりました。Codexアプリのファイル閲覧や変更の確認で使われているライブラリは、このPierreが作ったものです。買収額や完了時期は発表されておらず、完了には規制当局の承認などの条件があります。",
+  "description": "OpenAIが開発ツール企業Pierre Computer Companyを買収へ。CodexのTreesとDiffsを作った会社です。オープンソースは維持され、Code Storageも継続。金額と完了時期は未発表です。",
+  "keywords": [
+    "OpenAI 買収",
+    "Pierre Computer Company",
+    "Code Storage",
+    "Codex",
+    "Trees Diffs",
+    "オープンソース",
+    "Git",
+    "コーディングエージェント",
+    "Pando",
+    "ソースコード管理"
+  ],
+  "tags": [
+    "OpenAI",
+    "Codex",
+    "買収",
+    "Git",
+    "AIエージェント",
+    "開発ツール"
+  ],
+  "highlights": [
+    "OpenAIがCode Storageを運営するPierre Computer Companyの買収に合意し、Codexに機能を取り込む方針です",
+    "Codexで使われるファイル閲覧「Trees」と差分表示「Diffs」はPierre製で、オープンソースのまま残ります",
+    "買収は規制当局の承認などが条件で、完了までは両社は別会社のままです。金額は未発表です"
+  ],
+  "timetable": [],
+  "verdict": null,
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "Codexでコードを確認している開発者は、画面の部品がPierre製だと知っておくと、今後の変更点を追いやすくなります。",
+      "Code Storageを使う企業は、買収完了後も使い続けられます。機能はCodexへ統合される方針です。"
+    ]
+  },
+  "body": "対象になるのは、Codexアプリでファイルを見たり、コードの変更を確認したりしている開発者です。Pierreのコード保管サービス「Code Storage」を使っている企業にも関係します。どちらでもない人には、今のところ何も変わりません。\n\nPierreは、プログラムのコードを保管して履歴を残すサービスと、開発者向けのオープンソースのツール（ソースが無料で公開されたソフト）を手がける会社です。履歴の管理には、多くの開発現場で使われるGit（コードの変更履歴を記録する仕組み）を使います。\n\n## 買収の中身は未発表の金額と、規制当局の承認という条件\n\nOpenAIの公式ブログによると、買収の対象はPierre Computer Company, Inc.です。取引の形は、OpenAIによるPierreの買収です。\n\n買収額は発表されていません。完了の時期も示されていません。\n\n完了は通常の完了条件に従い、規制当局の承認の取得も条件に含まれます。完了までは、OpenAIとPierreは別々の独立した会社のままです。\n\nOpenAIは、すでにPierreの部品を使っていると説明しています。Codexアプリでファイルを見たり変更を確認したりするとき、Pierreの「Trees」と「Diffs」というライブラリ（部品として組み込むプログラム）が動いています。\n\nTreesは、プロジェクトのファイルをすばやくたどるための部品です。Diffsは、何が変わったかを見やすく表示する部品です。OpenAIは、どちらも大量のコードを見て回る場面で高い性能を出すと評価しています。\n\n**狙いはAIが書くコードに合わせたGitの作り直し**\n\nOpenAIは、AIが並行して大量にコードを書くようになると、Gitまわりの仕組みも進化が必要だと説明しています。同社は今週、自社で使うソース管理の基盤「Pando」でGitを拡張している取り組みを公開したばかりです。\n\nPierreの参加によって、OpenAIは「エージェントが最初に作るブランチから、コードが世に出る瞬間まで」の標準を作りたいとしています。エージェントとは、自分で手順を進めるAIのことです。ブランチは、元のコードを壊さずに作業するための枝分かれです。\n\nOpenAIは、Codexを「開発者とエージェントが最も野心的なプロジェクトに挑む場所」にしたいとも述べています。買収の完了後は、企業が出荷するコードと、人々の判断をつなぐことを目指します。\n\nPierreの他の成果も紹介されています。Diffsの「Edit」モードでは、問題を見つけたその場でコードの1行を直せます。最近公開された「Highlights」は、開発者の入力やエージェントのコード出力に合わせて更新される、非常に高速なシンタックスハイライト（コードの色分け表示）です。\n\nCode StorageのAPI（アプリから呼び出す仕組み）も、同じ小さなチームが設計しました。アプリがコードを保存し、Gitで履歴を追えるサービスです。\n\n## 日本の開発者が使えるオープンソースは公開のまま、Code Storageも継続\n\n日本の開発者にとって、最も確かな点は2つです。1つ目は、Pierreのオープンソースのプロジェクトが、買収後もオープンソースのまま残ることです。OpenAIも引き続き貢献するとしています。\n\n2つ目は、Code Storageの顧客が、買収の完了後も使い続けられることです。OpenAIは、その間に機能をCodexに取り込む作業を進めるとしています。\n\n日本向けの提供条件や料金の変更は、発表されていません。Codexアプリを使っている人は、これまでどおり使えます。\n\nサイソクは、AIがコード移行まで自律的に進める流れを報じています（[GPT-6 Astraの機能整理](/articles/openai-gpt-6-astra-comprehensive-guide-matome)）。今回の買収は、その作業を支えるコード管理の土台を厚くする動きとして読めます（編集部の見方）。\n\n## まだ分からないこと\n\n- 買収額はまだ発表されていません。\n- 買収の完了時期はまだ発表されていません。\n- Code StorageがCodexに統合される具体的な時期と形は、まだ発表されていません。\n- 日本を含む地域別の提供条件や料金の変更は、まだ発表されていません。",
+  "easy": "## ひとことで言うと\n\nOpenAIが、開発者向けツールを作る米Pierre社を買収することになりました。Codexアプリのコード確認の画面は、すでにPierreの部品で動いています。\n\n買収額や完了の時期は発表されていません。完了には、規制当局の承認などの条件があります。\n\n## 何が変わるのか\n\nPierreは、プログラムのコードを保管し、変更の履歴を記録するサービス「Code Storage」を運営しています。履歴の管理には、開発者に広く使われる仕組みのGit（ギット）を使っています。\n\nまた、ファイルを一覧で見る「Trees」と、変更箇所を見比べる「Diffs」という部品も公開しています。どちらも、OpenAIのCodexアプリで使われています。\n\nOpenAIは、AIがコードを書く場面が増えると、Gitまわりの仕組みも変える必要があると説明しています。Pierreの技術を使い、AIが最初に作る枝分かれの作業から、完成したコードを公開するまでを、Codexでつなぐ考えです。\n\n## 今の利用者への影響\n\nPierreのオープンソースの部品は、これからも無料で公開されたままです。OpenAIも開発に協力を続けるとしています。\n\nCode Storageは、買収が完了したあとも使えます。機能は、順次Codexに取り込む方針です。買収が完了するまで、OpenAIとPierreは別々の会社のままです。",
+  "channel": "OpenAI公式ブログ",
+  "channelId": "",
+  "channelSlug": "openai-news",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "OpenAI to acquire Pierre Computer Company, Inc.",
+  "publishedAt": "2026-11-04T14:30:00+00:00",
+  "generatedAt": "2026-11-04T14:40:41.806785+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/openai-acquire-pierre-computer-codex-b37e95a1.jpg",
+  "model": "claude:sonnet",
+  "affiliates": [],
+  "newsType": "deal",
+  "faq": [
+    {
+      "q": "OpenAIはPierreを買収するの？何が発表された？",
+      "a": "OpenAIが、Code Storageを運営するPierre Computer Company, Inc.を買収すると発表しました。完了は規制当局の承認などが条件で、金額は未発表です。"
+    },
+    {
+      "q": "Pierreの買収はCodexにどう関係する？",
+      "a": "Codexアプリのファイルをたどるtreesと、変更を見せるDiffsは、すでにPierreのライブラリです。OpenAIはGitの作業をエージェント向けに発展させるとしています。"
+    },
+    {
+      "q": "Pierreのオープンソースやcode Storageは使い続けられる？",
+      "a": "オープンソースのプロジェクトは公開のままで、OpenAIも貢献を続けます。Code Storageの顧客も、買収完了後に使い続けられます。"
+    },
+    {
+      "q": "Pierreの買収はいつ完了する？",
+      "a": "完了時期は発表されていません。規制当局の承認などの条件があり、完了までOpenAIとPierreは別々の独立した会社のままです。"
+    }
+  ],
+  "todayActions": [
+    "Codexアプリでファイルや差分を表示し、Pierre製のTreesとDiffsの画面を確認する",
+    "Code Storageを使っている場合は、社内の担当者に買収後も継続できると共有する",
+    "OpenAI公式ブログで、Pandoの記事と今回の発表を読み比べる"
+  ],
+  "relatedSlugs": [
+    "openai-gpt-6-astra-comprehensive-guide-matome"
+  ],
+  "qualityScore": 85,
+  "breaking": true,
+  "sourcePublishedAt": "2026-11-04T14:30:00+00:00",
+  "detectedAt": "2026-11-04T14:38:20+00:00",
+  "fastLane": true,
+  "speedMinutes": 14,
+  "imageCredit": {
+    "kind": "official",
+    "org": "OpenAI",
+    "provider": "OpenAI公式ブログ",
+    "sourceUrl": "https://openai.com/index/openai-to-acquire-pierre",
+    "original": "https://images.ctfassets.net/kftzwdyauwt9/2mUBSQZ1FwfTFJR5Yco4nQ/9a775c8c69a1d1e161bd7f56f4fdb7e7/OAIonOAI_ChadNelson_1x1.png?w=3840&q=90&fm=webp",
+    "width": 1200,
+    "height": 1200,
+    "at": "2026-11-04T14:41:03+00:00"
+  },
+  "imageFocus": {
+    "x": 0.475,
+    "y": 0.537,
+    "box": [
+      0.041,
+      0.075,
+      0.909,
+      1.0
+    ],
+    "ar": 1.0,
+    "src": "https://ai-tech-express.jp/img/openai-acquire-pierre-computer-codex-b37e95a1.jpg"
+  }
+}

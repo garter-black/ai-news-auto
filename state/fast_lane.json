@@ -284,6 +284,19 @@
       "title": "",
       "url": "https://k-tai.watch.impress.co.jp/docs/news/2151356.html"
     },
+    "3a06f84c0f51a102": {
+      "detectedAt": "2026-11-04T14:38:20+00:00",
+      "finishedAt": "2026-11-04T14:40:51+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41849583908",
+      "slug": "openai-acquire-pierre-computer-codex",
+      "source": "openai-news",
+      "sourcePublishedAt": "2026-11-04T14:30:00+00:00",
+      "startedAt": "2026-11-04T14:38:57+00:00",
+      "title": "OpenAI to acquire Pierre Computer Company, Inc.",
+      "url": "https://openai.com/index/openai-to-acquire-pierre"
+    },
     "3fa1bc8326d32871": {
       "detectedAt": "2026-11-02T15:30:20+00:00",
       "finishedAt": "2026-11-02T15:32:02+00:00",

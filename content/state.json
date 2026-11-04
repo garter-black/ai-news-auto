@@ -5834,6 +5834,17 @@
       "skipped": true,
       "url": "https://www.mext.go.jp/a_menu/shinkou/nankyoku/detail/1422006_00071.htm"
     },
+    "3a06f84c0f51a102": {
+      "at": "2026-11-04T14:40:51.098992+00:00",
+      "breaking": true,
+      "major": true,
+      "mix": "other",
+      "model": "claude:sonnet",
+      "score": 85,
+      "section": "ai",
+      "slug": "openai-acquire-pierre-computer-codex",
+      "url": "https://openai.com/index/openai-to-acquire-pierre"
+    },
     "3a09379f6ade51a6": {
       "at": "2026-10-28T19:33:00.941696+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -14405,46 +14416,6 @@
   "quality_log": [
     {
       "accepted": true,
-      "at": "2026-11-02T19:34:35.972926+00:00",
-      "attempt": 2,
-      "id": "598c6194c0d34c23",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 71.9,
-        "avg_sentence": 32.2,
-        "long_share": 0.045,
-        "max_paragraph": 137,
-        "paragraphs": 30,
-        "sentences": 67
-      },
-      "score": 100,
-      "source": "openai-news",
-      "title": "Qodo builds context into AI code review with Codex"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T19:34:58.489990+00:00",
-      "attempt": 1,
-      "id": "dc539634bf50a02a",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 74.6,
-        "avg_sentence": 37.3,
-        "long_share": 0.05,
-        "max_paragraph": 111,
-        "paragraphs": 10,
-        "sentences": 20
-      },
-      "score": 100,
-      "source": "tokyo-metro",
-      "title": "令和8年度東京都税制調査会第3回総会の開催及び知事への報告の手交について"
-    },
-    {
-      "accepted": true,
       "at": "2026-11-02T19:52:48.817883+00:00",
       "attempt": 1,
       "id": "195c284d0de53e7f",
@@ -20831,6 +20802,43 @@
       "warnings": [
         "見出しが49字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（VOID・TANUKI・PIT）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T14:39:48.980725+00:00",
+      "attempt": 1,
+      "id": "3a06f84c0f51a102",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "openai-news",
+      "title": "OpenAI to acquire Pierre Computer Company, Inc."
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T14:40:51.091749+00:00",
+      "attempt": 2,
+      "id": "3a06f84c0f51a102",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 90.5,
+        "avg_sentence": 40.5,
+        "long_share": 0.105,
+        "max_paragraph": 144,
+        "paragraphs": 17,
+        "sentences": 38
+      },
+      "score": 85,
+      "source": "openai-news",
+      "title": "OpenAI to acquire Pierre Computer Company, Inc.",
+      "warnings": [
+        "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す"
       ]
     }
   ],
