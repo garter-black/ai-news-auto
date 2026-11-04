@@ -596,6 +596,44 @@ class TrialScopeTest(unittest.TestCase):
         self.assertIn("CLAUDE_API_LEDGER: video\n", (root / "sns_video.yml").read_text("utf-8"))
 
 
+class MaintenanceScopeTest(unittest.TestCase):
+    """（2026-11-04）今ある記事の手入れ（types・titles などの書き直し）の回数は、新しい記事の1日の上限と別に数える。
+    記事の型の書き直しが「中心」を127回使い、新しい投資・マネー／不動産の記事が無料モデルに落ちて全部不合格になった"""
+
+    def test_rewrite_jobs_do_not_eat_article_caps(self):
+        import json
+        import tempfile
+        from pathlib import Path
+        from unittest.mock import patch
+
+        import llm
+
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            today = llm._jst_day()
+            (d / "claude_api_usage_types.json").write_text(json.dumps({"runs": {today: {"r1": {"usd": 9.0, "calls": {"core": 127}}}}}))
+            (d / "claude_api_usage_titles.json").write_text(json.dumps({"runs": {today: {"r3": {"usd": 1.0, "calls": {"core": 5}}}}}))
+            (d / "claude_api_usage.json").write_text(json.dumps({"runs": {today: {"r2": {"usd": 1.0, "calls": {"core": 4}}}}}))
+            with patch.object(llm, "API_STATE_DIR", d):
+                with patch.dict("os.environ", {"CLAUDE_API_LEDGER": "", "LLM_WORKFLOW": "articles"}):
+                    s = llm.api_ledger_summary()
+                    self.assertEqual(s["calls_today"].get("core"), 4)  # 新しい記事は新しい記事の分だけ
+                    self.assertAlmostEqual(s["spent_today"], 11.0)  # お金（今日の目安額）は全部を合わせる
+                with patch.dict("os.environ", {"CLAUDE_API_LEDGER": "types", "LLM_WORKFLOW": "products"}):
+                    self.assertEqual(llm.api_ledger_summary()["calls_today"].get("core"), 132)  # 手入れどうしは合わせる
+
+    def test_rewrite_workflows_use_maintenance_ledgers(self):
+        from pathlib import Path
+
+        import llm
+
+        root = Path(__file__).resolve().parents[1] / ".github" / "workflows"
+        for name, ledger in (("types_rewrite.yml", "types"), ("title_rewrite.yml", "titles")):
+            self.assertIn(f"CLAUDE_API_LEDGER: {ledger}", (root / name).read_text("utf-8"), name)
+            self.assertIn(ledger, llm.MAINTENANCE_LEDGERS)
+        self.assertNotIn("video", llm.MAINTENANCE_LEDGERS)  # SNS の動画は本番と同じ上限
+
+
 class VideoClaudeOnlyTest(unittest.TestCase):
     """（2026-11-04 決定）動画の台本・画像の確認は Claude だけ。上限なら本当の理由を出す（Gemini に回さない）"""
 

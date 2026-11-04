@@ -248,6 +248,10 @@ def article_purpose(item: dict, lane: str, major: bool = False) -> str:
         return "sns"
     if lane == "ai" or persona.is_persona_topic({"genreSlug": lane, "title": item.get("title", "")}):
         return "core"
+    # 今日まだ最低本数に届いていない 投資・マネー／不動産／エンタメ は「中心」の段で書く（scripts/genre_focus.py の DAILY_MIN。
+    # 1日数本だけ）。エンタメは「その他」＝予算が苦しい日は無料モデルになり、品質ゲートで落ちて1本も出ない日が続いていた（2026-11-04）
+    if lane in genre_focus.FOCUS_GENRES and genre_focus.short_today(lane):
+        return "core"
     return "rest"
 
 

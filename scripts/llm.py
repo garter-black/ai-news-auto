@@ -413,6 +413,27 @@ def is_trial() -> bool:
     return (os.environ.get("LLM_WORKFLOW") or "").endswith(TRIAL_SUFFIX) or (os.environ.get("CLAUDE_API_LEDGER") or "").endswith(TRIAL_SUFFIX)
 
 
+# 今ある記事の手入れ（書き直し・見出し・章・ラベルの後付け）のジョブの記録。新しい記事の1日の回数の上限を食わないよう、
+# 回数は手入れのジョブどうしで別に数える（お金＝月の予算と今日の目安額は全部を合わせたまま）。
+# 2026-11-04: 記事の型の書き直し（types）が日本時間の朝までに「中心」を127回使い、新しい記事の「中心」の上限60回を
+# 使い切っていた。投資・マネー／不動産の候補が無料モデルに落ちて全部不合格になり、その日はAI以外の記事が出なかった
+MAINTENANCE_LEDGERS = {"types", "titles", "sections", "labels"}
+
+
+def _ledger_scope(name: str) -> str:
+    """記録の名前（CLAUDE_API_LEDGER。ファイル名の claude_api_usage_<名前>）→ 1日の回数を数える範囲（trial / maint / main）"""
+    name = (name or "").lower()
+    if name.endswith(TRIAL_SUFFIX) or (not name and (os.environ.get("LLM_WORKFLOW") or "").endswith(TRIAL_SUFFIX)):
+        return "trial"
+    return "maint" if name in MAINTENANCE_LEDGERS else "main"
+
+
+def current_ledger_scope() -> str:
+    if is_trial():
+        return "trial"
+    return _ledger_scope(re.sub(r"[^a-z0-9_-]", "", (os.environ.get("CLAUDE_API_LEDGER") or "").lower()))
+
+
 def claude_calls_today() -> int:
     """Claude CLI の今日の回数。試しのジョブと本番のジョブは別に数える（試しは試しの分だけ・本番は本番の分だけ）"""
     trial = is_trial()
@@ -986,11 +1007,14 @@ def api_ledger_summary(now: datetime | None = None) -> dict:
     req_by_day: dict[str, dict[str, int]] = {}
     cost_stats: dict[str, list[float]] = {}  # "段|モデルの段" → [回数, 米ドル]（今と前の期間）
     exhausted_until, reason = None, ""
-    trial = is_trial()
+    scope = current_ledger_scope()
     for path in sorted(API_STATE_DIR.glob("claude_api_usage*.json")):
         data = _read_json(path)
         # 1日の回数（calls）は、試しのジョブ（claude_api_usage_*_trial.json）と本番を別に数える。お金（月の予算）は全部を合わせる
-        same_scope = path.stem.endswith(TRIAL_SUFFIX) == trial
+        # 1日の回数は、試し・手入れ・本番（新しい記事・速報・動画）で別に数える（MAINTENANCE_LEDGERS）
+        ledger_name = path.stem[len("claude_api_usage_"):] if path.stem.startswith("claude_api_usage_") else ""
+        file_scope = "trial" if path.stem.endswith(TRIAL_SUFFIX) else _ledger_scope(ledger_name)
+        same_scope = file_scope == scope
         for day, runs in (data.get("runs") or {}).items():
             if not isinstance(runs, dict) or day < prev_first:
                 continue

@@ -66,6 +66,30 @@ class RouteTest(unittest.TestCase):
         self.assertTrue(genre_focus.ROUTE_INVESTMENT_RE.search("日銀のETF売却"))
 
 
+class MarketReviewRouteTest(unittest.TestCase):
+    """（2026-11-04）相場の振り返り・金融政策の見通しは投資・マネーへ。「日本株式会社」は動かさない"""
+
+    def test_market_reviews_route_to_investment(self):
+        for title in ("AI半導体株に翻弄された日本株～2026年10月の日本株式の振り返りと今後のポイント", "経済・物価情勢の展望（10月、全文）", "米国株式市場の見通し"):
+            self.assertEqual(genre_focus.route_section({"title": title}, "business"), "investment", title)
+        self.assertEqual(genre_focus.route_section({"title": "日本株式会社が新製品"}, "business"), "business")
+
+
+class FocusTierTest(unittest.TestCase):
+    """（2026-11-04）最低本数に届いていない 投資・マネー／不動産／エンタメ は「中心」の段で書く（エンタメが無料モデルに落ちて出なかった）"""
+
+    def test_short_focus_genre_uses_core(self):
+        import web_articles
+
+        with patch.object(genre_focus, "today_counts", return_value={}):
+            self.assertTrue(genre_focus.short_today("entertainment"))
+            self.assertEqual(web_articles.article_purpose({"title": "カプコン 決算"}, "entertainment"), "core")
+        with patch.object(genre_focus, "today_counts", return_value={"entertainment": 5}):
+            self.assertFalse(genre_focus.short_today("entertainment"))
+            self.assertEqual(web_articles.article_purpose({"title": "カプコン 決算"}, "entertainment"), "rest")
+        self.assertEqual(web_articles.article_purpose({"title": "大相撲"}, "sports"), "rest")
+
+
 class CandidateTest(unittest.TestCase):
     PASS = [
         ("investment", "[JPX総研]「TOPIX Next-tier」の算出開始について"),

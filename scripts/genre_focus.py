@@ -133,7 +133,9 @@ ROUTE_INVESTMENT_RE = re.compile(
     r"金融政策|政策金利|利上げ|利下げ|日経平均|(?<![A-Za-z])TOPIX(?![A-Za-z])|株価指数|東証|資本コストや株価|"
     r"金融商品|資産運用|運用状況|運用実績|年金積立金|(?<![A-Za-z])GPIF(?![A-Za-z])|暗号資産|特定口座|金融所得|証券税制|"
     r"決算|業績予想|上方修正|下方修正|配当|自己株式の取得(?!状況)|自社株買い|株式分割|公開買付|(?<![A-Za-z])TOB(?![A-Za-z])|"
-    r"含み損|含み益|手数料(?:の)?(?:無料|改定|引き下げ|引下げ|ゼロ)",
+    r"含み損|含み益|手数料(?:の)?(?:無料|改定|引き下げ|引下げ|ゼロ)|"
+    # 相場の振り返り・金融政策の見通し（2026-11-04: ニッセイ基礎研の「日本株の振り返り」が business のままで、投資・マネーに来なかった）
+    r"日本株(?!式会社)|米国株(?!式会社)|株式市場|株式相場|長期金利|経済・物価情勢の展望|展望レポート",
     re.IGNORECASE,
 )
 # エンタメのビジネスの話題（配信サービス・ゲーム機・アニメ・映画の料金・決算など）。テック・ビジネスのフィードからエンタメへ動かす
@@ -298,6 +300,12 @@ def today_counts(state: dict | None = None, now: datetime | None = None, article
             continue  # 取り下げた記事（JSON が無い）は数えない
         counts[genre] = counts.get(genre, 0) + 1
     return counts
+
+
+def short_today(genre: str, state: dict | None = None, now: datetime | None = None, articles_dir: Path | None = None) -> bool:
+    """このジャンルが今日まだ最低本数（DAILY_MIN）に届いていないか（届いていなければ記事を「中心」の段で書く）"""
+    need = daily_min().get(genre, 0)
+    return need > 0 and today_counts(state, now, articles_dir).get(genre, 0) < need
 
 
 def boost_lanes(lanes, state: dict | None = None, now: datetime | None = None, articles_dir: Path | None = None) -> list[str]:
