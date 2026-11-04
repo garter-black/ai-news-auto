@@ -372,4 +372,9 @@ test("写真の無いサービスは「WEB SERVICE」の板ではなく頭文字
   const body = fs.readFileSync(path.join(root, "components/rail/RankingBody.tsx"), "utf8");
   const first = body.slice(body.indexOf("function First"), body.indexOf("function First") + 1200);
   assert.ok(!/bg-live|text-live/.test(first), "1位の札に速報の赤（live）を使っている");
+  // 2位以下の札・スマホの PR の帯も同じ（2026-11-04 一貫性の点検: 1位だけ直して、ほかの順位とスマホの帯が赤のままだった）
+  for (const file of ["components/rail/RankingBody.tsx", "components/rail/MobilePrBar.tsx", "components/rail/RailRanking.tsx", "components/rail/parts.tsx"]) {
+    const src = fs.readFileSync(path.join(root, file), "utf8");
+    assert.ok(!/bg-live|text-live/.test(src), `${file}: 広告の枠に速報の赤（live）を使っている（W20）`);
+  }
 });

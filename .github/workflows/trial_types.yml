@@ -30,7 +30,9 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Trial (dry run)
         env:
-          LLM_WORKFLOW: trial
+          # 試し書きは本番と別に数える（llm.is_trial は名前の末尾 _trial を見る。台帳 O10。前は「trial」だけで本番に数えていた）
+          LLM_WORKFLOW: types_trial
+          CLAUDE_API_LEDGER: types_trial
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}

@@ -303,7 +303,7 @@ function planRow(data: PricingProduct, plan: LadderPlan): PlanRow {
 }
 
 function modelRow(data: PricingProduct, model: LadderModel): ModelRow {
-  const cell = (v: number | undefined) => (typeof v === "number" ? money(v, "USD") : "—");
+  const cell = (v: number | undefined) => (typeof v === "number" ? money(v, "USD") : "");
   const jp = model.jpy;
   const scheduled = (model.scheduled ?? [])
     .map((s) => {

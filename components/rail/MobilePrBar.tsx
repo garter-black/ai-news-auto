@@ -92,7 +92,7 @@ export default function MobilePrBar({ item, watchId }: { item: OfferItem; watchI
           <span className="min-w-0 flex-1">
             <span className="flex items-center gap-1.5 text-meta font-bold">
               <span className="rounded border border-line-strong px-1 text-badge text-muted">PR</span>
-              <span className="text-live">掲載中の商品</span>
+              <span className="text-accent">掲載中の商品</span>
             </span>
             <span className="block truncate text-meta font-bold text-ink">{item.name}</span>
             {price && <span className="text-meta font-bold tabular-nums tracking-normal text-ink">{price}</span>}

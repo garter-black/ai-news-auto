@@ -218,7 +218,7 @@ export default async function ComparePage({ params }: Props) {
                     {product.priceNote && <span className="mt-0.5 block text-meta font-normal text-muted">{product.priceNote}</span>}
                   </td>
                   {guide.columns.map((column, i) => (
-                    <td key={column} className="px-3 py-3 text-ink-soft">{product.specs?.[i] ?? "—"}</td>
+                    <td key={column} className="px-3 py-3 text-ink-soft">{product.specs?.[i] ?? ""}</td>
                   ))}
                   <td className="px-3 py-3 text-ink-soft">{product.bestFor}</td>
                   <td className="py-3 pl-3">

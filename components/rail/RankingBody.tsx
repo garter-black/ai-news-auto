@@ -197,7 +197,7 @@ function Row({ item, rank, onClick, now }: { item: OfferItem; rank: number; onCl
         <span className="font-display text-[22px] leading-none text-ink">{rank}</span>
         <ProductImage item={item} className="size-[72px] rounded-lg border border-line" pad="p-1.5" compact />
         <span className="min-w-0">
-          {item.label && <span className="block text-meta font-bold text-live">{item.label}</span>}
+          {item.label && <span className="block text-meta font-bold text-accent">{item.label}</span>}
           <span className="line-clamp-2 text-meta font-bold leading-snug text-ink group-hover:underline">{item.name}</span>
           {item.caution && <span className="mt-1 block text-meta leading-snug text-ink-soft">{item.caution}</span>}
           <span className="mt-0.5 block">
