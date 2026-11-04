@@ -1050,7 +1050,7 @@ def swap_video(slug: str, mp4: Path, approved: str, api_key: str | None = None) 
         inp["id"] = post_id
         for k in ("channelId", "schedulingType", "mode", "dueAt"):
             inp.pop(k, None)
-        after = edit_post(key, inp, article_of(report))
+        after = edit_post(key, inp, article_of(report), service=service)
         out[service] = {"status": after.get("status"), "dueAt": after.get("dueAt"), "video": _has_video(after) if service == "threads" else None}
     save_state(state)
     log(f"[video-followup] オーナーが選んだ動画に替えました（{approved}）: {out}")
@@ -1209,14 +1209,14 @@ def pause_post(api_key: str, node: dict) -> dict:
     return res.get("post") or {}
 
 
-def edit_post(api_key: str, inp: dict, article: dict | None = None) -> dict:
+def edit_post(api_key: str, inp: dict, article: dict | None = None, service: str = "threads") -> dict:
     """Buffer の editPost。本文・画像を変えるときは、変える直前に SNS ルールの門番（sns_rules）を通す（予約の時刻だけ戻すときは通さない）。
     差し替えたあとの投稿（状態・時刻・付いているもの）も同じ応答で受け取る（読み直しの1回を省く）"""
     import sns_rules
     import threads_post
 
     if "text" in inp or "metadata" in inp or "assets" in inp:
-        sns_rules.enforce_buffer("threads", inp, article, source="sns_video_followup.edit_post", history=False)
+        sns_rules.enforce_buffer(service, inp, article, source="sns_video_followup.edit_post", history=False)
     data = threads_post.buffer_graphql(
         api_key,
         "mutation($input: EditPostInput!) { editPost(input: $input) { __typename "
