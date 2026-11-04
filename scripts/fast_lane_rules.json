@@ -256,7 +256,7 @@
       },
       {
         "name": "google",
-        "re": "Google|グーグル|Gemini|DeepMind|(?<![A-Za-z])Gemma(?![A-Za-z])|(?<![A-Za-z])Genie\\s?\\d|(?<![A-Za-z])Veo\\s?\\d|NotebookLM|(?<![A-Za-z])Pixel\\s?\\d|Android\\s?\\d{2}|Alphabet"
+        "re": "Google|グーグル|Gemini|DeepMind|(?<![A-Za-z])Gemma(?![A-Za-z])|(?<![A-Za-z])Genie\\s?\\d|(?<![A-Za-z])Veo\\s?\\d|NotebookLM|(?<![A-Za-z])Pixel\\s?\\d|Android\\s?\\d{2}|(?<![A-Za-z])Chrome\\s?\\d{2,3}(?![0-9])|Alphabet"
       },
       {
         "name": "apple",
@@ -398,6 +398,16 @@
         "name": "Google公式ブログ"
       },
       {
+        "host": "chromestatus.com",
+        "entity": "google",
+        "name": "Chrome Platform Status（Google公式）"
+      },
+      {
+        "host": "developer.chrome.com",
+        "entity": "google",
+        "name": "Chrome for Developers（Google公式）"
+      },
+      {
         "host": "apple.com",
         "entity": "apple",
         "name": "Apple公式"
@@ -519,7 +529,7 @@
         "name": "Xbox Wire（公式）"
       }
     ],
-    "primary_path_re": "/(?:news|newsroom|blog|blogs|research|index|press|pressroom|stories|story|announcements?|releases?)/[^?#]{4,}|/Archives/edgar/data/|^/(?:[A-Za-z0-9_-]+/){0,5}[a-z0-9]+(?:-[a-z0-9]+){2,}/?$",
+    "primary_path_re": "/(?:news|newsroom|blog|blogs|research|index|press|pressroom|stories|story|announcements?|releases?)/[^?#]{4,}|/release-notes/[^?#]{2,}|/Archives/edgar/data/|^/(?:[A-Za-z0-9_-]+/){0,5}[a-z0-9]+(?:-[a-z0-9]+){2,}(?:\\.html?)?/?$",
     "outlets": [
       {
         "host": "k-tai.watch.impress.co.jp",
