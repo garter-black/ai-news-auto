@@ -186,13 +186,17 @@ def lead_point_problem(record: dict) -> str:
     if not points or record.get("type") == "roundup" or record.get("disaster"):
         return ""
     first = points[0]
+    if len(first) < 20:
+        return ""  # 要点の体をなしていない短い断片（試しの記録など）は見ない。要点は40〜60字
     lede1 = next(iter(_sentences(record.get("lede") or "")), "")
     sim = similarity(first, lede1) if lede1 else 0.0
     if sim >= VERBATIM_SIMILAR:
         return "要点の1つ目がリードの文の写し。一番のニュースを、リードとは違う言い方で書く"
     terms = main_news_terms(record.get("title") or "")
     text = unicodedata.normalize("NFKC", first).lower()
-    if terms and not any(t in text for t in terms) and sim < LEAD_POINT_SIMILAR:
+    # 漢字の長い複合語（「無料教科書」「国内推論」）は2字ずつの部分でも見る（「教科書」と書いていれば一番のニュースに触れている）
+    pieces = {t[i:i + 2] for t in terms if re.fullmatch(r"[一-龥々]{3,}", t) for i in range(len(t) - 1)} - GENERIC_TERMS
+    if terms and not any(t in text for t in [*terms, *pieces]) and sim < LEAD_POINT_SIMILAR:
         return (f"要点の1つ目（「{first[:24]}…」）が一番のニュースになっていない。題名・リードの1文目と同じ中心の事実"
                 f"（{'・'.join(terms[:4])}）を、リードとは違う言い方で1つ目に書く")
     return ""

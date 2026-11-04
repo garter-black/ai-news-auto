@@ -2293,6 +2293,13 @@
    "title": "ChatGPTのOpenAIが紹介する法律AI「Legora」　1万件の契約書を数分で一括点検",
    "videoUrl": "https://www.youtube.com/watch?v=z-WZMjNsg-k"
   },
+  "openai-refutes-exponential-time-hypothesis": {
+   "channel": "two-minute-papers",
+   "reason": "creator-video",
+   "retiredAt": "2026-11-04T10:17:04+09:00",
+   "title": "OpenAI、指数時間仮説を否定する論文を公開　3-SAT問題の高速解法を提示",
+   "videoUrl": "https://www.youtube.com/watch?v=CWdTBLsbaQs"
+  },
   "openai-security-agent-control-limitations": {
    "channel": "ai-explained",
    "reason": "creator-video",

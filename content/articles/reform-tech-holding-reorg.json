@@ -55,13 +55,12 @@
   "channelSlug": "tsr",
   "genre": "ビジネス・経済",
   "genreSlug": "business",
-  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものであり、特定の企業・金融商品への投資を勧誘するものではありません。誤りが含まれる可能性があるため、正確な内容は発表元の一次情報をご確認ください。",
+  "disclaimer": "本記事は報道（東京商工リサーチの調査・取材記事）をもとにAIが要約・解説して自動生成したものであり、特定の企業・金融商品への投資を勧誘するものではありません。誤りが含まれる可能性があるため、正確な内容は発表元の一次情報をご確認ください。",
   "videoId": "",
   "videoUrl": "",
   "videoTitle": "リフォームテクノロジー取締役会長・栗原将氏 インタビュー ～ 「ぼったくり」なし・ネット完結、住設業界の慣習変えたDX ～",
   "publishedAt": "2026-11-02T22:00:00+00:00",
   "generatedAt": "2026-11-02T22:14:43.621191+00:00",
-  "thumbnail": "https://ai-tech-express.jp/img/reform-tech-holding-reorg-e149a4c6.jpg",
   "model": "cloudflare:@cf/openai/gpt-oss-120b",
   "affiliates": [],
   "faq": [
@@ -95,28 +94,6 @@
   "sourcePublishedAt": "2026-11-02T22:00:00+00:00",
   "detectedAt": "2026-11-02T22:10:55+00:00",
   "speedMinutes": 18,
-  "imageCredit": {
-    "kind": "official",
-    "org": "東京商工リサーチ",
-    "provider": "東京商工リサーチ",
-    "sourceUrl": "https://www.tsr-net.co.jp/data/detail/1203383_1527.html",
-    "original": "https://www.tsr-net.co.jp/data/detail/__icsFiles/afieldfile/2026/10/28/1103_koukan_2.jpg",
-    "width": 1200,
-    "height": 694,
-    "at": "2026-11-02T22:15:04+00:00"
-  },
-  "imageFocus": {
-    "x": 0.483,
-    "y": 0.538,
-    "box": [
-      0.0,
-      0.076,
-      0.966,
-      1.0
-    ],
-    "ar": 1.7291,
-    "src": "https://ai-tech-express.jp/img/reform-tech-holding-reorg-e149a4c6.jpg"
-  },
   "originalTitle": "リフォームテクノロジー、持株会社化で「交換できるくん」分社化　ネット完結型リフォームが加速",
   "titleStyle": "2026-11-03",
   "sectionTitles": {
@@ -134,5 +111,6 @@
       "使ってみるには": "公式サイトから見積もり依頼までの手順"
     }
   },
-  "sectionsPolishedAt": "2026-11-03T12:12:19+00:00"
+  "sectionsPolishedAt": "2026-11-03T12:12:19+00:00",
+  "thumbnail": ""
 }

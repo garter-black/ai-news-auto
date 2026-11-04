@@ -5,7 +5,7 @@
 """
 import sys
 import unittest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest import mock
 
@@ -75,7 +75,8 @@ class NoticeGateTest(unittest.TestCase):
             {"slug": "cyberagent", "title": NOTICES[3][0], "channelSlug": "cyberagent-news"},
             {"slug": "apple", "title": KEEP[3], "channelSlug": "apple"},
         ]
-        with mock.patch.object(retire_articles, "recent_sns", return_value={"cyberagent"}):
+        posted = {"cyberagent": now - timedelta(days=2)}  # SNS に出して2日（7日たつまで残す。2026-11-04 D5）
+        with mock.patch.object(retire_articles, "sns_posts", return_value=posted):
             picked, kept = retire_articles.plan_notice(articles, now)
         self.assertEqual(set(picked), {"tobacco"})
         self.assertEqual(picked["tobacco"]["reason"], "notice-listing")

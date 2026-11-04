@@ -33,9 +33,9 @@
     "シミュレーション"
   ],
   "highlights": [
+    "NVIDIAは、数日かかるプラズマ計算をAIが数ミリ秒で予測した例など、半導体工場のAI活用を紹介しました",
     "Applied MaterialsのACE+は、PhysicsNeMoを使い表面形状のシミュレーションを最大35倍速くしました",
-    "AdvantestはNeMo Switchyardのエージェントで、試験工程のAIモデル選びを数時間から数分に短縮しました",
-    "Applied MaterialsはOmniverseで工場全体のデジタルツインを作り、搬送の滞りや配置を仮想空間で検証します"
+    "AdvantestはNeMo Switchyardのエージェントで、試験工程のAIモデル選びを数時間から数分に短縮しました"
   ],
   "timetable": [],
   "verdict": {

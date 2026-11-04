@@ -31,8 +31,8 @@
     "生成AI"
   ],
   "highlights": [
+    "CrowdStrikeは、社内のAIエージェントを止めるキルスイッチを「Falcon Guardian」に組み込みました",
     "キルスイッチはエージェントのコードを消さず、AIモデルへの接続を断つ方式",
-    "遮断や再開は人が判断する設計で、回路遮断器に例えられている",
     "AI可観測性のFiddler AIとAI検査のDreadnodeの買収計画も同時に発表"
   ],
   "timetable": [],

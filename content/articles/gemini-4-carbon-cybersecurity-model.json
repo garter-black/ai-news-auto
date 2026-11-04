@@ -31,9 +31,9 @@
     "Google DeepMind"
   ],
   "highlights": [
+    "Googleの最上位モデル「Gemini 4 Carbon」は、脆弱性発見のSEC-bench Proで88.2%を記録",
     "Artificial Analysis Intelligence Index v5.0で首位の59点を記録",
-    "ExploitGymは54.8%、CWE-bench（修正コード生成）は71.0%と報告",
-    "Terminal-Bench 4.0の不正成功を0.0%に抑え、重大な不整合警告は約80%減"
+    "ExploitGymは54.8%、CWE-bench（修正コード生成）は71.0%と報告"
   ],
   "timetable": [],
   "verdict": {

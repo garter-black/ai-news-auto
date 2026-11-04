@@ -242,6 +242,7 @@ def type_problems(record: dict) -> list[str]:
     except Exception:  # noqa: BLE001
         return []
     out = [] if record.get("newsType") else ["[A18] ニュースの種類の型で書かれていない（newsType が無い）"]
+    # [A38]: 「この記事のポイント」の1つ目が一番のニュースの言い換えになっていない（article_style.lead_point_problem）
     out += [f"[{code}] {msg}" for code, msg in article_style.coded_problems(record) if code in ("A18", "A19", "A38")]
     return out
 

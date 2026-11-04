@@ -29,8 +29,8 @@
     "EU AI法"
   ],
   "highlights": [
+    "Claude Mythos 5など3モデルが書く文章に、Anthropicの電子透かしが入るようになりました",
     "文章に見えない透かしが入り、意味・品質・読みやすさは変わらず、トークンや隠し文字も増えない",
-    "Sonnet 4.6で透かしに頼るなら、temperature・top_p・top_kの3つを要求から外す",
     "Amazon Bedrockでの展開は11月10日までに完了するとされ、検出機能は限定公開"
   ],
   "timetable": [],
