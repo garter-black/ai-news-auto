@@ -1986,6 +1986,58 @@
       },
       "embedded": true,
       "why": "速報（文面の投稿はすぐ出した）"
+    },
+    "copilot-cowork-build-lessons-rust": {
+      "at": "2026-11-04T05:49:25+00:00",
+      "status": "gate_failed",
+      "tries": 1,
+      "textAt": "2026-11-04T13:45:00+00:00",
+      "textId": "",
+      "breaking": false,
+      "scheduled": true,
+      "versions": {
+        "full": {
+          "ok": false,
+          "seconds": null,
+          "reasons": [
+            "記事の文だけの台本を作れない: つかみ（何が起きたか・なぜ大事か）の文か、画面の見出しが無い"
+          ],
+          "qa": {
+            "geometry": false,
+            "vision": false,
+            "version": 1
+          },
+          "template": "",
+          "level": null,
+          "base_layout": ""
+        },
+        "short": {
+          "ok": false,
+          "seconds": null,
+          "reasons": [
+            "記事の文だけの台本を作れない: つかみ（何が起きたか・なぜ大事か）の文か、画面の見出しが無い"
+          ],
+          "qa": {
+            "geometry": false,
+            "vision": false,
+            "version": 1
+          },
+          "template": "",
+          "level": null,
+          "base_layout": ""
+        }
+      },
+      "timings": {
+        "full": {
+          "ladder_total": 584.2
+        },
+        "short": {
+          "ladder_total": 584.2
+        }
+      },
+      "ok": false,
+      "reason": "full: 記事の文だけの台本を作れない: つかみ（何が起きたか・なぜ大事か）の文か、画面の見出しが無い / short: 記事の文だけの台本を作れない: つかみ（何が起きたか・なぜ大事か）の文か、画面の見出しが無い",
+      "pages": []
     }
   },
   "queued": {
@@ -2072,6 +2124,11 @@
         "threads": ""
       },
       "why": "Buffer に動画つきの投稿を作れなかった: Buffer: Scheduled time must be in the future"
+    },
+    "copilot-cowork-build-lessons-rust": {
+      "status": "waiting",
+      "why": "動画が検査に落ちたので、あとの回で作り直す（この投稿だけ遅らせる）",
+      "checkedAt": "2026-11-04T05:49:25+00:00"
     }
   },
   "converted": {
