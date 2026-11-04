@@ -187,6 +187,8 @@ def qa_ok(version: dict | None, env: dict | None = None) -> bool:
     if env.get("SNS_VIDEO_REQUIRE_QA", "on") == "off":
         return True
     qa = (version or {}).get("qa") or {}
+    if qa.get("ownerApproved"):
+        return True  # オーナーが動画そのものを見て選んだ（swap_video。記録つき）
     # 2026-11-04 オーナー承認: すべての段で同じ合格の基準。承認済みの形（左の見出し＋右の公式ページの画面）ではない L3/L4 の動画、
     # 画像のレビューができなかった（決まりだけで通した）動画は出さない。「確かめられない」は不合格
     if (version or {}).get("level") in ("L3", "L4") or str(qa.get("vision_how") or qa.get("how") or "").startswith("deterministic"):
@@ -1022,6 +1024,39 @@ def adopt_video(slug: str, src: Path, now: datetime | None = None, upload=None) 
     return {"slug": slug, "versions": {k: {"seconds": v["seconds"], "qa": v["qa"], "template": v["template"]} for k, v in versions.items()}, "urls": urls}
 
 
+def swap_video(slug: str, mp4: Path, approved: str, api_key: str | None = None) -> dict:
+    """（オーナーが動画そのものを見て選んだときだけ）予約中の投稿の動画を、この mp4 に替える（時刻と文面はそのまま）。
+    Bluesky もこの動画を使う。qa には ownerApproved を記録する（検査の代わりにオーナーの承認）"""
+    key = api_key if api_key is not None else os.environ.get("BUFFER_API_KEY", "")
+    state = load_json(STATE, {"videos": {}})
+    url = upload_kv(Path(mp4), slug)
+    v = state["videos"][slug]
+    variant = "short"
+    ver = v.setdefault("versions", {}).setdefault(variant, {})
+    ver["qa"] = {**(ver.get("qa") or {}), "ownerApproved": approved}
+    v.setdefault("urls", {})[variant] = url
+    v["variant"] = variant
+    report = ver.get("post") or {}
+    inputs = ((state.get("converted") or {}).get(slug) or {}).get("pending", {}).get("inputs") or {}
+    out = {"url": url}
+    for service, post_id in ((state.get("queued") or {}).get(slug) or {}).get("channels", {}).items():
+        if service not in inputs or not post_id:
+            continue
+        cur = read_post(key, post_id) or {}
+        if cur.get("status") != "scheduled":
+            out[service] = f"予約中ではない（{cur.get('status')}）"
+            continue
+        inp = video_input(service, inputs[service], report, variant, url)
+        inp["id"] = post_id
+        for k in ("channelId", "schedulingType", "mode", "dueAt"):
+            inp.pop(k, None)
+        after = edit_post(key, inp, article_of(report))
+        out[service] = {"status": after.get("status"), "dueAt": after.get("dueAt"), "video": _has_video(after) if service == "threads" else None}
+    save_state(state)
+    log(f"[video-followup] オーナーが選んだ動画に替えました（{approved}）: {out}")
+    return out
+
+
 def drop_bluesky_extra(state: dict) -> int:
     """出し直す記事を Bluesky の埋め合わせの記録から外す（外さないと Bluesky が「もう出した」として出さない）。何度やっても同じ"""
     keys = [s for s, c in (state.get("converted") or {}).items() if c.get("dropBlueskyExtra")]
@@ -1535,8 +1570,12 @@ def main() -> None:
     parser.add_argument("--repost", metavar="SLUG", help="出し直し（content/sns_reposts/<slug>.json の承認済みの文面か今の決まりの文面・動画つきで次のふつうの枠に）")
     parser.add_argument("--slot", default="", help="--repost の枠（ISO 8601。省略すると次のふつうの枠）")
     parser.add_argument("--adopt-video", nargs=2, metavar=("SLUG", "DIR"), help="検査に合格して保存した動画を、この記事の SNS 用に置く（作り直さない）")
+    parser.add_argument("--swap-video", nargs=3, metavar=("SLUG", "MP4", "APPROVED"), help="予約中の投稿の動画を、オーナーが選んだ mp4 に替える（時刻・文面はそのまま）")
     parser.add_argument("--publish", action="store_true", help="--repost / --adopt-video のあと、動画を待っている投稿を枠の順に予約する")
     args = parser.parse_args()
+    if args.swap_video:
+        print(json.dumps(swap_video(args.swap_video[0], Path(args.swap_video[1]), args.swap_video[2]), ensure_ascii=False))
+        return
     if args.repost or args.adopt_video:
         import llm
 

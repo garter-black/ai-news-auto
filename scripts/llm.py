@@ -449,7 +449,7 @@ def claude_calls_today() -> int:
 
 # 動画（台本・画像の確認）の Claude CLI（サブスクリプション）は、ほかの仕事と別に数え、上限を大きくする（2026-11-04 オーナー
 # 「API の上限で止まるのは勿体無い」）。API の上限（CLAUDE_API_DAILY_CALLS_*）は変えない。安全のための上限は残す
-CLI_PURPOSE_CAPS = {"video": 150, "video_review": 150}
+CLI_PURPOSE_CAPS = {"video": 60, "video_review": 40}  # 2026-11-04 オーナー: サブスクリプションの使いすぎを抑える（1日約8本分）
 
 
 def cli_purpose_cap(purpose: str) -> int:

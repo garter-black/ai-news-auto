@@ -45,6 +45,9 @@ on:
       adopt_video:
         description: "（出し直し）検査に合格した保存済みの動画を使う: slug:実行ID（その実行の成果物から <slug>__v3*.mp4 と report を探す）。空なら作り直す"
         default: ""
+      swap_video:
+        description: "（オーナーが選んだ動画に替える）slug:ブランチ:ファイル（そのブランチにある mp4 を置いて予約中の投稿の動画を替える）。空なら何もしない"
+        default: ""
       requeue:
         description: "（直す）下書きに戻した X・Facebook の投稿を動画つきで出し直す（例 slug:facebook）。空なら何もしない"
         default: ""
@@ -96,8 +99,8 @@ jobs:
           CLAUDE_API_LEDGER: video
           # Claude CLI（サブスクリプション）の回数は state/llm_usage_video.json に、台本・画像の確認ごとに数える（API の上限のあとも続ける）
           LLM_WORKFLOW: video
-          CLAUDE_CLI_DAILY_VIDEO: ${{ vars.CLAUDE_CLI_DAILY_VIDEO || '150' }}
-          CLAUDE_CLI_DAILY_VIDEO_REVIEW: ${{ vars.CLAUDE_CLI_DAILY_VIDEO_REVIEW || '150' }}
+          CLAUDE_CLI_DAILY_VIDEO: ${{ vars.CLAUDE_CLI_DAILY_VIDEO || '60' }}  # 2026-11-04 オーナー: サブスクリプションの使いすぎを抑える
+          CLAUDE_CLI_DAILY_VIDEO_REVIEW: ${{ vars.CLAUDE_CLI_DAILY_VIDEO_REVIEW || '40' }}
           CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
           CLAUDE_API_DAILY_CALLS_VIDEO: ${{ vars.CLAUDE_API_DAILY_CALLS_VIDEO }}
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
@@ -143,6 +146,12 @@ jobs:
             SNS_VIDEO_POST=live python scripts/sns_video_followup.py "${args[@]}" --publish
             exit $?
           fi
+          if [ -n "${{ github.event.inputs.swap_video }}" ]; then
+            sv="${{ github.event.inputs.swap_video }}"; slug="${sv%%:*}"; rest="${sv#*:}"; br="${rest%%:*}"; file="${rest#*:}"
+            git fetch -q origin "$br" && git show "origin/$br:$file" > "$RUNNER_TEMP/swap.mp4"
+            python scripts/sns_video_followup.py --swap-video "$slug" "$RUNNER_TEMP/swap.mp4" "2026-11-04 オーナーが copilot_A_v3 を選んだ"
+            exit $?
+          fi
           if [ -n "${{ github.event.inputs.requeue }}" ]; then
             SNS_VIDEO_POST=live python scripts/sns_video_followup.py --requeue "${{ github.event.inputs.requeue }}"
             exit $?
@@ -182,7 +191,7 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
       - name: 記録を main に残す（動画の記録・Claude API の使用量・記事の video）
-        if: ${{ always() && (github.event.inputs.plan_only != 'true' || github.event.inputs.queue_fix == 'apply' || github.event.inputs.requeue != '' || github.event.inputs.repost != '' || github.event.inputs.adopt_video != '') }}
+        if: ${{ always() && (github.event.inputs.plan_only != 'true' || github.event.inputs.queue_fix == 'apply' || github.event.inputs.requeue != '' || github.event.inputs.repost != '' || github.event.inputs.adopt_video != '' || github.event.inputs.swap_video != '') }}
         continue-on-error: true
         run: |
           files="state/sns_video.json state/claude_api_usage_video.json state/buffer_calls/video.json state/llm_usage_video.json"

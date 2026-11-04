@@ -702,8 +702,8 @@ class VideoCliAfterApiCapTest(unittest.TestCase):
 
         with patch.dict(os.environ, {}, clear=False):
             os.environ.pop("CLAUDE_CLI_DAILY_VIDEO", None)
-            self.assertGreaterEqual(llm.cli_purpose_cap("video"), 150)
-            self.assertGreaterEqual(llm.cli_purpose_cap("video_review"), 150)
+            self.assertEqual(llm.cli_purpose_cap("video"), 60)
+            self.assertEqual(llm.cli_purpose_cap("video_review"), 40)
         self.assertEqual(llm.cli_usage_key("claude:sonnet", "breaking"), "claude:sonnet")
 
     def test_image_review_falls_back_to_cli(self):
