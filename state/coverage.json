@@ -2,6 +2,24 @@
  "hours": 96,
  "items": [
   {
+   "slug": "torchtpu-open-source-pytorch-tpu",
+   "at": "2026-11-04T12:19:46.569345+00:00",
+   "title": "Google、TPU向け「TorchTPU」をオープンソース公開　PyTorchをそのまま実行",
+   "head": "Google、TPU向け「TorchTPU」をオープンソース公開　PyTorchをそのまま実行 | TorchTPU がオープンソースに: TPU でネイティブ PyTorch を実行",
+   "text": "Google、TPU向け「TorchTPU」をオープンソース公開　PyTorchをそのまま実行 | TorchTPU がオープンソースに: TPU でネイティブ PyTorch を実行 | TorchTPU / TPU / PyTorch / オープンソース / vLLM / Hugging Face / llm-d / TorchTitan / Google Cloud / LiteRT / TorchTPU / PyTorch / TPU / Google Cloud / オープンソース / AIインフラ",
+   "urls": [
+    "https://cloud.google.com/blog/ja/topics/ai-infrastructure/torchtpu-is-now-open-source-run-native-pytorch-on-tpus/"
+   ]
+  },
+  {
+   "slug": "msr-hacker-mindset-cybersecurity-ai",
+   "at": "2026-11-04T12:15:45.673570+00:00",
+   "title": "Microsoft Research、ハッカー思考と自律型サイバー防衛を解説　DARPA元責任者が語るAI時代の攻防",
+   "head": "Microsoft Research、ハッカー思考と自律型サイバー防衛を解説　DARPA元責任者が語るAI時代の攻防 | Learn the rules: The hacker mindset",
+   "text": "Microsoft Research、ハッカー思考と自律型サイバー防衛を解説　DARPA元責任者が語るAI時代の攻防 | Learn the rules: The hacker mindset | Microsoft Research / サイバーセキュリティ / ハッカー思考 / DARPA / Cyber Grand Challenge / AI防衛 / 自律システム / パープルチーム / Project Frota / クラウドセキュリティ / Microsoft / AI研究 / サイバーセキュリティ / 生成AI / 機械学習",
+   "urls": []
+  },
+  {
    "slug": "google-tpu-oracle-cloud-infrastructure",
    "at": "2026-11-04T11:26:49.626252+00:00",
    "title": "Google Cloudと　Oracle、OCIでGoogle TPUを提供へ　2027年から導入開始",
@@ -1222,14 +1240,6 @@
    "urls": [
     "https://www.tsr-net.co.jp/data/detail/1203387_1527.html"
    ]
-  },
-  {
-   "slug": "intelligent-terminal-local-120b-llm",
-   "at": "2026-10-31T12:01:39.436659+00:00",
-   "title": "Microsoftが「Intelligent Terminal」を公開　AIをオフラインで実行",
-   "head": "Microsoftが「Intelligent Terminal」を公開　AIをオフラインで実行 | Running a 120B model offline on Surface RTX Spark Dev Box with Intelligent Terminal",
-   "text": "Microsoftが「Intelligent Terminal」を公開　AIをオフラインで実行 | Running a 120B model offline on Surface RTX Spark Dev Box with Intelligent Terminal | Intelligent Terminal / Windows Terminal / ローカルLLM / Qwen 3.5 / Surface RTX Spark / Dev Box / Hyper-V / 使い方 / 料金 / オープンソース / Microsoft / Copilot / Intelligent Terminal / Windows / 生成AI / ローカルAI / 開発ツール",
-   "urls": []
   }
  ]
 }

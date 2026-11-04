@@ -1,0 +1,135 @@
+{
+  "slug": "torchtpu-open-source-pytorch-tpu",
+  "sourceType": "web",
+  "sourceUrl": "https://cloud.google.com/blog/ja/topics/ai-infrastructure/torchtpu-is-now-open-source-run-native-pytorch-on-tpus/",
+  "sourceName": "Google Cloud 公式ブログ（日本）",
+  "title": "Google、TPU向け「TorchTPU」をオープンソース公開　PyTorchをそのまま実行",
+  "seoTitle": "TorchTPUとは？TPUでPyTorchを動かす使い方",
+  "threadsPost": "AIモデルを開発・運用している人、押さえておきたい話です。\n\n要約すると、GoogleがTPUでPyTorchを動かす「TorchTPU」をGitHubで公開しました。\nvLLMやHugging Faceなど、使い慣れたツールのままTPUを選べます。\n\nAIの開発で、計算資源は何を重視して選びますか？",
+  "threadsHook": "callout",
+  "threadsQuestions": [
+    {
+      "pattern": "plain",
+      "question": "AIの開発で、計算資源は何を重視して選びますか？"
+    },
+    {
+      "pattern": "tradeoff",
+      "question": "安い計算資源のために、環境の作り直しの手間を受け入れますか？"
+    }
+  ],
+  "threadsStyle": 3,
+  "writingVoice": "honest",
+  "lede": "GoogleがTPU向けのネイティブPyTorch基盤「TorchTPU」を、PyTorch Conference 2026に合わせてGitHubでオープンソース公開しました。Google Cloud公式ブログによると、最小限のコード変更で既存のPyTorchの処理をTPUで動かせます。一方でVeRLなど一部の機能はプレビュー版で、価格は発表されていません。",
+  "description": "GoogleがTPUで標準のPyTorchを動かす「TorchTPU」をGitHubで公開。vLLM・Hugging Face・Rayなどに対応し、最小限のコード変更で利用可能。プレビュー提供の機能や未発表の条件も整理します。",
+  "keywords": [
+    "TorchTPU",
+    "TPU",
+    "PyTorch",
+    "オープンソース",
+    "vLLM",
+    "Hugging Face",
+    "llm-d",
+    "TorchTitan",
+    "Google Cloud",
+    "LiteRT"
+  ],
+  "tags": [
+    "TorchTPU",
+    "PyTorch",
+    "TPU",
+    "Google Cloud",
+    "オープンソース",
+    "AIインフラ"
+  ],
+  "highlights": [
+    "TPUで標準のPyTorchを動かす「TorchTPU」がGitHubでオープンソース公開された",
+    "Transformers v5ではdevice_map=\"tpu\"を渡すだけでTPUにモデルを配置できる",
+    "VeRLの対応とTPU Agent Suiteはプレビュー版で、全機能が一般提供ではない"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "limited",
+    "japan": "unknown",
+    "price": "不明",
+    "free": null,
+    "audience": "AI開発者",
+    "take": "TorchTPUはGitHubで公開済み。プレビュー版の機能もあるため、公式ドキュメントで対応範囲を確認するとよいでしょう。",
+    "judgedAt": "2026-11-04T12:19:46.569359+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "AIモデルを運用するエンジニアは、GPU以外にTPUも選べるようになり、計算資源の選択肢が広がります。",
+      "TPUを使う費用は発表されていないため、導入を検討する人は公式ドキュメントで条件を確認するとよいでしょう。"
+    ]
+  },
+  "body": "TPUは、Googleが開発したAI専用の計算チップです。PyTorchは、AIモデルを作って動かすために世界中で使われているオープンソースの開発基盤です。\n\nTorchTPUは、この2つを直接つなぐ仕組みです。Google Cloud公式ブログによると、Metaのチームと共同で開発しました。TPUをGPUやCPUと同じ感覚で選べるようにするのが狙いです。\n\n**遅延テンソル方式からの転換**\n\nGoogle Cloudのドキュメントによると、これまでTPUでPyTorchを動かすにはPyTorch/XLAが必要でした。計算の流れを記録してまとめて実行する方式で、コンパイルできる範囲を示すコードを足す必要がありました（Google Cloudのドキュメント、11/4確認）。\n\nTorchTPUは、PyTorch標準の「1デバイスにつき1プロセス」の実行方式を使い、処理を即時に実行します。そのため既存の処理やライブラリを、構造を書き換えずに動かせるとされています（同、11/4確認）。\n\n使い方は2段階です。まずイーガーモード（1行ずつ即実行する方式）でデバッグします。次にtorch.compileで本番向けの性能に移ります。公式ブログは「最小限のコード変更」で動かせると説明しており、変更が不要という意味ではありません。\n\n**Hugging FaceとMetaの評価**\n\nHugging Faceとは、人気のオープンウェイトモデル（重みを公開したAIモデル）をTPUで動かせるようにしました。Transformers v5ではdevice_map=\"tpu\"を渡すだけで配置できます。画像生成向けのDiffusersもTPU上で動き、テンソル並列処理に対応します。\n\nHugging Faceのトランスフォーマー群は、TPU上で毎晩自動テストされる体制も整えられました。\n\nMetaでは、PyTorchエンジニアリング担当ディレクターのJana van Greunen氏が「単一のハードウェア アーキテクチャに縛られるわけにはいきません」と述べています。\n\n**推論：vLLM、SGLang、llm-d**\n\n推論とは、学習済みのAIに答えを出させる処理です。公式ブログは、この費用と応答の速さが本番運用の主な難所になると説明しています。\n\n- vLLM：Inferactと開発したバックエンドで、継続的なバッチ処理、量子化、マルチチップ並列処理に対応します。\n- SGLang：RadixArkと開発しました。RadixAttentionで、繰り返されるプロンプト接頭辞の再計算を省きます。\n- llm-d 1.0：Red Hat、IBMなどと公開しました。公式ブログは、500人以上の協力者と25の組織のコミュニティとしています。一方、Google Cloudのドキュメントでは35の組織とあり、数字が異なります。\n\nllm-dはCNCFのサンドボックスプロジェクトです。接頭辞キャッシュ対応ルーティングや、プレフィルとデコードの分離ができます。GKEでは共通のエンドポイントのまま、GPUかTPUかを選べます。サイソクでは、llm-d 1.0を[10月のAI基盤更新](/articles/google-cloud-ai-infrastructure-october-updates)でも取り上げました。\n\nZenteiq.aiの創業者は、llm-dを使ったGKE Inference Gatewayで、総スループットが4倍以上になったと述べています。1日のトークン生成能力は、TPU v6e 1,000個あたり14億7,000万トークンから59億7,000万トークンに増えたとのことです。これは同社自身の用途での結果です。\n\n**学習：TorchTitanは最大8,192個のTPUで検証**\n\nTorchTitanには、Llama 3 70B／405B、Qwen 3 8B／32B、Qwen 3 235B、FLUX.1 12Bなどの事前学習用レシピがあります。最大8,000個のIronwood TPU（TPU v7x）での実行が検証されています。\n\nGoogleのテストでは、Qwen 3 8Bで最大52%のモデルFLOP使用率（MFU）を示しました。最大8,192個のIronwood TPUで、ほぼ線形のスケーリングと安定性も確認されたとしています。いずれもGoogle自身の測定です。\n\nVeRL（強化学習の枠組み）は、TPUバックエンドとリファレンスレシピがアップストリームされました。これはプレビュー版です。Rayでは、CPU、GPU、TPUをまたぐ処理を1つのワークフローで管理できます。\n\n**スマホ向けのLiteRTとTPU Agent Suite**\n\nLiteRT（旧TensorFlow Lite）もPyTorchの周辺に加わりました。litert-torch.convert()を1回呼ぶとPyTorchモデルを変換でき、Android、iOS、Windows、Webなどで動かせます。\n\nTPU Agent Suiteのプレビュー版もGitHubで公開されました。導入の案内、診断、性能調整などの自動化を助けるものです。\n\n編集部の見方では、TPUの利用者はGPU中心の開発環境を大きく作り替えずに、TPUを比較対象に加えやすくなります。ただし費用や性能の差は、各社の用途でしか分かりません。\n\n## まだ分からないこと\n\n- TorchTPU自体の価格と、TPUの利用料金はまだ発表されていません。\n- 日本での提供条件は、まだ発表されていません。\n- プレビュー版の機能が一般提供になる時期は、まだ発表されていません。",
+  "easy": "## ひとことで言うと\n\nGoogleが、自社のAI専用チップ「TPU」で、人気のAI開発ツール「PyTorch」をそのまま使える仕組み「TorchTPU」を公開しました。ソースコードはGitHubで公開されています。\n\n**何が変わったか**\n\nこれまでTPUでPyTorchを動かすには、コードに追加の記述が必要でした。TorchTPUでは、最小限の変更で既存のコードを動かせます。\n\n**どんなツールに対応するか**\n\nAIを動かすvLLMやSGLang、Hugging Faceのモデル、分散処理のRayなどに対応します。Hugging FaceのTransformers v5では、device_map=\"tpu\"を指定するだけでTPUにモデルを置けます。\n\n**注意点**\n\nVeRL（強化学習の枠組み）への対応や、TPU Agent Suiteはプレビュー版です。価格や日本での提供条件は発表されていません。",
+  "channel": "Google Cloud 公式ブログ（日本）",
+  "channelId": "",
+  "channelSlug": "google-cloud-blog-ja",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "TorchTPU がオープンソースに: TPU でネイティブ PyTorch を実行",
+  "publishedAt": "2026-11-04T02:10:00+00:00",
+  "generatedAt": "2026-11-04T12:19:46.569345+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/torchtpu-open-source-pytorch-tpu-c202f35f.jpg",
+  "model": "claude:sonnet",
+  "affiliates": [],
+  "newsType": "product",
+  "faq": [
+    {
+      "q": "TorchTPUとは何ですか？",
+      "a": "TPUで標準のPyTorchを動かすための、オープンソースのバックエンドです。Metaと共同開発され、GitHubで公開されました。最小限のコード変更で既存の処理を動かせます。"
+    },
+    {
+      "q": "TorchTPUは前の方式と何が違いますか？",
+      "a": "従来のPyTorch/XLAは、計算を記録するために追加のコードが必要でした。TorchTPUは処理を即時実行するため、既存のコードを書き換えにくいとされています。"
+    },
+    {
+      "q": "TorchTPUはどのツールに対応しますか？",
+      "a": "vLLM、SGLang、llm-d、TorchTitan、Ray、TorchRec、Hugging Face、LiteRTに対応します。VeRLの対応とTPU Agent Suiteはプレビュー版です。"
+    },
+    {
+      "q": "TorchTPUの料金や日本での提供は？",
+      "a": "TorchTPUやTPUの料金、日本での提供条件は発表されていません。公式ドキュメントで最新の条件を確認する必要があります。"
+    }
+  ],
+  "todayActions": [
+    "Google CloudのTPU向けPyTorchドキュメントで、対応する演算子とモデルを確認する",
+    "自社のAIワークロードがvLLMやHugging Faceを使っているか洗い出す",
+    "TPUの料金と提供条件は、Google Cloudの公式情報で最新を確かめる"
+  ],
+  "relatedSlugs": [
+    "google-cloud-ai-infrastructure-october-updates"
+  ],
+  "qualityScore": 92,
+  "sourcePublishedAt": "2026-11-04T02:10:00+00:00",
+  "detectedAt": "2026-11-04T12:17:53+00:00",
+  "imageCredit": {
+    "kind": "official",
+    "org": "Google Cloud",
+    "provider": "Google Cloud 公式ブログ（日本）",
+    "sourceUrl": "https://cloud.google.com/blog/ja/topics/ai-infrastructure/torchtpu-is-now-open-source-run-native-pytorch-on-tpus/",
+    "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/Ai_infrastructure.max-2500x2500.jpg",
+    "width": 1200,
+    "height": 591,
+    "at": "2026-11-04T12:21:28+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.534,
+    "y": 0.497,
+    "box": [
+      0.141,
+      0.07,
+      0.928,
+      0.924
+    ],
+    "ar": 2.0305,
+    "src": "https://ai-tech-express.jp/img/torchtpu-open-source-pytorch-tpu-c202f35f.jpg"
+  }
+}

@@ -2,12 +2,14 @@
   "failed": {
     "0Kw6_DTZPrY": 1,
     "1E0ZoktFerQ": 1,
+    "2h16j4K_NbA": 1,
     "2lNUGkCg_qc": 1,
     "3IVo-MNwk2I": 1,
     "4ZwVP0-ylZU": 1,
     "4bGb2OjU5tA": 1,
     "4idQxzAyPDo": 1,
     "5iu0nY9lIy8": 1,
+    "63pcV4z0DwI": 1,
     "7cJlIJpKBW4": 1,
     "8K08Ywgduno": 1,
     "AIH_9dOpAmU": 1,
@@ -20,9 +22,11 @@
     "IfVM9p0VCzE": 1,
     "JI3bbZNdyeA": 2,
     "JPe8gJkEa6g": 2,
+    "JR7xBi2kJjY": 1,
     "KH5fQCLhXrg": 1,
     "MCB3zM5dEVI": 1,
     "MxwXGl-lpe0": 1,
+    "NCxD-qsQcN0": 1,
     "NsOlCHYn99k": 1,
     "Oi9DHk57KeQ": 2,
     "UGLV3ufFZEw": 1,
@@ -55,7 +59,6 @@
     "tTuk4pGnT0A": 1,
     "u5t7-BLYvfQ": 2,
     "udRxVK7mKn0": 2,
-    "uuXijUuj4MA": 1,
     "xP1kjDOisVw": 1,
     "y6L37mXkTw0": 2,
     "y6g2J5NTlM8": 1,
@@ -3002,6 +3005,10 @@
       "reason": "本動画は1分未満のYouTube Shorts形式（ダイジェスト・予告動画）であり、報道記事化に必要な情報量が不足しているため対象外と判定しました。",
       "skipped": true
     },
+    "uuXijUuj4MA": {
+      "at": "2026-11-04T12:15:45.673570+00:00",
+      "slug": "msr-hacker-mindset-cybersecurity-ai"
+    },
     "uulSwSasi3g": {
       "at": "2026-08-07T15:48:07.244197+00:00",
       "slug": "forex-intervention-boj-rate-hike-outlook"
@@ -3165,6 +3172,11 @@
     "y1KqVcVJvzw": {
       "at": "2026-09-09T01:55:23.994473+00:00",
       "slug": "boj-interest-rate-raise-impact"
+    },
+    "yC72iQx6rM0": {
+      "at": "2026-11-04T12:04:39.355945+00:00",
+      "reason": "publish-gate: thin",
+      "skipped": true
     },
     "yI5C7LqBVEM": {
       "at": "2026-10-19T17:54:42.070579+00:00",
@@ -8719,6 +8731,14 @@
       "reason": "quality: 本文が短い（2437字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://blog.google/innovation-and-ai/technology/health/google-for-health-summit-singapore/"
+    },
+    "7ce238c684b996e7": {
+      "at": "2026-11-04T12:19:55.229451+00:00",
+      "model": "claude:sonnet",
+      "score": 92,
+      "section": "ai",
+      "slug": "torchtpu-open-source-pytorch-tpu",
+      "url": "https://cloud.google.com/blog/ja/topics/ai-infrastructure/torchtpu-is-now-open-source-run-native-pytorch-on-tpus/"
     },
     "7ce53b651c4285c7": {
       "at": "2026-10-29T06:52:01.073610+00:00",
@@ -14490,50 +14510,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T18:44:17.012688+00:00",
-      "attempt": 1,
-      "id": "29a9ccbde0255995",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "1月中旬から12月中旬頃までTver広告の配信も → 元記事では「11月中旬から12月中旬頃まで配信予定」となっており、月が「1月」に誤記されている。"
-      ],
-      "readability": {
-        "avg_paragraph": 110.0,
-        "avg_sentence": 50.4,
-        "long_share": 0.167,
-        "max_paragraph": 182,
-        "paragraphs": 11,
-        "sentences": 24
-      },
-      "score": 90,
-      "source": "mhlw",
-      "title": "「年金の日」・「ねんきん月間」のお知らせ"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T18:44:25.754410+00:00",
-      "attempt": 2,
-      "id": "29a9ccbde0255995",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 50.3字・60字超の文が 29% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 109.7,
-        "avg_sentence": 50.3,
-        "long_share": 0.292,
-        "max_paragraph": 156,
-        "paragraphs": 11,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "mhlw",
-      "title": "「年金の日」・「ねんきん月間」のお知らせ"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T18:44:29.371918+00:00",
@@ -20878,6 +20854,61 @@
         "見出しの書き方: 区切りの全角空白が2つ以上（補足は1つだけ）",
         "見出しが51字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（OCI・PFLOPS・FP）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T12:19:17.596450+00:00",
+      "attempt": 1,
+      "id": "7ce238c684b996e7",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "llm-d 1.0「500人以上の協力者と25の組織のコミュニティ」→ 元記事は25の組織だが、確認済みの文脈（公式ドキュメント）では35の組織と食い違っており、数字が一致しない。",
+        "「Zenteiq.aiは…推論の総スループットが4倍以上」「1日あたりのトークン生成能力は…14億7,000万から59億7,000万」→ 元記事では「トークン」とあるが記事は単位が欠落し、「1,000個のTPU v6eあたり」の条件はあるものの、顧客自身の用途という注記以外は問題なし（軽微な言い回しの省略）。",
+        "「かんたん版：ソースコードはGitHubで誰でも見られます」→ 元記事はオープンソースとして利用可能とするのみで、「誰でも見られる」はやや言い過ぎだが許容範囲の言い換え。",
+        "「TorchTitanは…最大8,000個のIronwood TPUでの実行が検証」と「最大8,192個でほぼ線形」→ 元記事に両方あり問題なし。ただしlead/要点の「記録した」「拡張」は元記事のテスト結果で、Google自身の条件付き結果である点の注記が薄い。",
+        "「編集部の見方では、PyTorchのコードを変えずにTPUを試せる」→ 元記事は「最小限のコード変更」であり、「変えずに」は言い過ぎ。",
+        "判定「提供状況=available」→ VeRL・TPU Agent Suiteなど一部はプレビュー版であり、全体を提供開始済みとするのはやや広い表現。"
+      ],
+      "readability": {
+        "avg_paragraph": 88.1,
+        "avg_sentence": 42.1,
+        "long_share": 0.174,
+        "max_paragraph": 165,
+        "paragraphs": 22,
+        "sentences": 46
+      },
+      "score": 80,
+      "source": "google-cloud-blog-ja",
+      "title": "TorchTPU がオープンソースに: TPU でネイティブ PyTorch を実行",
+      "warnings": [
+        "見出しが57字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（TPU・XLA・CI）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T12:19:55.214711+00:00",
+      "attempt": 2,
+      "id": "7ce238c684b996e7",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 85.5,
+        "avg_sentence": 40.9,
+        "long_share": 0.152,
+        "max_paragraph": 154,
+        "paragraphs": 22,
+        "sentences": 46
+      },
+      "score": 92,
+      "source": "google-cloud-blog-ja",
+      "title": "TorchTPU がオープンソースに: TPU でネイティブ PyTorch を実行",
+      "warnings": [
+        "見出しが47字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（TPU・XLA・CNCF）"
       ]
     }
   ],
