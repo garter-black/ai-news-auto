@@ -509,7 +509,7 @@ def broad_prefilter(item: dict) -> str | None:
         ok, why = persona.sports_scope(f"{title} {item.get('summary', '')[:300]}", japanese_source=not feed.get("foreign"))
         if not ok:
             return f"スポーツの対象外（{why}）"
-    if indexnow.candidate_off_focus(item.get("section", ""), title, item.get("summary", "")):
+    if indexnow.candidate_off_focus(item.get("section", ""), title, item.get("summary", ""), item.get("source_slug", "")):
         # 作っても検索に出せず取り下げるだけ（2026-11-03 オーナー承認。scripts/indexnow.py の公開前の門）
         return "サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）"
     return None

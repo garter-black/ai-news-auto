@@ -133,12 +133,29 @@
    "title": "アパート経営を成功させる3つの戦略。自主管理や法人化の判断基準を解説",
    "videoUrl": "https://www.youtube.com/watch?v=alGjfEes5ZA"
   },
+  "apple-14-inch-macbook-pro-m6-1eabbb64": {
+   "channel": "trends",
+   "note": "報道機関の記事が出典（W31 違反）。同じ発表を Apple 公式の発表から書いた記事がある（重複）ので転送。2026-11-04 オーナー決定",
+   "reason": "press-source",
+   "redirect": "apple-14-inch-macbook-pro-m6",
+   "retiredAt": "2026-11-04T22:39:13+09:00",
+   "sourceUrl": "https://www.nytimes.com/2026/10/28/technology/apple-touch-screen-macbook-pro.html",
+   "title": "Apple、新チップ「M6」搭載の14インチMacBook Pro　33万9,800円から"
+  },
   "apple-foldable-iphone-duo-analysis": {
    "channel": "nikkei",
    "reason": "creator-video",
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "折りたたみiPhone「Duo」を分析。新CEOが挑むAIと市場規制の課題",
    "videoUrl": "https://www.youtube.com/watch?v=m4_t43gVdYk"
+  },
+  "apple-ipados-macos-no-merge-ternus": {
+   "channel": "radar-gori.me",
+   "note": "報道機関の記事が出典（W31 違反）で、同じ事実の公式の一次情報が無い。2026-11-04 オーナー決定で取り下げ",
+   "reason": "press-source",
+   "retiredAt": "2026-11-04T22:39:13+09:00",
+   "sourceUrl": "https://gori.me/macbookpro/172049",
+   "title": "Apple、iPadOSとmacOSの統合を否定　Ternus CEOが決算説明会で「計画していない」"
   },
   "asics-vissel-kobe-its-my-day-event": {
    "channel": "prtimes-all",
@@ -540,6 +557,14 @@
    "retiredAt": "2026-11-03T18:55:45+09:00",
    "sourceUrl": "https://www.jst.go.jp/pr/announce/20261026-2/index.html",
    "title": "九州大学などが解明、長寿動物ダマラランドデバネズミが持つ強力な発がん耐性の仕組み"
+  },
+  "deepseek-harness-creator-mode": {
+   "channel": "radar-bloomberg.com",
+   "note": "報道機関の記事が出典（W31 違反）で、同じ事実の公式の一次情報が無い。2026-11-04 オーナー決定で取り下げ",
+   "reason": "press-source",
+   "retiredAt": "2026-11-04T22:39:13+09:00",
+   "sourceUrl": "https://www.bloomberg.com/news/articles/2026-11-02/deepseek-boosts-ai-agent-offering-with-new-creator-mode",
+   "title": "中国DeepSeek、AIエージェントに「クリエイターモード」　文章の指示で3D表示や動画編集の機能を作成"
   },
   "deepseek-ocr-optical-compression": {
    "channel": "two-minute-papers",
@@ -1097,6 +1122,14 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "GoogleのAI「Gemini Live」で植物が自律移動　日光を探して会話するロボット「Sprout」開発",
    "videoUrl": "https://www.youtube.com/watch?v=cv8tEbKtEvk"
+  },
+  "google-messages-gradient-icon": {
+   "channel": "radar-9to5google.com",
+   "note": "報道機関の記事が出典（W31 違反）で、同じ事実の公式の一次情報が無い。2026-11-04 オーナー決定で取り下げ",
+   "reason": "press-source",
+   "retiredAt": "2026-11-04T22:39:13+09:00",
+   "sourceUrl": "https://9to5google.com/2026/11/02/google-messages-gradient-icon-beta/",
+   "title": "「Google Messages」のベータ版、アイコンがグラデーションに一新"
   },
   "government-food-loss-reduction-guide": {
    "channel": "gov-online",
@@ -1727,6 +1760,14 @@
    "sourceUrl": "https://www.value-press.com/pressrelease/383188",
    "title": "京都発のウェルネスブランドLYTHAがヘンプシードオイルを個包装で新発売"
   },
+  "mac-refurbished-imac-studio-restock": {
+   "channel": "radar-gori.me",
+   "note": "報道機関の記事が出典（W31 違反）で、同じ事実の公式の一次情報が無い。2026-11-04 オーナー決定で取り下げ",
+   "reason": "press-source",
+   "retiredAt": "2026-11-04T22:39:13+09:00",
+   "sourceUrl": "https://gori.me/sale/apple-refurbished/172065",
+   "title": "Apple、Mac整備済製品に24モデル追加　M4搭載iMacは197,800円から"
+  },
   "macro-economy-inflation-real-estate-investment-matome": {
    "channel": "rakumachi",
    "reason": "creator-roundup",
@@ -1796,6 +1837,14 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "米Metaの新AIアプリ「Muse」発表、買い物や返金交渉をAIが代行",
    "videoUrl": "https://www.youtube.com/watch?v=OODvXcQJyVo"
+  },
+  "meta-waddle-world-ai-pet": {
+   "channel": "radar-engadget.com",
+   "note": "報道機関の記事が出典（W31 違反）で、同じ事実の公式の一次情報が無い。2026-11-04 オーナー決定で取り下げ",
+   "reason": "press-source",
+   "retiredAt": "2026-11-04T22:39:13+09:00",
+   "sourceUrl": "https://www.engadget.com/2299227/meta-tamagotchi-like-ai-digital-pet-app-waddle-world/",
+   "title": "Meta、AIペット育成アプリ「Waddle World」をフィリピンで公開　日記にペットが返信"
   },
   "mext-foreign-education-data-2026": {
    "channel": "mext",
@@ -2321,6 +2370,15 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "title": "OpenAI、ナビエ・ストークス問題の証明を発表｜AIの成果と検証状況",
    "videoUrl": "https://www.youtube.com/watch?v=mOvtumfyjCs"
+  },
+  "oracle-ai-workspace-chatgpt": {
+   "channel": "radar-itmedia.co.jp",
+   "note": "報道機関の記事が出典（W31 違反）。同じ発表を OpenAI 公式の発表から書いた記事があるので転送。2026-11-04 オーナー決定",
+   "reason": "press-source",
+   "redirect": "openai-oracle-partnership-chatgpt",
+   "retiredAt": "2026-11-04T22:39:13+09:00",
+   "sourceUrl": "https://kn.itmedia.co.jp/kn/article/2611/02/2000002740/",
+   "title": "オラクル、業務システムをChatGPTから操作可能に　小規模企業向けに年1万2000ドル分の利用枠"
   },
   "orukan-creator-asset-formation-goal": {
    "channel": "rakumachi",

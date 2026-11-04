@@ -45,6 +45,22 @@ OFFICIAL_GROUPS = [
     {"samsung.com", "news.samsung.com"},
     {"sony.com", "sony.co.jp", "sony.jp"},
 ]
+# 会社が開示資料（適時開示・IR の PDF）の置き場に指定している IR の配信サービス（2026-11-04 オーナー承認・台帳 A44）。
+# 公式のページから張られているときだけ「同じ会社の公式」とみなす（例: ゆうちょ銀行の IR ニュース → ssl4.eir-parts.net の TDnet の PDF）
+IR_HOST_RE = re.compile(r"(?:^|\.)(?:eir-parts\.net|release\.tdnet\.info|xj-storage\.jp|irpocket\.com|magicalir\.net)$")
+# IR の一覧ページへのリンクの手がかり（同じ公式ドメインのページだけ）
+IR_PAGE_RE = re.compile(r"/ir(?:/|$|-)|investor|IRニュース|IR情報|投資家|株主・投資家|適時開示|ニュースリリース（IR）", re.I)
+# IR の資料を探す話題（株式・提携・決算・配当など。適時開示に出る種類）
+IR_TOPIC_RE = re.compile(
+    r"株式|株主|議決権|出資|資本(?:業務)?提携|業務提携|買収|子会社|持分法|公開買付|(?<![A-Za-z])TOB(?![A-Za-z])|経営統合|合併|"
+    r"決算|業績|上方修正|下方修正|配当|自己株式|自社株|増資|社債|業績予想|特別(?:利益|損失)|減損"
+)
+IR_NEWS_TYPES = ("earnings", "deal", "filing")
+TDNET_LIST = "https://www.release.tdnet.info/inbs/I_list_{page:03d}_{day}.html"
+TDNET_PAGES = 5
+IR_BUDGET = 18
+# 開示資料は数字（株数・割合・日程）が表や後半にあるので、長めに抜き出す
+IR_EXCERPT_CAP = 6000
 # ニュースの種類ごとに、深く読むべきリンクの手がかり（scripts/news_types.py。2026-11-03 オーナー決定「元の資料を要約ページの先まで読む」）
 TYPE_HINT_RE = {
     "earnings": re.compile(r"financial|statement|results|earnings|investor|/ir/|10-q|10-k|8-k|data ?sheet|supplement|presentation|業績|決算|財務|短信|説明資料|連結", re.I),
@@ -145,7 +161,7 @@ def score_link(link: dict, source_url: str, title_words: set[str], money: bool, 
     product_site = news_type == "product" and bool(re.search(r"商品サイト|製品サイト|特設サイト|ブランドサイト|商品情報|製品情報", text))
     if path.endswith("/") and len([p for p in path.split("/") if p]) <= 2 and not PRICE_RE.search(path) and not product_site:
         return -1
-    domain_ok = base_domain(host(url)) in official_domains(source_url)
+    domain_ok = base_domain(host(url)) in official_domains(source_url) or bool(IR_HOST_RE.search(host(url)))
     public = (money and is_public(url)) or bool(news_type in TYPE_PUBLIC_RE and TYPE_PUBLIC_RE[news_type].search(host(url)))
     both = f"{text} {urllib.parse.unquote(url)}"
     overlap = len(title_words & _words(both))
@@ -228,21 +244,52 @@ def excerpt(text: str, title: str, keywords: set[str] | None = None, cap: int = 
     return "\n".join(lines[i] for i in sorted(chosen))
 
 
-def _fetch_page(url: str, timeout: int) -> dict:
-    """1ページ取る（HTML は直接。PDF は読み取りサービス経由）"""
-    if re.search(r"\.pdf(?:$|\?)", url, re.I):
+def pdf_text(data: bytes) -> str:
+    """PDF の文字を取り出す（読み取りサービスが使えないときの予備。pypdf が無ければ空）"""
+    try:
+        import io  # noqa: PLC0415
+        from pypdf import PdfReader  # noqa: PLC0415
+    except Exception:  # noqa: BLE001
+        return ""
+    try:
+        reader = PdfReader(io.BytesIO(data))
+        return "\n".join((page.extract_text() or "") for page in reader.pages[:30])
+    except Exception:  # noqa: BLE001
+        return ""
+
+
+def _fetch_pdf(url: str) -> dict:
+    """PDF を読む（読み取りサービス → 直接取って pypdf の順）。どちらも文字が取れなければ例外（読めなかった資料として残す）"""
+    try:
         data, _ = feeds.fetch_jina(url, timeout=PDF_TIMEOUT)  # 鍵が残高切れなら鍵なしで読む（feeds.py）
         body = feeds._decode(data)
-        m = re.search(r"^Title:\s*(.+)$", body, re.M)
-        title = m.group(1) if m else ""
-        if "Markdown Content:" in body:
-            body = body.split("Markdown Content:", 1)[1]
-        body = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", body)
-        body = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", body)
-        return {"text": feeds._collapse([body])[:60000], "title": title.strip(), "pdf": True}
+    except Exception:  # noqa: BLE001
+        body = ""
+    if len(re.sub(r"\s+", "", body.split("Markdown Content:", 1)[-1])) < 200:
+        raw, _ = feeds.fetch(url, timeout=PDF_TIMEOUT, accept="application/pdf,*/*;q=0.8")
+        text = pdf_text(raw) if raw[:5] == b"%PDF-" else ""
+        if len(re.sub(r"\s+", "", text)) < 200:
+            raise ValueError("PDF の文字を取り出せない（画像だけの PDF か、読み取りに失敗）")
+        return {"text": feeds._collapse([text])[:60000], "title": "", "pdf": True}
+    m = re.search(r"^Title:\s*(.+)$", body, re.M)
+    title = m.group(1) if m else ""
+    if "Markdown Content:" in body:
+        body = body.split("Markdown Content:", 1)[1]
+    body = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", body)
+    body = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", body)
+    return {"text": feeds._collapse([body])[:60000], "title": title.strip(), "pdf": True}
+
+
+def _fetch_page(url: str, timeout: int) -> dict:
+    """1ページ取る（HTML は直接。PDF は読み取りサービス経由、だめなら直接取って文字を取り出す）"""
+    if re.search(r"\.pdf(?:$|\?)", url, re.I) or IR_HOST_RE.search(host(url)) and "/doc/" in url:
+        return _fetch_pdf(url)
     data, final_url = feeds.fetch(url, timeout=timeout, accept="text/html,application/xhtml+xml;q=0.9,*/*;q=0.8")
     if data[:5] == b"%PDF-":
-        raise ValueError("PDF（読み取りサービスで取り直さない。取得は最大2本まで）")
+        text = pdf_text(data)  # 拡張子の無い PDF（IR の配信サービスなど）は、その場で文字を取り出す
+        if len(re.sub(r"\s+", "", text)) < 200:
+            raise ValueError("PDF の文字を取り出せない（画像だけの PDF か、読み取りに失敗）")
+        return {"text": feeds._collapse([text])[:60000], "title": "", "pdf": True, "final_url": final_url}
     parser = feeds._Extractor()
     try:
         parser.feed(feeds._decode(data))
@@ -256,13 +303,18 @@ def _fetch_page(url: str, timeout: int) -> dict:
 
 def follow(page: dict | None, source_url: str, title: str, source_name: str = "", money: bool = False,
            keywords: set[str] | None = None, fetcher=None, now: datetime | None = None, log=None,
-           max_fetches: int = MAX_FETCHES, news_type: str = "") -> list[dict]:
+           max_fetches: int = MAX_FETCHES, news_type: str = "", unread: list | None = None,
+           published: datetime | None = None, source_text: str = "", list_fetcher=None) -> list[dict]:
     """元記事のリンクを最大2本取りに行き、抜き出しを返す。
-    戻り値: [{"url", "name", "title", "excerpt", "checkedAt", "public"}]。失敗しても例外にしない（取れたものだけ）"""
+    戻り値: [{"url", "name", "title", "excerpt", "checkedAt", "public"}]。失敗しても例外にしない（取れたものだけ）。
+    unread（リスト）を渡すと、見つけたのに読めなかった資料（PDF・IR の開示資料）の URL を足す（「未発表」と書かせない門に使う。台帳 A44）。
+    株式・提携・決算などの話題（IR_TOPIC_RE）では、同じ会社の IR の開示資料（適時開示の PDF）も探して読む（ir_documents）"""
     links = (page or {}).get("links") or []
     # 深く読む種類（決算・脆弱性・製品・制度…）は3本まで追う（scripts/news_types.py）
     cap_fetches = MAX_FETCHES + (1 if news_type in TYPE_EXCERPT_CAP else 0)
     targets = pick(links, (page or {}).get("final_url") or source_url, title, money, limit=min(max_fetches, cap_fetches), news_type=news_type)
+    if fetcher is not None and list_fetcher is None:
+        list_fetcher = lambda day, n: ""  # noqa: E731 - 試しの取得（テスト）では TDnet の一覧を取りに行かない
     fetcher = fetcher or _fetch_page
     started = time.time()
     today = (now or datetime.now(JST)).astimezone(JST).strftime("%Y-%m-%d")
@@ -275,9 +327,13 @@ def follow(page: dict | None, source_url: str, title: str, source_name: str = ""
         except Exception as error:  # noqa: BLE001 - リンク先が取れなくても記事は作る
             if log:
                 log(f"   [links] 取得に失敗: {link['url'][:80]}（{str(error)[:60]}）")
+            if unread is not None and is_document(link["url"]):
+                unread.append(link["url"])
             continue
         text = excerpt(got.get("text") or "", f"{title} {link.get('text', '')}", keywords, cap=TYPE_EXCERPT_CAP.get(news_type, EXCERPT_CAP))
         if len(text) < 80:
+            if unread is not None and is_document(link["url"]):
+                unread.append(link["url"])
             continue
         out.append({
             "url": link["url"],
@@ -289,7 +345,141 @@ def follow(page: dict | None, source_url: str, title: str, source_name: str = ""
         })
         if log:
             log(f"   [links] {link['url'][:90]}（{len(text)}字を抜き出し・点数{link['score']}）")
+    # 同じ会社の IR の開示資料（適時開示の PDF）。数字（株数・金額・日程）が発表の本文ではなく別の PDF にあることが多い（ゆうちょ銀行の例）
+    if ir_wanted(title, news_type, source_text):
+        seen = {o["url"] for o in out} | {link["url"] for link in targets}
+        for doc in ir_documents(page, source_url, title, source_name, published or now, fetcher=fetcher,
+                                list_fetcher=list_fetcher, log=log, skip=seen):
+            try:
+                got = fetcher(doc["url"], FETCH_TIMEOUT)
+            except Exception as error:  # noqa: BLE001
+                if log:
+                    log(f"   [ir] 開示資料を読めない: {doc['url'][:80]}（{str(error)[:60]}）")
+                if unread is not None:
+                    unread.append(doc["url"])
+                continue
+            text = excerpt(got.get("text") or "", f"{title} {doc.get('text', '')}", keywords, cap=IR_EXCERPT_CAP)
+            if len(text) < 80:
+                if unread is not None:
+                    unread.append(doc["url"])
+                continue
+            out.append({
+                "url": doc["url"],
+                "name": f"{source_name or site_name(doc['url'])} IR（適時開示）",
+                "title": (doc.get("text") or got.get("title") or "").strip()[:80],
+                "excerpt": text,
+                "checkedAt": today,
+                "public": False,
+                "ir": True,
+            })
+            if log:
+                log(f"   [ir] {doc['url'][:90]}（{len(text)}字を抜き出し・{doc.get('via')}）")
     return out
+
+
+def is_document(url: str) -> bool:
+    """開示資料・PDF の URL か（読めなかったときに「未読の資料」として残すもの）"""
+    return bool(re.search(r"\.pdf(?:$|\?)", url, re.I) or IR_HOST_RE.search(host(url)))
+
+
+def ir_wanted(title: str, news_type: str = "", source_text: str = "") -> bool:
+    """IR の開示資料を探す記事か（決算・提携・書類の種類か、題名・冒頭が株式・提携・決算などの話題）"""
+    return news_type in IR_NEWS_TYPES or bool(IR_TOPIC_RE.search(f"{title} {(source_text or '')[:400]}"))
+
+
+def _company_key(name: str) -> str:
+    """会社名の比べ方（「株式会社」「公式」「（日本）」などを外す）"""
+    name = re.sub(r"株式会社|（株）|\(株\)|有限会社|公式|ニュースリリース|プレスリリース|IR|ニュース|（[^）]*）|\([^)]*\)|\s", "", name or "")
+    return name
+
+
+def shared_words(title_words: set[str], text: str) -> int:
+    """題名の言葉（2字以上）のうち、相手の文字列に含まれる数（日本語は語の区切りが無いので部分一致で数える）"""
+    low = (text or "").lower()
+    return sum(1 for w in title_words if len(w) >= 2 and w in low)
+
+
+def tdnet_rows(html: str) -> list[dict]:
+    """TDnet の開示一覧（日ごと）の行: [{"code", "name", "title", "url"}]"""
+    rows = []
+    for m in re.finditer(r'kjCode"[^>]*>\s*(\d+)\s*</td>\s*<td[^>]*kjName"[^>]*>([^<]*)</td>\s*<td[^>]*kjTitle"[^>]*>\s*<a href="([^"]+)"[^>]*>([^<]+)</a>', html):
+        href = m.group(3)
+        rows.append({"code": m.group(1), "name": m.group(2).strip(), "title": m.group(4).strip(),
+                     "url": href if href.startswith("http") else "https://www.release.tdnet.info/inbs/" + href})
+    return rows
+
+
+def _tdnet_list(day: str, page: int) -> str:
+    data, _ = feeds.fetch(TDNET_LIST.format(page=page, day=day), timeout=FETCH_TIMEOUT, accept="text/html")
+    return feeds._decode(data)
+
+
+def ir_documents(page: dict | None, source_url: str, title: str, source_name: str, when: datetime | None, *,
+                 fetcher=None, list_fetcher=None, log=None, skip: set[str] | None = None, limit: int = 1) -> list[dict]:
+    """同じ会社の IR の開示資料を探す（最大 limit 本）。探す順:
+    1. 元のページから張られた IR の配信サービスの資料（IR_HOST_RE）
+    2. 元のページから張られた同じ公式ドメインの IR の一覧ページ（IR_PAGE_RE）の中の、題名の言葉が重なる資料（PDF・IR の配信サービス）
+    3. 日本の会社なら、発表の日の TDnet（東証の適時開示）の一覧で、会社名が合い題名の言葉が重なる開示（PDF）
+    どれも会社自身の開示（報道ではない）。戻り値: [{"url", "text", "via"}]"""
+    fetcher = fetcher or _fetch_page
+    list_fetcher = list_fetcher or _tdnet_list
+    skip = set(skip or ())
+    words = _words(title)
+    started = time.time()
+    found: list[dict] = []
+
+    def add(url: str, text: str, via: str) -> None:
+        if url not in skip and all(f["url"] != url for f in found):
+            found.append({"url": url, "text": text, "via": via})
+
+    links = (page or {}).get("links") or []
+    base_url = (page or {}).get("final_url") or source_url
+    for link in links:
+        url = link.get("url") or ""
+        if IR_HOST_RE.search(host(url)) and (shared_words(words, link.get("text") or "") or "/doc/" in url):
+            add(url, link.get("text") or "", "元のページのリンク")
+    if len(found) < limit:
+        ir_pages = [l for l in links if (l.get("url") or "").startswith("http") and base_domain(host(l["url"])) in official_domains(base_url)
+                    and IR_PAGE_RE.search(f"{l.get('url')} {l.get('text') or ''}") and not is_document(l["url"])][:1]
+        for ir in ir_pages:
+            if time.time() - started > IR_BUDGET:
+                break
+            try:
+                got = fetcher(ir["url"], FETCH_TIMEOUT)
+            except Exception:  # noqa: BLE001
+                continue
+            for link in got.get("links") or []:
+                url = link.get("url") or link.get("href") or ""
+                same = base_domain(host(url)) in official_domains(base_url) or IR_HOST_RE.search(host(url))
+                if same and is_document(url) and shared_words(words, link.get("text") or "") >= 1:
+                    add(url, link.get("text") or "", "IR の一覧ページ")
+    jp = host(source_url).endswith(".jp") or bool(re.search(r"[ぁ-んァ-ヶ一-龠]", source_name or ""))
+    key = _company_key(source_name)
+    if len(found) < limit and jp and key and when is not None:
+        day = when.astimezone(JST).strftime("%Y%m%d")
+        best: list[tuple[int, dict]] = []
+        for n in range(1, TDNET_PAGES + 1):
+            if time.time() - started > IR_BUDGET:
+                break
+            try:
+                html = list_fetcher(day, n)
+            except Exception:  # noqa: BLE001
+                break
+            rows = tdnet_rows(html)
+            if not rows:
+                break
+            for row in rows:
+                name = _company_key(row["name"])
+                if not name or not (name in key or key in name or name in title):
+                    continue
+                overlap = shared_words(words - set(_words(row["name"])) - {name.lower()}, row["title"])
+                if overlap:
+                    best.append((overlap, row))
+        for _, row in sorted(best, key=lambda x: -x[0])[:limit]:
+            add(row["url"], row["title"], "TDnet（適時開示）")
+    if log and found:
+        log(f"   [ir] 開示資料の候補 {len(found)}本（{', '.join(f['via'] for f in found)}）")
+    return found[:limit]
 
 
 def main() -> int:

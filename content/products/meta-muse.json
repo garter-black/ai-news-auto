@@ -58,12 +58,6 @@
       "sources": [
         "meta-muse-singapore-launch"
       ]
-    },
-    {
-      "text": "かわいいアバターを作り、性格を決められるようにしています。",
-      "sources": [
-        "meta-waddle-world-ai-pet"
-      ]
     }
   ],
   "pricing": [
@@ -143,7 +137,6 @@
     "vera-rubin"
   ],
   "articles": [
-    "meta-waddle-world-ai-pet",
     "nvidia-meta-muse-partnership-expansion",
     "meta-muse-singapore-launch"
   ],

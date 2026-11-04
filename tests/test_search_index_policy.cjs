@@ -81,3 +81,24 @@ test('ニュース用サイトマップは元の発表から48時間以内・重
   assert.equal(newsSitemapReason({ ...fresh, late: true }, now), 'late');
   assert.equal(newsSitemapReason({ ...fresh, type: 'roundup' }, now), 'roundup');
 });
+
+test('A43: ゲーム機・ゲームのサービスの公式の発表（本体・料金・セール）は主題。レビュー・報道・ソフトの告知は外す', () => {
+  const game = { ...good, genreSlug: 'entertainment' };
+  assert.equal(noindexReason({ ...game, channelSlug: 'playstation-blog-jp', title: 'PS5 Proの価格を11月20日に改定' }), null);
+  assert.equal(noindexReason({ ...game, channelSlug: 'playstation-blog-jp', title: 'PlayStation Storeでブラックフライデーセールを開催' }), null);
+  assert.equal(noindexReason({ ...game, channelSlug: 'nintendo-topics', title: 'Nintendo Switch 2 本体の国内発売日が決定' }), null);
+  assert.equal(noindexReason({ ...game, channelSlug: 'nintendo-topics', title: '『新作RPG』レビュー：Switch 2で遊んでみた' }), 'off-focus');
+  assert.equal(noindexReason({ ...game, channelSlug: 'gamespark', title: 'PlayStation Storeでセールを開催' }), 'off-focus');
+  assert.equal(noindexReason({ ...game, channelSlug: 'nintendo-topics', title: '『新作RPG』本日発売' }), 'off-focus');
+});
+
+test('A10: 速報・お知らせ・注意喚起・ミサイル・災害は本文800字から検索に出す。ほかは1,500字のまま', () => {
+  assert.equal(noindexReason({ ...good, bodyLength: 900, breaking: true }), null);
+  assert.equal(noindexReason({ ...good, bodyLength: 900, newsType: 'breaking' }), null);
+  assert.equal(noindexReason({ ...good, bodyLength: 900, title: 'Microsoft 365で障害、Outlookがつながりにくい状態' }), null);
+  assert.equal(noindexReason({ ...good, bodyLength: 900, title: '国税庁を名乗るフィッシングメールに注意喚起' }), null);
+  assert.equal(noindexReason({ ...good, bodyLength: 799, breaking: true }), 'thin');
+  assert.equal(noindexReason({ ...good, bodyLength: 900 }), 'thin');
+  assert.equal(noindexReason({ ...good, bodyLength: 1499, title: 'iPhoneの新機能' }), 'thin');
+  assert.equal(noindexReason({ ...good, bodyLength: 900, genreSlug: 'public', title: '障害者手帳のアプリ' }), 'thin');
+});

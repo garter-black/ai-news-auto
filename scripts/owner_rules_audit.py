@@ -242,7 +242,7 @@ def genre_problems(record: dict) -> list[str]:
     except Exception as error:  # noqa: BLE001
         return cannot_check("A22", "genre_focus", error)
     out = [f"[A22] {p}" for p in genre_focus.advice_problems(record)]
-    if record.get("genreSlug") == "entertainment" and not genre_focus.entertainment_focus(record.get("title") or "", record.get("tags")):
+    if record.get("genreSlug") == "entertainment" and not genre_focus.entertainment_focus(record.get("title") or "", record.get("tags"), record.get("channelSlug") or ""):
         out.append("[A23] エンタメの記事がビジネス・テックの目線ではない（作品の告知・ゴシップ。料金・決算・販売本数・AI・規約の話ではない）")
     return out
 

@@ -10,7 +10,6 @@
   "overview": {
     "text": "M6は、Appleが開発した新世代の半導体チップです。MacBook ProやiMacなどのデバイスに搭載され、2026年10月に発表されました。",
     "sources": [
-      "apple-14-inch-macbook-pro-m6-1eabbb64",
       "apple-14-inch-macbook-pro-m6",
       "apple-imac-m6-2026-10"
     ]
@@ -27,7 +26,6 @@
       "label": "提供開始",
       "value": "11月6日発売",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6",
         "apple-imac-m6-2026-10"
       ]
@@ -36,7 +34,6 @@
       "label": "日本での提供",
       "value": "日本でも利用できる",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6",
         "apple-imac-m6-2026-10"
       ]
@@ -45,7 +42,6 @@
       "label": "向いている人",
       "value": "クリエイターや学生",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6"
       ]
     }
@@ -54,28 +50,24 @@
     {
       "text": "M5と比べてグラフィックス性能が最大30パーセント向上しています。",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6"
       ]
     },
     {
       "text": "デュアル16コアNeural Engineを搭載し、本体内でAIモデルを効率よく動かせます。",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6"
       ]
     },
     {
       "text": "最大24時間のバッテリー駆動時間を実現しています。",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6"
       ]
     },
     {
       "text": "Wi-Fi 7やBluetooth 6に対応し、通信速度が向上しています。",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6",
         "apple-imac-m6-2026-10"
       ]
@@ -85,7 +77,6 @@
     {
       "text": "14インチMacBook Proは33万9,800円（税込）からとなっています。",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6"
       ]
     },
@@ -106,7 +97,6 @@
     {
       "text": "日本国内でもApple Storeなどで予約受付が行われています。",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6",
         "apple-imac-m6-2026-10"
       ]
@@ -114,7 +104,6 @@
     {
       "text": "11月6日から日本国内で販売が開始されます。",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6",
         "apple-imac-m6-2026-10"
       ]
@@ -124,7 +113,6 @@
     {
       "text": "Appleの公式サイトやApple Storeアプリから予約注文できます。",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6",
         "apple-imac-m6-2026-10"
       ]
@@ -132,7 +120,6 @@
     {
       "text": "11月6日からはApple Store直営店や取扱店で購入できます。",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6",
         "apple-imac-m6-2026-10"
       ]
@@ -142,7 +129,6 @@
     {
       "text": "前世代のM5と比べてグラフィックス性能が最大30パーセント向上しました。",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6"
       ]
     },
@@ -159,7 +145,6 @@
       "q": "いつから買えますか？",
       "a": "2026年11月6日に発売されます。",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6",
         "apple-imac-m6-2026-10"
       ]
@@ -176,7 +161,6 @@
       "q": "バッテリーはどのくらい持ちますか？",
       "a": "最大24時間のバッテリー駆動時間を実現しています。",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6"
       ]
     },
@@ -184,7 +168,6 @@
       "q": "M5チップと何が違いますか？",
       "a": "グラフィックス性能が最大30パーセント向上しています。",
       "sources": [
-        "apple-14-inch-macbook-pro-m6-1eabbb64",
         "apple-14-inch-macbook-pro-m6"
       ]
     }
@@ -205,12 +188,10 @@
     "macbook-pro"
   ],
   "articles": [
-    "apple-14-inch-macbook-pro-m6-1eabbb64",
     "apple-14-inch-macbook-pro-m6",
     "apple-imac-m6-2026-10"
   ],
   "linkFrom": [
-    "apple-14-inch-macbook-pro-m6-1eabbb64",
     "apple-14-inch-macbook-pro-m6",
     "apple-imac-m6-2026-10"
   ],

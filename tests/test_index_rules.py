@@ -55,7 +55,7 @@ SAMPLES = [
 
 
 def _summary(article: dict, body_length: int, japan_value: bool) -> dict:
-    keys = ("slug", "type", "title", "seoTitle", "tags", "genreSlug", "channelSlug", "sourceType", "indexable", "verdict")
+    keys = ("slug", "type", "title", "seoTitle", "tags", "genreSlug", "channelSlug", "sourceType", "indexable", "verdict", "breaking", "newsType")
     out = {k: article.get(k) for k in keys if article.get(k) is not None}
     out.setdefault("tags", [])
     out.setdefault("title", "")

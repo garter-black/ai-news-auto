@@ -6,3 +6,5 @@ pillow>=11.0.0
 anthropic==1.17.0
 # 写真の主役の位置（scripts/image_focus.py。SNS カードの切り抜き）
 opencv-python-headless>=4.10,<5
+# IR の開示資料（PDF）の文字の取り出し（scripts/source_links.py。読み取りサービスが使えないときの予備）
+pypdf>=5.0,<7

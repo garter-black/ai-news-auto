@@ -198,7 +198,7 @@ def is_focus(article: dict) -> bool:
     if public_interest.focus_topic(article):
         return True
     if article.get("genreSlug") in ENTERTAINMENT_GENRES:
-        return genre_focus.entertainment_focus(article.get("title", ""), article.get("tags"))
+        return genre_focus.entertainment_focus(article.get("title", ""), article.get("tags"), article.get("channelSlug", ""))
     if article.get("genreSlug") in SPORTS_GENRES:
         # 発信元が海外かは記事に残らない。海外のフィードは生成時に sports_scope(japanese_source=False) で落としているので、ここでは目印だけで見る
         return persona.sports_scope(text)[0]
@@ -215,7 +215,7 @@ def noindex_reason(article: dict, dups: set[str] | frozenset = frozenset()) -> s
     if article.get("channelSlug") in CREATOR_CHANNELS:
         return "creator-video"
     body = article.get("body", "")
-    # ミサイル・災害の記事は公式の発表が短いので下限を下げる（scripts/public_interest.py の short_ok。台帳 A40）
+    # 速報・お知らせ・注意喚起・ミサイル・災害の記事は公式の発表が短いので下限を800字に下げる（scripts/public_interest.py の short_ok。台帳 A10・A40）
     if len(body) < (public_interest.SHORT_BODY if public_interest.short_ok(article) else THIN_BODY):
         return "thin"
     if not is_focus(article):
@@ -262,7 +262,7 @@ def publish_block_reason(article: dict) -> str | None:
     return reason if reason in PUBLISH_BLOCK else None
 
 
-def candidate_off_focus(lane: str, title: str, summary: str = "") -> bool:
+def candidate_off_focus(lane: str, title: str, summary: str = "", source_slug: str = "") -> bool:
     """生成の前に、幅広い話題の候補がサイトの主題外と分かるか（LLM を使わずに見送る。迷うものは通して公開前の門で見る）。
     レーン（フィードの分野）がジャンルの目安。AI の話題・読者像のジャンル・お金/制度の話題・スポーツ（別の足切りあり）・分野不明は通す"""
     if not lane or lane.startswith("_") or lane in FOCUS_GENRES or lane in SPORTS_GENRES or lane in persona.PERSONA_GENRES:
@@ -271,7 +271,7 @@ def candidate_off_focus(lane: str, title: str, summary: str = "") -> bool:
     if AI_TOPIC.search(text):
         return False
     if lane in ENTERTAINMENT_GENRES:
-        return genre_focus.candidate_problem(lane, title, summary) is not None
+        return genre_focus.candidate_problem(lane, title, summary, source_slug) is not None
     if lane in persona.PERSONA_EXTRA_GENRES and persona.PRIORITY_TOPIC_RE.search(text):
         return False
     if lane in public_interest.FOCUS_GENRES and public_interest.FOCUS_TOPIC_RE.search(public_interest._nfkc(text)):
@@ -301,6 +301,10 @@ def index_rules() -> dict:
         "entertainmentGenres": sorted(ENTERTAINMENT_GENRES),
         "entertainmentBusiness": _js_regex(genre_focus.ENTERTAINMENT_BUSINESS_RE),
         "entertainmentExclude": _js_regex(genre_focus.ENTERTAINMENT_EXCLUDE_RE),
+        "gameOfficialSources": sorted(genre_focus.GAME_OFFICIAL_SOURCES),
+        "gamePlatform": _js_regex(genre_focus.GAME_PLATFORM_RE),
+        "gameAnnounce": _js_regex(genre_focus.GAME_ANNOUNCE_RE),
+        "gameExclude": _js_regex(genre_focus.GAME_EXCLUDE_RE),
         "sportsGenres": sorted(SPORTS_GENRES),
         "globalEvent": _js_regex(persona.GLOBAL_EVENT_RE),
         "japanSports": _js_regex(persona.JAPAN_SPORTS_RE),
@@ -308,6 +312,7 @@ def index_rules() -> dict:
         "publicInterestGenres": list(public_interest.FOCUS_GENRES),
         "publicInterestTopic": _js_regex(public_interest.FOCUS_TOPIC_RE),
         "publicInterestShortTopic": _js_regex(public_interest.SHORT_TOPIC_RE),
+        "shortNoticeTopic": _js_regex(public_interest.SHORT_NOTICE_RE),
         "thinBodyPublicInterest": public_interest.SHORT_BODY,
     }
 

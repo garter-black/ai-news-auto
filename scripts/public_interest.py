@@ -413,16 +413,29 @@ FOCUS_TOPIC_RE = re.compile("|".join(f"(?:{p.pattern})" for p in CATEGORY_RES.va
 
 
 # ミサイル・災害の記事は公式の発表そのものが短い（防衛省の続報は700字ほど）。水増しせずに出せるよう、本文の下限を下げる
-# （地震・津波の型の記事 disaster と同じ考え。ほかの種類は通常の下限 indexnow.THIN_BODY のまま）
+# （地震・津波の型の記事 disaster と同じ考え）。2026-11-04 オーナー承認（台帳 A10）で、速報（breaking・種類 breaking）と
+# お知らせ・注意喚起（障害・サービス停止・緊急の更新・詐欺の注意喚起など）にも広げた。ほかの種類は通常の下限 indexnow.THIN_BODY のまま
 SHORT_BODY = int(RULES["short_body"])
 SHORT_TOPIC_RE = re.compile(f"(?:{CATEGORY_RES['missile'].pattern})|(?:{CATEGORY_RES['disaster'].pattern})")
+# お知らせ・注意喚起の題名（ジャンルを問わない）。お知らせ・統計の書き写し（A26・notice_gate）は別の門で止める
+SHORT_NOTICE_RE = re.compile(
+    f"(?:{CATEGORY_RES['scam'].pattern})|"
+    r"注意喚起|お知らせ|障害(?!者)|不具合|つながりにくい|サービス(?:の)?(?:停止|中断)|緊急(?:メンテナンス|の)?(?:更新|アップデート|パッチ|メンテナンス)|"
+    r"ゼロデイ|悪用(?:が確認|された|の報告)"
+)
 
 
 def short_ok(article: dict) -> bool:
-    """本文の下限を SHORT_BODY に下げてよい記事か（ミサイル・災害の題名。lib/indexing.ts の isShortPublicInterest と同じ）"""
+    """本文の下限を SHORT_BODY（800字）に下げてよい記事か。lib/indexing.ts の isShortArticle と同じ。
+    速報（breaking が真か、種類が breaking）／お知らせ・注意喚起の題名／ミサイル・災害の題名（公共性のジャンル）"""
+    if article.get("breaking") is True or (article.get("newsType") or "") == "breaking":
+        return True
+    head = _nfkc(f"{article.get('title', '')} {article.get('seoTitle', '')}")
+    if SHORT_NOTICE_RE.search(head):
+        return True
     if (article.get("genreSlug") or "") not in FOCUS_GENRES:
         return False
-    return bool(SHORT_TOPIC_RE.search(_nfkc(f"{article.get('title', '')} {article.get('seoTitle', '')}")))
+    return bool(SHORT_TOPIC_RE.search(head))
 
 
 def focus_topic(article: dict) -> bool:

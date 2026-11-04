@@ -90,7 +90,7 @@ class PromptTest(unittest.TestCase):
                 self.assertIn("1,000字につき1つまで", block)
                 self.assertIn("「## 概要」「## これまでの流れ」の章は作らない", block)
                 self.assertIn("まだ分からないこと", block)
-                self.assertIn("1,600字以上", block)  # 公開前の門（indexnow の thin）と同じ長さ
+                self.assertIn("800字以上" if key == "breaking" else "1,600字以上", block)  # 公開前の門（indexnow の thin。速報は800字・A10）
 
     def test_type_specific_must_haves(self):
         self.assertIn("前年", nt.prompt_block("earnings"))

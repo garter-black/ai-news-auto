@@ -110,6 +110,43 @@ ENTERTAINMENT_EXCLUDE_RE = re.compile(
     re.IGNORECASE,
 )
 
+# （2026-11-04 オーナー承認・台帳 A43）よく知られたゲーム機・ゲームのサービスの公式の発表は、有名ブランドのレーン（A41 の 25%）で扱う。
+# 対象は、任天堂・ソニー（PlayStation）・Microsoft（Xbox）の自社の発表（発信元が下の公式のフィード・記事）で、題名がゲーム機・
+# サービスの名前と「本体・周辺機器・サービス・料金・価格・セール」のどれかの話のものだけ。ソフトの告知・レビュー・攻略・
+# ゴシップ・報道・他社の発表は今までどおり扱わない（ENTERTAINMENT_EXCLUDE_RE のうちセール・体験版などの語はこの発表には当てない）
+GAME_OFFICIAL_SOURCES = frozenset({"nintendo-topics", "playstation-blog-jp", "sony-jp", "xbox-wire-jp"})
+GAME_PLATFORM_RE = re.compile(
+    r"(?<![A-Za-z])(?:PS5|PS ?Plus|PS VR2|PlayStation|Nintendo|Switch|Xbox|Game ?Pass)(?![A-Za-z])|"
+    r"プレイステーション|プレステ|ニンテンドー|任天堂|スイッチ2|ゲームパス|ゲーム機",
+    re.IGNORECASE,
+)
+GAME_ANNOUNCE_RE = re.compile(
+    r"本体|新型|新モデル|ハードウェア|周辺機器|コントローラー|アクセサリー|"
+    r"価格|値上げ|値下げ|料金|月額|年額|プラン|セール|割引|ディスカウント|"
+    r"(?<![A-Za-z])(?:PS ?Plus|PlayStation Plus|Game ?Pass|Nintendo Switch Online)(?![A-Za-z])|ゲームパス|"
+    r"サービス(?:の)?(?:開始|終了|提供)|提供(?:開始|終了)|販売(?:開始|終了)|予約(?:開始|受付)|国内(?:で)?(?:の)?発売|発売日|"
+    r"販売台数|出荷台数",
+    re.IGNORECASE,
+)
+# ゲームの公式の発表でも扱わないもの（レビュー・攻略・ソフトの紹介・ゴシップ・番組や作品の告知・グッズ）
+GAME_EXCLUDE_RE = re.compile(
+    r"レビュー|プレイ(?:日記|レポート|動画)|攻略|インプレ|遊んでみた|開発者(?:に聞く|インタビュー)|インタビュー|制作秘話|"
+    r"熱愛|交際|結婚|離婚|破局|不倫|炎上|スキャンダル|"
+    r"予告(?:編)?(?:を)?(?:公開|解禁)|キャスト|主題歌|出演|PV(?:を)?公開|ダイレクト|配信番組|"
+    r"グッズ|コラボカフェ|ポップアップ|プレゼント|ゲーム内|今週の|今月の|おすすめ",
+    re.IGNORECASE,
+)
+
+
+def official_game_news(title: str, source_slug: str = "") -> bool:
+    """ゲーム機・ゲームのサービスの公式の発表（本体・周辺機器・サービス・料金・価格・セール）か。台帳 A43。
+    発信元が任天堂・ソニー・Xbox の公式で、題名にゲーム機・サービスの名前と発表の中身の語があり、レビュー・ゴシップでないもの"""
+    if str(source_slug or "") not in GAME_OFFICIAL_SOURCES:
+        return False
+    t = _nfkc(title)
+    return bool(GAME_PLATFORM_RE.search(t) and GAME_ANNOUNCE_RE.search(t) and not GAME_EXCLUDE_RE.search(t))
+
+
 # お知らせ・統計の書き写し。全体の門は scripts/notice_gate.py（認可・受章者・議事要旨・決算発表日の予告・啓発・統計の転載）で、
 # genre_focus はまずそれを使い（notice_problem）、そのうえで投資・不動産に特有の決まった知らせ（取引所の月次・銘柄の指定・
 # 自己株式の取得状況・配当の支払い・行政処分など）と、不動産会社の催し・サステナビリティの知らせだけをここで足す（2026-11-04 に全体の門とそろえた）
@@ -181,9 +218,12 @@ def route_section(item: dict, section: str | None) -> str | None:
     return section
 
 
-def entertainment_focus(title: str, tags: list | tuple | None = None) -> bool:
+def entertainment_focus(title: str, tags: list | tuple | None = None, source_slug: str = "") -> bool:
     """エンタメの記事・候補がビジネス・テックの目線か（料金・決算・販売本数・市場規模・AI・提携・規約）。
-    ゴシップ・告知だけの題名は外す。scripts/indexnow.py の is_focus と lib/indexing.ts が同じ判定を使う"""
+    ゴシップ・告知だけの題名は外す。ゲーム機・ゲームのサービスの公式の発表（official_game_news。A43）は主題。
+    scripts/indexnow.py の is_focus と lib/indexing.ts が同じ判定を使う"""
+    if official_game_news(title, source_slug):
+        return True
     t = _nfkc(title)
     if ENTERTAINMENT_EXCLUDE_RE.search(t):
         return False
@@ -205,6 +245,8 @@ def candidate_problem(lane: str, title: str, summary: str = "", source_slug: str
             return f"{'投資・マネー' if lane == 'investment' else '不動産'}の話題ではない"
         return None
     if lane == "entertainment":
+        if official_game_news(t, source_slug):
+            return None  # ゲーム機・サービスの公式の発表（本体・料金・セール。A43）は有名ブランドのレーンで扱う
         if ENTERTAINMENT_EXCLUDE_RE.search(t):
             return "サイトの主題外（エンタメの告知・ゴシップ・キャンペーン。ビジネス・テックの目線ではない）"
         if not ENTERTAINMENT_BUSINESS_RE.search(text):

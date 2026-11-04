@@ -102,18 +102,22 @@ class Bundle:
     money: bool = False
     fx: dict | None = None
     news_type: str = ""  # ニュースの種類（scripts/news_types.py）。深く読む種類はリンク先の抜き出しを長めに渡す
+    unread_docs: list[str] = field(default_factory=list)  # 見つけたのに読めなかった資料（PDF・IR の開示資料。台帳 A44）
 
-    def cap(self, label: str) -> int:
+    def cap(self, label: str, key: str = "") -> int:
+        if key.startswith("ir:"):
+            return source_links.IR_EXCERPT_CAP  # IR の開示資料（適時開示の PDF。台帳 A44）は数字が後ろにあるので長めに渡す
         base = GROUP_CAP.get(label, 800)
         if label in ("関連ページ", "公的資料") and self.news_type in source_links.TYPE_EXCERPT_CAP:
             return max(base, source_links.TYPE_EXCERPT_CAP[self.news_type])
         return base
 
     def prompt_cap(self) -> int:
-        return PROMPT_CAP + (4000 if self.news_type in source_links.TYPE_EXCERPT_CAP else 0)
+        extra = source_links.IR_EXCERPT_CAP if any(g.key.startswith("ir:") for g in self.groups) else 0
+        return PROMPT_CAP + (4000 if self.news_type in source_links.TYPE_EXCERPT_CAP else 0) + extra
 
     def empty(self) -> bool:
-        return not self.groups and not self.computed
+        return not self.groups and not self.computed and not self.unread_docs
 
     def prompt_block(self) -> str:
         """生成プロンプトに足す欄。束が空なら空文字"""
@@ -130,7 +134,7 @@ class Bundle:
                 "- [F1]・[C1] のような欄の記号や「確認済みの事実の束」「計算済みの数字」という欄の名前は本文に書かない（出典は名前と確認日で書く）。"
             )
             for i, g in enumerate(self.groups, 1):
-                parts.append(f"## [F{i}] {g.label}：{g.cite}\n{g.body[:self.cap(g.label)]}")
+                parts.append(f"## [F{i}] {g.label}：{g.cite}\n{g.body[:self.cap(g.label, g.key)]}")
         if self.computed:
             parts.append(
                 "# 計算済みの数字（プログラムが計算した。あなたは計算しない）\n"
@@ -149,6 +153,13 @@ class Bundle:
                 f"- 「{self.ladder['name']}のプランと料金」の表（上の [F] の表と同じもの）は、プログラムが本文の料金の章に差し込む。"
                 "本文にはプランの一覧表を自分で作らない。表の読み方（どの段が誰向けか）を1〜2文で書くのはよい。"
             )
+        if self.unread_docs:
+            parts.append(
+                "# 読めなかった開示資料（台帳 A44）\n"
+                "- 次の資料（PDF・IR の開示資料）は見つかったが中身を読めなかった。株数・金額・日程などがこの資料に書かれている可能性があるので、"
+                "「未発表」「公表されていません」と言い切らない（書くなら「発表の本文では触れていません」のように確かめた範囲だけ）。\n"
+                + "\n".join(f"  - {u}" for u in self.unread_docs[:3])
+            )
         text = "\n\n".join(parts)
         if len(text) > self.prompt_cap() and self.groups:
             # 長すぎるときは、後ろの欄（リンク先・過去記事など）の中身から短くする。計算済みの数字と決まりは削らない
@@ -157,7 +168,7 @@ class Bundle:
                 if over <= 0:
                     break
                 g = self.groups[i - 1]
-                body = g.body[:self.cap(g.label)]
+                body = g.body[:self.cap(g.label, g.key)]
                 cut = min(over, max(0, len(body) - 200))
                 if cut:
                     text = text.replace(body, body[:len(body) - cut].rstrip() + "…", 1)
@@ -184,6 +195,7 @@ class Bundle:
             "computedValues": [v for c in self.computed for v in c.values],
             "ladder": bool(self.ladder),
             "money": self.money,
+            "unreadDocs": list(self.unread_docs),
         }
 
 
@@ -499,7 +511,7 @@ def link_groups(links: list[dict]) -> list[Group]:
     for i, got in enumerate(links, 1):
         label = "公的資料" if got.get("public") else "関連ページ"
         title = f"「{got['title']}」" if got.get("title") else ""
-        out.append(Group(f"link:{i}", label, f"{got['name']}{title}", got["url"], got.get("checkedAt", ""), got["excerpt"],
+        out.append(Group(f"{'ir' if got.get('ir') else 'link'}:{i}", label, f"{got['name']}{title}", got["url"], got.get("checkedAt", ""), got["excerpt"],
                          marks=[got["name"], source_links.host(got["url"])]))
     return out
 
@@ -519,7 +531,7 @@ def fx_group(fx: dict | None, needed: bool) -> Group | None:
 
 def build(item: dict, text: str, related: list[dict] | None = None, lane: str = "ai", page: dict | None = None, *,
           follow_links: bool = True, now: datetime | None = None, log=None, fetcher=None, max_links: int = 2,
-          news_type: str = "") -> Bundle:
+          news_type: str = "", list_fetcher=None) -> Bundle:
     """1本の記事の「確かな事実の束」。ネットワークに出るのはリンク先（最大2本）と為替（料金データが無いとき）だけ"""
     now = now or datetime.now(timezone.utc)
     title = item.get("title") or ""
@@ -533,11 +545,14 @@ def build(item: dict, text: str, related: list[dict] | None = None, lane: str = 
         groups.append(g)
     if g := continuation_group(item, page, news_type, now):
         groups.append(g)
-    links = []
+    links: list[dict] = []
+    unread: list[str] = []
     if follow_links and page is not None:
         keywords = {w.lower() for w in re.findall(r"[A-Za-z][A-Za-z0-9.+-]{2,}|[ァ-ヶー]{2,}|[一-龠々]{2,}", title)}
         links = source_links.follow(page, item.get("url", ""), title, item.get("source_name", ""), money=money,
-                                    keywords=keywords, fetcher=fetcher, now=now, log=log, max_fetches=max_links, news_type=news_type)
+                                    keywords=keywords, fetcher=fetcher, now=now, log=log, max_fetches=max_links, news_type=news_type,
+                                    unread=unread, published=statement_date(item, text, page), source_text=text or "",
+                                    list_fetcher=list_fetcher)
     groups += link_groups(links)
     past = past_rows(title, text, related or [], now)
     if g := past_group(past):
@@ -548,7 +563,29 @@ def build(item: dict, text: str, related: list[dict] | None = None, lane: str = 
                                   published=statement_date(item, text, page))
     if g := fx_group(fx, any(c.kind == "yen" for c in computed)):
         groups.append(g)
-    return Bundle(groups=groups, computed=computed, ladder=insert, money=money, fx=fx, news_type=news_type)
+    return Bundle(groups=groups, computed=computed, ladder=insert, money=money, fx=fx, news_type=news_type, unread_docs=unread)
+
+
+# 「まだ発表されていない」と言い切る書き方（台帳 A44。読めなかった資料があるときは書かせない）
+UNDISCLOSED_RE = re.compile(
+    r"未発表|未公表|非公表|非開示|(?:発表|公表|開示|公開)(?:は)?されていません|明らかに(?:され|し)ていません|(?:発表|公表|開示)していません"
+)
+
+
+def undisclosed_problems(record: dict) -> list[str]:
+    """見つけた開示資料（IR の PDF など）を読めていないのに「未発表」「公表されていません」と書いていないか（台帳 A44）。
+    record["_facts"]["unreadDocs"]（facts_bundle.build が入れる）が空なら何も言わない"""
+    unread = ((record.get("_facts") or {}).get("unreadDocs")) or []
+    if not unread:
+        return []
+    text = "\n".join(str(record.get(k) or "") for k in ("title", "lede", "description", "body", "easy"))
+    text += "\n" + "\n".join(str(x) for x in (record.get("highlights") or []))
+    text += "\n" + "\n".join(str((f or {}).get("a") or "") for f in (record.get("faq") or []) if isinstance(f, dict))
+    m = UNDISCLOSED_RE.search(text)
+    if not m:
+        return []
+    return [f"読めなかった開示資料（{unread[0][:80]}）があるのに「{m.group(0)}」と書いている。資料を確かめられていないことは"
+            "「未発表」と言い切らない（その文を消すか、「発表の本文では触れていません」のように確かめた範囲を書く）（A44）"]
 
 
 # --------------------------------------------------------------------------- #

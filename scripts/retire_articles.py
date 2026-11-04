@@ -171,6 +171,9 @@ def is_thin(article: dict) -> bool:
     body = article.get("body", "")
     if len(body) >= indexnow.THIN_BODY or article.get("type") == "roundup" or article.get("disaster"):
         return False
+    # 速報・お知らせ・注意喚起・ミサイル・災害は800字から（台帳 A10。公開の門 indexnow.noindex_reason と同じ）
+    if indexnow.public_interest.short_ok(article) and len(body) >= indexnow.public_interest.SHORT_BODY:
+        return False
     return not (TABLE.search(body) or article.get("faq") or article.get("charts") or article.get("rivals"))
 
 

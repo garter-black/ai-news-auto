@@ -40,6 +40,11 @@ const SPORTS_GENRES = new Set<string>(rules.sportsGenres);
 const ENTERTAINMENT_GENRES = new Set<string>(rules.entertainmentGenres);
 const ENTERTAINMENT_BUSINESS = new RegExp(rules.entertainmentBusiness.source, rules.entertainmentBusiness.flags);
 const ENTERTAINMENT_EXCLUDE = new RegExp(rules.entertainmentExclude.source, rules.entertainmentExclude.flags);
+/** ゲーム機・ゲームのサービスの公式の発表（genre_focus.official_game_news。台帳 A43） */
+const GAME_OFFICIAL_SOURCES = new Set<string>(rules.gameOfficialSources);
+const GAME_PLATFORM = new RegExp(rules.gamePlatform.source, rules.gamePlatform.flags);
+const GAME_ANNOUNCE = new RegExp(rules.gameAnnounce.source, rules.gameAnnounce.flags);
+const GAME_EXCLUDE = new RegExp(rules.gameExclude.source, rules.gameExclude.flags);
 const GLOBAL_EVENT = new RegExp(rules.globalEvent.source, rules.globalEvent.flags);
 const JAPAN_SPORTS = new RegExp(rules.japanSports.source, rules.japanSports.flags);
 const FOREIGN_SPORTS = new RegExp(rules.foreignSports.source, rules.foreignSports.flags);
@@ -48,13 +53,17 @@ const PUBLIC_INTEREST_GENRES = new Set<string>(rules.publicInterestGenres);
 const PUBLIC_INTEREST_TOPIC = new RegExp(rules.publicInterestTopic.source, rules.publicInterestTopic.flags);
 
 const PUBLIC_INTEREST_SHORT_TOPIC = new RegExp(rules.publicInterestShortTopic.source, rules.publicInterestShortTopic.flags);
-/** ミサイル・災害の記事の本文の下限（公式の発表が短いため。public_interest.SHORT_BODY） */
+const SHORT_NOTICE_TOPIC = new RegExp(rules.shortNoticeTopic.source, rules.shortNoticeTopic.flags);
+/** 速報・お知らせ・注意喚起・ミサイル・災害の記事の本文の下限（公式の発表が短いため。public_interest.SHORT_BODY。台帳 A10） */
 const THIN_BODY_PUBLIC_INTEREST: number = rules.thinBodyPublicInterest;
 
 /** public_interest.short_ok と同じ */
-function isShortPublicInterest(article: ArticleSummary): boolean {
+export function isShortArticle(article: Pick<ArticleSummary, "breaking" | "newsType" | "title" | "seoTitle" | "genreSlug">): boolean {
+  if (article.breaking === true || article.newsType === "breaking") return true;
+  const head = `${article.title ?? ""} ${article.seoTitle ?? ""}`.normalize("NFKC");
+  if (SHORT_NOTICE_TOPIC.test(head)) return true;
   if (!PUBLIC_INTEREST_GENRES.has(article.genreSlug || "")) return false;
-  return PUBLIC_INTEREST_SHORT_TOPIC.test(`${article.title ?? ""} ${article.seoTitle ?? ""}`.normalize("NFKC"));
+  return PUBLIC_INTEREST_SHORT_TOPIC.test(head);
 }
 
 /** public_interest.focus_topic と同じ */
@@ -80,7 +89,14 @@ function isJapanSports(text: string): boolean {
 }
 
 /** genre_focus.entertainment_focus と同じ（ゴシップ・告知だけの題名は外し、ビジネス・テックの目印があれば主題） */
+export function isOfficialGameNews(title: string, channelSlug: string): boolean {
+  if (!GAME_OFFICIAL_SOURCES.has(channelSlug || "")) return false;
+  const t = (title ?? "").normalize("NFKC");
+  return GAME_PLATFORM.test(t) && GAME_ANNOUNCE.test(t) && !GAME_EXCLUDE.test(t);
+}
+
 function isEntertainmentFocus(article: ArticleSummary): boolean {
+  if (isOfficialGameNews(article.title ?? "", article.channelSlug ?? "")) return true;
   const title = (article.title ?? "").normalize("NFKC");
   if (ENTERTAINMENT_EXCLUDE.test(title)) return false;
   return ENTERTAINMENT_BUSINESS.test(`${title} ${(article.tags ?? []).join(" ")}`);
@@ -103,7 +119,7 @@ export function noindexReason(article: ArticleSummary): string | null {
   if (article.type === "roundup") return null;
   if (WIRE_SOURCES.has(article.channelSlug)) return "wire";
   if (CREATOR_CHANNELS.has(article.channelSlug)) return "creator-video";
-  if (article.bodyLength < (isShortPublicInterest(article) ? THIN_BODY_PUBLIC_INTEREST : THIN_BODY)) return "thin";
+  if (article.bodyLength < (isShortArticle(article) ? THIN_BODY_PUBLIC_INTEREST : THIN_BODY)) return "thin";
   if (!isFocus(article)) return "off-focus";
   if (!article.verdict && !article.hasJapanValue) return "no-japan-value";
   // 重複の印は記事 JSON の duplicateOf と、索引を作るときの予備の判定（lib/article-index.mjs の markDuplicates）

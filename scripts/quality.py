@@ -31,6 +31,7 @@ import article_style  # noqa: E402  文体の決まりと公開前の門（1か�
 import ui_claims  # noqa: E402
 import genre_focus  # noqa: E402  投資助言・売買のすすめ・取引のやり方の門（2026-11-03・台帳 A22）
 import public_interest  # noqa: E402  事件・災害・政治の書き方の門（2026-11-04・台帳 A39）
+import facts_bundle  # noqa: E402  読めなかった開示資料があるときに「未発表」と書かせない（台帳 A44）
 
 TITLE_RANGE = (18, 64)
 PASS_SCORE = 70
@@ -110,7 +111,8 @@ def every_path_problems(record: dict) -> list[str]:
     文体の門（A1〜A6・A17〜A21・A24・A33・A36・A38）＋投資助言・取引のやり方（A22。どの記事でも）＋自分で試した書き方（A14）。
     1つでもあれば書き出さない（作り直すか見送る）。tests/test_rule_consistency.py が、記事を書くすべての段がこれを通るかを確かめる"""
     return (article_style.problems(record) + genre_focus.advice_problems(record) + first_person_problems(record)
-            + public_interest.sensitive_problems(record) + public_interest.press_source_problems(record))
+            + public_interest.sensitive_problems(record) + public_interest.press_source_problems(record)
+            + facts_bundle.undisclosed_problems(record))
 
 
 def added_problems(before: dict, after: dict) -> list[str]:
@@ -1085,6 +1087,7 @@ def structural_problems(record: dict, kind: str, source_text: str = "", context:
     # 事件・災害・政治の書き方（煽り・推測・私人の実名・分かっていないことの区別・公式の安全情報のリンク。台帳 A39）
     problems += public_interest.sensitive_problems(record)
     problems += public_interest.press_source_problems(record)  # 報道が出典の記事は書かない（W31。すべての経路）
+    problems += facts_bundle.undisclosed_problems(record)  # 読めなかった開示資料があるのに「未発表」と書かない（A44）
     problems += language_problems(record, source_text)
     # 文体の門（報告「記事の文章レベル比較_2026-11-03」の自動ゲート17項目・台帳 A1〜A6・A18〜A21。scripts/article_style.py が1か所で持つ）:
     # 決まった型の見出し・見出しの多すぎ・中身のない章・指示文の漏れ・割った文・一問一答・幼い言い方・宣伝の言葉・つなぎ・くり返し・英語の画面名

@@ -70,8 +70,7 @@
     {
       "text": "Wi-Fi 7やBluetooth 6に対応し、通信速度や接続性が向上しています。",
       "sources": [
-        "apple-14-inch-macbook-pro-m6",
-        "apple-14-inch-macbook-pro-m6-1eabbb64"
+        "apple-14-inch-macbook-pro-m6"
       ]
     }
   ],
@@ -93,7 +92,6 @@
     {
       "text": "日本国内でもAppleの公式サイトや直営店などで購入できます。",
       "sources": [
-        "apple-ipados-macos-no-merge-ternus",
         "apple-14-inch-macbook-pro-m6"
       ]
     }
@@ -154,13 +152,6 @@
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
-    },
-    {
-      "q": "OSがiPadOSと統合される予定はありますか？",
-      "a": "AppleのCEOは、現時点で根本的な変更やOS統合を計画していないと述べています。",
-      "sources": [
-        "apple-ipados-macos-no-merge-ternus"
-      ]
     }
   ],
   "timeline": [
@@ -174,9 +165,6 @@
     "m6"
   ],
   "articles": [
-    "mac-refurbished-imac-studio-restock",
-    "apple-ipados-macos-no-merge-ternus",
-    "apple-14-inch-macbook-pro-m6-1eabbb64",
     "apple-14-inch-macbook-pro-m6"
   ],
   "linkFrom": [],
