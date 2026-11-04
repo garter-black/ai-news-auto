@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-11-04T13:12:47+00:00",
+  "updatedAt": "2026-11-04T16:21:30+00:00",
   "metricsFetchedAt": "2026-11-04T09:43:51+00:00",
-  "visitsFetchedAt": "2026-11-04T13:12:46+00:00",
+  "visitsFetchedAt": "2026-11-04T16:21:29+00:00",
   "target": "visits",
   "visitRate": 0.087,
   "postsWithVisits": 4,
-  "freshSkipped": 9,
+  "freshSkipped": 11,
   "posts": 86,
   "axes": {
     "hook": {
@@ -177,12 +177,21 @@
       },
       "その他": {
         "n": 23,
-        "avgViews": 149.0,
-        "avgEngagement": 1.52,
+        "avgViews": 137.2,
+        "avgEngagement": 1.48,
         "avgComments": 0.35,
-        "avgVisits": 12.98,
+        "avgVisits": 11.96,
         "nVisits": 1,
-        "score": 1241.42
+        "score": 1150.75
+      },
+      "Google": {
+        "n": 15,
+        "avgViews": 81.6,
+        "avgEngagement": 0.2,
+        "avgComments": 0.0,
+        "avgVisits": 7.07,
+        "nVisits": 2,
+        "score": 721.82
       },
       "DeepSeek": {
         "n": 1,
@@ -192,15 +201,6 @@
         "avgVisits": 4.52,
         "nVisits": 0,
         "score": 709.39
-      },
-      "Google": {
-        "n": 14,
-        "avgViews": 67.2,
-        "avgEngagement": 0.14,
-        "avgComments": 0.0,
-        "avgVisits": 5.82,
-        "nVisits": 2,
-        "score": 619.46
       },
       "Anthropic": {
         "n": 4,
@@ -230,13 +230,13 @@
         "score": 324.69
       },
       "OpenAI": {
-        "n": 20,
-        "avgViews": 18.5,
-        "avgEngagement": 0.2,
+        "n": 19,
+        "avgViews": 18.8,
+        "avgEngagement": 0.21,
         "avgComments": 0.0,
-        "avgVisits": 1.6,
+        "avgVisits": 1.63,
         "nVisits": 1,
-        "score": 243.02
+        "score": 249.32
       }
     },
     "ending": {
@@ -668,7 +668,7 @@
       "engagement": 1.0,
       "hook": "breaking",
       "slot": "夜",
-      "company": "その他",
+      "company": "Google",
       "ending": "完結型",
       "format": "速報",
       "postFormat": "A/B前",
