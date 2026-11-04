@@ -2056,9 +2056,9 @@
       }
     },
     "gpt-56-cyber-aws-govcloud": {
-      "at": "2026-11-04T16:16:52+00:00",
+      "at": "2026-11-04T16:36:49+00:00",
       "status": "gate_failed",
-      "tries": 2,
+      "tries": 3,
       "textAt": "2026-11-04T15:17:40+00:00",
       "textId": "",
       "breaking": true,
@@ -2097,10 +2097,10 @@
       },
       "timings": {
         "full": {
-          "ladder_total": 609.6
+          "ladder_total": 369.8
         },
         "short": {
-          "ladder_total": 609.6
+          "ladder_total": 369.8
         }
       },
       "ok": false,
@@ -2198,16 +2198,18 @@
       "delayedMin": 0
     },
     "openai-acquire-pierre-computer-codex": {
-      "status": "waiting",
-      "why": "動画が検査に落ちたので、あとの回で作り直す（この投稿だけ遅らせる）",
+      "status": "skipped",
+      "why": "海外の企業向け・開発者向けの話題（「開発ツール」）は SNS に出さない（サイトだけ）",
       "checkedAt": "2026-11-04T15:21:44+00:00",
       "deferred": "Buffer API 429 RATE_LIMIT_EXCEEDED: 2026-11-11T16:35+00:00 まで呼び出しを止めます",
-      "channels": {}
+      "channels": {},
+      "at": "2026-11-04T16:36:49+00:00"
     },
     "gpt-56-cyber-aws-govcloud": {
-      "status": "waiting",
-      "why": "動画が検査に落ちたので、あとの回で作り直す（この投稿だけ遅らせる）",
-      "checkedAt": "2026-11-04T15:21:44+00:00"
+      "status": "skipped",
+      "why": "海外の企業向け・開発者向けの話題（「AWS」）は SNS に出さない（サイトだけ）",
+      "checkedAt": "2026-11-04T15:21:44+00:00",
+      "at": "2026-11-04T16:36:49+00:00"
     }
   },
   "converted": {
