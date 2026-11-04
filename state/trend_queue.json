@@ -1,6 +1,321 @@
 {
-  "updated": "2026-11-04T06:08:20.439197+09:00",
+  "updated": "2026-11-04T10:27:44.556697+09:00",
   "items": [
+    {
+      "id": "fcef20cfe9a085695b48ac38e18921b0c08df987",
+      "kind": "trend",
+      "url": "https://finance.yahoo.co.jp/news/detail/538fc2b35387b38c07f95aac5bb2b2a42b4147ba",
+      "title": "住友ファーマ 株価",
+      "summary": "Googleトレンド急上昇（約100件の検索）。関連報道: ２日の動意株＞住友ファーマ(ウエルスアドバイザー) / 住友ファーマが大幅反発､27年3月期業績予想の増額を好感 / 【決算】住友ファーマ、17.3％増収 オルゴビクスなど米国の成長が牽引 | 日刊薬業 - 医薬品産業の総合情報サイト",
+      "published_at": "2026-11-04T10:10:00+09:00",
+      "source_name": "Googleトレンド",
+      "source_slug": "trends",
+      "lang": "ja",
+      "image": null,
+      "genre": "investment",
+      "sources": [
+        {
+          "title": "２日の動意株＞住友ファーマ(ウエルスアドバイザー)",
+          "url": "https://finance.yahoo.co.jp/news/detail/538fc2b35387b38c07f95aac5bb2b2a42b4147ba",
+          "source": "Yahoo!ファイナンス",
+          "published": "2026-11-04T10:10:00+09:00"
+        },
+        {
+          "title": "住友ファーマが大幅反発､27年3月期業績予想の増額を好感",
+          "url": "https://shikiho.toyokeizai.net/news/0/963288",
+          "source": "四季報オンライン",
+          "published": "2026-11-04T10:10:00+09:00"
+        },
+        {
+          "title": "【決算】住友ファーマ、17.3％増収 オルゴビクスなど米国の成長が牽引 | 日刊薬業 - 医薬品産業の総合情報サイト",
+          "url": "https://nk.jiho.jp/article/306330",
+          "source": "日刊薬業",
+          "published": "2026-11-04T10:10:00+09:00"
+        }
+      ],
+      "traffic": 100,
+      "queued_at": "2026-11-04T10:27:44.182595+09:00"
+    },
+    {
+      "id": "e5a5675e2d1ffd241d6b2d7e041969ccd68c838e",
+      "kind": "trend",
+      "url": "https://finance.yahoo.co.jp/news/detail/78ba3698b7b696fa28b4b36508bad08462e5ac0c",
+      "title": "住友商事 株価",
+      "summary": "Googleトレンド急上昇（約200件の検索）。関連報道: ２日の動意株＞住友商(ウエルスアドバイザー) / 決算:住友商事の純利益6700億円、27年3月期に上振れ 実質増配 / 住友商事、通期純利益6700億円に上方修正 配当も増額",
+      "published_at": "2026-11-04T10:00:00+09:00",
+      "source_name": "Googleトレンド",
+      "source_slug": "trends",
+      "lang": "ja",
+      "image": null,
+      "genre": "investment",
+      "sources": [
+        {
+          "title": "２日の動意株＞住友商(ウエルスアドバイザー)",
+          "url": "https://finance.yahoo.co.jp/news/detail/78ba3698b7b696fa28b4b36508bad08462e5ac0c",
+          "source": "Yahoo!ファイナンス",
+          "published": "2026-11-04T10:00:00+09:00"
+        },
+        {
+          "title": "決算:住友商事の純利益6700億円、27年3月期に上振れ 実質増配",
+          "url": "https://www.nikkei.com/article/DGXZQOUB020TI0S6A101C2000000/",
+          "source": "日本経済新聞",
+          "published": "2026-11-04T10:00:00+09:00"
+        },
+        {
+          "title": "住友商事、通期純利益6700億円に上方修正 配当も増額",
+          "url": "https://www.reuters.com/jp/world/6IVFH3LZ2VNSVD3ADPT4FQTX7E-2026-11-02/",
+          "source": "Reuters",
+          "published": "2026-11-04T10:00:00+09:00"
+        }
+      ],
+      "traffic": 200,
+      "queued_at": "2026-11-04T10:27:44.182595+09:00"
+    },
+    {
+      "id": "fa5cf1d88191aa9356e9ecf426acce1aabb663dd",
+      "kind": "trend",
+      "url": "https://kabutan.jp/news/marketnews/?b=n202611020205",
+      "title": "tdk 株価",
+      "summary": "Googleトレンド急上昇（約200件の検索）。関連報道: ＴＤＫは安い、通期業績・配当予想を上方修正も買い向かう姿勢限定的 / ＴＤＫ、売上高・営業利益・純利益が中間期で過去最高 業績予想３兆円超に上方修正、２６年９月中間期連結決算 / TDK－3日続落 通期営業益を上方修正も材料出尽くし〔DZH 個別株情報〕(時事通信)",
+      "published_at": "2026-11-04T10:00:00+09:00",
+      "source_name": "Googleトレンド",
+      "source_slug": "trends",
+      "lang": "ja",
+      "image": null,
+      "genre": "investment",
+      "sources": [
+        {
+          "title": "ＴＤＫは安い、通期業績・配当予想を上方修正も買い向かう姿勢限定的",
+          "url": "https://kabutan.jp/news/marketnews/?b=n202611020205",
+          "source": "株探",
+          "published": "2026-11-04T10:00:00+09:00"
+        },
+        {
+          "title": "ＴＤＫ、売上高・営業利益・純利益が中間期で過去最高 業績予想３兆円超に上方修正、２６年９月中間期連結決算",
+          "url": "https://www.sakigake.jp/news/article/20261031AK0011/",
+          "source": "秋田魁新報電子版",
+          "published": "2026-11-04T10:00:00+09:00"
+        },
+        {
+          "title": "TDK－3日続落 通期営業益を上方修正も材料出尽くし〔DZH 個別株情報〕(時事通信)",
+          "url": "https://finance.yahoo.co.jp/news/detail/d6b848b140e72f69a2073744a18b537f93caa23b",
+          "source": "Yahoo!ファイナンス",
+          "published": "2026-11-04T10:00:00+09:00"
+        }
+      ],
+      "traffic": 200,
+      "queued_at": "2026-11-04T10:27:44.182595+09:00"
+    },
+    {
+      "id": "93b612d519cf77e4b14aa268b9cdd3b9e53107fd",
+      "kind": "trend",
+      "url": "https://eetimes.itmedia.co.jp/ee/articles/2611/02/news034.html",
+      "title": "キオクシア 株価",
+      "summary": "Googleトレンド急上昇（約5,000件の検索）。関連報道: キオクシア「明らかにスーパーサイクル」、純利益は半期で2兆円超：27年の生産能力は既に「SOLD OUT」（1/3 ページ） / 決算レポート：キオクシアホールディングス（今3Qは業績横ばいの見込みだが、今4Qは再度成長へ） / キオクシア株急落 失望売り促す「保守的」見通し、株主還元も期待薄",
+      "published_at": "2026-11-04T09:50:00+09:00",
+      "source_name": "Googleトレンド",
+      "source_slug": "trends",
+      "lang": "ja",
+      "image": null,
+      "genre": "investment",
+      "sources": [
+        {
+          "title": "キオクシア「明らかにスーパーサイクル」、純利益は半期で2兆円超：27年の生産能力は既に「SOLD OUT」（1/3 ページ）",
+          "url": "https://eetimes.itmedia.co.jp/ee/articles/2611/02/news034.html",
+          "source": "EE Times Japan",
+          "published": "2026-11-04T09:50:00+09:00"
+        },
+        {
+          "title": "決算レポート：キオクシアホールディングス（今3Qは業績横ばいの見込みだが、今4Qは再度成長へ）",
+          "url": "https://media.rakuten-sec.net/articles/-/53923",
+          "source": "トウシル",
+          "published": "2026-11-04T09:50:00+09:00"
+        },
+        {
+          "title": "キオクシア株急落 失望売り促す「保守的」見通し、株主還元も期待薄",
+          "url": "https://www.nikkei.com/article/DGXZQOFL0209FTS6A101C2000000/",
+          "source": "日本経済新聞",
+          "published": "2026-11-04T09:50:00+09:00"
+        }
+      ],
+      "traffic": 5000,
+      "queued_at": "2026-11-04T10:27:44.182595+09:00"
+    },
+    {
+      "id": "a66582ed2e2eb175addce91dcd8c3db3910baf4e",
+      "kind": "trend",
+      "url": "https://www.nikkei.com/article/DGXZQOFL300VDTQ6A031C2000000/",
+      "title": "オリエンタルランド 株価",
+      "summary": "Googleトレンド急上昇（約500件の検索）。関連報道: オリエンタルランドの株価が1年ぶり高値 25周年で猛暑克服、客単価「2万円」射程に / ＯＬＣ、今期経常を一転15％増益に上方修正・2期ぶり最高益、配当も2円増額 / オリエンタルランドが経常最高益予想　ディズニーとサンリオの優待・投資額を比較",
+      "published_at": "2026-11-04T09:50:00+09:00",
+      "source_name": "Googleトレンド",
+      "source_slug": "trends",
+      "lang": "ja",
+      "image": null,
+      "genre": "investment",
+      "sources": [
+        {
+          "title": "オリエンタルランドの株価が1年ぶり高値 25周年で猛暑克服、客単価「2万円」射程に",
+          "url": "https://www.nikkei.com/article/DGXZQOFL300VDTQ6A031C2000000/",
+          "source": "日本経済新聞",
+          "published": "2026-11-04T09:50:00+09:00"
+        },
+        {
+          "title": "ＯＬＣ、今期経常を一転15％増益に上方修正・2期ぶり最高益、配当も2円増額",
+          "url": "https://kabutan.jp/news/?b=k202610290142",
+          "source": "株探",
+          "published": "2026-11-04T09:50:00+09:00"
+        },
+        {
+          "title": "オリエンタルランドが経常最高益予想　ディズニーとサンリオの優待・投資額を比較",
+          "url": "https://news.infoseek.co.jp/article/zaikei_875747/",
+          "source": "Infoseek",
+          "published": "2026-11-04T09:50:00+09:00"
+        }
+      ],
+      "traffic": 500,
+      "queued_at": "2026-11-04T10:27:44.182595+09:00"
+    },
+    {
+      "id": "bd77db82486b50a500f6bc90bee4f34482b22617",
+      "kind": "trend",
+      "url": "https://kabutan.jp/news/marketnews/?b=n202611040052",
+      "title": "ihi 株価",
+      "summary": "Googleトレンド急上昇（約500件の検索）。関連報道: 本日の決算発表予定 … ＩＨＩ、三菱商、ＮＴＴなど 77社 (11月4日) / 11月2～6日に決算発表を予定している企業リスト / 【本日の注目決算】住友商、商船三井、京セラ、ＪＡＬ、住友化、日本ハム―11月2日決算星取表",
+      "published_at": "2026-11-04T09:50:00+09:00",
+      "source_name": "Googleトレンド",
+      "source_slug": "trends",
+      "lang": "ja",
+      "image": null,
+      "genre": "investment",
+      "sources": [
+        {
+          "title": "本日の決算発表予定 … ＩＨＩ、三菱商、ＮＴＴなど 77社 (11月4日)",
+          "url": "https://kabutan.jp/news/marketnews/?b=n202611040052",
+          "source": "株探",
+          "published": "2026-11-04T09:50:00+09:00"
+        },
+        {
+          "title": "11月2～6日に決算発表を予定している企業リスト",
+          "url": "https://shikiho.toyokeizai.net/news/0/962923",
+          "source": "四季報オンライン",
+          "published": "2026-11-04T09:50:00+09:00"
+        },
+        {
+          "title": "【本日の注目決算】住友商、商船三井、京セラ、ＪＡＬ、住友化、日本ハム―11月2日決算星取表",
+          "url": "https://moneyworld.jp/news/detail?id=222247",
+          "source": "QUICK Money World",
+          "published": "2026-11-04T09:50:00+09:00"
+        }
+      ],
+      "traffic": 500,
+      "queued_at": "2026-11-04T10:27:44.182595+09:00"
+    },
+    {
+      "id": "53d51277d465aacd5d03dcf4acadb6994b79bb44",
+      "kind": "trend",
+      "url": "https://news.yahoo.co.jp/articles/c268b87edb0093f3a33980a1ef1e24c8e749b816",
+      "title": "パナソニック株価",
+      "summary": "Googleトレンド急上昇（約500件の検索）。関連報道: パナソニックHDが過去最高益、AI需要がけん引し2028年度目標を2年前倒し（MONOist） / 本日注目すべき【好決算】銘柄 パナＨＤ、住友ファーマ、東エレク (30日引け後 発表分) / 研究開発トップに聞く（5）東和薬品取締役・中村豪之氏",
+      "published_at": "2026-11-04T09:50:00+09:00",
+      "source_name": "Googleトレンド",
+      "source_slug": "trends",
+      "lang": "ja",
+      "image": null,
+      "genre": "investment",
+      "sources": [
+        {
+          "title": "パナソニックHDが過去最高益、AI需要がけん引し2028年度目標を2年前倒し（MONOist）",
+          "url": "https://news.yahoo.co.jp/articles/c268b87edb0093f3a33980a1ef1e24c8e749b816",
+          "source": "Yahoo!ニュース",
+          "published": "2026-11-04T09:50:00+09:00"
+        },
+        {
+          "title": "本日注目すべき【好決算】銘柄 パナＨＤ、住友ファーマ、東エレク (30日引け後 発表分)",
+          "url": "https://kabutan.jp/news/marketnews/?b=n202611020015",
+          "source": "株探",
+          "published": "2026-11-04T09:50:00+09:00"
+        },
+        {
+          "title": "研究開発トップに聞く（5）東和薬品取締役・中村豪之氏",
+          "url": "https://www.nikkan.co.jp/articles/view/796054",
+          "source": "日刊工業新聞",
+          "published": "2026-11-04T09:50:00+09:00"
+        }
+      ],
+      "traffic": 500,
+      "queued_at": "2026-11-04T10:27:44.182595+09:00"
+    },
+    {
+      "id": "21b9ad530469352ed79e298118d1b253bad891fc",
+      "kind": "trend",
+      "url": "https://eetimes.itmedia.co.jp/ee/articles/2611/02/news047.html",
+      "title": "三菱電機株価",
+      "summary": "Googleトレンド急上昇（約200件の検索）。関連報道: 半導体／FA好調の三菱電機、26年度2Qは純利益92％増：ローム／東芝の統合は変化なし / 三菱電機、株価一時4.1%高 調整後営業益の上振れと自社株買いで / 環境省、車載再生プラに認証制 欧規制対応へ実証",
+      "published_at": "2026-11-04T09:50:00+09:00",
+      "source_name": "Googleトレンド",
+      "source_slug": "trends",
+      "lang": "ja",
+      "image": null,
+      "genre": "investment",
+      "sources": [
+        {
+          "title": "半導体／FA好調の三菱電機、26年度2Qは純利益92％増：ローム／東芝の統合は変化なし",
+          "url": "https://eetimes.itmedia.co.jp/ee/articles/2611/02/news047.html",
+          "source": "EE Times Japan",
+          "published": "2026-11-04T09:50:00+09:00"
+        },
+        {
+          "title": "三菱電機、株価一時4.1%高 調整後営業益の上振れと自社株買いで",
+          "url": "https://www.nikkei.com/article/DGXZQOFL021HI0S6A101C2000000/",
+          "source": "日本経済新聞",
+          "published": "2026-11-04T09:50:00+09:00"
+        },
+        {
+          "title": "環境省、車載再生プラに認証制 欧規制対応へ実証",
+          "url": "https://www.nikkan.co.jp/articles/view/795974",
+          "source": "日刊工業新聞",
+          "published": "2026-11-04T09:50:00+09:00"
+        }
+      ],
+      "traffic": 200,
+      "queued_at": "2026-11-04T10:27:44.182595+09:00"
+    },
+    {
+      "id": "1b841b9838c9bfc5ad064737752e51ee19fd48f6",
+      "kind": "trend",
+      "url": "https://s.kabutan.jp/news/k202611020038/",
+      "title": "商船三井 株価",
+      "summary": "Googleトレンド急上昇（約200件の検索）。関連報道: 商船三井、今期経常を31％上方修正 / 商船三井、海運市況の改善を背景に通期業績予想を大幅上方修正--決算チェック(フィスコ) / 決算:商船三井の純利益41％増に上振れ 27年3月期、運賃上昇の恩恵",
+      "published_at": "2026-11-04T09:50:00+09:00",
+      "source_name": "Googleトレンド",
+      "source_slug": "trends",
+      "lang": "ja",
+      "image": null,
+      "genre": "investment",
+      "sources": [
+        {
+          "title": "商船三井、今期経常を31％上方修正",
+          "url": "https://s.kabutan.jp/news/k202611020038/",
+          "source": "株探",
+          "published": "2026-11-04T09:50:00+09:00"
+        },
+        {
+          "title": "商船三井、海運市況の改善を背景に通期業績予想を大幅上方修正--決算チェック(フィスコ)",
+          "url": "https://finance.yahoo.co.jp/news/detail/4548dfc32f5a6920a79d0b06a473daf79f0079ff",
+          "source": "Yahoo!ファイナンス",
+          "published": "2026-11-04T09:50:00+09:00"
+        },
+        {
+          "title": "決算:商船三井の純利益41％増に上振れ 27年3月期、運賃上昇の恩恵",
+          "url": "https://www.nikkei.com/article/DGXZQOUB021IM0S6A101C2000000/",
+          "source": "日本経済新聞",
+          "published": "2026-11-04T09:50:00+09:00"
+        }
+      ],
+      "traffic": 200,
+      "queued_at": "2026-11-04T10:27:44.182595+09:00"
+    },
     {
       "id": "4846a74cece39cf74bcd7402342e1290bb651f86",
       "kind": "trend",
