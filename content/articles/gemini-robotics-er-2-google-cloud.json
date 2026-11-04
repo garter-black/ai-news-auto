@@ -1,0 +1,134 @@
+{
+  "slug": "gemini-robotics-er-2-google-cloud",
+  "sourceType": "web",
+  "sourceUrl": "https://cloud.google.com/blog/ja/products/ai-machine-learning/gemini-robotics-embodied-reasoning-2-is-now-available-on-google-cloud/",
+  "sourceName": "Google Cloud 公式ブログ（日本）",
+  "title": "Google Cloud、ロボット用AI「Gemini Robotics ER 2」を公開プレビューで提供",
+  "seoTitle": "Gemini Robotics ER 2とは？Google Cloudでの使い方",
+  "threadsPost": "ロボットや工場の自動化に関わる人、押さえておきたい話です。\n\n要約すると、GoogleがロボットAI「Gemini Robotics ER 2」をGoogle Cloudで公開プレビューにしました。\n映像を見て作業の成否を判断し、失敗した手順だけやり直せます。\n\nロボットに任せたい作業、あなたの職場にはありますか？",
+  "threadsHook": "callout",
+  "threadsQuestions": [
+    {
+      "pattern": "future",
+      "question": "自分の職場の作業は、ロボットに任せられる範囲が広がると感じますか？"
+    },
+    {
+      "pattern": "line",
+      "question": "ロボットの判断に任せる作業は、どこまでなら許せますか？"
+    }
+  ],
+  "threadsStyle": 3,
+  "writingVoice": "honest",
+  "lede": "Google Cloudは、ロボットの頭脳役を担うAI「Gemini Robotics ER 2」を、Geminiプラットフォームで公開プレビュー版として企業向けに提供し始めました。Google Cloud公式ブログの日本語版が11月4日に公開しました。映像から作業の成否を判断し、複数のロボットの連携も扱えます。料金や日本での提供状況の詳細は、公式の料金ページとドキュメントで確認する形です。",
+  "description": "Google CloudがロボットAI「Gemini Robotics ER 2」を公開プレビューで提供。映像から作業の成否を判断し、複数ロボットの連携も可能。できること、使い始め方、注意点を整理します。",
+  "keywords": [
+    "Gemini Robotics ER 2",
+    "Google Cloud ロボット",
+    "物理AI",
+    "エンボディド推論",
+    "Gemini プラットフォーム",
+    "公開プレビュー",
+    "ロボット AI 企業向け",
+    "Model Garden",
+    "マルチロボット",
+    "VLAモデル"
+  ],
+  "tags": [
+    "生成AI",
+    "ロボティクス",
+    "Google Cloud",
+    "物理AI",
+    "Gemini"
+  ],
+  "highlights": [
+    "Gemini Robotics ER 2がGoogle Cloudで公開プレビューに。企業の本番環境向けにGeminiプラットフォームから使える",
+    "重要な瞬間の動画フレームを91.3%の精度、平均絶対フレーム距離0.96秒で特定すると説明している",
+    "MuJoCo-WarpやNVIDIA Isaac Simで試したうえで、エッジ上の実機ロボットへ導入できる"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "limited",
+    "japan": "unknown",
+    "price": "料金ページで確認",
+    "free": null,
+    "audience": "ロボット開発者",
+    "take": "ロボットを扱う企業は、Model Gardenの公開プレビューとドキュメントで条件と料金を確認するとよいでしょう。",
+    "judgedAt": "2026-11-04T12:32:01.195120+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "工場や倉庫、ラボの自動化を担当する開発者は、Model Gardenの公開プレビューで試せます。",
+      "実機の前にMuJoCo-WarpやNVIDIA Isaac Simで動作を検証でき、試行の手間を抑えやすくなります。",
+      "料金は公式のAgent Platformの料金ページで確認してください。"
+    ]
+  },
+  "body": "Gemini Robotics ER 2は、ロボットの「頭脳」の役割を担うAIモデルです。カメラの映像や音声、文章を受け取り、次に何をするかを考えます。動きを担当する別のモデルや制御の仕組みに指示を出します。\n\nGoogle Cloud公式ブログの日本語版（11月4日公開）によると、このモデルはGeminiプラットフォームで公開プレビュー版として使えます。企業の本番環境向けです。\n\nGoogle DeepMindが作った最新のロボット向けモデルに、Google Cloudのセキュリティを合わせた形です。さらに、複数のAIを組み合わせる仕組みと、開発から運用までの管理も加わります。公式ブログは、この組み合わせが「初めて」だと説明しています。\n\nなお、このモデルは7月30日のGoogle公式ブログでも発表されています。そこでは、Gemini APIやGoogle AI Studioで開発者向けに公開されていました。Gemini Enterprise Agent Platformでは、限定的なプライベートプレビューとされていました。\n\n今回のGoogle Cloud側の発表は、企業が使う場として公開プレビューに広がったものです（Google公式ブログ、11/4確認）。ロボット向けの前の世代「Gemini Robotics 2」については、サイソクも[過去に解説しています](/articles/gemini-robotics-2-comprehensive-summary-matome)。\n\n**作業の成否を映像で見分ける**\n\n現場のロボットには、次の手順に進む前に「前の手順が本当に成功したか」を知る力が要ります。ER 2は、続けて流れてくる映像をリアルタイムで処理します。\n\n進み具合は、成功か失敗かの二択、いくつかの段階、連続した点数のいずれかで分類します。失敗した手順だけを調整してやり直せるので、全工程をやり直す必要はありません。\n\n重要な出来事が起きた映像フレームの特定も得意とします。たとえば液体を注ぐのを止めるタイミングです。公式ブログは、次の性能で特定できると説明しています。\n\n- 精度：91.3%\n- 平均絶対フレーム距離：0.96秒\n- 速さ：多くの大規模モデルより4倍速い\n\n比べた相手や測定条件の詳細は、DeepMindの技術レポートで確認する必要があります。\n\n計器の読み取りも強化されました。円形ダイヤル、サイトグラス（液面を見る窓）、デジタル表示、定規、液体温度計など、10種類以上の計器の値を映像から読み取ります。\n\n**複数のロボットが役割を分ける**\n\n固定アーム、車輪付きのローバー、四足歩行ロボットなど、形の違うロボットを同じ仕組みで動かせます。種類の違うロボット同士が作業場所の理解を共有し、役割分担や作業の引き継ぎを行います。1台では難しい手順も実行できるという説明です。\n\n開発者は、視覚言語行動（VLA）モデル（映像と言葉から動作を出すAI）、ナビゲーションAPI、独自の関数を「道具」として登録します。ER 2は、自然言語の指示からそれらを呼び出します。実行中に自分のやり方を口頭で説明したり、操作する人が専門用語なしで指示を変えたりすることもできます。\n\n**試してから実機へ**\n\nGoogle Cloud上で、次の流れを組めます。\n\n- シミュレーション：MuJoCo-WarpやNVIDIA Isaac Simで動作を試し、Geminiで合成シナリオの生成と画像への自動ラベル付けを行う\n- 学習：Cloud StorageやBigQueryにあるデモ動画を整理してラベルを付け、Geminiプラットフォーム、GKE、Cluster Directorでカスタムのモデルを学習する\n- 運用：IAM（権限管理）などの制御つきで導入する。Google Distributed Cloudで経路計画など遅れに敏感な処理を工場側で動かし、稼働データをBigQueryへ送る\n\n**導入企業の声**\n\nBoston DynamicsのSpot担当バイスプレジデント、Marco da Silva氏は、映像にAIモデルを使えると述べています。その結果、点検は「ある一時点の見た目」の確認にとどまらなくなるとしています。\n\nAPI（アプリから呼び出す仕組み）のない古い反応器でも、タッチ画面を読み取れます。シンガポールのASTAR IMREのLoh Xian Jun教授は、この点を挙げています。いずれも事業者側の発言です。\n\n**使い始め方と注意点**\n\n開発者や企業チームは、Geminiプラットフォームの Model Garden から公開プレビュー版で開発を始められます。サンプルコードや双方向ストリーミングのガイドは、Gemini API Robotics のドキュメントにあります。技術仕様、料金、リージョン別の提供状況は、公式のモデル情報ページと料金ページで確認します。\n\nモデルは「gemini-robotics-er-2-preview」という名前で、Gemini 3.5 Flashがベースだと公式ドキュメントに書かれています。同じドキュメントは、ロボット周辺の安全な環境を保つのは利用者の責任だとしています。また、あいまいな指示や想定外の入力ではハルシネーション（もっともらしい誤り）を起こすことがあるとも注意しています（Google Cloud公式ドキュメント、11/4確認）。\n\n編集部の見方では、発表の中心は映像で成否を確かめる力と、Google Cloudの開発・運用基盤との組み合わせです。実際の現場で確実に動くかは、プレビュー期間中の検証で確かめる段階です。\n\n## まだ分からないこと\n\n- 日本での提供状況や日本語への対応は、まだ発表されていません。\n- 料金の具体的な金額は、この発表では示されていません。\n- 一般提供（GA）の時期は、まだ発表されていません。",
+  "easy": "## ひとことで言うと\n\nGoogle Cloudが、ロボットの頭脳にあたるAI「Gemini Robotics ER 2」を企業向けに公開プレビューで提供し始めました。カメラの映像を見て、作業がうまくいったかを自分で判断できます。\n\n## どんなAIか\n\nロボットは次の作業に進む前に、前の作業が成功したかを知る必要があります。このAIは映像を見ながら、成功か失敗かを判断します。失敗した手順だけをやり直せるので、全体をやり直さずに済みます。\n\n重要な場面の映像フレームを91.3%の精度で見つけられると説明されています。10種類以上の計器の値も、映像から読み取れます。\n\n## 使い始めるには\n\n開発者や企業のチームは、Geminiプラットフォームの Model Garden から使えます。現在は公開プレビュー版です。料金とドキュメントは、公式ページで確認できます。",
+  "channel": "Google Cloud 公式ブログ（日本）",
+  "channelId": "",
+  "channelSlug": "google-cloud-blog-ja",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Gemini Robotics Embodied Reasoning 2 が Google Cloud で利用可能に",
+  "publishedAt": "2026-11-04T02:00:00+00:00",
+  "generatedAt": "2026-11-04T12:32:01.195107+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/gemini-robotics-er-2-google-cloud-7f37a6c6.jpg",
+  "model": "claude:sonnet",
+  "affiliates": [],
+  "newsType": "product",
+  "faq": [
+    {
+      "q": "Gemini Robotics ER 2は何が発表された？",
+      "a": "ロボットの頭脳役のAIを、Google CloudのGeminiプラットフォームで公開プレビュー版として企業向けに提供し始めました。Model Gardenから開発を始められます。"
+    },
+    {
+      "q": "Gemini Robotics ER 2でできることは？",
+      "a": "映像から作業の成否を判断し、失敗した手順だけ調整できます。10種類以上の計器の読み取りや、複数ロボットの役割分担も扱えます。"
+    },
+    {
+      "q": "Gemini Robotics ER 2はどうやって始める？",
+      "a": "Geminiプラットフォームの Model Garden から公開プレビュー版で開発できます。サンプルコードはGemini API Roboticsのドキュメントにあります。"
+    },
+    {
+      "q": "Gemini Robotics ER 2を使うときの注意点は？",
+      "a": "ロボット周辺の安全の確保は利用者の責任です。あいまいな指示ではハルシネーションが起きることもあり、公開プレビュー版である点にも注意が必要です。"
+    }
+  ],
+  "todayActions": [
+    "Google Cloudの公式ドキュメントで、モデル情報ページのリージョン別提供状況を確認する",
+    "Agent Platformの料金ページで、Gemini Robotics ERの料金を確認する",
+    "自社の現場で、映像による成否判定が役立つ作業を洗い出して共有する"
+  ],
+  "relatedSlugs": [
+    "gemini-robotics-2-comprehensive-summary-matome"
+  ],
+  "qualityScore": 93,
+  "sourcePublishedAt": "2026-11-04T02:00:00+00:00",
+  "detectedAt": "2026-11-04T12:30:57+00:00",
+  "imageCredit": {
+    "kind": "official",
+    "org": "Google Cloud",
+    "provider": "Google Cloud 公式ブログ（日本）",
+    "sourceUrl": "https://cloud.google.com/blog/ja/products/ai-machine-learning/gemini-robotics-embodied-reasoning-2-is-now-available-on-google-cloud/",
+    "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/gemini-robotics-2__blog__cover.width-2200..max-2200x2200.png",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-04T12:32:38+00:00"
+  },
+  "imageFocus": {
+    "x": 0.439,
+    "y": 0.5,
+    "box": [
+      0.0,
+      0.0,
+      0.878,
+      1.0
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/gemini-robotics-er-2-google-cloud-7f37a6c6.jpg"
+  }
+}

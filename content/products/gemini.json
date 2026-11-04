@@ -17,6 +17,7 @@
     "gemini-notebook"
   ],
   "linkFrom": [
+    "gemini-robotics-er-2-google-cloud",
     "gemini-plans-daily-brief-added",
     "gemini-cost-per-task-routing",
     "gemini-edit-files-directly",
@@ -94,6 +95,7 @@
     }
   ],
   "articles": [
+    "gemini-robotics-er-2-google-cloud",
     "gemini-plans-daily-brief-added",
     "google-ai-educator-series-expansion",
     "google-guided-learning-classroom-search",

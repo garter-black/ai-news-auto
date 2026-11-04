@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "gemini-robotics-er-2-google-cloud",
+   "at": "2026-11-04T12:32:01.195107+00:00",
+   "title": "Google Cloud、ロボット用AI「Gemini Robotics ER 2」を公開プレビューで提供",
+   "head": "Google Cloud、ロボット用AI「Gemini Robotics ER 2」を公開プレビューで提供 | Gemini Robotics Embodied Reasoning 2 が Google Cloud で利用可能に",
+   "text": "Google Cloud、ロボット用AI「Gemini Robotics ER 2」を公開プレビューで提供 | Gemini Robotics Embodied Reasoning 2 が Google Cloud で利用可能に | Gemini Robotics ER 2 / Google Cloud ロボット / 物理AI / エンボディド推論 / Gemini プラットフォーム / 公開プレビュー / ロボット AI 企業向け / Model Garden / マルチロボット / VLAモデル / 生成AI / ロボティクス / Google Cloud / 物理AI / Gemini",
+   "urls": [
+    "https://cloud.google.com/blog/ja/products/ai-machine-learning/gemini-robotics-embodied-reasoning-2-is-now-available-on-google-cloud/"
+   ]
+  },
+  {
    "slug": "torchtpu-open-source-pytorch-tpu",
    "at": "2026-11-04T12:19:46.569345+00:00",
    "title": "Google、TPU向け「TorchTPU」をオープンソース公開　PyTorchをそのまま実行",
