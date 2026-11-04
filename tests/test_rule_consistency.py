@@ -326,6 +326,15 @@ class SiteAndOpsTest(unittest.TestCase):
         with patch.object(audit, "_gh", lambda *a: failed):
             self.assertFalse(audit.write_issue({"/x": ["[A1] x"]}, "body"))
 
+    def test_audit_a6_ignores_ad_product_titles_but_not_site_labels(self):
+        """A6 はサイトの札・見出しの決まり。広告に出る他社の書籍の正式な名前（「60分でわかる！…」）は違反にしない（毎日の見張りの誤検知）"""
+        import owner_rules_audit as audit
+
+        ad = '<p>本も比べる</p><a rel="sponsored nofollow" href="#">60分でわかる！ AIエージェント 超入門</a><a rel="sponsored" href="#">PR</a>'
+        self.assertEqual([v for v in audit.article_page_problems(f"<html><body>{ad}</body></html>", {}) if v.startswith("[A6]")], [])
+        label = '<p>3分でわかる新機能</p><a rel="sponsored" href="#">PR</a>'
+        self.assertTrue([v for v in audit.article_page_problems(f"<html><body>{label}</body></html>", {}) if v.startswith("[A6]")])
+
     def test_cold_check_does_not_pass_missing_pages(self):
         import cold_check
 

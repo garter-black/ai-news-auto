@@ -84,6 +84,31 @@ PERSONA_HEADING_HTML = re.compile(
 # A6: 見出しの札があざとい（「3秒でわかる」など）
 GIMMICK_LABEL = re.compile(r"\d+秒でわかる|\d+分でわかる|一瞬でわかる|サクッと")
 
+
+def _product_titles() -> list[str]:
+    """広告に出る他社の商品の正式な名前（content/products.json の title）のうち、A6 の言い回しを含むもの（サイトの札ではない）"""
+    try:
+        data = json.loads((Path(__file__).resolve().parent.parent / "content" / "products.json").read_text("utf-8"))
+    except (OSError, ValueError):
+        return []
+    titles: list[str] = []
+
+    def walk(x) -> None:
+        if isinstance(x, dict):
+            if isinstance(x.get("title"), str) and GIMMICK_LABEL.search(x["title"]):
+                titles.append(x["title"])
+            for v in x.values():
+                walk(v)
+        elif isinstance(x, list):
+            for v in x:
+                walk(v)
+
+    walk(data)
+    return titles
+
+
+GIMMICK_PRODUCT = re.compile("|".join(re.escape(t) for t in sorted(_product_titles(), key=len, reverse=True)) or r"(?!x)x")
+
 # A5: 有名な会社に無理な説明を付けた題名（「ChatGPTのOpenAI」「AI半導体のNVIDIA」）
 FAMOUS = (
     "OpenAI|NVIDIA|Google|Apple|Microsoft|Meta|Amazon|Anthropic|Samsung|サムスン|ソニー|トヨタ|Tesla|テスラ|"
@@ -437,7 +462,14 @@ def article_page_problems(html: str, record: dict) -> list[str]:
     if m := PERSONA_HEADING_HTML.search(html):
         out.append(f"[A24] 立場の小見出しがページに出ている（「{m.group(1)}」）")
     visible = "".join(page.text)
-    if not gimmick and (m := GIMMICK_LABEL.search(visible)):
+    # 広告の商品名（書籍「60分でわかる！ AIエージェント 超入門」など、他社の商品の正式な名前）はサイトの札ではないので除いて見る
+    products = [re.sub(r"<[^>]+>", "", x) for x in re.findall(r'<a [^>]*rel="[^"]*sponsored[^"]*"[^>]*>(.*?)</a>', html, re.S)]
+    unlabelled = visible
+    for name in sorted({x.strip() for x in products if GIMMICK_LABEL.search(x)}, key=len, reverse=True):
+        unlabelled = unlabelled.replace(name, "")
+    unlabelled = GIMMICK_PRODUCT.sub("", unlabelled)
+    if not gimmick and (m := GIMMICK_LABEL.search(unlabelled)):
+        visible = unlabelled
         out.append(f"[A6] あざとい札がページに出ている（「{_snippet(visible, m)}」）")
     credit = record.get("imageCredit") or {}
     if isinstance(credit, dict) and credit.get("kind") == "ai" and "AI生成" not in visible:
