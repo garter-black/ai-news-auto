@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "atlassian-context-graph-agents-teamwork-graph",
+   "at": "2026-11-04T08:32:50.154404+00:00",
+   "title": "Atlassian、AIエージェント向けの文脈地図「Teamwork Graph」を解説　接続だけでは答えは出ない",
+   "head": "Atlassian、AIエージェント向けの文脈地図「Teamwork Graph」を解説　接続だけでは答えは出ない | Inside a context graph: how agents connect the dots across work",
+   "text": "Atlassian、AIエージェント向けの文脈地図「Teamwork Graph」を解説　接続だけでは答えは出ない | Inside a context graph: how agents connect the dots across work | 文脈グラフ / Teamwork Graph / AIエージェント / Atlassian / MCP / RAG / ベクトル検索 / コンテキスト / 社内データ / AI導入 / AIエージェント / Atlassian / 文脈グラフ / MCP / 生成AI",
+   "urls": [
+    "https://www.atlassian.com/blog/context/inside-a-context-graph"
+   ]
+  },
+  {
    "slug": "tencent-hy4-ai-gateway-available",
    "at": "2026-11-04T08:07:37.441397+00:00",
    "title": "Vercel、AI Gatewayでテンセントの「Hy4」を提供　12月31日まで半額",

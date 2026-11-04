@@ -9756,6 +9756,14 @@
       "slug": "riken-utokyo-3d-live-cell-microscope",
       "url": "https://www.riken.jp/press/2026/20261102_1/index.html"
     },
+    "954aea6925799b60": {
+      "at": "2026-11-04T08:32:59.223079+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "score": 88,
+      "section": "ai",
+      "slug": "atlassian-context-graph-agents-teamwork-graph",
+      "url": "https://www.atlassian.com/blog/context/inside-a-context-graph"
+    },
     "95ace0e08e8db609": {
       "at": "2026-11-04T02:27:37.138362+00:00",
       "reason": "dedupe: 同じ出典URL",
@@ -14247,50 +14255,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T17:11:28.945757+00:00",
-      "attempt": 1,
-      "id": "d9642dffdf582468",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 50.5字・60字超の文が 27% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 65.4,
-        "avg_sentence": 50.5,
-        "long_share": 0.273,
-        "max_paragraph": 117,
-        "paragraphs": 17,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "atlassian-blog",
-      "title": "For the third year running, Atlassian named a Leader in the Gartner® Magic Quadr"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T17:11:31.904135+00:00",
-      "attempt": 0,
-      "id": "d9642dffdf582468",
-      "kind": "ai",
-      "model": "",
-      "problems": [
-        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（50.5→50.5字）"
-      ],
-      "readability": {
-        "avg_paragraph": 65.4,
-        "avg_sentence": 50.5,
-        "long_share": 0.273,
-        "max_paragraph": 117,
-        "paragraphs": 17,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "atlassian-blog",
-      "title": "For the third year running, Atlassian named a Leader in the Gartner® Magic Quadr"
-    },
     {
       "accepted": false,
       "at": "2026-11-02T17:11:39.837387+00:00",
@@ -20649,6 +20613,55 @@
       "warnings": [
         "見出しが43字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（BYOK・JSON）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T08:32:31.578909+00:00",
+      "attempt": 1,
+      "id": "954aea6925799b60",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "1つの文を2つに割っている（「特徴があります。という形になって初めて、判断の根拠になるという整理です。」）。1文にまとめる"
+      ],
+      "readability": {
+        "avg_paragraph": 105.5,
+        "avg_sentence": 47.2,
+        "long_share": 0.211,
+        "max_paragraph": 222,
+        "paragraphs": 17,
+        "sentences": 38
+      },
+      "score": null,
+      "source": "atlassian-blog",
+      "title": "Inside a context graph: how agents connect the dots across work",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（CLI・CQS・IQ）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T08:32:59.211773+00:00",
+      "attempt": 2,
+      "id": "954aea6925799b60",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 80.9,
+        "avg_sentence": 37.7,
+        "long_share": 0.089,
+        "max_paragraph": 181,
+        "paragraphs": 21,
+        "sentences": 45
+      },
+      "score": 88,
+      "source": "atlassian-blog",
+      "title": "Inside a context graph: how agents connect the dots across work",
+      "warnings": [
+        "見出しが57字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（CLI）"
       ]
     }
   ],
