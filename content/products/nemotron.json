@@ -6,7 +6,7 @@
   "companyName": "NVIDIA",
   "category": "AIモデル",
   "overview": {
-    "text": "Nemotronは、NVIDIAが提供するオープンなAIモデルシリーズです。テキスト、画像、動画のマルチモーダル処理や音声認識に対応するモデルが発表されています。",
+    "text": "Nemotronは、NVIDIAが提供するAIモデルです。音声認識やマルチモーダル処理、テキスト生成に対応するオープンモデル群として発表されました。",
     "sources": [
       "aws-nvidia-nemotron-35-super-vl",
       "nvidia-nemotron-35-transcribe"
@@ -14,16 +14,8 @@
   },
   "facts": [
     {
-      "label": "提供開始",
-      "value": "2026年10月に順次発表",
-      "sources": [
-        "aws-nvidia-nemotron-35-super-vl",
-        "nvidia-nemotron-35-transcribe"
-      ]
-    },
-    {
-      "label": "日本での提供",
-      "value": "日本からも利用できます",
+      "label": "料金",
+      "value": "無償公開（オープンウェイト）",
       "sources": [
         "aws-nvidia-nemotron-35-super-vl",
         "nvidia-nemotron-35-transcribe"
@@ -31,7 +23,7 @@
     },
     {
       "label": "使える場所",
-      "value": "AWS環境やHugging Face",
+      "value": "Hugging Face、AWSなど",
       "sources": [
         "aws-nvidia-nemotron-35-super-vl",
         "nvidia-nemotron-35-transcribe"
@@ -39,92 +31,91 @@
     },
     {
       "label": "向いている人",
-      "value": "AI開発者や研究者",
+      "value": "AI開発者やエンジニア",
       "sources": [
-        "nvidia-tensorrt-edge-llm-edge-ai",
+        "aws-nvidia-nemotron-35-super-vl",
         "nvidia-nemotron-35-transcribe"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "テキストや画像、ドキュメント、動画を1つのモデルで処理できます。",
-      "sources": [
-        "aws-nvidia-nemotron-35-super-vl"
-      ]
-    },
-    {
-      "text": "40言語の文字起こしや31言語から英語への翻訳に対応しています。",
+      "text": "40言語の文字起こしや31言語の翻訳に対応します。",
       "sources": [
         "nvidia-nemotron-35-transcribe"
       ]
     },
     {
-      "text": "DGX Spark環境でNemotron-3.5 Lightningを実行できます。",
+      "text": "テキストや画像、動画の入力を1つで処理できます。",
       "sources": [
-        "nvidia-tensorrt-edge-llm-edge-ai"
+        "aws-nvidia-nemotron-35-super-vl"
       ]
     },
     {
-      "text": "Bolt E4Bなどの小型言語モデルでローカル動作を実現します。",
+      "text": "話者の切り替え認識や最大8人の話者分離が可能です。",
       "sources": [
-        "nvidia-nemotron-halloween-monsterhouse"
+        "nvidia-nemotron-35-transcribe"
+      ]
+    },
+    {
+      "text": "数コマンドで組み込み機器での対話を始められます。",
+      "sources": [
+        "nvidia-tensorrt-edge-llm-edge-ai"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "モデルの重みや学習データはオープンウェイトとして無償で公開されています。",
+      "text": "モデルの重みや学習データは無償で公開されています。",
       "sources": [
         "aws-nvidia-nemotron-35-super-vl",
         "nvidia-nemotron-35-transcribe"
       ]
     },
     {
-      "text": "AWS上での利用は、Amazon EKSなどのインスタンス料金に準じます。",
+      "text": "実行には対応するGPU環境が必要となります。",
       "sources": [
-        "aws-nvidia-nemotron-35-super-vl"
+        "nvidia-nemotron-35-transcribe"
       ]
     }
   ],
   "japan": [
     {
-      "text": "日本国内のAWS環境やHugging Faceを通じて利用可能です。",
+      "text": "Hugging Face等からモデルをダウンロードして利用できます。",
       "sources": [
-        "aws-nvidia-nemotron-35-super-vl",
         "nvidia-nemotron-35-transcribe"
       ]
     },
     {
-      "text": "対応するNVIDIA環境があれば今日から試すことができます。",
+      "text": "日本国内のAWS環境でも対応インスタンスで利用可能です。",
       "sources": [
-        "nvidia-tensorrt-edge-llm-edge-ai"
+        "aws-nvidia-nemotron-35-super-vl"
       ]
     }
   ],
   "howto": [
     {
-      "text": "AWS上ではAmazon EKSやSageMaker HyperPod EKSでデプロイできます。",
+      "text": "コマンドを使ってローカルやエッジ環境で対話を始められます。",
+      "sources": [
+        "nvidia-tensorrt-edge-llm-edge-ai"
+      ]
+    },
+    {
+      "text": "Amazon EKSなどのAWS上でデプロイして利用できます。",
       "sources": [
         "aws-nvidia-nemotron-35-super-vl"
       ]
     },
     {
-      "text": "Hugging Faceなどからモデルをダウンロードして実行可能です。",
+      "text": "Hugging Face等でモデルの重みを入手してデプロイできます。",
       "sources": [
         "nvidia-nemotron-35-transcribe"
-      ]
-    },
-    {
-      "text": "コマンドラインツールを使ってチャットを開始できます。",
-      "sources": [
-        "nvidia-tensorrt-edge-llm-edge-ai"
       ]
     }
   ],
   "differences": [
     {
-      "text": "1つのモデルに文字起こしや話者識別などが統合されています。",
+      "text": "文字起こしや話者識別などを1つのチェックポイントに統合しています。",
       "sources": [
         "nvidia-nemotron-35-transcribe"
       ]
@@ -132,32 +123,39 @@
   ],
   "faq": [
     {
-      "q": "無料で使えますか？",
-      "a": "モデルの重み自体は無償公開されていますが、実行にはGPU環境が必要です。",
+      "q": "無料で使える？",
+      "a": "モデルの重みや学習データは無償で公開されています。実行には対応するNVIDIA製GPUが必要です。",
       "sources": [
         "aws-nvidia-nemotron-35-super-vl",
         "nvidia-nemotron-35-transcribe"
       ]
     },
     {
-      "q": "音声認識モデルは何言語に対応していますか？",
-      "a": "40言語の文字起こしや31言語の翻訳に対応しています。",
+      "q": "話者識別には対応している？",
+      "a": "13言語で話者の切り替えを認識し、最大8人までの話者分離に対応しています。",
       "sources": [
         "nvidia-nemotron-35-transcribe"
       ]
     },
     {
-      "q": "商用利用は可能ですか？",
-      "a": "公開されている規約に従うことで商用利用を含めて活用できます。",
+      "q": "どこから入手できる？",
+      "a": "Hugging FaceやModelScopeを通じて公開されています。",
       "sources": [
         "nvidia-nemotron-35-transcribe"
       ]
     },
     {
-      "q": "対応しているコンテキスト長はどのくらいですか？",
-      "a": "最大1Mトークンの長大なコンテキスト長を効率的に処理できます。",
+      "q": "どのような形式で処理を行える？",
+      "a": "テキストだけでなく画像や動画の入力も1つのモデルで処理できます。",
       "sources": [
         "aws-nvidia-nemotron-35-super-vl"
+      ]
+    },
+    {
+      "q": "何言語の文字起こしに対応する？",
+      "a": "40言語の文字起こしに対応しています。",
+      "sources": [
+        "nvidia-nemotron-35-transcribe"
       ]
     }
   ],
@@ -171,6 +169,11 @@
       "date": "2026-10-30",
       "slug": "aws-nvidia-nemotron-35-super-vl",
       "event": "Nemotron 3.5 Super VLのサポートを発表"
+    },
+    {
+      "date": "2026-10-31",
+      "slug": "nvidia-nemotron-halloween-monsterhouse",
+      "event": "音声エージェントの仕組みを公開"
     }
   ],
   "related": [
@@ -194,9 +197,9 @@
     "aws-nvidia-nemotron-35-super-vl",
     "nvidia-nemotron-35-transcribe"
   ],
-  "signature": "72e5388a4030f56e",
-  "primarySignature": "f25eb84db1927efb",
+  "signature": "e575d1b1ba923aed",
+  "primarySignature": "385fa77c0e8b995c",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-29T17:50:17+00:00",
-  "updatedAt": "2026-11-02T18:29:40+00:00"
+  "updatedAt": "2026-11-04T03:54:09+00:00"
 }

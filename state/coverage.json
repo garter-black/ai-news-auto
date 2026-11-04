@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "palette-ibm-research-slide-deck",
+   "at": "2026-11-04T03:52:56.935002+00:00",
+   "title": "IBM Research、スライド作成AI「Palette」を発表　PresentBenchで2分野首位",
+   "head": "IBM Research、スライド作成AI「Palette」を発表　PresentBenchで2分野首位 | Palette: teaching a small model to build decks in your design language",
+   "text": "IBM Research、スライド作成AI「Palette」を発表　PresentBenchで2分野首位 | Palette: teaching a small model to build decks in your design language | スライド作成AI / Palette IBM / IBM Research / PresentBench / 小型AIモデル / オープンウェイト / パワポ 自動作成 AI / 資料 デザイン AI / pptxgenjs / Hugging Face / 生成AI / スライド作成 / IBM Research / オープンウェイト / Hugging Face",
+   "urls": [
+    "https://huggingface.co/blog/ibm-research/palette-deck-building"
+   ]
+  },
+  {
    "slug": "gemini-cost-per-task-routing",
    "at": "2026-11-04T03:14:30.559487+00:00",
    "title": "Googleが「Gemini」モデルの使い分け手法を公開　タスクごとのコスト削減を検証",

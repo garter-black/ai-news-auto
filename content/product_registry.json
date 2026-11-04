@@ -1242,6 +1242,10 @@
     "vera-rubin": {
       "at": "2026-11-04T03:15:30+00:00",
       "signature": "f371775f04f97426"
+    },
+    "openai-dot": {
+      "at": "2026-11-04T03:54:01+00:00",
+      "signature": "bd6b903ef30dc06b"
     }
   },
   "deferred": {}
