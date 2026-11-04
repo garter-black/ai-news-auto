@@ -310,6 +310,19 @@
       "title": "Muse Is Now Available in Singapore: The World’s First Personal AI Agent Built for Everyone",
       "url": "https://about.fb.com/news/2026/10/muse-is-now-available-in-singapore-the-worlds-first-personal-ai-agent-built-for-everyone/"
     },
+    "45eff8f499ae341a": {
+      "detectedAt": "2026-11-04T04:21:24+00:00",
+      "finishedAt": "2026-11-04T04:27:37+00:00",
+      "outcome": "skipped",
+      "reason": "followup quality: 「Impress Watchは2026年11月4日、iPad版「Affinity」の機能や料金について続報を伝えました」→ 元記事に発信元がImpress Watchであることや「続報」であることは書かれておらず、固有名詞と報道の関係が創作されている。; 「既存記事では触れていなかった点を以下にまとめます」→ 既存記事との関係（何が追加情報か）は元記事や確認済み",
+      "run": "41772805541",
+      "slug": "",
+      "source": "radar-impress.co.jp",
+      "sourcePublishedAt": "2026-11-04T04:14:22+00:00",
+      "startedAt": "2026-11-04T04:27:08+00:00",
+      "title": "「Affinity」にiPad版登場 人気のデザイン・写真アプリが無料で",
+      "url": "https://www.watch.impress.co.jp/docs/news/2153447.html"
+    },
     "4b9ad4180246a1db": {
       "detectedAt": "2026-10-28T16:52:51+00:00",
       "finishedAt": "2026-10-28T16:54:39+00:00",
