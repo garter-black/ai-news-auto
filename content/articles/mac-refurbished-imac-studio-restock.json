@@ -85,7 +85,7 @@
   "videoTitle": "Mac整備済製品、Mac StudioとiMacの在庫が一気に復活。新モデル追加で計123種類",
   "publishedAt": "2026-11-04T01:57:24.629000+00:00",
   "generatedAt": "2026-11-04T02:02:47.124303+00:00",
-  "thumbnail": "",
+  "thumbnail": "https://ai-tech-express.jp/img/mac-refurbished-imac-studio-restock-fa482cc4.jpg",
   "model": "anthropic-api:claude-sonnet-5-5",
   "affiliates": [],
   "newsType": "product",
@@ -299,5 +299,25 @@
     "takeaway": [],
     "priceNote": "iMac (24-inch, M4)の価格は、発表資料には書かれていません（未発表）。比べた製品の公式価格は、HP OmniBook X 14は297,000円（税込）、Surface Pro（第12世代）は238,480円（日本）です。",
     "computed": []
+  },
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A bright office desk near a window, with a coffee mug, a paper notebook, and a pen, illuminated by natural daylight.",
+    "provider": "Cloudflare Workers AI",
+    "noProduct": true,
+    "at": "2026-11-04T08:09:06+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.509,
+    "box": [
+      0.0,
+      0.018,
+      1.0,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/mac-refurbished-imac-studio-restock-fa482cc4.jpg"
   }
 }
