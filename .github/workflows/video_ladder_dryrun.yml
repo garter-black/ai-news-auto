@@ -16,6 +16,9 @@ on:
       levels:
         description: "試す段（例: L3A / L1,L2,L3A）"
         default: "L1,L2,L3A"
+      auto_cards:
+        description: "台本が場面ごとに画面の道具（カード）を選ぶ（on / off。オーナーの承認待ちの試し）"
+        default: "off"
 
 permissions:
   contents: write  # 画像のレビューに Claude API を使ったときの使用量（state/claude_api_usage_video_trial.json）を main に残すため
@@ -57,6 +60,7 @@ jobs:
           CLAUDE_API_LEDGER: video_trial  # 試しは本番の1日の上限と別に数える（scripts/llm.py の is_trial）
           CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
           CLAUDE_API_DAILY_CALLS_VIDEO: ${{ vars.CLAUDE_API_DAILY_CALLS_VIDEO }}
+          SNS_VIDEO_AUTO_CARDS: ${{ github.event.inputs.auto_cards }}
           COUNT: ${{ github.event.inputs.count }}
           SLUGS: ${{ github.event.inputs.slugs }}
           LEVELS: ${{ github.event.inputs.levels }}

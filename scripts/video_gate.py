@@ -1042,6 +1042,38 @@ def check_calm(report: dict, total: float, result: GateResult) -> None:
             result.reasons.append(f"v3: 場面{h.get('beat')}の選択した文に、キーワード「{h.get('keyword')}」の数字・言葉が無い")
 
 
+AUTO_CARDS_MIN_TOOLS = 2
+PAGE_IDLE_MAX = 4.0  # 公式ページの画面が、選択の青（英語なら訳も）もカードも無いまま続いてよい長さ
+
+
+def page_idle_problems(report: dict, end: float, limit: float = PAGE_IDLE_MAX, step: float = 0.1) -> list[str]:
+    """（2026-11-04 オーナー: 英語のページだけが21秒続いた）公式ページの画面が、選択の青と日本語の訳（日本語の文なら青だけ）も、
+    カード・グラフも無いまま limit 秒を超えて続いたら不合格"""
+    covered: list[tuple[float, float]] = []
+    subs = [(float(x.get("t0", 0)), float(x.get("t1", 0))) for x in report.get("subtitles") or []]
+    for g in report.get("geometry") or []:
+        a, b = float(g.get("t0", 0)), float(g.get("t1", 0))
+        target = str(g.get("target", ""))
+        english = bool(re.search(r"[A-Za-z]", target)) and not re.search(r"[ぁ-んァ-ヴ一-龥]", target)
+        if english and g.get("ja"):
+            covered += [(max(a, s0), min(b, s1)) for s0, s1 in subs if s0 < b and a < s1]
+        else:
+            covered.append((a, b))
+    covered += [(float(L.get("t0", 0)), float(L.get("t1", 0))) for L in (report.get("ladders") or []) + (report.get("charts") or [])]
+    t, run, worst, at = 0.0, 0.0, 0.0, 0.0
+    while t < end:
+        if any(a - 1e-6 <= t < b for a, b in covered):
+            run = 0.0
+        else:
+            run += step
+            if run > worst:
+                worst, at = run, t - run + step
+        t += step
+    if worst > limit + 1e-6:
+        return [f"{at:.1f}秒から{worst:.1f}秒、選択の青と訳もカードも無い画面が続く（{limit:.0f}秒まで）"]
+    return []
+
+
 def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, article: dict | None = None, renderer: Path | None = None) -> None:
     m = result.metrics
     calm = bool(report.get("motion_budget"))
@@ -1153,8 +1185,13 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
     tools = sorted({str(L.get("mode") or "ladder") for L in report.get("ladders") or []} | ({"chart"} if report.get("charts") else set()))
     m["v3_visual_tools"] = tools
     min_tools = int(os.environ.get("VIDEO_MIN_TOOLS", "0") or 0)
+    if report.get("auto_cards"):  # 台本が道具を選ぶ旗（SNS_VIDEO_AUTO_CARDS）が on で作った動画は、2種類以上
+        min_tools = max(min_tools, AUTO_CARDS_MIN_TOOLS)
     if min_tools and end >= 25 and len(tools) < min_tools:
         result.reasons.append(f"v3: 画面の道具が{len(tools)}種類（{'・'.join(tools) or 'なし'}。{min_tools}種類以上）")
+    if report.get("auto_cards"):
+        for p in page_idle_problems(report, end):
+            result.reasons.append(f"v3: {p}")
     if m["v3_card_share"] > CARD_SHARE_MAX:
         result.reasons.append(f"v3: 右の画面の {m['v3_card_share']:.0%} がカード（公式ページの画面が基本の形。{CARD_SHARE_MAX:.0%} まで）")
     # 左の列の見出し・キーワード（同じ言葉の繰り返し・名詞1つだけは不合格。2026-11-04）と、最初の5〜8秒で何のニュースか分かるか
@@ -1165,7 +1202,7 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
         result.reasons.append(f"v3: 書体は{V3_MAX_FONTS}つまで（{fonts}）")
     # 描画のソースに線・帯・枠が無い（型のカードを使った動画は、カードを描く video_templates.py も）
     renderer = renderer or Path(__file__).resolve().parent / "shorts_v3.py"
-    renderers = [renderer] + ([Path(__file__).resolve().parent / "video_templates.py"] if report.get("template") not in (None, "", "default") else [])
+    renderers = [renderer] + ([Path(__file__).resolve().parent / "video_templates.py"] if report.get("template") not in (None, "", "default") or report.get("auto_cards") else [])
     for path in renderers:
         for p in lint_renderer(path):
             result.reasons.append(f"v3: 飾りの線・帯: {p}")

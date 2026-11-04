@@ -686,6 +686,51 @@ SCRIPT_SCHEMA = {
 }
 
 
+# 台本が場面ごとに画面の道具（カード）を選ぶ（2026-11-04・オーナーの承認待ち。既定 off＝今までと同じ）。
+# on のとき: 台本に cards（2列・前→今・○×・数字・手順）。カードの文字・数字は記事と照合。ゲートは道具2種類以上と「青と訳の無い画面は4秒まで」
+AUTO_CARDS_ENV = "SNS_VIDEO_AUTO_CARDS"
+AUTO_CARD_MODES = ("timeline", "checklist", "figures", "specs")  # 2列・前→今＝timeline、○×＝checklist、数字＝figures、手順＝specs
+
+
+def auto_cards_on(env: dict | None = None) -> bool:
+    return (os.environ if env is None else env).get(AUTO_CARDS_ENV, "off") == "on"
+
+
+_CARD = {
+    "type": "OBJECT",
+    "properties": {
+        "beat": {"type": "INTEGER"},
+        "mode": {"type": "STRING"},
+        "title": {"type": "STRING"},
+        "rows": {"type": "ARRAY", "items": {"type": "OBJECT", "properties": {"label": {"type": "STRING"}, "text": {"type": "STRING"}, "value": {"type": "STRING"}},
+                                            "required": ["label", "text", "value"]}},
+    },
+    "required": ["beat", "mode", "title", "rows"],
+}
+
+
+def script_schema(env: dict | None = None) -> dict:
+    """台本の形。カードの旗が on のときだけ cards を足す（off なら SCRIPT_SCHEMA そのまま）"""
+    if not auto_cards_on(env):
+        return SCRIPT_SCHEMA
+    out = json.loads(json.dumps(SCRIPT_SCHEMA))
+    out["properties"]["cards"] = {"type": "ARRAY", "items": _CARD}
+    out["required"] = out["required"] + ["cards"]
+    out["propertyOrdering"] = out["propertyOrdering"] + ["cards"]
+    return out
+
+
+AUTO_CARDS_RULES = """
+
+# 画面の道具（cards。場面ごとに1つまで。2〜3枚・2種類以上）
+- 右の画面は基本は公式ページの画面（選択の青と訳）。場面によって、右に白いカードを2〜4秒出して中身を見せる。左の大きな文字（keyword）は**持ち帰る一言**（例: 契約そのまま・PCは汚れない・費用管理は別で）、カードは**その中身の詳しいこと**。左とカードに同じ言葉を並べない。
+- mode は次から選ぶ。続けて同じ mode を使わない。1本で2種類以上:
+  - timeline: 2つを並べる（例: 手元のIDE｜クラウド）・前→今（例: 前: 手作業 → 今: 自動）。rows は2〜3行で label（8字以内）と text（18字以内）。value は空。
+  - checklist: できる・できないを○×で（例: label「上限の設定」text「× 決められない」）。rows は2〜4行。text は「○ 」か「× 」で始める。value は空。
+  - figures: 大事な数字を大きく（例: label「検知まで」value「平均69秒」）。rows は1〜3行。value は記事の数字そのまま（10字以内）、text は空か補足（14字以内）。
+  - specs: 手順や要素を順に（例: 検知 → 特定 → 隔離 → 再開）。rows は2〜4行で text（14字以内）だけ。label・value は空。
+- beat はカードを出す場面の番号（beat 1〜）。ladder・compare・units を使う場面には出さない。title は14字以内。
+- カードの文字・数字は資料（記事）にあるものだけ。数字は記事の表記どおり。製品名は英字のまま。"""
 BEATS_MIN, BEATS_MAX = 5, 7
 SPEECH_TOTAL_MAX = 330  # 読み上げの合計（九州そら・速さ1.38 で約1秒5字 → 約65秒）
 
@@ -783,7 +828,7 @@ def script_system() -> str:
 
 # 読み上げ（speech）
 - 英語の製品名・社名はカタカナ（Claude→クロード、OpenAI→オープンエーアイ、Pro→プロ）。記号は言葉に（$200→200ドル、%→パーセント）。
-- 数字はアラビア数字のまま（かなや漢数字にしない）。"""
+- 数字はアラビア数字のまま（かなや漢数字にしない）。""" + (AUTO_CARDS_RULES if auto_cards_on() else "")
 
 
 REVIEW_SCHEMA = {
@@ -1150,8 +1195,78 @@ def script_problems(s: dict, article: dict, pages: list[Page]) -> list[str]:
             out.append("compare.ratio は数字の倍率（例: 10倍）。")
     flat = flat_script(s)
     out += gate.number_context_problems(s, article)
+    if auto_cards_on():
+        out += card_problems(s, article)
     out += gate.fact_problems(flat, article) + gate.title_problems(flat, article, v2.main_name(article))
     out += v2.reading_problems(flat)
+    return out
+
+
+def card_problems(s: dict, article: dict) -> list[str]:
+    """台本が選んだカードの検査（旗が on のとき）: 形・数・続けて同じ道具を使わない・文字と数字は記事にある・左の一言とカードが同じ言葉にならない"""
+    out = []
+    beats = s.get("beats") or []
+    cards = [c for c in s.get("cards") or [] if isinstance(c, dict)]
+    taken = {int((s.get(k) or {}).get("beat") or 0) for k in ("ladder", "compare", "units")}
+    mat = gate.material_text(article)
+    nums = gate.number_tokens(mat) | {"0"}
+    if len(cards) < 2 or len({c.get("mode") for c in cards}) < 2:
+        out.append("cards は2〜3枚で、2種類以上の mode を使う。")
+    seen_beats, prev = set(), None
+    for c in sorted(cards, key=lambda c: int(c.get("beat") or 0)):
+        b, mode, rows = int(c.get("beat") or 0), c.get("mode"), c.get("rows") or []
+        name = f"cards（beat{b}）"
+        if mode not in AUTO_CARD_MODES:
+            out.append(f"{name}.mode は {'/'.join(AUTO_CARD_MODES)} のどれか（{mode}）。")
+        if not (1 <= b <= len(beats)) or b in seen_beats or b in taken:
+            out.append(f"{name}.beat は場面の番号で、1場面に1枚・ladder などと別の場面に。")
+        if prev and prev[0] == mode and prev[1] == b - 1:
+            out.append(f"{name}: 続けて同じ道具（{mode}）を使わない。")
+        seen_beats.add(b)
+        prev = (mode, b)
+        lo, hi = (1, 3) if mode == "figures" else (2, 4)
+        if not (lo <= len(rows) <= hi):
+            out.append(f"{name}.rows は{lo}〜{hi}行。")
+        if len(c.get("title", "")) > 14:
+            out.append(f"{name}.title は14字以内。")
+        kw = (beats[b - 1].get("keyword", "") if 1 <= b <= len(beats) else "")
+        for r in rows:
+            label, text, value = r.get("label", ""), r.get("text", ""), r.get("value", "")
+            if len(label) > 8 or len(text) > 18 or len(value) > 10:
+                out.append(f"{name}: 行の文字が長すぎます（label 8字・text 18字・value 10字まで）。")
+            if mode == "checklist" and not re.match(r"^[○×✕✓]\s?", text):
+                out.append(f"{name}: checklist の text は「○ 」か「× 」で始める（{text}）。")
+            if mode == "figures" and not re.search(r"\d", gate.norm(value)):
+                out.append(f"{name}: figures の value は記事の数字（{value}）。")
+            for t in (c.get("title", ""), label, text, value):
+                if bad := gate.numbers_ok(t, nums):
+                    out.append(f"{name}: 記事に無い数字 {', '.join(sorted(set(bad)))}（{t}）。")
+                if bad := gate.proper_noun_problems(t, mat):
+                    out.append(f"{name}: 記事に無い語 {', '.join(sorted(set(bad)))}（{t}）。")
+                out += [f"{name}: {p}" for p in gate.stiff_problems(t)] if hasattr(gate, "stiff_problems") else []
+            if kw and len(kw) >= 4 and (gate.norm(kw) in gate.norm(text) or gate.norm(text) and gate.norm(text) in gate.norm(kw)):
+                out.append(f"{name}: 左の一言「{kw}」とカードの文字が同じ（左は持ち帰る一言、カードは中身に）。")
+    return out
+
+
+def normalize_cards(script: dict) -> list[dict]:
+    """台本のカードを描画の形に（specs は name、figures は label・value・change、出どころは「記事より」）。型のカード（video_templates）はそのまま"""
+    out = []
+    for c in script.get("cards") or []:
+        if not isinstance(c, dict):
+            continue
+        c = dict(c)
+        rows = []
+        for r in c.get("rows") or []:
+            r = dict(r)
+            if c.get("mode") == "specs" and not r.get("name"):
+                r["name"] = r.get("text") or r.get("label") or ""
+            if c.get("mode") == "figures" and r.get("text") and not r.get("change"):
+                r["change"] = r["text"]
+            rows.append(r)
+        c["rows"] = rows
+        c.setdefault("source", "記事より")
+        out.append(c)
     return out
 
 
@@ -1442,7 +1557,7 @@ def write_script(article: dict, pages: list[Page], note: str = "") -> tuple[dict
             t = time.time()
             calls += 1
             try:
-                got = llm.generate_json(sys_text, prompt + feedback, SCRIPT_SCHEMA, temperature=temperature, max_output_tokens=8192, tier=tier, visibility="high", purpose="video")
+                got = llm.generate_json(sys_text, prompt + feedback, script_schema(), temperature=temperature, max_output_tokens=8192, tier=tier, visibility="high", purpose="video")
                 call_secs.append(time.time() - t)
                 return got
             except RuntimeError as error:
@@ -1683,7 +1798,7 @@ def short_script(script: dict) -> dict:
     for key in ("ladder", "compare", "units"):
         if key in out:
             out[key] = moved(out[key])
-    for key in ("ladders", "flows"):
+    for key in ("ladders", "flows", "cards"):
         if key in out:
             out[key] = [moved(x) for x in out[key] if remap.get(int(x.get("beat") or 0))]
     skipped = [(b.get("label") or "").strip() for i, b in enumerate(beats, 1) if i not in picks and (b.get("label") or "").strip()]
@@ -2571,7 +2686,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     # 手順の絵（flows）: 作業の流れ・たとえの手順を箱と矢印で
     flow_map = {int(f.get("beat") or 0): f for f in (script.get("flows") or []) if int(f.get("beat") or 0) and len(f.get("steps") or []) >= 2}
     # 型のカード（video_templates.decorate が足す。既定の型の台本には無い＝今までと同じ）
-    card_map = {int(c.get("beat") or 0): c for c in (script.get("cards") or []) if int(c.get("beat") or 0) and (c.get("rows") or c.get("mode") == "image")}
+    card_map = {int(c.get("beat") or 0): c for c in normalize_cards(script) if int(c.get("beat") or 0) and (c.get("rows") or c.get("mode") == "image")}
     n_beats = len(beats)
     ladders: list[Ladder] = []
     uni = script.get("units") or {}
@@ -4086,6 +4201,7 @@ def make_video(
                 "layout": LAYOUT,
                 "base_layout": BASE_LAYOUT,
                 "subtitles": [{"t0": round(x.t0, 3), "t1": round(x.t1, 3), "text": x.text} for x in plan.subtitles],
+                **({"auto_cards": True} if auto_cards_on() else {}),
                 "fps": fps,
                 "events": plan.events,
                 "focus": plan.focus,

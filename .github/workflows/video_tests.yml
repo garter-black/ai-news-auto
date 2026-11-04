@@ -14,6 +14,7 @@ on:
       - "tests/test_shorts_v3_qa.py"
       - "tests/test_video_templates.py"
       - "tests/test_video_ladder.py"
+      - "tests/test_auto_cards.py"
       - "tests/fixtures/video/**"
       - ".github/workflows/video_tests.yml"
   pull_request:
@@ -25,6 +26,7 @@ on:
       - "tests/test_shorts_v3_qa.py"
       - "tests/test_video_templates.py"
       - "tests/test_video_ladder.py"
+      - "tests/test_auto_cards.py"
   workflow_dispatch:
 
 permissions:
@@ -45,4 +47,4 @@ jobs:
           which ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg)
           pip install -r requirements.txt numpy pillow budoux opencv-python-headless
       - name: 動画のテスト（投稿しない）
-        run: python -m unittest -v tests.test_video_templates tests.test_shorts_v3 tests.test_shorts_v3_script tests.test_shorts_v3_qa tests.test_video_ladder
+        run: python -m unittest -v tests.test_video_templates tests.test_shorts_v3 tests.test_shorts_v3_script tests.test_shorts_v3_qa tests.test_video_ladder tests.test_auto_cards
