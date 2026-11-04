@@ -6,7 +6,7 @@
   "companyName": "Apple",
   "category": "ガジェット",
   "overview": {
-    "text": "MacBook Proは、Appleが2026年10月に発表したプロ向けのノートブックです。新しい「M6」チップを搭載し、処理能力やAI機能が大きく向上しています。",
+    "text": "MacBook Proは、Appleが2026年10月に発表した14型のプロ向けノートブックです。M6チップを搭載し、処理能力やオンデバイスAI機能が大きく向上しています。最大24時間のバッテリー駆動時間を実現しています。",
     "sources": [
       "apple-14-inch-macbook-pro-m6"
     ]
@@ -14,7 +14,7 @@
   "facts": [
     {
       "label": "料金",
-      "value": "339,800円（税込）から",
+      "value": "33万9800円から",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
@@ -28,21 +28,14 @@
     },
     {
       "label": "日本での提供",
-      "value": "日本でも提供予定",
-      "sources": [
-        "apple-14-inch-macbook-pro-m6"
-      ]
-    },
-    {
-      "label": "使える場所",
-      "value": "Apple Storeなどで購入可能",
+      "value": "利用できる",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
     },
     {
       "label": "向いている人",
-      "value": "クリエイターや学生、ビジネスユーザー",
+      "value": "学生・プロ",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
@@ -50,25 +43,25 @@
   ],
   "capabilities": [
     {
-      "text": "12コアCPUと12コアGPUを搭載したM6チップにより、マルチタスクが速くなります。",
+      "text": "12コアのCPUや12コアのGPUを備えたM6チップでマルチタスクやコードのコンパイルが速くなります。",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
     },
     {
-      "text": "最大24時間のバッテリー駆動時間を実現し、外出先でも長く使えます。",
+      "text": "省電力性能の向上により、最大24時間のバッテリー駆動時間を実現しています。",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
     },
     {
-      "text": "デュアル16コアNeural Engineにより、AIの処理能力が強化されています。",
+      "text": "Wi-Fi 7とBluetooth 6に対応し、ワイヤレスの通信速度が向上しています。",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
     },
     {
-      "text": "Wi-Fi 7やBluetooth 6に対応し、通信速度や接続性が向上しています。",
+      "text": "最大1600ニトのピークHDR輝度を持つLiquid Retina XDRディスプレイを搭載しています。",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
@@ -76,7 +69,7 @@
   ],
   "pricing": [
     {
-      "text": "通常価格は339,800円（税込）からです。",
+      "text": "通常の価格は339,800円（税込）からです。",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
@@ -90,7 +83,13 @@
   ],
   "japan": [
     {
-      "text": "日本国内でもAppleの公式サイトや直営店などで購入できます。",
+      "text": "日本国内でも利用できます。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "text": "11月6日（金）からApple Store直営店や取扱店で販売が始まります。",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
@@ -98,7 +97,7 @@
   ],
   "howto": [
     {
-      "text": "Appleの公式サイトやApple Storeアプリから予約注文できます。",
+      "text": "Appleの公式サイトやApple Storeアプリから予約して申し込めます。",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
@@ -112,13 +111,13 @@
   ],
   "differences": [
     {
-      "text": "M5搭載の従来モデルと比べ、グラフィックス性能が最大30パーセント高速化しました。",
+      "text": "M5を搭載した従来モデルと比較して、グラフィックス性能が最大30パーセント高速化しました。",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
     },
     {
-      "text": "M1モデルと比べると、グラフィックスが最大11倍、AIパフォーマンスが最大13倍に向上しています。",
+      "text": "M1モデルからアップグレードする場合、グラフィックスが最大11倍、AIパフォーマンスが最大13倍に向上します。",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
@@ -126,29 +125,29 @@
   ],
   "faq": [
     {
-      "q": "いつから使えますか？",
-      "a": "2026年11月6日に販売が開始されます。",
+      "q": "いつから買える？",
+      "a": "予約注文は10月29日から始まり、11月6日に販売が始まります。",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
     },
     {
-      "q": "誰に向いていますか？",
-      "a": "動画編集をするクリエイターや、プログラミングを行うデベロッパ、学生やビジネスユーザーに向いています。",
+      "q": "カラーは何色がある？",
+      "a": "スペースブラックとシルバーの2色が用意されています。",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
     },
     {
-      "q": "学生向けの割引はありますか？",
+      "q": "学生向けの割引はある？",
       "a": "対象となる学生や教職員は、学生・教職員価格を利用できます。",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
     },
     {
-      "q": "下取りは使えますか？",
-      "a": "Apple Trade Inを利用して、今使っているパソコンを下取りに出すことができます。",
+      "q": "持っているパソコンを下取りに出せる？",
+      "a": "Apple Trade Inを利用して下取りに出すことで、購入価格を割引にできます。",
       "sources": [
         "apple-14-inch-macbook-pro-m6"
       ]
@@ -158,7 +157,7 @@
     {
       "date": "2026-10-27",
       "slug": "apple-14-inch-macbook-pro-m6",
-      "event": "M6チップ搭載の新14インチMacBook Proを発表"
+      "event": "M6搭載の14インチMacBook Proを発表"
     }
   ],
   "related": [
@@ -168,9 +167,9 @@
     "apple-14-inch-macbook-pro-m6"
   ],
   "linkFrom": [],
-  "signature": "38667a70095b9e04",
-  "primarySignature": "a07cec688168e2df",
+  "signature": "8ba17b2114c01841",
+  "primarySignature": "8ba17b2114c01841",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-11-04T01:28:07+00:00",
-  "updatedAt": "2026-11-04T01:28:07+00:00"
+  "updatedAt": "2026-11-04T13:56:08+00:00"
 }

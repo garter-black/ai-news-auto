@@ -7312,6 +7312,12 @@
       "updated": "cccskills-ai-agent-skills-market",
       "url": "https://prtimes.jp/main/html/rd/p/000000085.000041726.html"
     },
+    "5cda413903691f04": {
+      "at": "2026-11-04T13:53:28.160286+00:00",
+      "reason": "prefilter: サイトの主題外（エンタメのビジネス・テックの話題ではない。料金・決算・販売本数・AI・規約などがない）",
+      "skipped": true,
+      "url": "https://blog.ja.playstation.com/2026/11/04/20261104-wtsf-launch-reminder-o/"
+    },
     "5cf7c4a2445b103e": {
       "at": "2026-10-27T01:52:24.904759+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12307,6 +12313,15 @@
       "slug": "craft-beer-shipments-2026-tsr",
       "url": "https://www.tsr-net.co.jp/data/detail/1203392_1527.html"
     },
+    "d1ca532e101a8cf0": {
+      "at": "2026-11-04T13:54:49.579554+00:00",
+      "mix": "brand",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 92,
+      "section": "entertainment",
+      "slug": "game-pass-november-2026-wave-1",
+      "url": "https://news.xbox.com/ja-jp/2026/11/04/https-news-xbox-com-en-us-2026-11-03-xbox-game-pass-november-2026-wave-1/"
+    },
     "d1d1bba68ad45445": {
       "at": "2026-11-04T10:27:25.801486+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（会議）",
@@ -12951,6 +12966,15 @@
       "reason": "quality: 本文が短い（2096字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-amazon-polly-generative-engine-torchneuron-for-trainium-and-more-october-26-2026/"
+    },
+    "e0664abf07afbb1d": {
+      "at": "2026-11-04T13:53:27.693117+00:00",
+      "mix": "ai_consumer",
+      "model": "claude:sonnet",
+      "score": 93,
+      "section": "ai",
+      "slug": "duolingo-ai-str-fix-bug-agent",
+      "url": "https://blog.duolingo.com/ai-bug-fixing-agent/"
     },
     "e06ce812ec7f92c2": {
       "at": "2026-10-30T05:54:26.203665+00:00",
@@ -14374,130 +14398,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-02T18:50:56.737293+00:00",
-      "attempt": 0,
-      "id": "1ea828d9cbeb2842",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 99.9,
-        "avg_sentence": 40.5,
-        "long_share": 0.119,
-        "max_paragraph": 189,
-        "paragraphs": 17,
-        "sentences": 42
-      },
-      "score": 100,
-      "source": "nvidia-developer-blog",
-      "title": "Making Kubernetes AI-Ready for NVIDIA Vera Rubin on Day One"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T18:51:05.948692+00:00",
-      "attempt": 1,
-      "id": "672c1f7fb07a8d66",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 82.7,
-        "avg_sentence": 41.4,
-        "long_share": 0.045,
-        "max_paragraph": 157,
-        "paragraphs": 11,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "boj",
-      "title": "【記者会見】植田総裁（10月30日分）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T19:11:30.987492+00:00",
-      "attempt": 1,
-      "id": "1b616ac07b1e1fa7",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "題名で料金・価格を約束しているのに、本文に金額（円・ドル・無料など）が無い。元記事の金額を書くか、題名から料金の話を外す"
-      ],
-      "readability": {
-        "avg_paragraph": 84.2,
-        "avg_sentence": 45.6,
-        "long_share": 0.167,
-        "max_paragraph": 134,
-        "paragraphs": 13,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "elevenlabs-blog",
-      "title": "How KPN is bringing voice AI to the Netherlands' entrepreneurs with Mobiel AI"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T19:11:40.558818+00:00",
-      "attempt": 2,
-      "id": "1b616ac07b1e1fa7",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 82.3,
-        "avg_sentence": 43.9,
-        "long_share": 0.133,
-        "max_paragraph": 154,
-        "paragraphs": 16,
-        "sentences": 30
-      },
-      "score": 100,
-      "source": "elevenlabs-blog",
-      "title": "How KPN is bringing voice AI to the Netherlands' entrepreneurs with Mobiel AI"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T19:11:47.468298+00:00",
-      "attempt": 1,
-      "id": "b083716eb979e302",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 76.7,
-        "avg_sentence": 40.6,
-        "long_share": 0.059,
-        "max_paragraph": 113,
-        "paragraphs": 9,
-        "sentences": 17
-      },
-      "score": 100,
-      "source": "soumu",
-      "title": "令和8年度普通交付税の11月交付"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T19:32:58.103657+00:00",
-      "attempt": 1,
-      "id": "598c6194c0d34c23",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [
-        "題名で「日本で使えるか」を約束しているのに、本文の「日本で使える？」が「分からない」で始まっている。「当サイトで確認済み」の欄に答えがあればそれで答え、無ければ題名から日本の話を外す"
-      ],
-      "readability": {
-        "avg_paragraph": 59.8,
-        "avg_sentence": 30.4,
-        "long_share": 0.036,
-        "max_paragraph": 97,
-        "paragraphs": 28,
-        "sentences": 55
-      },
-      "score": null,
-      "source": "openai-news",
-      "title": "Qodo builds context into AI code review with Codex"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T19:34:35.972926+00:00",
@@ -20781,6 +20681,151 @@
       "title": "令和8年熊本地震罹災証明書（り災証明書）のオンライン申請について",
       "warnings": [
         "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T13:52:14.264280+00:00",
+      "attempt": 1,
+      "id": "e0664abf07afbb1d",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "duolingo-blog",
+      "title": "We tried “Claude, fix this bug”—here’s what actually worked"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T13:53:07.879391+00:00",
+      "attempt": 2,
+      "id": "e0664abf07afbb1d",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "「調査を6つの作業に分けた」→ 元記事は6項目を挙げているが「6つの作業に分けた」という数え方・構成は元記事に明示されておらず、言い過ぎ。",
+        "「ログを調べ、報告者の操作を再現します」→ 元記事は報告者の活動を再構築(reconstructing)すると述べており、「再現」は実機での再現と紛らわしい訳。",
+        "「関連ファイル上位3件が、実際の修正で変更された3ファイルと一致した」→ 元記事は1件のfix PRでの一致を述べるのみで、一般的な成果のように読め、言い過ぎ。",
+        "「AIの途中結果をファイルで残す運用を、チームで検討する」「Claude Codeなどに任せて試す」→ 元記事はClaude Agent SDKでの構築であり、Claude Codeへの言及はなく一般的助言の範囲を超える。",
+        "「修正の成功率や、削減した時間の数値は、まだ発表されていません」→ 元記事は「数時間分の手作業を自動化」と述べており、時間削減の数値が全く無いかのような書き方は一部不正確。"
+      ],
+      "readability": {
+        "avg_paragraph": 75.4,
+        "avg_sentence": 30.1,
+        "long_share": 0.0,
+        "max_paragraph": 144,
+        "paragraphs": 16,
+        "sentences": 40
+      },
+      "score": 82,
+      "source": "duolingo-blog",
+      "title": "We tried “Claude, fix this bug”—here’s what actually worked",
+      "warnings": [
+        "見出しが48字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（STR・CI）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T13:53:27.672374+00:00",
+      "attempt": 2,
+      "id": "e0664abf07afbb1d",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 75.1,
+        "avg_sentence": 30.1,
+        "long_share": 0.0,
+        "max_paragraph": 144,
+        "paragraphs": 16,
+        "sentences": 40
+      },
+      "score": 93,
+      "source": "duolingo-blog",
+      "title": "We tried “Claude, fix this bug”—here’s what actually worked",
+      "warnings": [
+        "見出しが48字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（STR・CI）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T13:53:50.685035+00:00",
+      "attempt": 1,
+      "id": "d1ca532e101a8cf0",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "title の長さが不適切（69字 / 18〜64字）"
+      ],
+      "readability": {
+        "avg_paragraph": 78.2,
+        "avg_sentence": 41.2,
+        "long_share": 0.167,
+        "max_paragraph": 122,
+        "paragraphs": 19,
+        "sentences": 36
+      },
+      "score": null,
+      "source": "xbox-wire-jp",
+      "title": "Game Pass に『Escape Academy 2: Back 2 School』『Thronefall』『Warhammer Survivors』などが",
+      "warnings": [
+        "見出しが69字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（PIT・OF・GOBLIN）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T13:54:21.776833+00:00",
+      "attempt": 2,
+      "id": "d1ca532e101a8cf0",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "文が長い（1文の平均 47.4字・60字超の文が 17% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 83.7字・最長 250字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 83.7,
+        "avg_sentence": 47.4,
+        "long_share": 0.167,
+        "max_paragraph": 250,
+        "paragraphs": 17,
+        "sentences": 30
+      },
+      "score": 93,
+      "source": "xbox-wire-jp",
+      "title": "Game Pass に『Escape Academy 2: Back 2 School』『Thronefall』『Warhammer Survivors』などが",
+      "warnings": [
+        "見出しが49字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（VOID・TANUKI・PIT）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T13:54:49.574062+00:00",
+      "attempt": 0,
+      "id": "d1ca532e101a8cf0",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 71.8,
+        "avg_sentence": 37.0,
+        "long_share": 0.061,
+        "max_paragraph": 168,
+        "paragraphs": 17,
+        "sentences": 33
+      },
+      "score": 92,
+      "source": "xbox-wire-jp",
+      "title": "Game Pass に『Escape Academy 2: Back 2 School』『Thronefall』『Warhammer Survivors』などが",
+      "warnings": [
+        "見出しが49字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（VOID・TANUKI・PIT）"
       ]
     }
   ],

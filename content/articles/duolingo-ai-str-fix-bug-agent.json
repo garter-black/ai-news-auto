@@ -1,0 +1,144 @@
+{
+  "slug": "duolingo-ai-str-fix-bug-agent",
+  "sourceType": "web",
+  "sourceUrl": "https://blog.duolingo.com/ai-bug-fixing-agent/",
+  "sourceName": "Duolingo公式ブログ",
+  "title": "Duolingo、バグ修正AI「AI STR Fix」を社内導入　Claudeで調査作業を自動化",
+  "seoTitle": "AI STR Fixとは？Duolingoのバグ修正AIの使い方",
+  "threadsPost": "AIでコードを書いている開発者の皆さん、押さえておきたい話です。\n\n要約すると、Duolingoが「Claude、このバグを直して」だけでは足りないと気づきました。\n調査作業を自動化するAIを作り、修正の土台にしています。\n\nバグ修正で、いちばん時間がかかるのはどの作業ですか？",
+  "threadsHook": "callout",
+  "threadsQuestions": [
+    {
+      "pattern": "expert",
+      "question": "バグ修正で、いちばん時間がかかるのはどの作業ですか？"
+    },
+    {
+      "pattern": "line",
+      "question": "バグ修正をAIに任せるなら、どこまでなら許せますか？"
+    }
+  ],
+  "threadsStyle": 3,
+  "writingVoice": "honest",
+  "lede": "Duolingoのエンジニアは、バグ調査の手作業を、AIエージェント「AI STR Fix」に任せ始めています。Claude Agent SDKで作られ、関連コードや再現手順などをチケットに自動で書き込みます。同社の公式ブログ（11月4日付）によると、リリースを止めるバグも修正済みです。日本の開発チームも、同じ考え方を自社で試せます。",
+  "description": "DuolingoがClaudeで作ったバグ修正AI「AI STR Fix」の仕組みを解説。「バグを直して」の一言では足りず、調査作業の自動化が鍵でした。日本の開発者が使える部分も整理します。",
+  "keywords": [
+    "Duolingo",
+    "AI STR Fix",
+    "バグ修正 AI",
+    "Claude Agent SDK",
+    "Claude Code",
+    "AIエージェント",
+    "開発者生産性",
+    "Jira 自動化",
+    "Sonnet Opus",
+    "コンテキスト管理"
+  ],
+  "tags": [
+    "Claude",
+    "AIエージェント",
+    "Duolingo",
+    "開発ツール",
+    "生成AI"
+  ],
+  "highlights": [
+    "Duolingoが、バグ調査を自動化するAI「AI STR Fix」を社内で運用している",
+    "ある修正PRで、関連ファイル上位3件が、実際に変更された3ファイルと一致した",
+    "Sonnetが大半を担当し、難しい処理はOpusが受け持つ構成だ"
+  ],
+  "timetable": [],
+  "verdict": null,
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "バグの山を抱える開発チームは、調査作業をAIに任せる設計の参考にできます。",
+      "Claude Agent SDKは日本でも使えます（当サイトの確認：11/3）。小さな調査工程から試せます。"
+    ]
+  },
+  "body": "対象はソフトウェアの開発チームです。バグ修正にAIを使いたい人に関係します。Duolingoの社内ツールなので、外部に公開された製品ではありません。ただ、土台のClaude Agent SDKは、日本の開発者も使えます（当サイトの確認：11/3）。\n\nDuolingoでは、管理者とベータ版の利用者が、スマホを振るとバグ報告の画面を開けます。これを「Shake-to-Report（STR）」と呼びます。管理者からの報告は、自動でJira（課題管理ツール）のチケットになります。スクリーンショット、ログ、端末情報も付きます。\n\nそれでも、報告が増えるほど修正は追いつかず、バグの未対応分は膨らんでいました。\n\n## 「バグを直して」の一言では足りなかった\n\nDevX AIチームは、最初に「Claude、fix this bug」という短い指示を試しました。公式ブログによると、バグ修正にはコードの変更以外の作業が多くあります。\n\nエンジニアはまず、何が起きたかをつなぎ合わせます。ログを調べ、報告者の操作を再構築します。有効だったA/Bテストを確認し、関連コードを探します。実機で再現を試し、最近の変更を調べ、実装者を探すこともあります。\n\n「直して」と頼むことは、この全工程を説明なしにAIへ求めることでした。そこでチームは、調査の手作業をAIに任せる方針に変えました。\n\n**調査で扱う内容**\n\n「AI STR Fix」は、Claude Agent SDKで作られています。大半の作業はSonnetが担当し、難しい作業はOpusが受け持ちます。各作業には、システムプロンプト、ユーザープロンプト、スキル、作業用フォルダが渡されます。フォルダにはチケット情報と、リポジトリの写しが入っています。\n\n途中の調査結果は、プロンプトではなくファイルとして保存します。後続のAIが、前の結果を読み込めるようにするためです。コンテキストウィンドウ（一度に読める量）を汚さずに済みます。\n\n調べる内容は、次の6つです。\n\n- 関連コード：どこを直すかを探す作業です。ある修正PRでは、上位3ファイルの推薦が、実際に変更された3ファイルと一致しました。\n- 利用者の操作：数千件の記録から、時系列の流れを作ります。事前に機械的な絞り込みを行い、トークン（AIが文字を数える単位）の無駄を避けます。\n- 関連する実験：対象外の端末向けの実験を除きます。原因が実験なら、実験を止めれば早く直せます。\n- 関連する変更：先に見つけたコードを手がかりに、最近の変更だけを調べます。既に修正済みの古いチケットも見つかります。\n- 再現手順：操作、コード、実験の情報から、手順を作ります。アプリのデバッグ機能を使い、早く到達できるようにします。\n- 担当者の推薦：約1,000人の社員の中から、関係する領域に詳しい人を挙げます。\n\n**修正の工程も足していった**\n\n最初は、情報を集めてAIに修正を任せるだけでした。エンジニアの役割は、書くことから確認とレビューに移りました。\n\n使ううちに、手作業が見つかり、工程が増えました。\n\n- 自己レビュー：明らかな間違い、壊れたテスト、波及する影響を、AIが先に確認します。\n- CIの修正：CIの結果を監視し、失敗を直します。\n- 機能の事前調査：既存コードの作法に合うよう、実装前に機能の仕組みを調べます。\n- 自動のベータ版ビルド：修正ブランチが整うと、ベータ版が自動で作られます。誰でも入れて確認できます。\n\n公式ブログによると、AI STR Fixはリリースを止めるバグを直した実績があります。実行したSTRチケットごとに、数時間分の手作業を自動化できるとのことです。各チームは、自分たちのバグに合う調査工程を足し始めています。\n\n## 日本の開発チームが使える部分\n\nClaude Agent SDKを含むClaudeのAPIは、日本で使えます。料金はドル建て（税別）です（当サイトの確認：11/3）。ブログは、AI STR Fix自体の公開には触れていません。\n\n編集部の見方では、参考になるのは、調査の手順を分けた設計です。「直して」と頼む前に、人間が毎回やる調査を書き出し、1つずつAIに渡す。その結果を、人にもAIにも読める形で残す。この進め方は、自社のバグ管理でも試せます。\n\n## まだ分からないこと\n\n- AI STR Fixの外部への提供は、まだ発表されていません。\n- 修正の成功率は、まだ発表されていません。削減時間については、ブログが「数時間分の手作業を自動化」と述べるのみで、具体的な数値は示されていません。\n- 各工程にかかるAIの利用料は、まだ発表されていません。",
+  "easy": "## ひとことで言うと\n\nDuolingoはAIにバグ修正を任せる際、「直して」と頼むだけでは不十分だと分かりました。そこで、エンジニアが手作業でしていた調査をAIに任せる仕組みを作りました。\n\n## 何をしているのか\n\nバグの報告は、スマホを振るだけで送れます。しかし直す作業が追いつかず、未対応のバグがたまっていました。\n\nAIはまず、関係しそうなコード、利用者の操作の流れ、動いていた実験、最近の変更を調べます。次に、再現する手順や、詳しそうな担当者も提案します。\n\nこうして集めた情報を「AIコンテキスト」と呼び、バグの記録に書き込みます。人にもAIにも役立ちます。\n\n## 日本の開発者にも使える考え方\n\nClaudeは日本でも使えます（当サイトの確認：11/3）。同じ考え方は、自社のバグ管理にも応用できます。\n\n最初に、人が毎回やる調査の手順を書き出すとよいでしょう。そのうえで、手順を1つずつAIに任せていきます。",
+  "channel": "Duolingo公式ブログ",
+  "channelId": "",
+  "channelSlug": "duolingo-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "We tried “Claude, fix this bug”—here’s what actually worked",
+  "publishedAt": "2026-11-04T13:00:00+00:00",
+  "generatedAt": "2026-11-04T13:53:01.943686+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/duolingo-ai-str-fix-bug-agent-3626c093.jpg",
+  "model": "claude:sonnet",
+  "affiliates": [],
+  "newsType": "research",
+  "faq": [
+    {
+      "q": "Duolingoの「AI STR Fix」とは何ですか？",
+      "a": "Duolingoが社内で使う、バグ調査と修正のAIです。Claude Agent SDKで作られ、関連コードや再現手順などをJiraのチケットに自動で書き込みます。"
+    },
+    {
+      "q": "AI STR Fixは外部の企業でも使えますか？",
+      "a": "外部への提供は発表されていません。ただ、土台のClaude Agent SDKは日本でも使えるので、同じ考え方を自社で試せます（当サイトの確認：11/3）。"
+    },
+    {
+      "q": "AI STR FixはどのClaudeモデルを使っていますか？",
+      "a": "大半の作業はSonnetが担当し、難しい作業はOpusが受け持ちます。Claude Agent SDKで構築されています。"
+    },
+    {
+      "q": "AI STR Fixはどんな情報を集めますか？",
+      "a": "関連コード、利用者の操作の流れ、関連する実験、最近の変更、再現手順、担当者の推薦です。これらを「AIコンテキスト」と呼んでいます。"
+    }
+  ],
+  "todayActions": [
+    "自社のバグ修正で、人が毎回行う調査の手順を書き出す",
+    "調査の1工程だけ、Claude Codeなどに任せて試す",
+    "AIの途中結果をファイルで残す運用を、チームで検討する"
+  ],
+  "qualityScore": 93,
+  "sourcePublishedAt": "2026-11-04T13:00:00+00:00",
+  "detectedAt": "2026-11-04T13:50:57+00:00",
+  "speedMinutes": 57,
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/duolingo-ai-str-fix-bug-agent-fig1-2d7e3d85.jpg",
+      "width": 900,
+      "height": 600,
+      "kind": "hero",
+      "credit": "Duolingo",
+      "sourceUrl": "https://blog.duolingo.com/ai-bug-fixing-agent/",
+      "original": "https://storage.ghost.io/c/7a/33/7a33d0f4-927d-4fe8-a6bf-96131b5e76d4/content/images/2026/11/cover_We-tried----Claude--fix-this-bug------here---s-what-actually-worked.png"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/duolingo-ai-str-fix-bug-agent-fig2-73150f0d.jpg",
+      "width": 1200,
+      "height": 519,
+      "kind": "dense",
+      "credit": "Duolingo",
+      "sourceUrl": "https://blog.duolingo.com/ai-bug-fixing-agent/",
+      "original": "https://storage.ghost.io/c/7a/33/7a33d0f4-927d-4fe8-a6bf-96131b5e76d4/content/images/2026/11/Fix-this-bug_AI-STR-fix.png"
+    }
+  ],
+  "imageCredit": {
+    "kind": "official",
+    "org": "Duolingo",
+    "provider": "Duolingo公式ブログ",
+    "sourceUrl": "https://blog.duolingo.com/ai-bug-fixing-agent/",
+    "original": "https://storage.ghost.io/c/7a/33/7a33d0f4-927d-4fe8-a6bf-96131b5e76d4/content/images/2026/11/Fix-this-bug_iceberg.png",
+    "width": 1200,
+    "height": 673,
+    "at": "2026-11-04T13:56:32+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.492,
+    "y": 0.48,
+    "box": [
+      0.05,
+      0.0,
+      0.934,
+      0.961
+    ],
+    "ar": 1.7831,
+    "src": "https://ai-tech-express.jp/img/duolingo-ai-str-fix-bug-agent-3626c093.jpg"
+  }
+}

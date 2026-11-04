@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "game-pass-november-2026-wave-1",
+   "at": "2026-11-04T13:54:12.068000+00:00",
+   "title": "Game Pass、11月前半に新作『Escape Academy 2』など多数　発売初日から対象",
+   "head": "Game Pass、11月前半に新作『Escape Academy 2』など多数　発売初日から対象 | Game Pass に『Escape Academy 2: Back 2 School』『Thronefall』『Warhammer Survivors』などが登場",
+   "text": "Game Pass、11月前半に新作『Escape Academy 2』など多数　発売初日から対象 | Game Pass に『Escape Academy 2: Back 2 School』『Thronefall』『Warhammer Survivors』などが登場 | Game Pass / Game Pass 11月 / Game Pass 新作 / Escape Academy 2 / Warhammer Survivors / Thronefall / Game Pass Ultimate / Game Pass Essential / Game Pass 提供終了 / Football Manager 27 / ゲーム / 配信 / Xbox / Game Pass",
+   "urls": [
+    "https://news.xbox.com/ja-jp/2026/11/04/https-news-xbox-com-en-us-2026-11-03-xbox-game-pass-november-2026-wave-1/"
+   ]
+  },
+  {
+   "slug": "duolingo-ai-str-fix-bug-agent",
+   "at": "2026-11-04T13:53:01.943686+00:00",
+   "title": "Duolingo、バグ修正AI「AI STR Fix」を社内導入　Claudeで調査作業を自動化",
+   "head": "Duolingo、バグ修正AI「AI STR Fix」を社内導入　Claudeで調査作業を自動化 | We tried “Claude, fix this bug”—here’s what actually worked",
+   "text": "Duolingo、バグ修正AI「AI STR Fix」を社内導入　Claudeで調査作業を自動化 | We tried “Claude, fix this bug”—here’s what actually worked | Duolingo / AI STR Fix / バグ修正 AI / Claude Agent SDK / Claude Code / AIエージェント / 開発者生産性 / Jira 自動化 / Sonnet Opus / コンテキスト管理 / Claude / AIエージェント / Duolingo / 開発ツール / 生成AI",
+   "urls": [
+    "https://blog.duolingo.com/ai-bug-fixing-agent/"
+   ]
+  },
+  {
    "slug": "kumamoto-quake-risai-online-application",
    "at": "2026-11-04T13:11:48.735512+00:00",
    "title": "熊本地震のり災証明書、熊本市など14市町でオンライン申請可　大津町は11月30日まで",
@@ -220,16 +240,6 @@
    ]
   },
   {
-   "slug": "mac-refurbished-imac-studio-restock",
-   "at": "2026-11-04T02:02:47.124303+00:00",
-   "title": "Apple、Mac整備済製品に24モデル追加　M4搭載iMacは197,800円から",
-   "head": "Apple、Mac整備済製品に24モデル追加　M4搭載iMacは197,800円から | Mac整備済製品、Mac StudioとiMacの在庫が一気に復活。新モデル追加で計123種類",
-   "text": "Apple、Mac整備済製品に24モデル追加　M4搭載iMacは197,800円から | Mac整備済製品、Mac StudioとiMacの在庫が一気に復活。新モデル追加で計123種類 | Mac整備済製品 / Apple整備済製品 / 24インチiMac / iMac M4 / Mac Studio M4 Max / 整備済製品 価格 / Mac mini 整備済 / Studio Display 整備済 / MacBook Pro 整備済 / Mac 安く買う / Apple / Mac / 整備済製品 / iMac / Mac Studio",
-   "urls": [
-    "https://gori.me/sale/apple-refurbished/172065"
-   ]
-  },
-  {
    "slug": "databricks-claude-mlflow-tracing-beta",
    "at": "2026-11-04T01:27:19.164083+00:00",
    "title": "Databricks、Claude向けOpenTelemetry連携をベータ公開　MLflowでAIエージェントの動作を記録",
@@ -247,16 +257,6 @@
    "text": "Google、Gemini有料プランの説明に「Daily Brief」を追加　AI PlusとProが対象 | Geminiの料金・プランのページが更新（利用上限の記載が変更） | Gemini 料金 / Google AI Plus / Google AI Pro / Daily Brief / Gemini 有料プラン / Gemini 使用量上限 / Google AI Ultra / Gemini 無料 違い / Gemini 動画生成 / Gemini 月額 / Gemini / Google / 生成AI / 料金プラン",
    "urls": [
     "https://gemini.google/us/subscriptions/?hl=en#entry-2026-11-04-f58336"
-   ]
-  },
-  {
-   "slug": "apple-ipados-macos-no-merge-ternus",
-   "at": "2026-11-04T00:50:16.849943+00:00",
-   "title": "Apple、iPadOSとmacOSの統合を否定　Ternus CEOが決算説明会で「計画していない」",
-   "head": "Apple、iPadOSとmacOSの統合を否定　Ternus CEOが決算説明会で「計画していない」 | Apple、iPadOSとmacOSの統合を（何度目の）否定。CEOが明言",
-   "text": "Apple、iPadOSとmacOSの統合を否定　Ternus CEOが決算説明会で「計画していない」 | Apple、iPadOSとmacOSの統合を（何度目の）否定。CEOが明言 | iPadOS macOS 統合 / Apple 統合 否定 / John Ternus CEO / MacBook Pro タッチ / Apple 決算説明会 / Dynamic Island Mac / 折り畳みMacBook / M7 Pro Max / Apple / MacBook Pro / iPadOS / macOS / Ternus CEO",
-   "urls": [
-    "https://gori.me/macbookpro/172049"
    ]
   },
   {
@@ -641,16 +641,6 @@
    ]
   },
   {
-   "slug": "deepseek-harness-creator-mode",
-   "at": "2026-11-02T17:44:35.562626+00:00",
-   "title": "中国DeepSeek、AIエージェントに「クリエイターモード」　文章の指示で3D表示や動画編集の機能を作成",
-   "head": "中国DeepSeek、AIエージェントに「クリエイターモード」　文章の指示で3D表示や動画編集の機能を作成 | DeepSeek releases a \"creator mode\" that allows users of DeepSeek Harness to create custom plugins, like a 3D model renderer and a video editing workbench",
-   "text": "中国DeepSeek、AIエージェントに「クリエイターモード」　文章の指示で3D表示や動画編集の機能を作成 | DeepSeek releases a \"creator mode\" that allows users of DeepSeek Harness to create custom plugins, like a 3D model renderer and a video editing workbench | DeepSeek Harness / DeepSeek クリエイターモード / DeepSeek プラグイン / DeepSeek とは / AIエージェント / DeepSeek 日本 / DeepSeek 料金 / 3Dモデル AI / 動画編集 AI / 中国 AI / DeepSeek / DeepSeek Harness / AIエージェント / 生成AI / プラグイン",
-   "urls": [
-    "https://www.bloomberg.com/news/articles/2026-11-02/deepseek-boosts-ai-agent-offering-with-new-creator-mode"
-   ]
-  },
-  {
    "slug": "kanto-gx-connect-matching-tokyo",
    "at": "2026-11-02T17:37:41.776273+00:00",
    "title": "関東経済産業局、省エネ・脱炭素のマッチングイベントを東京で開催　6社が技術を紹介",
@@ -778,16 +768,6 @@
    "text": "Docker、AIエージェントの安全基準づくり「Blueprint Alliance」に参画 | The Ecosystem is the Answer: Docker, the Blueprint Alliance, and the Importance of Collaboration in the Agentic Era | Docker / Blueprint Alliance / Agent Baseline / AIエージェント / セキュリティ / ガバナンス / Docker Sandboxes / Open Container Initiative / 生成AI / セキュリティ / コンテナ / 開発ツール",
    "urls": [
     "https://www.docker.com/blog/docker-blueprint-alliance-agent-baseline/"
-   ]
-  },
-  {
-   "slug": "google-messages-gradient-icon",
-   "at": "2026-11-02T13:47:41.718441+00:00",
-   "title": "「Google Messages」のベータ版、アイコンがグラデーションに一新",
-   "head": "「Google Messages」のベータ版、アイコンがグラデーションに一新 | Google Messages update rolling out new app icon with gradient design",
-   "text": "「Google Messages」のベータ版、アイコンがグラデーションに一新 | Google Messages update rolling out new app icon with gradient design | Google Messages / アイコン / グラデーション / Android / ベータ版 / メッセージアプリ / Google Chat / Workspace / 新デザイン / アップデート / Google Messages / Android / アプリ更新 / デザイン / Google",
-   "urls": [
-    "https://9to5google.com/2026/11/02/google-messages-gradient-icon-beta/"
    ]
   },
   {
@@ -1116,16 +1096,6 @@
    "text": "Microsoft、Windows 11の右クリックメニューを刷新　不要項目を隠せる更新をプレビュー公開 | Windows 11の右クリックメニュー刷新、不要項目を非表示にする機能の提供開始 | Windows 11 右クリックメニュー / KB5127936 / 右クリックメニュー 非表示 / コンテキストメニュー カスタマイズ / Windows 11 25H2 / Windows 11 26H2 / ViVeTool / メニューのカスタマイズ / エクスプローラー 高速化 / Shift 右クリック / Windows 11 / Microsoft / エクスプローラー / OSアップデート / KB5127936",
    "urls": [
     "https://news.mynavi.jp/techplus/article/20261102-5224966/"
-   ]
-  },
-  {
-   "slug": "oracle-ai-workspace-chatgpt",
-   "at": "2026-11-01T22:39:49.872018+00:00",
-   "title": "オラクル、業務システムをChatGPTから操作可能に　小規模企業向けに年1万2000ドル分の利用枠",
-   "head": "オラクル、業務システムをChatGPTから操作可能に　小規模企業向けに年1万2000ドル分の利用枠 | オラクルの機能がChatGPTで利用可能に 複数システムをまたぐ業務をAIで自動化",
-   "text": "オラクル、業務システムをChatGPTから操作可能に　小規模企業向けに年1万2000ドル分の利用枠 | オラクルの機能がChatGPTで利用可能に 複数システムをまたぐ業務をAIで自動化 | Oracle AI Workspace / オラクル ChatGPT / OpenAI オラクル 協業 / Codex / Oracle App Composer / Oracle AI Security Mesh / Oracle AI SMB Bundle / NetSuite QuickStart / 業務自動化 AI / ChatGPT Business / 生成AI / ChatGPT / Codex / Oracle / 業務自動化 / ERP",
-   "urls": [
-    "https://kn.itmedia.co.jp/kn/article/2611/02/2000002740/"
    ]
   },
   {
