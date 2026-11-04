@@ -57,12 +57,12 @@
     "openrouter:nvidia/nemotron-3.5-super-vl:free": 37
   },
   "2026-11-04": {
-    "anthropic-api:claude-haiku-5-5": 83,
-    "anthropic-api:claude-sonnet-5-5": 19,
-    "cf-image:flux-1-schnell": 1,
+    "anthropic-api:claude-haiku-5-5": 85,
+    "anthropic-api:claude-sonnet-5-5": 21,
+    "cf-image:flux-1-schnell": 2,
     "cf-image:flux-2-klein-4b": 9,
     "claude:sonnet": 12,
-    "cloudflare:@cf/openai/gpt-oss-120b": 17,
+    "cloudflare:@cf/openai/gpt-oss-120b": 18,
     "gemini-3.5-flash-lite": 12
   }
 }

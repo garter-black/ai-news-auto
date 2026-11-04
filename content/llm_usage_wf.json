@@ -54,14 +54,14 @@
       "gemini-3.5-flash-lite": 2
     },
     "breaking": {
-      "anthropic-api:claude-haiku-5-5": 3,
-      "anthropic-api:claude-sonnet-5-5": 8,
+      "anthropic-api:claude-haiku-5-5": 5,
+      "anthropic-api:claude-sonnet-5-5": 10,
       "claude:sonnet": 2
     },
     "images": {
-      "cf-image:flux-1-schnell": 1,
+      "cf-image:flux-1-schnell": 2,
       "cf-image:flux-2-klein-4b": 9,
-      "cloudflare:@cf/openai/gpt-oss-120b": 8
+      "cloudflare:@cf/openai/gpt-oss-120b": 9
     },
     "products": {
       "anthropic-api:claude-haiku-5-5": 3,
