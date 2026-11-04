@@ -1,0 +1,187 @@
+{
+  "slug": "macbook-pro",
+  "name": "MacBook Pro",
+  "aliases": [],
+  "company": "other",
+  "companyName": "Apple",
+  "category": "ガジェット",
+  "overview": {
+    "text": "MacBook Proは、Appleが2026年10月に発表したプロ向けのノートブックです。新しい「M6」チップを搭載し、処理能力やAI機能が大きく向上しています。",
+    "sources": [
+      "apple-14-inch-macbook-pro-m6"
+    ]
+  },
+  "facts": [
+    {
+      "label": "料金",
+      "value": "339,800円（税込）から",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "label": "提供開始",
+      "value": "2026年11月6日",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "label": "日本での提供",
+      "value": "日本でも提供予定",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "label": "使える場所",
+      "value": "Apple Storeなどで購入可能",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "label": "向いている人",
+      "value": "クリエイターや学生、ビジネスユーザー",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "text": "12コアCPUと12コアGPUを搭載したM6チップにより、マルチタスクが速くなります。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "text": "最大24時間のバッテリー駆動時間を実現し、外出先でも長く使えます。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "text": "デュアル16コアNeural Engineにより、AIの処理能力が強化されています。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "text": "Wi-Fi 7やBluetooth 6に対応し、通信速度や接続性が向上しています。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6",
+        "apple-14-inch-macbook-pro-m6-1eabbb64"
+      ]
+    }
+  ],
+  "pricing": [
+    {
+      "text": "通常価格は339,800円（税込）からです。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "text": "学生・教職員価格は322,800円（税込）からです。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    }
+  ],
+  "japan": [
+    {
+      "text": "日本国内でもAppleの公式サイトや直営店などで購入できます。",
+      "sources": [
+        "apple-ipados-macos-no-merge-ternus",
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    }
+  ],
+  "howto": [
+    {
+      "text": "Appleの公式サイトやApple Storeアプリから予約注文できます。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "text": "Apple Store直営店やApple製品取扱店で購入できます。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    }
+  ],
+  "differences": [
+    {
+      "text": "M5搭載の従来モデルと比べ、グラフィックス性能が最大30パーセント高速化しました。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "text": "M1モデルと比べると、グラフィックスが最大11倍、AIパフォーマンスが最大13倍に向上しています。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "いつから使えますか？",
+      "a": "2026年11月6日に販売が開始されます。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "q": "誰に向いていますか？",
+      "a": "動画編集をするクリエイターや、プログラミングを行うデベロッパ、学生やビジネスユーザーに向いています。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "q": "学生向けの割引はありますか？",
+      "a": "対象となる学生や教職員は、学生・教職員価格を利用できます。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "q": "下取りは使えますか？",
+      "a": "Apple Trade Inを利用して、今使っているパソコンを下取りに出すことができます。",
+      "sources": [
+        "apple-14-inch-macbook-pro-m6"
+      ]
+    },
+    {
+      "q": "OSがiPadOSと統合される予定はありますか？",
+      "a": "AppleのCEOは、現時点で根本的な変更やOS統合を計画していないと述べています。",
+      "sources": [
+        "apple-ipados-macos-no-merge-ternus"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2026-10-27",
+      "slug": "apple-14-inch-macbook-pro-m6",
+      "event": "M6チップ搭載の新14インチMacBook Proを発表"
+    }
+  ],
+  "related": [
+    "m6"
+  ],
+  "articles": [
+    "apple-ipados-macos-no-merge-ternus",
+    "apple-14-inch-macbook-pro-m6-1eabbb64",
+    "apple-14-inch-macbook-pro-m6"
+  ],
+  "linkFrom": [],
+  "signature": "38667a70095b9e04",
+  "primarySignature": "a07cec688168e2df",
+  "model": "gemini-3.5-flash-lite",
+  "createdAt": "2026-11-04T01:28:07+00:00",
+  "updatedAt": "2026-11-04T01:28:07+00:00"
+}

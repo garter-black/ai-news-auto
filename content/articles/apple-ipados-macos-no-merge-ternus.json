@@ -55,7 +55,7 @@
   "videoTitle": "Apple、iPadOSとmacOSの統合を（何度目の）否定。CEOが明言",
   "publishedAt": "2026-11-04T00:41:24.629000+00:00",
   "generatedAt": "2026-11-04T00:50:16.849943+00:00",
-  "thumbnail": "",
+  "thumbnail": "https://ai-tech-express.jp/img/apple-ipados-macos-no-merge-ternus-e9347467.jpg",
   "model": "anthropic-api:claude-sonnet-5-5",
   "affiliates": [],
   "newsType": "product",
@@ -95,5 +95,25 @@
     }
   ],
   "detectedAt": "2026-11-04T00:41:24+00:00",
-  "fastLane": true
+  "fastLane": true,
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A softly lit, empty exhibition hall with blurred stage lights and warm bokeh, polished floor, no exhibits, no products and no people in view.",
+    "provider": "Cloudflare Workers AI",
+    "noProduct": true,
+    "at": "2026-11-04T01:29:58+00:00"
+  },
+  "imageFocus": {
+    "x": 0.545,
+    "y": 0.434,
+    "box": [
+      0.091,
+      0.0,
+      1.0,
+      0.869
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/apple-ipados-macos-no-merge-ternus-e9347467.jpg"
+  }
 }

@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "databricks-claude-mlflow-tracing-beta",
+   "at": "2026-11-04T01:27:19.164083+00:00",
+   "title": "Databricks、Claude向けOpenTelemetry連携をベータ公開　MLflowでAIエージェントの動作を記録",
+   "head": "Databricks、Claude向けOpenTelemetry連携をベータ公開　MLflowでAIエージェントの動作を記録 | Claude Platform now supports native OpenTelemetry observability in Databricks MLflow",
+   "text": "Databricks、Claude向けOpenTelemetry連携をベータ公開　MLflowでAIエージェントの動作を記録 | Claude Platform now supports native OpenTelemetry observability in Databricks MLflow | Databricks / Claude / MLflow / OpenTelemetry / AIエージェント / トレース / 可視化 / デバッグ / Unity Catalog / Anthropic / Databricks / Anthropic / Claude / MLflow / OpenTelemetry / AIエージェント",
+   "urls": [
+    "https://www.databricks.com/blog/claude-platform-now-supports-native-opentelemetry-observability-databricks-mlflow"
+   ]
+  },
+  {
+   "slug": "gemini-plans-daily-brief-added",
+   "at": "2026-11-04T01:12:00.449675+00:00",
+   "title": "Google、Gemini有料プランの説明に「Daily Brief」を追加　AI PlusとProが対象",
+   "head": "Google、Gemini有料プランの説明に「Daily Brief」を追加　AI PlusとProが対象 | Geminiの料金・プランのページが更新（利用上限の記載が変更）",
+   "text": "Google、Gemini有料プランの説明に「Daily Brief」を追加　AI PlusとProが対象 | Geminiの料金・プランのページが更新（利用上限の記載が変更） | Gemini 料金 / Google AI Plus / Google AI Pro / Daily Brief / Gemini 有料プラン / Gemini 使用量上限 / Google AI Ultra / Gemini 無料 違い / Gemini 動画生成 / Gemini 月額 / Gemini / Google / 生成AI / 料金プラン",
+   "urls": [
+    "https://gemini.google/us/subscriptions/?hl=en#entry-2026-11-04-f58336"
+   ]
+  },
+  {
    "slug": "apple-ipados-macos-no-merge-ternus",
    "at": "2026-11-04T00:50:16.849943+00:00",
    "title": "Apple、iPadOSとmacOSの統合を否定　Ternus CEOが決算説明会で「計画していない」",

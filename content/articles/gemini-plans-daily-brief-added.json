@@ -1,0 +1,178 @@
+{
+  "slug": "gemini-plans-daily-brief-added",
+  "sourceType": "web",
+  "sourceUrl": "https://gemini.google/us/subscriptions/?hl=en#entry-2026-11-04-f58336",
+  "sourceName": "Google AI プラン（Gemini）料金ページ",
+  "title": "Google、Gemini有料プランの説明に「Daily Brief」を追加　AI PlusとProが対象",
+  "seoTitle": "Gemini Daily Briefとは？AI Plus・Proの料金",
+  "threadsPost": "Geminiの有料プランを使っている人、知っておいてほしい話です。\n\n要約すると、GoogleがGeminiの料金ページを更新しました。\nAI PlusとAI Proの説明に「Daily Brief」が加わっています。\n\n仕事用のAIに、自分のお金で毎月いくらまでなら出せますか？",
+  "threadsHook": "callout",
+  "threadsQuestions": [
+    {
+      "pattern": "price",
+      "question": "仕事で使うAIに、自分のお金で毎月いくらまでなら出せますか？"
+    },
+    {
+      "pattern": "count",
+      "question": "AIの有料プランで、ふだん上限に当たるのは1日に何回ですか？"
+    }
+  ],
+  "threadsStyle": 3,
+  "writingVoice": "senpai",
+  "lede": "Googleは11月4日までにGeminiの料金ページを更新し、Google AI PlusとGoogle AI Proの説明に「Daily Brief」を加えました。無料版の2倍、4倍という使用量の上限や、月4.99ドル・19.99ドルの料金表示は変わっていません。",
+  "description": "Geminiの料金ページが更新され、Google AI Plus（月4.99ドル）とPro（月19.99ドル）の説明に新機能「Daily Brief」が追加されました。上限倍率は2倍・4倍のまま。変更点と日本の料金を整理します。",
+  "keywords": [
+    "Gemini 料金",
+    "Google AI Plus",
+    "Google AI Pro",
+    "Daily Brief",
+    "Gemini 有料プラン",
+    "Gemini 使用量上限",
+    "Google AI Ultra",
+    "Gemini 無料 違い",
+    "Gemini 動画生成",
+    "Gemini 月額"
+  ],
+  "tags": [
+    "Gemini",
+    "Google",
+    "生成AI",
+    "料金プラン"
+  ],
+  "highlights": [
+    "変更はAI PlusとAI Proの説明文で、動画生成に続く機能として「Daily Brief」が加わった",
+    "上限は無料版の2倍（AI Plus）と4倍（AI Pro）で、料金は米国で月4.99ドルと19.99ドル",
+    "日本の料金は、AI Plusが月725円、AI Proが月2,900円（11月3日確認）"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "ok",
+    "price": "月2,900円（Pro）",
+    "free": false,
+    "audience": "Gemini有料会員",
+    "take": "AI PlusかProの契約者は、Daily Briefが自分のアカウントで使えるか公式で確認するとよいでしょう。",
+    "judgedAt": "2026-11-04T01:12:00.449686+00:00",
+    "japanSource": {
+      "name": "Gemini（Googleの生成AI）",
+      "url": "https://support.google.com/gemini/answer/13575153?hl=ja",
+      "checkedAt": "2026-11-03"
+    }
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "AI PlusかAI Proを契約中の人は、追加の説明に入った「Daily Brief」を自分の画面で確認するとよいでしょう。",
+      "日本の料金はAI Plusが月725円、AI Proが月2,900円で、今回のページ更新で金額は変わっていません。"
+    ]
+  },
+  "body": "Geminiは、Googleが提供する対話型のAIアシスタントです。無料で使えるほか、使用量の上限を引き上げ、機能を増やした有料プランがあります。\n\nGoogleのGeminiの料金ページによると、有料プランの説明文が11月2日から4日の間に書き換えられました。変わったのは、Google AI PlusとGoogle AI Proの紹介文です。\n\n## 追加されたのは「Daily Brief」の1語\n\nAI Plusの紹介文は、これまで「無料版の2倍の使用量上限と、動画生成などの機能」という内容でした。今回は、動画生成の後ろに「Daily Brief」が加わっています。\n\nAI Proも同じです。「無料版の4倍の使用量上限」という説明の機能名に、動画生成と並んで「Daily Brief」が入りました。\n\n変わったのは機能名の並びだけで、上限の倍率は動いていません。\n\n| 比べること | 前 | 今回 | 変化 |\n|---|---|---|---|\n| AI Plusの紹介 | 2倍の上限、動画生成など | 2倍の上限、動画生成とDaily Brief | **機能名を追加** |\n| AI Proの紹介 | 4倍の上限、動画生成など | 4倍の上限、動画生成とDaily Brief | **機能名を追加** |\n| 上限の倍率 | 2倍／4倍 | 2倍／4倍 | **変更なし** |\n\nDaily Briefが何をする機能かは、料金ページには説明がありません。名前から毎日の要約のようなものを想像できますが、編集部としては断定しません。\n\n## 上限と料金は据え置き、単位は「無料版との倍率」\n\nGoogle AIの各プランの上限は、回数や時間ではなく、無料版や下位プランとの倍率で示されています。\n\n- AI Plus：無料版の2倍、月4.99ドル\n- AI Pro：無料版の4倍、月19.99ドル\n- AI Ultra：AI Proの5倍で月99.99ドル、20倍で月199.99ドル\n\nUltraだけは基準が無料版ではなくAI Proです。無料版の具体的な回数は、公式ページでは案内されていません（当サイトのGeminiガイド、10/30確認）。\n\nドル建ての料金を1ドル157.90円で換算すると、次のとおりです。\n\n- 4.99ドル：約788円、消費税10%込みで約867円\n- 19.99ドル：約3,160円、消費税10%込みで約3,470円\n- 99.99ドル：約15,790円（税別の目安）、消費税10%込みで約17,370円\n- 199.99ドル：約34,740円（税込み）\n\n（以上、サイソク編集部の計算）\n\n**Gemini（Google AI プラン）のプランと料金（公式の料金と円の目安）**\n\n| プラン | 料金（公式） | 円の目安 | 主な上限・違い |\n| --- | --- | --- | --- |\n| 無料 | 0円/月 |  | Gmail、Google ドライブ、Google フォト共通で利用できる 15 GB のクラウド ストレージ |\n| Google AI Plus | 725円/月（月払い） |  | 無料版の 2 倍の使用量上限、Gmail、Google ドライブ、Google フォト共通で利用できる 400 GB のクラウド ストレージ |\n| Google AI Pro | 2,900円/月（月払い） |  | 無料版の 4 倍の使用量上限、Gmail、Google ドライブ、Google フォト共通で利用できる 5 TB のクラウド ストレージ |\n| Google AI Ultra（AI Pro の 5 倍） | 14,500円/月（月払い） |  | AI Pro の 5 倍の使用量上限 |\n| Google AI Ultra（AI Pro の 20 倍） | 32,000円/月（月払い） |  | AI Pro の 20 倍の使用量上限 |\n| Gemini Enterprise Business エディション | $21/人・月から | 約3,650円（税込みの目安） | ユーザー数: 最大 300 人 |\n| Gemini Enterprise Standard / Plus エディション | $30/人・月から | 約5,210円（税込みの目安） |  |\n\n出典：Gemini（Google AI プラン）の公式ページ（https://gemini.google/jp/subscriptions/?hl=ja）／確認日：2026-11-03\n円は1ドル=157.90円（2026-11-02、ECB参照レート（ユーロ経由で計算））で計算した目安です。ドルのプランは消費税10%を足しています。実際の請求額は為替とカード会社の手数料で変わります。\n\n## 日本の料金は円建て、月725円から\n\nGeminiアプリは日本でも使えます。日本向けの料金ページは円建てです（当サイトの確認：11/3）。\n\n日本向けの表示では、AI Plusが月725円、AI Proが月2,900円です。AI Ultraは、AI Proの5倍の上限が月14,500円、20倍が月32,000円です（Google公式の料金ページ、11/3確認）。\n\n表の読み方は次のとおりです。無料版は15 GBのストレージが付き、AI Plusは400 GB、AI Proは5 TBです。まず使用量を増やしたい人はAI Plus、ストレージも含めて大きく使う人はAI Proが選択肢になります。\n\n**契約者が今すること**\n\n今回の更新は、すでに契約している人の料金を変えるものではありません。Daily Briefが自分のアカウントで使えるかどうかは、公式の画面で確認するのが確実です。機能は地域や言語で違うことがあります（当サイトの確認：11/3）。\n\n## まだ分からないこと\n\n- Daily Briefの具体的な機能は、まだ発表されていません。\n- Daily Briefの日本での提供時期と対応言語は、まだ発表されていません。\n- 無料版の使用量の具体的な回数は、まだ発表されていません。",
+  "easy": "## ひとことで言うと\n\nGoogleがGeminiの料金ページを更新しました。有料プランのAI PlusとAI Proの説明に、新しく「Daily Brief」という機能名が加わっています。料金と使用量の上限は変わっていません。\n\n## 何が変わったのか\n\nGeminiの有料プランの紹介文に、機能が1つ書き足されました。\n\n- Google AI Plus：無料版の2倍の使用量上限。動画生成に加えて「Daily Brief」が書かれました。\n- Google AI Pro：無料版の4倍の使用量上限。こちらも動画生成に加えて「Daily Brief」が書かれました。\n\nDaily Briefがどんな機能かは、ページには説明がありません。\n\n## 料金は変わっていない\n\n米国の料金は、AI Plusが月4.99ドル、AI Proが月19.99ドルのままです。日本向けのページでは、AI Plusが月725円、AI Proが月2,900円と表示されています（Google公式の料金ページ、11/3確認）。\n\nなお、日本向けのページで同じ文言が出ているかは、まだ分かっていません。契約中の人は、公式の画面で確認すると確実です。",
+  "channel": "Google AI プラン（Gemini）料金ページ",
+  "channelId": "",
+  "channelSlug": "watch-gemini-subscriptions",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Geminiの料金・プランのページが更新（利用上限の記載が変更）",
+  "publishedAt": "2026-11-04T01:11:29.558002+00:00",
+  "generatedAt": "2026-11-04T01:12:00.449675+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/gemini-plans-daily-brief-added-c5660868.jpg",
+  "model": "anthropic-api:claude-sonnet-5-5",
+  "affiliates": [],
+  "newsType": "pricing",
+  "pricingProduct": "gemini",
+  "faq": [
+    {
+      "q": "Gemini有料プランのページで何が変わった？",
+      "a": "Google AI PlusとProの紹介文に、動画生成と並んで「Daily Brief」が追加されました。使用量の上限の倍率は、無料版の2倍・4倍のままです。"
+    },
+    {
+      "q": "Google AI Proの料金はいくら？",
+      "a": "米国では月19.99ドルです。日本向けの表示は月2,900円（月払い）で、無料版の4倍の使用量上限と5 TBのストレージが付きます（11/3確認）。"
+    },
+    {
+      "q": "Google AI Plusの料金と上限は？",
+      "a": "米国で月4.99ドルです。日本向けの表示は月725円で、無料版の2倍の使用量上限と、400 GBのストレージが付きます（11/3確認）。"
+    },
+    {
+      "q": "Geminiは日本で使える？",
+      "a": "Geminiアプリは日本で使えます。ただし機能は地域や言語で違うことがあり、Daily Briefの日本での提供はまだ発表されていません。"
+    }
+  ],
+  "todayActions": [
+    "契約中のGeminiの画面で、Daily Briefが使えるかを確認する",
+    "自分のプランが無料版の何倍の上限か、公式の料金ページで見直す",
+    "月額の費用と上限の差を、AI PlusとProで比べてみる"
+  ],
+  "qualityScore": 88,
+  "factSources": [
+    {
+      "label": "料金",
+      "name": "Google公式の料金ページ",
+      "url": "https://gemini.google/jp/subscriptions/?hl=ja",
+      "checkedAt": "2026-11-03"
+    },
+    {
+      "label": "使い方ガイド",
+      "name": "当サイトのGeminiガイド",
+      "url": "/guides/gemini-free-plan",
+      "checkedAt": "2026-10-30"
+    },
+    {
+      "label": "為替",
+      "name": "ECB参照レート（ユーロ経由で計算）",
+      "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml",
+      "checkedAt": "2026-11-02"
+    },
+    {
+      "label": "日本での提供",
+      "name": "Gemini（Googleの生成AI）の公式ページ",
+      "url": "https://support.google.com/gemini/answer/13575153?hl=ja",
+      "checkedAt": "2026-11-03"
+    },
+    {
+      "label": "計算",
+      "name": "サイソク編集部の計算（元記事と上の資料の数字から）",
+      "url": "",
+      "checkedAt": ""
+    }
+  ],
+  "charts": [
+    {
+      "kind": "ladder",
+      "product": "gemini",
+      "highlight": "ai-plus",
+      "afterHeading": "上限と料金は据え置き、単位は「無料版との倍率」"
+    }
+  ],
+  "detectedAt": "2026-11-04T01:11:29+00:00",
+  "sectionTitles": {
+    "easy": {
+      "料金は変わっていない": "米国価格は据え置き、日本向けは月725円"
+    }
+  },
+  "sectionsPolishedAt": "2026-11-04T01:28:38+00:00",
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A sunlit office space with a wooden desk, a stack of printed reports, a coffee mug, and a window framing a distant city skyline, all bathed in soft natural light.",
+    "provider": "Cloudflare Workers AI",
+    "noProduct": true,
+    "at": "2026-11-04T01:29:28+00:00"
+  },
+  "imageFocus": {
+    "x": 0.463,
+    "y": 0.494,
+    "box": [
+      0.0,
+      0.0,
+      0.925,
+      0.988
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/gemini-plans-daily-brief-added-c5660868.jpg"
+  }
+}

@@ -15,6 +15,7 @@
   ],
   "linkFrom": [
     "claude-text-watermark-api",
+    "databricks-claude-mlflow-tracing-beta",
     "crowdstrike-ai-kill-switch-falcon-guardian",
     "supabase-mcp-claude-issued-auth",
     "claude-ultra-plan-price-limits",
@@ -96,6 +97,7 @@
   ],
   "articles": [
     "claude-text-watermark-api",
+    "databricks-claude-mlflow-tracing-beta",
     "crowdstrike-ai-kill-switch-falcon-guardian",
     "supabase-mcp-claude-issued-auth",
     "google-cloud-ai-october-2026-recap",

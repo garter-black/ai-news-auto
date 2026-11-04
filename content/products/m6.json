@@ -165,7 +165,9 @@
       "event": "Appleが「M6」搭載の新14インチMacBook Proを発表"
     }
   ],
-  "related": [],
+  "related": [
+    "macbook-pro"
+  ],
   "articles": [
     "apple-14-inch-macbook-pro-m6-1eabbb64",
     "apple-14-inch-macbook-pro-m6",

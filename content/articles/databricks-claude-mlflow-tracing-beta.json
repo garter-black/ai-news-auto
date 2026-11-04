@@ -1,0 +1,156 @@
+{
+  "slug": "databricks-claude-mlflow-tracing-beta",
+  "sourceType": "web",
+  "sourceUrl": "https://www.databricks.com/blog/claude-platform-now-supports-native-opentelemetry-observability-databricks-mlflow",
+  "sourceName": "Databricks公式ブログ",
+  "title": "Databricks、Claude向けOpenTelemetry連携をベータ公開　MLflowでAIエージェントの動作を記録",
+  "seoTitle": "Databricks MLflowとClaudeの連携とは？日本での提供状況",
+  "threadsPost": "AIエージェントを開発している人、これはチェックしてほしい。\n\n要約すると、\nDatabricksがClaudeとMLflowの連携をベータ公開しました。\nAIエージェントの動作をトレースとして記録し、デバッグや評価に使えます。\n\nAIエージェントのデバッグ、どうしていますか？",
+  "threadsHook": "callout",
+  "threadsQuestions": [
+    {
+      "pattern": "plain",
+      "question": "開発ツールの新機能、気になるものはありますか？"
+    },
+    {
+      "pattern": "expert",
+      "question": "AIエージェントのデバッグ、どのツールを使っていますか？"
+    },
+    {
+      "pattern": "count",
+      "question": "1週間でAIエージェントの修正に何時間かけますか？"
+    }
+  ],
+  "threadsStyle": 3,
+  "writingVoice": "honest",
+  "lede": "Databricksの公式ブログは11月4日、AnthropicのClaudeプラットフォーム向けに、OpenTelemetryによるネイティブな可視化機能を公開ベータ版として提供開始したと発表しました。この機能はDatabricks MLflowで利用でき、AIエージェントの動作を個別のステップ（スパン）として記録します。トレースは統合データカタログ「Unity Catalog」に保存され、SQLで参照できます。日本での提供開始時期はまだ発表されていません。",
+  "description": "DatabricksがClaude向けOpenTelemetry連携をベータ公開。MLflowでAIエージェントのトレースを記録し、デバッグと評価に活用できます。日本での提供は未発表です。公開ベータ版として提供開始されました。",
+  "keywords": [
+    "Databricks",
+    "Claude",
+    "MLflow",
+    "OpenTelemetry",
+    "AIエージェント",
+    "トレース",
+    "可視化",
+    "デバッグ",
+    "Unity Catalog",
+    "Anthropic",
+    "生成AI",
+    "ベータ版"
+  ],
+  "tags": [
+    "Databricks",
+    "Anthropic",
+    "Claude",
+    "MLflow",
+    "OpenTelemetry",
+    "AIエージェント"
+  ],
+  "highlights": [
+    "Claude PlatformのOpenTelemetry連携がDatabricks MLflowで公開ベータ版として提供開始（11/4）",
+    "トレースはUnity Catalogに保存され、SQLで参照やアクセス制御が可能です。Databricks以外のトレースと並べて確認できます",
+    "MLflow IssuesやReview Queuesなど、デバッグと評価を支援する機能も公開ベータ版として利用可能です"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "limited",
+    "japan": "unknown",
+    "price": "不明",
+    "free": null,
+    "audience": "AI開発者",
+    "take": "Databricksワークスペースを持つ開発者は、公式の接続ガイドを確認して導入を検討してください。",
+    "judgedAt": "2026-11-04T01:27:19.164095+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "AIエージェントを開発する企業の担当者は、デバッグにかかる工数を減らせる可能性があります。",
+      "Databricksを利用している開発チームは、MLflowのトレース機能を既存のワークフローに追加できます。",
+      "AIエージェントの品質改善に関わる人は、専門家によるレビュー機能を活用して修正の優先順位を決められます。"
+    ]
+  },
+  "body": "モデル呼び出しやツール利用の履歴を、トレースで辿れます。トレースは統合データカタログ「Unity Catalog」に保存され、SQLで参照できます。日本での提供開始時期はまだ発表されていません。\n\nDatabricks MLflowは、機械学習モデルの開発や追跡を行うためのプラットフォームです。OpenTelemetryは、ソフトウェアの動作信号を収集して送り出すための共通規格です。\n\n今回の発表で、Claudeを使ったAIエージェントの開発者は、エージェントがどのような手順で答えを出したかを確認できます。Databricks上でそのまま確認できます。\n\nこれまで、Claudeの動作を詳しく調べるには、回答の結果だけを見るしかありませんでした。答えが間違っていても、どこで判断を間違ったかは分かりにくいのが課題でした。\n\n今回、Claudeのネイティブな計測機能がトレースを生成します。それらはOpenTelemetryの仕組みでDatabricksに送信されます。開発者はモデルの呼び出しやツールの利用、それぞれの処理時間を一つずつ見直せます。\n\nDatabricksは、トレースデータを「Zerobus Ingest」という仕組みで受け取り、Unity Catalogのテーブルに保存します。Unity Catalogは、データへのアクセス権を管理する機能です。\n\nこれにより、機密性の高いエージェントのトレースデータにも、適切なアクセス制御をかけられます。Databricksは、低遅延での大量のトレース取り込みと、データのガバナンスを両立できると説明しています。\n\n## ClaudeをDatabricks MLflowに接続する3つのステップ\n\nClaudeをDatabricks MLflowに接続する手順は、公式ブログによると3ステップです。\n1. Databricksで実験（experiment）を作成し、トレースの保存先にUnity Catalogを選択する\n2. ワークスペースIDやリージョン、スパンの保存先テーブルを指定して、ネイティブな書き出しを設定する\n3. Claudeエージェントを実行し、実験のトレース画面でモデル呼び出しやツール活動を確認する\n\n入力と出力の内容を記録するには、設定で「コンテンツモード」を「フル」にする必要があります（公式ブログの案内）。\n\n予期しない回答が返った場合、MLflowの「トレースを分析」機能が「Genie Code」を使って調査を支援します。\n\nGenie Codeは、記録された実行内容を調べ、どこで問題が起きたかを説明する仕組みです。開発者は、指示文の修正やツールの改善、コンテキストの変更などを判断できます。\n\n「MLflow Issues」はベータ版として提供され、Genie Codeを使って繰り返し発生する品質や運用上の問題を見つけます。例として挙げられているのは、トークンを浪費する繰り返しの検索や、引数が不足して失敗するツール呼び出しです。必要な形式に従わない回答なども含まれます。\n\nチームは検出の頻度や対象となるトラフィックを選び、修正後に問題が再発しないかを監視できます。Review QueuesをSDKで管理するには、MLflow 3.17.1以降が必要です。\n\n「MLflow Review Queues」を使えば、専門家が記録されたリクエストと回答を確認できます。専門家は、不足している点や想定される回答をフィードバックできます。\n\n開発者はこの意見をもとにエージェントを改良し、後続の評価のための基準回答を作れます。\n\n変更の効果を測るには、「MLflow Agent Evaluation」で同じテストケースを使った評価を実行します。プロンプトやスキル、ツールの変更が、エージェントの品質を向上させたか、逆に悪化させたかを比較できます。\n\n詳しくは[Databricks公式ブログの案内](https://www.databricks.com/blog/claude-platform-now-supports-native-opentelemetry-observability-databricks-mlflow)を参照してください。\n\nClaude自体は日本でも利用できますが、Databricks MLflowとのこの連携機能の日本での提供時期は、まだ発表されていません。\n\nDatabricksは11月2日、富裕層向け資産管理の顧客手続きにAIエージェント基盤を提案する記事も出しています（[Databricks、富裕層向け資産管理の顧客手続きにAIエージェント基盤を提案](/articles/databricks-wealth-management-onboarding)）。\n\n## まだ分からないこと\n\n- 今回の機能の日本での提供開始時期\n- 日本での料金体系や無料枠の有無",
+  "easy": "## ひとことで言うと\n\nDatabricksが、AIモデル「Claude」の動作を記録して調べられる機能を、データ分析プラットフォーム「Databricks MLflow」に追加しました。開発者がAIエージェントの失敗原因を特定しやすくなります。\n\n## 公開ベータ版として始まった新機能\n\nAnthropicが提供する「Claude」は、文章を作ったり質問に答えたりするAIです。今回、Claudeの動作を「トレース」という記録としてDatabricksに送り、MLflowで確認できるようになりました。トレースとは、AIがどのような手順で答えを出したかを記録したものです。",
+  "channel": "Databricks公式ブログ",
+  "channelId": "",
+  "channelSlug": "databricks-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Claude Platform now supports native OpenTelemetry observability in Databricks MLflow",
+  "publishedAt": "2026-11-03T21:00:00+00:00",
+  "generatedAt": "2026-11-04T01:27:19.164083+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/databricks-claude-mlflow-tracing-beta-fe388d61.jpg",
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "affiliates": [],
+  "newsType": "product",
+  "faq": [
+    {
+      "q": "Databricksが発表したClaude連携の新機能とは？",
+      "a": "AnthropicのClaudeプラットフォーム向けに、OpenTelemetryによるネイティブな可視化機能をDatabricks MLflowで公開ベータ版として提供開始しました。"
+    },
+    {
+      "q": "ClaudeのトレースをMLflowで保存するのは、これまでと何が違う？",
+      "a": "これまでは回答の結果だけを見るしかありませんでしたが、今回はモデル呼び出しやツール利用などの個別のステップをトレースとして記録できます。"
+    },
+    {
+      "q": "Claudeの新機能、日本で使えるようになりましたか？",
+      "a": "Claude自体は日本でも利用できますが、Databricks MLflowとの連携機能が日本で提供される時期はまだ発表されていません。"
+    },
+    {
+      "q": "ClaudeとDatabricks MLflowを連携するにはどうすればいい？",
+      "a": "Databricksで実験を作成し、トレース保存先にUnity Catalogを選択するなど、公式ブログに記載の3ステップで接続します。"
+    },
+    {
+      "q": "トレースで入出力を記録する際の注意点は？",
+      "a": "入力と出力の内容を記録するには、設定で「コンテンツモード」を「フル」にする必要があります。公式ブログで案内されています。"
+    }
+  ],
+  "todayActions": [
+    "Databricks公式ブログで、Claude連携の接続手順を確認する",
+    "自社のDatabricksワークスペースで、MLflowの実験作成画面を確かめる",
+    "AIエージェントの開発担当者に、トレース機能の導入を検討するよう共有する"
+  ],
+  "relatedSlugs": [
+    "databricks-wealth-management-onboarding"
+  ],
+  "qualityScore": 90,
+  "sourcePublishedAt": "2026-11-03T21:00:00+00:00",
+  "detectedAt": "2026-11-04T01:10:52+00:00",
+  "sectionsPolishedAt": "2026-11-04T01:28:25+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/databricks-claude-mlflow-tracing-beta-fig1-5e162787.jpg",
+      "width": 1200,
+      "height": 628,
+      "kind": "dense",
+      "credit": "Databricks",
+      "sourceUrl": "https://www.databricks.com/blog/claude-platform-now-supports-native-opentelemetry-observability-databricks-mlflow",
+      "original": "https://www.databricks.com/sites/default/files/2026-11/claude-platform-supports-native-open-telemetry-observability-databricks-mlflow-blog-og.png"
+    }
+  ],
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A quiet office space with a wooden desk, scattered notebooks, a pen, and a large whiteboard in the background displaying a hand‑drawn flowchart of data flow, illuminated by soft natural light from a nearby window.",
+    "provider": "Cloudflare Workers AI",
+    "noProduct": true,
+    "original": "https://www.databricks.com/sites/default/files/2026-11/claude-platform-supports-native-open-telemetry-observability-databricks-mlflow-blog-og.png",
+    "at": "2026-11-04T01:29:08+00:00"
+  },
+  "imageFocus": {
+    "x": 0.394,
+    "y": 0.422,
+    "box": [
+      0.0,
+      0.0,
+      0.787,
+      0.845
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/databricks-claude-mlflow-tracing-beta-fe388d61.jpg"
+  }
+}

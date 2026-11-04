@@ -131,6 +131,14 @@
       "tries": 2,
       "url": "https://huggingface.co/blog/allenai/statebench"
     },
+    "a9ba99b8846683ac": {
+      "first": "2026-11-04T01:24:17.644580+00:00",
+      "next": "2026-11-04T04:24:17.644580+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "営業毎旬報告（10月31日現在）",
+      "tries": 1,
+      "url": "http://www.boj.or.jp/statistics/boj/other/acmai/release/2026/ac261031.htm"
+    },
     "bc4177032a04e266": {
       "first": "2026-11-03T18:23:56.532871+00:00",
       "next": "2026-11-04T03:20:15.499229+00:00",
@@ -138,6 +146,14 @@
       "title": "Palette: teaching a small model to build decks in your design language",
       "tries": 2,
       "url": "https://huggingface.co/blog/ibm-research/palette-deck-building"
+    },
+    "cba8f769dd5b673e": {
+      "first": "2026-11-04T01:17:44.264654+00:00",
+      "next": "2026-11-04T04:17:44.264654+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "Half of Slack Messages Are No Longer From People. Here’s Slack by the Numbers.",
+      "tries": 1,
+      "url": "https://www.salesforce.com/news/stories/slack-stats/"
     },
     "ce9b39562dd42cfe": {
       "first": "2026-11-03T13:43:44.204259+00:00",
@@ -3690,6 +3706,12 @@
       "skipped": true,
       "url": "https://www.fsa.go.jp/common/recruit/r8/kokusai-01/kokusai-01.html"
     },
+    "0cb0ca942eabbf75": {
+      "at": "2026-11-04T01:17:44.707450+00:00",
+      "reason": "prefilter: 不動産の話題ではない",
+      "skipped": true,
+      "url": "https://www.tokyu-fudosan-hd.co.jp/news/companies/pdf/d5e7fa5a8d681a9b61127ef623a5574f6877227c.pdf"
+    },
     "0cb7ee166a550142": {
       "at": "2026-10-28T21:55:13.754157+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（職員）",
@@ -4159,11 +4181,25 @@
       "skipped": true,
       "url": "https://jp.investing.com/news/stock-market-news/article-1725036"
     },
+    "1581d1c3b7bdda12": {
+      "at": "2026-11-04T01:28:01.160547+00:00",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "score": 90,
+      "section": "ai",
+      "slug": "databricks-claude-mlflow-tracing-beta",
+      "url": "https://www.databricks.com/blog/claude-platform-now-supports-native-opentelemetry-observability-databricks-mlflow"
+    },
     "158423f4848f3b00": {
       "at": "2026-11-02T14:31:21.619845+00:00",
       "reason": "prefilter: タイトルが短すぎる（一覧リンク等）",
       "skipped": true,
       "url": "https://www.mof.go.jp/application-contact/procurement/seihuchoutatsu/index.htm"
+    },
+    "15a3b788c6fe1a2f": {
+      "at": "2026-11-04T01:24:18.066163+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（採用）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/kouseiroudoushou/saiyou/ninkituki/ninki-shougaisyabunkageijyutsukeikakusuishinkan.html"
     },
     "15a4ccf73ef28b6b": {
       "at": "2026-10-28T04:22:17.393712+00:00",
@@ -5518,6 +5554,12 @@
       "skipped": true,
       "url": "https://www.nli-research.co.jp/topics_detail1/id=87226?site=nli"
     },
+    "35b09f9e9b4d07af": {
+      "at": "2026-11-04T01:24:18.066127+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/toukei/saikin/hw/hihogosya/m2026/08.html"
+    },
     "35cf51a18907f6ab": {
       "at": "2026-11-03T20:35:29.627574+00:00",
       "major": true,
@@ -6018,6 +6060,12 @@
       "reason": "prefilter: 価値の薄いお知らせ（調達）",
       "skipped": true,
       "url": "https://www.soumu.go.jp/menu_news/s-news/01cyber01_02000001_00308.html"
+    },
+    "4321d9ac28e5a5c9": {
+      "at": "2026-11-04T01:28:01.506069+00:00",
+      "reason": "prefilter: お知らせ・統計の転載（listing）",
+      "skipped": true,
+      "url": "https://www8.cao.go.jp/shokun/hatsurei/r08aki.html"
     },
     "4338b997783eb31c": {
       "at": "2026-11-02T23:56:14.012379+00:00",
@@ -6569,6 +6617,12 @@
       "skipped": true,
       "url": "https://www.mext.go.jp/a_menu/shinkou/nankyoku/detail/1422925_00019.htm"
     },
+    "4fc707364320f23e": {
+      "at": "2026-11-04T01:28:01.507999+00:00",
+      "reason": "prefilter: お知らせ・統計の転載（listing）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/newpage_76949.html"
+    },
     "4fcc6090f912c8cb": {
       "at": "2026-10-27T03:04:42.977507+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（セミナー）",
@@ -7057,6 +7111,12 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000010.000046814.html"
     },
+    "5e237e9407d50660": {
+      "at": "2026-11-04T01:24:18.066068+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（審議会）",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/main_sosiki/joho_tsusin/policyreports/joho_tsusin/setsuzoku_seisaku/02kiban03_04001195.html"
+    },
     "5e49338ed6317f78": {
       "at": "2026-11-02T16:31:40.907826+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -7376,6 +7436,12 @@
       "section": "ai",
       "slug": "openai-signals-chatgpt-work-data",
       "url": "https://openai.com/index/chatgpt-expanding-world-of-work"
+    },
+    "64dd073c425d0f04": {
+      "at": "2026-11-04T01:28:01.508919+00:00",
+      "reason": "prefilter: お知らせ・統計の転載（listing）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/newpage_76875.html"
     },
     "653882b3da5b8f0b": {
       "at": "2026-10-29T15:53:20.348732+00:00",
@@ -7983,6 +8049,15 @@
       "slug": "microsoft-ui-reactor-winui-csharp-mvu",
       "url": "https://devblogs.microsoft.com/ifdef-windows/microsoft-ui-reactor-a-c-first-way-to-build-winui-apps/"
     },
+    "7491a7fb681c05c6": {
+      "at": "2026-11-04T01:12:32.424355+00:00",
+      "major": true,
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 88,
+      "section": "ai",
+      "slug": "gemini-plans-daily-brief-added",
+      "url": "https://gemini.google/us/subscriptions/?hl=en#entry-2026-11-04-f58336"
+    },
     "74c9b2e03867b173": {
       "at": "2026-11-03T19:51:15.184960+00:00",
       "reason": "dedupe: 固有名詞が一致（agentcore・bedrock）: ServiceNow on-behalf-of token exchange w",
@@ -8543,6 +8618,12 @@
       "reason": "prefilter: 価値の薄いお知らせ（導入事例）",
       "skipped": true,
       "url": "https://kyodonewsprwire.jp/release/202610268701"
+    },
+    "82f4af305358cbaa": {
+      "at": "2026-11-04T01:24:18.066147+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（採用）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/kouseiroudoushou/saiyou/ninkituki/ninki-jiritsushienshinkoushitsuchouhosa.html"
     },
     "82f858ee268207ae": {
       "at": "2026-10-31T18:21:40.516386+00:00",
@@ -9235,6 +9316,12 @@
       "skipped": true,
       "url": "https://kyodonewsprwire.jp/release/202610218386"
     },
+    "92ebb0d3af1fd62b": {
+      "at": "2026-11-04T01:28:01.507055+00:00",
+      "reason": "prefilter: お知らせ・統計の転載（listing）",
+      "skipped": true,
+      "url": "https://www.fsa.go.jp/news/r8/sonota/20261104/20261104.html"
+    },
     "93007272508454d1": {
       "at": "2026-11-02T10:51:12.685573+00:00",
       "reason": "followup: 新しい事実なし（boj-outlook-report-october）",
@@ -9750,6 +9837,12 @@
       "skipped": true,
       "url": "https://www.kantei.go.jp/jp/105/actions/202610/26sei_yotou.html"
     },
+    "9f2f353dc57e0822": {
+      "at": "2026-11-04T01:17:44.708885+00:00",
+      "reason": "prefilter: サイトの主題外（エンタメのビジネス・テックの話題ではない。料金・決算・販売本数・AI・規約などがない）",
+      "skipped": true,
+      "url": "https://blog.ja.playstation.com/2026/11/04/20261104-sonicracing-season2-interview-feature-o/"
+    },
     "9f58f01686e213c4": {
       "at": "2026-10-30T10:31:48.305618+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9959,6 +10052,12 @@
       "section": "public",
       "slug": "reiwa-8-autumn-shoubo-houshou",
       "url": "https://www.soumu.go.jp/menu_news/s-news/01shoubo01_02001279.html"
+    },
+    "a483ae619e784c97": {
+      "at": "2026-11-04T01:24:18.066004+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（人事）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/stf/newpage_77100.html"
     },
     "a4be21c02d238c64": {
       "at": "2026-10-30T11:11:26.735515+00:00",
@@ -13583,171 +13682,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T08:01:18.049360+00:00",
-      "attempt": 1,
-      "id": "613010f141cb0ebf",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "title の長さが不適切（70字 / 18〜64字）"
-      ],
-      "readability": {
-        "avg_paragraph": 98.9,
-        "avg_sentence": 71.4,
-        "long_share": 0.722,
-        "max_paragraph": 175,
-        "paragraphs": 13,
-        "sentences": 18
-      },
-      "score": null,
-      "source": "sbintuitions-blog",
-      "title": "Sarashina3.2 mini thinking の安全性"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T08:01:23.531185+00:00",
-      "attempt": 2,
-      "id": "613010f141cb0ebf",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "title の長さが不適切（65字 / 18〜64字）"
-      ],
-      "readability": {
-        "avg_paragraph": 96.8,
-        "avg_sentence": 59.9,
-        "long_share": 0.381,
-        "max_paragraph": 149,
-        "paragraphs": 13,
-        "sentences": 21
-      },
-      "score": null,
-      "source": "sbintuitions-blog",
-      "title": "Sarashina3.2 mini thinking の安全性"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T08:01:31.987816+00:00",
-      "attempt": 1,
-      "id": "d13c5cabe6d2ffd0",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 56.2字・60字超の文が 38% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 168.6字・最長 236字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 168.6,
-        "avg_sentence": 56.2,
-        "long_share": 0.375,
-        "max_paragraph": 236,
-        "paragraphs": 8,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "tsr",
-      "title": "主な「地ビールメーカー」1-8月出荷量は2年連続で増加 ビールメーカーの６割弱が前年割れ、首位は「エチゴビール」"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T08:01:35.796079+00:00",
-      "attempt": 0,
-      "id": "d13c5cabe6d2ffd0",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 103.2,
-        "avg_sentence": 27.4,
-        "long_share": 0.0,
-        "max_paragraph": 141,
-        "paragraphs": 13,
-        "sentences": 49
-      },
-      "score": 100,
-      "source": "tsr",
-      "title": "主な「地ビールメーカー」1-8月出荷量は2年連続で増加 ビールメーカーの６割弱が前年割れ、首位は「エチゴビール」"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T08:01:45.013506+00:00",
-      "attempt": 1,
-      "id": "71a098c0e2d097d6",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "title の長さが不適切（71字 / 18〜64字）"
-      ],
-      "readability": {
-        "avg_paragraph": 156.7,
-        "avg_sentence": 60.6,
-        "long_share": 0.548,
-        "max_paragraph": 220,
-        "paragraphs": 12,
-        "sentences": 31
-      },
-      "score": null,
-      "source": "google-cloud-blog-ja",
-      "title": "ソブリン AI の新時代を切り開く: Google Distributed Cloud の最新イノベーション"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T08:01:53.752276+00:00",
-      "attempt": 2,
-      "id": "71a098c0e2d097d6",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 66.6字・60字超の文が 50% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 112.8,
-        "avg_sentence": 66.6,
-        "long_share": 0.5,
-        "max_paragraph": 200,
-        "paragraphs": 13,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "google-cloud-blog-ja",
-      "title": "ソブリン AI の新時代を切り開く: Google Distributed Cloud の最新イノベーション"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T08:01:59.013773+00:00",
-      "attempt": 0,
-      "id": "71a098c0e2d097d6",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 121.9字・最長 218字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 121.9,
-        "avg_sentence": 40.6,
-        "long_share": 0.103,
-        "max_paragraph": 218,
-        "paragraphs": 13,
-        "sentences": 39
-      },
-      "score": 100,
-      "source": "google-cloud-blog-ja",
-      "title": "ソブリン AI の新時代を切り開く: Google Distributed Cloud の最新イノベーション"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T08:15:10.233069+00:00",
-      "attempt": 1,
-      "id": "9febbe0bcfade9e8",
-      "kind": "update",
-      "model": "claude:sonnet",
-      "problems": [],
-      "score": 96,
-      "source": "radar-k-tai.watch.impress.co.jp",
-      "title": "XREAL、Android XRとGemini搭載のスマートグラス「XREAL AURA」を11月27日に発売"
-    },
     {
       "accepted": false,
       "at": "2026-11-02T08:26:40.794846+00:00",
@@ -20103,6 +20037,163 @@
       "warnings": [
         "見出しが51字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（SVP・PROLED・XDR）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:12:10.395655+00:00",
+      "attempt": 1,
+      "id": "7491a7fb681c05c6",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "本文冒頭の「仕事で文章作成や調べものに使う人が、主な利用者です」→ 元記事にも確認済みの文脈にも無い利用者層の断定で、根拠がない。",
+        "末尾の「判定: 提供状況=available」→ 本文はDaily Briefの日本での提供は未発表としており、「available」という表示は読者に提供済みと誤解させる恐れがある。",
+        "「99.99ドル：約17,370円（税込み）」→ 計算済みの税別約15,790円を省いており、税込みの目安だけを示している点は表記として不完全（誤りではない）。"
+      ],
+      "readability": {
+        "avg_paragraph": 69.8,
+        "avg_sentence": 35.9,
+        "long_share": 0.03,
+        "max_paragraph": 113,
+        "paragraphs": 17,
+        "sentences": 33
+      },
+      "score": 82,
+      "source": "watch-gemini-subscriptions",
+      "title": "Geminiの料金・プランのページが更新（利用上限の記載が変更）",
+      "warnings": [
+        "見出しが53字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T01:12:32.405639+00:00",
+      "attempt": 1,
+      "id": "7491a7fb681c05c6",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 68.2,
+        "avg_sentence": 36.2,
+        "long_share": 0.031,
+        "max_paragraph": 113,
+        "paragraphs": 17,
+        "sentences": 32
+      },
+      "score": 88,
+      "source": "watch-gemini-subscriptions",
+      "title": "Geminiの料金・プランのページが更新（利用上限の記載が変更）",
+      "warnings": [
+        "見出しが53字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:13:25.310898+00:00",
+      "attempt": 1,
+      "id": "cba8f769dd5b673e",
+      "kind": "ai",
+      "model": "gemini-3.5-flash",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "salesforce-news",
+      "title": "Half of Slack Messages Are No Longer From People. Here’s Slack by the Numbers."
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:17:44.264618+00:00",
+      "attempt": 2,
+      "id": "cba8f769dd5b673e",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "salesforce-news",
+      "title": "Half of Slack Messages Are No Longer From People. Here’s Slack by the Numbers."
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:20:48.864689+00:00",
+      "attempt": 1,
+      "id": "a9ba99b8846683ac",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "boj",
+      "title": "営業毎旬報告（10月31日現在）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:24:17.644540+00:00",
+      "attempt": 2,
+      "id": "a9ba99b8846683ac",
+      "kind": "broad",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "boj",
+      "title": "営業毎旬報告（10月31日現在）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:27:29.237238+00:00",
+      "attempt": 1,
+      "id": "1581d1c3b7bdda12",
+      "kind": "ai",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "problems": [
+        "文が長い（1文の平均 47.6字・60字超の文が 22% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 142.8字・最長 219字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 142.8,
+        "avg_sentence": 47.6,
+        "long_share": 0.222,
+        "max_paragraph": 219,
+        "paragraphs": 12,
+        "sentences": 36
+      },
+      "score": 80,
+      "source": "databricks-blog",
+      "title": "Claude Platform now supports native OpenTelemetry observability in Databricks ML",
+      "warnings": [
+        "見出しが62字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（SQL）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T01:28:01.148528+00:00",
+      "attempt": 0,
+      "id": "1581d1c3b7bdda12",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 86.7,
+        "avg_sentence": 43.3,
+        "long_share": 0.1,
+        "max_paragraph": 138,
+        "paragraphs": 20,
+        "sentences": 40
+      },
+      "score": 90,
+      "source": "databricks-blog",
+      "title": "Claude Platform now supports native OpenTelemetry observability in Databricks ML",
+      "warnings": [
+        "見出しが62字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（SQL）"
       ]
     }
   ],
