@@ -1,8 +1,9 @@
 {
   "2026-11-03": {
     "video_trial": {
-      "anthropic-api:claude-sonnet-5-5": 44,
-      "claude:sonnet": 9
+      "anthropic-api:claude-sonnet-5-5": 48,
+      "claude:sonnet": 9,
+      "claude:sonnet#video": 8
     }
   }
 }
