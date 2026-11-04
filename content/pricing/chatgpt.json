@@ -4,25 +4,25 @@
  "company": "openai",
  "kind": "plan",
  "mode": "mixed",
- "checkedAt": "2026-11-03",
+ "checkedAt": "2026-11-04",
  "updatedAt": "2026-11-03",
  "sources": [
   {
    "url": "https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus",
    "title": "What is ChatGPT Plus?（OpenAI ヘルプ）",
-   "checkedAt": "2026-11-03",
+   "checkedAt": "2026-11-04",
    "how": "auto"
   },
   {
    "url": "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers",
    "title": "About ChatGPT Pro tiers（OpenAI ヘルプ）",
-   "checkedAt": "2026-11-03",
+   "checkedAt": "2026-11-04",
    "how": "auto"
   },
   {
    "url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
    "title": "What is ChatGPT Business?（OpenAI ヘルプ）",
-   "checkedAt": "2026-11-03",
+   "checkedAt": "2026-11-04",
    "how": "auto"
   },
   {
@@ -101,10 +101,10 @@
      "label": "Price: $20/month (billed monthly)",
      "src": "auto",
      "jpy": {
-      "exTax": 3158,
-      "inclTax": 3474,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 3166,
+      "inclTax": 3482,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -139,10 +139,10 @@
      "label": "Pro 100 $100（Monthly price (USD)）",
      "src": "auto",
      "jpy": {
-      "exTax": 15790,
-      "inclTax": 17369,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 15829,
+      "inclTax": 17412,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -172,10 +172,10 @@
      "label": "Pro 200 $200（Monthly price (USD)）",
      "src": "auto",
      "jpy": {
-      "exTax": 31580,
-      "inclTax": 34738,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 31658,
+      "inclTax": 34824,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -205,10 +205,10 @@
      "label": "Pro 500 $500（Monthly price (USD)）",
      "src": "auto",
      "jpy": {
-      "exTax": 78950,
-      "inclTax": 86845,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 79145,
+      "inclTax": 87060,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -238,10 +238,10 @@
      "label": "Annual plan: $20 per user per month, billed annually",
      "src": "auto",
      "jpy": {
-      "exTax": 3158,
-      "inclTax": 3474,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 3166,
+      "inclTax": 3482,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -255,10 +255,10 @@
      "label": "Monthly plan: $25 per user per month",
      "src": "auto",
      "jpy": {
-      "exTax": 3948,
-      "inclTax": 4342,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 3957,
+      "inclTax": 4353,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -284,10 +284,10 @@
      "label": "Annual plan: $100 per user per month, billed annually",
      "src": "auto",
      "jpy": {
-      "exTax": 15790,
-      "inclTax": 17369,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 15829,
+      "inclTax": 17412,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -301,10 +301,10 @@
      "label": "Monthly plan: $125 per user per month",
      "src": "auto",
      "jpy": {
-      "exTax": 19738,
-      "inclTax": 21711,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 19786,
+      "inclTax": 21765,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -319,8 +319,8 @@
  "fx": {
   "base": "USD",
   "quote": "JPY",
-  "rate": 157.9,
-  "date": "2026-11-02",
+  "rate": 158.29,
+  "date": "2026-11-03",
   "source": "ECB参照レート（ユーロ経由で計算）",
   "sourceUrl": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
  }

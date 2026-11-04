@@ -4,13 +4,13 @@
  "company": "google",
  "kind": "plan",
  "mode": "auto",
- "checkedAt": "2026-11-03",
+ "checkedAt": "2026-11-04",
  "updatedAt": "2026-11-03",
  "sources": [
   {
    "url": "https://gemini.google/jp/subscriptions/?hl=ja",
    "title": "Google AI プラン（日本）",
-   "checkedAt": "2026-11-03",
+   "checkedAt": "2026-11-04",
    "how": "auto"
   }
  ],
@@ -138,10 +138,10 @@
      "label": "最小構成価格: $21 （1 ライセンスあたり月額）",
      "src": "auto",
      "jpy": {
-      "exTax": 3316,
-      "inclTax": 3647,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 3324,
+      "inclTax": 3656,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -167,10 +167,10 @@
      "label": "最小構成価格: $30 （1 ライセンスあたり月額）",
      "src": "auto",
      "jpy": {
-      "exTax": 4737,
-      "inclTax": 5211,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 4749,
+      "inclTax": 5224,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -183,8 +183,8 @@
  "fx": {
   "base": "USD",
   "quote": "JPY",
-  "rate": 157.9,
-  "date": "2026-11-02",
+  "rate": 158.29,
+  "date": "2026-11-03",
   "source": "ECB参照レート（ユーロ経由で計算）",
   "sourceUrl": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
  }

@@ -35,10 +35,10 @@
      "src": "manual",
      "label": "$17 /月相当（年額請求の場合）",
      "jpy": {
-      "exTax": 2684,
-      "inclTax": 2953,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 2691,
+      "inclTax": 2960,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      },
@@ -66,10 +66,10 @@
      "src": "manual",
      "label": "$167 /月相当（年額請求の場合）",
      "jpy": {
-      "exTax": 26369,
-      "inclTax": 29006,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 26434,
+      "inclTax": 29078,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      },
@@ -87,8 +87,8 @@
  "fx": {
   "base": "USD",
   "quote": "JPY",
-  "rate": 157.9,
-  "date": "2026-11-02",
+  "rate": 158.29,
+  "date": "2026-11-03",
   "source": "ECB参照レート（ユーロ経由で計算）",
   "sourceUrl": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
  }

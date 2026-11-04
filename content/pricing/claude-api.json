@@ -4,13 +4,13 @@
  "company": "anthropic",
  "kind": "api",
  "mode": "auto",
- "checkedAt": "2026-11-03",
+ "checkedAt": "2026-11-04",
  "updatedAt": "2026-11-03",
  "sources": [
   {
    "url": "https://platform.claude.com/docs/en/about-claude/pricing",
    "title": "Claude API Pricing（公式ドキュメント）",
-   "checkedAt": "2026-11-03",
+   "checkedAt": "2026-11-04",
    "how": "auto"
   }
  ],
@@ -35,11 +35,11 @@
    "status": "listed",
    "sourceUrl": "https://platform.claude.com/docs/en/about-claude/pricing",
    "jpy": {
-    "input": 632.0,
-    "output": 3158.0,
-    "cacheRead": 31.6,
-    "rate": 157.9,
-    "rateDate": "2026-11-02",
+    "input": 633.0,
+    "output": 3166.0,
+    "cacheRead": 31.7,
+    "rate": 158.29,
+    "rateDate": "2026-11-03",
     "rateSource": "ECB参照レート（ユーロ経由で計算）",
     "estimate": true,
     "taxIncluded": false
@@ -63,11 +63,11 @@
    "status": "listed",
    "sourceUrl": "https://platform.claude.com/docs/en/about-claude/pricing",
    "jpy": {
-    "input": 316.0,
-    "output": 1579.0,
+    "input": 317.0,
+    "output": 1583.0,
     "cacheRead": 15.8,
-    "rate": 157.9,
-    "rateDate": "2026-11-02",
+    "rate": 158.29,
+    "rateDate": "2026-11-03",
     "rateSource": "ECB参照レート（ユーロ経由で計算）",
     "estimate": true,
     "taxIncluded": false
@@ -90,10 +90,10 @@
    "sourceUrl": "https://platform.claude.com/docs/en/about-claude/pricing",
    "jpy": {
     "input": 15.8,
-    "output": 79.0,
+    "output": 79.1,
     "cacheRead": 1.58,
-    "rate": 157.9,
-    "rateDate": "2026-11-02",
+    "rate": 158.29,
+    "rateDate": "2026-11-03",
     "rateSource": "ECB参照レート（ユーロ経由で計算）",
     "estimate": true,
     "taxIncluded": false
@@ -115,11 +115,11 @@
    "status": "listed",
    "sourceUrl": "https://platform.claude.com/docs/en/about-claude/pricing",
    "jpy": {
-    "input": 79.0,
-    "output": 395.0,
-    "cacheRead": 7.9,
-    "rate": 157.9,
-    "rateDate": "2026-11-02",
+    "input": 79.1,
+    "output": 396.0,
+    "cacheRead": 7.91,
+    "rate": 158.29,
+    "rateDate": "2026-11-03",
     "rateSource": "ECB参照レート（ユーロ経由で計算）",
     "estimate": true,
     "taxIncluded": false
@@ -129,8 +129,8 @@
  "fx": {
   "base": "USD",
   "quote": "JPY",
-  "rate": 157.9,
-  "date": "2026-11-02",
+  "rate": 158.29,
+  "date": "2026-11-03",
   "source": "ECB参照レート（ユーロ経由で計算）",
   "sourceUrl": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
  }

@@ -4,13 +4,13 @@
  "company": "anthropic",
  "kind": "plan",
  "mode": "auto",
- "checkedAt": "2026-11-03",
+ "checkedAt": "2026-11-04",
  "updatedAt": "2026-11-03",
  "sources": [
   {
    "url": "https://claude.com/pricing",
    "title": "Claude 料金ページ（Plans & Pricing）",
-   "checkedAt": "2026-11-03",
+   "checkedAt": "2026-11-04",
    "how": "auto"
   }
  ],
@@ -36,8 +36,8 @@
      "jpy": {
       "exTax": 0,
       "inclTax": 0,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -64,10 +64,10 @@
      "taxIncluded": false,
      "src": "auto",
      "jpy": {
-      "exTax": 2684,
-      "inclTax": 2953,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 2691,
+      "inclTax": 2960,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -81,10 +81,10 @@
      "taxIncluded": false,
      "src": "auto",
      "jpy": {
-      "exTax": 3158,
-      "inclTax": 3474,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 3166,
+      "inclTax": 3482,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -110,10 +110,10 @@
      "taxIncluded": false,
      "src": "auto",
      "jpy": {
-      "exTax": 15790,
-      "inclTax": 17369,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 15829,
+      "inclTax": 17412,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -140,10 +140,10 @@
      "taxIncluded": false,
      "src": "auto",
      "jpy": {
-      "exTax": 31580,
-      "inclTax": 34738,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 31658,
+      "inclTax": 34824,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -171,10 +171,10 @@
      "taxIncluded": false,
      "src": "auto",
      "jpy": {
-      "exTax": 3158,
-      "inclTax": 3474,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 3166,
+      "inclTax": 3482,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -188,10 +188,10 @@
      "taxIncluded": false,
      "src": "auto",
      "jpy": {
-      "exTax": 3948,
-      "inclTax": 4342,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 3957,
+      "inclTax": 4353,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -217,10 +217,10 @@
      "taxIncluded": false,
      "src": "auto",
      "jpy": {
-      "exTax": 15790,
-      "inclTax": 17369,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 15829,
+      "inclTax": 17412,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -234,10 +234,10 @@
      "taxIncluded": false,
      "src": "auto",
      "jpy": {
-      "exTax": 19738,
-      "inclTax": 21711,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 19786,
+      "inclTax": 21765,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -263,10 +263,10 @@
      "label": "US$20/シート/月（年払い、最低20シート）。使用コストはモデルとタスクに応じて変動します。",
      "src": "auto",
      "jpy": {
-      "exTax": 3158,
-      "inclTax": 3474,
-      "rate": 157.9,
-      "rateDate": "2026-11-02",
+      "exTax": 3166,
+      "inclTax": 3482,
+      "rate": 158.29,
+      "rateDate": "2026-11-03",
       "rateSource": "ECB参照レート（ユーロ経由で計算）",
       "estimate": true
      }
@@ -282,8 +282,8 @@
  "fx": {
   "base": "USD",
   "quote": "JPY",
-  "rate": 157.9,
-  "date": "2026-11-02",
+  "rate": 158.29,
+  "date": "2026-11-03",
   "source": "ECB参照レート（ユーロ経由で計算）",
   "sourceUrl": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
  }

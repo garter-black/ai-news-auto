@@ -4,13 +4,13 @@
  "company": "openai",
  "kind": "api",
  "mode": "auto",
- "checkedAt": "2026-11-03",
+ "checkedAt": "2026-11-04",
  "updatedAt": "2026-11-03",
  "sources": [
   {
    "url": "https://developers.openai.com/api/docs/pricing",
    "title": "OpenAI API Pricing（公式ドキュメント）",
-   "checkedAt": "2026-11-03",
+   "checkedAt": "2026-11-04",
    "how": "auto"
   }
  ],
@@ -32,11 +32,11 @@
    "status": "listed",
    "sourceUrl": "https://developers.openai.com/api/docs/pricing",
    "jpy": {
-    "input": 1579.0,
-    "output": 7895.0,
+    "input": 1583.0,
+    "output": 7914.0,
     "cacheRead": 158.0,
-    "rate": 157.9,
-    "rateDate": "2026-11-02",
+    "rate": 158.29,
+    "rateDate": "2026-11-03",
     "rateSource": "ECB参照レート（ユーロ経由で計算）",
     "estimate": true,
     "taxIncluded": false
@@ -57,11 +57,11 @@
    "status": "listed",
    "sourceUrl": "https://developers.openai.com/api/docs/pricing",
    "jpy": {
-    "input": 3158.0,
-    "output": 11842.0,
-    "cacheRead": 316.0,
-    "rate": 157.9,
-    "rateDate": "2026-11-02",
+    "input": 3166.0,
+    "output": 11872.0,
+    "cacheRead": 317.0,
+    "rate": 158.29,
+    "rateDate": "2026-11-03",
     "rateSource": "ECB参照レート（ユーロ経由で計算）",
     "estimate": true,
     "taxIncluded": false
@@ -82,11 +82,11 @@
    "status": "listed",
    "sourceUrl": "https://developers.openai.com/api/docs/pricing",
    "jpy": {
-    "input": 316.0,
-    "output": 1579.0,
+    "input": 317.0,
+    "output": 1583.0,
     "cacheRead": 15.8,
-    "rate": 157.9,
-    "rateDate": "2026-11-02",
+    "rate": 158.29,
+    "rateDate": "2026-11-03",
     "rateSource": "ECB参照レート（ユーロ経由で計算）",
     "estimate": true,
     "taxIncluded": false
@@ -107,11 +107,11 @@
    "status": "listed",
    "sourceUrl": "https://developers.openai.com/api/docs/pricing",
    "jpy": {
-    "input": 632.0,
-    "output": 2368.0,
-    "cacheRead": 31.6,
-    "rate": 157.9,
-    "rateDate": "2026-11-02",
+    "input": 633.0,
+    "output": 2374.0,
+    "cacheRead": 31.7,
+    "rate": 158.29,
+    "rateDate": "2026-11-03",
     "rateSource": "ECB参照レート（ユーロ経由で計算）",
     "estimate": true,
     "taxIncluded": false
@@ -133,10 +133,10 @@
    "sourceUrl": "https://developers.openai.com/api/docs/pricing",
    "jpy": {
     "input": 158.0,
-    "output": 790.0,
-    "cacheRead": 7.9,
-    "rate": 157.9,
-    "rateDate": "2026-11-02",
+    "output": 791.0,
+    "cacheRead": 7.91,
+    "rate": 158.29,
+    "rateDate": "2026-11-03",
     "rateSource": "ECB参照レート（ユーロ経由で計算）",
     "estimate": true,
     "taxIncluded": false
@@ -157,11 +157,11 @@
    "status": "listed",
    "sourceUrl": "https://developers.openai.com/api/docs/pricing",
    "jpy": {
-    "input": 316.0,
-    "output": 1184.0,
+    "input": 317.0,
+    "output": 1187.0,
     "cacheRead": 15.8,
-    "rate": 157.9,
-    "rateDate": "2026-11-02",
+    "rate": 158.29,
+    "rateDate": "2026-11-03",
     "rateSource": "ECB参照レート（ユーロ経由で計算）",
     "estimate": true,
     "taxIncluded": false
@@ -183,10 +183,10 @@
    "sourceUrl": "https://developers.openai.com/api/docs/pricing",
    "jpy": {
     "input": 15.8,
-    "output": 79.0,
+    "output": 79.1,
     "cacheRead": 1.58,
-    "rate": 157.9,
-    "rateDate": "2026-11-02",
+    "rate": 158.29,
+    "rateDate": "2026-11-03",
     "rateSource": "ECB参照レート（ユーロ経由で計算）",
     "estimate": true,
     "taxIncluded": false
@@ -207,11 +207,11 @@
    "status": "listed",
    "sourceUrl": "https://developers.openai.com/api/docs/pricing",
    "jpy": {
-    "input": 31.6,
-    "output": 118.0,
-    "cacheRead": 3.16,
-    "rate": 157.9,
-    "rateDate": "2026-11-02",
+    "input": 31.7,
+    "output": 119.0,
+    "cacheRead": 3.17,
+    "rate": 158.29,
+    "rateDate": "2026-11-03",
     "rateSource": "ECB参照レート（ユーロ経由で計算）",
     "estimate": true,
     "taxIncluded": false
@@ -221,8 +221,8 @@
  "fx": {
   "base": "USD",
   "quote": "JPY",
-  "rate": 157.9,
-  "date": "2026-11-02",
+  "rate": 158.29,
+  "date": "2026-11-03",
   "source": "ECB参照レート（ユーロ経由で計算）",
   "sourceUrl": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
  }
