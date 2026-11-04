@@ -36,7 +36,7 @@
   "timetable": [],
   "verdict": {
     "status": "available",
-    "japan": "ok",
+    "japan": "unknown",
     "price": "無料（オープンソース）",
     "free": true,
     "audience": "iOS/macOS開発者",

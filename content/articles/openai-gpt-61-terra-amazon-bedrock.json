@@ -35,7 +35,7 @@
   "timetable": [],
   "verdict": {
     "status": "available",
-    "japan": "ok",
+    "japan": "unknown",
     "price": "従量課金（前モデルより50%以上安い）",
     "free": false,
     "audience": "開発者・企業",

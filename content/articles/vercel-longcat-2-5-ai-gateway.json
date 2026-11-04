@@ -36,7 +36,7 @@
   "timetable": [],
   "verdict": {
     "status": "available",
-    "japan": "ok",
+    "japan": "unknown",
     "price": "提供元の料金のまま",
     "free": null,
     "audience": "開発者",

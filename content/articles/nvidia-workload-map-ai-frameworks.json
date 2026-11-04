@@ -35,7 +35,7 @@
   "timetable": [],
   "verdict": {
     "status": "available",
-    "japan": "ok",
+    "japan": "unknown",
     "price": "オープンソース",
     "free": null,
     "audience": "インフラエンジニア",
