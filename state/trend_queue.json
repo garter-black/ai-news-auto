@@ -1,40 +1,4 @@
 {
-  "updated": "2026-11-04T11:39:06.314858+09:00",
-  "items": [
-    {
-      "id": "4846a74cece39cf74bcd7402342e1290bb651f86",
-      "kind": "trend",
-      "url": "https://news.yahoo.co.jp/articles/1a2e6ef472c5df46ae574d193f1d60e20907ef27",
-      "title": "北陸電力 ほくリンク",
-      "summary": "Googleトレンド急上昇（約100件の検索）。関連報道: 北陸電力「ほくリンク」会員のメールアドレス約55万件が流出 委託先のメール配信サービスに不正アクセス / 「ほくリンク」会員55万件のメールアドレス流出 北陸電力、委託先の不正アクセスで｜社会｜石川のニュース / 北電、メールアドレス５５万件流出 委託先に不正アクセス",
-      "published_at": "2026-11-03T00:30:00+09:00",
-      "source_name": "Googleトレンド",
-      "source_slug": "trends",
-      "lang": "ja",
-      "image": null,
-      "genre": "ai",
-      "sources": [
-        {
-          "title": "北陸電力「ほくリンク」会員のメールアドレス約55万件が流出 委託先のメール配信サービスに不正アクセス",
-          "url": "https://news.yahoo.co.jp/articles/1a2e6ef472c5df46ae574d193f1d60e20907ef27",
-          "source": "Yahoo!ニュース",
-          "published": "2026-11-03T00:30:00+09:00"
-        },
-        {
-          "title": "「ほくリンク」会員55万件のメールアドレス流出 北陸電力、委託先の不正アクセスで｜社会｜石川のニュース",
-          "url": "https://www.hokkoku.co.jp/articles/-/2278351",
-          "source": "北國新聞",
-          "published": "2026-11-03T00:30:00+09:00"
-        },
-        {
-          "title": "北電、メールアドレス５５万件流出 委託先に不正アクセス",
-          "url": "https://webun.jp/articles/-/1121874",
-          "source": "北日本新聞webunプラス",
-          "published": "2026-11-03T00:30:00+09:00"
-        }
-      ],
-      "traffic": 100,
-      "queued_at": "2026-11-03T02:11:09.120334+09:00"
-    }
-  ]
+  "updated": "2026-11-04T18:26:21.361926+09:00",
+  "items": []
 }
