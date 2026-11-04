@@ -48,16 +48,16 @@
   "2026-11-04": {
     "articles": {
       "anthropic-api:claude-haiku-5-5": 56,
-      "anthropic-api:claude-sonnet-5-5": 6,
-      "claude:sonnet": 7,
+      "anthropic-api:claude-sonnet-5-5": 7,
+      "claude:sonnet": 8,
       "gemini-3.5-flash-lite": 2
     },
     "breaking": {
       "anthropic-api:claude-sonnet-5-5": 1
     },
     "images": {
-      "cf-image:flux-2-klein-4b": 5,
-      "cloudflare:@cf/openai/gpt-oss-120b": 5
+      "cf-image:flux-2-klein-4b": 8,
+      "cloudflare:@cf/openai/gpt-oss-120b": 6
     },
     "products": {
       "anthropic-api:claude-haiku-5-5": 1,

@@ -152,6 +152,42 @@
     }
   },
   "major_tries": {},
+  "pi_reopened": {
+    "015d389a8563486d": "2026-11-04T13:10:52.830493+00:00",
+    "02812387c422b17e": "2026-11-04T13:10:52.830493+00:00",
+    "0700ffb69ed06a25": "2026-11-04T13:10:52.830493+00:00",
+    "0863d9ea9cb77229": "2026-11-04T13:10:52.830493+00:00",
+    "0e170a29357ca076": "2026-11-04T13:10:52.830493+00:00",
+    "1518f82e6c28ebe0": "2026-11-04T13:10:52.830493+00:00",
+    "18444c154a1fd1c8": "2026-11-04T13:10:52.830493+00:00",
+    "322de511a9d70b13": "2026-11-04T13:10:52.830493+00:00",
+    "35b09f9e9b4d07af": "2026-11-04T13:10:52.830493+00:00",
+    "4745bed385b63a30": "2026-11-04T13:10:52.830493+00:00",
+    "4e3d51136129d961": "2026-11-04T13:10:52.830493+00:00",
+    "50fec75b2d225a41": "2026-11-04T13:10:52.830493+00:00",
+    "52f82050390d0a0b": "2026-11-04T13:10:52.830493+00:00",
+    "552adf5449a9ebb7": "2026-11-04T13:10:52.830493+00:00",
+    "5cda413903691f04": "2026-11-04T13:10:52.830493+00:00",
+    "60c729c2b97122fb": "2026-11-04T13:10:52.830493+00:00",
+    "6973d1c309d9eb2e": "2026-11-04T13:10:52.830493+00:00",
+    "743775a8256fe105": "2026-11-04T13:10:52.830493+00:00",
+    "75062b922de11e98": "2026-11-04T13:10:52.830493+00:00",
+    "7da9fc739690622b": "2026-11-04T13:10:52.830493+00:00",
+    "82870a11b510856e": "2026-11-04T13:10:52.830493+00:00",
+    "8d14de2cca67f1c1": "2026-11-04T13:10:52.830493+00:00",
+    "99c036dd3c919f1d": "2026-11-04T13:10:52.830493+00:00",
+    "9f2f353dc57e0822": "2026-11-04T13:10:52.830493+00:00",
+    "ae26df52e2687ef8": "2026-11-04T13:10:52.830493+00:00",
+    "c81a1e9aca96c53d": "2026-11-04T13:10:52.830493+00:00",
+    "d12138e172a3a7f9": "2026-11-04T13:10:52.830493+00:00",
+    "d1ca532e101a8cf0": "2026-11-04T13:10:52.830493+00:00",
+    "d443e98d7d0d2b52": "2026-11-04T13:10:52.830493+00:00",
+    "d9ab2f31cea858b4": "2026-11-04T13:10:52.830493+00:00",
+    "e668e5e296aa7d6a": "2026-11-04T13:10:52.830493+00:00",
+    "eaecd17577cb955c": "2026-11-04T13:10:52.830493+00:00",
+    "f6fc941e4e764021": "2026-11-04T13:10:52.830493+00:00",
+    "f789f34fdfee6cb3": "2026-11-04T13:10:52.830493+00:00"
+  },
   "processed": {
     "--kyzoeUuBk": {
       "at": "2026-08-10T15:58:56.932533+00:00",
@@ -3328,12 +3364,6 @@
       "skipped": true,
       "url": "https://cloud.google.com/blog/ja/topics/hybrid-cloud/managed-rag-search-inside-the-sovereign-perimeter-gemini-on-gdc-enterprise-search/"
     },
-    "015d389a8563486d": {
-      "at": "2026-11-04T10:27:25.800806+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110409"
-    },
     "0192594f98b7ad03": {
       "at": "2026-11-02T08:51:17.003458+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -3392,12 +3422,6 @@
       "reason": "prefilter: タイトルが短すぎる（一覧リンク等）",
       "skipped": true,
       "url": "https://www.soumu.go.jp/menu_news/s-news/01kanbo01_02001183.html"
-    },
-    "02812387c422b17e": {
-      "at": "2026-11-04T10:23:39.547470+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110412"
     },
     "028731ad3c7f2237": {
       "at": "2026-10-27T03:04:42.978261+00:00",
@@ -3504,12 +3528,6 @@
       "skipped": true,
       "url": "https://www.gov-online.go.jp/press_conferences/prime_minister/202610/video-326849.html"
     },
-    "0700ffb69ed06a25": {
-      "at": "2026-11-04T08:04:12.536158+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.suntory.co.jp/softdrink/news/pr/article/2026/SBF1746.html?rss=0000000029"
-    },
     "0708179eece2ae7a": {
       "at": "2026-10-27T03:04:42.978947+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（周年）",
@@ -3558,8 +3576,8 @@
       "url": "https://www.mhlw.go.jp/web_magazine/"
     },
     "0863d9ea9cb77229": {
-      "at": "2026-11-04T05:44:16.710141+00:00",
-      "reason": "prefilter: 価値の薄いお知らせ（お詫び）",
+      "at": "2026-11-04T13:11:52.826283+00:00",
+      "reason": "public-interest: 資料が短い 644字",
       "skipped": true,
       "url": "https://www.sumitomo-rd.co.jp/news/2026110422463/"
     },
@@ -3806,12 +3824,6 @@
       "reason": "元記事が破損したPDFデータ（バイナリ文字や制御文字の羅列）であり、日本銀行のETF売却ペースに関する具体的な決定内容や数値を読み取ることができないため。",
       "skipped": true,
       "url": "http://www.boj.or.jp/mopo/mpmdeci/mpr_2026/k261030c.pdf"
-    },
-    "0e170a29357ca076": {
-      "at": "2026-11-04T10:23:39.547209+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.kantei.go.jp/jp/pages/20261104choukan_teigen.html"
     },
     "0e4b12bec5929bad": {
       "at": "2026-10-28T23:31:55.873588+00:00",
@@ -4213,12 +4225,6 @@
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/047978/"
     },
-    "1518f82e6c28ebe0": {
-      "at": "2026-11-04T08:03:10.192374+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.digital.go.jp/policies/education/2025report"
-    },
     "1545015c8f298087": {
       "at": "2026-11-02T10:51:43.803905+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -4386,12 +4392,6 @@
       "reason": "quality: 本文が短い（1651字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000030.000071705.html"
-    },
-    "18444c154a1fd1c8": {
-      "at": "2026-11-04T10:23:39.547303+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110401"
     },
     "1846e81e08bcba88": {
       "at": "2026-10-29T01:12:35.064356+00:00",
@@ -5531,12 +5531,6 @@
       "skipped": true,
       "url": "https://www.mext.go.jp/b_menu/houdou/mext_01698.html"
     },
-    "322de511a9d70b13": {
-      "at": "2026-11-04T02:29:14.049187+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.mhlw.go.jp/kouseiroudoushou/shikaku_shiken/kanrieiyoushi/about.html"
-    },
     "3230a95dc5ad0047": {
       "at": "2026-11-04T07:02:43.045925+00:00",
       "model": "anthropic-api:claude-haiku-5-5",
@@ -5686,12 +5680,6 @@
       "reason": "quality: easy_markdown が「## ひとことで言うと」から始まっていない",
       "skipped": true,
       "url": "https://www.nli-research.co.jp/topics_detail1/id=87226?site=nli"
-    },
-    "35b09f9e9b4d07af": {
-      "at": "2026-11-04T01:24:18.066127+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.mhlw.go.jp/toukei/saikin/hw/hihogosya/m2026/08.html"
     },
     "35cf51a18907f6ab": {
       "at": "2026-11-03T20:35:29.627574+00:00",
@@ -6450,12 +6438,6 @@
       "slug": "digital-agency-gbiz-id-dashboard-update",
       "url": "https://www.digital.go.jp/resources/govdashboard/gbiz-id"
     },
-    "4745bed385b63a30": {
-      "at": "2026-11-03T15:11:35.861500+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.mhlw.go.jp/stf/newpage_77137.html"
-    },
     "476ace2fe1accb7b": {
       "at": "2026-10-28T04:22:17.393477+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -6750,12 +6732,6 @@
       "skipped": true,
       "url": "http://www.mlit.go.jp/report/press/tetsudo01_hh_000265.html"
     },
-    "4e3d51136129d961": {
-      "at": "2026-11-04T08:04:12.535821+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.suntory.co.jp/news/article/2026/15165.html?rss=0000000029"
-    },
     "4e454402c70fe4c7": {
       "at": "2026-11-03T01:26:55.382886+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（委員会）",
@@ -6884,12 +6860,6 @@
       "slug": "softbank-net-safety-education-oita",
       "url": "https://www.softbank.jp/sbnews/entry/20261027_02"
     },
-    "50fec75b2d225a41": {
-      "at": "2026-11-04T02:29:14.054250+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.affrc.maff.go.jp/docs/press/261104.html"
-    },
     "5122bb9d928b5a06": {
       "at": "2026-11-02T21:19:01.491128+00:00",
       "reason": "short text 538",
@@ -6976,12 +6946,6 @@
       "reason": "quality: 本文が短い（1264字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）; easy_markdown が短い（320字 / 基準 400字以上）; title / seo_title に感嘆符がある",
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/047927/"
-    },
-    "52f82050390d0a0b": {
-      "at": "2026-11-04T10:23:39.547246+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.soumu.go.jp/menu_news/s-news/01tsushin06_02000364.html"
     },
     "534a8c2da0020056": {
       "at": "2026-10-26T14:35:29.164627+00:00",
@@ -7085,12 +7049,6 @@
       "reason": "prefilter: 扱わない話題（事件事故・ゴシップ・選挙・医療効果・噂）",
       "skipped": true,
       "url": "https://www.mhlw.go.jp/stf/newpage_77119.html"
-    },
-    "552adf5449a9ebb7": {
-      "at": "2026-11-04T02:29:14.054204+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.uniqlo.com/jp/ja/contents/corp/press-release/2026/11/uniqlo_and_cecilie_bahnsen_202.html"
     },
     "56086e2c77c38346": {
       "at": "2026-10-28T21:54:21.903523+00:00",
@@ -7354,12 +7312,6 @@
       "updated": "cccskills-ai-agent-skills-market",
       "url": "https://prtimes.jp/main/html/rd/p/000000085.000041726.html"
     },
-    "5cda413903691f04": {
-      "at": "2026-11-04T08:02:48.513449+00:00",
-      "reason": "prefilter: サイトの主題外（エンタメのビジネス・テックの話題ではない。料金・決算・販売本数・AI・規約などがない）",
-      "skipped": true,
-      "url": "https://blog.ja.playstation.com/2026/11/04/20261104-wtsf-launch-reminder-o/"
-    },
     "5cf7c4a2445b103e": {
       "at": "2026-10-27T01:52:24.904759+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -7516,12 +7468,6 @@
       "reason": "prefilter: 価値の薄いお知らせ（セミナー）",
       "skipped": true,
       "url": "https://www.atpress.ne.jp/news/642375"
-    },
-    "60c729c2b97122fb": {
-      "at": "2026-11-04T10:23:39.547326+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110402"
     },
     "60e8d80f76ce81f6": {
       "at": "2026-11-04T03:53:47.957887+00:00",
@@ -7966,12 +7912,6 @@
       "slug": "eurozone-unemployment-rate-sep-2026",
       "url": "https://www.nli-research.co.jp/topics_detail1/id=87233?site=nli"
     },
-    "6973d1c309d9eb2e": {
-      "at": "2026-11-04T08:03:10.192454+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.digital.go.jp/resources/govdashboard/wide-area-cooperation"
-    },
     "69b343e8a29aa74d": {
       "at": "2026-10-27T00:51:23.899281+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -8397,12 +8337,6 @@
       "skipped": true,
       "url": "https://www.digital.go.jp/councils/procurement-reform/FY2026/24cfea22-3e10-418e-abbd-983af697d751"
     },
-    "743775a8256fe105": {
-      "at": "2026-11-04T02:29:14.050412+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.jst.go.jp/pr/announce/20261104/index.html"
-    },
     "74684824c71b8449": {
       "at": "2026-10-30T09:31:34.741298+00:00",
       "kind": "update",
@@ -8454,12 +8388,6 @@
       "reason": "prefilter: 価値の薄いお知らせ（億米ドル）",
       "skipped": true,
       "url": "https://www.dreamnews.jp/press/0000366545"
-    },
-    "75062b922de11e98": {
-      "at": "2026-11-04T08:04:12.537341+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.nao.ac.jp/news/blog/2026/20261104-public-observatory.html"
     },
     "755c6b2b63fba038": {
       "at": "2026-11-02T05:32:20.562825+00:00",
@@ -8786,12 +8714,6 @@
       "slug": "reddit-for-you-following-feed",
       "url": "https://techcrunch.com/2026/10/28/reddit-is-the-latest-platform-to-embrace-the-for-you-feed/"
     },
-    "7da9fc739690622b": {
-      "at": "2026-11-03T16:14:39.240613+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.riken.jp/press/2026/20261104_1/index.html"
-    },
     "7de3a8e3b1290bff": {
       "at": "2026-10-30T01:12:00.752733+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -9030,12 +8952,6 @@
       "section": "ai",
       "slug": "mistral-large-4-preview",
       "url": "https://mistral.ai/news/mistral-large-4/"
-    },
-    "82870a11b510856e": {
-      "at": "2026-11-04T02:27:37.139727+00:00",
-      "reason": "prefilter: サイトの主題外（エンタメのビジネス・テックの話題ではない。料金・決算・販売本数・AI・規約などがない）",
-      "skipped": true,
-      "url": "https://blog.ja.playstation.com/2026/11/04/20261104-black-friday-sale-ps-store-sale-s/"
     },
     "82c166eb3403fd1d": {
       "at": "2026-10-30T05:54:26.203641+00:00",
@@ -9525,12 +9441,6 @@
       "section": "business",
       "slug": "omron-ntt-docomo-business-ot-security",
       "url": "https://www.ntt.com/about-us/press-releases/news/article/2026/1027_2.html"
-    },
-    "8d14de2cca67f1c1": {
-      "at": "2026-11-04T08:03:10.192506+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.mhlw.go.jp/stf/newpage_77142.html"
     },
     "8d2124d7838d1e30": {
       "at": "2026-10-30T04:02:13.551866+00:00",
@@ -10147,12 +10057,6 @@
       "skipped": true,
       "url": "http://www.boj.or.jp/paym/intlact_pm/cpss/cpss261102a.htm"
     },
-    "99c036dd3c919f1d": {
-      "at": "2026-11-04T02:29:14.053935+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.kirinholdings.com/jp/newsroom/release/2026/1104_01.html"
-    },
     "99e0e76bd5ab3b42": {
       "at": "2026-10-28T18:03:32.148088+00:00",
       "model": "claude:sonnet",
@@ -10358,12 +10262,6 @@
       "reason": "prefilter: 価値の薄いお知らせ（を開催）",
       "skipped": true,
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110407"
-    },
-    "9f2f353dc57e0822": {
-      "at": "2026-11-04T01:17:44.708885+00:00",
-      "reason": "prefilter: サイトの主題外（エンタメのビジネス・テックの話題ではない。料金・決算・販売本数・AI・規約などがない）",
-      "skipped": true,
-      "url": "https://blog.ja.playstation.com/2026/11/04/20261104-sonicracing-season2-interview-feature-o/"
     },
     "9f58f01686e213c4": {
       "at": "2026-10-30T10:31:48.305618+00:00",
@@ -10960,12 +10858,6 @@
       "reason": "quality: 元記事・確認済みの資料に無い画面の手順・メニュー名・ボタン名がある（「ワークスペース設定の左サイドバーからAI > A」）。資料にある道順だけを書くか、「公式ヘルプの手順を確認してください」と書く",
       "skipped": true,
       "url": "https://www.atlassian.com/blog/bitbucket/agentic-pipelines-generally-available"
-    },
-    "ae26df52e2687ef8": {
-      "at": "2026-11-04T08:04:12.535898+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.maff.go.jp/j/press/nousan/kikaku/261104.html"
     },
     "ae2898f665e29e0d": {
       "at": "2026-10-26T13:12:34.090521+00:00",
@@ -12077,12 +11969,6 @@
       "skipped": true,
       "url": "https://www.gov-online.go.jp/press_conferences/prime_minister/202610/video-326796.html"
     },
-    "c81a1e9aca96c53d": {
-      "at": "2026-11-04T08:04:12.535996+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.suntory.co.jp/news/article/2026/15166.html?rss=0000000029"
-    },
     "c8962f2408138eaf": {
       "at": "2026-10-26T14:13:35.074024+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12413,12 +12299,6 @@
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/024740/"
     },
-    "d12138e172a3a7f9": {
-      "at": "2026-11-04T08:04:12.537401+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.jst.go.jp/pr/announce/20261104-2/index.html"
-    },
     "d13c5cabe6d2ffd0": {
       "at": "2026-11-02T08:01:35.797046+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12426,12 +12306,6 @@
       "section": "business",
       "slug": "craft-beer-shipments-2026-tsr",
       "url": "https://www.tsr-net.co.jp/data/detail/1203392_1527.html"
-    },
-    "d1ca532e101a8cf0": {
-      "at": "2026-11-04T03:01:18.494444+00:00",
-      "reason": "prefilter: サイトの主題外（エンタメのビジネス・テックの話題ではない。料金・決算・販売本数・AI・規約などがない）",
-      "skipped": true,
-      "url": "https://news.xbox.com/ja-jp/2026/11/04/https-news-xbox-com-en-us-2026-11-03-xbox-game-pass-november-2026-wave-1/"
     },
     "d1d1bba68ad45445": {
       "at": "2026-11-04T10:27:25.801486+00:00",
@@ -12539,12 +12413,6 @@
       "reason": "quality: 本文が短い（2020字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://openai.com/index/retell-ai"
-    },
-    "d443e98d7d0d2b52": {
-      "at": "2026-11-04T08:03:10.192321+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.mhlw.go.jp/toukei/saikin/hw/jinkou/geppo/m2026/06.html"
     },
     "d460f1a1fdc5a6e4": {
       "at": "2026-10-30T06:12:36.878827+00:00",
@@ -12848,9 +12716,15 @@
       "url": "https://www.fsa.go.jp/common/conference/minister/2026b/20261016-1.html"
     },
     "d9ab2f31cea858b4": {
-      "at": "2026-11-04T08:03:10.192568+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
+      "at": "2026-11-04T13:11:52.268049+00:00",
+      "breaking": true,
+      "major": true,
+      "mix": "alert",
+      "model": "claude:sonnet",
+      "publicInterest": "disaster",
+      "score": 96,
+      "section": "public",
+      "slug": "kumamoto-quake-risai-online-application",
       "url": "https://www.digital.go.jp/news/f83a8d24-4c79-4c47-b768-6a2435c3d350"
     },
     "d9e1320a612eeb80": {
@@ -13384,12 +13258,6 @@
       "slug": "fallout-collab-cafe-tower-records",
       "url": "https://news.xbox.com/ja-jp/2026/10/30/fallout-collab-cafe-tower-records-omotesando/"
     },
-    "e668e5e296aa7d6a": {
-      "at": "2026-11-04T08:03:10.192418+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.soumu.go.jp/menu_news/s-news/01shoubo01_02001298.html"
-    },
     "e6946ccebe084c64": {
       "at": "2026-10-29T03:51:57.553808+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（億米ドル）",
@@ -13577,12 +13445,6 @@
       "reason": "prefilter: 価値の薄いお知らせ（会議）",
       "skipped": true,
       "url": "https://www.kantei.go.jp/jp/105/actions/202610/29keizai.html"
-    },
-    "eaecd17577cb955c": {
-      "at": "2026-11-04T08:04:12.536226+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.caa.go.jp/notice/entry/047986/"
     },
     "eb7708c5f537ab79": {
       "at": "2026-10-26T14:31:00.675003+00:00",
@@ -14073,12 +13935,6 @@
       "slug": "publica-dentsu-djib-ctv-partnership",
       "url": "https://prtimes.jp/main/html/rd/p/000000146.000014440.html"
     },
-    "f6fc941e4e764021": {
-      "at": "2026-11-04T08:04:12.536270+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
-      "skipped": true,
-      "url": "https://www.caa.go.jp/notice/entry/047987/"
-    },
     "f732f132bb86bed9": {
       "at": "2026-10-27T03:07:12.942008+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（議事）",
@@ -14107,8 +13963,8 @@
       "url": "https://www.metro.tokyo.lg.jp/information/press/2026/10/2026102911"
     },
     "f789f34fdfee6cb3": {
-      "at": "2026-11-04T08:04:12.535714+00:00",
-      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "at": "2026-11-04T13:11:53.644058+00:00",
+      "reason": "public-interest: 資料が短い 737字",
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/048019/"
     },
@@ -14518,28 +14374,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T18:50:52.096419+00:00",
-      "attempt": 2,
-      "id": "1ea828d9cbeb2842",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 74.3字・60字超の文が 70% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 106.8,
-        "avg_sentence": 74.3,
-        "long_share": 0.696,
-        "max_paragraph": 204,
-        "paragraphs": 16,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "nvidia-developer-blog",
-      "title": "Making Kubernetes AI-Ready for NVIDIA Vera Rubin on Day One"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T18:50:56.737293+00:00",
@@ -20924,6 +20758,29 @@
       "warnings": [
         "見出しが53字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（ER・VLA・GKE）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T13:11:52.259691+00:00",
+      "attempt": 1,
+      "id": "d9ab2f31cea858b4",
+      "kind": "broad",
+      "model": "claude:sonnet",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 76.9,
+        "avg_sentence": 36.1,
+        "long_share": 0.094,
+        "max_paragraph": 129,
+        "paragraphs": 15,
+        "sentences": 32
+      },
+      "score": 96,
+      "source": "digital-agency",
+      "title": "令和8年熊本地震罹災証明書（り災証明書）のオンライン申請について",
+      "warnings": [
+        "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す"
       ]
     }
   ],
