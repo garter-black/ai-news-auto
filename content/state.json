@@ -7109,6 +7109,16 @@
       "skipped": true,
       "url": "https://www.atpress.ne.jp/news/643690"
     },
+    "5c4576623088d079": {
+      "at": "2026-11-04T04:36:09.003305+00:00",
+      "breaking": true,
+      "major": true,
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 93,
+      "section": "business",
+      "slug": "ntt-fy2026-q2-results",
+      "url": "https://group.ntt/jp/newsrelease/2026/11/04/261104a.html"
+    },
     "5c50d4cdc1533c5b": {
       "at": "2026-10-29T18:52:25.418186+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13897,46 +13907,6 @@
   "quality_log": [
     {
       "accepted": true,
-      "at": "2026-11-02T14:52:12.360812+00:00",
-      "attempt": 0,
-      "id": "113b61fb4ffd8543",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 113.1,
-        "avg_sentence": 24.2,
-        "long_share": 0.0,
-        "max_paragraph": 145,
-        "paragraphs": 9,
-        "sentences": 42
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "ユーロ圏ＧＤＰ（2026年7-9月期）－主要4か国はいずれも前期比伸び率が低下"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T15:08:11.526450+00:00",
-      "attempt": 1,
-      "id": "19244c7aa2063fd3",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 72.3,
-        "avg_sentence": 35.0,
-        "long_share": 0.065,
-        "max_paragraph": 138,
-        "paragraphs": 30,
-        "sentences": 62
-      },
-      "score": 93,
-      "source": "openai-news",
-      "title": "Introducing the Grid Protectors Program"
-    },
-    {
-      "accepted": true,
       "at": "2026-11-02T15:12:16.344144+00:00",
       "attempt": 1,
       "id": "1b0064df51b95a9e",
@@ -20251,6 +20221,51 @@
       "score": 60,
       "source": "radar-impress.co.jp",
       "title": "「Affinity」にiPad版登場 人気のデザイン・写真アプリが無料で"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T04:35:36.709490+00:00",
+      "attempt": 1,
+      "id": "5c4576623088d079",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "元記事・確認済みの事実の束・計算済みの数字のどれにも無い数字がある（「営業利益は前年の9,450億円」）。元記事か束の数字に直すか、その文を削る。割合・差・換算などを自分で計算しない（計算済みの数字の欄にあるものだけ使う）"
+      ],
+      "readability": {
+        "avg_paragraph": 56.0,
+        "avg_sentence": 35.7,
+        "long_share": 0.152,
+        "max_paragraph": 123,
+        "paragraphs": 21,
+        "sentences": 33
+      },
+      "score": null,
+      "source": "ntt-news-release",
+      "title": "2026年度 第2四半期決算について"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T04:36:08.986581+00:00",
+      "attempt": 2,
+      "id": "5c4576623088d079",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 80.4,
+        "avg_sentence": 37.3,
+        "long_share": 0.179,
+        "max_paragraph": 172,
+        "paragraphs": 13,
+        "sentences": 28
+      },
+      "score": 93,
+      "source": "ntt-news-release",
+      "title": "2026年度 第2四半期決算について",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（IFRS）"
+      ]
     }
   ],
   "short_text_retry": {

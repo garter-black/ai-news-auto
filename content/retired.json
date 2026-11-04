@@ -1158,6 +1158,14 @@
    "title": "個人向けAI「GrokBot」で何ができる？メールや家電を自動化する活用術",
    "videoUrl": "https://www.youtube.com/watch?v=BsNHg6cNjZE"
   },
+  "gyakuhibu-cross-trade-complete-guide-matome": {
+   "channel": "rakuten-sec",
+   "reason": "investment-advice",
+   "replacedBy": "ntt-fy2026-q2-results",
+   "retiredAt": "2026-11-04T13:37:07+09:00",
+   "title": "株主優待の「つなぎ売り」入門　逆日歩の仕組みと失敗しないコツを解説",
+   "videoUrl": "https://www.youtube.com/watch?v=NLzbOcdmHmg"
+  },
   "haneda-innov-city-awai-2026": {
    "channel": "nomura-re",
    "reason": "thin",
@@ -2458,7 +2466,6 @@
   "rakuten-sec-cross-trade-genwatashi": {
    "channel": "rakuten-sec",
    "reason": "no-japan-value",
-   "redirect": "gyakuhibu-cross-trade-complete-guide-matome",
    "retiredAt": "2026-11-03T18:55:45+09:00",
    "title": "楽天証券の株主優待つなぎ売りで重要な現渡の仕組みと自動化の手法",
    "videoUrl": "https://www.youtube.com/watch?v=NLzbOcdmHmg"
@@ -2466,7 +2473,6 @@
   "rakuten-sec-cross-trade-margin-category": {
    "channel": "rakuten-sec",
    "reason": "no-japan-value",
-   "redirect": "gyakuhibu-cross-trade-complete-guide-matome",
    "retiredAt": "2026-11-03T18:55:45+09:00",
    "title": "楽天証券のつなぎ売りで使う一般信用と制度信用の違いと選び方",
    "videoUrl": "https://www.youtube.com/watch?v=KaMBccXV8A4"
@@ -3143,7 +3149,6 @@
   "understanding-gyakuhibu-margin-trading-risks": {
    "channel": "rakuten-sec",
    "reason": "no-japan-value",
-   "redirect": "gyakuhibu-cross-trade-complete-guide-matome",
    "retiredAt": "2026-11-03T18:55:45+09:00",
    "title": "楽天証券が解説、株主優待のつなぎ売りで発生する追加コスト「逆日歩」の仕組みとリスクを避ける方法",
    "videoUrl": "https://www.youtube.com/watch?v=_irS11nJOuw"
