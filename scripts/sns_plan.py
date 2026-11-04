@@ -95,9 +95,9 @@ def excluded(article: dict | None) -> str:
     aud = _re(ex["audience_re"]).search(audience) if audience else None
     if not (hit or aud):
         return ""
-    if japanese_source(article):
-        return ""  # 日本の会社・官公庁の発表は外さない（日本の読者に関係する）
-    if lane_of(article)[0] == "safety" and not aud:
+    if not aud and japanese_source(article):
+        return ""  # 日本の会社・官公庁の発表は外さない（日本の読者に関係する）。読者が開発者・IT 担当の記事は日本の発表でも外す
+    if not aud and lane_of(article)[0] == "safety":
         return ""  # 一般の人が使うサービスの障害・流出は外さない
     why = f"「{hit.group(0)}」" if hit else f"読者が「{audience}」"
     return f"海外の企業向け・開発者向けの話題（{why}）は SNS に出さない（サイトだけ）"

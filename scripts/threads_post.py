@@ -2243,7 +2243,9 @@ def main() -> int:
         else:
             if not pool:
                 break
-            pick = next((a for a in pool if a.get("threadsHook") not in recent_hooks), pool[0])
+            # 同じ書き出しの型が続かないようにするのは、同じ話題の点数（レーン）の中だけ（話題の順番を崩さない。S27）
+            top = sns_plan.sns_score(pool[0])
+            pick = next((a for a in pool if a.get("threadsHook") not in recent_hooks and sns_plan.sns_score(a) >= top), pool[0])
             pool.remove(pick)
             lane = sns_plan.lane_of(pick)[0]
             test = f"lane_{lane}" if lane else "lane_none"  # どのレーンで選んだか（inflow_report・growth_indicators で比べる）
