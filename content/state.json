@@ -3316,6 +3316,12 @@
       "skipped": true,
       "url": "https://cloud.google.com/blog/ja/topics/hybrid-cloud/managed-rag-search-inside-the-sovereign-perimeter-gemini-on-gdc-enterprise-search/"
     },
+    "015d389a8563486d": {
+      "at": "2026-11-04T10:27:25.800806+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110409"
+    },
     "0192594f98b7ad03": {
       "at": "2026-11-02T08:51:17.003458+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -3374,6 +3380,12 @@
       "reason": "prefilter: タイトルが短すぎる（一覧リンク等）",
       "skipped": true,
       "url": "https://www.soumu.go.jp/menu_news/s-news/01kanbo01_02001183.html"
+    },
+    "02812387c422b17e": {
+      "at": "2026-11-04T10:23:39.547470+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110412"
     },
     "028731ad3c7f2237": {
       "at": "2026-10-27T03:04:42.978261+00:00",
@@ -3775,6 +3787,12 @@
       "skipped": true,
       "url": "http://www.boj.or.jp/mopo/mpmdeci/mpr_2026/k261030c.pdf"
     },
+    "0e170a29357ca076": {
+      "at": "2026-11-04T10:23:39.547209+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.kantei.go.jp/jp/pages/20261104choukan_teigen.html"
+    },
     "0e4b12bec5929bad": {
       "at": "2026-10-28T23:31:55.873588+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -3822,6 +3840,13 @@
       "section": "public",
       "slug": "reiwa-8-culture-merit-recipients",
       "url": "https://www.mext.go.jp/b_menu/houdou/2026/1422024_00002.htm"
+    },
+    "0f281cabd4f69d19": {
+      "at": "2026-11-04T10:23:03.225973+00:00",
+      "model": "claude:sonnet",
+      "reason": "quality: 公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルのまま」「日本の売上は1%減」）",
+      "skipped": true,
+      "url": "https://github.blog/changelog/2026-11-03-byok-and-enterprise-custom-models-in-the-copilot-usage-api"
     },
     "0f5fcb7257a2c170": {
       "at": "2026-10-30T02:21:48.744779+00:00",
@@ -4334,6 +4359,12 @@
       "reason": "quality: 本文が短い（1651字 / 基準 2500字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000030.000071705.html"
+    },
+    "18444c154a1fd1c8": {
+      "at": "2026-11-04T10:23:39.547303+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110401"
     },
     "1846e81e08bcba88": {
       "at": "2026-10-29T01:12:35.064356+00:00",
@@ -5013,6 +5044,12 @@
       "section": "ai",
       "slug": "apple-creator-studio-new-ai-features",
       "url": "https://www.apple.com/jp/newsroom/2026/10/apple-creator-studio-adds-powerful-new-ai-features-and-even-more-creative-tools/"
+    },
+    "276b8fc949d8e12a": {
+      "at": "2026-11-04T10:23:39.547373+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（講座）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110403"
     },
     "277d5156ec35d8c2": {
       "at": "2026-10-30T02:09:36.609004+00:00",
@@ -6464,6 +6501,12 @@
       "skipped": true,
       "url": "https://www.mext.go.jp/b_menu/shingi/chukyo/chukyo3/118/gijiroku/mext_00020.html"
     },
+    "49bbd73f5c4653f7": {
+      "at": "2026-11-04T10:23:39.547387+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（審議会）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110411"
+    },
     "49f0dc7602b0b3b8": {
       "at": "2026-11-03T00:11:21.136252+00:00",
       "reason": "short text 521",
@@ -6888,6 +6931,12 @@
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/047927/"
     },
+    "52f82050390d0a0b": {
+      "at": "2026-11-04T10:23:39.547246+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/menu_news/s-news/01tsushin06_02000364.html"
+    },
     "534a8c2da0020056": {
       "at": "2026-10-26T14:35:29.164627+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -6916,6 +6965,13 @@
       "reason": "quality: 本文が短い（1579字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）; easy_markdown が短い（380字 / 基準 400字以上）",
       "skipped": true,
       "url": "https://www.ipa.go.jp/news/2026/shiken_20261028.html"
+    },
+    "537d2d79ba7e867a": {
+      "at": "2026-11-04T10:23:39.546192+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "reason": "2027年シーズンからのF1チームとの複数年スポンサー契約の発表で、契約金や提供内容、対象サービスなど読者が仕事やお金で使える具体的な条件・数字が元資料にほぼ無く、本文1,600字以上を事実だけで満たせないため。",
+      "skipped": true,
+      "url": "https://group.ntt/jp/newsrelease/2026/11/04/261104b.html"
     },
     "539e0355e722133b": {
       "at": "2026-11-02T10:11:23.183236+00:00",
@@ -7409,6 +7465,12 @@
       "skipped": true,
       "url": "https://www.atpress.ne.jp/news/642375"
     },
+    "60c729c2b97122fb": {
+      "at": "2026-11-04T10:23:39.547326+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110402"
+    },
     "60e8d80f76ce81f6": {
       "at": "2026-11-04T03:53:47.957887+00:00",
       "model": "anthropic-api:claude-haiku-5-5",
@@ -7606,6 +7668,12 @@
       "reason": "quality: 訳されていない英文が残っている（「Deliberate Decisions: How Grounded Leade…」）",
       "skipped": true,
       "url": "https://www.databricks.com/blog/deliberate-decisions-and-enterprise-ai-value"
+    },
+    "6472fdf22ab62433": {
+      "at": "2026-11-04T10:23:39.547154+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（募集）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110405"
     },
     "64b723bef18a4cfc": {
       "at": "2026-10-27T02:41:12.429501+00:00",
@@ -8129,6 +8197,13 @@
       "skipped": true,
       "url": "https://www.mext.go.jp/b_menu/daijin/detail/mext_00747.html"
     },
+    "70a6d50c8a692703": {
+      "at": "2026-11-04T10:24:03.638162+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "reason": "IPAのイベント参加者（受講生）の募集告知で、読者が使う・買う製品やサービスの発表ではないため。",
+      "skipped": true,
+      "url": "https://www.ipa.go.jp/jinzai/security-camp/connect/index.html"
+    },
     "70d1c307ea1eb2d2": {
       "at": "2026-10-28T23:13:03.555337+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（キャンペーン）",
@@ -8570,6 +8645,12 @@
       "reason": "quality: easy_markdown が短い（295字 / 基準 400字以上）",
       "skipped": true,
       "url": "https://jtta.or.jp/news/38325"
+    },
+    "7c7cdc0c8dac2de1": {
+      "at": "2026-11-04T10:23:39.547507+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（を開催）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110404"
     },
     "7ca3445894680534": {
       "at": "2026-10-26T21:14:34.391644+00:00",
@@ -9461,6 +9542,14 @@
       "skipped": true,
       "url": "https://openai.com/index/openai-cut-incident-investigation"
     },
+    "8f8ad038d372731f": {
+      "at": "2026-11-04T10:27:25.258637+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "score": 93,
+      "section": "investment",
+      "slug": "yucho-bank-matsui-securities-alliance",
+      "url": "https://www.jp-bank.japanpost.jp/aboutus/press/2026/abt_prs_id002131.html"
+    },
     "8f91bcf39583d7b7": {
       "at": "2026-11-03T00:51:11.818376+00:00",
       "reason": "short text 548",
@@ -10176,6 +10265,12 @@
       "skipped": true,
       "url": "https://www.kantei.go.jp/jp/105/actions/202610/26sei_yotou.html"
     },
+    "9f041e1602b63eeb": {
+      "at": "2026-11-04T10:27:25.799381+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（を開催）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110407"
+    },
     "9f2f353dc57e0822": {
       "at": "2026-11-04T01:17:44.708885+00:00",
       "reason": "prefilter: サイトの主題外（エンタメのビジネス・テックの話題ではない。料金・決算・販売本数・AI・規約などがない）",
@@ -10340,6 +10435,12 @@
       "section": "business",
       "slug": "boj-cpmi-payment-system-report",
       "url": "https://www.boj.or.jp/paym/intlact_pm/cpss/cpss261102a.htm"
+    },
+    "a2d5334d51a132e0": {
+      "at": "2026-11-04T10:27:25.798646+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（委員会）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110406"
     },
     "a2ff4102256b5786": {
       "at": "2026-10-27T17:51:57.399683+00:00",
@@ -11258,6 +11359,12 @@
       "skipped": true,
       "url": "https://www.kantei.go.jp/jp/105/statement/2026/1029kaiken.html"
     },
+    "ba1f197ec3f8ce37": {
+      "at": "2026-11-04T10:27:25.800083+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（表彰）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110408"
+    },
     "ba4d3ab8dded0b33": {
       "at": "2026-10-26T11:02:15.090656+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11829,6 +11936,13 @@
       "slug": "boj-outlook-report-october",
       "url": "http://www.boj.or.jp/mopo/outlook/gor2610b.pdf"
     },
+    "c75ff71a02ae4361": {
+      "at": "2026-11-04T10:23:30.522238+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "reason": "公開前の門: サイトの主題（AI・テック／お金・投資・不動産・起業／制度のお金の話／日本のスポーツ）から外れた話題は公開しません",
+      "skipped": true,
+      "url": "https://www.mof.go.jp/policy/exchequer/reference/receipts_payments/202610gaiyo.htm"
+    },
     "c7606af40dbb903f": {
       "at": "2026-10-30T17:01:41.818264+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12198,6 +12312,12 @@
       "reason": "prefilter: サイトの主題外（エンタメのビジネス・テックの話題ではない。料金・決算・販売本数・AI・規約などがない）",
       "skipped": true,
       "url": "https://news.xbox.com/ja-jp/2026/11/04/https-news-xbox-com-en-us-2026-11-03-xbox-game-pass-november-2026-wave-1/"
+    },
+    "d1d1bba68ad45445": {
+      "at": "2026-11-04T10:27:25.801486+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（会議）",
+      "skipped": true,
+      "url": "https://www.metro.tokyo.lg.jp/information/press/2026/11/2026110410"
     },
     "d2282bcce1625c64": {
       "at": "2026-10-30T22:01:11.556786+00:00",
@@ -14270,84 +14390,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T17:32:10.579265+00:00",
-      "attempt": 1,
-      "id": "9cb8acb22504c471",
-      "kind": "update",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "続報の長さが不適切（268字 / 400〜900字）"
-      ],
-      "score": null,
-      "source": "watch-chatgpt-pricing",
-      "title": "ChatGPTが更新: with Pro 100, with Pro 200, or with Pro 500.Plan: Pro, Feature: Mont"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T17:33:54.651255+00:00",
-      "attempt": 1,
-      "id": "4846a74cece39cf74bcd7402342e1290bb651f86",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 65.8字・60字超の文が 58% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 87.8,
-        "avg_sentence": 65.8,
-        "long_share": 0.583,
-        "max_paragraph": 117,
-        "paragraphs": 9,
-        "sentences": 12
-      },
-      "score": 100,
-      "source": "trends",
-      "title": "北陸電力 ほくリンク"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T17:34:50.484250+00:00",
-      "attempt": 0,
-      "id": "4846a74cece39cf74bcd7402342e1290bb651f86",
-      "kind": "trend",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 85.5,
-        "avg_sentence": 31.7,
-        "long_share": 0.0,
-        "max_paragraph": 137,
-        "paragraphs": 10,
-        "sentences": 27
-      },
-      "score": 100,
-      "source": "trends",
-      "title": "北陸電力 ほくリンク"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T17:36:18.309855+00:00",
-      "attempt": 1,
-      "id": "c3d9c0114f0e103f",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 59.2字・60字超の文が 52% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 85.1,
-        "avg_sentence": 59.2,
-        "long_share": 0.522,
-        "max_paragraph": 153,
-        "paragraphs": 16,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "nvidia-developer-blog",
-      "title": "Build World Models for Interactive Simulation with NVIDIA Cosmos"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T17:37:13.892345+00:00",
@@ -20679,6 +20721,71 @@
       "title": "光学から AI まで：Surface カメラのイノベーションに迫る",
       "warnings": [
         "見出しが41字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T10:22:12.344111+00:00",
+      "attempt": 1,
+      "id": "0f281cabd4f69d19",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "github-changelog-copilot",
+      "title": "BYOK and enterprise custom models in the Copilot usage API"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T10:23:03.225936+00:00",
+      "attempt": 2,
+      "id": "0f281cabd4f69d19",
+      "kind": "ai",
+      "model": "claude:sonnet",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "github-changelog-copilot",
+      "title": "BYOK and enterprise custom models in the Copilot usage API"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T10:25:59.008131+00:00",
+      "attempt": 1,
+      "id": "8f8ad038d372731f",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "jp-bank",
+      "title": "ゆうちょ銀行と松井証券との資本業務提携について"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T10:27:25.250753+00:00",
+      "attempt": 2,
+      "id": "8f8ad038d372731f",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 98.5,
+        "avg_sentence": 44.1,
+        "long_share": 0.172,
+        "max_paragraph": 159,
+        "paragraphs": 13,
+        "sentences": 29
+      },
+      "score": 93,
+      "source": "jp-bank",
+      "title": "ゆうちょ銀行と松井証券との資本業務提携について",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（JPAM）"
       ]
     }
   ],
