@@ -3332,6 +3332,14 @@
    "title": "OpenAI、Zendeskの活用事例を公開　社内で約600のAIアプリを自作",
    "videoUrl": "https://www.youtube.com/watch?v=GNYHDltnwZQ"
   },
+  "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom": {
+   "channel": "openai",
+   "note": "取り下げた zendesk-chatgpt-enterprise-case-study と同じ動画の重複。2026-11-04 オーナー決定で取り下げ",
+   "reason": "inaccurate",
+   "retiredAt": "2026-11-04T12:50:35+09:00",
+   "title": "Zendesk、ChatGPT Enterpriseを全社導入　社員が約600のAIアプリを開発",
+   "videoUrl": "https://www.youtube.com/watch?v=L6pzlo1QvoM"
+  },
   "zero-yen-real-estate-investment-strategy": {
    "channel": "uraken-fudosan",
    "reason": "creator-video",
