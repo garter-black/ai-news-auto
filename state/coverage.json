@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "ai-enjoyable-work-atlassian-survey",
+   "at": "2026-11-04T16:20:48.186638+00:00",
+   "title": "AI利用者の82%、好きな仕事もAIに一部任せていると回答",
+   "head": "AI利用者の82%、好きな仕事もAIに一部任せていると回答 | AI was supposed to take on the drudgery. Workers say it’s taking on the good stuff, too.",
+   "text": "AI利用者の82%、好きな仕事もAIに一部任せていると回答 | AI was supposed to take on the drudgery. Workers say it’s taking on the good stuff, too. | AI 仕事 / AI 好きな仕事 / AI 業務 任せる / AI 専門家 判断 / AI 働き方 / Atlassian 調査 / AI 人の判断 / AI 職場 調査 / ナレッジワーカー AI / AI 任せる仕事 / 生成AI / 働き方 / 調査 / 業務効率化 / Atlassian",
+   "urls": [
+    "https://www.atlassian.com/blog/ai-at-work/ai-was-supposed-to-take-on-the-drudgery-workers-say-its-taking-on-the-good-stuff-too"
+   ]
+  },
+  {
    "slug": "google-health-ai-evaluation-framework",
    "at": "2026-11-04T15:34:22.957041+00:00",
    "title": "Google、健康AIを3面で評価する枠組みを公開　正確さ・安全性・役立ち",
@@ -317,16 +327,6 @@
    "text": "Anthropic、AI応答の出所を証明する「FlashProve」公開　400B級モデルで毎秒約110トークン | Progress on provable inference for large language models | FlashProve / 証明可能な推論 / provable inference / zkSNARK / Anthropic 研究 / AI 改ざん検知 / ゼロ知識証明 AI / Llama 4 Maverick / Lean 形式検証 / AI規制 監査 / 生成AI / LLM / Anthropic / AIセキュリティ / 暗号",
    "urls": [
     "https://www.anthropic.com/research/provable-inference"
-   ]
-  },
-  {
-   "slug": "crowdstrike-ai-kill-switch-falcon-guardian",
-   "at": "2026-11-03T20:35:26.666420+00:00",
-   "title": "CrowdStrike、AI緊急停止機能を「Falcon Guardian」に追加　Claude Coworkとも連携",
-   "head": "CrowdStrike、AI緊急停止機能を「Falcon Guardian」に追加　Claude Coworkとも連携 | CrowdStrike launches an AI kill switch in Falcon Guardian to stop rogue internal agents, and announces a Falcon Guardian integration with Claude Cowork",
-   "text": "CrowdStrike、AI緊急停止機能を「Falcon Guardian」に追加　Claude Coworkとも連携 | CrowdStrike launches an AI kill switch in Falcon Guardian to stop rogue internal agents, and announces a Falcon Guardian integration with Claude Cowork | CrowdStrike / AIキルスイッチ / Falcon Guardian / AIエージェント セキュリティ / 暴走するAI / Claude Cowork / Fiddler AI / Dreadnode / AIゲートウェイ / エージェント 緊急停止 / CrowdStrike / AIエージェント / セキュリティ / Claude Cowork / 生成AI",
-   "urls": [
-    "https://www.crowdstrike.com/en-us/press-releases/crowdstrike-introduces-ai-kill-switch-for-ai-safety/"
    ]
   },
   {

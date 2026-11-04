@@ -1,0 +1,153 @@
+{
+  "slug": "ai-enjoyable-work-atlassian-survey",
+  "sourceType": "web",
+  "sourceUrl": "https://www.atlassian.com/blog/ai-at-work/ai-was-supposed-to-take-on-the-drudgery-workers-say-its-taking-on-the-good-stuff-too",
+  "sourceName": "Atlassian公式ブログ",
+  "title": "AI利用者の82%、好きな仕事もAIに一部任せていると回答",
+  "seoTitle": "AIは好きな仕事も担う？米国の職場調査が示す実態",
+  "threadsPost": "AIを仕事で使っている人、これは押さえておきたい話です。\n\n要約すると、AIを使う人の82%が、好きな仕事も一部AIに任せていると答えました。\nAIの使い方が深いチームほど、その割合は高くなっています。\n\nAIに任せるなら、どこまでなら任せられますか？",
+  "threadsHook": "callout",
+  "threadsQuestions": [
+    {
+      "pattern": "line",
+      "question": "AIに任せるなら、どこまでなら任せられますか？"
+    },
+    {
+      "pattern": "count",
+      "question": "AIに任せている作業は、1日で何件くらいありますか？"
+    },
+    {
+      "pattern": "ab",
+      "question": "面倒な作業と好きな作業、AIに先に任せるならどちらですか？"
+    }
+  ],
+  "threadsStyle": 3,
+  "writingVoice": "explainer",
+  "lede": "仕事で使うAIは、面倒な作業を引き受けるものとされてきました。しかし、Atlassianの調査では、AIを使う人の82%が、好きな仕事も一部AIに任せていると答えています。AIが職場の標準になっているチームでは、好きな仕事の中程度以上をAIが担うと答える人が71%でした。AIに任せる仕事と、人が握る判断は、チームごとに決めていく必要があります。",
+  "description": "Atlassianの米国調査（1,013人）で、AIを使う人の82%が、好きな仕事も一部AIに任せていると回答しました。利用が深いチームほど任せる割合が高いです。高リスクな判断は78%が人が主導すべきと答えました。",
+  "keywords": [
+    "AI 仕事",
+    "AI 好きな仕事",
+    "AI 業務 任せる",
+    "AI 専門家 判断",
+    "AI 働き方",
+    "Atlassian 調査",
+    "AI 人の判断",
+    "AI 職場 調査",
+    "ナレッジワーカー AI",
+    "AI 任せる仕事"
+  ],
+  "tags": [
+    "生成AI",
+    "働き方",
+    "調査",
+    "業務効率化",
+    "Atlassian"
+  ],
+  "highlights": [
+    "AIを使う人の82%が、好きな仕事と嫌いな仕事の両方を一部AIに任せていると回答しました。",
+    "AIが標準になったチームでは、好きな仕事の中程度以上をAIが担うとの回答が71%でした。",
+    "高リスクな判断を人が主導すべきと答えた人は78%、AIに単独で任せてよいは3%でした。"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "demo",
+    "japan": "unknown",
+    "price": "不明",
+    "free": null,
+    "audience": "",
+    "take": "",
+    "judgedAt": "2026-11-04T16:20:48.186650+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "チームでAI導入を進める人は、どの作業をAIに任せるかを決める際に、実際に作業している人の意見を聞くとよいとされています。",
+      "Atlassianは、若手が経験を積むための作業を人に残すことを勧めています。"
+    ]
+  },
+  "body": "この調査は、米国のナレッジワーカー（情報を扱う仕事をする会社員など）1,013人を対象にしました。Atlassianの研究部門、チームワーク・ラボ（Teamwork Lab）が2026年9月28日から10月1日にかけて実施しています。AIの利用について聞かれたのは、そのうち仕事でAIを使っている949人です。\n\nAtlassianの公式ブログによると、AIを使う人の82%が、AIは嫌いな仕事だけでなく好きな仕事も一部引き受けていると答えました。AIは面倒な作業を減らすために導入されてきた、という想定とは違う結果です。\n\n## AIは面倒な仕事だけでなく、好きな仕事も引き受けている\n\n全部を任せている人の割合は、差がもっと大きくなります。好きな仕事を全部AIに任せていると答えたのは10%でした。嫌いな仕事を全部任せていると答えたのは3%です。\n\nAIの使い方が深いほど、好きな仕事を任せる割合も高くなります。AIを「ちょっとした時の手助け」として使う人は、嫌いな仕事の中程度以上をAIが担うと答えた人が31%で、好きな仕事は24%でした。\n\nところが、AIがチームの標準的な進め方に組み込まれると、順番が逆転します。この段階では、嫌いな仕事は58%、好きな仕事は71%でした。\n\n役職による差もあります。部長以上の管理職では60%が、好きな仕事の中程度以上をAIが担うと答えました。一般の管理職は42%、担当者は36%です。\n\nチームワーク・ラボ責任者のモリー・サンズ氏は、「リーダーは、組織の誰よりも多く、好きな仕事をAIに渡している」と話しています。仕事の進め方を決める人ほど、自分の好きな仕事をAIに渡している、という構図です。サンズ氏は、「役職が上の人には公正な取引に見えても、キャリアの浅い人には同じように感じられないかもしれない」とも述べています。経験を積む途中の人は、その仕事を通じて力をつけているからです。\n\n**専門の仕事は素人にも近づくが、判断は専門家が握る**\n\nAIを使う人の95%が、AIのおかげで専門の仕事の一つが素人にも楽になったと答えました。一方、かつて専門家にしかできなかった判断をAIで素人が下せるようになったと答えたのは28%でした。作業は広がっても、最終判断まで任せる人は少数派です。\n\nAIを使う人の54%は、今後は専門家が増えると見ています。専門的な判断が、仕事を導き、ミスを見つけるためにより重要になるという理由です。その見方は、利用が深い人では60%、利用が浅い人では50%でした。\n\n人がAIにどこまで任せたいかは、仕事の重さで変わります。大量のデータを確認する作業では68%が、AIが主導して人が確認する形を望みました。一方で、人が主導すべきだと答えた割合は次のとおりです。\n\n- 新しい問題・複雑な問題：58%\n- 何を優先するかの判断：66%\n- 高い専門性が必要な成果物：67%\n- 高リスクな判断：78%\n\n業務、顧客、法務、人事のリスクが大きい判断でも、66%がAIの関与を望んでいました。AIに単独で高リスクの判断を任せてよいと答えたのは3%です。\n\n## 日本の職場にも同じ傾向があるかは分かりません\n\nこの調査は米国の回答者を対象にしたもので、日本の職場の数字は公表されていません。チームでAIの使い方を決める立場の人は、「どの作業をAIに任せるか」の視点を参考にできます。Atlassianは次の3つを勧めています。\n- 任せる作業を決めるとき、速さや品質に加えて、担当者が仕事に熱中できるか、必要な技能が育つかを確かめる\n- 大量の作業はAIが進めて人が確認し、新しい問題・優先順位・専門的な作業・高リスクな判断は人が主導する\n- 判断力を育てる作業は人に残し、とくに若手社員が経験を積める場を守る\nサンズ氏は、「最も使っている人ほど専門性の大切さを確信していて、好きな仕事をAIに最も渡している」と述べています。\n**まだ分からないこと**\n- 日本国内の職場で同じ割合になるかは、まだ発表されていません\n- 調査の時点（2026年9月末から10月初め）以降に、数字がどう変わるかは分かりません",
+  "easy": "## ひとことで言うと\n\nAIを使う人の82%が、好きな仕事も一部AIに任せていると答えました。AIの使い方が深いチームほど、その割合が高くなります。\n\nAIは面倒な作業を減らすための道具とされてきました。今回の調査では、好きな仕事もAIに渡る場面が多いことが分かりました。\n\n作業は広がっても、専門家の判断はまだ欠かせないと考える人が多数派です。AIに任せるかどうかは、仕事の重さで決めるとよいでしょう。",
+  "channel": "Atlassian公式ブログ",
+  "channelId": "",
+  "channelSlug": "atlassian-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "AI was supposed to take on the drudgery. Workers say it’s taking on the good stuff, too.",
+  "publishedAt": "2026-11-04T16:01:43+00:00",
+  "generatedAt": "2026-11-04T16:20:48.186638+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/ai-enjoyable-work-atlassian-survey-f6c410fc.jpg",
+  "model": "anthropic-api:claude-haiku-5-5",
+  "affiliates": [],
+  "newsType": "general",
+  "faq": [
+    {
+      "q": "AIは好きな仕事もどのくらい引き受けている？",
+      "a": "AIを使う人の82%が、好きな仕事の一部をAIに任せていると答えました。好きな仕事を全部任せていると答えたのは10%で、嫌いな仕事を全部任せていると答えた3%を上回りました。"
+    },
+    {
+      "q": "AIに任せても、専門家の判断は必要？",
+      "a": "必要とする見方が多数派です。AIを使う人の54%が、今後は専門家が増えると予想し、専門的な判断はより重要になるとしています。"
+    },
+    {
+      "q": "日本の職場でも同じ結果になる？",
+      "a": "この調査は米国の知識労働者が対象で、日本の職場の数字はまだ発表されていません。"
+    }
+  ],
+  "todayActions": [
+    "自分の仕事で、AIに任せている作業を一覧にして確かめる",
+    "重要な判断をAIに任せていないか、チームで確認する",
+    "若手が経験を積める作業を、AIに任せきらないよう話し合う"
+  ],
+  "qualityScore": 92,
+  "sourcePublishedAt": "2026-11-04T16:01:43+00:00",
+  "detectedAt": "2026-11-04T16:19:15+00:00",
+  "speedMinutes": 23,
+  "sectionsPolishedAt": "2026-11-04T16:21:08+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/ai-enjoyable-work-atlassian-survey-fig1-66d2112f.jpg",
+      "width": 1200,
+      "height": 814,
+      "kind": "dense",
+      "credit": "Atlassian",
+      "sourceUrl": "https://www.atlassian.com/blog/ai-at-work/ai-was-supposed-to-take-on-the-drudgery-workers-say-its-taking-on-the-good-stuff-too",
+      "original": "https://atlassianblog.wpengine.com/wp-content/uploads/2026/10/ai_is_taking_on_enjoyed_work_not_just_disliked_work-1480px.png"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/ai-enjoyable-work-atlassian-survey-fig2-afcfb15e.jpg",
+      "width": 1200,
+      "height": 877,
+      "kind": "dense",
+      "credit": "Atlassian",
+      "sourceUrl": "https://www.atlassian.com/blog/ai-at-work/ai-was-supposed-to-take-on-the-drudgery-workers-say-its-taking-on-the-good-stuff-too",
+      "original": "https://atlassianblog.wpengine.com/wp-content/uploads/2026/10/the_more_senior_the_more_enjoyed_work_goes_to_ai-1480px.png"
+    }
+  ],
+  "imageCredit": {
+    "kind": "official",
+    "org": "Atlassian",
+    "provider": "Atlassian公式ブログ",
+    "sourceUrl": "https://www.atlassian.com/blog/ai-at-work/ai-was-supposed-to-take-on-the-drudgery-workers-say-its-taking-on-the-good-stuff-too",
+    "original": "https://atlassianblog.wpengine.com/wp-content/uploads/2026/10/blog_hero_img_pulse-wave-6@2x-1.png",
+    "width": 1200,
+    "height": 675,
+    "at": "2026-11-04T16:21:20+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.58,
+    "y": 0.631,
+    "box": [
+      0.159,
+      0.261,
+      1.0,
+      1.0
+    ],
+    "ar": 1.7778,
+    "src": "https://ai-tech-express.jp/img/ai-enjoyable-work-atlassian-survey-f6c410fc.jpg"
+  }
+}

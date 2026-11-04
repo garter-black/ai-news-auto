@@ -191,6 +191,7 @@
     "7da9fc739690622b": "2026-11-04T13:10:52.830493+00:00",
     "82870a11b510856e": "2026-11-04T13:10:52.830493+00:00",
     "8d14de2cca67f1c1": "2026-11-04T13:10:52.830493+00:00",
+    "95c54cb4295006bd": "2026-11-04T16:19:15.626052+00:00",
     "99c036dd3c919f1d": "2026-11-04T13:10:52.830493+00:00",
     "9f2f353dc57e0822": "2026-11-04T13:10:52.830493+00:00",
     "ae26df52e2687ef8": "2026-11-04T13:10:52.830493+00:00",
@@ -5813,6 +5814,15 @@
       "slug": "google-cloud-ai-october-2026-recap",
       "url": "https://cloud.google.com/blog/products/ai-machine-learning/what-google-cloud-announced-in-ai-this-month/"
     },
+    "36a04b2684967aa1": {
+      "at": "2026-11-04T16:20:58.094146+00:00",
+      "mix": "enterprise_dev",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "score": 92,
+      "section": "ai",
+      "slug": "ai-enjoyable-work-atlassian-survey",
+      "url": "https://www.atlassian.com/blog/ai-at-work/ai-was-supposed-to-take-on-the-drudgery-workers-say-its-taking-on-the-good-stuff-too"
+    },
     "36ccb3101b7cb129": {
       "at": "2026-10-28T01:52:56.696303+00:00",
       "breaking": true,
@@ -10071,7 +10081,7 @@
       "url": "https://newsroom.kddi.com/news/assets/2026/kddi_nr_s-82_4796/kddi_nr_s-82_4796_pdf_01.pdf"
     },
     "95c54cb4295006bd": {
-      "at": "2026-11-04T15:40:06.149342+00:00",
+      "at": "2026-11-04T16:20:58.723181+00:00",
       "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
       "skipped": true,
       "url": "https://www.soumu.go.jp/main_sosiki/kenkyu/digital_shokadai/02ryutsu02_04000610.html"
@@ -14655,28 +14665,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T21:53:06.228106+00:00",
-      "attempt": 1,
-      "id": "e0be2f0a8eaa6b94",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [
-        "サイソクが自分で試したように読める書き方がある（「筆者」）。サイソクは試していない。元記事の書き手が試した結果なら「〇〇（媒体名）の記者が試したところ」と誰が試したかを書く"
-      ],
-      "readability": {
-        "avg_paragraph": 65.6,
-        "avg_sentence": 31.8,
-        "long_share": 0.01,
-        "max_paragraph": 127,
-        "paragraphs": 50,
-        "sentences": 103
-      },
-      "score": null,
-      "source": "microsoft-source",
-      "title": "Nine engineers, 1,211 code updates in a day: Lessons from building Copilot Cowor"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T21:54:58.354932+00:00",
@@ -21054,6 +21042,26 @@
       "score": null,
       "source": "jfa",
       "title": "SAMURAI BLUE（日本代表）メンバー・スケジュール MIZUHO BLUE CHALLENGE THE KALLANG FOOTBALL SERIES "
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T16:20:58.087710+00:00",
+      "attempt": 1,
+      "id": "36a04b2684967aa1",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 90.7,
+        "avg_sentence": 37.8,
+        "long_share": 0.139,
+        "max_paragraph": 197,
+        "paragraphs": 15,
+        "sentences": 36
+      },
+      "score": 92,
+      "source": "atlassian-blog",
+      "title": "AI was supposed to take on the drudgery. Workers say it’s taking on the good stu"
     }
   ],
   "short_text_retry": {

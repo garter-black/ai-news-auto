@@ -47,7 +47,7 @@
   },
   "2026-11-04": {
     "articles": {
-      "anthropic-api:claude-haiku-5-5": 75,
+      "anthropic-api:claude-haiku-5-5": 77,
       "anthropic-api:claude-sonnet-5-5": 11,
       "claude:sonnet": 10,
       "cloudflare:@cf/openai/gpt-oss-120b": 9,
@@ -64,7 +64,7 @@
       "cloudflare:@cf/openai/gpt-oss-120b": 8
     },
     "products": {
-      "anthropic-api:claude-haiku-5-5": 2,
+      "anthropic-api:claude-haiku-5-5": 3,
       "gemini-3.5-flash-lite": 10
     }
   }
