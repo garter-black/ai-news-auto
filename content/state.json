@@ -1,6 +1,7 @@
 {
   "failed": {
     "0Kw6_DTZPrY": 1,
+    "0LDs5rvx1EI": 1,
     "1E0ZoktFerQ": 1,
     "2h16j4K_NbA": 2,
     "2lNUGkCg_qc": 1,
@@ -5158,6 +5159,12 @@
       "skipped": true,
       "url": "https://www.salesforce.com/jp/news/press-releases/2026/10/26/idom-customer-news-2/"
     },
+    "27c11336cca71266": {
+      "at": "2026-11-04T18:14:00.350200+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.gov-online.go.jp/press_conferences/chief_cabinet_secretary/202611/video-327048.html"
+    },
     "27f8be5bb347e6c8": {
       "at": "2026-10-26T23:21:40.234840+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -8564,6 +8571,12 @@
       "skipped": true,
       "url": "https://www.nao.ac.jp/news/blog/2026/20261104-public-observatory.html"
     },
+    "7520b30bdab115ce": {
+      "at": "2026-11-04T18:14:00.350150+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.gov-online.go.jp/press_conferences/chief_cabinet_secretary/202611/video-327067.html"
+    },
     "755c6b2b63fba038": {
       "at": "2026-11-02T05:32:20.562825+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -10127,6 +10140,12 @@
       "reason": "quality: 本文が短い（1421字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）; easy_markdown が短い（283字 / 基準 400字以上）; 独自の価値が無い。「## これまでの流れ」（過去記事の文脈がある場合）・元記事の数値の Markdown 比較表（比べるものがある場合）・「## 自分に関係ある？」（150字以上で立場別に",
       "skipped": true,
       "url": "https://www.caa.go.jp/notice/entry/047949/"
+    },
+    "9684a53b3202b12d": {
+      "at": "2026-11-04T18:14:00.350087+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.gov-online.go.jp/press_conferences/chief_cabinet_secretary/202611/video-327078.html"
     },
     "96882ab7e78168fa": {
       "at": "2026-11-01T22:40:16.869257+00:00",
@@ -13681,6 +13700,13 @@
       "skipped": true,
       "url": "https://www.maff.go.jp/j/press/yusyutu_kokusai/keizai/261102.html"
     },
+    "e92adb95112b5264": {
+      "at": "2026-11-04T18:14:00.043207+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "reason": "Amazonのショッピング機能（Shop Direct Merchant Workspace）の販売者向けポータル発表で、AI・テクノロジーの技術的中身を実質的に扱っていない。小売・EC事業者向けの業務案内に当たり、ジャンルの対象範囲（AI・ソフトウェア・ハードウェア・開発ツールに関する技術発表）から外れると判断した。",
+      "skipped": true,
+      "url": "https://www.aboutamazon.com/news/retail/amazon-shop-direct-merchant-workspace?utm_source=rss"
+    },
     "e9321f8b1844d168": {
       "at": "2026-11-02T19:52:49.263922+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（会議）",
@@ -14681,28 +14707,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T22:53:58.466040+00:00",
-      "attempt": 2,
-      "id": "7c1aece6152955a3",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [
-        "事実確認を実行できなかった（すべてのモデルで失敗しました: None）"
-      ],
-      "readability": {
-        "avg_paragraph": 65.1,
-        "avg_sentence": 34.2,
-        "long_share": 0.013,
-        "max_paragraph": 139,
-        "paragraphs": 42,
-        "sentences": 80
-      },
-      "score": null,
-      "source": "radar-gori.me",
-      "title": "新型MacBook Proは「ほしい」、だけど「活かせない」のジレンマ。新モデルは買いま……"
-    },
     {
       "accepted": false,
       "at": "2026-11-02T23:00:58.964680+00:00",
@@ -21048,6 +21052,32 @@
       "warnings": [
         "見出しの書き方: 記号: かっこの直後に「、」",
         "初めて出たところで言い換えていない略語（SMS・JIPDEC）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T18:13:57.002060+00:00",
+      "attempt": 1,
+      "id": "e92adb95112b5264",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "答えになっていない見出し（「参加は無料、日本の店の扱いはまだ未定」）。未定のことは「## まだ分からないこと」に1行で書き、章は作らない",
+        "元記事・確認済みの資料に無い画面の手順・メニュー名・ボタン名がある（「商品ページの「Shop Direct」ボタン」）。資料にある道順だけを書くか、「公式ヘルプの手順を確認してください」と書く"
+      ],
+      "readability": {
+        "avg_paragraph": 138.8,
+        "avg_sentence": 41.6,
+        "long_share": 0.175,
+        "max_paragraph": 204,
+        "paragraphs": 12,
+        "sentences": 40
+      },
+      "score": null,
+      "source": "about-amazon",
+      "title": "Amazon’s new Shop Direct Merchant Workspace makes it even easier for stores acro",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（SP・FBA）"
       ]
     }
   ],
