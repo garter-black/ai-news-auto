@@ -123,14 +123,6 @@
       "tries": 1,
       "url": "http://www.boj.or.jp/statistics/boj/other/acmai/release/2026/ac261031.htm"
     },
-    "cba8f769dd5b673e": {
-      "first": "2026-11-04T01:17:44.264654+00:00",
-      "next": "2026-11-04T10:24:36.166335+00:00",
-      "reason": "元記事・確認済みの事実の束・計算済みの数字のどれにも無い数字がある（「社員の83%」、「botを使い、営業担当の90%」）。元記事か束の数字に直すか、その文を削る。割合・差・換算などを自分で計算しない（計算済みの数字の欄にあるものだけ使う）",
-      "title": "Half of Slack Messages Are No Longer From People. Here’s Slack by the Numbers.",
-      "tries": 2,
-      "url": "https://www.salesforce.com/news/stories/slack-stats/"
-    },
     "e2654f5d2f822277": {
       "first": "2026-11-04T03:04:00.517719+00:00",
       "next": "2026-11-04T06:04:00.517719+00:00",
@@ -5382,6 +5374,12 @@
       "skipped": true,
       "url": "https://www.mhlw.go.jp/topics/medias/c-med/2026/06/"
     },
+    "2f1bd542dc1a2a03": {
+      "at": "2026-11-04T11:03:07.267059+00:00",
+      "reason": "stale: 発表から59時間（記事ページの日付）",
+      "skipped": true,
+      "url": "http://www.boj.or.jp/about/bcp/fin_bcp/fbcp261104a.pdf"
+    },
     "2f1df1094cb5652f": {
       "at": "2026-10-27T23:41:05.859122+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（ブース）",
@@ -6162,6 +6160,13 @@
       "section": "ai",
       "slug": "docomo-smtb-net-bank-amazon-connect-ai",
       "url": "https://aws.amazon.com/jp/blogs/news/docomo-smtb-net-bank-amazon-connect-customer-ai-agents/"
+    },
+    "42d93762ee08db46": {
+      "at": "2026-11-04T11:03:20.386579+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "reason": "審議会の開催告知で、計画の中身や数字はまだ決まっていません。働く人や家計に直接関係する条件や金額が示されていないため、対象外としました。",
+      "skipped": true,
+      "url": "http://www.mlit.go.jp/report/press/water02_hh_000214.html"
     },
     "42fdc8615b3e9eec": {
       "at": "2026-10-29T23:52:13.650088+00:00",
@@ -8788,6 +8793,14 @@
       "section": "public",
       "slug": "digital-agency-disaster-prevention-dx",
       "url": "https://www.digital.go.jp/policies/disaster_prevention"
+    },
+    "7f3e9ee44aca1677": {
+      "at": "2026-11-04T11:06:05.983734+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "score": 92,
+      "section": "tech-gadget",
+      "slug": "docomo-son-mlb-fireworks-traffic",
+      "url": "https://www.docomo.ne.jp/info/news_release/2026/11/04_01.html"
     },
     "7f40581db2f3c2f0": {
       "at": "2026-10-31T09:21:10.562187+00:00",
@@ -12097,6 +12110,13 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000056.000175627.html"
     },
+    "cba8f769dd5b673e": {
+      "at": "2026-11-04T11:03:05.271824+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "reason": "quality: 要点の1つ目がリードの文の写し。一番のニュースを、リードとは違う言い方で書く; 元記事・確認済みの事実の束・計算済みの数字のどれにも無い数字がある（「rceの社内では、社員の83%」、「営業担当の90%」）。元記事か束の数字に直すか、その文を削る。割合・差・換算などを自分で計算しない（計算済みの数字の欄にあるものだけ使う）",
+      "skipped": true,
+      "url": "https://www.salesforce.com/news/stories/slack-stats/"
+    },
     "cbaf201becd502e1": {
       "at": "2026-11-02T00:02:48.732158+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（採用）",
@@ -14390,91 +14410,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-02T17:37:13.892345+00:00",
-      "attempt": 0,
-      "id": "c3d9c0114f0e103f",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 78.4,
-        "avg_sentence": 36.2,
-        "long_share": 0.077,
-        "max_paragraph": 145,
-        "paragraphs": 18,
-        "sentences": 39
-      },
-      "score": 100,
-      "source": "nvidia-developer-blog",
-      "title": "Build World Models for Interactive Simulation with NVIDIA Cosmos"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T17:38:11.303629+00:00",
-      "attempt": 1,
-      "id": "94e2e7000b62203f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 53.8字・60字超の文が 33% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 125.4字・最長 266字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 125.4,
-        "avg_sentence": 53.8,
-        "long_share": 0.333,
-        "max_paragraph": 266,
-        "paragraphs": 9,
-        "sentences": 21
-      },
-      "score": 100,
-      "source": "jnet21",
-      "title": "省エネ・コスト削減技術が集結、東京でマッチングイベント"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T17:38:58.687235+00:00",
-      "attempt": 0,
-      "id": "94e2e7000b62203f",
-      "kind": "broad",
-      "model": "",
-      "problems": [
-        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（53.8→53.8字）"
-      ],
-      "readability": {
-        "avg_paragraph": 125.4,
-        "avg_sentence": 53.8,
-        "long_share": 0.333,
-        "max_paragraph": 266,
-        "paragraphs": 9,
-        "sentences": 21
-      },
-      "score": 100,
-      "source": "jnet21",
-      "title": "省エネ・コスト削減技術が集結、東京でマッチングイベント"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T17:44:49.494766+00:00",
-      "attempt": 1,
-      "id": "2122a3d533d50001",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 53.1,
-        "avg_sentence": 32.7,
-        "long_share": 0.064,
-        "max_paragraph": 114,
-        "paragraphs": 29,
-        "sentences": 47
-      },
-      "score": 100,
-      "source": "radar-bloomberg.com",
-      "title": "DeepSeek releases a \"creator mode\" that allows users of DeepSeek Harness to crea"
-    },
     {
       "accepted": false,
       "at": "2026-11-02T17:58:11.408182+00:00",
@@ -20786,6 +20721,94 @@
       "title": "ゆうちょ銀行と松井証券との資本業務提携について",
       "warnings": [
         "初めて出たところで言い換えていない略語（JPAM）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T11:01:48.962448+00:00",
+      "attempt": 1,
+      "id": "cba8f769dd5b673e",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "元記事・確認済みの事実の束・計算済みの数字のどれにも無い数字がある（「社員の83%」、「tを毎週使い、営業担当の90%」）。元記事か束の数字に直すか、その文を削る。割合・差・換算などを自分で計算しない（計算済みの数字の欄にあるものだけ使う）"
+      ],
+      "readability": {
+        "avg_paragraph": 87.7,
+        "avg_sentence": 42.4,
+        "long_share": 0.129,
+        "max_paragraph": 190,
+        "paragraphs": 15,
+        "sentences": 31
+      },
+      "score": null,
+      "source": "salesforce-news",
+      "title": "Half of Slack Messages Are No Longer From People. Here’s Slack by the Numbers.",
+      "warnings": [
+        "見出しが51字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T11:03:05.271734+00:00",
+      "attempt": 2,
+      "id": "cba8f769dd5b673e",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "要点の1つ目がリードの文の写し。一番のニュースを、リードとは違う言い方で書く",
+        "元記事・確認済みの事実の束・計算済みの数字のどれにも無い数字がある（「rceの社内では、社員の83%」、「営業担当の90%」）。元記事か束の数字に直すか、その文を削る。割合・差・換算などを自分で計算しない（計算済みの数字の欄にあるものだけ使う）"
+      ],
+      "readability": {
+        "avg_paragraph": 114.8,
+        "avg_sentence": 46.8,
+        "long_share": 0.148,
+        "max_paragraph": 207,
+        "paragraphs": 11,
+        "sentences": 27
+      },
+      "score": null,
+      "source": "salesforce-news",
+      "title": "Half of Slack Messages Are No Longer From People. Here’s Slack by the Numbers.",
+      "warnings": [
+        "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T11:04:41.329561+00:00",
+      "attempt": 1,
+      "id": "7f3e9ee44aca1677",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "ntt-news",
+      "title": "国内初、SON技術を活用し、混雑状況に応じた通信量の自動調整を実証 -合計280MHzの帯域幅を活用し、大規模イベントの混雑時間帯にも安定した通信を確認-"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T11:06:03.814058+00:00",
+      "attempt": 2,
+      "id": "7f3e9ee44aca1677",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 104.6,
+        "avg_sentence": 38.0,
+        "long_share": 0.068,
+        "max_paragraph": 181,
+        "paragraphs": 16,
+        "sentences": 44
+      },
+      "score": 92,
+      "source": "ntt-news",
+      "title": "国内初、SON技術を活用し、混雑状況に応じた通信量の自動調整を実証 -合計280MHzの帯域幅を活用し、大規模イベントの混雑時間帯にも安定した通信を確認-",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（SON・TM）"
       ]
     }
   ],
