@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import re
 import shutil
 import struct
@@ -1005,6 +1006,11 @@ def geometry_problems(report: dict) -> list[str]:
                 out.append(f"QA(c): {name}の読み上げに、左のキーワード「{kw}」の数字・言葉が無い")
         elif re.findall(r"\d+(?:\.\d+)?", norm(kw)) and not key_fact_ok(kw, "", str(g.get("target", "")), str(g.get("ja", ""))):
             out.append(f"QA(c): {name}の選んだ文に、数字「{kw}」が無い")
+    # (d) 日本語の吹き出しが、選択した英文とその続きの行（同じ段落）にかぶらない（2026-11-04 オーナー）
+    for t in report.get("texts") or []:
+        if t.get("role") == "subtitle" and any(_overlap(t["bbox"], a) > 0 for a in t.get("avoid") or []):
+            out.append(f"QA(d): {t.get('t0')}秒の日本語の吹き出しが、選択した英文かその続きの行にかぶっている")
+            break
     return out
 
 
@@ -1143,6 +1149,12 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
     card_sec = sum(max(0.0, float(L.get("t1", 0)) - float(L.get("t0", 0))) for L in report.get("ladders") or []) + \
         sum(max(0.0, float(c.get("t1", 0)) - float(c.get("t0", 0))) for c in report.get("charts") or [])
     m["v3_card_share"] = round(card_sec / max(end, 1), 3)
+    # 画面の道具（選択の青のほか）: カード・グラフの種類（2026-11-04 オーナー「1本で2種類以上」）。記録は必ず、合否は VIDEO_MIN_TOOLS（既定 0＝見るだけ）
+    tools = sorted({str(L.get("mode") or "ladder") for L in report.get("ladders") or []} | ({"chart"} if report.get("charts") else set()))
+    m["v3_visual_tools"] = tools
+    min_tools = int(os.environ.get("VIDEO_MIN_TOOLS", "0") or 0)
+    if min_tools and end >= 25 and len(tools) < min_tools:
+        result.reasons.append(f"v3: 画面の道具が{len(tools)}種類（{'・'.join(tools) or 'なし'}。{min_tools}種類以上）")
     if m["v3_card_share"] > CARD_SHARE_MAX:
         result.reasons.append(f"v3: 右の画面の {m['v3_card_share']:.0%} がカード（公式ページの画面が基本の形。{CARD_SHARE_MAX:.0%} まで）")
     # 左の列の見出し・キーワード（同じ言葉の繰り返し・名詞1つだけは不合格。2026-11-04）と、最初の5〜8秒で何のニュースか分かるか

@@ -631,9 +631,10 @@ def card_base(r, L) -> dict:
         return info
     # specs / checklist / timeline: 縦に並んだ行（ラベル＋文）。今読んでいる行を薄い青に
     n = len(L.rows)
-    row_h = min(190, (PH - 160 - 70) // max(n, 1))
+    big = n <= 3  # 2026-11-04 オーナー「カードの下半分が空いている」: 行が少ないときは行を高く・字を約1.3倍に
+    row_h = min(280 if big else 190, (PH - 160 - 70) // max(n, 1))
     top = 160 + (PH - 160 - 70 - row_h * n) // 2  # 行が少ないときはカードの真ん中に
-    label_w = 0 if L.mode == "specs" else 230
+    label_w = 0 if L.mode == "specs" else (300 if big else 230)
     text_x = X0 + (80 if L.mode == "specs" else label_w + (60 if L.mode == "timeline" else 0))
     width = PW - text_x - X0
     rows = []
@@ -642,16 +643,16 @@ def card_base(r, L) -> dict:
             head = v3.render_text([(chr(0x2460 + k), "black", v3.BLUE)], 46)
             body = v3.wrapped(row["name"], "black", range(50, 32, -2), width, 2, color=v3.INK)
         elif L.mode == "checklist":
-            head = v3.render_text([(row["label"], "black", v3.BLUE)], 34)
-            body = v3.wrapped(row["text"], "bold", range(40, 28, -2), width, 2, color=v3.INK)
+            head = v3.render_text([(row["label"], "black", v3.BLUE)], 44 if big else 34)
+            body = v3.wrapped(row["text"], "bold", range(54 if big else 40, 28, -2), width, 2, color=v3.INK)
         else:  # timeline
-            head = v3.render_text([(row["label"], "black", v3.BLUE)], 34)
-            parts = [v3.wrapped(row["text"], "black", range(54, 30, -2), width, 2, color=v3.INK)]
+            head = v3.render_text([(row["label"], "black", v3.BLUE)], 44 if big else 34)
+            parts = [v3.wrapped(row["text"], "black", range(70 if big else 54, 30, -2), width, 2, color=v3.INK)]
             if row.get("note"):
                 parts.append(v3.fit_line(row["note"], "bold", range(28, 20, -2), width, color=v3.MUTED, accent=False))
             body = v3.stack(parts, 8)
         rows.append({"y": top + k * row_h, "h": row_h, "head": head, "body": body, "subj": False})
-    info.update({"rows": rows, "text_x": text_x})
+    info.update({"rows": rows, "text_x": text_x, "label_w": label_w, "big": big})
     return info
 
 
@@ -753,7 +754,7 @@ def card_frame(r, info: dict, L, t: float):
             hi = v3.ease_out((t - t_hi - (focus_k * L.tour if L.tour else 0)) / 0.3)
             v3._highlight_row(arr, 30, row["y"] - 16, PW - 60, row["h"] - 18, hi)
         if L.mode == "timeline":  # 流れの点（データの印。線でつながない）
-            dots.append((X0 + 200 + 8, row["y"] + 18, 26, v3.BLUE if k <= max(focus_k, 0) else (196, 205, 220)))
+            dots.append((X0 + info.get("label_w", 230) - 22, row["y"] + (26 if info.get("big") else 18), 26, v3.BLUE if k <= max(focus_k, 0) else (196, 205, 220)))
         shown.append((k, row, a))
     if dots:
         img = Image.fromarray(arr)

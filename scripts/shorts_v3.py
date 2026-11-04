@@ -2440,6 +2440,12 @@ def callout_place(sub: "Subtitle", cam: "Cam") -> tuple[int, int, int, int, bool
     if not vis:  # 英文が画面に無い（カメラが別の所）なら出さない
         return None
     top, bottom = min(r[1] for r in vis), max(r[3] for r in vis)
+    row_top, row_bottom = top, bottom
+    if sub.block:  # 2026-11-04 オーナー: 吹き出しは選択した文の続きの行（同じ段落の下の行）にもかぶせない → 下に置くなら段落の下に
+        bx0, by0 = cam.map(sub.block[0], sub.block[1])
+        bx1, by1 = cam.map(sub.block[2], sub.block[3])
+        bottom = max(bottom, min(by1, PH))
+        top = min(top, max(by0, 0)) if by0 >= 0 else top
     sh = CALLOUT_SH
     h, w = sub.sprite.shape[0] - sh * 2, sub.sprite.shape[1] - sh * 2
     margin = 36
@@ -2452,7 +2458,7 @@ def callout_place(sub: "Subtitle", cam: "Cam") -> tuple[int, int, int, int, bool
         y, up = int(top - py_gap - h), False
     else:
         return None
-    last = [r for r in vis if (r[3] >= bottom - 2 if up else r[1] <= top + 2)][0]
+    last = [r for r in vis if (r[3] >= row_bottom - 2 if up else r[1] <= row_top + 2)][0]
     tip_x = int(min(max(max(last[0], 0) + 44, x + 24), x + w - 24 - POINTER[0]))
     tip_y = y - POINTER[1] if up else y + h
     return x, y, tip_x, tip_y, up
@@ -2479,6 +2485,7 @@ class Subtitle:
     sprite: np.ndarray
     page: int
     rows: list
+    block: tuple = ()  # 選択した英文の段落全体（ページの座標）。吹き出しは続きの行にもかぶせない（2026-11-04 オーナー）
 
 
 @dataclass
@@ -2892,7 +2899,7 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     for a, b, idx in sub_spans:
         text = (items[idx].get("ja") or "").strip()
         tg = targets[idx]
-        subtitles.append(Subtitle(a, b, text, callout_sprite(text), tg.page, list(tg.rows or [tg.match or tg.rect])))
+        subtitles.append(Subtitle(a, b, text, callout_sprite(text), tg.page, list(tg.rows or [tg.match or tg.rect]), tuple(tg.block.rect)))
 
     # 注目の場所（画面上の枠）: 字幕がかぶらないかをゲートで見る
     focus = []
@@ -3619,6 +3626,7 @@ def geometry_records(plan: Plan, step: float = 0.1) -> list[dict]:
 def text_records(plan: Plan) -> list[dict]:
     out = []
     rows = [(item.role, item.text, item.sprite, item.bbox(), item.t0, item.t1) for item in plan.texts]
+    avoid: list = []  # 吹き出しごとの「かぶせてはいけない枠」（選択した文の行と、その段落）
     for sub in plan.subtitles:  # 吹き出しはカメラと動くので、0.5秒ごとの位置で記録する（注目の場所と同じ刻み）
         spr = sub.sprite
         for w0, w1, wm in time_windows(sub.t0, sub.t1):
@@ -3629,7 +3637,11 @@ def text_records(plan: Plan) -> list[dict]:
             # 文字の面積は吹き出しの中の文字の所だけ（余白・影は数えない）。かぶりの検査はこの枠＋余白で十分（英文の行の外に置いている）
             bbox = [float(x + 26), float(y + 16), float(x + spr.shape[1] - CALLOUT_SH * 2 - 26), float(y + spr.shape[0] - CALLOUT_SH * 2 - 16)]
             rows.append(("subtitle", sub.text, spr, bbox, w0, w1))
+            cam = plan.camera.at(wm)  # 選択した文とその段落（続きの行）の画面の枠。ゲートが吹き出しのかぶりを見る（2026-11-04）
+            pts = [cam.map(r[0], r[1]) + cam.map(r[2], r[3]) for r in sub.rows] + ([cam.map(sub.block[0], sub.block[1]) + cam.map(sub.block[2], sub.block[3])] if sub.block else [])
+            avoid.append([[round(PANEL[0] + max(0.0, q[0]), 1), round(PANEL[1] + max(0.0, q[1]), 1), round(PANEL[0] + min(float(PW), q[2]), 1), round(PANEL[1] + min(float(PH), q[3]), 1)] for q in pts])
     markers = {i: item.marker_lines() for i, item in enumerate(plan.texts) if item.marker}
+    sub_no = 0
     for idx, (role, text, spr, bbox, t0, t1) in enumerate(rows):
         if role in ("hook", "keyword", "sub", "conclusion", "eyebrow"):
             box = list(COL)
@@ -3661,6 +3673,9 @@ def text_records(plan: Plan) -> list[dict]:
                 "t1": round(t1, 3),
             }
         )
+        if role == "subtitle":
+            out[-1]["avoid"] = avoid[sub_no] if sub_no < len(avoid) else []
+            sub_no += 1
         if idx in markers:  # マーカーの枠と文字の枠（行ごと・画面の座標）。ゲートがはみ出しを見る
             it = plan.texts[idx]
             out[-1]["marker"] = True
