@@ -6,6 +6,7 @@
   },
   "2026-11-03": {
     "evergreen": {
+      "anthropic-api:claude-haiku-5-5": 7,
       "anthropic-api:claude-sonnet-5-5": 13
     }
   }
