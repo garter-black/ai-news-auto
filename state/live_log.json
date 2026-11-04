@@ -228,6 +228,9 @@
     "cyberagent-fy2026-results-date": {
       "liveAt": "2026-11-02T07:24:44+00:00"
     },
+    "databricks-claude-mlflow-tracing-beta": {
+      "liveAt": "2026-11-04T01:35:12+00:00"
+    },
     "databricks-sap-partnership-enterprise-ai": {
       "liveAt": "2026-11-02T03:34:04+00:00"
     },
@@ -347,6 +350,9 @@
     },
     "gemini-notebook-free-textbooks": {
       "liveAt": "2026-10-29T16:07:24+00:00"
+    },
+    "gemini-plans-daily-brief-added": {
+      "liveAt": "2026-11-04T01:35:11+00:00"
     },
     "github-agentic-workflows-generally-available": {
       "liveAt": "2026-10-28T22:35:47+00:00"
