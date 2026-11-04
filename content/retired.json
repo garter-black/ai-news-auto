@@ -544,6 +544,14 @@
    "sourceUrl": "https://news.xbox.com/ja-jp/2026/11/02/crimson-desert-charting-the-unknown/",
    "title": "『紅の砂漠 Enhanced』が新DLC「未知なる旅路」を配信開始　海の探索やハウジング機能も追加"
   },
+  "crowdstrike-ai-kill-switch-falcon-guardian": {
+   "channel": "radar-cnbc.com",
+   "note": "報道機関（CNBC）の記事が出典（W31 違反）。公式の発表はあるが本文を読み取れず書き直しの品質ゲートを通らなかった。2026-11-04 オーナー決定で取り下げ",
+   "reason": "press-source",
+   "retiredAt": "2026-11-05T01:18:07+09:00",
+   "sourceUrl": "https://www.cnbc.com/2026/11/03/crowdstrike-ai-kill-switch-rogue-agents.html",
+   "title": "CrowdStrike、AI緊急停止機能を「Falcon Guardian」に追加　Claude Coworkとも連携"
+  },
   "currency-intervention-limit-and-structural-yen-depreciation": {
    "channel": "rakumachi",
    "reason": "creator-video",
