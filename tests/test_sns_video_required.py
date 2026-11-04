@@ -504,3 +504,15 @@ class NoDuplicateTest(unittest.TestCase):
         out = audit.sns_problems(posts, lambda post: [])
         self.assertEqual(len(out), 1)
         self.assertTrue(out[0].startswith("[S20]") and "threads:acme-tool" in out[0])
+
+
+class OwnerApprovedRepostTest(unittest.TestCase):
+    def test_only_listed_deleted_posts_are_ignored_by_duplicate_guard(self):
+        tp._BUFFER_RECENT.clear()
+        tp._BUFFER_RECENT["c"] = [("OLD", LINK), ("OTHER", LINK)]
+        tp.ensure_not_duplicate("k", {"channelId": "c"}, "threads", ART, "article", allow=["OLD", "OTHER"])  # 両方消したなら作れる
+        with self.assertRaises(tp.DuplicatePost):
+            tp.ensure_not_duplicate("k", {"channelId": "c"}, "threads", ART, "article", allow=["OLD"])  # 消していない投稿があれば作らない
+        with self.assertRaises(tp.DuplicatePost):
+            tp.ensure_not_duplicate("k", {"channelId": "c"}, "threads", ART, "article")  # ふだんは止める
+        tp._BUFFER_RECENT.clear()

@@ -651,6 +651,9 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
             inp = video_input(service, inputs[service], report, variant, urls[variant])
             inp.update({"mode": "customScheduled", "dueAt": _iso(base + timedelta(minutes=offset))})
             inp.pop("saveToDraft", None)
+            allow = ((rec.get("pending") or {}).get("allowDuplicateOf") or {}).get(service)
+            if allow:
+                inp["_allowDuplicateOf"] = list(allow)  # オーナー承認の出し直し（消した前の投稿だけ重複と数えない）
             try:
                 created[service] = creator(service, inp, article)
             except Exception as error:  # noqa: BLE001
@@ -908,6 +911,14 @@ def repost(slug: str, api_key: str | None = None, now: datetime | None = None, s
         pending["forceVariant"] = spec["variant"]
     if spec.get("adopt"):
         pending["hold"] = True  # オーナーに見せた動画を置くまで、ここでは動画を作らない（adopt_video で置く）
+    if spec.get("ownerApprovedDeleteRepost"):
+        # オーナーが「消して出し直す」を承認し、前の投稿を SNS から消した: その Buffer の投稿だけ重複の確かめで数えない
+        prev = (state.get("queued") or {}).get(slug) or {}
+        ids = {k: [v] for k, v in (prev.get("channels") or {}).items() if v}
+        for k, v in (spec.get("deletedBufferIds") or {}).items():
+            ids.setdefault(k, []).extend(x for x in v if x not in ids.get(k, []))
+        pending["allowDuplicateOf"] = ids
+        log(f"[video-followup] オーナー承認の出し直し（{spec['ownerApprovedDeleteRepost']}）: 消した前の投稿 {ids} は重複と数えない")
     old_ids = {"threads": rec.get("id", ""), **{k: v for k, v in (rec.get("channels") or {}).items() if k in ("twitter", "facebook", "bluesky")}}
     if slug in (state.get("videos") or {}):
         state.setdefault("videosArchive", {})[slug] = state["videos"].pop(slug)  # 動画はいまのコードで作り直す

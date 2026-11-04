@@ -7,6 +7,19 @@
     "twitter",
     "facebook"
   ],
-  "bluesky": true,
-  "adopt": true
+  "bluesky": false,
+  "adopt": true,
+  "ownerApprovedDeleteRepost": "2026-11-04 オーナー承認（マーカーを直した動画で消して出し直す。前の 9:45 の投稿は調整役が消した）",
+  "deletedBufferIds": {
+    "threads": [
+      "6aea3af35fa3d509fa3d0ef9"
+    ],
+    "twitter": [
+      "6aea3af452391758e2e63135"
+    ],
+    "facebook": [
+      "6aea3af45fa3d509fa3d103d",
+      "6aea86b896d5e2abc7692f68"
+    ]
+  }
 }

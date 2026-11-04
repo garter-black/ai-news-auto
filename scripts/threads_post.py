@@ -1737,7 +1737,7 @@ def recent_channel_posts(api_key: str, channel_id: str, gql=None) -> list[tuple[
     return found
 
 
-def ensure_not_duplicate(api_key: str, post_input: dict, service: str, article: dict | None, kind: str, gql=None) -> None:
+def ensure_not_duplicate(api_key: str, post_input: dict, service: str, article: dict | None, kind: str, gql=None, allow: list[str] | None = None) -> None:
     """作る直前に、同じ記事の投稿がこの SNS の Buffer にもう無いかを確かめる（1記事1投稿。S8・S20）。
     あれば DuplicatePost。Buffer を読めなければ作らない（BufferUnavailable などをそのまま投げる）。下書きは見ない"""
     needle = post_needle(article, kind)
@@ -1745,6 +1745,10 @@ def ensure_not_duplicate(api_key: str, post_input: dict, service: str, article: 
     if not needle or not channel or post_input.get("saveToDraft") or kind == "video_followup":
         return
     for post_id, text in recent_channel_posts(api_key, channel, gql):
+        if post_id in (allow or []):
+            # オーナーが承認した出し直し（前の投稿は SNS から消した）。その投稿だけは重複と数えない（記録に残す）
+            log(f"  [{service}] オーナー承認の出し直し: 消した前の投稿 {post_id} は重複と数えない（{needle}）")
+            continue
         if needle in text:
             raise DuplicatePost(post_id, service, needle)
 
@@ -1752,9 +1756,10 @@ def ensure_not_duplicate(api_key: str, post_input: dict, service: str, article: 
 def create_post(api_key: str, post_input: dict, *, service: str, article: dict | None, source: str, kind: str = "article") -> str:
     """Buffer に投稿を1件作り、投稿IDを返す。作る直前に SNS ルールの門番（sns_rules）を通し、
     同じ記事の投稿がこの SNS にもう無いかを Buffer で確かめる（あれば DuplicatePost。2026-11-04 の二重投稿のあと）"""
+    allow = list(post_input.pop("_allowDuplicateOf", None) or [])  # オーナー承認の出し直しだけ（消した前の投稿の Buffer の ID）
     sns_rules.enforce_buffer(service, post_input, article, source=source, kind=kind)
     try:
-        ensure_not_duplicate(api_key, post_input, service, article, kind)
+        ensure_not_duplicate(api_key, post_input, service, article, kind, allow=allow)
     except DuplicatePost as dup:
         # もうある投稿をこの投稿として扱う（作らない）。呼び出し側はいつもどおり ID を記録する
         log(f"  [{service}] {dup}（{source}）")
