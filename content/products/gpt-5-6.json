@@ -6,39 +6,22 @@
   "companyName": "OpenAI",
   "category": "AIモデル",
   "overview": {
-    "text": "GPT-5.6は、OpenAIが2026年7月に発表した最先端のAIモデルファミリーです。用途に合わせて選べるSol、Terra、Lunaの3つのモデルで構成されています。",
+    "text": "GPT-5.6は、OpenAIが発表した最新のAIモデルファミリーです。Sol、Terra、Lunaの3つのモデルで構成されています。",
     "sources": [
-      "openai-chatgpt-voice-gpt56-integration-matome",
-      "openai-chatgpt-for-academic-researchers-gpt5-6",
       "openai-build-hour-gpt56-valuemaxxing"
     ]
   },
   "facts": [
     {
-      "label": "料金",
-      "value": "API従量課金",
-      "sources": [
-        "openai-build-hour-gpt56-valuemaxxing"
-      ]
-    },
-    {
       "label": "提供開始",
-      "value": "2026年7月",
-      "sources": [
-        "openai-chatgpt-voice-gpt56-integration-matome",
-        "openai-build-hour-gpt56-valuemaxxing"
-      ]
-    },
-    {
-      "label": "日本での提供",
-      "value": "条件付き",
+      "value": "2026年7月以降順次",
       "sources": [
         "openai-build-hour-gpt56-valuemaxxing"
       ]
     },
     {
       "label": "向いている人",
-      "value": "開発者および研究者",
+      "value": "開発者、研究者、法人",
       "sources": [
         "openai-chatgpt-for-academic-researchers-gpt5-6",
         "openai-build-hour-gpt56-valuemaxxing"
@@ -47,102 +30,83 @@
   ],
   "capabilities": [
     {
-      "text": "Sol、Terra、Lunaの3つのモデルを用途に合わせて使い分けできます。",
+      "text": "Solでは複雑なプロフェッショナル業務や難度の高いコーディングタスクに対応できます。",
       "sources": [
-        "openai-chatgpt-voice-gpt56-integration-matome",
         "openai-build-hour-gpt56-valuemaxxing"
       ]
     },
     {
-      "text": "プログラムによるツール呼び出しで入力トークン数を24%削減できます。",
+      "text": "V7 GoでGPT-5.6 Solを使うと、ツール呼び出しの失敗率が0.2%に下がります。",
       "sources": [
-        "openai-chatgpt-voice-gpt56-integration-matome",
+        "v7-go-gpt-5-6-integration-context-graph"
+      ]
+    },
+    {
+      "text": "会話のターンをまたいで推論プロセスをキャッシュに保持し、処理効率を向上させます。",
+      "sources": [
         "openai-build-hour-gpt56-valuemaxxing"
       ]
     },
     {
-      "text": "コンテキスト圧縮機能により72ターンの会話で入力トークン数を82%削減できます。",
+      "text": "長大な会話履歴やツールの実行ログを圧縮して入力トークン数を削減できます。",
       "sources": [
-        "openai-chatgpt-voice-gpt56-integration-matome",
         "openai-build-hour-gpt56-valuemaxxing"
       ]
     }
   ],
-  "pricing": [
-    {
-      "text": "APIの従量課金制で提供されています。",
-      "sources": [
-        "openai-build-hour-gpt56-valuemaxxing"
-      ]
-    },
-    {
-      "text": "世界10万人の学術研究者を対象とした無料提供プログラムが用意されています。",
-      "sources": [
-        "openai-chatgpt-for-academic-researchers-gpt5-6"
-      ]
-    }
-  ],
+  "pricing": [],
   "japan": [
     {
-      "text": "開発者向けのAPIなどが提供されています。",
+      "text": "学術研究者向けの無料プログラムなどは日本からも利用できます。",
       "sources": [
-        "openai-build-hour-gpt56-valuemaxxing"
+        "openai-chatgpt-for-academic-researchers-gpt5-6"
       ]
     }
   ],
   "howto": [
     {
-      "text": "開発者向けプラットフォームのAPI経由で利用できます。",
+      "text": "開発者向けプラットフォームのAPIや、学術研究者向けの支援プログラムなどを通じて利用できます。",
       "sources": [
+        "openai-chatgpt-for-academic-researchers-gpt5-6",
         "openai-build-hour-gpt56-valuemaxxing"
-      ]
-    },
-    {
-      "text": "学術研究者は専用プログラムを通じて申請できます。",
-      "sources": [
-        "openai-chatgpt-for-academic-researchers-gpt5-6"
       ]
     }
   ],
   "differences": [
     {
-      "text": "Sol、Terra、Lunaの3層構成により用途に応じた最適化が可能になりました。",
+      "text": "旧世代のモデルと比べて細部の深さと正確さが向上しています。",
       "sources": [
-        "openai-chatgpt-voice-gpt56-integration-matome",
-        "openai-build-hour-gpt56-valuemaxxing"
+        "v7-go-gpt-5-6-integration-context-graph"
       ]
     }
   ],
   "faq": [
     {
-      "q": "無料で使える？",
-      "a": "学術研究者向けの無料提供プログラムが用意されています。開発者向けのAPIは従量課金です。",
+      "q": "どのようなモデルがありますか？",
+      "a": "複雑なタスク向けのSol、バランス型のTerra、速さと安さを重視するLunaの3つのモデルが用意されています。",
+      "sources": [
+        "openai-build-hour-gpt56-valuemaxxing"
+      ]
+    },
+    {
+      "q": "無料で使えますか？",
+      "a": "世界10万人の学術研究者を対象とした無料提供プログラムが用意されています。",
+      "sources": [
+        "openai-chatgpt-for-academic-researchers-gpt5-6"
+      ]
+    },
+    {
+      "q": "開発向けの機能は何がありますか？",
+      "a": "プログラムによるツール呼び出しや、プロンプトキャッシングによるコスト削減機能などが利用できます。",
+      "sources": [
+        "openai-build-hour-gpt56-valuemaxxing"
+      ]
+    },
+    {
+      "q": "いつから使えますか？",
+      "a": "2026年7月以降、開発者向けプラットフォームや研究者向けプログラムで順次提供されています。",
       "sources": [
         "openai-chatgpt-for-academic-researchers-gpt5-6",
-        "openai-build-hour-gpt56-valuemaxxing"
-      ]
-    },
-    {
-      "q": "いつから使える？",
-      "a": "2026年7月から順次提供されています。",
-      "sources": [
-        "openai-chatgpt-voice-gpt56-integration-matome",
-        "openai-build-hour-gpt56-valuemaxxing"
-      ]
-    },
-    {
-      "q": "誰に向いている？",
-      "a": "複雑な処理や開発を行う開発者や、学術研究を行う研究者に向いています。",
-      "sources": [
-        "openai-chatgpt-for-academic-researchers-gpt5-6",
-        "openai-build-hour-gpt56-valuemaxxing"
-      ]
-    },
-    {
-      "q": "モデルの種類は？",
-      "a": "最上位のSol、バランス型のTerra、高速・低コストなLunaの3モデルがあります。",
-      "sources": [
-        "openai-chatgpt-voice-gpt56-integration-matome",
         "openai-build-hour-gpt56-valuemaxxing"
       ]
     }
@@ -151,22 +115,22 @@
     {
       "date": "2026-07-25",
       "slug": "openai-build-hour-gpt56-valuemaxxing",
-      "event": "活用手法Valuemaxxingを公開"
+      "event": "GPT-5.6ファミリーと活用手法を発表"
     },
     {
       "date": "2026-07-30",
       "slug": "openai-chatgpt-for-academic-researchers-gpt5-6",
-      "event": "研究者向け無償提供プログラムを発表"
-    },
-    {
-      "date": "2026-08-14",
-      "slug": "openai-chatgpt-voice-gpt56-integration-matome",
-      "event": "GPT-5.6ファミリーを発表"
+      "event": "研究者向けにGPT-5.6の無償提供プログラムを開始"
     },
     {
       "date": "2026-10-22",
       "slug": "v7-go-gpt-5-6-integration-context-graph",
-      "event": "業務自動化V7 GoにGPT-5.6を統合"
+      "event": "V7 GoにGPT-5.6を統合"
+    },
+    {
+      "date": "2026-11-04",
+      "slug": "gpt-56-cyber-aws-govcloud",
+      "event": "GPT-5.6 Cyberを発表"
     }
   ],
   "related": [
@@ -176,6 +140,7 @@
     "gpt-6"
   ],
   "articles": [
+    "gpt-56-cyber-aws-govcloud",
     "v7-go-gpt-5-6-integration-context-graph",
     "chatgpt-work-for-sales-comprehensive-summary-matome",
     "openai-chatgpt-voice-gpt56-integration-matome",
@@ -183,13 +148,14 @@
     "openai-build-hour-gpt56-valuemaxxing"
   ],
   "linkFrom": [
+    "gpt-56-cyber-aws-govcloud",
     "v7-go-gpt-5-6-integration-context-graph",
     "openai-chatgpt-for-academic-researchers-gpt5-6",
     "openai-build-hour-gpt56-valuemaxxing"
   ],
-  "signature": "1304d625e0ad390d",
-  "primarySignature": "970b1a1debcc4fb6",
+  "signature": "8e60086135de0ca0",
+  "primarySignature": "7f17ea0b7a086087",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:45:03+00:00",
-  "updatedAt": "2026-11-04T03:49:24+00:00"
+  "updatedAt": "2026-11-04T15:52:20+00:00"
 }

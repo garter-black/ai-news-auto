@@ -153,10 +153,11 @@
   "related": [
     "claude",
     "gpt-6-astra",
-    "kimi-k3",
-    "gpt-6-1-terra"
+    "gpt-5-6",
+    "kimi-k3"
   ],
   "articles": [
+    "gpt-56-cyber-aws-govcloud",
     "kimi-k3-bedrock-india-inference",
     "openai-gpt-61-terra-amazon-bedrock",
     "amazon-bedrock-cost-management-playbook",

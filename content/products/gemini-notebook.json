@@ -138,15 +138,14 @@
   ],
   "related": [
     "gemini",
-    "claude",
-    "figma",
-    "gemini-live"
+    "gemini-live",
+    "antigravity",
+    "google-ai-studio"
   ],
   "articles": [
     "google-ai-educator-series-expansion",
     "google-guided-learning-classroom-search",
     "gemini-notebook-free-textbooks",
-    "kddi-iret-ai-use-cases-113",
     "google-labs-eric-topol-ai-healthcare-prevention"
   ],
   "linkFrom": [

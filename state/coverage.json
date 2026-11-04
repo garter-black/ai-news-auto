@@ -2,6 +2,26 @@
  "hours": 96,
  "items": [
   {
+   "slug": "google-health-ai-evaluation-framework",
+   "at": "2026-11-04T15:34:22.957041+00:00",
+   "title": "Google、健康AIを3面で評価する枠組みを公開　正確さ・安全性・役立ち",
+   "head": "Google、健康AIを3面で評価する枠組みを公開　正確さ・安全性・役立ち | We're sharing our framework for building safer and more helpful AI for health.",
+   "text": "Google、健康AIを3面で評価する枠組みを公開　正確さ・安全性・役立ち | We're sharing our framework for building safer and more helpful AI for health. | Google 健康AI / 健康AI 評価 / AI 評価 枠組み / 医療AI 安全性 / 健康AI 正確さ / Google for Health / 医療AI 評価方法 / 健康AI 役立ちやすさ / AI ホワイトペーパー Google / 生成AI / 医療AI / AI評価 / Google / 健康",
+   "urls": [
+    "https://blog.google/innovation-and-ai/technology/health/evaluating-health-ai-at-scale/"
+   ]
+  },
+  {
+   "slug": "lotus-elise-fuel-pump-recall-2026",
+   "at": "2026-11-04T15:33:04.193780+00:00",
+   "title": "ロータス「エリーゼ」611台をリコール　燃料ポンプを全車交換へ",
+   "head": "ロータス「エリーゼ」611台をリコール　燃料ポンプを全車交換へ | リコールの届出について（ロータス エリーゼ SPORT/SPRINT 220 他）",
+   "text": "ロータス「エリーゼ」611台をリコール　燃料ポンプを全車交換へ | リコールの届出について（ロータス エリーゼ SPORT/SPRINT 220 他） | ロータス エリーゼ リコール / 燃料ポンプ リコール / エリーゼ 燃料ポンプ / ロータス リコール 2026 / エルシーアイ リコール / 国土交通省 リコール届出 / 車台番号 確認 / リコール 対象車 確認 / エリーゼ SPORT 220 リコール / 低圧燃料ポンプ 交換 / 自動車 / リコール / 製品安全 / 行政",
+   "urls": [
+    "http://www.mlit.go.jp/report/press/jidosha08_hh_005881.html"
+   ]
+  },
+  {
    "slug": "gpt-56-cyber-aws-govcloud",
    "at": "2026-11-04T15:13:00.376918+00:00",
    "title": "OpenAIのサイバー特化AI「GPT-5.6 Cyber」、AWS GovCloudで承認済み顧客向けに提供",
@@ -1204,9 +1224,9 @@
   {
    "slug": "deepseek-super-agent-coding-prototype",
    "at": "2026-11-01T05:07:46.947644+00:00",
-   "title": "DeepSeek、プログラミング支援AI「Super-Agent」の試作版を公開　呼ばれなくても提案",
-   "head": "DeepSeek、プログラミング支援AI「Super-Agent」の試作版を公開　呼ばれなくても提案 | DeepSeek open sources Super-Agent as a research prototype, a proactive coding agent it says can monitor group chats for coding issues and suggest solutions",
-   "text": "DeepSeek、プログラミング支援AI「Super-Agent」の試作版を公開　呼ばれなくても提案 | DeepSeek open sources Super-Agent as a research prototype, a proactive coding agent it says can monitor group chats for coding issues and suggest solutions | Super-Agent / DeepSeek / コーディングエージェント / Claude Code / オープンソース / プログラミングAI / DeepSeek Harness / グループチャット / AIエージェント / Anthropic / DeepSeek / AIエージェント / コーディングAI / オープンソース / 生成AI",
+   "title": "DeepSeek、GitHubリポジトリ向けの自律型コーディングAI「dsh-superagent」の試作コードを公開",
+   "head": "DeepSeek、GitHubリポジトリ向けの自律型コーディングAI「dsh-superagent」の試作コードを公開 | DeepSeek open sources Super-Agent as a research prototype, a proactive coding agent it says can monitor group chats for coding issues and suggest solutions",
+   "text": "DeepSeek、GitHubリポジトリ向けの自律型コーディングAI「dsh-superagent」の試作コードを公開 | DeepSeek open sources Super-Agent as a research prototype, a proactive coding agent it says can monitor group chats for coding issues and suggest solutions | Super-Agent / DeepSeek / コーディングエージェント / Claude Code / オープンソース / プログラミングAI / DeepSeek Harness / グループチャット / AIエージェント / Anthropic / DeepSeek / AIエージェント / コーディングAI / オープンソース / 生成AI",
    "urls": [
     "https://github.com/deepseek-ai/dsh-superagent-prototype"
    ]

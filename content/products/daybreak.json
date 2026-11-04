@@ -160,11 +160,12 @@
   ],
   "related": [
     "gpt-6-astra",
+    "gpt-5-6",
     "chatgpt",
-    "codex",
-    "gpt-6"
+    "codex"
   ],
   "articles": [
+    "gpt-56-cyber-aws-govcloud",
     "cisco-openai-cyber-defense",
     "openai-security-sprint-bug-bounty",
     "openai-daybreak-check-point-vulnerability",
