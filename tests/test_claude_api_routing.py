@@ -297,6 +297,31 @@ class AdaptiveBudgetTests(Base):
         self.write_ledger("claude_api_usage.json", {"runs": {"2026-11-03": {"a": {"usd": 94.0}}}})
         self.assertEqual(llm.api_ledger_summary()["spent"], 0)
 
+    def test_refill_day_usage_before_refill_is_not_double_counted(self):
+        """2026-11-04: 補充（0:00 UTC＝日本時間 9:00）より前の日本時間 0〜9時に使った約 $28 が、新しい期間の1日目にも数えられていた"""
+        before = datetime(2026, 11, 3, 20, 0, tzinfo=timezone.utc)  # 日本時間 11/4 5:00（前の期間）
+        after = datetime(2026, 11, 4, 4, 0, tzinfo=timezone.utc)    # 日本時間 11/4 13:00（新しい期間）
+        with patch.object(llm, "_now", return_value=before):
+            for _ in range(2):
+                llm.record_api_usage("core", "claude-sonnet-5-5", {"output_tokens": 1_420_000})  # 約 $14 ずつ
+            pre = llm.api_ledger_summary()
+        self.assertAlmostEqual(pre["spent_today"], pre["spent"] - 0, places=2)
+        self.assertGreater(pre["spent_today"], 27)  # 前の期間の中では、その日の分として数える
+        with patch.object(llm, "_now", return_value=after):
+            llm.record_api_usage("core", "claude-sonnet-5-5", {"output_tokens": 90_000})  # 約 $1
+            s = llm.api_ledger_summary()
+        self.assertEqual(s["period_start"], "2026-11-04")
+        self.assertLess(s["spent"], 1.5)  # 新しい期間には補充後の分だけ
+        self.assertAlmostEqual(s["spent"], s["spent_today"], places=4)
+        self.assertGreater(s["daily_limit"], 2.5)  # 月の予算 $95 は変えない（95 / 30日）
+        # 前の数え方（pre_usd を見ない）なら約 $29 になり、今日の目安を超えて中心が Haiku・無料に下がっていた
+        ledger = json.loads((llm.API_STATE_DIR / "claude_api_usage.json").read_text())
+        self.assertGreater(sum(e["usd"] for e in ledger["runs"]["2026-11-04"].values()), 28)
+        # すでに記録済みの日（pre_usd を後から足した記録）も同じように数える
+        self.write_ledger("claude_api_usage_types.json", {"runs": {"2026-11-04": {"gh-1-1": {"usd": 28.49, "pre_usd": 28.49}}}})
+        with patch.object(llm, "_now", return_value=after):
+            self.assertLess(llm.api_ledger_summary()["spent"], 1.5)
+
     def test_fractional_level_mixes_models_evenly(self):
         llm._api_summary_logged.add("2026-11-10")  # 要約の1行はこのテストでは出さない
         with patch.object(llm, "api_plan", return_value={"levels": {"core": 1.5}}):

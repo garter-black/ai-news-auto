@@ -1029,6 +1029,8 @@ def api_ledger_summary(now: datetime | None = None) -> dict:
                 if day < first_day:
                     continue
                 usd = float(entry.get("usd") or 0)
+                if day == first_day:  # 補充日の、補充の時刻より前の分は前の期間に数える（record_api_usage の pre_usd）
+                    usd = max(0.0, usd - float(entry.get("pre_usd") or 0))
                 spent += usd
                 if day == today:
                     spent_today += usd
@@ -1227,6 +1229,10 @@ def record_api_usage(purpose: str, model: str, usage, now: datetime | None = Non
     data = _read_json(_ledger_path())
     entry = _ledger_entry(data, now)
     entry["usd"] = round(float(entry.get("usd") or 0) + usd, 6)
+    # 補充日の日本時間 0〜9時（補充 0:00 UTC より前）の分は前の期間のお金。日付の欄は日本時間なので、
+    # その分を pre_usd に分けて残し、新しい期間の使用額に二重に数えない（2026-11-04 約 $28 が二重に数えられた）
+    if _jst_day(now) == _jst_day(_period_bounds(now)[1]):
+        entry["pre_usd"] = round(float(entry.get("pre_usd") or 0) + usd, 6)
     entry.setdefault("calls", {})[purpose] = entry.get("calls", {}).get(purpose, 0) + 1
     stat = entry.setdefault("by", {}).setdefault(f"{purpose}|{_model_level(model)}", {"n": 0, "usd": 0.0})
     stat["n"] += 1
