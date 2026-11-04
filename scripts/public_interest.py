@@ -223,9 +223,16 @@ def is_candidate(item: dict, kind: str = "") -> bool:
     return candidate_problem(title, summary, item.get("url") or "") is None
 
 
+# 手続き・支援の案内（罹災証明の申請・支援金・特例など）。災害の話題でも速報にはしない
+PROCEDURE_RE = re.compile(r"罹災証明|り災証明|申請|支援|特例|手続|給付|貸付|相談窓口|受付")
+
+
 def breaking_ok(item: dict, kind: str = "") -> bool:
     """速報にしてよいか。ミサイル・災害（官公庁の発表）だけ。流出・リコール・詐欺は通常の記事（すぐ出すが【速報】にはしない）"""
-    return (kind or item.get("kind")) == "gov" and category(item.get("title") or "", "") in BREAKING_CATEGORIES
+    title = _nfkc(item.get("title") or "")
+    if PROCEDURE_RE.search(title):
+        return False  # 被災者の手続き・支援の案内は急ぎの速報ではない（2026-11-04 の初回で罹災証明の案内が速報になった）
+    return (kind or item.get("kind")) == "gov" and category(title, "") in BREAKING_CATEGORIES
 
 
 def done_today(state: dict, now: datetime | None = None) -> int:

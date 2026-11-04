@@ -87,6 +87,9 @@ class CandidateTest(unittest.TestCase):
         self.assertTrue(pi.breaking_ok(self.item("北朝鮮のミサイル等関連情報（続報）について")))
         self.assertFalse(pi.breaking_ok(self.item("不正アクセスによる情報流出のお詫び")))
         self.assertFalse(pi.breaking_ok(self.item("北朝鮮のミサイル等関連情報", kind="company")))
+        # 被災者の手続きの案内は災害の話題でも速報にしない（S2）
+        self.assertFalse(pi.breaking_ok(self.item("令和8年熊本地震罹災証明書（り災証明書）のオンライン申請について")))
+        self.assertTrue(pi.breaking_ok(self.item("令和8年台風第30号に関する特別警報の発表について")))
 
     def test_daily_cap_counts_only_created_articles_today(self):
         now = datetime(2026, 11, 4, 15, tzinfo=JST)
