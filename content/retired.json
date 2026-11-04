@@ -3356,5 +3356,41 @@
    "videoUrl": "https://www.youtube.com/watch?v=6Qx099Wptf0"
   }
  },
+ "products": {
+  "chatgpt-enterprise": {
+   "name": "ChatGPT Enterprise",
+   "reason": "no-sources",
+   "redirect": "chatgpt",
+   "retiredAt": "2026-11-04T13:05:21+09:00"
+  },
+  "claude-opus-5-5": {
+   "name": "Claude Opus 5.5",
+   "reason": "no-sources",
+   "redirect": "claude",
+   "retiredAt": "2026-11-03T18:04:26+09:00"
+  },
+  "deepseek-v4-1-flash": {
+   "name": "DeepSeek-V4.1-Flash",
+   "reason": "no-sources",
+   "retiredAt": "2026-11-03T18:04:26+09:00"
+  },
+  "gpt-6-luna": {
+   "name": "GPT-6 Luna",
+   "reason": "no-sources",
+   "redirect": "gpt-6",
+   "retiredAt": "2026-11-03T18:04:26+09:00"
+  },
+  "gpt-6-sol": {
+   "name": "GPT-6 Sol",
+   "reason": "no-sources",
+   "redirect": "gpt-6",
+   "retiredAt": "2026-11-03T18:04:26+09:00"
+  },
+  "jev": {
+   "name": "Jev",
+   "reason": "no-sources",
+   "retiredAt": "2026-11-03T18:04:26+09:00"
+  }
+ },
  "version": 1
 }

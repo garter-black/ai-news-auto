@@ -89,20 +89,56 @@ async function loadArticle(env: Env, slug: string): Promise<void> {
  * 重複の記事は代表の記事へ 301、それ以外は 410 Gone を返す（AdSense「有用性の低いコンテンツ」への対策。2026-11-03）
  */
 type RetiredEntry = { reason: string; redirect?: string };
-let retiredLoading: Promise<Map<string, RetiredEntry>> | null = null;
+type RetiredLists = { articles: Map<string, RetiredEntry>; products: Map<string, RetiredEntry> };
+let retiredLoading: Promise<RetiredLists> | null = null;
 
-function loadRetired(env: Env): Promise<Map<string, RetiredEntry>> {
+function loadRetiredLists(env: Env): Promise<RetiredLists> {
+  const empty = (): RetiredLists => ({ articles: new Map(), products: new Map() });
   retiredLoading ??= (async () => {
     const res = await asset(env, "/_content/retired.json");
-    if (!res.ok) return new Map<string, RetiredEntry>();
-    const data = (await res.json()) as { articles?: Record<string, RetiredEntry> };
-    return new Map(Object.entries(data.articles ?? {}));
+    if (!res.ok) return empty();
+    const data = (await res.json()) as { articles?: Record<string, RetiredEntry>; products?: Record<string, RetiredEntry> };
+    return { articles: new Map(Object.entries(data.articles ?? {})), products: new Map(Object.entries(data.products ?? {})) };
   })().catch((error) => {
     retiredLoading = null;
     console.error("[worker] retired list failed", String(error));
-    return new Map<string, RetiredEntry>();
+    return empty();
   });
   return retiredLoading;
+}
+
+async function loadRetired(env: Env): Promise<Map<string, RetiredEntry>> {
+  return (await loadRetiredLists(env)).articles;
+}
+
+/**
+ * 消えた製品ページ（content/retired.json の products。scripts/retire_articles.py が、関係する記事・出典を失った製品を消すときに書く）。
+ * 404 にせず、親の製品ページ（redirect。例: chatgpt-enterprise → chatgpt）へ、無ければ図鑑の一覧（/products）へ 301（台帳 W30。2026-11-04）。
+ * 同じ slug の製品ページがまた作られていれば（content/products にある）転送しない
+ */
+const PRODUCT_PATH = /^\/products\/([^/]+?)(\.rsc)?\/?$/;
+
+async function retiredProductResponse(url: URL, env: Env): Promise<Response | null> {
+  const match = PRODUCT_PATH.exec(url.pathname);
+  if (!match) return null;
+  let slug: string;
+  try {
+    slug = decodeURIComponent(match[1]);
+  } catch {
+    return null;
+  }
+  const entry = (await loadRetiredLists(env)).products.get(slug);
+  if (!entry) return null;
+  try {
+    await loadBase(env);
+    if ((g.__SAISOKU_VFS__?.dirs.get("content/products") ?? []).includes(`${slug}.json`)) return null;
+  } catch {
+    // 中身の一覧が読めないときも転送する（消えた製品なので 404 よりよい）
+  }
+  const target = entry.redirect && /^[A-Za-z0-9][A-Za-z0-9_-]*$/.test(entry.redirect) && entry.redirect !== slug ? `/products/${entry.redirect}` : "/products";
+  const to = new URL(`${target}${match[2] ?? ""}`, url);
+  to.search = url.search;
+  return new Response(null, { status: 301, headers: { Location: to.pathname + to.search, "Cache-Control": "public, max-age=3600" } });
 }
 
 const RETIRED_PATH = /^\/(articles|cover|card)\/([^/]+?)(\.rsc)?\/?$/;
@@ -343,8 +379,8 @@ export default {
     // 編集部の記事確認ページ（cloudflare/review.ts。ログインした編集部だけ。キャッシュしない）
     if (url.pathname === "/review" || url.pathname.startsWith("/review/")) return handleReview(request, url, env as unknown as ReviewEnv);
 
-    // 取り下げた記事（301 か 410）・終了した固定ページ（410）。エッジキャッシュに古い版の HTML が残っていても先に返す
-    const retired = retiredPageResponse(request, url) ?? (await retiredResponse(request, url, env, ctx));
+    // 取り下げた記事（301 か 410）・終了した固定ページ（410）・消えた製品ページ（親の製品へ 301）。エッジキャッシュに古い版の HTML が残っていても先に返す
+    const retired = retiredPageResponse(request, url) ?? (await retiredResponse(request, url, env, ctx)) ?? (await retiredProductResponse(url, env));
     if (retired) return retired;
 
     const cacheKey = edgeCacheKey(request, url, env);

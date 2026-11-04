@@ -487,6 +487,32 @@ def fix_product(data: dict) -> dict | None:
     return data
 
 
+def parent_product(slug: str, live: set[str]) -> str:
+    """消える製品の転送先: 今も残る製品のうち、slug が「その製品の slug + -」で始まる一番長いもの
+    （chatgpt-enterprise → chatgpt、gemini-4-argon-pro → gemini-4-argon）。無ければ ""（サイトは図鑑の一覧 /products へ転送）"""
+    best = ""
+    for cand in live:
+        if cand != slug and slug.startswith(cand + "-") and len(cand) > len(best):
+            best = cand
+    return best
+
+
+def record_removed_products(store: dict, removed: list[str], stamp: str, names: dict[str, str] | None = None) -> None:
+    """消した製品ページを content/retired.json の products に残す（cloudflare/worker.ts が 404 にせず親の製品・一覧へ 301。台帳 W30）。
+    前に消した製品の転送先が今は無ければ、たどり直す。同じ slug の製品がまた作られていれば、その記録は消す"""
+    live = {p.stem for p in (ROOT / "content" / "products").glob("*.json")}
+    products = store.setdefault("products", {})
+    for slug in removed:
+        products[slug] = {"reason": "no-sources", "retiredAt": stamp, "name": (names or {}).get(slug, slug)}
+    for slug in list(products):
+        if slug in live:
+            del products[slug]
+            continue
+        products[slug]["redirect"] = parent_product(slug, live)
+        if not products[slug]["redirect"]:
+            products[slug].pop("redirect")
+
+
 def apply(retired: dict[str, dict], now: datetime) -> dict:
     stamp = now.astimezone(JST).isoformat(timespec="seconds")
     store = {"version": 1, "articles": {}}
@@ -530,6 +556,7 @@ def apply(retired: dict[str, dict], now: datetime) -> dict:
             path.write_text(json.dumps(new, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             stats["articles_rewritten"] += 1
 
+    removed_names: dict[str, str] = {}
     files = [ROOT / f for f in DATA_FILES] + [p for d in DATA_DIRS for p in sorted((ROOT / d).glob("*.json"))]
     for path in files:
         if not path.exists():
@@ -543,12 +570,16 @@ def apply(retired: dict[str, dict], now: datetime) -> dict:
             if fixed is None:
                 path.unlink()
                 stats["products_removed"].append(path.stem)
+                removed_names[path.stem] = str(new.get("name") or path.stem)
                 continue
             new = fixed
         if rw.changed:
             path.write_text(json.dumps(new, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             stats["data_rewritten"] += 1
 
+    # 消した製品ページは 404 にせず、親の製品ページ（無ければ図鑑の一覧）へ転送する（台帳 W30）
+    if removed_names or store.get("products"):
+        record_removed_products(store, stats["products_removed"], stamp, removed_names)
     RETIRED.write_text(json.dumps(store, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
     return stats
 
