@@ -453,6 +453,9 @@
       { "host": "corp.moneyforward.com", "entity": "*", "name": "マネーフォワード公式" },
       { "host": "brainpad.co.jp", "entity": "*", "name": "ブレインパッド公式" },
       { "host": "developers.cyberagent.co.jp", "entity": "*", "name": "CyberAgent Developers Blog" },
+      { "host": "arara.com", "entity": "*", "name": "アララ公式" },
+      { "host": "asoview.co.jp", "entity": "*", "name": "アソビュー公式" },
+      { "host": "biccamera.co.jp", "entity": "*", "name": "ビックカメラ公式" },
       {
         "host": "nvidia.com",
         "entity": "nvidia",
