@@ -603,6 +603,14 @@
       "category": "アプリ・サービス"
     },
     {
+      "slug": "imac",
+      "name": "iMac",
+      "aliases": [],
+      "company": "other",
+      "companyName": "Apple",
+      "category": "ガジェット"
+    },
+    {
       "slug": "ipad",
       "name": "iPad",
       "aliases": [],
@@ -718,6 +726,14 @@
       "company": "other",
       "companyName": "Apple",
       "category": "半導体・インフラ"
+    },
+    {
+      "slug": "mac-studio",
+      "name": "Mac Studio",
+      "aliases": [],
+      "company": "other",
+      "companyName": "Apple",
+      "category": "ガジェット"
     },
     {
       "slug": "macbook-pro",
@@ -1213,15 +1229,11 @@
     "自律型AI",
     "音声AI"
   ],
-  "updatedAt": "2026-11-04T01:28:03+00:00",
+  "updatedAt": "2026-11-04T02:39:08+00:00",
   "failed": {
     "gpt-5-6-sol": {
       "at": "2026-10-27T11:05:30+00:00",
       "signature": "6556ee5d85f5cdb4"
-    },
-    "rtx-spark": {
-      "at": "2026-10-31T12:13:10+00:00",
-      "signature": "ef53f469d0978064"
     },
     "figma": {
       "at": "2026-11-01T01:41:23+00:00",

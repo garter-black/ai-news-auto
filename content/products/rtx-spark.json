@@ -6,122 +6,100 @@
   "companyName": "NVIDIA",
   "category": "ガジェット",
   "overview": {
-    "text": "RTX Sparkは、手元で本格的なAIエージェントや高度なAI処理を動かすための新しいPC向けプラットフォームです。NVIDIAがMicrosoftやMediaTekなどと共同で開発し、2026年8月に発表しました。",
+    "text": "RTX Sparkは、NVIDIAがMediaTekと共同開発したモバイル向けの次世代PC用統合プロセッサです。最大128GBの統合メモリと1ペタフロップスのAI演算能力を備え、手元でローカルAIエージェントを動かせます。2026年8月に発表されました。",
     "sources": [
-      "nvidia-local-ai-gtc-berlin-spark-station",
-      "nvidia-rtx-spark-announcement",
       "nvidia-rtx-spark-superchip-announcement"
     ]
   },
   "facts": [
     {
       "label": "提供開始",
-      "value": "2026年後半より順次展開",
+      "value": "2026年後半より順次",
       "sources": [
-        "nvidia-local-ai-gtc-berlin-spark-station",
         "nvidia-rtx-spark-announcement"
       ]
     },
     {
-      "label": "日本での提供",
-      "value": "パートナー企業経由で調達可能",
+      "label": "使える場所",
+      "value": "対応するノートPCや卓上機",
       "sources": [
-        "nvidia-local-ai-gtc-berlin-spark-station"
+        "nvidia-local-ai-gtc-berlin-spark-station",
+        "nvidia-gtc-berlin-2026-keynote-highlights"
       ]
     },
     {
       "label": "向いている人",
-      "value": "AI開発者やクリエイター",
+      "value": "AI開発者や映像制作者",
       "sources": [
         "nvidia-local-ai-gtc-berlin-spark-station",
-        "nvidia-rtx-spark-announcement"
+        "adobe-premiere-nvidia-rtx-spark"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "最大128GBの統合メモリと1ペタフロップスのAI演算能力を備えています。",
+      "text": "パラメータ数が720億や1220億の大規模なAIモデルをクラウドに頼らずローカル環境だけで実行できます。",
       "sources": [
-        "nvidia-local-ai-gtc-berlin-spark-station",
-        "nvidia-rtx-spark-announcement"
+        "intelligent-terminal-local-120b-llm",
+        "nvidia-rtx-spark-local-agent-debugging"
       ]
     },
     {
-      "text": "完全にローカル環境で動作するエージェントアプリを利用できます。",
+      "text": "FP4精度において1ペタフロップスのAI演算能力を発揮します。",
       "sources": [
-        "nvidia-local-ai-gtc-berlin-spark-station"
+        "nvidia-rtx-spark-superchip-announcement"
       ]
     },
     {
-      "text": "4Kレンダリングと100fps超のゲームプレイを同時にこなせます。",
-      "sources": [
-        "nvidia-rtx-spark-announcement"
-      ]
-    },
-    {
-      "text": "動画編集ソフトでのシーン編集検出やオブジェクトマスクを高速化します。",
+      "text": "Adobe Premiere Proで4K 10-bit 4:2:2 60fpsのマルチカム映像をプロキシなしで同時再生できます。",
       "sources": [
         "adobe-premiere-nvidia-rtx-spark"
+      ]
+    },
+    {
+      "text": "AIがバグ検知やコード修正、ブラウザを用いた自動テストまでを約1分22秒で完結させます。",
+      "sources": [
+        "nvidia-rtx-spark-local-agent-debugging"
+      ]
+    },
+    {
+      "text": "Blenderでの3Dレンダリングとゲームプレイを同時に並行処理できます。",
+      "sources": [
+        "nvidia-rtx-spark-announcement"
       ]
     }
   ],
   "pricing": [],
-  "japan": [
-    {
-      "text": "発表の時点では、日本での提供に関する個別の案内はありません。",
-      "sources": [
-        "nvidia-local-ai-gtc-berlin-spark-station"
-      ]
-    },
-    {
-      "text": "ASUSやDell、HP、Lenovo、MSIなどの主要パートナーから購入できます。",
-      "sources": [
-        "nvidia-local-ai-gtc-berlin-spark-station"
-      ]
-    }
-  ],
-  "howto": [
-    {
-      "text": "ASUSやHPなどのパートナー企業から、専用システムを購入して始めます。",
-      "sources": [
-        "nvidia-local-ai-gtc-berlin-spark-station"
-      ]
-    },
-    {
-      "text": "Hugging Face等からオープンモデルをダウンロードして利用できます。",
-      "sources": [
-        "nvidia-local-ai-gtc-berlin-spark-station"
-      ]
-    }
-  ],
+  "japan": [],
+  "howto": [],
   "differences": [],
   "faq": [
     {
-      "q": "いつから使える？",
-      "a": "2026年後半よりパートナー各社から順次提供される予定です。",
+      "q": "どんなチップが搭載されている？",
+      "a": "MediaTekと共同開発した20コアのGrace CPUと、Blackwell RTX GPUを統合しています。",
       "sources": [
         "nvidia-rtx-spark-announcement"
       ]
     },
     {
-      "q": "誰に向いている？",
-      "a": "AI開発者や映像制作を行うクリエイターに向いています。",
-      "sources": [
-        "nvidia-local-ai-gtc-berlin-spark-station",
-        "nvidia-rtx-spark-announcement"
-      ]
-    },
-    {
-      "q": "主な仕様は？",
-      "a": "Blackwell GPUと20コアのGrace CPU、最大128GBの統合メモリを搭載しています。",
+      "q": "メモリの容量はいくつ？",
+      "a": "最大128GBのLPDDR5Xユニファイドメモリを搭載しています。",
       "sources": [
         "nvidia-rtx-spark-announcement"
       ]
     },
     {
-      "q": "セキュリティ面の特徴は？",
-      "a": "データを外部のクラウドに送信せず、完全なローカル環境で処理を完結できます。",
+      "q": "動画編集ではどんなメリットがある？",
+      "a": "Adobe Premiere Proの処理が高速化され、シーン編集検出やオブジェクトマスクがスムーズに使えます。",
       "sources": [
+        "adobe-premiere-nvidia-rtx-spark"
+      ]
+    },
+    {
+      "q": "オフラインでもAIは使える？",
+      "a": "インターネットに接続せず、端末の中だけで大規模言語モデルを動かすことができます。",
+      "sources": [
+        "intelligent-terminal-local-120b-llm",
         "nvidia-rtx-spark-local-agent-debugging"
       ]
     }
@@ -130,32 +108,17 @@
     {
       "date": "2026-08-06",
       "slug": "nvidia-rtx-spark-superchip-announcement",
-      "event": "RTX Spark superchipを発表"
-    },
-    {
-      "date": "2026-08-21",
-      "slug": "nvidia-rtx-spark-local-agent-debugging",
-      "event": "ローカル開発AIエージェントのデモを公開"
-    },
-    {
-      "date": "2026-09-09",
-      "slug": "adobe-premiere-nvidia-rtx-spark",
-      "event": "Adobe Premiere Proとの最適化を発表"
+      "event": "NVIDIAが「RTX Spark」を発表"
     },
     {
       "date": "2026-10-15",
       "slug": "nvidia-rtx-spark-announcement",
-      "event": "次世代PC向け統合プロセッサを発表"
-    },
-    {
-      "date": "2026-10-26",
-      "slug": "nvidia-local-ai-gtc-berlin-spark-station",
-      "event": "GTC BerlinでローカルAIの全貌を公開"
+      "event": "BlackwellとGraceを統合した詳細を公開"
     },
     {
       "date": "2026-10-26",
       "slug": "nvidia-gtc-berlin-2026-keynote-highlights",
-      "event": "GTC Berlin 2026でRTX Sparkを発表"
+      "event": "GTC Berlinで個人向けAI端末として披露"
     }
   ],
   "related": [
@@ -179,9 +142,9 @@
     "nvidia-rtx-spark-local-agent-debugging",
     "nvidia-rtx-spark-superchip-announcement"
   ],
-  "signature": "4dc228a85ef5c4fd",
+  "signature": "8c75824c09f843b3",
   "primarySignature": "abb2722a3026010d",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:43:40+00:00",
-  "updatedAt": "2026-10-27T11:09:16+00:00"
+  "updatedAt": "2026-11-04T02:39:30+00:00"
 }

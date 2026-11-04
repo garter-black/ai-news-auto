@@ -8,129 +8,135 @@
   "companyName": "OpenAI",
   "category": "アプリ・サービス",
   "overview": {
-    "text": "ChatGPT Workは、OpenAIが提供する企業向けのAIワークスペースです。2026年7月にEnterpriseプラン向けに提供開始が発表されました。",
+    "text": "ChatGPT Workは、企業の業務実務に特化したOpenAIのワークスペースです。2026年9月に発表され、チャットとは別の専用タブで資料作成から外部ツール連携までを自動化します。",
     "sources": [
+      "openai-chatgpt-work-launch",
       "openai-chatgpt-work-enterprise-rollout"
     ]
   },
   "facts": [
     {
       "label": "料金",
-      "value": "法人向けEnterprise契約",
+      "value": "Enterprise契約など",
       "sources": [
+        "openai-chatgpt-work-launch",
         "openai-chatgpt-work-enterprise-rollout"
       ]
     },
     {
       "label": "提供開始",
-      "value": "2026年7月",
+      "value": "2026年9月に順次提供",
       "sources": [
+        "openai-chatgpt-work-launch",
         "openai-chatgpt-work-enterprise-rollout"
+      ]
+    },
+    {
+      "label": "日本での提供",
+      "value": "日本から利用できます",
+      "sources": [
+        "openai-chatgpt-work-launch"
       ]
     },
     {
       "label": "使える場所",
       "value": "Web、デスクトップ、モバイル",
       "sources": [
+        "openai-chatgpt-work-launch",
         "openai-chatgpt-work-enterprise-rollout"
       ]
     },
     {
       "label": "向いている人",
-      "value": "ビジネス職、データ担当者",
+      "value": "データ担当者、ビジネス職",
       "sources": [
-        "chatgpt-work-realpage-ai-training",
-        "chatgpt-work-dashboard-generation"
+        "chatgpt-work-dashboard-generation",
+        "openai-chatgpt-work-launch"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "プロンプトを一度入力するだけで、研修テキスト、講義用スライド、補足PDFを同時に作成できます。",
+      "text": "手書きのホワイトボード画像やPDFから、ブランドのスタイルガイドに沿ったインフォグラフィックを生成できます。",
       "sources": [
-        "chatgpt-work-realpage-ai-training"
+        "openai-chatgpt-work-launch"
       ]
     },
     {
-      "text": "自然言語の指示から数秒で、インタラクティブなダッシュボードを自動生成できます。",
+      "text": "プロンプトからの指示で、メール送信やカレンダーの会議設定といった外部ツールとの連携を自動実行します。",
+      "sources": [
+        "openai-chatgpt-work-launch"
+      ]
+    },
+    {
+      "text": "自然言語の指示から、インタラクティブなダッシュボードを数秒で自動生成できます。",
       "sources": [
         "chatgpt-work-dashboard-generation"
       ]
     },
     {
-      "text": "DatabricksやSlack、Google Driveのデータを横断して統合分析を実行できます。",
+      "text": "DatabricksやSlack、Google Driveと連携し、データ分析やファンネル分析を実行できます。",
       "sources": [
-        "openai-chatgpt-work-product-insights-demo",
-        "chatgpt-work-data-agent-setup"
-      ]
-    },
-    {
-      "text": "分析結果からアクションプランを策定し、担当者の割り当てやSlackへの直接投稿を行えます。",
-      "sources": [
+        "chatgpt-work-data-agent-launch",
         "openai-chatgpt-work-product-insights-demo"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "最上位プランであるEnterpriseの契約ユーザー向けに提供されています。",
+      "text": "Enterpriseプランなどの有料プランに含まれる追加機能として提供されています。",
       "sources": [
+        "openai-chatgpt-work-launch",
         "openai-chatgpt-work-enterprise-rollout"
       ]
     }
   ],
   "japan": [
     {
-      "text": "基本機能や管理画面は日本語で利用可能です。モデル自体も高精度な日本語処理に対応しています。",
+      "text": "日本国内の企業やユーザーでも利用できます。",
       "sources": [
-        "uber-openai-chatgpt-work-enterprise-deployment"
+        "openai-chatgpt-work-launch"
       ]
     }
   ],
   "howto": [
     {
-      "text": "Webブラウザ版、デスクトップアプリ、モバイルアプリのすべての環境で利用できます。",
+      "text": "Webブラウザやデスクトップアプリ、モバイルアプリの画面上部にある「Work」タブに切り替えて利用します。",
       "sources": [
+        "openai-chatgpt-work-launch",
         "openai-chatgpt-work-enterprise-rollout"
-      ]
-    },
-    {
-      "text": "OpenAIの公式サイトや国内の正規リセラーを通じて、Enterpriseプランの導入相談を行います。",
-      "sources": [
-        "uber-openai-chatgpt-work-enterprise-deployment"
       ]
     }
   ],
-  "differences": [],
+  "differences": [
+    {
+      "text": "通常の対話型チャットスペースとは別に、ビジネス文書や企業のアセットを扱う専用のWorkタブが新設されています。",
+      "sources": [
+        "openai-chatgpt-work-launch"
+      ]
+    }
+  ],
   "faq": [
     {
-      "q": "いつから使える？",
-      "a": "2026年7月にEnterpriseプラン向けに順次提供が開始されています。",
+      "q": "いつから使えますか？",
+      "a": "2026年9月からEnterpriseプランなどのユーザー向けに順次提供されています。",
+      "sources": [
+        "openai-chatgpt-work-launch",
+        "openai-chatgpt-work-enterprise-rollout"
+      ]
+    },
+    {
+      "q": "どんなデバイスで使えますか？",
+      "a": "Webブラウザ、デスクトップアプリ、モバイルアプリのすべての環境で利用できます。",
       "sources": [
         "openai-chatgpt-work-enterprise-rollout"
       ]
     },
     {
-      "q": "どのような端末で使える？",
-      "a": "Webブラウザ、デスクトップアプリ、モバイルアプリのすべての環境で同期して利用できます。",
+      "q": "メールやカレンダーの操作もできますか？",
+      "a": "プロンプトからメールの送信やカレンダーの会議設定を自動で行うことができます。",
       "sources": [
-        "openai-chatgpt-work-enterprise-rollout"
-      ]
-    },
-    {
-      "q": "データ分析ではどのような操作に対応している？",
-      "a": "自然言語の指示からダッシュボードの自動生成、グラフの編集やファンネル分析が行えます。",
-      "sources": [
-        "chatgpt-work-tailor-dashboards-demo",
-        "openai-chatgpt-work-product-insights-demo"
-      ]
-    },
-    {
-      "q": "外部ツールとは連携できる？",
-      "a": "DatabricksやSlack、Google Driveなどの外部サービスとプラグインで連携できます。",
-      "sources": [
-        "openai-chatgpt-work-product-insights-demo",
-        "chatgpt-work-data-agent-setup"
+        "openai-chatgpt-work-launch"
       ]
     }
   ],
@@ -138,12 +144,22 @@
     {
       "date": "2026-07-24",
       "slug": "openai-chatgpt-work-enterprise-rollout",
-      "event": "ChatGPT WorkをEnterpriseプランに提供開始"
+      "event": "ChatGPT WorkをEnterpriseプランで順次提供"
+    },
+    {
+      "date": "2026-09-16",
+      "slug": "openai-chatgpt-work-launch",
+      "event": "ChatGPTに実務向けのChatGPT Workを追加"
+    },
+    {
+      "date": "2026-09-18",
+      "slug": "chatgpt-work-data-agent-launch",
+      "event": "ChatGPT Workにデータエージェントを追加"
     },
     {
       "date": "2026-09-18",
       "slug": "chatgpt-work-dashboard-generation",
-      "event": "ダッシュボード自動生成機能を実演"
+      "event": "ChatGPT Workのダッシュボード自動生成を実演"
     }
   ],
   "related": [
@@ -197,9 +213,9 @@
     "openai-chatgpt-work-admin-api",
     "openai-chatgpt-work-enterprise-rollout"
   ],
-  "signature": "a094517cd19ff5b4",
-  "primarySignature": "1b1e52514328374e",
+  "signature": "4c77d53469bef02f",
+  "primarySignature": "d967792fc34eb0df",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:34:50+00:00",
-  "updatedAt": "2026-11-02T11:11:56+00:00"
+  "updatedAt": "2026-11-04T02:39:17+00:00"
 }

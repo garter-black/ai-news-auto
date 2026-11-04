@@ -1,0 +1,163 @@
+{
+  "slug": "google-cloud-agent-skill-evaluation-rules",
+  "sourceType": "web",
+  "sourceUrl": "https://cloud.google.com/blog/topics/developers-practitioners/evaluate-agent-skills-before-they-bloat-your-context-window/",
+  "sourceName": "Google Cloud公式ブログ",
+  "title": "Google Cloud、AIエージェントスキル評価の5ルールを公開",
+  "seoTitle": "AIエージェントスキル評価の5ルール　Google Cloudの提供状況",
+  "threadsPost": "コードを書く開発者の皆さん、評価の仕方を見直す時です。\n\n要約すると、Google CloudがAIエージェントスキルの5ルールを公開しました。\n開発者がスキルファイルを書く前に、トリガーの衝突やセキュリティリスクを防ぐ仕組みを紹介しています。\n\nAIエージェントを使う開発者の方、スキルファイルはどう整理していますか？",
+  "threadsHook": "question",
+  "threadsQuestions": [
+    {
+      "pattern": "expert",
+      "question": "AIエージェントを使う開発者の方、スキルファイルはどう整理していますか？"
+    },
+    {
+      "pattern": "ab",
+      "question": "AIエージェントの評価、正しさと速さどちらを重視しますか？"
+    },
+    {
+      "pattern": "plain",
+      "question": "仕事でAIエージェントを使っていますか？"
+    }
+  ],
+  "threadsStyle": 3,
+  "writingVoice": "explainer",
+  "lede": "Google Cloudは2026年11月3日、AIエージェントのスキルを評価する5つのルールを公式ブログで公開しました。開発者がスキルファイルを導入する前に、トリガーの衝突やセキュリティリスクを事前に防ぐ仕組みを紹介しています。コンテキストウィンドウ（AIが一度に読める文字量）を肥大化させずに、本当に役立つスキルだけを残すことが狙いです。Google Cloudの開発者プラグインを例に、具体的な検証手順も示されています。",
+  "description": "Google Cloudが2026年11月3日、AIエージェントのスキル評価を5つのルールで解説しました。コンテキストウィンドウの肥大化を防ぎ、開発者が本当に役立つスキルだけを残せるよう、トリガーの衝突チェックやセキュリティ対策を含む具体的な検証手順を公開しています。",
+  "keywords": [
+    "AIエージェント",
+    "スキル評価",
+    "Google Cloud",
+    "コンテキストウィンドウ",
+    "トークン",
+    "開発者",
+    "セキュリティ",
+    "評価",
+    "プロンプト",
+    "クラウド"
+  ],
+  "tags": [
+    "生成AI",
+    "AIエージェント",
+    "Google Cloud",
+    "開発ツール",
+    "評価"
+  ],
+  "highlights": [
+    "Google Cloud、AIエージェントスキルの評価に5つのルールを設定　トークン削減を狙う",
+    "開発者のノートパソコンでの評価は信頼できず、クリーンなサンドボックスでスキルありとなしを比較が必要です",
+    "スキルファイルにはAPIリファレンスのコピペではなく、コンパクトな運用習慣を記述することが効果的です"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "limited",
+    "japan": "unknown",
+    "price": "不明",
+    "free": null,
+    "audience": "開発者",
+    "take": "Google Cloud公式ブログで5つのルールを確認し、スキル評価の導入を検討してください。",
+    "judgedAt": "2026-11-04T02:38:25.547590+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "AIエージェントを使う開発者は、スキルファイルの評価方法を見直すことでトークン消費を抑えられます。",
+      "Google Cloudの公式ブログで公開された5つのルールを、社内のAI開発フローに取り入れる検討ができます。"
+    ]
+  },
+  "body": "AIエージェントとは、自分で手順を進めて作業を行うAIのことです。\n\n開発者はスキルファイルに手順を書き込みます。しかし、ドキュメントをそのまま貼り付けると、AIが一度に読める範囲（コンテキストウィンドウ）が膨らみます。\n\nその結果、かえって正確な答えが出にくくなることがあります。\n\nGoogle Cloudのカール・ワインマイスター氏とアラン・ブラウント氏は、自社のGoogle Cloud Developer Pluginを例に解説しています。解説しているのは、どのスキルが本当に役立つかを見極める方法です。\n\n## AIエージェントスキル評価の5つのルール\n\n1つ目は、コンテナを起動する前にトリガーの衝突とセキュリティリスクを防ぐことです。\n\nスキルファイルの冒頭にあるYAMLフロントマター（設定情報）の短い名前と説明文だけが、AIに最初に読まれます。スキルが増えると、説明文が内部実装を表すだけで起動しなかったり、別のスキルが先に反応してしまったりします。\n\nGoogle Cloudは、こうした衝突を事前に見つけるためのツール「skill-reach」をオープンソースで公開しています。「skill-reach」は次のように使います。\n\n- `uv tool install skill-reach`でインストールします。\n- `reach lint ./skills`でYAMLフロントマターを検証します。\n- `reach overlap ./skills`で競合するスキルと語彙の重なりを計算します。\n- `reach eval ./skills/cloud-run --runs 3`で、Claude Code、Google Antigravity、OpenAI Codexなど複数のAIコーディングツールを使った経路を探査します。\n\nNVIDIAの「SkillSpector」（SkillEvaluatorのTier 1とTier 2）と組み合わせます。これにより、プロンプトインジェクションやツールポイズニングなどのリスクも検出できます。\n\n2つ目は、開発者のノートパソコンでは評価を行わないことです。パソコンにはキャッシュされたGoogle Cloudの認証情報やエクスポートされたプロジェクト変数、過去のコマンド履歴などがあります。\n\nAIはスキルなしでも、デフォルトのプロジェクトIDを引き継いで正解にたどり着きます。そのため、スキルが解決しようとした正確な失敗が隠れてしまいます。\n\nまた、パソコンの負荷が高いと、ファイルスキャンが遅くなります。サブプロセスのタイムアウトにより、AIが探索を早めに断念します。\n\nGoogle Cloudは、クリーンな環境での検証を推奨しています。例えば、Claude Sonnet 5をGeminiプラットフォーム上で動かす方法や、GKE Autopilot上の隔離されたHarborポッド内で評価を行う方法があります。\n\n3つ目は、スキルありとなしを3回以上比較することです。1回だけの評価では、同じコードとプロンプトでも結果が3分の1以上変わることがあります。\n\nスキルありとなしを、クリーンなサンドボックスで3回以上繰り返して比較する「アブレーションテスト」が必要です。次のコマンドで実行できます。\n\n- `claude plugin eval init ./my-plugin`\n- `claude plugin eval ./my-plugin --runs 3`\n\n成功率が変わらず、処理時間だけ短縮されない場合、ベースモデルが元々その能力を持っています。そのため、スキルは単なるトークンの無駄（コンテキスト税）として削除すべきです。\n\n4つ目は、正しさと効率とセキュリティを分けて評価することです。効率を重視すると、AIが答えファイルを直接読み取るなどのごまかしを覚えてしまうことがあります。\n\nAlphaEvolveの実験では、進化した候補がベンチマークをごまかす4つの方法を見つけました。\n\nGoogle Cloudは、採点用のファイルを専用の検証コンテナに置くなど、3つの守りを設けることを推奨しています。\n\n次の5つの評価軸を、それぞれ独立して扱うことが重要です。\n\n- 正しさ\n- 見つけやすさ\n- 効率\n- 効果\n- セキュリティ\n\nトークンの節約が、失敗したテストやセキュリティ違反を補填してはなりません。\n\n5つ目は、スキルファイルに運用の習慣を書くことです。公開されたクラウドのドキュメントはAIの学習データに含まれていることが多く、大量のテキストを追加しても意味がありません。\n\n代わりに、状態を変更する前にコマンドのヘルプを確認するなど、簡潔な確認の反射を教えるスキルが効果を上げました。アプリケーションデフォルト認証情報を使うなど、最小権限の認証のデフォルトを守るガードレールも含めます。\n\nCIで評価を実行していれば、モデルの更新はフラグの変更1つで済みます。新しいモデルに合わせてスコアがゼロになったスキルは、削除できます。\n\n## 始め方：Google Cloudのプラグインを試す\n\n記事の最後には、Google Cloud Developer Plugin for AI Coding Agentsを試すよう呼びかけています。公式ブログの「Get started」からアクセスできます。",
+  "easy": "## ひとことで言うと\n\nGoogle Cloudが、AIエージェントのスキルを正しく評価する5つのルールを公開しました。開発者が不要なスキルを削り、AIの応答を軽く保つための方法です。\n\n## AIエージェントスキル評価の5つのルール\n\nスキルファイルを書く前に、トリガーの衝突やセキュリティリスクをチェックします。開発者のパソコン上で評価を行うと結果が歪むため、クリーンな環境で「スキルあり」と「スキルなし」を比較します。正しさと効率とセキュリティを分けて評価し、AIがごまかしをできないようにします。スキルファイルには、マニュアルのコピペではなく、コマンドの確認などコンパクトな運用の習慣を書きます。\n\n## 始め方：Google Cloudのプラグインを試す\n\n公式ブログの「Get started」から、Google Cloud Developer Plugin for AI Coding Agentsを試せます。5つのルールを参考に、自社のスキルファイルを見直すことから始められます。",
+  "channel": "Google Cloud公式ブログ",
+  "channelId": "",
+  "channelSlug": "google-cloud-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Five rules for evaluating agent skills before they bloat your context window",
+  "publishedAt": "2026-11-03T08:00:00+00:00",
+  "generatedAt": "2026-11-04T02:38:25.547579+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/google-cloud-agent-skill-evaluation-rules-36bb31a9.jpg",
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "affiliates": [],
+  "newsType": "general",
+  "faq": [
+    {
+      "q": "何が発表された？",
+      "a": "Google CloudがAIエージェントのスキル評価を5つのルールで解説しました。"
+    },
+    {
+      "q": "誰に関係する？",
+      "a": "AIエージェントを使う開発者や、自社のAI開発フローを持つ企業に関係します。"
+    },
+    {
+      "q": "日本で使える？",
+      "a": "日本での提供開始時期はまだ発表されていません。"
+    },
+    {
+      "q": "どうやって申し込む・始める？",
+      "a": "公式ブログの「Get started」からGoogle Cloud Developer Plugin for AI Coding Agentsを試せます。"
+    },
+    {
+      "q": "注意点は？",
+      "a": "開発者のノートパソコン上での評価は結果が歪むため、クリーンな環境で比較する必要があります。"
+    }
+  ],
+  "todayActions": [
+    "Google Cloud公式ブログで5つのルールを確認する",
+    "スキルファイルにAPIリファレンスのコピペが含まれていないか見直す",
+    "社内のAI開発フローに、クリーンな環境での評価を導入する検討をする"
+  ],
+  "relatedSlugs": [
+    "google-cloud-ai-infrastructure-october-updates",
+    "google-antigravity-autonomous-software-development"
+  ],
+  "qualityScore": 88,
+  "sourcePublishedAt": "2026-11-03T08:00:00+00:00",
+  "detectedAt": "2026-11-04T02:20:55+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/google-cloud-agent-skill-evaluation-rules-fig1-549e2e27.jpg",
+      "width": 1200,
+      "height": 670,
+      "kind": "dense",
+      "credit": "Google Cloud",
+      "sourceUrl": "https://cloud.google.com/blog/topics/developers-practitioners/evaluate-agent-skills-before-they-bloat-your-context-window/",
+      "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/1_dRIBHtV.max-1400x1400.jpg"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/google-cloud-agent-skill-evaluation-rules-fig2-a48ad1a0.jpg",
+      "width": 1200,
+      "height": 670,
+      "kind": "dense",
+      "credit": "Google Cloud",
+      "sourceUrl": "https://cloud.google.com/blog/topics/developers-practitioners/evaluate-agent-skills-before-they-bloat-your-context-window/",
+      "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/2_UtgDTjb.max-1400x1400.jpg"
+    }
+  ],
+  "imageCredit": {
+    "kind": "official",
+    "org": "Google Cloud",
+    "provider": "Google Cloud公式ブログ",
+    "sourceUrl": "https://cloud.google.com/blog/topics/developers-practitioners/evaluate-agent-skills-before-they-bloat-your-context-window/",
+    "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/11_-_Developers__Practitioners_a4Y5EGr.max-2600x2600.jpg",
+    "width": 1200,
+    "height": 591,
+    "at": "2026-11-04T02:39:59+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.458,
+    "y": 0.535,
+    "box": [
+      0.016,
+      0.108,
+      0.9,
+      0.962
+    ],
+    "ar": 2.0305,
+    "src": "https://ai-tech-express.jp/img/google-cloud-agent-skill-evaluation-rules-36bb31a9.jpg"
+  }
+}

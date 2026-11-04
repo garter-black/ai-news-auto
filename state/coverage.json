@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "google-cloud-agent-skill-evaluation-rules",
+   "at": "2026-11-04T02:38:25.547579+00:00",
+   "title": "Google Cloud、AIエージェントスキル評価の5ルールを公開",
+   "head": "Google Cloud、AIエージェントスキル評価の5ルールを公開 | Five rules for evaluating agent skills before they bloat your context window",
+   "text": "Google Cloud、AIエージェントスキル評価の5ルールを公開 | Five rules for evaluating agent skills before they bloat your context window | AIエージェント / スキル評価 / Google Cloud / コンテキストウィンドウ / トークン / 開発者 / セキュリティ / 評価 / プロンプト / クラウド / 生成AI / AIエージェント / Google Cloud / 開発ツール / 評価",
+   "urls": [
+    "https://cloud.google.com/blog/topics/developers-practitioners/evaluate-agent-skills-before-they-bloat-your-context-window/"
+   ]
+  },
+  {
    "slug": "mac-refurbished-imac-studio-restock",
    "at": "2026-11-04T02:02:47.124303+00:00",
    "title": "Apple、Mac整備済製品に24モデル追加　M4搭載iMacは197,800円から",
@@ -274,9 +284,9 @@
   {
    "slug": "samsung-micro-rgb-tv-announcement",
    "at": "2026-11-03T01:22:54.643418+00:00",
-   "title": "サムスン、100µm未満のLEDを使う「Micro RGB TV」を発表　AIが映像を自動で最適化",
-   "head": "サムスン、100µm未満のLEDを使う「Micro RGB TV」を発表　AIが映像を自動で最適化 | [Video] Inside the Tech: Samsung Micro RGB TV",
-   "text": "サムスン、100µm未満のLEDを使う「Micro RGB TV」を発表　AIが映像を自動で最適化 | [Video] Inside the Tech: Samsung Micro RGB TV | サムスン / Micro RGB TV / LEDテレビ / AI映像最適化 / マイクロRGB / 高精細テレビ / リビングルーム / 映像技術 / 光源技術 / グレアフリー / テレビ / ディスプレイ / AI / Samsung",
+   "title": "サムスンが「Micro RGB TV」の技術を紹介する動画を公開　100µm未満のLEDとAIで映像を補正",
+   "head": "サムスンが「Micro RGB TV」の技術を紹介する動画を公開　100µm未満のLEDとAIで映像を補正 | [Video] Inside the Tech: Samsung Micro RGB TV",
+   "text": "サムスンが「Micro RGB TV」の技術を紹介する動画を公開　100µm未満のLEDとAIで映像を補正 | [Video] Inside the Tech: Samsung Micro RGB TV | サムスン / Micro RGB TV / LEDテレビ / AI映像最適化 / マイクロRGB / 高精細テレビ / リビングルーム / 映像技術 / 光源技術 / グレアフリー / テレビ / ディスプレイ / AI / Samsung",
    "urls": [
     "https://news.samsung.com/global/video-inside-the-tech-samsung-micro-rgb-tv"
    ]

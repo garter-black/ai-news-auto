@@ -69,10 +69,10 @@
   "gate_retry": {
     "0e889c44fa0a25a1": {
       "first": "2026-11-03T18:43:01.853190+00:00",
-      "next": "2026-11-03T21:43:01.853190+00:00",
-      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "next": "2026-11-04T05:34:06.965439+00:00",
+      "reason": "「判定: 提供状況=available 価格=API従量課金」→ 元記事は料金体系に一切触れておらず、「API従量課金」は創作の価格情報である; 「判定: 提供状況=available」→ 元記事は提供状況を明記しておらず、「available」との記載は根拠がない; 「ElevenLabsのAPIやツールを活用して…導入を検討するとよいでしょう」→ 一般的な助言としては許容されるが、料金面の前提",
       "title": "What is call transcription? A practical business guide",
-      "tries": 1,
+      "tries": 2,
       "url": "https://elevenlabs.io/blog/what-is-call-transcription"
     },
     "20954e3ac0ff87f7": {
@@ -155,13 +155,13 @@
       "tries": 1,
       "url": "https://www.salesforce.com/news/stories/slack-stats/"
     },
-    "ce9b39562dd42cfe": {
-      "first": "2026-11-03T13:43:44.204259+00:00",
-      "next": "2026-11-03T21:38:09.537688+00:00",
-      "reason": "要点「ガベージコレクションの実行回数・処理時間の削減を確認」→元記事ではモノレポのスクリプト操作中のGC時間などは別表で、PetclinicのCPU時間など一部は減少だが「全体的に軽減される傾向」は表の途中までしか確認できず、言い過ぎ。; FAQ「ガベージコレクションの実行回数や処理時間、消費CPU時間が全体的に軽減される傾向」→元記事で確認できるのはオープン・インデックス時などの限定的な比較で、",
-      "title": "Where Did the Saved Bytes Go? Compact Object Headers in IntelliJ IDEA",
-      "tries": 2,
-      "url": "https://blog.jetbrains.com/idea/2026/11/where-did-the-saved-bytes-go-compact-object-headers-in-intellij-idea/"
+    "ce253a4b2ae2e919": {
+      "first": "2026-11-04T02:29:13.763428+00:00",
+      "next": "2026-11-04T05:29:13.763428+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "「すし店」 売上増も「減益」企業が約4割 コメ価格など物価高が重し、廃業・倒産が急増",
+      "tries": 1,
+      "url": "https://www.tsr-net.co.jp/data/detail/1203395_1527.html"
     },
     "de5d8c3372c230d4": {
       "first": "2026-11-03T17:33:22.187893+00:00",
@@ -178,14 +178,6 @@
       "title": "【イベントレポート】PdMオフレコ会議「キャリアの壁編 〜次のステージに進む人は何を手放したのか〜」に参加してきました【DMM/CA/グッドパッチ合同】",
       "tries": 1,
       "url": "https://developers.cyberagent.co.jp/blog/archives/67267/"
-    },
-    "f5a0d7153ecc99c8": {
-      "first": "2026-11-03T18:52:56.353169+00:00",
-      "next": "2026-11-03T21:52:56.353169+00:00",
-      "reason": "サイソクが自分で試したように読める書き方がある（「筆者」）。サイソクは試していない。元記事の書き手が試した結果なら「〇〇（媒体名）の記者が試したところ」と誰が試したかを書く",
-      "title": "Five rules for evaluating agent skills before they bloat your context window",
-      "tries": 1,
-      "url": "https://cloud.google.com/blog/topics/developers-practitioners/evaluate-agent-skills-before-they-bloat-your-context-window/"
     }
   },
   "major_tries": {},
@@ -5432,6 +5424,12 @@
       "skipped": true,
       "url": "https://www.mext.go.jp/b_menu/houdou/mext_01698.html"
     },
+    "322de511a9d70b13": {
+      "at": "2026-11-04T02:29:14.049187+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.mhlw.go.jp/kouseiroudoushou/shikaku_shiken/kanrieiyoushi/about.html"
+    },
     "32449f7b43814550": {
       "at": "2026-10-30T00:32:02.060233+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（審議会）",
@@ -6697,6 +6695,12 @@
       "slug": "softbank-net-safety-education-oita",
       "url": "https://www.softbank.jp/sbnews/entry/20261027_02"
     },
+    "50fec75b2d225a41": {
+      "at": "2026-11-04T02:29:14.054250+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.affrc.maff.go.jp/docs/press/261104.html"
+    },
     "5122bb9d928b5a06": {
       "at": "2026-11-02T21:19:01.491128+00:00",
       "reason": "short text 538",
@@ -6872,6 +6876,12 @@
       "reason": "prefilter: 扱わない話題（事件事故・ゴシップ・選挙・医療効果・噂）",
       "skipped": true,
       "url": "https://www.mhlw.go.jp/stf/newpage_77119.html"
+    },
+    "552adf5449a9ebb7": {
+      "at": "2026-11-04T02:29:14.054204+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.uniqlo.com/jp/ja/contents/corp/press-release/2026/11/uniqlo_and_cecilie_bahnsen_202.html"
     },
     "56086e2c77c38346": {
       "at": "2026-10-28T21:54:21.903523+00:00",
@@ -8053,6 +8063,12 @@
       "skipped": true,
       "url": "https://www.digital.go.jp/councils/procurement-reform/FY2026/24cfea22-3e10-418e-abbd-983af697d751"
     },
+    "743775a8256fe105": {
+      "at": "2026-11-04T02:29:14.050412+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.jst.go.jp/pr/announce/20261104/index.html"
+    },
     "74684824c71b8449": {
       "at": "2026-10-30T09:31:34.741298+00:00",
       "kind": "update",
@@ -8077,6 +8093,12 @@
       "section": "ai",
       "slug": "microsoft-ui-reactor-winui-csharp-mvu",
       "url": "https://devblogs.microsoft.com/ifdef-windows/microsoft-ui-reactor-a-c-first-way-to-build-winui-apps/"
+    },
+    "748ef40f3abf85ff": {
+      "at": "2026-11-04T02:39:06.294893+00:00",
+      "reason": "prefilter: お知らせ・統計の転載（listing）",
+      "skipped": true,
+      "url": "https://www.maff.go.jp/j/press/kanbo/hisyo/261104.html"
     },
     "7491a7fb681c05c6": {
       "at": "2026-11-04T01:12:32.424355+00:00",
@@ -8621,6 +8643,12 @@
       "section": "ai",
       "slug": "mistral-large-4-preview",
       "url": "https://mistral.ai/news/mistral-large-4/"
+    },
+    "82870a11b510856e": {
+      "at": "2026-11-04T02:27:37.139727+00:00",
+      "reason": "prefilter: サイトの主題外（エンタメのビジネス・テックの話題ではない。料金・決算・販売本数・AI・規約などがない）",
+      "skipped": true,
+      "url": "https://blog.ja.playstation.com/2026/11/04/20261104-black-friday-sale-ps-store-sale-s/"
     },
     "82c166eb3403fd1d": {
       "at": "2026-10-30T05:54:26.203641+00:00",
@@ -9487,6 +9515,12 @@
       "slug": "riken-utokyo-3d-live-cell-microscope",
       "url": "https://www.riken.jp/press/2026/20261102_1/index.html"
     },
+    "95ace0e08e8db609": {
+      "at": "2026-11-04T02:27:37.138362+00:00",
+      "reason": "dedupe: 同じ出典URL",
+      "skipped": true,
+      "url": "https://www.morinaga.co.jp/company/newsrelease/detail.php?no=3230"
+    },
     "95acebd2bc110fc1": {
       "at": "2026-10-28T04:22:50.223428+00:00",
       "model": "gemini-3.1-flash-lite",
@@ -9678,6 +9712,12 @@
       "reason": "quality: 訳されていない英文が残っている（「The roles of central banks and central b…」）",
       "skipped": true,
       "url": "http://www.boj.or.jp/paym/intlact_pm/cpss/cpss261102a.htm"
+    },
+    "99c036dd3c919f1d": {
+      "at": "2026-11-04T02:29:14.053935+00:00",
+      "reason": "prefilter: サイトの主題外（AI・お金・制度のお金の話・日本のスポーツのどれでもない）",
+      "skipped": true,
+      "url": "https://www.kirinholdings.com/jp/newsroom/release/2026/1104_01.html"
     },
     "99e0e76bd5ab3b42": {
       "at": "2026-10-28T18:03:32.148088+00:00",
@@ -11705,6 +11745,13 @@
       "skipped": true,
       "url": "https://www.ipa.go.jp/jinzai/riss/interview/riss/riss-interview18.html"
     },
+    "ce9b39562dd42cfe": {
+      "at": "2026-11-04T02:27:36.803179+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: かんたん版に幼い言い方（「すごい」）。落ち着いた大人の言葉にする; かんたん版に決まった型の見出し（「何がすごいの？」）。中身の言葉にするか見出しを消す; 元記事・確認済みの事実の束・計算済みの数字のどれにも無い数字がある（「,531.7 | **‐1.3%」、「,376.9 | **+0.3%」）。元記事か束の数字に直すか、その文を削る。割合・差・換算などを自分で計算しない（計",
+      "skipped": true,
+      "url": "https://blog.jetbrains.com/idea/2026/11/where-did-the-saved-bytes-go-compact-object-headers-in-intellij-idea/"
+    },
     "ceb9a498088d80f9": {
       "at": "2026-10-31T01:07:49.086316+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（ライブ配信）",
@@ -13264,6 +13311,14 @@
       "skipped": true,
       "url": "https://news.samsung.com/jp/samsung-ranks-no-5-in-interbrands-best-global-brands-2026?utm_source=rss&utm_medium=direct"
     },
+    "f5a0d7153ecc99c8": {
+      "at": "2026-11-04T02:39:05.904361+00:00",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "score": 88,
+      "section": "ai",
+      "slug": "google-cloud-agent-skill-evaluation-rules",
+      "url": "https://cloud.google.com/blog/topics/developers-practitioners/evaluate-agent-skills-before-they-bloat-your-context-window/"
+    },
     "f5a3765811c7c11a": {
       "at": "2026-10-29T18:32:28.510471+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13583,6 +13638,13 @@
       "skipped": true,
       "url": "https://j-net21.smrj.go.jp/news/bt5puv00000105b8.html"
     },
+    "fcef20cfe9a085695b48ac38e18921b0c08df987": {
+      "at": "2026-11-04T02:24:31.069257+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://finance.yahoo.co.jp/news/detail/538fc2b35387b38c07f95aac5bb2b2a42b4147ba"
+    },
     "fcf6901fbd725b70": {
       "at": "2026-10-29T15:04:07.394309+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13746,214 +13808,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T10:51:32.933348+00:00",
-      "attempt": 1,
-      "id": "a8f9c4c3d8c63a92",
-      "kind": "update",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "続報の長さが不適切（285字 / 400〜900字）"
-      ],
-      "score": null,
-      "source": "boj",
-      "title": "日銀当座預金増減要因と金融調節（10月実績）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T10:51:40.663427+00:00",
-      "attempt": 1,
-      "id": "1545015c8f298087",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 51.0字・60字超の文が 32% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 124.7字・最長 172字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 124.7,
-        "avg_sentence": 51.0,
-        "long_share": 0.318,
-        "max_paragraph": 172,
-        "paragraphs": 9,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "tokyo-metro",
-      "title": "第7回 中小企業特別高圧電力・工業用LPガス価格高騰緊急対策事業 特別高圧電力・工業用LPガスを使用する中小企業者等を支援します！"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T10:51:43.802985+00:00",
-      "attempt": 0,
-      "id": "1545015c8f298087",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 48.4字・60字超の文が 27% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 118.2,
-        "avg_sentence": 48.4,
-        "long_share": 0.273,
-        "max_paragraph": 172,
-        "paragraphs": 9,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "tokyo-metro",
-      "title": "第7回 中小企業特別高圧電力・工業用LPガス価格高騰緊急対策事業 特別高圧電力・工業用LPガスを使用する中小企業者等を支援します！"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T11:11:27.116306+00:00",
-      "attempt": 1,
-      "id": "309f7e771384eb3a",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 54.6字・60字超の文が 43% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 78.0,
-        "avg_sentence": 54.6,
-        "long_share": 0.433,
-        "max_paragraph": 202,
-        "paragraphs": 21,
-        "sentences": 30
-      },
-      "score": 100,
-      "source": "arm-newsroom",
-      "title": "Top Arm-based innovations advancing on-device AI, cloud infrastructure, and phys"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T11:11:33.281595+00:00",
-      "attempt": 0,
-      "id": "309f7e771384eb3a",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 88.4,
-        "avg_sentence": 23.5,
-        "long_share": 0.0,
-        "max_paragraph": 219,
-        "paragraphs": 21,
-        "sentences": 79
-      },
-      "score": 100,
-      "source": "arm-newsroom",
-      "title": "Top Arm-based innovations advancing on-device AI, cloud infrastructure, and phys"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T11:11:42.682375+00:00",
-      "attempt": 1,
-      "id": "e458541b95d22ac0",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 55.6字・60字超の文が 39% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 125.0字・最長 170字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 125.0,
-        "avg_sentence": 55.6,
-        "long_share": 0.389,
-        "max_paragraph": 170,
-        "paragraphs": 8,
-        "sentences": 18
-      },
-      "score": 100,
-      "source": "mof",
-      "title": "国債のオンチェーン対応に関する研究会"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T11:11:45.714381+00:00",
-      "attempt": 0,
-      "id": "e458541b95d22ac0",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 88.8,
-        "avg_sentence": 30.4,
-        "long_share": 0.029,
-        "max_paragraph": 181,
-        "paragraphs": 12,
-        "sentences": 35
-      },
-      "score": 100,
-      "source": "mof",
-      "title": "国債のオンチェーン対応に関する研究会"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T11:31:17.815522+00:00",
-      "attempt": 1,
-      "id": "99bb573a7212de85",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "訳されていない英文が残っている（「The roles of central banks and central b…」）"
-      ],
-      "readability": {
-        "avg_paragraph": 142.9,
-        "avg_sentence": 57.1,
-        "long_share": 0.4,
-        "max_paragraph": 239,
-        "paragraphs": 8,
-        "sentences": 20
-      },
-      "score": null,
-      "source": "boj",
-      "title": "CPMIが報告書「進化する決済システムにおける中央銀行および中央銀行マネーの役割」を公表"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T11:31:22.784584+00:00",
-      "attempt": 2,
-      "id": "99bb573a7212de85",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "訳されていない英文が残っている（「The roles of central banks and central b…」）"
-      ],
-      "readability": {
-        "avg_paragraph": 164.8,
-        "avg_sentence": 61.8,
-        "long_share": 0.375,
-        "max_paragraph": 278,
-        "paragraphs": 6,
-        "sentences": 16
-      },
-      "score": null,
-      "source": "boj",
-      "title": "CPMIが報告書「進化する決済システムにおける中央銀行および中央銀行マネーの役割」を公表"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T11:31:30.188926+00:00",
-      "attempt": 1,
-      "id": "810f54c1a816500d",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 105.4,
-        "avg_sentence": 43.9,
-        "long_share": 0.125,
-        "max_paragraph": 196,
-        "paragraphs": 10,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "toyota",
-      "title": "[トヨタイムズ記事] 物流、スポーツ、教育、食... 広がる水素の可能性"
-    },
     {
       "accepted": false,
       "at": "2026-11-02T11:51:14.868984+00:00",
@@ -20156,6 +20010,207 @@
       "warnings": [
         "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（XDR）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T02:23:48.494788+00:00",
+      "attempt": 1,
+      "id": "fcef20cfe9a085695b48ac38e18921b0c08df987",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "住友ファーマ 株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T02:24:31.069171+00:00",
+      "attempt": 2,
+      "id": "fcef20cfe9a085695b48ac38e18921b0c08df987",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "住友ファーマ 株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T02:25:59.017130+00:00",
+      "attempt": 1,
+      "id": "ce9b39562dd42cfe",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "元記事・確認済みの事実の束・計算済みの数字のどれにも無い数字がある（「Cイベント数や実行時間が5%」、「ント数や実行時間が5%〜46%」、「%減、Monorepoは0.3%」）。元記事か束の数字に直すか、その文を削る。割合・差・換算などを自分で計算しない（計算済みの数字の欄にあるものだけ使う）"
+      ],
+      "readability": {
+        "avg_paragraph": 354.5,
+        "avg_sentence": 25.8,
+        "long_share": 0.0,
+        "max_paragraph": 629,
+        "paragraphs": 4,
+        "sentences": 55
+      },
+      "score": null,
+      "source": "jetbrains-blog",
+      "title": "Where Did the Saved Bytes Go? Compact Object Headers in IntelliJ IDEA",
+      "warnings": [
+        "見出しが49字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（IDEA・JBR・RSS）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T02:27:36.803093+00:00",
+      "attempt": 2,
+      "id": "ce9b39562dd42cfe",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "かんたん版に幼い言い方（「すごい」）。落ち着いた大人の言葉にする",
+        "かんたん版に決まった型の見出し（「何がすごいの？」）。中身の言葉にするか見出しを消す",
+        "元記事・確認済みの事実の束・計算済みの数字のどれにも無い数字がある（「,531.7 | **‐1.3%」、「,376.9 | **+0.3%」）。元記事か束の数字に直すか、その文を削る。割合・差・換算などを自分で計算しない（計算済みの数字の欄にあるものだけ使う）",
+        "元記事・確認済みの資料に無い画面の手順・メニュー名・ボタン名がある（「設定 > ビルド」、「実行 > コンパクトヘッダーの有無を確認する」）。資料にある道順だけを書くか、「公式ヘルプの手順を確認してください」と書く"
+      ],
+      "readability": {
+        "avg_paragraph": 97.9,
+        "avg_sentence": 53.0,
+        "long_share": 0.542,
+        "max_paragraph": 209,
+        "paragraphs": 13,
+        "sentences": 24
+      },
+      "score": null,
+      "source": "jetbrains-blog",
+      "title": "Where Did the Saved Bytes Go? Compact Object Headers in IntelliJ IDEA",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（IDEA・JEP・GC）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T02:28:40.753182+00:00",
+      "attempt": 1,
+      "id": "ce253a4b2ae2e919",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "tsr",
+      "title": "「すし店」 売上増も「減益」企業が約4割 コメ価格など物価高が重し、廃業・倒産が急増"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T02:29:13.763345+00:00",
+      "attempt": 2,
+      "id": "ce253a4b2ae2e919",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "tsr",
+      "title": "「すし店」 売上増も「減益」企業が約4割 コメ価格など物価高が重し、廃業・倒産が急増"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T02:30:32.814048+00:00",
+      "attempt": 1,
+      "id": "0e889c44fa0a25a1",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "elevenlabs-blog",
+      "title": "What is call transcription? A practical business guide"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T02:34:06.965365+00:00",
+      "attempt": 2,
+      "id": "0e889c44fa0a25a1",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "「判定: 提供状況=available 価格=API従量課金」→ 元記事は料金体系に一切触れておらず、「API従量課金」は創作の価格情報である",
+        "「判定: 提供状況=available」→ 元記事は提供状況を明記しておらず、「available」との記載は根拠がない",
+        "「ElevenLabsのAPIやツールを活用して…導入を検討するとよいでしょう」→ 一般的な助言としては許容されるが、料金面の前提が創作であるため読者が誤解するおそれがある"
+      ],
+      "readability": {
+        "avg_paragraph": 124.8,
+        "avg_sentence": 67.6,
+        "long_share": 0.5,
+        "max_paragraph": 234,
+        "paragraphs": 13,
+        "sentences": 24
+      },
+      "score": 62,
+      "source": "elevenlabs-blog",
+      "title": "What is call transcription? A practical business guide",
+      "warnings": [
+        "見出しが48字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（CRM・SOC・II）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T02:38:34.242729+00:00",
+      "attempt": 1,
+      "id": "f5a0d7153ecc99c8",
+      "kind": "ai",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "problems": [
+        "文が長い（1文の平均 61.7字・60字超の文が 38% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 246.6字・最長 520字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 246.6,
+        "avg_sentence": 61.7,
+        "long_share": 0.375,
+        "max_paragraph": 520,
+        "paragraphs": 8,
+        "sentences": 32
+      },
+      "score": 88,
+      "source": "google-cloud-blog",
+      "title": "Five rules for evaluating agent skills before they bloat your context window",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（YAML・GKE・CI）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T02:39:05.872667+00:00",
+      "attempt": 0,
+      "id": "f5a0d7153ecc99c8",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 73.2,
+        "avg_sentence": 42.9,
+        "long_share": 0.122,
+        "max_paragraph": 117,
+        "paragraphs": 24,
+        "sentences": 41
+      },
+      "score": 88,
+      "source": "google-cloud-blog",
+      "title": "Five rules for evaluating agent skills before they bloat your context window",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（YAML・GKE・CI）"
       ]
     }
   ],
