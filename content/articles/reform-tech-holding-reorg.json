@@ -112,5 +112,24 @@
     }
   },
   "sectionsPolishedAt": "2026-11-03T12:12:19+00:00",
-  "thumbnail": ""
+  "thumbnail": "https://ai-tech-express.jp/img/reform-tech-holding-reorg-36a4d966.jpg",
+  "imageCredit": {
+    "kind": "ai",
+    "model": "flux-2-klein-4b",
+    "prompt": "A person in a hard hat and vest is working on a residential construction site with a partially renovated house in the background on a sunny day.",
+    "provider": "Cloudflare Workers AI",
+    "at": "2026-11-04T02:01:35+00:00"
+  },
+  "imageFocus": {
+    "x": 0.5,
+    "y": 0.41,
+    "box": [
+      0.0,
+      0.0,
+      1.0,
+      0.821
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/reform-tech-holding-reorg-36a4d966.jpg"
+  }
 }

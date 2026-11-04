@@ -4546,6 +4546,13 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000018.000134977.html"
     },
+    "1b841b9838c9bfc5ad064737752e51ee19fd48f6": {
+      "at": "2026-11-04T02:00:09.134639+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://s.kabutan.jp/news/k202611020038/"
+    },
     "1b8c870c8d92c0f3": {
       "at": "2026-10-26T18:31:28.245178+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -4739,6 +4746,13 @@
       "reason": "prefilter: 価値の薄いお知らせ（講座）",
       "skipped": true,
       "url": "https://www.value-press.com/pressrelease/383122"
+    },
+    "21b9ad530469352ed79e298118d1b253bad891fc": {
+      "at": "2026-11-04T01:57:48.878910+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://eetimes.itmedia.co.jp/ee/articles/2611/02/news047.html"
     },
     "21cf65643bdcaa21": {
       "at": "2026-10-30T08:31:03.946410+00:00",
@@ -6806,6 +6820,12 @@
       "reason": "quality: 本文が短い（1539字 / 基準 1800字以上）。元記事の事実を使って各章を具体的に書き足す（推測で水増ししない）",
       "skipped": true,
       "url": "https://www.kantei.go.jp/jp/105/actions/202610/28germany.html"
+    },
+    "53d51277d465aacd5d03dcf4acadb6994b79bb44": {
+      "at": "2026-11-04T01:49:24.074095+00:00",
+      "reason": "trend sources 1",
+      "skipped": true,
+      "url": "https://news.yahoo.co.jp/articles/c268b87edb0093f3a33980a1ef1e24c8e749b816"
     },
     "543af653b59f437d": {
       "at": "2026-11-01T01:15:43.101847+00:00",
@@ -9362,6 +9382,13 @@
       "skipped": true,
       "url": "https://www.nli-research.co.jp/topics_detail1/id=87213?site=nli"
     },
+    "93b612d519cf77e4b14aa268b9cdd3b9e53107fd": {
+      "at": "2026-11-04T01:43:30.517432+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://eetimes.itmedia.co.jp/ee/articles/2611/02/news034.html"
+    },
     "93e3a99db3614882": {
       "at": "2026-10-30T05:53:29.926651+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -10174,6 +10201,13 @@
       "reason": "prefilter: 価値の薄いお知らせ（市場分析レポート）",
       "skipped": true,
       "url": "https://www.dreamnews.jp/press/0000366600"
+    },
+    "a66582ed2e2eb175addce91dcd8c3db3910baf4e": {
+      "at": "2026-11-04T01:46:56.089337+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://www.nikkei.com/article/DGXZQOFL300VDTQ6A031C2000000/"
     },
     "a7068035e151c3b0": {
       "at": "2026-10-26T21:14:17.873324+00:00",
@@ -11068,6 +11102,13 @@
       "reason": "prefilter: 価値の薄いお知らせ（募集）",
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000455.000015757.html"
+    },
+    "bd77db82486b50a500f6bc90bee4f34482b22617": {
+      "at": "2026-11-04T01:49:11.275801+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://kabutan.jp/news/marketnews/?b=n202611040052"
     },
     "bda2ca88f48f8801": {
       "at": "2026-11-02T03:51:18.940839+00:00",
@@ -12611,6 +12652,13 @@
       "slug": "ipa-mitou-advanced-2025-seika",
       "url": "https://www.ipa.go.jp/jinzai/mitou/advanced/2025second/seika.html"
     },
+    "e5a5675e2d1ffd241d6b2d7e041969ccd68c838e": {
+      "at": "2026-11-04T01:51:40.324156+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://finance.yahoo.co.jp/news/detail/78ba3698b7b696fa28b4b36508bad08462e5ac0c"
+    },
     "e5e4c3ae2b7984fd": {
       "at": "2026-10-26T17:52:08.272357+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13474,6 +13522,13 @@
       "slug": "ecb-policy-rate-hold-2026-10",
       "url": "https://www.nli-research.co.jp/topics_detail1/id=87227?site=nli"
     },
+    "fa5cf1d88191aa9356e9ecf426acce1aabb663dd": {
+      "at": "2026-11-04T01:54:23.431121+00:00",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://kabutan.jp/news/marketnews/?b=n202611020205"
+    },
     "fae0cc209d8923b6": {
       "at": "2026-10-27T01:51:14.886009+00:00",
       "reason": "prefilter: 告知・お知らせ系",
@@ -13682,306 +13737,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T08:26:40.794846+00:00",
-      "attempt": 1,
-      "id": "f94fc35fdadaf544",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 66.9字・60字超の文が 54% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 114.6,
-        "avg_sentence": 66.9,
-        "long_share": 0.542,
-        "max_paragraph": 158,
-        "paragraphs": 14,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "aws-japan-blog",
-      "title": "大規模金融系保守開発における AI 適用への挑戦 ── ニッセイ情報テクノロジーが AI-DLC v2 と内製ツールで進める、個人保険基幹系システムの AI 駆"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T08:26:45.005031+00:00",
-      "attempt": 0,
-      "id": "f94fc35fdadaf544",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 125.7字・最長 195字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 125.7,
-        "avg_sentence": 22.7,
-        "long_share": 0.0,
-        "max_paragraph": 195,
-        "paragraphs": 15,
-        "sentences": 83
-      },
-      "score": 100,
-      "source": "aws-japan-blog",
-      "title": "大規模金融系保守開発における AI 適用への挑戦 ── ニッセイ情報テクノロジーが AI-DLC v2 と内製ツールで進める、個人保険基幹系システムの AI 駆"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T08:26:54.684792+00:00",
-      "attempt": 1,
-      "id": "a88ae1defb1edfa3",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 56.6字・60字超の文が 33% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 89.4,
-        "avg_sentence": 56.6,
-        "long_share": 0.333,
-        "max_paragraph": 177,
-        "paragraphs": 19,
-        "sentences": 30
-      },
-      "score": 100,
-      "source": "jnet21",
-      "title": "中小企業に必要な法律知識（第3回）ー民法改正と手形廃止後の取引実務ー"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T08:26:59.567219+00:00",
-      "attempt": 0,
-      "id": "a88ae1defb1edfa3",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 79.5,
-        "avg_sentence": 23.8,
-        "long_share": 0.0,
-        "max_paragraph": 135,
-        "paragraphs": 27,
-        "sentences": 90
-      },
-      "score": 100,
-      "source": "jnet21",
-      "title": "中小企業に必要な法律知識（第3回）ー民法改正と手形廃止後の取引実務ー"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T08:51:17.002661+00:00",
-      "attempt": 1,
-      "id": "0192594f98b7ad03",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 83.3,
-        "avg_sentence": 44.8,
-        "long_share": 0.077,
-        "max_paragraph": 116,
-        "paragraphs": 7,
-        "sentences": 13
-      },
-      "score": 100,
-      "source": "mof",
-      "title": "令和8年度 9月末租税及び印紙収入、収入額調"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T09:13:12.550034+00:00",
-      "attempt": 1,
-      "id": "c6d9238c83518589",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 95.6,
-        "avg_sentence": 42.1,
-        "long_share": 0.16,
-        "max_paragraph": 183,
-        "paragraphs": 11,
-        "sentences": 25
-      },
-      "score": null,
-      "source": "mof",
-      "title": "第57回住宅金融支援機構債券（グリーンボンド）に対する政府保証の付与"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T09:14:44.806116+00:00",
-      "attempt": 2,
-      "id": "c6d9238c83518589",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 103.8,
-        "avg_sentence": 40.6,
-        "long_share": 0.087,
-        "max_paragraph": 179,
-        "paragraphs": 9,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "mof",
-      "title": "第57回住宅金融支援機構債券（グリーンボンド）に対する政府保証の付与"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T09:31:30.114952+00:00",
-      "attempt": 1,
-      "id": "23fa88e53441b0d4",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 124.9,
-        "avg_sentence": 59.2,
-        "long_share": 0.526,
-        "max_paragraph": 161,
-        "paragraphs": 9,
-        "sentences": 19
-      },
-      "score": null,
-      "source": "nli-research",
-      "title": "乖離する企業の２つの「物価」見通し－物価見通しは２％超でも自社の中期の販売価格見通しは１％未満"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T09:32:09.063641+00:00",
-      "attempt": 2,
-      "id": "23fa88e53441b0d4",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 60.5字・60字超の文が 47% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 127.8字・最長 181字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 127.8,
-        "avg_sentence": 60.5,
-        "long_share": 0.474,
-        "max_paragraph": 181,
-        "paragraphs": 9,
-        "sentences": 19
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "乖離する企業の２つの「物価」見通し－物価見通しは２％超でも自社の中期の販売価格見通しは１％未満"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T09:32:56.661911+00:00",
-      "attempt": 0,
-      "id": "23fa88e53441b0d4",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 140.1字・最長 202字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 140.1,
-        "avg_sentence": 34.1,
-        "long_share": 0.0,
-        "max_paragraph": 202,
-        "paragraphs": 9,
-        "sentences": 37
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "乖離する企業の２つの「物価」見通し－物価見通しは２％超でも自社の中期の販売価格見通しは１％未満"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T09:51:28.796695+00:00",
-      "attempt": 1,
-      "id": "8bc0d6eec5badada",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 101.9,
-        "avg_sentence": 44.3,
-        "long_share": 0.087,
-        "max_paragraph": 134,
-        "paragraphs": 10,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "mof",
-      "title": "国債金利情報(令和8年10月30日)"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T10:11:19.886732+00:00",
-      "attempt": 1,
-      "id": "539e0355e722133b",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 52.7字・60字超の文が 22% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 101.1,
-        "avg_sentence": 52.7,
-        "long_share": 0.217,
-        "max_paragraph": 151,
-        "paragraphs": 12,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "nissan",
-      "title": "6社が「福島県及び浪江町での循環型社会の実現に向けた取組みに関する連携協定」を締結"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T10:11:23.181924+00:00",
-      "attempt": 0,
-      "id": "539e0355e722133b",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 103.8,
-        "avg_sentence": 33.6,
-        "long_share": 0.027,
-        "max_paragraph": 151,
-        "paragraphs": 12,
-        "sentences": 37
-      },
-      "score": 100,
-      "source": "nissan",
-      "title": "6社が「福島県及び浪江町での循環型社会の実現に向けた取組みに関する連携協定」を締結"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T10:31:32.675876+00:00",
-      "attempt": 1,
-      "id": "cd0896561670865f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 46.2字・60字超の文が 12% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 138.8字・最長 183字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 138.8,
-        "avg_sentence": 46.2,
-        "long_share": 0.125,
-        "max_paragraph": 183,
-        "paragraphs": 8,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "tsr",
-      "title": "新型コロナ破たん、10月は125件発生"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T10:31:35.825493+00:00",
@@ -20195,6 +19950,202 @@
         "見出しが62字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（SQL）"
       ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:41:50.849130+00:00",
+      "attempt": 1,
+      "id": "93b612d519cf77e4b14aa268b9cdd3b9e53107fd",
+      "kind": "trend",
+      "model": "gemini-3.5-flash",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "キオクシア 株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:43:30.517345+00:00",
+      "attempt": 2,
+      "id": "93b612d519cf77e4b14aa268b9cdd3b9e53107fd",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "キオクシア 株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:45:08.211759+00:00",
+      "attempt": 1,
+      "id": "a66582ed2e2eb175addce91dcd8c3db3910baf4e",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "オリエンタルランド 株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:46:56.089248+00:00",
+      "attempt": 2,
+      "id": "a66582ed2e2eb175addce91dcd8c3db3910baf4e",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "オリエンタルランド 株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:48:23.619748+00:00",
+      "attempt": 1,
+      "id": "bd77db82486b50a500f6bc90bee4f34482b22617",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "ihi 株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:49:11.275737+00:00",
+      "attempt": 2,
+      "id": "bd77db82486b50a500f6bc90bee4f34482b22617",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "ihi 株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:50:39.360417+00:00",
+      "attempt": 1,
+      "id": "e5a5675e2d1ffd241d6b2d7e041969ccd68c838e",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "住友商事 株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:51:40.324088+00:00",
+      "attempt": 2,
+      "id": "e5a5675e2d1ffd241d6b2d7e041969ccd68c838e",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "住友商事 株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:53:14.265390+00:00",
+      "attempt": 1,
+      "id": "fa5cf1d88191aa9356e9ecf426acce1aabb663dd",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "tdk 株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:54:23.431064+00:00",
+      "attempt": 2,
+      "id": "fa5cf1d88191aa9356e9ecf426acce1aabb663dd",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "tdk 株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:56:29.059048+00:00",
+      "attempt": 1,
+      "id": "21b9ad530469352ed79e298118d1b253bad891fc",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "三菱電機株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:57:48.878849+00:00",
+      "attempt": 2,
+      "id": "21b9ad530469352ed79e298118d1b253bad891fc",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "三菱電機株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T01:59:00.399159+00:00",
+      "attempt": 1,
+      "id": "1b841b9838c9bfc5ad064737752e51ee19fd48f6",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "商船三井 株価"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T02:00:09.134586+00:00",
+      "attempt": 2,
+      "id": "1b841b9838c9bfc5ad064737752e51ee19fd48f6",
+      "kind": "trend",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "trends",
+      "title": "商船三井 株価"
     }
   ],
   "short_text_retry": {
