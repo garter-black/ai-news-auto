@@ -1,0 +1,161 @@
+{
+  "slug": "gemini-cost-per-task-routing",
+  "sourceType": "web",
+  "sourceUrl": "https://developers.googleblog.com/cost-per-task-using-cheap-classifiers-to-route-across-gemini-models-and-thinking-levels/",
+  "sourceName": "Google Developers Blog",
+  "title": "Googleが「Gemini」モデルの使い分け手法を公開　タスクごとのコスト削減を検証",
+  "seoTitle": "Gemini モデルの使い分け方　コスト削減の手法をGoogle公開",
+  "threadsPost": "コーディングエージェント開発者の皆さん、押さえておきたい話です。\n\n要約すると、\nGoogleがGeminiモデルを使い分ける手法を公開しました。\n安い分類器でタスクを判断し、モデルを切り替えることでコストを抑えます。\n\n仕事でAIエージェントを使うなら、コストと速さのどちらを重視しますか？",
+  "threadsHook": "callout",
+  "threadsQuestions": [
+    {
+      "pattern": "plain",
+      "question": "仕事でAIエージェントを使うなら、コストと速さのどちらを重視しますか？"
+    },
+    {
+      "pattern": "ab",
+      "question": "安いモデルで済む作業と、じっくり考えさせる作業、どちらを多く任せたいですか？"
+    },
+    {
+      "pattern": "tradeoff",
+      "question": "回答の正確さを優先するなら、少し時間がかかっても許容できますか？"
+    }
+  ],
+  "threadsStyle": 3,
+  "writingVoice": "honest",
+  "lede": "Googleの開発者向けブログが、Geminiモデルを使い分ける手法を2026年11月3日に公開しました。安い分類器でタスクを判断し、モデルや思考レベルを切り替えることで、1タスクあたりのコストを抑える仕組みです。検証では、50問のコーディングエージェント課題すべてを正しく解きながら、応答の短縮も実現しました。",
+  "description": "GoogleがGeminiモデルを使い分ける手法を公開。安い分類器でタスクを判断し、モデルや思考レベルを切り替えて1タスクあたりのコストを抑える仕組みを検証。50問すべてを正解しつつ応答も短縮しました。開発者向けの技術発表で、コスト削減の検証結果も含まれています。",
+  "keywords": [
+    "Gemini",
+    "ルーティング",
+    "コスト削減",
+    "分類器",
+    "推論",
+    "コーディングエージェント",
+    "思考レベル",
+    "Google AI"
+  ],
+  "tags": [
+    "生成AI",
+    "LLM",
+    "Gemini",
+    "開発ツール",
+    "コスト削減"
+  ],
+  "highlights": [
+    "GoogleがGeminiモデルを使い分ける手法を公開し、タスクごとのコスト削減を検証しました。",
+    "50問のコーディング課題で、安い分類器によるルーティングがすべて正解し応答も短縮しました。",
+    "思考レベルを「低」に設定したGemini 3.8 Flashが、ルーターなしで50問すべてを解きました。"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "demo",
+    "japan": "unknown",
+    "price": "不明",
+    "free": null,
+    "audience": "開発者",
+    "take": "ルーティング手法の検討材料として、自社のコーディングエージェントのコストを確認するとよいでしょう。",
+    "judgedAt": "2026-11-04T03:14:30.559497+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "コーディングエージェントを使う開発者は、1タスクあたりのコストを見直す材料になります。",
+      "思考レベルを「低」に設定するだけで、コストを抑えつつ正答率を維持できる可能性があります。"
+    ]
+  },
+  "body": "今回発表されたのは、AIエージェントが使うモデルを、作業の難しさに応じて自動で切り替える仕組みです。開発者がコーディングエージェントを運用する際、1トークンあたりのAPI料金だけでなく、1タスクを完了させるまでの総コストが重要になっています。\n\n発表元はGoogle Developers Blogで、Google Cloud AIのSergio Villani氏が執筆しました。発表の主なポイントは、安い分類器を使って軽い作業と重い作業を振り分けることでコストを下げられるという検証結果です。\n\n具体的には、TypeSafe社のJevという分類器をGeminiのモデル呼び出しの前に置く方法が紹介されています。Jevは1回の処理で「選択肢から1つを選ぶ」「数値を出す」「0から1の確率を返す」といった判断を行います。GoogleはTypeSafe社と提携しておらず、本記事は同社製品を推奨するものではありません。同じ仕組みは、Google DeepMindのオープンウェイトモデルであるDiffusionGemmaなど、他の分類器でも構築できます。\n\n検証は50問のコーディングエージェント課題で行われました。まず、正規表現やトークン数で簡単・難しいを判断する単純なルーターは、見慣れない課題では性能が大きく落ちました。開発用の16問では93.8％の正答率でしたが、未出題の34問では70.6％まで低下しました。一方、Jevは34問すべてで人間の難易度ラベルと一致し、全50問のうち48問、つまり96.0％で難易度を判断しました。\n\n次に、出力トークン数の上限を300に制限しても、簡単な作業の思考コストはほとんど減りませんでした。上限は天井に過ぎず、簡単な回答はそれに達しないためです。むしろ制限により、難しい25問のうち7問で回答が得られなくなるか誤った答えになりました。ルーターを使っても、安い選択肢がモデルの思考を減らさなければ、コストは削減できません。\n\n最も安い構成は、Flash-Liteという思考を行わないモデルにまず処理させます。Jevが難しいと判断したものだけを、Gemini 3.8 Flashの低思考レベルに回す方法でした。このルーターは50問すべてを正解しました。すべてを低思考で処理する場合と比べて、コストと応答時間を抑えられました。ただし、プロンプトが短い場合の1タスクあたりのコスト差は小さいです。対話型エージェントでは、待ち時間の短さがより大きなメリットになります。\n\nまた、トークン単価だけではコストの全体像は見えません。文脈キャッシュを使うと同じ大きな文脈を再送する際に75％から90％安くなります。キャッシュは1つのモデルに紐付くため、モデルを切り替えると割引が失われます。短く独立した作業はルーターで振り分け、文脈が多い長いやり取りは1つのモデルで続けるのが現実的な分け方です。\n\n発表では3つの実践的なルールも示されています。まず、ルーターを構築する前にGemini 3.8 Flashの思考レベルを「低」に設定すること。出力トークン数の上限を下げるだけでは、思考量は減りません。thinkingLevelを\"LOW\"に直接指定する必要があります。次に、Jevは短く独立したタスクに使い、簡単な作業をFlash-Liteに、難しい作業をFlashの低思考に回すこと。1つの要素につき1つの単純なはい・いいえの質問をJevに投げるのがコツです。最後に、文脈が多い長いやり取りは1つのモデルにまとめることです。\n\n## 日本の開発者への影響と料金\n\n日本向けの提供時期と料金は、まだ発表されていません。Geminiは日本で利用可能です。Jevは TypeSafe社の製品で、Google製ではありません。自社で同様のルーターを構築する場合、APIの従量課金が想定されます。セルフホスティングならGPU時間課金です。\n\n## まだ分からないこと\n\n- 日本での提供時期\n- 日本向けの料金プラン\n- Jev以外の分類器を使った場合の具体的な性能",
+  "easy": "## ひとことで言うと\n\nGoogleが発表した手法を使えば、安い分類器で作業の難しさを判断し、Geminiモデルを使い分けることでコストを抑えられます。\n\n## 開発者が知っておくべき仕組み\n\n安い分類器が「簡単な作業か」を判断し、簡単なら軽いモデルに、難しいなら少し考えるモデルに振り分けます。50問の検証で、すべて正解しながら応答も短くなりました。",
+  "channel": "Google Developers Blog",
+  "channelId": "",
+  "channelSlug": "google-developers-blog",
+  "genre": "AI・テクノロジー",
+  "genreSlug": "ai",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な仕様・料金は公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Cost per task: Using cheap classifiers to route across Gemini models and thinking levels",
+  "publishedAt": "2026-11-03T00:00:00+00:00",
+  "generatedAt": "2026-11-04T03:14:30.559487+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/gemini-cost-per-task-routing-37317513.jpg",
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "affiliates": [],
+  "newsType": "general",
+  "faq": [
+    {
+      "q": "Googleが発表したGeminiモデルの使い分け手法とは？",
+      "a": "安い分類器でタスクを判断し、モデルや思考レベルを切り替えて1タスクあたりのコストを抑える仕組みです。"
+    },
+    {
+      "q": "この手法は誰に関係するのですか？",
+      "a": "コーディングエージェントを運用する開発者や、AIを使った自動処理を検討している企業に関係します。"
+    },
+    {
+      "q": "日本でこの手法は使えるのですか？",
+      "a": "発表では日本での提供時期は明示されていません。Gemini自体は日本で利用可能です。"
+    },
+    {
+      "q": "この手法は無料で使えるのですか？",
+      "a": "JevはTypeSafe社の製品で、Google製ではありません。料金体系は発表されていません。"
+    },
+    {
+      "q": "この手法を使う際の注意点は何ですか？",
+      "a": "出力トークン数の上限を下げるだけでは思考コストは減らず、思考レベルを直接「低」に設定する必要があります。"
+    }
+  ],
+  "todayActions": [
+    "コーディングエージェントの1タスクあたりのコストを確認する",
+    "Gemini 3.8 Flashの思考レベルを「低」に設定する",
+    "自社の業務に合ったモデルの使い分け方を検討する"
+  ],
+  "relatedSlugs": [
+    "google-deepmind-antigravity-remote-control"
+  ],
+  "qualityScore": 85,
+  "sourcePublishedAt": "2026-11-03T00:00:00+00:00",
+  "detectedAt": "2026-11-04T02:50:55+00:00",
+  "sectionsPolishedAt": "2026-11-04T03:15:36+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/gemini-cost-per-task-routing-fig1-c5430e07.jpg",
+      "width": 1200,
+      "height": 670,
+      "kind": "dense",
+      "credit": "Google Developers",
+      "sourceUrl": "https://developers.googleblog.com/cost-per-task-using-cheap-classifiers-to-route-across-gemini-models-and-thinking-levels/",
+      "original": "https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/image3_1.original.jpg"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/gemini-cost-per-task-routing-fig2-042a1265.jpg",
+      "width": 1200,
+      "height": 668,
+      "kind": "dense",
+      "credit": "Google Developers",
+      "sourceUrl": "https://developers.googleblog.com/cost-per-task-using-cheap-classifiers-to-route-across-gemini-models-and-thinking-levels/",
+      "original": "https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/table_4_strategy_performance_comparison.original.jpg"
+    }
+  ],
+  "imageCredit": {
+    "kind": "official",
+    "org": "Google Developers",
+    "provider": "Google Developers Blog",
+    "sourceUrl": "https://developers.googleblog.com/cost-per-task-using-cheap-classifiers-to-route-across-gemini-models-and-thinking-levels/",
+    "original": "https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/image3_1.2e16d0ba.fill-1200x600.jpg",
+    "width": 1200,
+    "height": 600,
+    "at": "2026-11-04T03:15:50+00:00",
+    "imageKind": "hero"
+  },
+  "imageFocus": {
+    "x": 0.495,
+    "y": 0.49,
+    "box": [
+      0.056,
+      0.0,
+      0.934,
+      0.981
+    ],
+    "ar": 2.0,
+    "src": "https://ai-tech-express.jp/img/gemini-cost-per-task-routing-37317513.jpg"
+  }
+}

@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "gemini-cost-per-task-routing",
+   "at": "2026-11-04T03:14:30.559487+00:00",
+   "title": "Googleが「Gemini」モデルの使い分け手法を公開　タスクごとのコスト削減を検証",
+   "head": "Googleが「Gemini」モデルの使い分け手法を公開　タスクごとのコスト削減を検証 | Cost per task: Using cheap classifiers to route across Gemini models and thinking levels",
+   "text": "Googleが「Gemini」モデルの使い分け手法を公開　タスクごとのコスト削減を検証 | Cost per task: Using cheap classifiers to route across Gemini models and thinking levels | Gemini / ルーティング / コスト削減 / 分類器 / 推論 / コーディングエージェント / 思考レベル / Google AI / 生成AI / LLM / Gemini / 開発ツール / コスト削減",
+   "urls": [
+    "https://developers.googleblog.com/cost-per-task-using-cheap-classifiers-to-route-across-gemini-models-and-thinking-levels/"
+   ]
+  },
+  {
    "slug": "google-cloud-agent-skill-evaluation-rules",
    "at": "2026-11-04T02:38:25.547579+00:00",
    "title": "Google Cloud、AIエージェントスキル評価の5ルールを公開",

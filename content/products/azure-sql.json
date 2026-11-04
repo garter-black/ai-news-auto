@@ -8,11 +8,10 @@
   "companyName": "Microsoft",
   "category": "アプリ・サービス",
   "overview": {
-    "text": "Azure SQLは、マイクロソフトが提供するクラウドデータベースサービスです。リレーショナルデータベースとしての強みを活かしながら、AI連携や大容量のベクトル検索機能などを備えています。",
+    "text": "Azure SQLは、Microsoftのクラウドで使うリレーショナルデータベースです。既存のSQL Serverとの互換性を保ちながら、クラウドネイティブな機能へ進化を遂げています。",
     "sources": [
-      "microsoft-fabric-database-agent-preview",
-      "azure-sql-vector-index-diskann-ga",
-      "azure-sql-hyperscale-developers-guide"
+      "azure-sql-hyperscale-developers-guide",
+      "azure-sql-ai-agent-skills-guide"
     ]
   },
   "facts": [
@@ -21,25 +20,11 @@
       "value": "利用できる",
       "sources": [
         "microsoft-fabric-database-agent-preview",
-        "azure-sql-vector-index-diskann-ga"
-      ]
-    },
-    {
-      "label": "向いている人",
-      "value": "開発者、DBA、データ技術者",
-      "sources": [
-        "microsoft-fabric-database-agent-preview",
-        "azure-sql-ai-agent-skills-guide"
+        "azure-savings-plan-for-databases"
       ]
     }
   ],
   "capabilities": [
-    {
-      "text": "AIがデータベースの処理詰まりや高負荷を自動検知し、原因の特定から修正までスムーズに行えます。",
-      "sources": [
-        "microsoft-fabric-database-agent-preview"
-      ]
-    },
     {
       "text": "10億行のベクトルデータに対する類似性検索において、1秒未満の応答速度を達成しています。",
       "sources": [
@@ -47,21 +32,27 @@
       ]
     },
     {
-      "text": "コンピュートとストレージを分離した分散アーキテクチャにより、40TBをわずか7分でリストア可能です。",
+      "text": "40TBの超大規模データベースであっても、わずか7分でリストアを完了できます。",
       "sources": [
         "azure-sql-hyperscale-developers-guide"
+      ]
+    },
+    {
+      "text": "AIがデータベースを常時監視し、処理のブロックや高負荷を自動検知します。",
+      "sources": [
+        "microsoft-fabric-database-agent-preview"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "利用するサービスの料金プランやMicrosoft Fabricのキャパシティに準拠します。",
+      "text": "Database Agentの利用にはMicrosoft Fabricのキャパシティが必要です。",
       "sources": [
         "microsoft-fabric-database-agent-preview"
       ]
     },
     {
-      "text": "支出ベースのAzure savings plan for databasesを利用できます。",
+      "text": "対象のデータベースサービスが最大35％割引になるプランが提供されています。",
       "sources": [
         "azure-savings-plan-for-databases"
       ]
@@ -69,29 +60,17 @@
   ],
   "japan": [
     {
-      "text": "発表の時点では、日本からも利用可能です。",
+      "text": "日本からも利用可能です。",
       "sources": [
-        "microsoft-fabric-database-agent-preview"
+        "microsoft-fabric-database-agent-preview",
+        "azure-savings-plan-for-databases"
       ]
     }
   ],
-  "howto": [
-    {
-      "text": "Microsoft Fabricのポータルから設定を有効にします。",
-      "sources": [
-        "microsoft-fabric-database-agent-preview"
-      ]
-    },
-    {
-      "text": "Database Hubから監視したいデータベースを選択して始められます。",
-      "sources": [
-        "microsoft-fabric-database-agent-preview"
-      ]
-    }
-  ],
+  "howto": [],
   "differences": [
     {
-      "text": "従来の受動的な運用から、AIが問題を自動検知して教えるプロアクティブな運用へ変わりました。",
+      "text": "障害発生後に対応する受動的な運用から、AIが問題を事前に教える運用へ変わります。",
       "sources": [
         "microsoft-fabric-database-agent-preview"
       ]
@@ -99,55 +78,49 @@
   ],
   "faq": [
     {
-      "q": "無料枠はある？",
-      "a": "クラウドのAzure SQL Database無料枠が用意されています。",
+      "q": "データベースの管理を自動化できますか？",
+      "a": "AIが24時間体制で監視し、高負荷や処理のブロックを自動検知します。",
       "sources": [
-        "azure-sql-ai-agent-skills-guide"
+        "microsoft-fabric-database-agent-preview"
       ]
     },
     {
-      "q": "誰に向いている？",
-      "a": "データベースを管理するエンジニアや開発者に向いています。",
-      "sources": [
-        "microsoft-fabric-database-agent-preview",
-        "azure-sql-ai-agent-skills-guide"
-      ]
-    },
-    {
-      "q": "コスト削減プランはある？",
-      "a": "最大35パーセント割引になるAzure savings plan for databasesが提供されています。",
+      "q": "コストを削減するプランはありますか？",
+      "a": "最大35％割引になる支出ベースのコミットメントモデルが利用できます。",
       "sources": [
         "azure-savings-plan-for-databases"
       ]
     },
     {
-      "q": "検索速度はどれくらい？",
-      "a": "10億行のベクトルデータに対して1秒未満の応答速度を達成しています。",
+      "q": "ベクトル検索の速度はどれくらいですか？",
+      "a": "10億行のデータに対し、1秒未満の応答速度を達成しています。",
       "sources": [
         "azure-sql-vector-index-diskann-ga"
+      ]
+    },
+    {
+      "q": "バックアップからの復旧はどのくらい時間がかかりますか？",
+      "a": "40TBのデータベースであっても、わずか7分でリストアを完了できます。",
+      "sources": [
+        "azure-sql-hyperscale-developers-guide"
       ]
     }
   ],
   "timeline": [
     {
-      "date": "2026-07-29",
-      "slug": "azure-sql-fabric-data-anomaly-detection",
-      "event": "Azure SQLとFabricの連携機能を発表"
-    },
-    {
       "date": "2026-08-20",
       "slug": "azure-sql-hyperscale-developers-guide",
-      "event": "Azure SQL Hyperscaleを解説"
+      "event": "Azure SQL Hyperscaleを発表"
     },
     {
       "date": "2026-10-02",
       "slug": "azure-sql-vector-index-diskann-ga",
-      "event": "DiskANNインデックスが一般提供開始"
+      "event": "DiskANNインデックスの一般提供を開始"
     },
     {
       "date": "2026-10-23",
       "slug": "azure-sql-ai-agent-skills-guide",
-      "event": "Agent Skills機能が公開"
+      "event": "SQL Agent Skillsを公開"
     }
   ],
   "related": [
@@ -171,9 +144,9 @@
     "azure-sql-hyperscale-developers-guide",
     "azure-sql-fabric-data-anomaly-detection"
   ],
-  "signature": "fc8078e505f62ec4",
-  "primarySignature": "445f088250997aef",
+  "signature": "0e12e5baf3eaa297",
+  "primarySignature": "2bd21c90af4e99f8",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:44:29+00:00",
-  "updatedAt": "2026-11-01T12:15:08+00:00"
+  "updatedAt": "2026-11-04T03:15:17+00:00"
 }

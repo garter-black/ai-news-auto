@@ -1,0 +1,131 @@
+{
+  "slug": "figma",
+  "name": "Figma",
+  "aliases": [],
+  "company": "other",
+  "companyName": "Figma",
+  "category": "アプリ・サービス",
+  "overview": {
+    "text": "Figmaは、デザインの作成や共有ができるデザインツールです。提供元のFigmaから提供されており、AIによる画像・動画の制作基盤である「Figma Weave」などの機能が発表されています。",
+    "sources": [
+      "figma-weave-creative-workflow",
+      "openai-gpt-6-astra-first-impressions-n-dqdvmwoas"
+    ]
+  },
+  "facts": [
+    {
+      "label": "向いている人",
+      "value": "制作チームやデザイナー",
+      "sources": [
+        "figma-weave-creative-workflow",
+        "openai-gpt-6-astra-first-impressions-n-dqdvmwoas"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "text": "Figma Weaveのノードをつないだ画面で、制作の手順が見え、前の段階に戻って直せます。",
+      "sources": [
+        "figma-weave-creative-workflow"
+      ]
+    },
+    {
+      "text": "同じ指示を複数のAIモデルで走らせ、結果を並べて比べることができます。",
+      "sources": [
+        "figma-weave-creative-workflow"
+      ]
+    },
+    {
+      "text": "Figma MCP Serverを介してデザインシステムと直接連携し、一貫性のあるコンポーネントを適用できます。",
+      "sources": [
+        "openai-gpt6-astra-figma-integration"
+      ]
+    },
+    {
+      "text": "静止した鳥のポーズと移動するスリットを用いて、鳥が羽ばたいて飛んでいるようなベクターアニメーションを設計できます。",
+      "sources": [
+        "openai-gpt-6-astra-first-impressions-n-dqdvmwoas"
+      ]
+    }
+  ],
+  "pricing": [],
+  "japan": [],
+  "howto": [],
+  "differences": [],
+  "faq": [
+    {
+      "q": "誰に向いている？",
+      "a": "制作チームやデザイナーに向いています。",
+      "sources": [
+        "figma-weave-creative-workflow",
+        "openai-gpt-6-astra-first-impressions-n-dqdvmwoas"
+      ]
+    },
+    {
+      "q": "Figma Weaveとは？",
+      "a": "画像や動画をAIで作り、編集する作業を部品でつないでチームで繰り返し使えるようにするサービスです。",
+      "sources": [
+        "figma-weave-creative-workflow"
+      ]
+    },
+    {
+      "q": "Config Indiaとは？",
+      "a": "インドのベンガルールで初めて開かれた、製品開発者約5,000人が参加したイベントです。",
+      "sources": [
+        "figma-config-india-insights-ai"
+      ]
+    },
+    {
+      "q": "Figma WeaveでAIモデルは比較できる？",
+      "a": "同じ指示を異なるAIモデルに通し、結果を並べて比べることができます。",
+      "sources": [
+        "figma-weave-creative-workflow"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2026-09-10",
+      "slug": "openai-gpt-6-astra-first-impressions-n-dqdvmwoas",
+      "event": "GPT-6 Astraの企業導入事例を公開"
+    },
+    {
+      "date": "2026-09-22",
+      "slug": "openai-gpt6-astra-figma-integration",
+      "event": "GPT-6 AstraとFigmaの連携デモを公開"
+    },
+    {
+      "date": "2026-10-30",
+      "slug": "figma-config-india-insights-ai",
+      "event": "インド初のConfig Indiaを開催"
+    },
+    {
+      "date": "2026-10-31",
+      "slug": "figma-weave-creative-workflow",
+      "event": "Figma Weaveの使い所を公開"
+    }
+  ],
+  "related": [
+    "chatgpt",
+    "gpt-6-astra",
+    "gemini",
+    "github-copilot"
+  ],
+  "articles": [
+    "figma-weave-creative-workflow",
+    "figma-config-india-insights-ai",
+    "kddi-iret-ai-use-cases-113",
+    "github-copilot-app-projects-computer-use",
+    "openai-gpt6-astra-figma-integration",
+    "openai-gpt-6-astra-first-impressions-n-dqdvmwoas"
+  ],
+  "linkFrom": [
+    "figma-weave-creative-workflow",
+    "figma-config-india-insights-ai"
+  ],
+  "signature": "d5342b1f4b5f5afb",
+  "primarySignature": "cab31abdfe325e80",
+  "model": "gemini-3.5-flash-lite",
+  "createdAt": "2026-11-04T03:15:23+00:00",
+  "updatedAt": "2026-11-04T03:15:23+00:00"
+}

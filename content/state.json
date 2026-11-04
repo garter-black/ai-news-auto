@@ -93,10 +93,10 @@
     },
     "3d509e27bae229a3": {
       "first": "2026-11-03T23:40:53.183061+00:00",
-      "next": "2026-11-04T02:40:53.183061+00:00",
+      "next": "2026-11-04T06:01:17.900239+00:00",
       "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
       "title": "OpenAI appoints Jill Hazelbaker as Chief Corporate Affairs Officer",
-      "tries": 1,
+      "tries": 2,
       "url": "https://openai.com/index/jill-hazelbaker-chief-corporate-affairs-officer"
     },
     "60e8d80f76ce81f6": {
@@ -163,13 +163,13 @@
       "tries": 1,
       "url": "https://www.tsr-net.co.jp/data/detail/1203395_1527.html"
     },
-    "de5d8c3372c230d4": {
-      "first": "2026-11-03T17:33:22.187893+00:00",
-      "next": "2026-11-04T02:48:22.391453+00:00",
-      "reason": "「難しいタスク7問のうち7問で正解が得られなくなるか、誤った答えになりました」→ 元記事は難しい25問のうち7問が失敗（6問は未回答、1問は誤答）で、「7問のうち7問」は事実と異なる。; 「未出題の34問すべてを正解しました」「未出題の34問すべてを正しく分類しました」→ 元記事は34問すべてで難易度ラベルと一致（分類が一致）したという意味で、「正解」ではない。要点でも「50問中48問の正解率」と",
-      "title": "Cost per task: Using cheap classifiers to route across Gemini models and thinking levels",
-      "tries": 2,
-      "url": "https://developers.googleblog.com/cost-per-task-using-cheap-classifiers-to-route-across-gemini-models-and-thinking-levels/"
+    "e2654f5d2f822277": {
+      "first": "2026-11-04T03:04:00.517719+00:00",
+      "next": "2026-11-04T06:04:00.517719+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "延焼につながる火種を上空から検知。国産ドローンとクラウドGCSによる山火事防災訓練をソフトバンクが支援",
+      "tries": 1,
+      "url": "https://www.softbank.jp/sbnews/entry/20261104_01"
     },
     "f1da59955392e79e": {
       "first": "2026-11-04T00:48:40.342630+00:00",
@@ -5430,6 +5430,12 @@
       "skipped": true,
       "url": "https://www.mhlw.go.jp/kouseiroudoushou/shikaku_shiken/kanrieiyoushi/about.html"
     },
+    "32379469880e6096": {
+      "at": "2026-11-04T03:01:26.970536+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（セミナー）",
+      "skipped": true,
+      "url": "https://j-net21.smrj.go.jp/news/bt5puv0000010b3o.html"
+    },
     "32449f7b43814550": {
       "at": "2026-10-30T00:32:02.060233+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（審議会）",
@@ -5989,6 +5995,12 @@
       "section": "ai",
       "slug": "aws-nvidia-nemotron-35-super-vl",
       "url": "https://aws.amazon.com/blogs/machine-learning/accelerate-agentic-ai-with-nvidia-nemotron-models-on-amazon-eks-and-sagemaker-hyperpod-eks/"
+    },
+    "416541329c8b23f2": {
+      "at": "2026-11-04T03:01:26.969501+00:00",
+      "reason": "stale: 発表から307時間（記事ページの日付）",
+      "skipped": true,
+      "url": "https://j-net21.smrj.go.jp/news/bt5puv0000010bb3.html"
     },
     "418e4fbf97ad97ea": {
       "at": "2026-10-27T03:05:10.759417+00:00",
@@ -8315,6 +8327,12 @@
       "section": "lifestyle",
       "slug": "kirin-good-ale-limited-message-can",
       "url": "https://www.kirinholdings.com/jp/newsroom/release/2026/1027_01.html"
+    },
+    "7b989b7aa0d3bfd4": {
+      "at": "2026-11-04T03:01:31.453588+00:00",
+      "reason": "stale: 発表から307時間（記事ページの日付）",
+      "skipped": true,
+      "url": "https://j-net21.smrj.go.jp/news/bt5puv00000108j9.html"
     },
     "7bc8b4ac5fbcf892": {
       "at": "2026-10-30T19:11:29.061196+00:00",
@@ -11852,6 +11870,12 @@
       "slug": "craft-beer-shipments-2026-tsr",
       "url": "https://www.tsr-net.co.jp/data/detail/1203392_1527.html"
     },
+    "d1ca532e101a8cf0": {
+      "at": "2026-11-04T03:01:18.494444+00:00",
+      "reason": "prefilter: サイトの主題外（エンタメのビジネス・テックの話題ではない。料金・決算・販売本数・AI・規約などがない）",
+      "skipped": true,
+      "url": "https://news.xbox.com/ja-jp/2026/11/04/https-news-xbox-com-en-us-2026-11-03-xbox-game-pass-november-2026-wave-1/"
+    },
     "d2282bcce1625c64": {
       "at": "2026-10-30T22:01:11.556786+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -12413,6 +12437,14 @@
       "reason": "quality: 「銀行の窓口にたとえると…前は、用件が違っても全員が1つの列に並ぶ形に近い面がありました」→ OpenAIの旧基盤がそうした構造だったとは元記事に書かれておらず、旧基盤の構造を推測で描いている（一般的な方式の説明にとどまる）。; 「Pandoが目指したのは…」直後の「移行は…Gitの通信の決まりや、手元で使うGitの道具との互換性を保ったため」→ 元記事は互換性の維持と無停止移行",
       "skipped": true,
       "url": "https://openai.com/index/scaling-git-at-openai"
+    },
+    "de5d8c3372c230d4": {
+      "at": "2026-11-04T03:15:08.523520+00:00",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "score": 85,
+      "section": "ai",
+      "slug": "gemini-cost-per-task-routing",
+      "url": "https://developers.googleblog.com/cost-per-task-using-cheap-classifiers-to-route-across-gemini-models-and-thinking-levels/"
     },
     "de8ee9d6403bde44": {
       "at": "2026-11-02T20:12:13.263841+00:00",
@@ -13599,6 +13631,12 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000218.000073476.html"
     },
+    "fb043847e5b56c24": {
+      "at": "2026-11-04T03:01:26.970508+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（セミナー）",
+      "skipped": true,
+      "url": "https://j-net21.smrj.go.jp/news/bt5puv0000010b7d.html"
+    },
     "fb3444ec170407ee": {
       "at": "2026-10-31T03:31:18.916719+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13808,161 +13846,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T11:51:14.868984+00:00",
-      "attempt": 1,
-      "id": "2a181a0a4fb64895",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 58.4字・60字超の文が 46% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 140.1字・最長 190字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 140.1,
-        "avg_sentence": 58.4,
-        "long_share": 0.458,
-        "max_paragraph": 190,
-        "paragraphs": 10,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "mof",
-      "title": "片山財務大臣兼内閣府特命担当大臣繰上げ閣議後記者会見の概要(令和8年11月2日(月曜日))"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T11:51:18.750572+00:00",
-      "attempt": 0,
-      "id": "2a181a0a4fb64895",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 85.8,
-        "avg_sentence": 27.5,
-        "long_share": 0.0,
-        "max_paragraph": 186,
-        "paragraphs": 17,
-        "sentences": 53
-      },
-      "score": 100,
-      "source": "mof",
-      "title": "片山財務大臣兼内閣府特命担当大臣繰上げ閣議後記者会見の概要(令和8年11月2日(月曜日))"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T12:12:58.990834+00:00",
-      "attempt": 1,
-      "id": "43cb23190dac1c19",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 46.6字・60字超の文が 21% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 126.4字・最長 139字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 126.4,
-        "avg_sentence": 46.6,
-        "long_share": 0.211,
-        "max_paragraph": 139,
-        "paragraphs": 7,
-        "sentences": 19
-      },
-      "score": 100,
-      "source": "mof",
-      "title": "国債市場特別参加者会合（第121回）開催日程"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T12:14:34.073696+00:00",
-      "attempt": 0,
-      "id": "43cb23190dac1c19",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 124.9字・最長 139字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 124.9,
-        "avg_sentence": 36.4,
-        "long_share": 0.0,
-        "max_paragraph": 139,
-        "paragraphs": 7,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "mof",
-      "title": "国債市場特別参加者会合（第121回）開催日程"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T12:31:25.758032+00:00",
-      "attempt": 1,
-      "id": "6269f839343036cf",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 52.1字・60字超の文が 24% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 121.7字・最長 194字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 121.7,
-        "avg_sentence": 52.1,
-        "long_share": 0.238,
-        "max_paragraph": 194,
-        "paragraphs": 9,
-        "sentences": 21
-      },
-      "score": 100,
-      "source": "toyota",
-      "title": "クラウン（エステート）を一部改良"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T12:31:32.349871+00:00",
-      "attempt": 0,
-      "id": "6269f839343036cf",
-      "kind": "broad",
-      "model": "",
-      "problems": [
-        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（52.1→52.1字）"
-      ],
-      "readability": {
-        "avg_paragraph": 121.7,
-        "avg_sentence": 52.1,
-        "long_share": 0.238,
-        "max_paragraph": 194,
-        "paragraphs": 9,
-        "sentences": 21
-      },
-      "score": 100,
-      "source": "toyota",
-      "title": "クラウン（エステート）を一部改良"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T13:21:38.052722+00:00",
-      "attempt": 1,
-      "id": "e6d56825e06fc5a3",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 49.4字・60字超の文が 13% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 113.6,
-        "avg_sentence": 49.4,
-        "long_share": 0.13,
-        "max_paragraph": 152,
-        "paragraphs": 10,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "mof",
-      "title": "製造たばこの小売定価の認可"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T13:21:41.531050+00:00",
@@ -20211,6 +20094,128 @@
       "title": "Five rules for evaluating agent skills before they bloat your context window",
       "warnings": [
         "初めて出たところで言い換えていない略語（YAML・GKE・CI）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T02:56:12.535496+00:00",
+      "attempt": 1,
+      "id": "3d509e27bae229a3",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "openai-news",
+      "title": "OpenAI appoints Jill Hazelbaker as Chief Corporate Affairs Officer"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:01:17.900122+00:00",
+      "attempt": 2,
+      "id": "3d509e27bae229a3",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "openai-news",
+      "title": "OpenAI appoints Jill Hazelbaker as Chief Corporate Affairs Officer"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:03:08.796008+00:00",
+      "attempt": 1,
+      "id": "e2654f5d2f822277",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "softbank-news",
+      "title": "延焼につながる火種を上空から検知。国産ドローンとクラウドGCSによる山火事防災訓練をソフトバンクが支援"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:04:00.517673+00:00",
+      "attempt": 2,
+      "id": "e2654f5d2f822277",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "softbank-news",
+      "title": "延焼につながる火種を上空から検知。国産ドローンとクラウドGCSによる山火事防災訓練をソフトバンクが支援"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:06:14.519090+00:00",
+      "attempt": 1,
+      "id": "de5d8c3372c230d4",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "google-developers-blog",
+      "title": "Cost per task: Using cheap classifiers to route across Gemini models and thinkin"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:14:41.689985+00:00",
+      "attempt": 2,
+      "id": "de5d8c3372c230d4",
+      "kind": "ai",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "problems": [
+        "段落が長い（平均 176.9字・最長 261字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 176.9,
+        "avg_sentence": 43.0,
+        "long_share": 0.081,
+        "max_paragraph": 261,
+        "paragraphs": 9,
+        "sentences": 37
+      },
+      "score": 85,
+      "source": "google-developers-blog",
+      "title": "Cost per task: Using cheap classifiers to route across Gemini models and thinkin",
+      "warnings": [
+        "見出しが43字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（LOW）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T03:15:08.516057+00:00",
+      "attempt": 0,
+      "id": "de5d8c3372c230d4",
+      "kind": "ai",
+      "model": "",
+      "problems": [
+        "読みやすさ基準外のまま受理: 書き直し後の確認に不合格: 「最も安い構成は、Flash-Liteという思考を行わないモデルにまず処理させます」→ 元記事では、キーワード方式のヒューリスティックの方が安かったが誤りが多かったと書かれており、Jevルーターが最も安いとはされていない。Jevのコストは完全なルーターに近いとい"
+      ],
+      "readability": {
+        "avg_paragraph": 176.9,
+        "avg_sentence": 43.0,
+        "long_share": 0.081,
+        "max_paragraph": 261,
+        "paragraphs": 9,
+        "sentences": 37
+      },
+      "score": 85,
+      "source": "google-developers-blog",
+      "title": "Cost per task: Using cheap classifiers to route across Gemini models and thinkin",
+      "warnings": [
+        "見出しが43字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（LOW）"
       ]
     }
   ],
