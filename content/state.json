@@ -3997,6 +3997,15 @@
       "skipped": true,
       "url": "https://www.kantei.go.jp/jp/105/actions/202610/27seijo60anniversary.html"
     },
+    "12a4f09a247325df": {
+      "at": "2026-11-04T00:50:26.995004+00:00",
+      "major": true,
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 88,
+      "section": "ai",
+      "slug": "apple-ipados-macos-no-merge-ternus",
+      "url": "https://gori.me/macbookpro/172049"
+    },
     "13199e1cbdfa06a8": {
       "at": "2026-10-29T02:02:19.923589+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13576,50 +13585,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-11-02T07:41:34.693637+00:00",
-      "attempt": 1,
-      "id": "7ab05a1f8ab15b26",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 53.2字・60字超の文が 19% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 111.8,
-        "avg_sentence": 53.2,
-        "long_share": 0.19,
-        "max_paragraph": 161,
-        "paragraphs": 10,
-        "sentences": 21
-      },
-      "score": 100,
-      "source": "tsr",
-      "title": "2026年10月の「円安」倒産6件、52カ月連続発生 1-10月累計67件、前年（1-12月）件数を超える"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T07:41:38.356441+00:00",
-      "attempt": 0,
-      "id": "7ab05a1f8ab15b26",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 120.2字・最長 174字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 120.2,
-        "avg_sentence": 30.1,
-        "long_share": 0.025,
-        "max_paragraph": 174,
-        "paragraphs": 10,
-        "sentences": 40
-      },
-      "score": 100,
-      "source": "tsr",
-      "title": "2026年10月の「円安」倒産6件、52カ月連続発生 1-10月累計67件、前年（1-12月）件数を超える"
-    },
-    {
-      "accepted": false,
       "at": "2026-11-02T08:01:18.049360+00:00",
       "attempt": 1,
       "id": "613010f141cb0ebf",
@@ -20101,6 +20066,44 @@
       "score": null,
       "source": "cyberagent-developers",
       "title": "【イベントレポート】PdMオフレコ会議「キャリアの壁編 〜次のステージに進む人は何を手放したのか〜」に参加してきました【DMM/CA/グッドパッチ合同】"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T00:49:51.501259+00:00",
+      "attempt": 1,
+      "id": "12a4f09a247325df",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "radar-gori.me",
+      "title": "Apple、iPadOSとmacOSの統合を（何度目の）否定。CEOが明言"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T00:50:26.981675+00:00",
+      "attempt": 2,
+      "id": "12a4f09a247325df",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 90.5,
+        "avg_sentence": 44.1,
+        "long_share": 0.179,
+        "max_paragraph": 162,
+        "paragraphs": 19,
+        "sentences": 39
+      },
+      "score": 88,
+      "source": "radar-gori.me",
+      "title": "Apple、iPadOSとmacOSの統合を（何度目の）否定。CEOが明言",
+      "warnings": [
+        "見出しが51字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（SVP・PROLED・XDR）"
+      ]
     }
   ],
   "short_text_retry": {

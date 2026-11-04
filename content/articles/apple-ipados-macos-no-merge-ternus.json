@@ -1,0 +1,99 @@
+{
+  "slug": "apple-ipados-macos-no-merge-ternus",
+  "sourceType": "web",
+  "sourceUrl": "https://gori.me/macbookpro/172049",
+  "sourceName": "ゴリミー",
+  "title": "Apple、iPadOSとmacOSの統合を否定　Ternus CEOが決算説明会で「計画していない」",
+  "seoTitle": "iPadOSとmacOSの統合とは？Apple CEOが否定",
+  "threadsPost": "MacBook Proの購入を考えている人に、知っておいてほしい話です。\n\n要約すると、AppleのTernus CEOが決算説明会で、iPadOSとmacOSの統合は現時点で計画していないと答えました。\n新型MacBook Proはタッチ対応ですが、OSは分けたままです。\n\n仕事用のパソコンに、タブレットらしい操作感を求めますか？",
+  "threadsHook": "callout",
+  "threadsStyle": 3,
+  "writingVoice": "senpai",
+  "lede": "AppleのJohn Ternus CEOが米国時間11月2日の決算説明会で、iPadOSとmacOSの統合は「現時点で計画していない」と答えました。ゴリミーの報道によると、新型MacBook Proにタッチ操作が入ったことを踏まえたアナリストの質問への回答で、OSは分けたまま進む方針が改めて示されました。",
+  "description": "AppleのTernus CEOが決算説明会でiPadOSとmacOSの統合を「現時点で計画していない」と回答。ゴリミーの報道をもとに、過去の否定発言と新型MacBook Proのタッチ対応との関係を整理します。",
+  "keywords": [
+    "iPadOS macOS 統合",
+    "Apple 統合 否定",
+    "John Ternus CEO",
+    "MacBook Pro タッチ",
+    "Apple 決算説明会",
+    "Dynamic Island Mac",
+    "折り畳みMacBook",
+    "M7 Pro Max"
+  ],
+  "tags": [
+    "Apple",
+    "MacBook Pro",
+    "iPadOS",
+    "macOS",
+    "Ternus CEO"
+  ],
+  "highlights": [
+    "質問したのはArete ResearchのRichard Kramer氏で、MacとiPadの機能の重なりを踏まえた内容でした",
+    "Ternus氏は「計画していたとしても話さない」とも述べ、含みを残しました",
+    "Federighi氏は2025年に「スポークは作りたくない」と述べ、1つへの統合を否定しています"
+  ],
+  "timetable": [],
+  "verdict": null,
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "MacBook Proの購入を検討中の人は、OSの操作感が近く大きく変わる心配は小さいと考えられます。",
+      "タッチ操作は設定で完全にオフにできるため、従来の使い方を続けたい人も選べます。"
+    ]
+  },
+  "body": "iPadOSは、iPad用の基本ソフトです。macOSは、Mac用の基本ソフトです。AppleがこのOSを1つにまとめるのではないか、という見方は以前からあり、今回もその点が質問されました。\n\nゴリミーの報道によると、質問したのはArete ResearchのアナリストRichard Kramer氏です。新型MacBook ProにTouchやDynamic Island、Siri AIといったiPadやiPhone由来の機能が増えたことを挙げ、macOSとiOSのさらなる統合や、単一の統合OSを目指す可能性を尋ねました。\n\n## 「計画していたとしても話さない」\n\nTernus氏はまず、MacとiPadのどちらも誇りに思っていると述べました。「製品を設計する際は、それぞれの製品を最高の形にすることを考えている」と話したとされます。\n\niPhoneとMac、iPadの間のハンドオフ（作業を別の端末へ引き継ぐ機能）のように、エコシステムをまたぐ機能づくりは楽しんできたといいます。ただしそれとOSの統合は別の話だ、という立場を示しました。\n\n先週発表した新型MacBook Proについては「これまでのモデルよりあらゆる点で優れている」と自信を見せました。続けて「現時点で根本的に異なる変更を計画していないし、計画していたとしても話さない」と述べています（ゴリミーによる）。\n\n統合の予定はないと取れる回答です。一方で、仮に計画があっても明かさないという含みも残した形です。\n\n## 否定は2018年から続いている\n\nAppleが統合を否定したのは、今回が初めてではありません。ゴリミーによると、経緯は次のとおりです。\n\n- 2018年: Tim Cook氏が、ユーザーはMacとiPadの融合を求めていないと述べ、1つにまとめればトレードオフや妥協が生まれると説明\n- 2020年: Apple幹部が、融合はマーケティングでもビジネスでも「意味がない」と否定\n- 2021年: M1チップ搭載のiPad Proが登場し、Macと同じチップ・同じThunderboltポートになった時期に、Greg Joswiak氏が「我々はiPadが何なのか完璧に把握している」と語り、統合を否定\n- 2026年4月: Apple創立50周年のインタビューで、Ternus氏とJoswiak氏が否定。Ternus氏は、統合の議論が社内で一度もなかったと答えた\n\nソフトウェアエンジニアリング担当SVPのCraig Federighi氏は、2025年のインタビューで「スポーク（スプーンとフォークを合わせた道具）は作りたくない」と述べています。「スプーンとしても、フォークとしても、出来の良いものにはならない」という説明でした。\n\n別々の製品だからこそ、それぞれに最適化した道具を作れる。混ぜればどちらの用途にも中途半端になる。この考え方は、今回のTernus氏の回答とも一致します。\n\n**タッチ対応のMacBook Proでも、OSは分けたまま**\n\nゴリミーによると、新型MacBook ProはPROLED XDRディスプレイを搭載し、Mac史上初めてタッチスクリーンに対応しました。Dynamic Islandも初めて採用しています。\n\nタッチ操作は、設定で完全にオフにできる機能として追加されたと報じられています。使わない人にも、画面の美しさや軽量化、ヒンジの改良といった恩恵が届く設計だといいます。\n\nサイソクが以前報じたとおり、14インチのMacBook ProはM6チップを搭載し、11月6日発売、価格は33万9,800円からです（[Apple、新チップ「M6」搭載の14インチMacBook Pro　33万9,800円から](/articles/apple-14-inch-macbook-pro-m6-1eabbb64)）。\n\n機能の面ではiPad側から歩み寄っているように見えても、OSそのものを統合する動きではない。ゴリミーは、今回の発言でそれが改めて確認できたと伝えています。\n\n## 日本で買えるMacの使い方は変わるのか\n\nMacやiPhoneなどAppleの製品・サービスは、日本でもApple（日本）の公式ページで販売・提供されています（当サイトの確認：11/3）。新製品の日本での発売日は製品ごとに異なります。\n\nゴリミーは、MacBook Proを買うユーザーにとって、Macの操作感が近いうちにiPadのように大きく変わる心配はなさそうだ、と見ています。これはゴリミーの見立てであり、Appleが約束した内容ではありません。\n\n**折り畳みMacBookとM7の噂**\n\nハードウェアについては、別の噂があります。約20インチの折り畳みMacBookが「MacとiPadのハイブリッド」として開発されているという話です。物理キーボードを廃止し、ディスプレイの半分を仮想キーボードとして使う構想が報じられていました。\n\n見た目はiPadに近づきますが、それがOSの統合を意味するのかは分かっていません。来年以降にはM7 Pro/Maxを搭載した新モデルの噂もあります。MacとiPadの機能の重なりが増えても、OSを1つにまとめる話とは別の軸で進みそうだ、とゴリミーは伝えています。\n\n## まだ分からないこと\n\n- 折り畳みMacBookの発売時期や、搭載するOSはまだ発表されていません。\n- 将来のOS戦略について、Appleは「計画していたとしても話さない」としており、詳細はまだ発表されていません。",
+  "easy": "## ひとことで言うと\n\nAppleのTernus CEOが、iPadのOSとMacのOSを1つにまとめる計画は今のところないと述べました。ゴリミーの報道によるものです。\n\nMacの操作が急にiPadのように変わる心配は、当面なさそうです。\n\n## 何が語られたのか\n\n11月2日の決算説明会で、アナリストが質問しました。新型MacBook Proにタッチ操作や画面上部の表示機能Dynamic Islandが入ったためです。\n\nTernus氏は、MacとiPadのどちらも誇りに思っていると答えました。そのうえで、現時点で根本的に異なる変更は計画していないと述べました。\n\n## 過去の発言とも同じです\n\nAppleは2018年から、統合を繰り返し否定してきました。Craig Federighi氏は、2つを混ぜると「スプーンとしても、フォークとしても、出来の良いものにはならない」と説明しています。\n\n新型MacBook Proのタッチ操作は、設定で完全にオフにできます。使わない人にも、画面の美しさや軽量化、ヒンジの改良は届く設計だと報じられています。",
+  "channel": "ゴリミー",
+  "channelId": "",
+  "channelSlug": "radar-gori.me",
+  "genre": "テクノロジー・ガジェット",
+  "genreSlug": "tech-gadget",
+  "disclaimer": "本記事は報道（ゴリミー）の記事をもとにAIが要約・解説して自動生成したものです。誤りが含まれる可能性があるため、正確な情報は元の報道と公式発表をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Apple、iPadOSとmacOSの統合を（何度目の）否定。CEOが明言",
+  "publishedAt": "2026-11-04T00:41:24.629000+00:00",
+  "generatedAt": "2026-11-04T00:50:16.849943+00:00",
+  "thumbnail": "",
+  "model": "anthropic-api:claude-sonnet-5-5",
+  "affiliates": [],
+  "newsType": "product",
+  "faq": [
+    {
+      "q": "iPadOSとmacOSの統合についてAppleは何と答えた？",
+      "a": "Ternus CEOは11月2日の決算説明会で「現時点で計画していない」と答えました。計画していたとしても話さない、という含みも残しています（ゴリミーの報道）。"
+    },
+    {
+      "q": "新型MacBook Proのタッチ操作は無効にできる？",
+      "a": "ゴリミーによると、タッチ操作は設定で完全にオフにできる機能として追加されています。使わない人にも画面の美しさや軽量化などの恩恵が届く設計です。"
+    },
+    {
+      "q": "Appleが統合を否定したのは今回が初めて？",
+      "a": "初めてではありません。2018年のTim Cook氏の発言をはじめ、2020年、2021年、2026年4月にも幹部が否定しています（ゴリミーの報道）。"
+    },
+    {
+      "q": "iPadOSとmacOSの統合の質問は誰がした？",
+      "a": "Arete ResearchのアナリストRichard Kramer氏です。新型MacBook ProにiPad・iPhone由来の機能が増えたことを踏まえ、単一OSの可能性を尋ねました。"
+    }
+  ],
+  "todayActions": [
+    "MacBook Proの購入を検討中なら、タッチ操作を使わない前提で仕様を見比べる",
+    "日本での発売日と価格は、Apple（日本）の公式ページで確認する",
+    "社内でMacとiPadの併用を検討している場合は、OSが別である前提で運用を考える"
+  ],
+  "relatedSlugs": [
+    "apple-14-inch-macbook-pro-m6-1eabbb64"
+  ],
+  "qualityScore": 88,
+  "factSources": [
+    {
+      "label": "過去記事",
+      "name": "サイソクの過去記事",
+      "url": "",
+      "checkedAt": "2026-10-29"
+    }
+  ],
+  "detectedAt": "2026-11-04T00:41:24+00:00",
+  "fastLane": true
+}
