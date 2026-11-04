@@ -1855,7 +1855,7 @@
     },
     "ntt-fy2026-q2-results": {
       "at": "2026-11-04T04:56:00+00:00",
-      "status": "ready",
+      "status": "article_only",
       "tries": 1,
       "textAt": "2026-11-04T04:44:16+00:00",
       "textId": "",
@@ -1984,7 +1984,8 @@
         "short": "https://ai-tech-express.jp/video/ntt-fy2026-q2-results-06c2b67e73.mp4",
         "poster": "https://ai-tech-express.jp/video/ntt-fy2026-q2-results-10041fbfe7.jpg"
       },
-      "embedded": true
+      "embedded": true,
+      "why": "速報（文面の投稿はすぐ出した）"
     }
   },
   "queued": {
