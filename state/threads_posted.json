@@ -3632,9 +3632,11 @@
       "postedAt": "2026-11-03T21:00:50+00:00",
       "channels": {
         "twitter": "6aea4d28402e0fe50f12ce4a",
-        "facebook": "6aea4d2aca28ab6c317618fc"
+        "facebook": "6aea4d2aca28ab6c317618fc",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzhclkts6w2z"
       },
-      "videoVariant": "short"
+      "videoVariant": "short",
+      "blueskyAt": "2026-11-04T02:28:40+00:00"
     },
     "digest-20261104": {
       "style": "digest",
