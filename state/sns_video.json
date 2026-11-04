@@ -1887,9 +1887,9 @@
       "postedAt": "2026-11-04T17:00:00+09:00"
     },
     "openai-acquire-pierre-computer-codex": {
-      "at": "2026-11-04T15:12:36+00:00",
+      "at": "2026-11-04T15:21:44+00:00",
       "status": "gate_failed",
-      "tries": 1,
+      "tries": 2,
       "textAt": "2026-11-04T14:44:34+00:00",
       "textId": "",
       "breaking": true,
@@ -1916,9 +1916,8 @@
           "ok": false,
           "seconds": 32.551,
           "reasons": [
-            "v3: QA(目視): つかみ（話の食い違い）: 右の画面は英語の公式ページのChangelogという見出しだけで、読み上げの「Codexを使っている開発者の皆さん」と関係する内容が選択されていない。選択も単語",
-            "v3: QA(目視): 場面1（話の食い違い）: 選択した文は読み上げと一致するが、左のキーワードが「コードの変更を確認したりしている」と文の途中で切れていて、誰が対象なのか（開発者）が伝わらず、キーワードとし",
-            "v3: QA(目視): 始まり（最初の8秒で何のニュースか分からない）: 最初の8秒で何のニュースか分からない。左は「OpenAI、開発ツール企業Pierreを買収へ」と出るが、読み上げは「知っておいてほしい話です」と中身が無く、画面は英語のChangelogで関係が見えな"
+            "v3: QA(目視): つかみ（話の食い違い）: 右の選択は公式ページの見出し「Changelog」だけで、左の「Codexを使っている開発者」や読み上げの呼びかけと内容が結びつかない。",
+            "v3: QA(目視): 始まり（最初の8秒で何のニュースか分からない）: 冒頭の読み上げが「知っておいてほしい話です」という呼びかけだけで、OpenAIがPierreを買収するという中身が8秒の間に出てこない。左に「OpenAI、開発ツール企業Pierreを買収へ」と出るの"
           ],
           "qa": {
             "geometry": true,
@@ -1934,31 +1933,83 @@
       "timings": {
         "full": {
           "script": 0.0,
-          "tts": 20.1,
-          "plan_audio": 2.96,
-          "render": 35.76,
-          "gate": 4.54,
-          "sheet": 2.13,
-          "total": 65.5,
-          "ladder_total": 499.6
+          "tts": 23.96,
+          "plan_audio": 3.63,
+          "render": 43.89,
+          "gate": 5.28,
+          "sheet": 2.42,
+          "total": 79.2,
+          "ladder_total": 582.5
         },
         "short": {
           "script": 0.0,
-          "tts": 11.03,
-          "plan_audio": 1.62,
-          "render": 19.67,
-          "gate": 2.75,
-          "sheet": 1.19,
-          "total": 36.3,
-          "ladder_total": 499.6
+          "tts": 13.16,
+          "plan_audio": 2.0,
+          "render": 24.88,
+          "gate": 3.25,
+          "sheet": 1.37,
+          "total": 44.7,
+          "ladder_total": 582.5
         }
       },
       "ok": false,
-      "reason": "full: どの段でも合格しなかった（あとの回で作り直す）: full: v3: QA(目視): 場面1（画面の切れ・話の食い違い）: 選択は「編集方針・AI利用と事実確認」というメニュー項目で、読み上げ（ピエールの事業内容）と無関係。画面左端も「コード確認機能を支える」の見出しなどが切れている / 時間が足りない（残り 467秒 / short: どの段でも合格しなかった（あとの回で作り直す）: full: v3: QA(目視): 場面1（画面の切れ・話の食い違い）: 選択は「編集方針・AI利用と事実確認」というメニュー項目で、読み上げ（ピエールの事業内容）と無関係。画面左端も「コード確認機能を支える」の見出しなどが切れている / 時間が足りない（残り 467秒",
+      "reason": "full: どの段でも合格しなかった（あとの回で作り直す）: full: 描いた位置・画像のレビューの検査（qa）が無い・不合格・承認の形でない / 時間が足りない（残り 410秒） / full: v3: QA(b): 場面5の40.1秒で証拠の文が画面の端で切れている・余白が無い / short: どの段でも合格しなかった（あとの回で作り直す）: full: 描いた位置・画像のレビューの検査（qa）が無い・不合格・承認の形でない / 時間が足りない（残り 410秒） / full: v3: QA(b): 場面5の40.1秒で証拠の文が画面の端で切れている・余白が無い",
       "pages": [
         "ai-tech-express.jp",
         "developers.openai.com"
       ]
+    },
+    "gpt-56-cyber-aws-govcloud": {
+      "at": "2026-11-04T15:21:44+00:00",
+      "status": "gate_failed",
+      "tries": 1,
+      "textAt": "2026-11-04T15:17:40+00:00",
+      "textId": "",
+      "breaking": true,
+      "scheduled": false,
+      "versions": {
+        "full": {
+          "ok": false,
+          "seconds": null,
+          "reasons": [
+            "記事の文だけの台本を作れない: 始まり: つかみの見出し「GPT-5.6 Cyberの新しい発表」に数字がある（数字は意味の分かる場面で、説明と一緒に出す）"
+          ],
+          "qa": {
+            "geometry": false,
+            "vision": false,
+            "version": 1
+          },
+          "template": "",
+          "level": null,
+          "base_layout": ""
+        },
+        "short": {
+          "ok": false,
+          "seconds": null,
+          "reasons": [
+            "記事の文だけの台本を作れない: 始まり: つかみの見出し「GPT-5.6 Cyberの新しい発表」に数字がある（数字は意味の分かる場面で、説明と一緒に出す）"
+          ],
+          "qa": {
+            "geometry": false,
+            "vision": false,
+            "version": 1
+          },
+          "template": "",
+          "level": null,
+          "base_layout": ""
+        }
+      },
+      "timings": {
+        "full": {
+          "ladder_total": 551.8
+        },
+        "short": {
+          "ladder_total": 551.8
+        }
+      },
+      "ok": false,
+      "reason": "full: 記事の文だけの台本を作れない: 始まり: つかみの見出し「GPT-5.6 Cyberの新しい発表」に数字がある（数字は意味の分かる場面で、説明と一緒に出す） / short: 記事の文だけの台本を作れない: 始まり: つかみの見出し「GPT-5.6 Cyberの新しい発表」に数字がある（数字は意味の分かる場面で、説明と一緒に出す）",
+      "pages": []
     }
   },
   "queued": {
@@ -2053,7 +2104,12 @@
     "openai-acquire-pierre-computer-codex": {
       "status": "waiting",
       "why": "動画が検査に落ちたので、あとの回で作り直す（この投稿だけ遅らせる）",
-      "checkedAt": "2026-11-04T15:12:36+00:00"
+      "checkedAt": "2026-11-04T15:21:44+00:00"
+    },
+    "gpt-56-cyber-aws-govcloud": {
+      "status": "waiting",
+      "why": "動画が検査に落ちたので、あとの回で作り直す（この投稿だけ遅らせる）",
+      "checkedAt": "2026-11-04T15:21:44+00:00"
     }
   },
   "converted": {

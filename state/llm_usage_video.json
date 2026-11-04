@@ -10,7 +10,7 @@
   },
   "2026-11-04": {
     "video": {
-      "anthropic-api:claude-sonnet-5-5": 15,
+      "anthropic-api:claude-sonnet-5-5": 54,
       "claude:sonnet#video": 19,
       "claude:sonnet#video_review": 3
     }
