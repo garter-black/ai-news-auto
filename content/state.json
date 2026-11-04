@@ -85,10 +85,10 @@
     },
     "3c6177ead4c30c9c": {
       "first": "2026-11-04T00:40:44.797611+00:00",
-      "next": "2026-11-04T03:40:44.797611+00:00",
-      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "next": "2026-11-04T08:44:16.226824+00:00",
+      "reason": "要点の1つ目（「個々のコーディングは速くなったが、組織全体の革新…」）が一番のニュースになっていない。題名・リードの1文目と同じ中心の事実（効果）を、リードとは違う言い方で1つ目に書く",
       "title": "Measuring and orchestrating AI across the full engineering lifecycle",
-      "tries": 1,
+      "tries": 2,
       "url": "https://www.atlassian.com/blog/ai-at-work/measuring-and-orchestrating-ai-across-the-full-engineering-lifecycle"
     },
     "3d509e27bae229a3": {
@@ -138,14 +138,6 @@
       "title": "Half of Slack Messages Are No Longer From People. Here’s Slack by the Numbers.",
       "tries": 1,
       "url": "https://www.salesforce.com/news/stories/slack-stats/"
-    },
-    "ce253a4b2ae2e919": {
-      "first": "2026-11-04T02:29:13.763428+00:00",
-      "next": "2026-11-04T05:29:13.763428+00:00",
-      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
-      "title": "「すし店」 売上増も「減益」企業が約4割 コメ価格など物価高が重し、廃業・倒産が急増",
-      "tries": 1,
-      "url": "https://www.tsr-net.co.jp/data/detail/1203395_1527.html"
     },
     "e2654f5d2f822277": {
       "first": "2026-11-04T03:04:00.517719+00:00",
@@ -3537,6 +3529,12 @@
       "skipped": true,
       "url": "https://www.mhlw.go.jp/web_magazine/"
     },
+    "0863d9ea9cb77229": {
+      "at": "2026-11-04T05:44:16.710141+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（お詫び）",
+      "skipped": true,
+      "url": "https://www.sumitomo-rd.co.jp/news/2026110422463/"
+    },
     "0872902dfeb6a015": {
       "at": "2026-10-30T08:31:58.769136+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -5134,6 +5132,12 @@
       "reason": "prefilter: 価値の薄いお知らせ（委員会）",
       "skipped": true,
       "url": "https://www.mext.go.jp/b_menu/shingi/kokuritu/gijiroku/mext_00011.html"
+    },
+    "2b2a3c1174afd359": {
+      "at": "2026-11-04T05:44:16.710112+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（を開催）",
+      "skipped": true,
+      "url": "http://www.mlit.go.jp/report/press/house07_hh_000320.html"
     },
     "2b2f487795f0e5d2": {
       "at": "2026-11-01T01:11:05.151015+00:00",
@@ -10171,6 +10175,12 @@
       "slug": "openai-oracle-partnership-chatgpt",
       "url": "https://openai.com/index/oracle-apps-in-chatgpt"
     },
+    "a3e27bcab89669f6": {
+      "at": "2026-11-04T05:44:27.767902+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（説明会）",
+      "skipped": true,
+      "url": "https://global.toyota/jp/newsroom/corporate/44911652.html"
+    },
     "a42cbd0dcd40e943": {
       "at": "2026-10-26T17:14:17.179772+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -11394,6 +11404,13 @@
       "slug": "google-project-suncatcher-satellite-response",
       "url": "https://blog.google/innovation-and-ai/models-and-research/google-research/project-suncatcher-satellite-response/"
     },
+    "c35562cfeda582a4": {
+      "at": "2026-11-04T05:44:27.766698+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "reason": "元記事の本文に、売上高・利益・前年同期比・事業別や地域別の数字・次期見通しが含まれていません。抜き出されたのはメニューと決算発表の告知文だけで、決算の中身を伝える事実がないため記事にできません。決算の数字が確認できた時点で改めて作成します。",
+      "skipped": true,
+      "url": "https://www.nttdata.com/global/ja/news/release/2026/110400"
+    },
     "c37e361ee3708196": {
       "at": "2026-10-30T05:53:40.596135+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（募集）",
@@ -11823,6 +11840,14 @@
       "reason": "prefilter: 価値の薄いお知らせ（受賞）",
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000161.000000268.html"
+    },
+    "ce253a4b2ae2e919": {
+      "at": "2026-11-04T05:47:03.079562+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "score": 93,
+      "section": "business",
+      "slug": "sushi-shops-96-firms-profit-2026",
+      "url": "https://www.tsr-net.co.jp/data/detail/1203395_1527.html"
     },
     "ce440a8690960035": {
       "at": "2026-10-28T21:54:27.444112+00:00",
@@ -13925,96 +13950,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T16:01:23.826138+00:00",
-      "attempt": 1,
-      "id": "63028db311b26f99",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "被害に遭った企業では、わずか1日で150万円以上の料金が発生したケースもありました。 → 元記事の「exceeding $100,000 USD in a single day（1日で10万米ドル超）」という記述から換算すると約1500万円以上であり、金額が「150万円以上」と大幅に少なく誤って記載されている。"
-      ],
-      "readability": {
-        "avg_paragraph": 123.0,
-        "avg_sentence": 61.5,
-        "long_share": 0.455,
-        "max_paragraph": 198,
-        "paragraphs": 11,
-        "sentences": 22
-      },
-      "score": 85,
-      "source": "google-cloud-blog",
-      "title": "The Rise of LLMJacking: How Threat Actors Monetize Compromised Cloud and Model R"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T16:02:04.716763+00:00",
-      "attempt": 2,
-      "id": "63028db311b26f99",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 61.4字・60字超の文が 46% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 214.9字・最長 293字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 214.9,
-        "avg_sentence": 61.4,
-        "long_share": 0.464,
-        "max_paragraph": 293,
-        "paragraphs": 8,
-        "sentences": 28
-      },
-      "score": 100,
-      "source": "google-cloud-blog",
-      "title": "The Rise of LLMJacking: How Threat Actors Monetize Compromised Cloud and Model R"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T16:02:18.525880+00:00",
-      "attempt": 0,
-      "id": "63028db311b26f99",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 141.0字・最長 239字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 141.0,
-        "avg_sentence": 34.6,
-        "long_share": 0.038,
-        "max_paragraph": 239,
-        "paragraphs": 13,
-        "sentences": 53
-      },
-      "score": 100,
-      "source": "google-cloud-blog",
-      "title": "The Rise of LLMJacking: How Threat Actors Monetize Compromised Cloud and Model R"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T16:02:27.623543+00:00",
-      "attempt": 1,
-      "id": "af6a467fdfe036d7",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 52.9字・60字超の文が 32% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 145.5字・最長 196字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 145.5,
-        "avg_sentence": 52.9,
-        "long_share": 0.318,
-        "max_paragraph": 196,
-        "paragraphs": 8,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "増え続ける電子ごみと資源循環の行方－電子ごみの発生抑制と資源循環の課題"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T16:02:48.985740+00:00",
@@ -20295,6 +20230,106 @@
       "warnings": [
         "見出しが48字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（MCP・IP・ASICS）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T05:42:39.004091+00:00",
+      "attempt": 1,
+      "id": "3c6177ead4c30c9c",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "要点の1つ目（「AIを使う開発者は95%超でも、新しい価値づくり…」）が一番のニュースになっていない。題名・リードの1文目と同じ中心の事実（効果）を、リードとは違う言い方で1つ目に書く"
+      ],
+      "readability": {
+        "avg_paragraph": 97.5,
+        "avg_sentence": 44.1,
+        "long_share": 0.214,
+        "max_paragraph": 156,
+        "paragraphs": 19,
+        "sentences": 42
+      },
+      "score": null,
+      "source": "atlassian-blog",
+      "title": "Measuring and orchestrating AI across the full engineering lifecycle",
+      "warnings": [
+        "見出しが41字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（PDLC）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T05:44:16.226755+00:00",
+      "attempt": 2,
+      "id": "3c6177ead4c30c9c",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "要点の1つ目（「個々のコーディングは速くなったが、組織全体の革新…」）が一番のニュースになっていない。題名・リードの1文目と同じ中心の事実（効果）を、リードとは違う言い方で1つ目に書く"
+      ],
+      "readability": {
+        "avg_paragraph": 101.2,
+        "avg_sentence": 41.0,
+        "long_share": 0.108,
+        "max_paragraph": 169,
+        "paragraphs": 15,
+        "sentences": 37
+      },
+      "score": null,
+      "source": "atlassian-blog",
+      "title": "Measuring and orchestrating AI across the full engineering lifecycle",
+      "warnings": [
+        "見出しが44字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（DXI）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T05:46:08.024547+00:00",
+      "attempt": 1,
+      "id": "ce253a4b2ae2e919",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "段落が長い（平均 122.5字・最長 262字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 122.5,
+        "avg_sentence": 39.0,
+        "long_share": 0.114,
+        "max_paragraph": 262,
+        "paragraphs": 14,
+        "sentences": 44
+      },
+      "score": 90,
+      "source": "tsr",
+      "title": "「すし店」 売上増も「減益」企業が約4割 コメ価格など物価高が重し、廃業・倒産が急増",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（FOOD・LIFE・LC）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T05:47:03.065264+00:00",
+      "attempt": 0,
+      "id": "ce253a4b2ae2e919",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 53.1,
+        "avg_sentence": 30.7,
+        "long_share": 0.038,
+        "max_paragraph": 110,
+        "paragraphs": 30,
+        "sentences": 52
+      },
+      "score": 93,
+      "source": "tsr",
+      "title": "「すし店」 売上増も「減益」企業が約4割 コメ価格など物価高が重し、廃業・倒産が急増",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（FOOD・LIFE・LC）"
       ]
     }
   ],

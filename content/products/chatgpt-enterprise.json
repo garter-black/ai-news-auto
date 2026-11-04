@@ -1,0 +1,138 @@
+{
+  "slug": "chatgpt-enterprise",
+  "name": "ChatGPT Enterprise",
+  "aliases": [],
+  "company": "openai",
+  "companyName": "OpenAI",
+  "category": "アプリ・サービス",
+  "overview": {
+    "text": "ChatGPT Enterpriseは、企業向けのChatGPTの仕事用サービスです。OpenAIが提供しています。",
+    "sources": [
+      "thomson-reuters-openai-chatgpt-enterprise-cocounsel",
+      "uber-openai-chatgpt-work-enterprise-deployment"
+    ]
+  },
+  "facts": [
+    {
+      "label": "提供開始",
+      "value": "2025年9月",
+      "sources": [
+        "heimstaden-openai-real-estate-ai"
+      ]
+    },
+    {
+      "label": "使える場所",
+      "value": "企業向け環境",
+      "sources": [
+        "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
+      ]
+    },
+    {
+      "label": "向いている人",
+      "value": "法務プロフェッショナルなどの法人ユーザー",
+      "sources": [
+        "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "text": "Thomson ReutersのCoCounsel LegalやHighQと統合できます。",
+      "sources": [
+        "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
+      ]
+    },
+    {
+      "text": "回答に対して、参照元文献や判例の引用元が明記されます。",
+      "sources": [
+        "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
+      ]
+    },
+    {
+      "text": "複数システム間を行き来せず、単一の画面で作業を完結できます。",
+      "sources": [
+        "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
+      ]
+    },
+    {
+      "text": "社内ITの運用において、ヘルプデスクのチケットを処理できます。",
+      "sources": [
+        "openai-reimagining-it-with-chatgpt"
+      ]
+    }
+  ],
+  "pricing": [],
+  "japan": [],
+  "howto": [
+    {
+      "text": "OpenAIとエンタープライズ契約を締結して利用環境を構築します。",
+      "sources": [
+        "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
+      ]
+    },
+    {
+      "text": "関連する外部製品のライセンス確認が必要です。",
+      "sources": [
+        "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
+      ]
+    }
+  ],
+  "differences": [],
+  "faq": [
+    {
+      "q": "誰に向いている？",
+      "a": "法務プロフェッショナルや企業の担当者に向いています。",
+      "sources": [
+        "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
+      ]
+    },
+    {
+      "q": "いつから使える？",
+      "a": "企業での導入事例では2025年9月に使い始めています。",
+      "sources": [
+        "heimstaden-openai-real-estate-ai"
+      ]
+    },
+    {
+      "q": "どのような機能と連携できる？",
+      "a": "Thomson ReutersのCoCounsel LegalやHighQと統合できます。",
+      "sources": [
+        "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
+      ]
+    },
+    {
+      "q": "出力の根拠は確認できる？",
+      "a": "回答には参照元や引用元が明記される仕組みとなっています。",
+      "sources": [
+        "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2026-10-20",
+      "slug": "thomson-reuters-openai-chatgpt-enterprise-cocounsel",
+      "event": "Thomson Reutersの法務AIを統合"
+    }
+  ],
+  "related": [
+    "chatgpt",
+    "chatgpt-work",
+    "codex",
+    "chatgpt-voice"
+  ],
+  "articles": [
+    "heimstaden-openai-real-estate-ai",
+    "uber-openai-chatgpt-work-enterprise-deployment",
+    "thomson-reuters-openai-chatgpt-enterprise-cocounsel",
+    "openai-reimagining-it-with-chatgpt"
+  ],
+  "linkFrom": [
+    "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
+  ],
+  "signature": "4da2bb20b40dbb35",
+  "primarySignature": "a84f3543b07cef4a",
+  "model": "gemini-3.5-flash-lite",
+  "createdAt": "2026-11-04T05:47:09+00:00",
+  "updatedAt": "2026-11-04T05:47:09+00:00"
+}
