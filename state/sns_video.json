@@ -1786,9 +1786,9 @@
       "why": "速報（文面の投稿はすぐ出した）"
     },
     "copilot-cowork-build-lessons-rust": {
-      "at": "2026-11-04T06:04:17+00:00",
+      "at": "2026-11-04T06:28:18+00:00",
       "status": "gate_failed",
-      "tries": 2,
+      "tries": 3,
       "textAt": "2026-11-04T13:45:00+00:00",
       "textId": "",
       "breaking": false,
@@ -1827,10 +1827,10 @@
       },
       "timings": {
         "full": {
-          "ladder_total": 614.5
+          "ladder_total": 586.0
         },
         "short": {
-          "ladder_total": 614.5
+          "ladder_total": 586.0
         }
       },
       "ok": false,
@@ -1960,7 +1960,7 @@
     "copilot-cowork-build-lessons-rust": {
       "status": "waiting",
       "why": "動画が検査に落ちたので、あとの回で作り直す（この投稿だけ遅らせる）",
-      "checkedAt": "2026-11-04T06:15:21+00:00"
+      "checkedAt": "2026-11-04T06:28:18+00:00"
     },
     "github-copilot-jetbrains-air": {
       "status": "created",
