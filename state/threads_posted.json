@@ -3598,10 +3598,12 @@
       },
       "channels": {
         "twitter": "6aeacd7de478396c2741251e",
-        "facebook": "6aeacd7ee478396c2741256f"
+        "facebook": "6aeacd7ee478396c2741256f",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzhwze56ad26"
       },
       "convertedAt": "2026-11-04T06:15:17+00:00",
-      "videoVariant": "short"
+      "videoVariant": "short",
+      "blueskyAt": "2026-11-04T08:34:18+00:00"
     },
     "kimi-k3-bedrock-india-inference": {
       "id": "6aea4d279da2f6a2e96e839f",
