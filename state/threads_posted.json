@@ -4084,6 +4084,105 @@
       "questionText": "AIが書いたコードのレビュー、どこまで人が見るべきだと考えますか？",
       "questionPattern": "line",
       "postedAt": "2026-11-04T14:44:35+00:00"
+    },
+    "gpt-56-cyber-aws-govcloud": {
+      "id": "",
+      "via": "buffer",
+      "permalink": "",
+      "status": "awaiting_video",
+      "pending": {
+        "inputs": {
+          "threads": {
+            "channelId": "6ad942f3778b240e2f82f180",
+            "text": "【速報】ChatGPTを使っている人、これは要チェックです。\n\n要約すると、OpenAIのサイバー特化AI「GPT-5.6 Cyber」が、AWS GovCloud (US-East) で使えるようになりました。\n対象は承認を受けた顧客で、Amazon Bedrock経由です。\n\nAIの応答が減る代わりに本人確認が厳しくなるなら、許容できますか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/gpt-56-cyber-aws-govcloud?utm_source=threads&utm_medium=social&utm_campaign=classic",
+            "schedulingType": "automatic",
+            "assets": [],
+            "metadata": {
+              "threads": {
+                "topic": "ChatGPT",
+                "thread": [
+                  {
+                    "text": "【速報】ChatGPTを使っている人、これは要チェックです。\n\n要約すると、OpenAIのサイバー特化AI「GPT-5.6 Cyber」が、AWS GovCloud (US-East) で使えるようになりました。\n対象は承認を受けた顧客で、Amazon Bedrock経由です。\n\nAIの応答が減る代わりに本人確認が厳しくなるなら、許容できますか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/gpt-56-cyber-aws-govcloud?utm_source=threads&utm_medium=social&utm_campaign=classic",
+                    "assets": [
+                      {
+                        "image": {
+                          "url": "https://ai-tech-express.jp/card/gpt-56-cyber-aws-govcloud"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "mode": "shareNow"
+          },
+          "twitter": {
+            "channelId": "6ade35f52f1f5ed648cb07cf",
+            "schedulingType": "automatic",
+            "text": "【速報】ChatGPTを使っている人、これは要チェックです。\n\n要約すると、OpenAIのサイバー特化AI「GPT-5.6 Cyber」が、AWS GovCloud (US-East) で使えるようになりました。\n\nAIの応答が減る代わりに本人確認が厳しくなるなら、許容できますか？\n\n#AI #ChatGPT",
+            "assets": [],
+            "metadata": {
+              "twitter": {
+                "thread": [
+                  {
+                    "text": "【速報】ChatGPTを使っている人、これは要チェックです。\n\n要約すると、OpenAIのサイバー特化AI「GPT-5.6 Cyber」が、AWS GovCloud (US-East) で使えるようになりました。\n\nAIの応答が減る代わりに本人確認が厳しくなるなら、許容できますか？\n\n#AI #ChatGPT",
+                    "assets": [
+                      {
+                        "image": {
+                          "url": "https://ai-tech-express.jp/card/gpt-56-cyber-aws-govcloud"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "text": "詳しくはこちら👇\n（専門用語なしの「かんたん版」もあります）\nhttps://ai-tech-express.jp/articles/gpt-56-cyber-aws-govcloud?utm_source=x&utm_medium=social&utm_campaign=classic",
+                    "assets": []
+                  }
+                ]
+              }
+            },
+            "mode": "shareNow",
+            "_offsetMin": 1
+          },
+          "facebook": {
+            "channelId": "6ade3ad12f1f5ed648cb6936",
+            "schedulingType": "automatic",
+            "text": "【速報】ChatGPTを使っている人、これは要チェックです。\n\n要約すると、OpenAIのサイバー特化AI「GPT-5.6 Cyber」が、AWS GovCloud (US-East) で使えるようになりました。\n対象は承認を受けた顧客で、Amazon Bedrock経由です。\n\nAIの応答が減る代わりに本人確認が厳しくなるなら、許容できますか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/gpt-56-cyber-aws-govcloud?utm_source=facebook&utm_medium=social&utm_campaign=classic",
+            "assets": [],
+            "metadata": {
+              "facebook": {
+                "type": "post",
+                "linkAttachment": {
+                  "url": "https://ai-tech-express.jp/articles/gpt-56-cyber-aws-govcloud?utm_source=facebook&utm_medium=social&utm_campaign=classic",
+                  "title": "GPT-5.6 Cyberとは？AWS GovCloudでの提供条件",
+                  "description": "OpenAIのサイバー特化モデル「GPT-5.6 Cyber」が、DaybreakRed経由でAWS GovCloud (US-East) に対応しました。Amazon Bedrockで使え、承認とAWSの設定の両方が必要です。条件と申し込",
+                  "thumbnail": {
+                    "url": "https://ai-tech-express.jp/card/gpt-56-cyber-aws-govcloud"
+                  }
+                }
+              }
+            },
+            "mode": "shareNow",
+            "_offsetMin": 2
+          }
+        },
+        "slot": "2026-11-04T15:17:40+00:00",
+        "fmt": "classic"
+      },
+      "dueAt": "2026-11-04T15:17:40+00:00",
+      "hook": "breaking",
+      "opener": "check",
+      "genre": "ai",
+      "breaking": true,
+      "score": 3,
+      "style": "standalone",
+      "image": "card",
+      "format": "classic",
+      "topic": "ChatGPT",
+      "question": true,
+      "questionText": "AIの応答が減る代わりに本人確認が厳しくなるなら、許容できますか？",
+      "questionPattern": "tradeoff",
+      "postedAt": "2026-11-04T15:17:40+00:00"
     }
   },
   "extraPending": {}
