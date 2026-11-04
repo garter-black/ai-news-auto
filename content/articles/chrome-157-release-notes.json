@@ -1,0 +1,132 @@
+{
+  "slug": "chrome-157-release-notes",
+  "sourceType": "web",
+  "sourceUrl": "https://chromestatus.com/release-notes/157",
+  "sourceName": "Chrome Platform Status（Google公式）",
+  "title": "Chrome 157、Android版に言語判定API　Background FetchにはCORSを適用",
+  "seoTitle": "Chrome 157とは？新機能と変更点　CORS適用など",
+  "threadsPost": "Webサイトを作っている開発者の皆さん、押さえておきたい話です。\n\n要約すると、Chrome 157のリリースノートが公開されました。\nAndroid版で言語判定APIが使え、Background FetchにCORSが適用されます。\n\nふだんのブラウザは、Chromeと他のどちらを使うことが多いですか？",
+  "threadsHook": "callout",
+  "threadsQuestions": [
+    {
+      "pattern": "expert",
+      "question": "ふだんのブラウザは、Chromeと他のどちらを使うことが多いですか？"
+    },
+    {
+      "pattern": "count",
+      "question": "スマホで翻訳機能を使うのは、1日に何回くらいですか？"
+    }
+  ],
+  "threadsStyle": 3,
+  "writingVoice": "honest",
+  "lede": "Chrome 157のリリースノートで、Android版Chromeに端末内で文章の言語を判定する「Language Detector API」が加わると示されました。Background FetchにはCORS（別のサイトへの通信を制限する仕組み）の適用が始まり、CSSでは角の形を一括で指定する新しい書き方も入ります。Chrome Platform Status（Google公式）の資料にもとづきます。",
+  "description": "Chrome 157のリリースノートを整理。Android版の言語判定API、Background FetchへのCORS適用、CSSのcorner一括指定など、開発者向けの新機能と変更点を解説します。",
+  "keywords": [
+    "Chrome 157",
+    "Chrome リリースノート",
+    "Language Detector API",
+    "Background Fetch CORS",
+    "Sanitizer API",
+    "CSS corner",
+    "text-decoration-inset",
+    "text-overflow",
+    "WebGPU",
+    "Web Bluetooth",
+    "Chrome 新機能"
+  ],
+  "tags": [
+    "Chrome",
+    "Web開発",
+    "CSS",
+    "セキュリティ",
+    "ブラウザ"
+  ],
+  "highlights": [
+    "Chrome 157でAndroid版にLanguage Detector APIが入り、言語判定が端末内で完結する",
+    "Background FetchはChrome 157からCORSを適用し、通常のFetchと同じ安全確認の対象になる",
+    "CSSではcorner一括指定やtext-decoration-insetなど、見た目を細かく調整できる機能が加わる"
+  ],
+  "timetable": [],
+  "verdict": {
+    "status": "available",
+    "japan": "unknown",
+    "price": "不明",
+    "free": null,
+    "audience": "Web開発者",
+    "take": "自社サイトでBackground Fetchを使っているなら、CORSの影響を先に確認するとよいでしょう。",
+    "judgedAt": "2026-11-04T03:56:34.861157+00:00"
+  },
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "Web開発者は、Background Fetchを使うサイトで通信がCORSの確認を受けるか点検するとよいでしょう。",
+      "Android向けWebアプリを作る人は、Language Detector APIを使った端末内の言語判定を検討できます。"
+    ]
+  },
+  "body": "Chrome 157は、Google Chromeの新しい版です。Web開発者が使える新機能と、仕様の変更が並んでいます。Chrome Platform Status（Google公式）のリリースノートによると、特に目立つのは次の3点です。\n\n- Android版Chromeに、端末内で言語を判定するAPIが入る\n- Background FetchにCORSが適用される\n- CSSに、角の形を一括で指定する書き方が入る\n\nCSS（Webページの見た目を決める言語）とAPI（アプリから呼び出す仕組み）の変更が中心です。ふつうの利用者が操作を変える場面は多くありません。\n\n**Android版に言語判定API、通信はクラウドに出さない**\n\nLanguage Detector APIは、文章がどの言語で書かれているかを判定する機能です。今回、Chrome for Android（Clank）で使えるようになります。\n\nリリースノートによると、判定は端末内の機械学習モデルで動きます。速く、プライバシーに配慮でき、オフラインでも動く点が特徴です。Webアプリはクラウドの判定サービスに頼らずに済みます。\n\n**Background FetchにCORSが適用される**\n\nセキュリティ面では、Chrome 157からBackground Fetch APIにCORS（別のサイトへの通信を制限する仕組み）が適用されます。\n\nGoogleの説明では、これは仕様の意図にChromiumの実装を合わせる変更です。通常のFetchと同じ安全ルールが、Background Fetchにも当てはまります。Local Network Access（ローカルネットワークへのアクセス確認）も対象です。\n\nねらいは、通常のFetchではなくBackground Fetchを使うことで、CORSなどの確認を回避する手口を防ぐことです。すでにBackground Fetchを使っているサイトは、通信先がCORSを許可しているか確かめる必要があります。\n\n**CSSの角指定と文字装飾**\n\nCSSでは、角まわりの指定をまとめて書ける「corner」系の一括指定が入ります。\n\n- corner-top-left、corner-top-right、corner-bottom-left、corner-bottom-rightの各角用\n- corner-top、corner-bottomの物理方向用\n- corner-block-start、corner-block-endなどの論理方向用\n\nborder-radius（角の丸み）とcorner-shape（角の形）を、1つの宣言で個別の角に設定できます。cornersは互換用の別名として残ります。\n\ntext-decoration-insetは、下線・上線・打ち消し線を、文字の端から内側へ縮めるか外側へ伸ばすかを決めます。auto、長さ、パーセントの値を使えます。背景のグラデーションや追加の要素を使わずに、ネイティブの文字装飾で表現を作れます。\n\ntext-overflowには文字列の値が加わります。はみ出した文章の末尾に「(more)」のような任意の文字列を表示できます。\n\nposition-visibilityでは、anchor-validとanchor-visibleを出荷します。CSSWGが名前を単数形にそろえることを決め、anchors-validとanchors-visibleは別名として残ります。複数形は非推奨ですが、今回は削除されません。\n\n**Sanitizer、Service Worker、Web Bluetooth**\n\nSanitizer API（HTMLを安全な形に整える仕組み）には、javascriptURLsオプションが加わります。javascript:で始まるURLは、ページ移動に使われるときに無害化されます。従来は「安全」な方式の副作用として行われ、「危険」な方式では省かれていました。HTML標準がこれを整理し、開発者が選べるオプションにしました。オプションを使わない場合の動作は変わりません。\n\nService Workerでは、ProgressEventが使えるようになります。lengthComputable、loaded、totalの各属性を持つ進捗イベントを作れます。他のワーカーやXMLHttpRequestの標準とそろいます。\n\nWeb Bluetoothでは、BluetoothRemoteGATTServerがEventTargetを継承します。addEventListener()などが使え、接続レベルのイベントをGATTサーバーで直接扱えます。\n\n**描画・性能・実験機能**\n\nWebGPUのatomic-vec2u-min-maxでは、64ビット整数の完全対応がなくても、一部のアルゴリズムを実装できます。HTML-in-canvasも項目に入っています。\n\n性能面では、Long Animation Frame APIにstyleDurationとforcedStyleDurationが加わります。スタイル計算とレイアウトの時間を区別して測れます。\n\nDOMでは、HTMLの挿入とストリーミングの新しい方式が示されました。before、after、append、prepend、replaceWithがHTMLを受け取る方式のほか、WritableStreamを返すstream系の方式もあります。\n\nカメラ・マイク・位置情報の部品のアイコン専用表示や、Overscroll Areasも審査待ちです。Connection Allowlistsの埋め込み適用は、新しいオリジントライアル（試験提供）として示されています。\n\n編集部の見方として、今回の中心はBackground FetchへのCORS適用です。安全確認の抜け道が1つ閉じるため、使っているサイトは動作確認が要ります。\n\n## まだ分からないこと\n\n- Chrome 157の安定版の公開日はまだ発表されていません。\n- 各機能の対象となるプラットフォームの詳細はまだ発表されていません。\n- 日本での提供状況はまだ発表されていません。",
+  "easy": "## ひとことで言うと\n\nChrome 157では、Web開発者向けの新機能と変更点が多数入ります。\n\nAndroid版Chromeでは、端末の中で文章の言語を判定できるようになります。\n\n## 安全面の変更\n\nBackground Fetch（裏側でファイルを取得する仕組み）に、CORSという安全確認が適用されます。\n\nこれまでは通常の取得より確認が緩い面がありました。今回で、通常の取得と同じ扱いに近づきます。\n\n## 見た目まわりの追加\n\nCSS（Webページの見た目を決める言語）では、角の丸みや形を一度の指定でまとめて決める書き方が加わります。\n\n文字の下線の位置や長さを細かく調整する機能もあります。\n\nこれらは主にサイトを作る人向けの機能です。ふつうにWebを見る人が操作を変える必要はありません。",
+  "channel": "Chrome Platform Status（Google公式）",
+  "channelId": "",
+  "channelSlug": "radar-official",
+  "genre": "テクノロジー・ガジェット",
+  "genreSlug": "tech-gadget",
+  "disclaimer": "本記事は公式発表の文章をもとにAIが要約・解説して自動生成したものです。価格・仕様・提供時期は変更される場合があるため、購入・利用の前に発表元の一次情報をご確認ください。",
+  "videoId": "",
+  "videoUrl": "",
+  "videoTitle": "Chrome 157 Release Notes",
+  "publishedAt": "2026-11-04T03:53:24.629000+00:00",
+  "generatedAt": "2026-11-04T03:56:34.861148+00:00",
+  "thumbnail": "https://ai-tech-express.jp/img/chrome-157-release-notes-8d3ef498.jpg",
+  "model": "anthropic-api:claude-sonnet-5-5",
+  "affiliates": [],
+  "newsType": "product",
+  "faq": [
+    {
+      "q": "Chrome 157でBackground Fetchは何が変わる？",
+      "a": "Chrome 157からBackground Fetch APIにCORSが適用されます。通常のFetchと同じ安全ルールの対象になり、確認を回避する使い方を防ぎます。"
+    },
+    {
+      "q": "Language Detector APIはAndroid版Chromeで使える？",
+      "a": "Chrome 157のリリースノートでは、Chrome for Android（Clank）で使えるようになると示されています。判定は端末内の機械学習モデルで行います。"
+    },
+    {
+      "q": "Chrome 157は誰に関係する？",
+      "a": "主にWebサイトやWebアプリを作る開発者に関係します。CSSの新機能やAPIの変更が中心で、ふつうの利用者が操作を変える必要は多くありません。"
+    },
+    {
+      "q": "anchors-validなど複数形のCSS値はどうなる？",
+      "a": "単数形のanchor-validとanchor-visibleに名前がそろいます。複数形は別名として残り、非推奨になりますが、今回は削除されません。"
+    }
+  ],
+  "todayActions": [
+    "Background Fetchを使っているサイトで、通信先がCORSを許可しているか確かめる",
+    "Chrome Platform Statusのリリースノートで、自社サイトに関係する機能を洗い出す",
+    "CSSの角指定や文字装飾の新機能を、検証用のページで試す"
+  ],
+  "qualityScore": 90,
+  "detectedAt": "2026-11-04T03:53:24+00:00",
+  "fastLane": true,
+  "imageCredit": {
+    "kind": "official",
+    "org": "Chrome Platform Status（Google公式）",
+    "provider": "Chrome Platform Status（Google公式）",
+    "sourceUrl": "https://chromestatus.com/release-notes/157",
+    "original": "https://chromestatus.com/static/img/crstatus_192.png",
+    "width": 1200,
+    "height": 630,
+    "at": "2026-11-04T03:57:32+00:00",
+    "imageKind": "logo"
+  },
+  "imageFocus": {
+    "x": 0.492,
+    "y": 0.485,
+    "box": [
+      0.325,
+      0.226,
+      0.659,
+      0.744
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/chrome-157-release-notes-8d3ef498.jpg"
+  }
+}

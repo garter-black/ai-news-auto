@@ -1,5 +1,18 @@
 {
   "items": {
+    "00829269e89181f3": {
+      "detectedAt": "2026-11-04T03:53:24+00:00",
+      "finishedAt": "2026-11-04T03:57:04+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41769950899",
+      "slug": "chrome-157-release-notes",
+      "source": "radar-official",
+      "sourcePublishedAt": "2026-11-04T03:53:24+00:00",
+      "startedAt": "2026-11-04T03:55:30+00:00",
+      "title": "Chrome 157 Release Notes",
+      "url": "https://chromestatus.com/release-notes/157"
+    },
     "020b7910e3b471cc": {
       "detectedAt": "2026-11-03T16:44:20+00:00",
       "finishedAt": "2026-11-03T16:48:43+00:00",

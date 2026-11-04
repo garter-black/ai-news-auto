@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "chrome-157-release-notes",
+   "at": "2026-11-04T03:56:34.861148+00:00",
+   "title": "Chrome 157、Android版に言語判定API　Background FetchにはCORSを適用",
+   "head": "Chrome 157、Android版に言語判定API　Background FetchにはCORSを適用 | Chrome 157 Release Notes",
+   "text": "Chrome 157、Android版に言語判定API　Background FetchにはCORSを適用 | Chrome 157 Release Notes | Chrome 157 / Chrome リリースノート / Language Detector API / Background Fetch CORS / Sanitizer API / CSS corner / text-decoration-inset / text-overflow / WebGPU / Web Bluetooth / Chrome / Web開発 / CSS / セキュリティ / ブラウザ",
+   "urls": [
+    "https://chromestatus.com/release-notes/157"
+   ]
+  },
+  {
    "slug": "palette-ibm-research-slide-deck",
    "at": "2026-11-04T03:52:56.935002+00:00",
    "title": "IBM Research、スライド作成AI「Palette」を発表　PresentBenchで2分野首位",
@@ -1062,14 +1072,6 @@
    "urls": [
     "https://engineering.fb.com/2026/10/29/security/catching-bugs-before-they-land-jittestings-human-on-the-loop-approach-at-full-scale/"
    ]
-  },
-  {
-   "slug": "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom",
-   "at": "2026-11-01T00:11:14.326141+00:00",
-   "title": "Zendesk、ChatGPT Enterpriseを全社導入　社員が約600のAIアプリを開発",
-   "head": "Zendesk、ChatGPT Enterpriseを全社導入　社員が約600のAIアプリを開発 | ChatGPT Enterprise at Zendesk: Putting Company Data to Work",
-   "text": "Zendesk、ChatGPT Enterpriseを全社導入　社員が約600のAIアプリを開発 | ChatGPT Enterprise at Zendesk: Putting Company Data to Work | ChatGPT Enterprise / Zendesk / OpenAI / 社内AI活用 / AIエージェント / 導入事例 / 営業効率化 / データ分析 / OpenAI / ChatGPT / 生成AI / 業務効率化 / 事例研究",
-   "urls": []
   },
   {
    "slug": "design-industry-bankruptcies-record",

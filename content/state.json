@@ -3294,6 +3294,15 @@
       "skipped": true,
       "url": "https://huggingface.co/blog/ibm-research/cuga-harness"
     },
+    "00829269e89181f3": {
+      "at": "2026-11-04T03:57:04.107139+00:00",
+      "major": true,
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 90,
+      "section": "ai",
+      "slug": "chrome-157-release-notes",
+      "url": "https://chromestatus.com/release-notes/157"
+    },
     "00b5fd966277fe4f": {
       "at": "2026-11-02T02:11:11.121113+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13880,62 +13889,6 @@
   },
   "quality_log": [
     {
-      "accepted": true,
-      "at": "2026-11-02T14:31:21.618704+00:00",
-      "attempt": 1,
-      "id": "a29a9b9616500371",
-      "kind": "update",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "score": 100,
-      "source": "docker-blog",
-      "title": "Where should your code live in a Docker Sandbox?"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T14:31:29.437711+00:00",
-      "attempt": 1,
-      "id": "2b820c6e0bc17bb5",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 52.8字・60字超の文が 38% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 105.5,
-        "avg_sentence": 52.8,
-        "long_share": 0.375,
-        "max_paragraph": 130,
-        "paragraphs": 8,
-        "sentences": 16
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "次世代のAI「AIエージェント」とは－従来の生成AIとの違いを分かりやすく解説"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T14:31:32.541387+00:00",
-      "attempt": 0,
-      "id": "2b820c6e0bc17bb5",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 125.9字・最長 153字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 125.9,
-        "avg_sentence": 28.0,
-        "long_share": 0.0,
-        "max_paragraph": 153,
-        "paragraphs": 8,
-        "sentences": 36
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "次世代のAI「AIエージェント」とは－従来の生成AIとの違いを分かりやすく解説"
-    },
-    {
       "accepted": false,
       "at": "2026-11-02T14:31:43.185703+00:00",
       "attempt": 1,
@@ -20206,6 +20159,89 @@
       "warnings": [
         "見出しが52字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（JSON）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:56:07.032182+00:00",
+      "attempt": 1,
+      "id": "00829269e89181f3",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "リード『Chrome Platform Statusは11月4日』→ 元記事に公開日は無く『不明』とされているのに具体的な日付を書いている（創作・fatal）",
+        "本文『公式ヘルプの手順を確認してください（Chrome Platform Status（Google公式）の案内）』→ 元記事にない公式ヘルプへの案内を挿入している",
+        "『なお、無料で使えるChromeの更新に含まれる機能です』→ 元記事に価格・無料の記載は無い",
+        "『仕事・お金』欄『クラウドの判定サービスの代替になり得ます』→ 元記事の範囲を超える推測（軽微）",
+        "『Local Network Access（社内ネットワークへのアクセスの確認）』→ 元記事は説明なしの用語で、補足の言い換えとして不正確さは小さい（軽微）"
+      ],
+      "readability": {
+        "avg_paragraph": 97.9,
+        "avg_sentence": 41.0,
+        "long_share": 0.14,
+        "max_paragraph": 155,
+        "paragraphs": 18,
+        "sentences": 43
+      },
+      "score": 52,
+      "source": "radar-official",
+      "title": "Chrome 157 Release Notes",
+      "warnings": [
+        "見出しが43字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（CSS・CORS）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:56:43.547034+00:00",
+      "attempt": 2,
+      "id": "00829269e89181f3",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "「この項目は審査待ちと表示されています」（DOM／HTML挿入・ストリーミング） → 元記事では審査待ち（Pending review）の表示はCapability Elementsの項目にだけ付いており、HTML挿入の項目には付いていないため、ステータスの取り違えです。",
+        "「公式ヘルプの手順を確認してください（Chrome Platform Statusの案内）」 → 元記事に公式ヘルプの手順は無く、本文の流れにも合わない不自然な挿入です。",
+        "「64ビット整数の完全対応がなくても、一部のアルゴリズムを実装できます」 → 元記事のWebGPU atomic-vec2u-min-maxの項目名が示されておらず、どの機能の説明か読者に分からない書き方です。",
+        "「判定: 提供状況=available」 → 元記事は各機能の提供開始時期や提供状況を個別に示していないため、ここでの一括の提供状況表示は元記事に無い断定です。"
+      ],
+      "readability": {
+        "avg_paragraph": 88.1,
+        "avg_sentence": 40.8,
+        "long_share": 0.111,
+        "max_paragraph": 194,
+        "paragraphs": 25,
+        "sentences": 54
+      },
+      "score": 78,
+      "source": "radar-official",
+      "title": "Chrome 157 Release Notes",
+      "warnings": [
+        "見出しが53字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（CORS・CSS・CSSWG）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T03:57:04.105266+00:00",
+      "attempt": 2,
+      "id": "00829269e89181f3",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 86.4,
+        "avg_sentence": 41.6,
+        "long_share": 0.135,
+        "max_paragraph": 194,
+        "paragraphs": 25,
+        "sentences": 52
+      },
+      "score": 90,
+      "source": "radar-official",
+      "title": "Chrome 157 Release Notes",
+      "warnings": [
+        "見出しが53字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（CORS・CSS・CSSWG）"
       ]
     }
   ],
