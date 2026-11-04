@@ -76,6 +76,7 @@ MUTED = (84, 100, 128)  # 補足の文字
 SOFT = (90, 103, 126)  # 出典・クレジット
 MARKER = (214, 226, 244)  # キーワードの下を走るマーカー（青を薄くした色）
 SELECT = (178, 208, 250)  # 画面の文字の選択色（ブラウザで文字を選んだときの青）
+SELECT_DARK = (46, 104, 200)  # 暗い地のページの選択の青（重ねる色）
 WHITE = (255, 255, 255)
 FONT_FAMILY = "Noto Sans JP"
 LOGO_FAMILY = "Dela Gothic One"
@@ -3159,6 +3160,10 @@ def _highlight_select(img: np.ndarray, rect: tuple, k: float) -> None:
     if xa >= xb or ya >= yb:
         return
     roi = img[ya:yb, xa:xb].astype(np.uint16)
+    if roi.mean() < 100:  # 暗い地のページ（2026-11-04 GitHub Changelog）: 掛け算では青が見えないので、ブラウザの暗い画面の選択と同じく青を重ねる
+        blue = np.array(SELECT_DARK, dtype=np.float32)
+        img[ya:yb, xa:xb] = (roi.astype(np.float32) * 0.5 + blue * 0.5).astype(np.uint8)
+        return
     img[ya:yb, xa:xb] = ((roi * np.array(SELECT, dtype=np.uint16)) >> 8).astype(np.uint8)
 
 
