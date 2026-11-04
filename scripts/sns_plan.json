@@ -1,0 +1,57 @@
+{
+  "_doc": "SNS の伸ばし方の計画（2026-11-05 とろいも案 v1・台帳 S27〜S31）。scripts/sns_plan.py だけが読む。数字・語を変えるだけで選び方・枠・待ち時間を変えられる。slots_jst は通常の投稿の時刻（日本時間）。daily_cap は1日（日本時間）の自分の投稿の上限（Threads・X・Facebook・Bluesky それぞれ。速報も数える。cap_exempt の種類＝ミサイル・災害だけは数えない）。min_gap_min は投稿どうしの最短の間隔。lanes は出す話題（点数が高いほど先）。exclude は SNS に出さない話題（海外の企業向け・開発者向け。サイトには載せる）。muse はとろいも（Muse）の動画の受け渡し。utm は記事のリンクに付ける印",
+  "version": 1,
+  "decided": "2026-11-05",
+  "slots_jst": ["07:15", "08:10", "12:15", "18:45", "20:30", "21:45"],
+  "daily_cap": 6,
+  "min_gap_min": 45,
+  "digest_slot_jst": "07:15",
+  "fill_without_lane": true,
+  "lanes": {
+    "safety": {
+      "score": 6,
+      "label": "障害・流出・安全",
+      "re": "不正アクセス|情報漏え?い|情報漏洩|流出|漏えい|個人情報|ランサムウェア|サイバー攻撃|不正ログイン|フィッシング|詐欺|なりすまし|偽(?:の)?(?:サイト|メール|SMS)|障害|不具合|つながりにくい|通信障害|システム障害|サービス停止|サポート終了|提供終了|リコール|自主回収|使用(?:を)?中止|発火|発煙|注意喚起|緊急メンテナンス"
+    },
+    "money": {
+      "score": 5,
+      "label": "お金・制度・政府",
+      "re": "料金|値上げ|値下げ|価格改定|ポイント|キャンペーン|還元|無料化|NISA|iDeCo|税|年金|保険料|補助金?|給付|支援金|助成|最低賃金|賃上げ|ボーナス|ガソリン|電気代|電気料金|ガス料金|住宅ローン|金利|銀行|証券|決済|クレジットカード|PayPay|楽天ペイ|d払い|マイナンバー|マイナ保険証|e-Tax|国税庁|厚生労働省|デジタル庁|総務省|金融庁|内閣府|政府|閣議|ドコモ|NTTドコモ|(?<![A-Za-z])au(?![A-Za-z])|KDDI|ソフトバンク|楽天モバイル|ahamo|povo|LINEMO|(?<![A-Za-z])UQ(?![A-Za-z])|ゆうちょ|決算|業績予想|上方修正|下方修正"
+    },
+    "brand": {
+      "score": 4,
+      "label": "有名ブランドの製品",
+      "re": "Apple|iPhone|iPad|(?<![A-Za-z])Mac(?:Book)?(?![A-Za-z])|AirPods|Apple Watch|ソニー|(?<![A-Za-z])Sony(?![A-Za-z])|PlayStation|PS5|任天堂|Nintendo|(?<![A-Za-z])Switch(?![A-Za-z])|トヨタ|(?<![A-Za-z])Toyota(?![A-Za-z])|レクサス|ホンダ|(?<![A-Za-z])Honda(?![A-Za-z])|日産|マツダ|スバル|スズキ|ヤマハ|パナソニック|シャープ|日立|東芝|キヤノン|ニコン|富士フイルム|サムスン|Galaxy|(?<![A-Za-z])Pixel(?![A-Za-z])|Xperia|AQUOS|ダイソン|ユニクロ|無印良品|セブン|ローソン|ファミマ|ファミリーマート|マクドナルド|スタバ|スターバックス|Amazon|楽天|メルカリ|(?<![A-Za-z])LINE(?![A-Za-z])|ヤフー|Yahoo|YouTube|Netflix|ディズニー|Xbox|Game Pass|テスラ|(?<![A-Za-z])Tesla(?![A-Za-z])|(?<![A-Za-z])BYD(?![A-Za-z])|ビックカメラ|ヨドバシ|イオン"
+    },
+    "consumer_ai": {
+      "score": 3,
+      "label": "読者に関係するAI",
+      "re": "ChatGPT|Gemini|Claude|Copilot|Sora|NotebookLM|Siri|Apple Intelligence|Galaxy AI|(?<![A-Za-z])Grok(?![A-Za-z])|Perplexity|画像生成|動画生成",
+      "needs_re": "無料|日本語|日本で|料金|プラン|月額|使える|使えるように|スマホ|アプリ|iPhone|Android|Windows|一般|個人|学生|子ども|保護者|家庭|上限|提供開始|利用者"
+    }
+  },
+  "exclude": {
+    "_doc": "海外の企業向け・開発者向けの話題は SNS に出さない（サイトだけ）。text_re（題名・タグ）か audience_re（記事の想定読者）に当たり、出どころが日本の会社・官公庁のサイト（ドメインが .jp）でなければ外す（海外の会社の日本語のページ /jp/ も海外として扱う）。safety レーンの日本向けの話は外さない",
+    "text_re": "Google Cloud|Vertex AI|BigQuery|(?<![A-Za-z])AWS(?![A-Za-z])|Amazon Bedrock|Bedrock|SageMaker|(?<![A-Za-z])Azure(?![A-Za-z])|Microsoft Foundry|Foundry|Databricks|Snowflake|Atlassian|Jira|Confluence|Salesforce|Agentforce|ServiceNow|Workday|Oracle|(?<![A-Za-z])OCI(?![A-Za-z])|(?<![A-Za-z])IBM(?![A-Za-z])|Red Hat|Kubernetes|(?<![A-Za-z])Docker(?![A-Za-z])|Terraform|DevOps|GitHub Actions|JetBrains|Vercel|Supabase|Cloudflare Workers|MLflow|OpenTelemetry|Hugging Face|PyTorch|(?<![A-Za-z])TPU(?![A-Za-z])|(?<![A-Za-z])SDK(?![A-Za-z])|(?<![A-Za-z])API(?![A-Za-z])|(?<![A-Za-z])MCP(?![A-Za-z])|(?<![A-Za-z])CLI(?![A-Za-z])|(?<![A-Za-z])IDE(?![A-Za-z])|TypeScript|Python|\\.NET|データベース|開発者向け|開発ツール|企業向け|エンタープライズ|ベンチマーク|評価(?:の)?枠組み|オープンソース|研究者|論文|ロボット用",
+    "audience_re": "開発|エンジニア|IT部門|IT管理|管理者|基盤|研究者|データ担当|データ分析|データエンジニア|AI推進|導入する担当|設計技術者|セキュリティ担当|防御担当|金融機関|半導体企業|開発チーム|インフラ",
+    "japan_host_re": "\\.jp$",
+    "japan_hosts": ["group.ntt", "global.honda", "global.toyota", "toyota-global.com", "nissan-global.com", "sony.com", "sony.co.jp", "nintendo.com", "rakuten.com", "panasonic.com", "hitachi.com", "global.canon", "fujifilm.com", "mazda.com", "subaru.co.jp", "suzuki.com", "yamaha.com", "fastretailing.com", "aeon.info", "lycorp.co.jp", "mercari.com", "kddi.com", "softbank.jp", "docomo.ne.jp"]
+  },
+  "cap_exempt": ["missile", "disaster"],
+  "muse": {
+    "_doc": "とろいも（Muse）に頼む動画。毎朝と強い記事が出たときに最大 max_per_day 本を state/muse_queue.json に入れる。条件: 公式の出どころ・立つ数字が1つ・ブランド／お金／暮らし。投稿は wait_hours（速報は breaking_wait_hours）まで Muse の動画を待ち、来なければ今の自動動画（同じ検査）に戻す",
+    "max_per_day": 3,
+    "wait_hours": 4,
+    "breaking_wait_hours": 0,
+    "strong_score": 9,
+    "lookback_hours": 30,
+    "min_seconds": 30,
+    "max_seconds": 120,
+    "sizes": [[1920, 1080], [1080, 1920]]
+  },
+  "utm": {
+    "_doc": "utm_content=<投稿の種類>_<リンクの位置>。種類は video（動画つきの記事の投稿）・hook（Muse の型の文面。SNS_HOOK_FORMAT=1 のときだけ）・card（災害など写真のカードで急いで出すもの）・digest（朝のまとめ）。位置は body（本文）・reply（返信）",
+    "types": ["video", "hook", "card", "digest"],
+    "positions": ["body", "reply"]
+  }
+}

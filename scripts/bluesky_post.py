@@ -37,7 +37,8 @@ import sns_rules  # noqa: E402
 
 PDS = "https://bsky.social/xrpc"
 DELAY_MIN = 20
-PER_DAY = int(os.environ.get("BLUESKY_PER_DAY") or 24)
+# 1日（日本時間）の自分の投稿の上限。2026-11-05〜 Threads と同じ sns_plan の daily_cap（6本）まで（台帳 S27。変数で減らすのはよい）
+PER_DAY = min(int(os.environ.get("BLUESKY_PER_DAY") or 24), tp.sns_plan.daily_cap())
 GAP_MIN = int(os.environ.get("BLUESKY_GAP_MIN") or 40)  # 通常の投稿どうしの間隔（同じ時刻に2本並ばないように）
 LOOKBACK_H = 6  # これより古い記録は出さない（取りこぼしを後から大量に出さない。間隔をあける分の待ちは見込む）
 FILL_HOURS = 12  # 埋め合わせに使う記事の新しさ（生成から）
@@ -434,6 +435,8 @@ def fill_candidate(state: dict, extra: dict, now: datetime, articles: list[dict]
             continue
         if not video_of(article["slug"]):
             continue  # 動画のある記事だけ（ルール8）
+        if tp.sns_plan.excluded(article):
+            continue  # 海外の企業向け・開発者向けの話題は SNS に出さない（サイトだけ。S28）
         newest.append((generated, article))
     newest.sort(key=lambda x: x[0], reverse=True)
     for _, article in newest:

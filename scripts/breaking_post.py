@@ -119,6 +119,20 @@ def main() -> int:
         found =[json.loads((tp.ARTICLES_DIR / f"{args.slug}.json").read_text("utf-8"))]
     else:
         found = targets(state, now)
+    # 2026-11-05（台帳 S27・S28）: 海外の企業向け・開発者向けの話題は SNS に出さない。速報も1日の自分の投稿の上限
+    # （sns_plan の daily_cap。ミサイル・災害は数えない）に数える。上限に達していたら即時投稿しない（記事はサイトに出ている）
+    kept = []
+    for article in found:
+        if why := tp.sns_plan.excluded(article):
+            log(f"[breaking] {article['slug']}: {why}")
+            continue
+        today = now.astimezone(tp.JST).date()
+        used = tp.sns_plan.count_today(state["posted"], today, tp.sns_plan.video_skipped()) + sum(1 for a in kept if not tp.sns_plan.cap_exempt(a))
+        if not tp.sns_plan.cap_exempt(article) and used >= tp.sns_plan.daily_cap():
+            log(f"[breaking] {article['slug']}: 今日の自分の投稿が上限 {tp.sns_plan.daily_cap()} 本に達しているので SNS には出しません")
+            continue
+        kept.append(article)
+    found = kept if not args.slug else found
     if not found:
         log("[breaking] 即時投稿する速報記事はありません")
         return 0

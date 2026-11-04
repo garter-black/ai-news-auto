@@ -124,6 +124,9 @@ jobs:
           SNS_VIDEO_BREAKING_FOLLOWUP: ${{ vars.SNS_VIDEO_BREAKING_FOLLOWUP || 'off' }}
           # 中身に合わせた動画の型（scripts/video_templates.py）。2026-11-04 オーナー承認で既定 on（off で今までの1つの型）
           SNS_VIDEO_TEMPLATES: ${{ vars.SNS_VIDEO_TEMPLATES || 'on' }}
+          SNS_HOOK_FORMAT: ${{ vars.SNS_HOOK_FORMAT || '0' }}  # Muse の型の文面（オーナー承認まで 0。台帳 S30）
+          THREADS_LINK_AB: ${{ vars.THREADS_LINK_AB || '0' }}  # Threads のリンクの位置の比べ（オーナー承認まで 0。S31）
+          MUSE_WAIT_HOURS: ${{ vars.MUSE_WAIT_HOURS }}  # Muse の動画を待つ時間（空なら scripts/sns_plan.json の4時間）
         run: |
           if [ -n "${{ github.event.inputs.queue_fix }}" ]; then
             # 予約中の写真の投稿を下書きに戻し、新しい形の文面・動画つきで同じ枠に出し直す（apply のときだけ。投稿は門番を通る）

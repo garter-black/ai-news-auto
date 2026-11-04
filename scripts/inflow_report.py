@@ -103,7 +103,21 @@ def load_state(name: str) -> dict:
         return {}
 
 
+def video_variant(campaign: str, content: str) -> str:
+    """動画の版（cloudflare/inflow.ts の videoVariant と同じ）。2026-11-05〜 utm_campaign=sns_video_<版>（S29）"""
+    if campaign in ("sns_video_short", "sns_video_full"):
+        return campaign.rsplit("_", 1)[1]
+    return content if campaign == "sns_video" and content in ("short", "full") else ""
+
+
 def views_of(rows: list[dict], page: str, source: str, campaign: str | None = None, content: str | None = None) -> int:
+    if campaign == "sns_video":
+        # 動画の投稿は新旧どちらの形でも（content は版 short / full）
+        return sum(
+            r["views"] for r in rows
+            if r["page"] == page and r["source"] == source and video_variant(r.get("campaign", ""), r.get("content", ""))
+            and (content is None or video_variant(r.get("campaign", ""), r.get("content", "")) == content)
+        )
     return sum(
         r["views"] for r in rows
         if r["page"] == page and r["source"] == source
@@ -298,8 +312,9 @@ def show(data: dict, posted: dict, videos: dict, top: int = 3) -> None:
 
     video: dict[str, dict[str, int]] = {}
     for r in rows:
-        if r.get("campaign") == "sns_video" and r.get("content") in ("short", "full"):
-            video.setdefault(r["page"], {"short": 0, "full": 0})[r["content"]] += r["views"]
+        variant = video_variant(r.get("campaign", ""), r.get("content", ""))
+        if variant:
+            video.setdefault(r["page"], {"short": 0, "full": 0})[variant] += r["views"]
     if video:
         s = sum(v["short"] for v in video.values())
         f = sum(v["full"] for v in video.values())

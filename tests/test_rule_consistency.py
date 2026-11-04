@@ -212,6 +212,8 @@ NON_PROSE = {
     "article_quickfix.py": "LLM を使わない決まった置き換え（台帳 A の表示の段と同じ規則）",
     "audit.py": "ジャンルの付け替え（手で動かす）",
     "bluesky_post.py": "投稿の記録",
+    "muse_ingest.py": "記事は読むだけ（Muse の動画の記録 state/sns_video.json・state/muse_queue.json を書く）",
+    "muse_queue.py": "記事は読むだけ（Muse に頼む候補の記録 state/muse_queue.json を書く）",
     "buying_guides.py": "比較ガイド（/compare。記事ではない）",
     "check_images.py": "壊れた画像の差し替え",
     "digest_page.py": "朝のまとめの号",

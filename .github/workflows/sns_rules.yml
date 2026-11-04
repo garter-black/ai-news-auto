@@ -32,4 +32,4 @@ jobs:
       - name: Gate and call-site check (nothing is posted)
         env:
           SNS_RULES_NO_ISSUE: "1"
-        run: python -m unittest tests.test_sns_rules tests.test_morning_digest tests.test_sns_post_text tests.test_bluesky_post tests.test_sns_video_followup tests.test_sns_video_required -v
+        run: python -m unittest tests.test_sns_rules tests.test_morning_digest tests.test_sns_post_text tests.test_bluesky_post tests.test_sns_video_followup tests.test_sns_video_required tests.test_sns_growth_20261105 -v

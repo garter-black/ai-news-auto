@@ -472,7 +472,7 @@ class DigestPageTest(unittest.TestCase):
         p = digest_post()
         entry = {'style': 'digest', 'items': [], 'postPlan': p}
         got = bp.plan('digest-20261030', entry)
-        self.assertEqual(got['link'], 'https://ai-tech-express.jp/digest/20261030?utm_source=bluesky&utm_medium=social&utm_campaign=digest')
+        self.assertEqual(got['link'], 'https://ai-tech-express.jp/digest/20261030?utm_source=bluesky&utm_medium=social&utm_campaign=digest&utm_content=digest_body')
         self.assertEqual(got['images'][0], f'https://ai-tech-express.jp/digest/20261030/share.png?v={md.dp.image_rev()}')
         old = bp.plan('digest-20261029', {'style': 'digest', 'items': [], 'postPlan': {**p, 'link': 'https://ai-tech-express.jp/news'}})
         self.assertTrue(old['link'].startswith('https://ai-tech-express.jp/news?'))

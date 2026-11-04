@@ -34,7 +34,7 @@ VIDEO = [{"type": "video", "url": "https://ai-tech-express.jp/video/acme-tool-01
 
 
 def body(source: str) -> str:
-    return f"{GOOD}\n\n詳しくはこちら👇\n{LINK}?utm_source={source}&utm_medium=social&utm_campaign=classic"
+    return f"{GOOD}\n\n詳しくはこちら👇\n{LINK}?utm_source={source}&utm_medium=social&utm_campaign=classic&utm_content=video_body"
 
 
 def rule8(out: list[str]) -> list[str]:
@@ -43,12 +43,12 @@ def rule8(out: list[str]) -> list[str]:
 
 class VideoRequiredGateTest(unittest.TestCase):
     def test_article_post_without_video_is_rejected_on_every_platform(self):
-        reply = f"詳しくはこちら👇\n{LINK}?utm_source=x&utm_medium=social&utm_campaign=classic"
+        reply = f"詳しくはこちら👇\n{LINK}?utm_source=x&utm_medium=social&utm_campaign=classic&utm_content=video_reply"
         cases = {
             "threads": (body("threads"), {}),
             "facebook": (body("facebook"), {}),
             "x": (GOOD, {"reply_text": reply}),
-            "bluesky": (f"{GOOD}\nai-tech-express.jp/articles/acme-tool", {"links": [f"{LINK}?utm_source=bluesky&utm_medium=social&utm_campaign=x"]}),
+            "bluesky": (f"{GOOD}\nai-tech-express.jp/articles/acme-tool", {"links": [f"{LINK}?utm_source=bluesky&utm_medium=social&utm_campaign=x&utm_content=video_body"]}),
         }
         for platform, (text, kw) in cases.items():
             for media in ([], CARD):  # 写真・カードだけ・何も無い → 止める
@@ -180,7 +180,7 @@ def queued_rec(slot: datetime) -> dict:
                  "metadata": {"threads": {"topic": "AI", "thread": [{"text": body("threads"), "assets": [{"image": {"url": CARD[0]["url"]}}]}]}}}
     x_in = {"channelId": "x", "text": GOOD, "_offsetMin": 12,
             "metadata": {"twitter": {"thread": [{"text": GOOD, "assets": [{"image": {"url": CARD[0]["url"]}}]},
-                                                {"text": f"詳しくはこちら👇\n{LINK}?utm_source=x&utm_medium=social&utm_campaign=classic", "assets": []}]}}}
+                                                {"text": f"詳しくはこちら👇\n{LINK}?utm_source=x&utm_medium=social&utm_campaign=classic&utm_content=video_reply", "assets": []}]}}}
     fb_in = {"channelId": "f", "text": body("facebook"), "_offsetMin": 27, "assets": [],
              "metadata": {"facebook": {"type": "post", "linkAttachment": {"url": LINK, "thumbnail": {"url": CARD[0]["url"]}}}}}
     return {"id": "", "via": "buffer", "status": "awaiting_video", "dueAt": slot.isoformat(),

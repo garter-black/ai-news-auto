@@ -219,7 +219,7 @@ class GateTest(unittest.TestCase):
     def test_every_pattern_sample_passes_the_gate(self):
         for key, (hook, summary, question) in SAMPLES.items():
             body = f"{hook}\n\n{summary}\n\n{question}"
-            text = f"{body}\n\n詳しくはこちら👇\n{LINK}?utm_source=threads&utm_medium=social&utm_campaign=classic"
+            text = f"{body}\n\n詳しくはこちら👇\n{LINK}?utm_source=threads&utm_medium=social&utm_campaign=classic&utm_content=video_body"
             self.assertEqual(sns_rules.check_post("threads", text, VIDEO, ART, measurer=lambda url: (1200, 675)), [], key)
             self.assertTrue(tp.question_ok(question), key)
             self.assertEqual(qp.classify(question) if key != "expert" else "ab", "ab" if key == "expert" else key)

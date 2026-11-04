@@ -94,11 +94,20 @@ async function view(request: Request, url: URL, env: InflowEnv, ctx: Ctx): Promi
       console.error("[inflow] put failed", String(error)),
     ),
   );
-  // SNS の動画投稿（utm_campaign=sns_video・utm_content=short|full）は、短い版と全部の版の比べ（scripts/sns_video_followup.py --ab-report）にも数える
-  if (campaign === "sns_video" && (content === "short" || content === "full") && !page.startsWith("digest-") && page !== "_home") {
-    recordVideoVisit(env.AFF_KV, page, content, ctx, now);
+  // SNS の動画投稿は、短い版と全部の版の比べ（scripts/sns_video_followup.py --ab-report）にも数える。
+  // 2026-11-05〜 utm_campaign=sns_video_short|sns_video_full・utm_content=<種類>_<位置>（台帳 S29）。以前の utm_campaign=sns_video・utm_content=short|full も数える
+  const variant = videoVariant(campaign, content);
+  if (variant && !page.startsWith("digest-") && page !== "_home") {
+    recordVideoVisit(env.AFF_KV, page, variant, ctx, now);
   }
   return noContent();
+}
+
+/** 動画の版（short / full）。新しい形 utm_campaign=sns_video_<版> と、以前の形 utm_campaign=sns_video&utm_content=<版> */
+export function videoVariant(campaign: string, content: string): "short" | "full" | null {
+  if (campaign === "sns_video_short" || (campaign === "sns_video" && content === "short")) return "short";
+  if (campaign === "sns_video_full" || (campaign === "sns_video" && content === "full")) return "full";
+  return null;
 }
 
 type Row = { views: number; visitors: Set<string>; hours: Record<string, number> };

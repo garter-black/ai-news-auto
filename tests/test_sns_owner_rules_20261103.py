@@ -230,7 +230,7 @@ class PoliteSummaryTest(unittest.TestCase):
         stiff = ("会議のメモを取っている人、これは要チェックです。\n\n"
                  "要約すると、毎年11月30日を「年金の日」として普及や啓発活動を展開する。\nポスター掲示などを実施する。\n\n"
                  "あなたの職場では、会議の議事録を誰が書いていますか？\n\n詳しくはこちら👇\n"
-                 "https://ai-tech-express.jp/articles/acme-tool?utm_source=threads&utm_medium=social&utm_campaign=classic")
+                 "https://ai-tech-express.jp/articles/acme-tool?utm_source=threads&utm_medium=social&utm_campaign=classic&utm_content=video_body")
         out = [v for v in sns_rules.check_post("threads", stiff, [], art) if "ルール7" in v]
         self.assertTrue(any("です・ます" in v for v in out), out)
         self.assertTrue(any("硬い言葉" in v for v in out), out)

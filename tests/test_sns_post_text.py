@@ -299,7 +299,12 @@ class LinkInBodyTest(unittest.TestCase):
 
     def test_utm_per_platform_and_content(self):
         url = tp.utm_link("https://x.jp/a", "bluesky", "classic")
-        self.assertEqual(url, "https://x.jp/a?utm_source=bluesky&utm_medium=social&utm_campaign=classic")
+        self.assertEqual(url, "https://x.jp/a?utm_source=bluesky&utm_medium=social&utm_campaign=classic&utm_content=video_body")
+        # 2026-11-05（S29）: utm_content は必ず <種類>_<位置>。X は既定で返信、動画の版は utm_campaign に移す
+        self.assertTrue(tp.utm_link("https://x.jp/a", "x", "classic").endswith("&utm_content=video_reply"))
+        self.assertTrue(tp.utm_link("https://x.jp/a", "threads", "classic", ptype="hook", pos="reply").endswith("&utm_content=hook_reply"))
+        self.assertEqual(tp.utm_link("https://x.jp/a", "threads", "sns_video", "short"),
+                         "https://x.jp/a?utm_source=threads&utm_medium=social&utm_campaign=sns_video_short&utm_content=video_body")
         self.assertTrue(tp.utm_link("https://x.jp/a", "x", "classic", "video 1").endswith("&utm_content=video%201"))
         self.assertIn("?a=1&utm_source=facebook", tp.utm_link("https://x.jp/a?a=1", "facebook", "classic"))
 

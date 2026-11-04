@@ -30,7 +30,7 @@ def size(w, h):
 
 
 def with_link(text, source):
-    return f"{text}\n\n詳しくはこちら👇\n{LINK}?utm_source={source}&utm_medium=social&utm_campaign=classic"
+    return f"{text}\n\n詳しくはこちら👇\n{LINK}?utm_source={source}&utm_medium=social&utm_campaign=classic&utm_content=video_body"
 
 
 CARD = [{"type": "image", "url": "https://ai-tech-express.jp/card/acme-tool"}]
@@ -46,10 +46,10 @@ class CheckPostTest(unittest.TestCase):
     def test_good_posts_pass_on_every_platform(self):
         self.assertEqual(self.check("threads", with_link(GOOD, "threads")), [])
         self.assertEqual(self.check("facebook", with_link(GOOD, "facebook")), [])
-        reply = f"詳しくはこちら👇\n{LINK}?utm_source=x&utm_medium=social&utm_campaign=classic"
+        reply = f"詳しくはこちら👇\n{LINK}?utm_source=x&utm_medium=social&utm_campaign=classic&utm_content=video_reply"
         self.assertEqual(self.check("twitter", GOOD + "\n\n#AI", reply_text=reply), [])
         bsky = f"{GOOD}\nai-tech-express.jp/articles/acme-tool"
-        self.assertEqual(self.check("bluesky", bsky, links=[f"{LINK}?utm_source=bluesky&utm_medium=social&utm_campaign=fill"]), [])
+        self.assertEqual(self.check("bluesky", bsky, links=[f"{LINK}?utm_source=bluesky&utm_medium=social&utm_campaign=fill&utm_content=video_body"]), [])
 
     def test_link_placement_and_utm(self):
         self.assertTrue(any("本文に記事のリンクがない" in v for v in self.check("threads", GOOD)))
@@ -103,7 +103,7 @@ class CheckPostTest(unittest.TestCase):
     def test_lengths(self):
         long = with_link(GOOD.replace("月額は", "月額は" + "あ" * 400), "threads")
         self.assertTrue(any("長すぎる" in v for v in self.check("threads", long)))
-        reply = f"詳しくはこちら👇\n{LINK}?utm_source=x&utm_medium=social&utm_campaign=classic"
+        reply = f"詳しくはこちら👇\n{LINK}?utm_source=x&utm_medium=social&utm_campaign=classic&utm_content=video_reply"
         self.assertTrue(any("X の本文が長すぎる" in v for v in self.check("x", GOOD + "あ" * 100, reply_text=reply)))
 
     def test_sports_scope(self):
@@ -123,7 +123,7 @@ class CheckPostTest(unittest.TestCase):
         text = "今朝のAIニュース3本（2026/11/03）\n\n・GoogleのAI「Gemini 4」など10月の新発表まとめ\n・ElevenLabsが音響効果モデルを公開"
         art = {"link": link, "items": ["a", "b"]}
         share = [{"type": "image", "url": f"{link}/share.png?v=1"}]
-        body = f"{text}\n\nほかの新着もサイトにまとめています👇\n{link}?utm_source=threads&utm_medium=social&utm_campaign=digest"
+        body = f"{text}\n\nほかの新着もサイトにまとめています👇\n{link}?utm_source=threads&utm_medium=social&utm_campaign=digest&utm_content=digest_body"
         self.assertEqual(r.check_post("threads", body, share, art, kind="digest", measurer=size(1200, 630)), [])
         bad = text.replace("・ElevenLabsが音響効果モデルを公開", "・Google DeepMind")
         out = r.check_post("threads", bad, share, {"link": "https://ai-tech-express.jp/news", "items": ["a", "b"]}, kind="digest", measurer=size(1200, 630))
@@ -267,14 +267,14 @@ class CalloutRuleTest(unittest.TestCase):
             self.assertFalse(r.question_needs_article(ok), ok)
 
     def test_x_body_and_other_platforms_follow_rule6(self):
-        reply = f"詳しくはこちら👇\n{LINK}?utm_source=x&utm_medium=social&utm_campaign=classic"
+        reply = f"詳しくはこちら👇\n{LINK}?utm_source=x&utm_medium=social&utm_campaign=classic&utm_content=video_reply"
         bad = GOOD.replace("会議のメモを取っている人、これは要チェックです。", "会議のメモ、まだ手で取っていますか。")
         self.assertTrue(self.rule6(self.check("x", bad + "\n\n#AI", reply_text=reply)))
         # X は字数で書き出しを落とした形（要約から始まる）も通す
         self.assertEqual(self.rule6(self.check("x", GOOD.split("\n\n", 1)[1] + "\n\n#AI", reply_text=reply)), [])
         self.assertTrue(self.rule6(self.check("facebook", with_link(bad, "facebook"))))
         bsky = f"{bad}\nai-tech-express.jp/articles/acme-tool"
-        self.assertTrue(self.rule6(self.check("bluesky", bsky, links=[f"{LINK}?utm_source=bluesky&utm_medium=social&utm_campaign=fill"])))
+        self.assertTrue(self.rule6(self.check("bluesky", bsky, links=[f"{LINK}?utm_source=bluesky&utm_medium=social&utm_campaign=fill&utm_content=video_body"])))
 
     def test_digest_and_disaster_are_exempt(self):
         quake = {**ART, "disaster": True}

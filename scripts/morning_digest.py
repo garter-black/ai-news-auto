@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-朝のまとめ投稿「今朝のAIニュース3本」（毎朝 7:30）と、週2回の問いかけ投稿（火・金 12:15）。日本時間。Threads と X に出す。
+朝のまとめ投稿「今朝のAIニュース3本」（毎朝 7:15。2026-11-05〜 1日6枠の1本目）と、週2回の問いかけ投稿（火・金 12:15）。日本時間。Threads と X に出す。
 
   python3 scripts/morning_digest.py --dry-run                      # 朝のまとめの文面と選んだ記事を表示するだけ
   python3 scripts/morning_digest.py --kind poll --dry-run --force  # 問いかけ投稿の文面を表示（曜日・時刻を問わない）
@@ -17,7 +17,7 @@
 - 本文は見出しを1行ずつ（煽らない）。見出しは「だれが＋何を」（scripts/digest_page.py の short_headline。会社名だけにしない）
 - リンクは自分への返信に置く（Threads はリンクカード）。リンク先はその日の号のページ /digest/<YYYYMMDD>（UTM 付き）、
   Threads・X には号の横長画像（/digest/<id>/share.png）を添える。号のデータは投稿前に KV へ置き、出せなければ従来の /news・画像なし
-- 7:30 は通常の予約枠から外してある（threads_post.DIGEST_SLOT_JST）ので、1日の本数は増えない
+- 7:15 は通常の予約枠から外してある（threads_post.DIGEST_SLOT_JST）。1日6本の上限に数える（scripts/sns_plan.json）
 - 1日1本だけ。state/threads_posted.json に digest-YYYYMMDD（style: digest）で記録する
 - SNS_DIGEST=0 なら何もしない
 """

@@ -424,6 +424,8 @@ jobs:
           BUFFER_MONITOR_CAP: ${{ vars.BUFFER_MONITOR_CAP }}
           # 1日の投稿本数（Threads・X・Facebook 共通）。凍結を避けて週に1〜2本ずつ増やす
           SNS_PER_DAY: ${{ steps.ramp.outputs.sns_per_day }}
+          SNS_HOOK_FORMAT: ${{ vars.SNS_HOOK_FORMAT || '0' }}  # Muse の型の文面（オーナー承認まで 0。台帳 S30）
+          THREADS_LINK_AB: ${{ vars.THREADS_LINK_AB || '0' }}  # Threads のリンクの位置の比べ（オーナー承認まで 0。S31）
           # 速報の即時投稿の1日の上限（別枠・最大5）。速報待ちの記事を通常の予約に回さない判定に使う
           BREAKING_PER_DAY: ${{ vars.BREAKING_PER_DAY }}
           # 朝のまとめ・問いかけ投稿（sns_extra.yml）の枠を空けるか。0 で止めて通常の投稿に戻す

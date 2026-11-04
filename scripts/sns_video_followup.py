@@ -189,6 +189,8 @@ def qa_ok(version: dict | None, env: dict | None = None) -> bool:
     qa = (version or {}).get("qa") or {}
     if qa.get("ownerApproved"):
         return True  # オーナーが動画そのものを見て選んだ（swap_video。記録つき）
+    if (qa.get("muse") or {}).get("validated") is True:
+        return True  # とろいも（Muse）の動画。muse_ingest が長さ・画面の大きさ・音声を確かめた（S30。Muse 側で裏取り・型の確認済み）
     # 2026-11-04 オーナー承認: すべての段で同じ合格の基準。承認済みの形（左の見出し＋右の公式ページの画面）ではない L3/L4 の動画、
     # 画像のレビューができなかった（決まりだけで通した）動画は出さない。「確かめられない」は不合格
     if (version or {}).get("level") in ("L3", "L4") or str(qa.get("vision_how") or qa.get("how") or "").startswith("deterministic"):
@@ -236,6 +238,8 @@ def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_a
             continue  # オーナーに見せるまで、動画も投稿も自動では進めない
         if awaiting(rec) and (rec.get("pending") or {}).get("hold"):
             continue  # オーナーに見せた動画を置くのを待っている（作らない）
+        if awaiting(rec) and muse_waiting(slug, rec, now):
+            continue  # とろいも（Muse）の動画を待っている間は、自動動画を作らない（S30。期限を過ぎたら作る）
         if awaiting(rec) and queued.get("status") not in ("created", "skipped"):
             group = 0  # 動画を待っている投稿（動画が無いと出せない）は、枠が過ぎていても最優先・枠の順
         elif at > now:
@@ -257,11 +261,22 @@ def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_a
     return [r[3] for r in rows]
 
 
-def article_link(report: dict, variant: str) -> str:
-    """記事のリンク（Threads の UTM ＋ 版）。threads_post.utm_link と同じ形"""
+def ptype_of(url: str) -> str:
+    """前のリンクの utm_content から投稿の種類を引き継ぐ（hook_body なら hook。ほかは video。S29）"""
+    import urllib.parse
+
+    try:
+        content = (urllib.parse.parse_qs(urllib.parse.urlsplit(url).query).get("utm_content") or [""])[0]
+    except ValueError:
+        content = ""
+    return "hook" if content.startswith("hook_") else "video"
+
+
+def article_link(report: dict, variant: str, source: str = "threads", ptype: str = "video", pos: str = "") -> str:
+    """記事のリンク（UTM ＋ 版）。threads_post.utm_link と同じ形（utm_campaign=sns_video_<版>・utm_content=<種類>_<位置>）"""
     import threads_post
 
-    return threads_post.utm_link(report.get("url", ""), "threads", CAMPAIGN, variant)
+    return threads_post.utm_link(report.get("url", ""), source, CAMPAIGN, variant, ptype=ptype, pos=pos)
 
 
 def compose_post(report: dict, variant: str = "short") -> str:
@@ -270,7 +285,7 @@ def compose_post(report: dict, variant: str = "short") -> str:
     hook = ((sv3.get("hook") or {}).get("text") or report.get("title") or "").strip()
     seconds = int(round(float(report.get("total") or 0)))
     summary = (sv3.get("summary") or "").strip()
-    head = f"{hook}\n" + (f"{seconds}秒で解説しました。" if report.get("level") in ("L3", "L4") else f"公式ページの画面を見ながら、{seconds}秒で解説しました。")
+    head = f"{hook}\n" + (f"{seconds}秒で解説しました。" if report.get("level") in ("L3", "L4", "MUSE") else f"公式ページの画面を見ながら、{seconds}秒で解説しました。")
     voice = (report.get("voice") or {}).get("credit")
     tail = f"\n\n詳しくはこちら👇\n{article_link(report, variant)}" + (f"\n音声：{voice}" if voice else "")
     room = MAX_CHARS - len(head) - len(tail) - 2
@@ -500,6 +515,28 @@ ORDER_HOLD_MIN = 60  # 前の投稿の動画待ちで、あとの投稿を待た
 def give_up_h(rec: dict | None, video: dict | None = None) -> float:
     """動画を待つ上限（時間）。速報は QUEUE_GIVE_UP_BREAKING_H、ふつうは QUEUE_GIVE_UP_H"""
     return QUEUE_GIVE_UP_BREAKING_H if (rec or {}).get("breaking") or (video or {}).get("breaking") else QUEUE_GIVE_UP_H
+def muse_waiting(slug: str, rec: dict, now: datetime, video: dict | None = None) -> datetime | None:
+    """（2026-11-05 S30）この投稿が、とろいも（Muse）の動画を待っている期限。待っていなければ None。
+    Muse の動画がもう置かれた（adopted=muse）・頼んでいない・期限を過ぎた → None（今の自動動画に戻る）"""
+    import sns_plan
+
+    if (video or {}).get("adopted") == "muse":
+        return None
+    slot = _parse((rec.get("pending") or {}).get("slot") or rec.get("dueAt") or "") or now
+    until = sns_plan.muse_wait_until(slug, slot, breaking=bool(rec.get("breaking")))
+    return until if until and now < until else None
+
+
+def muse_extra_h(slug: str, rec: dict) -> float:
+    """Muse を待った分だけ、動画を待つ上限（give_up_h）を延ばす（待ったあとに自動動画を作る時間を残す）"""
+    import sns_plan
+
+    if not sns_plan.muse_item(slug).get("status"):
+        return 0.0
+    m = sns_plan.plan()["muse"]
+    return float(m["breaking_wait_hours"] if rec.get("breaking") else os.environ.get("MUSE_WAIT_HOURS") or m["wait_hours"])
+
+
 QUEUE_LEAD_MIN = 3  # 枠が過ぎた（または今すぐの）投稿は、送ってからこれだけ先に予約する（shareNow は使わない＝時刻を記録できる）
 MISSING_LABEL = "sns-video-missing"
 
@@ -523,12 +560,12 @@ def video_input(service: str, post_input: dict, report: dict, variant: str, vide
         for t in thread[1:]:  # X の返信の記事のリンクを動画の A/B 用に
             m = URL_RE.search(t.get("text") or "")
             if m:
-                t["text"] = t["text"][: m.start()] + threads_post.utm_link(report.get("url", ""), "x", CAMPAIGN, variant) + t["text"][m.end():]
+                t["text"] = t["text"][: m.start()] + article_link(report, variant, "x", ptype_of(m.group(0)), "reply") + t["text"][m.end():]
         meta.setdefault("twitter", {})["thread"] = thread
     elif service == "facebook":
         m = URL_RE.search(inp.get("text") or "")
         if m:
-            inp["text"] = inp["text"][: m.start()] + threads_post.utm_link(report.get("url", ""), "facebook", CAMPAIGN, variant) + inp["text"][m.end():]
+            inp["text"] = inp["text"][: m.start()] + article_link(report, variant, "facebook", ptype_of(m.group(0)), "body") + inp["text"][m.end():]
         meta["facebook"] = {"type": "post"}  # リンクカード（写真）ではなく動画を付ける。記事のリンクは本文にある
         inp["assets"] = video
     inp["metadata"] = meta
@@ -619,9 +656,30 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
             q.update({"status": "waiting", "why": "オーナーに見せた動画を置くのを待っている"})
             out.append({"slug": slug, **q})
             continue  # ほかの投稿の順番は止めない
+        try:
+            import sns_plan
+
+            art_now = json.loads((ARTICLES / f"{slug}.json").read_text("utf-8")) if (ARTICLES / f"{slug}.json").exists() else None
+            why_ex = sns_plan.excluded(art_now)
+        except Exception:  # noqa: BLE001 - 判定できなければ門番（送る直前）に任せる
+            why_ex = ""
+        if why_ex:
+            # 決まり（S28）より前に動画待ちにした、海外の企業向け・開発者向けの記事は出さない（issue は立てない＝決まりどおりの見送り）
+            q.update({"status": "skipped", "why": why_ex, "at": now.isoformat(timespec="seconds")})
+            out.append({"slug": slug, **q})
+            continue
+        if v.get("museHold"):
+            q.update({"status": "waiting", "why": "Muse の動画をオーナーに見せている（muse_ingest --release で出す）"})
+            out.append({"slug": slug, **q})
+            continue  # ほかの投稿の順番は止めない
+        if not urls and (until := muse_waiting(slug, rec, now, v)):
+            # とろいも（Muse）の動画を待つ（既定4時間・速報は待たない）。ほかの投稿の順番は止めない（S30）
+            q.update({"status": "waiting", "why": f"Muse の動画を {until.astimezone(JST):%H:%M} まで待っている", "checkedAt": now.isoformat(timespec="seconds")})
+            out.append({"slug": slug, **q})
+            continue
         if not urls or v.get("status") in ("started", "upload_failed"):  # 置いた動画があれば使う（前に記事ページだけにした動画も）
             failed = bool(v) and v.get("status") in ("gate_failed", "upload_failed", "dry_run") and not will_retry(v)
-            late = now - slot > timedelta(hours=give_up_h(rec, v))
+            late = now - slot > timedelta(hours=give_up_h(rec, v) + muse_extra_h(slug, rec))
             unfit = not v and not eligible(slug)
             if failed or late or unfit:
                 why = (f"動画を作れなかった（{v.get('status')}: {(v.get('reason') or v.get('error') or '')[:160]}）" if failed
@@ -1138,11 +1196,15 @@ def merged_text(text: str, report: dict, variant: str, limit: int = MAX_CHARS) -
     m = URL_RE.search(text)
     new = text
     if m:
-        cand = text[: m.start()] + article_link(report, variant) + text[m.end():]
+        cand = text[: m.start()] + article_link(report, variant, "threads", ptype_of(m.group(0)), "body") + text[m.end():]
         if len(cand) <= limit:
             new, notes["link"] = cand, "video"
+        elif "utm_content=" not in m.group(0):
+            tagged = text[: m.end()] + "&utm_content=video_body" + text[m.end():]  # 長くて替えられないときも種類と位置の印は付ける（S29）
+            if len(tagged) <= limit:
+                new = tagged
     seconds = int(round(float(report.get("total") or 0)))
-    form = VIDEO_LINE_PLAIN if report.get("level") in ("L3", "L4") else VIDEO_LINE
+    form = VIDEO_LINE_PLAIN if report.get("level") in ("L3", "L4", "MUSE") else VIDEO_LINE
     line = form.format(seconds=seconds) if seconds else ""
     credit = (report.get("voice") or {}).get("credit", "")
     if line:

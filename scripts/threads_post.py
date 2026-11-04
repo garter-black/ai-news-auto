@@ -39,6 +39,7 @@ import persona  # noqa: E402
 import threads_hooks  # noqa: E402
 import question_patterns  # noqa: E402
 import sns_rules  # noqa: E402
+import sns_plan  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
@@ -484,6 +485,61 @@ def llm_callout(article: dict, title: str, last: list[str]) -> str:
         log(f"  [callout] LLM の呼びかけがチェックを通りません: {line[:50]}")
         return ""
     return line
+
+
+HOOK3_LINE_MAX = 70
+HOOK3_TAIL = "対象・条件・まだ分からないことは記事にまとめました。"
+
+
+def _first_sentence(text: str, limit: int = HOOK3_LINE_MAX) -> str:
+    sent = re.split(r"(?<=[。！？])", str(text or "").strip())[0].strip()
+    return sent if len(sent) <= limit else ""
+
+
+def hook3_facts_ok(lines: list[str], article: dict) -> bool:
+    """数字はすべて記事の中にあるものだけ（記事に無い事実を書かない）"""
+    source = " ".join([str(article.get(k) or "") for k in ("title", "seoTitle", "lede", "description", "body")]
+                      + [str(h) for h in article.get("highlights") or []])
+    source = source.replace(",", "")
+    return all(d.replace(",", "").rstrip(".") in source for line in lines for d in re.findall(r"\d[\d,.]*", line))
+
+
+def compose_hook3(article: dict, use_llm: bool = False) -> str:
+    """（フラグ SNS_HOOK_FORMAT=1・オーナー承認待ち。台帳 S30）とろいも案の型の3行。
+    1行目＝結論＋数字か読者への影響 / 2行目＝なぜ大事か / 3行目＝記事にだけあるもの。リンクは呼ぶ側（with_link・位置のフラグ）。
+    LLM が使えれば書かせ、門番（sns_rules.hook_problems）と数字の照合に通らなければ記事の文から組み立てる。どちらもだめなら空"""
+    lines: list[str] = []
+    if use_llm and (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("GEMINI_API_KEY")):
+        prompt = (
+            "次のニュースを SNS に出す本文を、ちょうど3行で書く。\n"
+            f"読者: {persona.PERSONA['who']}\n"
+            f"- 1行目: 結論。数字か、読者にとって何が変わるかを入れる（全角{HOOK3_LINE_MAX}字以内。問いにしない）。\n"
+            f"- 2行目: なぜ大事か（だれに・どう関係するか。全角{HOOK3_LINE_MAX}字以内）。\n"
+            "- 3行目: 記事を読むと分かること（対象・条件・手順・未定のことなど）を予告し、「記事に」「記事で」などで結ぶ。\n"
+            "- 記事に無い事実・数字は書かない。煽り（衝撃・必見・知らないと損・！）、【速報】、絵文字、ハッシュタグは使わない。です・ます でも だ・である でもよいが、落ち着いた大人の文。\n\n"
+            f"見出し: {article.get('title', '')}\nリード: {article.get('lede', '')}\n要点: {' / '.join(str(h) for h in article.get('highlights') or [])}\n"
+            f"仕事・お金: {' / '.join(str(x) for x in ((article.get('workMoney') or {}).get('points') or []))}"
+        )
+        schema = {"type": "OBJECT", "properties": {"line1": {"type": "STRING"}, "line2": {"type": "STRING"}, "line3": {"type": "STRING"}},
+                  "required": ["line1", "line2", "line3"]}
+        try:
+            import llm  # noqa: PLC0415
+
+            data, _ = llm.generate_json("あなたはニュースサイトのSNS担当の編集者です。正確で自然な日本語だけを書きます。", prompt, schema,
+                                        tier="bulk", max_output_tokens=400, purpose="sns")
+            lines = [EMOJI_RE.sub("", str(data.get(k) or "")).strip() for k in ("line1", "line2", "line3")]
+        except Exception as error:  # noqa: BLE001
+            log(f"  [hook3] LLM で書けませんでした: {str(error)[:120]}")
+            lines = []
+    if not lines or sns_rules.hook_problems("\n".join(lines)) or not hook3_facts_ok(lines, article):
+        one = _first_sentence(article.get("lede") or article.get("description") or "")
+        points = (article.get("workMoney") or {}).get("points") or article.get("highlights") or []
+        two = next((_first_sentence(str(x)) for x in points if _first_sentence(str(x)) and not re.search(r"影響は小さい|直接の影響", str(x))), "")
+        lines = [one, two, HOOK3_TAIL] if one and two else []
+    text = "\n".join(lines)
+    if not lines or sns_rules.hook_problems(text) or not hook3_facts_ok(lines, article) or sns_rules.grammar_problems(text):
+        return ""
+    return text
 
 
 def first_line_hook(article: dict, recent: list[str], breaking: bool, title: str, use_llm: bool = False) -> str:
@@ -1004,14 +1060,19 @@ def video_possible(article: dict) -> bool:
 
 
 def candidates(state: dict, hours: int, genres: set[str] | None = None) -> list[dict]:
-    """直近 hours 時間に生成された未投稿の記事（既定は AI。genres で AI 以外のテスト枠用も）を、Threads で反応が取れそうな順に並べる。"""
-    genres = genres or {"ai"}
+    """直近 hours 時間に生成された未投稿の記事を、SNS に出す順に並べる。
+
+    2026-11-05〜（台帳 S27・S28。scripts/sns_plan.json）: ジャンルを問わず、ビューが取れる話題（レーン）から先に出す。
+    ①障害・流出・安全 ②お金・制度・政府 ③有名ブランドの製品 ④読者に関係する AI。海外の企業向け・開発者向けの話題は
+    SNS に出さない（サイトだけ。sns_plan.excluded）。genres を渡すとそのジャンルだけ（以前の AI 以外の枠のテストの呼び方）"""
     since = datetime.now(timezone.utc) - timedelta(hours=hours)
     posted = state["posted"]
     articles = []
     for path in ARTICLES_DIR.glob("*.json"):
         article = json.loads(path.read_text("utf-8"))
-        if article.get("genreSlug") not in genres or article["slug"] in posted or article["slug"] in (state.get("ruleBlocked") or {}):
+        if genres is not None and article.get("genreSlug") not in genres:
+            continue
+        if article["slug"] in posted or article["slug"] in (state.get("ruleBlocked") or {}):
             continue
         if datetime.fromisoformat(article["generatedAt"]) < since:
             continue
@@ -1020,17 +1081,19 @@ def candidates(state: dict, hours: int, genres: set[str] | None = None) -> list[
             continue
         if not sns_rules.is_urgent(article) and not video_possible(article):
             continue  # 動画を作れない記事は SNS に出さない（ルール8: 記事の投稿は動画つきだけ。急ぎの安全の知らせは例外）
+        if sns_plan.excluded(article):
+            continue  # 海外の企業向け・開発者向けの話題は SNS に出さない（サイトだけ。S28）
+        if article.get("genreSlug") == "sports" and not sns_plan.has_lane(article):
+            continue
+        if not sns_plan.has_lane(article) and not sns_plan.plan().get("fill_without_lane", True):
+            continue
         articles.append(article)
 
     # まとめ記事に統合済みの個別記事は、まとめ側を出せば十分なので重ねて流さない
     roundups = {a["slug"] for a in articles if a.get("type") == "roundup"} | set(posted)
     articles = [a for a in articles if a.get("roundupSlug") not in roundups]
     articles = [a for a in articles if score(a) >= MIN_SCORE]
-    if genres == {"ai"}:
-        articles.sort(key=lambda a: (score(a), a["generatedAt"]), reverse=True)
-    else:
-        articles = [a for a in articles if a.get("genreSlug") != "sports" and not a.get("disaster")]
-        articles.sort(key=lambda a: (everyday_score(a), a["generatedAt"]), reverse=True)
+    articles.sort(key=lambda a: (sns_plan.sns_score(a), score(a), a["generatedAt"]), reverse=True)
     return articles
 
 
@@ -1090,15 +1153,15 @@ def reserved_for_breaking(article: dict, state: dict, now: datetime | None = Non
     return age < timedelta(hours=BREAKING_RESERVE_HOURS) and breaking_allowed(state, now)
 
 
-# 投稿する時間帯（日本時間）。よく見られる時間から順に並べ、1日の本数 SNS_PER_DAY 個だけ使う。
-# 凍結を避けるため、本数は週に1〜2本ずつ増やす（GitHub の変数 SNS_PER_DAY で変更）
-SLOT_PRIORITY = [(7, 30), (12, 15), (18, 30), (21, 0), (22, 45), (9, 45), (15, 30), (23, 40), (0, 40), (11, 0), (20, 0), (17, 0)]
-SNS_PER_DAY = max(1, min(len(SLOT_PRIORITY), int(os.environ.get("SNS_PER_DAY") or 9)))
-SLOTS_JST = sorted(SLOT_PRIORITY[:SNS_PER_DAY])
+# 投稿する時間帯（日本時間）。2026-11-05 とろいも案 v1（台帳 S27）: 7:15・8:10・12:15・18:45・20:30・21:45 の6枠。
+# 枠・1日の上限（自分の投稿は1日6本まで。速報も数える。ミサイル・災害だけ数えない）・間隔は scripts/sns_plan.json の1か所で持つ
+SLOT_PRIORITY = sns_plan.slots_jst()
+SNS_PER_DAY = len(SLOT_PRIORITY)
+SLOTS_JST = sorted(SLOT_PRIORITY)
 JST = timezone(timedelta(hours=9))
 # 朝のまとめ投稿（scripts/morning_digest.py「今朝のAIニュース3本」）が使う枠。通常の予約はこの枠を空けておく
 # （1日の本数 SNS_PER_DAY はまとめを含めて数える）。SNS_DIGEST=0 でまとめを止め、通常の投稿に戻す
-DIGEST_SLOT_JST = (7, 30)
+DIGEST_SLOT_JST = sns_plan.digest_slot_jst()  # 7:15（1日6本の1本として数える）
 DIGEST_ON = os.environ.get("SNS_DIGEST", "1").strip() != "0"
 # 週2回（火・金の昼）の問いかけ投稿（morning_digest.py --kind poll。Buffer の API は Threads のアンケートに未対応のため）
 POLL_SLOT_JST = (12, 15)
@@ -1117,6 +1180,15 @@ def free_slots(state: dict, now: datetime | None = None, extra_taken: list[datet
     taken = [datetime.fromisoformat(p["dueAt"]) for p in state["posted"].values() if p.get("dueAt")]
     taken += list(extra_taken or [])
     base = now.astimezone(JST).replace(second=0, microsecond=0)
+    gap = sns_plan.min_gap().total_seconds()
+    posted = state.get("posted") or {}
+    skipped = sns_plan.video_skipped()
+    per_day = {d: sns_plan.count_today(posted, d, skipped) for d in (base.date(), (base + timedelta(days=1)).date())}
+    if DIGEST_ON:
+        # 朝のまとめ（7:15）は threads_posted.json の posted に入るまで数えられないので、まだの日は1本分を空けておく
+        for d in per_day:
+            if not any(k.startswith(f"digest-{d:%Y%m%d}") for k in posted):
+                per_day[d] += 1
     found = []
     for day in range(2):
         for hour, minute in SLOTS_JST:
@@ -1127,9 +1199,15 @@ def free_slots(state: dict, now: datetime | None = None, extra_taken: list[datet
                 continue
             if slot < base + timedelta(minutes=20) or slot > base + timedelta(hours=LOOKAHEAD_HOURS):
                 continue
-            # すでに予約した投稿と90分以内に重なる枠は使わない（枠の時刻を変えた日でも詰まりすぎないように）
-            if all(abs((slot - t).total_seconds()) >= 90 * 60 for t in taken):
-                found.append(slot.astimezone(timezone.utc))
+            # すでに予約した投稿と近すぎる枠（sns_plan の min_gap_min。既定45分）は使わない
+            if not all(abs((slot - t).total_seconds()) >= gap for t in taken):
+                continue
+            # 1日（日本時間）の自分の投稿は sns_plan の上限まで（速報も数える。ミサイル・災害は数えない。台帳 S27）
+            slot_day = slot.date()
+            if per_day.get(slot_day, 0) >= sns_plan.daily_cap():
+                continue
+            per_day[slot_day] = per_day.get(slot_day, 0) + 1
+            found.append(slot.astimezone(timezone.utc))
     return found
 
 
@@ -1457,12 +1535,32 @@ def recent_voice(state: dict, field: str, n: int = 5) -> list[str]:
     return [p[field] for p in history if p.get(field)][:n]
 
 
-def utm_link(link: str, source: str, fmt: str, content: str = "") -> str:
-    """SNS ごとの流入を分けるための UTM（utm_source=threads|bluesky|facebook|x, utm_medium=social, utm_campaign=形式）。
-    動画など投稿の中身を分けたいときは content（utm_content）を足す"""
+def post_type(article: dict | None, fmt: str = "classic") -> str:
+    """utm_content の投稿の種類（S29）: digest・card（災害など写真のカードで急いで出す）・hook（Muse の型の文面）・video（動画つきの記事の投稿）"""
+    if fmt == "digest":
+        return "digest"
+    if article and sns_rules.is_urgent(article):
+        return "card"
+    if fmt == "hook_thread" or (article or {}).get("_hookFormat"):
+        return "hook"
+    return "video"
+
+
+def utm_link(link: str, source: str, fmt: str, content: str = "", *, ptype: str = "", pos: str = "") -> str:
+    """SNS ごとの流入を分けるための UTM（utm_source=threads|bluesky|facebook|x, utm_medium=social, utm_campaign=形式,
+    utm_content=<投稿の種類>_<リンクの位置>。台帳 S29）。
+
+    2026-11-05〜: utm_content は必ず付ける（video_body・hook_reply・digest_body など。位置は X だけ既定で reply）。
+    動画の短い版・全部の版（以前の content=short|full）は utm_campaign=sns_video_short|sns_video_full に移す。
+    canonical はクエリを付けない（記事ページの <link rel=canonical> は app/articles/[slug] が slug だけで作る）"""
+    campaign = fmt
+    if fmt == "sns_video" and content in ("short", "full"):
+        campaign, content, ptype = f"sns_video_{content}", "", ptype or "video"
+    if not content:
+        default_type = "digest" if fmt == "digest" else "hook" if fmt == "hook_thread" else "video"
+        content = sns_plan.utm_content(ptype or default_type, pos or ("reply" if source == "x" else "body"))
     sep = "&" if "?" in link else "?"
-    url = f"{link}{sep}utm_source={source}&utm_medium=social&utm_campaign={fmt}"
-    return f"{url}&utm_content={urllib.parse.quote(content)}" if content else url
+    return f"{link}{sep}utm_source={source}&utm_medium=social&utm_campaign={campaign}&utm_content={urllib.parse.quote(content)}"
 
 
 THREADS_LINK_LINE = "詳しくはこちら👇"
@@ -1472,7 +1570,7 @@ THREADS_EASY_NOTE = "（かんたん版あり）"
 def with_link(text: str, article: dict, source: str = "threads", fmt: str = "classic", limit: int = MAX_CHARS) -> str:
     """本文の最後（問いかけの後）に、記事へのリンクを1行で足す（2026-11-03 オーナー決定。Threads・Bluesky・Facebook は本文にリンク）。
     上限を超えるときは書き出しのかたまりから削る"""
-    url = utm_link(f"{site_url()}/articles/{article['slug']}", source, fmt)
+    url = utm_link(f"{site_url()}/articles/{article['slug']}", source, fmt, ptype=post_type(article, fmt), pos="body")
     line = THREADS_LINK_LINE + (THREADS_EASY_NOTE if str(article.get("easy") or "").strip() else "")
     tail = f"\n\n{line}\n{url}"
     body = str(text).rstrip()
@@ -1643,12 +1741,13 @@ def publish_extra_channels(
     results: dict[str, str] = {}
     card = card_url(article)
     title = article.get("seoTitle") or article["title"]
-    fb_link = utm_link(link, "facebook", fmt)
+    ptype = post_type(article, fmt)
+    fb_link = utm_link(link, "facebook", fmt, ptype=ptype, pos="body")
     # Facebook のリンクカードの画像も写真だけのカード（16:9）。見出し入りのカバーは使わない（ルール2）
     link_card = {"url": fb_link, "title": title, "description": article.get("description", "")[:120], "thumbnail": {"url": card}}
     plans = []
     if "twitter" in channels:
-        x_link = utm_link(link, "x", fmt)
+        x_link = utm_link(link, "x", fmt, ptype=ptype, pos="reply")
         if fmt == "hook_thread":
             x_text = text
             thread = [
@@ -1831,6 +1930,9 @@ def publish_via_buffer(
     reply = compose_detail(article) if fmt == "hook_thread" else link_reply_text(article)
     thread = [{"text": text, "assets": [{"image": {"url": post_image(article, fmt)}}]}]
     # 2026-11-03〜: classic は本文の最後に記事のリンク（with_link）を入れ、返信（2/2）は作らない。画像はそのまま添える
+    # （フラグ THREADS_LINK_AB=1・S31）リンクの位置の比べで reply の回だけ、返信にリンクを置く
+    if fmt == "classic" and article.get("_linkPosition") == "reply" and sns_plan.link_ab_on():
+        thread.append({"text": f"{THREADS_LINK_LINE}\n{utm_link(link, 'threads', fmt, ptype=post_type(article, fmt), pos='reply')}", "assets": []})
     if fmt != "classic":
         thread.append({
             "text": reply,
@@ -1838,7 +1940,7 @@ def publish_via_buffer(
             "metadata": {
                 "threads": {
                     "linkAttachment": {
-                        "url": utm_link(link, "threads", fmt),
+                        "url": utm_link(link, "threads", fmt, ptype=post_type(article, fmt), pos="reply"),
                         "title": title,
                         "description": article.get("description", "")[:120],
                         "thumbnail": {"url": cover},
@@ -2112,38 +2214,39 @@ def main() -> int:
     learned = hook_bonus()
 
     def rank(articles: list[dict]) -> list[dict]:
-        # 実績の良い型（と、まだ試していない型）を先に → 記事の向き不向き
-        return sorted(articles, key=lambda a: -(learned.get(a.get("threadsHook") or "", 0.0) + score(a) * 0.3))
+        # 2026-11-05〜: 話題（レーン・Muse に頼んだ記事）が先。同じ点数の中で、実績の良い型 → 記事の向き不向き（S27）
+        return sorted(articles, key=lambda a: (-sns_plan.sns_score(a), -(learned.get(a.get("threadsHook") or "", 0.0) + score(a) * 0.3)))
 
     # 新着を優先し、足りない分は直近2週間のまだ投稿していない記事から補う
     fresh = rank(candidates(state, args.hours))
     seen = {a["slug"] for a in fresh}
     backlog = [a for a in rank(candidates(state, 14 * 24)) if a["slug"] not in seen]
-    pool = fresh + backlog
+    # レーンに当たる記事（新着 → 直近3日）を先に、レーンの無い記事（新着 → 直近2週間）は空いた枠の埋め合わせだけ（S27）
+    recent_cut = (datetime.now(timezone.utc) - timedelta(days=3)).isoformat()
+    lane_fresh = [a for a in fresh if sns_plan.has_lane(a)]
+    lane_back = [a for a in backlog if sns_plan.has_lane(a) and a["generatedAt"] >= recent_cut]
+    picked = {a["slug"] for a in lane_fresh + lane_back}
+    pool = lane_fresh + lane_back + [a for a in fresh + backlog if a["slug"] not in picked]
     if not fresh and backlog:
         log("[fallback] 新着に Threads 向きの記事が無いため、直近2週間の記事から選びました")
 
-    # AI 以外の記事のテスト枠用（新着 → 直近3日）。暮らし・お金に近い話題から
-    other_fresh = candidates(state, args.hours, NON_AI_GENRES)
-    other_seen = {a["slug"] for a in other_fresh}
-    other_pool = other_fresh + [a for a in candidates(state, 3 * 24, NON_AI_GENRES) if a["slug"] not in other_seen]
+    # AI 以外の記事のテスト枠（11/4〜11/10）は 2026-11-05 にレーンでの選び方（S27）に置き換えた。ジャンルを問わず同じ順番で選ぶ
+    other_pool: list[dict] = []
 
     # 枠ごとに1本ずつ選ぶ。直前に使った書き出しの型と同じ型は避ける（同じ型が続くと読み飛ばされるため）
     plan: list[tuple[dict, datetime | None]] = []
     slot_test: dict[str, str] = {}
     for slot in slots:
         test = ""
-        if non_ai_slot(slot) and other_pool:
+        if False and non_ai_slot(slot) and other_pool:  # noqa: SIM223 - 置き換え済みのテスト枠（S27）
             pick, test = other_pool.pop(0), "non_ai"
         else:
             if not pool:
                 break
             pick = next((a for a in pool if a.get("threadsHook") not in recent_hooks), pool[0])
             pool.remove(pick)
-            if non_ai_slot(slot):
-                test = "non_ai_fallback"  # AI 以外の記事が無かった
-            elif non_ai_test_on(slot):
-                test = "ai"
+            lane = sns_plan.lane_of(pick)[0]
+            test = f"lane_{lane}" if lane else "lane_none"  # どのレーンで選んだか（inflow_report・growth_indicators で比べる）
         if pick.get("threadsHook"):
             recent_hooks = [pick["threadsHook"], *recent_hooks][:3]
         if test:
@@ -2186,6 +2289,11 @@ def main() -> int:
         fmt = choose_format(state, article, breaking=False, offset=0 if live else offset) if buffer_key or not live else "classic"
         classic_text = compose(article, recent, recent_questions=recent_questions, use_llm=True)
         text = compose_hook(article, recent) if fmt == "hook_thread" else classic_text
+        if fmt == "classic" and sns_plan.hook_format_on() and not sns_rules.is_urgent(article):
+            # （フラグ・オーナー承認待ち。S30）とろいも案の型の3行。作れなければ今の形のまま
+            hook3 = compose_hook3(article, use_llm=True)
+            if hook3:
+                text, article["_hookFormat"] = hook3, True
         hook = article.get("_hook") or article.get("threadsHook") or ""
         if hook:
             recent = [hook, *recent][:4]
@@ -2194,8 +2302,10 @@ def main() -> int:
             comment, question = "", article.get("_question") or ""
             for problem in post_problems(text, article):
                 log(f"  [check] {article['slug']}: {problem}")
-            # 2026-11-03〜: Threads は本文の最後に記事のリンク（返信は作らない）
-            threads_text = with_link(text, article, "threads", fmt)
+            # 2026-11-03〜: Threads は本文の最後に記事のリンク（返信は作らない）。THREADS_LINK_AB=1 のときだけ返信と交互（S31）
+            link_pos = sns_plan.threads_link_position(state["posted"]) if not sns_rules.is_urgent(article) else "body"
+            article["_linkPosition"] = link_pos
+            threads_text = with_link(text, article, "threads", fmt) if link_pos == "body" else text
         else:
             # hook_thread（以前の A/B の形）: Threads の本文だけに「編集部の一言」と、約半分は「問いかけ」を足す
             comment = voice.editor_comment(article, recent_comments)
@@ -2256,6 +2366,9 @@ def main() -> int:
             "image": "card" if fmt == "classic" else "photo" if post_image(article, fmt) != f"{site_url()}/cover/{article['slug']}" else "cover",
             "format": fmt,
             **({"hookTextVersion": HOOK_TEXT_VERSION} if fmt == "hook_thread" else {}),
+            **({"hookFormat": "muse3"} if article.get("_hookFormat") else {}),
+            **({"linkPosition": article["_linkPosition"]} if article.get("_linkPosition") and sns_plan.link_ab_on() else {}),
+            "lane": sns_plan.lane_of(article)[0],
             "topic": topic_of(article),
             "question": bool(question),
             **({"questionText": question} if question else {}),

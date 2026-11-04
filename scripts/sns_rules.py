@@ -25,6 +25,11 @@
   9. （2026-11-03 オーナー指摘「可能しました」）壊れた日本語を出さない（な形容詞＋しました・です／ますの重なりなど。GRAMMAR_BREAKS）。
      よく知られた会社に無理な説明を付けない（「AI半導体のNVIDIAが」。headline_normalize と同じ判定）。
 
+  10. （2026-11-05 とろいも案 v1・台帳 S28）海外の企業向け・開発者向けの話題は SNS に出さない（サイトだけ。sns_plan.excluded）。
+  11. （2026-11-05・台帳 S29）記事のリンクの utm_content は <投稿の種類>_<リンクの位置>（video_body・hook_reply・digest_body など）。
+  （フラグ・オーナー承認待ち）SNS_HOOK_FORMAT=1 のときだけ、Muse の型（1行目＝結論＋数字か読者への影響／2行目＝なぜ大事か／
+     3行目＝記事にだけあるもの）も通す（S30）。THREADS_LINK_AB=1 のときだけ Threads のリンクを返信に置いてよい（S31）。
+
 違反したら: 投稿しない・ログに出す・GitHub の issue（ラベル sns-rule-violation）を立てるか、開いているものにコメントを足す。
 新しく Buffer / Bluesky / Threads の投稿 API を呼ぶ所を作るときは、必ずこの enforce を直前に呼ぶ（tests/test_sns_rules.py が確かめる）。
 
@@ -47,6 +52,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import persona  # noqa: E402
+import sns_plan  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
@@ -415,12 +421,44 @@ def check_link(platform: str, text: str, reply_text: str, links: list[str], path
         if not reply_links:
             out.append("[ルール1] X の返信に記事のリンクがない")
         tagged = reply_links
+    elif platform == "threads" and sns_plan.link_ab_on() and reply_links and not body_links:
+        tagged = reply_links  # リンクの位置の比べ（THREADS_LINK_AB=1・S31）: 返信にリンク
     else:
         if not body_links:
             out.append("[ルール1] 本文に記事のリンクがない（X 以外はリンクを本文に置く）")
         tagged = body_links + extra
     if (body_links or reply_links) and not any(has_utm(u, platform) for u in tagged):
         out.append(f"[ルール1] 記事のリンクに utm_source={UTM_SOURCE[platform]}&utm_medium=social がない")
+    elif (body_links or reply_links) and not any(utm_content_ok(u) for u in tagged):
+        out.append("[ルール11] 記事のリンクに utm_content=<投稿の種類>_<リンクの位置>（video_body など）がない")
+    return out
+
+
+def utm_content_ok(url: str) -> bool:
+    q = urllib.parse.parse_qs(_url(url).query)
+    return bool(sns_plan.UTM_CONTENT_RE.match((q.get("utm_content") or [""])[0]))
+
+
+# ルール（S30・フラグ）: Muse の型。1行目＝結論＋数字か読者への影響、2行目＝なぜ大事か、3行目＝記事にだけあるもの
+HOOK_IMPACT = re.compile(r"[0-9０-９]|確認を|変わ|上がる|下がる|無料|値上げ|値下げ|使えなく|使える|対象|注意|いつから|いくら|になる|が出た|を出した")
+HOOK_LINE_MAX = 90
+
+
+def hook_problems(content: str) -> list[str]:
+    """Muse の型の文面か（違反の一覧。空なら OK）"""
+    lines = [x.strip() for x in str(content or "").splitlines() if x.strip()]
+    out = []
+    if len(lines) != 3:
+        return [f"[ルール12] Muse の型は3行（今は{len(lines)}行）"]
+    if not HOOK_IMPACT.search(lines[0]):
+        out.append("[ルール12] 1行目に結論の数字か読者への影響がない")
+    if not re.search(r"記事", lines[2]):
+        out.append("[ルール12] 3行目が「記事にだけあるもの」の予告になっていない")
+    for i, line in enumerate(lines, 1):
+        if len(line) > HOOK_LINE_MAX:
+            out.append(f"[ルール12] {i}行目が長すぎる（{len(line)}字 / {HOOK_LINE_MAX}字まで）")
+    if any(line.endswith(QUESTION_END) for line in lines[:1]):
+        out.append("[ルール12] 1行目を問いにしない（結論を先に）")
     return out
 
 
@@ -456,6 +494,11 @@ def check_structure(platform: str, content: str) -> list[str]:
     if len(content) > CONTENT_MAX:
         out.append(f"[ルール1] 書き出し・要約・問いかけが長すぎる（{len(content)}字 / {CONTENT_MAX}字まで）")
     return out
+
+
+def _body_without_link_line(content: str) -> str:
+    """リンクの案内の行・動画の説明の行・音声のクレジットを除いた本文"""
+    return "\n".join(x for x in str(content or "").splitlines() if x.strip() and not LINK_LINE.match(x.strip()) and not NOTE_LINE.match(x.strip()))
 
 
 def check_opener(platform: str, text: str, content: str, article: dict | None) -> list[str]:
@@ -646,8 +689,16 @@ def check_post(
     out += check_link(platform, text, reply_text, links or [], article_paths(article, kind))
     content = strip_links(text)
     if kind not in ("digest", "disaster"):
-        out += check_structure(platform, content)
-        out += check_opener(platform, text, content, article)
+        if why := sns_plan.excluded(article):
+            out.append(f"[ルール10] {why}")
+        hook_form = sns_plan.hook_format_on() and platform != "x" and not hook_problems(_body_without_link_line(content))
+        if not hook_form:
+            out += check_structure(platform, content)
+            out += check_opener(platform, text, content, article)
+        else:
+            for pattern, label in BANNED_OPENERS:
+                if m := pattern.search(str(text or "")):
+                    out.append(f"[ルール6] {label}（「{m.group(0)[:24]}」）")
     for pattern, label in BANNED:
         if m := pattern.search(f"{text}\n{reply_text}"):
             out.append(f"[ルール3] {label}（「{m.group(0)[:20]}」）")
@@ -782,7 +833,7 @@ def enforce_buffer(service: str, post_input: dict, article: dict | None, *, sour
     text, reply, media, _links = buffer_parts(service, post_input)
     platform = norm_platform(service)
     # X 以外は返信を作らない（リンクは本文）。返信やリンクカードにだけリンクがある形は、本文のリンク無しとして止める
-    enforce(platform, text, media, article, source=source, kind=kind, reply_text=reply if platform == "x" else "",
+    enforce(platform, text, media, article, source=source, kind=kind, reply_text=reply if platform == "x" or (platform == "threads" and sns_plan.link_ab_on()) else "",
             history=history, draft=bool(post_input.get("saveToDraft")), measurer=measurer, pending_video=pending_video)
 
 
@@ -814,8 +865,25 @@ def audit_post(post: dict) -> list[str]:
         kind = "digest"
         article = {"link": digest, "items": [x for x in text.splitlines() if x.startswith("・")]}
     media = [m for m in post.get("media") or [] if m.get("url")]
-    return check_post(platform, text, media, article, kind=kind, reply_text=replies if platform == "x" else "",
-                      links=list(post.get("links") or []))
+    out = check_post(platform, text, media, article, kind=kind, reply_text=replies if platform == "x" or (platform == "threads" and sns_plan.link_ab_on()) else "",
+                     links=list(post.get("links") or []))
+    if before_growth_rules(post.get("at")):
+        # ルール10・11（2026-11-05〜）より前に作った投稿は、点検でも違反に数えない（決まりを後から当てない）
+        out = [v for v in out if not v.startswith(("[ルール10]", "[ルール11]"))]
+    return out
+
+
+GROWTH_RULES_FROM = "2026-11-05T15:00:00+00:00"  # ルール10・11の点検は 11/6 0:00 日本時間より後に出た投稿から（入れる前に予約済みの投稿を数えない）
+
+
+def before_growth_rules(at) -> bool:
+    from datetime import datetime  # noqa: PLC0415
+
+    try:
+        when = datetime.fromisoformat(str(at or "").replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return when.tzinfo is not None and when < datetime.fromisoformat(GROWTH_RULES_FROM)
 
 
 if __name__ == "__main__":

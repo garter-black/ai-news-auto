@@ -154,7 +154,7 @@ class PostTimingTest(unittest.TestCase):
         out = fu.post_one(state, NOW, self.F, lambda slug, body, url: sent.append((slug, url)) or {"status": "posted", "bufferId": "b1", "postedAt": NOW.isoformat()})
         self.assertEqual(out["slug"], "old")  # 文面から20分たっていない new は待つ
         self.assertEqual(out["variant"], "short")  # その日の最初は短い版
-        self.assertIn("utm_content=short", out["body"])
+        self.assertIn("utm_campaign=sns_video_short&utm_content=video_body", out["body"])
         self.assertEqual(sent, [("old", "https://ai-tech-express.jp/video/x-short.mp4")])
         # 間隔（40分）をあけるので、同じ回・すぐ次の回には出さない
         self.assertIsNone(fu.post_one(state, NOW + timedelta(minutes=5), self.F, lambda *a: self.fail("出してはいけない")))
@@ -190,7 +190,7 @@ class ComposeTest(unittest.TestCase):
         body = fu.compose_post(REPORT, "full")
         self.assertTrue(body.startswith("月200ドル、あなたに必要？"))
         self.assertIn("35秒", body)
-        self.assertIn("utm_source=threads&utm_medium=social&utm_campaign=sns_video&utm_content=full", body)
+        self.assertIn("utm_source=threads&utm_medium=social&utm_campaign=sns_video_full&utm_content=video_body", body)
         self.assertIn("音声：VOICEVOX:九州そら", body)  # クレジットは投稿の文にも必ず
         self.assertNotIn("ざっくり", body)
         self.assertLessEqual(len(body), fu.MAX_CHARS)
@@ -300,7 +300,7 @@ class MergeTest(unittest.TestCase):
 
     def test_merged_text_swaps_link_and_adds_line(self):
         text, notes = fu.merged_text(self.TEXT, REPORT, "full")
-        self.assertIn("utm_campaign=sns_video&utm_content=full", text)
+        self.assertIn("utm_campaign=sns_video_full&utm_content=video_body", text)
         self.assertNotIn("utm_campaign=classic", text)
         self.assertIn("35秒の動画で解説", text)
         self.assertLess(text.index("35秒の動画で解説"), text.index("詳しくはこちら"))
