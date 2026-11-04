@@ -1,41 +1,6 @@
 {
-  "updated": "2026-11-04T11:00:09.549085+09:00",
+  "updated": "2026-11-04T11:39:06.314858+09:00",
   "items": [
-    {
-      "id": "fcef20cfe9a085695b48ac38e18921b0c08df987",
-      "kind": "trend",
-      "url": "https://finance.yahoo.co.jp/news/detail/538fc2b35387b38c07f95aac5bb2b2a42b4147ba",
-      "title": "住友ファーマ 株価",
-      "summary": "Googleトレンド急上昇（約100件の検索）。関連報道: ２日の動意株＞住友ファーマ(ウエルスアドバイザー) / 住友ファーマが大幅反発､27年3月期業績予想の増額を好感 / 【決算】住友ファーマ、17.3％増収 オルゴビクスなど米国の成長が牽引 | 日刊薬業 - 医薬品産業の総合情報サイト",
-      "published_at": "2026-11-04T10:10:00+09:00",
-      "source_name": "Googleトレンド",
-      "source_slug": "trends",
-      "lang": "ja",
-      "image": null,
-      "genre": "investment",
-      "sources": [
-        {
-          "title": "２日の動意株＞住友ファーマ(ウエルスアドバイザー)",
-          "url": "https://finance.yahoo.co.jp/news/detail/538fc2b35387b38c07f95aac5bb2b2a42b4147ba",
-          "source": "Yahoo!ファイナンス",
-          "published": "2026-11-04T10:10:00+09:00"
-        },
-        {
-          "title": "住友ファーマが大幅反発､27年3月期業績予想の増額を好感",
-          "url": "https://shikiho.toyokeizai.net/news/0/963288",
-          "source": "四季報オンライン",
-          "published": "2026-11-04T10:10:00+09:00"
-        },
-        {
-          "title": "【決算】住友ファーマ、17.3％増収 オルゴビクスなど米国の成長が牽引 | 日刊薬業 - 医薬品産業の総合情報サイト",
-          "url": "https://nk.jiho.jp/article/306330",
-          "source": "日刊薬業",
-          "published": "2026-11-04T10:10:00+09:00"
-        }
-      ],
-      "traffic": 100,
-      "queued_at": "2026-11-04T10:27:44.182595+09:00"
-    },
     {
       "id": "4846a74cece39cf74bcd7402342e1290bb651f86",
       "kind": "trend",
