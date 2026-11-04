@@ -3540,8 +3540,7 @@
       },
       "status": "scheduled",
       "convertedAt": "2026-11-03T19:19:23+00:00",
-      "videoVariant": "short",
-      "blueskyFailed": "Bluesky のアカウントのメールアドレスが未確認のため、動画を上げられません（Bluesky の設定でメールを確認すると出せるようになります）"
+      "videoVariant": "short"
     },
     "chatgpt-pro-monthly-api-credits": {
       "id": "6ae9e0a01e1aeba3c6bb1c77",
@@ -3635,8 +3634,7 @@
         "twitter": "6aea4d28402e0fe50f12ce4a",
         "facebook": "6aea4d2aca28ab6c317618fc"
       },
-      "videoVariant": "short",
-      "blueskyFailed": "Bluesky の動画の処理に失敗しました: {'did': '', 'error': 'unconfirmed_email', 'jobId': '', 'state': ''}"
+      "videoVariant": "short"
     },
     "digest-20261104": {
       "style": "digest",
