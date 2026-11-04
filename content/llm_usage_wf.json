@@ -33,7 +33,7 @@
       "cf-image:flux-1-schnell": 9,
       "cf-image:flux-2-klein-4b": 31,
       "cloudflare:@cf/meta/llama-3.3-70b-instruct-fp8-fast": 5,
-      "cloudflare:@cf/openai/gpt-oss-120b": 103
+      "cloudflare:@cf/openai/gpt-oss-120b": 107
     },
     "local": {
       "gemini-3.5-flash-lite": 2
