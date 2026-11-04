@@ -3,8 +3,8 @@
     "video_trial": {
       "anthropic-api:claude-sonnet-5-5": 63,
       "claude:sonnet": 9,
-      "claude:sonnet#video": 45,
-      "claude:sonnet#video_review": 4
+      "claude:sonnet#video": 49,
+      "claude:sonnet#video_review": 5
     }
   }
 }
