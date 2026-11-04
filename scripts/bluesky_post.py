@@ -346,8 +346,8 @@ def pending(state: dict, now: datetime, extra: dict | None = None) -> list[tuple
     out = []
     for key, entry in state["posted"].items():
         when = due(entry)
-        if not when or (entry.get("channels") or {}).get("bluesky") or entry.get("blueskyFailed"):
-            continue
+        if not when or (entry.get("channels") or {}).get("bluesky") or entry.get("blueskyFailed") or entry.get("ownerHold"):
+            continue  # ownerHold: オーナーに見せるまで出さない記事
         if key in (extra or {}):  # 埋め合わせで先に出した記事は Threads に出た後も重ねない
             continue
         if entry.get("status") in ("awaiting_video", "skipped_no_video") or (needs_video(entry) and not video_of(key)):

@@ -227,6 +227,8 @@ def candidates(posted: dict, state: dict, now: datetime, window_h: float, load_a
         if slug in done or not at:
             continue
         queued = state.get("queued", {}).get(slug) or {}
+        if rec.get("ownerHold"):
+            continue  # オーナーに見せるまで、動画も投稿も自動では進めない
         if awaiting(rec) and (rec.get("pending") or {}).get("hold"):
             continue  # オーナーに見せた動画を置くのを待っている（作らない）
         if awaiting(rec) and queued.get("status") not in ("created", "skipped"):
@@ -587,7 +589,7 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
     videos = state.get("videos") or {}
     rows = []
     for slug, rec in (posted.get("posted") or {}).items():
-        if not awaiting(rec) or (queue.get(slug) or {}).get("status") in ("created", "skipped"):
+        if not awaiting(rec) or rec.get("ownerHold") or (queue.get(slug) or {}).get("status") in ("created", "skipped"):
             continue
         slot = _parse((rec.get("pending") or {}).get("slot") or rec.get("dueAt") or "") or now
         rows.append((slot, slug, rec))
