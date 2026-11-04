@@ -77,7 +77,6 @@
   "thumbnail": "https://i.ytimg.com/vi/L6pzlo1QvoM/maxresdefault.jpg",
   "model": "gemini-3.5-flash",
   "affiliates": [],
-  "duplicateOf": "zendesk-chatgpt-enterprise-case-study",
   "duplicateReason": "元の題名が同じ",
   "imageFocus": {
     "x": 0.514,
@@ -109,5 +108,6 @@
       "使ってみるには": "契約すれば自社データで業務ツールを作れる"
     }
   },
-  "sectionsPolishedAt": "2026-11-03T19:40:07+00:00"
+  "sectionsPolishedAt": "2026-11-03T19:40:07+00:00",
+  "indexable": false
 }

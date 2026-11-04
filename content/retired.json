@@ -2661,6 +2661,14 @@
    "title": "OpenAIサム・アルトマンCEOが示す「人生の助言をAIに求めてはならない理由」",
    "videoUrl": "https://www.youtube.com/watch?v=f8uIINtoJCM"
   },
+  "samsung-micro-rgb-tv-announcement": {
+   "channel": "samsung-global",
+   "note": "既存製品の紹介動画を新製品の発表として書いていた。2026-11-04 オーナー決定で取り下げ",
+   "reason": "inaccurate",
+   "retiredAt": "2026-11-04T12:13:07+09:00",
+   "sourceUrl": "https://news.samsung.com/global/video-inside-the-tech-samsung-micro-rgb-tv",
+   "title": "サムスンが「Micro RGB TV」の技術を紹介する動画を公開　100µm未満のLEDとAIで映像を補正"
+  },
   "sanada-naoki-asakusa-live-2026": {
    "channel": "atpress",
    "reason": "wire",
@@ -3315,6 +3323,14 @@
    "retiredAt": "2026-11-03T18:04:26+09:00",
    "sourceUrl": "https://news.yahoo.co.jp/articles/665557ba443284b46e77077206af16c366813e92",
    "title": "ロッテの「雪見だいふく」が発売45周年　Mrs. GREEN APPLEの藤澤涼架が新アンバサダーに就任"
+  },
+  "zendesk-chatgpt-enterprise-case-study": {
+   "channel": "openai",
+   "note": "元の動画に無い内容（作った年表・比較）が入っていた。2026-11-04 オーナー決定で取り下げ",
+   "reason": "inaccurate",
+   "retiredAt": "2026-11-04T12:13:07+09:00",
+   "title": "OpenAI、Zendeskの活用事例を公開　社内で約600のAIアプリを自作",
+   "videoUrl": "https://www.youtube.com/watch?v=GNYHDltnwZQ"
   },
   "zero-yen-real-estate-investment-strategy": {
    "channel": "uraken-fudosan",

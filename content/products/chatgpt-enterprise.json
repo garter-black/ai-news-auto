@@ -8,7 +8,6 @@
   "overview": {
     "text": "ChatGPT Enterpriseは、OpenAIが提供する法人向けのChatGPTです。エンタープライズレベルのセキュリティやカスタム分析機能を備え、2023年8月に提供が開始されました。",
     "sources": [
-      "zendesk-chatgpt-enterprise-case-study",
       "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
     ]
   },
@@ -17,22 +16,13 @@
       "label": "料金",
       "value": "法人向けの個別見積もり",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study",
         "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
-      ]
-    },
-    {
-      "label": "提供開始",
-      "value": "2023年08月",
-      "sources": [
-        "zendesk-chatgpt-enterprise-case-study"
       ]
     },
     {
       "label": "日本での提供",
       "value": "日本から利用可能",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study",
         "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
       ]
     },
@@ -40,7 +30,6 @@
       "label": "使える場所",
       "value": "企業・組織の社内環境",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study",
         "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
       ]
     },
@@ -48,7 +37,6 @@
       "label": "向いている人",
       "value": "ビジネス職や企業の法務担当",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study",
         "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
       ]
     }
@@ -57,14 +45,12 @@
     {
       "text": "社内の各部門で業務に特化した専用AIアプリを自作できます。",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study",
         "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
       ]
     },
     {
       "text": "顧客データと直接対話してアップセル等の契約拡大機会を自動で判別します。",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study",
         "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
       ]
     },
@@ -85,7 +71,6 @@
     {
       "text": "利用規模やシート数に応じた個別見積もりとなります。",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study",
         "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
       ]
     }
@@ -94,7 +79,6 @@
     {
       "text": "日本国内の企業向けにもすでに提供されており、今日から利用可能です。",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study",
         "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
       ]
     }
@@ -103,14 +87,12 @@
     {
       "text": "OpenAIの公式Webサイトから導入の問い合わせを行います。",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study",
         "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
       ]
     },
     {
       "text": "法人契約を締結し、API等を活用して社内データと連携させます。",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study",
         "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
       ]
     }
@@ -134,7 +116,6 @@
       "q": "無料で使える？",
       "a": "法人向けの有料プランであり、個別見積もりが必要です。",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study",
         "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
       ]
     },
@@ -142,7 +123,6 @@
       "q": "いつから使える？",
       "a": "すでに一般提供されており、公式サイトから問い合わせて導入できます。",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study",
         "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom"
       ]
     },
@@ -150,7 +130,6 @@
       "q": "海外企業でも使われている？",
       "a": "ZendeskやHeimstadenなどの企業で全社導入や業務刷新に活用されています。",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study",
         "heimstaden-openai-real-estate-ai"
       ]
     },
@@ -158,7 +137,6 @@
       "q": "誰に向いている？",
       "a": "全社的に生成AIを活用したい企業や、法務・営業などのビジネス職に向いています。",
       "sources": [
-        "zendesk-chatgpt-enterprise-case-study",
         "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
       ]
     }
@@ -168,11 +146,6 @@
       "date": "2026-10-20",
       "slug": "thomson-reuters-openai-chatgpt-enterprise-cocounsel",
       "event": "Thomson Reutersの法務AIを統合"
-    },
-    {
-      "date": "2026-10-30",
-      "slug": "zendesk-chatgpt-enterprise-case-study",
-      "event": "OpenAIが法人向けChatGPT Enterpriseを提供開始"
     }
   ],
   "related": [
@@ -183,14 +156,12 @@
   ],
   "articles": [
     "heimstaden-openai-real-estate-ai",
-    "zendesk-chatgpt-enterprise-case-study",
     "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom",
     "uber-openai-chatgpt-work-enterprise-deployment",
     "thomson-reuters-openai-chatgpt-enterprise-cocounsel",
     "openai-reimagining-it-with-chatgpt"
   ],
   "linkFrom": [
-    "zendesk-chatgpt-enterprise-case-study",
     "zendesk-chatgpt-enterprise-case-study-l6pzlo1qvom",
     "thomson-reuters-openai-chatgpt-enterprise-cocounsel"
   ],
