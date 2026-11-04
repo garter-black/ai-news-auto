@@ -6,79 +6,65 @@
   "companyName": "OpenAI",
   "category": "アプリ・サービス",
   "overview": {
-    "text": "ChatGPT Voiceは、OpenAIが開発した音声対話システムです。2026年7月23日にデスクトップ版が公開され、音声によるPC操作やAIエージェントの制御が可能になりました。2026年9月23日には外部ツール連携やGPT-6モデルを搭載した大幅アップデートが発表されています。",
+    "text": "ChatGPT Voiceは、音声だけでパソコンの操作や外部ツールとの連携、タスクの自動実行ができる機能です。OpenAIが開発し、2026年7月23日からデスクトップ版の提供が始まりました。",
     "sources": [
-      "openai-chatgpt-voice-desktop-gpt-live",
-      "openai-chatgpt-voice-update-gpt6-astra"
+      "openai-chatgpt-voice-gpt56-integration-matome",
+      "openai-chatgpt-voice-desktop-gpt-live"
     ]
   },
   "facts": [
     {
       "label": "料金",
-      "value": "Plus、Proなど有料プラン向け",
+      "value": "Plus、Proなどの有料プラン",
       "sources": [
         "openai-chatgpt-voice-desktop-gpt-live"
       ]
     },
     {
       "label": "提供開始",
-      "value": "2026年7月23日",
+      "value": "2026年7月23日（デスクトップ版）",
       "sources": [
         "openai-chatgpt-voice-desktop-gpt-live"
       ]
     },
     {
       "label": "日本での提供",
-      "value": "日本からも利用できます",
+      "value": "利用できる",
       "sources": [
-        "openai-chatgpt-voice-desktop-gpt-live",
         "openai-chatgpt-voice-update-gpt6-astra"
       ]
     },
     {
       "label": "使える場所",
-      "value": "macOS、Windows、Web、モバイル",
+      "value": "macOSとWindowsのデスクトップアプリなど",
       "sources": [
-        "openai-chatgpt-voice-desktop-gpt-live",
-        "openai-chatgpt-voice-update-gpt6-astra"
-      ]
-    },
-    {
-      "label": "向いている人",
-      "value": "ビジネス職",
-      "sources": [
-        "openai-chatgpt-voice-desktop-gpt-live",
-        "openai-chatgpt-voice-update-gpt6-astra"
+        "openai-chatgpt-voice-desktop-gpt-live"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "音声の指示だけでPCのシステム設定やプロジェクター、BGM再生を操作できます。",
-      "sources": [
-        "openai-chatgpt-voice-desktop-gpt-live"
-      ]
-    },
-    {
-      "text": "バグの特定からコード修正、プルリクエスト作成までを音声でCodexに指示できます。",
-      "sources": [
-        "openai-chatgpt-voice-desktop-gpt-live"
-      ]
-    },
-    {
-      "text": "カレンダーの空き時間を検索して予定を追加したり、重複請求の返金申請メールを作成・送信したりできます。",
+      "text": "カレンダーやメール、Slackなどの外部ツールと連携し、予定の確認やメール送信を音声で行えます。",
       "sources": [
         "openai-chatgpt-voice-update-gpt6-astra"
       ]
     },
     {
-      "text": "音声の指示だけで、決済フォームやカート機能を備えたWebサイトを自動で構築できます。",
+      "text": "音声指示だけで、決済機能付きのWebサイトやプレゼン用のビジュアルデッキを自動で構築できます。",
       "sources": [
-        "openai-chatgpt-voice-update-gpt6-astra"
+        "openai-chatgpt-voice-update-gpt6-astra",
+        "openai-chatgpt-voice-work-integration-demo"
       ]
     },
     {
-      "text": "画面上のメモやSlackのメッセージを認識し、Navanによる出張予約の手続きを裏側で進められます。",
+      "text": "バグの検出や修正、GitHubへのプルリクエストの作成を自律的に実行できます。",
+      "sources": [
+        "openai-chatgpt-voice-gpt56-integration-matome",
+        "openai-chatgpt-voice-desktop-gpt-live"
+      ]
+    },
+    {
+      "text": "出張手配ツール「Navan」を使い、航空券やホテルの予約を最終確認の手前まで進められます。",
       "sources": [
         "openai-chatgpt-voice-work-integration-demo"
       ]
@@ -86,7 +72,13 @@
   ],
   "pricing": [
     {
-      "text": "ChatGPTのPlus、Pro、Business、Enterpriseプラン向けに提供されています。",
+      "text": "Plus、Pro、Business、Enterpriseの有料プランで利用できます。",
+      "sources": [
+        "openai-chatgpt-voice-desktop-gpt-live"
+      ]
+    },
+    {
+      "text": "無料プランは含まれません。",
       "sources": [
         "openai-chatgpt-voice-desktop-gpt-live"
       ]
@@ -96,79 +88,63 @@
     {
       "text": "日本からも利用できます。",
       "sources": [
-        "openai-chatgpt-voice-desktop-gpt-live",
         "openai-chatgpt-voice-update-gpt6-astra"
       ]
     }
   ],
   "howto": [
     {
-      "text": "macOSおよびWindows向けのデスクトップアプリから利用できます。",
+      "text": "macOSやWindowsのデスクトップアプリから利用できます。",
       "sources": [
         "openai-chatgpt-voice-desktop-gpt-live"
       ]
     },
     {
-      "text": "モバイルアプリやWebブラウザ向けの最新バージョンでも一般提供されています。",
+      "text": "ショートカットキーやUI上の音声ボタンで起動して使います。",
       "sources": [
-        "openai-chatgpt-voice-update-gpt6-astra"
+        "openai-chatgpt-voice-work-integration-demo"
       ]
     }
   ],
   "differences": [
     {
-      "text": "従来の音声入力と異なり、作業中もバックグラウンドで待機し画面の文脈を理解しながら会話できます。",
+      "text": "従来の音声入力が発言をテキストに変換するだけだったのに対し、作業中も寄り添い続ける継続的な会話が可能です。",
       "sources": [
         "openai-chatgpt-voice-work-integration-demo"
       ]
     },
     {
-      "text": "質問に答える相談相手にとどまらず、外部ツールと連携して実務タスクを自律実行する形に進化しました。",
+      "text": "話が終わるのを待たずに、聞きながら画面への書き込みと発話を並行して進められます。",
       "sources": [
-        "openai-chatgpt-voice-update-gpt6-astra"
-      ]
-    },
-    {
-      "text": "GPT-6の搭載により、従来の音声モードと比べて応答の遅延が大幅に短縮されています。",
-      "sources": [
-        "openai-chatgpt-voice-update-gpt6-astra"
+        "openai-chatgpt-voice-desktop-gpt-live"
       ]
     }
   ],
   "faq": [
     {
-      "q": "どのOSで使えますか？",
-      "a": "macOSとWindowsに対応しています。Webブラウザやモバイル環境でも利用可能です。",
-      "sources": [
-        "openai-chatgpt-voice-desktop-gpt-live",
-        "openai-chatgpt-voice-update-gpt6-astra"
-      ]
-    },
-    {
-      "q": "話している最中に並行して処理されますか？",
-      "a": "はい。文脈をリアルタイムに解釈し、テキスト生成と音声読み上げを同時に並行処理します。",
+      "q": "無料で使える？",
+      "a": "無料プランは対象外で、Plusなどの有料プランが必要です。",
       "sources": [
         "openai-chatgpt-voice-desktop-gpt-live"
       ]
     },
     {
-      "q": "どのような外部アプリと連携できますか？",
-      "a": "Slack、Google Calendar、メールのほか、出張手配ツールのNavanなどと連携できます。",
+      "q": "どのデバイスで使える？",
+      "a": "macOSとWindowsのデスクトップアプリで使えます。",
       "sources": [
-        "openai-chatgpt-voice-update-gpt6-astra",
-        "openai-chatgpt-voice-work-integration-demo"
+        "openai-chatgpt-voice-desktop-gpt-live"
       ]
     },
     {
-      "q": "車の中でも使えますか？",
-      "a": "はい。車載ディスプレイを通じて、騒音がある車内でもメール確認や予約手続きを実行できます。",
+      "q": "パソコンから離れても動く？",
+      "a": "バックグラウンドで作業が続き、進み具合をスマートフォンで確かめられます。",
       "sources": [
-        "openai-chatgpt-voice-update-gpt6-astra"
+        "openai-chatgpt-voice-desktop-gpt-live"
       ]
     },
     {
-      "q": "勝手に購入や支払いが完了してしまいますか？",
-      "a": "出張予約のデモでは、決済前に人間が最終確認できるように設計されています。",
+      "q": "自動で購入まで完了してしまう？",
+      "a": "自動決済の前に最終確認の段階で人間へ判断を戻す設計になっています。",
       "sources": [
         "openai-chatgpt-voice-work-integration-demo"
       ]
@@ -178,12 +154,17 @@
     {
       "date": "2026-07-24",
       "slug": "openai-chatgpt-voice-desktop-gpt-live",
-      "event": "デスクトップアプリ版を公開"
+      "event": "デスクトップ版を提供開始"
+    },
+    {
+      "date": "2026-07-30",
+      "slug": "openai-chatgpt-voice-work-integration-demo",
+      "event": "仕事活用デモを公開"
     },
     {
       "date": "2026-09-24",
       "slug": "openai-chatgpt-voice-update-gpt6-astra",
-      "event": "外部連携とGPT-6搭載刷新を発表"
+      "event": "GPT-6搭載で更新"
     }
   ],
   "related": [
@@ -204,9 +185,9 @@
     "openai-chatgpt-voice-work-integration-demo",
     "openai-chatgpt-voice-desktop-gpt-live"
   ],
-  "signature": "4366d2f5499804d1",
-  "primarySignature": "4366d2f5499804d1",
-  "model": "gemini-flash-latest",
+  "signature": "4434651f9e7722db",
+  "primarySignature": "4434651f9e7722db",
+  "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:45:15+00:00",
-  "updatedAt": "2026-10-27T10:53:25+00:00"
+  "updatedAt": "2026-11-04T03:49:16+00:00"
 }

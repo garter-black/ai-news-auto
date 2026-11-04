@@ -75,6 +75,14 @@
       "tries": 2,
       "url": "https://elevenlabs.io/blog/what-is-call-transcription"
     },
+    "17a357c5e54aa313": {
+      "first": "2026-11-04T03:38:04.535003+00:00",
+      "next": "2026-11-04T06:38:04.535003+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "トヨタ、2027年シーズン WRC参戦体制発表 -2チーム、2車種で参戦-",
+      "tries": 1,
+      "url": "https://toyotagazooracing.com/jp/pressrelease/2026/1103-01/"
+    },
     "20954e3ac0ff87f7": {
       "first": "2026-11-03T18:26:13.990511+00:00",
       "next": "2026-11-04T03:24:14.913779+00:00",
@@ -99,6 +107,14 @@
       "tries": 2,
       "url": "https://openai.com/index/jill-hazelbaker-chief-corporate-affairs-officer"
     },
+    "52567fa092b78f28": {
+      "first": "2026-11-04T03:34:46.235755+00:00",
+      "next": "2026-11-04T06:34:46.235755+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "AI半導体株に翻弄された日本株～2026年10月の日本株式の振り返りと今後のポイント",
+      "tries": 1,
+      "url": "https://www.nli-research.co.jp/topics_detail1/id=87260?site=nli"
+    },
     "60e8d80f76ce81f6": {
       "first": "2026-11-04T00:13:44.468528+00:00",
       "next": "2026-11-04T03:13:44.468528+00:00",
@@ -107,14 +123,6 @@
       "tries": 1,
       "url": "http://www.boj.or.jp/statistics/boj/other/mb/mb.htm"
     },
-    "7f05432d1620715c": {
-      "first": "2026-11-03T17:45:37.679713+00:00",
-      "next": "2026-11-04T03:10:08.220973+00:00",
-      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
-      "title": "Learn the rules: The hacker mindset",
-      "tries": 2,
-      "url": "https://www.microsoft.com/en-us/research/podcast/learn-the-rules-the-hacker-mindset/"
-    },
     "9824d9cb50fa7b55": {
       "first": "2026-11-03T14:46:44.535250+00:00",
       "next": "2026-11-03T17:46:44.535250+00:00",
@@ -122,14 +130,6 @@
       "title": "マンション内を“顔だけ”で移動できる暮らしを実現 ルジェンテシリーズ初導入！顔認証セキュリティサービス「FreeiD」を標準装備した「ルジェンテ新宿」が竣工 ～新宿御苑の緑に近接する、全邸角住戸の資産価値～",
       "tries": 1,
       "url": "https://www.tokyu-fudosan-hd.co.jp/news/companies/pdf/c63f39dc2efcf88691dcd42fe07a304905d1074a.pdf"
-    },
-    "a55665cf48953af7": {
-      "first": "2026-11-03T17:37:41.235291+00:00",
-      "next": "2026-11-04T02:53:58.231212+00:00",
-      "reason": "タイトル・リード「Hugging Faceは…公開」→ 元記事はHugging Face上のブログだが発信元はAi2（allenai）で、公開主体の取り違え。; 「最大64,000トークンの入力」「入力長は最大64,000トークン」→ 元記事の64,000は訓練時に見た長さの上限（事前学習モデル）と、テスト時の代入数（最大64,000 assignments）であり、ベンチマークの入力長の仕様では",
-      "title": "StateBench: Testing how language models track state changes over long documents",
-      "tries": 2,
-      "url": "https://huggingface.co/blog/allenai/statebench"
     },
     "a9ba99b8846683ac": {
       "first": "2026-11-04T01:24:17.644580+00:00",
@@ -8486,6 +8486,13 @@
       "slug": "caa-consumer-safety-report-oct2026",
       "url": "https://www.caa.go.jp/notice/entry/047971/"
     },
+    "7f05432d1620715c": {
+      "at": "2026-11-04T03:49:06.536689+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "quality: 公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "skipped": true,
+      "url": "https://www.microsoft.com/en-us/research/podcast/learn-the-rules-the-hacker-mindset/"
+    },
     "7f0dec178da37fe0": {
       "at": "2026-10-26T12:33:20.217255+00:00",
       "reason": "dedupe: 固有名詞が一致（amazon・aws・bedrock）: aws-weekly-20261019-updates",
@@ -10197,6 +10204,13 @@
       "slug": "apple-14-inch-macbook-pro-m6",
       "url": "https://www.apple.com/jp/newsroom/2026/10/apple-introduces-the-new-14-inch-macbook-pro-with-m6/"
     },
+    "a55665cf48953af7": {
+      "at": "2026-11-04T03:32:23.743354+00:00",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "reason": "quality: 本文の最初の文がリードのくり返し。本文はリードに無い新しい事実から始める",
+      "skipped": true,
+      "url": "https://huggingface.co/blog/allenai/statebench"
+    },
     "a559581d376dfecc": {
       "at": "2026-10-28T20:31:53.338488+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（委員会）",
@@ -10707,6 +10721,12 @@
       "section": "entertainment",
       "slug": "pikmin-4-switch-2-edition-demo",
       "url": "https://www.nintendo.com/jp/topics/article/8a0fad53-c589-4304-98b2-f86bd3d5764f"
+    },
+    "b30e44fae271d390": {
+      "at": "2026-11-04T03:34:46.829540+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（受賞）",
+      "skipped": true,
+      "url": "http://global.nissannews.com/ja-JP/releases/261104-01-j"
     },
     "b32fc1ff91add27f": {
       "at": "2026-10-27T02:31:09.461076+00:00",
@@ -12755,6 +12775,12 @@
       "slug": "amazon-bedrock-managed-kb-agentic-retrieval-cdk",
       "url": "https://aws.amazon.com/blogs/machine-learning/build-agentic-retrieval-on-a-managed-amazon-bedrock-knowledge-base-with-cdk/"
     },
+    "e5ea5c5f9b45d456": {
+      "at": "2026-11-04T03:38:05.230103+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（を掲載しました）",
+      "skipped": true,
+      "url": "https://www.mext.go.jp/b_menu/shingi/chousa/shougai/054/siryo/mext_02488.html"
+    },
     "e5ec03234183a95a": {
       "at": "2026-10-30T03:42:36.523276+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13846,179 +13872,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-02T13:21:41.531050+00:00",
-      "attempt": 0,
-      "id": "e6d56825e06fc5a3",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 47.4字・60字超の文が 12% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 47.4,
-        "avg_sentence": 47.4,
-        "long_share": 0.125,
-        "max_paragraph": 71,
-        "paragraphs": 24,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "mof",
-      "title": "製造たばこの小売定価の認可"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T13:41:24.910620+00:00",
-      "attempt": 1,
-      "id": "a2a7b71a0a19d94c",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "訳されていない英文が残っている（「The roles of central banks and central b…」）"
-      ],
-      "readability": {
-        "avg_paragraph": 174.1,
-        "avg_sentence": 65.3,
-        "long_share": 0.375,
-        "max_paragraph": 291,
-        "paragraphs": 9,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "boj",
-      "title": "CPMIが報告書「進化する決済システムにおける中央銀行および中央銀行マネーの役割」を公表"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T13:41:30.940477+00:00",
-      "attempt": 2,
-      "id": "a2a7b71a0a19d94c",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 58.1字・60字超の文が 35% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 129.1字・最長 212字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 129.1,
-        "avg_sentence": 58.1,
-        "long_share": 0.35,
-        "max_paragraph": 212,
-        "paragraphs": 9,
-        "sentences": 20
-      },
-      "score": 100,
-      "source": "boj",
-      "title": "CPMIが報告書「進化する決済システムにおける中央銀行および中央銀行マネーの役割」を公表"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T13:41:34.570925+00:00",
-      "attempt": 0,
-      "id": "a2a7b71a0a19d94c",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 137.3字・最長 237字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 137.3,
-        "avg_sentence": 28.7,
-        "long_share": 0.0,
-        "max_paragraph": 237,
-        "paragraphs": 9,
-        "sentences": 43
-      },
-      "score": 100,
-      "source": "boj",
-      "title": "CPMIが報告書「進化する決済システムにおける中央銀行および中央銀行マネーの役割」を公表"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T13:47:48.436195+00:00",
-      "attempt": 1,
-      "id": "91d07db2a7132c51",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 51.0,
-        "avg_sentence": 30.0,
-        "long_share": 0.078,
-        "max_paragraph": 146,
-        "paragraphs": 30,
-        "sentences": 51
-      },
-      "score": 93,
-      "source": "radar-9to5google.com",
-      "title": "Google Messages update rolling out new app icon with gradient design"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T14:11:17.545368+00:00",
-      "attempt": 1,
-      "id": "7c6b46d680c874e7",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 64.9字・60字超の文が 48% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 106.6,
-        "avg_sentence": 64.9,
-        "long_share": 0.478,
-        "max_paragraph": 172,
-        "paragraphs": 14,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "docker-blog",
-      "title": "The Ecosystem is the Answer: Docker, the Blueprint Alliance, and the Importance "
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T14:11:21.977919+00:00",
-      "attempt": 0,
-      "id": "7c6b46d680c874e7",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 111.1,
-        "avg_sentence": 42.1,
-        "long_share": 0.108,
-        "max_paragraph": 180,
-        "paragraphs": 14,
-        "sentences": 37
-      },
-      "score": 100,
-      "source": "docker-blog",
-      "title": "The Ecosystem is the Answer: Docker, the Blueprint Alliance, and the Importance "
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T14:11:30.234322+00:00",
-      "attempt": 1,
-      "id": "e887449fa547326c",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 148.4,
-        "avg_sentence": 55.7,
-        "long_share": 0.375,
-        "max_paragraph": 205,
-        "paragraphs": 9,
-        "sentences": 24
-      },
-      "score": null,
-      "source": "mof",
-      "title": "片山財務大臣兼内閣府特命担当大臣閣議後記者会見の概要(令和8年10月30日(金曜日))"
-    },
     {
       "accepted": false,
       "at": "2026-11-02T14:11:45.401229+00:00",
@@ -20217,6 +20070,129 @@
         "見出しが43字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（LOW）"
       ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:24:23.205064+00:00",
+      "attempt": 1,
+      "id": "a55665cf48953af7",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "hugging-face-blog",
+      "title": "StateBench: Testing how language models track state changes over long documents"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:32:23.743284+00:00",
+      "attempt": 2,
+      "id": "a55665cf48953af7",
+      "kind": "ai",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "problems": [
+        "本文の最初の文がリードのくり返し。本文はリードに無い新しい事実から始める"
+      ],
+      "readability": {
+        "avg_paragraph": 169.9,
+        "avg_sentence": 55.0,
+        "long_share": 0.324,
+        "max_paragraph": 234,
+        "paragraphs": 11,
+        "sentences": 34
+      },
+      "score": null,
+      "source": "hugging-face-blog",
+      "title": "StateBench: Testing how language models track state changes over long documents",
+      "warnings": [
+        "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:33:49.880450+00:00",
+      "attempt": 1,
+      "id": "52567fa092b78f28",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "nli-research",
+      "title": "AI半導体株に翻弄された日本株～2026年10月の日本株式の振り返りと今後のポイント"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:34:46.235673+00:00",
+      "attempt": 2,
+      "id": "52567fa092b78f28",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "nli-research",
+      "title": "AI半導体株に翻弄された日本株～2026年10月の日本株式の振り返りと今後のポイント"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:36:28.289100+00:00",
+      "attempt": 1,
+      "id": "17a357c5e54aa313",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "toyota",
+      "title": "トヨタ、2027年シーズン WRC参戦体制発表 -2チーム、2車種で参戦-"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:38:04.534951+00:00",
+      "attempt": 2,
+      "id": "17a357c5e54aa313",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "toyota",
+      "title": "トヨタ、2027年シーズン WRC参戦体制発表 -2チーム、2車種で参戦-"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:43:38.682294+00:00",
+      "attempt": 1,
+      "id": "7f05432d1620715c",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "microsoft-research-blog",
+      "title": "Learn the rules: The hacker mindset"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T03:49:06.536642+00:00",
+      "attempt": 2,
+      "id": "7f05432d1620715c",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "microsoft-research-blog",
+      "title": "Learn the rules: The hacker mindset"
     }
   ],
   "short_text_retry": {

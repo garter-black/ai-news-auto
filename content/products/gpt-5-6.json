@@ -6,7 +6,7 @@
   "companyName": "OpenAI",
   "category": "AIモデル",
   "overview": {
-    "text": "GPT-5.6は、OpenAIが開発した最新のAIモデルファミリーです。2026年7月に発表され、高度な推論能力と効率的なコスト管理を実現しています。",
+    "text": "GPT-5.6は、OpenAIが2026年7月に発表した最先端のAIモデルファミリーです。用途に合わせて選べるSol、Terra、Lunaの3つのモデルで構成されています。",
     "sources": [
       "openai-chatgpt-voice-gpt56-integration-matome",
       "openai-chatgpt-for-academic-researchers-gpt5-6",
@@ -15,27 +15,31 @@
   },
   "facts": [
     {
+      "label": "料金",
+      "value": "API従量課金",
+      "sources": [
+        "openai-build-hour-gpt56-valuemaxxing"
+      ]
+    },
+    {
       "label": "提供開始",
       "value": "2026年7月",
       "sources": [
         "openai-chatgpt-voice-gpt56-integration-matome",
-        "openai-chatgpt-for-academic-researchers-gpt5-6",
         "openai-build-hour-gpt56-valuemaxxing"
       ]
     },
     {
       "label": "日本での提供",
-      "value": "利用できる",
+      "value": "条件付き",
       "sources": [
-        "v7-go-gpt-5-6-integration-context-graph",
-        "openai-chatgpt-for-academic-researchers-gpt5-6"
+        "openai-build-hour-gpt56-valuemaxxing"
       ]
     },
     {
       "label": "向いている人",
-      "value": "開発者や学術研究者、企業向け",
+      "value": "開発者および研究者",
       "sources": [
-        "v7-go-gpt-5-6-integration-context-graph",
         "openai-chatgpt-for-academic-researchers-gpt5-6",
         "openai-build-hour-gpt56-valuemaxxing"
       ]
@@ -43,28 +47,21 @@
   ],
   "capabilities": [
     {
-      "text": "用途に応じて「Sol」「Terra」「Luna」の3つのモデルを使い分けられます。",
+      "text": "Sol、Terra、Lunaの3つのモデルを用途に合わせて使い分けできます。",
       "sources": [
         "openai-chatgpt-voice-gpt56-integration-matome",
         "openai-build-hour-gpt56-valuemaxxing"
       ]
     },
     {
-      "text": "プログラムによるツール呼び出し機能でJavaScript環境でのコード実行が可能です。",
+      "text": "プログラムによるツール呼び出しで入力トークン数を24%削減できます。",
       "sources": [
         "openai-chatgpt-voice-gpt56-integration-matome",
         "openai-build-hour-gpt56-valuemaxxing"
       ]
     },
     {
-      "text": "プロンプトキャッシングにより入力トークンコストを最大90%削減できます。",
-      "sources": [
-        "openai-chatgpt-voice-gpt56-integration-matome",
-        "openai-build-hour-gpt56-valuemaxxing"
-      ]
-    },
-    {
-      "text": "長大な会話履歴や実行ログを自動または明示的に圧縮する機能を備えています。",
+      "text": "コンテキスト圧縮機能により72ターンの会話で入力トークン数を82%削減できます。",
       "sources": [
         "openai-chatgpt-voice-gpt56-integration-matome",
         "openai-build-hour-gpt56-valuemaxxing"
@@ -73,7 +70,13 @@
   ],
   "pricing": [
     {
-      "text": "学術研究者向けには、世界10万人を対象に無償提供するプログラムが用意されています。",
+      "text": "APIの従量課金制で提供されています。",
+      "sources": [
+        "openai-build-hour-gpt56-valuemaxxing"
+      ]
+    },
+    {
+      "text": "世界10万人の学術研究者を対象とした無料提供プログラムが用意されています。",
       "sources": [
         "openai-chatgpt-for-academic-researchers-gpt5-6"
       ]
@@ -81,23 +84,21 @@
   ],
   "japan": [
     {
-      "text": "日本からも利用できます。",
+      "text": "開発者向けのAPIなどが提供されています。",
       "sources": [
-        "v7-go-gpt-5-6-integration-context-graph",
-        "openai-chatgpt-for-academic-researchers-gpt5-6"
+        "openai-build-hour-gpt56-valuemaxxing"
       ]
     }
   ],
   "howto": [
     {
-      "text": "開発者向けプラットフォームやAPI、および統合された外部サービスを通じて利用できます。",
+      "text": "開発者向けプラットフォームのAPI経由で利用できます。",
       "sources": [
-        "v7-go-gpt-5-6-integration-context-graph",
         "openai-build-hour-gpt56-valuemaxxing"
       ]
     },
     {
-      "text": "学術研究者は専用のプログラムから申請を行って利用することができます。",
+      "text": "学術研究者は専用プログラムを通じて申請できます。",
       "sources": [
         "openai-chatgpt-for-academic-researchers-gpt5-6"
       ]
@@ -105,14 +106,7 @@
   ],
   "differences": [
     {
-      "text": "Sol、Terra、Lunaの3層構成により、タスクに応じた最適な選択が可能になりました。",
-      "sources": [
-        "openai-chatgpt-voice-gpt56-integration-matome",
-        "openai-build-hour-gpt56-valuemaxxing"
-      ]
-    },
-    {
-      "text": "持続的推論やコンテキスト圧縮機能により、処理効率が大きく向上しています。",
+      "text": "Sol、Terra、Lunaの3層構成により用途に応じた最適化が可能になりました。",
       "sources": [
         "openai-chatgpt-voice-gpt56-integration-matome",
         "openai-build-hour-gpt56-valuemaxxing"
@@ -121,36 +115,35 @@
   ],
   "faq": [
     {
+      "q": "無料で使える？",
+      "a": "学術研究者向けの無料提供プログラムが用意されています。開発者向けのAPIは従量課金です。",
+      "sources": [
+        "openai-chatgpt-for-academic-researchers-gpt5-6",
+        "openai-build-hour-gpt56-valuemaxxing"
+      ]
+    },
+    {
       "q": "いつから使える？",
-      "a": "2026年7月以降、順次提供が開始されています。",
+      "a": "2026年7月から順次提供されています。",
       "sources": [
         "openai-chatgpt-voice-gpt56-integration-matome",
-        "openai-chatgpt-for-academic-researchers-gpt5-6",
         "openai-build-hour-gpt56-valuemaxxing"
       ]
     },
     {
       "q": "誰に向いている？",
-      "a": "複雑なコーディングを行う開発者や学術研究者、企業の担当者に向いています。",
+      "a": "複雑な処理や開発を行う開発者や、学術研究を行う研究者に向いています。",
       "sources": [
-        "v7-go-gpt-5-6-integration-context-graph",
         "openai-chatgpt-for-academic-researchers-gpt5-6",
         "openai-build-hour-gpt56-valuemaxxing"
       ]
     },
     {
-      "q": "モデルの種類には何がある？",
-      "a": "最上位モデルのSol、バランス型のTerra、高速・低コストなLunaの3つがあります。",
+      "q": "モデルの種類は？",
+      "a": "最上位のSol、バランス型のTerra、高速・低コストなLunaの3モデルがあります。",
       "sources": [
         "openai-chatgpt-voice-gpt56-integration-matome",
         "openai-build-hour-gpt56-valuemaxxing"
-      ]
-    },
-    {
-      "q": "研究者向けに無料枠はある？",
-      "a": "世界10万人の学術研究者を対象とした無償提供プログラムが用意されています。",
-      "sources": [
-        "openai-chatgpt-for-academic-researchers-gpt5-6"
       ]
     }
   ],
@@ -158,12 +151,12 @@
     {
       "date": "2026-07-25",
       "slug": "openai-build-hour-gpt56-valuemaxxing",
-      "event": "Build Hourで活用術を提示"
+      "event": "活用手法Valuemaxxingを公開"
     },
     {
       "date": "2026-07-30",
       "slug": "openai-chatgpt-for-academic-researchers-gpt5-6",
-      "event": "研究者向け無償プログラムを開始"
+      "event": "研究者向け無償提供プログラムを発表"
     },
     {
       "date": "2026-08-14",
@@ -173,7 +166,7 @@
     {
       "date": "2026-10-22",
       "slug": "v7-go-gpt-5-6-integration-context-graph",
-      "event": "V7 GoにGPT-5.6を統合"
+      "event": "業務自動化V7 GoにGPT-5.6を統合"
     }
   ],
   "related": [
@@ -194,9 +187,9 @@
     "openai-chatgpt-for-academic-researchers-gpt5-6",
     "openai-build-hour-gpt56-valuemaxxing"
   ],
-  "signature": "b1f48575144899ac",
-  "primarySignature": "407b0cd2f93638c3",
+  "signature": "1304d625e0ad390d",
+  "primarySignature": "970b1a1debcc4fb6",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:45:03+00:00",
-  "updatedAt": "2026-11-03T09:41:22+00:00"
+  "updatedAt": "2026-11-04T03:49:24+00:00"
 }
