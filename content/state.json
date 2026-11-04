@@ -9,7 +9,7 @@
     "4bGb2OjU5tA": 1,
     "4idQxzAyPDo": 1,
     "5iu0nY9lIy8": 1,
-    "63pcV4z0DwI": 1,
+    "63pcV4z0DwI": 2,
     "7cJlIJpKBW4": 1,
     "8K08Ywgduno": 1,
     "AIH_9dOpAmU": 1,
@@ -1351,6 +1351,11 @@
     "N4xIsDpu354": {
       "at": "2026-08-18T00:35:10.896704+00:00",
       "slug": "interest-rate-rise-financial-defense"
+    },
+    "NCxD-qsQcN0": {
+      "at": "2026-11-04T14:19:05.242133+00:00",
+      "reason": "publish-gate: thin",
+      "skipped": true
     },
     "NIDrPjeZ-jQ": {
       "at": "2026-08-02T15:55:43.025790+00:00",
