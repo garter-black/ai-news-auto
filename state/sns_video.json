@@ -2057,9 +2057,9 @@
       "why": "速報（文面の投稿はすぐ出した）"
     },
     "gpt-56-cyber-aws-govcloud": {
-      "at": "2026-11-04T16:52:11+00:00",
+      "at": "2026-11-04T17:02:24+00:00",
       "status": "gate_failed",
-      "tries": 5,
+      "tries": 6,
       "textAt": "2026-11-04T15:17:40+00:00",
       "textId": "",
       "breaking": true,
@@ -2098,10 +2098,10 @@
       },
       "timings": {
         "full": {
-          "ladder_total": 568.3
+          "ladder_total": 240.5
         },
         "short": {
-          "ladder_total": 568.3
+          "ladder_total": 240.5
         }
       },
       "ok": false,
