@@ -3503,8 +3503,7 @@
       "via": "buffer",
       "channels": {
         "twitter": "6aea3af452391758e2e63135",
-        "facebook": "6aea3af45fa3d509fa3d103d",
-        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzhfc4mb722k"
+        "facebook": "6aea3af45fa3d509fa3d103d"
       },
       "hook": "breaking",
       "score": 6,
@@ -3516,34 +3515,15 @@
       "questionText": "あなたの職場では、システム障害の一次対応を誰が担当していますか？",
       "dueAt": "2026-11-04T09:45:00+09:00",
       "postedAt": "2026-11-03T04:17:29+00:00",
-      "metrics": {
-        "reactions": 0,
-        "comments": 0,
-        "engagementRate": 0,
-        "views": 0,
-        "quotes": 0,
-        "reposts": 0
-      },
-      "metricsUpdatedAt": "2026-11-03T12:02:02.899Z",
-      "externalLink": "https://www.threads.com/@saisoku637/post/DfR1bNgkYT3",
-      "ownReplies": 0,
-      "xMetrics": {
-        "reactions": 0,
-        "comments": 0,
-        "engagementRate": 0,
-        "reposts": 0,
-        "impressions": 0,
-        "clicks": 0
-      },
       "pausedIds": {
-        "threads": "6ae96058da2711fd26adb7eb",
-        "twitter": "6ae96058a5f6b0f7438855a4",
-        "facebook": "6ae96059b1dfe2c544efbb29"
+        "threads": "6aea3af35fa3d509fa3d0ef9",
+        "twitter": "6aea3af452391758e2e63135",
+        "facebook": "6aea3af45fa3d509fa3d103d",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzhfc4mb722k"
       },
       "status": "scheduled",
-      "convertedAt": "2026-11-03T19:19:23+00:00",
-      "videoVariant": "short",
-      "blueskyAt": "2026-11-04T03:17:05+00:00"
+      "convertedAt": "2026-11-04T03:24:14+00:00",
+      "videoVariant": "short"
     },
     "chatgpt-pro-monthly-api-credits": {
       "id": "6ae9e0a01e1aeba3c6bb1c77",

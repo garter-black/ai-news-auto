@@ -815,52 +815,6 @@
       "embedded": true,
       "why": "動画ができる前に投稿の時刻が来た（写真で出た）"
     },
-    "nvidia-recovery-automated-training-recovery": {
-      "at": "2026-11-03T19:50:05+00:00",
-      "status": "attached",
-      "tries": 1,
-      "ok": true,
-      "adopted": "/home/runner/work/_temp/adopt",
-      "versions": {
-        "short": {
-          "ok": true,
-          "seconds": 34.545,
-          "reasons": [],
-          "qa": {
-            "geometry": true,
-            "vision": true,
-            "version": 1
-          },
-          "template": "launch",
-          "level": "L1",
-          "post": {
-            "title": "NVIDIAがAI学習の自動復旧ソフト「NVIDIA Recovery」を無料…",
-            "url": "https://ai-tech-express.jp/articles/nvidia-recovery-automated-training-recovery",
-            "total": 34.545,
-            "voice": {
-              "engine": "voicevox",
-              "credit": "VOICEVOX:九州そら",
-              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
-              "speed": 1.38
-            },
-            "level": null,
-            "script_v3": {
-              "hook": {
-                "text": "NVIDIAがAI学習の自動復旧ソフトを公開"
-              },
-              "summary": "要約すると、NVIDIAがオープンソースの「NVIDIA Recovery」を公開しました。止まった分散AI学習を検知し、問題のノードを除外して再開させます。検知は平均69秒で、導入は監視モードから始められます。"
-            }
-          }
-        }
-      },
-      "urls": {
-        "short": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-9d71489616.mp4"
-      },
-      "level": "L1",
-      "variant": "short",
-      "bufferId": "6aea3af35fa3d509fa3d0ef9",
-      "postedAt": "2026-11-04T09:45:00+09:00"
-    },
     "github-copilot-jetbrains-air": {
       "at": "2026-11-03T20:04:26+00:00",
       "status": "attached",
@@ -1686,22 +1640,84 @@
       "variant": "short",
       "bufferId": "6aea8b67b8d162e0d8f85eb1",
       "postedAt": "2026-11-04T09:30:00+00:00"
+    },
+    "nvidia-recovery-automated-training-recovery": {
+      "at": "2026-11-04T03:24:15+00:00",
+      "status": "ready",
+      "tries": 1,
+      "ok": true,
+      "adopted": "/home/runner/work/_temp/adopt",
+      "versions": {
+        "full": {
+          "ok": true,
+          "seconds": 55.141,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1
+          },
+          "template": "launch",
+          "level": "L1",
+          "post": {
+            "title": "NVIDIAがAI学習の自動復旧ソフト「NVIDIA Recovery」を無料…",
+            "url": "https://ai-tech-express.jp/articles/nvidia-recovery-automated-training-recovery",
+            "total": 55.141,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "level": null,
+            "script_v3": {
+              "hook": {
+                "text": "NVIDIAがAI学習の自動復旧ソフトを公開"
+              },
+              "summary": "要約すると、NVIDIAがオープンソースの「NVIDIA Recovery」を公開しました。止まった分散AI学習を検知し、問題のノードを除外して再開させます。検知は平均69秒で、導入は監視モードから始められます。"
+            }
+          }
+        },
+        "short": {
+          "ok": true,
+          "seconds": 34.545,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1
+          },
+          "template": "launch",
+          "level": "L1",
+          "post": {
+            "title": "NVIDIAがAI学習の自動復旧ソフト「NVIDIA Recovery」を無料…",
+            "url": "https://ai-tech-express.jp/articles/nvidia-recovery-automated-training-recovery",
+            "total": 34.545,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "level": null,
+            "script_v3": {
+              "hook": {
+                "text": "NVIDIAがAI学習の自動復旧ソフトを公開"
+              },
+              "summary": "要約すると、NVIDIAがオープンソースの「NVIDIA Recovery」を公開しました。止まった分散AI学習を検知し、問題のノードを除外して再開させます。検知は平均69秒で、導入は監視モードから始められます。"
+            }
+          }
+        }
+      },
+      "urls": {
+        "full": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-b8e50ec473.mp4",
+        "poster": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-644d412c4b.jpg",
+        "short": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-a87ec20a2a.mp4"
+      },
+      "level": "L1"
     }
   },
   "queued": {
-    "nvidia-recovery-automated-training-recovery": {
-      "status": "created",
-      "why": "オーナーに見せた動画を置くのを待っている",
-      "channels": {
-        "threads": "6aea3af35fa3d509fa3d0ef9",
-        "twitter": "6aea3af452391758e2e63135",
-        "facebook": "6aea3af45fa3d509fa3d103d"
-      },
-      "id": "6aea3af35fa3d509fa3d0ef9",
-      "dueAt": "2026-11-04T09:45:00+09:00",
-      "variant": "short",
-      "delayedMin": 0
-    },
     "github-copilot-jetbrains-air": {
       "status": "created",
       "why": "動画を作っている途中・順番待ち",
@@ -1751,6 +1767,18 @@
       "dueAt": "2026-11-04T09:30:00+00:00",
       "variant": "short",
       "delayedMin": 0
+    },
+    "nvidia-recovery-automated-training-recovery": {
+      "status": "created",
+      "id": "6aea3af35fa3d509fa3d0ef9",
+      "dueAt": "2026-11-04T09:45:00+09:00",
+      "variant": "short",
+      "channels": {
+        "threads": "6aea3af35fa3d509fa3d0ef9",
+        "twitter": "6aea3af452391758e2e63135",
+        "facebook": "6aea3af45fa3d509fa3d103d"
+      },
+      "why": "ほかの実行が先に送った"
     }
   },
   "converted": {
@@ -1794,7 +1822,7 @@
       "applied": true
     },
     "nvidia-recovery-automated-training-recovery": {
-      "at": "2026-11-03T19:19:23+00:00",
+      "at": "2026-11-04T03:24:14+00:00",
       "pending": {
         "inputs": {
           "threads": {
@@ -1820,7 +1848,7 @@
               }
             },
             "mode": "customScheduled",
-            "dueAt": "2026-11-04T09:45:00+09:00"
+            "dueAt": "2026-11-04T12:55:00+09:00"
           },
           "twitter": {
             "channelId": "6ade35f52f1f5ed648cb07cf",
@@ -1848,7 +1876,7 @@
               }
             },
             "mode": "customScheduled",
-            "dueAt": "2026-11-04T09:57:00+09:00",
+            "dueAt": "2026-11-04T13:07:00+09:00",
             "_offsetMin": 12
           },
           "facebook": {
@@ -1870,35 +1898,52 @@
               }
             },
             "mode": "customScheduled",
-            "dueAt": "2026-11-04T10:12:00+09:00",
+            "dueAt": "2026-11-04T13:22:00+09:00",
             "_offsetMin": 27
           }
         },
-        "slot": "2026-11-04T09:45:00+09:00",
+        "slot": "2026-11-04T12:55:00+09:00",
         "fmt": "classic",
         "forceVariant": "short",
-        "hold": true
+        "hold": true,
+        "allowDuplicateOf": {
+          "threads": [
+            "6aea3af35fa3d509fa3d0ef9"
+          ],
+          "twitter": [
+            "6aea3af452391758e2e63135"
+          ],
+          "facebook": [
+            "6aea3af45fa3d509fa3d103d",
+            "6aea86b896d5e2abc7692f68"
+          ]
+        }
       },
       "threadsSent": false,
       "repost": true,
       "paused": {
         "threads": {
-          "id": "6ae96058da2711fd26adb7eb",
+          "id": "6aea3af35fa3d509fa3d0ef9",
           "ok": true,
           "deleted": true
         },
         "twitter": {
-          "id": "6ae96058a5f6b0f7438855a4",
+          "id": "6aea3af452391758e2e63135",
           "ok": true,
           "deleted": true
         },
         "facebook": {
-          "id": "6ae96059b1dfe2c544efbb29",
+          "id": "6aea3af45fa3d509fa3d103d",
+          "ok": true,
+          "deleted": true
+        },
+        "bluesky": {
+          "id": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzhfc4mb722k",
           "ok": true,
           "deleted": true
         }
       },
-      "dropBlueskyExtra": true,
+      "dropBlueskyExtra": false,
       "applied": true
     },
     "github-copilot-jetbrains-air": {
@@ -2030,91 +2075,50 @@
   },
   "videosArchive": {
     "nvidia-recovery-automated-training-recovery": {
-      "at": "2026-11-03T15:12:42+00:00",
-      "status": "article_only",
-      "tries": 3,
-      "textAt": "2026-11-03T12:02:00+00:00",
-      "textId": "6ae96058da2711fd26adb7eb",
-      "breaking": false,
-      "scheduled": false,
-      "versions": {
-        "full": {
-          "ok": true,
-          "seconds": 53.939,
-          "reasons": [],
-          "post": {
-            "title": "NVIDIA Recovery公開 止まったAI学習を自動で検知し再開",
-            "url": "https://ai-tech-express.jp/articles/nvidia-recovery-automated-training-recovery",
-            "total": 53.939,
-            "voice": {
-              "engine": "voicevox",
-              "credit": "VOICEVOX:九州そら",
-              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
-              "speed": 1.38
-            },
-            "script_v3": {
-              "hook": {
-                "text": "止まったAI学習、手で直しますか？"
-              },
-              "summary": "要約すると、NVIDIAはAI学習の中断を24時間体制で自動で検知し、問題のあるマシンを外して再開させるオープンソースのNVIDIA Recoveryを紹介しました。GPUクラスターを運用する基盤担当向けで、まずは監視モードで判断精度を確かめるのが現実的です。"
-            }
-          }
-        },
-        "short": {
-          "ok": true,
-          "seconds": 31.526,
-          "reasons": [],
-          "post": {
-            "title": "NVIDIA Recovery公開 止まったAI学習を自動で検知し再開",
-            "url": "https://ai-tech-express.jp/articles/nvidia-recovery-automated-training-recovery",
-            "total": 31.526,
-            "voice": {
-              "engine": "voicevox",
-              "credit": "VOICEVOX:九州そら",
-              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
-              "speed": 1.38
-            },
-            "script_v3": {
-              "hook": {
-                "text": "止まったAI学習、手で直しますか？"
-              },
-              "summary": "要約すると、NVIDIAはAI学習の中断を24時間体制で自動で検知し、問題のあるマシンを外して再開させるオープンソースのNVIDIA Recoveryを紹介しました。GPUクラスターを運用する基盤担当向けで、まずは監視モードで判断精度を確かめるのが現実的です。"
-            }
-          }
-        }
-      },
-      "timings": {
-        "full": {
-          "script": 0.0,
-          "tts": 10.27,
-          "plan_audio": 2.87,
-          "render": 30.69,
-          "gate": 3.97,
-          "sheet": 1.74,
-          "total": 49.7
-        },
-        "short": {
-          "script": 0.0,
-          "tts": 5.77,
-          "plan_audio": 1.64,
-          "render": 17.5,
-          "gate": 2.62,
-          "sheet": 1.14,
-          "total": 28.7
-        }
-      },
+      "at": "2026-11-03T19:50:05+00:00",
+      "status": "attached",
+      "tries": 1,
       "ok": true,
-      "reason": "",
-      "pages": [
-        "developer.nvidia.com"
-      ],
-      "urls": {
-        "full": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-f8818892e6.mp4",
-        "short": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-18ae0550f5.mp4",
-        "poster": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-abe4d867ff.jpg"
+      "adopted": "/home/runner/work/_temp/adopt",
+      "versions": {
+        "short": {
+          "ok": true,
+          "seconds": 34.545,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1
+          },
+          "template": "launch",
+          "level": "L1",
+          "post": {
+            "title": "NVIDIAがAI学習の自動復旧ソフト「NVIDIA Recovery」を無料…",
+            "url": "https://ai-tech-express.jp/articles/nvidia-recovery-automated-training-recovery",
+            "total": 34.545,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "level": null,
+            "script_v3": {
+              "hook": {
+                "text": "NVIDIAがAI学習の自動復旧ソフトを公開"
+              },
+              "summary": "要約すると、NVIDIAがオープンソースの「NVIDIA Recovery」を公開しました。止まった分散AI学習を検知し、問題のノードを除外して再開させます。検知は平均69秒で、導入は監視モードから始められます。"
+            }
+          }
+        }
       },
-      "embedded": true,
-      "why": "動画ができる前に投稿の時刻が来た（以前の写真の予約。2026-11-03 からは動画待ちにする）"
+      "urls": {
+        "short": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-9d71489616.mp4"
+      },
+      "level": "L1",
+      "variant": "short",
+      "bufferId": "6aea3af35fa3d509fa3d0ef9",
+      "postedAt": "2026-11-04T09:45:00+09:00"
     },
     "github-copilot-jetbrains-air": {
       "at": "2026-11-03T17:48:29+00:00",
