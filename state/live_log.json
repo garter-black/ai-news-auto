@@ -228,6 +228,9 @@
     "crowdstrike-ai-kill-switch-falcon-guardian": {
       "liveAt": "2026-11-03T20:39:16+00:00"
     },
+    "cwe-bench-v2-security-benchmark": {
+      "liveAt": "2026-11-04T04:31:25+00:00"
+    },
     "cyberagent-fy2026-results-date": {
       "liveAt": "2026-11-02T07:24:44+00:00"
     },
