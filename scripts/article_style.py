@@ -425,8 +425,9 @@ def coded_problems(record: dict) -> list[tuple[str, str]]:
         take = str((record.get("verdict") or {}).get("take") or "") if isinstance(record.get("verdict"), dict) else ""
         if calls := [x for x in sents + ([take] if take else []) if section_gate.calling_out(x)]:
             add("A17", f"呼びかけの「〜しましょう」が残っている（「{calls[0][-20:]}」）。「〜するとよいでしょう」など落ち着いた言い方で書く")
-    except (ImportError, AttributeError):
-        pass
+    except (ImportError, AttributeError) as error:
+        # 検査を動かせない → 合格にしない（2026-11-04 一貫性の点検: 確かめられない検査は不合格）
+        add("A21", f"中の人の注記・呼びかけの検査を動かせない（section_gate: {type(error).__name__}）")
     # 読者像の3つの立場の小見出しと、見出しの言葉だけ変えた「中身なし」の見出し（「〜は不明」「〜は示されていない」。台帳 A24。
     # 判定は表示の段と同じ scripts/section_gate.py の式）
     try:
@@ -437,8 +438,8 @@ def coded_problems(record: dict) -> list[tuple[str, str]]:
                 add("A24", f"{key}に読者像の立場の小見出し（会社員として／副業・独立を考えている人／お金・資産づくりの面で）。小見出しを作らず、事実がある影響だけ地の文で書く")
         if bad_t := [h for h in heads if section_gate.is_nonanswer_title(h)]:
             add("A24", f"答えになっていない見出し（「{bad_t[0]}」）。未定のことは「## まだ分からないこと」に1行で書き、章は作らない")
-    except (ImportError, AttributeError):
-        pass
+    except (ImportError, AttributeError) as error:
+        add("A21", f"立場の小見出し・中身なしの見出しの検査を動かせない（section_gate: {type(error).__name__}）")
     # 6. 割った文
     if m := SPLIT_RE.search(body_nq):
         add("A4", f"1つの文を2つに割っている（「{m.group(0)[:40]}」）。1文にまとめる")

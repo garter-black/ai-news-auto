@@ -318,8 +318,10 @@ class EveryPathTest(unittest.TestCase):
                "workMoney": {"relevance": "low", "points": ["直接の影響は小さいです。"]}}
         self.assertTrue(any("決まった型の見出し" in p for p in quality.structural_problems(rec, "ai")))
         src = {name: (ROOT / "scripts" / name).read_text("utf-8") for name in ("main.py", "roundup.py", "web_articles.py", "angle_articles.py")}
-        self.assertIn("article_style.problems(record)", src["main.py"])     # 動画の記事: 作り直し1回・だめなら出さない
-        self.assertIn("article_style.problems(record)", src["roundup.py"])  # まとめ: 同じ
+        # 動画の記事・まとめ: 作り直し1回・だめなら出さない。文体の門を含む共通の基準（quality.every_path_problems。2026-11-04 一貫性の点検）
+        self.assertIn("quality.every_path_problems(record)", src["main.py"])
+        self.assertIn("quality.every_path_problems(record)", src["roundup.py"])
+        self.assertIn("article_style.problems(record)", (ROOT / "scripts" / "quality.py").read_text("utf-8"))
         self.assertIn("quality.evaluate(", src["web_articles.py"])          # 通常・速報・幅広い話題・話題のキーワード: 品質ゲート
         self.assertIn("quality.evaluate(", src["angle_articles.py"])
 

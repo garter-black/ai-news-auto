@@ -870,9 +870,11 @@ def build_record(entry: dict, data: dict) -> dict:
 
 def style_gate(record: dict) -> list[str]:
     """動画の記事の文体の門（直せるものは直してから、残った問題の一覧）"""
+    import quality  # noqa: PLC0415 - すべての段で同じ合格の基準（文体＋投資助言 A22＋自分で試した書き方 A14）
+
     section_gate.apply(record)
     article_style.autofix(record)
-    return article_style.problems(record)
+    return quality.every_path_problems(record)
 
 
 def write_article(record: dict) -> Path:

@@ -401,16 +401,18 @@ def main() -> int:
             log(f"   [NG] {problems[0]}")
             continue
         # 文体の門（scripts/article_style.py。すべての生成の段で同じ決まり）。落ちたら問題点を添えて1回だけ作り直す
+        import quality  # noqa: PLC0415 - すべての段で同じ合格の基準（文体＋投資助言 A22＋自分で試した書き方 A14）
+
         section_gate.apply(record)
         article_style.autofix(record)
-        if style := article_style.problems(record):
+        if style := quality.every_path_problems(record):
             log(f"   [style] 不合格: {' | '.join(style[:3])[:300]} → 作り直します")
             try:
                 data = generate(client, cluster.key, members, feedback=style)
                 record = clean_record_labels(build_record(cluster.key, data, members))
                 section_gate.apply(record)
                 article_style.autofix(record)
-                style = article_style.problems(record) + internal_label_problems(record)
+                style = quality.every_path_problems(record) + internal_label_problems(record)
             except Exception as error:  # noqa: BLE001
                 style = [f"作り直しに失敗（{str(error)[:80]}）"]
             if style:

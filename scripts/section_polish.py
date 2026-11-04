@@ -479,7 +479,14 @@ def main(argv: list[str] | None = None) -> int:
             if latest.get("body") != record.get("body") or latest.get("easy") != record.get("easy"):
                 print(f"     {path.stem}: 処理中に本文が変わったので見送り", flush=True)
                 continue
+            before = dict(latest)
             latest.update({k: new[k] for k in ("body", "easy", "sectionTitles", "sectionsPolishedAt") if k in new})
+            # すべての段で同じ合格の基準（2026-11-04 一貫性の点検）: 書き直しで新しく門に落ちる文が増えたら書き込まない
+            import quality  # noqa: PLC0415
+
+            if added := quality.added_problems(before, latest):
+                print(f"     {path.stem}: 書き直しが門に落ちたので見送り（{added[0][:80]}）", flush=True)
+                continue
             path.write_text(json.dumps(latest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         done += 1
         if args.max and done >= args.max:

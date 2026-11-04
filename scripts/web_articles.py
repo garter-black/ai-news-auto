@@ -2174,6 +2174,15 @@ def main() -> int:
             mark(state, item, skipped=True, reason=f"followup quality: {'; '.join(problems)}"[:200], model=model_name)
             return "reject"
         record = followup.apply_update(article, data, item)
+        # すべての段で同じ合格の基準（2026-11-04 一貫性の点検）: 続報で書き足した文も、文体・投資助言・自分で試した書き方の門を通す。
+        # 古い型の記事にもとからある分は数えず、続報で新しく増えた不合格があれば書き込まない
+        import section_gate  # noqa: PLC0415
+
+        section_gate.apply(record)
+        if added := quality.added_problems(article, record):
+            log(f"   [gate] 続報の書き足しが門に落ちたので書き込みません: {' | '.join(added[:3])[:300]}")
+            mark(state, item, skipped=True, reason=f"followup style: {'; '.join(added)}"[:200], model=model_name)
+            return "reject"
         path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         touched.add(path.stem)
         updated_slugs.add(path.stem)

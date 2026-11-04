@@ -104,6 +104,32 @@ def promise_problems(record: dict) -> list[str]:
     return problems
 
 
+def every_path_problems(record: dict) -> list[str]:
+    """（2026-11-04 一貫性の点検）記事を書き出すすべての段（通常・動画・まとめ・続報・見出しの書き直し）で同じ合格の基準。
+    文体の門（A1〜A6・A17〜A21・A24・A33・A36・A38）＋投資助言・取引のやり方（A22。どの記事でも）＋自分で試した書き方（A14）。
+    1つでもあれば書き出さない（作り直すか見送る）。tests/test_rule_consistency.py が、記事を書くすべての段がこれを通るかを確かめる"""
+    return article_style.problems(record) + genre_focus.advice_problems(record) + first_person_problems(record)
+
+
+def added_problems(before: dict, after: dict) -> list[str]:
+    """公開中の記事を書き換える段（続報・見出しの書き直し）向け: 書き換えで新しく増えた不合格だけ（古い型の記事にもとからある分は数えない。O9）。
+    文体の門は決まりの番号（A1 など）で比べる（引用の文が変わっただけで「新しい不合格」としない）。番号が同じでも件数が増えたら新しい不合格"""
+    def keyed(record: dict) -> list[tuple[str, str]]:
+        return ([(code, msg) for code, msg in article_style.coded_problems(record)]
+                + [(msg, msg) for msg in genre_focus.advice_problems(record) + first_person_problems(record)])
+
+    seen: dict[str, int] = {}
+    for key, _ in keyed(before):
+        seen[key] = seen.get(key, 0) + 1
+    out = []
+    for key, msg in keyed(after):
+        if seen.get(key, 0) > 0:
+            seen[key] -= 1
+        else:
+            out.append(msg)
+    return out
+
+
 def first_person_problems(record: dict) -> list[str]:
     """サイソクが自分で試したように読める書き方。自社の検証データ（ownTest）がある記事だけ許す"""
     if record.get("ownTest"):
@@ -1067,7 +1093,8 @@ def structural_problems(record: dict, kind: str, source_text: str = "", context:
         problems += promise_problems(record)
         problems += faq_problems(record)
         if m := persona.OLD_VIEWPOINT_RE.search(body):
-            problems.append(f"古い立場の小見出し（「{m.group(0).lstrip('# ')}」）がある。立場は「" + "」「".join(persona.VIEWPOINTS) + "」の3つにする")
+            # 台帳 A24: 立場の小見出しは新旧どちらも作らない（前は「3つの立場にする」と直させていて、A24 と食い違っていた）
+            problems.append(f"古い立場の小見出し（「{m.group(0).lstrip('# ')}」）がある。立場の小見出しは作らず、事実がある影響だけを地の文で書く")
         problems += number_problems(record, source_text, context)
         problems += rival_problems(record)
         problems += money_outline_problems(record)
