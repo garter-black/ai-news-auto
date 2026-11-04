@@ -32,7 +32,16 @@ function ytWebp(src: string): string {
  *
  * 親要素に relative と大きさ（aspect-video など）が指定されている前提で、fill 画像と同じ位置を埋める。
  */
-export default function Thumb({ source, cover, ...props }: ImageProps & { source?: ThumbSource; cover?: string | null }) {
+/** 一覧の小さい写真にも出す「AI生成」の札（2026-11-04 オーナー承認・台帳 I4。記事ページ・トップの大きな写真は ImageCredit） */
+function AiMark() {
+  return (
+    <span data-ai-mark="" className="pointer-events-none absolute bottom-1 left-1 z-[1] rounded-sm bg-black/70 px-1 text-badge font-bold leading-[1.5] text-white">
+      AI生成
+    </span>
+  );
+}
+
+export default function Thumb({ source, cover, aiGenerated, ...props }: ImageProps & { source?: ThumbSource; cover?: string | null; aiGenerated?: boolean }) {
   const original = props.src;
   const empty = typeof original === "string" && original.trim() === "";
   const [stage, setStage] = useState<Stage>(empty ? "failed" : "original");
@@ -99,18 +108,28 @@ export default function Thumb({ source, cover, ...props }: ImageProps & { source
     stage === "original" && typeof webp === "string" && props.fill && props.sizes
       ? ownSrcSet(webp) ?? ytSrcSet(webp)
       : null;
+  // AI の画像を出しているときだけ札を重ねる（代わりの図版・カバーに切り替わったら出さない）
+  const mark = aiGenerated ? <AiMark /> : null;
   if (srcSet && typeof src === "string") {
     return (
-      <SrcSetImg
-        {...props}
-        src={src}
-        srcSet={srcSet}
-        onFail={onError}
-      />
+      <>
+        <SrcSetImg
+          {...props}
+          src={src}
+          srcSet={srcSet}
+          onFail={onError}
+        />
+        {mark}
+      </>
     );
   }
 
-  return <Image {...props} src={src} data-thumb="" data-thumb-stage={stage} onError={onError} />;
+  return (
+    <>
+      <Image {...props} src={src} data-thumb="" data-thumb-stage={stage} onError={onError} />
+      {mark}
+    </>
+  );
 }
 
 /** srcset 付きの <img>。React が動き出す前に失敗していたら、描いた直後に onFail を呼ぶ */

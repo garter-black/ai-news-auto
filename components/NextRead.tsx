@@ -82,7 +82,7 @@ function Cover({ item, sizes, small = false }: { item: NextReadItem; sizes: stri
       {cover ? (
         <Image src={cover} alt="" fill sizes={sizes} className="object-contain" />
       ) : (
-        <Thumb src={item.article.thumbnail} source={thumbSource(item.article)} cover={coverPath(item.article)} alt="" fill sizes={sizes} className="object-contain" />
+        <Thumb src={item.article.thumbnail} source={thumbSource(item.article)} cover={coverPath(item.article)} aiGenerated={item.article.imageCredit?.kind === "ai"} alt="" fill sizes={sizes} className="object-contain" />
       )}
     </span>
   );

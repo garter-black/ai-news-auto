@@ -152,6 +152,7 @@ function TimelineRow({ article }: { article: ArticleSummary }) {
             src={smallThumb(article.thumbnail)}
             source={thumbSource(article)}
             cover={coverPath(article)}
+            aiGenerated={article.imageCredit?.kind === "ai"}
             alt=""
             fill
             sizes="184px"

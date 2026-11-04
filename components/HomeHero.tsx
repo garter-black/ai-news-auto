@@ -8,7 +8,8 @@ import { companyOf, thumbSource } from "@/lib/companies";
 import { Highlight } from "@/lib/highlight";
 import { officialCreditText } from "@/lib/image-credit";
 import ImageCredit from "@/components/ImageCredit";
-import { coverPath } from "@/lib/cover-path";
+import { coverPath, isFastNews } from "@/lib/cover-path";
+import { liveLabel } from "@/lib/live-line";
 
 /**
  * トップの主役。
@@ -17,6 +18,7 @@ import { coverPath } from "@/lib/cover-path";
  */
 export default function HomeHero({ lead }: { lead: ArticleSummary }) {
   const isRoundup = lead.type === "roundup";
+  const heroLabel = isRoundup ? "まとめ" : liveLabel({ fast: isFastNews(lead), publishedAt: lead.publishedAt }, Date.now());
   const sources = lead.sourceCount;
   const href = `/articles/${lead.slug}`;
   const credit = officialCreditText(lead.imageCredit);
@@ -64,8 +66,12 @@ export default function HomeHero({ lead }: { lead: ArticleSummary }) {
 
       <div className="flex min-w-0 flex-col gap-4">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-meta">
-          <span className="rounded-sm bg-live px-2.5 py-0.5 text-badge font-bold tracking-wider text-live-ink">
-            {isRoundup ? "まとめ" : "最新"}
+          {/* 赤は本当の速報だけ（ヘッダー下の帯と同じ判定 lib/live-line.ts。台帳 W23・2026-11-04 オーナー承認）。ほかは紺 */}
+          <span
+            data-hero-label={heroLabel}
+            className={`rounded-sm px-2.5 py-0.5 text-badge font-bold tracking-wider ${heroLabel === "速報" ? "bg-live text-live-ink" : "bg-accent text-accent-ink"}`}
+          >
+            {heroLabel}
           </span>
           <ArticleMark company={companyOf(lead)} genre={lead.genre} size={18} />
           <RelTime iso={lead.publishedAt} className="index-num font-semibold text-muted" />

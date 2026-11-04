@@ -34,7 +34,8 @@ export async function GET(_request: Request, { params }: { params: Promise<{ key
         </div>
         <div style={{ display: "flex", alignItems: "center", marginTop: 54 }}>
           <span style={{ width: 12, height: headingSize + 6, background: "#c8221a", marginRight: 26 }} />
-          <span style={{ fontFamily: "Dela", fontSize: headingSize, lineHeight: 1.15 }}>{page.heading}</span>
+          {/* 見出しは読みやすい Noto（ロゴ用の書体はロゴだけ。台帳 W1・2026-11-04 オーナー承認） */}
+          <span style={{ fontFamily: "Noto", fontWeight: 700, fontSize: headingSize, lineHeight: 1.2 }}>{page.heading}</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", marginTop: 34, fontSize: 32, lineHeight: 1.65 }}>
           <span>{page.lines[0]}</span>

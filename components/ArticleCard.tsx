@@ -46,6 +46,7 @@ export default function ArticleCard({ article, priority, morph = false, quickIma
                 src={article.thumbnail}
                 source={thumbSource(article)}
                 cover={coverPath(article)}
+                aiGenerated={article.imageCredit?.kind === "ai"}
                 alt=""
                 fill
                 priority={priority}

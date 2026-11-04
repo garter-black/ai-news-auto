@@ -342,5 +342,45 @@ class SiteAndOpsTest(unittest.TestCase):
         self.assertEqual(cold_check.judge(page, None)[0], "fail")
 
 
+class OwnerDecisionTest(unittest.TestCase):
+    """2026-11-04 一貫性の点検のあと、オーナーが決めた6つ"""
+
+    def read(self, rel):
+        return (ROOT / rel).read_text("utf-8")
+
+    def test_hero_badge_is_red_only_for_breaking(self):
+        src = self.read("components/HomeHero.tsx")
+        self.assertIn("liveLabel(", src)
+        self.assertIn("isFastNews(", src)
+        self.assertNotRegex(src, r'className="rounded-sm bg-live', "トップの札がいつも赤")
+
+    def test_list_thumbnails_show_ai_mark(self):
+        self.assertIn("AI生成", self.read("components/Thumb.tsx"))
+        for rel in ("components/NewsHub.tsx", "components/ArticleCard.tsx", "components/Timeline.tsx", "components/NextRead.tsx", "app/page.tsx"):
+            self.assertIn('aiGenerated={', self.read(rel), rel)
+
+    def test_share_image_headlines_use_noto(self):
+        """ロゴ用の書体（Dela）は、ロゴ・サイト名・順位の数字だけ。見出しは Noto"""
+        bad = []
+        for base in ("app", "lib", "components"):
+            for path in (ROOT / base).rglob("*.tsx"):
+                if path.name == "wordmark.tsx":
+                    continue  # ロゴそのもの
+                lines = path.read_text("utf-8").splitlines()
+                for i, line in enumerate(lines, 1):
+                    near = "\n".join(lines[i - 1:i + 10])  # 書体の指定と中身が別の行のこともある
+                    if 'fontFamily: "Dela"' in line and not re.search(r"サイソク|\{n\}|String\(n\)", near):
+                        bad.append(f"{path.relative_to(ROOT)}:{i}")
+        self.assertEqual(bad, [])
+
+    def test_big_news_may_regenerate_three_times_and_last_try_skips_missing_fact_rewrite(self):
+        import web_articles
+
+        self.assertEqual(web_articles.MAJOR_ATTEMPTS, 3)
+        src = self.read("scripts/web_articles.py")
+        self.assertIn("attempts=MAJOR_ATTEMPTS if major else 2", src)
+        self.assertIn("elif missing and attempt < attempts", src)  # 最後の試行では作り直さず、無い事実を書かないまま進む（A20）
+
+
 if __name__ == "__main__":
     unittest.main()
