@@ -49,6 +49,9 @@
     "articles": {
       "anthropic-api:claude-haiku-5-5": 24
     },
+    "breaking": {
+      "anthropic-api:claude-sonnet-5-5": 1
+    },
     "images": {
       "cf-image:flux-2-klein-4b": 2,
       "cloudflare:@cf/openai/gpt-oss-120b": 2

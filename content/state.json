@@ -12537,6 +12537,13 @@
       "skipped": true,
       "url": "https://www.nli-research.co.jp/topics_detail1/id=87225?site=nli"
     },
+    "d89377dc82be1e74": {
+      "at": "2026-11-04T08:35:11.026955+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "reason": "抽出された本文はChrome Releasesブログのメニューやラベル、アーカイブ一覧だけで、Chromeのバージョン番号・修正内容・セキュリティ修正などの具体的な情報が含まれていない。記事化できる事実が確認できないため見送る。",
+      "skipped": true,
+      "url": "https://chromereleases.googleblog.com/2026/11/stable-channel-update-for-desktop.html"
+    },
     "d898b87514cc41e2": {
       "at": "2026-11-02T07:11:50.054477+00:00",
       "model": "gemini-3.5-flash-lite",

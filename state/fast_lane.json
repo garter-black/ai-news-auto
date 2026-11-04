@@ -750,6 +750,19 @@
       "title": "Apple unveils groundbreaking MacBook Pro with PROLED XDR Display",
       "url": "https://www.apple.com/newsroom/2026/10/apple-unveils-groundbreaking-macbook-pro-with-proled-xdr-display/"
     },
+    "d89377dc82be1e74": {
+      "detectedAt": "2026-11-04T08:33:24+00:00",
+      "finishedAt": "2026-11-04T08:35:11+00:00",
+      "outcome": "skipped",
+      "reason": "抽出された本文はChrome Releasesブログのメニューやラベル、アーカイブ一覧だけで、Chromeのバージョン番号・修正内容・セキュリティ修正などの具体的な情報が含まれていない。記事化できる事実が確認できないため見送る。",
+      "run": "41800546374",
+      "slug": "",
+      "source": "radar-official",
+      "sourcePublishedAt": "2026-11-04T06:16:07+00:00",
+      "startedAt": "2026-11-04T08:34:57+00:00",
+      "title": "Stable Channel Update for Desktop",
+      "url": "https://chromereleases.googleblog.com/2026/11/stable-channel-update-for-desktop.html"
+    },
     "d94c9f77ddafc83a": {
       "detectedAt": "2026-11-03T21:13:24+00:00",
       "finishedAt": "2026-11-03T21:15:42+00:00",
