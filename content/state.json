@@ -6080,6 +6080,14 @@
       "skipped": true,
       "url": "https://sakana.ai/api-platform-earlyaccess/"
     },
+    "431523e8b33d731a": {
+      "at": "2026-11-04T05:22:45.145834+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 92,
+      "section": "ai",
+      "slug": "salesforce-agent-fabric-evals-cost",
+      "url": "https://www.salesforce.com/jp/news/stories/agent-fabric-catch-failures-control-ai-costs/"
+    },
     "4318350f0fd23a61": {
       "at": "2026-10-28T23:13:03.555197+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（調達）",
@@ -13918,46 +13926,6 @@
   },
   "quality_log": [
     {
-      "accepted": true,
-      "at": "2026-11-02T15:12:16.344144+00:00",
-      "attempt": 1,
-      "id": "1b0064df51b95a9e",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 71.2,
-        "avg_sentence": 33.2,
-        "long_share": 0.041,
-        "max_paragraph": 126,
-        "paragraphs": 34,
-        "sentences": 73
-      },
-      "score": 93,
-      "source": "radar-official",
-      "title": "Anthropic, PBC - S-1/A-1"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T15:32:02.485426+00:00",
-      "attempt": 1,
-      "id": "3fa1bc8326d32871",
-      "kind": "broad",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 69.8,
-        "avg_sentence": 36.6,
-        "long_share": 0.071,
-        "max_paragraph": 117,
-        "paragraphs": 22,
-        "sentences": 42
-      },
-      "score": 95,
-      "source": "honda-news",
-      "title": "＜EICMA 2026＞ Honda初のハイエンド電動アシストマウンテンバイク「Honda RN0」を世界初公開 ～二輪車開発で培ったノウハウと最新e-MTB技"
-    },
-    {
       "accepted": false,
       "at": "2026-11-02T16:01:23.826138+00:00",
       "attempt": 1,
@@ -20277,6 +20245,56 @@
       "title": "2026年度 第2四半期決算について",
       "warnings": [
         "初めて出たところで言い換えていない略語（IFRS）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T05:22:01.835729+00:00",
+      "attempt": 1,
+      "id": "431523e8b33d731a",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "文が長い（1文の平均 47.2字・60字超の文が 20% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 85.9,
+        "avg_sentence": 47.2,
+        "long_share": 0.2,
+        "max_paragraph": 150,
+        "paragraphs": 22,
+        "sentences": 40
+      },
+      "score": 90,
+      "source": "salesforce-jp",
+      "title": "Salesforce、「MuleSoft / Agent Fabric」の機能拡張を発表 トークンコスト増加とAIエージェントの障害が顧客に影響が及ぼす前に自動",
+      "warnings": [
+        "見出しが48字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（MCP・IP・ASICS）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T05:22:36.778065+00:00",
+      "attempt": 0,
+      "id": "431523e8b33d731a",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 84.0,
+        "avg_sentence": 42.0,
+        "long_share": 0.13,
+        "max_paragraph": 150,
+        "paragraphs": 23,
+        "sentences": 46
+      },
+      "score": 92,
+      "source": "salesforce-jp",
+      "title": "Salesforce、「MuleSoft / Agent Fabric」の機能拡張を発表 トークンコスト増加とAIエージェントの障害が顧客に影響が及ぼす前に自動",
+      "warnings": [
+        "見出しが48字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（MCP・IP・ASICS）"
       ]
     }
   ],

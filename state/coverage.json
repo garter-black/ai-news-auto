@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "salesforce-agent-fabric-evals-cost",
+   "at": "2026-11-04T05:21:54.084846+00:00",
+   "title": "Salesforceが「Agent Fabric」にAI評価とコスト管理機能　品質低下で自動停止",
+   "head": "Salesforceが「Agent Fabric」にAI評価とコスト管理機能　品質低下で自動停止 | Salesforce、「MuleSoft / Agent Fabric」の機能拡張を発表 トークンコスト増加とAIエージェントの障害が顧客に影響が及ぼす前に自動で停止可能に",
+   "text": "Salesforceが「Agent Fabric」にAI評価とコスト管理機能　品質低下で自動停止 | Salesforce、「MuleSoft / Agent Fabric」の機能拡張を発表 トークンコスト増加とAIエージェントの障害が顧客に影響が及ぼす前に自動で停止可能に | Agent Fabric / MuleSoft / Salesforce / AIエージェント / Agent Evals / トークンコスト / AIコントロールプレーン / Agent Kill Switch / AIガバナンス / FinOps / Salesforce / MuleSoft / AIエージェント / 生成AI / AIガバナンス",
+   "urls": [
+    "https://www.salesforce.com/jp/news/stories/agent-fabric-catch-failures-control-ai-costs/"
+   ]
+  },
+  {
    "slug": "ntt-fy2026-q2-results",
    "at": "2026-11-04T04:36:00.675998+00:00",
    "title": "NTT、中間決算は増収減益　通期予想を上方修正し営業利益1兆7,300億円に",

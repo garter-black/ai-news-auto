@@ -6,7 +6,7 @@
   "companyName": "Google",
   "category": "AIモデル",
   "overview": {
-    "text": "Genie 4は、言葉で指示してリアルタイムに動かす仮想の世界を作れるAIモデルです。Googleが2026年10月27日に研究を発表しました。",
+    "text": "Genie 4は、言葉で指示しながらリアルタイムに操作できる仮想世界を作るAIモデルです。Google DeepMindが2026年10月27日に発表しました。",
     "sources": [
       "google-genie-4-world-model"
     ]
@@ -14,70 +14,63 @@
   "facts": [
     {
       "label": "提供開始",
-      "value": "限定テスター向けに提供中",
-      "sources": [
-        "google-genie-4-world-model"
-      ]
-    },
-    {
-      "label": "日本での提供",
-      "value": "記載なし",
+      "value": "限られたテスター向けに提供中",
       "sources": [
         "google-genie-4-world-model"
       ]
     },
     {
       "label": "向いている人",
-      "value": "開発者・制作者",
+      "value": "開発者や制作者",
       "sources": [
-        "google-ai-news-october-2026"
+        "google-genie-4-world-model"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "動かしている最中に、言葉でカメラを動かしたり天気を変えたりできます。",
+      "text": "動かしている最中に、普段の言葉でカメラの移動や天気の変更、登場人物の追加をリアルタイムで指示できます。",
       "sources": [
         "google-genie-4-world-model"
       ]
     },
     {
-      "text": "新しい登場人物を出すなどの操作を、言葉でその場で行えます。",
+      "text": "どの世界でも、周囲の環境音や音楽、対話の音声をその場で自動生成します。",
       "sources": [
         "google-genie-4-world-model"
       ]
     },
     {
-      "text": "環境音、音楽、対話型の会話などの音声を、自動で一緒に作ることができます。",
+      "text": "ロボットやAIエージェントを安全に訓練するための環境づくりに活用できます。",
+      "sources": [
+        "google-genie-4-world-model",
+        "google-ai-news-october-2026"
+      ]
+    },
+    {
+      "text": "映画制作、報道、ゲーム、製造といった分野の創作ツールとして使えます。",
       "sources": [
         "google-genie-4-world-model"
       ]
     }
   ],
   "pricing": [],
-  "japan": [
-    {
-      "text": "発表の時点では、日本での提供について案内はありません。",
-      "sources": [
-        "google-genie-4-world-model"
-      ]
-    }
-  ],
+  "japan": [],
   "howto": [
     {
-      "text": "現在は、信頼できる限られたテスターに順次提供されています。",
+      "text": "限られた信頼できるテスター向けに提供されています。",
       "sources": [
         "google-genie-4-world-model"
       ]
     },
     {
-      "text": "今後はGoogle AI Ultraの契約者向けにProject Genieで提供される予定です。",
+      "text": "近日中にGoogle AI Ultraの契約者向けにProject Genieとして提供される予定です。",
       "sources": [
         "google-genie-4-world-model"
       ]
     },
     {
-      "text": "早期アクセスのパートナー向けに、Gemini APIとAI Studioで提供予定です。",
+      "text": "早期アクセスのパートナー向けにGemini APIやAI Studioでの提供が予定されています。",
       "sources": [
         "google-genie-4-world-model"
       ]
@@ -86,29 +79,23 @@
   "differences": [],
   "faq": [
     {
-      "q": "いつから使える？",
-      "a": "現在は一部の限定テスター向けに提供中で、今後はGoogle AI UltraやGemini APIなどで順次提供予定です。",
+      "q": "日本語で指示を出せる？",
+      "a": "日本での提供や日本語の指示への対応は、まだ示されていません。",
+      "sources": [
+        "google-genie-4-world-model",
+        "google-ai-news-october-2026"
+      ]
+    },
+    {
+      "q": "どんな人に向いている？",
+      "a": "ロボットやAIエージェントの訓練環境を求めている人や、映画制作・ゲームなどの創作分野の制作者に向いています。",
       "sources": [
         "google-genie-4-world-model"
       ]
     },
     {
-      "q": "誰に向いている？",
-      "a": "映画やゲームを作る人、ロボットなどを研究する人に関係する発表とされています。",
-      "sources": [
-        "google-genie-4-world-model"
-      ]
-    },
-    {
-      "q": "どのような音が出る？",
-      "a": "環境音、音楽、対話型の会話の3種類の音声が、その場で自動的に生成されます。",
-      "sources": [
-        "google-genie-4-world-model"
-      ]
-    },
-    {
-      "q": "どのように操作できる？",
-      "a": "自然な言葉を使って、場面を動かしている最中に操作することができます。",
+      "q": "音声はどのように用意される？",
+      "a": "映像とは別に音を用意しなくても、周囲の環境音や音楽、対話の音声がその場で自動生成されます。",
       "sources": [
         "google-genie-4-world-model"
       ]
@@ -118,7 +105,7 @@
     {
       "date": "2026-10-27",
       "slug": "google-genie-4-world-model",
-      "event": "GoogleがGenie 4の研究を発表"
+      "event": "世界モデルの新版「Genie 4」を発表"
     }
   ],
   "related": [
@@ -134,9 +121,9 @@
   "linkFrom": [
     "google-genie-4-world-model"
   ],
-  "signature": "10b60cccefc18a03",
-  "primarySignature": "0d1b63510905edea",
+  "signature": "ec93fe0639d9e4ce",
+  "primarySignature": "10aac40784d62cb4",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-11-01T18:17:09+00:00",
-  "updatedAt": "2026-11-03T11:21:20+00:00"
+  "updatedAt": "2026-11-04T05:23:21+00:00"
 }
