@@ -203,9 +203,36 @@ def build_record(text: str, link: str, title: str, desc: str, thumb: dict | None
     }
 
 
+PUBLIC_API = "https://public.api.bsky.app/xrpc"
+
+
+def existing_uri(session: dict, link: str, fetcher=None) -> str:
+    """同じ記事（同じ号）の投稿が、自分の直近の投稿にもうあれば、その URI（1記事1投稿。2026-11-04 の二重投稿のあと）。
+    読めなければ例外（出さない。次の回にもう一度）"""
+    m = re.search(r"/(?:articles|digest)/[^/?#\s]+", link)
+    if not m:
+        return ""
+    needle = m.group(0)
+    actor = urllib.parse.quote(session.get("did") or session.get("handle") or "")
+    if fetcher is None:
+        def fetcher(url):
+            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "saisoku-bluesky/1.0"}), timeout=30) as res:
+                return json.loads(res.read() or b"{}")
+    feed = fetcher(f"{PUBLIC_API}/app.bsky.feed.getAuthorFeed?actor={actor}&limit=60&filter=posts_no_replies").get("feed") or []
+    for item in feed:
+        post = item.get("post") or {}
+        if needle in json.dumps(post.get("record") or {}, ensure_ascii=False) or needle in json.dumps(post.get("embed") or {}, ensure_ascii=False):
+            return post.get("uri", "")
+    return ""
+
+
 def create_record(session: dict, record: dict, p: dict, media: list[dict]) -> dict:
-    """Bluesky に1件出す。出す直前に SNS ルールの門番（sns_rules）を通す。違反なら SnsRuleViolation（出さない）"""
+    """Bluesky に1件出す。出す直前に SNS ルールの門番（sns_rules）を通し、同じ記事の投稿がもう無いかを自分の投稿で確かめる
+    （あればそれを返す＝二重に出さない）。違反なら SnsRuleViolation（出さない）"""
     sns_rules.enforce("bluesky", record["text"], media, p.get("gate"), source="bluesky_post", kind=p.get("kind", "article"), links=[p["link"]])
+    if uri := existing_uri(session, p["link"]):
+        log(f"  [bluesky] 同じ記事の投稿がもうあります（{uri}）。二重に出しません")
+        return {"uri": uri, "existing": True}
     return xrpc("com.atproto.repo.createRecord",
                 {"repo": session["did"], "collection": "app.bsky.feed.post", "record": record}, session["accessJwt"])
 

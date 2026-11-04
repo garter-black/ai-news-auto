@@ -71,6 +71,9 @@ jobs:
         run: nohup sh -c 'docker run -d --rm --name voicevox -p 50021:50021 voicevox/voicevox_engine:cpu-latest' > /tmp/voicevox.log 2>&1 &
       - uses: actions/checkout@v7
         with:
+          # workflow_run の既定は「きっかけの時点の commit」で、待っている間にほかの回が送った記録が見えない
+          # （2026-11-04 Kimi K3 の二重投稿）。いつも最新の main を読む
+          ref: main
           fetch-depth: 1
       - uses: actions/setup-python@v7
         with:

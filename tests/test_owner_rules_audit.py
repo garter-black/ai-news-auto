@@ -157,7 +157,8 @@ class SnsTest(unittest.TestCase):
                                                                      "[ルール1] 本文に記事のリンクがない", "[ルール2] 画像が 16:9 でない", "[ルール3] 「ざっくり」"]},
             {"platform": "bluesky", "url": "u4", "text": "y", "reply": True, "_v": ["[ルール1] x"]},
         ]
-        self.assertEqual({"S1", "S2", "S3", "S4", "S6", "S7", "S8", "S10"}, ids(audit.sns_problems(posts, judge)))
+        # 同じ SNS に同じ記事が2つは S20（2026-11-04。S8 の「1記事1投稿」をSNSごとに見張る）
+        self.assertEqual({"S1", "S2", "S3", "S4", "S6", "S7", "S20", "S10"}, ids(audit.sns_problems(posts, judge)))
 
     def test_comment_hours(self):
         self.assertFalse(audit.comment_time_ok("10:19"))

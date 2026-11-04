@@ -1696,9 +1696,69 @@ def utc_z(when: datetime) -> str:
     return when.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
+class DuplicatePost(RuntimeError):
+    """同じ記事の投稿が、この SNS の Buffer にもう入っている（予約中・出した）。作らない（2026-11-04 Kimi K3 の二重投稿のあと）"""
+
+    def __init__(self, existing_id: str, service: str, needle: str):
+        self.existing_id = existing_id
+        super().__init__(f"同じ記事の投稿が {service} にもうあります（{existing_id}・{needle}）。二重に作りません")
+
+
+# 実行の中で読んだ Buffer の投稿（チャンネル → [(id, 本文)]）。作ったものは足していく（同じ実行で二度作らない）
+_BUFFER_RECENT: dict[str, list[tuple[str, str]]] = {}
+RECENT_POSTS_FIELDS = "id status dueAt text metadata { ... on ThreadsPostMetadata { thread { text } } ... on TwitterPostMetadata { thread { text } } }"
+
+
+def post_needle(article: dict | None, kind: str) -> str:
+    """同じ投稿かを見分ける印（記事のパス・朝のまとめの号のパス）"""
+    article = article or {}
+    if kind == "digest":
+        m = re.search(r"/digest/[^/?#\s]+", str(article.get("link") or ""))
+        return m.group(0) if m else ""
+    return f"/articles/{article['slug']}" if article.get("slug") else ""
+
+
+def recent_channel_posts(api_key: str, channel_id: str, gql=None) -> list[tuple[str, str]]:
+    """このチャンネルの、前後48時間の予約中・送信中・出した投稿（id, 本文と返信をつないだ文）。実行の中で1回だけ Buffer を読む"""
+    if channel_id in _BUFFER_RECENT:
+        return _BUFFER_RECENT[channel_id]
+    gql = gql or buffer_graphql
+    now = datetime.now(timezone.utc)
+    found: list[tuple[str, str]] = []
+    for org_id in buffer_org_ids(api_key):
+        flt = (f"status: [scheduled, sending, sent], channelIds: [{json.dumps(channel_id)}], "
+               f"startDate: {json.dumps(utc_z(now - timedelta(hours=48)))}, endDate: {json.dumps(utc_z(now + timedelta(hours=48)))}")
+        data = gql(api_key, f"query {{ posts(first: 100, input: {{ organizationId: {json.dumps(org_id)}, filter: {{ {flt} }} }}) {{ edges {{ node {{ {RECENT_POSTS_FIELDS} }} }} }} }}")
+        for edge in data["posts"]["edges"]:
+            node = edge["node"]
+            thread = ((node.get("metadata") or {}).get("thread")) or []
+            found.append((node.get("id", ""), "\n".join([node.get("text") or ""] + [t.get("text") or "" for t in thread])))
+    _BUFFER_RECENT[channel_id] = found
+    return found
+
+
+def ensure_not_duplicate(api_key: str, post_input: dict, service: str, article: dict | None, kind: str, gql=None) -> None:
+    """作る直前に、同じ記事の投稿がこの SNS の Buffer にもう無いかを確かめる（1記事1投稿。S8・S20）。
+    あれば DuplicatePost。Buffer を読めなければ作らない（BufferUnavailable などをそのまま投げる）。下書きは見ない"""
+    needle = post_needle(article, kind)
+    channel = str(post_input.get("channelId") or "")
+    if not needle or not channel or post_input.get("saveToDraft") or kind == "video_followup":
+        return
+    for post_id, text in recent_channel_posts(api_key, channel, gql):
+        if needle in text:
+            raise DuplicatePost(post_id, service, needle)
+
+
 def create_post(api_key: str, post_input: dict, *, service: str, article: dict | None, source: str, kind: str = "article") -> str:
-    """Buffer に投稿を1件作り、投稿IDを返す。作る直前に SNS ルールの門番（sns_rules）を通す。違反なら SnsRuleViolation"""
+    """Buffer に投稿を1件作り、投稿IDを返す。作る直前に SNS ルールの門番（sns_rules）を通し、
+    同じ記事の投稿がこの SNS にもう無いかを Buffer で確かめる（あれば DuplicatePost。2026-11-04 の二重投稿のあと）"""
     sns_rules.enforce_buffer(service, post_input, article, source=source, kind=kind)
+    try:
+        ensure_not_duplicate(api_key, post_input, service, article, kind)
+    except DuplicatePost as dup:
+        # もうある投稿をこの投稿として扱う（作らない）。呼び出し側はいつもどおり ID を記録する
+        log(f"  [{service}] {dup}（{source}）")
+        return dup.existing_id
     data = buffer_graphql(
         api_key,
         """mutation($input: CreatePostInput!) {
@@ -1713,6 +1773,9 @@ def create_post(api_key: str, post_input: dict, *, service: str, article: dict |
     result = data["createPost"]
     if "message" in result:
         raise RuntimeError(f"Buffer: {result['message']}")
+    needle = post_needle(article, kind)
+    if needle and post_input.get("channelId") in _BUFFER_RECENT:
+        _BUFFER_RECENT[post_input["channelId"]].append((result["post"]["id"], needle))
     return result["post"]["id"]
 
 

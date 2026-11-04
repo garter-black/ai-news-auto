@@ -549,7 +549,23 @@ def _eligible_default(slug: str) -> bool:
     return (ARTICLES / f"{slug}.json").exists()
 
 
-def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=None, issue=None, eligible=None) -> list[dict]:
+def remote_queued(slug: str) -> dict:
+    """main の最新の state/sns_video.json にある、この記事の送った記録（ほかの実行が先に送っていないか。2026-11-04 Kimi K3 の二重投稿のあと）。
+    読めなければ {}（その場合も Buffer の確かめ threads_post.ensure_not_duplicate が止める）"""
+    if os.environ.get("GITHUB_ACTIONS") != "true":
+        return {}
+    try:
+        subprocess.run(["git", "fetch", "-q", "--depth", "1", "origin", "main"], cwd=ROOT, check=True, capture_output=True, timeout=60)
+        out = subprocess.run(["git", "show", "origin/main:state/sns_video.json"], cwd=ROOT, check=True, capture_output=True, text=True, timeout=30).stdout
+        data = json.loads(out)
+    except Exception:  # noqa: BLE001
+        return {}
+    q = (data.get("queued") or {}).get(slug) or {}
+    extra = (data.get("extraQueued") or {}).get(slug) or {}
+    return q if (q.get("status") == "created" or any((q.get("channels") or {}).values())) else (extra if extra.get("status") == "created" else {})
+
+
+def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=None, issue=None, eligible=None, remote=None) -> list[dict]:
     """（2026-11-03 オーナー指示「SNS の投稿は動画のはず」）動画を待っている記事の投稿（threads_post.queue_for_video）を、
     動画ができたものから**枠の順番に**動画つきで Buffer に送る。
       - 枠の時刻がまだ先なら、その時刻に予約。過ぎていれば（動画が遅れた）今から QUEUE_LEAD_MIN 分後に予約（遅らせる）。
@@ -562,6 +578,7 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
     creator = creator or create_queued
     issue = issue or missing_issue
     eligible = eligible or _eligible_default
+    remote = remote or remote_queued
     queue = state.setdefault("queued", {})
     videos = state.get("videos") or {}
     rows = []
@@ -610,6 +627,13 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
         if not variant:
             q.update({"status": "skipped", "why": "投稿に使える版が無い"})
             issue(slug, q["why"])
+            out.append({"slug": slug, **q})
+            continue
+        theirs = remote(slug)
+        if theirs:
+            # ほかの実行（同時に動いた回）がもう送った。作らずに、その記録を写す（1記事1投稿）
+            q.update({**{k: theirs.get(k) for k in ("status", "id", "dueAt", "variant", "channels") if theirs.get(k)}, "status": "created", "why": "ほかの実行が先に送った"})
+            log(f"[video-followup] {slug} はほかの実行がもう送っています。二重に作りません: {q.get('channels')}")
             out.append({"slug": slug, **q})
             continue
         report = versions[variant]["post"]

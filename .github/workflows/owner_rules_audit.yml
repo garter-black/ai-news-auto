@@ -37,6 +37,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           SNS_RULES_NO_ISSUE: "1"
+          # 二重投稿の点検（S20）に Buffer の投稿を読む（読むだけ・1日数回。回数の記録は state/buffer_calls/audit.json）
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_LEDGER: audit
         run: python scripts/owner_rules_audit.py --latest "${{ inputs.latest || '20' }}" --issue --out out/owner_rules_audit.json
       - uses: actions/upload-artifact@v7
         if: always()

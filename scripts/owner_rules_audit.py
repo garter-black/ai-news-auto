@@ -55,7 +55,7 @@ OWNER_NAME_PAGES = ("/about", "/editorial-policy")
 
 # この点検が確かめる台帳の番号（docs/owner_rules.md の「点検」列と一致させる。tests/test_owner_rules_ledger.py）
 AUDIT_RULES = (
-    "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S13", "S14", "S19",
+    "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S13", "S14", "S20", "S19",
     "I2", "I4", "I5",
     "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23", "A24", "A25", "A26", "A28", "A29", "A30", "A32", "A37", "A38",
     "W3", "W5", "W6", "W10", "W11", "W12", "W13", "W17", "W18", "W19", "W20", "W21", "W22", "W23",
@@ -762,12 +762,12 @@ def sns_problems(posts: list[dict], judge) -> list[str]:
             pass
         for v in judge(post) or []:
             out.append(f"{_sns_rule_id(v)} {post.get('platform')} {when}: {v}（{where}）")
-        links = " ".join([post.get("text") or "", *(post.get("links") or [])])
+        links = " ".join([post.get("text") or "", *(post.get("links") or []), *(post.get("replies") or [])])  # X は返信にリンク
         if m := re.search(r"/articles/([A-Za-z0-9_-]+)", links):
-            slug = m.group(1)
-            if slug in seen and seen[slug] != where:
-                out.append(f"[S8] 同じ記事の投稿が2つある（{slug}: {seen[slug]} と {where}）")
-            seen.setdefault(slug, where)
+            key = f"{post.get('platform')}:{m.group(1)}"  # SNS ごとに1記事1投稿（Threads と X に同じ記事は正しい）
+            if key in seen and seen[key] != where:
+                out.append(f"[S20] 同じ SNS に同じ記事の投稿が2つある（{key}: {seen[key]} と {where}）")
+            seen.setdefault(key, where)
     return out
 
 
@@ -1010,6 +1010,16 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
         found["SNS（Bluesky の直近の投稿 %d 本）" % len([p for p in posts if not p.get("reply")])] = v
     except Exception as error:  # noqa: BLE001
         found["SNS"] = [f"[S11] SNS の投稿を読めなかった（{type(error).__name__}）"]
+    # SNS（Threads・X・Facebook の二重投稿。Buffer の鍵があるときだけ・読むだけ・1日数回の呼び出し）
+    if os.environ.get("BUFFER_API_KEY"):
+        try:
+            import sns_audit  # noqa: PLC0415
+
+            since = datetime.now(timezone.utc) - timedelta(days=max(sns_days, 2.0))
+            posts = [sns_audit.normalize_buffer(n) for n in sns_audit.buffer_posts(os.environ["BUFFER_API_KEY"], since)]
+            found["SNS（Threads・X・Facebook の二重投稿）"] = [v for v in sns_problems(posts, lambda post: []) if v.startswith("[S20]")]
+        except Exception as error:  # noqa: BLE001
+            found["SNS（二重投稿）"] = [f"[S20] Buffer の投稿を読めなかった（{type(error).__name__}）"]
     # SNS（Threads・X・Facebook の動画の有無。手元の記録だけ・Buffer の回数を使わない）
     try:
         root = Path(__file__).resolve().parent.parent / "state"

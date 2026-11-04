@@ -36,6 +36,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: main  # きっかけの時点の古い commit ではなく、最新の記録を読む（二重投稿よけ）
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"

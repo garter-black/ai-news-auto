@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import ast
+import json
 import sys
 import unittest
 from datetime import datetime, timedelta, timezone
@@ -418,3 +419,84 @@ class OwnerAuditTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class NoDuplicateTest(unittest.TestCase):
+    """（2026-11-04 Kimi K3 の二重投稿・台帳 S20）同時に動いた2つの実行が、同じ記事を同じ SNS に2回出さない"""
+
+    def fake_buffer(self):
+        store: list[dict] = []
+        calls = {"create": 0}
+
+        def gql(api_key, query, variables=None, gated=False, role=None):
+            if "createPost" in query:
+                calls["create"] += 1
+                inp = variables["input"]
+                thread = (((inp.get("metadata") or {}).get("threads") or (inp.get("metadata") or {}).get("twitter") or {}).get("thread")) or []
+                store.append({"id": f"P{len(store) + 1}", "channel": inp["channelId"], "text": inp.get("text", ""),
+                              "metadata": {"thread": [{"text": t.get("text", "")} for t in thread]}})
+                return {"createPost": {"post": {"id": store[-1]["id"]}}}
+            if "posts(" in query:
+                ch = query.split("channelIds: [")[1].split("]")[0].strip('"')
+                return {"posts": {"edges": [{"node": {k: v for k, v in n.items() if k != "channel"}} for n in store if n["channel"] == ch]}}
+            raise AssertionError(query[:80])
+
+        return gql, store, calls
+
+    def run_once(self, gql, posted, videos):
+        tp._BUFFER_RECENT.clear()  # 実行ごとに別のプロセス
+        state = {"videos": json.loads(json.dumps(videos))}
+        with patch.object(tp, "buffer_graphql", gql), patch.object(tp, "buffer_org_ids", return_value=["org"]), \
+                patch.object(r, "enforce_buffer"), patch.object(fu, "article_of", lambda report: ART):
+            fu.publish_queued(state, {"posted": json.loads(json.dumps(posted))}, NOW, FLAGS,
+                              creator=lambda svc, inp, art: tp.create_post("k", inp, service=svc, article=art, source="test"),
+                              issue=lambda s, w: None, eligible=lambda s: True, remote=lambda s: {})
+        return state
+
+    def test_two_overlapping_runs_create_each_post_once(self):
+        gql, store, calls = self.fake_buffer()
+        posted = {"acme-tool": queued_rec(NOW + timedelta(minutes=30))}
+        videos = {"acme-tool": ready_video("acme-tool")}
+        a = self.run_once(gql, posted, videos)  # 1つ目の実行
+        b = self.run_once(gql, posted, videos)  # 2つ目の実行は古い記録のまま（1つ目の記録をまだ読んでいない）
+        self.assertEqual(calls["create"], 3)  # Threads・X・Facebook に1つずつだけ
+        self.assertEqual(a["queued"]["acme-tool"]["channels"], b["queued"]["acme-tool"]["channels"])  # 2つ目はもうある投稿を記録
+
+    def test_remote_record_from_other_run_stops_creation(self):
+        gql, store, calls = self.fake_buffer()
+        state = {"videos": {"acme-tool": ready_video("acme-tool")}}
+        theirs = {"status": "created", "id": "T9", "channels": {"threads": "T9"}}
+        with patch.object(fu, "article_of", lambda report: ART):
+            out = fu.publish_queued(state, {"posted": {"acme-tool": queued_rec(NOW + timedelta(minutes=30))}}, NOW, FLAGS,
+                                    creator=lambda *a: self.fail("作ってはいけない"), issue=lambda s, w: None, eligible=lambda s: True,
+                                    remote=lambda s: theirs)
+        self.assertEqual((out[0]["status"], out[0]["id"]), ("created", "T9"))
+
+    def test_cannot_check_buffer_means_do_not_create(self):
+        import buffer_budget
+
+        tp._BUFFER_RECENT.clear()
+
+        def down(*a, **k):
+            raise buffer_budget.BufferUnavailable("429")
+
+        inp = {"channelId": "c", "text": "x"}
+        with patch.object(tp, "buffer_graphql", down), patch.object(tp, "buffer_org_ids", return_value=["org"]), patch.object(r, "enforce_buffer"):
+            with self.assertRaises(buffer_budget.BufferUnavailable):
+                tp.create_post("k", inp, service="threads", article=ART, source="test")
+
+    def test_bluesky_does_not_repost_same_article(self):
+        import bluesky_post as bp
+
+        feed = {"feed": [{"post": {"uri": "at://me/post/1", "record": {"text": "…", "facets": [{"features": [{"uri": f"{LINK}?utm_source=bluesky"}]}]}}}]}
+        self.assertEqual(bp.existing_uri({"did": "did:me"}, f"{LINK}?utm_source=bluesky", fetcher=lambda url: feed), "at://me/post/1")
+        self.assertEqual(bp.existing_uri({"did": "did:me"}, "https://ai-tech-express.jp/articles/other", fetcher=lambda url: feed), "")
+
+    def test_audit_flags_two_posts_of_one_article_on_one_sns(self):
+        import owner_rules_audit as audit
+
+        posts = [{"platform": "threads", "id": "1", "text": LINK}, {"platform": "x", "id": "2", "text": "", "replies": [LINK]},
+                 {"platform": "threads", "id": "3", "text": LINK}]
+        out = audit.sns_problems(posts, lambda post: [])
+        self.assertEqual(len(out), 1)
+        self.assertTrue(out[0].startswith("[S20]") and "threads:acme-tool" in out[0])
