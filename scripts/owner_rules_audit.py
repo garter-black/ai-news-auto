@@ -188,12 +188,22 @@ def record_problems(record: dict, page_headings: bool = False) -> list[str]:
     return list(dict.fromkeys(out))
 
 
+# 動かせなかった検査（2026-11-04 一貫性の点検: 読み込めない検査を「違反なし」と同じに扱わない。issue に1行ずつ出す）
+CHECK_ERRORS: dict[str, None] = {}
+
+
+def cannot_check(rule: str, module: str, error: Exception) -> list[str]:
+    """検査を動かせなかったことを記録する（記事ごとに同じ行を並べないよう、run() の最後にまとめて1回だけ出す）"""
+    CHECK_ERRORS[f"[{rule}] 点検を動かせなかった（{module} を使えない: {type(error).__name__}）"] = None
+    return []
+
+
 def pricing_problems(record: dict) -> list[str]:
     """[A32] 料金が話題でない記事（研究・決算・脆弱性・提携など）の料金表（scripts/pricing_scope.py と同じ規則）"""
     try:
         import pricing_scope  # noqa: PLC0415
-    except Exception:  # noqa: BLE001
-        return []
+    except Exception as error:  # noqa: BLE001
+        return cannot_check("A32", "pricing_scope", error)
     if record.get("type") == "roundup" or not pricing_scope.has_table(record) or pricing_scope.relevant(record):
         return []
     return [f"[A32] 料金が話題でない記事に料金表（{pricing_scope.news_type(record)}）"]
@@ -204,8 +214,8 @@ def genre_problems(record: dict) -> list[str]:
     A23: エンタメはビジネス・テックの目線だけ（作品の告知・ゴシップの記事を作らない）。判定は scripts/genre_focus.py（生成の門と同じ）"""
     try:
         import genre_focus  # noqa: PLC0415
-    except Exception:  # noqa: BLE001
-        return []
+    except Exception as error:  # noqa: BLE001
+        return cannot_check("A22", "genre_focus", error)
     out = [f"[A22] {p}" for p in genre_focus.advice_problems(record)]
     if record.get("genreSlug") == "entertainment" and not genre_focus.entertainment_focus(record.get("title") or "", record.get("tags")):
         out.append("[A23] エンタメの記事がビジネス・テックの目線ではない（作品の告知・ゴシップ。料金・決算・販売本数・AI・規約の話ではない）")
@@ -216,8 +226,8 @@ def label_problems(record: dict) -> list[str]:
     """A30: ジャンル（タブ）の付け間違い・タグの会社名の形の混ざり（scripts/labels.py。生成の門と同じ判定）"""
     try:
         import labels  # noqa: PLC0415
-    except Exception:  # noqa: BLE001
-        return []
+    except Exception as error:  # noqa: BLE001
+        return cannot_check("A30", "labels", error)
     out = []
     if fixed := labels.genre_fix(record):
         out.append(f"[A30] ジャンルの付け間違い（{record.get('genreSlug')} → {fixed[0]}: {fixed[1]}）")
@@ -239,8 +249,8 @@ def type_problems(record: dict) -> list[str]:
         return []
     try:
         import article_style  # noqa: PLC0415
-    except Exception:  # noqa: BLE001
-        return []
+    except Exception as error:  # noqa: BLE001
+        return cannot_check("A18", "article_style", error)
     out = [] if record.get("newsType") else ["[A18] ニュースの種類の型で書かれていない（newsType が無い）"]
     # [A38]: 「この記事のポイント」の1つ目が一番のニュースの言い換えになっていない（article_style.lead_point_problem）
     out += [f"[{code}] {msg}" for code, msg in article_style.coded_problems(record) if code in ("A18", "A19", "A38")]
@@ -256,8 +266,8 @@ def image_record_problems(record: dict) -> list[str]:
 
         if images.product_launch(record):
             return ["[I2] 発表された製品・車・端末を AI で描いた画像"]
-    except Exception:  # noqa: BLE001
-        pass
+    except Exception as error:  # noqa: BLE001
+        return cannot_check("I2", "images", error)
     return []
 
 
@@ -266,8 +276,8 @@ def low_value_problems(record: dict) -> list[str]:
     try:
         import indexnow  # noqa: PLC0415
         import retire_articles  # noqa: PLC0415
-    except Exception:  # noqa: BLE001
-        return []
+    except Exception as error:  # noqa: BLE001
+        return cannot_check("A10", "indexnow・retire_articles", error)
     channel = record.get("channelSlug")
     if channel in indexnow.CREATOR_CHANNELS:
         return ["[A10] 他人の動画の要約の記事（新しく作らない種類）"]
@@ -290,8 +300,8 @@ def notice_problems(record: dict, sns: set[str] | dict | None = None) -> list[st
     try:
         import notice_gate  # noqa: PLC0415
         import retire_articles  # noqa: PLC0415
-    except Exception:  # noqa: BLE001
-        return []
+    except Exception as error:  # noqa: BLE001
+        return cannot_check("A26", "notice_gate・retire_articles", error)
     kind = notice_gate.notice_reason(record)
     if not kind:
         return []
@@ -313,8 +323,8 @@ def creator_video_problems(record: dict) -> list[str]:
     まとめ記事も、表紙・元の動画が他人のチャンネルの動画なら同じ（発信元が CREATOR_CHANNELS）"""
     try:
         import indexnow  # noqa: PLC0415
-    except Exception:  # noqa: BLE001
-        return []
+    except Exception as error:  # noqa: BLE001
+        return cannot_check("A10", "indexnow", error)
     if record.get("channelSlug") in indexnow.CREATOR_CHANNELS:
         return ["[A10] 他人の動画の要約の記事が残っている（python3 scripts/retire_articles.py --creator --apply で取り下げる）"]
     return []
@@ -325,8 +335,8 @@ def research_firm_problems(record: dict) -> list[str]:
     （免責文が「公式発表の文章をもとに」・その会社のサイトの写真を公式写真として使っている）。2026-11-04 オーナー決定 D2"""
     try:
         import research_firms  # noqa: PLC0415
-    except Exception:  # noqa: BLE001
-        return []
+    except Exception as error:  # noqa: BLE001
+        return cannot_check("A37", "research_firms", error)
     firm = research_firms.article_firm(record)
     if not firm:
         return []
@@ -711,9 +721,8 @@ def live_line_problems(html: str, by_slug: dict[str, dict]) -> list[str]:
         import sns_rules  # noqa: PLC0415
 
         fast = sns_rules.is_fast_news(article)
-    except Exception:  # noqa: BLE001
-        minutes = article.get("speedMinutes")
-        fast = bool(article.get("breaking")) or isinstance(minutes, (int, float))
+    except Exception as error:  # noqa: BLE001
+        return cannot_check("W23", "sns_rules", error)  # 判定できないのに「速報でよい」としない
     return [] if fast else [f"[W23] 速報ではない記事（{link.group(1)}）にヘッダー下の赤い「速報」が付いている。「最新」にする"]
 
 
@@ -916,7 +925,8 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
         import retire_articles  # noqa: PLC0415
 
         sns = retire_articles.sns_posts(everywhere=True)
-    except Exception:  # noqa: BLE001
+    except Exception as error:  # noqa: BLE001
+        cannot_check("A26", "retire_articles.sns_posts", error)
         sns = {}
     for a in load_articles():
         # A37: 調査会社・情報会社の記事の「公式発表」の表示。A10: 他人の動画の要約（前から残っているものも。全部の記事）
@@ -999,6 +1009,7 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
                 found.setdefault(where[url], []).append(f"[I5] 読めない画像（{problem}: {url[:90]}）")
     except Exception as error:  # noqa: BLE001
         print(f"[owner-audit] 画像の確認をとばしました: {type(error).__name__}", file=sys.stderr)
+        cannot_check("I5", "check_images", error)
     # SNS（Bluesky の公開フィード）
     try:
         import sns_audit  # noqa: PLC0415
@@ -1035,6 +1046,8 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
         found["SNS（問いかけの型の記録）"] = question_pattern_problems(posted, datetime.now(timezone.utc), days=max(sns_days, 1.0))
     except Exception as error:  # noqa: BLE001
         found["SNS（問いかけの型）"] = [f"[S19] 投稿の記録を読めなかった（{type(error).__name__}）"]
+    if CHECK_ERRORS:
+        found["点検そのもの（動かせなかった検査）"] = list(CHECK_ERRORS)
     return {k: v for k, v in found.items() if v}
 
 
@@ -1046,8 +1059,8 @@ def legacy_backlog(articles: list[dict]) -> dict:
 
     try:
         import article_style  # noqa: PLC0415
-    except Exception:  # noqa: BLE001
-        return {}
+    except Exception as error:  # noqa: BLE001
+        return {"error": f"article_style を使えない: {type(error).__name__}"}
     failing = 0
     codes: dict[str, int] = {}
     for record in articles:
@@ -1086,6 +1099,8 @@ def render(found: dict[str, list[str]], latest: int, backlog: dict | None = None
         if len(v) > 15:
             lines.append(f"- …ほか {len(v) - 15} 件")
         lines.append("")
+    if backlog and backlog.get("error"):
+        lines += [f"参考の数（O9: 古い型のまま公開中の記事の数）を出せませんでした（{backlog['error']}）。", ""]
     if backlog and backlog.get("total"):
         top = "・".join(f"{k} {v}本" for k, v in list(backlog["codes"].items())[:5])
         lines += [
@@ -1101,23 +1116,28 @@ def _gh(*args: str) -> subprocess.CompletedProcess:
     return subprocess.run(["gh", *args], capture_output=True, text=True, timeout=60, check=False)
 
 
-def write_issue(found: dict[str, list[str]], body: str) -> None:
+def write_issue(found: dict[str, list[str]], body: str) -> bool:
+    """issue を開く・直す・閉じる。gh が失敗したら False（実行を赤にして、知らせが届かないことに気づけるようにする）"""
     listed = _gh("issue", "list", "--label", LABEL, "--state", "open", "--limit", "1", "--json", "number", "--jq", ".[0].number // empty")
-    number = listed.stdout.strip() if listed.returncode == 0 else ""
+    if listed.returncode != 0:
+        print(f"[owner-audit] issue の一覧を読めません: {listed.stderr.strip()[:200]}", file=sys.stderr)
+        return False
+    number = listed.stdout.strip()
     run_url = f"{os.environ.get('GITHUB_SERVER_URL', 'https://github.com')}/{os.environ.get('GITHUB_REPOSITORY', '')}/actions/runs/{os.environ.get('GITHUB_RUN_ID', '')}"
     if not found:
         if number:
-            _gh("issue", "close", number, "--comment", f"今日の点検では違反はありませんでした。{run_url}")
-        return
+            return _gh("issue", "close", number, "--comment", f"今日の点検では違反はありませんでした。{run_url}").returncode == 0
+        return True
     body = f"{body}\n\n実行: {run_url}"
     if number:
-        _gh("issue", "edit", number, "--body", body)
+        edited = _gh("issue", "edit", number, "--body", body)
         _gh("issue", "comment", number, "--body", f"今日の点検: {sum(len(v) for v in found.values())} 件（本文を最新に更新しました）。{run_url}")
-        print(f"[owner-audit] issue #{number} を更新しました")
-        return
+        print(f"[owner-audit] issue #{number} を更新しました" if edited.returncode == 0 else f"[owner-audit] issue #{number} を直せません: {edited.stderr.strip()[:200]}")
+        return edited.returncode == 0
     _gh("label", "create", LABEL, "--color", "B60205", "--description", "オーナーのルール（docs/owner_rules.md）に合わないもの", "--force")
     made = _gh("issue", "create", "--title", ISSUE_TITLE, "--label", LABEL, "--body", body)
     print(f"[owner-audit] issue を立てました: {made.stdout.strip() or made.stderr.strip()[:200]}")
+    return made.returncode == 0
 
 
 def main() -> int:
@@ -1145,8 +1165,8 @@ def main() -> int:
     if summary:
         with open(summary, "a", encoding="utf-8") as f:
             f.write(body + "\n")
-    if args.issue:
-        write_issue(found, body)
+    if args.issue and not write_issue(found, body):
+        return 1
     return 0
 
 

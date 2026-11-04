@@ -490,7 +490,8 @@ async function auditOne(browser, page, vp, theme, dela) {
       .goto(withInternal(page.path), { waitUntil: "load", timeout: 45000 })
       .catch(() => p.goto(withInternal(page.path), { waitUntil: "load", timeout: 45000 }));
     const status = resp ? resp.status() : 0;
-    if (page.kind === "404" ? status !== 404 : status >= 400) result.errors.push({ check: "HTTP", detail: `状態 ${status}` });
+    // 応答が無い（状態 0）も失敗（開けたか確かめられないページを合格にしない。2026-11-04 一貫性の点検）
+    if (status === 0 || (page.kind === "404" ? status !== 404 : status >= 400)) result.errors.push({ check: "HTTP", detail: `状態 ${status}` });
     await p.waitForTimeout(1200);
     const clsLoad = await p.evaluate(() => ({ cls: window.__cls, entries: window.__clsEntries.slice(0, 5) }));
     // 遅延読み込みの画像を出すため、下までゆっくりスクロールして戻る
@@ -780,7 +781,10 @@ async function checkLinks(results, report) {
       }
     }
   }));
-  report.push({ page: "(内部リンク)", label: `内部リンク ${sample.length} 本`, viewport: "-", theme: "-", errors: broken.map((b) => ({ check: "リンク切れ", detail: b })), warnings: flaky.map((b) => ({ check: "リンク", detail: b })) });
+  // 通信エラーが多すぎる（2割を超える）ときは、リンクを確かめられていないので失敗にする（全部が通信エラーでも合格になっていた）
+  const unchecked = sample.length && flaky.length / sample.length > 0.2
+    ? [{ check: "リンク", detail: `内部リンクの${flaky.length}/${sample.length}本を通信エラーで確かめられない` }] : [];
+  report.push({ page: "(内部リンク)", label: `内部リンク ${sample.length} 本`, viewport: "-", theme: "-", errors: [...broken.map((b) => ({ check: "リンク切れ", detail: b })), ...unchecked], warnings: flaky.map((b) => ({ check: "リンク", detail: b })) });
 }
 
 async function main() {

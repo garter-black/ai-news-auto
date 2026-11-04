@@ -109,7 +109,8 @@ def judge(first: dict, again: dict | None, limit: float = LIMIT) -> tuple[str, s
     """('fail' | 'warn' | 'ok', 理由)"""
     if first["error"] or first["status"] == 0:
         return "fail", f"開けない（{first['error'] or '接続の失敗'}・{first['ttfb']}秒）"
-    if first["status"] >= 500:
+    if first["status"] >= 400:
+        # サイトマップに載るページは 200 で開くはず（404・410 を合格にしない。W3・W25。2026-11-04 一貫性の点検）
         return "fail", f"状態 {first['status']}"
     if first["cache"] == "MISS":
         return "fail", "ビルドで作っておらず、アクセスが来てから作った（x-nextjs-cache: MISS）"
@@ -137,6 +138,10 @@ def check(args) -> int:
     if args.previous:
         version = wait_for_new_version(base, args.previous)
         print(f"版: {args.previous[:8]} → {version[:8] or '(不明)'}", flush=True)
+        if not version or version == args.previous:
+            # 新しい版に切り替わっていない → 古い版を測って「合格」にしない（確かめられない検査は不合格）
+            print("::error::デプロイのあとも新しい版に切り替わらない（古い版を測ることになるので不合格）", flush=True)
+            return 1
     listed = load_sitemap(base)
     if len(listed) < 10:
         print(f"::error::サイトマップから測るページを選べない（{len(listed)} 本）", flush=True)
