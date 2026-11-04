@@ -1888,7 +1888,7 @@
     },
     "openai-acquire-pierre-computer-codex": {
       "at": "2026-11-04T16:16:52+00:00",
-      "status": "ready",
+      "status": "article_only",
       "tries": 3,
       "textAt": "2026-11-04T14:44:34+00:00",
       "textId": "",
@@ -2053,12 +2053,13 @@
       ],
       "urls": {
         "short": "https://ai-tech-express.jp/video/openai-acquire-pierre-computer-codex-b5e5b6f5ca.mp4"
-      }
+      },
+      "why": "速報（文面の投稿はすぐ出した）"
     },
     "gpt-56-cyber-aws-govcloud": {
-      "at": "2026-11-04T16:36:49+00:00",
+      "at": "2026-11-04T16:43:57+00:00",
       "status": "gate_failed",
-      "tries": 3,
+      "tries": 4,
       "textAt": "2026-11-04T15:17:40+00:00",
       "textId": "",
       "breaking": true,
@@ -2097,10 +2098,10 @@
       },
       "timings": {
         "full": {
-          "ladder_total": 369.8
+          "ladder_total": 450.9
         },
         "short": {
-          "ladder_total": 369.8
+          "ladder_total": 450.9
         }
       },
       "ok": false,
