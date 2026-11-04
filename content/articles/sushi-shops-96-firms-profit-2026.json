@@ -67,7 +67,7 @@
   "videoTitle": "「すし店」 売上増も「減益」企業が約4割 コメ価格など物価高が重し、廃業・倒産が急増",
   "publishedAt": "2026-11-04T01:30:00+00:00",
   "generatedAt": "2026-11-04T05:45:58.121315+00:00",
-  "thumbnail": "",
+  "thumbnail": "https://ai-tech-express.jp/img/sushi-shops-96-firms-profit-2026-862f0591.jpg",
   "model": "anthropic-api:claude-haiku-5-5",
   "affiliates": [],
   "newsType": "earnings",
@@ -104,5 +104,29 @@
     }
   ],
   "sourcePublishedAt": "2026-11-04T01:30:00+00:00",
-  "detectedAt": "2026-11-04T05:40:50+00:00"
+  "detectedAt": "2026-11-04T05:40:50+00:00",
+  "imageCredit": {
+    "kind": "stock",
+    "title": "Yamazato Restaurant - Sushi counter",
+    "creator": "Photo Republic",
+    "creatorUrl": "",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "provider": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yamazato_Restaurant_-_Sushi_counter.jpg",
+    "query": "sushi counter japan",
+    "at": "2026-11-04T06:26:48+00:00"
+  },
+  "imageFocus": {
+    "x": 0.494,
+    "y": 0.5,
+    "box": [
+      0.059,
+      0.0,
+      0.928,
+      1.0
+    ],
+    "ar": 1.9048,
+    "src": "https://ai-tech-express.jp/img/sushi-shops-96-firms-profit-2026-862f0591.jpg"
+  }
 }

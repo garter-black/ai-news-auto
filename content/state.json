@@ -91,14 +91,6 @@
       "tries": 2,
       "url": "https://www.atlassian.com/blog/ai-at-work/measuring-and-orchestrating-ai-across-the-full-engineering-lifecycle"
     },
-    "3d509e27bae229a3": {
-      "first": "2026-11-03T23:40:53.183061+00:00",
-      "next": "2026-11-04T06:01:17.900239+00:00",
-      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
-      "title": "OpenAI appoints Jill Hazelbaker as Chief Corporate Affairs Officer",
-      "tries": 2,
-      "url": "https://openai.com/index/jill-hazelbaker-chief-corporate-affairs-officer"
-    },
     "52567fa092b78f28": {
       "first": "2026-11-04T03:34:46.235755+00:00",
       "next": "2026-11-04T06:34:46.235755+00:00",
@@ -5866,6 +5858,14 @@
       "section": "ai",
       "slug": "jira-autumn-2026-release",
       "url": "https://www.atlassian.com/blog/development/jira-autumn-release"
+    },
+    "3d509e27bae229a3": {
+      "at": "2026-11-04T06:24:57.339843+00:00",
+      "model": "gemini-3.5-flash",
+      "score": 80,
+      "section": "ai",
+      "slug": "openai-appoints-jill-hazelbaker-chief-corporate-affairs-offi",
+      "url": "https://openai.com/index/jill-hazelbaker-chief-corporate-affairs-officer"
     },
     "3d9ee45ab41d23bc": {
       "at": "2026-10-28T22:30:58.505763+00:00",
@@ -13951,68 +13951,6 @@
   },
   "quality_log": [
     {
-      "accepted": true,
-      "at": "2026-11-02T16:02:48.985740+00:00",
-      "attempt": 0,
-      "id": "af6a467fdfe036d7",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 87.9,
-        "avg_sentence": 28.7,
-        "long_share": 0.0,
-        "max_paragraph": 137,
-        "paragraphs": 15,
-        "sentences": 46
-      },
-      "score": 100,
-      "source": "nli-research",
-      "title": "増え続ける電子ごみと資源循環の行方－電子ごみの発生抑制と資源循環の課題"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T16:11:27.938443+00:00",
-      "attempt": 1,
-      "id": "fcfd6740eb17fc15",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 55.9字・60字超の文が 48% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 85.7,
-        "avg_sentence": 55.9,
-        "long_share": 0.478,
-        "max_paragraph": 157,
-        "paragraphs": 15,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "nvidia-developer-blog",
-      "title": "Support New AI Frameworks Faster Using NVIDIA Workload Map"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T16:11:31.708003+00:00",
-      "attempt": 0,
-      "id": "fcfd6740eb17fc15",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 90.5,
-        "avg_sentence": 34.8,
-        "long_share": 0.026,
-        "max_paragraph": 164,
-        "paragraphs": 15,
-        "sentences": 39
-      },
-      "score": 100,
-      "source": "nvidia-developer-blog",
-      "title": "Support New AI Frameworks Faster Using NVIDIA Workload Map"
-    },
-    {
       "accepted": false,
       "at": "2026-11-02T16:11:40.681168+00:00",
       "attempt": 1,
@@ -20330,6 +20268,71 @@
       "title": "「すし店」 売上増も「減益」企業が約4割 コメ価格など物価高が重し、廃業・倒産が急増",
       "warnings": [
         "初めて出たところで言い換えていない略語（FOOD・LIFE・LC）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T06:23:34.637692+00:00",
+      "attempt": 1,
+      "id": "3d509e27bae229a3",
+      "kind": "ai",
+      "model": "gemini-3.5-flash",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "openai-news",
+      "title": "OpenAI appoints Jill Hazelbaker as Chief Corporate Affairs Officer"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T06:24:27.285830+00:00",
+      "attempt": 2,
+      "id": "3d509e27bae229a3",
+      "kind": "ai",
+      "model": "gemini-3.5-flash",
+      "problems": [
+        "文が長い（1文の平均 68.9字・60字超の文が 67% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
+        "段落が長い（平均 160.8字・最長 206字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 160.8,
+        "avg_sentence": 68.9,
+        "long_share": 0.667,
+        "max_paragraph": 206,
+        "paragraphs": 9,
+        "sentences": 21
+      },
+      "score": 88,
+      "source": "openai-news",
+      "title": "OpenAI appoints Jill Hazelbaker as Chief Corporate Affairs Officer",
+      "warnings": [
+        "見出しが58字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T06:24:57.335381+00:00",
+      "attempt": 0,
+      "id": "3d509e27bae229a3",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "文が長い（1文の平均 47.5字・60字超の文が 16% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
+      ],
+      "readability": {
+        "avg_paragraph": 94.9,
+        "avg_sentence": 47.5,
+        "long_share": 0.156,
+        "max_paragraph": 160,
+        "paragraphs": 16,
+        "sentences": 32
+      },
+      "score": 80,
+      "source": "openai-news",
+      "title": "OpenAI appoints Jill Hazelbaker as Chief Corporate Affairs Officer",
+      "warnings": [
+        "見出しが58字（目安40字以内）。一覧・カードでは前半だけを出す"
       ]
     }
   ],
