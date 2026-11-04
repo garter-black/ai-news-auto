@@ -291,7 +291,7 @@ def _qless(text: str) -> str:
 def topic(text: str, max_len: int = 16, need_marker: bool = False) -> str:
     """文・問いの主題（「…は」「…が」の前）。長ければ「で・と・に・を・の」の後ろへ縮める（例:「JetBrains AirのCopilotクラウド実行に必要な条件は？」→「必要な条件」）"""
     t = _qless(text)
-    m = re.match(r"^(.+?)(?:は|が)(?![a-zA-Z])", t)
+    m = re.match(r"^(.{4,24}?)(?:では|には|も|は|が)、", t) or re.match(r"^(.+?)(?:は|が)(?![a-zA-Z])", t)
     if not m and need_marker:
         return ""
     base = (m.group(1) if m else t).rstrip("。")
@@ -342,7 +342,7 @@ def keyword_for(speech: str, target: str, ja: str, avoid: set[str]) -> str:
         if len(kw) >= 2 and re.search(r"[^\d.,，．]", kw) and gate.key_fact_ok(kw, "", target, ja) and gate.narration_ok(kw, speech):
             nums.append((1 if re.search(r"(?:[年月日つ個回本台]|段階)$", kw) else 0, kw))
     ph = _phrases(body)
-    starts = {0} | {i for i in range(1, len(ph)) if re.search(r"(?:、|は|が|では|には|も)$", ph[i - 1])}
+    starts = {0} | {i for i in range(1, len(ph)) if re.search(r"(?:、|は|が|では|には|も|なく)$", ph[i - 1])}
     cands = []
     for i in sorted(starts):
         if BAD_LABEL_START.search(ph[i]):
@@ -399,7 +399,7 @@ def page_target(pages: list, speech: str, used: set[str]) -> tuple[str, str, str
                         continue
                     if v3.is_english(sent):
                         shared = sum(1 for t in st if t in sent.lower())
-                        if shared < (1 if sd else 2) or not v3.clause_ok(sent, b.text):
+                        if shared < (1 if sd else 3) or not v3.clause_ok(sent, b.text):
                             continue
                         score = 10.0 * len(sd) + 3 * shared
                     else:
@@ -423,9 +423,10 @@ def caption_for(speech: str, target: str) -> str:
     """英語の文の日本語の吹き出し: 読み上げの文（か、その読点までのまとまり）で 40 字まで。数字は target にあるものだけ"""
     td = _digits(target)
     body = speech.rstrip("。")
-    cands = [body] + [c.strip() for c in body.split("、")] + [short_phrase(body, 40, 10)]
+    # 吹き出しは言い切りのまとまりだけ（「…環境「Air」で」のような切れ端にしない）
+    cands = [body] + [c.strip() for c in body.split("、")]
     for c in cands:
-        if 10 <= len(c) <= 40 and _digits(c) <= td and not stiff(c):
+        if 10 <= len(c) <= 40 and _digits(c) <= td and not stiff(c) and re.search(r"(?:ます|ません|です|でした|ました|できる|ない|れる|せる|る|た)$", c):
             return c
     return ""
 
@@ -554,7 +555,10 @@ def template_script(article: dict, pages: list) -> tuple[dict | None, list[str]]
             continue
         target, bid, ja = got
         cands = (["あなたの場合"] if src == "work" and "あなたの場合" not in used_labels else []) + label_candidates(hint, sp)
-        label = next((c for c in cands if label_ok(c, used_labels, article) and overlap(c, hook["text"]) < 0.6), "")
+        terms = gate._subject_terms(article)
+        if src in ("lede", "intro") and terms:  # 絵コンテの「GitHubの発表」と同じ形（1本に1回）
+            cands.append(f"{terms[0]}の発表")
+        label = next((c for c in cands if label_ok(c, used_labels, article) and (c.endswith("の発表") or overlap(c, hook["text"]) < 0.6)), "")
         if not label:
             continue
         kw = keyword_for(sp, target, ja, used_kw | {label})
