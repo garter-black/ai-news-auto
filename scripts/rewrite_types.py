@@ -40,8 +40,8 @@ import web_articles as w  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
 RETIRED_PATH = ROOT / "content" / "retired.json"
-# 書き直した記事から取り替える欄（それ以外は今の記事のまま）
-REPLACE = ("lede", "description", "highlights", "body", "easy", "faq", "todayActions", "workMoney", "verdict", "newsType",
+# 書き直した記事から取り替える欄（それ以外は今の記事のまま）。免責文も取り替える（出典を公式に差し替えた記事に「報道をもとに」が残らないように。2026-11-04）
+REPLACE = ("disclaimer", "lede", "description", "highlights", "body", "easy", "faq", "todayActions", "workMoney", "verdict", "newsType",
            "affiliates", "qualityScore", "model", "writingVoice", "factSources", "charts", "pricingProduct", "pricingCompare", "relatedSlugs")
 WRITE_MODEL = os.environ.get("REWRITE_MODEL", "claude-sonnet-5-5")
 # 品質ゲートに合格しなかった回数（2回落ちた記事は、順番の対象から外す。同じ記事に何度も費用を使わない）

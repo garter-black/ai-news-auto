@@ -206,6 +206,7 @@ class RewriteUsesOfficialPageTitleTest(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 rewrite_types.rewrite("x")
         self.assertEqual(seen["title"], "A Day With Galaxy Buds On")
+        self.assertIn("disclaimer", rewrite_types.REPLACE)  # 「報道をもとに」の免責文を残さない
 
 
 if __name__ == "__main__":
