@@ -1642,8 +1642,8 @@
       "postedAt": "2026-11-04T09:30:00+00:00"
     },
     "nvidia-recovery-automated-training-recovery": {
-      "at": "2026-11-04T03:24:15+00:00",
-      "status": "ready",
+      "at": "2026-11-04T03:25:56+00:00",
+      "status": "attached",
       "tries": 1,
       "ok": true,
       "adopted": "/home/runner/work/_temp/adopt",
@@ -1714,7 +1714,10 @@
         "poster": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-644d412c4b.jpg",
         "short": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-a87ec20a2a.mp4"
       },
-      "level": "L1"
+      "level": "L1",
+      "variant": "short",
+      "bufferId": "6ae96058da2711fd26adb7eb",
+      "postedAt": "2026-11-04T12:55:00+09:00"
     }
   },
   "queued": {
@@ -1770,15 +1773,15 @@
     },
     "nvidia-recovery-automated-training-recovery": {
       "status": "created",
-      "id": "6aea3af35fa3d509fa3d0ef9",
-      "dueAt": "2026-11-04T09:45:00+09:00",
-      "variant": "short",
       "channels": {
-        "threads": "6aea3af35fa3d509fa3d0ef9",
-        "twitter": "6aea3af452391758e2e63135",
-        "facebook": "6aea3af45fa3d509fa3d103d"
+        "threads": "6ae96058da2711fd26adb7eb",
+        "twitter": "6ae96058a5f6b0f7438855a4",
+        "facebook": "6aeaa5d216e63068f18f781b"
       },
-      "why": "ほかの実行が先に送った"
+      "id": "6ae96058da2711fd26adb7eb",
+      "dueAt": "2026-11-04T12:55:00+09:00",
+      "variant": "short",
+      "delayedMin": 0
     }
   },
   "converted": {
@@ -1822,7 +1825,7 @@
       "applied": true
     },
     "nvidia-recovery-automated-training-recovery": {
-      "at": "2026-11-04T03:24:14+00:00",
+      "at": "2026-11-04T03:25:55+00:00",
       "pending": {
         "inputs": {
           "threads": {
@@ -1934,11 +1937,6 @@
         },
         "facebook": {
           "id": "6aea3af45fa3d509fa3d103d",
-          "ok": true,
-          "deleted": true
-        },
-        "bluesky": {
-          "id": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzhfc4mb722k",
           "ok": true,
           "deleted": true
         }
@@ -2075,12 +2073,42 @@
   },
   "videosArchive": {
     "nvidia-recovery-automated-training-recovery": {
-      "at": "2026-11-03T19:50:05+00:00",
-      "status": "attached",
+      "at": "2026-11-04T03:24:15+00:00",
+      "status": "ready",
       "tries": 1,
       "ok": true,
       "adopted": "/home/runner/work/_temp/adopt",
       "versions": {
+        "full": {
+          "ok": true,
+          "seconds": 55.141,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1
+          },
+          "template": "launch",
+          "level": "L1",
+          "post": {
+            "title": "NVIDIAがAI学習の自動復旧ソフト「NVIDIA Recovery」を無料…",
+            "url": "https://ai-tech-express.jp/articles/nvidia-recovery-automated-training-recovery",
+            "total": 55.141,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "level": null,
+            "script_v3": {
+              "hook": {
+                "text": "NVIDIAがAI学習の自動復旧ソフトを公開"
+              },
+              "summary": "要約すると、NVIDIAがオープンソースの「NVIDIA Recovery」を公開しました。止まった分散AI学習を検知し、問題のノードを除外して再開させます。検知は平均69秒で、導入は監視モードから始められます。"
+            }
+          }
+        },
         "short": {
           "ok": true,
           "seconds": 34.545,
@@ -2113,12 +2141,11 @@
         }
       },
       "urls": {
-        "short": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-9d71489616.mp4"
+        "full": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-b8e50ec473.mp4",
+        "poster": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-644d412c4b.jpg",
+        "short": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-a87ec20a2a.mp4"
       },
-      "level": "L1",
-      "variant": "short",
-      "bufferId": "6aea3af35fa3d509fa3d0ef9",
-      "postedAt": "2026-11-04T09:45:00+09:00"
+      "level": "L1"
     },
     "github-copilot-jetbrains-air": {
       "at": "2026-11-03T17:48:29+00:00",
