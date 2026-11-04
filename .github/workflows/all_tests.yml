@@ -1,0 +1,57 @@
+name: All tests
+
+# tests/ のテストを「全部」動かす（2026-11-04: どのワークフローにも入っていないテストが16本あり、壊れていても誰も気づかなかった）。
+# 新しいテストのファイルは、ここに書き足さなくても自動で動く（pytest は tests/test_*.py、node は tests/test_*.cjs を全部拾う）。
+# tests/test_ci_wiring.py が、この全部動かす形が崩れていないか・名前の決まりから外れたテストが無いかを確かめる。
+# 外への通信・投稿・LLM は使わない（必要なテストは自分で飛ばす）。
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - "tests/**"
+      - "lib/**"
+      - "app/**"
+      - "components/**"
+      - "cloudflare/**"
+      - "content/**/*.ts"
+      - "*.ts"
+      - "package.json"
+      - "requirements.txt"
+      - ".github/workflows/all_tests.yml"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: all-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - name: 準備（ffmpeg・Python・Node・日本語フォント）
+        run: |
+          which ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg)
+          pip install -r requirements.txt numpy pillow budoux opencv-python-headless imageio-ffmpeg pytest
+          npm ci
+          mkdir -p ~/.local/share/fonts && cp assets/fonts/NotoSansJP-*.otf ~/.local/share/fonts/ && fc-cache -f > /dev/null
+      - name: Python のテストを全部（tests/test_*.py）
+        env:
+          SNS_RULES_NO_ISSUE: "1"
+        run: python -m pytest -q -p no:cacheprovider tests/
+      - name: Node のテストを全部（tests/test_*.cjs）
+        run: node --test tests/test_*.cjs
