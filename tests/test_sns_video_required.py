@@ -241,7 +241,7 @@ class PublishQueuedTest(unittest.TestCase):
 
     def test_failed_or_unfit_video_skips_post_and_opens_issue(self):
         slot = NOW + timedelta(hours=1)
-        failed = {"status": "gate_failed", "tries": 3, "reason": "full: v3: 長さ"}
+        failed = {"status": "gate_failed", "tries": fu.MAX_TRIES, "reason": "full: v3: 長さ"}
         state, sent, issues, _ = self.run_queue({"a": queued_rec(slot)}, {"a": failed})
         self.assertEqual(sent, [])
         self.assertEqual(state["queued"]["a"]["status"], "skipped")

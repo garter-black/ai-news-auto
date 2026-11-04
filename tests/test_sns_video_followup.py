@@ -66,25 +66,31 @@ class SelectTest(unittest.TestCase):
         self.assertEqual(self.pick(posted(a=1, b=2, c=3, old=20, news=1)), ["b", "c", "a"])
 
     def test_retry_dry_run_when_upload_on(self):
-        state = {"videos": {"b": {"status": "dry_run"}, "c": {"status": "gate_failed"}}}
+        state = {"videos": {"b": {"status": "dry_run"}, "c": {"status": "gate_failed", "tries": fu.MAX_TRIES}}}
         args = (posted(a=1, b=2, c=3), state, NOW, 12)
         kw = {"load_article": lambda s: {"slug": s}, "eligible": lambda a: True, "score": lambda a: {"a": 1, "b": 5, "c": 3}[a["slug"]]}
         self.assertEqual(fu.candidates(*args, **kw), ["a"])
         self.assertEqual(fu.candidates(*args, retry_dry=True, **kw), ["b", "a"])
 
-    def test_retry_capture_or_script_failures_once(self):
+    def test_retry_failures_on_later_runs(self):
+        """2026-11-04 オーナー承認: 落ちた動画は理由を問わず、あとの回で作り直す（MAX_TRIES まで。実際の上限は枠からの時間）"""
         state = {"videos": {
             "a": {"status": "gate_failed", "reason": "full: 撮れるページが無い（openai.com: HTTP 403）"},
             "b": {"status": "gate_failed", "versions": {"full": {"reasons": ["公式ページか台本が無い"]}}},
-            "c": {"status": "gate_failed", "tries": 3, "reason": "full: 台本を作れない"},  # 3回まで（MAX_TRIES）
+            "c": {"status": "gate_failed", "tries": fu.MAX_TRIES, "reason": "full: 台本を作れない"},
             "e": {"status": "gate_failed", "tries": 2, "reason": "full: 台本を作れない"},
             "d": {"status": "gate_failed", "reason": "full: v3: 長さ"},
         }}  # fmt: skip
         kw = {"load_article": lambda s: {"slug": s}, "eligible": lambda a: True, "score": lambda a: 1}
-        self.assertEqual(sorted(fu.candidates(posted(a=1, b=1, c=1, d=1, e=1), state, NOW, 12, **kw)), ["a", "b", "e"])
+        self.assertEqual(sorted(fu.candidates(posted(a=1, b=1, c=1, d=1, e=1), state, NOW, 12, **kw)), ["a", "b", "d", "e"])
+
+    def test_breaking_gives_up_after_two_hours(self):
+        self.assertEqual(fu.give_up_h({"breaking": True}), fu.QUEUE_GIVE_UP_BREAKING_H)
+        self.assertEqual(fu.QUEUE_GIVE_UP_BREAKING_H, 2)
+        self.assertEqual(fu.give_up_h({}), fu.QUEUE_GIVE_UP_H)
 
     def test_skip_done(self):
-        self.assertEqual(self.pick(posted(a=1, b=2), {"videos": {"b": {"status": "gate_failed"}}}), ["a"])
+        self.assertEqual(self.pick(posted(a=1, b=2), {"videos": {"b": {"status": "posted"}}}), ["a"])
 
     def test_daily_count(self):
         today = NOW.isoformat()

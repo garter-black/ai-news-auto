@@ -720,7 +720,8 @@ def script_system() -> str:
 - hook（最初の5〜8秒。2026-11-04 オーナー）: **詳しくない人にも、何のニュースで、なぜ大事かが分かる**ふつうの言葉で始める（記事を読みたくなるように）。
   問いかけ・説明の無い数字・専門用語で始めない（だめな例: 「99.9%でも学習は止まる？」・左に「99.9%」だけ）。
   text は画面に大きく出すニュースの見出し（10〜22字・主役の名前を入れる・**数字を入れない**。例: NVIDIAが学習の自動復旧ソフトを公開）。
-  speech は何が起きたか＋なぜ大事かを1〜2文で（25〜45字・主役の名前で始める。例: 「NVIDIAが、止まったAI学習を自動で立て直すソフトを無料で公開しました。」）。
+  speech は2文で（合計25〜45字）。**1文目は見る人の損得・具体的な場面**（16字前後の言い切り。例: 「AIの学習が止まると、直るまでGPUは遊んだままです。」）、
+  **主役の名前は2文目までに**（画面の見出しには0秒から主役の名前が出ている。2026-11-04 オーナー承認）。例: 「NVIDIAが、止まった学習を自動で立て直すソフトを無料で公開しました。」
   payoff は text が消えたあと左に出す、ニュースの中身の短い言い回し（6〜16字・**数字だけにしない**。例: 止まった学習を自動で再開）。payoff の言葉は speech にも入れる。
   数字は、意味が分かる文脈のあと（beat）で、ふつうの言葉の説明と一緒に出す（例: 「1台の故障率は0.1%でも、1万台なら毎日どこかが止まる」）。
   block / target は payoff の証拠になる画面の文字（記事の見出しなど、文字の大きい行（番号に「|大」）を選ぶ）。
@@ -774,6 +775,11 @@ def script_system() -> str:
 
 # 画面の文字（text・payoff・keyword・sub・conclusion.text・ja・ladder）
 - 製品名・社名は資料の表記のまま英字で書く（Claude・Gemini・Ultra。カタカナにしない）。カタカナにするのは speech だけ。
+
+# 見続けたくなる作り（2026-11-04 オーナー「真面目すぎて、ただの読み聞かせ」。ふざけない・大人の言い方のまま）
+- hook.speech は要約で始めない。見る人が3秒で気になる具体的な場面か意外な対比（例: エディタを変えずに、使うAIだけ乗り換えられたら？）から入り、続けて何のニュースかを言う。
+- 話し言葉の短い文で、1つの beat で1つのことだけ（speech は60字以内）。途中に「で、何が変わる？」の切り替えと、見る人の仕事に当てはめた「あなたの場合」の場面を1つずつ入れる。
+- conclusion.speech は要点のくり返しではなく、見る人への問いかけ（投稿の問いと同じ向き）で終える。「担い手」「〜を図る」などの硬い言い回しは使わない。
 
 # 読み上げ（speech）
 - 英語の製品名・社名はカタカナ（Claude→クロード、OpenAI→オープンエーアイ、Pro→プロ）。記号は言葉に（$200→200ドル、%→パーセント）。
@@ -2750,7 +2756,8 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     if narr.end_start - c_t > 0.9 + 1.0 and add_move(c_t, hook_close, "締め: 最初の数字へ", n_last):
         spots.append(Spot(c_t + 0.35, narr.end_start, t0.page, t0.span, list(t0.rows or [t0.match]), c_t + 0.5))
         qa_add(n_last, t0, list(t0.rows or [t0.match]), c_t + 0.5, narr.end_start, hook, hook.get("payoff", ""), "", hook.get("speech", ""))
-    # 4秒より長く何も変わらない所は、カーソルが読んでいる文を指す（カメラは動かさない）。左端と右端を交互に
+    # 3.6秒より長く何も変わらない所は、カーソルが読んでいる文を指す（カメラは動かさない）。左端と右端を交互に
+    # （2026-11-04 オーナー「ただの読み聞かせ」: 4秒を超えて止まった画面を作らない。ゲートは video_gate.CALM_MAX_SEGMENT＝4.0秒）
     cover = [(c.t0, c.t1) for c in charts] + [(L.t0, L.t1) for L in ladders]
     camera = Camera(first, moves)
     side = 0
@@ -2759,11 +2766,13 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
         bounds = [0.0] + changes + [narr.end_start]
         added = False
         for a, b in zip(bounds, bounds[1:]):
-            if b - a <= 4.0 or any(c0 - 0.2 <= (a + b) / 2 <= c1 + 0.2 for c0, c1 in cover):
+            if b - a <= 3.6 or any(c0 - 0.2 <= (a + b) / 2 <= c1 + 0.2 for c0, c1 in cover):
                 continue
             t = (a + b) / 2
             cam = camera.at(t)
             sp = next((x for x in spots if x.page == cam.page and x.t0 <= t <= x.t1 and x.sel), None)
+            if sp is None:  # 選択が出ていない所（締めなど）は、同じページで最後に読んだ文を指す
+                sp = max((x for x in spots if x.page == cam.page and x.t0 <= t and x.sel), key=lambda x: x.t0, default=None)
             if sp is None:
                 continue
             # 2026-11-04: カーソルが前に指した所のすぐ近くを指すと、絵がほとんど変わらずゲートに落ちていた（読んでいる文を指す）。
@@ -3805,6 +3814,7 @@ def vision_system() -> str:
 さらに版ごとに opening を判定する（最後に付ける「始まり」のコマと、最初の8秒の読み上げ・左の文字を見る）:
 4. clear: このニュースに詳しくない人が、最初の8秒で「何のニュースで、なぜ大事か」が分かり、記事を読みたくなるか。
    問いかけだけ・説明の無い数字（例: 左に「99.9%」だけ）・説明の無い専門用語で始まる・何の話か分からない → false（issue に直し方）。
+   さらに、忙しい人が5秒を過ぎても見続けたくなるか（要約の読み聞かせ・同じ画面が続くだけ・硬い言い回しなら false）。
 false のときは issue に、何がどうだめかを短く日本語で書く（true のときは空文字）。すべてのコマについて index 順に答える。"""
 
 

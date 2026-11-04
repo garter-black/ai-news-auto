@@ -167,7 +167,7 @@ def pick_variant(state: dict, now: datetime, ab_until: str, after_ab: str = "sho
     return "short" if shown % 2 == 0 else "full"
 
 
-MAX_TRIES = 3  # 動画の作り直しは3回まで（2026-11-03: 台本の段は自分で直すようにした。shorts_v3.self_correct）
+MAX_TRIES = 8  # 動画の作り直しの回数の上限（2026-11-04: 落ちたらあとの回で L1/L2/L3A を作り直す。実際の上限は枠からの時間 QUEUE_GIVE_UP_H / 速報 QUEUE_GIVE_UP_BREAKING_H）
 
 
 def will_retry(r: dict) -> bool:
@@ -176,8 +176,8 @@ def will_retry(r: dict) -> bool:
         return False
     if r.get("status") == "upload_failed":
         return True
-    why = f"{r.get('reason', '')} {' '.join(v.get('reasons', [''])[0] for v in (r.get('versions') or {}).values() if v.get('reasons'))}"
-    return r.get("status") == "gate_failed" and bool(re.search(r"撮れる|台本|公式ページか台本が無い|文字が入りません|動き|変化|フレーム差", why))
+    # 2026-11-04 オーナー承認: 合格の基準はどの段も同じ。落ちた動画は理由を問わず、あとの回でもう一度作る（枠から6時間・速報は2時間まで）
+    return r.get("status") == "gate_failed"
 
 
 def qa_ok(version: dict | None, env: dict | None = None) -> bool:
@@ -378,7 +378,7 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
         reports = make_versions(slug, OUT)
         ok = {k: bool((r.get("gate") or {}).get("ok")) and (OUT / f"{slug}__v3{'short' if k == 'short' else ''}.mp4").exists() for k, r in reports.items()}
         rec["versions"] = {k: {"ok": ok[k], "seconds": r.get("total"), "reasons": (r.get("gate") or {}).get("reasons", [])[:3],
-                               "qa": (r.get("gate") or {}).get("qa") or {}, "template": r.get("template", ""), "level": r.get("level"),
+                               "qa": (r.get("gate") or {}).get("qa") or {}, "template": r.get("template", ""), "level": r.get("level"), "base_layout": r.get("base_layout", ""),
                                **({"post": post_report(r)} if ok[k] else {})} for k, r in reports.items()}
         rec["timings"] = {k: r.get("timings") for k, r in reports.items()}
         levels = sorted({r.get("level") for r in reports.values() if r.get("level")})
@@ -488,7 +488,12 @@ def attach_ready(state: dict, posted: dict, now: datetime, f: dict, editor) -> l
 
 
 QUEUE_GIVE_UP_H = 6  # 枠の時刻からこれだけ過ぎても動画ができなければ、出さない（issue を立てる）
-ORDER_HOLD_MIN = 60  # 前の投稿の動画待ちで、あとの投稿を待たせるのは枠からこの分まで（投稿の流れを止めない）
+QUEUE_GIVE_UP_BREAKING_H = 2  # 速報はこれだけ（2026-11-04 オーナー承認: 速報は2時間まで作り直して待つ）
+
+
+def give_up_h(rec: dict | None, video: dict | None = None) -> float:
+    """動画を待つ上限（時間）。速報は QUEUE_GIVE_UP_BREAKING_H、ふつうは QUEUE_GIVE_UP_H"""
+    return QUEUE_GIVE_UP_BREAKING_H if (rec or {}).get("breaking") or (video or {}).get("breaking") else QUEUE_GIVE_UP_H
 QUEUE_LEAD_MIN = 3  # 枠が過ぎた（または今すぐの）投稿は、送ってからこれだけ先に予約する（shareNow は使わない＝時刻を記録できる）
 MISSING_LABEL = "sns-video-missing"
 
@@ -605,24 +610,26 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
             continue  # ほかの投稿の順番は止めない
         if not urls or v.get("status") in ("started", "upload_failed"):  # 置いた動画があれば使う（前に記事ページだけにした動画も）
             failed = bool(v) and v.get("status") in ("gate_failed", "upload_failed", "dry_run") and not will_retry(v)
-            late = now - slot > timedelta(hours=QUEUE_GIVE_UP_H)
+            late = now - slot > timedelta(hours=give_up_h(rec, v))
             unfit = not v and not eligible(slug)
             if failed or late or unfit:
                 why = (f"動画を作れなかった（{v.get('status')}: {(v.get('reason') or v.get('error') or '')[:160]}）" if failed
                        else "動画を作れない記事（撮ってよい公式ページが無い）" if unfit
-                       else f"枠（{slot.astimezone(JST):%m/%d %H:%M}）から{QUEUE_GIVE_UP_H}時間たっても動画ができない")
+                       else f"枠（{slot.astimezone(JST):%m/%d %H:%M}）から{give_up_h(rec, v):g}時間たっても動画ができない")
                 q.update({"status": "skipped", "why": why, "at": now.isoformat(timespec="seconds")})
                 log(f"[video-followup] 動画が無いので出しません {slug}: {why}")
                 issue(slug, why)
                 out.append({"slug": slug, **q})
                 continue
-            q.update({"status": "waiting", "why": "動画を作っている途中・順番待ち", "checkedAt": now.isoformat(timespec="seconds")})
-            out.append({"slug": slug, **q})
-            if now - slot > timedelta(minutes=ORDER_HOLD_MIN):
-                # 1本の動画の遅れで、ほかの投稿まで止めない（2026-11-04 オーナー「投稿を止めない」）。枠から60分を過ぎたら、あとの投稿は先に出す
-                log(f"[video-followup] {slug} は動画待ち（枠から{ORDER_HOLD_MIN}分を過ぎたので、あとの投稿は待たせない）")
+            if v.get("status") == "gate_failed":
+                # 2026-11-04 オーナー: 動画が検査に落ちて作り直し中の投稿は、その投稿だけ遅らせる（あとの枠の投稿・記事づくりは止めない）
+                q.update({"status": "waiting", "why": "動画が検査に落ちたので、あとの回で作り直す（この投稿だけ遅らせる）", "checkedAt": now.isoformat(timespec="seconds")})
+                log(f"[video-followup] {slug} は動画の作り直し待ち。あとの枠の投稿は先に出します")
+                out.append({"slug": slug, **q})
                 continue
-            log(f"[video-followup] {slug} は動画待ち。あとの枠の投稿も順番を保って待たせます（枠から{ORDER_HOLD_MIN}分まで）")
+            q.update({"status": "waiting", "why": "動画を作っている途中・順番待ち", "checkedAt": now.isoformat(timespec="seconds")})
+            log(f"[video-followup] {slug} は動画待ち。あとの枠の投稿も順番を保って待たせます")
+            out.append({"slug": slug, **q})
             break
         variant = (rec.get("pending") or {}).get("forceVariant") or pick_variant(state, now, f["ab_until"], f["after_ab"])
         versions = v.get("versions") or {}
@@ -811,7 +818,7 @@ def publish_extra_queued(state: dict, now: datetime, f: dict, creator=None, issu
         urls = v.get("urls") or {}
         slot = _parse((item.get("pending") or {}).get("slot") or "") or now
         if not urls:
-            if (v and not will_retry(v) and v.get("status") not in ("started",)) or now - slot > timedelta(hours=QUEUE_GIVE_UP_H):
+            if (v and not will_retry(v) and v.get("status") not in ("started",)) or now - slot > timedelta(hours=give_up_h(item, v)):
                 item.update({"status": "skipped", "why": "動画が無い"})
                 issue(slug, "X・Facebook の投稿を動画つきで出せませんでした（動画が無い）")
             out.append({"slug": slug, "extra": True, **{k: item.get(k) for k in ("status", "why")}})
@@ -1361,7 +1368,9 @@ def ab_report() -> dict:
     except Exception as error:  # noqa: BLE001
         log(f"[video-followup] 記事への訪問を読めない: {type(error).__name__}")
         visits = {}
-    return {"ab": ab_rows(state, metrics, visits), "daily": daily_rates(state)}
+    import video_ladder
+
+    return {"ab": ab_rows(state, metrics, visits), "daily": daily_rates(state), "approved": video_ladder.approved_share(state)}
 
 
 def draft_test(report_path: Path, video_url: str, yes: bool = False, variant: str = "short") -> dict:
@@ -1557,6 +1566,9 @@ def main() -> None:
     if args.today:
         for row in today_report():
             print(json.dumps(row, ensure_ascii=False))
+        import video_ladder
+
+        print(json.dumps({"approved_template_share": video_ladder.approved_share(load_json(STATE, {"videos": {}}))}, ensure_ascii=False))
         return
     if args.check_post:
         import threads_post

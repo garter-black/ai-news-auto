@@ -761,7 +761,7 @@ def _overlap(a, b) -> float:
 CALM_MAX_MOVES_PER_BEAT = 2  # 「行へ」＋「証拠に寄る」
 CALM_MOVING_SHARE = 0.35  # カメラが動いている時間の割合の上限
 CALM_MIN_HOLD = 1.4  # 動いたあと止めておく最短（計画は 1.5秒）
-CALM_MAX_SEGMENT = 4.8  # 止めておく分、何も変わらない区間の上限は少し長く（選択・訳・補足の文字で変化を出す）
+CALM_MAX_SEGMENT = 4.0  # 何も変わらない区間の上限（2026-11-04 オーナー「ただの読み聞かせ」: 4秒を超えて止まった画面を作らない）
 CALM_AVG_SEGMENT = (1.5, 3.6)
 CALM_MOTION_MIN = 0.2
 CALM_EVENT_MIN_SOFT = 0.3  # 文字・選択の変化の直後の差（カメラの動きより小さい）
@@ -802,7 +802,19 @@ def point_ok(text: str, speech: str) -> bool:
 # 決まった問い・役目の名前の見出し（2026-11-04 オーナー「答えは？は不自然」→ 場面の中身から作った見出しにする）
 TEMPLATE_LABELS = {"答え", "答えは", "結論", "結論から", "何ができる", "どんなもの", "前と何が違う", "前と比べると", "誰に効く", "誰に必要", "どう試す", "どう直す",
                    "どれくらい速い", "確かめ方", "使い方", "必要な人", "要らない人", "注意", "比較", "たとえると", "プランの比較", "次の一歩", "何が変わった",
-                   "使いどころ", "知っておきたい", "何の発表", "どんな発表", "要約すると"}  # fmt: skip
+                   "使いどころ", "知っておきたい", "何の発表", "どんな発表", "要約すると",
+                   # 2026-11-04 オーナー（Copilot の動画の「何があった？」）: 中身の無い決まった見出しは全部の段で不合格
+                   "何があった", "何が起きた", "何が発表された", "どうなる", "なぜ大事", "ポイント", "要点", "注目のニュース", "今日のニュース",
+                   "気になる点", "ほかの注目点", "知っておきたい点", "だれに役立つ", "誰に役立つ", "いつから", "日本では", "お金の話", "だれが対象",
+                   "続きは記事で", "まとめ", "解説", "詳しく", "くわしく"}  # fmt: skip
+# 硬い言い回し（2026-11-04 オーナー「作業の担い手」）。画面の文字・字幕（訳）・読み上げのどれにも使わない。やさしい言葉に言い換える
+STIFF_PHRASES = ("担い手", "に資する", "を図る", "を図り", "に鑑み", "に係る", "所要の", "講じ", "普及啓発", "利活用", "当該", "協働",
+                 "周知", "等の", "等を", "等で", "かかる状況", "可能となる", "可能となり", "可能となった", "可能としている", "実施する", "実施され")
+
+
+def stiff_problems(text: str) -> list[str]:
+    """硬い言い回し（STIFF_PHRASES）。見つかった言い回しごとに1行"""
+    return [f"硬い言い回し「{w}」（やさしい言葉に）" for w in STIFF_PHRASES if w in (text or "")]
 NUMBER_UNITS = r"[約超以上未満最大最小月年日時間分秒台件人社倍円ドル米%％万億兆個回点位]"
 
 
@@ -826,6 +838,16 @@ def _subject_terms(article: dict) -> list[str]:
     return list(dict.fromkeys(terms))
 
 
+SUMMARY_OPENING = re.compile(r"^(?:要約すると|まとめると|結論から|結論として|今回の発表は|今回は|本日は|今日は|先日)")
+BEAT_SPEECH_MAX = 70  # 1場面の読み上げ（1つの場面で1つのことだけ。2026-11-04）
+
+
+def beat_length_problems(script_v3: dict) -> list[str]:
+    """1場面の読み上げが長すぎない（1つの場面で1つのことだけ）"""
+    return [f"beat{i} の読み上げが長い（{len(b.get('speech', ''))}字。{BEAT_SPEECH_MAX}字まで・1場面1つのこと）"
+            for i, b in enumerate((script_v3 or {}).get("beats") or [], 1) if isinstance(b, dict) and len(b.get("speech", "")) > BEAT_SPEECH_MAX]
+
+
 def opening_problems(script_v3: dict, article: dict | None = None) -> list[str]:
     """最初の5〜8秒（つかみ）で、詳しくない人にも何のニュースか・なぜ大事かが分かるか（2026-11-04 オーナー）:
     つかみの文字に説明の無い数字が無い・左に数字だけを出さない・読み上げは主役の名前と何が起きたかを言う（25字以上）"""
@@ -840,11 +862,16 @@ def opening_problems(script_v3: dict, article: dict | None = None) -> list[str]:
         out.append(f"つかみの左の言葉「{payoff}」が数字だけ・名詞1つだけ（ニュースの中身の言い回しに。例: 止まった学習を自動で再開）")
     if len(speech) < 20:
         out.append(f"つかみの読み上げ「{speech}」が短い（何が起きたか・なぜ大事かを25〜45字で）")
+    # 2026-11-04 オーナー「真面目すぎて、ただの読み聞かせ」: つかみは要約で始めない（具体的な場面・意外な対比・見る人への呼びかけで、3秒で気になるように）
+    if SUMMARY_OPENING.search(speech or ""):
+        out.append(f"つかみの読み上げ「{speech[:20]}…」が要約の言い方で始まる（見る人の場面・意外な対比・呼びかけで始める）")
     if re.search(r"[？?]\s*$", text) and re.search(r"[？?]\s*$", speech):
         out.append("つかみが問いかけだけ（まず何のニュースかを言う）")
+    # 2026-11-04 オーナー承認: 読み上げの1文目は見る人の損得・具体的な場面でよい。主役の名前は、見出し（0秒から出ている）か読み上げの2文目までに
     terms = _subject_terms(article or {})
-    if terms and not any(t.lower() in f"{text} {speech}".lower() for t in terms):
-        out.append(f"つかみに主役の名前（{'・'.join(terms[:3])}）が無い（何のニュースか分かるように）")
+    first_two = "".join(re.split(r"(?<=[。！？!?])", speech or "")[:2])
+    if terms and not any(t.lower() in f"{text} {first_two}".lower() for t in terms):
+        out.append(f"つかみに主役の名前（{'・'.join(terms[:3])}）が無い（見出しか、読み上げの2文目までに）")
     return out
 
 
@@ -866,6 +893,13 @@ def label_problems(script_v3: dict) -> list[str]:
             out.append(f"beat{i} の補足「{sub}」の数字がその場面の読み上げに無い")
         if kw and b.get("target") and not (key_fact_ok(kw, sub, b.get("target", ""), b.get("ja", "")) or point_ok(kw, f"{b.get('target', '')} {b.get('ja', '')}")):
             out.append(f"beat{i} のキーワード「{kw}」が選択する証拠の文（訳）に無い")
+    # 硬い言い回し（画面の文字・字幕の訳・読み上げのどれにも。2026-11-04）
+    concl = sv.get("conclusion") or {}
+    spoken = [("hook", hook.get(k, "")) for k in ("text", "payoff", "speech", "ja")] + [("conclusion", concl.get(k, "")) for k in ("text", "speech")]
+    spoken += [(f"beat{i}", b.get(k, "")) for i, b in enumerate(beats, 1) for k in ("label", "keyword", "sub", "speech", "ja")]
+    for where, text in spoken:
+        for p in stiff_problems(text):
+            out.append(f"{where}: {p}")
     for field_name, name in (("label", "見出し"), ("keyword", "キーワード")):
         seen: dict[str, int] = {}
         for i, b in enumerate(beats, 1):
@@ -1112,7 +1146,7 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
     if m["v3_card_share"] > CARD_SHARE_MAX:
         result.reasons.append(f"v3: 右の画面の {m['v3_card_share']:.0%} がカード（公式ページの画面が基本の形。{CARD_SHARE_MAX:.0%} まで）")
     # 左の列の見出し・キーワード（同じ言葉の繰り返し・名詞1つだけは不合格。2026-11-04）と、最初の5〜8秒で何のニュースか分かるか
-    for p in label_problems(sv3) + opening_problems(sv3, article):
+    for p in label_problems(sv3) + opening_problems(sv3, article) + beat_length_problems(sv3):
         result.reasons.append(f"v3: {p}")
     fonts = report.get("fonts") or []
     if not fonts or len(set(fonts)) > V3_MAX_FONTS:

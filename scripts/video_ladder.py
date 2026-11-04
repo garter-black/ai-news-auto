@@ -1,48 +1,34 @@
 #!/usr/bin/env python3
-"""SNS 動画の「段の下がり方」（fallback ladder）。動画が作れないせいで投稿が止まらないように、必ず合格する動画を1本作る。
+"""SNS 動画の段（ladder）。どの段も**同じ合格の基準**: オーナー承認の形（shorts_v3.BASE_LAYOUT「screen-left-headline」:
+左に小見出し＋大きな見出し（行ごとのマーカー）、右に公式ページの本物の画面と選択の青・日本語の吹き出し）で、
+位置の検査（geometry・マーカー・始まり・見出し）と画像のレビュー（vision）の両方に合格した動画だけを出す（2026-11-04 オーナー承認）。
+レビューができない（API も サブスクリプションの CLI も使えない）＝不合格。静止画1枚の動画は作らない。
 
-2026-11-04 オーナー:「動画がダメなら投稿しない」は「投稿が止まる」ことではない。合格する動画を必ず作る。
-上の段から順に試し、最初に合格した段の動画を使う（版ごと。サイト用＝full・SNS 用＝short）。
+  L1 : 今の型（shorts_v3.make_versions。LLM の台本。中で QA に落ちたら1回だけ作り直す）
+  L2 : L1 をもう1回（新しく撮り直し・前の回の検査で落ちた理由を台本の決まりに足す）
+  L3A: 同じ形を LLM なしで作る（記事の文だけの台本）。見出し・小見出しは記事の題・本文の見出し・FAQ から、読み上げは記事の
+       です・ますの文から、右は公式ページ（撮れなければ自分の記事ページ）の画面で、記事の数字・名前を含む文に選択の青、
+       英語の文には記事の同じ数字・名前を含む文を日本語の吹き出しに。shorts_v3.make_video と同じ描画・同じゲート・同じレビュー
 
-  L1: 今の型（shorts_v3.make_versions。公式ページの画面＋選択の青＋中身に合わせた型）
-  L2: L1 をもう1回（新しく撮り直し・台本も書き直し。前の回の検査で落ちた理由を台本の決まりに足す）
-  L3: 公式の写真・図（記事の imageCredit が official の写真と bodyImages）を、ゆっくり寄る動き（Ken Burns）で見せ、
-      読み上げと同じ文の日本語の字幕を出す。画面の文字を塗る（DOM の選択の青）ことはしないので、塗りのずれ・行の頭の切れは起きない。
-      台本は L1/L2 が書いた台本の場面（画面を指す言い方の無いもの）か、記事の文から機械で作る。AI で描いた画像は使わない（I2）
-  L4: 最小でも良い動画: 公式の写真1枚（無ければ無地のブランドのカード）＋要点の短い行（記事の見出し・FAQ の問いをそのまま）＋
-      記事の文をそのまま読む九州そらの声＋記事へ誘う温かい締め。LLM を使わずに作れる（全部の LLM が止まっても作れる）
+どの段にも通らなければ、その回は「動画なし」。sns_video_followup があとの回で作り直す（通常の投稿は枠から6時間・速報は2時間まで）。
 
-どの段も 16:9 1920x1080・30fps・VOICEVOX 九州そら・-14 LUFS・2つの版（full / short）。
 出力は sns_video_followup.run が読む所: OUT/<slug>__v3.mp4（full）と OUT/<slug>__v3short.mp4（short）。
 戻り値は shorts_v3.make_versions と同じ形 {"full": report, "short": report}。report には
-  report["level"]  = "L1".."L4"（使った段）
-  report["ladder"] = [{"level", "ok", "reasons", "seconds", "variants"}]（試した段ごと）
-  report["gate"]   = {"ok", "reasons", "warnings", "metrics", "qa": {"geometry", "vision", "version": 1, ...}}
+  report["level"]  = "L1" / "L2" / "L3A"（使った段。どれも通らなければ None）
+  report["ladder"] = [{"level", "ok", "reasons", "seconds", "variants"}]
+  report["gate"]["qa"] = {"geometry", "vision", "version": 1}（shorts_v3.qa_versions が決める）
 
-L3/L4 の検査（qa）
-  geometry: DOM の塗りが無いので塗りのずれは起きない（作りで満たす）。それでも、文字が安全領域・枠の中・文字の面積の上限・
-            文字どうし／文字と画像のかぶり無し・画面の数字はすべて記事にある・字幕をつなぐと読み上げと同じ・
-            要点の行と読み上げが同じ話（記事の同じ FAQ の問いと答え、または文字の重なり）を確かめる。
-  vision:   書き出した動画のコマ（場面ごと）を Claude API（llm の purpose="video_review" の予算・配分）に画像で見せて確かめる。
-            API が使えないときは、L4 に限って「画面の文字がすべて記事の文そのまま（または決まった定型の文）で、上の検査が全部通った」
-            ときだけ vision を合格にする（qa["vision_how"]="deterministic-L4"）。L3 は API のレビューが無ければ不合格（→ L4 へ）。
-
-時間: 全体で deadline_s 秒（既定 720 秒＝12分）。L1/L2 は別のプロセスで動かし、時間が来たら止める。
-残りが少なければ L2・L3 を飛ばして L4 へ（L4 は2本で 90 秒以内が目安）。
-
-  python3 scripts/video_ladder.py <slug>                       # 段を順に試す（投稿しない・置かない）
-  python3 scripts/video_ladder.py <slug> --levels L4 --tts fake  # L4 だけ（声なしの試作）
-  python3 scripts/video_ladder.py --plan-check 20              # 直近の SNS 向けの記事 20 本で L3/L4 の計画と検査だけ（描画しない）
-  python3 scripts/video_ladder.py --dry-run 20 --levels L3,L4  # 20 本を書き出して段ごとの合格率（投稿しない）
-  python3 scripts/video_ladder.py --stats [--alert]            # state/sns_video.json の直近20本の段の内訳（L3/L4 が3割を超えたら issue）
+  python3 scripts/video_ladder.py <slug>                         # 段を順に試す（投稿しない・置かない）
+  python3 scripts/video_ladder.py <slug> --levels L3A            # 記事の文だけの承認の形
+  python3 scripts/video_ladder.py --plan-check 20                # 直近 20 本で L3A の台本の検査だけ（自分の記事ページを模した画面で。描画しない）
+  python3 scripts/video_ladder.py --stats [--alert]              # 直近20本の段の内訳・承認の形の割合（9割未満なら issue）
 """
 
 from __future__ import annotations
 
 import argparse
-import io
+import copy
 import json
-import math
 import os
 import re
 import shutil
@@ -51,57 +37,27 @@ import subprocess
 import sys
 import tempfile
 import time
-import zlib
-from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass, field
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
-LEVELS = ("L1", "L2", "L3", "L4")
+LEVELS = ("L1", "L2", "L3A")
+APPROVED_LEVELS = ("L1", "L2", "L3A")  # どれも承認の形（BASE_LAYOUT）で作る段
+BASE_LAYOUT = "screen-left-headline"  # shorts_v3.BASE_LAYOUT と同じ
 VARIANTS = ("full", "short")
 QA_VERSION = 1
-DEADLINE_S = float(os.environ.get("VIDEO_LADDER_DEADLINE", "720"))
-L4_RESERVE_S = 90.0  # L4 の2本（声・描画・検査・レビュー）に残しておく時間
-MIN_SECONDS = {"L1": 240.0, "L2": 240.0, "L3": 100.0, "L4": 0.0}  # この段を始めるのに要る残り時間（足りなければ飛ばす）
+DEADLINE_S = float(os.environ.get("VIDEO_LADDER_DEADLINE", "840"))
+L3A_RESERVE_S = 240.0  # L3A（撮影・2本の描画・レビュー）に残しておく時間
+MIN_SECONDS = {"L1": 240.0, "L2": 240.0, "L3A": 0.0}  # この段を始めるのに要る残り時間（足りなければ飛ばす）
 STATE = ROOT / "state" / "sns_video.json"
 FALLBACK_LABEL = "sns-video-fallback"
-FALLBACK_SHARE = 0.30
+APPROVED_MIN = 0.90  # 承認の形で作った動画の割合（直近20本）がこれ未満なら知らせる
 FALLBACK_WINDOW = 20
-FALLBACK_MIN = 5  # 記録がこれより少ないときは知らせない（数本で3割はぶれが大きい）
+FALLBACK_MIN = 5  # 記録がこれより少ないときは知らせない
+CPS = 5.0  # 九州そら・速さ1.38 で1秒に約5字
+SPEECH_MIN, SPEECH_MAX = 220, 320  # L3A の読み上げの合計（サイト用の版が 40〜80秒に入る）
 
-# 長さ（秒）。L3 は今の短い版と同じ、L4 は短い版 15〜30秒
-RANGES = {
-    ("L3", "short"): (20.0, 45.0), ("L3", "full"): (25.0, 75.0),
-    ("L4", "short"): (15.0, 30.0), ("L4", "full"): (15.0, 60.0),
-}  # fmt: skip
-CPS = 5.0  # 九州そら・速さ1.38 で1秒に約5字（docs/sns-video-v3-20261102.md）
-
-W, H, FPS = 1920, 1080, 30
-SAFE = (40, 30, W - 40, H - 30)
-STAGE = (243, 245, 249)
-INK = (11, 26, 51)
-BLUE = (29, 74, 143)
-ACCENT = (200, 34, 26)
-MUTED = (84, 100, 128)
-SOFT = (90, 103, 126)
-WHITE = (255, 255, 255)
-NAVY_TOP = (11, 26, 51)
-NAVY_BOTTOM = (29, 74, 143)
-FONT_FAMILY = "Noto Sans JP"
-LOGO_FAMILY = "Dela Gothic One"
-
-# 割り付け（x0, y0, x1, y1）
-LOGO_XY = (104, 58)
-COL = (104, 150, 660, 700)  # 左の列: 小見出し＋要点（つかみは題）
-IMG = (720, 64, 1816, 680)  # 右: 公式の写真（16:9）か、無地のブランドのカード
-SUB = (104, 712, 1816, 884)  # 下: 読み上げと同じ字幕（1〜2行）
-CREDIT = (104, 980, 1816, 1040)  # 一番下: クレジットの小さな1行
-RADIUS = 24
-TEXT_RATIO_MAX = 0.18  # 1フレームの文字の面積（v3 と同じ上限）
-
-LEAD, GAP, END_HOLD = 0.15, 0.32, 1.0
 
 
 def log(msg: str) -> None:
@@ -184,39 +140,6 @@ def article_numbers(article: dict) -> set[str]:
     return gate.number_tokens(material(article)) | {"0"}
 
 
-def is_ours(url: str) -> bool:
-    return "ai-tech-express.jp/img/" in str(url or "")
-
-
-SKIP_KINDS = ("dense",)  # 文字の多い図・画面の写し（動画の大きさでは図の中の文字が読めない）は使わない
-COVER_KINDS = ("photo", "hero", "video", "kit")  # 枠いっぱいに切り抜いてよい写真。ほか（バナー・ロゴ）は切らずに全体を見せる
-
-
-def official_images(article: dict) -> list[dict]:
-    """使ってよい画像（I1/I2）: imageCredit が official のサムネイル（サイトに保存した写し）と、本文の公式の写真・図（bodyImages）。
-    AI 画像・素材写真・YouTube のサムネイル・ニュースサイトの写真は使わない"""
-    out: list[dict] = []
-    credit = article.get("imageCredit") or {}
-    focus = article.get("imageFocus") or {}
-    if credit.get("kind") == "official" and str(credit.get("imageKind") or "").lower() not in SKIP_KINDS:
-        url = article.get("thumbnail") or ""
-        url = url if is_ours(url) else ""
-        if url:
-            org = (credit.get("org") or credit.get("provider") or "").strip()
-            out.append({"url": url, "org": org, "kind": str(credit.get("imageKind") or "photo"), "focus": [float(focus.get("x", 0.5)), float(focus.get("y", 0.5))]})
-    for b in article.get("bodyImages") or []:
-        if not isinstance(b, dict) or not is_ours(b.get("src", "")) or not (b.get("credit") or "").strip():
-            continue
-        if str(b.get("kind", "")).lower() in ("ai", "stock", "generated") + SKIP_KINDS:
-            continue
-        if any(x["url"] == b["src"] for x in out):
-            continue
-        out.append({"url": b["src"], "org": str(b["credit"]).strip(), "kind": str(b.get("kind") or "photo"), "focus": [0.5, 0.5]})
-    for x in out:
-        x["credit"] = f"画像：{x['org']}（公式発表より）" if x["org"] else "画像：公式発表より"
-    return out
-
-
 def subject_of(article: dict) -> str:
     """題の頭の主語（「Googleが…」「Canva、…」）。長い・数字だけ・記号で始まるものは使わない"""
     title = re.sub(r"^【[^】]*】", "", str(article.get("title") or "")).strip()
@@ -258,121 +181,28 @@ def narration_sentence(text: str, max_len: int = 72, first: bool = True) -> str:
         s += "。"
     return s if not polite_ok(s) else ""
 
-
-@dataclass
-class Beat:
-    label: str  # 小見出し（青・小さく）
-    key: str  # 要点の行（大きく。記事の見出し・FAQ の問いなどをそのまま）
-    speech: str  # 読み上げ（記事の文をそのまま。字幕にも同じ文を出す）
-    source: str  # lede / faq / work / script
-    image: int = -1  # 使う画像の番号（-1 = 無し）
+_PARSER = None
 
 
-@dataclass
-class SimplePlan:
-    level: str
-    variant: str
-    slug: str
-    title: str
-    hook_speech: str
-    hook_text: str
-    beats: list[Beat]
-    ending_text: str
-    ending_speech: str
-    cta: str
-    images: list[dict] = field(default_factory=list)
-    subject: str = ""
-    source_name: str = ""
-    summary: str = ""
-    length_range: tuple = (15.0, 30.0)
-    script_from: str = "article"  # article（機械で）/ llm（L1/L2 の台本の場面）
-    sub_max: int = 58  # 字幕1枚の字数（SUB_MAX2。文字の面積が上限に近ければ SUB_MAX＝1行に）
+def _phrases(text: str) -> list[str]:
+    global _PARSER
+    try:
+        import budoux
 
-    @property
-    def mode(self) -> str:
-        return "image" if self.images else "card"
-
-    def lines(self) -> list[str]:
-        return [self.hook_speech] + [b.speech for b in self.beats] + [self.ending_speech]
-
-
-FAQ_LABELS = [
-    (re.compile(r"いつ|時期|発売日|開始"), "いつから？"),
-    (re.compile(r"日本"), "日本では？"),
-    (re.compile(r"無料|料金|いくら|価格|費用|値段"), "お金の話"),
-    (re.compile(r"違う|変わ|前と"), "前と比べると？"),
-    (re.compile(r"誰|対象"), "だれが対象？"),
-    (re.compile(r"とは|何を|何が|何で|どんな|できる"), "どんなもの？"),
-]
-FALLBACK_LABELS = ["気になる点", "ほかの注目点", "知っておきたい点"]
-FIXED_LABELS = {"注目のニュース", "何があった？", "だれに役立つ？", "続きは記事で", "要点"} | {x for _, x in FAQ_LABELS} | set(FALLBACK_LABELS)
-
-HOOKS = [
-    ("{s}の新しいニュースです。", "大事なところを、短くまとめてお伝えします。"),
-    ("{s}の話題を、短くお伝えします。", "知っておきたい点を、順番に紹介します。"),
-    ("{s}について、知っておきたいニュースです。", "要点をまとめてお伝えします。"),
-]
-HOOK_GENERIC = ("新しいニュースを、短くお伝えします。", "知っておきたい点を、順番に紹介します。")
-HOOK_EYEBROW = "注目のニュース"
-ENDINGS = {
-    "short": [
-        "くわしくは記事で解説しています。投稿のリンクから、ぜひチェックしてみてください。",
-        "続きは記事でくわしく解説しています。投稿のリンクから、のぞいてみてください。",
-    ],
-    "full": [
-        "くわしくは、サイソクニュースの記事で解説しています。ぜひ、あわせて読んでみてください。",
-        "続きは、サイソクニュースの記事でくわしく紹介しています。あわせて読んでみてください。",
-    ],
-}
-ENDING_COMPACT = "続きは、投稿のリンクの記事で読めます。"
-ENDING_TEXT = "くわしくは記事で"
-CTA = {"short": "投稿のリンクからどうぞ ↗", "full": "ai-tech-express.jp"}
-
-
-def _pick(options: list, seed: str):
-    return options[zlib.crc32(seed.encode("utf-8")) % len(options)]
-
-
-def hook_for(article: dict, variant: str) -> str:
-    s = subject_of(article)
-    first, second = _pick(HOOKS, article.get("slug", "")) if s else HOOK_GENERIC
-    first = first.format(s=s)
-    return first if variant == "short" else first + second
-
-
-def fixed_texts(article: dict) -> set[str]:
-    """決まった定型の文（記事の文ではないが、この仕組みが決めた言い回し。中身の主張・数字は入らない）"""
-    s = subject_of(article)
-    out = set(FIXED_LABELS) | {ENDING_TEXT, ENDING_COMPACT, *CTA.values(), *[x for v in ENDINGS.values() for x in v], *HOOK_GENERIC, HOOK_GENERIC[0] + HOOK_GENERIC[1]}
-    for a, b in HOOKS:
-        out |= {a.format(s=s), a.format(s=s) + b, b}
+        if _PARSER is None:
+            _PARSER = budoux.load_default_japanese_parser()
+        parts = _PARSER.parse(text)
+    except Exception:  # noqa: BLE001 - budoux が無ければ1文字ずつ
+        parts = list(text)
+    out = []
+    for p in parts:  # 英数字の語の途中では切らない
+        if out and re.match(r"^[A-Za-z0-9.\-+]", p) and re.search(r"[A-Za-z0-9.\-+]$", out[-1]):
+            out[-1] += p
+        else:
+            out.append(p)
     return out
 
 
-def title_key(article: dict, speech: str) -> str:
-    """「何があった？」の要点の行: 題を全角の空白で分けた片方（読み上げと重なりの多い方）。長ければハイライトの最初の文節"""
-    parts = [p.strip() for p in TITLE_SPLIT.split(str(article.get("title") or "")) if p.strip()]
-    sd = set(re.findall(r"\d+(?:\.\d+)?", plain(speech)))
-    parts = [p for p in parts if 6 <= len(plain(p)) <= 52 and set(re.findall(r"\d+(?:\.\d+)?", plain(p))) <= sd and key_fit(clean_sentence(p))]
-    best = max(parts, key=lambda p: overlap(p, speech), default="")
-    if best and overlap(best, speech) >= 0.2:
-        return clean_sentence(best)
-    for h in article.get("highlights") or []:
-        for clause in re.split(r"(?<=[。])", clean_sentence(h)):
-            clause = clause.strip().rstrip("。")
-            if 6 <= len(clause) <= 28 and overlap(clause, speech) >= 0.3 and set(re.findall(r"\d+(?:\.\d+)?", plain(clause))) <= sd:
-                return clause
-    return ""
-
-
-def faq_label(q: str, used: set[str]) -> str:
-    for pat, label in FAQ_LABELS:
-        if pat.search(q) and label not in used:
-            return label
-    return next((x for x in FALLBACK_LABELS if x not in used), "")
-
-
-SKIP_H2 = re.compile(r"概要|何が発表|自分には|仕事・お金|仕事とお金|まとめ|出典|参考|よくある質問|FAQ|ライバル|数字で見る")
 
 
 def body_sections(body: str) -> list[tuple[str, str, str]]:
@@ -409,121 +239,6 @@ def lede_candidates(article: dict) -> list[str]:
     return [x for x in dict.fromkeys(out) if x]
 
 
-def first_beat(article: dict) -> Beat | None:
-    """最初の場面（何があった？）: 候補の文のうち、題の片方（か見出しのハイライト）と同じ話のもの"""
-    for speech in lede_candidates(article):
-        if key := title_key(article, speech):
-            return Beat("何があった？", key, speech, "lede")
-    return None
-
-
-def article_beats(article: dict) -> list[Beat]:
-    """記事の文から場面を作る（LLM なし）。順番: 何があった？（リード）→ FAQ（問い＝要点・答え＝読み上げ）→
-    本文の小見出し（見出し＝要点・その段落の最初の文＝読み上げ）→ 本文の問いの見出し（料金は？・日本で使える？）→ だれに役立つ？"""
-    beats: list[Beat] = []
-    used_labels: set[str] = set()
-    if fb := first_beat(article):
-        beats.append(fb)
-        used_labels.add("何があった？")
-    faq_rows = []
-    for f in article.get("faq") or []:
-        if not isinstance(f, dict):
-            continue
-        q = clean_sentence(f.get("q", ""))
-        if not q or len(q) > 30 or _NOT_NARRATION.search(q):
-            continue
-        raw = sentences(f.get("a", ""))
-        speech = narration_sentence(raw[0]) if raw else ""  # 答えの最初の文だけ（途中の文は前の文が無いと話が分からない）
-        if not speech:
-            continue
-        k = 0
-        nxt = narration_sentence(raw[k + 1], first=False) if k + 1 < len(raw) else ""
-        if len(speech) < 24 and nxt and len(speech + nxt) <= 76:
-            speech += nxt
-        if re.search(r"何が発表|何を発表|とは何|とは？", q) and beats:  # 「何があった？」と同じ話
-            continue
-        faq_rows.append((1 if _NO_INFO.search(speech) else 0, len(faq_rows), q, speech))
-    for _, _, q, speech in sorted(faq_rows):
-        label = faq_label(q, used_labels)
-        if not label:
-            continue
-        used_labels.add(label)
-        beats.append(Beat(label, q, speech, "faq"))
-    for h2, h3, para in body_sections(article.get("body", "")):
-        head = re.sub(r"^\s*(?:\d{1,2}|[①-⑩])[.．、)）]\s*", "", clean_sentence(h3 or h2))  # 見出しの頭の番号（「2. 」）は出さない
-        if not head or SKIP_H2.search(h2) or (not h3 and not head.endswith(("？", "?"))) or not (4 <= len(head) <= 28):
-            continue
-        if _NOT_NARRATION.search(head):
-            continue
-        sents = sentences(para)
-        speech = narration_sentence(sents[0]) if sents else ""
-        if not speech or _NO_INFO.search(speech) and h3:
-            continue
-        if len(speech) < 32 and len(sents) > 1 and (nxt := narration_sentence(sents[1], first=False)) and len(speech + nxt) <= 84:
-            speech += nxt  # 最初の文が短い前置き（「〜があります。」）なら、次の文までで1つの話に
-        label = ("前と比べると？" if "前と比べると？" not in used_labels else "") if re.search(r"前と|違う|変わ", h2) and h3 else ""
-        label = label or faq_label(head, used_labels)
-        if not label:
-            continue
-        used_labels.add(label)
-        beats.append(Beat(label, head, speech, "section"))
-    for p in (article.get("workMoney") or {}).get("points") or []:
-        s = narration_sentence(p, max_len=76)
-        m = re.match(r"^(.{4,24}?(?:人|者|方|企業|会社|チーム|部門|担当|事業主|愛好家))(?:は|が|なら|に)、?", clean_sentence(p))
-        if s and m and not _NO_INFO.search(s):
-            beats.append(Beat("だれに役立つ？", m.group(1), s, "work"))
-            break
-    # 同じ話（読み上げの重なりが大きい）は後ろを落とす
-    out: list[Beat] = []
-    for b in beats:
-        if any(len(bigrams(b.speech) & bigrams(o.speech)) / max(len(bigrams(b.speech) | bigrams(o.speech)), 1) > 0.45 for o in out):
-            continue
-        if any(plain(b.key) == plain(o.key) for o in out):
-            continue
-        out.append(b)
-    return out
-
-
-def title_beats(article: dict) -> list[Beat]:
-    """です・ますの文が記事に1つも使えないときの最後の手: 題をそのまま読む（「見出しは「◯◯」です。」）。題の片方ずつ・題の全体の順に候補"""
-    title = str(article.get("title") or "")
-    parts = [clean_sentence(p) for p in TITLE_SPLIT.split(title) if p.strip()] + [clean_sentence(title)]
-    return [Beat("何があった？", p, f"見出しは「{p}」です。", "title") for p in dict.fromkeys(parts) if 6 <= len(plain(p)) <= 64]
-
-
-def est_seconds(lines: list[str]) -> float:
-    chars = sum(len(re.sub(r"[\s、。！？「」]", "", x)) for x in lines)
-    return LEAD + chars / CPS + GAP * (len(lines) - 1) + END_HOLD
-
-
-def choose_beats(beats: list[Beat], hook: str, ending: str, rng: tuple, variant: str) -> list[Beat]:
-    """長さの範囲に入るように場面を選ぶ。最初の場面（何があった？）は必ず入れる。
-    短い版: そのあと数字のある場面を先に・「まだ発表されていない」の場面は入れない。サイト用: 記事の順・「まだ」は2つまで最後に"""
-    _lo, hi = rng
-    target = hi - 2.5
-    if not beats:
-        return []
-    head, rest = beats[0], beats[1:]
-    if variant == "short":
-        rest = sorted((b for b in rest if not _NO_INFO.search(b.speech)), key=lambda b: (b.source != "work", not re.search(r"\d", b.speech), beats.index(b)))
-    else:
-        info = [b for b in rest if not _NO_INFO.search(b.speech)]
-        rest = info + [b for b in rest if _NO_INFO.search(b.speech)][:2]
-    chosen = [head]
-    for b in rest:
-        if est_seconds([hook] + [x.speech for x in chosen + [b]] + [ending]) <= target:
-            chosen.append(b)
-    return [b for b in beats if b in chosen]
-
-
-def hook_title(article: dict) -> str:
-    """つかみに出す題: 36字までなら題の全体、長ければ題の前半（全角の空白の前。記事の題そのまま）"""
-    title = clean_sentence(article.get("title", ""))
-    if len(plain(title)) <= 36:
-        return title
-    first = clean_sentence(next((p for p in TITLE_SPLIT.split(str(article.get("title") or "")) if p.strip()), ""))
-    return first if len(plain(first)) >= 8 else title
-
 
 def summary_of(article: dict) -> str:
     """投稿文の要約（threadsPost の「要約すると、」の行があればそれ。無ければリードの最初の文）"""
@@ -535,1172 +250,493 @@ def summary_of(article: dict) -> str:
     return ("要約すると、" + lede[0]) if lede else ""
 
 
-def build_plan(article: dict, level: str, variant: str, images: list[dict] | None = None, script: dict | None = None, fewer: bool = False) -> SimplePlan:
-    """L3/L4 の計画（描画しない）。images=None なら記事の公式の画像（L4 は1枚まで）。script は L1/L2 が書いた台本（L3 で使う）"""
-    rng = RANGES[(level, variant)]
-    imgs = official_images(article) if images is None else list(images)
-    if level == "L4":
-        imgs = imgs[:1]
-    hook = hook_for(article, variant)
-    ending = _pick(ENDINGS[variant], article.get("slug", "") + variant)
-    beats, origin = [], "article"
-    if level == "L3" and script:
-        beats = script_beats(script, article)
-        origin = "llm" if beats else "article"
-        if beats and (h := script_hook(script, article)):
-            hook = h
-    if not beats:
-        beats = article_beats(article)
-    nums, mat = article_numbers(article), plain(material(article))
-    beats = [b for b in beats if not beat_problems(b, article, nums, mat)]  # 検査に通る場面だけ（計画が落ちないように先に外す）
-    if not beats:
-        beats = [b for b in title_beats(article) if not beat_problems(b, article, nums, mat)][:1]
-    chosen = choose_beats(beats, hook, ending, rng, variant)
-    if fewer and len(chosen) > 1:  # 作り直し: 場面を半分に（文字が少ないほど見落としが減る）
-        chosen = chosen[: max(1, len(chosen) // 2)]
-    if variant == "short" and est_seconds([hook] + [b.speech for b in chosen] + [ending]) > rng[1] - 1.5:
-        ending = ENDING_COMPACT  # 最初の場面が長いときは、締めを短く
-    if est_seconds([hook] + [b.speech for b in chosen] + [ending]) < rng[0] + 1.5 and origin == "article":
-        hook = hook_for(article, "full")  # 場面が少なくて短すぎるときは、つかみを2文に
-    for i, b in enumerate(chosen):
-        b.image = (i + 1) % len(imgs) if imgs and level == "L3" and len(imgs) > 1 else (0 if imgs else -1)
-    return SimplePlan(
-        level=level, variant=variant, slug=article.get("slug", ""), title=clean_sentence(article.get("title", "")),
-        hook_speech=hook, hook_text=hook_title(article), beats=chosen,
-        ending_text=ENDING_TEXT, ending_speech=ending, cta=CTA[variant], images=imgs,
-        subject=subject_of(article), source_name=clean_sentence(article.get("sourceName", "")),
-        summary=summary_of(article), length_range=rng, script_from=origin,
-    )  # fmt: skip
 
 
-def script_hook(script: dict, article: dict) -> str:
-    h = clean_sentence((script.get("hook") or {}).get("speech", ""))
-    if not h or _SCREEN_WORDS.search(h):
-        return ""
-    import sns_rules
-
-    if sns_rules.grammar_problems(h) or not (sns_rules.POLITE_END.search(h) or h.endswith(("？", "?"))):
-        return ""
+def _digits(text: str) -> set[str]:
     import video_gate as gate
 
-    if gate.numbers_ok(h, article_numbers(article)):
+    return set(re.findall(r"\d+(?:\.\d+)?", gate.norm(text or "")))
+
+
+def stiff(text: str) -> list[str]:
+    """硬い言い回し（video_gate.stiff_problems。2026-11-04 オーナー「作業の担い手」）"""
+    import video_gate as gate
+
+    return gate.stiff_problems(text) if hasattr(gate, "stiff_problems") else []
+
+
+def short_phrase(text: str, max_len: int, min_len: int = 2) -> str:
+    """文節（budoux）の切れ目で max_len 字まで。最後の読点・助詞を1つ落とす（「…の」「…は」で終わらない）"""
+    out = ""
+    for p in _phrases(clean_sentence(text)):
+        if len(out + p) > max_len:
+            break
+        out += p
+    out = re.sub(r"[、。・：:\s]+$", "", out)
+    out = _TRAIL_PARTICLE.sub("", out)
+    out = re.sub(r"[、。・：:\s]+$", "", out)
+    return out if len(out) >= min_len else ""
+
+
+BAD_LABEL_END = re.compile(r"(?:による|によると|について|として|では|での|には|から|まで|より|など|とは|って|の|へ|に|で|と|や|も|を|が|は)$")
+BAD_LABEL_START = re.compile(r"^(?:この|その|あの|今回|これ|それ|同社|同氏|また|さらに|ただし|なお|結論)")
+
+
+def _qless(text: str) -> str:
+    t = clean_sentence(text)
+    t = re.sub(r"^\s*(?:\d{1,2}|[①-⑩])[.．、)）]\s*", "", t)
+    return re.sub(r"(?:ですか|ますか|でしょうか|のか|の)?[？?]+$", "", t).strip()
+
+
+def topic(text: str, max_len: int = 16, need_marker: bool = False) -> str:
+    """文・問いの主題（「…は」「…が」の前）。長ければ「で・と・に・を・の」の後ろへ縮める（例:「JetBrains AirのCopilotクラウド実行に必要な条件は？」→「必要な条件」）"""
+    t = _qless(text)
+    m = re.match(r"^(.+?)(?:は|が)(?![a-zA-Z])", t)
+    if not m and need_marker:
         return ""
-    return h
+    base = (m.group(1) if m else t).rstrip("。")
+    if len(base) > max_len:
+        parts = re.split(r"(?:で|と|に|を|の|、)", base)
+        tail = parts[-1] if parts else ""
+        base = tail if len(tail) >= 4 else ""
+    base = base.strip(" 、")
+    if base.count("「") != base.count("」"):
+        return ""
+    return base if 4 <= len(base) <= max_len and not BAD_LABEL_END.search(base) and not BAD_LABEL_START.search(base) else ""
 
 
-def script_beats(script: dict, article: dict) -> list[Beat]:
-    """L1/L2 の台本（LLM）の場面のうち、写真を見せながらでも話が合うもの: 画面を指す言い方が無い・グラフの場面ではない・
-    数字はすべて記事にある・です・ます・キーワードと読み上げが同じ話"""
-    import video_gate as gate
-
-    nums = article_numbers(article)
-    graph = {int((script.get(k) or {}).get("beat") or 0) for k in ("ladder", "compare", "units")}
-    graph |= {int(x.get("beat") or 0) for k in ("ladders", "flows") for x in script.get(k) or []}
-    out, used = [], set()
-    for i, b in enumerate(script.get("beats") or [], 1):
-        speech = clean_sentence(b.get("speech", ""))
-        key = clean_sentence(b.get("keyword", ""))
-        label = clean_sentence(b.get("label", "")) or "ポイント"
-        if i in graph or not speech or not key or _SCREEN_WORDS.search(speech) or polite_ok(speech):
-            continue
-        if gate.numbers_ok(speech + " " + key, nums) or gate.bare_phrase(key) or label in used:
-            continue
-        kd = set(re.findall(r"\d+(?:\.\d+)?", gate.norm(key)))
-        if not kd <= set(re.findall(r"\d+(?:\.\d+)?", gate.norm(speech))) or (not kd and overlap(key, speech) < 0.2):
-            continue
-        used.add(label)
-        out.append(Beat(label, key, speech, "script"))
-    return out
-
-
-def beat_problems(b: Beat, article: dict, nums: set | None = None, mat: str | None = None) -> list[str]:
-    """1つの場面の検査（数字は記事にある・要点と読み上げは記事の文そのまま・同じ話・枠に入る・です・ます）"""
-    import video_gate as gate
-
-    nums = article_numbers(article) if nums is None else nums
-    mat = plain(material(article)) if mat is None else mat
+def label_candidates(hint: str, speech: str) -> list[str]:
+    """小見出しの候補（切れ端にしない）: ①見出しそのもの（16字まで）②見出し・FAQ の問いの主題 ③読み上げの文の主題"""
     out = []
-    for p in polite_ok(b.speech):
-        out.append(f"の読み上げ: {p}")
-    if bad := gate.numbers_ok(b.speech, nums):
-        out.append(f"の読み上げに記事に無い数字 {', '.join(sorted(set(bad)))}")
-    if bad := gate.numbers_ok(b.key, nums):
-        out.append(f"の要点に記事に無い数字 {', '.join(sorted(set(bad)))}")
-    if b.source != "script" and plain(b.key) not in mat:
-        out.append(f"の要点「{b.key[:14]}」が記事にそのまま無い")
-    m = _TITLE_SPEECH.match(b.speech) if b.source == "title" else None
-    if b.source == "title" and not (m and plain(m.group(1)) in mat):
-        out.append("の題の読み上げが記事の題そのままではない")
-    elif b.source not in ("script", "title") and plain(b.speech).rstrip("。") not in mat:
-        out.append("の読み上げが記事の文そのままではない")
-    kd = set(re.findall(r"\d+(?:\.\d+)?", gate.norm(b.key)))
-    sd = set(re.findall(r"\d+(?:\.\d+)?", gate.norm(b.speech)))
-    if not kd <= sd and b.source not in ("faq", "section"):
-        out.append(f"の要点の数字が読み上げに無い（{b.key[:14]}）")
-    if b.source not in ("faq", "work", "section", "title") and overlap(b.key, b.speech) < 0.2:
-        out.append(f"の要点と読み上げが別の話（{b.key[:14]}）")
-    if gate.bare_phrase(b.key) or gate.bare_phrase(b.label) and b.label not in FIXED_LABELS:
-        out.append(f"の要点・小見出しが名詞1つだけ（{b.key}）")
-    if b.source == "script" and b.label not in FIXED_LABELS and gate.numbers_ok(b.label, nums):
-        out.append("の小見出しに記事に無い数字")
-    if not key_fit(b.key):
-        out.append(f"の要点「{b.key[:12]}」が左の列に入らない")
-    for chunk in sub_chunks(b.speech):
-        if not fit(chunk, "bold", SUB_SIZES, SUB[2] - SUB[0], 2):
-            out.append(f"の字幕「{chunk[:12]}」が字幕の枠に入らない")
-    return out
+    h = _qless(hint)
+    if h and len(h) <= 16:
+        out.append(re.sub(r"(?:は|って|とは)$", "", h))
+    out += [topic(hint), topic(speech, need_marker=True)]
+    return [c.strip() for c in dict.fromkeys(out) if c and c.count("「") == c.count("」") and 4 <= len(c.strip()) <= 16 and not BAD_LABEL_END.search(c.strip()) and not BAD_LABEL_START.search(c.strip())]
 
 
-def plan_problems(plan: SimplePlan, article: dict) -> list[str]:
-    """描画の前の検査（ネット・声なしで回せる）。空なら合格"""
+def label_ok(label: str, used: set[str], article: dict) -> bool:
     import video_gate as gate
 
-    out: list[str] = []
-    nums = article_numbers(article)
-    mat = plain(material(article))
-    fixed = {plain(x) for x in fixed_texts(article)}
-    if not plan.beats:
-        out.append("使える場面が無い（記事にです・ますの文・FAQ が無い）")
-    lo, hi = plan.length_range
-    est = est_seconds(plan.lines())
-    if not (lo - 3 <= est <= hi + 3):
-        out.append(f"読み上げの長さの見込み {est:.0f}秒が {lo:.0f}〜{hi:.0f}秒から外れる")
-    for line in plan.lines():
-        for p in polite_ok(line) if not line.endswith(("？", "?")) else []:
-            out.append(f"読み上げ: {p}")
-        if bad := gate.numbers_ok(line, nums):
-            out.append(f"読み上げに記事に無い数字 {', '.join(sorted(set(bad)))}")
-    seen_keys, seen_labels = set(), set()
-    for i, b in enumerate(plan.beats, 1):
-        out += [f"場面{i}{p}" for p in beat_problems(b, article, nums, mat)]
-        if plain(b.key) in seen_keys:
-            out.append(f"場面{i}の要点が前の場面と同じ")
-        if b.label in seen_labels:
-            out.append(f"場面{i}の小見出し「{b.label}」が前の場面と同じ")
-        seen_keys.add(plain(b.key))
-        seen_labels.add(b.label)
-    if plain(plan.hook_text) not in mat:
-        out.append("つかみの題が記事の題そのままではない")
-    if plan.script_from == "article" and plain(plan.hook_speech) not in fixed:
-        out.append("つかみの読み上げが決まった言い回しではない")
-    for img in plan.images:
-        if not is_ours(img.get("url", "")):
-            out.append(f"サイトに保存していない画像は使わない（{img.get('url', '')[:40]}）")
-    if plan.level == "L4" and len(plan.images) > 1:
-        out.append("L4 の画像は1枚まで")
-    if (article.get("imageCredit") or {}).get("kind") in ("ai", "stock") and any(x["url"] == article.get("thumbnail") for x in plan.images):
-        out.append("AI・素材の画像を使っている（I2）")
-    out += fit_problems(plan)
-    return out
+    key = gate.norm(re.sub(r"[\s　？?]+", "", label)).lower()
+    templates = {gate.norm(x).lower() for x in gate.TEMPLATE_LABELS}
+    return (2 <= len(label) <= 16 and not gate.bare_phrase(label) and key not in templates and key not in used
+            and not re.search(r"[？?]\s*$", label) and not stiff(label) and not gate.numbers_ok(label, article_numbers(article)))  # fmt: skip
 
 
-def all_verbatim(plan: SimplePlan, article: dict) -> bool:
-    """画面の文字（題・要点・字幕・カード）がすべて記事の文そのままか、決まった定型の文か（L4 の vision の代わりの判定に使う）"""
-    mat = plain(material(article))
-    fixed = {plain(x) for x in fixed_texts(article)}
-    texts = [plan.hook_text, plan.subject, plan.source_name] + [b.key for b in plan.beats] + [b.speech for b in plan.beats]
-    texts += [b.label for b in plan.beats] + [plan.hook_speech, plan.ending_speech, plan.ending_text, plan.cta]
-    def ok(t: str) -> bool:
-        m = _TITLE_SPEECH.match(t or "")
-        return not t or plain(t) in mat or plain(t) in fixed or bool(m and plain(m.group(1)) in mat)
-
-    return all(ok(t) for t in texts)
+NUM_UNIT = re.compile(
+    r"(?:約|最大|最小|最高|平均)?[0-9０-９][0-9０-９,，.．]*(?:万|億|兆)?"
+    r"(?:倍|%|％|ドル|円|件|人|社|時間|分|秒|年|月|日|GB|TB|メガワット|ギガワット|kg|W|Wh|Nm|世帯|個|つ|回|段階|カ月|か月|週間|台|本|種類|言語|か国|カ国|ユーロ|トークン|行|ページ|ポイント|万人|拠点|モデル)"
+)
 
 
-# --------------------------------------------------------------------------- #
-# 2. 文字（Pillow）。書体は Noto Sans JP（Black/Bold）とロゴの Dela Gothic One だけ
-# --------------------------------------------------------------------------- #
+def keyword_for(speech: str, target: str, ja: str, avoid: set[str]) -> str:
+    """大きな見出し（キーワード）: 読み上げにそのままある言い回しで、選択する証拠の文（英語なら吹き出し）にもあるもの。
+    数字があれば数字（日付は後回し）、無ければ英字・カタカナの名前を含む文節のまとまり（16字まで・名詞1つだけにしない）"""
+    import video_gate as gate
 
-NUM_SPLIT = re.compile(r"(?<![A-Za-z0-9.\-])([$＄]?\d[\d,，.．]*(?:万|億|兆)?\d*(?:円|ドル|%|％|倍|人|件|社|年|月|日|時間|分|秒|GB|TB|万人|kg|W|Wh|Nm)?)")
-_PARSER = None
-
-
-def _phrases(text: str) -> list[str]:
-    global _PARSER
-    try:
-        import budoux
-
-        if _PARSER is None:
-            _PARSER = budoux.load_default_japanese_parser()
-        parts = _PARSER.parse(text)
-    except Exception:  # noqa: BLE001 - budoux が無ければ1文字ずつ
-        parts = list(text)
-    out = []
-    for p in parts:  # 英数字の語の途中では切らない
-        if out and re.match(r"^[A-Za-z0-9.\-+]", p) and re.search(r"[A-Za-z0-9.\-+]$", out[-1]):
-            out[-1] += p
-        else:
-            out.append(p)
-    return out
-
-
-def wrap(text: str, fnt, width: int) -> list[str]:
-    lines, cur = [], ""
-    for p in _phrases(text):
-        if fnt.getlength(cur + p) <= width:
-            cur += p
+    body = speech.rstrip("。")
+    nums = []
+    for m in NUM_UNIT.finditer(body):
+        kw = m.group(0)
+        if len(kw) >= 2 and re.search(r"[^\d.,，．]", kw) and gate.key_fact_ok(kw, "", target, ja) and gate.narration_ok(kw, speech):
+            nums.append((1 if re.search(r"(?:[年月日つ個回本台]|段階)$", kw) else 0, kw))
+    ph = _phrases(body)
+    starts = {0} | {i for i in range(1, len(ph)) if re.search(r"(?:、|は|が|では|には|も)$", ph[i - 1])}
+    cands = []
+    for i in sorted(starts):
+        if BAD_LABEL_START.search(ph[i]):
             continue
-        if cur:
-            lines.append(cur)
-        cur = ""
-        while fnt.getlength(p) > width:  # 1つの文節が幅より長い → 文字で切る
-            k = len(p)
-            while k > 1 and fnt.getlength(p[:k]) > width:
-                k -= 1
-            lines.append(p[:k])
-            p = p[k:]
-        cur = p
-    if cur:
-        lines.append(cur)
-    # 行頭に句読点・閉じかっこを置かない
-    for i in range(1, len(lines)):
-        while lines[i] and lines[i][0] in "、。」）！？":
-            lines[i - 1] += lines[i][0]
-            lines[i] = lines[i][1:]
-    return [x for x in lines if x]
+        acc = ""
+        for j in range(i, len(ph)):
+            acc += ph[j]
+            if len(acc) > 16:
+                break
+            c = _TRAIL_PARTICLE.sub("", re.sub(r"[、。・：:\s]+$", "", acc))
+            if not (5 <= len(c) <= 16) or re.search(r"[、。！？!?「」]", c) or gate.bare_phrase(c) or stiff(c) or c in avoid or BAD_LABEL_END.search(c):
+                continue
+            if not (gate.key_fact_ok(c, "", target, ja) or gate.point_ok(c, f"{target} {ja}")) or not gate.narration_ok(c, speech):
+                continue
+            named = bool(re.search(r"[A-Za-z]{2,}|[ァ-ヴー]{3,}", c))
+            cands.append((0 if named else 1, -len(c), i, c))
+    nums.sort()
+    if nums and nums[0][0] == 0 and nums[0][1] not in avoid:
+        return nums[0][1]
+    if cands:
+        return sorted(cands)[0][3]
+    return nums[0][1] if nums and nums[0][1] not in avoid else ""
 
 
-def fit(text: str, face: str, sizes, width: int, rows: int) -> tuple[int, list[str]] | None:
-    import shorts
+def block_sentences(text: str) -> list[str]:
+    return [p.strip() for p in re.split(r"(?<=[。！？])|(?<=[.!?])\s+(?=[A-Z0-9\"“])", text or "") if len(p.strip()) >= 12]
 
-    width -= 8  # 文字の絵の余白（左右 2px ずつ）と丸めの分
-    for size in sizes:
-        lines = wrap(text, shorts.font(face, size), width)
-        if len(lines) <= rows and all(shorts.font(face, size).getlength(x) <= width + 0.5 for x in lines):
-            return size, lines
+
+def _terms(text: str) -> set[str]:
+    return {t.lower() for t in re.findall(r"[A-Za-z][A-Za-z0-9.+\-]{2,}", text or "")} | set(re.findall(r"[ァ-ヴー]{3,}", text or ""))
+
+
+def page_target(pages: list, speech: str, used: set[str]) -> tuple[str, str, str] | None:
+    """読み上げの文の証拠になる画面の文: 公式ページで、記事の数字（全部）と名前を含む文。無ければ自分の記事ページで同じ文。
+    戻り値 (target, block_id, ja)。ja は英語の文のときの日本語の吹き出し（読み上げの文から。数字は target にあるものだけ）"""
+    import shorts_v3 as v3
+
+    sd, st = _digits(speech), _terms(speech)
+    body = plain(speech).rstrip("。")
+    best = None
+    for p in pages:
+        for b in p.blocks:
+            for sent in block_sentences(b.text):
+                key = plain(sent)
+                if key in used:
+                    continue
+                if p.own:
+                    if body and body in key:
+                        score = 5.0
+                    else:
+                        continue
+                else:
+                    if not (20 <= len(sent) <= 240) or (sd and not sd <= _digits(sent)):
+                        continue
+                    if v3.is_english(sent):
+                        shared = sum(1 for t in st if t in sent.lower())
+                        if shared < (1 if sd else 2) or not v3.clause_ok(sent, b.text):
+                            continue
+                        score = 10.0 * len(sd) + 3 * shared
+                    else:
+                        ov = overlap(sent, speech)
+                        if ov < 0.35 or not v3.ja_phrase_ok(sent.rstrip("。"), b.text):
+                            continue
+                        score = 10.0 * len(sd) + 20 * ov
+                if best is None or score > best[0]:
+                    best = (score, sent, b.id)
+    if not best:
+        return None
+    _score, sent, bid = best
+    target = sent if v3.is_english(sent) else sent.rstrip("。")
+    ja = caption_for(speech, sent) if v3.is_english(sent) else ""
+    if v3.is_english(sent) and not ja:
+        return None
+    return target, bid, ja
+
+
+def caption_for(speech: str, target: str) -> str:
+    """英語の文の日本語の吹き出し: 読み上げの文（か、その読点までのまとまり）で 40 字まで。数字は target にあるものだけ"""
+    td = _digits(target)
+    body = speech.rstrip("。")
+    cands = [body] + [c.strip() for c in body.split("、")] + [short_phrase(body, 40, 10)]
+    for c in cands:
+        if 10 <= len(c) <= 40 and _digits(c) <= td and not stiff(c):
+            return c
+    return ""
+
+
+def hook_parts(article: dict, pages: list) -> dict | None:
+    """つかみ: 読み上げ＝何が起きたか・なぜ大事か（本文の最初の文 → リードの文）、見出し＝記事の題の片方（数字なし）、
+    証拠＝画面のいちばん大きな見出し（英語なら題を吹き出しに）"""
+    import shorts_v3 as v3
+    import video_gate as gate
+
+    terms = gate._subject_terms(article)
+    cands = []
+    # 3秒で気になる入り（2026-11-04 オーナー「ただの読み聞かせ」）: 投稿の1行目の呼びかけ（読者を名指しする。門番 sns_rules のルール6で確かめた文）
+    first = str(article.get("threadsPost") or "").splitlines()[:1]
+    if first and not re.search(r"【|先に言うと|発表から\d+分|^\s*要約すると|押さえておきたい|気になる人|要チェック", first[0]) and re.search(r"(?:です|ます)。?$", first[0].strip()):
+        cands.append(first[0].strip())
+    intro = [para for h2, h3, para in body_sections(article.get("body", "")) if not h2 and not h3]
+    for para in intro[:1]:
+        cands += sentences(para)[:1]
+    cands += sentences(article.get("lede", ""))[:2]
+    speeches = []
+    for c in cands:
+        sp = narration_sentence(c, max_len=70)
+        if sp and len(sp) >= 20 and not stiff(sp) and not gate.SUMMARY_OPENING.search(sp) if hasattr(gate, "SUMMARY_OPENING") else sp:
+            speeches.append(sp)
+    if not speeches:
+        return None
+    parts = [clean_sentence(p) for p in TITLE_SPLIT.split(str(article.get("title") or "")) if p.strip()]
+    texts = []
+    for p in parts:
+        head = p.split("、")[0]
+        for cand in (p, head):
+            if 10 <= len(cand) <= 40 and not re.search(r"\d", gate.norm(cand)) and not stiff(cand) and not gate.bare_phrase(cand):
+                texts.append(cand)
+    named = [t for t in texts if any(x.lower() in t.lower() for x in terms)]
+    texts = named + [t for t in texts if t not in named]
+    if not texts and terms:
+        texts = [f"{terms[-1] if len(terms[-1]) <= 20 else terms[0]}の新しい発表"]
+    pick = next(((t, sp) for t in texts for sp in speeches if not terms or any(x.lower() in f"{t} {sp}".lower() for x in terms)), None)
+    if not pick:
+        return None
+    text, speech = pick
+    # つかみの左の言葉（見出しが消えたあと、次の場面まで出す。読み上げにそのままある言い回し。数字だけ・名詞1つだけにしない）
+    payoff = keyword_for(speech, speech, "", set())
+    if not payoff or gate.number_only(payoff) or gate.bare_phrase(payoff):
+        return None
+    ordered = [p for p in pages if not p.own] + [p for p in pages if p.own]
+    for p in ordered:
+        hero = v3.hero_block(p)
+        if not hero:
+            continue
+        sent = (block_sentences(hero.text) or [hero.text])[0].strip()
+        if not (6 <= len(sent) <= 200):
+            continue
+        if v3.is_english(sent):
+            return {"text": text, "payoff": payoff, "speech": speech, "block": hero.id, "target": sent, "ja": text if not _digits(text) - _digits(sent) else ""}
+        return {"text": text, "payoff": payoff, "speech": speech, "block": hero.id, "target": sent.rstrip("。"), "ja": ""}
     return None
 
 
-def render_lines(lines: list[str], face: str, size: int, color=INK, accent: bool = False, gap: float = 1.3, align: str = "left", width: int | None = None):
-    """文字の RGBA（numpy）。accent なら数字を赤に"""
-    import numpy as np
-    from PIL import Image, ImageDraw
-
-    import shorts
-
-    fnt = shorts.font(face, size)
-    asc, desc = fnt.getmetrics()
-    lh = int(size * gap)
-    w = int(width or max((fnt.getlength(x) for x in lines), default=1)) + 4
-    h = lh * (len(lines) - 1) + asc + desc + 4
-    img = Image.new("RGBA", (max(w, 1), max(h, 1)), (0, 0, 0, 0))
-    d = ImageDraw.Draw(img)
-    for i, line in enumerate(lines):
-        lw = fnt.getlength(line)
-        x = 2 + ((w - 4 - lw) / 2 if align == "center" else 0)
-        y = 2 + i * lh
-        parts = NUM_SPLIT.split(line) if accent else [line]
-        for j, part in enumerate(parts):
-            if not part:
-                continue
-            col = ACCENT if (accent and j % 2 == 1) else color
-            d.text((x, y), part, font=fnt, fill=col + (255,))
-            x += fnt.getlength(part)
-    return np.asarray(img)
-
-
-# --------------------------------------------------------------------------- #
-# 3. 絵の計画（どの時刻に何を出すか）と描画
-# --------------------------------------------------------------------------- #
-
-KEY_SIZES = range(58, 38, -2)
-HOOK_SIZES = range(52, 34, -2)
-SUB_SIZES = range(44, 34, -2)
-SUB_MAX = 38  # 字幕1枚を1行にするときの字数（文字の面積が上限に近い割り付けで使う）
-SUB_MAX2 = 58  # 字幕1枚の字数（2行まで。これより長い文は文節の切れ目で同じくらいの長さに分ける）
-
-
-def key_fit(text: str) -> tuple[int, list[str]] | None:
-    """要点の行の大きさと折り返し: 3行まで（大きい字）→ 4行まで（40〜44px）→ 5行まで（36〜40px。長い題をそのまま出すとき）"""
-    cw = COL[2] - COL[0]
-    return fit(text, "black", KEY_SIZES, cw, 3) or fit(text, "black", range(44, 38, -2), cw, 4) or fit(text, "black", range(40, 34, -2), cw, 5)
-
-
-def fit_problems(plan: SimplePlan) -> list[str]:
-    """要点・題・字幕が枠に入るか（描画の前に分かる）"""
-    out = []
-    cw = COL[2] - COL[0]
-    if not fit(plan.hook_text, "black", HOOK_SIZES, cw, 5):
-        out.append("題が左の列に入らない")
-    for i, b in enumerate(plan.beats, 1):
-        if not key_fit(b.key):
-            out.append(f"場面{i}の要点「{b.key[:12]}」が左の列に入らない")
-    for line in plan.lines():
-        for chunk in sub_chunks(line):
-            if not fit(chunk, "bold", SUB_SIZES, SUB[2] - SUB[0], 2):
-                out.append(f"字幕「{chunk[:12]}」が字幕の枠に入らない")
+def fact_candidates(article: dict) -> list[tuple[str, str, str]]:
+    """場面の候補 (読み上げの文, 小見出しの元, 出どころ): リード → FAQ → 本文の小見出し → 本文の問いの見出し → 仕事とお金"""
+    out: list[tuple[str, str, str]] = []
+    parts = [clean_sentence(p) for p in TITLE_SPLIT.split(str(article.get("title") or "")) if p.strip()]
+    for h2, h3, para in body_sections(article.get("body", ""))[:1]:  # 本文の最初の文（何が起きたか・なぜ大事か）
+        if not h2 and not h3 and (sp := narration_sentence((sentences(para) or [""])[0], max_len=70)):
+            out.append((sp, sp, "intro"))
+    for s in sentences(article.get("lede", ""))[:3]:
+        if (sp := narration_sentence(s, max_len=70)):
+            hint = max(parts, key=lambda p: overlap(p, sp), default="")
+            out.append((sp, hint, "lede"))
+    for f in article.get("faq") or []:
+        if not isinstance(f, dict):
+            continue
+        raw = sentences(f.get("a", ""))
+        sp = narration_sentence(raw[0], max_len=70) if raw else ""
+        if not sp:
+            continue
+        nxt = narration_sentence(raw[1], first=False) if len(raw) > 1 else ""
+        if len(sp) < 24 and nxt and len(sp + nxt) <= 70:
+            sp += nxt
+        out.append((sp, f.get("q", ""), "faq"))
+    for h2, h3, para in body_sections(article.get("body", "")):
+        head = h3 or (h2 if h2.endswith(("？", "?")) else "")
+        if not head or re.search(r"概要|自分には|仕事・お金|仕事とお金|まとめ|出典|よくある質問", h2):
+            continue
+        sents = sentences(para)
+        sp = narration_sentence(sents[0], max_len=70) if sents else ""
+        if sp and len(sp) < 30 and len(sents) > 1 and (nxt := narration_sentence(sents[1], first=False)) and len(sp + nxt) <= 70:
+            sp += nxt
+        if sp:
+            out.append((sp, head, "section"))
+    for p in (article.get("workMoney") or {}).get("points") or []:
+        if (sp := narration_sentence(p, max_len=76)):
+            m = re.match(r"^(.{4,20}?(?:人|者|方|企業|会社|チーム|部門|担当|事業主|法人))(?:は|が|なら|に)", clean_sentence(p))
+            out.append((sp, m.group(1) if m else "", "work"))
     return out
 
 
-_GOOD_END = re.compile(r"(?:は|が|を|に|で|と|も|へ|や|から|まで|より|ため|して|され|ており|ていて|し|く|て)$")
+SOFT_PROBLEM = re.compile(r"^beat\d+\.label は4〜14字|^beats は|読み上げの合計が|^hook\.text は|^hook\.speech は|^beat\d+（これは何？）|speech が長すぎ|^conclusion|speech で数字|speech に英単語")
 
 
-def sub_chunks(speech: str, max_chars: int | None = None) -> list[str]:
-    """字幕の1枚ずつ: 文ごとに、max_chars 字（既定 SUB_MAX2＝2行まで）を超える文は、文節の切れ目で同じくらいの長さに分ける。
-    切れ目は読点の後 → 助詞・て形の後の順に選び、「の」の後では切らない（「…の」「上に…」のような読めない切れ端を作らない）。つなぐと読み上げと同じ"""
-    limit = max_chars or SUB_MAX2
-    out = []
-    for s in sentences(speech) or [speech]:
-        if len(s) <= limit:
-            out.append(s)
+def template_script(article: dict, pages: list) -> tuple[dict | None, list[str]]:
+    """承認の形の台本を記事の文だけで作る（LLM なし）。戻り値 (台本, 問題)。台本が作れなければ (None, 理由)"""
+    import shorts_v3 as v3
+    import video_gate as gate
+
+    hook = hook_parts(article, pages)
+    if not hook:
+        return None, ["つかみ（何が起きたか・なぜ大事か）の文か、画面の見出しが無い"]
+    used_targets = {plain(hook["target"])}
+    used_labels: set[str] = set()
+    used_kw: set[str] = set()
+    beats: list[dict] = []
+    total = len(hook["speech"])
+    seen = [hook["speech"]]
+    for sp, hint, src in fact_candidates(article):
+        if len(beats) >= 6 or total >= SPEECH_MAX - 40:
+            break
+        if stiff(sp) or any(len(bigrams(sp) & bigrams(o)) / max(len(bigrams(sp) | bigrams(o)), 1) > 0.45 for o in seen):
             continue
-        ph = _phrases(s)
-        cum = [0]
-        for x in ph:
-            cum.append(cum[-1] + len(x))
-        k = math.ceil(len(s) / limit)
-        cuts, last = [], 0
-        for i in range(1, k):
-            target = len(s) * i / k
+        if _NO_INFO.search(sp) and sum(1 for b in beats if _NO_INFO.search(b["speech"])) >= 1:
+            continue
+        got = page_target(pages, sp, used_targets)
+        if not got:
+            continue
+        target, bid, ja = got
+        cands = (["あなたの場合"] if src == "work" and "あなたの場合" not in used_labels else []) + label_candidates(hint, sp)
+        label = next((c for c in cands if label_ok(c, used_labels, article) and overlap(c, hook["text"]) < 0.6), "")
+        if not label:
+            continue
+        kw = keyword_for(sp, target, ja, used_kw | {label})
+        if not kw:
+            continue
+        beat = {"label": label, "keyword": kw, "sub": "", "speech": sp, "block": bid, "target": target, "ja": ja}
+        if gate.label_problems({"hook": {}, "beats": [beat]}):
+            continue
+        beats.append(beat)
+        used_targets.add(plain(target))
+        used_labels.add(gate.norm(re.sub(r"[\s　？?]+", "", label)).lower())
+        used_kw.add(kw)
+        seen.append(sp)
+        total += len(sp)
+    if len(beats) < 3:
+        return None, [f"画面の証拠と合う記事の文が足りない（{len(beats)}場面）"]
+    # 2026-11-04 オーナー「ただの読み聞かせ」: 2つめの場面の前に「で、何が変わるのか。」の切り替え、締めは投稿の問いかけ（まとめで終わらない）
+    turn = "で、何が変わるのか。"
+    k = next((i for i in range(1, len(beats)) if len(turn + beats[i]["speech"]) <= 70), None)
+    if k is not None:
+        beats[k]["speech"] = turn + beats[k]["speech"]
+    question = next((ln.strip() for ln in str(article.get("threadsPost") or "").splitlines() if re.search(r"[？?]$", ln.strip()) and 8 <= len(ln.strip()) <= 40), "")
+    script = {
+        "hook": hook, "beats": beats,
+        "compare": {"beat": 0, "base": "", "subject": "", "ratio": ""}, "ladder": {"beat": 0, "subject": "", "rows": []},
+        "units": {"beat": 0, "unit": "", "subject": "", "rows": []},
+        "conclusion": {"text": "あなたはどうしますか", "speech": question} if question else {"text": "くわしくは記事で", "speech": "くわしくは記事で解説しています。"},
+        "short_beats": [], "title": clean_sentence(article.get("title", ""))[:60], "summary": summary_of(article), "hashtags": [],
+        "_level": "L3A", "_source": "article",
+    }  # fmt: skip
+    # 台本の検査（LLM の台本と同じ shorts_v3.script_problems）。場面の問題はその場面を外して、もう一度
+    for _ in range(4):
+        probs = [p for p in v3.script_problems(script, article, pages) if not SOFT_PROBLEM.search(p)]
+        probs += [f"硬い言い回し: {p}" for t in texts_of(script) for p in stiff(t)]
+        bad = sorted({int(m.group(1)) for p in probs for m in [re.search(r"beat(\d+)", p)] if m}, reverse=True)
+        if not bad:
+            break
+        for i in bad:
+            if 1 <= i <= len(script["beats"]):
+                script["beats"].pop(i - 1)
+        if len(script["beats"]) < 3:
+            return None, probs[:6]
+    if any(re.search(r"\bhook\b|つかみ|始まり", p) for p in probs):
+        return None, probs[:6]
+    return v3.latin_names(script), probs
 
-            def cost(j: int) -> float:
-                end = ph[j - 1]
-                bonus = 8 if end.endswith("、") else (3 if _GOOD_END.search(end) else 0)
-                penalty = 6 if end.endswith("の") or re.match(r"^(?:上|下|中|前|後|間|方|側)", ph[j] if j < len(ph) else "") else 0
-                too_long = cum[j] - cum[last] > limit or (i == k - 1 and len(s) - cum[j] > limit)
-                return abs(cum[j] - target) - bonus + penalty + (99 if cum[j] - cum[last] < 8 or len(s) - cum[j] < 8 or too_long else 0)
 
-            j = min(range(last + 1, len(ph)), key=cost, default=None)
-            if j is None:
-                break
-            cuts.append(j)
-            last = j
-        bounds = [0] + cuts + [len(ph)]
-        out += ["".join(ph[a:b]) for a, b in zip(bounds, bounds[1:]) if b > a]
+def texts_of(script: dict) -> list[str]:
+    """台本の中で、画面に出る・読み上げる文字（硬い言い回しの検査に使う）"""
+    hook, concl = script.get("hook") or {}, script.get("conclusion") or {}
+    out = [hook.get("text", ""), hook.get("payoff", ""), hook.get("speech", ""), hook.get("ja", ""), concl.get("text", ""), concl.get("speech", "")]
+    for b in script.get("beats") or []:
+        out += [b.get(k, "") for k in ("label", "keyword", "sub", "speech", "ja")]
     return [x for x in out if x]
 
 
-@dataclass
-class Item:
-    role: str
-    text: str
-    sprite: object  # numpy RGBA
-    x: int
-    y: int
-    t0: float
-    t1: float
-    box: tuple
-    size: int
-    color: tuple
-    slide: int = 0  # 左から入る距離（px）
-    fade: float = 0.3
-
-    def bbox(self) -> list[float]:
-        h, w = self.sprite.shape[:2]
-        return [float(self.x), float(self.y), float(self.x + w), float(self.y + h)]
-
-
-@dataclass
-class Timeline:
-    total: float
-    line_times: list[tuple[float, float]]
-    items: list[Item]
-    segments: list[tuple[float, float, int]]  # (t0, t1, 画像の番号 or -1)
-    units: list[dict]
-    credits: list[str]
-    keyframes: list[tuple[float, str, str]]  # (時刻, 読み上げ, 要点)
-    card: list = field(default_factory=list)  # ブランドのカードの文字 (文字, 枠, 大きさ)
-    card_image: object = None  # 写真なしのときのブランドのカード（numpy）
-
-
-def column_items(eyebrow: str, key_text: str, sizes, rows: int, t0: float, t1: float, role: str, accent: bool) -> list[Item]:
-    """左の列: 小見出し（青・小）＋大きな文字。縦の中心は右の画像の中心にそろえる"""
-    cw = COL[2] - COL[0]
-    import shorts
-
-    got = (key_fit(key_text) if role == "keyword" else fit(key_text, "black", sizes, cw, rows)) or (sizes[-1], wrap(key_text, shorts.font("black", sizes[-1]), cw - 8)[:rows])
-    size, lines = got
-    big = render_lines(lines, "black", size, INK, accent=accent, gap=1.28)
-    eb = render_lines([eyebrow], "bold", 26, BLUE) if eyebrow else None
-    total_h = big.shape[0] + (eb.shape[0] + 18 if eb is not None else 0)
-    cy = (IMG[1] + IMG[3]) // 2
-    y = int(min(max(COL[1], cy - total_h / 2), COL[3] - total_h))
-    out = []
-    if eb is not None:
-        out.append(Item("eyebrow", eyebrow, eb, COL[0], y, t0, t1, COL, 26, BLUE, slide=18))
-        y += eb.shape[0] + 18
-    out.append(Item(role, key_text, big, COL[0], y, t0 + 0.08, t1, COL, size, INK, slide=28))
-    return out
-
-
-def build_timeline(plan: SimplePlan, line_times: list[tuple[float, float]], total: float, credits: dict) -> Timeline:
-    items: list[Item] = []
-    n = len(plan.beats)
-    starts = [a for a, _ in line_times]
-    seg_t = [0.0] + [max(0.0, s - 0.12) for s in starts[1:]] + [total]
-    # 左の列: つかみ（題）→ 場面ごとの要点 → 締め
-    hook_eye = HOOK_EYEBROW
-    items += column_items(hook_eye, plan.hook_text, HOOK_SIZES, 5, 0.0, seg_t[1], "hook", accent=False)
-    for i, b in enumerate(plan.beats, 1):
-        items += column_items(b.label, b.key, KEY_SIZES, 3, seg_t[i], seg_t[i + 1], "keyword", accent=True)
-    end_t0 = seg_t[n + 1]
-    items += column_items("続きは記事で", plan.ending_text, KEY_SIZES, 2, end_t0, total, "conclusion", accent=False)
-    cta = render_lines([plan.cta], "bold", 30, BLUE)
-    last = items[-1]
-    items.append(Item("cta", plan.cta, cta, COL[0], int(last.y + last.sprite.shape[0] + 22), end_t0 + 0.3, total, COL, 30, BLUE, slide=0))
-    # ロゴ（ずっと）
-    logo = render_lines(["サイソクニュース"], "logo", 30, INK)
-    items.append(Item("logo", "サイソクニュース", logo, LOGO_XY[0], LOGO_XY[1], 0.0, total, (0, 0, IMG[0], COL[1]), 30, INK, fade=0.0))
-    # 字幕（読み上げと同じ文。1枚ずつ、字数に比例した時間）
-    units = []
-    kinds = ["hook"] + ["point"] * n + ["use"]
-    captions = [plan.hook_text] + [b.key for b in plan.beats] + [plan.ending_text]
-    for li, ((s, e), speech) in enumerate(zip(line_times, plan.lines())):
-        chunks = sub_chunks(speech, plan.sub_max)
-        weights = [max(1, len(c)) for c in chunks]
-        acc = s
-        recs = []
-        next_s = line_times[li + 1][0] if li + 1 < len(line_times) else total
-        for k, (c, wgt) in enumerate(zip(chunks, weights)):
-            c0 = acc
-            c1 = s + (e - s) * sum(weights[: k + 1]) / sum(weights)
-            if k == len(chunks) - 1:
-                c1 = max(c1, min(next_s, e + 0.25))
-            acc = c1
-            c0v = 0.0 if li == 0 and k == 0 else c0
-            size, lines = fit(c, "bold", SUB_SIZES, SUB[2] - SUB[0], 2) or (SUB_SIZES[-1], [c])
-            spr = render_lines(lines, "bold", size, INK, gap=1.3, align="center")
-            x = int((SUB[0] + SUB[2] - spr.shape[1]) / 2)
-            y = int((SUB[1] + SUB[3] - spr.shape[0]) / 2)
-            items.append(Item("subtitle", c, spr, x, y, c0v, c1, SUB, size, INK, fade=0.06 if k else 0.12))
-            recs.append({"text": c, "start": round(c0v, 3), "end": round(c1, 3)})
-        units.append({"kind": kinds[li], "line": li, "caption": captions[li], "start": round(s, 3), "end": round(e, 3), "chunks": recs})
-    # クレジット: 画像の出典は画像を出している間ずっと。最後の場面で声・画像・サイトの1行
-    shown = []
-    if credits.get("image"):
-        spr = render_lines([credits["image"]], "bold", 20, SOFT)
-        items.append(Item("credit", credits["image"], spr, CREDIT[0], CREDIT[1] + 8, 0.0, end_t0, CREDIT, 20, SOFT, fade=0.0))
-        shown.append(credits["image"])
-    tail = "　".join(x for x in [f"音声：{credits['voice']}" if credits.get("voice") else "", credits.get("image", ""), "ai-tech-express.jp"] if x)
-    spr = render_lines([tail], "bold", 20, SOFT)
-    items.append(Item("credit", tail, spr, CREDIT[0], CREDIT[1] + 8, end_t0, total, CREDIT, 20, SOFT, fade=0.2))
-    shown += [x for x in [f"音声：{credits['voice']}" if credits.get("voice") else "", credits.get("image", ""), "ai-tech-express.jp"] if x]
-    segments = [(seg_t[0], seg_t[1], 0 if plan.images else -1)]
-    segments += [(seg_t[i], seg_t[i + 1], plan.beats[i - 1].image) for i in range(1, n + 1)]
-    segments += [(end_t0, total, segments[-1][2])]
-    # 見せるコマ: 場面ごとに、いちばん長く出ている字幕の真ん中（字幕の切り替わり・文字の入り途中を避ける）
-    keyframes = []
-    for (a, _b, _), u, sp, cap in zip(segments, units, plan.lines(), captions):
-        c = max(u["chunks"], key=lambda x: x["end"] - x["start"])
-        keyframes.append((round(max((c["start"] + c["end"]) / 2, a + 0.6), 2), sp, cap))
-    return Timeline(total, line_times, items, segments, units, list(dict.fromkeys(shown)), keyframes)
-
-
-def _mask_round(w: int, h: int, r: int):
-    import numpy as np
-    from PIL import Image, ImageDraw
-
-    m = Image.new("L", (w * 2, h * 2), 0)
-    ImageDraw.Draw(m).rounded_rectangle((0, 0, w * 2 - 1, h * 2 - 1), r * 2, fill=255)
-    return np.asarray(m.resize((w, h), Image.LANCZOS)).astype(np.float32) / 255.0
-
-
-def _mask_shadow(w: int, h: int, r: int, pad: int = 40):
-    import numpy as np
-    from PIL import Image, ImageDraw, ImageFilter
-
-    m = Image.new("L", (w + pad * 2, h + pad * 2), 0)
-    ImageDraw.Draw(m).rounded_rectangle((pad, pad + 10, pad + w, pad + h + 10), r, fill=60)
-    return np.asarray(m.filter(ImageFilter.GaussianBlur(18))).astype(np.float32) / 255.0
-
-
-def load_picture(path: str, size: tuple[int, int], kind: str = "photo"):
-    """画像を右の枠の 1.1 倍の大きさに。16:9 に近ければ枠いっぱい（cover）、違えば白い地に全体（contain。図の文字を切らない）"""
-    import numpy as np
-    from PIL import Image
-
-    w, h = int(size[0] * 1.1), int(size[1] * 1.1)
-    img = Image.open(path).convert("RGB")
-    ar, want = img.width / img.height, w / h
-    if abs(ar - want) / want <= 0.04 and kind in COVER_KINDS:
-        scale = max(w / img.width, h / img.height)
-        img = img.resize((max(w, round(img.width * scale)), max(h, round(img.height * scale))), Image.LANCZOS)
-        x0, y0 = (img.width - w) // 2, (img.height - h) // 2
-        return np.asarray(img.crop((x0, y0, x0 + w, y0 + h)))
-    from PIL import ImageEnhance, ImageFilter
-
-    # 縦横比が違う画像は切らずに全体を見せる。余白は同じ画像をぼかして薄くした地（白い帯にしない）
-    k = max(w / img.width, h / img.height)
-    cover = img.resize((max(w, round(img.width * k)), max(h, round(img.height * k))), Image.LANCZOS)
-    cx0, cy0 = (cover.width - w) // 2, (cover.height - h) // 2
-    canvas = cover.crop((cx0, cy0, cx0 + w, cy0 + h)).filter(ImageFilter.GaussianBlur(28))
-    canvas = Image.blend(ImageEnhance.Brightness(canvas).enhance(1.05), Image.new("RGB", (w, h), WHITE), 0.35)
-    scale = min(w * 0.96 / img.width, h * 0.96 / img.height)
-    img = img.resize((max(1, round(img.width * scale)), max(1, round(img.height * scale))), Image.LANCZOS)
-    canvas.paste(img, ((w - img.width) // 2, (h - img.height) // 2))
-    return np.asarray(canvas)
-
-
-def brand_card(size: tuple[int, int], big: str, small: str, boxes: list | None = None, big_max: int = 96):
-    """写真が無いときの右の枠: 紺のグラデーションに、主役の名前（大）と出典（小）。線・帯・枠は描かない。
-    boxes に (文字, 画面での枠, 大きさ) を足す（文字の面積の検査用。寄ったときの最大 1.05 倍で数える）"""
-    import numpy as np
-    from PIL import Image
-
-    w, h = int(size[0] * 1.1), int(size[1] * 1.1)
-    t = np.linspace(0, 1, h)[:, None, None]
-    grad = (np.array(NAVY_TOP)[None, None, :] * (1 - t) + np.array(NAVY_BOTTOM)[None, None, :] * t).repeat(w, axis=1)
-    img = Image.fromarray(grad.astype(np.uint8), "RGB").convert("RGBA")
-    got = fit(big, "black", range(big_max, 40, -4), int(w * 0.78), 2) if big else None
-    y_mid = h // 2
-    if got:
-        spr = render_lines(got[1], "black", got[0], WHITE, gap=1.2, align="center")
-        sub = render_lines([small], "bold", 34, (214, 226, 244), align="center") if small else None
-        total = spr.shape[0] + (sub.shape[0] + 26 if sub is not None else 0)
-        y = int(y_mid - total / 2)
-        img.alpha_composite(Image.fromarray(spr), ((w - spr.shape[1]) // 2, y))
-        if sub is not None:
-            img.alpha_composite(Image.fromarray(sub), ((w - sub.shape[1]) // 2, y + spr.shape[0] + 26))
-        if boxes is not None:  # キャンバス（1.1倍）の座標 → 画面の座標（中心から 1/1.1×最大1.05倍）
-            cx, cy = (IMG[0] + IMG[2]) / 2, (IMG[1] + IMG[3]) / 2
-            k = 1.05 / 1.1
-            for text, sp, yy, sz in [(big, spr, y, got[0])] + ([(small, sub, y + spr.shape[0] + 26, 34)] if sub is not None else []):
-                x0 = (w - sp.shape[1]) / 2
-                bx = [cx + (x0 - w / 2) * k, cy + (yy - h / 2) * k, cx + (x0 + sp.shape[1] - w / 2) * k, cy + (yy + sp.shape[0] - h / 2) * k]
-                boxes.append((text, bx, sz))
-    return np.asarray(img.convert("RGB"))
-
-
-def layout_timeline(plan: "SimplePlan", times: list, total: float, credits: dict) -> "Timeline":
-    """時刻の計画を作り、文字の面積が上限に近ければ字幕を1行ずつにして作り直す。写真なしならブランドのカードも（tl.card_image）"""
-    tl = build_timeline(plan, times, total, credits)
-    if timeline_ratio(tl, plan) > TEXT_RATIO_MAX - 0.005:
-        plan.sub_max = SUB_MAX
-        tl = build_timeline(plan, times, total, credits)
-    if not plan.images:
-        tl.card_image = card_for(plan, tl)
-    return tl
-
-
-def timeline_ratio(tl: "Timeline", plan: "SimplePlan") -> float:
-    """描く前の文字の面積の最大（写真なしなら、ブランドのカードの文字も入れて）"""
-    import video_gate as gate
-
-    if not plan.images:
-        card_for(plan, tl)
-    return gate.text_ratio_max(text_records(tl), tl.total, (W, H))[0]
-
-
-def card_for(plan: "SimplePlan", tl: "Timeline"):
-    """写真なしのときのブランドのカード。文字の面積が上限に近ければ、カードの文字を小さく・出典の行を外す（tl.card に文字の枠を入れる）"""
-    import video_gate as gate
-
-    size = (IMG[2] - IMG[0], IMG[3] - IMG[1])
-    big = plan.subject or plan.source_name
-    small = f"出典：{plan.source_name}" if plan.subject and plan.source_name else ""
-    card = None
-    for big_max, keep_small in ((96, True), (64, True), (56, False), (0, False)):  # 最後は文字の無い無地のカード
-        boxes: list = []
-        card = brand_card(size, big if big_max else "", small if keep_small else "", boxes, big_max=big_max or 56)
-        tl.card = boxes
-        if gate.text_ratio_max(text_records(tl), tl.total, (W, H))[0] <= TEXT_RATIO_MAX - 0.005:
-            break
-    return card
-
-
-def blend(dst, src, x: int, y: int, alpha: float = 1.0) -> None:
-    import numpy as np
-
-    h, w = src.shape[:2]
-    x0, y0, x1, y1 = max(0, x), max(0, y), min(dst.shape[1], x + w), min(dst.shape[0], y + h)
-    if x1 <= x0 or y1 <= y0 or alpha <= 0:
-        return
-    s = src[y0 - y : y1 - y, x0 - x : x1 - x]
-    a = s[..., 3:4].astype(np.float32) / 255.0 * alpha
-    region = dst[y0:y1, x0:x1].astype(np.float32)
-    dst[y0:y1, x0:x1] = (region * (1 - a) + s[..., :3].astype(np.float32) * a).astype(np.uint8)
-
-
-def ease(k: float) -> float:
-    k = min(1.0, max(0.0, k))
-    return k * k * (3 - 2 * k)
-
-
-class Renderer:
-    """1フレームずつ描く（右の画像はゆっくり寄る・場面の切り替えは 0.45秒で重ねて替える・左の文字は左から入る）"""
-
-    def __init__(self, plan: SimplePlan, tl: Timeline, pictures: list):
-        import numpy as np
-
-        self.plan, self.tl = plan, tl
-        self.pictures = pictures  # 画像ごとの numpy（無ければブランドのカード1枚）
-        self.iw, self.ih = IMG[2] - IMG[0], IMG[3] - IMG[1]
-        self.round = _mask_round(self.iw, self.ih, RADIUS)[..., None]
-        self.corner = RADIUS + 2  # 角の丸めは四隅の正方形だけで計算する（速さ）
-        shadow = _mask_shadow(self.iw, self.ih, RADIUS)
-        base = np.zeros((H, W, 3), dtype=np.uint8)
-        base[:] = STAGE
-        pad = 40
-        sh = np.zeros(shadow.shape + (4,), dtype=np.uint8)
-        sh[..., :3] = (20, 30, 50)
-        sh[..., 3] = (shadow * 255).astype(np.uint8)
-        blend(base, sh, IMG[0] - pad, IMG[1] - pad)
-        self.base = base
-        self.total = tl.total
-
-    def run_of(self, k: int) -> tuple[float, float]:
-        """同じ画像が続く場面をまとめた時間（ゆっくり寄る動きを場面の切れ目で戻さない）"""
-        segs = self.tl.segments
-        a = k
-        while a > 0 and segs[a - 1][2] == segs[k][2]:
-            a -= 1
-        b = k
-        while b + 1 < len(segs) and segs[b + 1][2] == segs[k][2]:
-            b += 1
-        return segs[a][0], segs[b][1]
-
-    def picture_at(self, idx: int, t: float, seg: tuple):
-        import numpy as np
-
-        src = self.pictures[idx if 0 <= idx < len(self.pictures) else 0]
-        a, b = seg[0], seg[1]
-        k = ease((t - a) / max(b - a, 0.1))
-        img = self.plan.images[idx] if 0 <= idx < len(self.plan.images) else {}
-        zmax = 1.08 if img.get("kind") in COVER_KINDS else (1.05 if not self.plan.images else 1.02)  # 文字のあるバナー・ロゴは端を切らない
-        s = 1.0 + (zmax - 1.0) * k
-        fx, fy = (img.get("focus") or [0.5, 0.5]) if img else (0.5, 0.5)
-        sh, sw = src.shape[:2]
-        cw, ch = sw / 1.1 / s * 1.0, sh / 1.1 / s * 1.0
-        cx = min(max(sw / 2 + (fx - 0.5) * (sw - cw) * k, cw / 2), sw - cw / 2)
-        cy = min(max(sh / 2 + (fy - 0.5) * (sh - ch) * k, ch / 2), sh - ch / 2)
-        x0, y0 = int(round(cx - cw / 2)), int(round(cy - ch / 2))
-        crop = src[max(0, y0) : max(0, y0) + int(ch), max(0, x0) : max(0, x0) + int(cw)]
-        try:
-            import cv2
-
-            return cv2.resize(crop, (self.iw, self.ih), interpolation=cv2.INTER_AREA)
-        except ImportError:  # pragma: no cover
-            from PIL import Image
-
-            return np.asarray(Image.fromarray(crop).resize((self.iw, self.ih), Image.BILINEAR))
-
-    def frame(self, i: int, fps: int = FPS):
-        import numpy as np
-
-        t = i / fps
-        out = self.base.copy()
-        segs = self.tl.segments
-        cur = next((k for k, s in enumerate(segs) if s[0] <= t < s[1]), len(segs) - 1)
-        seg = segs[cur]
-        pic = self.picture_at(seg[2], t, self.run_of(cur))
-        if cur > 0 and segs[cur - 1][2] != seg[2] and t - seg[0] < 0.45:  # 前の画像から重ねて替える
-            prev = self.picture_at(segs[cur - 1][2], t, self.run_of(cur - 1)).astype(np.float32)
-            k = ease((t - seg[0]) / 0.45)
-            pic = (prev * (1 - k) + pic.astype(np.float32) * k).astype(np.uint8)
-        region = out[IMG[1] : IMG[3], IMG[0] : IMG[2]]
-        bg = region.copy()
-        region[:] = pic
-        c = self.corner
-        for ys in (slice(0, c), slice(self.ih - c, self.ih)):
-            for xs in (slice(0, c), slice(self.iw - c, self.iw)):
-                m = self.round[ys, xs]
-                region[ys, xs] = (bg[ys, xs] * (1 - m) + pic[ys, xs] * m).astype(np.uint8)
-        for it in self.tl.items:
-            if not (it.t0 - 1e-6 <= t < it.t1):
-                continue
-            a_in = 1.0 if it.fade <= 0 else ease((t - it.t0) / it.fade)
-            # 字幕は消えるときにうすくしない（次の字幕へそのまま替える。うすい文字のコマを作らない）
-            a_out = 1.0 if it.fade <= 0 or it.role in ("logo", "subtitle") else ease((it.t1 - t) / 0.2)
-            alpha = min(a_in, a_out)
-            dx = int(-it.slide * (1 - a_in))
-            blend(out, it.sprite, it.x + dx, it.y, alpha)
-        return out
-
-
-_WORKER: Renderer | None = None
-_WORKER_FPS = FPS
-
-
-def _x264(fps: int, total: float) -> list[str]:
-    return ["-c:v", "libx264", "-preset", "superfast", "-crf", "21",
-            "-maxrate", f"{min(8.0, max(2.0, 150.0 / max(total, 1))):.1f}M", "-bufsize", "16M",
-            "-profile:v", "high", "-pix_fmt", "yuv420p", "-r", str(fps), "-g", str(fps * 2), "-keyint_min", str(fps), "-sc_threshold", "0"]  # fmt: skip
-
-
-def _encode_chunk(args: tuple) -> str:
-    """1つのプロセスが、受け持ちのコマ（a〜b）を描いて、自分の ffmpeg で1つの区切りの動画にする（親を通さないので速い）"""
-    import shorts
-
-    a, b, path, fps, vf, total = args
-    assert _WORKER is not None
-    cmd = [shorts.ffmpeg_bin(), "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(fps), "-i", "-",
-           *vf, *_x264(fps, total), "-threads", "1", "-an", path]  # fmt: skip
-    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-    assert proc.stdin
-    try:
-        for i in range(a, b):
-            proc.stdin.write(_WORKER.frame(i, fps).tobytes())
-    finally:
-        proc.stdin.close()
-    if proc.wait() != 0:
-        raise RuntimeError("ffmpeg（区切り）が失敗しました")
-    return path
-
-
-def encode(renderer: Renderer, audio: Path, out: Path, fps: int = FPS, out_scale: float = 1.0, workers: int | None = None) -> None:
-    """コマを区切りごとに並列で描いて H.264 にし、つないで（再エンコードなし）音を付ける。faststart・AAC 48kHz ステレオ"""
-    import shorts
-
-    global _WORKER, _WORKER_FPS
-    n = int(round(renderer.total * fps))
-    vf = ["-vf", f"scale={int(W * out_scale) // 2 * 2}:{int(H * out_scale) // 2 * 2}:flags=area"] if out_scale != 1.0 else []
-    workers = workers if workers is not None else max(1, min(8, (os.cpu_count() or 2)))
-    with tempfile.TemporaryDirectory() as tmp:
-        k = max(1, min(workers, n // max(fps, 1) or 1))
-        bounds = [round(n * j / k) for j in range(k + 1)]
-        tasks = [(bounds[j], bounds[j + 1], str(Path(tmp) / f"seg{j:02d}.mp4"), fps, vf, renderer.total) for j in range(k) if bounds[j + 1] > bounds[j]]
-        _WORKER, _WORKER_FPS = renderer, fps
-        try:
-            if k <= 1 or sys.platform == "win32":
-                paths = [_encode_chunk(t) for t in tasks]
-            else:
-                import multiprocessing as mp
-
-                with mp.get_context("fork").Pool(len(tasks)) as pool:
-                    paths = pool.map(_encode_chunk, tasks)
-        finally:
-            _WORKER = None
-        listing = Path(tmp) / "list.txt"
-        listing.write_text("".join(f"file '{p}'\n" for p in paths), "utf-8")
-        cmd = [shorts.ffmpeg_bin(), "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(listing), "-i", str(audio),
-               "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-ac", "2",
-               "-t", f"{renderer.total:.3f}", "-movflags", "+faststart", str(out)]  # fmt: skip
-        if subprocess.run(cmd).returncode != 0:
-            raise RuntimeError("ffmpeg（つなぐ）が失敗しました")
-
-
 # --------------------------------------------------------------------------- #
-# 4. 声と音（九州そら・自作の BGM・-14 LUFS）。shorts_v3 の部品を使う
+# 2. ページ（公式ページ＋自分の記事ページ）。テスト・計画の確かめ用に、記事の文から自分の記事ページを模した画面も作れる
 # --------------------------------------------------------------------------- #
 
 
-def make_tts_factory(kind: str):
-    """速さ → 声の合成器。voicevox は九州そら（shorts_v3.V3_VOICE）。fake は自動テスト用の合成音（九州そらと同じくらいの速さ）"""
+def capture(article: dict, slug: str) -> list:
+    """撮る画面: 出典の公式ページ（撮れなければ同じ会社の公式ページ）と、自分の記事ページ（証拠の文の予備）。1回でまとめて撮る"""
     import shorts_v2 as v2
     import shorts_v3 as v3
 
-    if kind == "fake":
-        def fake(speed: float):
-            tts = v2.FakeTTS(1.0 / CPS * v3.V3_VOICE["speed"] / speed)
-            return tts
+    v3.CAPTURE_FAILS.clear()
+    own = f"https://{v3.SITE}/articles/{slug}"
+    urls = v3.page_urls(article)
+    pages = v3.capture_pages(urls + [own])
+    source = v2.official_page_url(article)
+    if urls and not (source and any(p.url == source for p in pages)):
+        extra = v3.fallback_urls(article, urls)
+        if extra:
+            pages = v3.capture_pages([p.url for p in pages if not p.own] + extra + [own]) or pages
+    return pages
 
-        return fake, v3.V3_VOICE["speed"]
-    return (lambda speed: v3.make_tts(kind, speed)), v3.V3_VOICE["speed"]
 
-
-_TTS_CACHE: dict = {}
-
-
-def narrate(lines: list[str], tts_kind, work: Path, rng: tuple) -> tuple[list[tuple[float, float]], object, float, dict]:
-    """行ごとに合成して並べる。長さが外れたら速さを1回だけ計算し直して読み直す（基準 ±0.1 の範囲）"""
+def article_page(article: dict, max_blocks: int = 28):
+    """記事の文から、自分の記事ページを模した画面（shorts_v3.Page。1文字ずつの枠つき）。テストと --plan-check 用（ネットなし）"""
     import numpy as np
-
-    import shorts_v2 as v2
-    import shorts_v3 as v3
-
-    factory, base = make_tts_factory(tts_kind) if isinstance(tts_kind, str) else (tts_kind, 1.38)
-    if tts_kind == "voicevox" and not v3.wait_voicevox(timeout=90):
-        raise RuntimeError("VOICEVOX に繋がりません")
-    lo, hi = rng
-    speed = base
-    for attempt in range(3):
-        tts = factory(speed)
-
-        def synth(i: int):
-            key = (str(tts_kind), round(speed, 3), lines[i])
-            if key in _TTS_CACHE:  # 2つの版で同じ文（場面の読み上げ）は1回だけ合成する
-                return _TTS_CACHE[key]
-            raw, dst = work / f"n{attempt}_{i}.src.wav", work / f"n{attempt}_{i}.wav"
-            tts.synth(v3.speech_for_tts(lines[i]), raw)
-            v2._to_48k_trimmed(raw, dst)
-            clip = v2._read_wav(dst)
-            if len(_TTS_CACHE) > 200:
-                _TTS_CACHE.clear()
-            _TTS_CACHE[key] = clip
-            return clip
-
-        with ThreadPoolExecutor(max_workers=4) as pool:
-            clips = list(pool.map(synth, range(len(lines))))
-        voiced = sum(len(c) for c in clips) / v3.SR
-        fixed = LEAD + GAP * (len(lines) - 1) + END_HOLD
-        total = voiced + fixed
-        if lo + 0.5 <= total <= hi - 0.5:
-            break
-        want = (lo + 1.5) if total < lo + 0.5 else (hi - 1.5)
-        new = min(base + 0.1, max(base - 0.1, speed * voiced / max(want - fixed, 1.0)))
-        if abs(new - speed) < 0.005:
-            break
-        speed = new
-    times, t = [], LEAD
-    for c in clips:
-        times.append((t, t + len(c) / v3.SR))
-        t = times[-1][1] + GAP
-    total = times[-1][1] + END_HOLD
-    samples = np.zeros(int(math.ceil(total * v3.SR)) + 1, dtype=np.float32)
-    for (a, _), c in zip(times, clips):
-        k = int(a * v3.SR)
-        samples[k : k + len(c)] += c[: len(samples) - k]
-    voice = {"engine": getattr(tts, "engine", "fake"), "credit": getattr(tts, "credit", ""), "label": getattr(tts, "label", ""), "speed": round(speed, 2)}
-    return times, samples, total, voice
-
-
-def build_audio(voice_samples, total: float, work: Path) -> tuple[Path, dict]:
-    """声＋自作の BGM（声の下で自動で下げる。v3 と同じ部品）→ -14 LUFS"""
-    import numpy as np
+    from PIL import Image, ImageDraw, ImageFont
 
     import shorts_v3 as v3
 
-    n = int(round(total * v3.SR))
-    voice = np.zeros(n, dtype=np.float32)
-    voice[: min(n, len(voice_samples))] = voice_samples[:n]
-    bgm = v3.synth_bgm(total)[:n]
-    bgm = np.pad(bgm, (0, n - len(bgm)))
-    gain, sep = v3.duck_gain(voice, bgm)
-    mix = voice + bgm * gain
-    return v3.master(mix, total, work), {"bgm": "自作（synth_bgm・外部音源なし）", **sep}
+    k = v3.CAPTURE_DPR
+    w = v3.CAPTURE_W * k
+    font_path = str(ROOT / "assets" / "fonts" / "NotoSansJP-Bold.otf")
+    rows: list[tuple[str, int]] = [(clean_sentence(article.get("title", "")), 30), (clean_sentence(article.get("lede", "")), 16)]
+    for h2, h3, para in body_sections(article.get("body", "")):
+        if h3 or h2:
+            rows.append((clean_sentence(h3 or h2), 20))
+        rows.append((clean_sentence(para), 15))
+    for f in article.get("faq") or []:
+        rows += [(clean_sentence(f.get("q", "")), 18), (clean_sentence(f.get("a", "")), 15)]
+    rows += [(clean_sentence(p), 15) for p in (article.get("workMoney") or {}).get("points") or []]
+    rows = [r for r in rows if r[0]][:max_blocks]
+    layout, y = [], 120
+    for text, size in rows:
+        f = ImageFont.truetype(font_path, size * k)
+        lines, cur = [], ""
+        for ch in text:
+            if f.getlength(cur + ch) > w - 80 * k:
+                lines.append(cur)
+                cur = ""
+            cur += ch
+        if cur:
+            lines.append(cur)
+        layout.append((text, size, y, lines, f))
+        y += int(size * 1.6 * len(lines)) + 28
+    img = Image.new("RGB", (w, (y + 80) * k), (252, 252, 250))
+    d = ImageDraw.Draw(img)
+    blocks = []
+    for i, (text, size, y0, lines, f) in enumerate(layout, 1):
+        chars = []
+        for li, line in enumerate(lines):
+            yy = (y0 + li * size * 1.6) * k
+            d.text((40 * k, yy), line, font=f, fill=(20, 20, 24))
+            for j, ch in enumerate(line):
+                x0, x1 = 40 * k + f.getlength(line[:j]), 40 * k + f.getlength(line[: j + 1])
+                chars.append((ch, (x0, yy, x1, yy + size * 1.3 * k) if ch.strip() else None))
+        rect = (40 * k, y0 * k, w - 40 * k, (y0 + size * 1.6 * len(lines)) * k)
+        blocks.append(v3.Block(f"1-{i}", text, rect, chars, float(size)))
+    return v3.Page(f"https://ai-tech-express.jp/articles/{article.get('slug', '')}", "ai-tech-express.jp", np.asarray(img), blocks, article.get("title", ""), own=True)
 
 
 # --------------------------------------------------------------------------- #
-# 5. 1本を作って検査する（L3 / L4）
+# 3. L3A: 承認の形を記事の文だけで（描画・ゲート・レビューは shorts_v3 と同じ）
 # --------------------------------------------------------------------------- #
 
 
-def fetch_image(url: str, dest: Path) -> str:
-    """サイトに保存した公式の画像を手元に置く（失敗したら空＝その画像は使わない）"""
-    import urllib.request
+def run_template(slug: str, out_dir: Path, need: list[str], article: dict, tts: str = "voicevox", profile: str | None = None,
+                 pages: list | None = None, **kw) -> dict:
+    """L3A の2本（必要な版だけ）を作り、shorts_v3.qa_versions で位置の検査と画像のレビュー（API → サブスクリプションの CLI）にかける。
+    レビューができなければ不合格。戻り値 {版: report}"""
+    import shorts_v3 as v3
 
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    if dest.exists() and dest.stat().st_size > 1000:
-        return str(dest)
-    try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (saisoku video ladder)"})
-        with urllib.request.urlopen(req, timeout=20) as r:
-            data = r.read()
-        if len(data) < 1000:
-            return ""
-        dest.write_bytes(data)
-        from PIL import Image
-
-        Image.open(dest).verify()
-        return str(dest)
-    except Exception:  # noqa: BLE001
-        dest.unlink(missing_ok=True)
-        return ""
-
-
-def text_records(tl: Timeline) -> list[dict]:
-    import shorts
-    import video_gate as gate
-
-    out = []
-    for it in tl.items:
-        face = "logo" if it.role == "logo" else ("black" if it.role in ("hook", "keyword", "conclusion") else "bold")
-        out.append({
-            "role": it.role, "text": it.text, "bbox": [round(v, 1) for v in it.bbox()], "box": list(it.box),
-            "size": it.size, "min_size": {"subtitle": 32, "keyword": 36, "hook": 32, "conclusion": 36, "eyebrow": 20, "cta": 24, "credit": 16, "logo": 22}.get(it.role, 16),
-            "contrast": round(gate.contrast(it.color, STAGE), 2), "missing": gate.missing_glyphs(it.text, shorts.font(face, 40)),
-            "safe": True, "t0": round(it.t0, 3), "t1": round(it.t1, 3),
-        })  # fmt: skip
-    for text, bx, size in tl.card:
-        out.append({"role": "card", "text": text, "bbox": [round(v, 1) for v in bx], "box": list(IMG), "size": size, "min_size": 28,
-                    "contrast": round(gate.contrast(WHITE, NAVY_BOTTOM), 2), "missing": gate.missing_glyphs(text, shorts.font("black", 40)),
-                    "safe": True, "t0": 0.0, "t1": round(tl.total, 3)})  # fmt: skip
-    return out
-
-
-def layout_problems(report: dict) -> list[str]:
-    """描いた位置の検査（L3/L4 の geometry）: 安全領域・枠・文字の面積・文字どうし／文字と画像のかぶり"""
-    import video_gate as gate
-
-    out = []
-    texts = report.get("texts") or []
-    for t in texts:
-        if not gate._inside(t["bbox"], SAFE):
-            out.append(f"文字が安全領域の外: {t['role']}「{t['text'][:10]}」")
-        if t.get("box") and not gate._inside(t["bbox"], t["box"]):
-            out.append(f"文字が枠からはみ出す: {t['role']}「{t['text'][:10]}」")
-        if t["role"] != "card" and gate._overlap(t["bbox"], IMG) > 0:
-            out.append(f"文字が画像にかぶる: {t['role']}「{t['text'][:10]}」")
-    ratio, at = gate.text_ratio_max(texts, float(report.get("total") or 0), (W, H))
-    if ratio > TEXT_RATIO_MAX:
-        out.append(f"文字が画面の {ratio:.0%} を占める（{at:.1f}秒。上限 {TEXT_RATIO_MAX:.0%}）")
-    for i, a in enumerate(texts):
-        for b in texts[i + 1 :]:
-            if a["role"] == b["role"] == "subtitle" or {a["role"], b["role"]} == {"credit"}:
-                continue
-            if float(a["t0"]) < float(b["t1"]) - 0.05 and float(b["t0"]) < float(a["t1"]) - 0.05 and gate._overlap(a["bbox"], b["bbox"]) > 4:
-                out.append(f"文字どうしがかぶる: 「{a['text'][:8]}」と「{b['text'][:8]}」")
-    # 字幕をつなぐと読み上げと同じ（字幕 ↔ 読み上げ）
-    for u, line in zip(report.get("units") or [], report.get("speech_lines") or []):
-        if plain("".join(c["text"] for c in u.get("chunks") or [])) != plain(line):
-            out.append(f"字幕と読み上げが違う（{u.get('kind')}）")
-    return out
-
-
-VISION_SYSTEM = """あなたはニュース動画の厳しい最終チェック係です。横型 1920x1080 の動画のコマ（1枚＝1場面）と、そのときの読み上げ・左の要点を見て、
-コマごとに、投稿に出してはいけない重大な問題があるかを判定します。画面の左は小見出しと大きな要点の文字、右は公式発表の写真・図（無いときは紺の無地のカード）、
-下は読み上げと同じ字幕、一番下は小さなクレジットです。重大な問題:
-1. 文字が切れている・画面や枠からはみ出している・文字どうしが重なって読めない・小さすぎて読めない
-2. 左の要点と、読み上げ・字幕が別の話（同じ点を話していない）
-3. 写真・図が壊れている・真っ白・ほぼ単色・記事と関係が無い・画像の中の大事な文字が枠で切れている
-4. 日本語が壊れている・不自然で意味が通らない
-右の写真・図・イラストは、どれも記事の会社が公式に出した素材です（CG やイラストも公式）。AI で作ったように見えるかどうかは判定しません。
-字幕は長い文を2〜3枚に分けて順に出すので、コマの字幕が文の途中から始まる・途中で終わるのは問題ではありません（下の読み上げの全文と比べてください）。
-細かい好み（もっと派手に、など）は問題にしません。ok が false のときは issue に、何がどうだめかを短く日本語で書きます（true のときは空文字）。
-すべてのコマについて index 順に答えます。"""
-
-VISION_SCHEMA = {
-    "type": "OBJECT",
-    "properties": {
-        "frames": {
-            "type": "ARRAY",
-            "items": {
-                "type": "OBJECT",
-                "properties": {"index": {"type": "INTEGER"}, "ok": {"type": "BOOLEAN"}, "issue": {"type": "STRING"}},
-                "required": ["index", "ok", "issue"],
-            },
-        }
-    },
-    "required": ["frames"],
-}
-
-
-def keyframes(mp4: Path, tl: Timeline, work: Path, limit: int = 4) -> list[tuple[Path, str]]:
-    """場面ごとの真ん中のコマ（最大 limit 枚。つかみ・最初の場面・まん中・締め）"""
-    import shorts
-
-    picks = tl.keyframes
-    if len(picks) > limit:
-        idx = sorted({0, 1, len(picks) // 2, len(picks) - 1})
-        picks = [picks[i] for i in idx][:limit]
-    out = []
-    for k, (t, speech, cap) in enumerate(picks):
-        p = work / f"kf{k}.jpg"
-        subprocess.run([shorts.ffmpeg_bin(), "-y", "-loglevel", "error", "-ss", f"{min(t, tl.total - 0.1):.2f}", "-i", str(mp4), "-frames:v", "1",
-                        "-vf", "scale=960:540", "-q:v", "4", str(p)], check=True)  # fmt: skip
-        out.append((p, f"{t:.1f}秒 要点「{cap}」 読み上げ「{speech}」"))
-    return out
-
-
-def contact_sheet(paths: list[Path], out: Path) -> None:
-    """場面ごとのコマを2列に並べた見比べ用の画像（Artifacts で動画を開かずに見られる）"""
-    from PIL import Image
-
-    ims = [Image.open(p).convert("RGB").resize((480, 270)) for p in paths]
-    if not ims:
-        return
-    cols = 2
-    rows = math.ceil(len(ims) / cols)
-    sheet = Image.new("RGB", (cols * 492 + 12, rows * 282 + 12), (226, 230, 237))
-    for i, im in enumerate(ims):
-        sheet.paste(im, (12 + (i % cols) * 492, 12 + (i // cols) * 282))
-    sheet.save(out)
-
-
-def claude_vision(frames_by_variant: dict[str, list[tuple[Path, str]]]) -> tuple[dict | None, str]:
-    """Claude API（llm.generate_json_images。purpose=video_review の配分・予算）に、2つの版のコマをまとめて1回で見せる。
-    戻り値 ({版: {"ok", "problems"}}, 使ったモデル)。使えなければ (None, 理由)"""
-    metas = [(v, path, note) for v, frames in frames_by_variant.items() for path, note in frames]
-    if not metas:
-        return None, "見るコマが無い"
-    try:
-        import llm
-
-        images = [path.read_bytes() for _v, path, _n in metas]
-        lines = [f"[{k}] {'短い版' if v == 'short' else '全部の版'}・{note}" for k, (v, _p, note) in enumerate(metas)]
-        prompt = "コマは上の画像の順（index 0 から）。各コマの情報:\n" + "\n".join(lines) + "\n\n判定を JSON で返してください。"
-        data, model = llm.generate_json_images(VISION_SYSTEM, prompt, images, VISION_SCHEMA, purpose="video_review")
-    except Exception as error:  # noqa: BLE001 - レビューできないだけ（下の決まりで判定）
-        return None, f"{type(error).__name__}: {str(error)[:160]}"
-    got = {int(f.get("index", -1)): f for f in data.get("frames") or [] if isinstance(f, dict)}
-    out: dict[str, dict] = {v: {"ok": True, "problems": []} for v in frames_by_variant}
-    for k, (v, _p, note) in enumerate(metas):
-        f = got.get(k)
-        if f is None or not f.get("ok"):
-            out[v]["ok"] = False
-            out[v]["problems"].append(f"{note[:20]}: {str((f or {}).get('issue') or '判定が無い')[:80]}")
-    return out, model
-
-
-def finish_gate(mp4: Path, report: dict, article: dict, profile: str) -> dict:
-    """品質ゲート（video_gate.check_video の共通の検査）＋ L3/L4 の描いた位置の検査。qa の vision は review_versions で"""
-    import video_gate as gate
-
-    res = gate.check_video(mp4, report, augmented(article), profile) if mp4.exists() else gate.GateResult(ok=False, reasons=["動画ファイルが無い"])
-    g = res.to_dict()
-    geo = layout_problems(report) if mp4.exists() else ["動画ファイルが無い"]
-    lo, hi = report.get("length_range") or (0, 999)
-    dur = float((g.get("metrics") or {}).get("duration") or 0)
-    if mp4.exists() and not (lo <= dur <= hi):
-        g["reasons"].append(f"長さが {lo:.0f}〜{hi:.0f}秒の外（{dur:.1f}秒）")
-    g["reasons"] += [f"位置: {p}" for p in geo] + [f"計画: {p}" for p in report.get("plan_problems") or []]
-    g["qa"] = {"geometry": not geo and not report.get("plan_problems"), "vision": False, "version": QA_VERSION, "how": "ladder"}
-    g["ok"] = not g["reasons"]
-    return g
-
-
-def make_simple(slug: str, level: str, variant: str, out_dir: Path, article: dict, tts="voicevox", profile: str | None = None,
-                images: list[dict] | None = None, script: dict | None = None, fps: int = FPS, out_scale: float = 1.0,
-                pictures: dict | None = None, workers: int | None = None, fewer: bool = False) -> tuple[dict, "Timeline | None", "SimplePlan"]:
-    """L3/L4 の1本: 計画 → 検査 → 声 → 描画 → ゲート（vision はあとで）。例外は投げず report に残す。
-    pictures: {url: 手元のパス}（テスト用。無ければダウンロード）"""
-    t_start = time.time()
     out_dir.mkdir(parents=True, exist_ok=True)
-    name = f"{slug}__v3" + ("short" if variant == "short" else "")
-    mp4 = out_dir / f"{name}.mp4"
-    mp4.unlink(missing_ok=True)
-    plan = build_plan(article, level, variant, images=images, script=script, fewer=fewer)
-    report: dict = {"slug": slug, "version": f"ladder-{level}", "design": f"ladder-{level}", "level": level, "variant": variant,
-                    "design_name": "公式の画像と字幕" if level == "L3" else "要点と声", "errors": [], "pages": [], "frame": [W, H],
-                    "layout": "landscape", "safe": list(SAFE), "fonts": [FONT_FAMILY, LOGO_FAMILY], "length_range": list(plan.length_range)}  # fmt: skip
-    tl = None
-    stages: dict = {}
-    try:
-        # 画像を手元に（取れない画像は外す。1枚も無ければブランドのカード）
-        got = []
-        for img in plan.images:
-            path = (pictures or {}).get(img["url"]) or fetch_image(img["url"], out_dir / "_images" / (re.sub(r"[^A-Za-z0-9.-]", "_", img["url"].rsplit("/", 1)[-1]) or "img.jpg"))
-            if path:
-                got.append({**img, "path": path})
-        if len(got) != len(plan.images):
-            plan = build_plan(article, level, variant, images=[{k: v for k, v in g.items() if k != "path"} for g in got], script=script, fewer=fewer)
-        if level == "L3" and not got:
-            raise RuntimeError("公式の画像を取れない（L3 は写真・図が要る）")
-        report["plan_problems"] = plan_problems(plan, article)
-        if report["plan_problems"]:
-            raise RuntimeError("計画の検査に落ちた: " + " / ".join(report["plan_problems"][:3]))
-        with tempfile.TemporaryDirectory() as tmp:
-            work = Path(tmp)
-            st = time.time()
-            times, samples, total, voice = narrate(plan.lines(), tts, work, plan.length_range)
-            stages["tts"] = round(time.time() - st, 1)
-            st = time.time()
-            credits = {"voice": voice.get("credit", ""), "image": got[0]["credit"] if got else ""}
-            tl = layout_timeline(plan, times, total, credits)
-            audio, audio_info = build_audio(samples, total, work)
-            size = (IMG[2] - IMG[0], IMG[3] - IMG[1])
-            pics = [load_picture(g["path"], size, g.get("kind", "photo")) for g in got] or [tl.card_image]
-            encode(Renderer(plan, tl, pics), audio, mp4, fps=fps, out_scale=out_scale, workers=workers)
-            stages["render"] = round(time.time() - st, 1)
-        report["audio"] = audio_info
-        report.update(report_fields(plan, tl, voice, article))
-    except Exception as error:  # noqa: BLE001 - 失敗は report に残す（次の段へ）
-        import traceback
-
-        report["errors"].append(f"{type(error).__name__}: {error}")
-        report["traceback"] = traceback.format_exc()[-1500:]
-        log(f"[ladder] {name} {level}: 失敗 {type(error).__name__}: {str(error)[:200]}")
-    prof = profile or ("production" if (report.get("voice") or {}).get("engine") == "voicevox" else "preview")
-    if report["errors"]:
-        report["gate"] = {"ok": False, "reasons": [f"描画: {e}" for e in report["errors"]], "warnings": [], "metrics": {},
-                          "qa": {"geometry": False, "vision": False, "version": QA_VERSION, "how": "ladder"}}  # fmt: skip
-    else:
-        st = time.time()
-        report["gate"] = finish_gate(mp4, report, article, prof)
-        stages["gate"] = round(time.time() - st, 1)
-    report["allVerbatim"] = all_verbatim(plan, article)
-    report["timings"] = {**stages, "total": round(time.time() - t_start, 1)}
-    report["sizeMB"] = round(mp4.stat().st_size / 1e6, 2) if mp4.exists() else 0
-    return report, tl, plan
-
-
-def report_fields(plan: SimplePlan, tl: Timeline, voice: dict, article: dict) -> dict:
-    """sns_video_followup・品質ゲートが読む report の欄（v3 と同じ名前）"""
-    url = f"https://ai-tech-express.jp/articles/{plan.slug}"
-    title = plan.title if len(plan.title) <= 40 else plan.title[:39] + "…"
-    image_credit = tl.credits[0] if plan.images and tl.credits else ""
-    desc = [plan.summary, "", "▼記事はこちら", url, ""]
-    if voice.get("credit"):
-        desc.append(f"音声：{voice['credit']}")
-    if image_credit:
-        desc.append(image_credit)
-    desc += ["BGM：サイソクニュース自作", "ai-tech-express.jp"]
-    return {
-        "company": plan.subject, "title": title, "url": url, "description": "\n".join(desc), "hashtags": ["#サイソク"],
-        "script": {
-            "title": plan.title, "headline": plan.hook_text,
-            "hook": {"caption": plan.hook_text, "speech": plan.hook_speech},
-            "points": [{"caption": b.key, "speech": b.speech} for b in plan.beats],
-            "use": {"caption": plan.ending_text, "speech": plan.ending_speech}, "numbers": [], "hook_text": "",
-            "summary": plan.summary,
-        },
-        # 投稿文（sns_video_followup.post_report / compose_post）が読む所だけ。場面は simple_script に
-        "script_v3": {"hook": {"text": plan.hook_text}, "summary": plan.summary},
-        "simple_script": {"level": plan.level, "from": plan.script_from, "hook": plan.hook_speech,
-                          "beats": [{"label": b.label, "key": b.key, "speech": b.speech, "source": b.source, "image": b.image} for b in plan.beats],
-                          "ending": plan.ending_speech},
-        "speech_lines": plan.lines(), "units": tl.units, "total": round(tl.total, 3), "end_start": round(tl.total, 3),
-        "allowed_silences": [[0.0, LEAD + 0.05], [round(tl.line_times[-1][1], 3), round(tl.total, 3)]],
-        "texts": text_records(tl), "credits_shown": tl.credits, "voice": voice, "image_credit": image_credit,
-        "images": [{"url": x["url"], "credit": x["credit"], "kind": x.get("kind", "")} for x in plan.images],
-        "fps": FPS, "variant": plan.variant, "template": f"ladder-{plan.level}",
-    }  # fmt: skip
-
-
-def review_versions(level: str, made: dict, article: dict, work: Path, reviewer=None) -> None:
-    """版ごとに vision を決める（report["gate"]["qa"]["vision"]）。reviewer(frames_by_variant) → (dict | None, how)"""
-    reviewer = reviewer or claude_vision
-    frames: dict[str, list] = {}
-    for v, (rep, tl, _plan) in made.items():
-        mp4 = Path(rep.get("_mp4", ""))
-        if rep["gate"].get("ok") is False and rep["gate"]["reasons"] or tl is None or not mp4.exists():
-            continue
-        try:
-            (work / v).mkdir(parents=True, exist_ok=True)
-            frames[v] = keyframes(mp4, tl, work / v)
-            contact_sheet([p for p, _ in frames[v]], mp4.with_suffix(".sheet.png"))
-        except Exception as error:  # noqa: BLE001
-            rep["gate"]["reasons"].append(f"コマを取り出せない: {error}")
-    verdicts, how = (reviewer(frames) if frames else (None, "見るコマが無い"))
-    for v, (rep, _tl, plan) in made.items():
-        g = rep["gate"]
-        if v not in frames:
-            g["ok"] = False
-            continue
-        verdict = (verdicts or {}).get(v) if isinstance(verdicts, dict) else None
-        if isinstance(verdict, dict) and "ok" in verdict:
-            g["qa"]["vision"] = bool(verdict.get("ok"))
-            g["qa"]["vision_how"] = how
-            if not verdict.get("ok"):
-                g["reasons"] += [f"画像のレビュー: {p}" for p in (verdict.get("problems") or ["問題あり"])[:4]]
-        elif level == "L4" and rep.get("allVerbatim") and g["qa"]["geometry"] and not g["reasons"]:
-            # レビューが使えない: L4 は画面の文字がすべて記事の文そのまま（か決まった定型の文）で、検査が全部通ったときだけ合格（docstring）
-            g["qa"]["vision"] = True
-            g["qa"]["vision_how"] = f"deterministic-L4（レビューなし: {how}）"
-        else:
-            g["qa"]["vision_how"] = f"レビューできない（{how}）"
-            g["reasons"].append(f"画像のレビューができない（{how}）")
-        g["ok"] = not g["reasons"] and g["qa"]["geometry"] and g["qa"]["vision"]
-
-
-def run_simple(level: str, slug: str, out_dir: Path, need: list[str], article: dict, tts="voicevox", profile: str | None = None,
-               script: dict | None = None, reviewer=None, text_only: bool = False, fewer: bool = False, **kw) -> dict:
-    """L3/L4 を版ごとに作って検査する。戻り値 {版: report}。fewer: 場面を減らした作り直し（L4 の2回目）"""
-    made = {}
+    pages = pages if pages is not None else capture(article, slug)
+    if not pages:
+        why = "撮れるページが無い（" + "・".join(v3.CAPTURE_FAILS[:3]) + "）"
+        return {v: {"slug": slug, "errors": [why], "gate": {"ok": False, "reasons": [why]}, "failReason": why, "level": "L3A"} for v in need}
+    script, probs = template_script(article, pages)
+    if not script:
+        why = "記事の文だけの台本を作れない: " + " / ".join(probs[:3])
+        return {v: {"slug": slug, "errors": [why], "gate": {"ok": False, "reasons": [why]}, "failReason": why, "level": "L3A"} for v in need}
+    (out_dir / f"{slug}.L3A.script.json").write_text(json.dumps(script, ensure_ascii=False, indent=2), "utf-8")
+    fast = {k: kw[k] for k in ("fps", "out_scale", "workers", "sheet") if k in kw}
+    out = {}
     for v in need:
-        rep, tl, plan = make_simple(slug, level, v, out_dir, article, tts=tts, profile=profile, images=[] if text_only else None, script=script, fewer=fewer, **kw)
-        rep["_mp4"] = str(out_dir / f"{slug}__v3{'short' if v == 'short' else ''}.mp4")
-        made[v] = (rep, tl, plan)
-    review_versions(level, made, article, out_dir / "_frames", reviewer=reviewer)
-    return {v: r for v, (r, _t, _p) in made.items()}
+        s = copy.deepcopy(script) if v == "full" else v3.short_script(copy.deepcopy(script))
+        out[v] = v3.make_video(slug, out_dir, tts, profile=profile, article=article, pages=pages, script=s, **fast)
+    out = v3.qa_versions(slug, out, None)
+    for r in out.values():
+        r["level"] = "L3A"
+        r["script_source"] = "article"
+    return out
 
 
 # --------------------------------------------------------------------------- #
-# 6. L1 / L2（shorts_v3 をそのまま。別のプロセスで時間を区切る）
+# 4. 合格の基準（どの段も同じ）と L1/L2
 # --------------------------------------------------------------------------- #
 
 
 def qa_ok(report: dict, env: dict | None = None) -> bool:
-    """sns_video_followup.qa_ok と同じ: 描いた位置（geometry）と画像のレビュー（vision）の両方に合格。SNS_VIDEO_REQUIRE_QA=off で止める"""
+    """sns_video_followup.qa_ok と同じ基準: 承認の形（BASE_LAYOUT）で、位置の検査（geometry）と画像のレビュー（vision）の両方に合格。
+    レビューの代わりに決まりだけで通したもの・承認の形でないものは不合格。SNS_VIDEO_REQUIRE_QA=off で止める（試験用）"""
     env = os.environ if env is None else env
     if env.get("SNS_VIDEO_REQUIRE_QA", "on") == "off":
         return True
-    qa = ((report or {}).get("gate") or {}).get("qa") or {}
-    return bool(qa.get("geometry")) and bool(qa.get("vision"))
+    rep = report or {}
+    qa = (rep.get("gate") or {}).get("qa") or {}
+    if str(qa.get("vision_how") or qa.get("how") or "").startswith("deterministic"):
+        return False
+    if rep.get("base_layout") and rep.get("base_layout") != BASE_LAYOUT:
+        return False
+    return bool(qa.get("geometry")) and qa.get("vision") is True
 
 
 def passes(report: dict | None, mp4: Path) -> bool:
     return bool(report) and bool((report.get("gate") or {}).get("ok")) and qa_ok(report) and mp4.exists()
+
 
 
 def feedback_note(reports: dict | None) -> str:
@@ -1787,7 +823,8 @@ def isolated(fn, timeout: float, *args, **kwargs) -> tuple[dict | None, str]:
 
 
 # --------------------------------------------------------------------------- #
-# 7. 段を順に試す
+
+# 5. 段を順に試す
 # --------------------------------------------------------------------------- #
 
 
@@ -1796,30 +833,19 @@ def _out_name(slug: str, variant: str) -> str:
 
 
 def l1_skip_l2(reports: dict | None) -> str:
-    """L1 の失敗が「もう一度やっても同じ」もの（撮れるページが無い・v3 の対象外）なら、L2 を飛ばす理由"""
+    """L1 の失敗が「もう一度やっても同じ」もの（撮れるページが無い）なら、L2 を飛ばす理由"""
     why = " ".join(str((r or {}).get("failReason") or " ".join(((r or {}).get("gate") or {}).get("reasons") or [])) for r in (reports or {}).values())
-    if re.search(r"撮れるページが無い|撮ってよい公式ページがありません|対象外", why):
+    if re.search(r"撮れるページが無い|撮ってよい公式ページがありません", why):
         return "撮れる公式ページが無い（もう一度やっても同じ）"
     return ""
 
 
-def latest_script(dirs: list[Path], slug: str) -> dict | None:
-    """L2 → L1 の順に、書いた台本（v3script.json）を探す（L3 の場面に使う）"""
-    for d in dirs:
-        for p in sorted(d.glob(f"{slug}*.v3script.json"), key=lambda x: x.stat().st_mtime, reverse=True):
-            try:
-                return json.loads(p.read_text("utf-8"))
-            except (OSError, json.JSONDecodeError):
-                continue
-    return None
-
-
 def make_versions(slug: str, out_dir: Path, deadline_s: float = DEADLINE_S, tts: str = "voicevox", profile: str | None = None,
                   levels: tuple | list = LEVELS, runners: dict | None = None, clock=time.monotonic, isolate: bool = True,
-                  article: dict | None = None, reviewer=None, **kw) -> dict:
-    """段を L1 → L4 の順に試し、版ごとに最初に合格した段の動画を out_dir/<slug>__v3.mp4（full）・__v3short.mp4（short）に置く。
+                  article: dict | None = None, **kw) -> dict:
+    """段を L1 → L2 → L3A の順に試し、版ごとに最初に合格した段の動画を out_dir/<slug>__v3.mp4（full）・__v3short.mp4（short）に置く。
     戻り値 {"full": report, "short": report}（shorts_v3.make_versions と同じ形。report["level"]・report["ladder"]・report["gate"]["qa"]）。
-    runners: {"L1": fn(...), ...}（テスト用。fn(slug, level_dir, need, article, prev, remaining) → {版: report}）"""
+    どの段も別のプロセスで動かし、deadline_s で止める。runners: {"L1": fn(...), ...}（テスト用。fn(slug, level_dir, need, article, prev, remaining) → {版: report}）"""
     import shorts
 
     t0 = clock()
@@ -1834,7 +860,6 @@ def make_versions(slug: str, out_dir: Path, deadline_s: float = DEADLINE_S, tts:
     last: dict[str, dict] = {}
     ladder: list[dict] = []
     prev: dict | None = None
-    has_l4 = "L4" in levels
     for level in levels:
         need = [v for v in VARIANTS if v not in chosen]
         if not need:
@@ -1842,84 +867,60 @@ def make_versions(slug: str, out_dir: Path, deadline_s: float = DEADLINE_S, tts:
         remaining = deadline_s - (clock() - t0)
         level_dir = root / level
         level_dir.mkdir(parents=True, exist_ok=True)
-        skip = ""
-        if level == "L2":
-            skip = l1_skip_l2(prev) if prev is not None else ""
-        if level == "L3" and not official_images(a):
-            skip = "公式の画像が無い（L3 は写真・図が要る）"
-        reserve = (L4_RESERVE_S if has_l4 and level != "L4" else 0.0) + (MIN_SECONDS["L3"] if level in ("L1", "L2") and "L3" in levels and official_images(a) else 0.0)
-        if not skip and level != "L4" and remaining - reserve < MIN_SECONDS[level]:
+        skip = l1_skip_l2(prev) if level == "L2" and prev is not None else ""
+        reserve = L3A_RESERVE_S if level != "L3A" and "L3A" in levels else 0.0
+        if not skip and remaining - reserve < MIN_SECONDS.get(level, 0.0):
             skip = f"時間が足りない（残り {remaining:.0f}秒）"
+        if not skip and remaining <= 5:
+            skip = "時間切れ"
         if skip:
             ladder.append({"level": level, "ok": False, "skipped": True, "reasons": [skip], "seconds": 0.0, "variants": {}})
             log(f"[ladder] {slug} {level}: 飛ばす（{skip}）")
             continue
         st = clock()
         log(f"[ladder] {slug} {level}: 開始（版 {need}・残り {remaining:.0f}秒）")
-        reports, err = run_level(level, slug, level_dir, need, a, prev, remaining - reserve, runners, isolate, tts, profile, reviewer, root, **kw)
+        reports, err = run_level(level, slug, level_dir, need, a, prev, remaining - reserve, runners, isolate, tts, profile, **kw)
         seconds = round(clock() - st, 1)
         got = {}
         for v in need:
             rep = (reports or {}).get(v)
             mp4 = level_dir / f"{_out_name(slug, v)}.mp4"
-            ok = passes(rep, mp4)
-            got[v] = ok
+            got[v] = passes(rep, mp4)
             if rep:
                 last[v] = rep
-            if ok:
+            if got[v]:
                 chosen[v] = (level, rep, mp4)
         reasons = [err] if err else []
         for v in need:
             if not got.get(v):
                 rs = ((last.get(v) or {}).get("gate") or {}).get("reasons") or []
                 if (last.get(v) or {}).get("gate", {}).get("ok") and not qa_ok(last.get(v)):
-                    rs = ["描いた位置・画像のレビューの検査（qa）が無い・不合格"] + list(rs)
+                    rs = ["描いた位置・画像のレビューの検査（qa）が無い・不合格・承認の形でない"] + list(rs)
                 reasons += [f"{v}: {x}" for x in rs[:3]]
         entry = {"level": level, "ok": all(got.get(v) for v in need), "reasons": reasons[:8], "seconds": seconds, "variants": got}
         ladder.append(entry)
         log(f"[ladder] {slug} {level}: {'合格' if entry['ok'] else '不合格'} {seconds}秒 {got} {reasons[:2]}")
         if level in ("L1", "L2"):
             prev = reports or prev
-        if level == "L4":
-            # L4 の写真つきが落ちた版は、写真なし（文字とブランドのカード）でもう1回
-            need2 = [v for v in need if not got.get(v)]
-            if need2 and (runners is None or "L4text" in runners):
-                st = clock()
-                dir2 = root / "L4text"
-                dir2.mkdir(parents=True, exist_ok=True)
-                reports2, err2 = run_level("L4text", slug, dir2, need2, a, prev, deadline_s - (clock() - t0), runners, isolate, tts, profile, reviewer, root, **kw)
-                got2 = {}
-                for v in need2:
-                    rep = (reports2 or {}).get(v)
-                    mp4 = dir2 / f"{_out_name(slug, v)}.mp4"
-                    got2[v] = passes(rep, mp4)
-                    if rep:
-                        last[v] = rep
-                    if got2[v]:
-                        chosen[v] = ("L4", rep, mp4)
-                ladder.append({"level": "L4", "mode": "text" if official_images(a) else "fewer", "ok": all(got2.values()), "seconds": round(clock() - st, 1), "variants": got2,
-                               "reasons": ([err2] if err2 else []) + [f"{v}: {x}" for v in need2 if not got2.get(v) for x in ((last.get(v) or {}).get("gate") or {}).get("reasons", [])[:3]]})  # fmt: skip
     out = {}
     total_s = round(clock() - t0, 1)
     for v in VARIANTS:
         if v in chosen:
             level, rep, mp4 = chosen[v]
-            dst = out_dir / f"{_out_name(slug, v)}.mp4"
-            shutil.copyfile(mp4, dst)
+            shutil.copyfile(mp4, out_dir / f"{_out_name(slug, v)}.mp4")
             sheet = mp4.with_suffix(".sheet.png")
             if sheet.exists():
                 shutil.copyfile(sheet, out_dir / f"{_out_name(slug, v)}.sheet.png")
             rep = dict(rep)
             rep["level"] = level
+            rep["mp4"] = str(out_dir / f"{_out_name(slug, v)}.mp4")
         else:
             rep = dict(last.get(v) or {"slug": slug, "errors": ["どの段でも作れなかった"], "gate": {"ok": False, "reasons": ["どの段でも作れなかった"]}})
             rep["level"] = None
             rep.setdefault("gate", {}).setdefault("qa", {"geometry": False, "vision": False, "version": QA_VERSION})
             rep["gate"]["ok"] = False
-            rep["failReason"] = rep.get("failReason") or "どの段でも合格しなかった: " + " / ".join(" ".join(e.get("reasons", [])[:1]) for e in ladder)[:300]
-        rep.pop("_mp4", None)
+            rep["failReason"] = rep.get("failReason") or "どの段でも合格しなかった（あとの回で作り直す）: " + " / ".join(" ".join(e.get("reasons", [])[:1]) for e in ladder)[:300]
         rep["ladder"] = ladder
-        rep.setdefault("timings", {})
         rep["timings"] = {**(rep.get("timings") or {}), "ladder_total": total_s}
         (out_dir / f"{_out_name(slug, v)}.report.json").write_text(json.dumps(rep, ensure_ascii=False, indent=2, default=str), "utf-8")
         out[v] = rep
@@ -1928,7 +929,7 @@ def make_versions(slug: str, out_dir: Path, deadline_s: float = DEADLINE_S, tts:
 
 
 def run_level(level: str, slug: str, level_dir: Path, need: list[str], a: dict, prev: dict | None, budget: float, runners: dict | None,
-              isolate: bool, tts: str, profile: str | None, reviewer, root: Path, **kw) -> tuple[dict | None, str]:
+              isolate: bool, tts: str, profile: str | None, **kw) -> tuple[dict | None, str]:
     """1つの段を動かす。戻り値 ({版: report}, 失敗の理由)"""
     if runners and level in runners:
         try:
@@ -1936,81 +937,98 @@ def run_level(level: str, slug: str, level_dir: Path, need: list[str], a: dict, 
         except Exception as error:  # noqa: BLE001
             return None, f"{type(error).__name__}: {error}"
     if level in ("L1", "L2"):
-        fb = feedback_note(prev) if level == "L2" else ""
-        fn_kw = {"tts": tts, "profile": profile, "feedback": fb, **{k: v for k, v in kw.items() if k in ("extra_pages", "template")}}
-        if isolate:
-            return isolated(run_v3, budget, slug, level_dir, **fn_kw)
-        try:
-            return run_v3(slug, level_dir, **fn_kw), ""
-        except Exception as error:  # noqa: BLE001
-            return None, f"{type(error).__name__}: {error}"
+        fn, args = run_v3, (slug, level_dir)
+        fn_kw = {"tts": tts, "profile": profile, "feedback": feedback_note(prev) if level == "L2" else "", **{k: v for k, v in kw.items() if k in ("extra_pages", "template")}}
+    elif level == "L3A":
+        fn, args = run_template, (slug, level_dir, need, a)
+        fn_kw = {"tts": tts, "profile": profile, **{k: v for k, v in kw.items() if k in ("fps", "out_scale", "workers", "sheet", "pages")}}
+    else:
+        return None, f"知らない段 {level}"
+    if isolate:
+        return isolated(fn, budget, *args, **fn_kw)
     try:
-        if level == "L3":
-            script = latest_script([root / "L2", root / "L1"], slug)
-            return run_simple("L3", slug, level_dir, need, a, tts=tts, profile=profile, script=script, reviewer=reviewer, **kw), ""
-        if level == "L4text" and not official_images(a):  # 写真がもともと無い: 同じ割り付けで、場面を少なくしてもう1回
-            return run_simple("L4", slug, level_dir, need, a, tts=tts, profile=profile, reviewer=reviewer, text_only=True, fewer=True, **kw), ""
-        return run_simple("L4", slug, level_dir, need, a, tts=tts, profile=profile, reviewer=reviewer, text_only=(level == "L4text"), **kw), ""
+        return fn(*args, **fn_kw), ""
     except Exception as error:  # noqa: BLE001
         return None, f"{type(error).__name__}: {error}"
 
 
 # --------------------------------------------------------------------------- #
-# 8. 段の内訳と知らせ（L3/L4 が直近20本の3割を超えたら issue）
+# 6. 段の内訳・承認の形の割合と知らせ（9割未満なら issue）
 # --------------------------------------------------------------------------- #
 
-_ORDER = {"L1": 1, "L2": 2, "L3": 3, "L4": 4}
+_ORDER = {"L1": 1, "L2": 2, "L3A": 3, "L3": 4, "L4": 5}
+USED = ("ready", "posted", "attached", "article_only", "attach_failed", "uploaded", "dry_run")
 
 
 def level_of(rec: dict) -> str | None:
-    """記録（state/sns_video.json の videos の1件）の段: rec["level"]、無ければ合格した版の段のうち一番下（SNS に出る短い版が下の段なら下の段と数える）"""
+    """記録（state/sns_video.json の videos の1件）の段: rec["level"]、無ければ合格した版の段のうち一番下"""
     if rec.get("level") in _ORDER:
         return rec["level"]
     levels = [v.get("level") for v in (rec.get("versions") or {}).values() if isinstance(v, dict) and v.get("ok") and v.get("level") in _ORDER]
     return max(levels, key=_ORDER.get) if levels else None
 
 
-def level_stats(state: dict, last: int = FALLBACK_WINDOW) -> dict:
-    """直近 last 本（作り終えた記録・新しい順）の段の内訳。段の無い古い記録（ladder 以前）は数えない"""
+def _rows(state: dict, last: int) -> list[tuple[str, str, dict]]:
     rows = []
     for slug, rec in (state.get("videos") or {}).items():
         if not isinstance(rec, dict) or rec.get("status") == "started":
             continue
-        lv = level_of(rec)
-        if lv is None and not any("level" in (v or {}) for v in (rec.get("versions") or {}).values()) and "level" not in rec:
-            continue
-        rows.append((rec.get("at", ""), slug, lv or "none"))
-    rows.sort(reverse=True)
-    rows = rows[:last]
-    by = {k: 0 for k in (*LEVELS, "none")}
-    for _, _, lv in rows:
+        if "level" not in rec and not any("level" in (v or {}) for v in (rec.get("versions") or {}).values()):
+            continue  # 段の仕組みより前の記録は数えない
+        rows.append((rec.get("at", ""), slug, rec))
+    rows.sort(key=lambda r: r[0], reverse=True)
+    return rows[:last]
+
+
+def level_stats(state: dict, last: int = FALLBACK_WINDOW) -> dict:
+    """直近 last 本の段の内訳（作り終えた記録・新しい順）"""
+    rows = _rows(state, last)
+    by: dict[str, int] = {}
+    for _, _, rec in rows:
+        lv = level_of(rec) or "none"
         by[lv] = by.get(lv, 0) + 1
+    return {"n": len(rows), "by_level": by, "slugs": [(s, level_of(r) or "none") for _, s, r in rows]}
+
+
+def approved(rec: dict) -> bool:
+    """承認の形（L1/L2/L3A・BASE_LAYOUT）で作り、合格した動画か"""
+    vers = [v for v in (rec.get("versions") or {}).values() if isinstance(v, dict) and v.get("ok")]
+    if not vers:
+        return False
+    layouts = {v.get("base_layout") for v in vers if v.get("base_layout")}
+    return level_of(rec) in APPROVED_LEVELS and (not layouts or layouts == {BASE_LAYOUT})
+
+
+def approved_share(state: dict, last: int = FALLBACK_WINDOW) -> dict:
+    """直近 last 本の、作れた動画（合格した版がある記録）のうち承認の形で作った割合（2026-11-04 オーナー承認の目安: 9割以上）"""
+    rows = [(s, r) for _, s, r in _rows(state, 10_000) if r.get("ok") or r.get("status") in USED][:last]
+    good = [s for s, r in rows if approved(r)]
     n = len(rows)
-    share = (by["L3"] + by["L4"]) / n if n else 0.0
-    return {"n": n, "by_level": by, "fallback_share": round(share, 3), "slugs": [(s, lv) for _, s, lv in rows]}
+    return {"n": n, "approved": len(good), "share": round(len(good) / n, 3) if n else None, "min": APPROVED_MIN,
+            "not_approved": [(s, level_of(r) or "none") for s, r in rows if s not in good]}  # fmt: skip
 
 
 def fallback_alert(state: dict, env: dict | None = None, run=subprocess.run) -> str:
-    """L3/L4 が直近20本の3割を超えたら issue（ラベル sns-video-fallback）を作るか、開いている issue に追記する。GitHub Actions の中だけ"""
+    """承認の形で作った動画が直近20本の9割未満なら issue（ラベル sns-video-fallback）を作るか、開いている issue に追記する。GitHub Actions の中だけ"""
     env = os.environ if env is None else env
-    st = level_stats(state)
-    if st["n"] < FALLBACK_MIN or st["fallback_share"] <= FALLBACK_SHARE:
+    st = approved_share(state)
+    if st["n"] < FALLBACK_MIN or (st["share"] or 0) >= APPROVED_MIN:
         return "ok"
     if env.get("GITHUB_ACTIONS") != "true":
         return "skip-local"
-    body = (f"直近 {st['n']} 本の SNS 動画のうち、下の段（L3 公式の画像＋字幕／L4 要点と声）で作った動画が {st['fallback_share']:.0%}（基準 {FALLBACK_SHARE:.0%}）。\n\n"
-            f"段の内訳: {json.dumps(st['by_level'], ensure_ascii=False)}\n\n"
-            + "\n".join(f"- `{s}`: {lv}" for s, lv in st["slugs"])
-            + "\n\nL1（公式ページの画面の型）が落ちる理由を `state/sns_video.json` の versions[].reasons・ladder で確かめてください。")  # fmt: skip
+    body = (f"直近 {st['n']} 本の SNS 動画のうち、承認の形（左の見出し＋右の公式ページの画面。L1/L2/L3A）で作った動画は {st['approved']} 本"
+            f"（{st['share']:.0%}。目安 {APPROVED_MIN:.0%} 以上）。\n\n"
+            + "\n".join(f"- `{s}`: {lv}" for s, lv in st["not_approved"])
+            + "\n\n落ちた理由は `state/sns_video.json` の versions[].reasons・ladder を確かめてください。")  # fmt: skip
     try:
-        run(["gh", "label", "create", FALLBACK_LABEL, "--color", "FBCA04", "--description", "SNS 動画が下の段（L3/L4）に頼りすぎている", "--force"],
+        run(["gh", "label", "create", FALLBACK_LABEL, "--color", "FBCA04", "--description", "SNS 動画が承認の形で作れていない", "--force"],
             check=False, capture_output=True, text=True, timeout=60)  # fmt: skip
         found = run(["gh", "issue", "list", "--label", FALLBACK_LABEL, "--state", "open", "--json", "number", "--limit", "1"], check=False, capture_output=True, text=True, timeout=60)
         rows = json.loads(found.stdout or "[]") if getattr(found, "stdout", "") else []
         if rows:
             run(["gh", "issue", "comment", str(rows[0]["number"]), "--body", body], check=False, capture_output=True, text=True, timeout=60)
             return f"commented #{rows[0]['number']}"
-        run(["gh", "issue", "create", "--title", f"SNS 動画が下の段に頼りすぎ（L3/L4 が {st['fallback_share']:.0%}）", "--label", FALLBACK_LABEL, "--body", body],
+        run(["gh", "issue", "create", "--title", f"SNS 動画が承認の形で作れていない（{st['share']:.0%}）", "--label", FALLBACK_LABEL, "--body", body],
             check=False, capture_output=True, text=True, timeout=60)  # fmt: skip
         return "created"
     except Exception as error:  # noqa: BLE001
@@ -2019,9 +1037,8 @@ def fallback_alert(state: dict, env: dict | None = None, run=subprocess.run) -> 
 
 
 # --------------------------------------------------------------------------- #
-# 9. 直近の記事での確かめ（投稿しない）
+# 7. 直近の記事での確かめ（投稿しない）
 # --------------------------------------------------------------------------- #
-
 
 def recent_slugs(n: int = 20) -> list[str]:
     """直近の SNS 向けの記事（genreSlug が ai か、Threads に出した記事）。新しい順"""
@@ -2041,28 +1058,6 @@ def recent_slugs(n: int = 20) -> list[str]:
     return [s for _, s in sorted(rows, reverse=True)[:n]]
 
 
-def plan_check(slugs: list[str]) -> list[dict]:
-    """L3/L4 の計画と描画の前の検査だけ（ネット・声なし）"""
-    import shorts
-
-    out = []
-    for slug in slugs:
-        a = shorts.load_article(slug)
-        row = {"slug": slug, "images": len(official_images(a)), "imageKind": (a.get("imageCredit") or {}).get("kind")}
-        for level in ("L3", "L4"):
-            for v in VARIANTS:
-                if level == "L3" and not official_images(a):
-                    row[f"{level}_{v}"] = "対象外（公式の画像なし）"
-                    continue
-                plan = build_plan(a, level, v)
-                probs = plan_problems(plan, a)
-                row[f"{level}_{v}"] = "ok" if not probs else probs[:2]
-                row[f"{level}_{v}_sec"] = round(est_seconds(plan.lines()), 1)
-                row[f"{level}_{v}_beats"] = len(plan.beats)
-        textplan = build_plan(a, "L4", "short", images=[])
-        row["L4_text"] = "ok" if not plan_problems(textplan, a) else plan_problems(textplan, a)[:2]
-        out.append(row)
-    return out
 
 
 def l1_history(n: int = 20) -> dict:
@@ -2088,17 +1083,34 @@ def l1_history(n: int = 20) -> dict:
     return {"n": len(rows), "ok": ok, "versions": vers, "qa_passed_versions": qa, "fail_reasons": reasons}
 
 
+
+
+def plan_check(slugs: list[str]) -> list[dict]:
+    """L3A の台本を、自分の記事ページを模した画面（article_page）で作って検査するだけ（ネット・声・描画なし）"""
+    import shorts
+
+    out = []
+    for slug in slugs:
+        a = shorts.load_article(slug)
+        script, probs = template_script(a, [article_page(a)])
+        row = {"slug": slug, "ok": bool(script), "problems": probs[:3]}
+        if script:
+            row.update({"hook": script["hook"]["text"], "speech": script["hook"]["speech"], "beats": [(b["label"], b["keyword"]) for b in script["beats"]],
+                        "chars": len(script["hook"]["speech"]) + sum(len(b["speech"]) for b in script["beats"])})
+        out.append(row)
+    return out
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description="SNS 動画の段の下がり方（L1→L4）。投稿しない・置かない")
+    parser = argparse.ArgumentParser(description="SNS 動画の段（L1→L2→L3A。どれも承認の形・同じ合格の基準）。投稿しない・置かない")
     parser.add_argument("slugs", nargs="*")
     parser.add_argument("--out", default=str(ROOT / "out" / "video_ladder"))
     parser.add_argument("--tts", default=os.environ.get("SHORTS_TTS", "voicevox"), choices=["voicevox", "fake", "edge", "auto"])
-    parser.add_argument("--levels", default="L1,L2,L3,L4")
+    parser.add_argument("--levels", default=",".join(LEVELS))
     parser.add_argument("--deadline", type=float, default=DEADLINE_S)
     parser.add_argument("--profile")
-    parser.add_argument("--plan-check", type=int, metavar="N", help="直近の N 本で L3/L4 の計画と検査だけ")
+    parser.add_argument("--plan-check", type=int, metavar="N", help="直近の N 本で L3A の台本の検査だけ")
     parser.add_argument("--dry-run", type=int, metavar="N", help="直近の N 本を書き出して段ごとの合格率（投稿しない）")
-    parser.add_argument("--no-vision", action="store_true", help="画像のレビュー（Claude API）を使わない（L4 は決まりで判定・L3 は不合格）")
     parser.add_argument("--stats", action="store_true")
     parser.add_argument("--alert", action="store_true")
     parser.add_argument("--history", type=int, metavar="N")
@@ -2111,7 +1123,7 @@ def main() -> None:
         pass
     if args.stats or args.alert:
         state = json.loads(STATE.read_text("utf-8")) if STATE.exists() else {}
-        print(json.dumps(level_stats(state), ensure_ascii=False, indent=2))
+        print(json.dumps({"levels": level_stats(state), "approved": approved_share(state)}, ensure_ascii=False, indent=2))
         if args.alert:
             print(fallback_alert(state))
         return
@@ -2122,46 +1134,35 @@ def main() -> None:
         rows = plan_check(recent_slugs(args.plan_check))
         for r in rows:
             print(json.dumps(r, ensure_ascii=False))
-        bad = [r for r in rows if r["L4_short"] != "ok" or r["L4_full"] != "ok" or r["L4_text"] != "ok"]
-        print(f"L4 の計画が検査に通った記事: {len(rows) - len(bad)}/{len(rows)}")
-        sys.exit(1 if bad else 0)
+        print(f"L3A の台本が作れた記事: {sum(r['ok'] for r in rows)}/{len(rows)}")
+        return
     levels = tuple(x.strip() for x in args.levels.split(",") if x.strip())
-    reviewer = (lambda frames: (None, "--no-vision")) if args.no_vision else None
     slugs = recent_slugs(args.dry_run) if args.dry_run else args.slugs
     if not slugs:
         parser.error("slug か --dry-run N を指定してください")
     summary = []
     for slug in slugs:
-        out = make_versions(slug, Path(args.out), deadline_s=args.deadline, tts=args.tts, profile=args.profile, levels=levels, reviewer=reviewer)
-        row = {"slug": slug, **{v: out[v].get("level") for v in VARIANTS}, "ladder": [{k: e.get(k) for k in ("level", "mode", "ok", "skipped", "seconds", "variants", "reasons")} for e in out["full"]["ladder"]]}
+        out = make_versions(slug, Path(args.out), deadline_s=args.deadline, tts=args.tts, profile=args.profile, levels=levels)
+        row = {"slug": slug, **{v: out[v].get("level") for v in VARIANTS},
+               "qa": {v: (out[v].get("gate") or {}).get("qa") for v in VARIANTS},
+               "ladder": [{k: e.get(k) for k in ("level", "ok", "skipped", "seconds", "variants", "reasons")} for e in out["full"]["ladder"]]}  # fmt: skip
         summary.append(row)
         print(json.dumps(row, ensure_ascii=False))
-    if summary:
-        tried: dict[str, list[int]] = {}
-        no_review: dict[str, int] = {}  # 画像のレビューができなかっただけで、ほかの検査には通った版の数
-        for row in summary:
-            for e in row["ladder"]:
-                if e.get("skipped"):
-                    continue
-                key = e["level"] + ("text" if e.get("mode") == "text" else "")
-                t = tried.setdefault(key, [0, 0])
-                for v, ok in (e.get("variants") or {}).items():
-                    t[1] += 1
-                    t[0] += 1 if ok else 0
-                    rs = [r for r in e.get("reasons") or [] if r.startswith(f"{v}: ")]
-                    if not ok and rs and all("画像のレビューができない" in r for r in rs):
-                        no_review[key] = no_review.get(key, 0) + 1
-        used = {}
-        for row in summary:
-            for v in VARIANTS:
-                used[f"{v}:{row[v]}"] = used.get(f"{v}:{row[v]}", 0) + 1
-        result = {"articles": len(summary), "pass_rate_by_level": {k: f"{a}/{b}" for k, a_b in tried.items() for a, b in [a_b]},
-                  "failed_only_for_no_review": no_review, "used": used,
-                  "all_produced": all(row["full"] and row["short"] for row in summary), "l1_history": l1_history(20)}  # fmt: skip
-        print(json.dumps(result, ensure_ascii=False, indent=2))
-        Path(args.out).mkdir(parents=True, exist_ok=True)
-        (Path(args.out) / "dryrun.json").write_text(json.dumps({"summary": result, "rows": summary}, ensure_ascii=False, indent=2), "utf-8")
-        sys.exit(0 if result["all_produced"] else 1)
+    tried: dict[str, list[int]] = {}
+    for row in summary:
+        for e in row["ladder"]:
+            if e.get("skipped"):
+                continue
+            t = tried.setdefault(e["level"], [0, 0])
+            for ok in (e.get("variants") or {}).values():
+                t[1] += 1
+                t[0] += 1 if ok else 0
+    result = {"articles": len(summary), "pass_rate_by_level": {k: f"{a}/{b}" for k, (a, b) in tried.items()},
+              "all_produced": all(row["full"] and row["short"] for row in summary)}  # fmt: skip
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    Path(args.out).mkdir(parents=True, exist_ok=True)
+    (Path(args.out) / "dryrun.json").write_text(json.dumps({"summary": result, "rows": summary}, ensure_ascii=False, indent=2), "utf-8")
+    sys.exit(0 if result["all_produced"] else 1)
 
 
 if __name__ == "__main__":
