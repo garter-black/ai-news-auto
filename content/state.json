@@ -6852,6 +6852,15 @@
       "skipped": true,
       "url": "https://www.jst.go.jp/pr/info/info1882/index.html"
     },
+    "54c4ca6643eafba1": {
+      "at": "2026-11-04T02:03:01.710111+00:00",
+      "major": true,
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 92,
+      "section": "ai",
+      "slug": "mac-refurbished-imac-studio-restock",
+      "url": "https://gori.me/sale/apple-refurbished/172065"
+    },
     "54f81c61f607157e": {
       "at": "2026-11-02T21:19:00.494127+00:00",
       "reason": "short text 338",
@@ -13738,28 +13747,6 @@
   },
   "quality_log": [
     {
-      "accepted": true,
-      "at": "2026-11-02T10:31:35.825493+00:00",
-      "attempt": 0,
-      "id": "cd0896561670865f",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 126.4字・最長 202字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 126.4,
-        "avg_sentence": 27.8,
-        "long_share": 0.0,
-        "max_paragraph": 202,
-        "paragraphs": 9,
-        "sentences": 41
-      },
-      "score": 100,
-      "source": "tsr",
-      "title": "新型コロナ破たん、10月は125件発生"
-    },
-    {
       "accepted": false,
       "at": "2026-11-02T10:51:32.933348+00:00",
       "attempt": 1,
@@ -20146,6 +20133,30 @@
       "score": null,
       "source": "trends",
       "title": "商船三井 株価"
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T02:03:01.689391+00:00",
+      "attempt": 1,
+      "id": "54c4ca6643eafba1",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 80.6,
+        "avg_sentence": 38.9,
+        "long_share": 0.103,
+        "max_paragraph": 145,
+        "paragraphs": 14,
+        "sentences": 29
+      },
+      "score": 92,
+      "source": "radar-gori.me",
+      "title": "Mac整備済製品、Mac StudioとiMacの在庫が一気に復活。新モデル追加で計123種類",
+      "warnings": [
+        "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（XDR）"
+      ]
     }
   ],
   "short_text_retry": {

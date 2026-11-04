@@ -1196,6 +1196,37 @@
           "helper": 8
         },
         "usd": 0.007458
+      },
+      "gh-41757638767-1": {
+        "by": {
+          "breaking|2": {
+            "n": 1,
+            "usd": 0.109256
+          },
+          "check|1": {
+            "n": 1,
+            "usd": 0.002731
+          },
+          "helper|1": {
+            "n": 1,
+            "usd": 0.000474
+          }
+        },
+        "cache_read": 0,
+        "cache_write": 9372,
+        "calls": {
+          "breaking": 1,
+          "check": 1,
+          "helper": 1
+        },
+        "in": 42474,
+        "out": 6498,
+        "req": {
+          "breaking": 1,
+          "check": 1,
+          "helper": 1
+        },
+        "usd": 0.112461
       }
     }
   }
