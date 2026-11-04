@@ -91,14 +91,6 @@
       "tries": 1,
       "url": "https://www.hiroshima-u.ac.jp/news/101101"
     },
-    "3c6177ead4c30c9c": {
-      "first": "2026-11-04T00:40:44.797611+00:00",
-      "next": "2026-11-04T08:44:16.226824+00:00",
-      "reason": "要点の1つ目（「個々のコーディングは速くなったが、組織全体の革新…」）が一番のニュースになっていない。題名・リードの1文目と同じ中心の事実（効果）を、リードとは違う言い方で1つ目に書く",
-      "title": "Measuring and orchestrating AI across the full engineering lifecycle",
-      "tries": 2,
-      "url": "https://www.atlassian.com/blog/ai-at-work/measuring-and-orchestrating-ai-across-the-full-engineering-lifecycle"
-    },
     "52567fa092b78f28": {
       "first": "2026-11-04T03:34:46.235755+00:00",
       "next": "2026-11-04T06:34:46.235755+00:00",
@@ -5885,6 +5877,14 @@
       "section": "ai",
       "slug": "amazon-trainium-ai-chip-nba-prime-360",
       "url": "https://www.aboutamazon.com/news/innovation/trainium-ai-chip-prime-360-nba-highlights?utm_source=rss"
+    },
+    "3c6177ead4c30c9c": {
+      "at": "2026-11-04T09:02:45.888251+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "score": 92,
+      "section": "ai",
+      "slug": "measuring-ai-across-engineering-lifecycle",
+      "url": "https://www.atlassian.com/blog/ai-at-work/measuring-and-orchestrating-ai-across-the-full-engineering-lifecycle"
     },
     "3cb550be35eb2430": {
       "at": "2026-10-30T05:22:04.333351+00:00",
@@ -14263,29 +14263,6 @@
   },
   "quality_log": [
     {
-      "accepted": false,
-      "at": "2026-11-02T17:11:39.837387+00:00",
-      "attempt": 1,
-      "id": "7654ed0c5356186b",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 45.2字・60字超の文が 13% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 148.6字・最長 182字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 148.6,
-        "avg_sentence": 45.2,
-        "long_share": 0.13,
-        "max_paragraph": 182,
-        "paragraphs": 7,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "jnet21",
-      "title": "仙台でアトツギ交流会、家業の強みを活かした新規事業に挑戦"
-    },
-    {
       "accepted": true,
       "at": "2026-11-02T17:11:43.211981+00:00",
       "attempt": 0,
@@ -20669,6 +20646,30 @@
       "warnings": [
         "見出しが57字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（CLI）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T09:02:45.883366+00:00",
+      "attempt": 1,
+      "id": "3c6177ead4c30c9c",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 77.8,
+        "avg_sentence": 38.9,
+        "long_share": 0.1,
+        "max_paragraph": 155,
+        "paragraphs": 20,
+        "sentences": 40
+      },
+      "score": 92,
+      "source": "atlassian-blog",
+      "title": "Measuring and orchestrating AI across the full engineering lifecycle",
+      "warnings": [
+        "見出しが46字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（QA・DXI）"
       ]
     }
   ],

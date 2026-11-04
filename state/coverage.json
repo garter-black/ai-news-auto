@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "measuring-ai-across-engineering-lifecycle",
+   "at": "2026-11-04T09:02:38.043868+00:00",
+   "title": "豪Atlassian、AI効果を開発全体で測る枠組みを提示　コードは速くなっても革新は横ばい",
+   "head": "豪Atlassian、AI効果を開発全体で測る枠組みを提示　コードは速くなっても革新は横ばい | Measuring and orchestrating AI across the full engineering lifecycle",
+   "text": "豪Atlassian、AI効果を開発全体で測る枠組みを提示　コードは速くなっても革新は横ばい | Measuring and orchestrating AI across the full engineering lifecycle | AI 開発 生産性 / AIコーディング 効果 / 開発 生産性 指標 / PR サイズ / エンジニアリング 生産性 / AI 導入 効果 測り方 / 開発者 体験 / ソフトウェア開発 ライフサイクル / AIエージェント 開発 / 変更の失敗率 / 生成AI / AI / 開発ツール / ソフトウェア開発 / DX / Atlassian",
+   "urls": [
+    "https://www.atlassian.com/blog/ai-at-work/measuring-and-orchestrating-ai-across-the-full-engineering-lifecycle"
+   ]
+  },
+  {
    "slug": "atlassian-context-graph-agents-teamwork-graph",
    "at": "2026-11-04T08:32:50.154404+00:00",
    "title": "Atlassian、AIエージェント向けの文脈地図「Teamwork Graph」を解説　接続だけでは答えは出ない",
