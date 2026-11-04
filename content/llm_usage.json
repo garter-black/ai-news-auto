@@ -58,7 +58,7 @@
   },
   "2026-11-04": {
     "anthropic-api:claude-haiku-5-5": 83,
-    "anthropic-api:claude-sonnet-5-5": 16,
+    "anthropic-api:claude-sonnet-5-5": 19,
     "cf-image:flux-1-schnell": 1,
     "cf-image:flux-2-klein-4b": 9,
     "claude:sonnet": 12,

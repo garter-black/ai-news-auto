@@ -2169,6 +2169,25 @@
           "breaking": 3
         },
         "usd": 0.26344
+      },
+      "gh-41870730869-1": {
+        "by": {
+          "breaking|2": {
+            "n": 3,
+            "usd": 0.260727
+          }
+        },
+        "cache_read": 19332,
+        "cache_write": 9666,
+        "calls": {
+          "breaking": 3
+        },
+        "in": 59898,
+        "out": 11290,
+        "req": {
+          "breaking": 3
+        },
+        "usd": 0.260727
       }
     }
   }

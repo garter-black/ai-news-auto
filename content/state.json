@@ -24,6 +24,7 @@
     "JPe8gJkEa6g": 2,
     "JR7xBi2kJjY": 1,
     "KH5fQCLhXrg": 1,
+    "KyX-aQ-pw4I": 1,
     "MCB3zM5dEVI": 1,
     "MxwXGl-lpe0": 1,
     "NCxD-qsQcN0": 1,
@@ -168,7 +169,7 @@
     }
   },
   "major_tries": {
-    "f57fcca12f80bc03": 1
+    "f57fcca12f80bc03": 2
   },
   "pi_reopened": {
     "015d389a8563486d": "2026-11-04T13:10:52.830493+00:00",
@@ -14674,68 +14675,6 @@
   "quality_log": [
     {
       "accepted": true,
-      "at": "2026-11-02T22:14:44.632841+00:00",
-      "attempt": 1,
-      "id": "c4c08db9ebb51f8c",
-      "kind": "broad",
-      "model": "cloudflare:@cf/openai/gpt-oss-120b",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 105.9,
-        "avg_sentence": 44.8,
-        "long_share": 0.192,
-        "max_paragraph": 213,
-        "paragraphs": 11,
-        "sentences": 26
-      },
-      "score": 100,
-      "source": "tsr",
-      "title": "リフォームテクノロジー取締役会長・栗原将氏 インタビュー ～ 「ぼったくり」なし・ネット完結、住設業界の慣習変えたDX ～"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T22:36:34.414146+00:00",
-      "attempt": 1,
-      "id": "1df2c9e92a95f846",
-      "kind": "ai",
-      "model": "cloudflare:@cf/openai/gpt-oss-120b",
-      "problems": [
-        "段落が長い（平均 78.9字・最長 308字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 78.9,
-        "avg_sentence": 39.5,
-        "long_share": 0.139,
-        "max_paragraph": 308,
-        "paragraphs": 18,
-        "sentences": 36
-      },
-      "score": 100,
-      "source": "vercel-changelog",
-      "title": "LongCat 2.5 now available on AI Gateway"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T22:37:51.922801+00:00",
-      "attempt": 0,
-      "id": "1df2c9e92a95f846",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 68.6,
-        "avg_sentence": 25.6,
-        "long_share": 0.0,
-        "max_paragraph": 146,
-        "paragraphs": 22,
-        "sentences": 59
-      },
-      "score": 100,
-      "source": "vercel-changelog",
-      "title": "LongCat 2.5 now available on AI Gateway"
-    },
-    {
-      "accepted": true,
       "at": "2026-11-02T22:43:34.915143+00:00",
       "attempt": 1,
       "id": "f968f27e7c1fba7b",
@@ -21064,6 +21003,48 @@
       "warnings": [
         "初めて出たところで言い換えていない略語（CVSS・JIPDEC）"
       ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T16:46:56.101561+00:00",
+      "attempt": 1,
+      "id": "f57fcca12f80bc03",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "fast",
+      "title": "当社が提供する「アララメッセージ」への不正アクセスによる情報流出およびサービス停止について（第２報）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T16:47:20.686277+00:00",
+      "attempt": 2,
+      "id": "f57fcca12f80bc03",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "fast",
+      "title": "当社が提供する「アララメッセージ」への不正アクセスによる情報流出およびサービス停止について（第２報）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T16:47:46.907457+00:00",
+      "attempt": 3,
+      "id": "f57fcca12f80bc03",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "fast",
+      "title": "当社が提供する「アララメッセージ」への不正アクセスによる情報流出およびサービス停止について（第２報）"
     }
   ],
   "short_text_retry": {
