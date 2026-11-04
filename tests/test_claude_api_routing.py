@@ -143,8 +143,9 @@ class RoutingTests(Base):
                  patch.object(llm, "_claude_models", return_value=[]), \
                  patch.object(llm, "models_for", return_value=["gemini-test"]), \
                  patch.object(llm, "_call_gemini", return_value='{"answer": "free"}'):
-                self.assertEqual(llm.generate_json("s", "p", SCHEMA, purpose="video")[1], "gemini-test")
-        self.assertEqual(llm.api_ledger_summary()["calls_today"]["video"], 5)  # 返事があった分の料金は数える（キー不足は1回出し直し）
+                # 速報は API がだめなら無料のモデルへ（動画は Claude だけ: VideoClaudeOnlyTest）
+                self.assertEqual(llm.generate_json("s", "p", SCHEMA, purpose="breaking")[1], "gemini-test")
+        self.assertEqual(llm.api_ledger_summary()["calls_today"]["breaking"], 5)  # 返事があった分の料金は数える（キー不足は1回出し直し）
 
     def test_invalid_schema_retries_once_without_structured_output(self):
         with patch.object(llm, "_api_request", side_effect=[ApiError("bad schema", 400), fake_message()]) as api:
@@ -593,3 +594,23 @@ class TrialScopeTest(unittest.TestCase):
             self.assertIn("CLAUDE_API_LEDGER: video_trial", text, name)
             self.assertIn("LLM_WORKFLOW: video_trial", text, name)
         self.assertIn("CLAUDE_API_LEDGER: video\n", (root / "sns_video.yml").read_text("utf-8"))
+
+
+class VideoClaudeOnlyTest(unittest.TestCase):
+    """（2026-11-04 決定）動画の台本・画像の確認は Claude だけ。上限なら本当の理由を出す（Gemini に回さない）"""
+
+    def test_video_never_falls_back_to_free_models_and_says_cap(self):
+        import llm
+
+        called = []
+        with patch.object(llm, "_try_anthropic_api", return_value=None), patch.object(llm, "_claude_models", return_value=[]), \
+                patch.object(llm, "models_for", side_effect=lambda tier: called.append(tier) or ["gemini-x"]), \
+                patch.object(llm, "api_ledger_summary", return_value={"calls_today": {"video": 60}}), \
+                patch.object(llm, "_daily_calls_cap", return_value=60), patch.object(llm, "api_block_reason", return_value="video の今日の安全上限 60 回に到達"), \
+                patch.object(llm, "claude_calls_today", return_value=40), patch.object(llm, "_claude_daily_max", return_value=40), \
+                patch.object(llm, "claude_enabled", return_value=True):
+            with self.assertRaises(RuntimeError) as caught:
+                llm.generate_json("s", "p", {"type": "OBJECT", "properties": {"a": {"type": "STRING"}}, "required": ["a"]}, purpose="video")
+        self.assertEqual(called, [])  # 無料のモデルの一覧すら作らない
+        self.assertIn("Claude の1日の上限に達しました（台本用 60/60 回・CLI 40/40 回）", str(caught.exception))
+        self.assertNotIn("GEMINI", str(caught.exception))

@@ -197,7 +197,7 @@ class ProcessReleaseTest(ReleaseTestBase):
         best = {"kind": "hero", "url": "https://www.kubell-storage.com/assets_c/2026/10/key.png", "image": object(), "rank": images.OFFICIAL_RANK["hero"], "where": "body"}
         seen = {}
 
-        def pick(src, repeats, fast=False):
+        def pick(src, repeats, fast=False, extra=0):  # extra: 本文に置く公式の写真の数（4555e973 で増えた引数）
             seen["sourceUrl"] = src["sourceUrl"]
             return {"best": best, "reasons": []}
 

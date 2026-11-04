@@ -769,6 +769,28 @@ API_TIERS = {
 }
 # Claude CLI（サブスクリプション）も使ってよい段（2026-11-03 オーナー決定: 速報・SNS・動画だけ）
 API_CLI_PURPOSES = {"breaking", "sns", "video", "video_review"}
+# 動画の台本・画像の確認は Claude だけで書く（2026-11-04 決定。無料のモデル（Gemini など）には回さない）。
+# Claude が使えないときは、本当の理由（1日の上限など）を書いた例外にする（ログ・issue に「GEMINI_API_KEY が未設定」と出さない）
+CLAUDE_ONLY_PURPOSES = {"video", "video_review"}
+PURPOSE_LABELS = {"video": "台本用", "video_review": "画像の確認用"}
+
+
+def claude_unavailable_message(purpose: str, last_error: Exception | None = None) -> str:
+    """Claude（API と CLI）で書けなかった理由を、ふつうの言葉で1行に（上限なら回数つき）"""
+    label = PURPOSE_LABELS.get(purpose, purpose)
+    try:
+        s = api_ledger_summary()
+        used, cap = s["calls_today"].get(purpose, 0), _daily_calls_cap(purpose)
+    except Exception:  # noqa: BLE001
+        used, cap = 0, 0
+    cli_used, cli_cap = claude_calls_today(), _claude_daily_max()
+    api_why = api_block_reason(purpose) or ""
+    at_cap = (cap and used >= cap) or "上限" in api_why
+    cli_note = f"・CLI {cli_used}/{cli_cap} 回" if claude_enabled() else "・CLI なし"
+    if at_cap:
+        return f"Claude の1日の上限に達しました（{label} {used}/{cap} 回{cli_note}）"
+    reason = api_why or (str(last_error)[:160] if last_error else "不明")
+    return f"Claude で書けませんでした（{label}: {reason}{cli_note}）"
 # 予算の配り方（優先順）。下の段ほど後回し＝予算が足りないと先に削られる:
 #   削る順 = 中心 Sonnet→Haiku → SNS Sonnet→Haiku → 最後に その他 Haiku→無料（月 $3 ほどなので最後まで残す。速報・動画は削らない）
 #   余るとき = さらに 確認→Sonnet → その他→Sonnet と上げる（CLAUDE_API_UPGRADES=0 で上げない。Opus には上げない）
@@ -1336,7 +1358,7 @@ def generate_json_images(system_instruction: str, prompt: str, images: list[byte
 
     model, why = api_choose(purpose)
     if not model:
-        raise RuntimeError(f"画像の確認に Claude API を使えない（{why}）")
+        raise RuntimeError(claude_unavailable_message(purpose) if "上限" in why else f"画像の確認に Claude API を使えない（{why}）")
     content: list[dict] = []
     for img in images:
         content.append({"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": base64.b64encode(img).decode("ascii")}})
@@ -1389,7 +1411,10 @@ def generate_json(
             return got
     # Claude CLI（サブスクリプション）は速報・SNS・動画だけ（API が使えない・失敗したときの次の手）
     cli = visibility == "high" or purpose in API_CLI_PURPOSES
-    candidates = (_claude_models() if cli else []) + [m for m in models_for(tier) if not m.startswith("claude:")]
+    if purpose in CLAUDE_ONLY_PURPOSES:
+        candidates = _claude_models()  # 動画は Claude だけ（無料のモデルには回さない）
+    else:
+        candidates = (_claude_models() if cli else []) + [m for m in models_for(tier) if not m.startswith("claude:")]
     last_error: Exception | None = None
     used = usage_today()
     for model in candidates:
@@ -1488,6 +1513,10 @@ def generate_json(
                     continue
                 log(f"   [llm] {model}: 失敗（{text[:120]}） -> 次のモデルへ")
                 break
+    if purpose in CLAUDE_ONLY_PURPOSES:
+        message = claude_unavailable_message(purpose, last_error)
+        log(f"   [llm] {message}")
+        raise RuntimeError(message)
     raise RuntimeError(f"すべてのモデルで失敗しました: {last_error}")
 
 
