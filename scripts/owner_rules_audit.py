@@ -1050,7 +1050,16 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
         since = datetime.now(timezone.utc) - timedelta(days=sns_days)
         posts = [sns_audit.normalize_bsky(p) for p in sns_audit.bluesky_posts(since)]
         v = sns_problems(posts, sns_rules.audit_post)
-        found["SNS（Bluesky の直近の投稿 %d 本）" % len([p for p in posts if not p.get("reply")])] = v
+        own = [p for p in posts if not p.get("reply")]
+        # 見出しに一番新しい投稿の時刻も出す（違反の行だけを見て「最近の投稿が無い」と読み違えないように。2026-11-04）
+        newest = max((str(p.get("at") or p.get("createdAt") or "") for p in own), default="")
+        when = ""
+        if newest:
+            try:
+                when = "・最新 " + datetime.fromisoformat(newest.replace("Z", "+00:00")).astimezone(JST).strftime("%m/%d %H:%M")
+            except ValueError:
+                when = ""
+        found[f"SNS（Bluesky の直近の投稿 {len(own)} 本{when}。違反のある投稿だけを下に並べる）"] = v
     except Exception as error:  # noqa: BLE001
         found["SNS"] = [f"[S11] SNS の投稿を読めなかった（{type(error).__name__}）"]
     # SNS（Threads・X・Facebook の二重投稿。Buffer の鍵があるときだけ・読むだけ・1日数回の呼び出し）
