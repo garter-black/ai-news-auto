@@ -50,6 +50,7 @@ STYLE_PROMPT = """## サイソクの文体（ITmedia・日経クロステック�
   ×「Appleは11月2日、第4四半期の決算を発表しました。」 ○「Appleの7〜9月期の売上高は前年同期比12%増の1,145億ドルで、過去最高でした。」
   ×「デジタル庁は、アンケートの結果を公表しました。」 ○「政府職員向けの生成AI「源内」について、利用者の71.7%が「満足」と答えました。」
 - リード・3つの要点・本文・まとめ・かんたん版で、同じ文や同じ事実をくり返さない。同じ数字は本文で2〜3回まで。
+  ただし「この記事のポイント」（3つの要点）の1つ目は、一番のニュース（題名・リードの1文目と同じ中心の事実）を、リードとは違う言い方で書く。
 - 見出しは記事の中身の言葉で、本文1,000字に1つまで。決まった質問の見出し（料金は？／日本で使える？／自分に関係ある？／
   ライバルと比べてどう？／もう使える？／何がすごいの？／数字で見ると？）と「## 概要」は使わない。
 - 材料の無い章・欄は作らない。「元記事」「言及なし」「記載なし」「書かれていません」「確認できていません」「判断できません」は書かない。
@@ -64,6 +65,13 @@ STYLE_PROMPT = """## サイソクの文体（ITmedia・日経クロステック�
 - 一部改良を「新型」と書かない。前からあるものを「新たに」と書かない。「ざっくり」は使わない。
 - 本文・かんたん版の頭に「要約すると、」の段落を置かない（リードと「この記事のポイント」が要約の役目。同じことのくり返しになる）。
   リードの次は、それが何か・誰のためかの1〜2文か、リードに無い新しい事実から始める。"""
+
+# 「この記事のポイント」（highlights）の並び（2026-11-04 オーナー決定 D4・台帳 A38）。生成のすべての段のプロンプトに同じ文を入れる
+# （scripts/main.py・web_articles.py・roundup.py・followup.py。tests/test_article_style.py::LeadPointTest が確かめる）
+LEAD_POINT_RULE = (
+    "1つ目は、この記事の一番のニュース（題名・リードの1文目と同じ中心の事実）を、リードとは違う言い方で書く"
+    "（リードの文をそのまま写さない。題名の主な語を入れる）。2つ目と3つ目は、リードに無い事実を入れる。"
+)
 
 # --------------------------------------------------------------------------- #
 # 門の規則
@@ -154,6 +162,40 @@ def similarity(a: str, b: str) -> float:
     if not x or not y:
         return 0.0
     return len(x & y) / min(len(x), len(y))
+
+
+# 題名の主な語（要点の1つ目に一番のニュースが入っているかを見る。台帳 A38）。主語（題名の最初の語）とどの記事にも出る語は数えない
+MAIN_TERM_RE = re.compile(r"[a-z][a-z0-9.\-]*[a-z0-9]|[ァ-ヴー]{2,}|[一-龥々]{2,}|\d[\d,.]*")
+GENERIC_TERMS = {"ai", "公開", "発表", "開始", "対応", "提供", "紹介", "拡大", "追加", "発売", "導入", "活用", "実施", "説明", "表明", "公表",
+                 "明らか", "向け", "新た", "最大", "全て", "事例", "成果"}
+LEAD_POINT_SIMILAR = 0.35  # リードの1文目とこれ以上重なれば、一番のニュースを言い換えたものとみなす
+VERBATIM_SIMILAR = 0.9     # これ以上はリードの文の写し（言い換えになっていない）
+
+
+def main_news_terms(title: str) -> list[str]:
+    """題名の前半（全角の空白より前）の主な語。主語（最初の語）と一般的な語を除く"""
+    head = re.split(r"\u3000", title or "", maxsplit=1)[0]  # NFKC の前に分ける（全角の空白が半角になるため）
+    head = unicodedata.normalize("NFKC", head).lower()
+    terms = MAIN_TERM_RE.findall(head)
+    return [t for t in terms[1:] if t not in GENERIC_TERMS and len(t) >= 2]
+
+
+def lead_point_problem(record: dict) -> str:
+    """要点の1つ目が一番のニュースになっていない・リードの文の写しになっている（台帳 A38）。問題が無ければ空"""
+    points = [str(h) for h in record.get("highlights") or [] if str(h).strip()]
+    if not points or record.get("type") == "roundup" or record.get("disaster"):
+        return ""
+    first = points[0]
+    lede1 = next(iter(_sentences(record.get("lede") or "")), "")
+    sim = similarity(first, lede1) if lede1 else 0.0
+    if sim >= VERBATIM_SIMILAR:
+        return "要点の1つ目がリードの文の写し。一番のニュースを、リードとは違う言い方で書く"
+    terms = main_news_terms(record.get("title") or "")
+    text = unicodedata.normalize("NFKC", first).lower()
+    if terms and not any(t in text for t in terms) and sim < LEAD_POINT_SIMILAR:
+        return (f"要点の1つ目（「{first[:24]}…」）が一番のニュースになっていない。題名・リードの1文目と同じ中心の事実"
+                f"（{'・'.join(terms[:4])}）を、リードとは違う言い方で1つ目に書く")
+    return ""
 
 
 def _no_quotes(text: str) -> str:
@@ -289,8 +331,9 @@ def autofix(record: dict) -> list[str]:
                 changes.append(f"本文の最初の{dropped}文がリードと同じだったので外した")
     # 要点（3つ）のうちリードの文とほぼ同じものは外す（2つ以上残るときだけ。報告の自動ゲート13）
     highlights = [str(h) for h in record.get("highlights") or []]
+    # 1つ目は一番のニュースの言い換え（台帳 A38）なので外さない（写しなら repair_items が言い換え、だめなら門で作り直す）
     if lede_sents and len(highlights) >= 3:
-        kept = [h for h in highlights if not any(similarity(h, x) >= 0.9 for x in lede_sents)]
+        kept = highlights[:1] + [h for h in highlights[1:] if not any(similarity(h, x) >= 0.9 for x in lede_sents)]
         if 2 <= len(kept) < len(highlights):
             record["highlights"] = kept
             changes.append(f"リードとほぼ同じ要点を{len(highlights) - len(kept)}つ外した")
@@ -445,10 +488,13 @@ def coded_problems(record: dict) -> list[tuple[str, str]]:
             and not re.search(r"\d[\d,.]*\s?(?:%|％|円|ドル|億|万|倍|人|件|社|台)", lede_sents[0]) \
             or (lede_sents and len(lede_sents[0]) < 36 and re.search(r"(?:発表|公開|公表)しました。?$", lede_sents[0])):
         add("A19", "リードの1文目が「〇〇を発表しました」で終わり、何が新しいか（中身・数字）を言っていない。1文目で新しい事実を言い切る")
-    for h in record.get("highlights") or []:
+    # 2つ目・3つ目はリードに無い事実。1つ目は一番のニュースの言い換え（写しは不可。台帳 A38。2026-11-04 オーナー決定 D4）
+    for h in (record.get("highlights") or [])[1:]:
         if any(similarity(h, s) >= 0.9 for s in lede_sents):
-            add("A19", f"要点「{str(h)[:24]}…」がリードの文とほぼ同じ。要点にはリードに無い事実を入れる")
+            add("A19", f"要点「{str(h)[:24]}…」がリードの文とほぼ同じ。2つ目・3つ目の要点にはリードに無い事実を入れる")
             break
+    if msg := lead_point_problem(record):
+        add("A38", msg)
     # 14. 同じ数字のくり返し（表の外）
     prose = TABLE_LINE_RE.sub("", body)
     counts: dict[str, int] = {}
@@ -561,6 +607,14 @@ def repair_items(record: dict) -> list[dict]:
                     add(field, sentence, "一問一答の口調（「〜の？」）を、説明の文にする")
     lede = record.get("lede") or ""
     first = next(iter(_sentences(lede)), "")
+    # 要点の1つ目を、一番のニュースの言い換えにする（台帳 A38）。リードの数字は使ってよい
+    points = record.get("highlights") or []
+    if points and (issue := lead_point_problem(record)):
+        nums = set(re.findall(r"\d+(?:[.,]\d+)*", f"{record.get('title') or ''} {lede}"))
+        add("highlights", str(points[0]),
+            f"{issue}。題名「{record.get('title') or ''}」・リードの1文目「{first}」の中心の事実を40〜60字で言い換えた1文にする",
+            index=0, allow=nums)
+        next(x for x in out if x["field"] == "highlights")["check"] = lambda new, _r=record: bool(lead_point_problem({**_r, "highlights": [new, *list(_r.get("highlights") or [])[1:]]}))
     if first and any("〇〇を発表しました" in p for p in problems({"lede": lede})):
         nums = set(re.findall(r"\d+(?:[.,]\d+)*", lede))
         add("lede", first, "リードの1文目が「〇〇を発表しました」で終わっている。リードの中の事実（数字・中身）を使い、何が新しいかを言い切る1文にする",

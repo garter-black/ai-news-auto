@@ -287,6 +287,59 @@ class NoticeTest(unittest.TestCase):
 
 
 
+class RetireOwnerDecisionTest(unittest.TestCase):
+    """2026-11-04 オーナー決定: D3 他人の動画の要約は残さない（台帳 A10）・D5 お知らせ型は SNS／公開から7日で毎週自動で取り下げる（台帳 A26）"""
+
+    TOBACCO = "財務省、製造たばこの小売定価の認可情報を随時公開"
+
+    def setUp(self):
+        import retire_articles  # noqa: PLC0415
+
+        self.r = retire_articles
+        self._posts = retire_articles.sns_posts
+
+    def tearDown(self):
+        self.r.sns_posts = self._posts
+
+    def test_notice_kept_for_seven_days_from_sns_or_publish(self):
+        from datetime import datetime, timedelta, timezone  # noqa: PLC0415
+
+        now = datetime(2026, 11, 20, tzinfo=timezone.utc)
+        iso = lambda days: (now - timedelta(days=days)).isoformat()  # noqa: E731
+        arts = [
+            {"slug": "posted-3d", "title": self.TOBACCO, "publishedAt": iso(30)},
+            {"slug": "posted-8d", "title": self.TOBACCO, "publishedAt": iso(30)},
+            {"slug": "fresh", "title": self.TOBACCO, "publishedAt": iso(2)},
+            {"slug": "old", "title": self.TOBACCO, "publishedAt": iso(10)},
+            {"slug": "news", "title": "Apple、7〜9月期の売上高が12％増", "publishedAt": iso(30)},
+        ]
+        self.r.sns_posts = lambda everywhere=False: {"posted-3d": now - timedelta(days=3), "posted-8d": now - timedelta(days=8)}
+        picked, kept = self.r.plan_notice(arts, now)
+        self.assertEqual(set(picked), {"posted-8d", "old"})
+        self.assertEqual({k["slug"] for k in kept}, {"posted-3d", "fresh"})
+        # 毎日の点検は、週1回の自動の取り下げが動かずに過ぎたもの（7日＋8日）だけを違反にする
+        self.assertEqual([], audit.notice_problems({"slug": "x", "title": self.TOBACCO, "publishedAt": (datetime.now(timezone.utc) - timedelta(days=9)).isoformat()}, {}))
+        self.assertEqual({"A26"}, ids(audit.notice_problems({"slug": "x", "title": self.TOBACCO, "publishedAt": (datetime.now(timezone.utc) - timedelta(days=16)).isoformat()}, {})))
+
+    def test_weekly_workflow_retires_and_deploys(self):
+        wf = (Path(__file__).resolve().parent.parent / ".github" / "workflows" / "notice_retire.yml").read_text("utf-8")
+        self.assertRegex(wf, r'cron: "\d+ \d+ \* \* \d"')
+        self.assertIn("scripts/retire_articles.py --notice --apply", wf)
+        self.assertIn("scripts/git_safe_push.py", wf)
+        self.assertIn("gh workflow run deploy_cloudflare.yml", wf)
+        self.assertNotRegex(wf, r"ANTHROPIC_API_KEY|BUFFER|threads_post|post_now", "LLM も SNS も使わない")
+
+    def test_creator_videos_are_all_retired(self):
+        import indexnow  # noqa: PLC0415
+
+        arts = [{"slug": "a", "channelSlug": "two-minute-papers", "title": "t"}, {"slug": "b", "channelSlug": "openai", "title": "t"}]
+        self.assertEqual(set(self.r.plan_creator(arts)), {"a"})
+        self.assertEqual({"A10"}, ids(audit.creator_video_problems(arts[0])))
+        self.assertEqual([], audit.creator_video_problems(arts[1]))
+        live = [a for a in self.r.load_articles() if a.get("channelSlug") in indexnow.CREATOR_CHANNELS]
+        self.assertEqual([], [a["slug"] for a in live], "他人の動画の要約の記事が残っている（retire_articles.py --creator --apply）")
+
+
 class TitleTagTest(unittest.TestCase):
     """A29: 題名は1つ（<title>・og:title・twitter:title が見出し h1 と同じ）"""
 

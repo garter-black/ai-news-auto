@@ -16,11 +16,28 @@ export const RADAR_OFFICIAL = "radar-official";
 /** 話題のキーワード（複数の報道・公式をまとめた記事） */
 export const TRENDS = "trends";
 
-/** 報道機関の発信元か（radar-<報道機関のホスト>・話題のキーワード） */
+/**
+ * 調査会社・情報会社（東京商工リサーチ・帝国データバンク・ニッセイ基礎研究所など）の発信元（2026-11-04 オーナー決定 D2・台帳 A37）。
+ * 取材・調査の記事で、登場する企業・機関の公式発表ではないので「報道」として扱う（札・出典の欄・発信元ページ・トップの一番上に置かない）。
+ * 正本は lib/research-firms.json（Python の生成・写真・点検も読む）。ずれは tests/test_source_pages_guides.cjs が確かめる。
+ */
+export const RESEARCH_FIRM_CHANNELS: Record<string, string> = {
+  tsr: "東京商工リサーチ",
+  tdb: "帝国データバンク",
+  "nli-research": "ニッセイ基礎研究所",
+};
+
+/** 調査会社・情報会社の発信元か */
+export function isResearchFirmChannel(slug?: string | null): boolean {
+  return Object.prototype.hasOwnProperty.call(RESEARCH_FIRM_CHANNELS, (slug ?? "").trim());
+}
+
+/** 報道機関の発信元か（radar-<報道機関のホスト>・話題のキーワード・調査会社／情報会社） */
 export function isNewsOutletChannel(slug?: string | null): boolean {
   const s = (slug ?? "").trim();
   if (!s) return false;
   if (s === TRENDS) return true;
+  if (isResearchFirmChannel(s)) return true;
   // radar-<ホスト> は報道機関の記事が出典。公式の一次情報まで確かめた記事だけが radar-official
   return s.startsWith("radar-") && s !== RADAR_OFFICIAL;
 }
@@ -39,6 +56,7 @@ export function channelDisplayLabel(slug: string, label: string): string {
 
 /** 発信元ページの題名の後ろ。報道機関は「発表」ではない */
 export function channelTitleTail(channel: string): string {
+  if (isResearchFirmChannel(channel)) return "の調査・報道をもとにした記事";
   return isNewsOutletChannel(channel) ? "の報道をもとにした記事" : "の最新発表まとめ";
 }
 
@@ -52,6 +70,9 @@ export function channelDescription(channel: string, label: string, web: boolean,
   }
   if (channel === TRENDS) {
     return `話題になったキーワードを、複数の報道と公式の資料をもとにまとめた記事 ${count} 本です。出典は記事ごとに示しています。`;
+  }
+  if (isResearchFirmChannel(channel)) {
+    return `${label}の調査・取材記事（報道）をもとにした日本語の記事 ${count} 本です。登場する企業・機関が自ら発表した内容ではありません。出典は記事ごとに示しています。`;
   }
   if (isNewsOutletChannel(channel)) {
     return `${label}の報道をもとに、公式の資料が見つからなかった話題を日本語でまとめた記事 ${count} 本です。報道の内容は記事ごとに出典を示しています。`;

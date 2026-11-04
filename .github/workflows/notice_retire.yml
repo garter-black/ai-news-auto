@@ -1,0 +1,60 @@
+name: Notice Retire (weekly)
+
+# notice_retire.yml — お知らせ型の記事（決算発表日の予告・認可・受章者・議事要旨・啓発月間・統計の転載など）の週1回の自動の取り下げ
+# （2026-11-04 オーナー決定 D5・台帳 A26）。最後に SNS に出してから7日、出していなければ公開から7日を過ぎた記事を
+# scripts/retire_articles.py --notice --apply で取り下げる（content/retired.json に足して 410）。LLM は使わない・SNS には投稿しない。
+# 取り下げたらコミットして、Cloudflare へデプロイする（GITHUB_TOKEN の push では他のワークフローが起動しないため明示的に呼ぶ）。
+on:
+  schedule:
+    - cron: "23 20 * * 0" # 毎週月曜 5:23（日本時間）
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: notice-retire
+  cancel-in-progress: false
+
+jobs:
+  retire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Retire notice articles past 7 days
+        run: python scripts/retire_articles.py --notice --apply
+
+      - name: Commit & push
+        id: commit
+        run: |
+          echo "changed=0" >> "$GITHUB_OUTPUT"
+          if [ -z "$(git status --porcelain content/)" ]; then
+            echo "取り下げる記事なし"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/
+          git commit -m "chore(retire): お知らせ型の記事を取り下げ（SNS・公開から7日）"
+          if python3 scripts/git_safe_push.py; then
+            echo "changed=1" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "::error::push できませんでした"
+          exit 1
+
+      - name: Deploy to Cloudflare
+        if: ${{ steps.commit.outputs.changed == '1' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy_cloudflare.yml --ref main

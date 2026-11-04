@@ -53,6 +53,22 @@ test('[W12] 話題の見張りの radar-<報道機関> と話題のまとめは�
   assert.equal(isThinSourceChannel('openai'), false);
 });
 
+test('[A37] 調査会社・情報会社（東京商工リサーチ・帝国データバンクなど）は「報道」。一覧は lib/research-firms.json と同じ', () => {
+  const m = load('lib/news-outlets.ts');
+  const firms = JSON.parse(read('lib/research-firms.json'));
+  assert.deepEqual(Object.keys(m.RESEARCH_FIRM_CHANNELS).sort(), Object.keys(firms.channels).sort());
+  for (const s of Object.keys(firms.channels)) {
+    assert.equal(m.isResearchFirmChannel(s), true, s);
+    assert.equal(m.isNewsOutletChannel(s), true, `${s} は報道として扱う`);
+    assert.equal(m.isThinSourceChannel(s), true, `${s} の発信元ページは検索に出さない`);
+    assert.doesNotMatch(m.channelDescription(s, firms.channels[s], true, 5), OFFICIAL_WORDS, s);
+    assert.doesNotMatch(m.channelTitleTail(s), /発表/, s);
+  }
+  const { sourceBadge } = load('lib/companies.ts');
+  assert.equal(sourceBadge({ channelSlug: 'tsr' }), '報道');
+  assert.equal(sourceBadge({ channelSlug: 'openai-news' }), '公式発表');
+});
+
 test('[W12] 記事にある radar-<ホスト> は、すべて scripts/fast_lane_rules.json の報道機関の一覧（radar.outlets）にある', () => {
   const outlets = (JSON.parse(read('scripts/fast_lane_rules.json')).radar || {}).outlets || [];
   const hosts = outlets.map((o) => o.host);

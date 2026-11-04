@@ -32,12 +32,16 @@
   python3 scripts/retire_articles.py --noindex --apply         # 取り下げる
   python3 scripts/retire_articles.py --noindex --append out.md # 一覧を Markdown の末尾に足す
 
-お知らせ・統計の転載の取り下げ（2026-11-03 オーナー決定・台帳 A26）: --notice で、発表をそのまま書き写しただけの記事
+お知らせ・統計の転載の取り下げ（2026-11-03 オーナー決定・台帳 A26。2026-11-04 D5 で毎週の自動実行 notice_retire.yml）: --notice で、発表をそのまま書き写しただけの記事
 （認可・受章者の一覧、議事要旨、決算発表日の予告、毎年の啓発・手続きのお知らせ、統計・実績の数字の転載。判定は scripts/notice_gate.py）を取り下げる。
-  直近7日に SNS（Threads・Bluesky・SNS 動画）に出した記事は残し、一覧に別で出す。転送先は無いので 410。
+  最後に SNS（Threads・Bluesky・SNS 動画）に出してから7日、出していなければ公開から7日たつまでは残し、一覧に別で出す。転送先は無いので 410。
   これからは公開前の門（scripts/indexnow.py の publish_block_reason → "notice"）で作らない。
 
   python3 scripts/retire_articles.py --notice                    # 数えるだけ
+
+他人の動画の要約の取り下げ（2026-11-04 オーナー決定 D3・台帳 A10）: --creator で、発信元が個人・他媒体の YouTube（CREATOR_CHANNELS）の
+記事をすべて取り下げる（検索に出していなくても読める状態で残さない。SNS に出した記事も残さない。410）。
+  python3 scripts/retire_articles.py --creator --apply
   python3 scripts/retire_articles.py --notice --apply --append out.md
 """
 
@@ -120,8 +124,16 @@ def _read(path: Path) -> dict:
     return data if isinstance(data, dict) else {}
 
 
-def recent_sns(now: datetime, everywhere: bool = False) -> set[str]:
-    """直近 SNS_KEEP_DAYS 日に SNS へ出した記事。everywhere なら Threads に加えて Bluesky・SNS 動画も見る"""
+def _when(value) -> datetime | None:
+    try:
+        at = datetime.fromisoformat(str(value or "").replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return at if at.tzinfo else at.replace(tzinfo=timezone.utc)
+
+
+def sns_posts(everywhere: bool = False) -> dict[str, datetime]:
+    """記事ごとの最後に SNS へ出した時刻。everywhere なら Threads に加えて Bluesky・SNS 動画も見る"""
     rows = [(slug, item.get("postedAt")) for slug, item in (_read(THREADS).get("posted") or {}).items() if isinstance(item, dict)]
     if everywhere:
         rows += [(slug, item.get("at")) for slug, item in _read(BLUESKY).items() if isinstance(item, dict)]
@@ -130,17 +142,28 @@ def recent_sns(now: datetime, everywhere: bool = False) -> set[str]:
             for slug, item in (_read(SNS_VIDEO).get("videos") or {}).items()
             if isinstance(item, dict) and item.get("status") == "posted"
         ]
-    keep = set()
+    last: dict[str, datetime] = {}
     for slug, value in rows:
-        try:
-            at = datetime.fromisoformat(str(value or "").replace("Z", "+00:00"))
-        except ValueError:
-            continue
-        if at.tzinfo is None:
-            at = at.replace(tzinfo=timezone.utc)
-        if now - at < timedelta(days=SNS_KEEP_DAYS):
-            keep.add(slug)
-    return keep
+        if (at := _when(value)) and (slug not in last or at > last[slug]):
+            last[slug] = at
+    return last
+
+
+def recent_sns(now: datetime, everywhere: bool = False) -> set[str]:
+    """直近 SNS_KEEP_DAYS 日に SNS へ出した記事。everywhere なら Threads に加えて Bluesky・SNS 動画も見る"""
+    return {slug for slug, at in sns_posts(everywhere).items() if now - at < timedelta(days=SNS_KEEP_DAYS)}
+
+
+def notice_anchor(article: dict, posts: dict[str, datetime]) -> datetime | None:
+    """お知らせ型の記事の「7日」を数え始める時刻（2026-11-04 オーナー決定 D5）: 最後に SNS に出した時刻。
+    SNS に出していなければ公開した時刻"""
+    return posts.get(article.get("slug", "")) or _when(article.get("publishedAt") or article.get("generatedAt"))
+
+
+def notice_due(article: dict, posts: dict[str, datetime], now: datetime, days: float = SNS_KEEP_DAYS) -> bool:
+    """お知らせ型の記事が取り下げの時期か（SNS に出してから、出していなければ公開から days 日を過ぎた）"""
+    anchor = notice_anchor(article, posts)
+    return anchor is None or now - anchor >= timedelta(days=days)
 
 
 def is_thin(article: dict) -> bool:
@@ -272,8 +295,10 @@ def plan_noindex(articles: list[dict], now: datetime) -> tuple[dict[str, dict], 
 
 
 def plan_notice(articles: list[dict], now: datetime) -> tuple[dict[str, dict], list[dict]]:
-    """お知らせ・告知・統計の転載の記事を取り下げる計画 {slug: {reason, title}} と、SNS に出したので残す記事"""
-    sns = recent_sns(now, everywhere=True)
+    """お知らせ・告知・統計の転載の記事を取り下げる計画 {slug: {reason, title}} と、まだ残す記事。
+    SNS に出してから7日（出していなければ公開から7日）を過ぎたものだけ取り下げる（2026-11-04 オーナー決定 D5。
+    毎週 .github/workflows/notice_retire.yml が --notice --apply で動かす）"""
+    posts = sns_posts(everywhere=True)
     picked: dict[str, dict] = {}
     kept: list[dict] = []
     for a in articles:
@@ -283,8 +308,11 @@ def plan_notice(articles: list[dict], now: datetime) -> tuple[dict[str, dict], l
         if not kind:
             continue
         reason = f"notice-{kind}"
-        if a["slug"] in sns:
-            kept.append({"slug": a["slug"], "title": a.get("title", ""), "reason": reason, "why": f"直近{SNS_KEEP_DAYS}日に SNS に出した"})
+        if not notice_due(a, posts, now):
+            why = f"SNS に出してから{SNS_KEEP_DAYS}日たっていない" if a["slug"] in posts else f"公開から{SNS_KEEP_DAYS}日たっていない（SNS には未投稿）"
+            anchor = notice_anchor(a, posts)
+            until = (anchor + timedelta(days=SNS_KEEP_DAYS)).astimezone(JST).strftime("%m/%d %H:%M") if anchor else ""
+            kept.append({"slug": a["slug"], "title": a.get("title", ""), "reason": reason, "why": f"{why}。{until} から取り下げの対象"})
             continue
         entry = {"reason": reason, "title": a.get("title", ""), "channel": a.get("channelSlug", "")}
         for key in ("sourceUrl", "videoUrl"):
@@ -292,6 +320,22 @@ def plan_notice(articles: list[dict], now: datetime) -> tuple[dict[str, dict], l
                 entry[key] = a[key]
         picked[a["slug"]] = entry
     return picked, kept
+
+
+def plan_creator(articles: list[dict]) -> dict[str, dict]:
+    """他人の動画の要約の記事をすべて取り下げる計画（2026-11-04 オーナー決定 D3・台帳 A10）。
+    発信元が個人・他媒体の YouTube（indexnow.CREATOR_CHANNELS）の記事。検索に出していなくても読める状態で残さない。
+    オーナーがこの種類の削除を承認したので、直近に SNS に出した記事も残さない（転送先は無いので 410）"""
+    picked: dict[str, dict] = {}
+    for a in articles:
+        if a.get("channelSlug") not in indexnow.CREATOR_CHANNELS:
+            continue
+        entry = {"reason": "creator-video", "title": a.get("title", ""), "channel": a.get("channelSlug", "")}
+        for key in ("sourceUrl", "videoUrl"):
+            if a.get(key):
+                entry[key] = a[key]
+        picked[a["slug"]] = entry
+    return picked
 
 
 def report_notice(retired: dict[str, dict], kept: list[dict], before: int, after: int, path: Path) -> None:
@@ -304,7 +348,7 @@ def report_notice(retired: dict[str, dict], kept: list[dict], before: int, after
         "",
         f"- 発表をそのまま書き写しただけの記事（お知らせ・告知・統計の転載）を **{len(retired)}本** 取り下げました。記事は {before}本 → **{after}本**。",
         "- 取り下げた記事の URL は「この記事は掲載を終了しました」と返します（410 Gone）。一覧・サイトマップ・関連記事からも外れました。",
-        f"- 直近{SNS_KEEP_DAYS}日に SNS に出した記事は、投稿のリンクが生きているので残しました（下の「残した記事」）。",
+        f"- SNS に出してから{SNS_KEEP_DAYS}日（出していなければ公開から{SNS_KEEP_DAYS}日）たっていない記事は、まだ残しています（下の「残した記事」）。毎週の自動の取り下げで外れます。",
         "- これからは、同じ種類の記事は公開前に止めます（`scripts/notice_gate.py` の判定を `scripts/indexnow.py` の公開前の門で使う）。",
         "",
         "### 区分ごとの本数",
@@ -314,10 +358,10 @@ def report_notice(retired: dict[str, dict], kept: list[dict], before: int, after
     ]
     cats = [c for c in NOTICE_LABELS if any(e["reason"] == c for e in retired.values())]
     lines += [f"| {NOTICE_LABELS[c]} | {sum(1 for e in retired.values() if e['reason'] == c)} |" for c in cats]
-    lines += ["", f"### 残した記事（直近{SNS_KEEP_DAYS}日に SNS に出したため）", ""]
+    lines += ["", f"### 残した記事（SNS か公開から{SNS_KEEP_DAYS}日たっていない）", ""]
     if kept:
-        lines += ["| slug | 題名 | 区分 |", "|---|---|---|"]
-        lines += [f"| {k['slug']} | {k['title'].replace('|', '｜')} | {NOTICE_LABELS.get(k['reason'], k['reason'])} |" for k in kept]
+        lines += ["| slug | 題名 | 区分 | 理由 |", "|---|---|---|---|"]
+        lines += [f"| {k['slug']} | {k['title'].replace('|', '｜')} | {NOTICE_LABELS.get(k['reason'], k['reason'])} | {k['why']} |" for k in kept]
     else:
         lines.append("なし")
     lines += ["", "### 取り下げた記事の一覧", "", "| slug | 題名 | 区分 |", "|---|---|---|"]
@@ -587,6 +631,7 @@ def main() -> int:
     parser.add_argument("--refs", action="store_true", help="取り下げ済みの記事への参照だけを付け替える（新しく取り下げない）")
     parser.add_argument("--noindex", action="store_true", help="検索に出していない（noindex の）記事をすべて取り下げる")
     parser.add_argument("--notice", action="store_true", help="お知らせ・告知・統計の転載の記事を取り下げる（scripts/notice_gate.py）")
+    parser.add_argument("--creator", action="store_true", help="他人の動画の要約の記事（CREATOR_CHANNELS）をすべて取り下げる（D3）")
     parser.add_argument("--append", type=Path, help="--noindex / --notice の一覧を Markdown の末尾に足す")
     args = parser.parse_args()
     now = datetime.now(timezone.utc)
@@ -594,6 +639,17 @@ def main() -> int:
         print(f"[retire] 参照の付け替え: {json.dumps(apply({}, now), ensure_ascii=False)}")
         return 0
     articles = load_articles()
+    if args.creator:
+        retired = plan_creator(articles)
+        print(f"[retire] 全 {len(articles)} 本のうち、他人の動画の要約の取り下げ {len(retired)} 本")
+        for slug, e in sorted(retired.items()):
+            print(f"  - {slug}（{e['channel']}）: {e['title']}")
+        if args.apply and retired:
+            stats = apply(retired, now)
+            again = apply({}, now)
+            stats["second_pass"] = again["articles_rewritten"] + again["data_rewritten"]
+            print(f"[retire] 実行: {json.dumps(stats, ensure_ascii=False)}")
+        return 0
     if args.notice:
         retired, kept = plan_notice(articles, now)
         counts = {c: sum(1 for e in retired.values() if e["reason"] == c) for c in NOTICE_LABELS}

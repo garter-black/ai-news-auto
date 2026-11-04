@@ -1,0 +1,17 @@
+{
+  "_doc": "調査会社・情報会社（信用調査・市場調査・シンクタンク）の発信元（2026-11-04 オーナー決定 D2・台帳 A37）。ここの記事は登場する企業・機関の公式発表ではなく「報道」として扱う（札・出典の欄・免責文は「報道」、その会社のサイトの写真を記事の主役の写真として使わない）。サイト（lib/news-outlets.ts）・記事の生成（scripts/web_articles.py）・写真（scripts/images.py）・毎日の点検（scripts/owner_rules_audit.py）が同じこの一覧を読む。",
+  "channels": {
+    "tsr": "東京商工リサーチ",
+    "tdb": "帝国データバンク",
+    "nli-research": "ニッセイ基礎研究所"
+  },
+  "hosts": {
+    "tsr-net.co.jp": "東京商工リサーチ",
+    "tdb.co.jp": "帝国データバンク",
+    "tdb-di.com": "帝国データバンク",
+    "nli-research.co.jp": "ニッセイ基礎研究所",
+    "yano.co.jp": "矢野経済研究所",
+    "fuji-keizai.co.jp": "富士経済",
+    "m2ri.jp": "MM総研"
+  }
+}

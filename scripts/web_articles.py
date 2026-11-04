@@ -71,6 +71,7 @@ import pacing  # noqa: E402  1日の上限の数え方（公開中だけ）と�
 import page_watch  # noqa: E402
 import persona  # noqa: E402
 import quality  # noqa: E402
+import research_firms  # noqa: E402  調査会社・情報会社の記事は「報道」（台帳 A37）
 import rivals  # noqa: E402
 import story  # noqa: E402
 import trends  # noqa: E402
@@ -314,7 +315,7 @@ WEB_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を読�
 - slug_en: URL用の英小文字スラッグ。半角英数とハイフンのみ、3〜6単語、40文字以内。
 - keywords: 検索されうる日本語キーワード 8〜12個。
 - tags: 記事分類用のタグ 3〜6個。
-- highlights: 記事のポイントちょうど3つ。各40〜60文字で、資料にある数値や固有名詞を含める。リードの文をくり返さない（リードに無い事実を入れる）。
+- highlights: 記事のポイントちょうど3つ。各40〜60文字で、資料にある数値や固有名詞を含める。1つ目は、この記事の一番のニュース（題名・リードの1文目と同じ中心の事実）を、リードとは違う言い方で書く（リードの文をそのまま写さない。題名の主な語を入れる）。2つ目と3つ目は、リードに無い事実を入れる。
 - timetable: 文章が元なので **必ず空配列 []** にする。
 - verdict: 読者が「自分は今これを使えるか」を判断するための判定。本文の「料金・提供プラン」「日本から使う方法」と矛盾させない。
   元記事に根拠がない項目は推測せず unknown / 不明 / null にする。
@@ -381,7 +382,7 @@ BROAD_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を�
 - mentioned_tools: 記事中で言及した商品・サービス・企業・制度の正式名称（0〜12個）。本文で触れたものだけ。
 - slug_en: URL用の英小文字スラッグ。半角英数とハイフンのみ、3〜6単語、40文字以内。
 - keywords: 検索されうる日本語キーワード 8〜12個。tags: 3〜6個。
-- highlights: 記事のポイントちょうど3つ。各40〜60文字で、資料にある数値や固有名詞を含める。リードの文をくり返さない（リードに無い事実を入れる）。
+- highlights: 記事のポイントちょうど3つ。各40〜60文字で、資料にある数値や固有名詞を含める。1つ目は、この記事の一番のニュース（題名・リードの1文目と同じ中心の事実）を、リードとは違う言い方で書く（リードの文をそのまま写さない。題名の主な語を入れる）。2つ目と3つ目は、リードに無い事実を入れる。
 - timetable: **必ず空配列 []**。
 - verdict: 読者が使う・買う・申し込む・参加できるものの場合だけ埋める（基準: status available/limited/soon/demo、
   japan ok/partial/no/unknown、price 14字以内、free true/false/null、audience 2〜8字、take 25〜55字）。
@@ -768,7 +769,7 @@ TREND_PROMPT_TEMPLATE = """日本でいま話題になっているキーワー�
 - mentioned_tools: 記事中で言及した製品・サービス・企業・制度の正式名称（0〜12個）。
 - slug_en: 英小文字とハイフン、3〜6単語、40文字以内。
 - keywords: 8〜12個。tags: 3〜6個。
-- highlights: ちょうど3つ、各40〜60文字。報道にある数値や固有名詞を含める。リードの文をくり返さない。
+- highlights: ちょうど3つ、各40〜60文字。報道にある数値や固有名詞を含める。1つ目は、この記事の一番のニュース（題名・リードの1文目と同じ中心の事実）を、リードとは違う言い方で書く（リードの文をそのまま写さない。題名の主な語を入れる）。2つ目と3つ目は、リードに無い事実を入れる。
 - timetable: **必ず空配列 []**。
 - verdict: 話題がサービス・製品・制度など読者が使う/申し込むものの場合だけ埋める（基準: status available/limited/soon/demo、
   japan ok/partial/no/unknown、price 14字以内、free true/false/null、audience 2〜8字、take 25〜55字）。
@@ -925,6 +926,8 @@ def compose_with_facts(item: dict, text: str, lane: str, related: list[dict], vo
     if item.get("late"):
         context += LATE_NOTE.format(date=f"{item['published_at'].astimezone(JST):%Y年%m月%d日}")
     secondary_note = f"\n\n{SECONDARY_SOURCE_NOTE.format(name=item['source_name'])}" if item.get("secondary") else ""
+    if not secondary_note and (firm := research_firm(item)):
+        secondary_note = f"\n\n{RESEARCH_SOURCE_NOTE.format(name=firm)}"
     watch_note = f"\n\n{WATCH_DIFF_NOTE}" if item.get("watch") else ""
     if lane == "ai":
         genre = AI
@@ -966,6 +969,19 @@ SECONDARY_SOURCE_NOTE = """## 今回の元記事は報道です（重要）
   サイソクが自分で試したように読める書き方（「筆者のテスト環境では」「私たちが試した」）はしない。"""
 
 
+# 調査会社・情報会社（東京商工リサーチ・帝国データバンクなど）の記事（2026-11-04 オーナー決定 D2・台帳 A37。scripts/research_firms.py）
+RESEARCH_SOURCE_NOTE = """## 今回の元記事は調査会社・情報会社の記事です（重要）
+今回の元記事は「{name}」の調査・取材の記事で、記事に登場する企業・機関の公式発表ではありません（報道として扱います）。
+- リードと本文の最初の段落で「{name}の調べによると」「{name}によると」のように、出典が{name}であることを必ず書く。
+- 登場する企業の動き（倒産・再編・業績など）を、その企業が自ら発表したように書かない。「公式発表」「公式サイトで発表」と書かない。
+- {name}の推計・見立ては「{name}の推計では」と添え、元記事に無い数字・発言は作らない。"""
+
+
+def research_firm(item: dict) -> str:
+    """元記事が調査会社・情報会社の記事なら会社名（違えば空）"""
+    return research_firms.firm_name(item.get("source_slug", ""), item.get("url", ""))
+
+
 def source_age(item: dict, now: datetime | None = None) -> timedelta | None:
     """元の発表からの経過時間（発表の時刻が分からないときは None）"""
     published = item.get("published_at")
@@ -1003,7 +1019,9 @@ def source_header(item: dict) -> str:
     when = ""
     if published and not item.get("published_guessed"):
         when = f"{published.astimezone(timezone.utc):%Y-%m-%d %H:%M} UTC（日本時間 {published.astimezone(JST):%Y-%m-%d %H:%M}）"
-    kind = f"報道機関（{item['source_name']}）" if item.get("secondary") else "公式の発表"
+    firm = research_firm(item)
+    kind = (f"報道機関（{item['source_name']}）" if item.get("secondary")
+            else f"調査会社・情報会社（{firm}）の調査・取材記事。登場する企業の公式発表ではない" if firm else "公式の発表")
     return (
         f"[元記事の情報] 発信元: {item['source_name']}（{kind}） / 公開日時: {when or '不明（検知した時刻で代用）'} / URL: {item['url']}\n"
         f"タイトル: {item['title']}"
@@ -1058,7 +1076,9 @@ def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_
         "disclaimer": (
             f"本記事は報道（{item['source_name']}）の記事をもとにAIが要約・解説して自動生成したものです。"
             "誤りが含まれる可能性があるため、正確な情報は元の報道と公式発表をご確認ください。"
-            if item.get("secondary") else web_disclaimer(resolved)
+            if item.get("secondary")
+            else research_firms.disclaimer(research_firm(item), web_disclaimer(resolved)) if research_firm(item)
+            else web_disclaimer(resolved)
         ),
         "videoId": "",
         "videoUrl": "",

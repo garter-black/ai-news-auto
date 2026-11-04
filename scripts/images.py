@@ -62,6 +62,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import image_focus  # noqa: E402
+import research_firms  # noqa: E402  調査会社・情報会社の写真は主役の公式写真にしない（台帳 A37）
 import llm  # noqa: E402
 
 try:
@@ -389,6 +390,7 @@ def official_slugs() -> set[str]:
                     MEDIA_HOSTS.add(outlet["host"])
         except Exception:  # noqa: BLE001
             pass
+        MEDIA_HOSTS.update(research_firms.hosts())  # 調査会社・情報会社のサイトも公式ではない（台帳 A37）
         try:
             registry = json.loads((ROOT / "scripts" / "sources_registry.json").read_text("utf-8"))
             for value in registry.values():
@@ -408,6 +410,10 @@ def official_source(article: dict) -> dict | None:
     host = urllib.parse.urlparse(page).netloc.lower()
     slug = article.get("channelSlug") or ""
     if not host or slug == "trends" or (slug.startswith("radar-") and slug != "radar-official"):
+        return None
+    # 調査会社・情報会社（東京商工リサーチ・帝国データバンクなど）の記事は報道。そのサイトの写真を、記事に登場する企業の
+    # 公式写真のように使わない（2026-11-04 オーナー決定 D2・台帳 A37。一覧は lib/research-firms.json）
+    if research_firms.article_firm(article):
         return None
     official_slugs()  # MEDIA_HOSTS に radar.outlets を足す
     if _host_in(host, MEDIA_HOSTS):
@@ -2502,7 +2508,9 @@ def process(path: Path, article: dict, ctx: dict) -> str:
 
     # 選び直し（--slug・--repick-hours など）で、前に付けた公式の写真を AI・素材・写真なしに替えない
     # （その回だけ元記事が開けない・判定が落ちた、で公式の写真を失わない）
-    if previous.get("kind") == "official" and is_ours(previous_thumb := (ctx.get("previous_thumb", {}).get(slug) or thumb)):
+    # ただし調査会社・情報会社のサイトから取った写真は残さない（報道の写真を主役の公式写真として使わない。台帳 A37）
+    if previous.get("kind") == "official" and not research_firms.host_firm(previous.get("sourceUrl") or previous.get("original") or "") \
+            and is_ours(previous_thumb := (ctx.get("previous_thumb", {}).get(slug) or thumb)):
         article["thumbnail"] = previous_thumb
         article["imageCredit"] = previous
         log("   [img] 前の公式の写真をそのまま使う（公式の写真を AI・素材に替えない）")

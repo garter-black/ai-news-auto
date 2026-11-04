@@ -57,7 +57,7 @@ OWNER_NAME_PAGES = ("/about", "/editorial-policy")
 AUDIT_RULES = (
     "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S13", "S14",
     "I2", "I4", "I5",
-    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23", "A24", "A25", "A26", "A28", "A29", "A30", "A32",
+    "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23", "A24", "A25", "A26", "A28", "A29", "A30", "A32", "A37", "A38",
     "W3", "W5", "W6", "W10", "W11", "W12", "W13", "W17", "W18", "W19", "W20", "W21", "W22", "W23",
 )
 
@@ -242,7 +242,7 @@ def type_problems(record: dict) -> list[str]:
     except Exception:  # noqa: BLE001
         return []
     out = [] if record.get("newsType") else ["[A18] ニュースの種類の型で書かれていない（newsType が無い）"]
-    out += [f"[{code}] {msg}" for code, msg in article_style.coded_problems(record) if code in ("A18", "A19")]
+    out += [f"[{code}] {msg}" for code, msg in article_style.coded_problems(record) if code in ("A18", "A19", "A38")]
     return out
 
 
@@ -277,9 +277,15 @@ def low_value_problems(record: dict) -> list[str]:
     return notice_problems(record)
 
 
-def notice_problems(record: dict, sns: set[str] | None = None) -> list[str]:
+# A26・D5: お知らせ型の記事は毎週の自動の取り下げ（.github/workflows/notice_retire.yml）で外す。
+# 取り下げの時期（SNS か公開から7日）を、週1回の間隔＋1日より過ぎても残っていたら、自動の取り下げが動いていない
+NOTICE_GRACE_DAYS = 8
+
+
+def notice_problems(record: dict, sns: set[str] | dict | None = None) -> list[str]:
     """A26: お知らせ・告知・統計の転載の記事（認可・受章者・議事要旨・決算発表日の予告・啓発月間・出荷量など）。
-    直近7日に SNS に出した記事は投稿のリンクのために残している（7日を過ぎたら retire_articles.py --notice で取り下げる）"""
+    最後に SNS に出してから7日（出していなければ公開から7日）は残し、毎週の自動の取り下げ（notice_retire.yml）で外す（2026-11-04 D5）。
+    sns は {slug: 最後に出した時刻}（retire_articles.sns_posts）。slug の集合なら、その記事は直近に出したものとして残す"""
     try:
         import notice_gate  # noqa: PLC0415
         import retire_articles  # noqa: PLC0415
@@ -289,11 +295,47 @@ def notice_problems(record: dict, sns: set[str] | None = None) -> list[str]:
     if not kind:
         return []
     if sns is None:
-        sns = retire_articles.recent_sns(datetime.now(timezone.utc), everywhere=True)
-    if record.get("slug") in sns:
+        sns = retire_articles.sns_posts(everywhere=True)
+    if isinstance(sns, (set, frozenset)):
+        if record.get("slug") in sns:
+            return []
+        sns = {}
+    now = datetime.now(timezone.utc)
+    if not retire_articles.notice_due(record, sns, now, days=retire_articles.SNS_KEEP_DAYS + NOTICE_GRACE_DAYS):
         return []
-    return [f"[A26] お知らせ・統計の転載の記事（{notice_gate.LABELS[kind]}）が公開されている。"
-            "python3 scripts/retire_articles.py --notice --apply で取り下げる"]
+    return [f"[A26] お知らせ・統計の転載の記事（{notice_gate.LABELS[kind]}）が、SNS か公開から{retire_articles.SNS_KEEP_DAYS}日を過ぎても残っている。"
+            "毎週の自動の取り下げ（notice_retire.yml）を確かめる。手で外すなら python3 scripts/retire_articles.py --notice --apply"]
+
+
+def creator_video_problems(record: dict) -> list[str]:
+    """A10（2026-11-04 D3）: 他人の動画の要約の記事が残っていないか（新しい記事だけでなく全部の記事）。
+    まとめ記事も、表紙・元の動画が他人のチャンネルの動画なら同じ（発信元が CREATOR_CHANNELS）"""
+    try:
+        import indexnow  # noqa: PLC0415
+    except Exception:  # noqa: BLE001
+        return []
+    if record.get("channelSlug") in indexnow.CREATOR_CHANNELS:
+        return ["[A10] 他人の動画の要約の記事が残っている（python3 scripts/retire_articles.py --creator --apply で取り下げる）"]
+    return []
+
+
+def research_firm_problems(record: dict) -> list[str]:
+    """A37: 調査会社・情報会社（東京商工リサーチ・帝国データバンクなど）の記事を「公式発表」として出していないか
+    （免責文が「公式発表の文章をもとに」・その会社のサイトの写真を公式写真として使っている）。2026-11-04 オーナー決定 D2"""
+    try:
+        import research_firms  # noqa: PLC0415
+    except Exception:  # noqa: BLE001
+        return []
+    firm = research_firms.article_firm(record)
+    if not firm:
+        return []
+    out = []
+    if research_firms.OFFICIAL_CLAIM.search(str(record.get("disclaimer") or "")):
+        out.append(f"[A37] {firm}の調査・取材記事なのに、免責文が「公式発表の文章をもとに」になっている（「報道」として扱う）")
+    credit = record.get("imageCredit") or {}
+    if isinstance(credit, dict) and credit.get("kind") == "official" and research_firms.host_firm(credit.get("sourceUrl") or credit.get("original") or ""):
+        out.append(f"[A37] {firm}のサイトの写真を「公式発表より」の写真として使っている（報道の写真を主役の公式写真にしない）")
+    return out
 
 
 # ---- 本番のページ ---------------------------------------------------------------
@@ -524,7 +566,14 @@ CALL_OUT = re.compile(r"ましょう[。！]")
 
 
 def outlet_channel(slug: str) -> bool:
-    """報道機関の発信元か（lib/news-outlets.ts の isNewsOutletChannel と同じ）"""
+    """報道機関の発信元か（lib/news-outlets.ts の isNewsOutletChannel と同じ。調査会社・情報会社も含む＝台帳 A37）"""
+    try:
+        import research_firms  # noqa: PLC0415
+
+        if slug in research_firms.channels():
+            return True
+    except Exception:  # noqa: BLE001
+        pass
     return slug == "trends" or (slug.startswith("radar-") and slug != "radar-official")
 
 
@@ -839,11 +888,13 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
     try:
         import retire_articles  # noqa: PLC0415
 
-        sns = retire_articles.recent_sns(datetime.now(timezone.utc), everywhere=True)
+        sns = retire_articles.sns_posts(everywhere=True)
     except Exception:  # noqa: BLE001
-        sns = set()
+        sns = {}
     for a in load_articles():
-        if v := notice_problems(a, sns):
+        # A37: 調査会社・情報会社の記事の「公式発表」の表示。A10: 他人の動画の要約（前から残っているものも。全部の記事）
+        v = research_firm_problems(a) + creator_video_problems(a) + notice_problems(a, sns)
+        if v:
             found.setdefault(f"/articles/{a['slug']}", []).extend(x for x in v if x not in found.get(f"/articles/{a['slug']}", []))
     if not network:
         return found

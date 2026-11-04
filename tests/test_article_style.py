@@ -236,6 +236,59 @@ class RepairTest(unittest.TestCase):
         self.assertFalse(any("〇〇を発表しました" in p for p in st.problems(rec)))
 
 
+class LeadPointTest(unittest.TestCase):
+    """「この記事のポイント」の1つ目は一番のニュースの言い換え（2026-11-04 オーナー決定 D4・台帳 A38）。
+    Kimi K3 の記事で、1つ目が脇の話（費用80%削減）、一番のニュース（インド国内で処理）はリードにしか無かった"""
+
+    KIMI = {
+        "title": "AWS、Bedrockの「Kimi K3」でインド国内推論に対応　処理をムンバイとハイデラバードに限定",
+        "lede": "Amazon BedrockのAIモデル「Kimi K3」で、推論処理をインド国内に限って実行できるプロファイルが加わりました。処理先はムンバイとハイデラバードの2リージョンです。",
+        "highlights": [
+            "Ultrahumanはプロンプトキャッシュで言語モデルの費用を80%削減し、複数回の会話を85%速くしたと説明",
+            "Chat Completions・Responsesなど4つのAPIに対応し、既存のopenaiライブラリから呼び出せる",
+            "急ぎでない処理はflex層で標準料金から50%割引",
+        ],
+    }
+
+    def test_side_fact_first_is_rejected(self):
+        self.assertIn("A38", {code for code, _ in st.coded_problems(self.KIMI)})
+
+    def test_main_news_reworded_first_passes(self):
+        rec = {**self.KIMI, "highlights": ["Bedrockの「Kimi K3」で、推論をインド国内のムンバイとハイデラバードだけで処理する設定を選べます",
+                                           *self.KIMI["highlights"][1:]]}
+        self.assertEqual(st.lead_point_problem(rec), "")
+        self.assertNotIn("A38", {code for code, _ in st.coded_problems(rec)})
+
+    def test_verbatim_copy_of_lede_is_rejected_but_not_dropped(self):
+        rec = {**self.KIMI, "highlights": ["Amazon BedrockのAIモデル「Kimi K3」で、推論処理をインド国内に限って実行できるプロファイルが加わりました。",
+                                           *self.KIMI["highlights"][1:]]}
+        self.assertIn("写し", st.lead_point_problem(rec))
+        st.autofix(rec)
+        self.assertEqual(len(rec["highlights"]), 3, "1つ目（一番のニュース）は自動で外さない")
+
+    def test_repair_item_rewrites_first_point_with_lede_context(self):
+        items = [x for x in st.repair_items(self.KIMI) if x["field"] == "highlights"]
+        self.assertEqual(len(items), 1)
+        self.assertEqual(items[0]["index"], 0)
+        self.assertIn("インド国内", " ".join(items[0]["issues"]))
+        self.assertTrue(items[0]["check"]("Ultrahumanは費用を80%削減した"), "直しても脇の話のままなら使わない")
+        self.assertFalse(items[0]["check"]("Bedrockの「Kimi K3」で、推論をインド国内だけで処理する設定を選べます"))
+
+    def test_rule_is_in_every_generation_prompt(self):
+        import followup  # noqa: PLC0415
+        import main as m  # noqa: PLC0415
+        import roundup  # noqa: PLC0415
+        import web_articles as w  # noqa: PLC0415
+
+        for name, text in {"video": m.PROMPT_TEMPLATE, "web": w.WEB_PROMPT_TEMPLATE, "broad": w.BROAD_PROMPT_TEMPLATE,
+                           "trend": w.TREND_PROMPT_TEMPLATE, "roundup": roundup.PROMPT}.items():
+            with self.subTest(name=name):
+                self.assertIn(st.LEAD_POINT_RULE, text)
+                self.assertNotIn("リードの文をくり返さない", text)
+        self.assertIn(st.LEAD_POINT_RULE, (ROOT / "scripts" / "followup.py").read_text("utf-8"))
+        self.assertIn("要点）の1つ目は、一番のニュース", st.STYLE_PROMPT)
+
+
 class EveryPathTest(unittest.TestCase):
     """文体の決まりは1か所（article_style.STYLE_PROMPT）にあり、すべての生成の段が使い、門で守らせる（台帳 A21）"""
 
