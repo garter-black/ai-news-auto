@@ -3503,7 +3503,8 @@
       "via": "buffer",
       "channels": {
         "twitter": "6aea3af452391758e2e63135",
-        "facebook": "6aea3af45fa3d509fa3d103d"
+        "facebook": "6aea3af45fa3d509fa3d103d",
+        "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzhfc4mb722k"
       },
       "hook": "breaking",
       "score": 6,
@@ -3541,7 +3542,8 @@
       },
       "status": "scheduled",
       "convertedAt": "2026-11-03T19:19:23+00:00",
-      "videoVariant": "short"
+      "videoVariant": "short",
+      "blueskyAt": "2026-11-04T03:17:05+00:00"
     },
     "chatgpt-pro-monthly-api-credits": {
       "id": "6ae9e0a01e1aeba3c6bb1c77",
