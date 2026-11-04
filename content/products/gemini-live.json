@@ -6,97 +6,57 @@
   "companyName": "Google",
   "category": "アプリ・サービス",
   "overview": {
-    "text": "Gemini Liveは、Googleが提供するリアルタイムな音声対話が可能なAIモデルおよび機能です。低遅延で人間のように自然な対話を実現し、様々なアプリケーションやロボットに組み込まれて活用されています。",
+    "text": "Gemini Liveは、Googleが提供する低遅延で自然な音声対話を実現するAIモデルおよび機能です。2026年8月頃から開発者向けの音声AIエージェント構築などで活用されています。",
     "sources": [
-      "google-gemini-live-sprout-plant-robot",
-      "google-gemini-college-student-features",
       "voice-agent-observability-langsmith-gemini-live"
     ]
   },
   "facts": [
     {
-      "label": "料金",
-      "value": "無料枠あり / 従量課金",
+      "label": "使える場所",
+      "value": "Google AI Studioなど",
       "sources": [
         "google-gemini-live-sprout-plant-robot"
       ]
     },
     {
-      "label": "提供開始",
-      "value": "開発者向けに一般提供",
-      "sources": [
-        "voice-agent-observability-langsmith-gemini-live"
-      ]
-    },
-    {
-      "label": "日本での提供",
-      "value": "日本からも利用可能",
-      "sources": [
-        "google-gemini-live-sprout-plant-robot",
-        "google-gemini-college-student-features"
-      ]
-    },
-    {
-      "label": "使える場所",
-      "value": "Google AI Studioなど",
-      "sources": [
-        "google-gemini-live-sprout-plant-robot",
-        "voice-agent-observability-langsmith-gemini-live"
-      ]
-    },
-    {
       "label": "向いている人",
-      "value": "開発者や学生など",
+      "value": "音声AIエージェントの開発者",
       "sources": [
-        "google-gemini-live-sprout-plant-robot",
-        "google-gemini-college-student-features",
         "voice-agent-observability-langsmith-gemini-live"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "音声入力をそのまま音声で処理するSpeech-to-Speechによる低遅延な対話ができます。",
+      "text": "音声入力をそのまま処理し音声出力するSpeech-to-Speechによる応答ができます。",
       "sources": [
         "voice-agent-observability-langsmith-gemini-live"
       ]
     },
     {
-      "text": "カメラを起動して画面を見せながらデザインの使い方などを学ぶことができます。",
-      "sources": [
-        "google-gemini-college-student-features"
-      ]
-    },
-    {
-      "text": "面接やプレゼンの練習で自分のアイデアの聞こえ方を確認できます。",
-      "sources": [
-        "google-gemini-college-student-features"
-      ]
-    }
-  ],
-  "pricing": [
-    {
-      "text": "Google AI Studioを通じて一定の無料利用枠が用意されています。",
+      "text": "人間の相づちに合わせて滑らかに話し、冗談を言うこともできます。",
       "sources": [
         "google-gemini-live-sprout-plant-robot"
       ]
     },
     {
-      "text": "無料枠を超えた分は、トークン数に応じた従量課金となります。",
+      "text": "面接や発表の練習、新しいソフトの操作を教わる用途に使えます。",
       "sources": [
-        "google-gemini-live-sprout-plant-robot"
+        "google-gemini-college-student-features"
+      ]
+    },
+    {
+      "text": "スマートフォンなどの対応端末で話しかけて呼び出せます。",
+      "sources": [
+        "samsung-galaxy-buds-on-cuff-earbuds"
       ]
     }
   ],
+  "pricing": [],
   "japan": [
     {
-      "text": "日本の開発者もAPIを利用して試すことができます。",
-      "sources": [
-        "google-gemini-live-sprout-plant-robot"
-      ]
-    },
-    {
-      "text": "日本語でのテキスト入力や音声対話にも標準で対応しています。",
+      "text": "Google AI Studioを通じて日本からも利用可能です。",
       "sources": [
         "google-gemini-live-sprout-plant-robot"
       ]
@@ -106,60 +66,37 @@
     {
       "text": "Google AI Studioにアクセスし、GoogleアカウントでログインしてAPIキーを発行します。",
       "sources": [
-        "google-gemini-live-sprout-plant-robot",
-        "voice-agent-observability-langsmith-gemini-live"
+        "google-gemini-live-sprout-plant-robot"
       ]
     },
     {
-      "text": "開発用環境からAPIを呼び出して機能を有効化します。",
+      "text": "開発用環境からAPIを呼び出して利用できます。",
       "sources": [
         "google-gemini-live-sprout-plant-robot"
       ]
     }
   ],
-  "differences": [
-    {
-      "text": "従来のテキスト翻刻プロセスを挟まないため、レイテンシーが極めて低くなっています。",
-      "sources": [
-        "voice-agent-observability-langsmith-gemini-live"
-      ]
-    },
-    {
-      "text": "音声アシスタントのようなぎこちなさがなく、人間の相づちに合わせて滑らかに話すことができます。",
-      "sources": [
-        "google-gemini-live-sprout-plant-robot"
-      ]
-    }
-  ],
+  "differences": [],
   "faq": [
     {
-      "q": "無料で使える？",
-      "a": "Google AI Studioを通じて一定の無料利用枠が用意されています。",
+      "q": "誰に向いている？",
+      "a": "低遅延な音声AIエージェントを構築したい開発者に向いています。",
+      "sources": [
+        "voice-agent-observability-langsmith-gemini-live"
+      ]
+    },
+    {
+      "q": "どこで試せる？",
+      "a": "Google AI Studioなどから利用できます。",
       "sources": [
         "google-gemini-live-sprout-plant-robot"
       ]
     },
     {
-      "q": "音声の処理方法は従来と何が違う？",
-      "a": "テキスト翻刻プロセスを挟まないため、レイテンシーが極めて低くなっています。",
+      "q": "対応する端末は？",
+      "a": "スマートフォンなどの対応端末で利用できます。",
       "sources": [
-        "voice-agent-observability-langsmith-gemini-live"
-      ]
-    },
-    {
-      "q": "どのような用途に向いていますか？",
-      "a": "面接の練習やデザインの学習、音声AIエージェントの開発などに向いています。",
-      "sources": [
-        "google-gemini-college-student-features",
-        "voice-agent-observability-langsmith-gemini-live"
-      ]
-    },
-    {
-      "q": "どのように始められますか？",
-      "a": "Google AI StudioでAPIキーを発行し、開発環境から呼び出すことで使い始めることができます。",
-      "sources": [
-        "google-gemini-live-sprout-plant-robot",
-        "voice-agent-observability-langsmith-gemini-live"
+        "samsung-galaxy-buds-on-cuff-earbuds"
       ]
     }
   ],
@@ -167,12 +104,12 @@
     {
       "date": "2026-08-01",
       "slug": "voice-agent-observability-langsmith-gemini-live",
-      "event": "LangSmithとの可観測性実装を解説"
+      "event": "LangChainがGemini Liveエージェントのトレーシング手法を解説"
     },
     {
       "date": "2026-10-29",
       "slug": "google-gemini-live-sprout-plant-robot",
-      "event": "Sproutロボットの技術デモを公開"
+      "event": "GoogleがGemini搭載の植物ロボットSproutを公開"
     }
   ],
   "related": [
@@ -183,15 +120,17 @@
   ],
   "articles": [
     "google-gemini-live-sprout-plant-robot",
+    "samsung-galaxy-buds-on-cuff-earbuds",
     "google-gemini-college-student-features",
     "voice-agent-observability-langsmith-gemini-live"
   ],
   "linkFrom": [
+    "samsung-galaxy-buds-on-cuff-earbuds",
     "voice-agent-observability-langsmith-gemini-live"
   ],
-  "signature": "c1ff0e7b6744bf0e",
-  "primarySignature": "7f120af5999675ac",
+  "signature": "d0699b5d1a88705a",
+  "primarySignature": "0f9ff7937a74e8b1",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:59:22+00:00",
-  "updatedAt": "2026-11-03T10:42:09+00:00"
+  "updatedAt": "2026-11-04T17:12:05+00:00"
 }

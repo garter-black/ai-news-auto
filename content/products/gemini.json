@@ -14,7 +14,7 @@
     "antigravity",
     "google-ai-studio",
     "gemini-4-argon",
-    "gemini-4"
+    "gemini-notebook"
   ],
   "linkFrom": [
     "gemini-robotics-er-2-google-cloud",
@@ -108,6 +108,7 @@
     "google-distributed-cloud-ai-innovations-2026",
     "google-antigravity-autonomous-software-development",
     "gemini-edit-files-directly",
+    "kddi-iret-ai-use-cases-113",
     "google-gemini-live-sprout-plant-robot",
     "xreal-aura-android-xr-glasses",
     "gemini-4-carbon-cybersecurity-model",

@@ -108,12 +108,13 @@
   "related": [
     "chatgpt",
     "gpt-6-astra",
-    "github-copilot",
-    "gpt-6"
+    "gemini",
+    "github-copilot"
   ],
   "articles": [
     "figma-weave-creative-workflow",
     "figma-config-india-insights-ai",
+    "kddi-iret-ai-use-cases-113",
     "github-copilot-app-projects-computer-use",
     "openai-gpt6-astra-figma-integration",
     "openai-gpt-6-astra-first-impressions-n-dqdvmwoas"
