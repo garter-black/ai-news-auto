@@ -6,9 +6,10 @@
   "companyName": "OpenAI",
   "category": "開発ツール",
   "overview": {
-    "text": "Codexは、プログラムの作成や修正をAIに任せるOpenAIのサービスです。PlusやProなどの対象プランでは、12月からChatGPTと利用枠が共通化されます。",
+    "text": "Codexは、プログラムの作成や修正をAIに任せるOpenAIのサービスです。OpenAIによって提供され、コード生成や開発支援に活用されています。",
     "sources": [
-      "chatgpt-codex-shared-usage-limits"
+      "chatgpt-codex-shared-usage-limits",
+      "openai-codex-astra-merge-ceo-interview"
     ]
   },
   "facts": [
@@ -21,48 +22,57 @@
     },
     {
       "label": "日本での提供",
-      "value": "日本からも利用可能",
+      "value": "日本からも利用できる",
       "sources": [
         "openai-codex-astra-merge-ceo-interview"
       ]
     },
     {
       "label": "使える場所",
-      "value": "ChatGPT、開発者用プラットフォーム",
+      "value": "ChatGPTや開発者用プラットフォーム",
       "sources": [
         "openai-codex-astra-merge-ceo-interview"
+      ]
+    },
+    {
+      "label": "向いている人",
+      "value": "開発者やビジネス職、法務担当者",
+      "sources": [
+        "openai-codex-astra-merge-ceo-interview",
+        "sullivan-cromwell-openai-codex-legal-tool"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "プログラムの作成や修正をAIに任せることができます。",
+      "text": "プログラムのコード生成や修正をAIに任せることができます。",
       "sources": [
         "chatgpt-codex-shared-usage-limits"
       ]
     },
     {
-      "text": "指示の足りない部分をAIが常識に基づいて自動で補完します。",
+      "text": "自然言語の指示をもとに、業務ツールやデータ可視化サイトを自分で作成できます。",
       "sources": [
-        "openai-codex-astra-merge-ceo-interview"
+        "openai-codex-astra-merge-ceo-interview",
+        "openai-codex-benefit-street-partners-financial-tool"
       ]
     },
     {
-      "text": "Sites機能で、定時自動更新や閲覧者別の表示最適ができます。",
-      "sources": [
-        "openai-codex-sites-update-scheduled-tasks-personalization"
-      ]
-    },
-    {
-      "text": "本番環境の障害原因の特定から修正までを自動で行うことができます。",
+      "text": "本番環境の障害原因を特定し、数分で自動修正パッチを生成できます。",
       "sources": [
         "openai-codex-production-monitoring-demo"
+      ]
+    },
+    {
+      "text": "Sites機能を使って、スケジュールタスクによる自動更新や閲覧者別の表示最適化ができます。",
+      "sources": [
+        "openai-codex-sites-update-scheduled-tasks-personalization"
       ]
     }
   ],
   "pricing": [
     {
-      "text": "12月からはPlus、Pro、Businessの各プランでChatGPTと利用枠が共通化されます。",
+      "text": "12月からPlus、Pro、Businessの各プランでChatGPTと利用枠が共通化されます。",
       "sources": [
         "chatgpt-codex-shared-usage-limits"
       ]
@@ -74,11 +84,17 @@
       "sources": [
         "openai-codex-astra-merge-ceo-interview"
       ]
+    },
+    {
+      "text": "OpenAIのアカウントを作成し、ChatGPTや開発者用プラットフォームにアクセスすることで試せます。",
+      "sources": [
+        "openai-codex-astra-merge-ceo-interview"
+      ]
     }
   ],
   "howto": [
     {
-      "text": "OpenAIの公式サイトでアカウントを作成またはログインして利用します。",
+      "text": "OpenAIの公式サイトでアカウントを作成またはログインします。",
       "sources": [
         "openai-codex-astra-merge-ceo-interview"
       ]
@@ -93,23 +109,29 @@
   "differences": [],
   "faq": [
     {
-      "q": "利用枠はどう変わる？",
-      "a": "12月からPlusやProなどのプランで、ChatGPTと利用枠が共通化されます。",
+      "q": "どのようなプランが対象ですか？",
+      "a": "Plus、Pro、Businessなどのプランが対象となります。",
       "sources": [
         "chatgpt-codex-shared-usage-limits"
       ]
     },
     {
-      "q": "誰に向いている？",
-      "a": "エンジニアだけでなく、プログラミング専門外の非技術部門のメンバーやビジネス職に向いています。",
+      "q": "利用枠はどう変わりますか？",
+      "a": "12月からChatGPTとCodexが1つの利用枠を分け合う形になります。",
       "sources": [
-        "openai-codex-astra-merge-ceo-interview",
-        "openai-codex-benefit-street-partners-financial-tool"
+        "chatgpt-codex-shared-usage-limits"
       ]
     },
     {
-      "q": "上限に達したときはどうする？",
-      "a": "回復を待つ、上位のプランに変える、クレジットを買うの3つの選択肢があります。",
+      "q": "非エンジニアでも使えますか？",
+      "a": "専門知識がない人でも、自分で業務ツールを作れるようになります。",
+      "sources": [
+        "openai-codex-astra-merge-ceo-interview"
+      ]
+    },
+    {
+      "q": "いつから利用枠が共通化されますか？",
+      "a": "12月から対象プランでChatGPTと利用枠が共通化されます。",
       "sources": [
         "chatgpt-codex-shared-usage-limits"
       ]
@@ -119,22 +141,42 @@
     {
       "date": "2026-07-24",
       "slug": "gamma-ceo-openai-innovation-velocity",
-      "event": "Gammaが開発にCodexを導入"
+      "event": "Gamma社が開発にCodexを導入"
+    },
+    {
+      "date": "2026-10-08",
+      "slug": "stack-overflow-devday-2026-codex",
+      "event": "Stack OverflowがCodex活用製品を発表"
+    },
+    {
+      "date": "2026-10-09",
+      "slug": "openai-codex-production-monitoring-demo",
+      "event": "障害自動復旧のデモを公開"
+    },
+    {
+      "date": "2026-10-16",
+      "slug": "openai-codex-sites-update-scheduled-tasks-personalization",
+      "event": "Sitesに定時自動更新などを追加"
+    },
+    {
+      "date": "2026-10-24",
+      "slug": "openai-codex-benefit-street-partners-financial-tool",
+      "event": "金融分析ツールの開発事例を公開"
     },
     {
       "date": "2026-10-27",
       "slug": "sullivan-cromwell-openai-codex-legal-tool",
-      "event": "米法律事務所がCodexを活用"
+      "event": "法律事務所の契約書分析ツール事例を公開"
     },
     {
       "date": "2026-10-28",
       "slug": "openai-codex-astra-merge-ceo-interview",
-      "event": "MergeのCEOがCodexの活用法を語る"
+      "event": "Merge社の活用事例を公開"
     },
     {
       "date": "2026-11-02",
       "slug": "chatgpt-codex-shared-usage-limits",
-      "event": "利用枠の共通化を発表"
+      "event": "利用枠をChatGPTと共通化すると発表"
     }
   ],
   "related": [
@@ -144,6 +186,7 @@
     "gpt-6"
   ],
   "articles": [
+    "openai-acquire-pierre-computer-codex",
     "heimstaden-openai-real-estate-ai",
     "openai-bigger-bug-bounties",
     "openai-security-sprint-bug-bounty",
@@ -175,6 +218,7 @@
     "openai-chatgpt-voice-desktop-gpt-live"
   ],
   "linkFrom": [
+    "openai-acquire-pierre-computer-codex",
     "qodo-codex-plugin-code-review",
     "openai-codex-astra-merge-ceo-interview",
     "shopify-cto-codex-ai-prototyping",
@@ -186,9 +230,9 @@
     "openai-meet-new-codex-cli-terminal-update",
     "gamma-ceo-openai-innovation-velocity"
   ],
-  "signature": "3665d2d81f790d64",
-  "primarySignature": "1560cdacf719395f",
+  "signature": "9779cb14b4c93659",
+  "primarySignature": "1e673ba1c03c3273",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:42:14+00:00",
-  "updatedAt": "2026-11-04T02:39:23+00:00"
+  "updatedAt": "2026-11-04T15:11:23+00:00"
 }

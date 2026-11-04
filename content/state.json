@@ -142,6 +142,14 @@
       "tries": 1,
       "url": "https://www.softbank.jp/sbnews/entry/20261104_01"
     },
+    "e92adb95112b5264": {
+      "first": "2026-11-04T15:10:10.114870+00:00",
+      "next": "2026-11-04T18:10:10.114870+00:00",
+      "reason": "訳されていない英文が残っている（「makes it simple for merchants to have th…」）",
+      "title": "Amazon’s new Shop Direct Merchant Workspace makes it even easier for stores across the web to have their products discov",
+      "tries": 1,
+      "url": "https://www.aboutamazon.com/news/retail/amazon-shop-direct-merchant-workspace?utm_source=rss"
+    },
     "f1da59955392e79e": {
       "first": "2026-11-04T00:48:40.342630+00:00",
       "next": "2026-11-04T03:48:40.342630+00:00",
@@ -151,7 +159,9 @@
       "url": "https://developers.cyberagent.co.jp/blog/archives/67267/"
     }
   },
-  "major_tries": {},
+  "major_tries": {
+    "2c8a2ca0b2585148": 1
+  },
   "pi_reopened": {
     "015d389a8563486d": "2026-11-04T13:10:52.830493+00:00",
     "02812387c422b17e": "2026-11-04T13:10:52.830493+00:00",
@@ -14416,105 +14426,6 @@
   "quality_log": [
     {
       "accepted": true,
-      "at": "2026-11-02T19:52:48.817883+00:00",
-      "attempt": 1,
-      "id": "195c284d0de53e7f",
-      "kind": "update",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "score": 100,
-      "source": "aws-ml-blog",
-      "title": "Prepare web content for Amazon Bedrock Knowledge Bases with Crawl4AI"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T19:54:10.269977+00:00",
-      "attempt": 1,
-      "id": "0ef693dc699abbb7",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 67.4,
-        "avg_sentence": 33.7,
-        "long_share": 0.0,
-        "max_paragraph": 112,
-        "paragraphs": 11,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "mext",
-      "title": "令和8年度 文化功労者及び文化勲章受章者について"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T20:11:47.354770+00:00",
-      "attempt": 1,
-      "id": "66a947a7e4a10f75",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 86.1,
-        "avg_sentence": 56.2,
-        "long_share": 0.391,
-        "max_paragraph": 197,
-        "paragraphs": 15,
-        "sentences": 23
-      },
-      "score": null,
-      "source": "elevenlabs-blog",
-      "title": "Angle Health’s ElevenAgents pilot handles 90% of provider calls without a transf"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T20:11:57.067467+00:00",
-      "attempt": 2,
-      "id": "66a947a7e4a10f75",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "題名で料金・価格を約束しているのに、本文に金額（円・ドル・無料など）が無い。元記事の金額を書くか、題名から料金の話を外す"
-      ],
-      "readability": {
-        "avg_paragraph": 66.1,
-        "avg_sentence": 43.4,
-        "long_share": 0.219,
-        "max_paragraph": 182,
-        "paragraphs": 21,
-        "sentences": 32
-      },
-      "score": null,
-      "source": "elevenlabs-blog",
-      "title": "Angle Health’s ElevenAgents pilot handles 90% of provider calls without a transf"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T20:12:07.649095+00:00",
-      "attempt": 1,
-      "id": "de8ee9d6403bde44",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 56.0字・60字超の文が 35% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 128.9字・最長 270字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 128.9,
-        "avg_sentence": 56.0,
-        "long_share": 0.348,
-        "max_paragraph": 270,
-        "paragraphs": 10,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "mlit-press",
-      "title": "令和８年秋の叙勲について"
-    },
-    {
-      "accepted": true,
       "at": "2026-11-02T20:12:13.259583+00:00",
       "attempt": 0,
       "id": "de8ee9d6403bde44",
@@ -20839,6 +20750,122 @@
       "title": "OpenAI to acquire Pierre Computer Company, Inc.",
       "warnings": [
         "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T15:03:22.502711+00:00",
+      "attempt": 1,
+      "id": "2c8a2ca0b2585148",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "元記事・確認済みの資料に無い画面の手順・メニュー名・ボタン名がある（「ホームページの検索画面」）。資料にある道順だけを書くか、「公式ヘルプの手順を確認してください」と書く"
+      ],
+      "readability": {
+        "avg_paragraph": 66.1,
+        "avg_sentence": 34.1,
+        "long_share": 0.065,
+        "max_paragraph": 159,
+        "paragraphs": 16,
+        "sentences": 31
+      },
+      "score": null,
+      "source": "mlit-press",
+      "title": "リコールの届出について（ロータス エリーゼ SPORT/SPRINT 220 他）",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（SPORT・SPRINT・EHC）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T15:05:42.452970+00:00",
+      "attempt": 2,
+      "id": "2c8a2ca0b2585148",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "mlit-press",
+      "title": "リコールの届出について（ロータス エリーゼ SPORT/SPRINT 220 他）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T15:07:20.437452+00:00",
+      "attempt": 3,
+      "id": "2c8a2ca0b2585148",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "元記事・確認済みの資料に無い画面の手順・メニュー名・ボタン名がある（「ホームページの検索画面」）。資料にある道順だけを書くか、「公式ヘルプの手順を確認してください」と書く"
+      ],
+      "readability": {
+        "avg_paragraph": 69.2,
+        "avg_sentence": 32.7,
+        "long_share": 0.056,
+        "max_paragraph": 134,
+        "paragraphs": 17,
+        "sentences": 36
+      },
+      "score": null,
+      "source": "mlit-press",
+      "title": "リコールの届出について（ロータス エリーゼ SPORT/SPRINT 220 他）",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（SPORT・SPRINT・EHC）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T15:09:05.628624+00:00",
+      "attempt": 1,
+      "id": "e92adb95112b5264",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "題名で料金・価格を約束しているのに、本文に金額（円・ドル・無料など）が無い。元記事の金額を書くか、題名から料金の話を外す"
+      ],
+      "readability": {
+        "avg_paragraph": 92.3,
+        "avg_sentence": 44.6,
+        "long_share": 0.103,
+        "max_paragraph": 136,
+        "paragraphs": 14,
+        "sentences": 29
+      },
+      "score": null,
+      "source": "about-amazon",
+      "title": "Amazon’s new Shop Direct Merchant Workspace makes it even easier for stores acro",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（SP）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T15:10:10.114361+00:00",
+      "attempt": 2,
+      "id": "e92adb95112b5264",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "訳されていない英文が残っている（「makes it simple for merchants to have th…」）"
+      ],
+      "readability": {
+        "avg_paragraph": 134.7,
+        "avg_sentence": 49.4,
+        "long_share": 0.167,
+        "max_paragraph": 194,
+        "paragraphs": 11,
+        "sentences": 30
+      },
+      "score": null,
+      "source": "about-amazon",
+      "title": "Amazon’s new Shop Direct Merchant Workspace makes it even easier for stores acro",
+      "warnings": [
+        "見出しの書き方: 記号: かっこの直後に「、」",
+        "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（SP）"
       ]
     }
   ],
