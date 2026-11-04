@@ -83,6 +83,14 @@
       "tries": 2,
       "url": "https://huggingface.co/blog/cwe-bench"
     },
+    "3c6177ead4c30c9c": {
+      "first": "2026-11-04T00:40:44.797611+00:00",
+      "next": "2026-11-04T03:40:44.797611+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "Measuring and orchestrating AI across the full engineering lifecycle",
+      "tries": 1,
+      "url": "https://www.atlassian.com/blog/ai-at-work/measuring-and-orchestrating-ai-across-the-full-engineering-lifecycle"
+    },
     "3d509e27bae229a3": {
       "first": "2026-11-03T23:40:53.183061+00:00",
       "next": "2026-11-04T02:40:53.183061+00:00",
@@ -146,6 +154,14 @@
       "title": "Cost per task: Using cheap classifiers to route across Gemini models and thinking levels",
       "tries": 2,
       "url": "https://developers.googleblog.com/cost-per-task-using-cheap-classifiers-to-route-across-gemini-models-and-thinking-levels/"
+    },
+    "f1da59955392e79e": {
+      "first": "2026-11-04T00:48:40.342630+00:00",
+      "next": "2026-11-04T03:48:40.342630+00:00",
+      "reason": "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルのまま」「日本の売上は1%減」）",
+      "title": "【イベントレポート】PdMオフレコ会議「キャリアの壁編 〜次のステージに進む人は何を手放したのか〜」に参加してきました【DMM/CA/グッドパッチ合同】",
+      "tries": 1,
+      "url": "https://developers.cyberagent.co.jp/blog/archives/67267/"
     },
     "f5a0d7153ecc99c8": {
       "first": "2026-11-03T18:52:56.353169+00:00",
@@ -5594,6 +5610,12 @@
       "reason": "short text 356",
       "skipped": true,
       "url": "https://www.softbank.jp/sbnews/entry/2026/10/27/130000"
+    },
+    "387c6dfef6097cba": {
+      "at": "2026-11-04T00:40:45.175232+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（採用）",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/menu_syokai/saiyou/117566.html"
     },
     "38ad10ff8a82e2cd": {
       "at": "2026-10-29T18:13:41.962809+00:00",
@@ -11218,6 +11240,12 @@
       "skipped": true,
       "url": "https://www.jfa.jp/news/00036964/"
     },
+    "c664ceeed1b18caf": {
+      "at": "2026-11-04T00:40:45.175194+00:00",
+      "reason": "prefilter: 価値の薄いお知らせ（審議会）",
+      "skipped": true,
+      "url": "https://www.soumu.go.jp/main_sosiki/joho_tsusin/policyreports/joho_tsusin/denpa_yukoriyo/musenjujisha/02kiban09_04000746.html"
+    },
     "c666e3ca610efc76": {
       "at": "2026-10-26T12:34:07.628140+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -13546,92 +13574,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-02T07:11:50.053760+00:00",
-      "attempt": 0,
-      "id": "d898b87514cc41e2",
-      "kind": "broad",
-      "model": "",
-      "problems": [
-        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（60.0→60.0字）"
-      ],
-      "readability": {
-        "avg_paragraph": 165.0,
-        "avg_sentence": 60.0,
-        "long_share": 0.409,
-        "max_paragraph": 205,
-        "paragraphs": 8,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "rakuten",
-      "title": "国内（証券単体）最多！楽天証券、証券総合口座数1,500万口座突破のお知らせ"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T07:21:44.996274+00:00",
-      "attempt": 1,
-      "id": "30737b7a64596bc9",
-      "kind": "broad",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 49.5,
-        "avg_sentence": 29.4,
-        "long_share": 0.0,
-        "max_paragraph": 79,
-        "paragraphs": 19,
-        "sentences": 32
-      },
-      "score": 96,
-      "source": "cyberagent-news",
-      "title": "2026年9月期 通期決算発表のお知らせ"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T07:41:21.293853+00:00",
-      "attempt": 1,
-      "id": "8cc0591d0066c2aa",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 66.1字・60字超の文が 62% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 119.8,
-        "avg_sentence": 66.1,
-        "long_share": 0.621,
-        "max_paragraph": 202,
-        "paragraphs": 16,
-        "sentences": 29
-      },
-      "score": 100,
-      "source": "google-cloud-blog-ja",
-      "title": "Agent Compute Engine と拡張されたエージェント ガバナンスのご紹介"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T07:41:26.015512+00:00",
-      "attempt": 0,
-      "id": "8cc0591d0066c2aa",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "段落が長い（平均 144.3字・最長 265字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 144.3,
-        "avg_sentence": 33.5,
-        "long_share": 0.014,
-        "max_paragraph": 265,
-        "paragraphs": 16,
-        "sentences": 69
-      },
-      "score": 100,
-      "source": "google-cloud-blog-ja",
-      "title": "Agent Compute Engine と拡張されたエージェント ガバナンスのご紹介"
-    },
     {
       "accepted": false,
       "at": "2026-11-02T07:41:34.693637+00:00",
@@ -20103,6 +20045,62 @@
       "score": null,
       "source": "hugging-face-blog",
       "title": "CWE-bench v2: More coverage, quality, and transparency"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T00:35:52.208556+00:00",
+      "attempt": 1,
+      "id": "3c6177ead4c30c9c",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "atlassian-blog",
+      "title": "Measuring and orchestrating AI across the full engineering lifecycle"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T00:40:44.797562+00:00",
+      "attempt": 2,
+      "id": "3c6177ead4c30c9c",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "atlassian-blog",
+      "title": "Measuring and orchestrating AI across the full engineering lifecycle"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T00:44:46.720964+00:00",
+      "attempt": 1,
+      "id": "f1da59955392e79e",
+      "kind": "ai",
+      "model": "gemini-3.1-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "cyberagent-developers",
+      "title": "【イベントレポート】PdMオフレコ会議「キャリアの壁編 〜次のステージに進む人は何を手放したのか〜」に参加してきました【DMM/CA/グッドパッチ合同】"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T00:48:40.342592+00:00",
+      "attempt": 2,
+      "id": "f1da59955392e79e",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "cyberagent-developers",
+      "title": "【イベントレポート】PdMオフレコ会議「キャリアの壁編 〜次のステージに進む人は何を手放したのか〜」に参加してきました【DMM/CA/グッドパッチ合同】"
     }
   ],
   "short_text_retry": {
