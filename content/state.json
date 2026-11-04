@@ -5427,6 +5427,14 @@
       "skipped": true,
       "url": "https://www.mhlw.go.jp/kouseiroudoushou/shikaku_shiken/kanrieiyoushi/about.html"
     },
+    "3230a95dc5ad0047": {
+      "at": "2026-11-04T07:02:43.045925+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "score": 93,
+      "section": "business",
+      "slug": "wage-cut-rules-after-profit-drop",
+      "url": "https://j-net21.smrj.go.jp/solution/qa/vision/Q1548.html"
+    },
     "32379469880e6096": {
       "at": "2026-11-04T03:01:26.970536+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（セミナー）",
@@ -13324,6 +13332,13 @@
       "skipped": true,
       "url": "https://www.nintendo.com/jp/topics/article/83238995-2a42-4cfb-8bc2-446730ee5d18"
     },
+    "f1da59955392e79e": {
+      "at": "2026-11-04T07:01:31.497659+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "reason": "PdM（プロダクトマネージャー）のキャリアの悩みを話し合うイベントの参加レポートで、AI・ソフトウェア・ハードウェア・開発ツールなどの技術発表や技術解説を扱っていないため対象外です。",
+      "skipped": true,
+      "url": "https://developers.cyberagent.co.jp/blog/archives/67267/"
+    },
     "f1e1f11f31431f46": {
       "at": "2026-10-27T22:02:28.865271+00:00",
       "reason": "short text 379",
@@ -13950,28 +13965,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": false,
-      "at": "2026-11-02T16:11:40.681168+00:00",
-      "attempt": 1,
-      "id": "695b25dcb4295c45",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "easy_markdown が「## ひとことで言うと」から始まっていない"
-      ],
-      "readability": {
-        "avg_paragraph": 113.5,
-        "avg_sentence": 50.4,
-        "long_share": 0.222,
-        "max_paragraph": 155,
-        "paragraphs": 12,
-        "sentences": 27
-      },
-      "score": null,
-      "source": "nli-research",
-      "title": "ユーロ圏失業率（2026年9月）－失業率は横ばい、若年失業率は上昇"
-    },
     {
       "accepted": false,
       "at": "2026-11-02T16:11:58.664599+00:00",
@@ -20334,6 +20327,26 @@
       "warnings": [
         "見出しが58字（目安40字以内）。一覧・カードでは前半だけを出す"
       ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T07:02:43.039875+00:00",
+      "attempt": 1,
+      "id": "3230a95dc5ad0047",
+      "kind": "broad",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 95.2,
+        "avg_sentence": 41.2,
+        "long_share": 0.081,
+        "max_paragraph": 153,
+        "paragraphs": 16,
+        "sentences": 37
+      },
+      "score": 93,
+      "source": "jnet21",
+      "title": "賃上げ後に業績が悪化した場合、賃金を元の水準に戻せますか。賃下げの注意点と進め方を教えてください。"
     }
   ],
   "short_text_retry": {
