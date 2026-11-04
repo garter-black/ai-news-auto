@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "cwe-bench-v2-security-benchmark",
+   "at": "2026-11-04T04:24:38.646696+00:00",
+   "title": "Collinear AI、脆弱性修正のテスト「CWE-bench v2」を公開　100タスクを誰でも実行可能に",
+   "head": "Collinear AI、脆弱性修正のテスト「CWE-bench v2」を公開　100タスクを誰でも実行可能に | CWE-bench v2: More coverage, quality, and transparency",
+   "text": "Collinear AI、脆弱性修正のテスト「CWE-bench v2」を公開　100タスクを誰でも実行可能に | CWE-bench v2: More coverage, quality, and transparency | CWE-bench v2 / 脆弱性 修正 ベンチマーク / AI セキュリティ 評価 / Collinear AI / Hugging Face / Gemini 4 Argon / Claude Opus 5.5 / DeepSeek V4.1 Flash / pass@1 / Harbor 使い方 / 生成AI / セキュリティ / ベンチマーク / Hugging Face / オープンソース",
+   "urls": [
+    "https://huggingface.co/blog/cwe-bench"
+   ]
+  },
+  {
    "slug": "chrome-157-release-notes",
    "at": "2026-11-04T03:56:34.861148+00:00",
    "title": "Chrome 157、Android版に言語判定API　Background FetchにはCORSを適用",

@@ -8,7 +8,7 @@
   "companyName": "Meta",
   "category": "AIモデル",
   "overview": {
-    "text": "Meta Museは、Metaが提供する個人向けの自律型AIアシスタントです。メールの整理や買い物の下調べなどをAIが手伝ってくれます。2026年10月4日に発表されました。",
+    "text": "Meta Museは、調べものや作業を代わりに進める個人向けのAIエージェントです。Metaが提供しており、日本では2026年10月23日に提供が開始されました。",
     "sources": [
       "nvidia-meta-muse-partnership-expansion",
       "meta-muse-singapore-launch"
@@ -17,7 +17,14 @@
   "facts": [
     {
       "label": "料金",
-      "value": "基本的な機能は無料",
+      "value": "多くの基本機能は無料、有料プランあり",
+      "sources": [
+        "meta-muse-singapore-launch"
+      ]
+    },
+    {
+      "label": "提供開始",
+      "value": "2026年10月23日（日本）",
       "sources": [
         "nvidia-meta-muse-partnership-expansion",
         "meta-muse-singapore-launch"
@@ -25,7 +32,7 @@
     },
     {
       "label": "日本での提供",
-      "value": "10月23日に発表",
+      "value": "提供中",
       "sources": [
         "nvidia-meta-muse-partnership-expansion",
         "meta-muse-singapore-launch"
@@ -33,28 +40,27 @@
     },
     {
       "label": "使える場所",
-      "value": "iOS、Android、Web",
+      "value": "iOS、Android、Webサイト",
       "sources": [
-        "nvidia-meta-muse-partnership-expansion",
         "meta-muse-singapore-launch"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "メールの管理や予定の調整を代行します。",
+      "text": "GmailやGoogle Calendar、Instagramとつなぎ、メールや予定の管理を支援します。",
       "sources": [
         "meta-muse-singapore-launch"
       ]
     },
     {
-      "text": "買い物や旅行の計画を調べることができます。",
+      "text": "シンガポールではShopeeやGrabなど8社と連携し、買い物や旅行の手配を支援します。",
       "sources": [
         "meta-muse-singapore-launch"
       ]
     },
     {
-      "text": "AIがペットに返事と落書きを返す機能もあります。",
+      "text": "かわいいアバターを作り、性格を決められるようにしています。",
       "sources": [
         "meta-waddle-world-ai-pet"
       ]
@@ -62,14 +68,13 @@
   ],
   "pricing": [
     {
-      "text": "基本的な機能は無料で利用できます。",
+      "text": "多くの基本機能は無料で利用できます。",
       "sources": [
-        "nvidia-meta-muse-partnership-expansion",
         "meta-muse-singapore-launch"
       ]
     },
     {
-      "text": "もっと使いたい人向けに、有料のサブスクリプションプランがあります。",
+      "text": "もっと多く使いたい人向けの有料プランがありますが、金額や利用枠はアプリの購入画面で確認してください。",
       "sources": [
         "meta-muse-singapore-launch"
       ]
@@ -77,23 +82,22 @@
   ],
   "japan": [
     {
-      "text": "Metaは10月23日にMuseの日本提供を発表しました。",
+      "text": "Metaが2026年10月23日に日本での提供開始を発表しています。",
       "sources": [
         "nvidia-meta-muse-partnership-expansion",
         "meta-muse-singapore-launch"
       ]
     },
     {
-      "text": "iOS・Android・Webで利用できます。",
+      "text": "iOS、Android、Webサイトのmuse.aiで使えます。",
       "sources": [
-        "nvidia-meta-muse-partnership-expansion",
         "meta-muse-singapore-launch"
       ]
     }
   ],
   "howto": [
     {
-      "text": "iOSやAndroidのアプリ、またはウェブサイトのmuse.aiから利用できます。",
+      "text": "iOSアプリ、Androidアプリ、Webサイトのmuse.aiから利用できます。",
       "sources": [
         "meta-muse-singapore-launch"
       ]
@@ -103,22 +107,21 @@
   "faq": [
     {
       "q": "無料で使える？",
-      "a": "基本的な機能は無料で使えます。より多く使いたい人向けの有料プランもあります。",
-      "sources": [
-        "nvidia-meta-muse-partnership-expansion",
-        "meta-muse-singapore-launch"
-      ]
-    },
-    {
-      "q": "どんな端末で使える？",
-      "a": "iOS端末、Android端末、ウェブサイトで利用できます。AI搭載メガネへの対応も予定されています。",
+      "a": "多くの基本機能は無料で使えます。より多く使いたい人向けの有料プランもあります。",
       "sources": [
         "meta-muse-singapore-launch"
       ]
     },
     {
-      "q": "安全面はどうなっている？",
-      "a": "専用の仮想環境で動き、パスワードや支払い情報はAIから見えないように保護されています。",
+      "q": "対応している端末やブラウザは？",
+      "a": "iOS、Android、Webサイトのmuse.aiで使えます。AIグラスでの提供も近日対応とされています。",
+      "sources": [
+        "meta-muse-singapore-launch"
+      ]
+    },
+    {
+      "q": "セキュリティの仕組みは？",
+      "a": "専用のコンピューターでデータを保管し、パスワードや支払い情報はエージェントから見えない仕組みになっています。",
       "sources": [
         "meta-muse-singapore-launch"
       ]
@@ -128,7 +131,12 @@
     {
       "date": "2026-10-28",
       "slug": "nvidia-meta-muse-partnership-expansion",
-      "event": "Metaが自律型AIエージェントアプリ「Muse」を発表"
+      "event": "NVIDIAがMetaとMuseで協業拡大を発表"
+    },
+    {
+      "date": "2026-10-28",
+      "slug": "meta-muse-singapore-launch",
+      "event": "Metaが個人向けAIエージェント「Muse」をシンガポールで提供"
     }
   ],
   "related": [
@@ -143,9 +151,9 @@
     "nvidia-meta-muse-partnership-expansion",
     "meta-muse-singapore-launch"
   ],
-  "signature": "359855876093ec48",
-  "primarySignature": "079906dbb7bc650f",
+  "signature": "36c4923e7af206a1",
+  "primarySignature": "46c92c6b3daec47f",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-28T03:14:57+00:00",
-  "updatedAt": "2026-11-03T11:01:18+00:00"
+  "updatedAt": "2026-11-04T04:25:07+00:00"
 }

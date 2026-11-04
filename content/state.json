@@ -83,14 +83,6 @@
       "tries": 1,
       "url": "https://toyotagazooracing.com/jp/pressrelease/2026/1103-01/"
     },
-    "20954e3ac0ff87f7": {
-      "first": "2026-11-03T18:26:13.990511+00:00",
-      "next": "2026-11-04T03:24:14.913779+00:00",
-      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
-      "title": "CWE-bench v2: More coverage, quality, and transparency",
-      "tries": 2,
-      "url": "https://huggingface.co/blog/cwe-bench"
-    },
     "3c6177ead4c30c9c": {
       "first": "2026-11-04T00:40:44.797611+00:00",
       "next": "2026-11-04T03:40:44.797611+00:00",
@@ -4696,6 +4688,14 @@
       "reason": "prefilter: 価値の薄いお知らせ（CAGR）",
       "skipped": true,
       "url": "https://www.dreamnews.jp/press/0000366549"
+    },
+    "20954e3ac0ff87f7": {
+      "at": "2026-11-04T04:24:46.782856+00:00",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "score": 92,
+      "section": "ai",
+      "slug": "cwe-bench-v2-security-benchmark",
+      "url": "https://huggingface.co/blog/cwe-bench"
     },
     "20cc7c9e1bb19e7a": {
       "at": "2026-10-28T15:44:12.732582+00:00",
@@ -13890,50 +13890,6 @@
   "quality_log": [
     {
       "accepted": false,
-      "at": "2026-11-02T14:31:43.185703+00:00",
-      "attempt": 1,
-      "id": "8b79606d9c8c64ee",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 61.8字・60字超の文が 56% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 103.0,
-        "avg_sentence": 61.8,
-        "long_share": 0.56,
-        "max_paragraph": 212,
-        "paragraphs": 15,
-        "sentences": 25
-      },
-      "score": 100,
-      "source": "apple-ml",
-      "title": "Online Dense Reinforcement Learning with Planning-Grounding Agent for UI Navigat"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T14:31:47.316314+00:00",
-      "attempt": 0,
-      "id": "8b79606d9c8c64ee",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 42.2字・60字超の文が 25% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 101.4,
-        "avg_sentence": 42.2,
-        "long_share": 0.25,
-        "max_paragraph": 187,
-        "paragraphs": 15,
-        "sentences": 36
-      },
-      "score": 100,
-      "source": "apple-ml",
-      "title": "Online Dense Reinforcement Learning with Planning-Grounding Agent for UI Navigat"
-    },
-    {
-      "accepted": false,
       "at": "2026-11-02T14:52:09.226999+00:00",
       "attempt": 1,
       "id": "113b61fb4ffd8543",
@@ -20242,6 +20198,56 @@
       "warnings": [
         "見出しが53字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（CORS・CSS・CSSWG）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T04:23:01.418411+00:00",
+      "attempt": 1,
+      "id": "20954e3ac0ff87f7",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [
+        "元記事の文をそのまま書き写している（2文。例「harbor run --repo \"https://huggingface.co/datasets」）。自分の言葉で要約する"
+      ],
+      "readability": {
+        "avg_paragraph": 111.7,
+        "avg_sentence": 39.0,
+        "long_share": 0.093,
+        "max_paragraph": 181,
+        "paragraphs": 15,
+        "sentences": 43
+      },
+      "score": null,
+      "source": "hugging-face-blog",
+      "title": "CWE-bench v2: More coverage, quality, and transparency",
+      "warnings": [
+        "見出しが45字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（CWE・LLM・GLM）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T04:24:46.775802+00:00",
+      "attempt": 2,
+      "id": "20954e3ac0ff87f7",
+      "kind": "ai",
+      "model": "anthropic-api:claude-haiku-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 115.1,
+        "avg_sentence": 42.1,
+        "long_share": 0.146,
+        "max_paragraph": 204,
+        "paragraphs": 15,
+        "sentences": 41
+      },
+      "score": 92,
+      "source": "hugging-face-blog",
+      "title": "CWE-bench v2: More coverage, quality, and transparency",
+      "warnings": [
+        "見出しが55字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（CWE）"
       ]
     }
   ],

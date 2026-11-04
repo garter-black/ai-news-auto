@@ -6,168 +6,119 @@
   "companyName": "Google",
   "category": "AIモデル",
   "overview": {
-    "text": "Gemini 4 Argonは、複雑な仕事やコーディング、財務分析向けにGoogleが提供する最先端のAIモデルです。2026年10月に発表され、すでに世界で提供が始まっています。",
+    "text": "Gemini 4 Argonは、複雑な仕事や長い作業に対応するGoogleの最先端AIモデルです。2026年10月に発表され、世界での提供が始まっています。",
     "sources": [
       "google-ai-news-october-2026",
       "google-cloud-ai-october-2026-recap",
-      "google-gemini-4-argon-surf-clock-hardware",
       "google-gemini-agent-startups"
     ]
   },
   "facts": [
     {
-      "label": "料金",
-      "value": "個人向けGoogle AI Proで月2,900円",
+      "label": "日本での提供",
+      "value": "Google AI Proなどで利用可能",
       "sources": [
         "google-cloud-ai-october-2026-recap"
       ]
     },
     {
-      "label": "提供開始",
-      "value": "2026年10月下旬",
-      "sources": [
-        "google-cloud-ai-october-2026-recap",
-        "google-gemini-4-argon-surf-clock-hardware"
-      ]
-    },
-    {
       "label": "使える場所",
-      "value": "Google AI StudioやGemini APIなど",
+      "value": "GeminiアプリやGoogle Cloudなど",
       "sources": [
-        "google-ai-news-october-2026"
+        "google-ai-news-october-2026",
+        "google-cloud-ai-october-2026-recap"
       ]
     },
     {
       "label": "向いている人",
-      "value": "開発者や会社員、企業のAI担当",
+      "value": "開発者や財務分析をする人",
       "sources": [
-        "google-ai-news-october-2026",
-        "google-cloud-ai-october-2026-recap",
-        "google-gemini-agent-startups"
+        "cwe-bench-v2-security-benchmark",
+        "google-ai-news-october-2026"
       ]
     }
   ],
   "capabilities": [
     {
-      "text": "複雑なソフトウェア開発やコード作成をこなします。",
+      "text": "複雑なソフトウェア開発や金融・法務の業務をこなせます。",
       "sources": [
         "google-ai-news-october-2026",
         "google-cloud-ai-october-2026-recap"
       ]
     },
     {
-      "text": "財務や法務の細かい作業で文脈を保ちながら処理します。",
+      "text": "AIの脆弱性修正テストで67.8%の正解率を記録しました。",
       "sources": [
-        "google-cloud-ai-october-2026-recap"
+        "cwe-bench-v2-security-benchmark"
       ]
     },
     {
-      "text": "3Dプリンタ向けの立体データを作るPythonコードを自動生成できます。",
+      "text": "3Dプリンタ用の立体データや組み立てガイドを自動生成できます。",
       "sources": [
         "google-gemini-4-argon-surf-clock-hardware"
       ]
     },
     {
-      "text": "海洋データを処理し、リアルタイムの波の状態を計算するプログラムを書けます。",
+      "text": "海底地形まで考慮した海洋データの解析プログラムを書くことができます。",
       "sources": [
         "google-gemini-4-argon-surf-clock-hardware"
       ]
-    },
-    {
-      "text": "長時間のマルチステップタスクで文脈を維持します。",
-      "sources": [
-        "google-gemini-agent-startups"
-      ]
     }
   ],
-  "pricing": [
-    {
-      "text": "個人向けのGoogle AI Pro（月2,900円）で使えます。",
-      "sources": [
-        "google-cloud-ai-october-2026-recap"
-      ]
-    },
-    {
-      "text": "開発者向けには、100万出力トークンあたり10ドルの導入価格で提供が始まっています。",
-      "sources": [
-        "google-cloud-ai-october-2026-recap"
-      ]
-    }
-  ],
+  "pricing": [],
   "japan": [
     {
-      "text": "日本からの利用可否について、公式ブログ内での明確な地域制限の明記はありません。",
+      "text": "日本の個人向けでは、Google AI Proのプラン（月2,900円）で使えます。",
       "sources": [
-        "google-gemini-agent-startups"
+        "google-cloud-ai-october-2026-recap"
       ]
     }
   ],
   "howto": [
     {
-      "text": "Google AI StudioやGemini API、Google Cloud、Geminiアプリから利用できます。",
+      "text": "Google AI Studio、Gemini API、Google Cloud、検索、Geminiアプリで使えます。",
       "sources": [
-        "google-ai-news-october-2026",
-        "google-cloud-ai-october-2026-recap"
+        "google-ai-news-october-2026"
       ]
     },
     {
-      "text": "Google for Startups プログラムやセールスチームを通じて順次展開される見込みです。",
+      "text": "Google AI Proのプランに申し込むことで利用できます。",
       "sources": [
-        "google-gemini-agent-startups"
+        "google-cloud-ai-october-2026-recap"
       ]
     }
   ],
   "differences": [
     {
-      "text": "最先端の考える力を持つフロンティア推論モデルとして、長い複数手順の作業でも文脈を保てるようになりました。",
+      "text": "従来のモデルと比べて、長時間のマルチステップタスクで文脈を保つ力が強くなっています。",
       "sources": [
-        "google-ai-news-october-2026",
-        "google-cloud-ai-october-2026-recap"
-      ]
-    },
-    {
-      "text": "画面上の対話だけでなく、ハードウェア開発や3Dデータの生成といった現実世界の物理的な作業を支援できるようになりました。",
-      "sources": [
-        "google-gemini-4-argon-surf-clock-hardware"
+        "google-cloud-ai-october-2026-recap",
+        "google-gemini-agent-startups"
       ]
     }
   ],
   "faq": [
     {
       "q": "いつから使える？",
-      "a": "2026年10月下旬から開発者向けやGoogle Cloudなどで提供が始まっています。",
+      "a": "2026年10月に発表され、すでに提供が始まっています。",
       "sources": [
-        "google-cloud-ai-october-2026-recap",
-        "google-gemini-4-argon-surf-clock-hardware"
+        "google-ai-news-october-2026",
+        "google-gemini-agent-startups"
       ]
     },
     {
-      "q": "個人でも利用できる？",
-      "a": "個人向けのGoogle AI Proなどで利用することができます。",
-      "sources": [
-        "google-cloud-ai-october-2026-recap"
-      ]
-    },
-    {
-      "q": "ハードウェア開発にも使える？",
-      "a": "3Dプリンタ用の立体データや電子工作の配線ガイドの自動生成などに活用できます。",
-      "sources": [
-        "google-gemini-4-argon-surf-clock-hardware"
-      ]
-    },
-    {
-      "q": "企業のクラウドでも動く？",
-      "a": "Google Cloudで提供されており、複数手順の業務で文脈を保った処理を行えます。",
-      "sources": [
-        "google-cloud-ai-october-2026-recap"
-      ]
-    },
-    {
-      "q": "どんな準備が必要？",
-      "a": "Googleアカウントのほか、利用環境に応じて開発者向けのツールやGoogle Cloudの契約が必要です。",
+      "q": "どのような業務に向いている？",
+      "a": "複雑なプログラミングや財務分析、法務の作業に向いています。",
       "sources": [
         "google-ai-news-october-2026",
         "google-cloud-ai-october-2026-recap"
+      ]
+    },
+    {
+      "q": "利用できる場所は？",
+      "a": "GeminiアプリやGoogle Cloud、Google AI Studioなどで使えます。",
+      "sources": [
+        "google-ai-news-october-2026"
       ]
     }
   ],
@@ -175,12 +126,12 @@
     {
       "date": "2026-10-29",
       "slug": "google-gemini-4-argon-surf-clock-hardware",
-      "event": "電子工作を自動化するデモを公開"
+      "event": "スマート時計を自作するデモを公開"
     },
     {
       "date": "2026-11-03",
-      "slug": "google-cloud-ai-october-2026-recap",
-      "event": "Google Cloudが10月のAI発表を総まとめ"
+      "slug": "google-ai-news-october-2026",
+      "event": "Google公式ブログが10月の発表を総括"
     }
   ],
   "related": [
@@ -190,6 +141,7 @@
     "genie-4"
   ],
   "articles": [
+    "cwe-bench-v2-security-benchmark",
     "google-ai-news-october-2026",
     "google-cloud-ai-october-2026-recap",
     "google-gemini-4-argon-surf-clock-hardware",
@@ -200,9 +152,9 @@
     "google-cloud-ai-october-2026-recap",
     "google-gemini-4-argon-surf-clock-hardware"
   ],
-  "signature": "29f34b934c73f373",
-  "primarySignature": "9242484f3e095430",
+  "signature": "62c7370360bc52fa",
+  "primarySignature": "32fa5ce4e6b0a716",
   "model": "gemini-3.5-flash-lite",
   "createdAt": "2026-10-27T10:44:57+00:00",
-  "updatedAt": "2026-11-03T10:21:40+00:00"
+  "updatedAt": "2026-11-04T04:24:55+00:00"
 }
