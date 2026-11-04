@@ -528,3 +528,13 @@ class OwnerApprovedRepostTest(unittest.TestCase):
                               issue=lambda s, w: None, eligible=lambda s: True,
                               remote=lambda s: {"status": "created", "channels": {"threads": "OLD-T", "twitter": "OLD-X", "facebook": "OLD-F"}})
         self.assertEqual(sent, [("threads", ["OLD-T"]), ("twitter", ["OLD-X"]), ("facebook", ["OLD-F"])])
+
+
+class OneQualityBarTest(unittest.TestCase):
+    def test_l3_l4_and_unreviewed_videos_are_never_posted(self):
+        good = {"geometry": True, "vision": True}
+        self.assertTrue(fu.qa_ok({"level": "L1", "qa": good}, env={}))
+        self.assertTrue(fu.qa_ok({"level": "L2", "qa": good}, env={}))
+        self.assertFalse(fu.qa_ok({"level": "L3", "qa": good}, env={}))
+        self.assertFalse(fu.qa_ok({"level": "L4", "qa": good}, env={}))
+        self.assertFalse(fu.qa_ok({"level": "L1", "qa": {**good, "vision_how": "deterministic-L4"}}, env={}))

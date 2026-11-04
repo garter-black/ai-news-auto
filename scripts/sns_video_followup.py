@@ -187,7 +187,11 @@ def qa_ok(version: dict | None, env: dict | None = None) -> bool:
     if env.get("SNS_VIDEO_REQUIRE_QA", "on") == "off":
         return True
     qa = (version or {}).get("qa") or {}
-    return bool(qa.get("geometry")) and bool(qa.get("vision"))
+    # 2026-11-04 オーナー承認: すべての段で同じ合格の基準。承認済みの形（左の見出し＋右の公式ページの画面）ではない L3/L4 の動画、
+    # 画像のレビューができなかった（決まりだけで通した）動画は出さない。「確かめられない」は不合格
+    if (version or {}).get("level") in ("L3", "L4") or str(qa.get("vision_how") or qa.get("how") or "").startswith("deterministic"):
+        return False
+    return bool(qa.get("geometry")) and bool(qa.get("vision")) is True
 
 
 def awaiting(rec: dict) -> bool:
