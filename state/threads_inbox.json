@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T03:20:56+00:00",
+  "generatedAt": "2026-11-04T01:57:35+00:00",
   "method": "buffer-metrics",
   "manual": [
     "Chrome で各 url（@saisoku637 の投稿）を開き、ログイン済みのアカウントで返信欄を読む",
@@ -8,6 +8,19 @@
   ],
   "items": [
     {
+      "id": "6ae8adba2810e4a79d3552c2",
+      "slug": "honda-rn0-emtb-eicma-2026",
+      "post": "【速報】マウンテンバイク好きの人、これは要チェックです。",
+      "url": "https://www.threads.com/@saisoku637/post/DfPpEoHlBhz",
+      "sentAt": "2026-11-02T15:35:40.731Z",
+      "comments": 7,
+      "newComments": 7,
+      "views": 2041,
+      "commenter": null,
+      "text": null,
+      "metricsUpdatedAt": "2026-11-03T10:08:12.784Z"
+    },
+    {
       "id": "6ae63210cf3a3112f3b8e317",
       "slug": "intelligent-terminal-local-120b-llm",
       "post": "コードを書く開発者の皆さん、朗報です。",
@@ -15,12 +28,12 @@
       "sentAt": "2026-11-01T00:45:30.001Z",
       "comments": 1,
       "newComments": 0,
-      "views": 594,
+      "views": 597,
       "commenter": null,
       "text": null,
-      "metricsUpdatedAt": "2026-11-02T11:07:09.964Z"
+      "metricsUpdatedAt": "2026-11-03T10:08:12.785Z"
     }
   ],
-  "checkedPosts": 74,
+  "checkedPosts": 77,
   "note": "コメント数は Buffer の集計（数時間おくれることがある）。本文と相手は url を Chrome で開いて確認する"
 }
