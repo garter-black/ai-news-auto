@@ -2150,6 +2150,25 @@
           "helper": 1
         },
         "usd": 0.013635
+      },
+      "gh-41868708904-1": {
+        "by": {
+          "breaking|2": {
+            "n": 3,
+            "usd": 0.26344
+          }
+        },
+        "cache_read": 19274,
+        "cache_write": 9637,
+        "calls": {
+          "breaking": 3
+        },
+        "in": 60082,
+        "out": 11533,
+        "req": {
+          "breaking": 3
+        },
+        "usd": 0.26344
       }
     }
   }

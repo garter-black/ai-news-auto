@@ -55,7 +55,7 @@
     },
     "breaking": {
       "anthropic-api:claude-haiku-5-5": 3,
-      "anthropic-api:claude-sonnet-5-5": 2,
+      "anthropic-api:claude-sonnet-5-5": 5,
       "claude:sonnet": 2
     },
     "images": {

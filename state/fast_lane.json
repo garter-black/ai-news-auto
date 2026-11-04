@@ -875,6 +875,19 @@
       "title": "GitHub Copilot app, Universe releases",
       "url": "https://github.blog/changelog/2026-10-28-github-copilot-app-universe-releases"
     },
+    "f57fcca12f80bc03": {
+      "detectedAt": "2026-11-04T17:30:00+00:00",
+      "finishedAt": "2026-11-04T16:38:04+00:00",
+      "outcome": "retry",
+      "reason": "作れなかった（次の起動で再挑戦）",
+      "run": "41868708904",
+      "slug": "",
+      "source": "fast",
+      "sourcePublishedAt": "2026-11-01T15:00:00+00:00",
+      "startedAt": "2026-11-04T16:36:43+00:00",
+      "title": "当社が提供する「アララメッセージ」への不正アクセスによる情報流出およびサービス停止について（第２報）",
+      "url": "https://www.arara.com/dcms_media/other/arara_20261102__.pdf"
+    },
     "f968f27e7c1fba7b": {
       "detectedAt": "2026-11-02T22:33:24+00:00",
       "finishedAt": "2026-11-02T22:43:34+00:00",

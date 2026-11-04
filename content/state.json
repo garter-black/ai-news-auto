@@ -2,7 +2,7 @@
   "failed": {
     "0Kw6_DTZPrY": 1,
     "1E0ZoktFerQ": 1,
-    "2h16j4K_NbA": 1,
+    "2h16j4K_NbA": 2,
     "2lNUGkCg_qc": 1,
     "3IVo-MNwk2I": 1,
     "4ZwVP0-ylZU": 1,
@@ -167,7 +167,9 @@
       "url": "https://developers.cyberagent.co.jp/blog/archives/67267/"
     }
   },
-  "major_tries": {},
+  "major_tries": {
+    "f57fcca12f80bc03": 1
+  },
   "pi_reopened": {
     "015d389a8563486d": "2026-11-04T13:10:52.830493+00:00",
     "02812387c422b17e": "2026-11-04T13:10:52.830493+00:00",
@@ -1177,6 +1179,11 @@
     "JMEzBOaAu7A": {
       "at": "2026-08-13T07:17:26.574443+00:00",
       "slug": "okinotorishima-island-or-rock-ocean-rights"
+    },
+    "JR7xBi2kJjY": {
+      "at": "2026-11-04T16:36:31.838400+00:00",
+      "reason": "27秒の短尺（ショート形式）のプロモーション動画であり、顧客企業のCTOによる定性的なコメントのみで具体技術・新発表・利用条件などの詳細が含まれず、読者にとって実質的な情報価値が乏しいため。",
+      "skipped": true
     },
     "JRUtDKYMovA": {
       "at": "2026-08-31T12:06:02.945894+00:00",
@@ -14667,66 +14674,6 @@
   "quality_log": [
     {
       "accepted": true,
-      "at": "2026-11-02T21:54:58.354932+00:00",
-      "attempt": 2,
-      "id": "e0be2f0a8eaa6b94",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 77.6,
-        "avg_sentence": 31.4,
-        "long_share": 0.008,
-        "max_paragraph": 159,
-        "paragraphs": 53,
-        "sentences": 131
-      },
-      "score": 100,
-      "source": "microsoft-source",
-      "title": "Nine engineers, 1,211 code updates in a day: Lessons from building Copilot Cowor"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T21:56:15.573693+00:00",
-      "attempt": 1,
-      "id": "186d94b3d13f9a68",
-      "kind": "broad",
-      "model": "cloudflare:@cf/openai/gpt-oss-120b",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 91.5,
-        "avg_sentence": 34.9,
-        "long_share": 0.048,
-        "max_paragraph": 192,
-        "paragraphs": 8,
-        "sentences": 21
-      },
-      "score": 100,
-      "source": "mhlw",
-      "title": "戦没者慰霊事業のお知らせ（令和８年11月実施分）"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T22:13:14.840985+00:00",
-      "attempt": 1,
-      "id": "36932bac88d8fa5b",
-      "kind": "ai",
-      "model": "claude:sonnet",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 57.1,
-        "avg_sentence": 33.4,
-        "long_share": 0.103,
-        "max_paragraph": 129,
-        "paragraphs": 34,
-        "sentences": 58
-      },
-      "score": 100,
-      "source": "google-cloud-blog",
-      "title": "What Google Cloud announced in AI this month"
-    },
-    {
-      "accepted": true,
       "at": "2026-11-02T22:14:44.632841+00:00",
       "attempt": 1,
       "id": "c4c08db9ebb51f8c",
@@ -21062,6 +21009,61 @@
       "score": 92,
       "source": "atlassian-blog",
       "title": "AI was supposed to take on the drudgery. Workers say it’s taking on the good stu"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T16:37:12.486874+00:00",
+      "attempt": 1,
+      "id": "f57fcca12f80bc03",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "脆弱性・障害・欠陥の記事に必要な「深刻度（CVSS などの点数・評価）」が資料にあるのに本文にありません（点数と評価の言葉。資料の表記どおり）。資料の表記どおりに入れてください",
+        "脆弱性・障害・欠陥の記事に必要な「直し方（修正版・更新・自動更新か）」が資料にあるのに本文にありません（修正版の番号、更新の方法、自動で直るか）。資料の表記どおりに入れてください",
+        "脆弱性・障害・欠陥の記事に必要な「悪用の有無」が資料にあるのに本文にありません（「悪用は確認されていない」などの公式の表現）。資料の表記どおりに入れてください"
+      ],
+      "score": null,
+      "source": "fast",
+      "title": "当社が提供する「アララメッセージ」への不正アクセスによる情報流出およびサービス停止について（第２報）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T16:37:38.922686+00:00",
+      "attempt": 2,
+      "id": "f57fcca12f80bc03",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "公開前の門: 日本の読者に役立つ情報が足りません。日本の読者が自分に関係あるか判断できる章を、資料にある事実だけで書いてください。見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める（例「日本で使えるのは12月から」「料金は月200ドルの"
+      ],
+      "score": null,
+      "source": "fast",
+      "title": "当社が提供する「アララメッセージ」への不正アクセスによる情報流出およびサービス停止について（第２報）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T16:38:04.787173+00:00",
+      "attempt": 3,
+      "id": "f57fcca12f80bc03",
+      "kind": "broad",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [
+        "答えになっていない見出し（「日本の契約企業は再設定が必要、再開時期は未定」）。未定のことは「## まだ分からないこと」に1行で書き、章は作らない"
+      ],
+      "readability": {
+        "avg_paragraph": 68.8,
+        "avg_sentence": 35.2,
+        "long_share": 0.049,
+        "max_paragraph": 141,
+        "paragraphs": 21,
+        "sentences": 41
+      },
+      "score": null,
+      "source": "fast",
+      "title": "当社が提供する「アララメッセージ」への不正アクセスによる情報流出およびサービス停止について（第２報）",
+      "warnings": [
+        "初めて出たところで言い換えていない略語（CVSS・JIPDEC）"
+      ]
     }
   ],
   "short_text_retry": {
