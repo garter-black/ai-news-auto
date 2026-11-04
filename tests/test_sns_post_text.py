@@ -256,17 +256,17 @@ class GroundedQuestionTest(unittest.TestCase):
 
     def test_llm_question_is_checked_and_falls_back(self):
         article = dict(OLD)
-        with no_weak(), patch.object(tp, "llm_question", return_value="輸入の多い取引先、あなたの会社にもありますか？") as ask:
+        with no_weak(), patch.object(tp, "llm_question", return_value=("輸入の多い取引先、あなたの会社にもありますか？", "plain")) as ask:
             text = tp.compose(dict(article), [], use_llm=True)
         ask.assert_called_once()
         self.assertTrue(text.endswith("輸入の多い取引先、あなたの会社にもありますか？"))
-        with no_weak(), patch.object(tp, "llm_question", return_value=""):
+        with no_weak(), patch.object(tp, "llm_question", return_value=("", "")):
             text = tp.compose(dict(article), [], use_llm=True)
         self.assertIn("円安", tp.post_blocks_of(text)[2])
         for bad in ["コメントで教えてください？", "今が買い時ですか？", "便利です。", "あ" * 45 + "？"]:
             self.assertFalse(tp.question_ok(bad, OLD["title"]), bad)
         with patch.dict("os.environ", {"GEMINI_API_KEY": ""}):
-            self.assertEqual(tp.llm_question(OLD, OLD["title"]), "")
+            self.assertEqual(tp.llm_question(OLD, OLD["title"]), ("", ""))
 
     def test_generated_question_skips_llm_and_fixed_question_wins(self):
         with no_weak(), patch.object(tp, "llm_question", side_effect=AssertionError("no LLM")):

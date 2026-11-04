@@ -37,6 +37,7 @@ from threads_token import API_BASE, load_token, refresh_if_needed  # noqa: E402
 import threads_voice as voice  # noqa: E402
 import persona  # noqa: E402
 import threads_hooks  # noqa: E402
+import question_patterns  # noqa: E402
 import sns_rules  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -531,6 +532,7 @@ def compose(
     recent_questions: list[str] | None = None,
     use_llm: bool = False,
     fixed_question: str = "",
+    fixed_pattern: str = "",
 ) -> str:
     """投稿文（2026-11-02 の形）。書き出し／要約すると、＋事実2文／読者への問いかけ の3つのかたまり。
 
@@ -544,15 +546,19 @@ def compose(
     title = str(article.get("title") or article.get("seoTitle") or "").strip()
     hook = first_line_hook(article, recent, breaking, title, use_llm=use_llm)
     blocks = post_blocks_of(article.get("threadsPost", "")) if int(article.get("threadsStyle") or 1) >= 3 else []
-    # 問いかけ: 決まった問い（Bluesky が Threads と同じ問いを使う）→ 生成時の問い → LLM に問いだけ書かせる → 話題・主役から作る
-    question = fixed_question if question_ok(fixed_question, title) else ""
-    if not question and len(blocks) >= 2 and len(clean_lines(blocks[-1])) == 1 and clean_lines(blocks[-1])[0] != hook:
-        last = clean_lines(blocks[-1])[0]
-        question = last if question_ok(last, title, QUESTION_MAX) else ""
+    # 問いかけ: 決まった問い（Bluesky が Threads と同じ問いを使う）→ 生成時の問いの候補（型つき。回し方で選ぶ）
+    # → LLM に問いだけ書かせる → 話題・主役から作る。選んだ型は _question_pattern に残す（台帳 S19）
+    question, pattern = (fixed_question, question_patterns.clean(fixed_pattern) or question_patterns.classify(fixed_question)) \
+        if question_ok(fixed_question, title) else ("", "")
+    if not question:
+        choice = question_patterns.pick(question_candidates(article, blocks, title, hook))
+        if choice:
+            question, pattern = choice["question"], choice["pattern"]
     if not question and use_llm:
-        question = llm_question(article, title)
+        question, pattern = llm_question(article, title)
     if not question:
         question = voice.reader_question(article, topic_of(article), recent_questions)
+        pattern = question_patterns.classify(question)
     summary = ""
     generated = next((b for b in blocks if b.startswith(f"{persona.SUMMARY_OPENER}、")), "")
     if generated:
@@ -588,7 +594,39 @@ def compose(
         summary = "\n".join(headline_normalize.strip_known_descriptors(x) for x in summary.splitlines())
     text = "\n\n".join(b for b in (hook, summary, question) if b)
     article["_question"] = question
+    article["_question_pattern"] = pattern or question_patterns.PLAIN
+    question_patterns.note_used(article["_question_pattern"])
     return ensure_question(text, article, recent_questions)
+
+
+def question_pattern_fields(article: dict, question: str) -> dict:
+    """投稿の記録に残す問いかけの型（台帳 S19。流入の報告で型ごとに比べる）。問いかけの無い投稿は何も足さない"""
+    if not question:
+        return {}
+    pattern = article.get("_question_pattern") if article.get("_question") == question else ""
+    return {"questionPattern": question_patterns.clean(pattern) or question_patterns.classify(question)}
+
+
+def question_candidates(article: dict, blocks: list[str], title: str, hook: str) -> list[dict]:
+    """生成時に書いた問いの候補（型つき）。threadsQuestions（2026-11-04〜）と、紹介文の最後の問い。
+    どれも問いのチェック（question_ok）と、怒りを誘う言い方のチェックを通ったものだけ"""
+    found: list[dict] = []
+    for item in question_patterns.from_generated(article.get("threadsQuestions")):
+        found.append(item)
+    if len(blocks) >= 2 and len(clean_lines(blocks[-1])) == 1 and clean_lines(blocks[-1])[0] != hook:
+        last = clean_lines(blocks[-1])[0]
+        known = next((c["pattern"] for c in found if c["question"] == last), "")
+        if not known:
+            found.insert(0, {"pattern": question_patterns.clean(article.get("threadsQuestionPattern")) or question_patterns.classify(last),
+                             "question": last})
+    out, seen = [], set()
+    for c in found:
+        q = c["question"]
+        if q in seen or not question_ok(q, title, QUESTION_MAX) or question_patterns.question_problems(q):
+            continue
+        seen.add(q)
+        out.append(c)
+    return out
 
 
 def question_ok(question: str, title: str = "", limit: int = voice.QUESTION_LIMIT) -> bool:
@@ -598,7 +636,7 @@ def question_ok(question: str, title: str = "", limit: int = voice.QUESTION_LIMI
         q and q.endswith(QUESTION_END) and len(q) <= limit and "\n" not in q and q.count("？") + q.count("?") <= 2
         and not BAIT_RE.search(q) and not persona.ADVICE_RE.search(q) and not persona.STIFF_RE.search(q)
         and not re.search(r"https?://|#\S", q) and not repeats_title(q, title)
-        and not sns_rules.question_needs_article(q)
+        and not sns_rules.question_needs_article(q) and not question_patterns.question_problems(q)
     )
 
 
@@ -642,35 +680,46 @@ def llm_summary(article: dict, title: str, draft: str, budget: int) -> str:
     return candidate
 
 
-def llm_question(article: dict, title: str) -> str:
-    """生成時の問いが無い記事（以前の形の記事など）に、軽いモデルで問いかけの1文だけを書かせる。失敗したら空
+def llm_question(article: dict, title: str) -> tuple[str, str]:
+    """生成時の問いが無い記事（以前の形の記事など）に、軽いモデルで問いかけの1文だけを書かせる。(問い, 型)。失敗したら ("", "")
 
-    GEMINI_API_KEY があるときだけ。SNS_LLM_QUESTION=0 で止める（そのときは話題・主役から作る問いを使う）
+    問いかけの型（scripts/question_patterns.py。台帳 S19）から記事に合うものを選ばせる（回し方で少ない型を先に示す）。
+    呼び出しは今までどおり1回だけ。GEMINI_API_KEY があるときだけ。SNS_LLM_QUESTION=0 で止める（そのときは話題・主役から作る問いを使う）
     """
     if not os.environ.get("GEMINI_API_KEY") or os.environ.get("SNS_LLM_QUESTION", "1").strip() == "0":
-        return ""
+        return "", ""
+    order = question_patterns.rotation_order()
+    kinds = "\n".join(
+        f"  - {k}（{question_patterns.NAMES[k]}）: {p['how']}。合う記事: {p['when']}。例:「{p['examples'][0]}」"
+        for k in order for p in question_patterns.PATTERNS if p["key"] == k
+    )
     prompt = (
         "次のニュースを読んだ人への問いかけを、1文だけ書く。\n"
         f"読者: {persona.PERSONA['who']}\n"
-        "- 記事を読まなくても答えられる、読者自身の好み・経験を聞く短い問いにする（ふだん何を使っているか／AとBならどちらか／何を重視するか／やったことがあるか）。全角35字以内（40字を超えると使えない）。「？」で終える。\n"
+        "- 記事を読まなくても答えられる、読者自身の好み・経験を聞く短い問いにする。全角35字以内（40字を超えると使えない）。「？」で終える。\n"
+        "- 次の型のうち、この記事に自然に合うものを使う（上ほど優先。ただし合わない型は使わない）。どれも合わなければ pattern は plain にして、"
+        "ふだん何を使っているか／何を重視するか などのふつうの問いにする。\n"
+        f"{kinds}\n"
+        "- 二択は、どちらを選んでも恥ずかしくない、両方にもっともな理由があるものだけ。怒りを誘う・決めつける・賛成か反対かを聞く問いにしない。\n"
         "- 「この機能、使ってみたいですか？」「いちばん気になった発表は？」のように、記事の中身を知らないと答えられない問いにしない。話題（製品の分野・お金・暮らし）にはつなげる。新しい事実や数字は書かない。\n"
-        "- 「コメントしてね」などの反応のお願い、アンケートのふり、売買のすすめ、硬い言い回し、「ざっくり」は使わない。\n"
-        "例:「趣味の道具にかけるお金、何を重視して選びますか？」「スマホの写真、いちばん撮るのは仕事と家族のどっちですか？」\n\n"
+        "- 「コメントしてね」などの反応のお願い、アンケートのふり、売買のすすめ、硬い言い回し、「ざっくり」は使わない。\n\n"
         f"見出し: {title}\n要約: {article.get('description', '')}\n要点: {' / '.join(str(h) for h in article.get('highlights') or [])}"
     )
-    schema = {"type": "OBJECT", "properties": {"question": {"type": "STRING"}}, "required": ["question"]}
+    schema = {"type": "OBJECT", "properties": {"pattern": {"type": "STRING", "enum": question_patterns.ALL_KEYS}, "question": {"type": "STRING"}},
+              "required": ["pattern", "question"]}
     try:
         import llm  # noqa: PLC0415
 
         data, _ = llm.generate_json("あなたはニュースサイトのSNS担当の編集者です。", prompt, schema, tier="bulk", max_output_tokens=512)
         question = EMOJI_RE.sub("", str(data.get("question") or "")).strip().strip("「」\"")
+        pattern = question_patterns.clean(data.get("pattern")) or question_patterns.classify(question)
     except Exception as error:  # noqa: BLE001  失敗したら話題・主役から作る問いを使う
         log(f"  [question] LLM で問いを作れませんでした: {str(error)[:120]}")
-        return ""
+        return "", ""
     if not question_ok(question, title):
         log(f"  [question] LLM の問いがチェックを通りません: {question[:60]}")
-        return ""
-    return question
+        return "", ""
+    return question, pattern
 
 
 def ensure_question(text: str, article: dict, recent_questions: list[str] | None = None) -> str:
@@ -679,6 +728,7 @@ def ensure_question(text: str, article: dict, recent_questions: list[str] | None
         return text
     question = voice.reader_question(article, topic_of(article), recent_questions or [])
     article["_question"] = question
+    article["_question_pattern"] = question_patterns.classify(question)
     return f"{str(text).rstrip()}\n\n{question}"
 
 
@@ -2116,6 +2166,7 @@ def main() -> int:
             "topic": topic_of(article),
             "question": bool(question),
             **({"questionText": question} if question else {}),
+            **(question_pattern_fields(article, question)),
             **({"comment": comment} if comment else {}),
             **({"dueAt": due_at.isoformat(timespec="seconds")} if due_at and buffer_channel else {}),
             "postedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),

@@ -46,8 +46,12 @@ def main() -> int:
     extra = tp.publish_extra_channels(key, channels, text, link, article, due_at=due)
 
     state = tp.load_state()
+    # 手で書いた本文でも、最後の問いの型を言い回しから見分けて残す（台帳 S19。流入の報告で型ごとに比べる）
+    last = tp.post_blocks_of(text)[-1].strip() if tp.post_blocks_of(text) else ""
+    question = last if last.endswith(tp.QUESTION_END) else ""
     state["posted"][args.slug] = {
         **result, "dueAt": due.isoformat(timespec="seconds"), "channels": extra, "manual": True,
+        "question": bool(question), **({"questionText": question} if question else {}), **tp.question_pattern_fields({}, question),
     }
     tp.save_state(state)
     print(f"[post-now] {args.slug}: threads {result.get('id')} / {extra}")

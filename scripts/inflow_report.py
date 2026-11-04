@@ -136,6 +136,62 @@ def sent_time(rec: dict, now: datetime | None = None) -> tuple[datetime | None, 
     return when, bool(when and when <= now)
 
 
+def reader_comments(rec: dict) -> float:
+    """読者のコメント数（Buffer のコメント数から自分の返信を引く。scripts/threads_learn.py の reader_metrics と同じ計算）"""
+    try:
+        import threads_learn  # noqa: PLC0415
+
+        return float(threads_learn.reader_metrics(rec).get("comments") or 0)
+    except Exception:  # noqa: BLE001
+        return float((rec.get("metrics") or {}).get("comments") or 0)
+
+
+def per_k(value: float, impressions: int) -> float | None:
+    """1000表示あたり（表示が無ければ None）"""
+    return round(value / impressions * 1000, 1) if impressions else None
+
+
+def pattern_breakdown(posts: list[dict]) -> list[dict]:
+    """問いかけの型ごと（台帳 S19）: 本数・表示・読者のコメント・訪問と、1000表示あたりのコメント・訪問。
+    まだ出ていない予約と動画の行は数えない。型の記録が無い投稿（11/04 より前）も数えない"""
+    groups: dict[str, dict] = {}
+    for p in posts:
+        if p.get("pending") or not p.get("pattern"):
+            continue
+        g = groups.setdefault(p["pattern"], {"pattern": p["pattern"], "n": 0, "impressions": 0, "comments": 0.0, "visits": 0})
+        g["n"] += 1
+        g["impressions"] += int(p.get("impressions") or 0)
+        g["comments"] += float(p.get("comments") or 0)
+        g["visits"] += int(p.get("visits") or 0)
+    out = []
+    for g in groups.values():
+        g["commentsPer1k"], g["visitsPer1k"] = per_k(g["comments"], g["impressions"]), per_k(g["visits"], g["impressions"])
+        out.append(g)
+    return sorted(out, key=lambda g: (-g["n"], g["pattern"]))
+
+
+def pattern_window(posted: dict, now: datetime | None = None, days: int = 14) -> list[dict]:
+    """直近 days 日の型ごとの本数・表示・読者のコメント（記録だけ。訪問は日ごとの報告で見る）。2週間で各型5本が目安"""
+    now = now or datetime.now(JST)
+    posts = []
+    for rec in posted.values():
+        when, sent = sent_time(rec, now)
+        if not rec.get("questionPattern") or not when or not sent or when < now - timedelta(days=days):
+            continue
+        posts.append({"pattern": rec["questionPattern"], "impressions": (rec.get("metrics") or {}).get("views") or 0,
+                      "comments": reader_comments(rec), "visits": 0, "pending": False})
+    return pattern_breakdown(posts)
+
+
+def pattern_name(key: str) -> str:
+    try:
+        import question_patterns  # noqa: PLC0415
+
+        return question_patterns.NAMES.get(key, key)
+    except Exception:  # noqa: BLE001
+        return key
+
+
 def threads_posts(data: dict, posted: dict, videos: dict, now: datetime | None = None) -> list[dict]:
     """Threads の投稿ごとの結果。その日に出した投稿と、その日に Threads から訪問があった投稿（前の日の投稿も）。
     その日の予約でまだ出ていない投稿は pending=True（訪問0 には数えない）"""
@@ -157,6 +213,7 @@ def threads_posts(data: dict, posted: dict, videos: dict, now: datetime | None =
             "impressions": metrics.get("views") or 0,
             "pending": not sent, "before_start": when < INFLOW_START,
             "hook": hook_label(rec), "test": rec.get("slotTest") or "",
+            "pattern": rec.get("questionPattern") or "", "comments": reader_comments(rec),
         })
     for slug, rec in videos.items():
         when = jst(rec.get("postedAt") or "")
@@ -168,7 +225,8 @@ def threads_posts(data: dict, posted: dict, videos: dict, now: datetime | None =
             if when.date().isoformat() > date:
                 continue
             out.append({"slug": slug, "at": when, "kind": f"動画・{'短い版' if variant == 'short' else '全部の版'}", "visits": hits, "utm": hits,
-                        "impressions": 0, "pending": False, "before_start": when < INFLOW_START, "hook": "", "test": ""})
+                        "impressions": 0, "pending": False, "before_start": when < INFLOW_START, "hook": "", "test": "",
+                        "pattern": "", "comments": 0.0})
     return sorted(out, key=lambda p: p["at"])
 
 
@@ -229,6 +287,12 @@ def show(data: dict, posted: dict, videos: dict, top: int = 3) -> None:
             print("    通常枠のテスト（AI / AI以外。1本あたりの訪問）: " + " / ".join(
                 f"{SLOT_TEST_LABELS.get(k, k)} {len(v)}本・訪問{sum(x['visits'] for x in v)}（1本あたり {sum(x['visits'] for x in v) / len(v):.1f}）"
                 for k, v in sorted(groups.items())))
+        groups = pattern_breakdown(posts)
+        if groups:
+            fmt = lambda v: "-" if v is None else f"{v}"  # noqa: E731
+            print("    問いかけの型ごと（1000表示あたりのコメント・訪問）: " + " / ".join(
+                f"{pattern_name(g['pattern'])} {g['n']}本・表示{g['impressions']}・コメント{fmt(g['commentsPer1k'])}・訪問{fmt(g['visitsPer1k'])}"
+                for g in groups))
         if pending:
             print(f"    まだ出ていない予約: {len(pending)}本（" + "、".join(f"{p['at']:%H:%M} {p['kind'] or '-'}" for p in pending) + "。時刻は予約の時刻）")
 
@@ -242,6 +306,10 @@ def show(data: dict, posted: dict, videos: dict, top: int = 3) -> None:
         print(f"  動画投稿から: 短い版 {s}回 / 全部の版 {f}回")
         for page, v in sorted(video.items(), key=lambda kv: -(kv[1]["short"] + kv[1]["full"]))[:top]:
             print(f"    「{title_of(page)}」 短い版 {v['short']} / 全部の版 {v['full']}")
+    window = pattern_window(posted)
+    if window:
+        print("  直近14日の問いかけの型（本数。各型5本以上が目安・1000表示あたりの読者コメント）: " + " / ".join(
+            f"{pattern_name(g['pattern'])} {g['n']}本（{'-' if g['commentsPer1k'] is None else g['commentsPer1k']}）" for g in window))
     if data.get("truncated"):
         print("  注意: 集計の上限に達しました。全部は数えられていません。")
 

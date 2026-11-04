@@ -1055,6 +1055,7 @@ def build_web_record(item: dict, data: dict, page: dict, model_name: str, voice_
         "seoTitle": str(data.get("seo_title", "")).strip() or fallback_seo_title(str(data["title"])),
         "threadsPost": m.normalize_body(str(data.get("threads_post", ""))).strip(),
         "threadsHook": m.threads_hooks.clean_hook(data.get("threads_hook")),
+        **m.question_patterns.record_fields(data),
         "threadsStyle": m.threads_hooks.POST_STYLE,
         "writingVoice": voice_key,
         "lede": m.normalize_body(data.get("lede", "")),

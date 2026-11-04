@@ -195,6 +195,7 @@ def main() -> int:
             "topic": tp.topic_of(article),
             "question": bool(question),
             **({"questionText": question} if question else {}),
+            **tp.question_pattern_fields(article, question),
             **({"comment": comment} if comment else {}),
             "postedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         }

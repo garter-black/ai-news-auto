@@ -55,7 +55,7 @@ OWNER_NAME_PAGES = ("/about", "/editorial-policy")
 
 # この点検が確かめる台帳の番号（docs/owner_rules.md の「点検」列と一致させる。tests/test_owner_rules_ledger.py）
 AUDIT_RULES = (
-    "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S13", "S14",
+    "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S13", "S14", "S19",
     "I2", "I4", "I5",
     "A1", "A2", "A3", "A4", "A5", "A6", "A10", "A11", "A12", "A17", "A18", "A19", "A22", "A23", "A24", "A25", "A26", "A28", "A29", "A30", "A32", "A37", "A38",
     "W3", "W5", "W6", "W10", "W11", "W12", "W13", "W17", "W18", "W19", "W20", "W21", "W22", "W23",
@@ -800,6 +800,32 @@ def video_record_problems(posted: dict, videos: dict, queued: dict, now: datetim
     return out
 
 
+# S19: 問いかけの型を記録する（2026-11-04 オーナー決定「いろんな型を試していきたい」）。この日時より後に予約・投稿した記事の投稿だけ見る
+QUESTION_PATTERN_SINCE = datetime(2026, 11, 4, 3, 0, tzinfo=timezone.utc)  # 11/4 12:00 JST（仕組みを入れた日）
+
+
+def question_pattern_problems(posted: dict, now: datetime, days: float = 2.0) -> list[str]:
+    """Buffer を呼ばずに投稿の記録（state/threads_posted.json）だけを見る。問いかけのある記事の投稿に
+    questionPattern（8つの型か plain）が無ければ違反。朝のまとめ・問いかけ（poll）・地震などの知らせは対象外"""
+    import question_patterns  # noqa: PLC0415
+
+    out = []
+    for slug, rec in (posted.get("posted") or {}).items():
+        if rec.get("style") in ("digest", "poll") or rec.get("format") in ("digest", "poll") or slug.startswith(("digest-", "poll-")):
+            continue
+        if not rec.get("question") or rec.get("manual"):
+            continue  # 問いかけの無い投稿（地震・津波の知らせなど）と、手で出した臨時の投稿
+        try:
+            booked = datetime.fromisoformat(str(rec.get("postedAt") or "").replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if booked < max(QUESTION_PATTERN_SINCE, now - timedelta(days=days)) or booked > now:
+            continue
+        if not question_patterns.clean(rec.get("questionPattern")):
+            out.append(f"[S19] 問いかけの型が記録されていない投稿（{slug}・{booked.astimezone(JST):%m/%d %H:%M}・問い「{str(rec.get('questionText') or '')[:24]}」）")
+    return out
+
+
 # sns_rules のルールの番号 → 台帳の番号
 SNS_RULE_MAP = {
     "ルール1": "[S4]", "ルール2": "[S7]", "ルール3": "[S9]", "ルール4": "[S11]", "ルール5": "[S8]",
@@ -992,6 +1018,12 @@ def run(latest: int, sns_days: float, network: bool, base: str = BASE) -> dict[s
         found["SNS（Threads・X・Facebook の動画）"] = v
     except Exception as error:  # noqa: BLE001
         found["SNS（動画）"] = [f"[S13] 投稿と動画の記録を読めなかった（{type(error).__name__}）"]
+    # SNS（問いかけの型の記録。手元の記録だけ）
+    try:
+        posted = json.loads((Path(__file__).resolve().parent.parent / "state" / "threads_posted.json").read_text("utf-8"))
+        found["SNS（問いかけの型の記録）"] = question_pattern_problems(posted, datetime.now(timezone.utc), days=max(sns_days, 1.0))
+    except Exception as error:  # noqa: BLE001
+        found["SNS（問いかけの型）"] = [f"[S19] 投稿の記録を読めなかった（{type(error).__name__}）"]
     return {k: v for k, v in found.items() if v}
 
 
