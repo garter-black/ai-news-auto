@@ -16,11 +16,18 @@ export const dela = localFont({
   variable: "--font-dela",
 });
 
-/** 時刻・件数・統合本数。小さい数字だけなので先読みはせず、LCP の画像・CSS に回線を譲る */
+/**
+ * 時刻・件数・統合本数。小さい数字だけなので先読みはせず、LCP の画像・CSS に回線を譲る。
+ * 届くまでの代わりの書体（幅を Martian Mono に合わせたもの）は app/globals.css の SaisokuMonoFallback。
+ * next/font が作る代わりは Arial だけを指すため、Arial の無い Linux・Android では幅の狭い等幅に落ち、
+ * 届いた瞬間に記事上部の日時の行が2行に折り返して見出しと要点が押し下げられていた（CLS 0.18、issue #24）
+ */
 export const martian = Martian_Mono({
   weight: ["400", "600"],
   subsets: ["latin"],
   display: "swap",
   preload: false,
+  adjustFontFallback: false,
+  fallback: ["SaisokuMonoFallback", "SaisokuMonoFallbackRoboto"],
   variable: "--font-martian",
 });

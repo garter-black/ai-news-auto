@@ -1,6 +1,30 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/*
+ * 数字の書体 Martian Mono（app/fonts.ts）が届くまでの代わり。幅と高さを Martian Mono に合わせ、届いても行の折り返しが変わらないようにする。
+ * Arial と同じ寸法の書体（Linux の Liberation Sans、ChromeOS の Arimo）も同じ値で使う。next/font の自動の代わりは Arial だけで、
+ * Arial の無い Linux では狭い等幅に落ち、届いた瞬間に記事上部の日時の行が2行になって要点が押し下げられていた（CLS 0.18、issue #24）。
+ * 値は next の capsize の寸法から: size-adjust = (700/1000)/(xWidthAvg/unitsPerEm)、ascent = 1/size-adjust、descent = 0.2/size-adjust。
+ * Android（Roboto）は寸法が少し違うので別の名前で並べる（前の名前の書体が端末に無いときだけ使われる）
+ */
+@font-face {
+  font-family: "SaisokuMonoFallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans"), local("Arimo");
+  ascent-override: 63.69%;
+  descent-override: 12.74%;
+  line-gap-override: 0%;
+  size-adjust: 157.02%;
+}
+@font-face {
+  font-family: "SaisokuMonoFallbackRoboto";
+  src: local("Roboto"), local("Roboto-Regular");
+  ascent-override: 63.55%;
+  descent-override: 12.71%;
+  line-gap-override: 0%;
+  size-adjust: 157.37%;
+}
+
 /* --------------------------------------------------------------------- */
 /* カラートークン：報道ネイビー×速報レッド（A案・2026-10-28 採用）           */
 /* 紺＝骨組み（ヘッダーの帯・リンク・ボタン・選択中でない強調）               */
