@@ -103,5 +103,16 @@
     ]
   },
   "sectionsPolishedAt": "2026-11-04T01:17:57+00:00",
-  "typesRewrittenAt": "2026-11-04T01:17:57+00:00"
+  "typesRewrittenAt": "2026-11-04T01:17:57+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/nvidia-meta-muse-partnership-expansion-fig1-dbda645f.jpg",
+      "width": 700,
+      "height": 393,
+      "kind": "photo",
+      "credit": "NVIDIA",
+      "sourceUrl": "https://nvidianews.nvidia.com/news/nvidia-and-meta-to-expand-collaboration-on-muse-and-muse-family-of-models-amid-robust-growth",
+      "original": "https://iprsoftwaremedia.com/219/files/202610/e94f1653d286c13260a76fb1b9084960/6ae01b2d3d6332b69004e23d_meta_and_nvidia/meta_and_nvidia_mid.png?v=1b0c7d28-ee2e-401f-84ac-795e5ac88591"
+    }
+  ]
 }

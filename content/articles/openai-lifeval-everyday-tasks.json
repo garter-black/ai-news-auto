@@ -103,5 +103,25 @@
   "sectionsPolishedAt": "2026-11-04T01:23:28+00:00",
   "newsType": "research",
   "typesRewrittenAt": "2026-11-04T01:23:28+00:00",
-  "updatedAt": "2026-11-04T01:23:28+00:00"
+  "updatedAt": "2026-11-04T01:23:28+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/openai-lifeval-everyday-tasks-fig1-21cbc85b.jpg",
+      "width": 900,
+      "height": 670,
+      "kind": "photo",
+      "credit": "OpenAI",
+      "sourceUrl": "https://openai.com/index/lifeval",
+      "original": "https://images.ctfassets.net/kftzwdyauwt9/33prB2g2HLW6Azbom6co0a/a5fd275ffbdef887211846448f2fac6b/assorted-ecg.png?w=3840&q=90&fm=webp"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/openai-lifeval-everyday-tasks-fig2-72d8651e.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "hero",
+      "credit": "OpenAI",
+      "sourceUrl": "https://openai.com/index/lifeval",
+      "original": "https://images.ctfassets.net/kftzwdyauwt9/3Iad2h8cMUadlldiZqbsAo/69264040a908479aa8843b590b0015b5/lifeval-social-crayon.png?w=1600&h=900&fit=fill"
+    }
+  ]
 }

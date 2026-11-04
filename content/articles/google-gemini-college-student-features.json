@@ -90,5 +90,25 @@
   },
   "sectionsPolishedAt": "2026-11-04T01:17:57+00:00",
   "typesRewrittenAt": "2026-11-04T01:17:57+00:00",
-  "updatedAt": "2026-11-04T01:17:57+00:00"
+  "updatedAt": "2026-11-04T01:17:57+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/google-gemini-college-student-features-fig1-9e610d09.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "photo",
+      "credit": "Google",
+      "sourceUrl": "https://blog.google/products-and-platforms/products/gemini/college-student-favorite-features/",
+      "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/College_Fave_Gemini_Features_her.width-2200.format-webp.webp"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/google-gemini-college-student-features-fig2-cff8934b.jpg",
+      "width": 1200,
+      "height": 674,
+      "kind": "dense",
+      "credit": "Google",
+      "sourceUrl": "https://blog.google/products-and-platforms/products/gemini/college-student-favorite-features/",
+      "original": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Gemini_Live_studying.width-2000.format-webp.webp"
+    }
+  ]
 }

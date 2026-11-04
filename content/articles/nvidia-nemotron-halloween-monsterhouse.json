@@ -122,5 +122,25 @@
     ]
   },
   "typesRewrittenAt": "2026-11-04T01:17:57+00:00",
-  "updatedAt": "2026-11-04T01:17:57+00:00"
+  "updatedAt": "2026-11-04T01:17:57+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/nvidia-nemotron-halloween-monsterhouse-fig1-6c7accef.jpg",
+      "width": 1200,
+      "height": 648,
+      "kind": "photo",
+      "credit": "Hugging Face",
+      "sourceUrl": "https://huggingface.co/blog/nvidia/nemotron-halloween",
+      "original": "https://cdn-uploads.huggingface.co/production/uploads/6ab2a746c7d0655b3d8dfbb9/5bIvVxc791He8vRKSaBH4.png"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/nvidia-nemotron-halloween-monsterhouse-fig2-1d8b1abe.jpg",
+      "width": 1073,
+      "height": 570,
+      "kind": "dense",
+      "credit": "Hugging Face",
+      "sourceUrl": "https://huggingface.co/blog/nvidia/nemotron-halloween",
+      "original": "https://cdn-uploads.huggingface.co/production/uploads/6ab2a746c7d0655b3d8dfbb9/iVLQ71tHCdvLRIuaJ6oLk.png"
+    }
+  ]
 }

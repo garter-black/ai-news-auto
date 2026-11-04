@@ -90,5 +90,16 @@
   },
   "sectionsPolishedAt": "2026-11-04T01:17:57+00:00",
   "typesRewrittenAt": "2026-11-04T01:17:57+00:00",
-  "updatedAt": "2026-11-04T01:17:57+00:00"
+  "updatedAt": "2026-11-04T01:17:57+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/ntt-4k-ai-video-surveillance-2026-fig1-1a5ef119.jpg",
+      "width": 1000,
+      "height": 551,
+      "kind": "dense",
+      "credit": "NTT",
+      "sourceUrl": "https://group.ntt/jp/newsrelease/2026/10/27/261027b.html",
+      "original": "https://group.ntt/jp/newsrelease/2026/10/27/img/261027bc.jpg"
+    }
+  ]
 }

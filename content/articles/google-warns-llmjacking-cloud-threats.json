@@ -107,5 +107,25 @@
     "LiteLLMを使っている場合は、CVE-2026-40217への修正版が当たっているか確かめる"
   ],
   "typesRewrittenAt": "2026-11-04T01:23:35+00:00",
-  "updatedAt": "2026-11-04T01:23:35+00:00"
+  "updatedAt": "2026-11-04T01:23:35+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/google-warns-llmjacking-cloud-threats-fig1-62395927.jpg",
+      "width": 1200,
+      "height": 678,
+      "kind": "dense",
+      "credit": "Google Cloud",
+      "sourceUrl": "https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models/",
+      "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/Figure_1_Usage_chart_showing_LLMJacking_ge.max-2000x2000_ttHac9S.png"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/google-warns-llmjacking-cloud-threats-fig2-17b0e40b.jpg",
+      "width": 1200,
+      "height": 612,
+      "kind": "dense",
+      "credit": "Google Cloud",
+      "sourceUrl": "https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models/",
+      "original": "https://storage.googleapis.com/gweb-cloudblog-publish/images/Figure_2_Threat_Actor_tests_publicly_expos.max-1900x1900.png"
+    }
+  ]
 }

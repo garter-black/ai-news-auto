@@ -107,5 +107,16 @@
     "11月5日のライブ配信の予定を確認し、Cosmos Frameworkの手順を把握する"
   ],
   "typesRewrittenAt": "2026-11-04T01:20:39+00:00",
-  "updatedAt": "2026-11-04T01:20:39+00:00"
+  "updatedAt": "2026-11-04T01:20:39+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/nvidia-cosmos-world-models-simulation-fig1-d235583b.jpg",
+      "width": 1200,
+      "height": 464,
+      "kind": "dense",
+      "credit": "NVIDIA",
+      "sourceUrl": "https://developer.nvidia.com/blog/build-world-models-for-interactive-simulation-with-nvidia-cosmos/",
+      "original": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/image1-15.webp"
+    }
+  ]
 }

@@ -105,5 +105,16 @@
     "AIに読ませたい業務文書がどこまで文章として整理されているか点検する"
   ],
   "typesRewrittenAt": "2026-11-04T01:17:57+00:00",
-  "updatedAt": "2026-11-04T01:17:57+00:00"
+  "updatedAt": "2026-11-04T01:17:57+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/nissay-it-ai-driven-development-aws-fig1-488087cb.jpg",
+      "width": 1200,
+      "height": 767,
+      "kind": "dense",
+      "credit": "AWS",
+      "sourceUrl": "https://aws.amazon.com/jp/blogs/news/ai-dlc-unicorn-gym-nissay-it-202611/",
+      "original": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/11/02/tool1102.png"
+    }
+  ]
 }

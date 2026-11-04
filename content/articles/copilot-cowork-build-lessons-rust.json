@@ -121,5 +121,25 @@
   "sectionsPolishedAt": "2026-11-04T01:17:57+00:00",
   "newsType": "explainer",
   "typesRewrittenAt": "2026-11-04T01:17:57+00:00",
-  "updatedAt": "2026-11-04T01:17:57+00:00"
+  "updatedAt": "2026-11-04T01:17:57+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/copilot-cowork-build-lessons-rust-fig1-871435bd.jpg",
+      "width": 1200,
+      "height": 640,
+      "kind": "dense",
+      "credit": "Microsoft",
+      "sourceUrl": "https://commandline.microsoft.com/how-we-built-copilot-cowork-python-to-rust-migration/",
+      "original": "https://commandline.microsoft.com/wp-content/uploads/2026/10/figure-b-trust-boundary-command-line-2048x1092.png"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/copilot-cowork-build-lessons-rust-fig2-60208958.jpg",
+      "width": 1200,
+      "height": 635,
+      "kind": "dense",
+      "credit": "Microsoft",
+      "sourceUrl": "https://commandline.microsoft.com/how-we-built-copilot-cowork-python-to-rust-migration/",
+      "original": "https://commandline.microsoft.com/wp-content/uploads/2026/10/figure-c-crate-graph-command-line-2048x1083.png"
+    }
+  ]
 }
