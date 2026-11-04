@@ -1852,7 +1852,8 @@
             "geometry": true,
             "vision": true,
             "version": 1,
-            "v3": true
+            "v3": true,
+            "ownerApproved": "2026-11-04 オーナーが copilot_A_v3 を選んだ"
           },
           "template": "storyboard",
           "level": "L1",
@@ -1878,7 +1879,7 @@
         }
       },
       "urls": {
-        "short": "https://ai-tech-express.jp/video/github-copilot-jetbrains-air-0154c8dcd8.mp4"
+        "short": "https://ai-tech-express.jp/video/github-copilot-jetbrains-air-35bacb4bc2.mp4"
       },
       "level": "L1",
       "variant": "short",
