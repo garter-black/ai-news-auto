@@ -107,5 +107,25 @@
     ]
   },
   "typesRewrittenAt": "2026-11-04T01:17:57+00:00",
-  "updatedAt": "2026-11-04T01:17:57+00:00"
+  "updatedAt": "2026-11-04T01:17:57+00:00",
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/apple-imac-m6-2026-10-fig1-d6c68dab.jpg",
+      "width": 1200,
+      "height": 630,
+      "kind": "photo",
+      "credit": "Apple",
+      "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/apple-unveils-new-imac-with-m6/",
+      "original": "https://www.apple.com/newsroom/images/2026/10/apple-unveils-new-imac-with-m6/tile/Apple-iMac-with-M6-hero-261027-lp.jpg.og.jpg?202610290810"
+    },
+    {
+      "src": "https://ai-tech-express.jp/img/apple-imac-m6-2026-10-fig2-a5d8781c.jpg",
+      "width": 1200,
+      "height": 675,
+      "kind": "photo",
+      "credit": "Apple",
+      "sourceUrl": "https://www.apple.com/jp/newsroom/2026/10/apple-unveils-new-imac-with-m6/",
+      "original": "https://www.apple.com/newsroom/images/2026/10/apple-unveils-new-imac-with-m6/article/Apple-iMac-with-M6-hero-261027_big.jpg.medium_2x.jpg"
+    }
+  ]
 }

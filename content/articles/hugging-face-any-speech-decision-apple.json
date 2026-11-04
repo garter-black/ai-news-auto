@@ -139,5 +139,16 @@
       "自分に関係ある？": "会議の文字起こしや仕分けアプリを高精度に",
       "使ってみるには": "公式ブログとGitHubからサンプルで試す"
     }
-  }
+  },
+  "bodyImages": [
+    {
+      "src": "https://ai-tech-express.jp/img/hugging-face-any-speech-decision-apple-fig1-76980d7d.jpg",
+      "width": 1200,
+      "height": 600,
+      "kind": "hero",
+      "credit": "Hugging Face",
+      "sourceUrl": "https://huggingface.co/blog/anydecisionmodel",
+      "original": "https://huggingface.co/blog/assets/anydecisionmodel/banner.png"
+    }
+  ]
 }
