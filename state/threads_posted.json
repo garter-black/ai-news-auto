@@ -3499,10 +3499,10 @@
       }
     },
     "nvidia-recovery-automated-training-recovery": {
-      "id": "6ae96058da2711fd26adb7eb",
+      "id": "6aeaa63b4c41ba80aa557d91",
       "via": "buffer",
       "channels": {
-        "twitter": "6ae96058a5f6b0f7438855a4",
+        "twitter": "6aeaa63c4c41ba80aa557dc5",
         "facebook": "6aeaa5d216e63068f18f781b"
       },
       "hook": "breaking",
@@ -3516,13 +3516,13 @@
       "dueAt": "2026-11-04T12:55:00+09:00",
       "postedAt": "2026-11-03T04:17:29+00:00",
       "pausedIds": {
-        "threads": "6aea3af35fa3d509fa3d0ef9",
-        "twitter": "6aea3af452391758e2e63135",
-        "facebook": "6aea3af45fa3d509fa3d103d",
+        "threads": "6ae96058da2711fd26adb7eb",
+        "twitter": "6ae96058a5f6b0f7438855a4",
+        "facebook": "6aeaa5d216e63068f18f781b",
         "bluesky": "at://did:plc:nwiq4lvu5kt4jr2tomn6ui7k/app.bsky.feed.post/3mzhfc4mb722k"
       },
       "status": "scheduled",
-      "convertedAt": "2026-11-04T03:25:55+00:00",
+      "convertedAt": "2026-11-04T03:27:48+00:00",
       "videoVariant": "short"
     },
     "chatgpt-pro-monthly-api-credits": {

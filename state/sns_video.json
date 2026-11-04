@@ -1642,7 +1642,7 @@
       "postedAt": "2026-11-04T09:30:00+00:00"
     },
     "nvidia-recovery-automated-training-recovery": {
-      "at": "2026-11-04T03:25:56+00:00",
+      "at": "2026-11-04T03:27:49+00:00",
       "status": "attached",
       "tries": 1,
       "ok": true,
@@ -1716,7 +1716,7 @@
       },
       "level": "L1",
       "variant": "short",
-      "bufferId": "6ae96058da2711fd26adb7eb",
+      "bufferId": "6aeaa63b4c41ba80aa557d91",
       "postedAt": "2026-11-04T12:55:00+09:00"
     }
   },
@@ -1774,11 +1774,11 @@
     "nvidia-recovery-automated-training-recovery": {
       "status": "created",
       "channels": {
-        "threads": "6ae96058da2711fd26adb7eb",
-        "twitter": "6ae96058a5f6b0f7438855a4",
+        "threads": "6aeaa63b4c41ba80aa557d91",
+        "twitter": "6aeaa63c4c41ba80aa557dc5",
         "facebook": "6aeaa5d216e63068f18f781b"
       },
-      "id": "6ae96058da2711fd26adb7eb",
+      "id": "6aeaa63b4c41ba80aa557d91",
       "dueAt": "2026-11-04T12:55:00+09:00",
       "variant": "short",
       "delayedMin": 0
@@ -1825,7 +1825,7 @@
       "applied": true
     },
     "nvidia-recovery-automated-training-recovery": {
-      "at": "2026-11-04T03:25:55+00:00",
+      "at": "2026-11-04T03:27:48+00:00",
       "pending": {
         "inputs": {
           "threads": {
@@ -1911,14 +1911,17 @@
         "hold": true,
         "allowDuplicateOf": {
           "threads": [
+            "6ae96058da2711fd26adb7eb",
             "6aea3af35fa3d509fa3d0ef9"
           ],
           "twitter": [
+            "6ae96058a5f6b0f7438855a4",
             "6aea3af452391758e2e63135"
           ],
           "facebook": [
             "6aea3af45fa3d509fa3d103d",
-            "6aea86b896d5e2abc7692f68"
+            "6aea86b896d5e2abc7692f68",
+            "6ae96059b1dfe2c544efbb29"
           ]
         }
       },
@@ -1926,17 +1929,17 @@
       "repost": true,
       "paused": {
         "threads": {
-          "id": "6aea3af35fa3d509fa3d0ef9",
+          "id": "6ae96058da2711fd26adb7eb",
           "ok": true,
           "deleted": true
         },
         "twitter": {
-          "id": "6aea3af452391758e2e63135",
+          "id": "6ae96058a5f6b0f7438855a4",
           "ok": true,
           "deleted": true
         },
         "facebook": {
-          "id": "6aea3af45fa3d509fa3d103d",
+          "id": "6aeaa5d216e63068f18f781b",
           "ok": true,
           "deleted": true
         }
@@ -2073,8 +2076,8 @@
   },
   "videosArchive": {
     "nvidia-recovery-automated-training-recovery": {
-      "at": "2026-11-04T03:24:15+00:00",
-      "status": "ready",
+      "at": "2026-11-04T03:25:56+00:00",
+      "status": "attached",
       "tries": 1,
       "ok": true,
       "adopted": "/home/runner/work/_temp/adopt",
@@ -2145,7 +2148,10 @@
         "poster": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-644d412c4b.jpg",
         "short": "https://ai-tech-express.jp/video/nvidia-recovery-automated-training-recovery-a87ec20a2a.mp4"
       },
-      "level": "L1"
+      "level": "L1",
+      "variant": "short",
+      "bufferId": "6ae96058da2711fd26adb7eb",
+      "postedAt": "2026-11-04T12:55:00+09:00"
     },
     "github-copilot-jetbrains-air": {
       "at": "2026-11-03T17:48:29+00:00",
