@@ -288,6 +288,62 @@ class CameraHoldTest(unittest.TestCase):
 
 
 @unittest.skipUnless(READY, "ffmpeg / numpy / Pillow / budoux が必要")
+class MarkerTest(unittest.TestCase):
+    """2026-11-04 オーナー: 左の見出しのマーカーが文字の右端よりずっと先まで出る（2行の見出しの短い2行目「自動で再開」「調整」）"""
+
+    def item(self, text: str, two_lines: bool = True):
+        spr = v3.wrapped(text, "black", range(84, 52, -2), v3.COL_W, 2) if two_lines else v3.render_text(v3.accent_segments(text, "black"), 120)
+        return v3.TextItem("keyword", text, spr, v3.COL[0], 400, 0.0, 3.0, anim="wipe", marker=True)
+
+    def test_marker_hugs_each_line(self):
+        it = self.item("止まった学習を自動で再開")
+        lines = it.marker_lines()
+        self.assertEqual(len(lines), 2)  # 2行
+        for ln in lines:
+            g, m = ln["glyph"], ln["marker"]
+            gw = g[2] - g[0]
+            allow = min(gate.MARKER_OVERFLOW_SHARE * gw, gate.MARKER_OVERFLOW_PX)
+            self.assertLessEqual(g[0] - m[0], allow)
+            self.assertLessEqual(m[2] - g[2], allow)
+            self.assertEqual(g[0] - m[0], m[2] - g[2])  # 左右の余白は同じ
+        self.assertLess(lines[1]["glyph"][2], lines[0]["glyph"][2])  # 短い2行目は短いマーカー
+        self.assertLess(lines[1]["marker"][2], lines[0]["marker"][2])
+        one = self.item("復旧をまとめて調整", two_lines=False).marker_lines()
+        self.assertEqual(len(one), 1)
+
+    def test_gate_catches_full_width_marker(self):
+        it = self.item("止まった学習を自動で再開")
+        good = [{"role": "keyword", "text": it.text, "marker": True, "marker_lines": it.marker_lines()}]
+        self.assertEqual(gate.marker_problems(good), [])
+        # 前の描き方: スプライトの幅いっぱい（長い1行目の幅）＋6px を、2行目の下にも引いていた
+        w = it.sprite.shape[1]
+        old = [dict(ln, marker=[-6, ln["marker"][1], w + 6, ln["marker"][3]]) for ln in it.marker_lines()]
+        probs = gate.marker_problems([{"role": "keyword", "text": it.text, "marker": True, "marker_lines": old}])
+        self.assertTrue(any("2行目の文字の右端" in p for p in probs), probs)
+        self.assertTrue(gate.marker_problems([{"role": "keyword", "text": "x", "marker": True}]))  # 記録が無い
+
+    def test_drawn_marker_pixels_match_record(self):
+        """実際に描いたコマで、マーカーの色の画素が記録した枠の中だけにある"""
+        it = self.item("止まった学習を自動で再開")
+
+        r = v3.Renderer.__new__(v3.Renderer)  # Renderer.frame が使う所だけ用意する
+        r.plan = type("Plan", (), {"texts": [it]})()
+        r.stage = np.full((v3.H, v3.W, 3), 255, dtype=np.uint8)
+        r.panel = lambda t: np.full((v3.PH, v3.PW, 3), 255, dtype=np.uint8)
+        r.corner = v3._mask_panel_corners()
+        r.panel_stage = r.stage[v3.PANEL[1] : v3.PANEL[3], v3.PANEL[0] : v3.PANEL[2]].copy()
+        frame = r.frame(int(2.0 * v3.FPS))
+        hit = np.all(frame == np.array(v3.MARKER, dtype=np.uint8), axis=-1)
+        ys, xs = np.nonzero(hit)
+        self.assertTrue(len(xs))
+        for ln in it.marker_lines():
+            m = ln["marker"]
+            row = (ys >= it.y + m[1]) & (ys < it.y + m[3])
+            self.assertLessEqual(xs[row].max() + 1, it.x + m[2])
+            self.assertGreaterEqual(xs[row].min(), it.x + m[0])
+
+
+@unittest.skipUnless(READY, "ffmpeg / numpy / Pillow / budoux が必要")
 class LintTest(unittest.TestCase):
     def test_cards_have_no_lines_or_bars(self):
         self.assertEqual(gate.lint_renderer(ROOT / "scripts" / "video_templates.py"), [])
@@ -357,6 +413,24 @@ class CardRenderTest(unittest.TestCase):
             self.assertTrue(r["gate"]["ok"], (name, r["gate"]["reasons"]))
             modes = sorted(L["mode"] for L in r["ladders"])
             self.assertEqual(modes, sorted({"a": ["image", "specs", "checklist"], "b": ["timeline", "figures", "versus"]}[name]), name)
+
+    def test_base_layout_kept(self):
+        """2026-11-04 オーナー承認の基本の形（左の見出し＋右の公式ページ）: どの型でも同じ形で、カードは動画の半分まで"""
+        for name in ("a", "b", "breaking"):
+            r = self.reports[name]
+            self.assertEqual(r["base_layout"], v3.BASE_LAYOUT)
+            self.assertEqual((r["layout"], r["panel"]), (v3.LAYOUT, list(v3.PANEL)))
+            self.assertLessEqual(r["gate"]["metrics"]["v3_card_share"], gate.CARD_SHARE_MAX)
+        bad = copy.deepcopy(self.reports["b"])
+        bad["ladders"] = [{"t0": 0.5, "t1": bad["total"] - 0.5, "mode": "figures"}]
+        res = gate.check_video(self.tmp / "b" / "fixture-ai-plan__v3.mp4", bad, t3.article(), "test")
+        self.assertTrue(any("がカード" in x for x in res.reasons), res.reasons)
+
+    def test_marker_lines_recorded(self):
+        for name in ("a", "b"):
+            marked = [t for t in self.reports[name]["texts"] if t.get("marker")]
+            self.assertTrue(marked)
+            self.assertTrue(all(t.get("marker_lines") for t in marked))
 
     def test_image_credit_shown(self):
         r = self.reports["a"]

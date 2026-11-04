@@ -61,6 +61,10 @@ W, H, FPS = gate.V3_W, gate.V3_H, gate.FPS
 SR = 48000
 VERSION = "v3"
 LAYOUT = "landscape"
+# オーナーが承認した基本の形（2026-11-04「基本的な構成はいい感じ」）: 左に小さな見出し＋大きな見出し（文字に合わせたマーカー）、
+# 右に公式ページの本物の画面（選択の青・英語なら日本語の吹き出し）。中身に合わせた型（video_templates）のカードは
+# 場面の一部で右の画面に出るだけで、この形を置き換えない（ゲート: カードは動画の半分まで）
+BASE_LAYOUT = "screen-left-headline"
 
 # 色（サイトの色: 墨 #0b1a33・青 #1d4a8f・赤 #c8221a・白。明るく清潔な見た目）
 STAGE = (243, 245, 249)  # 背景（ほぼ白の明るいグレー）
@@ -2217,12 +2221,57 @@ class TextItem:
     delay: float = 0.0
     marker: bool = False  # キーワードの下をマーカーが走る
 
+    def marker_lines(self) -> list[dict]:
+        """行ごとのマーカー（2026-11-04 オーナー「マーカーが文字の右端よりずっと先まで出ている」）。
+        実際に描いた文字の枠（行ごと・アルファで測る）にぴったり合わせ、左右の余白は小さく同じだけ（0.15em・6px・行幅の5% のいちばん小さい値）。
+        戻り値 [{"glyph": [x0, y0, x1, y1], "marker": [x0, y0, x1, y1]}]（スプライトの中の座標）"""
+        cached = getattr(self, "_marker_lines", None)
+        if cached is not None:
+            return cached
+        out = []
+        for x0, y0, x1, y1 in line_boxes(self.sprite):
+            lh, lw = y1 - y0, x1 - x0
+            pad = int(max(2, min(6, 0.15 * lh, 0.05 * lw)))
+            mh = int(lh * 0.34)
+            my = y1 - mh - int(lh * 0.06)
+            out.append({"glyph": [x0, y0, x1, y1], "marker": [x0 - pad, my, x1 + pad, my + mh]})
+        self._marker_lines = out
+        return out
+
     def bbox(self) -> list[float]:
         a = self.sprite[..., 3]
         ys, xs = np.nonzero(a > 8)
         if not len(xs):
             return [self.x, self.y, self.x, self.y]
         return [float(self.x + xs.min()), float(self.y + ys.min()), float(self.x + xs.max() + 1), float(self.y + ys.max() + 1)]
+
+
+def line_boxes(sprite: np.ndarray) -> list[tuple[int, int, int, int]]:
+    """スプライト（RGBA）の文字の行ごとの枠 (x0, y0, x1, y1)。縦に3px 以上あいた所で行を分け、行ごとに左右の端を測る"""
+    a = sprite[..., 3] > 8
+    rows = np.nonzero(a.any(axis=1))[0]
+    if not len(rows):
+        return []
+    groups, start, prev = [], int(rows[0]), int(rows[0])
+    for r in rows[1:]:
+        r = int(r)
+        if r - prev > 2:
+            groups.append([start, prev])
+            start = r
+        prev = r
+    groups.append([start, prev])
+    tall = max(b - a_ + 1 for a_, b in groups)
+    merged: list[list[int]] = []
+    for g in groups:  # 点や線だけの細い切れ端（「二」の上の線など）は隣の行に足す
+        if merged and ((g[1] - g[0] + 1) < 0.3 * tall or (merged[-1][1] - merged[-1][0] + 1) < 0.3 * tall):
+            merged[-1][1] = g[1]
+        else:
+            merged.append(list(g))
+    out = []
+    for y0, y1 in merged:
+        cols = np.nonzero(a[y0 : y1 + 1].any(axis=0))[0]
+        out.append((int(cols[0]), int(y0), int(cols[-1]) + 1, int(y1) + 1))
+    return out
 
 
 RENDERED: list[str] = []  # 動画に描いた文字すべて（数字が記事と合っているかをゲートで見る。途中の数字は描かない）
@@ -3450,9 +3499,18 @@ class Renderer:
                 k = ease_out(age / 0.5)
                 if item.marker:
                     mk = ease((age - 0.22) / 0.45)
-                    mh = int(h * 0.34)
                     if mk > 0 and k_out > 0.6:
-                        _highlight_marker(frame, item.x - 6, item.y + h - mh - int(h * 0.06) + dy_out, w + 12, mh, mk)
+                        # 行ごとに、その行の文字の幅だけ（2行の見出しの短い2行目も、その幅だけ）。左から順に走る
+                        spans = item.marker_lines()
+                        total_w = sum(m["marker"][2] - m["marker"][0] for m in spans) or 1
+                        done = mk * total_w
+                        for m in spans:
+                            mx0, my0, mx1, my1 = m["marker"]
+                            k_line = min(1.0, max(0.0, done / max(mx1 - mx0, 1)))
+                            done -= mx1 - mx0
+                            if k_line <= 0:
+                                break
+                            _highlight_marker(frame, item.x + mx0, item.y + my0 + dy_out, mx1 - mx0, my1 - my0, k_line)
                 edge = 60.0
                 col = np.clip((k * (w + edge) - np.arange(w, dtype=np.float32)) / edge, 0, 1)
                 blend(frame, item.sprite, item.x, item.y + int((1 - k) * 16) + dy_out, k_out, col_alpha=col)
@@ -3562,7 +3620,8 @@ def text_records(plan: Plan) -> list[dict]:
             # 文字の面積は吹き出しの中の文字の所だけ（余白・影は数えない）。かぶりの検査はこの枠＋余白で十分（英文の行の外に置いている）
             bbox = [float(x + 26), float(y + 16), float(x + spr.shape[1] - CALLOUT_SH * 2 - 26), float(y + spr.shape[0] - CALLOUT_SH * 2 - 16)]
             rows.append(("subtitle", sub.text, spr, bbox, w0, w1))
-    for role, text, spr, bbox, t0, t1 in rows:
+    markers = {i: item.marker_lines() for i, item in enumerate(plan.texts) if item.marker}
+    for idx, (role, text, spr, bbox, t0, t1) in enumerate(rows):
         if role in ("hook", "keyword", "sub", "conclusion", "eyebrow"):
             box = list(COL)
         elif role in ("source", "credit"):
@@ -3593,6 +3652,12 @@ def text_records(plan: Plan) -> list[dict]:
                 "t1": round(t1, 3),
             }
         )
+        if idx in markers:  # マーカーの枠と文字の枠（行ごと・画面の座標）。ゲートがはみ出しを見る
+            it = plan.texts[idx]
+            out[-1]["marker"] = True
+            out[-1]["marker_lines"] = [{"glyph": [it.x + m["glyph"][0], it.y + m["glyph"][1], it.x + m["glyph"][2], it.y + m["glyph"][3]],
+                                        "marker": [it.x + m["marker"][0], it.y + m["marker"][1], it.x + m["marker"][2], it.y + m["marker"][3]]}
+                                       for m in markers[idx]]  # fmt: skip
     return out
 
 
@@ -3994,6 +4059,7 @@ def make_video(
                 "safe": list(SAFE_V3),
                 "frame": [W, H],
                 "layout": LAYOUT,
+                "base_layout": BASE_LAYOUT,
                 "subtitles": [{"t0": round(x.t0, 3), "t1": round(x.t1, 3), "text": x.text} for x in plan.subtitles],
                 "fps": fps,
                 "events": plan.events,

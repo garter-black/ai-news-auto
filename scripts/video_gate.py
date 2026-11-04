@@ -569,11 +569,43 @@ def check_timeline(report: dict, duration: float, result: GateResult) -> None:
         result.reasons.append("最初の1秒に「つかみ」の文字が出ていない")
 
 
+MARKER_OVERFLOW_SHARE = 0.06  # マーカーが文字の端からはみ出してよいのは、行の文字の幅の 6% まで
+MARKER_OVERFLOW_PX = 12  # …かつ 12px まで（2026-11-04 オーナー「マーカーが文字の右端よりずっと先まで出ている」）
+
+
+def marker_problems(texts: list[dict]) -> list[str]:
+    """左の見出しのマーカー（薄い青）が、行ごとの実際の文字の幅に合っているか。左右どちらかのはみ出しが
+    行の文字の幅の 6% か 12px を超えたら不合格。マーカーを描いたのに行ごとの記録が無いのも不合格"""
+    out, metrics = [], []
+    for t in texts or []:
+        if not t.get("marker"):
+            continue
+        lines = t.get("marker_lines") or []
+        if not lines:
+            out.append(f"マーカーの行ごとの枠の記録が無い（「{str(t.get('text', ''))[:12]}」）")
+            continue
+        for k, ln in enumerate(lines, 1):
+            g, m = ln["glyph"], ln["marker"]
+            gw = max(g[2] - g[0], 1)
+            left, right = g[0] - m[0], m[2] - g[2]
+            allow = min(MARKER_OVERFLOW_SHARE * gw, MARKER_OVERFLOW_PX)
+            metrics.append(max(left, right))
+            if left > allow or right > allow:
+                side = "右" if right >= left else "左"
+                over = max(left, right)
+                out.append(f"マーカーが「{str(t.get('text', ''))[:12]}」の{k}行目の文字の{side}端から {over:.0f}px（{over / gw:.0%}）はみ出す（{allow:.0f}px まで）")
+            if m[3] <= g[1] or m[1] >= g[3]:
+                out.append(f"マーカーが「{str(t.get('text', ''))[:12]}」の{k}行目の文字に重なっていない")
+    return out
+
+
 def check_texts(report: dict, result: GateResult) -> None:
     texts = report.get("texts") or []
     if not texts:
         result.reasons.append("文字の配置記録（texts）が無い")
         return
+    for p in marker_problems(texts):
+        result.reasons.append(f"文字: {p}")
     safe = tuple(report.get("safe") or SAFE)
     for t in texts:
         name = f"{t.get('role')}「{str(t.get('text', ''))[:14]}」"
@@ -649,6 +681,7 @@ V3_SEPARATION = (12.0, 18.0)  # 声と BGM の差（声が出ている間の RMS
 V3_TITLE_MAX = 2.0  # つかみ（題）の文字は 2 秒までに消す
 V3_TEXT_RATIO = 0.18  # 1フレームの中で文字が占める面積の上限
 V3_MAX_FONTS = 2
+CARD_SHARE_MAX = 0.5  # 2026-11-04 オーナー承認の基本の形（左の見出し＋右の公式ページ）を、カードが置き換えない
 V3_CAPTION_ROLES = ("hook", "keyword", "sub", "conclusion", "source", "credit", "subtitle", "eyebrow", "logo")
 # 飾りの線・帯・枠を描く呼び出し。v3 の描画ではマスク（_mask_*）・比較グラフの棒（data_bars）・カーソル（_cursor_sprite）以外で禁止
 LINT_CALLS = {"line", "rectangle", "rounded_rectangle", "polygon", "draw_rect", "hline", "vline", "drawbox"}
@@ -1072,6 +1105,12 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
     m["qa_geometry"] = not geo
     for p in geo:
         result.reasons.append(f"v3: {p}")
+    # 基本の形（左の見出し＋右の公式ページ）: カード（グラフ・写真・型のカード）が右の画面を占めるのは動画の半分まで
+    card_sec = sum(max(0.0, float(L.get("t1", 0)) - float(L.get("t0", 0))) for L in report.get("ladders") or []) + \
+        sum(max(0.0, float(c.get("t1", 0)) - float(c.get("t0", 0))) for c in report.get("charts") or [])
+    m["v3_card_share"] = round(card_sec / max(end, 1), 3)
+    if m["v3_card_share"] > CARD_SHARE_MAX:
+        result.reasons.append(f"v3: 右の画面の {m['v3_card_share']:.0%} がカード（公式ページの画面が基本の形。{CARD_SHARE_MAX:.0%} まで）")
     # 左の列の見出し・キーワード（同じ言葉の繰り返し・名詞1つだけは不合格。2026-11-04）と、最初の5〜8秒で何のニュースか分かるか
     for p in label_problems(sv3) + opening_problems(sv3, article):
         result.reasons.append(f"v3: {p}")
