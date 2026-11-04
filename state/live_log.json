@@ -345,6 +345,9 @@
     "gemini-4-carbon-cybersecurity-model": {
       "liveAt": "2026-10-28T17:05:17+00:00"
     },
+    "gemini-cost-per-task-routing": {
+      "liveAt": "2026-11-04T03:30:35+00:00"
+    },
     "gemini-edit-files-directly": {
       "liveAt": "2026-10-29T16:23:20+00:00"
     },
