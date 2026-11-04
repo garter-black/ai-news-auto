@@ -3393,7 +3393,8 @@
         "reposts": 0,
         "impressions": 0,
         "clicks": 0
-      }
+      },
+      "visits": 1
     },
     "poll-20261103": {
       "style": "poll",
