@@ -1169,9 +1169,30 @@ def api(method: str, path: str, params: dict) -> dict:
         raise RuntimeError(f"Threads API {error.code}: {error.read().decode()[:300]}") from error
 
 
-def publish(token: dict, text: str, link: str, article: dict | None = None) -> dict:
-    """Threads 公式 API で出す（Buffer が無いときの予備）。出す直前にルールの門番を通す"""
+def meta_existing_post(token: dict, article: dict | None, fetch=None) -> str:
+    """Threads 公式 API で、自分の直近の投稿に同じ記事（/articles/<slug>）があればその ID（1記事1投稿。S8・S20）。
+    読めなければ RuntimeError（確かめられない → 出さない。2026-11-04 一貫性の点検: Buffer の経路と同じ基準）"""
+    slug = str((article or {}).get("slug") or "")
+    if not slug:
+        return ""
+    fetch = fetch or api
+    data = fetch("GET", f"{token['user_id']}/threads", {"fields": "id,text,link_attachment_url,timestamp", "limit": 50, "access_token": token["access_token"]})
+    if not isinstance(data, dict) or not isinstance(data.get("data"), list):
+        raise RuntimeError("Threads API: 自分の投稿の一覧を読めません（二重投稿を確かめられないので出しません）")
+    needle = f"/articles/{slug}"
+    for row in data["data"]:
+        row = row or {}
+        if needle in f"{row.get('text') or ''} {row.get('link_attachment_url') or ''}":
+            return str(row.get("id") or "")
+    return ""
+
+
+def publish(token: dict, text: str, link: str, article: dict | None = None, fetch=None) -> dict:
+    """Threads 公式 API で出す（Buffer が無いときの予備）。出す直前にルールの門番を通し、同じ記事の投稿がもう無いかを確かめる"""
     sns_rules.enforce("threads", text, [], article, source="threads_post.publish")
+    if existing := meta_existing_post(token, article, fetch):
+        log(f"  [threads] 同じ記事の投稿がもうあります（{existing}）。二重に出しません")
+        return {"id": existing, "permalink": "", "duplicate": True}
     user_id, access_token = token["user_id"], token["access_token"]
     container = api("POST", f"{user_id}/threads", {
         "media_type": "TEXT",
@@ -1706,6 +1727,9 @@ class DuplicatePost(RuntimeError):
 
 # 実行の中で読んだ Buffer の投稿（チャンネル → [(id, 本文)]）。作ったものは足していく（同じ実行で二度作らない）
 _BUFFER_RECENT: dict[str, list[tuple[str, str]]] = {}
+_BUFFER_RECENT_AT: dict[str, float] = {}
+# 読んでからこの秒数を過ぎたら、作る直前に読み直す（同時に動いたほかのワークフローが作った投稿を見落とさない。2026-11-04 一貫性の点検）
+RECENT_POSTS_MAX_AGE_SEC = 90
 RECENT_POSTS_FIELDS = "id status dueAt text metadata { ... on ThreadsPostMetadata { thread { text } } ... on TwitterPostMetadata { thread { text } } }"
 
 
@@ -1720,7 +1744,7 @@ def post_needle(article: dict | None, kind: str) -> str:
 
 def recent_channel_posts(api_key: str, channel_id: str, gql=None) -> list[tuple[str, str]]:
     """このチャンネルの、前後48時間の予約中・送信中・出した投稿（id, 本文と返信をつないだ文）。実行の中で1回だけ Buffer を読む"""
-    if channel_id in _BUFFER_RECENT:
+    if channel_id in _BUFFER_RECENT and time.time() - _BUFFER_RECENT_AT.get(channel_id, time.time()) <= RECENT_POSTS_MAX_AGE_SEC:
         return _BUFFER_RECENT[channel_id]
     gql = gql or buffer_graphql
     now = datetime.now(timezone.utc)
@@ -1734,6 +1758,7 @@ def recent_channel_posts(api_key: str, channel_id: str, gql=None) -> list[tuple[
             thread = ((node.get("metadata") or {}).get("thread")) or []
             found.append((node.get("id", ""), "\n".join([node.get("text") or ""] + [t.get("text") or "" for t in thread])))
     _BUFFER_RECENT[channel_id] = found
+    _BUFFER_RECENT_AT[channel_id] = time.time()
     return found
 
 

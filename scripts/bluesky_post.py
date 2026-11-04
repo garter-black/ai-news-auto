@@ -225,6 +225,13 @@ def existing_uri(session: dict, link: str, fetcher=None) -> str:
         post = item.get("post") or {}
         if needle in json.dumps(post.get("record") or {}, ensure_ascii=False) or needle in json.dumps(post.get("embed") or {}, ensure_ascii=False):
             return post.get("uri", "")
+    # 公開のフィードは反映が数分遅れることがある（速報の Bluesky 投稿と通常の Bluesky の実行が重なったとき）。
+    # 自分のサーバー（PDS）の記録そのものも読む（書いた直後から見える。2026-11-04 一貫性の点検）
+    if session.get("did"):
+        repo = urllib.parse.quote(session["did"])
+        for rec in fetcher(f"{PDS}/com.atproto.repo.listRecords?repo={repo}&collection=app.bsky.feed.post&limit=50").get("records") or []:
+            if needle in json.dumps(rec.get("value") or {}, ensure_ascii=False):
+                return rec.get("uri", "")
     return ""
 
 

@@ -130,11 +130,12 @@ def grammar_problems(text: str) -> list[str]:
 
 
 def descriptor_problems(text: str) -> list[str]:
-    """よく知られた会社への無理な説明（「AI半導体のNVIDIAが」）。headline_normalize の判定を使う（読めなければ見ない）"""
+    """よく知られた会社への無理な説明（「AI半導体のNVIDIAが」）。headline_normalize の判定を使う。
+    読めなければ不合格（確かめられない検査を合格にしない。2026-11-04 一貫性の点検）"""
     try:
         import headline_normalize as hn  # noqa: PLC0415
-    except Exception:  # noqa: BLE001
-        return []
+    except Exception as error:  # noqa: BLE001
+        return [f"[ルール9] 会社名の説明の検査を動かせません（headline_normalize: {type(error).__name__}）"]
     out = []
     for line in str(text or "").splitlines():
         for m in hn._descriptor_matches(line.removeprefix(SUMMARY)):
@@ -495,13 +496,14 @@ def check_language(text: str) -> list[str]:
 
 
 def product_launch(article: dict) -> bool:
-    """製品の発表の記事か（scripts/images.py の判定と同じ。読み込めなければ False）"""
+    """製品の発表の記事か（scripts/images.py の判定と同じ）。判定できなければ True（製品として扱い、AI の画像を使わせない。
+    確かめられない検査を合格にしない。2026-11-04 一貫性の点検）"""
     try:
         import images  # noqa: PLC0415
 
         return bool(images.product_launch(article))
     except Exception:  # noqa: BLE001
-        return False
+        return True
 
 
 def uses_article_photo(url: str, article: dict) -> bool:
@@ -557,6 +559,10 @@ def check_sports(article: dict | None, text: str) -> list[str]:
     return [] if ok else [f"[ルール4] スポーツは日本のスポーツだけ（{why}）"]
 
 
+class PostingStateUnknown(RuntimeError):
+    """投稿の記録を読めない（1記事1投稿を確かめられない → 出さない。RuntimeError なので呼ぶ側は次の回にやり直す）"""
+
+
 def already_posted(platform: str, article: dict | None, kind: str, state: dict | None = None, extra: dict | None = None) -> bool:
     """この記事をこの SNS にもう出したか（state/threads_posted.json・state/bluesky_extra.json）"""
     slug = str((article or {}).get("slug") or "")
@@ -565,8 +571,11 @@ def already_posted(platform: str, article: dict | None, kind: str, state: dict |
     if state is None:
         try:
             state = json.loads(STATE_PATH.read_text("utf-8"))
-        except (OSError, ValueError):
-            state = {}
+        except FileNotFoundError:
+            state = {}  # 記録がまだ無い（初めての投稿）
+        except (OSError, ValueError) as error:
+            # 記録が壊れていて読めない → 出したかを確かめられないので出さない（S20。次の回にやり直す）
+            raise PostingStateUnknown(f"投稿の記録 {STATE_PATH.name} を読めません: {type(error).__name__}") from error
     entry = (state.get("posted") or {}).get(slug) or {}
     channels = entry.get("channels") or {}
     if platform == "threads":
@@ -578,8 +587,10 @@ def already_posted(platform: str, article: dict | None, kind: str, state: dict |
     if extra is None:
         try:
             extra = json.loads(BLUESKY_EXTRA_PATH.read_text("utf-8"))
-        except (OSError, ValueError):
+        except FileNotFoundError:
             extra = {}
+        except (OSError, ValueError) as error:
+            raise PostingStateUnknown(f"Bluesky の記録 {BLUESKY_EXTRA_PATH.name} を読めません: {type(error).__name__}") from error
     return bool(channels.get("bluesky") or (extra.get(slug) or {}).get("uri"))
 
 

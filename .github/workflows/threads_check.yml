@@ -10,6 +10,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: main  # 最新の投稿の記録を読む（S20）
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"

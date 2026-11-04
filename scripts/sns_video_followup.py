@@ -431,7 +431,7 @@ def run(now: datetime | None = None, env: dict | None = None, plan_only: bool = 
         log(f"[video-followup] 段の見張りをとばしました: {type(error).__name__}")
     apply_converted(state, posted)
     results += publish_queued(state, posted, now, f, creator=creator)
-    results += publish_extra_queued(state, now, f, creator=creator)
+    results += publish_extra_queued(state, now, f, creator=creator, posted=posted)
     save_state(state)
     if f["post"] and f["breaking_followup"]:
         out = post_one(state, now, f, poster or post_video, only_breaking=True)
@@ -562,17 +562,22 @@ def _eligible_default(slug: str) -> bool:
     return (ARTICLES / f"{slug}.json").exists()
 
 
+class RemoteRecordUnknown(RuntimeError):
+    """main の最新の記録を読めなかった（確かめられない → 作らない。S20）"""
+
+
 def remote_queued(slug: str) -> dict:
     """main の最新の state/sns_video.json にある、この記事の送った記録（ほかの実行が先に送っていないか。2026-11-04 Kimi K3 の二重投稿のあと）。
-    読めなければ {}（その場合も Buffer の確かめ threads_post.ensure_not_duplicate が止める）"""
+    Actions の中で読めなければ RemoteRecordUnknown（S20「確かめられなければ作らない」。呼ぶ側は次の回に回す）。
+    手元で手で動かすときは読まない（Buffer の確かめ threads_post.ensure_not_duplicate が止める）"""
     if os.environ.get("GITHUB_ACTIONS") != "true":
         return {}
     try:
         subprocess.run(["git", "fetch", "-q", "--depth", "1", "origin", "main"], cwd=ROOT, check=True, capture_output=True, timeout=60)
         out = subprocess.run(["git", "show", "origin/main:state/sns_video.json"], cwd=ROOT, check=True, capture_output=True, text=True, timeout=30).stdout
         data = json.loads(out)
-    except Exception:  # noqa: BLE001
-        return {}
+    except Exception as error:  # noqa: BLE001
+        raise RemoteRecordUnknown(f"main の記録を読めません: {type(error).__name__}") from error
     q = (data.get("queued") or {}).get(slug) or {}
     extra = (data.get("extraQueued") or {}).get(slug) or {}
     return q if (q.get("status") == "created" or any((q.get("channels") or {}).values())) else (extra if extra.get("status") == "created" else {})
@@ -652,7 +657,14 @@ def publish_queued(state: dict, posted: dict, now: datetime, f: dict, creator=No
             issue(slug, q["why"])
             out.append({"slug": slug, **q})
             continue
-        theirs = remote(slug)
+        try:
+            theirs = remote(slug)
+        except RemoteRecordUnknown as error:
+            # 確かめられない → 作らない（S20）。順番を保つため、この回の残りも次の回に回す
+            q["deferred"] = str(error)[:200]
+            log(f"[video-followup] {slug}: {error}。二重投稿を確かめられないので次の回に回します")
+            out.append({"slug": slug, **q})
+            break
         allowed = {x for ids in ((rec.get("pending") or {}).get("allowDuplicateOf") or {}).values() for x in ids}
         if theirs and allowed and (theirs.get("channels") or {}).get("threads", theirs.get("id")) in allowed:
             # main の記録の Threads の投稿はオーナー承認で消したもの → 出し直す（SNS ごとの重複は Buffer の確かめが止める）
@@ -803,24 +815,30 @@ def queue_fix(apply: bool = False, now: datetime | None = None, api_key: str | N
     apply_converted(state, posted)
     f = flags()
     rows += publish_queued(state, posted, now, f)
-    rows += publish_extra_queued(state, now, f)
+    rows += publish_extra_queued(state, now, f, posted=posted)
     save_state(state)
     POSTED.write_text(json.dumps(posted, ensure_ascii=False, indent=2) + "\n", "utf-8")
     return rows
 
 
-def publish_extra_queued(state: dict, now: datetime, f: dict, creator=None, issue=None) -> list[dict]:
-    """Threads はもう出ていて、X・Facebook だけ写真の予約を下書きに戻した記事を、動画つきで出す（動画ができしだい・元の時刻より後）"""
+def publish_extra_queued(state: dict, now: datetime, f: dict, creator=None, issue=None, posted: dict | None = None) -> list[dict]:
+    """Threads はもう出ていて、X・Facebook だけ写真の予約を下書きに戻した記事を、動画つきで出す（動画ができしだい・元の時刻より後）。
+    publish_queued と同じ基準（2026-11-04 一貫性の点検）: 動画は検査に合格した版（qa_ok・S23）だけ、ownerHold の記事は自動で出さない"""
     out: list[dict] = []
     if not f.get("post"):
         return out
     creator = creator or create_queued
     issue = issue or missing_issue
+    posted = posted if posted is not None else load_json(POSTED, {"posted": {}})
     for slug, item in (state.get("extraQueued") or {}).items():
         if item.get("status") in ("created", "skipped"):
             continue
+        if ((posted.get("posted") or {}).get(slug) or {}).get("ownerHold"):
+            out.append({"slug": slug, "extra": True, "status": "waiting", "why": "オーナーの確認待ち（ownerHold）"})
+            continue
         v = (state.get("videos") or {}).get(slug) or {}
-        urls = v.get("urls") or {}
+        versions = v.get("versions") or {}
+        urls = {k: u for k, u in (v.get("urls") or {}).items() if (versions.get(k) or {}).get("ok") and qa_ok(versions.get(k))}
         slot = _parse((item.get("pending") or {}).get("slot") or "") or now
         if not urls:
             if (v and not will_retry(v) and v.get("status") not in ("started",)) or now - slot > timedelta(hours=give_up_h(item, v)):
@@ -888,7 +906,7 @@ def requeue(slug: str, services: list[str], slot: datetime | None = None, api_ke
                                                "paused": {k: {"id": old.get(k, ""), "ok": True} for k in services}}
     apply_converted(state, posted)
     POSTED.write_text(json.dumps(posted, ensure_ascii=False, indent=2) + "\n", "utf-8")
-    out = publish_extra_queued(state, now, flags())
+    out = publish_extra_queued(state, now, flags(), posted=posted)
     save_state(state)
     return {"slug": slug, "services": services, "result": out}
 
