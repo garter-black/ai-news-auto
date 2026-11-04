@@ -35,6 +35,10 @@ def main() -> int:
     if "--list" in sys.argv:
         print("\n".join(cmds))
         return 0
+    if not (ROOT / "node_modules").exists():
+        # npm ci をしていないジョブ（記事づくり・SNS など）から git_safe_push が呼ぶとき。Python のテストだけ動かす（データの門はこちら）
+        print("[deploy-tests] node_modules が無いので node のテストは飛ばします（公開の回では全部動きます）", flush=True)
+        cmds = [c for c in cmds if not c.startswith("node")]
     failed = []
     for cmd in cmds:
         print(f"[deploy-tests] {cmd}", flush=True)

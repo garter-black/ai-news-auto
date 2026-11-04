@@ -84,6 +84,40 @@ class RegeneratedProductTest(unittest.TestCase):
         self.assertGreaterEqual(src.count("retire_articles.forget_products("), 2)
 
 
+class TodayCaseTest(unittest.TestCase):
+    def test_regenerated_product_with_redirect_record_is_cleaned_by_sync(self):
+        """2026-11-04 の再現: 転送の記録がある製品（chatgpt-enterprise）を products.py が作り直す → 同期で記録が消え、
+        LiveDataTest の条件（製品ページがある slug に転送の記録が無い）を満たす"""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            prods = root / "content" / "products"
+            prods.mkdir(parents=True)
+            retired = root / "content" / "retired.json"
+            retired.write_text(json.dumps({"articles": {}, "products": {"chatgpt-enterprise": {"reason": "no-sources", "redirect": "chatgpt"},
+                                                                         "jev": {"reason": "no-sources"}}}), "utf-8")
+            for slug in ("chatgpt", "chatgpt-enterprise"):  # 作り直された
+                (prods / f"{slug}.json").write_text("{}", "utf-8")
+            with patch.object(retire_articles, "RETIRED", retired):
+                retire_articles.forget_products(sorted(p.stem for p in prods.glob("*.json")))  # products.py の同期と同じ呼び方
+            left = json.loads(retired.read_text("utf-8"))["products"]
+            self.assertEqual(list(left), ["jev"])
+            self.assertFalse(set(left) & {p.stem for p in prods.glob("*.json")})
+
+
+class DeployListTest(unittest.TestCase):
+    def test_pre_push_list_is_exactly_the_deploy_workflow_list(self):
+        """push 前の門（git_safe_push → deploy_tests）と公開の検査は同じ一覧（ワークフローのファイル）を使う。取りこぼしがあれば落とす"""
+        import re  # noqa: PLC0415
+
+        import deploy_tests  # noqa: PLC0415
+
+        wf = (ROOT / ".github" / "workflows" / "deploy_cloudflare.yml").read_text("utf-8")
+        lines = {m.group(1).strip() for m in re.finditer(r"(?m)^\s*(?:-\s*)?(?:run:\s*)?((?:node --test|node scripts/test_\w+\.mjs|python3? -m unittest)\b.*)$", wf)}
+        self.assertEqual(set(deploy_tests.commands()), lines)
+        self.assertEqual(len(re.findall(r"python3? -m unittest|node --test", wf)),
+                         sum(len(re.findall(r"python3? -m unittest|node --test", c)) for c in deploy_tests.commands()))
+
+
 class LiveDataTest(unittest.TestCase):
     def test_retired_products_point_at_live_pages(self):
         store = json.loads((ROOT / "content" / "retired.json").read_text("utf-8"))

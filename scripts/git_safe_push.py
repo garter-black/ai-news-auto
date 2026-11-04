@@ -355,7 +355,7 @@ def push(remote: str, branch: str) -> bool:
 
 
 def safe_push(*, remote: str = "origin", branch: str = "main", attempts: int = 6, strict: bool = False,
-              regen: list[str] | None = None, sleep=time.sleep) -> int:
+              regen: list[str] | None = None, sleep=time.sleep, gate=None) -> int:
     root = repo_root()
     abort_leftovers()
     regen = regen or []
@@ -391,6 +391,9 @@ def safe_push(*, remote: str = "origin", branch: str = "main", attempts: int = 6
                     log("最新の main にこの回の変更はもう入っています（push するものはありません）")
                     pushed = True
                     break
+            if gate is not None and not gate(root):
+                log("::error::公開と同じテストに通らないので push しません（壊れたデータを main に入れない。scripts/deploy_tests.py）")
+                return 1
             if push(remote, branch):
                 log(f"push しました（{attempt} 回目）: {git_out('rev-parse', '--short', 'HEAD')}")
                 pushed = True
@@ -417,6 +420,17 @@ def safe_push(*, remote: str = "origin", branch: str = "main", attempts: int = 6
                     git("stash", "drop", "-q", f"stash@{{{index}}}", check=False)
 
 
+def deploy_gate(root: Path) -> bool:
+    """push の直前に、公開（deploy_cloudflare.yml）と同じテストを載せ直した中身で動かす（2026-11-04 オーナー「直すだけでなく予防して」）。
+    テストの一覧は scripts/deploy_tests.py がワークフローのファイルから毎回読む（一覧は1か所）。SAFE_PUSH_NO_GATE=1 で止められる"""
+    if os.environ.get("SAFE_PUSH_NO_GATE") == "1":
+        return True
+    proc = subprocess.run([sys.executable, str(root / "scripts" / "deploy_tests.py")], cwd=root, capture_output=True, text=True)
+    if proc.returncode != 0:
+        log((proc.stdout + proc.stderr)[-3000:])
+    return proc.returncode == 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--remote", default="origin")
@@ -429,7 +443,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if args.wait_idle:
         wait_idle(args.wait_idle, args.wait_max)
-    return safe_push(remote=args.remote, branch=args.branch, attempts=args.attempts, strict=args.strict, regen=args.regen)
+    return safe_push(remote=args.remote, branch=args.branch, attempts=args.attempts, strict=args.strict, regen=args.regen,
+                     gate=deploy_gate)
 
 
 if __name__ == "__main__":

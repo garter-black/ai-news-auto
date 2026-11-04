@@ -223,6 +223,21 @@ class EndToEndTest(unittest.TestCase):
         proc = subprocess.run(["git", "pull", "-q", "--rebase", "origin", "main"], cwd=self.ours, capture_output=True)
         self.assertNotEqual(proc.returncode, 0)
 
+    def test_failing_deploy_gate_blocks_the_push(self):
+        """公開と同じテストに通らない中身は main に入れない（2026-11-04: データの変更で公開が落ち続けた件の予防）"""
+        self.other_job_pushes()
+        self.our_run_commits()
+        before = subprocess.run(["git", "--git-dir", str(self.remote), "rev-parse", "main"], capture_output=True, text=True).stdout
+        os.chdir(self.ours)
+        self.assertEqual(gsp.safe_push(sleep=lambda _s: None, gate=lambda _root: False), 1)
+        after = subprocess.run(["git", "--git-dir", str(self.remote), "rev-parse", "main"], capture_output=True, text=True).stdout
+        self.assertEqual(before, after)
+        self.assertEqual(self.read(self.ours, "state/scratch.json"), {"n": 1})  # 手元の変更は戻っている
+
+    def test_main_uses_the_deploy_gate(self):
+        src = (Path(gsp.__file__)).read_text("utf-8")
+        self.assertIn("gate=deploy_gate", src)
+
     def test_merges_and_pushes_without_losing_the_new_article(self):
         self.other_job_pushes()
         self.our_run_commits()
