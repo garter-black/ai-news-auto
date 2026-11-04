@@ -77,10 +77,10 @@
     },
     "20954e3ac0ff87f7": {
       "first": "2026-11-03T18:26:13.990511+00:00",
-      "next": "2026-11-03T21:26:13.990511+00:00",
+      "next": "2026-11-04T03:24:14.913779+00:00",
       "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
       "title": "CWE-bench v2: More coverage, quality, and transparency",
-      "tries": 1,
+      "tries": 2,
       "url": "https://huggingface.co/blog/cwe-bench"
     },
     "3d509e27bae229a3": {
@@ -91,12 +91,20 @@
       "tries": 1,
       "url": "https://openai.com/index/jill-hazelbaker-chief-corporate-affairs-officer"
     },
+    "60e8d80f76ce81f6": {
+      "first": "2026-11-04T00:13:44.468528+00:00",
+      "next": "2026-11-04T03:13:44.468528+00:00",
+      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "title": "マネタリーベース（10月）",
+      "tries": 1,
+      "url": "http://www.boj.or.jp/statistics/boj/other/mb/mb.htm"
+    },
     "7f05432d1620715c": {
       "first": "2026-11-03T17:45:37.679713+00:00",
-      "next": "2026-11-03T20:45:37.679713+00:00",
+      "next": "2026-11-04T03:10:08.220973+00:00",
       "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
       "title": "Learn the rules: The hacker mindset",
-      "tries": 1,
+      "tries": 2,
       "url": "https://www.microsoft.com/en-us/research/podcast/learn-the-rules-the-hacker-mindset/"
     },
     "9824d9cb50fa7b55": {
@@ -117,10 +125,10 @@
     },
     "bc4177032a04e266": {
       "first": "2026-11-03T18:23:56.532871+00:00",
-      "next": "2026-11-03T21:23:56.532871+00:00",
-      "reason": "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください",
+      "next": "2026-11-04T03:20:15.499229+00:00",
+      "reason": "題名で料金・価格を約束しているのに、本文に金額（円・ドル・無料など）が無い。元記事の金額を書くか、題名から料金の話を外す",
       "title": "Palette: teaching a small model to build decks in your design language",
-      "tries": 1,
+      "tries": 2,
       "url": "https://huggingface.co/blog/ibm-research/palette-deck-building"
     },
     "ce9b39562dd42cfe": {
@@ -13540,158 +13548,6 @@
   "quality_log": [
     {
       "accepted": true,
-      "at": "2026-11-02T06:51:26.343786+00:00",
-      "attempt": 0,
-      "id": "b26279cb5133a651",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 53.6,
-        "avg_sentence": 34.0,
-        "long_share": 0.033,
-        "max_paragraph": 120,
-        "paragraphs": 19,
-        "sentences": 30
-      },
-      "score": 100,
-      "source": "ntt-news-ai",
-      "title": "AI検索時代における地域の中小企業・店舗の集客力向上を支援する「おまかせネット集客サポート」を提供開始"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T06:51:34.066692+00:00",
-      "attempt": 1,
-      "id": "54a1ebf3c41048cd",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 54.2字・60字超の文が 29% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 126.6字・最長 181字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 126.6,
-        "avg_sentence": 54.2,
-        "long_share": 0.286,
-        "max_paragraph": 181,
-        "paragraphs": 9,
-        "sentences": 21
-      },
-      "score": 100,
-      "source": "ntt-news",
-      "title": "自己株式の取得状況に関するお知らせ（会社法第165条第2項の規定による定款の定めに基づく自己株式の取得）"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T06:51:37.733774+00:00",
-      "attempt": 0,
-      "id": "54a1ebf3c41048cd",
-      "kind": "broad",
-      "model": "",
-      "problems": [
-        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（54.2→54.2字）"
-      ],
-      "readability": {
-        "avg_paragraph": 126.6,
-        "avg_sentence": 54.2,
-        "long_share": 0.286,
-        "max_paragraph": 181,
-        "paragraphs": 9,
-        "sentences": 21
-      },
-      "score": 100,
-      "source": "ntt-news",
-      "title": "自己株式の取得状況に関するお知らせ（会社法第165条第2項の規定による定款の定めに基づく自己株式の取得）"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T07:11:25.411693+00:00",
-      "attempt": 1,
-      "id": "4c4b5e3ad9bf29d0",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 60.1字・60字超の文が 33% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 96.2,
-        "avg_sentence": 60.1,
-        "long_share": 0.333,
-        "max_paragraph": 188,
-        "paragraphs": 15,
-        "sentences": 24
-      },
-      "score": 100,
-      "source": "google-cloud-blog-ja",
-      "title": "ARTEX とその同類: エージェント型攻撃フレームワークの登場"
-    },
-    {
-      "accepted": true,
-      "at": "2026-11-02T07:11:29.083439+00:00",
-      "attempt": 0,
-      "id": "4c4b5e3ad9bf29d0",
-      "kind": "ai",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 105.5,
-        "avg_sentence": 29.8,
-        "long_share": 0.019,
-        "max_paragraph": 199,
-        "paragraphs": 15,
-        "sentences": 53
-      },
-      "score": 100,
-      "source": "google-cloud-blog-ja",
-      "title": "ARTEX とその同類: エージェント型攻撃フレームワークの登場"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T07:11:38.242968+00:00",
-      "attempt": 1,
-      "id": "d898b87514cc41e2",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "未向けの「こどもNISA」→「未成年のお客様」の脱落による表現の不自然さがある"
-      ],
-      "readability": {
-        "avg_paragraph": 95.8,
-        "avg_sentence": 49.6,
-        "long_share": 0.276,
-        "max_paragraph": 190,
-        "paragraphs": 15,
-        "sentences": 29
-      },
-      "score": 90,
-      "source": "rakuten",
-      "title": "国内（証券単体）最多！楽天証券、証券総合口座数1,500万口座突破のお知らせ"
-    },
-    {
-      "accepted": false,
-      "at": "2026-11-02T07:11:45.793558+00:00",
-      "attempt": 2,
-      "id": "d898b87514cc41e2",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [
-        "文が長い（1文の平均 60.0字・60字超の文が 41% / 基準 平均45字以下・60字超20%以下）。1文は50字以内を目安に2文に分け、1文に言いたいことは1つにする（内容と文字数は減らさない）",
-        "段落が長い（平均 165.0字・最長 205字 / 基準 平均120字以下・最長220字以下）。1段落は1〜3文にし、数字が3つ以上並ぶところは箇条書きにする（内容と文字数は減らさない）"
-      ],
-      "readability": {
-        "avg_paragraph": 165.0,
-        "avg_sentence": 60.0,
-        "long_share": 0.409,
-        "max_paragraph": 205,
-        "paragraphs": 8,
-        "sentences": 22
-      },
-      "score": 100,
-      "source": "rakuten",
-      "title": "国内（証券単体）最多！楽天証券、証券総合口座数1,500万口座突破のお知らせ"
-    },
-    {
-      "accepted": true,
       "at": "2026-11-02T07:11:50.053760+00:00",
       "attempt": 0,
       "id": "d898b87514cc41e2",
@@ -20125,6 +19981,128 @@
       "score": 18,
       "source": "hugging-face-blog",
       "title": "StateBench: Testing how language models track state changes over long documents"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T00:02:48.300681+00:00",
+      "attempt": 1,
+      "id": "7f05432d1620715c",
+      "kind": "ai",
+      "model": "gemini-3.5-flash",
+      "problems": [
+        "「法律の思考実験ゲーム」→ 元記事では「No Vehicles in the Park」を内容モデレーションをテーマにしたゲームと説明しており、法律のゲームという記述は元記事と矛盾する。",
+        "「総額5,800万ドル（約5800万ドル）」→ 同じ金額を「約」で重複させており、表記として不自然。",
+        "「単に機械的なルールを厳格に当てはめてユーザーの手間を増やすと、かえってルールを回避する行動を誘発する恐れがあります」→ 元記事にない一般論を編集部の見解として明示せず書いている。",
+        "「2001年9月11日...通信が停止した経験をきっかけにセキュリティ技術のキャリアへと進みました」→ 元記事は9.11後に人材探しが自分に及んだと述べるのみで、因果関係の断定は言い過ぎ。",
+        "「日本のIT現場にも通じる」「日本のIT担当者や開発者にとっても…機会が増えています」→ 元記事に日本の状況への言及はなく、根拠の無い一般化。"
+      ],
+      "readability": {
+        "avg_paragraph": 66.4,
+        "avg_sentence": 60.8,
+        "long_share": 0.375,
+        "max_paragraph": 118,
+        "paragraphs": 22,
+        "sentences": 24
+      },
+      "score": 72,
+      "source": "microsoft-research-blog",
+      "title": "Learn the rules: The hacker mindset",
+      "warnings": [
+        "見出しが48字（目安40字以内）。一覧・カードでは前半だけを出す",
+        "初めて出たところで言い換えていない略語（CGC・DEF・CON）"
+      ]
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T00:10:08.220927+00:00",
+      "attempt": 2,
+      "id": "7f05432d1620715c",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "microsoft-research-blog",
+      "title": "Learn the rules: The hacker mindset"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T00:12:12.476396+00:00",
+      "attempt": 1,
+      "id": "60e8d80f76ce81f6",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "boj",
+      "title": "マネタリーベース（10月）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T00:13:44.468478+00:00",
+      "attempt": 2,
+      "id": "60e8d80f76ce81f6",
+      "kind": "broad",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "boj",
+      "title": "マネタリーベース（10月）"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T00:16:04.474511+00:00",
+      "attempt": 1,
+      "id": "bc4177032a04e266",
+      "kind": "ai",
+      "model": "cloudflare:@cf/openai/gpt-oss-120b",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "hugging-face-blog",
+      "title": "Palette: teaching a small model to build decks in your design language"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T00:20:15.499154+00:00",
+      "attempt": 2,
+      "id": "bc4177032a04e266",
+      "kind": "ai",
+      "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+      "problems": [
+        "題名で料金・価格を約束しているのに、本文に金額（円・ドル・無料など）が無い。元記事の金額を書くか、題名から料金の話を外す"
+      ],
+      "readability": {
+        "avg_paragraph": 183.4,
+        "avg_sentence": 45.9,
+        "long_share": 0.139,
+        "max_paragraph": 297,
+        "paragraphs": 9,
+        "sentences": 36
+      },
+      "score": null,
+      "source": "hugging-face-blog",
+      "title": "Palette: teaching a small model to build decks in your design language"
+    },
+    {
+      "accepted": false,
+      "at": "2026-11-04T00:24:14.913745+00:00",
+      "attempt": 1,
+      "id": "20954e3ac0ff87f7",
+      "kind": "ai",
+      "model": "gemini-3.5-flash-lite",
+      "problems": [
+        "公開前の門: 本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を1500字以上にしてください"
+      ],
+      "score": null,
+      "source": "hugging-face-blog",
+      "title": "CWE-bench v2: More coverage, quality, and transparency"
     }
   ],
   "short_text_retry": {
