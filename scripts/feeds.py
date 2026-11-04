@@ -756,11 +756,65 @@ def _decode(data: bytes) -> str:
 
 JINA_READER = "https://r.jina.ai/"
 _jina_key_dead: str | None = None          # この実行で鍵が使えないと分かった理由（以後は鍵なしで読む）
-_robots_cache: dict[str, urllib.robotparser.RobotFileParser | None] = {}
+_robots_cache: dict = {}  # origin → Robots / _DisallowAll / None（制限なし）
 API_FETCH_MAX_PER_RUN = 8                  # Claude API の web fetch はこの実行で何回まで
 API_FETCH_TOOL = "web_fetch_20260318"
 _api_fetch_used = 0
 _api_fetch_blocked_hosts: set[str] = set()  # API でも読めなかったホスト（この実行ではもう試さない）
+
+
+class Robots:
+    """robots.txt の一般のクローラー（*）向けの決まり（RFC 9309）。一番長く一致した規則が勝ち、同じ長さなら Allow。
+    Python 3.12 の urllib.robotparser は「上から最初に一致した規則」で判定するため、「Allow: /」の後の
+    「Disallow: /private/」を無視してしまう（2026-11-04 に見つけた。本番は 3.12）"""
+
+    def __init__(self, lines: list[str]):
+        groups: list[tuple[set[str], list[tuple[bool, str]]]] = []
+        agents: set[str] = set()
+        rules: list[tuple[bool, str]] = []
+        last_was_agent = False
+        for raw in lines:
+            line = raw.split("#", 1)[0].strip()
+            if ":" not in line:
+                continue
+            key, value = (x.strip() for x in line.split(":", 1))
+            key = key.lower()
+            if key == "user-agent":
+                if not last_was_agent and (agents or rules):
+                    groups.append((agents, rules))
+                    agents, rules = set(), []
+                agents.add(value.lower())
+                last_was_agent = True
+            elif key in ("allow", "disallow"):
+                last_was_agent = False
+                if value or key == "allow":
+                    rules.append((key == "allow", value))
+        if agents or rules:
+            groups.append((agents, rules))
+        self.rules = [r for a, rs in groups if "*" in a for r in rs]
+
+    @staticmethod
+    def _match(pattern: str, path: str) -> bool:
+        if not pattern:
+            return False
+        regex = "".join(".*" if c == "*" else ("$" if c == "$" and i == len(pattern) - 1 else re.escape(c)) for i, c in enumerate(pattern))
+        return re.match(regex, path) is not None
+
+    def can_fetch(self, url: str) -> bool:
+        parts = urllib.parse.urlsplit(url)
+        path = urllib.parse.unquote(parts.path or "/") + (f"?{parts.query}" if parts.query else "")
+        best: tuple[int, bool] | None = None
+        for allow, pattern in self.rules:
+            if self._match(pattern, path):
+                cand = (len(pattern), allow)
+                if best is None or cand[0] > best[0] or (cand[0] == best[0] and allow):
+                    best = cand
+        return True if best is None else best[1]
+
+
+class _DisallowAll:
+    def can_fetch(self, url: str) -> bool:
+        return False
 
 
 def robots_allows(url: str) -> bool:
@@ -769,20 +823,17 @@ def robots_allows(url: str) -> bool:
     parts = urllib.parse.urlsplit(url)
     origin = f"{parts.scheme}://{parts.netloc}"
     if origin not in _robots_cache:
-        parser: urllib.robotparser.RobotFileParser | None = urllib.robotparser.RobotFileParser()
+        parser: Robots | _DisallowAll | None
         try:
             data, _ = fetch(origin + "/robots.txt", timeout=10, accept="text/plain,*/*;q=0.5")
-            parser.parse(_decode(data[:500_000]).splitlines())
+            parser = Robots(_decode(data[:500_000]).splitlines())
         except urllib.error.HTTPError as error:
-            if 400 <= error.code < 500:
-                parser = None  # 制限なし
-            else:
-                parser.disallow_all = True
+            parser = None if 400 <= error.code < 500 else _DisallowAll()  # 4xx は制限なし、5xx は全部禁止
         except Exception:  # noqa: BLE001
-            parser.disallow_all = True
+            parser = _DisallowAll()
         _robots_cache[origin] = parser
     parser = _robots_cache[origin]
-    return parser is None or parser.can_fetch("*", url)
+    return parser is None or parser.can_fetch(url)
 
 
 def fetch_jina(url: str, timeout: int = 25, accept: str = "text/plain", check_robots: bool = True, return_format: str = "") -> tuple[bytes, str]:

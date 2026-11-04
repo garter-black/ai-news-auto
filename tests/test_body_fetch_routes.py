@@ -82,6 +82,14 @@ class JinaKeyFallbackTest(Base):
 
 
 class RobotsTest(Base):
+    def test_longest_match_wins_like_rfc9309(self):
+        rules = feeds.Robots(["User-agent: *", "Allow: /", "Disallow: /private/", "Allow: /private/ok$", "", "User-agent: other", "Disallow: /"])
+        self.assertTrue(rules.can_fetch("https://a.com/index/x"))
+        self.assertFalse(rules.can_fetch("https://a.com/private/page"))  # Python 3.12 の robotparser は ここを許してしまう
+        self.assertTrue(rules.can_fetch("https://a.com/private/ok"))
+        self.assertFalse(feeds.Robots(["User-agent: *", "Disallow: /*.pdf$"]).can_fetch("https://a.com/x/file.pdf"))
+        self.assertTrue(feeds.Robots(["User-agent: googlebot", "Disallow: /"]).can_fetch("https://a.com/"))  # * の決まりが無ければ制限なし
+
     def test_rfc9309_status_handling(self):
         for status, expected in ((403, True), (404, True), (503, False)):
             feeds._robots_cache.clear()

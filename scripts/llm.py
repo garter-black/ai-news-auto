@@ -420,10 +420,34 @@ def claude_calls_today() -> int:
     for job, models in workflow_usage_by_job().items():
         if job.endswith(TRIAL_SUFFIX) != trial:
             continue
-        total += sum(n for m, n in models.items() if m.startswith("claude:"))
+        total += sum(n for m, n in models.items() if m.startswith("claude:") and "#" not in m)
     if not trial:
-        total = max(total, sum(n for m, n in dict(_load_usage().get(_today(), {})).items() if m.startswith("claude:")))
+        total = max(total, sum(n for m, n in dict(_load_usage().get(_today(), {})).items() if m.startswith("claude:") and "#" not in m))
     return total
+
+
+# 動画（台本・画像の確認）の Claude CLI（サブスクリプション）は、ほかの仕事と別に数え、上限を大きくする（2026-11-04 オーナー
+# 「API の上限で止まるのは勿体無い」）。API の上限（CLAUDE_API_DAILY_CALLS_*）は変えない。安全のための上限は残す
+CLI_PURPOSE_CAPS = {"video": 150, "video_review": 150}
+
+
+def cli_purpose_cap(purpose: str) -> int:
+    return max(0, _env_int(f"CLAUDE_CLI_DAILY_{purpose.upper()}", CLI_PURPOSE_CAPS.get(purpose, 0)))
+
+
+def cli_purpose_calls(purpose: str) -> int:
+    """この段の Claude CLI の今日の回数（記録の名前は claude:<モデル>#<段>。試しと本番は別に数える）"""
+    trial = is_trial()
+    total = 0
+    for job, models in workflow_usage_by_job().items():
+        if job.endswith(TRIAL_SUFFIX) != trial:
+            continue
+        total += sum(n for m, n in models.items() if m.startswith("claude:") and m.endswith(f"#{purpose}"))
+    return total
+
+
+def cli_usage_key(model: str, purpose: str) -> str:
+    return f"{model}#{purpose}" if model.startswith("claude:") and purpose in CLI_PURPOSE_CAPS else model
 
 
 def _claude_daily_max() -> int:
@@ -708,6 +732,42 @@ def _call_claude(model: str, system_instruction: str, prompt: str, schema: dict,
     return text
 
 
+def _call_claude_images(model: str, system_instruction: str, prompt: str, images: list[bytes], schema: dict) -> str:
+    """Claude CLI に画像のファイルを読ませて JSON を返させる（画像の確認を API の上限のあとも続けるため）。
+    使える道具は Read だけ・読める場所は画像を置いた一時フォルダだけ"""
+    name = model.split(":", 1)[1]
+    with tempfile.TemporaryDirectory(prefix="claude-img-") as tmp:
+        paths = []
+        for i, img in enumerate(images):
+            path = Path(tmp) / f"frame{i + 1:02d}.jpg"
+            path.write_bytes(img)
+            paths.append(str(path))
+        body = (f"次の {len(paths)} 枚の画像ファイルを、この順に Read で全部読んでから答えてください（画像の番号は1から）:\n"
+                + "\n".join(f"{i + 1}. {p}" for i, p in enumerate(paths)) + "\n\n" + prompt)
+        cmd = [
+            "claude", "-p", "--output-format", "json", "--model", name, "--system-prompt", system_instruction,
+            "--tools", "Read", "--allowedTools", "Read", "--add-dir", tmp,
+            "--strict-mcp-config", "--setting-sources", "", "--disable-slash-commands", "--no-session-persistence",
+            "--max-turns", str(len(paths) + 4), "--json-schema", json.dumps(_json_schema(schema), ensure_ascii=False),
+        ]
+        try:
+            proc = subprocess.run(cmd, input=body, capture_output=True, text=True, timeout=max(CLAUDE_TIMEOUT, 600), env=_cli_env(), cwd=tmp)
+        except subprocess.TimeoutExpired as error:
+            raise RuntimeError("画像の確認（CLI）が時間切れ") from error
+    out, err = proc.stdout.strip(), proc.stderr.strip()
+    try:
+        wrapper = json.loads(out.splitlines()[-1] if out else "")
+    except (json.JSONDecodeError, IndexError) as error:
+        _cli_check_limits(out + " " + err)
+        raise RuntimeError(f"画像の確認（CLI）の出力を読めません (exit {proc.returncode}): {(err or out)[:200]}") from error
+    if wrapper.get("is_error") or wrapper.get("subtype") != "success":
+        detail = f"{wrapper.get('subtype')} {wrapper.get('result') or ''} {err}"
+        _cli_check_limits(detail)
+        raise RuntimeError(f"画像の確認（CLI）エラー: {detail.strip()[:200]}")
+    structured = wrapper.get("structured_output")
+    return json.dumps(structured, ensure_ascii=False) if isinstance(structured, dict) else str(wrapper.get("result") or "")
+
+
 def _call_codex(model: str, system_instruction: str, prompt: str, schema: dict) -> str:
     name = model.split(":", 1)[1]
     with tempfile.TemporaryDirectory() as tmp:
@@ -783,9 +843,9 @@ def claude_unavailable_message(purpose: str, last_error: Exception | None = None
         used, cap = s["calls_today"].get(purpose, 0), _daily_calls_cap(purpose)
     except Exception:  # noqa: BLE001
         used, cap = 0, 0
-    cli_used, cli_cap = claude_calls_today(), _claude_daily_max()
+    cli_used, cli_cap = (cli_purpose_calls(purpose), cli_purpose_cap(purpose)) if purpose in CLI_PURPOSE_CAPS else (claude_calls_today(), _claude_daily_max())
     api_why = api_block_reason(purpose) or ""
-    at_cap = (cap and used >= cap) or "上限" in api_why
+    at_cap = ((cap and used >= cap) or "上限" in api_why) and (not claude_enabled() or cli_used >= cli_cap)
     cli_note = f"・CLI {cli_used}/{cli_cap} 回" if claude_enabled() else "・CLI なし"
     if at_cap:
         return f"Claude の1日の上限に達しました（{label} {used}/{cap} 回{cli_note}）"
@@ -1358,6 +1418,16 @@ def generate_json_images(system_instruction: str, prompt: str, images: list[byte
 
     model, why = api_choose(purpose)
     if not model:
+        # API が使えない（上限など）→ Claude CLI（サブスクリプション）で画像を読ませて確かめる（2026-11-04 オーナー「止まるのは勿体無い」）
+        cli = _claude_models()
+        if cli and cli_purpose_calls(purpose) < cli_purpose_cap(purpose):
+            text = _call_claude_images(cli[0], system_instruction, prompt, images, schema)
+            _record_usage(cli_usage_key(cli[0], purpose))
+            log(f"   [llm] Claude CLI {cli[0]}（{purpose}・画像{len(images)}枚・API は {why}）")
+            data = parse_json_lenient(text)
+            if missing := missing_keys(data, schema):
+                raise RuntimeError(f"画像の確認の答えに {missing} が無い")
+            return data, cli[0]
         raise RuntimeError(claude_unavailable_message(purpose) if "上限" in why else f"画像の確認に Claude API を使えない（{why}）")
     content: list[dict] = []
     for img in images:
@@ -1439,7 +1509,11 @@ def generate_json(
             if tier != "write":
                 _exhausted.add(model)  # 本文の段の予備は、速報（quality）がまだ使える
             continue
-        if model.startswith("claude:") and purpose != "breaking" and claude_calls_today() >= _claude_daily_max():
+        if model.startswith("claude:") and purpose in CLI_PURPOSE_CAPS:
+            if cli_purpose_calls(purpose) >= cli_purpose_cap(purpose):
+                log(f"   [llm] {model}: {PURPOSE_LABELS.get(purpose, purpose)}の CLI の今日の上限 {cli_purpose_cap(purpose)} 回に達したので使わない")
+                continue
+        elif model.startswith("claude:") and purpose != "breaking" and claude_calls_today() >= _claude_daily_max():
             log(f"   [llm] {model}: 今日の上限 {_claude_daily_max()} 回に達したので使わない")
             continue
         use_schema = True
@@ -1456,7 +1530,7 @@ def generate_json(
                 else:
                     text = _call_gemini(model, system_instruction, prompt, schema, temperature, max_output_tokens, use_schema,
                                         timeout_ms=WRITE_TIMEOUT_MS if tier == "write" else None)
-                _record_usage(model)
+                _record_usage(cli_usage_key(model, purpose))
                 data = parse_json_lenient(text)
                 missing = missing_keys(data, schema)
                 if missing:

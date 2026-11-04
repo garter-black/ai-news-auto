@@ -94,6 +94,10 @@ jobs:
           LLM_DEFAULT_VISIBILITY: high
           LLM_DEFAULT_PURPOSE: video
           CLAUDE_API_LEDGER: video
+          # Claude CLI（サブスクリプション）の回数は state/llm_usage_video.json に、台本・画像の確認ごとに数える（API の上限のあとも続ける）
+          LLM_WORKFLOW: video
+          CLAUDE_CLI_DAILY_VIDEO: ${{ vars.CLAUDE_CLI_DAILY_VIDEO || '150' }}
+          CLAUDE_CLI_DAILY_VIDEO_REVIEW: ${{ vars.CLAUDE_CLI_DAILY_VIDEO_REVIEW || '150' }}
           CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
           CLAUDE_API_DAILY_CALLS_VIDEO: ${{ vars.CLAUDE_API_DAILY_CALLS_VIDEO }}
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
@@ -181,7 +185,7 @@ jobs:
         if: ${{ always() && (github.event.inputs.plan_only != 'true' || github.event.inputs.queue_fix == 'apply' || github.event.inputs.requeue != '' || github.event.inputs.repost != '' || github.event.inputs.adopt_video != '') }}
         continue-on-error: true
         run: |
-          files="state/sns_video.json state/claude_api_usage_video.json state/buffer_calls/video.json"
+          files="state/sns_video.json state/claude_api_usage_video.json state/buffer_calls/video.json state/llm_usage_video.json"
           python scripts/sns_video_followup.py --sync-posted || true
           [ -n "$(git status --porcelain state/threads_posted.json state/bluesky_extra.json)" ] && changed_posted=1 || changed_posted=""
           changed=""; for f in $files; do [ -f "$f" ] && [ -n "$(git status --porcelain "$f")" ] && changed="$changed $f"; done
@@ -196,6 +200,7 @@ jobs:
             [ -f "$RUNNER_TEMP/sns_video.json" ] && cp "$RUNNER_TEMP/sns_video.json" state/sns_video.json
             [ -f "$RUNNER_TEMP/video.json" ] && mkdir -p state/buffer_calls && cp "$RUNNER_TEMP/video.json" state/buffer_calls/video.json
             [ -f "$RUNNER_TEMP/claude_api_usage_video.json" ] && python scripts/llm.py --merge-api-usage "$RUNNER_TEMP/claude_api_usage_video.json" state/claude_api_usage_video.json
+            [ -f "$RUNNER_TEMP/llm_usage_video.json" ] && python scripts/llm.py --merge-usage-counts "$RUNNER_TEMP/llm_usage_video.json" state/llm_usage_video.json && git add state/llm_usage_video.json
             # 動画つきで送った・出さなかった記録を、最新の投稿履歴（threads_posted.json）に写す（何度写しても同じ）
             python scripts/sns_video_followup.py --sync-posted || true
             git add state/threads_posted.json state/bluesky_extra.json 2>/dev/null

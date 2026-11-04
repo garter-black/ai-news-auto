@@ -607,10 +607,59 @@ class VideoClaudeOnlyTest(unittest.TestCase):
                 patch.object(llm, "models_for", side_effect=lambda tier: called.append(tier) or ["gemini-x"]), \
                 patch.object(llm, "api_ledger_summary", return_value={"calls_today": {"video": 60}}), \
                 patch.object(llm, "_daily_calls_cap", return_value=60), patch.object(llm, "api_block_reason", return_value="video の今日の安全上限 60 回に到達"), \
-                patch.object(llm, "claude_calls_today", return_value=40), patch.object(llm, "_claude_daily_max", return_value=40), \
+                patch.object(llm, "cli_purpose_calls", return_value=150), patch.object(llm, "cli_purpose_cap", return_value=150), \
                 patch.object(llm, "claude_enabled", return_value=True):
             with self.assertRaises(RuntimeError) as caught:
                 llm.generate_json("s", "p", {"type": "OBJECT", "properties": {"a": {"type": "STRING"}}, "required": ["a"]}, purpose="video")
         self.assertEqual(called, [])  # 無料のモデルの一覧すら作らない
-        self.assertIn("Claude の1日の上限に達しました（台本用 60/60 回・CLI 40/40 回）", str(caught.exception))
+        self.assertIn("Claude の1日の上限に達しました（台本用 60/60 回・CLI 150/150 回）", str(caught.exception))
         self.assertNotIn("GEMINI", str(caught.exception))
+
+
+class VideoCliAfterApiCapTest(unittest.TestCase):
+    """（2026-11-04 オーナー「止まるの勿体無い」）動画の API の上限のあとは Claude CLI（サブスクリプション）で続ける。
+    CLI はほかの仕事の上限（CLAUDE_DAILY_MAX）と別に、台本・画像の確認ごとに数える（既定 150 回）"""
+
+    SCHEMA = {"type": "OBJECT", "properties": {"a": {"type": "STRING"}}, "required": ["a"]}
+
+    def test_script_continues_on_cli_even_when_shared_cli_cap_is_used(self):
+        import llm
+
+        with patch.object(llm, "_try_anthropic_api", return_value=None), patch.object(llm, "_claude_models", return_value=["claude:sonnet"]), \
+                patch.object(llm, "claude_calls_today", return_value=40), patch.object(llm, "_claude_daily_max", return_value=40), \
+                patch.object(llm, "cli_purpose_calls", return_value=12), patch.object(llm, "_call_claude", return_value='{"a": "ok"}') as cli, \
+                patch.object(llm, "_record_usage") as rec:
+            data, model = llm.generate_json("s", "p", self.SCHEMA, purpose="video")
+        self.assertEqual((data, model), ({"a": "ok"}, "claude:sonnet"))
+        self.assertTrue(cli.called)
+        rec.assert_called_with("claude:sonnet#video")  # 台本用として別に数える
+
+    def test_cli_cap_for_video_is_large_and_separate(self):
+        import llm
+
+        with patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("CLAUDE_CLI_DAILY_VIDEO", None)
+            self.assertGreaterEqual(llm.cli_purpose_cap("video"), 150)
+            self.assertGreaterEqual(llm.cli_purpose_cap("video_review"), 150)
+        self.assertEqual(llm.cli_usage_key("claude:sonnet", "breaking"), "claude:sonnet")
+
+    def test_image_review_falls_back_to_cli(self):
+        import llm
+
+        with patch.object(llm, "api_choose", return_value=(None, "video_review の今日の安全上限 40 回に到達")), \
+                patch.object(llm, "_claude_models", return_value=["claude:sonnet"]), patch.object(llm, "cli_purpose_calls", return_value=0), \
+                patch.object(llm, "_call_claude_images", return_value='{"a": "ok"}') as cli, patch.object(llm, "_record_usage"):
+            data, model = llm.generate_json_images("s", "p", [b"jpg"], self.SCHEMA)
+        self.assertEqual((data, model), ({"a": "ok"}, "claude:sonnet"))
+        self.assertEqual(cli.call_args.args[3], [b"jpg"])
+
+    def test_both_caps_reached_gives_clear_message(self):
+        import llm
+
+        with patch.object(llm, "_try_anthropic_api", return_value=None), patch.object(llm, "_claude_models", return_value=["claude:sonnet"]), \
+                patch.object(llm, "cli_purpose_calls", return_value=150), patch.object(llm, "cli_purpose_cap", return_value=150), \
+                patch.object(llm, "claude_enabled", return_value=True), patch.object(llm, "api_ledger_summary", return_value={"calls_today": {"video": 60}}), \
+                patch.object(llm, "_daily_calls_cap", return_value=60), patch.object(llm, "api_block_reason", return_value="video の今日の安全上限 60 回に到達"):
+            with self.assertRaises(RuntimeError) as caught:
+                llm.generate_json("s", "p", self.SCHEMA, purpose="video")
+        self.assertIn("Claude の1日の上限に達しました（台本用 60/60 回・CLI 150/150 回）", str(caught.exception))
