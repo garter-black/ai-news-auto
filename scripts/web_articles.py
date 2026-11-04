@@ -1593,6 +1593,17 @@ def _guess_source(url: str) -> str:
     return ""
 
 
+def fast_lang(feed: dict, meta: dict, url: str) -> str:
+    """速報レーンの資料の言語。発信元の設定 → 依頼の lang → 日本のドメイン（.jp）なら ja → en。
+    （2026-11-05 アララの不正アクセスの日本語の発表が「英語の資料」として扱われ、日本の読者向けの章を求められて作れなかった）"""
+    if feed.get("lang"):
+        return str(feed["lang"])
+    if str(meta.get("lang") or "") in ("ja", "en"):
+        return str(meta["lang"])
+    host = urllib.parse.urlsplit(url).netloc.lower()
+    return "ja" if host.endswith(".jp") else "en"
+
+
 def build_fast_items(urls: list[str], meta_raw: str, state: dict, now: datetime) -> tuple[list[dict], dict]:
     """速報レーンの候補（feeds.parse_feed と同じ形）と、作る前に決まった結果 {id: result}"""
     fast_lane.register_sources(feeds)
@@ -1645,7 +1656,7 @@ def build_fast_items(urls: list[str], meta_raw: str, state: dict, now: datetime)
                 "published_at": None,
                 "source_name": (feed.get("name") if feed and not secondary and slug != "radar-official" else "")
                 or str(meta.get("sourceName") or "") or (outlet or {}).get("name") or fast_lane.primary_name(url) or urllib.parse.urlsplit(url).netloc,
-                "source_slug": slug or (f"radar-{outlet['host']}" if outlet else "fast"), "lang": feed.get("lang", "en"), "image": None, "priority": 1,
+                "source_slug": slug or (f"radar-{outlet['host']}" if outlet else "fast"), "lang": fast_lang(feed, meta, url), "image": None, "priority": 1,
             }
         if secondary or public_interest.is_press_url(url):
             # 報道が出典（レーダーで一次情報が見つからなかった話題）は作らない（2026-11-04 W31。Worker 側の門をすり抜けた依頼も

@@ -251,6 +251,16 @@ class FlagsTest(unittest.TestCase):
             self.assertTrue(r.check_link("threads", "本文", reply, [], ["/articles/acme-tool"]))
 
 
+class FastLangTest(unittest.TestCase):
+    def test_japanese_notice_is_japanese(self):
+        import web_articles
+
+        self.assertEqual(web_articles.fast_lang({}, {"lang": "ja"}, "https://www.arara.com/x.pdf"), "ja")
+        self.assertEqual(web_articles.fast_lang({}, {}, "https://www.biccamera.co.jp/x"), "ja")
+        self.assertEqual(web_articles.fast_lang({}, {}, "https://openai.com/x"), "en")
+        self.assertEqual(web_articles.fast_lang({"lang": "en"}, {"lang": "ja"}, "https://x.jp/"), "en")
+
+
 class IndicatorsTest(unittest.TestCase):
     def test_offline_build(self):
         sent = at(5, 12, 15)
