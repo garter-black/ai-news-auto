@@ -56,7 +56,7 @@ def fake_runner(level: str, results: dict, calls: list, qa: bool = True, advance
             ok = bool(results.get(v))
             if ok:
                 (level_dir / f"{vl._out_name(slug, v)}.mp4").write_bytes(b"fake")
-            q = {"geometry": qa, "vision": qa, "version": 1, **({"vision_how": how} if how else {})}
+            q = {"geometry": qa, "vision": qa, "version": 1, "v3": qa, **({"vision_how": how} if how else {})}
             rep = {"slug": slug, "total": 40.0, "base_layout": layout, "gate": {"ok": ok, "reasons": [] if ok else [f"{level} の検査に落ちた"], "qa": q}}
             if fail_reason:
                 rep["failReason"] = fail_reason
@@ -254,8 +254,9 @@ class GoldenRenderTest(unittest.TestCase):
         self.assertEqual(r["level"], "L3A")
         self.assertEqual(r.get("base_layout"), vl.BASE_LAYOUT)
         self.assertTrue(r["gate"]["qa"]["geometry"], r["gate"]["reasons"])
-        if r["gate"]["ok"]:
-            self.assertTrue(vl.qa_ok(r))
+        # L3A はまだカード（画面の道具）を作らないので v3 の形に届かず、投稿には使えない（qa.v3 = False）
+        self.assertFalse(r["gate"]["qa"].get("v3"))
+        self.assertFalse(vl.qa_ok(r))
 
     def test_review_unavailable_is_a_fail(self):
         out = self.run_l3a(lambda versions: ({}, "画像の確認に Claude API も CLI も使えない"))

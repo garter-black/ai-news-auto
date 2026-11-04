@@ -735,6 +735,8 @@ def qa_ok(report: dict, env: dict | None = None) -> bool:
         return False
     if rep.get("base_layout") and rep.get("base_layout") != BASE_LAYOUT:
         return False
+    if env.get("SNS_VIDEO_REQUIRE_V3", "on") != "off" and qa.get("v3") is not True:  # v3 の形（sns_video_followup.qa_ok と同じ）
+        return False
     return bool(qa.get("geometry")) and qa.get("vision") is True
 
 

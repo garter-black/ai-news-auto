@@ -1775,13 +1775,26 @@ def short_script(script: dict) -> dict:
         graph = [int((script.get(k) or {}).get("beat") or 0) for k in ("ladder", "compare")] + [int(L.get("beat") or 0) for L in script.get("ladders") or []]
         chosen = [b for b in [next((b for b in graph if b and b != 1), 2 if n >= 2 else 0)] if 1 <= b <= n]
     picks = [1] + chosen if n else []
+    # カード（画面の道具）のある台本: 短い版でも道具を2種類残す（v3 の形。2026-11-04）。違う種類のカードの場面を先に選ぶ
+    card_beats: dict[int, str] = {int(c.get("beat") or 0): str(c.get("mode")) for c in script.get("cards") or [] if isinstance(c, dict) and 1 <= int(c.get("beat") or 0) <= n}
+    if len(set(card_beats.values())) >= 2:
+        keep: list[int] = []
+        for b, mode in sorted(card_beats.items()):
+            if mode not in {card_beats[k] for k in keep}:
+                keep.append(b)
+        picks = sorted(dict.fromkeys([1] + keep[:2] + [b for b in chosen if b not in keep][:1]))
+        chosen = [b for b in picks if b != 1]
 
     # 30秒に届かない（読み上げが約145字未満）なら、グラフの場面 → 次の場面の順に1つ足す（短すぎて答えが薄くならないように）
     def chars(ps: list[int]) -> int:
         return len((script.get("hook") or {}).get("speech", "")) + sum(len(beats[i - 1].get("speech", "")) for i in ps) + 24
 
-    while chars(picks) > 200 and len(picks) > 2:  # 45秒に収める（締めの案内の分を残す）
-        picks.pop()
+    while chars(picks) > 200 and len(picks) > 2:  # 45秒に収める（締めの案内の分を残す）。カードの場面は落とさない
+        drop = next((b for b in reversed(picks) if b != 1 and b not in card_beats), None)
+        if drop is None or len([b for b in picks if b in card_beats]) <= 2 and drop in card_beats:
+            if drop is None:
+                break
+        picks.remove(drop)
     if chars(picks) < 145 and len(picks) < n:
         graph = [int((script.get(k) or {}).get("beat") or 0) for k in ("ladder", "compare", "units")] + [int(L.get("beat") or 0) for L in script.get("ladders") or []]
         extra = [b for b in graph if b and b not in picks] + [b for b in range(1, n + 1) if b not in picks]

@@ -83,6 +83,13 @@ class FlagOnTest(unittest.TestCase):
         short = v3.short_script(script)
         self.assertEqual([c["beat"] for c in short["cards"]], [2])
 
+    def test_short_version_keeps_two_card_kinds(self):
+        script = {"hook": {"speech": "a" * 30}, "beats": [{"speech": "b" * 60, "label": str(i)} for i in range(6)], "conclusion": {"speech": "c"},
+                  "cards": [{"beat": 2, "mode": "timeline", "rows": []}, {"beat": 4, "mode": "timeline", "rows": []}, {"beat": 5, "mode": "checklist", "rows": []}],
+                  "short_beats": [3, 6]}  # fmt: skip
+        short = v3.short_script(script)
+        self.assertEqual(sorted({c["mode"] for c in short["cards"]}), ["checklist", "timeline"])
+
     def test_normalize_for_renderer(self):
         got = v3.normalize_cards({"cards": [{"beat": 1, "mode": "specs", "rows": [{"label": "", "text": "検知", "value": ""}]}]})
         self.assertEqual(got[0]["rows"][0]["name"], "検知")
