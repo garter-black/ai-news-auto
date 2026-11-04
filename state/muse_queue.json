@@ -1,0 +1,41 @@
+{
+  "items": [
+    {
+      "slug": "kumamoto-quake-risai-online-application",
+      "url": "https://ai-tech-express.jp/articles/kumamoto-quake-risai-online-application",
+      "title": "熊本地震のり災証明書、熊本市など14市町でオンライン申請可　大津町は11月30日まで",
+      "reason": "お金・制度・政府・数字「14市町」・公式（デジタル庁）",
+      "score": 9.0,
+      "lane": "money",
+      "breaking": false,
+      "file": "news-kumamoto-quake-risai-online-application.mp4",
+      "queuedAt": "2026-11-04T16:38:37+00:00",
+      "status": "queued"
+    },
+    {
+      "slug": "yucho-bank-matsui-securities-alliance",
+      "url": "https://ai-tech-express.jp/articles/yucho-bank-matsui-securities-alliance",
+      "title": "ゆうちょ銀行、松井証券の議決権約20%を取得へ　提携で運用商品を販売",
+      "reason": "お金・制度・政府・数字「20%」・公式（ゆうちょ銀行）",
+      "score": 9.0,
+      "lane": "money",
+      "breaking": false,
+      "file": "news-yucho-bank-matsui-securities-alliance.mp4",
+      "queuedAt": "2026-11-04T16:38:37+00:00",
+      "status": "queued"
+    },
+    {
+      "slug": "ntt-fy2026-q2-results",
+      "url": "https://ai-tech-express.jp/articles/ntt-fy2026-q2-results",
+      "title": "NTT、中間決算は増収減益　通期予想を上方修正し営業利益1兆7,300億円に",
+      "reason": "お金・制度・政府・数字「7,300億円」・公式（NTT ニュースリリース）",
+      "score": 9.0,
+      "lane": "money",
+      "breaking": true,
+      "file": "news-ntt-fy2026-q2-results.mp4",
+      "queuedAt": "2026-11-04T16:38:37+00:00",
+      "status": "queued"
+    }
+  ],
+  "updatedAt": "2026-11-04T16:38:37+00:00"
+}
