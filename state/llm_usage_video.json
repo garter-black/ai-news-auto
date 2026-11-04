@@ -3,7 +3,9 @@
     "video": {
       "anthropic-api:claude-opus-5-5": 13,
       "anthropic-api:claude-sonnet-5-5": 30,
-      "claude:opus": 40
+      "claude:opus": 40,
+      "claude:sonnet#video": 8,
+      "claude:sonnet#video_review": 1
     }
   }
 }
