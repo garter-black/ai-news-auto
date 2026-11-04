@@ -453,6 +453,19 @@
       "title": "Microsoft.UI.Reactor: a C#-first way to build WinUI apps - #ifdef Windows",
       "url": "https://devblogs.microsoft.com/ifdef-windows/microsoft-ui-reactor-a-c-first-way-to-build-winui-apps/"
     },
+    "75679f5aa60bfcf8": {
+      "detectedAt": "2026-11-04T15:08:20+00:00",
+      "finishedAt": "2026-11-04T15:13:12+00:00",
+      "outcome": "created",
+      "reason": "",
+      "run": "41854623173",
+      "slug": "gpt-56-cyber-aws-govcloud",
+      "source": "openai-news",
+      "sourcePublishedAt": "2026-11-04T07:00:00+00:00",
+      "startedAt": "2026-11-04T15:12:28+00:00",
+      "title": "Daybreak Red is now available in AWS GovCloud (US-East)",
+      "url": "https://openai.com/index/daybreak-red-aws-govcloud"
+    },
     "7aba0b7952f79735": {
       "detectedAt": "2026-10-28T02:01:51+00:00",
       "finishedAt": "2026-10-28T02:08:10+00:00",

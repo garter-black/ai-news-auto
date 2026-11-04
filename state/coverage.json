@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "gpt-56-cyber-aws-govcloud",
+   "at": "2026-11-04T15:13:00.376918+00:00",
+   "title": "OpenAIのサイバー特化AI「GPT-5.6 Cyber」、AWS GovCloudで承認済み顧客向けに提供",
+   "head": "OpenAIのサイバー特化AI「GPT-5.6 Cyber」、AWS GovCloudで承認済み顧客向けに提供 | Daybreak Red is now available in AWS GovCloud (US-East)",
+   "text": "OpenAIのサイバー特化AI「GPT-5.6 Cyber」、AWS GovCloudで承認済み顧客向けに提供 | Daybreak Red is now available in AWS GovCloud (US-East) | GPT-5.6 Cyber / Daybreak Red / AWS GovCloud / Amazon Bedrock / OpenAI サイバーセキュリティ / 脆弱性調査 AI / 政府機関 AI / サイバー防御 / 生成AI / OpenAI / サイバーセキュリティ / AWS / Amazon Bedrock",
+   "urls": [
+    "https://openai.com/index/daybreak-red-aws-govcloud"
+   ]
+  },
+  {
    "slug": "openai-acquire-pierre-computer-codex",
    "at": "2026-11-04T14:40:41.806785+00:00",
    "title": "OpenAI、開発ツール企業Pierreを買収へ　Codexのコード確認機能を支える",
@@ -296,7 +306,7 @@
    "head": "CrowdStrike、AI緊急停止機能を「Falcon Guardian」に追加　Claude Coworkとも連携 | CrowdStrike launches an AI kill switch in Falcon Guardian to stop rogue internal agents, and announces a Falcon Guardian integration with Claude Cowork",
    "text": "CrowdStrike、AI緊急停止機能を「Falcon Guardian」に追加　Claude Coworkとも連携 | CrowdStrike launches an AI kill switch in Falcon Guardian to stop rogue internal agents, and announces a Falcon Guardian integration with Claude Cowork | CrowdStrike / AIキルスイッチ / Falcon Guardian / AIエージェント セキュリティ / 暴走するAI / Claude Cowork / Fiddler AI / Dreadnode / AIゲートウェイ / エージェント 緊急停止 / CrowdStrike / AIエージェント / セキュリティ / Claude Cowork / 生成AI",
    "urls": [
-    "https://www.cnbc.com/2026/11/03/crowdstrike-ai-kill-switch-rogue-agents.html"
+    "https://www.crowdstrike.com/en-us/press-releases/crowdstrike-introduces-ai-kill-switch-for-ai-safety/"
    ]
   },
   {
@@ -466,7 +476,7 @@
    "head": "kubell、法人向けストレージ「セキュアSAMBA」にMac用アプリ　Finderから直接編集 | オンラインストレージ「セキュアSAMBA」がMacのFinderから直接利用できるMac向けドライブアプリの提供を開始 – Windowsとの混在環境でもファイル共有を効率化",
    "text": "kubell、法人向けストレージ「セキュアSAMBA」にMac用アプリ　Finderから直接編集 | オンラインストレージ「セキュアSAMBA」がMacのFinderから直接利用できるMac向けドライブアプリの提供を開始 – Windowsとの混在環境でもファイル共有を効率化 | セキュアSAMBA / セキュアSAMBA Mac / Mac向けドライブアプリ / kubellストレージ / オンラインストレージ Mac / Finder クラウド / 法人向けオンラインストレージ / ファイルサーバー クラウド移行 / Windows Mac 混在 ファイル共有 / 国産オンラインストレージ / セキュアSAMBA / オンラインストレージ / Mac / クラウド / 法人向けIT",
    "urls": [
-    "https://news.mynavi.jp/techplus/article/20261103-5248905/"
+    "https://www.kubell.com/news/2026/10/sambamacdrive.html"
    ]
   },
   {
@@ -527,7 +537,7 @@
    "head": "Canva、iPad版「Affinity」を公開　描画・写真編集・レイアウトを1つのアプリに | 「Affinity for iPad」公開 スケッチから写真編集・ページ制作まで1つのアプリで",
    "text": "Canva、iPad版「Affinity」を公開　描画・写真編集・レイアウトを1つのアプリに | 「Affinity for iPad」公開 スケッチから写真編集・ページ制作まで1つのアプリで | Affinity for iPad / Affinity iPad 無料 / Canva Affinity / iPad デザインアプリ / Apple Pencil お絵かき / iPad 写真編集 RAW / iPad レイアウト アプリ / Canva AI Studio / afファイル / Photoshop 代替 iPad / Affinity / Canva / iPad / デザインアプリ / 写真編集",
    "urls": [
-    "https://news.mynavi.jp/article/20261103-5246117/"
+    "https://www.affinity.studio/ja_jp/ipad-app"
    ]
   },
   {
@@ -1105,7 +1115,7 @@
    "head": "Microsoft、Windows 11の右クリックメニューを刷新　不要項目を隠せる更新をプレビュー公開 | Windows 11の右クリックメニュー刷新、不要項目を非表示にする機能の提供開始",
    "text": "Microsoft、Windows 11の右クリックメニューを刷新　不要項目を隠せる更新をプレビュー公開 | Windows 11の右クリックメニュー刷新、不要項目を非表示にする機能の提供開始 | Windows 11 右クリックメニュー / KB5127936 / 右クリックメニュー 非表示 / コンテキストメニュー カスタマイズ / Windows 11 25H2 / Windows 11 26H2 / ViVeTool / メニューのカスタマイズ / エクスプローラー 高速化 / Shift 右クリック / Windows 11 / Microsoft / エクスプローラー / OSアップデート / KB5127936",
    "urls": [
-    "https://news.mynavi.jp/techplus/article/20261102-5224966/"
+    "https://support.microsoft.com/en-us/servicing/os/windows-11/2026/10/kb5127936-windows-11-25h2-26h2-update"
    ]
   },
   {
@@ -1198,7 +1208,7 @@
    "head": "DeepSeek、プログラミング支援AI「Super-Agent」の試作版を公開　呼ばれなくても提案 | DeepSeek open sources Super-Agent as a research prototype, a proactive coding agent it says can monitor group chats for coding issues and suggest solutions",
    "text": "DeepSeek、プログラミング支援AI「Super-Agent」の試作版を公開　呼ばれなくても提案 | DeepSeek open sources Super-Agent as a research prototype, a proactive coding agent it says can monitor group chats for coding issues and suggest solutions | Super-Agent / DeepSeek / コーディングエージェント / Claude Code / オープンソース / プログラミングAI / DeepSeek Harness / グループチャット / AIエージェント / Anthropic / DeepSeek / AIエージェント / コーディングAI / オープンソース / 生成AI",
    "urls": [
-    "https://www.bloomberg.com/news/articles/2026-11-01/deepseek-drops-enhanced-coding-agent-with-aim-to-rival-anthropic"
+    "https://github.com/deepseek-ai/dsh-superagent-prototype"
    ]
   },
   {

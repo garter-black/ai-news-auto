@@ -8429,6 +8429,17 @@
       "slug": "crimson-desert-enhanced-charting-the-unknown",
       "url": "https://news.xbox.com/ja-jp/2026/11/02/crimson-desert-charting-the-unknown/"
     },
+    "75679f5aa60bfcf8": {
+      "at": "2026-11-04T15:13:12.356934+00:00",
+      "breaking": true,
+      "major": true,
+      "mix": "enterprise_dev",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 88,
+      "section": "ai",
+      "slug": "gpt-56-cyber-aws-govcloud",
+      "url": "https://openai.com/index/daybreak-red-aws-govcloud"
+    },
     "75d4fca3ee3bc3a5": {
       "at": "2026-10-26T12:38:18.205462+00:00",
       "model": "gemini-3.5-flash-lite",
@@ -14424,26 +14435,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-02T20:12:13.259583+00:00",
-      "attempt": 0,
-      "id": "de8ee9d6403bde44",
-      "kind": "broad",
-      "model": "gemini-3.5-flash-lite",
-      "problems": [],
-      "readability": {
-        "avg_paragraph": 84.9,
-        "avg_sentence": 35.8,
-        "long_share": 0.0,
-        "max_paragraph": 181,
-        "paragraphs": 16,
-        "sentences": 38
-      },
-      "score": 100,
-      "source": "mlit-press",
-      "title": "令和８年秋の叙勲について"
-    },
     {
       "accepted": true,
       "at": "2026-11-02T20:31:24.901158+00:00",
@@ -20866,6 +20857,30 @@
         "見出しの書き方: 記号: かっこの直後に「、」",
         "見出しが42字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（SP）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T15:13:05.535593+00:00",
+      "attempt": 1,
+      "id": "75679f5aa60bfcf8",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 66.3,
+        "avg_sentence": 38.1,
+        "long_share": 0.1,
+        "max_paragraph": 128,
+        "paragraphs": 23,
+        "sentences": 40
+      },
+      "score": 88,
+      "source": "openai-news",
+      "title": "Daybreak Red is now available in AWS GovCloud (US-East)",
+      "warnings": [
+        "見出しの書き方: 記号: かっこの直後に「、」",
+        "見出しが55字（目安40字以内）。一覧・カードでは前半だけを出す"
       ]
     }
   ],

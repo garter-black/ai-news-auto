@@ -1,8 +1,8 @@
 {
   "candidates": 42,
-  "consecutive_zero": 1,
+  "consecutive_zero": 0,
   "last_zero_at": "2026-11-04T15:10:11+00:00",
-  "reason": "品質ゲート不合格: 訳されていない英文が残っている（「makes it simple for merchants to have th…」）",
-  "recovered_at": "2026-11-04T03:53:47+00:00",
+  "reason": "",
+  "recovered_at": "2026-11-04T15:13:12+00:00",
   "status": "ok"
 }
