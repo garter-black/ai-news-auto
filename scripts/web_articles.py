@@ -68,6 +68,7 @@ import pricing_scope  # noqa: E402
 import source_links  # noqa: E402
 import headline_normalize  # noqa: E402
 import pacing  # noqa: E402  1日の上限の数え方（公開中だけ）と時刻ごとの配分
+import public_interest  # noqa: E402  多くの人が読む公共性の高いニュース（台帳 A39・A40）
 import page_watch  # noqa: E402
 import persona  # noqa: E402
 import quality  # noqa: E402
@@ -212,6 +213,55 @@ def is_major(item: dict, trend_index: dedupe.Index | None = None) -> bool:
     return bool(trend_index and trend_index.entries and trend_index.find(title))
 
 
+# 公共性の枠ができる前の基準で見送った候補（主題外・お詫び・告知の足切り）を、48時間以内のものだけ1回見直す（2026-11-04〜）
+PI_REOPEN_REASONS = ("prefilter: サイトの主題外", "prefilter: 価値の薄いお知らせ（お詫び", "prefilter: 価値の薄いお知らせ（システム障害")
+PI_REOPEN_HOURS = 48
+
+
+def reopen_public_interest(state: dict, now: datetime) -> int:
+    """見送りの印を外して、この実行の公共性の判定（public_interest_pick）にもう一度かける。同じ候補は1回だけ。
+    当たらなければ通常どおり安い足切り（LLM を使わない）で見送りに戻る"""
+    done = state.setdefault("pi_reopened", {})
+    processed = state.get("processed_web") or {}
+    count = 0
+    for key, rec in list(processed.items()):
+        if key in done or not isinstance(rec, dict) or not rec.get("skipped"):
+            continue
+        if not str(rec.get("reason") or "").startswith(PI_REOPEN_REASONS):
+            continue
+        try:
+            at = datetime.fromisoformat(str(rec.get("at")))
+        except ValueError:
+            continue
+        if now - at > timedelta(hours=PI_REOPEN_HOURS):
+            continue
+        processed.pop(key)
+        done[key] = now.isoformat()
+        count += 1
+    for key, at in list(done.items()):  # 古い記録は消す（対象期間の3日を過ぎたもの）
+        try:
+            if now - datetime.fromisoformat(str(at)) > timedelta(days=4):
+                done.pop(key)
+        except ValueError:
+            done.pop(key)
+    return count
+
+
+def public_interest_pick(item: dict, left: int, signals: list[dict] | None = None) -> str | None:
+    """公共性の高い話題（情報漏えい・ミサイル・災害・リコール・詐欺・暮らしのお金の変更）として先に処理するなら、その種類。
+    幅広い話題のフィードの公式の一次情報（官公庁・会社）だけ（AI のフィード・配信・報道は対象外）。1日の残りが0なら None。
+    いま検索で急上昇している話題（state/trend_signals.json）に当たれば _trend_hit を付けて先に回す（記事の出典にはしない）"""
+    if left <= 0 or item.get("source_slug") in AI_SLUGS or item.get("fast"):
+        return None
+    if not public_interest.is_candidate(item, feeds.feed_kind(item)):
+        return None
+    if notice_reason(item) or prefilter(item):
+        return None  # お知らせ・統計の転載（A26）・告知
+    if signals and (hit := public_interest.trend_hit(item.get("title") or "", signals)):
+        item["_trend_hit"] = hit.get("title")
+    return public_interest.category(item.get("title") or "", item.get("summary") or "")
+
+
 def major_max_runs(item: dict) -> int:
     """大きなニュースを何回の実行まで再挑戦するか（本家・公式の発表は長めに粘る）"""
     return MAJOR_MAX_RUNS_TOP if feeds.source_rank(item) <= 1 else MAJOR_MAX_RUNS
@@ -242,6 +292,10 @@ def sns_likely(item: dict) -> bool:
 
 def article_purpose(item: dict, lane: str, major: bool = False) -> str:
     """Claude API のどの段で書くか（llm.API_TIERS）。速報・SNS・読者像の中心=Sonnet、ほか=Haiku（予算で上下する。Opus は使わない）"""
+    if major and item.get("_public_interest") and not public_interest.breaking_ok(item, feeds.feed_kind(item)):
+        # 公共性の枠（流出・リコール・詐欺・お金の変更）は SNS の段（Sonnet。予算が苦しい日は Haiku）。速報の段はミサイル・災害だけ。
+        # Claude API の月の上限（$95）は変えず、速報の取り分を使い切らないため（台帳 A40）
+        return "sns"
     if major:
         return "breaking"
     if lane == "ai" and sns_likely(item):
@@ -462,6 +516,8 @@ def broad_prefilter(item: dict) -> str | None:
 # 話題のニュース（Googleトレンド → state/trend_queue.json）
 # --------------------------------------------------------------------------- #
 
+# 話題の記事（関連報道を出典にする）を作るか。W31 に合わせて既定は作らない（オーナーが決め直したら TREND_FROM_PRESS=1）
+TREND_FROM_PRESS = os.environ.get("TREND_FROM_PRESS", "0") == "1"
 TREND_MIN_SOURCE_CHARS = 400
 TREND_MIN_SOURCES = 2
 TREND_MAX_SOURCES = 3
@@ -1587,8 +1643,13 @@ def build_fast_items(urls: list[str], meta_raw: str, state: dict, now: datetime)
                 or str(meta.get("sourceName") or "") or (outlet or {}).get("name") or fast_lane.primary_name(url) or urllib.parse.urlsplit(url).netloc,
                 "source_slug": slug or (f"radar-{outlet['host']}" if outlet else "fast"), "lang": feed.get("lang", "en"), "image": None, "priority": 1,
             }
+        if secondary or public_interest.is_press_url(url):
+            # 報道が出典（レーダーで一次情報が見つからなかった話題）は作らない（2026-11-04 W31。Worker 側の門をすり抜けた依頼も
+            # ここで止める。ゴリミーの記事が出典の記事が2本出ていた）。公式の発表が出たら、その URL で改めて作る
+            log(f"[fast] 報道機関の記事が出典のため作りません（W31）: {url}")
+            results[key] = {**base, "outcome": "skipped", "reason": "報道が出典（W31）"}
+            continue
         if secondary:
-            # 報道が出典（レーダーで一次情報が見つからなかった話題）。記事に「〇〇の報道によると」と書かせる
             item["secondary"] = True
             if meta.get("sourceName"):
                 item["source_name"] = str(meta["sourceName"])
@@ -1710,6 +1771,8 @@ def main() -> int:
     run_detected_at = datetime.now(timezone.utc)
     reopen_short_text(state, run_detected_at)
     prune_gate_retry(state, run_detected_at)
+    if not fast_mode and (reopened := reopen_public_interest(state, run_detected_at)):
+        log(f"[public-interest] 以前の基準で見送った候補 {reopened} 件を1回だけ見直します（主題外・お詫びの足切り。台帳 A40）")
 
     if fast_mode:
         # 速報レーン: 待たせないよう、生成・事実確認・続報の判定をすべて quality の段で行い、ほかのレーンは回さない
@@ -1816,6 +1879,11 @@ def main() -> int:
     for q in all_queue:
         trend_index.add(q["title"])
     queue = []
+    if trend_limit > 0 and not TREND_FROM_PRESS:
+        # 話題の記事は関連報道を出典にして書く作りなので、W31（事実は公式の一次情報だけ）に合わせて止める（2026-11-04）。
+        # 急上昇の話題は state/trend_signals.json の合図として、公式の候補を先に回すのに使う（scripts/public_interest.py）
+        log("[info] 話題（Googleトレンド）の記事は報道が出典になるため作りません（W31）。合図として公式の候補の順番に使います")
+        trend_limit = 0
     if trend_limit > 0:
         queue = [
             q for q in all_queue
@@ -1826,13 +1894,19 @@ def main() -> int:
 
     # --- 公式フィード（AI）と幅広い話題 ---
     major_ids: set[str] = set()
+    # 公共性の高い話題（情報漏えい・ミサイル・災害・リコール・詐欺・暮らしのお金の変更）の1日の残り（scripts/public_interest.py。台帳 A40）
+    pi_left = [max(public_interest.DAILY_CAP - public_interest.done_today(state), 0)]
+    pi_signals = public_interest.load_signals()
 
     def usable(items):
         kept = []
         for i in items:
             if not gate_retry_due(state, i["id"]):
                 continue  # 品質ゲートに落ちて再挑戦待ち（待ち時間が過ぎたら戻る）
-            if args.max_major > 0 and is_major(i, trend_index):
+            pi_cat = public_interest_pick(i, pi_left[0], pi_signals) if args.max_major > 0 else None
+            if pi_cat:
+                i["_public_interest"] = pi_cat
+            if args.max_major > 0 and (pi_cat or is_major(i, trend_index)):
                 # 大きなニュースは失敗回数ではなく実行回数で区切る（MAJOR_MAX_RUNS 回まで再挑戦）
                 if state["major_tries"].get(i["id"], 0) < major_max_runs(i):
                     major_ids.add(i["id"])
@@ -1863,10 +1937,21 @@ def main() -> int:
         ai_items = [i for i in ai_items if only_re.search(i["title"])]
         broad_items = [i for i in broad_items if only_re.search(i["title"])]
     # 大きなニュース: 本家（その企業の公式）→ 他の公式 の順、同じ順位なら新しい順
+    # 公共性の枠は、同じ順位の中でいま検索で急上昇している話題（trend_signals）に当たるものを先に
     majors = sorted(
         [i for i in ai_items + broad_items if i["id"] in major_ids],
-        key=lambda i: (feeds.source_rank(i), -i["published_at"].timestamp()),
+        key=lambda i: (feeds.source_rank(i), 0 if i.get("_trend_hit") and public_interest.TREND_FIRST else 1,
+                       public_interest.PRIORITY.get(i.get("_public_interest") or "", 9), -i["published_at"].timestamp()),
     )
+    pi_majors = [i for i in majors if i.get("_public_interest")]
+    if pi_majors:
+        log(f"[public-interest] 公共性の高い候補 {len(pi_majors)} 件（今日の残り {pi_left[0]} 本）: "
+            + " / ".join(f"{i['_public_interest']}{'（検索で急上昇）' if i.get('_trend_hit') else ''}:{i['title'][:40]}"
+                         for i in pi_majors[:6]))
+    if len(pi_majors) > pi_left[0]:
+        # 1日の残りを超える分は、この実行では作らない（見送りの印も付けない。通常のレーンにも回さず、次の実行・翌日に回す）
+        extra_ids = {i["id"] for i in pi_majors[pi_left[0]:] if not is_major(i, trend_index)}
+        majors = [i for i in majors if i["id"] not in extra_ids]
     majors = [i for n, i in enumerate(majors) if i["id"] not in {j["id"] for j in majors[:n]}]  # 同じ URL は AI 側を残す
     if fast_mode:
         majors = fast_items
@@ -2303,6 +2388,12 @@ def main() -> int:
                 mark(state, item, skipped=True, reason=f"short text {len(text)}")
                 run_status[item["id"]] = ("failed", feeds.source_rank(item))
             return
+        if item.get("_public_interest") and public_interest.source_too_short(item["_public_interest"], text):
+            # 公共性の枠で、資料が短く本文の下限に届かないもの（官公庁の短い注意喚起など）。水増しさせず、作り直しで費用も使わない
+            log(f"   [skip] 公共性の候補だが資料が短い（{len(text)}字 / 基準 {public_interest.MIN_SOURCE_CHARS}字）")
+            mark(state, item, skipped=True, reason=f"public-interest: 資料が短い {len(text)}字")
+            run_status[item["id"]] = ("failed", feeds.source_rank(item))
+            return
         if is_wire(item):
             reason = wire_precheck(item, text)
             if reason:
@@ -2332,11 +2423,16 @@ def main() -> int:
         genre, system, prompt, schema, kind, check_context, bundle = compose_with_facts(item, text, lane, related, voice_text, page)
         if retry_rec and retry_rec.get("reason"):
             prompt += quality.feedback_block([str(retry_rec["reason"])])
+        if item.get("_public_interest"):
+            prompt += public_interest.prompt_note(item["_public_interest"])  # 事件・災害・政治の書き方（台帳 A39）
 
         def build(data, model, item=item, page=page, voice_key=voice_key, genre=genre, related=related, bundle=bundle):
             if str(data.get("genre", "")).strip() not in GENRES_BY_SLUG:
                 data = {**data, "genre": genre.slug}
-            return attach_related(build_web_record(item, data, page, model, voice_key, bundle), data, related)
+            rec = attach_related(build_web_record(item, data, page, model, voice_key, bundle), data, related)
+            if item.get("_public_interest"):
+                rec["publicInterest"] = item["_public_interest"]  # 公共性の枠の印（1日の本数・門・安全情報のリンク。scripts/public_interest.py）
+            return rec
 
         started = time.time()
         if major:
@@ -2379,7 +2475,10 @@ def main() -> int:
         fresh = item.get("published_at") and item["published_at"] > datetime.now(timezone.utc) - timedelta(hours=12)
         # レーダーの話題は、公式ページの日付で発表から12時間以内と分かったときだけ速報（見出しの時刻では速報にしない）
         radar_ok = not item.get("radar") or (fresh and not item.get("published_guessed"))
-        if major and ((is_breaking(item) and fresh) or (item.get("fast") and radar_ok)) and not item.get("late") and not item.get("watch"):
+        # 公共性の枠はミサイル・災害（官公庁の発表）だけ速報にする（scripts/public_interest.py の breaking_ok。S2・S15）
+        pi_breaking = bool(item.get("_public_interest")) and public_interest.breaking_ok(item, feeds.feed_kind(item))
+        if major and ((is_breaking(item) and fresh) or (pi_breaking and fresh) or (item.get("fast") and radar_ok)) \
+                and not item.get("late") and not item.get("watch"):
             record["breaking"] = True
         if item.get("late"):
             record["late"] = True
@@ -2394,7 +2493,8 @@ def main() -> int:
         run_status[item["id"]] = ("article", record["slug"])
         mark(state, item, slug=record["slug"], model=model_name, section=lane, score=record.get("qualityScore"),
              **({"offPersona": True} if item.get("_off_persona") else {}),
-             **({"major": True} if major else {}), **({"breaking": True} if record.get("breaking") else {}))
+             **({"major": True} if major else {}), **({"breaking": True} if record.get("breaking") else {}),
+             **({"publicInterest": item["_public_interest"]} if item.get("_public_interest") else {}))
         state["major_tries"].pop(item["id"], None)
         (state.get("gate_retry") or {}).pop(item["id"], None)
         if item.get("_off_persona") and not major:

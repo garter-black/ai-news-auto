@@ -629,9 +629,57 @@ def enqueue(state: dict | None = None) -> tuple[int, int]:
     # 処理済み・キュー済みの話題は関連報道の取得自体を省く（速くするため）
     skip_state = {"processed_web": {**(state.get("processed_web") or {}), **{q: 1 for q in queued}}}
     now = datetime.now(JST).isoformat()
-    new = [{**i, "queued_at": now} for i in collect(skip_state, limit=10) if i["id"] not in queued]
+    raw = fetch_trends() + fetch_yahoo_realtime()
+    try:
+        save_signals(raw)
+    except Exception as error:  # noqa: BLE001 - 合図が書けなくても話題キューは止めない
+        print(f"[trends] 合図の書き出しに失敗: {str(error)[:120]}", file=sys.stderr)
+    new = [{**i, "queued_at": now} for i in collect(skip_state, limit=10, trends=raw) if i["id"] not in queued]
     save_queue(queue + new)
     return len(new), min(len(queue) + len(new), QUEUE_CAP)
+
+
+# いま検索で急上昇している話題の「合図」（サイトの軸で絞らない全件）。記事の出典にはしない。
+# web_articles が公式の一次情報（官公庁・会社）の候補と照らし、公共性の高い話題（情報漏えい・ミサイル・災害など）を先に回す
+# （scripts/public_interest.py・台帳 A40）。報道の本文は取らない（見出しと件数だけ）
+SIGNALS_PATH = _ROOT / "state" / "trend_signals.json"
+SIGNALS_MAX_AGE = timedelta(hours=24)
+SIGNALS_CAP = 60
+
+
+def save_signals(trends: list[dict], path: Path | None = None) -> int:
+    """急上昇ワードを合図として残す（24時間・60件まで。同じ語は新しい方）。中身が同じなら書かない（コミットを増やさない）"""
+    path = path or SIGNALS_PATH
+    try:
+        old = json.loads(path.read_text("utf-8")).get("items", [])
+    except Exception:  # noqa: BLE001
+        old = []
+    now = datetime.now(JST)
+    merged: dict[str, dict] = {}
+    for sig in old:
+        try:
+            seen = datetime.fromisoformat(str(sig.get("seen_at")))
+        except ValueError:
+            continue
+        if sig.get("title") and now - seen <= SIGNALS_MAX_AGE:
+            merged[sig["title"]] = sig
+    for t in trends:
+        title = str(t.get("title") or "").strip()
+        if not title:
+            continue
+        prev = merged.get(title)
+        merged[title] = {
+            "title": title,
+            "traffic": max(int(t.get("traffic") or 0), int((prev or {}).get("traffic") or 0)),
+            "news": [n.get("title", "") for n in (t.get("news") or [])][:3],
+            "seen_at": (prev or {}).get("seen_at") or now.isoformat(),
+        }
+    items = sorted(merged.values(), key=lambda x: x["traffic"], reverse=True)[:SIGNALS_CAP]
+    if [i["title"] for i in items] == [i.get("title") for i in old] and len(items) == len(old):
+        return len(items)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({"updated": now.isoformat(), "items": items}, ensure_ascii=False, indent=2) + "\n", "utf-8")
+    return len(items)
 
 
 # ---------------------------------------------------------------------------

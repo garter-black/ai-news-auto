@@ -43,6 +43,26 @@ const ENTERTAINMENT_EXCLUDE = new RegExp(rules.entertainmentExclude.source, rule
 const GLOBAL_EVENT = new RegExp(rules.globalEvent.source, rules.globalEvent.flags);
 const JAPAN_SPORTS = new RegExp(rules.japanSports.source, rules.japanSports.flags);
 const FOREIGN_SPORTS = new RegExp(rules.foreignSports.source, rules.foreignSports.flags);
+/** 公共性の高い話題（情報漏えい・ミサイル・災害・リコール・詐欺・暮らしのお金の変更。scripts/public_interest.py・台帳 A40） */
+const PUBLIC_INTEREST_GENRES = new Set<string>(rules.publicInterestGenres);
+const PUBLIC_INTEREST_TOPIC = new RegExp(rules.publicInterestTopic.source, rules.publicInterestTopic.flags);
+
+const PUBLIC_INTEREST_SHORT_TOPIC = new RegExp(rules.publicInterestShortTopic.source, rules.publicInterestShortTopic.flags);
+/** ミサイル・災害の記事の本文の下限（公式の発表が短いため。public_interest.SHORT_BODY） */
+const THIN_BODY_PUBLIC_INTEREST: number = rules.thinBodyPublicInterest;
+
+/** public_interest.short_ok と同じ */
+function isShortPublicInterest(article: ArticleSummary): boolean {
+  if (!PUBLIC_INTEREST_GENRES.has(article.genreSlug || "")) return false;
+  return PUBLIC_INTEREST_SHORT_TOPIC.test(`${article.title ?? ""} ${article.seoTitle ?? ""}`.normalize("NFKC"));
+}
+
+/** public_interest.focus_topic と同じ */
+function isPublicInterest(article: ArticleSummary): boolean {
+  if (!PUBLIC_INTEREST_GENRES.has(article.genreSlug || "")) return false;
+  const text = `${article.title ?? ""} ${article.seoTitle ?? ""} ${(article.tags ?? []).join(" ")}`.normalize("NFKC");
+  return PUBLIC_INTEREST_TOPIC.test(text);
+}
 
 /** persona.is_persona_topic と同じ */
 function isPersonaTopic(article: ArticleSummary): boolean {
@@ -71,6 +91,7 @@ export function isFocus(article: ArticleSummary): boolean {
   const text = `${article.title ?? ""} ${(article.tags ?? []).join(" ")}`;
   if (FOCUS_GENRES.has(article.genreSlug) || AI_TOPIC.test(text)) return true;
   if (isPersonaTopic(article)) return true;
+  if (isPublicInterest(article)) return true;
   if (ENTERTAINMENT_GENRES.has(article.genreSlug)) return isEntertainmentFocus(article);
   if (SPORTS_GENRES.has(article.genreSlug)) return isJapanSports(text);
   return false;
@@ -82,7 +103,7 @@ export function noindexReason(article: ArticleSummary): string | null {
   if (article.type === "roundup") return null;
   if (WIRE_SOURCES.has(article.channelSlug)) return "wire";
   if (CREATOR_CHANNELS.has(article.channelSlug)) return "creator-video";
-  if (article.bodyLength < THIN_BODY) return "thin";
+  if (article.bodyLength < (isShortPublicInterest(article) ? THIN_BODY_PUBLIC_INTEREST : THIN_BODY)) return "thin";
   if (!isFocus(article)) return "off-focus";
   if (!article.verdict && !article.hasJapanValue) return "no-japan-value";
   // 重複の印は記事 JSON の duplicateOf と、索引を作るときの予備の判定（lib/article-index.mjs の markDuplicates）

@@ -36,6 +36,7 @@ import headline_normalize  # noqa: E402
 import section_gate  # noqa: E402
 import news_types  # noqa: E402
 import article_style  # noqa: E402
+import public_interest  # noqa: E402  ミサイル・災害の記事の公式の安全情報のリンク（台帳 A39）
 
 # --------------------------------------------------------------------------- #
 # 設定
@@ -895,6 +896,9 @@ def write_article(record: dict) -> Path:
     # 文体の決まりのうちプログラムで直せるもの（「元記事」の言い換え・種類に合わない判定カード。scripts/article_style.py）
     for change in article_style.autofix(record):
         log(f"   [style] {change}")
+    # ミサイル・災害の記事に公式の安全情報のリンク（どの経路で書いた記事も。scripts/public_interest.py・台帳 A39）
+    for change in public_interest.autofix(record):
+        log(f"   [safety] {change}")
     ARTICLES_DIR.mkdir(parents=True, exist_ok=True)
     path = ARTICLES_DIR / f"{record['slug']}.json"
     path.write_text(

@@ -1,0 +1,43 @@
+{
+  "_doc": "公共性の高いニュースの選び方の調整値（scripts/public_interest.py が読む。台帳 A40）。数字を変えるだけで重みを変えられる。daily_cap は環境変数 PUBLIC_INTEREST_DAILY_CAP が優先。priority は小さいほど先（同じ実行で先に作る順）。kinds は一次情報として扱う発信元の種類（feeds.py の kind）。breaking は速報（すぐ SNS）にしてよい種類。trend_first=true なら、いま検索で急上昇している話題に当たる候補を先にする。short_body はミサイル・災害の本文の下限（字）。min_source_chars は流出・リコール・詐欺・お金の候補で、公式の発表の本文がこれより短ければ書かない字数",
+  "daily_cap": 4,
+  "priority": {
+    "missile": 0,
+    "disaster": 1,
+    "breach": 2,
+    "scam": 3,
+    "money": 4,
+    "recall": 5
+  },
+  "kinds": {
+    "missile": [
+      "gov"
+    ],
+    "disaster": [
+      "gov"
+    ],
+    "scam": [
+      "gov"
+    ],
+    "money": [
+      "gov"
+    ],
+    "breach": [
+      "gov",
+      "official",
+      "company"
+    ],
+    "recall": [
+      "gov",
+      "official",
+      "company"
+    ]
+  },
+  "breaking": [
+    "missile",
+    "disaster"
+  ],
+  "trend_first": true,
+  "short_body": 800,
+  "min_source_chars": 1200
+}

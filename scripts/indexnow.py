@@ -23,6 +23,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import persona  # noqa: E402  読者像（検索に出す話題の基準）
+import public_interest  # noqa: E402  公共性の高い話題（台帳 A40）
 import notice_gate  # noqa: E402  お知らせ・告知・統計の転載を作らない（公開前の門）
 import genre_focus  # noqa: E402  エンタメはビジネス・テックの目線だけ（2026-11-03）
 
@@ -193,6 +194,9 @@ def is_focus(article: dict) -> bool:
         return True
     if persona.is_persona_topic(article):
         return True
+    # 公共性の高い話題（情報漏えい・ミサイル・災害・リコール・詐欺・暮らしのお金の変更。2026-11-04 オーナー決定・台帳 A40）
+    if public_interest.focus_topic(article):
+        return True
     if article.get("genreSlug") in ENTERTAINMENT_GENRES:
         return genre_focus.entertainment_focus(article.get("title", ""), article.get("tags"))
     if article.get("genreSlug") in SPORTS_GENRES:
@@ -211,7 +215,8 @@ def noindex_reason(article: dict, dups: set[str] | frozenset = frozenset()) -> s
     if article.get("channelSlug") in CREATOR_CHANNELS:
         return "creator-video"
     body = article.get("body", "")
-    if len(body) < THIN_BODY:
+    # ミサイル・災害の記事は公式の発表が短いので下限を下げる（scripts/public_interest.py の short_ok。台帳 A40）
+    if len(body) < (public_interest.SHORT_BODY if public_interest.short_ok(article) else THIN_BODY):
         return "thin"
     if not is_focus(article):
         return "off-focus"
@@ -237,6 +242,7 @@ PUBLISH_FEEDBACK = {
         "見出しは決まった質問（「日本で使える？」「料金は？」）にせず中身の言葉にし、日本・無料・料金・使い方・始め方・使える のどれかを含める"
         "（例「日本で使えるのは12月から」「料金は月200ドルのまま」「日本の売上は1%減」）"
     ),
+    "press": "報道機関・ニュースブログの記事を出典にした記事は公開しません（事実は公式の一次情報だけ。W31）",
     "notice": "お知らせ・告知・統計の転載（認可・受章者・議事要旨・決算発表日の予告・啓発月間・出荷量など）は公開しません",
     "thin": f"本文が短すぎます。元記事にある事実だけで、背景・要点・読者への影響を補い、本文を{THIN_BODY}字以上にしてください",
 }
@@ -249,6 +255,9 @@ def publish_block_reason(article: dict) -> str | None:
     # お知らせ・告知・統計の転載（2026-11-03 オーナー決定・台帳 A26）。検索の基準（noindex_reason）とは別に、作らない
     if notice_gate.is_notice(article):
         return "notice"
+    # 報道機関・ニュースブログが出典の記事（2026-11-04 W31 をすべての経路に。scripts/public_interest.py）。作り直さず見送り
+    if public_interest.press_source_problems(article):
+        return "press"
     reason = noindex_reason(article)
     return reason if reason in PUBLISH_BLOCK else None
 
@@ -264,6 +273,8 @@ def candidate_off_focus(lane: str, title: str, summary: str = "") -> bool:
     if lane in ENTERTAINMENT_GENRES:
         return genre_focus.candidate_problem(lane, title, summary) is not None
     if lane in persona.PERSONA_EXTRA_GENRES and persona.PRIORITY_TOPIC_RE.search(text):
+        return False
+    if lane in public_interest.FOCUS_GENRES and public_interest.FOCUS_TOPIC_RE.search(public_interest._nfkc(text)):
         return False
     return True
 
@@ -294,6 +305,10 @@ def index_rules() -> dict:
         "globalEvent": _js_regex(persona.GLOBAL_EVENT_RE),
         "japanSports": _js_regex(persona.JAPAN_SPORTS_RE),
         "foreignSports": _js_regex(persona.FOREIGN_SPORTS_RE),
+        "publicInterestGenres": list(public_interest.FOCUS_GENRES),
+        "publicInterestTopic": _js_regex(public_interest.FOCUS_TOPIC_RE),
+        "publicInterestShortTopic": _js_regex(public_interest.SHORT_TOPIC_RE),
+        "thinBodyPublicInterest": public_interest.SHORT_BODY,
     }
 
 

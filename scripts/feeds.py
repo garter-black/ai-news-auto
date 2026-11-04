@@ -284,6 +284,17 @@ BROAD_FEEDS: list[dict] = [
     # エンタメ（ビジネスの目線: 決算・販売本数・産業の数字）
     {"slug": "capcom-ir", "name": "カプコン IRニュース", "url": "https://www.capcom.co.jp/ir/news/feed", "section": "entertainment", "kind": "company", "priority": 2},  # 約0.4件/日
     {"slug": "aja", "name": "日本動画協会", "url": "https://aja.gr.jp/feed", "section": "entertainment", "kind": "company", "priority": 3},  # 月数件（アニメ産業レポートなど）
+    # --- 2026-11-04 追加（多くの人が読む公共性の高いニュース。オーナー決定・台帳 A40。選び方は scripts/public_interest.py） ---
+    # robots.txt 許可・XML が読める・記事ページの本文が取れることを確かめた。
+    # 防衛省は「北朝鮮のミサイル等関連情報」の続報だけ（速報・落下推定は2行だけで本文が足りない。会談・訓練・人事は外す）
+    {"slug": "mod-news", "name": "防衛省・自衛隊", "url": "https://www.mod.go.jp/j/rss/news.xml", "section": "public", "kind": "gov", "priority": 1,
+     "include_re": "ミサイル", "exclude_re": "（速報）|落下推定|訓練|演習"},  # ミサイルの発射があった日だけ1〜3件
+    # 警察庁の新着は詐欺・サイバーの注意喚起だけ（ドローンの飛行禁止の指定・統計の定例は外す）
+    {"slug": "npa-new", "name": "警察庁", "url": "https://www.npa.go.jp/newlyarrived/rss20.xml", "section": "public", "kind": "gov", "priority": 2,
+     "include_re": "詐欺|サイバー|フィッシング|ランサム|不正アクセス|注意喚起|なりすまし"},  # 週に数件
+    # 確かめたが使えなかったもの（2026-11-04）: 個人情報保護委員会・外務省・国家サイバー統括室（cyber.go.jp）・国民生活センター・
+    #   消費者庁リコール情報サイト・国民保護ポータル（RSS なし・404・中身の無い XML）、TDnet 適時開示（robots.txt がすべて禁止）、
+    #   消防庁（RSS はあるが本文が PDF だけ・叙勲や訓練が中心）、気象庁の防災情報 XML（警報は機械向けの値で、地震・津波は scripts/quake.py の型で扱う）
 ]
 for _feed in BROAD_FEEDS:
     _feed.setdefault("lang", "ja")
