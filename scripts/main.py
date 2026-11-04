@@ -29,6 +29,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from channels import CHANNELS, Channel  # noqa: E402
 from genres import GENRES, GENRES_BY_SLUG  # noqa: E402
 from topics import is_off_topic  # noqa: E402
+import question_patterns  # noqa: E402
 import threads_hooks  # noqa: E402
 import persona  # noqa: E402
 import headline_normalize  # noqa: E402
@@ -447,6 +448,7 @@ ARTICLE_SCHEMA = {
         "body_markdown",
     ],
 }
+question_patterns.add_to_schema(ARTICLE_SCHEMA)  # 問いかけの型の候補（2026-11-04 オーナー決定。台帳 S19）
 
 
 VERDICT_STATUS = {"available", "limited", "soon", "demo"}
@@ -823,6 +825,7 @@ def build_record(entry: dict, data: dict) -> dict:
         "seoTitle": str(data.get("seo_title", "")).strip(),
         "threadsPost": normalize_body(str(data.get("threads_post", ""))).strip(),
         "threadsHook": threads_hooks.clean_hook(data.get("threads_hook")),
+        **question_patterns.record_fields(data),
         "threadsStyle": threads_hooks.POST_STYLE,
         "writingVoice": entry.get("_voice", ""),
         "lede": normalize_body(data.get("lede", "")),

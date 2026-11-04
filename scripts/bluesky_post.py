@@ -244,7 +244,8 @@ def plan(key: str, entry: dict) -> dict | None:
         return None
     article = json.loads(path.read_text("utf-8"))
     # 問いかけは Threads に出したものと同じにする（記録が無ければ話題・主役から作る）
-    text = tp.compose(article, [], breaking=bool(entry.get("breaking")), fixed_question=str(entry.get("questionText") or ""))
+    text = tp.compose(article, [], breaking=bool(entry.get("breaking")), fixed_question=str(entry.get("questionText") or ""),
+                    fixed_pattern=str(entry.get("questionPattern") or ""))
     spec = tp.ROOT / "content" / "sns_reposts" / f"{key}.json"
     if spec.exists():  # オーナーに見せて承認をもらった出し直しの文面（Threads と同じ）
         text = json.loads(spec.read_text("utf-8")).get("classic") or text

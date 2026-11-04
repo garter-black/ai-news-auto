@@ -28,6 +28,7 @@ import article_style  # noqa: E402
 import news_types  # noqa: E402
 import section_gate  # noqa: E402
 from cluster import build_clusters  # noqa: E402
+import question_patterns  # noqa: E402
 import threads_hooks  # noqa: E402
 from genres import GENRES_BY_SLUG  # noqa: E402
 from main import (  # noqa: E402
@@ -147,6 +148,7 @@ SCHEMA = {
         "body_markdown",
     ],
 }
+question_patterns.add_to_schema(SCHEMA)  # 問いかけの型の候補（台帳 S19）
 
 
 def load_articles() -> list[dict]:
@@ -319,6 +321,7 @@ def build_record(topic: str, data: dict, members: list[dict]) -> dict:
         "seoTitle": str(data.get("seo_title", "")).strip(),
         "threadsPost": normalize_body(str(data.get("threads_post", ""))).strip(),
         "threadsHook": threads_hooks.clean_hook(data.get("threads_hook")),
+        **question_patterns.record_fields(data),
         "threadsStyle": threads_hooks.POST_STYLE,
         "lede": normalize_body(data.get("lede", "")),
         "description": str(data["description"]).strip(),
