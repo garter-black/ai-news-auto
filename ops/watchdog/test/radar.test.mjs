@@ -254,7 +254,7 @@ test("すでに記事がある話題は回さない", async () => {
   assert.equal(log.covered.length, 2);
 });
 
-test("見逃しチェック・手動の依頼（state/radar_requests.json）の URL も回す（報道が出典なら secondary）", async () => {
+test("見逃しチェック・手動の依頼（state/radar_requests.json）でも、報道機関の記事が出典なら回さない（台帳 radar-no-outlet）", async () => {
   const h = harness();
   await h.run("2026-10-28T00:00:00Z");
   h.world.requests = [
@@ -263,9 +263,9 @@ test("見逃しチェック・手動の依頼（state/radar_requests.json）の 
     { url: "https://www.prnewswire.com/news-releases/x.html", title: "PR", requestedAt: "2026-10-28T00:30:00Z" },
   ];
   const log = await h.run("2026-10-28T00:33:00Z");
-  assert.equal(log.dispatched.length, 1);
-  assert.deepEqual([log.dispatched[0].sourceName, log.dispatched[0].secondary], ["Endpoints News", true]);
-  // 次の回は同じ依頼を繰り返さない
+  assert.equal(log.dispatched.length, 0);
+  assert.ok(log.noPrimary.some((n) => n.includes("報道のみ: Endpoints News")), log.noPrimary.join("\n"));
+  assert.equal(h.outbox().length, 0);
   assert.equal((await h.run("2026-10-28T00:37:00Z")).dispatched.length, 0);
 });
 

@@ -737,6 +737,14 @@ def load_requests() -> dict:
     return data
 
 
+def is_primary_request(entry: dict) -> bool:
+    """速報レーンへの依頼にしてよいか: 出典が公式（一次情報）であること。報道機関の記事・一次情報なしは不可"""
+    url = entry.get("url") or ""
+    if not url or entry.get("secondary"):
+        return False
+    return not (outlet(url) and not official(url, []))
+
+
 def add_requests(entries: list[dict], now: datetime) -> int:
     """state/radar_requests.json に足す（Worker のレーダーが読んで速報レーンに回す）。古いものは消す"""
     data = load_requests()
@@ -748,9 +756,14 @@ def add_requests(entries: list[dict], now: datetime) -> int:
                 kept.append(e)
         except (KeyError, ValueError):
             continue
+    # 報道機関の記事を出典にした依頼は置かない（他社の記事の書き直しになる。台帳の radar-no-outlet）。古い分も消す
+    kept = [e for e in kept if is_primary_request(e)]
     have = {norm_url(e["url"]) for e in kept}
     added = 0
     for e in entries:
+        if not is_primary_request(e):
+            print(f"[radar] 一次情報が無いので依頼しません（見張りのみ）: {e.get('url', '')}")
+            continue
         if norm_url(e["url"]) in have:
             continue
         kept.append({**e, "requestedAt": now.isoformat(timespec="seconds")})

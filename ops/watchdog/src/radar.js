@@ -587,7 +587,9 @@ export async function radar(env, now, deps = {}) {
       ? { url: req.url, sourceName: req.sourceName || officialOf(req.url, [], RR)?.name || outletOf(req.url, RR)?.name || "",
           secondary: Boolean(req.secondary ?? !officialOf(req.url, [], RR)), source: fastSourceFor(req.url, RR) || (officialOf(req.url, [], RR) ? "radar-official" : `radar-${outletOf(req.url, RR)?.host}`), fetched: [] }
       : await resolvePrimary(g, RR, fetchImpl);
-    if (!prim.url) {
+    // 一次情報（公式）が見つからず報道機関の記事しか無いときは回さない（他社の記事の書き直しになるため。台帳の radar-no-outlet）。
+    // 見つからなかったときと同じく、時間をおいて公式の発表が出ていないかだけ見直す（見張りとして残す）
+    if (!prim.url || prim.secondary) {
       for (const c of g) {
         const tries = (st.handled[c.id]?.tries || 0) + 1;
         st.handled[c.id] = {
@@ -595,7 +597,7 @@ export async function radar(env, now, deps = {}) {
           retryAt: new Date(now.getTime() + NO_PRIMARY_RETRY_MIN * 60000).toISOString(), title: c.title.slice(0, 80), found: c.url,
         };
       }
-      log.noPrimary.push(`${head.title.slice(0, 60)}（ページ取得 ${prim.fetched.join(",") || "なし"}）`);
+      log.noPrimary.push(`${head.title.slice(0, 60)}（${prim.secondary ? `報道のみ: ${prim.sourceName}・` : ""}ページ取得 ${prim.fetched.join(",") || "なし"}）`);
       dirty = true;
       continue;
     }

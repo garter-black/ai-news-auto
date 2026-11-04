@@ -15,33 +15,6 @@
       "secondary": false,
       "via": "manual",
       "requestedAt": "2026-11-02T04:58:43+00:00"
-    },
-    {
-      "url": "https://k-tai.watch.impress.co.jp/docs/news/2153244.html",
-      "title": "XREALが「XREAL AURA」を発表――CEOやグーグル、ソニーが語る空間コンピューティングとは",
-      "sourceName": "ケータイ Watch",
-      "secondary": true,
-      "via": "missed-check:ktai-watch",
-      "found": "https://k-tai.watch.impress.co.jp/docs/news/2153244.html",
-      "requestedAt": "2026-11-03T03:57:46+00:00"
-    },
-    {
-      "url": "https://gori.me/macbookpro/172017",
-      "title": "新型MacBook Proは「ほしい」、だけど「活かせない」のジレンマ。新モデルは買いま……",
-      "sourceName": "ゴリミー",
-      "secondary": true,
-      "via": "missed-check:gori-me",
-      "found": "https://gori.me/macbookpro/172017",
-      "requestedAt": "2026-11-03T03:57:46+00:00"
-    },
-    {
-      "url": "https://9to5google.com/2026/11/02/google-home-speaker-discount/",
-      "title": "Google Home Speaker gets first discount since June launch",
-      "sourceName": "9to5Google",
-      "secondary": true,
-      "via": "missed-check:9to5google",
-      "found": "https://9to5google.com/2026/11/02/google-home-speaker-discount/",
-      "requestedAt": "2026-11-03T03:57:46+00:00"
     }
   ]
 }

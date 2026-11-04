@@ -58,3 +58,27 @@ class PrimaryUrlShapeTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class NoOutletRequestTest(unittest.TestCase):
+    """速報レーンへの依頼（state/radar_requests.json）に、報道機関の記事を出典として入れない（台帳 W31・2026-11-04）。"""
+
+    def test_outlet_and_secondary_requests_are_dropped(self):
+        import tempfile
+        from datetime import datetime, timezone
+
+        now = datetime(2026, 11, 4, 4, 0, tzinfo=timezone.utc)
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "radar_requests.json"
+            # 前からあった報道の依頼（9to5Google）も消える
+            path.write_text('{"items": [{"url": "https://9to5google.com/2026/11/02/google-home-speaker-discount/", "secondary": true, '
+                            '"requestedAt": "2026-11-04T03:00:00+00:00"}]}', "utf-8")
+            with patch.object(radar, "REQUESTS_PATH", path):
+                added = radar.add_requests([
+                    {"url": "https://gori.me/macbookpro/172017", "title": "MacBook Pro", "sourceName": "ゴリミー", "secondary": True},
+                    {"url": "https://k-tai.watch.impress.co.jp/docs/news/2153244.html", "title": "x", "sourceName": "ケータイ Watch", "secondary": False},
+                    {"url": "https://chromestatus.com/release-notes/157", "title": "Chrome 157", "sourceName": "Chrome Platform Status", "secondary": False},
+                ], now)
+                items = radar.load_requests()["items"]
+        self.assertEqual(added, 1)
+        self.assertEqual([i["url"] for i in items], ["https://chromestatus.com/release-notes/157"])
