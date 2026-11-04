@@ -454,7 +454,9 @@ async function auditOne(browser, page, vp, theme, dela) {
         for (const e of list.getEntries()) {
           if (e.hadRecentInput) continue;
           window.__cls += e.value;
-          window.__clsEntries.push({ value: e.value, t: Math.round(e.startTime), nodes: (e.sources || []).map((s) => s.node && (s.node.id || s.node.className || s.node.nodeName)).filter(Boolean).slice(0, 3).map(String) });
+          // どこからどこへ動いたか（前→後の y・高さ、x）も残す。CI だけで起きるずれの原因を、手元で再現できなくても突き止めるため（issue #24）
+          const r = (b) => `${Math.round(b.x)},${Math.round(b.y)} ${Math.round(b.width)}x${Math.round(b.height)}`;
+          window.__clsEntries.push({ value: e.value, t: Math.round(e.startTime), nodes: (e.sources || []).map((s) => s.node && (s.node.id || s.node.className || s.node.nodeName)).filter(Boolean).slice(0, 3).map(String), rects: (e.sources || []).slice(0, 5).map((s) => `${String((s.node && (s.node.id || s.node.className || s.node.nodeName)) || "?").slice(0, 40)} ${r(s.previousRect)}→${r(s.currentRect)}`) });
         }
       }).observe({ type: "layout-shift", buffered: true });
     } catch {}
@@ -524,6 +526,9 @@ async function auditOne(browser, page, vp, theme, dela) {
     for (const e of [...new Set(ownFails)].slice(0, 6)) result.errors.push({ check: "読み込み失敗", detail: e });
     if (clsLoad.cls > CLS_LIMIT) {
       result.errors.push({ check: "レイアウトのずれ", detail: `CLS ${clsLoad.cls.toFixed(3)} > ${CLS_LIMIT} ${JSON.stringify(clsLoad.entries.map((e) => [Number(e.value.toFixed(3)), e.t, e.nodes.join("|")]))}` });
+      // 一番大きいずれの「前→後」の位置はログにだけ出す（issue の表は短く保つ）
+      const big = [...clsLoad.entries].sort((a, b) => b.value - a.value)[0];
+      if (big) console.log(`  CLS の内訳 ${page.path} ${vp.name}/${theme}: ${big.value.toFixed(3)} @${big.t}ms ${JSON.stringify(big.rects || [])}`);
     } else if (clsLoad.cls > 0.05) {
       result.warnings.push({ check: "レイアウトのずれ", detail: `CLS ${clsLoad.cls.toFixed(3)}` });
     }
