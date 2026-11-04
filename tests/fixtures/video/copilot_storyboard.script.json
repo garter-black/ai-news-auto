@@ -2,7 +2,7 @@
   "hook": {
     "text": "JetBrains AirでCopilotが今の契約のまま",
     "payoff": "契約そのまま",
-    "speech": "ジェットブレインズのアイディーイーを使う開発者に、うれしい知らせです。AIに作業を任せる新しい場所「エアー」で、いまのコパイロットの契約がそのまま使えます。",
+    "speech": "いまの契約のまま、AIに作業を任せる場所が増えます。開発ツールのジェットブレインズで、AIのコード助手コパイロットが選べるようになりました。",
     "block": "1-9",
     "target": "Select GitHub Copilot and use your existing Copilot subscription for coding tasks.",
     "ja": "いまのCopilotの契約のまま、作業を頼めます"
