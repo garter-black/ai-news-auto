@@ -3362,12 +3362,6 @@
   }
  },
  "products": {
-  "chatgpt-enterprise": {
-   "name": "ChatGPT Enterprise",
-   "reason": "no-sources",
-   "redirect": "chatgpt",
-   "retiredAt": "2026-11-04T13:05:21+09:00"
-  },
   "claude-opus-5-5": {
    "name": "Claude Opus 5.5",
    "reason": "no-sources",

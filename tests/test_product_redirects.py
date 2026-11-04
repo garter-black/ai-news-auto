@@ -69,6 +69,21 @@ class ApplyRecordsRedirectTest(unittest.TestCase):
             self.assertNotIn("bar", store["products"])
 
 
+class RegeneratedProductTest(unittest.TestCase):
+    def test_forget_products_drops_record_when_page_is_made_again(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            retired = Path(tmp) / "retired.json"
+            retired.write_text(json.dumps({"articles": {}, "products": {"foo-pro": {"reason": "no-sources", "redirect": "foo"},
+                                                                         "bar": {"reason": "no-sources"}}}), "utf-8")
+            with patch.object(retire_articles, "RETIRED", retired):
+                self.assertEqual(retire_articles.forget_products(["foo-pro", "zzz"]), ["foo-pro"])
+            self.assertEqual(list(json.loads(retired.read_text("utf-8"))["products"]), ["bar"])
+
+    def test_product_generator_calls_forget_on_save_and_sync(self):
+        src = (ROOT / "scripts" / "products.py").read_text("utf-8")
+        self.assertGreaterEqual(src.count("retire_articles.forget_products("), 2)
+
+
 class LiveDataTest(unittest.TestCase):
     def test_retired_products_point_at_live_pages(self):
         store = json.loads((ROOT / "content" / "retired.json").read_text("utf-8"))
@@ -77,7 +92,6 @@ class LiveDataTest(unittest.TestCase):
             self.assertNotIn(slug, live, f"{slug} は製品ページが残っているのに転送の記録がある")
             if entry.get("redirect"):
                 self.assertIn(entry["redirect"], live, f"{slug} の転送先 {entry['redirect']} の製品ページが無い")
-        self.assertEqual((store.get("products") or {}).get("chatgpt-enterprise", {}).get("redirect"), "chatgpt")
 
     def test_worker_redirects_retired_products(self):
         worker = (ROOT / "cloudflare" / "worker.ts").read_text("utf-8")

@@ -1080,6 +1080,10 @@ def main() -> int:
             "updatedAt": now_iso(),
         }
         write_json(PRODUCTS_DIR / f"{slug}.json", data)
+        # 前に消して転送にしていた製品を、今も載っている記事を出典に作り直したら、転送の記録を消す（台帳 W30）
+        import retire_articles  # noqa: PLC0415
+
+        retire_articles.forget_products([slug])
         log(f"   保存: content/products/{slug}.json（FAQ {len(content['faq'])} 問・出典つき項目 {score(content)}）")
 
     if args.no_sync:
@@ -1087,6 +1091,10 @@ def main() -> int:
     write_json(REGISTRY_PATH, registry)
     # 関連製品・記事一覧・案内元は毎回そろえる（LLM は使わない）
     live = {p.stem for p in PRODUCTS_DIR.glob("*.json")} & set(products)
+    # 製品ページがある slug の転送の記録は残さない（ほかの経路で作り直された分も。台帳 W30）
+    import retire_articles  # noqa: PLC0415
+
+    retire_articles.forget_products(sorted({p.stem for p in PRODUCTS_DIR.glob("*.json")}))
     leads = assign_leads(positions, live)
     for slug in live:
         path = PRODUCTS_DIR / f"{slug}.json"

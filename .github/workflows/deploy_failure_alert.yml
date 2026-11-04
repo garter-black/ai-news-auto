@@ -1,0 +1,55 @@
+name: Deploy failure alert
+
+# 公開（Deploy to Cloudflare Workers）が2回続けて失敗したら、すぐ issue を立てる（2026-11-04: 05:53 UTC から公開が
+# 落ち続けたのに気づくのが遅れた件）。取り消し（cancelled）・飛ばし（skipped）は数えない。
+# 同じ issue（ラベル deploy-failure）が開いていれば、失敗のたびにコメントを足す。公開が成功したら閉じる。
+on:
+  workflow_run:
+    workflows: ["Deploy to Cloudflare Workers"]
+    types: [completed]
+
+permissions:
+  issues: write
+  actions: read
+
+concurrency:
+  group: deploy-failure-alert
+  cancel-in-progress: false
+
+jobs:
+  alert:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' || github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Open, update or close the alert issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+          gh label create deploy-failure --repo "$REPO" --color B60205 --description "公開が続けて失敗" 2>/dev/null || true
+          open=$(gh issue list --repo "$REPO" --label deploy-failure --state open --json number -q '.[0].number // empty')
+          if [ "$CONCLUSION" = "success" ]; then
+            if [ -n "$open" ]; then
+              gh issue close "$open" --repo "$REPO" --comment "公開が成功したので閉じます: $RUN_URL"
+            fi
+            exit 0
+          fi
+          # 直近の完了した実行（取り消し・飛ばしを除く）のうち、新しい2回がどちらも失敗か
+          last2=$(gh run list --repo "$REPO" --workflow deploy_cloudflare.yml --status completed -L 30 --json conclusion \
+            -q '[.[] | select(.conclusion == "success" or .conclusion == "failure")][0:2] | map(.conclusion) | join(",")')
+          if [ "$last2" != "failure,failure" ]; then
+            echo "失敗は1回だけ（$last2）。まだ知らせない"; exit 0
+          fi
+          body="公開（Deploy to Cloudflare Workers）が2回続けて失敗しています。サイトは最後に成功した版のままで、新しい記事・修正が出ていません。
+          - 失敗した実行: $RUN_URL
+          - コミット: $SHA
+          直し方: 失敗した手順のログを見て直し、main に push する（成功するとこの issue は自動で閉じます）。"
+          if [ -n "$open" ]; then
+            gh issue comment "$open" --repo "$REPO" --body "また失敗しました: $RUN_URL（$SHA）"
+          else
+            gh issue create --repo "$REPO" --label deploy-failure --title "公開が2回続けて失敗しています" --body "$body"
+          fi

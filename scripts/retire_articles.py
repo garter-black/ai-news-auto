@@ -513,6 +513,22 @@ def record_removed_products(store: dict, removed: list[str], stamp: str, names: 
             products[slug].pop("redirect")
 
 
+def forget_products(slugs) -> list[str]:
+    """製品ページを（今も載っている記事を出典に）作り直したとき、その製品の転送の記録を content/retired.json から消す。
+    scripts/products.py が保存のたびに呼ぶ（台帳 W30。2026-11-04: 作り直した chatgpt-enterprise に転送の記録が残り、公開のテストが落ちた）"""
+    if not RETIRED.exists():
+        return []
+    store = json.loads(RETIRED.read_text(encoding="utf-8"))
+    products = store.get("products") or {}
+    gone = [s for s in slugs if s in products]
+    if not gone:
+        return []
+    for s in gone:
+        del products[s]
+    RETIRED.write_text(json.dumps(store, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+    return gone
+
+
 def apply(retired: dict[str, dict], now: datetime) -> dict:
     stamp = now.astimezone(JST).isoformat(timespec="seconds")
     store = {"version": 1, "articles": {}}
