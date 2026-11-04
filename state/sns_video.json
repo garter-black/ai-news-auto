@@ -1852,6 +1852,139 @@
       "variant": "full",
       "bufferId": "6aeab5a2ff887f055ceacbc0",
       "postedAt": "2026-11-04T12:00:00+00:00"
+    },
+    "ntt-fy2026-q2-results": {
+      "at": "2026-11-04T04:56:00+00:00",
+      "status": "ready",
+      "tries": 1,
+      "textAt": "2026-11-04T04:44:16+00:00",
+      "textId": "",
+      "breaking": true,
+      "scheduled": false,
+      "versions": {
+        "full": {
+          "ok": true,
+          "seconds": 63.759,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1
+          },
+          "template": "earnings",
+          "level": "L1",
+          "base_layout": "screen-left-headline",
+          "post": {
+            "title": "NTTが中間決算で増収減益、通期の営業利益予想を1兆7,300億円に上方修正",
+            "url": "https://ai-tech-express.jp/articles/ntt-fy2026-q2-results",
+            "total": 63.759,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "level": "L1",
+            "script_v3": {
+              "hook": {
+                "text": "NTTが中間決算を発表、予想を引き上げ"
+              },
+              "summary": "要約すると、NTTの2026年度4〜9月期は営業収益7兆3,622億円で8.7%増、営業利益8,301億円で12.2%減の増収減益でした。ドコモの好調を理由に、通期の営業利益予想は1兆7,300億円へ200億円引き上げられました。"
+            }
+          }
+        },
+        "short": {
+          "ok": true,
+          "seconds": 41.517,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1
+          },
+          "template": "earnings",
+          "level": "L1",
+          "base_layout": "screen-left-headline",
+          "post": {
+            "title": "NTTが中間決算で増収減益、通期の営業利益予想を1兆7,300億円に上方修正",
+            "url": "https://ai-tech-express.jp/articles/ntt-fy2026-q2-results",
+            "total": 41.517,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.48
+            },
+            "level": "L1",
+            "script_v3": {
+              "hook": {
+                "text": "NTTが中間決算を発表、予想を引き上げ"
+              },
+              "summary": "要約すると、NTTの2026年度4〜9月期は営業収益7兆3,622億円で8.7%増、営業利益8,301億円で12.2%減の増収減益でした。ドコモの好調を理由に、通期の営業利益予想は1兆7,300億円へ200億円引き上げられました。"
+            }
+          }
+        }
+      },
+      "timings": {
+        "full": {
+          "script": 0.0,
+          "tts": 27.09,
+          "plan_audio": 5.12,
+          "render": 49.23,
+          "gate": 5.56,
+          "sheet": 2.47,
+          "total": 89.6,
+          "ladder_total": 337.7
+        },
+        "short": {
+          "script": 0.0,
+          "tts": 35.21,
+          "plan_audio": 3.23,
+          "render": 30.92,
+          "gate": 3.85,
+          "sheet": 1.68,
+          "total": 74.9,
+          "ladder_total": 337.7
+        }
+      },
+      "level": "L1",
+      "ladder": {
+        "full": [
+          {
+            "level": "L1",
+            "ok": true,
+            "reasons": [],
+            "seconds": 337.7,
+            "variants": {
+              "full": true,
+              "short": true
+            }
+          }
+        ],
+        "short": [
+          {
+            "level": "L1",
+            "ok": true,
+            "reasons": [],
+            "seconds": 337.7,
+            "variants": {
+              "full": true,
+              "short": true
+            }
+          }
+        ]
+      },
+      "ok": true,
+      "reason": "",
+      "pages": [
+        "group.ntt"
+      ],
+      "urls": {
+        "full": "https://ai-tech-express.jp/video/ntt-fy2026-q2-results-5cba4eb14b.mp4",
+        "short": "https://ai-tech-express.jp/video/ntt-fy2026-q2-results-06c2b67e73.mp4",
+        "poster": "https://ai-tech-express.jp/video/ntt-fy2026-q2-results-10041fbfe7.jpg"
+      },
+      "embedded": true
     }
   },
   "queued": {
@@ -1928,6 +2061,16 @@
       "dueAt": "2026-11-04T12:00:00+00:00",
       "variant": "full",
       "delayedMin": 0
+    },
+    "ntt-fy2026-q2-results": {
+      "status": "skipped",
+      "errors": {
+        "threads": "Buffer: Scheduled time must be in the future"
+      },
+      "channels": {
+        "threads": ""
+      },
+      "why": "Buffer に動画つきの投稿を作れなかった: Buffer: Scheduled time must be in the future"
     }
   },
   "converted": {
