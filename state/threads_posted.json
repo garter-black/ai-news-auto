@@ -3589,7 +3589,8 @@
         "reposts": 0,
         "impressions": 0,
         "clicks": 0
-      }
+      },
+      "visits": 0
     },
     "google-pixel-11-pro-food-photography": {
       "id": "6ae9e0adf08b305d7c07a1a3",
@@ -3631,7 +3632,8 @@
         "reposts": 0,
         "impressions": 4,
         "clicks": 0
-      }
+      },
+      "visits": 0
     },
     "github-copilot-jetbrains-air": {
       "id": "6aeacd7cdc38f4d7bad1da42",

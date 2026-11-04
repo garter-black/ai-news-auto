@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-04T09:43:51+00:00",
+  "updatedAt": "2026-11-04T13:12:47+00:00",
   "metricsFetchedAt": "2026-11-04T09:43:51+00:00",
-  "visitsFetchedAt": "2026-11-04T09:43:50+00:00",
+  "visitsFetchedAt": "2026-11-04T13:12:46+00:00",
   "target": "visits",
-  "visitRate": 0.02,
-  "postsWithVisits": 2,
-  "freshSkipped": 11,
-  "posts": 84,
+  "visitRate": 0.087,
+  "postsWithVisits": 4,
+  "freshSkipped": 9,
+  "posts": 86,
   "axes": {
     "hook": {
       "breaking": {
@@ -14,27 +14,27 @@
         "avgViews": 166.4,
         "avgEngagement": 1.4,
         "avgComments": 0.2,
-        "avgVisits": 3.33,
+        "avgVisits": 14.47,
         "nVisits": 0,
-        "score": 324.08
+        "score": 1402.58
       },
       "number": {
         "n": 3,
         "avgViews": 75.0,
         "avgEngagement": 0.0,
         "avgComments": 0.0,
-        "avgVisits": 1.5,
+        "avgVisits": 6.52,
         "nVisits": 0,
-        "score": 169.89
+        "score": 723.65
       },
       "surprise": {
         "n": 1,
         "avgViews": 51.0,
         "avgEngagement": 0.0,
         "avgComments": 0.0,
-        "avgVisits": 1.02,
+        "avgVisits": 4.43,
         "nVisits": 0,
-        "score": 167.83
+        "score": 707.22
       },
       "empathy": {
         "n": 1,
@@ -43,34 +43,34 @@
         "avgComments": 0.0,
         "avgVisits": 1.0,
         "nVisits": 1,
-        "score": 167.33
+        "score": 621.35
       },
       "free": {
         "n": 1,
         "avgViews": 9.0,
         "avgEngagement": 1.0,
         "avgComments": 0.0,
-        "avgVisits": 0.18,
+        "avgVisits": 0.78,
         "nVisits": 0,
-        "score": 147.08
+        "score": 616.16
       },
       "callout": {
-        "n": 10,
-        "avgViews": 66.3,
-        "avgEngagement": 1.5,
-        "avgComments": 0.1,
-        "avgVisits": 1.33,
-        "nVisits": 0,
-        "score": 146.95
+        "n": 12,
+        "avgViews": 56.5,
+        "avgEngagement": 1.25,
+        "avgComments": 0.08,
+        "avgVisits": 4.8,
+        "nVisits": 2,
+        "score": 544.37
       },
       "caution": {
         "n": 2,
         "avgViews": 3.5,
         "avgEngagement": 0.0,
         "avgComments": 0.0,
-        "avgVisits": 0.54,
+        "avgVisits": 0.67,
         "nVisits": 1,
-        "score": 135.46
+        "score": 504.04
       },
       "future": {
         "n": 2,
@@ -79,90 +79,90 @@
         "avgComments": 0.0,
         "avgVisits": 0.0,
         "nVisits": 0,
-        "score": 113.86
+        "score": 477.08
       },
       "contrarian": {
         "n": 4,
         "avgViews": 21.8,
         "avgEngagement": 0.0,
         "avgComments": 0.0,
-        "avgVisits": 0.43,
+        "avgVisits": 1.89,
         "nVisits": 0,
-        "score": 106.19
+        "score": 448.85
       },
       "不明": {
         "n": 3,
         "avgViews": 2.3,
         "avgEngagement": 1.0,
         "avgComments": 0.0,
-        "avgVisits": 0.05,
+        "avgVisits": 0.2,
         "nVisits": 0,
-        "score": 97.72
+        "score": 408.21
       },
       "finally": {
         "n": 3,
         "avgViews": 1.7,
         "avgEngagement": 0.0,
         "avgComments": 0.0,
-        "avgVisits": 0.03,
+        "avgVisits": 0.14,
         "nVisits": 0,
-        "score": 96.55
+        "score": 404.81
       },
       "conclusion": {
         "n": 5,
         "avgViews": 19.4,
         "avgEngagement": 0.2,
         "avgComments": 0.0,
-        "avgVisits": 0.39,
+        "avgVisits": 1.69,
         "nVisits": 0,
-        "score": 95.54
+        "score": 403.73
       },
       "question": {
         "n": 4,
         "avgViews": 4.2,
         "avgEngagement": 0.0,
         "avgComments": 0.0,
-        "avgVisits": 0.08,
+        "avgVisits": 0.37,
         "nVisits": 0,
-        "score": 86.19
+        "score": 361.89
       },
       "before_after": {
         "n": 5,
         "avgViews": 2.4,
         "avgEngagement": 0.2,
         "avgComments": 0.0,
-        "avgVisits": 0.05,
+        "avgVisits": 0.21,
         "nVisits": 0,
-        "score": 74.29
+        "score": 311.34
       }
     },
     "slot": {
       "夜": {
-        "n": 34,
-        "avgViews": 101.0,
-        "avgEngagement": 1.18,
-        "avgComments": 0.24,
-        "avgVisits": 2.05,
-        "nVisits": 1,
-        "score": 204.58
+        "n": 36,
+        "avgViews": 95.8,
+        "avgEngagement": 1.11,
+        "avgComments": 0.22,
+        "avgVisits": 8.31,
+        "nVisits": 3,
+        "score": 829.53
       },
       "朝": {
         "n": 24,
         "avgViews": 93.8,
         "avgEngagement": 0.75,
         "avgComments": 0.04,
-        "avgVisits": 1.88,
+        "avgVisits": 8.15,
         "nVisits": 0,
-        "score": 188.42
+        "score": 813.65
       },
       "昼": {
         "n": 26,
         "avgViews": 83.0,
         "avgEngagement": 0.73,
         "avgComments": 0.0,
-        "avgVisits": 1.69,
+        "avgVisits": 7.24,
         "nVisits": 1,
-        "score": 172.15
+        "score": 731.64
       }
     },
     "company": {
@@ -171,101 +171,101 @@
         "avgViews": 274.4,
         "avgEngagement": 3.56,
         "avgComments": 0.11,
-        "avgVisits": 5.49,
+        "avgVisits": 23.86,
         "nVisits": 0,
-        "score": 461.78
+        "score": 1991.3
       },
       "その他": {
         "n": 23,
         "avgViews": 149.0,
         "avgEngagement": 1.52,
         "avgComments": 0.35,
-        "avgVisits": 3.02,
+        "avgVisits": 12.98,
         "nVisits": 1,
-        "score": 290.32
+        "score": 1241.42
       },
       "DeepSeek": {
         "n": 1,
         "avgViews": 52.0,
         "avgEngagement": 0.0,
         "avgComments": 0.0,
-        "avgVisits": 1.04,
+        "avgVisits": 4.52,
         "nVisits": 0,
-        "score": 168.33
+        "score": 709.39
       },
       "Google": {
-        "n": 13,
-        "avgViews": 71.4,
-        "avgEngagement": 0.15,
+        "n": 14,
+        "avgViews": 67.2,
+        "avgEngagement": 0.14,
         "avgComments": 0.0,
-        "avgVisits": 1.5,
-        "nVisits": 1,
-        "score": 157.58
+        "avgVisits": 5.82,
+        "nVisits": 2,
+        "score": 619.46
       },
       "Anthropic": {
         "n": 4,
         "avgViews": 53.0,
         "avgEngagement": 0.25,
         "avgComments": 0.0,
-        "avgVisits": 1.06,
+        "avgVisits": 4.61,
         "nVisits": 0,
-        "score": 142.05
+        "score": 604.27
       },
       "Meta": {
         "n": 2,
         "avgViews": 30.0,
         "avgEngagement": 1.0,
         "avgComments": 0.0,
-        "avgVisits": 0.6,
+        "avgVisits": 2.61,
         "nVisits": 0,
-        "score": 138.26
+        "score": 581.83
       },
       "NVIDIA": {
         "n": 13,
         "avgViews": 24.8,
         "avgEngagement": 0.08,
         "avgComments": 0.0,
-        "avgVisits": 0.5,
+        "avgVisits": 2.16,
         "nVisits": 0,
-        "score": 76.02
+        "score": 324.69
       },
       "OpenAI": {
-        "n": 19,
-        "avgViews": 19.4,
-        "avgEngagement": 0.21,
+        "n": 20,
+        "avgViews": 18.5,
+        "avgEngagement": 0.2,
         "avgComments": 0.0,
-        "avgVisits": 0.39,
-        "nVisits": 0,
-        "score": 59.51
+        "avgVisits": 1.6,
+        "nVisits": 1,
+        "score": 243.02
       }
     },
     "ending": {
       "問いかけ": {
-        "n": 11,
-        "avgViews": 235.7,
-        "avgEngagement": 3.27,
-        "avgComments": 0.73,
-        "avgVisits": 4.8,
-        "nVisits": 1,
-        "score": 420.09
+        "n": 12,
+        "avgViews": 216.2,
+        "avgEngagement": 3.0,
+        "avgComments": 0.67,
+        "avgVisits": 18.84,
+        "nVisits": 2,
+        "score": 1668.38
       },
       "完結型": {
-        "n": 53,
-        "avgViews": 97.7,
-        "avgEngagement": 0.66,
+        "n": 54,
+        "avgViews": 96.2,
+        "avgEngagement": 0.65,
         "avgComments": 0.02,
-        "avgVisits": 1.97,
-        "nVisits": 1,
-        "score": 197.47
+        "avgVisits": 8.36,
+        "nVisits": 2,
+        "score": 834.0
       },
       "記事で👇": {
         "n": 20,
         "avgViews": 3.4,
         "avgEngagement": 0.3,
         "avgComments": 0.0,
-        "avgVisits": 0.07,
+        "avgVisits": 0.29,
         "nVisits": 0,
-        "score": 30.84
+        "score": 129.3
       }
     },
     "format": {
@@ -274,65 +274,65 @@
         "avgViews": 187.7,
         "avgEngagement": 1.54,
         "avgComments": 0.23,
-        "avgVisits": 3.75,
+        "avgVisits": 16.33,
         "nVisits": 0,
-        "score": 362.25
+        "score": 1567.86
       },
       "図解カード+返信リンク": {
-        "n": 15,
-        "avgViews": 74.9,
-        "avgEngagement": 0.8,
-        "avgComments": 0.07,
-        "avgVisits": 1.62,
-        "nVisits": 2,
-        "score": 167.41
+        "n": 17,
+        "avgViews": 67.0,
+        "avgEngagement": 0.71,
+        "avgComments": 0.06,
+        "avgVisits": 5.83,
+        "nVisits": 4,
+        "score": 615.09
       },
       "リンクカード": {
         "n": 5,
         "avgViews": 2.6,
         "avgEngagement": 1.0,
         "avgComments": 0.0,
-        "avgVisits": 0.05,
+        "avgVisits": 0.23,
         "nVisits": 0,
-        "score": 75.04
+        "score": 312.93
       },
       "画像+返信リンク": {
         "n": 29,
         "avgViews": 4.6,
         "avgEngagement": 0.21,
         "avgComments": 0.0,
-        "avgVisits": 0.09,
+        "avgVisits": 0.4,
         "nVisits": 0,
-        "score": 26.23
+        "score": 110.6
       }
     },
     "postFormat": {
       "classic": {
-        "n": 25,
-        "avgViews": 154.2,
-        "avgEngagement": 1.76,
-        "avgComments": 0.36,
-        "avgVisits": 3.16,
-        "nVisits": 2,
-        "score": 303.83
+        "n": 27,
+        "avgViews": 143.3,
+        "avgEngagement": 1.63,
+        "avgComments": 0.33,
+        "avgVisits": 12.46,
+        "nVisits": 4,
+        "score": 1202.72
       },
       "A/B前": {
         "n": 47,
         "avgViews": 81.7,
         "avgEngagement": 0.68,
         "avgComments": 0.0,
-        "avgVisits": 1.63,
+        "avgVisits": 7.1,
         "nVisits": 0,
-        "score": 165.59
+        "score": 716.0
       },
       "hook_thread": {
         "n": 12,
         "avgViews": 12.2,
         "avgEngagement": 0.08,
         "avgComments": 0.0,
-        "avgVisits": 0.24,
+        "avgVisits": 1.06,
         "nVisits": 0,
-        "score": 57.49
+        "score": 243.73
       }
     },
     "postFormatKind": {
@@ -341,83 +341,83 @@
         "avgViews": 273.1,
         "avgEngagement": 3.2,
         "avgComments": 0.8,
-        "avgVisits": 5.46,
+        "avgVisits": 23.75,
         "nVisits": 0,
-        "score": 466.41
+        "score": 2012.71
       },
       "A/B前/速報": {
         "n": 21,
         "avgViews": 179.1,
         "avgEngagement": 1.05,
         "avgComments": 0.0,
-        "avgVisits": 3.58,
+        "avgVisits": 15.57,
         "nVisits": 0,
-        "score": 338.06
+        "score": 1462.99
       },
       "classic/通常": {
-        "n": 15,
-        "avgViews": 74.9,
-        "avgEngagement": 0.8,
-        "avgComments": 0.07,
-        "avgVisits": 1.62,
-        "nVisits": 2,
-        "score": 167.41
+        "n": 17,
+        "avgViews": 67.0,
+        "avgEngagement": 0.71,
+        "avgComments": 0.06,
+        "avgVisits": 5.83,
+        "nVisits": 4,
+        "score": 615.09
       },
       "hook_thread/速報": {
         "n": 4,
         "avgViews": 19.8,
         "avgEngagement": 0.0,
         "avgComments": 0.0,
-        "avgVisits": 0.4,
+        "avgVisits": 1.72,
         "nVisits": 0,
-        "score": 103.9
+        "score": 438.91
       },
       "hook_thread/通常": {
         "n": 8,
         "avgViews": 8.4,
         "avgEngagement": 0.12,
         "avgComments": 0.0,
-        "avgVisits": 0.17,
+        "avgVisits": 0.73,
         "nVisits": 0,
-        "score": 64.03
+        "score": 269.91
       },
       "A/B前/通常": {
         "n": 26,
         "avgViews": 3.0,
         "avgEngagement": 0.38,
         "avgComments": 0.0,
-        "avgVisits": 0.06,
+        "avgVisits": 0.26,
         "nVisits": 0,
-        "score": 25.36
+        "score": 105.99
       }
     },
     "question": {
       "問いかけあり": {
-        "n": 16,
-        "avgViews": 208.9,
-        "avgEngagement": 2.75,
-        "avgComments": 0.56,
-        "avgVisits": 4.29,
-        "nVisits": 2,
-        "score": 393.86
+        "n": 18,
+        "avgViews": 186.6,
+        "avgEngagement": 2.44,
+        "avgComments": 0.5,
+        "avgVisits": 16.22,
+        "nVisits": 4,
+        "score": 1506.16
       },
       "記録前": {
         "n": 47,
         "avgViews": 81.7,
         "avgEngagement": 0.68,
         "avgComments": 0.0,
-        "avgVisits": 1.63,
+        "avgVisits": 7.1,
         "nVisits": 0,
-        "score": 165.59
+        "score": 716.0
       },
       "なし": {
         "n": 21,
         "avgViews": 31.3,
         "avgEngagement": 0.05,
         "avgComments": 0.0,
-        "avgVisits": 0.63,
+        "avgVisits": 2.72,
         "nVisits": 0,
-        "score": 78.6
+        "score": 337.84
       }
     },
     "opener": {
@@ -426,9 +426,27 @@
         "avgViews": 93.3,
         "avgEngagement": 0.92,
         "avgComments": 0.11,
-        "avgVisits": 1.89,
+        "avgVisits": 8.13,
         "nVisits": 2,
-        "score": 189.77
+        "score": 813.41
+      },
+      "see": {
+        "n": 1,
+        "avgViews": 2.0,
+        "avgEngagement": 0.0,
+        "avgComments": 0.0,
+        "avgVisits": 0.0,
+        "nVisits": 1,
+        "score": 596.35
+      },
+      "gen": {
+        "n": 1,
+        "avgViews": 13.0,
+        "avgEngagement": 0.0,
+        "avgComments": 0.0,
+        "avgVisits": 0.0,
+        "nVisits": 1,
+        "score": 596.35
       }
     },
     "genre": {
@@ -437,29 +455,29 @@
         "avgViews": 455.6,
         "avgEngagement": 5.0,
         "avgComments": 0.8,
-        "avgVisits": 9.11,
+        "avgVisits": 39.62,
         "nVisits": 0,
-        "score": 748.56
+        "score": 3234.83
       },
       "AI": {
-        "n": 74,
-        "avgViews": 44.4,
+        "n": 76,
+        "avgViews": 43.4,
         "avgEngagement": 0.36,
         "avgComments": 0.01,
-        "avgVisits": 0.91,
-        "nVisits": 2,
-        "score": 95.43
+        "avgVisits": 3.77,
+        "nVisits": 4,
+        "score": 393.66
       }
     },
     "slotTest": {
       "なし": {
-        "n": 84,
-        "avgViews": 93.3,
-        "avgEngagement": 0.92,
-        "avgComments": 0.11,
-        "avgVisits": 1.89,
-        "nVisits": 2,
-        "score": 189.77
+        "n": 86,
+        "avgViews": 91.3,
+        "avgEngagement": 0.9,
+        "avgComments": 0.1,
+        "avgVisits": 7.94,
+        "nVisits": 4,
+        "score": 795.13
       }
     }
   },
@@ -555,7 +573,7 @@
     {
       "slug": "honda-rn0-emtb-eicma-2026",
       "visits": null,
-      "value": 49.12,
+      "value": 213.57,
       "views": 2456.0,
       "engagement": 31.0,
       "hook": "breaking",
@@ -573,7 +591,7 @@
     {
       "slug": "microsoft-ui-reactor-winui-csharp-mvu",
       "visits": null,
-      "value": 28.52,
+      "value": 124.0,
       "views": 1426.0,
       "engagement": 16.0,
       "hook": "breaking",
@@ -591,7 +609,7 @@
     {
       "slug": "intelligent-terminal-local-120b-llm",
       "visits": null,
-      "value": 11.94,
+      "value": 51.91,
       "views": 597.0,
       "engagement": 12.0,
       "hook": "callout",
@@ -609,7 +627,7 @@
     {
       "slug": "gemini-4-carbon-cybersecurity-model",
       "visits": null,
-      "value": 11.46,
+      "value": 49.83,
       "views": 573.0,
       "engagement": 0.0,
       "hook": "breaking",
@@ -627,7 +645,7 @@
     {
       "slug": "github-copilot-app-projects-computer-use",
       "visits": null,
-      "value": 7.7,
+      "value": 33.48,
       "views": 385.0,
       "engagement": 1.0,
       "hook": "breaking",
@@ -645,7 +663,7 @@
     {
       "slug": "samsung-galaxy-buds-on-cuff-earbuds",
       "visits": null,
-      "value": 5.66,
+      "value": 24.61,
       "views": 283.0,
       "engagement": 1.0,
       "hook": "breaking",
@@ -663,7 +681,7 @@
     {
       "slug": "kddi-iret-ai-use-cases-113",
       "visits": null,
-      "value": 4.58,
+      "value": 19.91,
       "views": 229.0,
       "engagement": 1.0,
       "hook": "breaking",
@@ -681,7 +699,7 @@
     {
       "slug": "openai-gpt-61-terra-amazon-bedrock",
       "visits": null,
-      "value": 4.48,
+      "value": 19.48,
       "views": 224.0,
       "engagement": 0.0,
       "hook": "number",
@@ -699,7 +717,7 @@
     {
       "slug": "quake-20261029000759",
       "visits": null,
-      "value": 3.42,
+      "value": 14.87,
       "views": 171.0,
       "engagement": 1.0,
       "hook": "breaking",
@@ -717,7 +735,7 @@
     {
       "slug": "claude-drug-development-progress",
       "visits": null,
-      "value": 3.28,
+      "value": 14.26,
       "views": 164.0,
       "engagement": 1.0,
       "hook": "breaking",
