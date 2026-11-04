@@ -3589,7 +3589,7 @@
       "blueskyFailed": "Bluesky の動画の処理に失敗しました: {'did': '', 'error': 'unconfirmed_email', 'jobId': '', 'state': ''}"
     },
     "github-copilot-jetbrains-air": {
-      "id": "6aea3e03b3ec15847385f6a7",
+      "id": "6aea40275a7c19a37cd1e45f",
       "via": "buffer",
       "status": "scheduled",
       "hook": "callout",
@@ -3607,18 +3607,18 @@
       "postedAt": "2026-11-03T17:20:06+00:00",
       "pausedIds": {},
       "channels": {
-        "twitter": "6aea3e065a7c19a37cd11efb",
-        "facebook": "6aea3e0a5a7c19a37cd127e4"
+        "twitter": "6aea40285a7c19a37cd1e523",
+        "facebook": "6aea402a52391758e2e82f0b"
       },
       "convertedAt": "2026-11-03T19:24:53+00:00",
       "videoVariant": "full"
     },
     "kimi-k3-bedrock-india-inference": {
-      "id": "6aea4c50a8918d96047f56e6",
+      "id": "6aea4d279da2f6a2e96e839f",
       "via": "buffer",
       "permalink": "",
       "status": "scheduled",
-      "dueAt": "2026-11-03T21:04:46+00:00",
+      "dueAt": "2026-11-03T21:08:13+00:00",
       "hook": "breaking",
       "opener": "know",
       "genre": "ai",
@@ -3632,8 +3632,8 @@
       "questionText": "仕事で使うAI、データの置き場所は気にしていますか？",
       "postedAt": "2026-11-03T21:00:50+00:00",
       "channels": {
-        "twitter": "6aea4c5246499f925e7c3280",
-        "facebook": "6aea4c551ee1ad0996cd39a0"
+        "twitter": "6aea4d28402e0fe50f12ce4a",
+        "facebook": "6aea4d2aca28ab6c317618fc"
       },
       "videoVariant": "short",
       "blueskyFailed": "Bluesky の動画の処理に失敗しました: {'did': '', 'error': 'unconfirmed_email', 'jobId': '', 'state': ''}"
@@ -3736,106 +3736,29 @@
       "videoVariant": "full"
     },
     "kpn-elevenlabs-mobiel-ai-netherlands": {
-      "id": "",
+      "id": "6aea8b67b8d162e0d8f85eb1",
       "via": "buffer",
       "permalink": "",
-      "status": "awaiting_video",
-      "pending": {
-        "inputs": {
-          "threads": {
-            "channelId": "6ad942f3778b240e2f82f180",
-            "text": "電話対応に追われる個人事業主の方へ。\n\n要約すると、オランダ通信大手KPNがElevenLabsの音声AIを導入しました。\n中小企業向けに留守番電話の文字起こしや要約を行う「Mobiel AI」を提供しています。\n\nあなたの仕事でも、電話の対応に作業を中断されることはありますか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/kpn-elevenlabs-mobiel-ai-netherlands?utm_source=threads&utm_medium=social&utm_campaign=classic",
-            "schedulingType": "automatic",
-            "assets": [],
-            "metadata": {
-              "threads": {
-                "topic": "生成AI",
-                "thread": [
-                  {
-                    "text": "電話対応に追われる個人事業主の方へ。\n\n要約すると、オランダ通信大手KPNがElevenLabsの音声AIを導入しました。\n中小企業向けに留守番電話の文字起こしや要約を行う「Mobiel AI」を提供しています。\n\nあなたの仕事でも、電話の対応に作業を中断されることはありますか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/kpn-elevenlabs-mobiel-ai-netherlands?utm_source=threads&utm_medium=social&utm_campaign=classic",
-                    "assets": [
-                      {
-                        "image": {
-                          "url": "https://ai-tech-express.jp/card/kpn-elevenlabs-mobiel-ai-netherlands"
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            },
-            "mode": "customScheduled",
-            "dueAt": "2026-11-04T09:30:00Z"
-          },
-          "twitter": {
-            "channelId": "6ade35f52f1f5ed648cb07cf",
-            "schedulingType": "automatic",
-            "text": "電話対応に追われる個人事業主の方へ。\n\n要約すると、オランダ通信大手KPNがElevenLabsの音声AIを導入しました。\n中小企業向けに留守番電話の文字起こしや要約を行う「Mobiel AI」を提供しています。\n\nあなたの仕事でも、電話の対応に作業を中断されることはありますか？\n\n#AI",
-            "assets": [],
-            "metadata": {
-              "twitter": {
-                "thread": [
-                  {
-                    "text": "電話対応に追われる個人事業主の方へ。\n\n要約すると、オランダ通信大手KPNがElevenLabsの音声AIを導入しました。\n中小企業向けに留守番電話の文字起こしや要約を行う「Mobiel AI」を提供しています。\n\nあなたの仕事でも、電話の対応に作業を中断されることはありますか？\n\n#AI",
-                    "assets": [
-                      {
-                        "image": {
-                          "url": "https://ai-tech-express.jp/card/kpn-elevenlabs-mobiel-ai-netherlands"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "text": "詳しくはこちら👇\n（専門用語なしの「かんたん版」もあります）\nhttps://ai-tech-express.jp/articles/kpn-elevenlabs-mobiel-ai-netherlands?utm_source=x&utm_medium=social&utm_campaign=classic",
-                    "assets": []
-                  }
-                ]
-              }
-            },
-            "mode": "customScheduled",
-            "dueAt": "2026-11-04T09:42:00Z",
-            "_offsetMin": 12
-          },
-          "facebook": {
-            "channelId": "6ade3ad12f1f5ed648cb6936",
-            "schedulingType": "automatic",
-            "text": "電話対応に追われる個人事業主の方へ。\n\n要約すると、オランダ通信大手KPNがElevenLabsの音声AIを導入しました。\n中小企業向けに留守番電話の文字起こしや要約を行う「Mobiel AI」を提供しています。\n\nあなたの仕事でも、電話の対応に作業を中断されることはありますか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/kpn-elevenlabs-mobiel-ai-netherlands?utm_source=facebook&utm_medium=social&utm_campaign=classic",
-            "assets": [],
-            "metadata": {
-              "facebook": {
-                "type": "post",
-                "linkAttachment": {
-                  "url": "https://ai-tech-express.jp/articles/kpn-elevenlabs-mobiel-ai-netherlands?utm_source=facebook&utm_medium=social&utm_campaign=classic",
-                  "title": "KPN「Mobiel AI」とは？ElevenLabsの音声AI活用",
-                  "description": "オランダの通信大手KPNがElevenLabsの音声AIを導入し、中小企業向け音声AIサービス「Mobiel AI」の提供を開始しました。留守番電話の文字起こしや要約機能を解説します。",
-                  "thumbnail": {
-                    "url": "https://ai-tech-express.jp/card/kpn-elevenlabs-mobiel-ai-netherlands"
-                  }
-                }
-              }
-            },
-            "mode": "customScheduled",
-            "dueAt": "2026-11-04T09:57:00Z",
-            "_offsetMin": 27
-          }
-        },
-        "slot": "2026-11-04T09:30:00+00:00",
-        "fmt": "classic"
-      },
+      "status": "scheduled",
       "hook": "callout",
       "opener": "gen",
       "slotTest": "ai",
       "genre": "ai",
       "score": 3,
       "style": "standalone",
-      "image": "card",
+      "image": "video",
       "format": "classic",
       "topic": "生成AI",
       "question": true,
       "questionText": "あなたの仕事でも、電話の対応に作業を中断されることはありますか？",
       "questionPattern": "plain",
       "dueAt": "2026-11-04T09:30:00+00:00",
-      "postedAt": "2026-11-04T01:31:10+00:00"
+      "postedAt": "2026-11-04T01:31:10+00:00",
+      "channels": {
+        "twitter": "6aea8b6916e63068f1886c24",
+        "facebook": "6aea8b6a69ad1ef03b6d9e60"
+      },
+      "videoVariant": "short"
     }
   },
   "extraPending": {}

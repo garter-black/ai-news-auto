@@ -116,5 +116,12 @@
       "使ってみるには": "KPN対象プランならモバイルアプリで追加"
     }
   },
-  "sectionsPolishedAt": "2026-11-03T12:14:43+00:00"
+  "sectionsPolishedAt": "2026-11-03T12:14:43+00:00",
+  "video": {
+    "src": "https://ai-tech-express.jp/video/kpn-elevenlabs-mobiel-ai-netherlands-74bc3de219.mp4",
+    "poster": "https://ai-tech-express.jp/video/kpn-elevenlabs-mobiel-ai-netherlands-6f7124bcc2.jpg",
+    "seconds": 49.2,
+    "title": "オランダ通信大手KPN、中小企業向け「Mobiel AI」を提供開始 音声AI…",
+    "credit": "VOICEVOX:九州そら"
+  }
 }

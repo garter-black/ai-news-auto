@@ -1478,6 +1478,214 @@
       "variant": "full",
       "bufferId": "6aea6433f93f03bf7d9b137b",
       "postedAt": "2026-11-04T06:30:00+00:00"
+    },
+    "kpn-elevenlabs-mobiel-ai-netherlands": {
+      "at": "2026-11-04T01:31:56+00:00",
+      "status": "attached",
+      "tries": 1,
+      "textAt": "2026-11-04T09:30:00+00:00",
+      "textId": "",
+      "breaking": false,
+      "scheduled": true,
+      "versions": {
+        "full": {
+          "ok": true,
+          "seconds": 49.193,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1,
+            "how": "ladder",
+            "vision_how": "deterministic-L4（レビューなし: RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+          },
+          "template": "ladder-L4",
+          "level": "L4",
+          "post": {
+            "title": "オランダ通信大手KPN、中小企業向け「Mobiel AI」を提供開始 音声AI…",
+            "url": "https://ai-tech-express.jp/articles/kpn-elevenlabs-mobiel-ai-netherlands",
+            "total": 49.193,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "level": "L4",
+            "script_v3": {
+              "hook": {
+                "text": "オランダ通信大手KPN、中小企業向け「Mobiel AI」を提供開始"
+              },
+              "summary": "要約すると、オランダ通信大手KPNがElevenLabsの音声AIを導入しました。"
+            }
+          }
+        },
+        "short": {
+          "ok": true,
+          "seconds": 26.343,
+          "reasons": [],
+          "qa": {
+            "geometry": true,
+            "vision": true,
+            "version": 1,
+            "how": "ladder",
+            "vision_how": "deterministic-L4（レビューなし: RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+          },
+          "template": "ladder-L4",
+          "level": "L4",
+          "post": {
+            "title": "オランダ通信大手KPN、中小企業向け「Mobiel AI」を提供開始 音声AI…",
+            "url": "https://ai-tech-express.jp/articles/kpn-elevenlabs-mobiel-ai-netherlands",
+            "total": 26.343,
+            "voice": {
+              "engine": "voicevox",
+              "credit": "VOICEVOX:九州そら",
+              "label": "VOICEVOX（九州そら・ノーマル・高さ-0.01・抑揚1.00）",
+              "speed": 1.38
+            },
+            "level": "L4",
+            "script_v3": {
+              "hook": {
+                "text": "オランダ通信大手KPN、中小企業向け「Mobiel AI」を提供開始"
+              },
+              "summary": "要約すると、オランダ通信大手KPNがElevenLabsの音声AIを導入しました。"
+            }
+          }
+        }
+      },
+      "timings": {
+        "full": {
+          "tts": 0.0,
+          "render": 11.2,
+          "gate": 1.3,
+          "total": 12.6,
+          "ladder_total": 82.9
+        },
+        "short": {
+          "tts": 0.0,
+          "render": 6.1,
+          "gate": 0.7,
+          "total": 6.8,
+          "ladder_total": 82.9
+        }
+      },
+      "level": "L4",
+      "ladder": {
+        "full": [
+          {
+            "level": "L1",
+            "ok": false,
+            "reasons": [
+              "full: 台本を作れない: 台本を作れませんでした（LLM 6回・0秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 6回・0秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
+            ],
+            "seconds": 17.4,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L2",
+            "ok": false,
+            "reasons": [
+              "full: 台本を作れない: 台本を作れませんでした（LLM 6回・0秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 6回・0秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
+            ],
+            "seconds": 8.1,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L3",
+            "ok": false,
+            "reasons": [
+              "full: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））",
+              "short: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+            ],
+            "seconds": 37.4,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L4",
+            "ok": true,
+            "reasons": [],
+            "seconds": 20.0,
+            "variants": {
+              "full": true,
+              "short": true
+            }
+          }
+        ],
+        "short": [
+          {
+            "level": "L1",
+            "ok": false,
+            "reasons": [
+              "full: 台本を作れない: 台本を作れませんでした（LLM 6回・0秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 6回・0秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
+            ],
+            "seconds": 17.4,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L2",
+            "ok": false,
+            "reasons": [
+              "full: 台本を作れない: 台本を作れませんでした（LLM 6回・0秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI",
+              "short: 台本を作れない: 台本を作れませんでした（LLM 6回・0秒）: すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMINI_API_KEY が未設定です; すべてのモデルで失敗しました: GEMI"
+            ],
+            "seconds": 8.1,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L3",
+            "ok": false,
+            "reasons": [
+              "full: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））",
+              "short: 画像のレビューができない（RuntimeError: 画像の確認に Claude API を使えない（video_review の今日の安全上限 40 回に到達））"
+            ],
+            "seconds": 37.4,
+            "variants": {
+              "full": false,
+              "short": false
+            }
+          },
+          {
+            "level": "L4",
+            "ok": true,
+            "reasons": [],
+            "seconds": 20.0,
+            "variants": {
+              "full": true,
+              "short": true
+            }
+          }
+        ]
+      },
+      "ok": true,
+      "reason": "",
+      "pages": [],
+      "urls": {
+        "full": "https://ai-tech-express.jp/video/kpn-elevenlabs-mobiel-ai-netherlands-74bc3de219.mp4",
+        "short": "https://ai-tech-express.jp/video/kpn-elevenlabs-mobiel-ai-netherlands-c5ce1aca85.mp4",
+        "poster": "https://ai-tech-express.jp/video/kpn-elevenlabs-mobiel-ai-netherlands-6f7124bcc2.jpg"
+      },
+      "embedded": true,
+      "variant": "short",
+      "bufferId": "6aea8b67b8d162e0d8f85eb1",
+      "postedAt": "2026-11-04T09:30:00+00:00"
     }
   },
   "queued": {
@@ -1530,6 +1738,18 @@
       "id": "6aea6433f93f03bf7d9b137b",
       "dueAt": "2026-11-04T06:30:00+00:00",
       "variant": "full",
+      "delayedMin": 0
+    },
+    "kpn-elevenlabs-mobiel-ai-netherlands": {
+      "status": "created",
+      "channels": {
+        "threads": "6aea8b67b8d162e0d8f85eb1",
+        "twitter": "6aea8b6916e63068f1886c24",
+        "facebook": "6aea8b6a69ad1ef03b6d9e60"
+      },
+      "id": "6aea8b67b8d162e0d8f85eb1",
+      "dueAt": "2026-11-04T09:30:00+00:00",
+      "variant": "short",
       "delayedMin": 0
     }
   },
