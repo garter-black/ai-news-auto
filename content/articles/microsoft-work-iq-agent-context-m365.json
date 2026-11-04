@@ -1,8 +1,8 @@
 {
   "slug": "microsoft-work-iq-agent-context-m365",
-  "title": "Microsoft「Work IQ」とは　MCP連携でできることと料金・利用条件",
-  "lede": "Work IQ（ワークIQ）のCLI・MCPは、AIアシスタントとMicrosoft 365の業務データをつなぐ道具です。メール・会議・文書について自然な言葉で質問できます。利用に必要な課金設定と管理者同意、動画で紹介された新APIとの違いを整理します。",
-  "description": "Work IQ（ワークIQ）でMicrosoft 365のメール・会議・文書をAIから扱う仕組みを解説。CLI・MCPに必要な課金設定・管理者同意と、動画の新APIデモとの違いを整理します。",
+  "title": "Microsoft、業務の文脈をAIエージェントに渡す「Work IQ」を解説　CLIは管理者同意と従量課金が必要",
+  "lede": "Microsoftは開発者向けセッション「Fly with Copilot」で、Microsoft 365のメールや会議、文書に散らばる業務の文脈をAIエージェントに渡す「Work IQ」の仕組みを紹介しました。今使えるWork IQ CLIは6月16日に一般提供されていますが、利用には組織の管理者の同意と、Copilot Studioの従量課金プランの設定が必要です。",
+  "description": "MicrosoftのWork IQの仕組みを、開発者向けセッションの内容から整理。Microsoft Graphとの役割の違い、REST・A2A・MCPの3つの接続方法、権限管理、自作エージェント「Margo」の例と、今使えるCLI・MCPの利用条件を解説します。",
   "keywords": [
     "Work IQ",
     "Microsoft 365 Copilot",
@@ -25,9 +25,9 @@
     "開発者ツール"
   ],
   "highlights": [
-    "元動画では、M365の業務の文脈をAIエージェントに渡す新APIやWork IQ OS、Margoのデモが紹介されました。",
-    "現在のCLI・MCPには、Copilot Studioの従量課金プラン、利用者の割り当て、管理者同意が必要です。",
-    "CLIは一般提供済みですが、動画で紹介された新APIやサンプルすべての提供状況を示すものではありません。"
+    "Microsoft 365のメール・会議・文書にある業務の文脈をAIエージェントに渡す「Work IQ」の仕組みが紹介された",
+    "Microsoft Graphがデータの読み書きを担うのに対し、Work IQはAIが判断に使える文脈を渡す層",
+    "外部のエージェントからはREST API、A2A、MCPの3つの方法でつなぐ"
   ],
   "timetable": [
     {
@@ -71,7 +71,7 @@
       "label": "Margoのオープンソースリポジトリ案内と質疑応答"
     }
   ],
-  "body": "## Work IQとは？今使えるCLI・MCPの範囲\n\nWork IQ（ワークIQ）のCLI・MCPでは、Microsoft 365のメール・会議・文書などについて自然な言葉で質問できます。CLIはコマンドで直接質問する使い方、MCPはGitHub CopilotなどのAIアシスタントへ接続する使い方です。\n\n使うには、組織管理者の同意と、Copilot Studioの従量課金プランの設定が必要です。そのプランにはAzureのサブスクリプションとリソースグループを指定し、利用者を割り当てます。Microsoft 365のアカウントだけで無料利用できるとは案内していません。\n\nMicrosoft LearnではCLIは2026年6月16日に一般提供されたと説明されています。一方、[公式GitHubのプラグイン集](https://github.com/microsoft/work-iq)にはPublic Previewの表記とプレビュー用プラグインがあります。CLIの一般提供と、プラグイン集・動画で紹介された新APIやWork IQ OSの提供範囲を、一括りにしないでください。\n\n確認：2026年10月30日21:11 JST。更新範囲はCLI・MCPの役割・利用条件と提供範囲の区別です。出典：[Microsoft公式「Work IQ CLI」](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/cli)。元動画の新API・サンプルの操作は今回再検証していません。\n\n## 何が発表されたのか\n\nMicrosoftは、開発者向けセッションイベント「Fly with Copilot」にて、企業内の組織データおよび業務コンテキストを自律型AIエージェントに接続する新たな統合インテリジェンス層「Work IQ」の技術全貌と関連ツール群を発表しました。本セッションには、デベロッパーアドボケイトのAyca Bas氏、テクニカルアドバイザーのAnthony Shaw氏、Work IQ担当GPMのTolga Kilic氏らが登壇しました。\n\n以下は元動画で紹介された新APIやデモの説明です。現在のCLI・MCPの一般提供・利用条件は、冒頭の更新追記と区別して読んでください。従来の「Microsoft Graph」が個別データの直接的なAPIアクセスを提供するのに対し、Work IQはメール、チャット、カレンダー、会議録、文書等に散在する「組織の文脈」を集約・理解し、AIエージェントが直ちに判断へ活用できる形式に加工して提供します。すでにMicrosoft 365 Copilot内で活用されているほか、外部エージェント開発者向けにREST API、Agent2Agent（A2A）プロトコル、Model Context Protocol（MCP）の3つのアクセス手段が提供されます。\n\n## 発表された機能・アップデートの全容\n\n### Microsoft 365 CopilotにおけるWork IQのコンテキスト統合\n\nAnthony Shaw氏は、Microsoft 365 Copilotアプリ上でWork IQがどのように機能しているかを実演しました。同氏は「Fly with Copilotセッションの準備として、着地させるべき5つのポイントは何か」という自然言語プロンプトを入力しました。\n\nCopilotは単に直近の予定を検索するだけでなく、組織内の35件の関連ミーティング、PowerPointスライド、会議の文字起こしテキスト、チャット履歴を包括的に解析しました。その結果、同氏がBuilding 32から会場であるBuilding 7へ移動する必要があることや、未回答のRSVP状態であること、さらに登壇者のAyca Bas氏やTolga Kilic氏との事前打合せで合意されたアジェンダの文脈まで踏まえた回答を提示しました。プロンプト内に日時や会議名を明示せずとも、Work IQがバックグラウンドで直近の文脈を補完している点が実証されました。\n\n### オープンソースダッシュボード基盤「Work IQ OS」と開発ツール\n\n開発者が独自業務アプリ（LOBアプリ）へWork IQを組み込むためのリファレンス実装として、「Work IQ OS（github.com/microsoft/iq-os）」が発表されました。MITライセンスでオープンソース公開される予定です。\n\n画面上のデモでは、パーソナライズされたダッシュボード「Microsoft IQ OS」が提示されました。ここには「Morning Brief（朝の要約）」「Daily Eval（日次の評価）」「Action Items（アクションアイテム）」「Meeting Intelligence（会議インテリジェンス）」といったモジュールが配置されています。これらはWork IQ APIを介してリアルタイムに更新されます。さらに統合されたDev Toolsから「Connect GitHub Copilot」を実行することで、ブラウザ内のセッションと連携し、自然言語でウィジェットのカスタマイズやレイアウト変更を行える開発体験が披露されました。\n\n### REST・A2A・MCPに対応する柔軟なマルチプロトコル構成\n\nAyca Bas氏は、Work IQ APIが提供する接続インターフェースの構造を解説しました。Work IQは「Chat」「Context」「Tools」「Workspaces」の4つの主要コンポーネントで構成されており、裏側にあるMicrosoft 365のMail、Calendar、Teams、Files、Peopleなどの組織知性にアクセスします。\n\nエージェント構築側に対しては、以下の3つの標準チャネルが開かれています。\n\n1. REST API: Webアプリやモバイルアプリから直接呼び出し可能な標準的HTTPインターフェース。\n2. A2A（Agent2Agent protocol）: 異なるフレームワークで構築されたエージェント同士が相互運用するためのオープン規格。Linux Foundationのプロジェクトとして運営されており、2026年3月にVersion 1.0が出荷済みです。\n3. MCP（Model Context Protocol）: エージェント向けに最適化されたコンテキスト提供サーバー。10個のジェネリックツールで構成されます。\n\n### Microsoft GraphとWork IQの役割分担\n\n開発者から頻繁に寄せられる「Work IQはMicrosoft Graphを置き換えるものなのか」という疑問に対し、Ayca Bas氏は両者の明確な違いを説明しました。\n\nMicrosoft Graphは「データアクセス」を担う層であり、200以上のエンドポイントを通じてメールの送信、カレンダー招待の作成、ファイルの取得といった個別データ操作をアプリケーション単位で実行します。一方でWork IQは「インテリジェンス」を担う層です。200ものエンドポイントをLLMに直接提示するとツール選択のオーバーヘッドが過大になるため、Work IQはエージェントが扱いやすいように抽象化された動的ツール（Tools）を提供します。ユーザーの現在の文脈を追跡し、常にログインユーザー自身のアイデンティティの下で動作する設計となっています。\n\n### Admin CenterおよびEntra IDによる高度なガバナンスと権限制御\n\nWork IQを企業環境で安全に運用するためのガバナンス機能も示されました。「Microsoft 365 admin center」のAgents/Tools管理画面では、「Work IQ MCP」に組み込まれた個別のツール（ask, fetch, create_entity, update_entity, delete_entity等）ごとに有効・無効をスイッチ切り替え可能です。例えば、AIエージェントに「作成」や「更新」は許可しつつ、「削除（delete）」権限のみを無効化するといった細分化されたポリシー設定が可能です。\n\nまた、自作エージェントから利用する際は「Microsoft Entra ID（旧Azure AD）」のアプリ登録（App Registrations）機能を使用します。「Work IQ Consumer」アプリの管理画面において、「WorkIQ.Agent.Ask」などの細分化された delegated（委任）アクセス許可を管理者が明示的に同意（Admin consent）することで、ゼロトラストモデルに準拠したセキュアなデータアクセスが維持されます。\n\n### インタラクティブデモによるAPIログの可視化と動作検証\n\nAyca Bas氏は、Web上で提供されている「Interactive Demo」環境を実演しました。開発者は実環境のテナントまたはサンプルデータセットを用いて、REST API、A2A、MCPの動作を試すことができます。\n\nデモでは「who am I」という簡易な問いをA2Aプロトコル経由で送信し、画面横の「API Log」パネルでバックグラウンドのJSONリクエストとレスポンスをリアルタイムに確認しました。さらにMCPツールのデモでは、「create_entity」を用いてカレンダー予定の追加リクエストを送信する手順が示され、開発者がデバッグやプロンプト調整を行うためのツール環境が整備されていることが示されました。\n\n### 自作AIエージェント「Margo」による自律的スケジュール調整の実装例\n\nTolga Kilic氏は、自身が抱える過絶な業務負荷（受信トレイのメール25万通、未読5万通、毎週92〜120件のミーティング招待）を解決するために構築したチーフ・オブ・スタッフ・エージェント「Margo」を実演しました。\n\nMargoはGitHub CopilotとWork IQ MCPサーバーを接続して動作します。リポジトリ内には「SKILL.md」「meeting-prep.md」「preferences.md」などのMarkdownファイルが配置されており、「すべての会議は5分遅らせて開始する」「本人の同意なしにメール送信や削除を行わない」といったグラウンドルール（行動規範）が定義されています。\n\nデモでは、Tolga氏が「明日Aycaと1:1の25分枠をとれるか」と指示すると、MargoはWork IQの「fetch」ツールでカレンダーの空き時間を検索し、1:00 PMと3:05 PMの2枠を抽出しました。その上で招待状の下書きを作成し、「Approve and send invitation」という人間の承認（Human-in-the-loop）ボタンを提示しました。承認ボタンをクリックした瞬間にWork IQ経由で正しく招待状が送信されました。さらにGitHub CopilotのCronジョブと連携し、「Morning Brief」や「Hourly Sweep」として能動的に直近の決定事項や欠話事項を要約・通知する自律ワークフローが提示されました。本リポジトリは「github.com/tolgakai/margo」にて公開されています。\n\n## 性能・ベンチマーク\n\n動画内では、特定の標準ベンチマークテスト（MMLUやGSM8Kなど）による定量的なベンチマークスコアの提示はありませんでした。しかし、開発・運用上の効率指標として以下の数値および仕様が提示されました。\n\n| 評価項目 / 指標 | 提示された数値・仕様 | 出典 | \n| :--- | :--- | :--- |\n| 統合APIエンドポイントの削減効果 | 200以上のGraphエンドポイントを、10個の汎用MCPツールへ集約 | 動画内スライド（11:58） |\n| Tolga Kilic氏のデータ処理規模 | 受信トレイ25万通（未読5万通）、週92〜120件の招待を解析処理 | 登壇者発言（20:36） |\n| A2Aプロトコルの標準化状況 | Linux Foundation傘下、2026年3月にVer 1.0出荷 | 動画内スライド（11:37） |\n| Work IQ OSのライセンス | MITライセンスによるオープンソース提供 | 登壇者発言（06:02） |\n\n## 導入を比較するときの確認項目\n\n[Microsoft公式のCLI資料](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/cli)によると、Work IQ CLIはMicrosoft 365の業務データに自然な言葉で質問し、MCP経由でAIアシスタントに業務の文脈を渡すための道具です。導入候補を比較するときは、次の点を確認してください。\n\n- **対象データ**：使いたいメール・会議・文書などを扱えるか。\n- **権限**：組織の管理者による同意と、必要なアクセス権限を確認できるか。\n- **課金**：利用者が割り当てられた従量課金プランと、その費用管理の方法を確認できるか。\n- **提供状態**：必要な機能が一般提供かプレビューか。動画で紹介された新APIやサンプルと、現在のCLI・MCPの範囲を区別できるか。\n\n（編集部注：比較の際は、実際に使うデータと機能を決め、その提供範囲・権限・課金条件を各サービスの公式資料で照合してください。）\n\n## 料金・提供プラン\n\n動画で紹介された新API・Work IQ OSと、現在のCLI・MCPの利用条件は分けて確認します。CLI・MCPの公式手順にはCopilot Studioの従量課金プランの設定が必要とあり、全体を「無料」「料金未発表」とは案内できません。個別の料金・請求条件は[公式文書の前提条件と課金案内](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/cli#prerequisites)を確認してください。本記事では実際の請求を検証していません。\n\n## 日本から使う方法\n\n現在のCLI・MCPの公式手順では、Node.js、Azure環境を指定したCopilot Studioの従量課金プラン、利用者の割り当て、Microsoft Entraテナントでの管理者同意を確認してから導入します。組織の管理者に相談し、[Microsoft公式のインストール手順](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/cli#install-work-iq)へ進んでください。\n\n今回、実環境での導入、日本語での動作、地域別の利用可否は確認していません。動画内のInteractive Demo・Work IQ OS・Margoの導入手順も再検証していません。\n\n## 誰が、何を確認してから使う？\n\n### 開発者・IT管理者\n\nまず、使うCLI・MCPクライアント、組織の管理者同意、課金設定を確認します。Microsoft Learnは、利用者が閲覧権限を持つデータにアクセスすると説明しています。動画で紹介された新APIや細かな操作制御が、どの環境でも同じように使えるとは限りません。\n\n### Microsoft 365を使う業務担当者\n\n社内のメール・会議・文書をAIから確認したい場合は、自分の組織で利用できる範囲をIT管理者へ相談します。個人の判断で業務データへのアクセス権や課金設定を追加する手順として、本記事を使わないでください。\n\n## 利用前に確認すること\n\n現行CLI・MCPを試す人は、[公式の前提条件と導入手順](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/cli#prerequisites)を確認してください。動画に登場する新API・Work IQ OS・Margoは、現行CLIと同じ提供状態と判断せず、それぞれの公開状況・権限・費用を確認します。本記事では導入・操作・請求の実地検証は行っていません。\n",
+  "body": "Work IQは、Microsoft 365にあるメール、チャット、予定、会議の記録、文書などから「その人が今どんな仕事の流れの中にいるか」をまとめ、AIエージェント（目的に沿って自分で調べたり操作したりするAI）が判断に使える形で渡す仕組みです。Microsoft 365 Copilotの中ですでに使われており、外部の開発者が作るエージェントからも使えるようにしています。\n\n## 今使えるのはCLIとMCP、利用には課金設定が必要\n\nWork IQ CLIは、コマンドでMicrosoft 365の業務データに自然な言葉で質問する道具です。MCP（AIアシスタントに外部のデータや機能をつなぐ共通の規格）を使えば、GitHub CopilotなどのAIアシスタントから同じように質問できます。\n\nMicrosoft Learnによると、CLIは6月16日に一般提供されました。使うには、組織の管理者の同意と、Copilot Studioの従量課金プランの設定が必要です。プランにはAzureのサブスクリプションとリソースグループを指定し、利用者を割り当てます。Microsoft 365のアカウントだけで無料で使えるとは案内されていません。公式GitHubのプラグイン集にはPublic Preview（公開の試用版）の表記があり、CLIの一般提供と、動画で紹介された新しいAPIやサンプルの提供範囲は分けて考える必要があります。\n\n確認：2026年10月30日21:11 JST。更新範囲はCLI・MCPの役割・利用条件と提供範囲の区別です。出典：[Microsoft公式「Work IQ CLI」](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/cli)。元動画の新API・サンプルの操作は今回再検証していません。\n\n## セッションで紹介された仕組みとデモ\n\n以下は、9月30日に公開されたセッションの動画で紹介された内容です。\n\n**Graphとの役割分担**：Microsoft Graphは、200を超える接続先（エンドポイント）でメールの送信や予定の作成、ファイルの取得といった個々のデータ操作を担います。登壇したデベロッパーアドボケイトのアイジャ・バス氏は、これだけの数をそのままAIに見せるとツール選びの負担が大きくなるため、Work IQはエージェントが扱いやすいように道具をまとめて提供すると説明しました。常にログインした本人の権限で動きます。\n\n**3つの接続方法**：外部のエージェントからは、REST API、A2A（異なる仕組みで作ったエージェント同士をつなぐ規格。Linux Foundationが運営し、3月にバージョン1.0を出荷）、MCPの3つでつなげます。MCPのサーバーは10個の汎用的なツールで構成されます。\n\n**権限の管理**：Microsoft 365 admin centerでは、Work IQ MCPのツール（ask、fetch、create_entity、update_entity、delete_entityなど）ごとに有効と無効を切り替えられます。自作のエージェントから使う場合は、Microsoft Entra IDのアプリ登録で、管理者が個別のアクセス許可に同意します。\n\n**Work IQ OS**：自社の業務アプリにWork IQを組み込むための見本として、朝の要約や会議の情報などを並べたダッシュボードを、MITライセンスのオープンソースで公開する予定です。\n\n**自作エージェント「Margo」**：Work IQ担当のトルガ・キリッチ氏は、受信トレイに25万通（未読5万通）、毎週92〜120件の会議の招待を抱える自身のために作ったエージェントを実演しました。GitHub CopilotとWork IQのMCPサーバーをつなぎ、本人の同意なしにメールを送ったり消したりしないといった決まりをファイルに書いています。「明日、25分の1対1の枠をとれるか」と頼むと、空き時間を2つ探して招待の下書きを作り、人が承認してから送りました。\n\n## まだ分からないこと\n\n- 動画で紹介された新しいAPIとWork IQ OSを一般提供する時期は、まだ発表されていません。\n- 日本語での動作や、地域ごとの利用の可否は、まだ確かめられていません。",
   "channel": "Microsoft Developer",
   "channelId": "UCsMica-v34Irf9KVTh6xx-g",
   "channelSlug": "microsoft-developer",
@@ -84,9 +84,9 @@
   "publishedAt": "2026-09-30T18:00:23+00:00",
   "generatedAt": "2026-10-05T23:38:39.415135+00:00",
   "thumbnail": "https://i.ytimg.com/vi/VpSCu7s4wD4/maxresdefault.jpg",
-  "model": "gemini-3.6-flash",
+  "model": "claude-code:claude-opus-5-5",
   "affiliates": [],
-  "seoTitle": "Work IQとは？MCP連携・料金と利用条件",
+  "seoTitle": "Microsoft Work IQの仕組みとCLI・MCPの利用条件",
   "verdict": {
     "status": "limited",
     "japan": "unknown",
@@ -94,10 +94,39 @@
     "free": null,
     "audience": "開発者",
     "take": "CLIは一般提供済み。管理者同意と課金設定が必要。動画の新API・Work IQ OSとは提供範囲を区別",
-    "judgedAt": "2026-10-30T16:40:28+09:00"
+    "judgedAt": "2026-11-04T01:17:57+00:00"
   },
-  "easy": "## Work IQとは？使い始める条件\n\nWork IQ（ワークIQ）は、AIと会社のMicrosoft 365のデータをつなぐ仕組みです。現在のCLI・MCPという道具を使うには、会社の管理者の許可と従量課金プランの設定が必要です。CLIは一般提供済みですが、プレビューのプラグインや動画の新しい仕組みまで、全部同じ条件で使えるわけではありません。\n\n## ひとことで言うと\nMicrosoftが、会社のメールや予定表、会議の記録などを、AIエージェント（＝指示を受けて自分で作業を進めるAI）が理解しやすい形にまとめて渡す仕組み「Work IQ」の詳しい中身を公開しました。AIが「仕事の流れや事情」をふまえて動けるようになるための土台です。\n\n## 何がすごいの？\nこれまでは、AIに社内のデータを使わせるには、200以上もある窓口を一つずつ使い分ける必要がありました。Work IQはそれを10個の道具にまとめ、AIが迷わず使えるようにしています。\n\nたとえるなら、散らかった書類棚から、秘書が「今あなたに必要なのはこれです」と選んで手渡してくれるようなものです。\n\n- デモでは「準備で押さえるべき5つのポイントは？」と聞くだけで、35件の関連会議や資料、チャットをふまえた答えが返ってきました\n- 管理者は「作成や更新はOK、削除は禁止」のように、AIにできることを細かく制限できます\n- 担当者が自作したAI秘書「Margo」は、空き時間を探して招待状の下書きを作り、人が承認ボタンを押してから送信していました\n\n## 自分に関係ある？\n今の段階では、主に開発者や企業のIT担当者向けのニュースです。ただ将来は、Microsoft 365を使う会社員にとって「過去の会議で何が決まったか」をAIがすぐ探してくれる、といった形で恩恵が届く可能性があります。すでにMicrosoft 365 Copilotの中では、この仕組みが使われていると説明されています。\n\n## 使ってみるには\n\nまず会社のIT管理者へ相談します。現在のCLI・MCPでは、Copilot Studioの従量課金プランにAzureの契約・リソースグループを設定し、使う人を割り当て、管理者が利用を許可する必要があります。Microsoft 365のアカウントだけで無料利用できるとは限りません。\n\n2026年10月30日21:11 JSTに[Microsoft公式の利用条件](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/cli)を確認しました。日本語での動作や日本からの導入、動画のサンプルは今回試していません。\n",
-  "updatedAt": "2026-10-30T21:18:58+09:00",
+  "easy": "## ひとことで言うと\n\nMicrosoftの「Work IQ」は、Microsoft 365のメールや予定、文書から仕事の状況をまとめ、AIに渡す仕組みです。AIが「今この人に必要なこと」を踏まえて答えたり、作業したりしやすくなります。\n\n## 使うには会社の管理者の設定が必要\n\n今使える道具を試すには、会社の管理者の同意と、Microsoftの従量課金のプランの設定が要ります。個人で勝手に始めるものではないので、社内のIT担当に相談するのが近道です。",
+  "updatedAt": "2026-11-04T01:17:57+00:00",
   "originalTitle": "Microsoft Work IQとは？MCP連携でできることと料金・利用条件",
-  "titleStyle": "2026-11-03"
+  "titleStyle": "2026-11-03",
+  "newsType": "explainer",
+  "faq": [
+    {
+      "q": "Work IQは無料で使えますか？",
+      "a": "CLI・MCPの利用には、Copilot Studioの従量課金プランの設定が必要です。Microsoft 365のアカウントだけで無料で使えるとは案内されていません。"
+    },
+    {
+      "q": "Microsoft GraphとWork IQは何が違いますか？",
+      "a": "Graphはメールの送信や予定の作成など個々のデータ操作を担います。Work IQは、業務の文脈をまとめてAIエージェントが判断に使える形で渡す層です。"
+    },
+    {
+      "q": "AIエージェントに削除だけ禁止できますか？",
+      "a": "Microsoft 365 admin centerで、Work IQ MCPのツールごとに有効と無効を切り替えられます。作成や更新は許可し、削除だけを止めるといった設定ができます。"
+    }
+  ],
+  "todayActions": [
+    "Work IQ CLIを試したい場合は、社内のIT管理者に管理者同意と課金設定の扱いを相談する",
+    "導入を検討する前に、Microsoft Learnの前提条件の欄で必要な環境と権限を確かめる"
+  ],
+  "workMoney": {
+    "relevance": "medium",
+    "points": [
+      "社内のメールや会議の情報をAIに使わせたい企業は、権限と課金の条件を先に確かめる必要があります。",
+      "ツールごとに削除などを禁止できるため、AIに任せる範囲を管理者が決められます。"
+    ]
+  },
+  "writingVoice": "explainer",
+  "sectionsPolishedAt": "2026-11-04T01:17:57+00:00",
+  "typesRewrittenAt": "2026-11-04T01:17:57+00:00"
 }
