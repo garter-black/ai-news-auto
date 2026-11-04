@@ -330,6 +330,25 @@
           "video_review": 3
         },
         "usd": 0.078754
+      },
+      "gh-41781283787-1": {
+        "by": {
+          "video_review|2": {
+            "n": 1,
+            "usd": 0.024564
+          }
+        },
+        "cache_read": 0,
+        "cache_write": 0,
+        "calls": {
+          "video_review": 1
+        },
+        "in": 8852,
+        "out": 686,
+        "req": {
+          "video_review": 1
+        },
+        "usd": 0.024564
       }
     }
   }
