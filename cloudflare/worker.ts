@@ -223,9 +223,20 @@ function deployVersion(env: Env): string {
   return (env.CF_VERSION_METADATA as { id?: string } | undefined)?.id ?? "dev";
 }
 
+/**
+ * 記事のカバー画像（/cover/<slug>?v=<版>-<題名のハッシュ>）。中身は URL だけで決まり、ブラウザにも7日 immutable で渡している。
+ * デプロイのたびに作り直す必要は無いので、エッジのキャッシュはデプロイ・JS の組に関係なく使い、古い版としての作り直しもしない（台帳 W29）。
+ * 以前は、デプロイのたびに画像の見回り（scripts/check_images.py）などが開くたびに1枚 1.5〜3.6 秒の CPU で作り直し、
+ * 同じ isolate のページのリクエストを待たせていた（2026-11-04 01:13 UTC のデプロイ直後、/usable が CPU 1ms のまま 90 秒待って切れた）
+ */
+function isImmutableImage(url: URL): boolean {
+  return url.pathname.startsWith("/cover/") && /^\d+-[0-9a-z]+$/.test(url.searchParams.get("v") ?? "");
+}
+
 function edgeCacheKey(request: Request, url: URL, env: Env): Request | null {
   if (request.method !== "GET" || request.headers.has("rsc") || url.searchParams.has("_rsc")) return null;
   if (url.pathname.startsWith("/_next/") || url.pathname.startsWith("/api/")) return null;
+  if (isImmutableImage(url)) return new Request(`${url.origin}${url.pathname}?v=${url.searchParams.get("v")}&__c=immutable`, { method: "GET" });
   const key = new URL(url);
   // 表示に関係しない計測用のパラメータ（シェアボタンの utm_*・SNS のクリック ID）はキーから外し、
   // 同じページを別物として描き直さない。/search の q もページは同じ（検索はブラウザ側で行う）
@@ -247,10 +258,13 @@ function edgeCacheable(response: Response): boolean {
 }
 
 /** エッジには1日置く（JS・CSS が変われば自然に使われなくなる）。ブラウザには毎回確かめさせる。どの版で描いたかを残す */
-function forEdge(response: Response, env: Env): Response {
+function forEdge(response: Response, env: Env, immutable = false): Response {
   const copy = new Response(response.body, response);
   const image = (copy.headers.get("content-type") ?? "").startsWith("image/");
-  copy.headers.set("cache-control", image ? "public, max-age=604800, s-maxage=86400" : "public, max-age=0, s-maxage=86400");
+  copy.headers.set(
+    "cache-control",
+    immutable && image ? "public, max-age=604800, s-maxage=604800, immutable" : image ? "public, max-age=604800, s-maxage=86400" : "public, max-age=0, s-maxage=86400",
+  );
   copy.headers.set("x-saisoku-ver", deployVersion(env));
   return copy;
 }
@@ -338,7 +352,7 @@ export default {
     if (edge && cacheKey) {
       const hit = await edge.match(cacheKey);
       if (hit) {
-        const fresh = hit.headers.get("x-saisoku-ver") === deployVersion(env);
+        const fresh = isImmutableImage(url) || hit.headers.get("x-saisoku-ver") === deployVersion(env);
         // 前のデプロイで描いたもの: すぐ返し、裏で今の版に作り直す
         if (!fresh && !refreshing.has(cacheKey.url)) {
           refreshing.add(cacheKey.url);
@@ -359,7 +373,7 @@ export default {
 
     const response = await render(request, url, env, ctx);
     if (edge && cacheKey && edgeCacheable(response)) {
-      const cached = forEdge(response, env);
+      const cached = forEdge(response, env, isImmutableImage(url));
       ctx.waitUntil(edge.put(cacheKey, cached.clone()));
       cached.headers.set("x-saisoku-edge", "miss");
       return cached;

@@ -155,6 +155,14 @@ test('[W29] サイトマップに載るページと一覧の2ページ目以降�
     assert.doesNotMatch(src, /generateStaticParams\(\) \{\s*return \[\];/, rel);
     assert.match(src, /laterPages\(/, rel);
   }
+  // カバー画像（URL に版と題名のハッシュ）は、デプロイのたびに作り直さない（1枚 1.5〜3.6 秒の CPU で、同じ isolate のページを待たせていた）
+  const worker = read('cloudflare/worker.ts');
+  assert.match(worker, /function isImmutableImage\(url: URL\)/);
+  assert.match(worker, /if \(isImmutableImage\(url\)\) return new Request\(/);
+  assert.match(worker, /const fresh = isImmutableImage\(url\) \|\|/);
+  const { coverPath } = load('lib/cover-path.ts');
+  const v = new URL(coverPath({ slug: 'a', title: '題名' }), 'https://x').searchParams.get('v');
+  assert.match(v, /^\d+-[0-9a-z]+$/, 'coverPath の ?v= は worker の isImmutableImage と同じ形');
   const { laterPages } = load('lib/paginate.ts');
   assert.deepEqual(laterPages(60), []);
   assert.deepEqual(laterPages(61), ['2']);
