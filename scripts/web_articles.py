@@ -67,6 +67,7 @@ import notice_gate  # noqa: E402
 import pricing_scope  # noqa: E402
 import source_links  # noqa: E402
 import headline_normalize  # noqa: E402
+import article_style  # noqa: E402
 import pacing  # noqa: E402  1日の上限の数え方（公開中だけ）と時刻ごとの配分
 import public_interest  # noqa: E402  多くの人が読む公共性の高いニュース（台帳 A39・A40）
 import news_mix  # noqa: E402  1日の記事の配分（ピボット・台帳 A41）
@@ -367,8 +368,7 @@ WEB_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を読�
   名前の直後に「とは／使い方／料金／日本で使える」のどれかを入れる（発表直後は日本語の記事がまだ少なく、この形の検索で1位を取りやすい）。
 - threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（書き出し／要約すると、＋2文／問いかけ の3つのかたまり・URLなし）。
 <<EASY_RULE>>
-- lede: 記事冒頭のリード文。150〜200字。1文目で今回なにが新しいか（誰が・何を・いつ）を言い切り、2文目に一番大事な数字か条件を置く。発信元の名前を含める。
-  報道記事のリードの文体（です・ます調で落ち着いた書き方）。よく知られた会社に「ChatGPTのOpenAI」のような説明を付けない。幼い言い方・話し言葉は使わない。
+- lede: <<LEDE_RULE>>
 - description: 100〜130文字のメタディスクリプション。結論を含める。
 - mentioned_tools: 記事中で言及した製品・サービス・企業の**正式名称**（3〜12個）。本文で触れたものだけ。
 - slug_en: URL用の英小文字スラッグ。半角英数とハイフンのみ、3〜6単語、40文字以内。
@@ -396,6 +396,7 @@ WEB_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を読�
 body_markdown 内では h1 (`#`) を使わないでください（タイトルは別途表示されます）。
 """
 WEB_PROMPT_TEMPLATE = WEB_PROMPT_TEMPLATE.replace("<<TITLE_STYLE>>", headline_normalize.TITLE_STYLE_PROMPT)  # 見出しの書き方（scripts/headline_normalize.py）
+WEB_PROMPT_TEMPLATE = WEB_PROMPT_TEMPLATE.replace("<<LEDE_RULE>>", article_style.LEDE_RULE)  # リードの書き方（scripts/article_style.py・台帳 A19）
 WEB_PROMPT_TEMPLATE = WEB_PROMPT_TEMPLATE.replace("<<EASY_RULE>>", news_types.EASY_RULE)  # かんたん版の書き方（scripts/news_types.py）
 
 
@@ -436,7 +437,7 @@ BROAD_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を�
 - seo_title: 全角24〜30文字。固有名詞（商品名・制度名・組織名）を先頭に置く。記号は「｜」「：」を最大1つまで。
 - threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（書き出し／要約すると、＋2文／問いかけ の3つのかたまり・URLなし）。
 <<EASY_RULE>>
-- lede: 150〜200字。1文目で今回なにが新しいか（誰が・何を・いつ）を言い切り、2文目に一番大事な数字か条件を置く。発信元の名前を含める。報道記事のリードの文体で、よく知られた会社に説明を付けず、幼い言い方・話し言葉は使わない。
+- lede: <<LEDE_RULE>>
 - description: 100〜130文字のメタディスクリプション。結論を含める。
 - mentioned_tools: 記事中で言及した商品・サービス・企業・制度の正式名称（0〜12個）。本文で触れたものだけ。
 - slug_en: URL用の英小文字スラッグ。半角英数とハイフンのみ、3〜6単語、40文字以内。
@@ -455,6 +456,7 @@ BROAD_PROMPT_TEMPLATE = """以下の一次情報（公式発表の文章）を�
 body_markdown 内では h1 (`#`) を使わないでください（タイトルは別途表示されます）。
 """
 BROAD_PROMPT_TEMPLATE = BROAD_PROMPT_TEMPLATE.replace("<<TITLE_STYLE>>", headline_normalize.TITLE_STYLE_PROMPT)  # 見出しの書き方（scripts/headline_normalize.py）
+BROAD_PROMPT_TEMPLATE = BROAD_PROMPT_TEMPLATE.replace("<<LEDE_RULE>>", article_style.LEDE_RULE)  # リードの書き方（scripts/article_style.py・台帳 A19）
 BROAD_PROMPT_TEMPLATE = BROAD_PROMPT_TEMPLATE.replace("<<EASY_RULE>>", news_types.EASY_RULE)  # かんたん版の書き方（scripts/news_types.py）
 
 
@@ -825,7 +827,7 @@ TREND_PROMPT_TEMPLATE = """日本でいま話題になっているキーワー�
 - seo_title: 全角24〜30文字。検索されるキーワードを先頭に置く。記号は「｜」「：」を最大1つまで。
 - threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（書き出し／要約すると、＋2文／問いかけ の3つのかたまり・URLなし）。
 <<EASY_RULE>>
-- lede: 150〜200字。1文目で何が起きたか（今回の新しい事実）を言い切り、2文目になぜ話題か・一番大事な数字を置く。報道記事のリードの文体で、よく知られた会社に説明を付けず、幼い言い方・話し言葉は使わない。
+- lede: <<LEDE_RULE>>
 - description: 100〜130文字。
 - mentioned_tools: 記事中で言及した製品・サービス・企業・制度の正式名称（0〜12個）。
 - slug_en: 英小文字とハイフン、3〜6単語、40文字以内。
@@ -844,6 +846,7 @@ TREND_PROMPT_TEMPLATE = """日本でいま話題になっているキーワー�
 body_markdown 内では h1 (`#`) を使わないでください。
 """
 TREND_PROMPT_TEMPLATE = TREND_PROMPT_TEMPLATE.replace("<<TITLE_STYLE>>", headline_normalize.TITLE_STYLE_PROMPT)  # 見出しの書き方（scripts/headline_normalize.py）
+TREND_PROMPT_TEMPLATE = TREND_PROMPT_TEMPLATE.replace("<<LEDE_RULE>>", article_style.LEDE_RULE)  # リードの書き方（scripts/article_style.py・台帳 A19）
 TREND_PROMPT_TEMPLATE = TREND_PROMPT_TEMPLATE.replace("<<EASY_RULE>>", news_types.EASY_RULE)  # かんたん版の書き方（scripts/news_types.py）
 
 

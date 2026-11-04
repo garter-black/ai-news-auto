@@ -49,10 +49,15 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
+  // Google Discover の大きな写真の条件（2026-11-04 台帳 W32）。googlebot だけでなく robots にも出す（Google の案内の書き方）。
+  // 抜粋・動画の下見の長さも制限しない（-1）
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+    "max-image-preview": "large",
+    "max-snippet": -1,
+    "max-video-preview": -1,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
   },
 };
 

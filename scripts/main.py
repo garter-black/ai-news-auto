@@ -315,9 +315,7 @@ PROMPT_TEMPLATE = """以下のYouTube動画を「映像」と「音声」の両�
   良い例:「GPT-6 Astra×Figma連携｜2時間でUI試作を自動化」「ChatGPT Plugin Extensionsとは：MCPでUI拡張」
 - threads_post: Threads・X に出す投稿文。末尾の「Threads 紹介文（threads_post）のルール」と「書き出し」に従う（書き出し／要約すると、＋2文／問いかけ の3つのかたまり・URLなし）。
 <<EASY_RULE>>
-- lede: 記事冒頭のリード文。150〜200字の1〜2段落。1文目で今回なにが新しいか（誰が・何を・いつ）を言い切り、2文目に一番大事な数字か条件を置く。
-  報道記事のリードの文体（です・ます調で落ち着いた書き方）。よく知られた会社に「ChatGPTのOpenAI」のような説明を付けない。幼い言い方・話し言葉は使わない。
-  ここだけ読んでも発表の要点が分かる密度にする。
+- lede: <<LEDE_RULE>>
 - description: 100〜130文字のメタディスクリプション。検索結果に出る想定で、結論を含める。
 - mentioned_tools: 記事中で言及した製品・サービス・企業・ブランドの**正式名称**の配列（5〜12個）。
   例（AI）: ["OpenAI", "ChatGPT", "Google Gemini", "NVIDIA"]
@@ -351,6 +349,7 @@ PROMPT_TEMPLATE = """以下のYouTube動画を「映像」と「音声」の両�
 body_markdown 内では h1 (`#`) を使わないでください（タイトルは別途表示されます）。
 """
 PROMPT_TEMPLATE = PROMPT_TEMPLATE.replace("<<TITLE_STYLE>>", headline_normalize.TITLE_STYLE_PROMPT)  # 見出しの書き方（scripts/headline_normalize.py）
+PROMPT_TEMPLATE = PROMPT_TEMPLATE.replace("<<LEDE_RULE>>", article_style.LEDE_RULE)  # リードの書き方（scripts/article_style.py・台帳 A19）
 PROMPT_TEMPLATE = PROMPT_TEMPLATE.replace("<<EASY_RULE>>", news_types.EASY_RULE)  # かんたん版の書き方（scripts/news_types.py）
 
 ARTICLE_SCHEMA = {

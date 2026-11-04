@@ -66,6 +66,7 @@ import {
 } from "@/lib/articles";
 import { Highlight } from "@/lib/highlight";
 import { isOwnImage } from "@/lib/thumb-url";
+import { shareImages } from "@/lib/share-image";
 import {
   renderMarkdown,
   splitBeforeHeading,
@@ -128,18 +129,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: article.generatedAt || article.publishedAt,
       modifiedTime: lastModifiedOf(article),
       tags: article.tags,
-      // SNSのカードは日本語見出し入りの独自カバー。無い記事は元動画（元記事）の画像
-      images: cover
-        ? [{ url: cover, width: 1200, height: 630, alt: title }]
-        : article.thumbnail
-          ? [{ url: article.thumbnail, width: 1280, height: 720 }]
-          : undefined,
+      // 公式発表の写真（幅 1,200px）がある記事はその写真が先、見出し入りのカバーは2つ目（Google Discover の大きな写真。lib/share-image.ts・台帳 W32）。
+      // 公式の写真が無い記事は、これまでどおり日本語見出し入りの独自カバー。それも無い記事は元動画（元記事）の画像
+      images: shareImages(article, cover, title),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description: article.description,
-      images: cover ? [cover] : article.thumbnail ? [article.thumbnail] : undefined,
+      images: shareImages(article, cover, title).map((image) => image.url).slice(0, 1),
     },
   };
 }
