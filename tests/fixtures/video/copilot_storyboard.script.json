@@ -1,37 +1,121 @@
 {
-  "hook": {"text": "JetBrains AirでCopilotが使える", "payoff": "追加の契約なし",
-           "speech": "コパイロットの契約だけで、ジェットブレインズのエアーに作業を任せられるようになりました。",
-           "block": "1-9", "target": "Select GitHub Copilot and use your existing Copilot subscription for coding tasks.", "ja": "いまのCopilotの契約のまま、作業を頼めます"},
+  "hook": {
+    "text": "JetBrains AirでCopilotが使える",
+    "payoff": "契約そのまま",
+    "speech": "いつものエディタのまま、AIに作業を任せられます。ジェットブレインズの作業場所「エアー」で、いまのコパイロットの契約がそのまま使えます。",
+    "block": "1-9",
+    "target": "Select GitHub Copilot and use your existing Copilot subscription for coding tasks.",
+    "ja": "いまのCopilotの契約のまま、作業を頼めます"
+  },
   "beats": [
-    {"label": "手元とクラウドの両方", "keyword": "同時に頼める", "sub": "",
-     "speech": "手元のアイディーイーでもクラウドでも、複数の作業を同時に頼めます。変更はコードの横で確かめられます。",
-     "block": "1-10", "target": "Track multiple agent sessions, use project context and IDE tools, and review changes alongside your code.",
-     "ja": "複数の作業を同時に追いかけ、変更はコードの横で確かめられます"},
-    {"label": "毎回まっさらな環境", "keyword": "PCは汚れない", "sub": "",
-     "speech": "クラウドでは毎回まっさらな環境で、ビルドやテストまで進めます。手元のPCは汚れません。",
-     "block": "1-18", "target": "Copilot can build, test, and install packages without modifying your local environment.",
-     "ja": "手元のPCを汚さずに、ビルドやテストまで進められます"},
-    {"label": "法人は費用管理に注意", "keyword": "費用管理は別で", "sub": "",
-     "speech": "ただし、エアーの画面ではコパイロットの利用上限を決められず、利用量も出ません。費用の管理は別で考えましょう。",
-     "block": "1-23", "target": "Air administrators can disable GitHub Copilot through a governance policy, but cannot set Copilot spending limits within Air.",
-     "ja": "Airの管理者はCopilotを止められますが、費用の上限は設定できません"}
+    {
+      "label": "手元とクラウドの両方",
+      "keyword": "同時に頼める",
+      "sub": "",
+      "speech": "手元のアイディーイーでもクラウドでも、複数の作業を同時に頼めます。",
+      "block": "1-10",
+      "target": "Track multiple agent sessions, use project context and IDE tools, and review changes alongside your code.",
+      "ja": "複数の作業を同時に追いかけ、変更はコードの横で確かめられます"
+    },
+    {
+      "label": "毎回まっさらな環境",
+      "keyword": "PCは汚れない",
+      "sub": "",
+      "speech": "クラウドでは毎回まっさらな環境で、ビルドやテストまで進めます。手元のPCは汚れません。",
+      "block": "1-18",
+      "target": "Copilot can build, test, and install packages without modifying your local environment.",
+      "ja": "手元のPCを汚さずに、ビルドやテストまで進められます"
+    },
+    {
+      "label": "法人は費用管理に注意",
+      "keyword": "費用管理は別で",
+      "sub": "",
+      "speech": "ただし、エアーの画面ではコパイロットの利用上限を決められず、利用量も出ません。費用の管理は別で考えましょう。",
+      "block": "1-22",
+      "target": "Air’s governance and analytics features do not include Copilot usage.",
+      "ja": "Airの管理と分析の機能には、Copilotの利用量が出ません"
+    }
   ],
   "cards": [
-    {"beat": 1, "mode": "timeline", "title": "手元とクラウドの両方", "source": "記事より",
-     "rows": [{"label": "手元のIDE", "text": "作業を並べて進める"}, {"label": "クラウド", "text": "隔離された環境で動く"}]},
-    {"beat": 2, "mode": "timeline", "title": "クラウドで動かすと", "source": "記事より",
-     "rows": [{"label": "クラウド", "text": "毎回まっさらな環境"}, {"label": "手元", "text": "変化なし"}]},
-    {"beat": 3, "mode": "checklist", "title": "Airの画面では", "source": "記事より",
-     "rows": [{"label": "上限の設定", "text": "× 決められない"}, {"label": "利用量の表示", "text": "× 出ない"}]}
+    {
+      "beat": 1,
+      "mode": "timeline",
+      "title": "手元とクラウドの両方",
+      "source": "記事より",
+      "rows": [
+        {
+          "label": "手元のIDE",
+          "text": "作業を並べて進める"
+        },
+        {
+          "label": "クラウド",
+          "text": "隔離された環境で動く"
+        }
+      ]
+    },
+    {
+      "beat": 2,
+      "mode": "timeline",
+      "title": "クラウドで動かすと",
+      "source": "記事より",
+      "rows": [
+        {
+          "label": "クラウド",
+          "text": "毎回まっさらな環境"
+        },
+        {
+          "label": "手元",
+          "text": "変化なし"
+        }
+      ]
+    },
+    {
+      "beat": 3,
+      "mode": "checklist",
+      "title": "Airの画面では",
+      "source": "記事より",
+      "rows": [
+        {
+          "label": "上限の設定",
+          "text": "× 決められない"
+        },
+        {
+          "label": "利用量の表示",
+          "text": "× 出ない"
+        }
+      ]
+    }
   ],
-  "compare": {"beat": 0, "base": "", "subject": "", "ratio": ""},
-  "ladder": {"beat": 0, "subject": "", "rows": []},
-  "units": {"beat": 0, "unit": "", "subject": "", "rows": []},
-  "conclusion": {"text": "予算とアラートを先に", "speech": "法人で広げる前に、コパイロット側の予算とアラートを確かめておきましょう。", "cta": "詳しくは記事で ↗", "eyebrow": "次の一歩"},
+  "compare": {
+    "beat": 0,
+    "base": "",
+    "subject": "",
+    "ratio": ""
+  },
+  "ladder": {
+    "beat": 0,
+    "subject": "",
+    "rows": []
+  },
+  "units": {
+    "beat": 0,
+    "unit": "",
+    "subject": "",
+    "rows": []
+  },
+  "conclusion": {
+    "text": "予算とアラートを先に",
+    "speech": "法人で広げる前に、コパイロット側の予算とアラートを確かめておきましょう。",
+    "cta": "詳しくは記事で ↗",
+    "eyebrow": "次の一歩"
+  },
   "short_beats": [],
   "title": "GitHubがJetBrainsの「Air」にCopilotを提供",
   "summary": "要約すると、JetBrainsのAIエージェント環境「Air」で、手持ちのGitHub Copilotの契約のまま作業を任せられるようになりました。",
-  "hashtags": ["#GitHubCopilot", "#JetBrains"],
+  "hashtags": [
+    "#GitHubCopilot",
+    "#JetBrains"
+  ],
   "_variant": "short",
   "_template": "storyboard"
 }

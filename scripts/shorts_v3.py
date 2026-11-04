@@ -2877,9 +2877,9 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
                 ev(chart_t, "chart", f"型のカード: {cd['mode']}")
                 if cd["mode"] == "image":  # 写真はゆっくり寄るだけ。1秒後に小さく出どころ（画像：◯◯（公式発表より））
                     ev(chart_t + 1.0, "text", "カード: 写真の出どころ")
-                elif tour:
+                elif tour:  # 行の強調が移るだけ（小さな変化）なので「highlight」として数える（大きな変化の基準で落とさない）
                     for k in range(len(rows_c)):
-                        ev(t_hi + 1.6 * k, "pop", f"カード: {k + 1}行目")
+                        ev(t_hi + 1.6 * k, "highlight", f"カード: {k + 1}行目")
                 else:
                     ev(t_hi, "pop", "カード: 強調")
                 if nxt - t_end > 1.2:  # カードが消えて証拠の画面に戻る（大きく絵が変わる所）
@@ -3780,7 +3780,8 @@ def geometry_records(plan: Plan, step: float = 0.1) -> list[dict]:
             v = cam_view(cam)
             views.append([t, round(cam.s, 5), *[round(x, 1) for x in v]])
             # 目視の確認のコマは、選択が消える直前（最後の 0.2秒）を避ける（コマの取り出しが次のフレームになり、選択の無い絵を見せていた）
-            if t <= t1 - 0.2 and (peak is None or cam.s > peak[1]):
+            # 選択の青を引き終わる前のコマも見せない（「青が見当たらない」「文の途中で切れている」と判定されていた。2026-11-04）
+            if t0 + 0.45 + 0.12 * max(0, len(q.get("sel") or []) - 1) <= t <= t1 - 0.2 and (peak is None or cam.s > peak[1]):
                 peak = (t, cam.s)
         tgt = q["target"]
         phrase = clause_ok(tgt, q["block_text"]) if is_english(tgt) else ja_phrase_ok(tgt, q["block_text"])
