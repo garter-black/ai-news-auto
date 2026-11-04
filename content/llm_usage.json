@@ -53,7 +53,7 @@
     "gemma-4-31b-it": 1
   },
   "2026-11-03": {
-    "anthropic-api:claude-haiku-5-5": 95,
+    "anthropic-api:claude-haiku-5-5": 96,
     "anthropic-api:claude-opus-5-5": 15,
     "anthropic-api:claude-sonnet-5-5": 115,
     "cf-image:flux-1-schnell": 9,

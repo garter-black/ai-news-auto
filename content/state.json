@@ -11447,6 +11447,12 @@
       "skipped": true,
       "url": "https://prtimes.jp/main/html/rd/p/000000087.000073972.html"
     },
+    "c4a752a9b4f8350f": {
+      "at": "2026-11-04T04:38:04.291065+00:00",
+      "reason": "followup: 新しい事実なし（ntt-fy2026-q2-results）",
+      "skipped": true,
+      "url": "https://www.docomo.ne.jp/info/news_release/2026/11/04_00.html?cid=CRP_INF_news_release_2026_11_04_00_from_RSS_news_release"
+    },
     "c4c08db9ebb51f8c": {
       "at": "2026-11-02T22:14:44.634249+00:00",
       "model": "cloudflare:@cf/openai/gpt-oss-120b",

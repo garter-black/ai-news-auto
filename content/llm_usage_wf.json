@@ -25,7 +25,7 @@
       "openrouter:nvidia/nemotron-3.5-super-vl:free": 37
     },
     "breaking": {
-      "anthropic-api:claude-haiku-5-5": 15,
+      "anthropic-api:claude-haiku-5-5": 16,
       "anthropic-api:claude-opus-5-5": 4,
       "anthropic-api:claude-sonnet-5-5": 16
     },
