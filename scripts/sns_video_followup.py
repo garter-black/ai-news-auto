@@ -979,7 +979,8 @@ def apply_converted(state: dict, posted: dict) -> int:
         rec.setdefault("pausedIds", {}).update({k: v.get("id") for k, v in paused.items()})
         channels = {k: v for k, v in (rec.get("channels") or {}).items() if k not in paused}
         if conv.get("repost"):
-            for k in ("blueskyAt", "blueskyFailed", "sentAt", "permalink"):
+            # 消した前の投稿の数字・リンクを残さない（学習と点検が前の投稿を読まないように）
+            for k in ("blueskyAt", "blueskyFailed", "sentAt", "permalink", "externalLink", "metrics", "metricsUpdatedAt", "xMetrics", "ownReplies"):
                 rec.pop(k, None)
         rec["channels"] = channels
         if conv.get("threadsSent"):
@@ -1000,11 +1001,16 @@ def sync_posted(state: dict, posted: dict) -> int:
     drop_bluesky_extra(state)
     for slug, q in (state.get("queued") or {}).items():
         rec = (posted.get("posted") or {}).get(slug)
-        if not rec or not awaiting(rec):
+        if not rec:
+            continue
+        # 動画待ちの記録か、記録の ID が送った投稿と違う（重なった実行が別の ID を書いた）ときに写す
+        stale = q.get("status") == "created" and q.get("id") and rec.get("id") != q.get("id") and rec.get("status") == "scheduled"
+        if not awaiting(rec) and not stale:
             continue
         if q.get("status") == "created":
             rec.update({"id": q.get("id", ""), "status": "scheduled", "dueAt": q.get("dueAt") or rec.get("dueAt"), "image": "video",
-                        "channels": {**(rec.get("channels") or {}), **{k: v for k, v in (q.get("channels") or {}).items() if k != "threads" and v}},
+                        "channels": {**{k: v for k, v in (rec.get("channels") or {}).items() if k == "bluesky"},
+                                     **{k: v for k, v in (q.get("channels") or {}).items() if k != "threads" and v}},
                         "videoVariant": q.get("variant", "")})
             rec.pop("pending", None)
             changed += 1

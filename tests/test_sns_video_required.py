@@ -293,6 +293,10 @@ class PublishQueuedTest(unittest.TestCase):
         self.assertNotIn("pending", a)
         self.assertEqual(b["status"], "skipped_no_video")
         self.assertEqual(fu.sync_posted(state, posted), 0)  # 何度写しても同じ
+        # 重なった実行が別の ID を書いた記録は、送った投稿の ID に直す
+        posted["posted"]["a"].update({"id": "DUP", "channels": {"twitter": "DUPX", "bluesky": "at://b"}})
+        self.assertEqual(fu.sync_posted(state, posted), 1)
+        self.assertEqual((posted["posted"]["a"]["id"], posted["posted"]["a"]["channels"]), ("T1", {"bluesky": "at://b", "twitter": "X1"}))
 
 
 class QueueFixTest(unittest.TestCase):

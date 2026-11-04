@@ -168,6 +168,8 @@ def upload_video(session: dict, url: str) -> dict:
     for _ in range(60):
         if job.get("blob"):
             return job["blob"]
+        if job.get("error") == "unconfirmed_email":
+            raise RuntimeError("Bluesky のアカウントのメールアドレスが未確認のため、動画を上げられません（Bluesky の設定でメールを確認すると出せるようになります）")
         if job.get("state") == "JOB_STATE_FAILED" or not job.get("jobId"):
             raise RuntimeError(f"Bluesky の動画の処理に失敗しました: {str(job)[:200]}")
         time.sleep(5)
@@ -589,6 +591,10 @@ def main() -> int:
             log(f"  [bluesky] {key} ({kind}): https://bsky.app/profile/{session['handle']}/post/{res['uri'].rsplit('/', 1)[-1]}")
         except Exception as error:  # noqa: BLE001
             log(f"  [bluesky] {key} 失敗: {error}")
+            if "メールアドレスが未確認" in str(error) and live:
+                import sns_video_followup as fu  # noqa: PLC0415
+
+                fu.missing_issue(key, f"Bluesky に動画で出せませんでした: {error}")
             if kind == "fill":  # 同じ記事で毎回失敗し続けないよう、記録して次へ（時刻なし＝本数に数えない）
                 extra[key] = {"failed": str(error)[:200], "title": entry["article"].get("title", "")}
             else:
