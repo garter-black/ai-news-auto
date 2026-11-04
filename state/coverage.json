@@ -2,6 +2,16 @@
  "hours": 96,
  "items": [
   {
+   "slug": "surface-camera-ai-noise-reduction-gen2",
+   "at": "2026-11-04T09:41:58.429437+00:00",
+   "title": "Microsoft、Surfaceカメラの画質技術を解説　AIモデルは端末内で動作",
+   "head": "Microsoft、Surfaceカメラの画質技術を解説　AIモデルは端末内で動作 | 光学から AI まで：Surface カメラのイノベーションに迫る",
+   "text": "Microsoft、Surfaceカメラの画質技術を解説　AIモデルは端末内で動作 | 光学から AI まで：Surface カメラのイノベーションに迫る | Surface カメラ / AI Noise Reduction / AI Enhancement / Surface Pro 12インチ / Surface Laptop 13インチ / Snapdragon X2 / NPU / ビデオ会議 画質 / DXOMARK ノートPC / オンデバイスAI / Surface / Windows / オンデバイスAI / NPU / Snapdragon X2",
+   "urls": [
+    "https://blogs.windows.com/japan/2026/11/04/from-optics-to-ai-diving-into-surface-camera-innovation/"
+   ]
+  },
+  {
    "slug": "measuring-ai-across-engineering-lifecycle",
    "at": "2026-11-04T09:02:38.043868+00:00",
    "title": "豪Atlassian、AI効果を開発全体で測る枠組みを提示　コードは速くなっても革新は横ばい",

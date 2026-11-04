@@ -7898,6 +7898,14 @@
       "skipped": true,
       "url": "https://www.atpress.ne.jp/news/642984"
     },
+    "6b5b24806390f299": {
+      "at": "2026-11-04T09:42:09.849307+00:00",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "score": 92,
+      "section": "ai",
+      "slug": "surface-camera-ai-noise-reduction-gen2",
+      "url": "https://blogs.windows.com/japan/2026/11/04/from-optics-to-ai-diving-into-surface-camera-innovation/"
+    },
     "6b66b09bd27b794c": {
       "at": "2026-10-28T23:13:03.555379+00:00",
       "reason": "prefilter: 価値の薄いお知らせ（受賞）",
@@ -14262,28 +14270,6 @@
     }
   },
   "quality_log": [
-    {
-      "accepted": true,
-      "at": "2026-11-02T17:11:43.211981+00:00",
-      "attempt": 0,
-      "id": "7654ed0c5356186b",
-      "kind": "broad",
-      "model": "",
-      "problems": [
-        "読みやすさ基準外のまま受理: 読みやすさが改善しなかった（45.2→45.2字）"
-      ],
-      "readability": {
-        "avg_paragraph": 148.6,
-        "avg_sentence": 45.2,
-        "long_share": 0.13,
-        "max_paragraph": 182,
-        "paragraphs": 7,
-        "sentences": 23
-      },
-      "score": 100,
-      "source": "jnet21",
-      "title": "仙台でアトツギ交流会、家業の強みを活かした新規事業に挑戦"
-    },
     {
       "accepted": false,
       "at": "2026-11-02T17:32:10.579265+00:00",
@@ -20670,6 +20656,29 @@
       "warnings": [
         "見出しが46字（目安40字以内）。一覧・カードでは前半だけを出す",
         "初めて出たところで言い換えていない略語（QA・DXI）"
+      ]
+    },
+    {
+      "accepted": true,
+      "at": "2026-11-04T09:42:06.565579+00:00",
+      "attempt": 1,
+      "id": "6b5b24806390f299",
+      "kind": "ai",
+      "model": "anthropic-api:claude-sonnet-5-5",
+      "problems": [],
+      "readability": {
+        "avg_paragraph": 80.8,
+        "avg_sentence": 42.3,
+        "long_share": 0.119,
+        "max_paragraph": 124,
+        "paragraphs": 22,
+        "sentences": 42
+      },
+      "score": 92,
+      "source": "windows-blog-jp",
+      "title": "光学から AI まで：Surface カメラのイノベーションに迫る",
+      "warnings": [
+        "見出しが41字（目安40字以内）。一覧・カードでは前半だけを出す"
       ]
     }
   ],
