@@ -1786,9 +1786,9 @@
       "why": "速報（文面の投稿はすぐ出した）"
     },
     "copilot-cowork-build-lessons-rust": {
-      "at": "2026-11-04T07:43:07+00:00",
+      "at": "2026-11-04T08:04:04+00:00",
       "status": "gate_failed",
-      "tries": 7,
+      "tries": 8,
       "textAt": "2026-11-04T13:45:00+00:00",
       "textId": "",
       "breaking": false,
@@ -1827,10 +1827,10 @@
       },
       "timings": {
         "full": {
-          "ladder_total": 22.5
+          "ladder_total": 612.0
         },
         "short": {
-          "ladder_total": 22.5
+          "ladder_total": 612.0
         }
       },
       "ok": false,
@@ -1959,9 +1959,10 @@
       "why": "Buffer に動画つきの投稿を作れなかった: Buffer: Scheduled time must be in the future"
     },
     "copilot-cowork-build-lessons-rust": {
-      "status": "waiting",
-      "why": "動画が検査に落ちたので、あとの回で作り直す（この投稿だけ遅らせる）",
-      "checkedAt": "2026-11-04T07:43:07+00:00"
+      "status": "skipped",
+      "why": "動画を作れなかった（gate_failed: full: 記事の文だけの台本を作れない: つかみ（何が起きたか・なぜ大事か）の文か、画面の見出しが無い / short: 記事の文だけの台本を作れない: つかみ（何が起きたか・なぜ大事か）の文か、画面の見出しが無い）",
+      "checkedAt": "2026-11-04T07:43:07+00:00",
+      "at": "2026-11-04T08:04:04+00:00"
     },
     "github-copilot-jetbrains-air": {
       "status": "created",

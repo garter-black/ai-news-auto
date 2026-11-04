@@ -3805,89 +3805,7 @@
       "id": "",
       "via": "buffer",
       "permalink": "",
-      "status": "awaiting_video",
-      "pending": {
-        "inputs": {
-          "threads": {
-            "channelId": "6ad942f3778b240e2f82f180",
-            "text": "Copilotを使っている人、これは要チェックです。\n\n要約すると、MicrosoftのCopilot Cowork開発チームは、AIにほとんどのコードを書かせました。\n10月21日に9人のエンジニアが、1,211件の変更を本流に取り込んでいます。\n\nあなたの仕事に、AIへ任せられる作業はありますか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/copilot-cowork-build-lessons-rust?utm_source=threads&utm_medium=social&utm_campaign=classic",
-            "schedulingType": "automatic",
-            "assets": [],
-            "metadata": {
-              "threads": {
-                "topic": "Copilot",
-                "thread": [
-                  {
-                    "text": "Copilotを使っている人、これは要チェックです。\n\n要約すると、MicrosoftのCopilot Cowork開発チームは、AIにほとんどのコードを書かせました。\n10月21日に9人のエンジニアが、1,211件の変更を本流に取り込んでいます。\n\nあなたの仕事に、AIへ任せられる作業はありますか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/copilot-cowork-build-lessons-rust?utm_source=threads&utm_medium=social&utm_campaign=classic",
-                    "assets": [
-                      {
-                        "image": {
-                          "url": "https://ai-tech-express.jp/card/copilot-cowork-build-lessons-rust"
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            },
-            "mode": "customScheduled",
-            "dueAt": "2026-11-04T13:45:00Z"
-          },
-          "twitter": {
-            "channelId": "6ade35f52f1f5ed648cb07cf",
-            "schedulingType": "automatic",
-            "text": "Copilotを使っている人、これは要チェックです。\n\n要約すると、MicrosoftのCopilot Cowork開発チームは、AIにほとんどのコードを書かせました。\n10月21日に9人のエンジニアが、1,211件の変更を本流に取り込んでいます。\n\nあなたの仕事に、AIへ任せられる作業はありますか？\n\n#AI #Copilot",
-            "assets": [],
-            "metadata": {
-              "twitter": {
-                "thread": [
-                  {
-                    "text": "Copilotを使っている人、これは要チェックです。\n\n要約すると、MicrosoftのCopilot Cowork開発チームは、AIにほとんどのコードを書かせました。\n10月21日に9人のエンジニアが、1,211件の変更を本流に取り込んでいます。\n\nあなたの仕事に、AIへ任せられる作業はありますか？\n\n#AI #Copilot",
-                    "assets": [
-                      {
-                        "image": {
-                          "url": "https://ai-tech-express.jp/card/copilot-cowork-build-lessons-rust"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "text": "詳しくはこちら👇\n（専門用語なしの「かんたん版」もあります）\nhttps://ai-tech-express.jp/articles/copilot-cowork-build-lessons-rust?utm_source=x&utm_medium=social&utm_campaign=classic",
-                    "assets": []
-                  }
-                ]
-              }
-            },
-            "mode": "customScheduled",
-            "dueAt": "2026-11-04T13:57:00Z",
-            "_offsetMin": 12
-          },
-          "facebook": {
-            "channelId": "6ade3ad12f1f5ed648cb6936",
-            "schedulingType": "automatic",
-            "text": "Copilotを使っている人、これは要チェックです。\n\n要約すると、MicrosoftのCopilot Cowork開発チームは、AIにほとんどのコードを書かせました。\n10月21日に9人のエンジニアが、1,211件の変更を本流に取り込んでいます。\n\nあなたの仕事に、AIへ任せられる作業はありますか？\n\n詳しくはこちら👇（かんたん版あり）\nhttps://ai-tech-express.jp/articles/copilot-cowork-build-lessons-rust?utm_source=facebook&utm_medium=social&utm_campaign=classic",
-            "assets": [],
-            "metadata": {
-              "facebook": {
-                "type": "post",
-                "linkAttachment": {
-                  "url": "https://ai-tech-express.jp/articles/copilot-cowork-build-lessons-rust?utm_source=facebook&utm_medium=social&utm_campaign=classic",
-                  "title": "Copilot Cowork開発の教訓　9人で1日1,211件、AIがコードを書くチームの進め方",
-                  "description": "MicrosoftがCopilot Cowork開発の舞台裏を公開。9人で1日1,211件の変更、仕様書を先に書く決まり、資格情報を持たないエージェントの設計、検査が本当に検査したかを確かめる仕組みなど、他のチームでも使える実践を整理します",
-                  "thumbnail": {
-                    "url": "https://ai-tech-express.jp/card/copilot-cowork-build-lessons-rust"
-                  }
-                }
-              }
-            },
-            "mode": "customScheduled",
-            "dueAt": "2026-11-04T14:12:00Z",
-            "_offsetMin": 27
-          }
-        },
-        "slot": "2026-11-04T13:45:00+00:00",
-        "fmt": "classic"
-      },
+      "status": "skipped_no_video",
       "hook": "callout",
       "opener": "check",
       "slotTest": "ai",
@@ -3901,7 +3819,8 @@
       "questionText": "あなたの仕事に、AIへ任せられる作業はありますか？",
       "questionPattern": "plain",
       "dueAt": "2026-11-04T13:45:00+00:00",
-      "postedAt": "2026-11-04T05:48:31+00:00"
+      "postedAt": "2026-11-04T05:48:31+00:00",
+      "why": "動画を作れなかった（gate_failed: full: 記事の文だけの台本を作れない: つかみ（何が起きたか・なぜ大事か）の文か、画面の見出しが無い / short: 記事の文だけの台本を作れない: つかみ（何が起きたか・なぜ大事か）の文か、画面の見出しが無い）"
     }
   },
   "extraPending": {}
