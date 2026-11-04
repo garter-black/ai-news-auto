@@ -16,6 +16,9 @@ on:
       levels:
         description: "試す段（例: L3A / L1,L2,L3A）"
         default: "L1,L2,L3A"
+      script:
+        description: "決まった台本の JSON（例: tests/fixtures/video/copilot_storyboard.script.json）。指定すると slugs の1本目をその台本で作る"
+        default: ""
       auto_cards:
         description: "台本が場面ごとに画面の道具（カード）を選ぶ（on / off。オーナーの承認待ちの試し）"
         default: "off"
@@ -61,6 +64,7 @@ jobs:
           CLAUDE_API_MONTHLY_BUDGET_USD: ${{ vars.CLAUDE_API_MONTHLY_BUDGET_USD }}
           CLAUDE_API_DAILY_CALLS_VIDEO: ${{ vars.CLAUDE_API_DAILY_CALLS_VIDEO }}
           SNS_VIDEO_AUTO_CARDS: ${{ github.event.inputs.auto_cards }}
+          SCRIPT: ${{ github.event.inputs.script }}
           COUNT: ${{ github.event.inputs.count }}
           SLUGS: ${{ github.event.inputs.slugs }}
           LEVELS: ${{ github.event.inputs.levels }}
@@ -69,7 +73,9 @@ jobs:
           curl -sf localhost:50021/version && echo " VOICEVOX OK"
           args="--levels $LEVELS --tts voicevox --profile production --out out/video_ladder"
           status=0
-          if [ -n "$SLUGS" ]; then
+          if [ -n "$SCRIPT" ]; then
+            python scripts/video_ladder.py $SLUGS --script "$SCRIPT" --tts voicevox --profile production --out out/video_ladder || status=$?
+          elif [ -n "$SLUGS" ]; then
             python scripts/video_ladder.py $SLUGS $args || status=$?
           else
             python scripts/video_ladder.py --dry-run "$COUNT" $args || status=$?

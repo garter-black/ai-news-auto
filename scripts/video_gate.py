@@ -1055,7 +1055,7 @@ def page_idle_problems(report: dict, end: float, limit: float = PAGE_IDLE_MAX, s
         a, b = float(g.get("t0", 0)), float(g.get("t1", 0))
         target = str(g.get("target", ""))
         english = bool(re.search(r"[A-Za-z]", target)) and not re.search(r"[ぁ-んァ-ヴ一-龥]", target)
-        if english and g.get("ja"):
+        if english:  # 英語の文は訳の吹き出しが出ている間だけ（訳の無い英文は「青だけ」でも読めない）
             covered += [(max(a, s0), min(b, s1)) for s0, s1 in subs if s0 < b and a < s1]
         else:
             covered.append((a, b))
@@ -1072,6 +1072,31 @@ def page_idle_problems(report: dict, end: float, limit: float = PAGE_IDLE_MAX, s
     if worst > limit + 1e-6:
         return [f"{at:.1f}秒から{worst:.1f}秒、選択の青と訳もカードも無い画面が続く（{limit:.0f}秒まで）"]
     return []
+
+
+TAKEAWAY_MAX = 14  # 左の大きな文字（持ち帰る一言）の長さ
+
+
+def v3_bar_problems(report: dict, end: float) -> list[str]:
+    """v3 の形（オーナー承認 2026-11-04）: ①選択の青のほかに画面の道具（カード・グラフ）が2種類以上（25秒以上の動画）
+    ②公式ページの画面が、選択の青と訳（日本語の文なら青だけ）もカードも無いまま4秒を超えない ③左の大きな文字は短い持ち帰る一言で、カードと同じ言葉ではない"""
+    out = []
+    tools = sorted({str(L.get("mode") or "ladder") for L in report.get("ladders") or []} | ({"chart"} if report.get("charts") else set()))
+    if end >= 25 and len(tools) < AUTO_CARDS_MIN_TOOLS:
+        out.append(f"画面の道具が{len(tools)}種類（{'・'.join(tools) or 'なし'}。{AUTO_CARDS_MIN_TOOLS}種類以上）")
+    out += page_idle_problems(report, end)
+    sv = report.get("script_v3") or {}
+    cards = {int(c.get("beat") or 0): c for c in sv.get("cards") or [] if isinstance(c, dict)}
+    for i, b in enumerate(sv.get("beats") or [], 1):
+        kw = norm(str(b.get("keyword", "")))
+        if len(kw) > TAKEAWAY_MAX:
+            out.append(f"beat{i} の左の一言「{b.get('keyword')}」が長い（{TAKEAWAY_MAX}字まで）")
+        for r in (cards.get(i) or {}).get("rows") or []:
+            texts = [norm(str(r.get(k, ""))) for k in ("text", "name", "value")]
+            if kw and len(kw) >= 4 and any(t and (kw in t or t in kw) for t in texts):
+                out.append(f"beat{i} の左の一言「{b.get('keyword')}」がカードと同じ言葉")
+                break
+    return out
 
 
 def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, article: dict | None = None, renderer: Path | None = None) -> None:
@@ -1192,6 +1217,10 @@ def check_v3(mp4: Path, report: dict, duration: float, result: GateResult, artic
     if report.get("auto_cards"):
         for p in page_idle_problems(report, end):
             result.reasons.append(f"v3: {p}")
+    # v3 の形（2026-11-04 オーナー承認の型。copilot_A_v3）に届いているか: report["gate"]["qa"]["v3"]（投稿の条件。sns_video_followup.qa_ok）
+    v3_bar = v3_bar_problems(report, end)
+    m["qa_v3"] = not v3_bar
+    m["qa_v3_problems"] = v3_bar[:6]
     if m["v3_card_share"] > CARD_SHARE_MAX:
         result.reasons.append(f"v3: 右の画面の {m['v3_card_share']:.0%} がカード（公式ページの画面が基本の形。{CARD_SHARE_MAX:.0%} まで）")
     # 左の列の見出し・キーワード（同じ言葉の繰り返し・名詞1つだけは不合格。2026-11-04）と、最初の5〜8秒で何のニュースか分かるか

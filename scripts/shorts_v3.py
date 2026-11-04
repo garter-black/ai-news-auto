@@ -28,6 +28,7 @@ import asyncio
 import json
 import math
 import os
+import random
 import re
 import subprocess
 import sys
@@ -1833,11 +1834,32 @@ def short_ending(topics: list[str], seed: str = "") -> dict:
     return {"text": "くわしくは記事で", "speech": head + invite, "cta": "投稿のリンクからどうぞ ↗", "eyebrow": "続きは記事で"}
 
 
-def make_tts(kind: str, speed: float):
-    """v3 の声: VOICEVOX は V3_VOICE（話者・スタイル・高さ・抑揚）。それ以外は v2 と同じ"""
+# 文の役目ごとの声（2026-11-04 オーナー承認。九州そら・高さ-0.01・抑揚1.0・速さ1.38 が基準）:
+# (速さの倍率＝基準の速さに掛ける, 抑揚, 高さ, 前の間（None＝0.22〜0.30秒で少しずつ変える）, 後の間)
+VOICE_ROLES = {
+    "hook": (1.32 / 1.38, 1.12, -0.01, 0.0, 0.35),
+    "normal": (1.0, 1.00, -0.01, None, 0.0),
+    "turn": (1.36 / 1.38, 1.10, -0.01, 0.45, 0.25),
+    "end": (1.30 / 1.38, 0.95, -0.02, 0.40, 0.0),
+}
+TURN_START = ("ただし", "ところが", "一方で", "しかし", "でも", "やっかいなのは")
+VOICE_ROLES_ON = os.environ.get("V3_VOICE_ROLES", "on") != "off"
+
+
+def line_role(line: "Line") -> str:
+    if line.kind == "hook":
+        return "hook"
+    if line.kind == "conclusion":
+        return "end"
+    return "turn" if line.speech.startswith(TURN_START) else "normal"
+
+
+def make_tts(kind: str, speed: float, intonation: float | None = None, pitch: float | None = None, pause: float = 1.0):
+    """v3 の声: VOICEVOX は V3_VOICE（話者・スタイル・高さ・抑揚）。役目ごとに抑揚・高さ・句読点の間を変えられる。それ以外は v2 と同じ"""
     if kind == "voicevox" or (kind == "auto" and shorts.VoiceVox.available()):
         v = V3_VOICE
-        tts = shorts.VoiceVox(v["speaker"], speed, style=v["style"], pitch=v["pitch"], intonation=v["intonation"])
+        tts = shorts.VoiceVox(v["speaker"], speed, style=v["style"], pitch=v["pitch"] if pitch is None else pitch, intonation=v["intonation"] if intonation is None else intonation)
+        tts.pause = pause
         tts.engine = "voicevox"
         tts.label = f"VOICEVOX（{v['speaker']}・{v['style']}・高さ{v['pitch']:+.2f}・抑揚{v['intonation']:.2f}）"
         return tts
@@ -1850,21 +1872,37 @@ def narrate(script: dict, tts_kind: str, work: Path) -> Narration:
         raise RuntimeError("VOICEVOX に繋がりません")
     base_speed = V3_VOICE["speed"] if tts_kind != "fake" else 1.22
     speed = base_speed
+    roles = [line_role(ln) if VOICE_ROLES_ON else "normal" for ln in lines]
+    rng = random.Random(len(lines) * 7 + sum(len(ln.speech) for ln in lines))  # 間の揺らぎは台本ごとに決まった値（作り直しても同じ）
+    jitter = [round(rng.uniform(0.9, 1.1), 2) if VOICE_ROLES_ON else 1.0 for _ in lines]
+    pre_gap = [rng.uniform(0.22, 0.30) if VOICE_ROLES_ON else GAP for _ in lines]
     for _ in range(5):
         tts = v2.FakeTTS(0.135 * 1.22 / speed) if tts_kind == "fake" else make_tts(tts_kind, speed)
 
         def synth(i: int) -> np.ndarray:
             raw, dst = work / f"l{i}.src.wav", work / f"l{i}.wav"
-            tts.synth(speech_for_tts(lines[i].speech), raw)
+            mult, inton, pitch, _pre, _post = VOICE_ROLES[roles[i]]
+            if tts_kind == "fake":
+                one = v2.FakeTTS(0.135 * 1.22 / (speed * mult))
+            elif VOICE_ROLES_ON:
+                one = make_tts(tts_kind, round(speed * mult, 3), intonation=inton, pitch=pitch, pause=jitter[i])
+            else:
+                one = tts
+            one.synth(speech_for_tts(lines[i].speech), raw)
             v2._to_48k_trimmed(raw, dst)
             return v2._read_wav(dst)
 
         with ThreadPoolExecutor(max_workers=4) as pool:
             clips = list(pool.map(synth, range(len(lines))))
         t = LEAD
-        for line, clip in zip(lines, clips):
+        prev_post = 0.0
+        for k, (line, clip) in enumerate(zip(lines, clips)):
+            if k:
+                pre = VOICE_ROLES[roles[k]][3]
+                t += max(prev_post, pre if pre is not None else pre_gap[k]) if VOICE_ROLES_ON else GAP
             line.start, line.end = t, t + len(clip) / SR
-            t = line.end + GAP
+            t = line.end
+            prev_post = VOICE_ROLES[roles[k]][4]
         total = lines[-1].end + END_HOLD
         end_start = total  # 締めのカードは無い（最後の場面のまま終わる）
         # 長さが外れたら、声の部分の長さから必要な速さを1回で計算して読み直す（何度も合成すると遅い）
@@ -1883,7 +1921,7 @@ def narrate(script: dict, tts_kind: str, work: Path) -> Narration:
     for line, clip in zip(lines, clips):
         a = int(line.start * SR)
         samples[a : a + len(clip)] += clip[: len(samples) - a]
-    voice = {"engine": tts.engine, "credit": tts.credit, "label": tts.label, "speed": round(speed, 2)}
+    voice = {"engine": tts.engine, "credit": tts.credit, "label": tts.label + ("・役目ごとの速さと間" if VOICE_ROLES_ON else ""), "speed": round(speed, 2), "roles": VOICE_ROLES_ON}
     return Narration(lines, samples, end_start, total, voice)
 
 
@@ -2846,6 +2884,12 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
                     ev(t_hi, "pop", "カード: 強調")
                 if nxt - t_end > 1.2:  # カードが消えて証拠の画面に戻る（大きく絵が変わる所）
                     ev(t_end + 0.05, "chart", "カード: 画面へ戻る")
+                    # 戻った画面にも選択の青と訳を出す（青も訳も無い英語の画面を残さない。2026-11-04 オーナー）
+                    spots.append(Spot(t_end + 0.1, nxt - 0.08, tg.page, span, sel, t_end + 0.3))
+                    if found[i]:
+                        qa_add(i, tg, sel, t_end + 0.3, nxt - 0.08, beat, beat.get("keyword", ""), beat.get("sub", ""), beat.get("speech", ""))
+                    if xl and nxt - 0.08 - (t_end + 0.4) > 0.6:
+                        sub_spans.append((t_end + 0.4, nxt - 0.08, i))
             elif i == uni_beat:
                 t_hi = chart_t + 0.3 + 0.5 * len(uni_rows) + 0.3
                 t_end = min(nxt - 0.06, t_hi + 2.2)
@@ -2874,10 +2918,13 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     n_last = n_beats + 1
     back_t = max(concl.start - 0.16, last_end() + HOLD)
     add_move(back_t, Camera._hold(first, 0, 0), "締め: 最初の画面へ戻る", n_last, cut=first.page != moves[-1].cam.page)
-    c_t = max(back_t + MOVE + HOLD, concl.start + 0.45 * (concl.end - concl.start))
+    # 締めで最初の数字へ寄る時刻（2026-11-04: 早めに。選択の青と訳の無い画面を4秒より長く続けない）
+    c_t = max(back_t + MOVE + HOLD, concl.start + 0.2 * (concl.end - concl.start))
     if narr.end_start - c_t > 0.9 + 1.0 and add_move(c_t, hook_close, "締め: 最初の数字へ", n_last):
         spots.append(Spot(c_t + 0.35, narr.end_start, t0.page, t0.span, list(t0.rows or [t0.match]), c_t + 0.5))
         qa_add(n_last, t0, list(t0.rows or [t0.match]), c_t + 0.5, narr.end_start, hook, hook.get("payoff", ""), "", hook.get("speech", ""))
+        if hook_xl and narr.end_start - (c_t + 0.6) >= 1.0:  # 締めで英文に戻ったら、訳の吹き出しも出す（訳の無い英語の画面にしない。2026-11-04）
+            sub_spans.append((c_t + 0.6, narr.end_start, 0))
     # 3.6秒より長く何も変わらない所は、カーソルが読んでいる文を指す（カメラは動かさない）。左端と右端を交互に
     # （2026-11-04 オーナー「ただの読み聞かせ」: 4秒を超えて止まった画面を作らない。ゲートは video_gate.CALM_MAX_SEGMENT＝4.0秒）
     cover = [(c.t0, c.t1) for c in charts] + [(L.t0, L.t1) for L in ladders]
@@ -2885,7 +2932,11 @@ def make_plan(article: dict, script: dict, narr: Narration, pages: list[Page]) -
     side = 0
     for _ in range(3):
         changes = sorted({e["t"] for e in events if e["kind"] in ("move", "cut", "chart", "pop", "highlight", "text", "click")})
-        bounds = [0.0] + changes + [narr.end_start]
+        kept: list[float] = []  # ゲートと同じく、0.7秒以内に続いた変化は1回と数える（その分、間が長く見える）
+        for c_ in changes:
+            if not kept or c_ - kept[-1] >= 0.7:
+                kept.append(c_)
+        bounds = [0.0] + kept + [narr.end_start]
         added = False
         for a, b in zip(bounds, bounds[1:]):
             if b - a <= 3.6 or any(c0 - 0.2 <= (a + b) / 2 <= c1 + 0.2 for c0, c1 in cover):
@@ -4235,7 +4286,7 @@ def make_video(
         timer.mark("sheet", t)
     report["gate"] = res.to_dict()
     # QA（2026-11-04）: 位置の検査（ゲートの中）と、AI の目視の確認（qa_versions が2本まとめて行う）。両方 true の動画だけ投稿に使う
-    report["gate"]["qa"] = {"geometry": bool(res.metrics.get("qa_geometry")), "vision": False, "version": QA_VERSION}
+    report["gate"]["qa"] = {"geometry": bool(res.metrics.get("qa_geometry")), "vision": False, "version": QA_VERSION, "v3": bool(res.metrics.get("qa_v3"))}
     if not report["gate"]["qa"]["geometry"] and res.ok:
         report["gate"]["ok"] = False
     report["sizeMB"] = round(mp4.stat().st_size / 1e6, 2) if mp4.exists() else 0

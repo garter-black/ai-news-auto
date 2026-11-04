@@ -651,7 +651,9 @@ def card_base(r, L) -> dict:
             if row.get("note"):
                 parts.append(v3.fit_line(row["note"], "bold", range(28, 20, -2), width, color=v3.MUTED, accent=False))
             body = v3.stack(parts, 8)
-        rows.append({"y": top + k * row_h, "h": row_h, "head": head, "body": body, "subj": False})
+        # 行の中で文字を縦の真ん中に（2026-11-04 オーナー「カードの下が空いている」）
+        yo = max(0, (row_h - 18 - body.shape[0]) // 2) if big else 0
+        rows.append({"y": top + k * row_h, "h": row_h, "head": head, "body": body, "subj": False, "yo": yo})
     info.update({"rows": rows, "text_x": text_x, "label_w": label_w, "big": big})
     return info
 
@@ -754,7 +756,7 @@ def card_frame(r, info: dict, L, t: float):
             hi = v3.ease_out((t - t_hi - (focus_k * L.tour if L.tour else 0)) / 0.3)
             v3._highlight_row(arr, 30, row["y"] - 16, PW - 60, row["h"] - 18, hi)
         if L.mode == "timeline":  # 流れの点（データの印。線でつながない）
-            dots.append((X0 + info.get("label_w", 230) - 22, row["y"] + (26 if info.get("big") else 18), 26, v3.BLUE if k <= max(focus_k, 0) else (196, 205, 220)))
+            dots.append((X0 + info.get("label_w", 230) - 22, row["y"] + (row.get("yo", 0) + 26 if info.get("big") else 18), 26, v3.BLUE if k <= max(focus_k, 0) else (196, 205, 220)))
         shown.append((k, row, a))
     if dots:
         img = Image.fromarray(arr)
@@ -762,8 +764,9 @@ def card_frame(r, info: dict, L, t: float):
         arr = np.asarray(img).copy()
     for k, row, a in shown:
         dx = int((1 - a) * 60)
-        v3.blend(arr, row["head"], X0 + dx, row["y"] + 4, a)
-        v3.blend(arr, row["body"], info["text_x"] + dx, row["y"], a)
+        yo = row.get("yo", 0)
+        v3.blend(arr, row["head"], X0 + dx, row["y"] + 4 + max(0, yo + (row["body"].shape[0] - row["head"].shape[0]) // 2 if yo else 0), a)
+        v3.blend(arr, row["body"], info["text_x"] + dx, row["y"] + yo, a)
     rows = [dict(r_, subj=(i == focus_k)) for i, r_ in enumerate(info["rows"])]
     return v3.push_in(arr, {**info, "rows": rows}, L, t, t_hi + (focus_k * L.tour if L.tour and focus_k > 0 else 0), 0.05)
 

@@ -363,6 +363,8 @@ class VoiceVox:
         with urllib.request.urlopen(req, timeout=60) as r:
             query = json.loads(r.read())
         query.update({"speedScale": self.speed, "pitchScale": self.pitch, "intonationScale": self.intonation, "prePhonemeLength": 0.05, "postPhonemeLength": 0.1, "outputSamplingRate": SAMPLE_RATE, "outputStereo": False})
+        if getattr(self, "pause", 1.0) != 1.0:  # 句読点の間の長さ（文ごとに少し変える。shorts_v3 の役目ごとの声）
+            query["pauseLengthScale"] = self.pause
         req = urllib.request.Request(
             f"{self.base}/synthesis?speaker={self.style_id}",
             data=json.dumps(query).encode(),

@@ -1089,6 +1089,28 @@ def l1_history(n: int = 20) -> dict:
 
 
 
+def render_script(slug: str, out_dir: Path, script_path: Path, tts: str = "voicevox", profile: str | None = None, pages: list | None = None, **kw) -> dict:
+    """決まった台本で作る（オーナー承認の絵コンテの出し直し用）。_variant が short なら短い版だけ、無ければ2本。
+    描画・ゲート・画像のレビューは本番と同じ（shorts_v3.make_video ＋ qa_versions）。投稿しない・置かない"""
+    import shorts
+    import shorts_v3 as v3
+
+    a = shorts.load_article(slug)
+    script = v3.latin_names(json.loads(Path(script_path).read_text("utf-8")))
+    pages = pages if pages is not None else v3.capture_pages(v3.page_urls(a))
+    out_dir.mkdir(parents=True, exist_ok=True)
+    variants = ["short"] if script.get("_variant") == "short" else ["full", "short"]
+    out = {}
+    for v in variants:
+        s = copy.deepcopy(script) if v == "full" or script.get("_variant") == "short" else v3.short_script(copy.deepcopy(script))
+        out[v] = v3.make_video(slug, out_dir, tts, profile=profile, article=a, pages=pages, script=s, **kw)
+    out = v3.qa_versions(slug, out, None)
+    for r in out.values():
+        r["level"] = "L1"
+        r["script_source"] = str(script_path)
+    return out
+
+
 def plan_check(slugs: list[str]) -> list[dict]:
     """L3A の台本を、自分の記事ページを模した画面（article_page）で作って検査するだけ（ネット・声・描画なし）"""
     import shorts
@@ -1118,6 +1140,7 @@ def main() -> None:
     parser.add_argument("--stats", action="store_true")
     parser.add_argument("--alert", action="store_true")
     parser.add_argument("--history", type=int, metavar="N")
+    parser.add_argument("--script", help="決まった台本（JSON。オーナー承認の絵コンテなど）で1本作り、同じゲートとレビューにかける（投稿しない）")
     args = parser.parse_args()
     try:
         import llm
@@ -1134,6 +1157,10 @@ def main() -> None:
     if args.history:
         print(json.dumps(l1_history(args.history), ensure_ascii=False, indent=2))
         return
+    if args.script:
+        out = render_script(args.slugs[0], Path(args.out), Path(args.script), tts=args.tts, profile=args.profile)
+        print(json.dumps({v: {"ok": r["gate"]["ok"], "qa": r["gate"].get("qa"), "total": r.get("total"), "reasons": r["gate"]["reasons"][:6]} for v, r in out.items()}, ensure_ascii=False, indent=2))
+        sys.exit(0 if all(r["gate"]["ok"] for r in out.values()) else 1)
     if args.plan_check:
         rows = plan_check(recent_slugs(args.plan_check))
         for r in rows:

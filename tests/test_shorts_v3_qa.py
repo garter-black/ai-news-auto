@@ -200,7 +200,8 @@ class RenderQATest(unittest.TestCase):
     def test_geometry_recorded_and_passes(self):
         r = self.report
         self.assertTrue(r["gate"]["ok"], r["gate"]["reasons"])
-        self.assertEqual(r["gate"]["qa"], {"geometry": True, "vision": False, "version": v3.QA_VERSION})
+        self.assertEqual({k: r["gate"]["qa"][k] for k in ("geometry", "vision", "version")}, {"geometry": True, "vision": False, "version": v3.QA_VERSION})
+        self.assertIn("v3", r["gate"]["qa"])  # v3 の形に届いたか（投稿の条件。合成の台本はカードが無いので False）
         beats = {g["beat"] for g in r["geometry"]}
         self.assertTrue({0, 1, 2, 3, 4} <= beats)
         for g in r["geometry"]:
@@ -245,7 +246,7 @@ class RenderQATest(unittest.TestCase):
         self.assertEqual(len(calls), 1)  # 2本まとめて1回
         self.assertGreater(calls[0][1], 2)
         for r in out.values():
-            self.assertEqual(r["gate"]["qa"], {"geometry": True, "vision": True, "version": v3.QA_VERSION})
+            self.assertEqual({k: r["gate"]["qa"][k] for k in ("geometry", "vision", "version")}, {"geometry": True, "vision": True, "version": v3.QA_VERSION})
             self.assertTrue(r["gate"]["ok"])
 
     def test_unclear_opening_fails_vision(self):

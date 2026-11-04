@@ -104,5 +104,43 @@ class GateTest(unittest.TestCase):
         self.assertEqual(gate.page_idle_problems(rep, 20), [])
 
 
+@unittest.skipUnless(READY, "numpy / Pillow が無い")
+class V3BarTest(unittest.TestCase):
+    """report["gate"]["qa"]["v3"]（投稿の条件）: 道具2種類以上・青と訳の無い画面4秒まで・左は短い持ち帰る一言でカードと同じ言葉ではない"""
+
+    def report(self, modes=("timeline", "checklist"), kw="契約そのまま", row="複数の作業を同時に頼める"):
+        return {"ladders": [{"t0": 4 + 8 * i, "t1": 8 + 8 * i, "mode": m} for i, m in enumerate(modes)], "charts": [],
+                "geometry": [{"t0": 0, "t1": 30, "target": "手作業だった復旧を自動にします", "ja": ""}], "subtitles": [],
+                "script_v3": {"beats": [{"keyword": kw}], "cards": [{"beat": 1, "mode": modes[0], "rows": [{"label": "手元", "text": row}]}]}}  # fmt: skip
+
+    def test_good(self):
+        self.assertEqual(gate.v3_bar_problems(self.report(), 30), [])
+
+    def test_one_tool_fails(self):
+        self.assertTrue(any("道具" in p for p in gate.v3_bar_problems(self.report(modes=("timeline",)), 30)))
+
+    def test_headline_same_as_card_fails(self):
+        self.assertTrue(any("同じ言葉" in p for p in gate.v3_bar_problems(self.report(kw="同時に頼める"), 30)))
+
+    def test_english_page_without_caption_fails(self):
+        r = self.report()
+        r["geometry"] = [{"t0": 0, "t1": 30, "target": "Track multiple agent sessions.", "ja": ""}]
+        self.assertTrue(any("訳" in p for p in gate.v3_bar_problems(r, 30)))
+
+
+@unittest.skipUnless(READY, "numpy / Pillow が無い")
+class VoiceRolesTest(unittest.TestCase):
+    """2026-11-04 オーナー承認の声: つかみはゆっくり・「ただし」の前は間・締めはゆっくり（九州そら・速さ1.38 が基準）"""
+
+    def test_roles(self):
+        self.assertEqual(v3.line_role(v3.Line("hook", 0, "a")), "hook")
+        self.assertEqual(v3.line_role(v3.Line("beat", 2, "ただし、上限は決められません。")), "turn")
+        self.assertEqual(v3.line_role(v3.Line("beat", 1, "手元でも使えます。")), "normal")
+        self.assertEqual(v3.line_role(v3.Line("conclusion", 3, "確かめましょう。")), "end")
+        self.assertAlmostEqual(v3.V3_VOICE["speed"] * v3.VOICE_ROLES["hook"][0], 1.32, places=2)
+        self.assertEqual(v3.VOICE_ROLES["turn"][3], 0.45)
+        self.assertTrue(v3.VOICE_ROLES_ON)
+
+
 if __name__ == "__main__":
     unittest.main()
